@@ -12,6 +12,7 @@ from pytest import raises as pytest_raises
 
 
 def test_agenda_acptfact_exists():
+    # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
@@ -21,23 +22,23 @@ def test_agenda_acptfact_exists():
         sunday_agenda_acptfact.base: sunday_agenda_acptfact
     }
     assert x_agenda._idearoot._acptfactunits != None
-    x_agenda._idearoot._acptfactunits = None
-    assert x_agenda._idearoot._acptfactunits is None
+    x_agenda._idearoot._acptfactunits = {}
+    assert not x_agenda._idearoot._acptfactunits
     x_agenda.set_acptfact(base=weekday_road, pick=sunday_road)
     assert x_agenda._idearoot._acptfactunits == {
         sunday_agenda_acptfact.base: sunday_agenda_acptfact
     }
 
-    x_agenda._idearoot._acptfactunits = None
-    assert x_agenda._idearoot._acptfactunits is None
+    x_agenda._idearoot._acptfactunits = {}
+    assert not x_agenda._idearoot._acptfactunits
     usa_week_road = x_agenda.make_l1_road("nation-state")
     usa_week_unit = acptfactunit_shop(
         base=usa_week_road, pick=usa_week_road, open=608, nigh=610
     )
     x_agenda._idearoot._acptfactunits = {usa_week_unit.base: usa_week_unit}
 
-    x_agenda._idearoot._acptfactunits = None
-    assert x_agenda._idearoot._acptfactunits is None
+    x_agenda._idearoot._acptfactunits = {}
+    assert not x_agenda._idearoot._acptfactunits
     x_agenda.set_acptfact(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
     assert x_agenda._idearoot._acptfactunits != None
     assert x_agenda._idearoot._acptfactunits == {usa_week_unit.base: usa_week_unit}
@@ -120,9 +121,9 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     fast_idea = x_agenda.get_idea_kid(fast_road)
     slow_idea = x_agenda.get_idea_kid(slow_road)
 
-    assert swim_idea._acptfactheirs is None
-    assert fast_idea._acptfactheirs is None
-    assert slow_idea._acptfactheirs is None
+    assert swim_idea._acptfactheirs == {}
+    assert fast_idea._acptfactheirs == {}
+    assert slow_idea._acptfactheirs == {}
 
     # WHEN
     x_agenda.set_acptfact(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
@@ -173,7 +174,7 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._economy_id)
 
-    assert swim_idea._acptfactheirs is None
+    assert swim_idea._acptfactheirs == {}
 
     # WHEN
     x_agenda.set_acptfact(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
@@ -220,7 +221,7 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     )
     first_earthdict = {first_earthheir.base: first_earthheir}
 
-    assert swim_idea._acptfactheirs is None
+    assert swim_idea._acptfactheirs == {}
 
     # WHEN
     x_agenda.set_acptfact(base=earth_road, pick=earth_road, open=200.0, nigh=500.0)
@@ -784,7 +785,6 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda._idearoot.set_kids_empty_if_null()
     issue_text = "issues"
     issue_road = x_agenda.make_l1_road(issue_text)
     climate_text = "climate"
@@ -804,7 +804,6 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda._idearoot.set_kids_empty_if_null()
 
     issue_text = "issues"
     issue_road = x_agenda.make_l1_road(issue_text)

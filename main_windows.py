@@ -296,7 +296,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_new(self):
         self.agenda_x = agendaunit_shop(_healer="new")
-        self.agenda_x._set_acptfacts_empty_if_null()
         self.agenda_x.set_partys_empty_if_null()
         self.agenda_x.set_groupunits_empty_if_null()
         self.agenda_x.set_time_hreg_ideas(c400_count=7)

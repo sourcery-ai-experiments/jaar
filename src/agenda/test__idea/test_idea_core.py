@@ -17,84 +17,84 @@ from pytest import raises as pytest_raises
 
 
 def test_IdeaCore_exists():
-    new_obj = IdeaCore()
-    assert new_obj
-    assert new_obj._kids is None
-    assert new_obj._weight is None
-    assert new_obj._label is None
-    assert new_obj._uid is None
-    assert new_obj._all_party_credit is None
-    assert new_obj._all_party_debt is None
-    assert new_obj._begin is None
-    assert new_obj._close is None
-    assert new_obj._addin is None
-    assert new_obj._numor is None
-    assert new_obj._denom is None
-    assert new_obj._reest is None
-    assert new_obj._numeric_road is None
-    assert new_obj._range_source_road is None
-    assert new_obj.promise is None
-    assert new_obj._problem_bool is None
-    assert new_obj._descendant_promise_count is None
-    assert new_obj._balancelines is None
-    assert new_obj._balanceheirs is None
-    assert new_obj._is_expanded is None
-    assert new_obj._acptfactheirs is None
-    assert new_obj._acptfactunits is None
-    assert new_obj._on_meld_weight_action is None
-    assert new_obj._level is None
-    assert new_obj._kids_total_weight is None
-    assert new_obj._active_status_hx is None
-    assert new_obj._agenda_importance is None
-    assert new_obj._agenda_coin_onset is None
-    assert new_obj._agenda_coin_cease is None
-    assert new_obj._requiredunits is None
-    assert new_obj._requiredheirs is None
-    assert new_obj._assignedunit is None
-    assert new_obj._assignedheir is None
-    assert new_obj._originunit is None
-    assert new_obj._road_node_delimiter is None
+    x_ideacore = IdeaCore()
+    assert x_ideacore
+    assert x_ideacore._kids is None
+    assert x_ideacore._weight is None
+    assert x_ideacore._label is None
+    assert x_ideacore._uid is None
+    assert x_ideacore._all_party_credit is None
+    assert x_ideacore._all_party_debt is None
+    assert x_ideacore._begin is None
+    assert x_ideacore._close is None
+    assert x_ideacore._addin is None
+    assert x_ideacore._numor is None
+    assert x_ideacore._denom is None
+    assert x_ideacore._reest is None
+    assert x_ideacore._numeric_road is None
+    assert x_ideacore._range_source_road is None
+    assert x_ideacore.promise is None
+    assert x_ideacore._problem_bool is None
+    assert x_ideacore._descendant_promise_count is None
+    assert x_ideacore._balancelines is None
+    assert x_ideacore._balanceheirs is None
+    assert x_ideacore._is_expanded is None
+    assert x_ideacore._acptfactheirs is None
+    assert x_ideacore._acptfactunits is None
+    assert x_ideacore._on_meld_weight_action is None
+    assert x_ideacore._level is None
+    assert x_ideacore._kids_total_weight is None
+    assert x_ideacore._active_status_hx is None
+    assert x_ideacore._agenda_importance is None
+    assert x_ideacore._agenda_coin_onset is None
+    assert x_ideacore._agenda_coin_cease is None
+    assert x_ideacore._requiredunits is None
+    assert x_ideacore._requiredheirs is None
+    assert x_ideacore._assignedunit is None
+    assert x_ideacore._assignedheir is None
+    assert x_ideacore._originunit is None
+    assert x_ideacore._road_node_delimiter is None
 
 
 def test_ideacore_shop_ReturnsCorrectObj():
-    new_obj = ideacore_shop()
-    assert new_obj
-    assert new_obj._kids is None
-    assert new_obj._weight >= 1
-    assert new_obj._label is None
-    assert new_obj._uid is None
-    assert new_obj._all_party_credit is None
-    assert new_obj._all_party_debt is None
-    assert new_obj._begin is None
-    assert new_obj._close is None
-    assert new_obj._addin is None
-    assert new_obj._numor is None
-    assert new_obj._denom is None
-    assert new_obj._reest is None
-    assert new_obj._numeric_road is None
-    assert new_obj._range_source_road is None
-    assert new_obj.promise is False
-    assert new_obj._problem_bool is False
-    assert new_obj._descendant_promise_count is None
-    assert new_obj._balancelines is None
-    assert new_obj._balanceheirs is None
-    assert new_obj._is_expanded == True
-    assert new_obj._acptfactheirs is None
-    assert new_obj._acptfactunits is None
-    assert new_obj._on_meld_weight_action == "default"
-    assert new_obj._level is None
-    assert new_obj._kids_total_weight == 0
-    assert new_obj._active_status_hx is None
-    assert new_obj._active_status_hx is None
-    assert new_obj._agenda_importance is None
-    assert new_obj._agenda_coin_onset is None
-    assert new_obj._agenda_coin_cease is None
-    assert new_obj._requiredunits is None
-    assert new_obj._requiredheirs is None
-    assert new_obj._assignedunit is None
-    assert new_obj._assignedheir is None
-    assert new_obj._originunit is None
-    assert new_obj._road_node_delimiter == get_node_delimiter()
+    x_ideacore = ideacore_shop()
+    assert x_ideacore
+    assert x_ideacore._kids == {}
+    assert x_ideacore._weight >= 1
+    assert x_ideacore._label is None
+    assert x_ideacore._uid is None
+    assert x_ideacore._all_party_credit is None
+    assert x_ideacore._all_party_debt is None
+    assert x_ideacore._begin is None
+    assert x_ideacore._close is None
+    assert x_ideacore._addin is None
+    assert x_ideacore._numor is None
+    assert x_ideacore._denom is None
+    assert x_ideacore._reest is None
+    assert x_ideacore._numeric_road is None
+    assert x_ideacore._range_source_road is None
+    assert x_ideacore.promise is False
+    assert x_ideacore._problem_bool is False
+    assert x_ideacore._descendant_promise_count is None
+    assert x_ideacore._balancelines == {}
+    assert x_ideacore._balancelinks == {}
+    assert x_ideacore._balanceheirs == {}
+    assert x_ideacore._is_expanded == True
+    assert x_ideacore._acptfactheirs == {}
+    assert x_ideacore._acptfactunits == {}
+    assert x_ideacore._on_meld_weight_action == "default"
+    assert x_ideacore._level is None
+    assert x_ideacore._kids_total_weight == 0
+    assert x_ideacore._active_status_hx == {}
+    assert x_ideacore._agenda_importance is None
+    assert x_ideacore._agenda_coin_onset is None
+    assert x_ideacore._agenda_coin_cease is None
+    assert x_ideacore._requiredunits == {}
+    assert x_ideacore._requiredheirs == {}
+    assert x_ideacore._assignedunit is None
+    assert x_ideacore._assignedheir is None
+    assert x_ideacore._originunit is None
+    assert x_ideacore._road_node_delimiter == get_node_delimiter()
 
 
 def test_IdeaCore_get_key_road_ReturnsCorrectObj():
@@ -265,14 +265,12 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromOutside():
     run_sufffacts = {run_sufffact.need: run_sufffact}
     requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
     requiredheirs = {requiredheir.base: requiredheir}
-    assert ball_idea._requiredunits is None
-    assert ball_idea._requiredheirs is None
+    assert ball_idea._requiredheirs == {}
 
     # WHEN
     ball_idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict=None)
 
     # THEN
-    assert ball_idea._requiredunits == {}
     assert ball_idea._requiredheirs == requiredheirs
     assert id(ball_idea._requiredheirs) != id(requiredheirs)
 
@@ -288,8 +286,7 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
     run_requiredunit = requiredunit_shop(base=run_road, sufffacts=run_sufffacts)
     run_requiredunits = {run_requiredunit.base: run_requiredunit}
     ball_idea = ideacore_shop(_label=ball_text, _requiredunits=run_requiredunits)
-    assert ball_idea._requiredunits != None
-    assert ball_idea._requiredheirs is None
+    assert ball_idea._requiredunits != {}
 
     # WHEN
     ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
@@ -567,15 +564,12 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_idea.promise == False
     assert work_idea._problem_bool == False
     assert work_idea._on_meld_weight_action == "default"
-    work_idea.set_acptfactunits_empty_if_null()
     assert work_idea._acptfactunits == {}
-    work_idea.set_balancelink_empty_if_null()
     assert work_idea._balancelinks == {}
     work_idea.set_assignedunit_empty_if_null()
     assert work_idea._assignedunit == assigned_unit_shop()
     work_idea.set_originunit_empty_if_null()
     assert work_idea._originunit == originunit_shop()
-    work_idea.set_kids_empty_if_null()
     assert work_idea._kids == {}
 
     # WHEN
@@ -674,7 +668,7 @@ def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
-    assert clean_idea._active_status_hx is None
+    assert clean_idea._active_status_hx == {}
 
     # WHEN
     clean_idea.set_active_status(tree_traverse_count=3)
@@ -717,7 +711,7 @@ def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideacore_shop(_label=clean_text)
-    assert clean_idea._active_status_hx is None
+    assert clean_idea._active_status_hx == {}
 
     # WHEN
     clean_idea.record_active_status_hx(

@@ -930,7 +930,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
             on_meld_weight_action=None,
         )
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
-        new_idea.set_kids_empty_if_null()
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
         new_pad = f"{self.x_idea._label}"
         if self.x_idea._pad not in ("", None):

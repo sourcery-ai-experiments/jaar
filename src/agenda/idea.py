@@ -41,6 +41,7 @@ from src.agenda.group import (
     balancelinks_get_from_dict,
     GroupBrand,
     BalanceLine,
+    balanceline_shop,
     balanceheir_shop,
     GroupUnit,
 )
@@ -51,6 +52,7 @@ from src.agenda.x_func import (
     get_on_meld_weight_actions,
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
+    get_empty_dict_if_null,
 )
 from copy import deepcopy
 
@@ -202,17 +204,14 @@ class IdeaCore:
     ):
         if tree_traverse_count == 0:
             self._active_status_hx = {0: curr_active_status}
-        else:
-            self.set_active_status_hx_empty_if_null()
-            if prev_active_status != curr_active_status:
-                self._active_status_hx[tree_traverse_count] = curr_active_status
+        elif prev_active_status != curr_active_status:
+            self._active_status_hx[tree_traverse_count] = curr_active_status
 
     def get_key_road(self):
         return self._label
 
     def set_acptfactheirs(self, acptfacts: dict[RoadPath:AcptFactCore]):
-        acptfacts = self._get_empty_dict_if_null(x_dict=acptfacts)
-        self.set_acptfactheirs_empty_if_null()
+        acptfacts = get_empty_dict_if_null(x_dict=acptfacts)
         x_dict = {}
         for h in acptfacts.values():
             x_acptfact = acptfactheir_shop(
@@ -228,7 +227,7 @@ class IdeaCore:
 
     def set_acptfactheirs_empty_if_null(self):
         if self._acptfactheirs is None:
-            self._acptfactheirs == {}
+            self._acptfactheirs = {}
 
     def apply_acptfactunit_transformations(
         self, acptfactheir: AcptFactHeir
@@ -239,7 +238,6 @@ class IdeaCore:
         return acptfactheir
 
     def delete_acptfactunit_if_past(self, acptfactheir: AcptFactHeir):
-        self.set_acptfactunits_empty_if_null()
         delete_acptfactunit = False
         for acptfactunit in self._acptfactunits.values():
             if (
@@ -259,7 +257,6 @@ class IdeaCore:
             self._acptfactunits = {}
 
     def set_acptfactunit(self, acptfactunit: AcptFactUnit):
-        self.set_acptfactunits_empty_if_null()
         self._acptfactunits[acptfactunit.base] = acptfactunit
 
     def _set_ideakid_attr(
@@ -357,14 +354,12 @@ class IdeaCore:
             self._descendant_promise_count = 0
 
     def get_descendant_roads(self) -> dict[RoadPath:int]:
-        self.set_kids_empty_if_null()
         descendant_roads = {}
         to_evaluate_ideas = list(self._kids.values())
         count_x = 0
         max_count = 1000
         while to_evaluate_ideas != [] and count_x < max_count:
             idea_x = to_evaluate_ideas.pop()
-            idea_x.set_kids_empty_if_null()
             descendant_roads[idea_x.get_idea_road()] = -1
             to_evaluate_ideas.extend(idea_x._kids.values())
             count_x += 1
@@ -418,7 +413,6 @@ class IdeaCore:
             )
             self._balanceheirs[balanceheir.brand] = balanceheir
 
-        self.set_balancelink_empty_if_null()
         for ib in self._balancelinks.values():
             balanceheir = balanceheir_shop(
                 brand=ib.brand,
@@ -430,22 +424,21 @@ class IdeaCore:
     def set_kidless_balancelines(self):
         # get balancelines from self
         for bh in self._balanceheirs.values():
-            balanceline_x = BalanceLine(
+            x_balanceline = balanceline_shop(
                 brand=bh.brand,
                 _agenda_credit=bh._agenda_credit,
                 _agenda_debt=bh._agenda_debt,
             )
-            self._balancelines[balanceline_x.brand] = balanceline_x
+            self._balancelines[x_balanceline.brand] = x_balanceline
 
     def set_balancelines(self, child_balancelines: dict[GroupBrand:BalanceLine] = None):
-        self.set_balancelines_empty_if_null()
         if child_balancelines is None:
             child_balancelines = {}
 
         # get balancelines from child
         for bl in child_balancelines.values():
             if self._balancelines.get(bl.brand) is None:
-                self._balancelines[bl.brand] = BalanceLine(
+                self._balancelines[bl.brand] = balanceline_shop(
                     brand=bl.brand,
                     _agenda_credit=0,
                     _agenda_debt=0,
@@ -457,20 +450,15 @@ class IdeaCore:
 
     def set_kids_total_weight(self):
         self._kids_total_weight = 0
-        self.set_kids_empty_if_null()
         for idea_x in self._kids.values():
             self._kids_total_weight += idea_x._weight
 
     def get_balanceheirs_creditor_weight_sum(self):
-        self.set_balancelink_empty_if_null()
-        self.set_balanceheir_empty_if_null()
         return sum(
             balancelink.creditor_weight for balancelink in self._balanceheirs.values()
         )
 
     def get_balanceheirs_debtor_weight_sum(self):
-        self.set_balancelink_empty_if_null()
-        self.set_balanceheir_empty_if_null()
         return sum(
             balancelink.debtor_weight for balancelink in self._balanceheirs.values()
         )
@@ -546,8 +534,6 @@ class IdeaCore:
         self._acptfactunits = new_acptfactunits
 
     def _meld_requiredunits(self, other_idea):
-        self.set_requiredunits_empty_if_null()
-        other_idea.set_requiredunits_empty_if_null()
         for lx in other_idea._requiredunits.values():
             if self._requiredunits.get(lx.base) is None:
                 self._requiredunits[lx.base] = lx
@@ -555,8 +541,6 @@ class IdeaCore:
                 self._requiredunits.get(lx.base).meld(lx)
 
     def _meld_balancelinks(self, other_idea):
-        self.set_balancelink_empty_if_null()
-        other_idea.set_balancelink_empty_if_null()
         for bl in other_idea._balancelinks.values():
             if self._balancelinks.get(bl.brand) != None:
                 self._balancelinks.get(bl.brand).meld(
@@ -568,8 +552,6 @@ class IdeaCore:
                 self._balancelinks[bl.brand] = bl
 
     def _meld_acptfactunits(self, other_idea):
-        self.set_acptfactunits_empty_if_null()
-        other_idea.set_acptfactunits_empty_if_null()
         for hc in other_idea._acptfactunits.values():
             if self._acptfactunits.get(hc.base) is None:
                 self._acptfactunits[hc.base] = hc
@@ -740,7 +722,6 @@ class IdeaCore:
             requiredunit_x.suff_idea_active_status = True
 
     def _get_or_create_requiredunit(self, base: RoadPath):
-        self.set_requiredunits_empty_if_null()
         requiredunit_x = None
         try:
             requiredunit_x = self._requiredunits[base]
@@ -786,15 +767,14 @@ class IdeaCore:
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
             idea_kid._close = self._close * idea_kid._numor / idea_kid._denom
 
-        self.set_kids_empty_if_null()
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def set_balancelink_empty_if_null(self):
+    def set_balancelinks_empty_if_null(self):
         if self._balancelinks is None:
             self._balancelinks = {}
 
-    def set_balanceheir_empty_if_null(self):
+    def set_balanceheirs_empty_if_null(self):
         if self._balanceheirs is None:
             self._balanceheirs = {}
 
@@ -803,18 +783,15 @@ class IdeaCore:
             self._balancelines = {}
 
     def set_balancelink(self, balancelink: BalanceLink):
-        self.set_balancelink_empty_if_null()
         self._balancelinks[balancelink.brand] = balancelink
 
     def del_balancelink(self, groupbrand: GroupBrand):
-        self.set_balancelink_empty_if_null()
         try:
             self._balancelinks.pop(groupbrand)
         except KeyError as e:
             raise (f"Cannot delete balancelink '{groupbrand}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
-        self.set_requiredunits_empty_if_null()
         required.delimiter = self._road_node_delimiter
         self._requiredunits[required.base] = required
 
@@ -823,7 +800,6 @@ class IdeaCore:
             self._requiredunits = {}
 
     def set_requiredheirs_status(self):
-        self.set_requiredunits_empty_if_null()
         for lu in self._requiredheirs.values():
             lu.set_status(acptfacts=self._acptfactheirs)
 
@@ -833,7 +809,6 @@ class IdeaCore:
         agenda_groups: dict[GroupBrand:GroupUnit] = None,
         agenda_healer: str = None,
     ):
-        self.set_acptfactheirs_empty_if_null()
         self.clear_requiredheirs_status()
         prev_to_now_active_status = bool(self._active_status)
         self._active_status = True
@@ -874,15 +849,11 @@ class IdeaCore:
         )
 
     def clear_requiredheirs_status(self):
-        self.set_requiredheirs_empty_if_null()
         for required in self._requiredheirs.values():
             required.clear_status()
 
     def _coalesce_with_requiredunits(self, requiredheirs: dict[RoadPath:RequiredHeir]):
-        self.set_requiredunits_empty_if_null()
-        self.set_requiredheirs_empty_if_null()
-
-        requiredheirs_new = self._get_empty_dict_if_null(x_dict=deepcopy(requiredheirs))
+        requiredheirs_new = get_empty_dict_if_null(x_dict=deepcopy(requiredheirs))
         requiredheirs_new.update(self._requiredunits)
         return requiredheirs_new
 
@@ -928,7 +899,6 @@ class IdeaCore:
             self._requiredheirs = {}
 
     def get_requiredheir(self, base: RoadPath):
-        self.set_requiredheirs_empty_if_null()
         return self._requiredheirs.get(base)
 
     def get_requiredunits_dict(self):
@@ -951,11 +921,6 @@ class IdeaCore:
             for group_pid, balancelink in self._balancelinks.items():
                 balancelinks_dict[group_pid] = balancelink.get_dict()
         return balancelinks_dict
-
-    def _get_empty_dict_if_null(self, x_dict: dict) -> dict:
-        if x_dict is None:
-            x_dict = {}
-        return x_dict
 
     def is_kidless(self):
         return self._kids == {}
@@ -1024,12 +989,10 @@ class IdeaCore:
         if is_sub_road(ref_road=self._numeric_road, sub_road=old_road):
             self._numeric_road = change_road(self._numeric_road, old_road, new_road)
 
-        self.set_requiredunits_empty_if_null()
         self._requiredunits == find_replace_road_key_dict(
             dict_x=self._requiredunits, old_road=old_road, new_road=new_road
         )
 
-        self.set_acptfactunits_empty_if_null()
         self._acptfactunits == find_replace_road_key_dict(
             dict_x=self._acptfactunits, old_road=old_road, new_road=new_road
         )
@@ -1117,7 +1080,7 @@ def ideacore_shop(
     if _kids_total_weight is None:
         _kids_total_weight = 0
 
-    return IdeaKid(
+    x_ideakid = IdeaKid(
         _label=_label,
         _uid=_uid,
         _pad=_pad,
@@ -1161,6 +1124,17 @@ def ideacore_shop(
         _active_status_hx=_active_status_hx,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
+    x_ideakid.set_acptfactheirs_empty_if_null()
+    x_ideakid.set_acptfactunits_empty_if_null()
+    x_ideakid.set_active_status_hx_empty_if_null()
+    x_ideakid.set_balanceheirs_empty_if_null()
+    x_ideakid.set_balancelines_empty_if_null()
+    x_ideakid.set_balancelinks_empty_if_null()
+    x_ideakid.set_kids_empty_if_null()
+    x_ideakid.set_requiredheirs_empty_if_null()
+    x_ideakid.set_requiredunits_empty_if_null()
+
+    return x_ideakid
 
 
 class IdeaRootLabelNotEmptyException(Exception):
@@ -1281,6 +1255,15 @@ def idearoot_shop(
     )
     if x_idearoot._label is None:
         x_idearoot.set_idea_label(_label=root_label())
+    x_idearoot.set_acptfactheirs_empty_if_null()
+    x_idearoot.set_active_status_hx_empty_if_null()
+    x_idearoot.set_acptfactunits_empty_if_null()
+    x_idearoot.set_balanceheirs_empty_if_null()
+    x_idearoot.set_balancelines_empty_if_null()
+    x_idearoot.set_balancelinks_empty_if_null()
+    x_idearoot.set_kids_empty_if_null()
+    x_idearoot.set_requiredheirs_empty_if_null()
+    x_idearoot.set_requiredunits_empty_if_null()
     return x_idearoot
 
 

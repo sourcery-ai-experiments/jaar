@@ -435,8 +435,6 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # GIVEN
     healer_text = "Zia"
     x_agenda = agendaunit_shop(healer_text)
-
-    x_agenda._set_acptfacts_empty_if_null()
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"

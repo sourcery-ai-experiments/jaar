@@ -449,13 +449,10 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     # no balancelinks attached to this one
     x_agenda.add_idea(ideacore_shop("hunt", _weight=3), pad="prom")
 
-    assert x_agenda._idearoot._balancelinks is None
-
     # WHEN
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._balancelinks == {}
 
     with pytest_raises(Exception) as excinfo:
         x_agenda._idearoot._balancelinks[rico_text]

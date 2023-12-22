@@ -451,8 +451,6 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     hunt_text = "hunt"
     x_agenda.add_idea(idea_kid=ideacore_shop(hunt_text, _weight=3), pad=prom_text)
 
-    assert x_agenda._idearoot._balancelinks is None
-
     # WHEN
     x_agenda.set_agenda_metrics()
 

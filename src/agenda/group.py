@@ -340,3 +340,9 @@ class BalanceLine(GroupCore):
 
 class GroupMetrics:
     pass
+
+
+def balanceline_shop(brand: GroupBrand, _agenda_credit: float, _agenda_debt: float):
+    return BalanceLine(
+        brand=brand, _agenda_credit=_agenda_credit, _agenda_debt=_agenda_debt
+    )

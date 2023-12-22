@@ -129,6 +129,8 @@ def test_intent_returned_WhenNoRequiredsExist():
 def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
+    print(f"{x_agenda._economy_id=}")
+    print(f"{x_agenda._idearoot._label=}")
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
     week_label = "weekdays"
@@ -149,15 +151,15 @@ def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
     )
     print(f"{work_wk_build_requiredunit.base=}")
     x_agenda.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
-    work_idea = x_agenda._idearoot._kids[work_text]
-    assert work_idea._requiredunits != None
+    work_idea = x_agenda.get_idea_kid(work_road)
+    assert work_idea._requiredunits != {}
     # print(work_idea._requiredunits)
     assert work_idea._requiredunits[week_road] != None
     assert work_idea._requiredunits[week_road] == work_wk_build_requiredunit
     try:
         work_idea._requiredheirs[week_road]
-    except TypeError as e:
-        assert str(e) == "'NoneType' object is not subscriptable"
+    except KeyError as e:
+        assert str(e) == "'A,weekdays'"
 
     idea_list = x_agenda.get_idea_list()
 
@@ -285,10 +287,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     rla_idea = work_idea._kids[rla_text]
     cost_idea = rla_idea._kids[cost_text]
 
-    assert a4_agenda._idearoot._requiredheirs is None
-    assert work_idea._requiredheirs is None
-    assert rla_idea._requiredheirs is None
-    assert cost_idea._requiredheirs is None
+    assert a4_agenda._idearoot._requiredheirs == {}
+    assert work_idea._requiredheirs == {}
+    assert rla_idea._requiredheirs == {}
+    assert cost_idea._requiredheirs == {}
 
     # WHEN
     idea_list = a4_agenda.get_idea_list()
@@ -517,7 +519,6 @@ def test_agenda_requiredunits_del_required_sufffact_UncoupledMethod2():
     work_road = x_agenda.make_l1_road("work")
     weekdays_road = x_agenda.make_l1_road("weekdays")
     work_idea1 = x_agenda.get_idea_kid(work_road)
-    work_idea1.set_requiredunits_empty_if_null()
     assert len(work_idea1._requiredunits) == 0
 
     # WHEN

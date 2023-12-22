@@ -383,7 +383,7 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # acptfactunit: acptfactunit_shop = None,
     # x_agenda._idearoot._kids[work_text]._acptfactunits = None
-    assert x_agenda._idearoot._kids[work_text]._acptfactunits is None
+    assert x_agenda._idearoot._kids[work_text]._acptfactunits == {}
     wkdays_road = x_agenda.make_l1_road("weekdays")
     acptfact_road = x_agenda.make_road(wkdays_road, "Sunday")
     acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)

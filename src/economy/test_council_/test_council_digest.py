@@ -65,12 +65,6 @@ def test_healeropen_seed_agenda_WhenStartingAgendaFileDoesNotExists(
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda.set_agenda_metrics()
     # x_idearoot = idearoot_shop(_label=gio_text, _pad="")
-    # x_idearoot.set_balancelines_empty_if_null()
-    # x_idearoot.set_kids_empty_if_null()
-    # x_idearoot.set_balancelink_empty_if_null()
-    # x_idearoot.set_balanceheir_empty_if_null()
-    # x_idearoot.set_requiredunits_empty_if_null()
-    # x_idearoot.set_requiredheirs_empty_if_null()
     # x_idearoot._agenda_importance = 1
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0

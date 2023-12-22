@@ -903,7 +903,6 @@ class AgendaUnit:
             self._set_ideakid_if_empty(road=base)
             self._set_ideakid_if_empty(road=pick)
 
-        self._set_acptfacts_empty_if_null()
         self._execute_tree_traverse()
         acptfact_idea = self.get_idea_kid(base)
 
@@ -994,7 +993,6 @@ class AgendaUnit:
         return list_x
 
     def del_acptfact(self, base: RoadPath):
-        self._set_acptfacts_empty_if_null()
         self._idearoot._acptfactunits.pop(base)
 
     def get_tree_metrics(self) -> TreeMetrics:
@@ -1134,7 +1132,6 @@ class AgendaUnit:
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
     def _get_filtered_balancelinks_idea(self, idea: IdeaCore) -> IdeaCore:
-        idea.set_balancelink_empty_if_null()
         _balancelinks_to_delete = [
             _balancelink_pid
             for _balancelink_pid in idea._balancelinks.keys()
@@ -1268,7 +1265,6 @@ class AgendaUnit:
             else:
                 self._non_root_idea_label_edit(old_road, new_label, pad)
             self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
-            self._set_acptfacts_empty_if_null()
             self._idearoot._acptfactunits = find_replace_road_key_dict(
                 dict_x=self._idearoot._acptfactunits,
                 old_road=old_road,
@@ -1529,9 +1525,6 @@ class AgendaUnit:
             required_del_sufffact_need=required_sufffact,
         )
 
-    def _set_acptfacts_empty_if_null(self):
-        self._idearoot.set_acptfactunits_empty_if_null()
-
     def get_intent_items(
         self,
         base: RoadPath = None,
@@ -1642,11 +1635,11 @@ class AgendaUnit:
                         idea._agenda_importance
                     )
                 else:
-                    for balanceline_x in idea._balancelines.values():
+                    for x_balanceline in idea._balancelines.values():
                         self.add_to_group_agenda_intent_credit_debt(
-                            groupbrand=balanceline_x.brand,
-                            balanceline_agenda_credit=balanceline_x._agenda_credit,
-                            balanceline_agenda_debt=balanceline_x._agenda_debt,
+                            groupbrand=x_balanceline.brand,
+                            balanceline_agenda_credit=x_balanceline._agenda_credit,
+                            balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
 
     def _distribute_groups_agenda_importance(self):
@@ -1693,7 +1686,6 @@ class AgendaUnit:
             partyunit.reset_agenda_credit_debt()
 
     def _idearoot_inherit_requiredheirs(self):
-        self._idearoot.set_requiredunits_empty_if_null()
         x_dict = {}
         for required in self._idearoot._requiredunits.values():
             x_required = requiredheir_shop(required.base)
@@ -1828,7 +1820,6 @@ class AgendaUnit:
         self._idearoot.inherit_balanceheirs()
         self._idearoot.clear_balancelines()
         self._idearoot.set_originunit_empty_if_null()
-        self._idearoot.set_acptfactunits_empty_if_null()
         self._idearoot._weight = 1
         self._idearoot._kids_total_weight = 0
         self._idearoot.set_kids_total_weight()
@@ -1864,7 +1855,6 @@ class AgendaUnit:
 
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_pad(parent_idea._pad, parent_idea._label)
-        idea_kid.set_acptfactunits_empty_if_null()
         idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
         idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
@@ -1912,8 +1902,6 @@ class AgendaUnit:
         return list(self._idea_dict.values())
 
     def set_agenda_metrics(self):
-        self._set_acptfacts_empty_if_null()
-
         self._rational = False
         self._tree_traverse_count = 0
         self._idea_dict = {self._idearoot.get_idea_road(): self._idearoot}
@@ -1965,7 +1953,6 @@ class AgendaUnit:
     def _check_if_any_idea_active_status_has_changed(self):
         any_idea_active_status_changed = False
         for idea in self._idea_dict.values():
-            idea.set_active_status_hx_empty_if_null()
             if idea._active_status_hx.get(self._tree_traverse_count) != None:
                 any_idea_active_status_changed = True
 
@@ -2210,8 +2197,6 @@ class AgendaUnit:
                 self._groups.get(brx.brand).meld(brx)
 
     def _meld_acptfacts(self, other_agenda):
-        self._set_acptfacts_empty_if_null()
-        other_agenda._set_acptfacts_empty_if_null()
         for hx in other_agenda._idearoot._acptfactunits.values():
             if self._idearoot._acptfactunits.get(hx.base) is None:
                 self.set_acptfact(
@@ -2383,7 +2368,15 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     x_idearoot._acptfactunits = get_obj_from_idea_dict(idearoot_dict, "_acptfactunits")
     x_idearoot._balancelinks = get_obj_from_idea_dict(idearoot_dict, "_balancelinks")
     x_idearoot._is_expanded = get_obj_from_idea_dict(idearoot_dict, "_is_expanded")
-
+    x_idearoot.set_acptfactheirs_empty_if_null()
+    x_idearoot.set_acptfactunits_empty_if_null()
+    x_idearoot.set_active_status_hx_empty_if_null()
+    x_idearoot.set_balanceheirs_empty_if_null()
+    x_idearoot.set_balancelines_empty_if_null()
+    x_idearoot.set_balancelinks_empty_if_null()
+    x_idearoot.set_kids_empty_if_null()
+    x_idearoot.set_requiredheirs_empty_if_null()
+    x_idearoot.set_requiredunits_empty_if_null()
     # if idearoot_dict.get("_kids"):
     set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
@@ -2407,7 +2400,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             )
             to_evaluate_idea_dicts.append(kid_dict)
 
-        idea_obj = ideacore_shop(
+        x_ideakid = ideacore_shop(
             _label=get_obj_from_idea_dict(idea_dict, "_label"),
             _weight=get_obj_from_idea_dict(idea_dict, "_weight"),
             _uid=get_obj_from_idea_dict(idea_dict, "_uid"),
@@ -2427,7 +2420,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
         )
         # add idea with created pad
-        x_agenda.add_idea(idea_obj, pad=idea_dict[pad_text])
+        x_agenda.add_idea(x_ideakid, pad=idea_dict[pad_text])
 
 
 def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:

@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.party import PartyPID
 from src.agenda.idea import ideacore_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.group import BalanceLine, balancelink_shop
+from src.agenda.group import balanceline_shop, balancelink_shop
 from pytest import raises as pytest_raises
 
 
@@ -334,7 +334,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_idea_road()=}")
     assert round(sandy_balanceline._agenda_credit, 15) == 1
     assert round(sandy_balanceline._agenda_debt, 15) == 1
-    x_balanceline = BalanceLine(
+    x_balanceline = balanceline_shop(
         brand=sandy_text,
         _agenda_credit=0.9999999999999998,
         _agenda_debt=0.9999999999999998,
@@ -361,7 +361,7 @@ def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
 
     # THEN
     assert x_agenda._idearoot._balancelines != {}
-    x_balanceline = BalanceLine(
+    x_balanceline = balanceline_shop(
         brand=sandy_text,
         _agenda_credit=0.23076923076923078,
         _agenda_debt=0.23076923076923078,

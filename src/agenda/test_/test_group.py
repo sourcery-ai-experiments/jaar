@@ -1,9 +1,11 @@
 from src.agenda.party import PartyPID, partylink_shop
 from src.agenda.group import (
     BalanceLine,
+    balanceline_shop,
     GroupUnit,
     groupunit_shop,
     GroupBrand,
+    BalanceLink,
     balancelink_shop,
     balancelinks_get_from_json,
     balanceheir_shop,
@@ -415,13 +417,12 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert ee_dict == {"brand": swimmers}
 
     # GIVEN
-    str_pid = "Marie"
-    marie_pid = PartyPID(str_pid)
-    marie_partylink = partylink_shop(pid=marie_pid, creditor_weight=29, debtor_weight=3)
+    sue_text = "Marie"
+    marie_partylink = partylink_shop(pid=sue_text, creditor_weight=29, debtor_weight=3)
     partylinks_dict = {marie_partylink.pid: marie_partylink}
     marie_json_dict = {
-        marie_pid: {
-            "pid": marie_pid,
+        sue_text: {
+            "pid": sue_text,
             "creditor_weight": 29,
             "debtor_weight": 3,
         }
@@ -452,9 +453,8 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
     # GIVEN
-    str_pid = "Marie"
-    marie_pid = PartyPID(str_pid)
-    marie_partylink = partylink_shop(pid=marie_pid, creditor_weight=29, debtor_weight=3)
+    sue_text = "Sue"
+    marie_partylink = partylink_shop(pid=sue_text, creditor_weight=29, debtor_weight=3)
     partylinks_dict = {marie_partylink.pid: marie_partylink}
 
     teacher_text = "teachers"
@@ -487,34 +487,38 @@ def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
     assert groupunits_obj_dict == teachers_obj_check_dict
 
 
-def test_brandLink_exists():
+def test_BalanceLink_exists():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
 
     # WHEN
-    group_link_x = balancelink_shop(brand=bikers_brand)
+    bikers_balancelink = BalanceLink(brand=bikers_brand)
 
     # THEN
-    assert group_link_x.brand == bikers_brand
-    assert group_link_x.creditor_weight == 1.0
-    assert group_link_x.debtor_weight == 1.0
+    assert bikers_balancelink.brand == bikers_brand
+    assert bikers_balancelink.creditor_weight == 1.0
+    assert bikers_balancelink.debtor_weight == 1.0
 
-    # WHEN
+
+def test_balancelink_shop_ReturnsCorrectObj():
+    # GIVEN
+    bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0
     bikers_debtor_weight = 5.0
 
-    group_link_x = balancelink_shop(
+    # WHEN
+    bikers_balancelink = balancelink_shop(
         brand=bikers_brand,
         creditor_weight=bikers_creditor_weight,
         debtor_weight=bikers_debtor_weight,
     )
 
     # THEN
-    assert group_link_x.creditor_weight == 3.0
-    assert group_link_x.debtor_weight == 5.0
+    assert bikers_balancelink.creditor_weight == bikers_creditor_weight
+    assert bikers_balancelink.debtor_weight == bikers_debtor_weight
 
 
-def test_brandLink_set_agenda_importanceCorrectly():
+def test_BalanceHeir_set_agenda_importance_CorrectlySetsAttr():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0
@@ -540,7 +544,7 @@ def test_brandLink_set_agenda_importanceCorrectly():
     assert group_heir_x._agenda_debt == 0.1
 
 
-def test_balancelink_get_dict_ReturnsDictWithNecessaryDataForJSON():
+def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
     bikers_creditor_weight = 3.0
@@ -592,16 +596,55 @@ def test_balancelinks_get_from_JSON_SimpleExampleWorks():
 def test_BalanceLine_exists():
     # GIVEN
     bikers_brand = GroupBrand("bikers")
-    balanceline_x = BalanceLine(
-        brand=bikers_brand, _agenda_credit=0.33, _agenda_debt=0.55
-    )
-    assert balanceline_x.brand == bikers_brand
-    assert balanceline_x._agenda_credit == 0.33
-    assert balanceline_x._agenda_debt == 0.55
+    bikers_agenda_credit = 0.33
+    bikers_agenda_debt = 0.55
 
     # WHEN
-    balanceline_x.add_agenda_credit_debt(agenda_credit=0.11, agenda_debt=0.2)
+    bikers_balanceline = BalanceLine(
+        brand=bikers_brand,
+        _agenda_credit=bikers_agenda_credit,
+        _agenda_debt=bikers_agenda_debt,
+    )
 
     # THEN
-    assert balanceline_x._agenda_credit == 0.44
-    assert balanceline_x._agenda_debt == 0.75
+    assert bikers_balanceline.brand == bikers_brand
+    assert bikers_balanceline._agenda_credit == bikers_agenda_credit
+    assert bikers_balanceline._agenda_debt == bikers_agenda_debt
+
+
+def test_balanceline_shop_ReturnsCorrectObj_exists():
+    # GIVEN
+    bikers_brand = GroupBrand("bikers")
+    bikers_brand = bikers_brand
+    bikers_agenda_credit = 0.33
+    bikers_agenda_debt = 0.55
+
+    # WHEN
+    biker_balanceline = balanceline_shop(
+        brand=bikers_brand,
+        _agenda_credit=bikers_agenda_credit,
+        _agenda_debt=bikers_agenda_debt,
+    )
+
+    assert biker_balanceline != None
+    assert biker_balanceline.brand == bikers_brand
+    assert biker_balanceline._agenda_credit == bikers_agenda_credit
+    assert biker_balanceline._agenda_debt == bikers_agenda_debt
+
+
+def test_BalanceLine_add_agenda_credit_debt_CorrectlyChangesAttr():
+    # GIVEN
+    bikers_brand = GroupBrand("bikers")
+    bikers_balanceline = balanceline_shop(
+        brand=bikers_brand, _agenda_credit=0.33, _agenda_debt=0.55
+    )
+    assert bikers_balanceline.brand == bikers_brand
+    assert bikers_balanceline._agenda_credit == 0.33
+    assert bikers_balanceline._agenda_debt == 0.55
+
+    # WHEN
+    bikers_balanceline.add_agenda_credit_debt(agenda_credit=0.11, agenda_debt=0.2)
+
+    # THEN
+    assert bikers_balanceline._agenda_credit == 0.44
+    assert bikers_balanceline._agenda_debt == 0.75

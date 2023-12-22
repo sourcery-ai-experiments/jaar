@@ -21,13 +21,13 @@ class TreeMetrics:
             self.level_count = {}
         if self.required_bases is None:
             self.required_bases = {}
-        self.set_balancelinks_empty_if_null()
+        self.set_balancelinks_metrics_empty_if_null()
         if self.uid_max is None:
             self.uid_max = 0
         self.set_uid_dict_emtpy_if_null()
         self.all_idea_uids_are_unique = True
 
-    def set_balancelinks_empty_if_null(self):
+    def set_balancelinks_metrics_empty_if_null(self):
         if self.balancelinks_metrics is None:
             self.balancelinks_metrics = {}
 

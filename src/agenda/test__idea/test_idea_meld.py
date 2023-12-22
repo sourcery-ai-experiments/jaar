@@ -280,12 +280,10 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
     casa_text = "casa"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = ideacore_shop("spirit", _pad=casa_text)
-    yx1.set_acptfactunits_empty_if_null()
     yx1.set_acptfactunit(acptfactunit=hc_1)
 
     hc_2 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx2 = ideacore_shop("fun", _pad=casa_text)
-    yx2.set_acptfactunits_empty_if_null()
     yx2.set_acptfactunit(acptfactunit=hc_2)
 
     # WHEN

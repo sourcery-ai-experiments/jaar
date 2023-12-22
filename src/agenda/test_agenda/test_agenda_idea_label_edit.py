@@ -277,10 +277,8 @@ def test_agenda_edit_idea_label_ChangesIdeaKidN_range_source_road():
     # THEN
     # for idea_x in x_agenda._idearoot._kids.values():
     #     print(f"{idea_x._pad=} {idea_x._label=}")
-    #     idea_x.set_kids_empty_if_null()
     #     for idea_y in idea_x._kids.values():
     #         print(f"{idea_y._pad=} {idea_y._label=}")
-    #         idea_y.set_kids_empty_if_null()
     #         for idea_z in idea_y._kids.values():
     #             print(f"{idea_z._pad=} {idea_z._label=}")
     assert old_rain_road != new_rain_road

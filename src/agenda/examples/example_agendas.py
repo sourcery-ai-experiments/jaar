@@ -250,79 +250,74 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
 
 
 def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
-    healer_text = "Bob"
-    x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
+    bob_agenda = agendaunit_shop(_healer="Bob", _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = ideacore_shop(ced_min_label)
-    ced_road = x_agenda.make_l1_road(ced_min_label)
-    x_agenda.add_idea(ced_minutes, pad=x_agenda._economy_id)
+    ced_road = bob_agenda.make_l1_road(ced_min_label)
+    bob_agenda.add_idea(ced_minutes, pad=bob_agenda._economy_id)
     mail_label = "obtain mail"
     mail_task = ideacore_shop(mail_label, promise=True)
-    x_agenda.add_idea(mail_task, pad=x_agenda._economy_id)
+    bob_agenda.add_idea(mail_task, pad=bob_agenda._economy_id)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = requiredunit_shop(
         base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
     )
-    mail_road = x_agenda.make_l1_road(mail_label)
-    x_agenda.edit_idea_attr(road=mail_road, required=x_task_required)
+    mail_road = bob_agenda.make_l1_road(mail_label)
+    bob_agenda.edit_idea_attr(road=mail_road, required=x_task_required)
 
     x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
     # print(
-    #     f"1Task_1CE0MinutesRequired_1AcptFact 2. {len(x_agenda._idearoot._kids)=} {x_acptfact.base=}"
+    #     f"1Task_1CE0MinutesRequired_1AcptFact 2. {len(bob_agenda._idearoot._kids)=} {x_acptfact.base=}"
     # )
-    x_agenda.set_acptfact(
+    bob_agenda.set_acptfact(
         base=x_acptfact.base,
         pick=x_acptfact.pick,
         open=x_acptfact.open,
         nigh=x_acptfact.nigh,
     )
-    # print(f"1Task_1CE0MinutesRequired_1AcptFact 3. {len(x_agenda._idearoot._kids)=}")
+    # print(f"1Task_1CE0MinutesRequired_1AcptFact 3. {len(bob_agenda._idearoot._kids)=}")
 
-    return x_agenda
+    return bob_agenda
 
 
 def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
-    healer_text = "Kol"
-    x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
+    kol_agenda = agendaunit_shop(_healer="Kol", _weight=10)
     shave_text = "shave"
-    shave_road = x_agenda.make_l1_road(shave_text)
+    shave_road = kol_agenda.make_l1_road(shave_text)
     idea_kid_shave = ideacore_shop(shave_text, _weight=30, promise=True)
-    x_agenda.add_idea(idea_kid_shave, pad=x_agenda._economy_id)
+    kol_agenda.add_idea(idea_kid_shave, pad=kol_agenda._economy_id)
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = kol_agenda.make_l1_road(week_text)
     week_idea = ideacore_shop(week_text, _weight=40)
-    x_agenda.add_idea(week_idea, pad=x_agenda._economy_id)
+    kol_agenda.add_idea(week_idea, pad=kol_agenda._economy_id)
 
     sun_text = "Sunday"
-    sun_road = x_agenda.make_road(week_road, sun_text)
+    sun_road = kol_agenda.make_road(week_road, sun_text)
     church_text = "Church"
-    church_road = x_agenda.make_road(sun_road, church_text)
+    church_road = kol_agenda.make_road(sun_road, church_text)
     mon_text = "Monday"
-    mon_road = x_agenda.make_road(week_road, mon_text)
+    mon_road = kol_agenda.make_road(week_road, mon_text)
     idea_grandkidU = ideacore_shop(sun_text, _weight=20)
     idea_grandkidM = ideacore_shop(mon_text, _weight=20)
-    x_agenda.add_idea(idea_grandkidU, pad=week_road)
-    x_agenda.add_idea(idea_grandkidM, pad=week_road)
+    kol_agenda.add_idea(idea_grandkidU, pad=week_road)
+    kol_agenda.add_idea(idea_grandkidM, pad=week_road)
 
     shave_required = requiredunit_shop(week_road)
     shave_required.set_sufffact(mon_road)
 
-    x_agenda.edit_idea_attr(road=shave_road, required=shave_required)
-    x_agenda.set_acptfact(base=week_road, pick=sun_road)
+    kol_agenda.edit_idea_attr(road=shave_road, required=shave_required)
+    kol_agenda.set_acptfact(base=week_road, pick=sun_road)
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=church_road)
-    x_agenda.edit_idea_attr(road=shave_road, acptfactunit=acptfactunit_x)
-    return x_agenda
+    kol_agenda.edit_idea_attr(road=shave_road, acptfactunit=acptfactunit_x)
+    return kol_agenda
 
 
 def get_agenda_base_time_example() -> AgendaUnit:
-    healer_text = "Sue"
-    x_agenda = agendaunit_shop(_healer=healer_text)
-    plant = "plant"
-    x_idea = ideacore_shop(plant)
-    x_agenda.add_idea(x_idea, pad=healer_text)
-
-    return x_agenda
+    sue_agenda = agendaunit_shop(_healer="Sue")
+    plant_idea = ideacore_shop("plant")
+    sue_agenda.add_idea(plant_idea, pad=sue_agenda._economy_id)
+    return sue_agenda
 
 
 def get_agenda_irrational_example() -> AgendaUnit:
