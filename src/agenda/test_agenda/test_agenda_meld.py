@@ -69,13 +69,13 @@ def test_agenda_meld_GroupUnits():
 
     agenda_text = "x_agenda"
     x_agenda1 = agendaunit_shop(_healer=agenda_text)
-    x_agenda1.set_groupunit(groupunit=x1_group)
+    x_agenda1.set_groupunit(y_groupunit=x1_group)
 
     x_agenda2 = agendaunit_shop(_healer=agenda_text)
-    x_agenda2.set_groupunit(groupunit=x1_group)
+    x_agenda2.set_groupunit(y_groupunit=x1_group)
     x2_pid = "x2_group"
     x2_group = groupunit_shop(brand=x2_pid, uid=5)
-    x_agenda2.set_groupunit(groupunit=x2_group)
+    x_agenda2.set_groupunit(y_groupunit=x2_group)
     assert len(x_agenda1._groups) == 1
 
     # WHEN

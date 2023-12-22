@@ -106,9 +106,9 @@ def test_agenda_get_groupunits_uid_max_WorksCorrectly():
     patr_text = "patrick"
 
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.set_groupunit(groupunit=groupunit_shop(brand=rico_text, uid=4))
-    x_agenda.set_groupunit(groupunit=groupunit_shop(brand=carr_text, uid=12))
-    x_agenda.set_groupunit(groupunit=groupunit_shop(brand=patr_text, uid=7))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=rico_text, uid=4))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=carr_text, uid=12))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=patr_text, uid=7))
 
     # WHEN/THEN
     assert x_agenda.get_groupunits_uid_max() == 12

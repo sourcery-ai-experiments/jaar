@@ -91,7 +91,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     swimmers_text = "swimmers"
     assigned_unit_x.set_suffgroup(brand=swimmers_text)
 
-    x_agenda.set_groupunit(groupunit=groupunit_shop(brand=swimmers_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swimmers_text))
     x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(morn_text), pad=swim_road)
     x_agenda.add_idea(ideacore_shop(four_text), pad=morn_road)

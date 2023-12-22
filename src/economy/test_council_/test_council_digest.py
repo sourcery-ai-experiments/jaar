@@ -303,7 +303,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     swim_text = "swimmers"
 #     swim_group = BraUnit(pid=swim_text)
 #     swim_group.set_partylink(partylink=partylink_shop(pid=ceci_text))
-#     s1.set_groupunit(groupunit=swim_group)
+#     s1.set_groupunit(y_groupunit=swim_group)
 
 #     yaya_text = "yaya"
 #     yaya_road = f"{src1},{yaya_text}"

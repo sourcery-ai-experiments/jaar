@@ -523,10 +523,7 @@ class AgendaUnit:
         self.set_partyunit(partyunit=partyunit)
 
     def set_partyunit(self, partyunit: PartyUnit):
-        self.set_partys_empty_if_null()
-        self.set_groupunits_empty_if_null()
         # future: if party is new check existance of group with party pid
-
         self._partys[partyunit.pid] = partyunit
 
         existing_group = None
@@ -544,7 +541,7 @@ class AgendaUnit:
                 uid=None,
                 single_party_id=None,
             )
-            self.set_groupunit(groupunit=group_unit)
+            self.set_groupunit(y_groupunit=group_unit)
 
     def edit_partyunit_pid(
         self,
@@ -686,13 +683,34 @@ class AgendaUnit:
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def set_groupunit(self, groupunit: GroupUnit, create_missing_partys: bool = None):
-        self.set_groupunits_empty_if_null()
-        groupunit._set_partylinks_empty_if_null()
-        self._groups[groupunit.brand] = groupunit
+    def set_groupunit(
+        self,
+        y_groupunit: GroupUnit,
+        create_missing_partys: bool = None,
+        replace: bool = True,
+        add_partylinks: bool = None,
+    ):
+        if replace is None:
+            replace = False
+        if add_partylinks is None:
+            add_partylinks = False
+        if (
+            self.get_groupunit(y_groupunit.brand) is None
+            or replace
+            and not add_partylinks
+        ):
+            self._groups[y_groupunit.brand] = y_groupunit
+
+        if add_partylinks:
+            x_groupunit = self.get_groupunit(y_groupunit.brand)
+            for x_partylink in y_groupunit._partys.values():
+                x_groupunit.set_partylink(x_partylink)
 
         if create_missing_partys:
-            self._create_missing_partys(partylinks=groupunit._partys)
+            self._create_missing_partys(partylinks=y_groupunit._partys)
+
+    def get_groupunit(self, x_groupbrand: GroupBrand) -> GroupUnit:
+        return self._groups.get(x_groupbrand)
 
     def _create_missing_partys(self, partylinks: dict[PartyPID:PartyLink]):
         for partylink_x in partylinks.values():
@@ -729,7 +747,7 @@ class AgendaUnit:
                 single_party_id=old_groupunit.single_party_id,
                 _single_party=old_groupunit._single_party,
             )
-            self.set_groupunit(groupunit=groupunit_x)
+            self.set_groupunit(y_groupunit=groupunit_x)
             self.del_groupunit(groupbrand=old_brand)
 
         self._edit_balancelinks_brand(
@@ -1140,7 +1158,7 @@ class AgendaUnit:
         for balancelink_x in balancelinks.values():
             if self._groups.get(balancelink_x.brand) is None:
                 groupunit_x = groupunit_shop(brand=balancelink_x.brand, _partys={})
-                self.set_groupunit(groupunit=groupunit_x)
+                self.set_groupunit(y_groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
         self.set_agenda_metrics()
@@ -1599,14 +1617,12 @@ class AgendaUnit:
             )
 
     def _reset_groupunits_agenda_credit_debt(self):
-        self.set_groupunits_empty_if_null()
         for balancelink_obj in self._groups.values():
             balancelink_obj.reset_agenda_credit_debt()
 
     def _set_groupunits_agenda_importance(
         self, balanceheirs: dict[GroupBrand:BalanceLink]
     ):
-        self.set_groupunits_empty_if_null()
         for balancelink_obj in balanceheirs.values():
             self.add_to_group_agenda_credit_debt(
                 groupbrand=balancelink_obj.brand,
@@ -1673,7 +1689,6 @@ class AgendaUnit:
         return groups
 
     def _reset_partyunit_agenda_credit_debt(self):
-        self.set_partys_empty_if_null()
         for partyunit in self._partys.values():
             partyunit.reset_agenda_credit_debt()
 
@@ -2181,8 +2196,6 @@ class AgendaUnit:
                 main_idea._originunit.set_originlink(party_pid, party_weight)
 
     def _meld_partys(self, other_agenda):
-        self.set_partys_empty_if_null()
-        other_agenda.set_partys_empty_if_null()
         for partyunit in other_agenda._partys.values():
             if self._partys.get(partyunit.pid) is None:
                 self.set_partyunit(partyunit=partyunit)
@@ -2190,11 +2203,9 @@ class AgendaUnit:
                 self._partys.get(partyunit.pid).meld(partyunit)
 
     def _meld_groups(self, other_agenda):
-        self.set_groupunits_empty_if_null()
-        other_agenda.set_groupunits_empty_if_null()
         for brx in other_agenda._groups.values():
             if self._groups.get(brx.brand) is None:
-                self.set_groupunit(groupunit=brx)
+                self.set_groupunit(y_groupunit=brx)
             else:
                 self._groups.get(brx.brand).meld(brx)
 
@@ -2255,7 +2266,6 @@ class AgendaUnit:
         assignor_partys: dict[PartyPID:PartyUnit],
         assignor_pid: PartyPID,
     ):
-        agenda_x.set_partys_empty_if_null()
         if self._partys.get(assignor_pid) != None:
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
@@ -2275,7 +2285,6 @@ class AgendaUnit:
     def _get_assignor_promise_ideas(
         self, agenda_x, assignor_pid: GroupBrand
     ) -> dict[RoadPath:int]:
-        agenda_x.set_groupunits_empty_if_null()
         assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_pid)
         return {
             idea_road: -1
@@ -2313,6 +2322,8 @@ def agendaunit_shop(
         _economy_id=_economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
+    x_agenda.set_partys_empty_if_null()
+    x_agenda.set_groupunits_empty_if_null()
     x_agenda._idearoot = idearoot_shop(
         _label=x_agenda._economy_id,
         _uid=1,

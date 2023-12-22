@@ -24,6 +24,9 @@ class AssignedUnit:
     def del_suffgroup(self, brand: GroupBrand):
         self._suffgroups.pop(brand)
 
+    def get_suffgroup(self, brand: GroupBrand) -> GroupBrand:
+        return self._suffgroups.get(brand)
+
 
 def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> AssignedUnit:
     if _suffgroups is None:

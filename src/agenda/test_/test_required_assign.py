@@ -165,7 +165,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
@@ -255,7 +255,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
@@ -265,7 +265,7 @@ def test_AssignedHeir_set_group_party_CorrectlySetsAttribute_NonEmpty_suffgroups
 
     # WHEN
     swim_group.del_partylink(pid=jim_text)
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
     assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
 
     # THEN
@@ -286,7 +286,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
@@ -296,7 +296,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
 
     # WHEN
     swim_group.del_partylink(pid=jim_text)
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
     assigned_heir_x.set_group_party(x_agenda._groups, x_agenda._healer)
 
     # THEN
@@ -426,14 +426,14 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=swim2_group)
+    x_agenda.set_groupunit(y_groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=tom_text))
-    x_agenda.set_groupunit(groupunit=swim3_group)
+    x_agenda.set_groupunit(y_groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
     parent_assigned_unit.set_suffgroup(brand=swim3_text)
@@ -473,14 +473,14 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=swim2_group)
+    x_agenda.set_groupunit(y_groupunit=swim2_group)
 
     swim3_text = "swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(pid=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(pid=tom_text))
-    x_agenda.set_groupunit(groupunit=swim3_group)
+    x_agenda.set_groupunit(y_groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
     parent_assigned_unit.set_suffgroup(brand=swim2_text)
@@ -504,6 +504,24 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
         str(excinfo.value)
         == f"parent_assigned_heir does not contain all partys of the idea's assigned_unit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
     )
+
+
+def test_AssignedUnit_get_suffgroup_ReturnsCorrectObj():
+    # GIVEN
+    climb_text = "climbers"
+    walk_text = "walkers"
+    swim_text = "swimmers"
+    run_text = "runners"
+
+    x_assigned_unit = assigned_unit_shop()
+    x_assigned_unit.set_suffgroup(climb_text)
+    x_assigned_unit.set_suffgroup(walk_text)
+    x_assigned_unit.set_suffgroup(swim_text)
+
+    # WHEN / THEN
+    assert x_assigned_unit.get_suffgroup(walk_text) != None
+    assert x_assigned_unit.get_suffgroup(swim_text) != None
+    assert x_assigned_unit.get_suffgroup(run_text) is None
 
 
 def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():

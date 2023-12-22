@@ -130,7 +130,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     healer_text = "Tom"
     x_agenda = agendaunit_shop(_healer=healer_text)
     run_text = "run"
-    x_agenda.set_groupunit(groupunit=groupunit_shop(run_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(run_text))
 
     morn_text = "morning"
     morn_road = x_agenda.make_l1_road(morn_text)
@@ -279,7 +279,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
     run_group.set_partylink(partylink=partylink_shop(pid=tim_text))
-    y_agenda.set_groupunit(groupunit=run_group)
+    y_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(brand=run_text)

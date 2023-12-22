@@ -270,7 +270,7 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     swim_group_unit = groupunit_shop(brand=swim_group_text)
     bob_link = partylink_shop(pid=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)
-    sal_agenda.set_groupunit(groupunit=swim_group_unit)
+    sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
 
     x_economy.save_public_agenda(sal_agenda)
     x_economy.save_public_agenda(bob_agenda)
@@ -285,7 +285,7 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  get_road(root_label()},sports,swimmer"
     sal_swim_road = get_road(sal_sports_road, swim_text)
     swim_group_unit.set_attr(_partylinks_set_by_economy_road=sal_swim_road)
-    sal_agenda.set_groupunit(groupunit=swim_group_unit)
+    sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
     x_economy.save_public_agenda(sal_agenda)
     x_economy.set_agenda_treasury_attrs(x_healer=sal_text)
 

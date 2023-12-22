@@ -77,7 +77,6 @@ class GroupUnit(GroupCore):
         self._agenda_debt = 0
         self._agenda_intent_credit = 0
         self._agenda_intent_debt = 0
-        self._set_partylinks_empty_if_null()
         for partylink in self._partys.values():
             partylink.reset_agenda_credit_debt()
 
@@ -107,18 +106,17 @@ class GroupUnit(GroupCore):
             self._partys = {}
 
     def get_partys_dict(self):
-        self._set_partylinks_empty_if_null()
-
         partys_x_dict = {}
         for party in self._partys.values():
             party_dict = party.get_dict()
             partys_x_dict[party_dict["pid"]] = party_dict
-
         return partys_x_dict
 
     def set_partylink(self, partylink: PartyLink):
-        self._set_partylinks_empty_if_null()
         self._partys[partylink.pid] = partylink
+
+    def get_partylink(self, party_pid: PartyPID):
+        return self._partys.get(party_pid)
 
     def del_partylink(self, pid):
         self._partys.pop(pid)
@@ -128,7 +126,6 @@ class GroupUnit(GroupCore):
         self.meld_partylinks(other_group=other_group)
 
     def meld_partylinks(self, other_group):
-        self._set_partylinks_empty_if_null()
         for oba in other_group._partys.values():
             if self._partys.get(oba.pid) is None:
                 self._partys[oba.pid] = oba
@@ -209,7 +206,7 @@ def groupunit_shop(
         _partys = {}
     if _single_party is None:
         _single_party = False
-    return GroupUnit(
+    x_groupunit = GroupUnit(
         brand=brand,
         uid=uid,
         single_party_id=single_party_id,
@@ -221,6 +218,8 @@ def groupunit_shop(
         _agenda_intent_debt=_agenda_intent_debt,
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
+    x_groupunit._set_partylinks_empty_if_null()
+    return x_groupunit
 
 
 @dataclass

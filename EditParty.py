@@ -259,7 +259,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
     def group_insert(self):
         bu = groupunit_shop(brand=self.group_pid.text())
-        self.agenda_x.set_groupunit(groupunit=bu)
+        self.agenda_x.set_groupunit(y_groupunit=bu)
         self.refresh_groups()
 
     def group_delete(self):

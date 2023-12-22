@@ -1,6 +1,7 @@
 from src.agenda.party import PartyPID, partylink_shop
 from src.agenda.group import (
     BalanceLine,
+    GroupUnit,
     groupunit_shop,
     GroupBrand,
     balancelink_shop,
@@ -13,13 +14,32 @@ from src.agenda.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
 
-def test_groupBrand_exists():
+def test_GroupBrand_exists():
     bikers_brand = GroupBrand("bikers")
     assert bikers_brand != None
     assert str(type(bikers_brand)).find(".group.GroupBrand") > 0
 
 
-def test_groupunit_exists():
+def test_GroupUnit_exists():
+    # GIVEN
+    swim_text = "swimmers"
+    # WHEN
+    swim_groupunit = GroupUnit(brand=swim_text)
+    # THEN
+    assert swim_groupunit != None
+    assert swim_groupunit.brand == swim_text
+    assert swim_groupunit.uid is None
+    assert swim_groupunit.single_party_id is None
+    assert swim_groupunit._single_party is None
+    assert swim_groupunit._partys is None
+    assert swim_groupunit._agenda_credit is None
+    assert swim_groupunit._agenda_debt is None
+    assert swim_groupunit._agenda_intent_credit is None
+    assert swim_groupunit._agenda_intent_debt is None
+    assert swim_groupunit._partylinks_set_by_economy_road is None
+
+
+def test_groupunit_shop_ReturnsCorrectObj():
     # GIVEN
     swimmers = "swimmers"
     nation_road = get_road(root_label(), "nation-states")
@@ -47,7 +67,7 @@ def test_groupunit_exists():
     assert swimmers_group._partylinks_set_by_economy_road == usa_road
 
 
-def test_groupunit_set_brand_WorksCorrectly():
+def test_GroupUnit_set_brand_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(brand=swim_text)
@@ -61,7 +81,7 @@ def test_groupunit_set_brand_WorksCorrectly():
     assert swim_group.brand == water_text
 
 
-def test_groupunit_set_attr_WorksCorrectly():
+def test_GroupUnit_set_attr_WorksCorrectly():
     # GIVEN
     swim_text = "swimmers"
     swim_group = groupunit_shop(brand=swim_text)
@@ -95,7 +115,7 @@ def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_econom
     )
 
 
-def test_groupunit_set_partylink_worksCorrectly():
+def test_GroupUnit_set_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -113,7 +133,21 @@ def test_groupunit_set_partylink_worksCorrectly():
     assert swimmers_group._partys == swimmers_partys
 
 
-def test_groupunit_del_partylink_worksCorrectly():
+def test_GroupUnit_get_partylink_worksCorrectly():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group.set_partylink(partylink_shop(todd_text, 13, 7))
+    swimmers_group.set_partylink(partylink_shop(mery_text, 23, 5))
+
+    # WHEN / THEN
+    assert swimmers_group.get_partylink(todd_text) != None
+    assert swimmers_group.get_partylink(mery_text) != None
+    assert swimmers_group.get_partylink("todd") is None
+
+
+def test_GroupUnit_del_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -134,7 +168,7 @@ def test_groupunit_del_partylink_worksCorrectly():
     assert swimmers_group._partys.get(todd_text) is None
 
 
-def test_groupunit_clear_partylinks_worksCorrectly():
+def test_GroupUnit_clear_partylinks_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -155,7 +189,7 @@ def test_groupunit_clear_partylinks_worksCorrectly():
     assert swimmers_group._partys.get(todd_text) is None
 
 
-def test_Groupunit_reset_agenda_importance_WorkCorrectly():
+def test_GroupUnit_reset_agenda_importance_WorkCorrectly():
     # GIVEN
     maria_brand = "maria"
     maria_group = groupunit_shop(
@@ -181,7 +215,7 @@ def test_Groupunit_reset_agenda_importance_WorkCorrectly():
     assert maria_group._agenda_intent_debt == 0
 
 
-def test_Groupunit_reset_agenda_importance_reset_partylinks():
+def test_GroupUnit_reset_agenda_importance_reset_partylinks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -366,7 +400,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert todd_dict.get("_partylinks_set_by_economy_road") is None
 
 
-def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
+def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     swimmers = "swimmers"
 
@@ -416,7 +450,7 @@ def test_groupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_groupunit_get_from_JSON_SimpleExampleWorks():
+def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
     # GIVEN
     str_pid = "Marie"
     marie_pid = PartyPID(str_pid)

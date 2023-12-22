@@ -801,7 +801,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(groupunit=run_group)
+    x_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
     run_assignedunit.set_suffgroup(brand=run_text)
@@ -815,7 +815,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
 
     # WHEN
     run_group.set_partylink(partylink=partylink_shop(pid=bob_text))
-    x_agenda.set_groupunit(groupunit=run_group)
+    x_agenda.set_groupunit(y_groupunit=run_group)
 
     # THEN
     assert len(x_agenda.get_intent_items()) == 1

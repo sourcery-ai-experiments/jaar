@@ -1,3 +1,5 @@
+from src.agenda.party import partylink_shop
+from src.agenda.group import groupunit_shop
 from src.agenda.idea import IdeaAttrHolder, assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
@@ -69,11 +71,26 @@ class WorldUnit:
                 debtor_weight=action_weight,
                 depotlink_type="assignment",
             )
-
-            # lobbyer_seed changes
             lobbyer_seed.add_partyunit(lobbyee_pid, depotlink_type="assignment")
-            x_assignedunit.set_suffgroup(lobbyee_pid)
-            x_balancelinks[lobbyee_pid] = balancelink_shop(lobbyee_pid)
+
+        for lobby_group in x_lobbyunit._lobbyee_groups.keys():
+            print(f"{lobby_group=}")
+            x_groupunit = groupunit_shop(lobby_group)
+            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+                x_groupunit.set_partylink(partylink_shop(lobbyee_pid))
+            lobbyer_seed.set_groupunit(x_groupunit, False, False, True)
+
+        if x_lobbyunit._lobbyee_groups == {}:
+            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
+                # lobbyee_seed changes
+                x_assignedunit.set_suffgroup(lobbyee_pid)
+                x_balancelinks[lobbyee_pid] = balancelink_shop(lobbyee_pid)
+        else:
+            for lobby_group in x_lobbyunit._lobbyee_groups.keys():
+                # lobbyee_seed changes
+                print(f"assignunit {lobby_group=}")
+                x_assignedunit.set_suffgroup(lobby_group)
+                x_balancelinks[lobby_group] = balancelink_shop(lobby_group)
 
         # for every idea in concernunit set idea attributes to lobbyer_seed
         x_reason = x_lobbyunit._concernunit.reason

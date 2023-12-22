@@ -9,13 +9,7 @@ from src.agenda.idea import ideacore_shop
 from pytest import raises as pytest_raises
 
 
-def test_agenda_partys_exists():
-    # GIVEN / WHEN
-    x_agenda = agendaunit_shop()
-
-    # THEN
-    assert x_agenda._partys is None
-
+def test_agenda_set_partyunit_SetObjCorrectly():
     # GIVEN
     yahri_party = partyunit_shop(pid=PartyPID("yahri"))
     partys_x = {yahri_party.pid: yahri_party}
@@ -45,9 +39,12 @@ def test_agenda_set_party_correctly_sets_partys_1():
     assert len(x_agenda._groups) == 0
 
     # WHEN
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID("rico")))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID("carmen")))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID("patrick")))
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
 
     # THEN
     assert len(x_agenda._partys) == 3
@@ -55,15 +52,12 @@ def test_agenda_set_party_correctly_sets_partys_1():
     assert x_agenda._groups["rico"]._single_party == True
 
     # WHEN
-    x_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand("rico"), creditor_weight=10)
-    )
-    x_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand("carmen"), creditor_weight=10)
-    )
-    x_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand("patrick"), creditor_weight=10)
-    )
+    rico_group = rico_text
+    carm_group = carm_text
+    patr_group = patr_text
+    x_agenda._idearoot.set_balancelink(balancelink_shop(rico_group, creditor_weight=10))
+    x_agenda._idearoot.set_balancelink(balancelink_shop(carm_group, creditor_weight=10))
+    x_agenda._idearoot.set_balancelink(balancelink_shop(patr_group, creditor_weight=10))
     assert len(x_agenda._idearoot._balancelinks) == 3
 
 
@@ -901,7 +895,7 @@ def test_agenda_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     swim_group.set_partylink(
         partylink=partylink_shop(pid=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     swim_group = x_agenda._groups.get(swim_text)
     assert len(swim_group._partys) == 2
@@ -946,7 +940,7 @@ def test_agenda_PartyUnit_CorrectlyMergesPIDs():
     swim_group.set_partylink(
         partylink=partylink_shop(pid=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     assert len(x_agenda._partys) == 3
     assert x_agenda._partys.get(rico_text) != None
@@ -990,7 +984,7 @@ def test_agenda_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     swim_group.set_partylink(
         partylink=partylink_shop(pid=rico_text, creditor_weight=7, debtor_weight=30)
     )
-    x_agenda.set_groupunit(groupunit=swim_group)
+    x_agenda.set_groupunit(y_groupunit=swim_group)
 
     swim_group = x_agenda._groups.get(swim_text)
     assert len(swim_group._partys) == 2
@@ -1028,7 +1022,7 @@ def test_agenda_PartyUnit_raiseErrorNewPIDGroupUnitPreviouslyExists():
     carmen_group = groupunit_shop(brand=carmen_text)
     carmen_group.set_partylink(partylink=partylink_shop(pid=rico_text))
     carmen_group.set_partylink(partylink=partylink_shop(pid=anna_text))
-    x_agenda.set_groupunit(groupunit=carmen_group)
+    x_agenda.set_groupunit(y_groupunit=carmen_group)
     assert len(x_agenda._groups) == 3
     assert x_agenda._partys.get(carmen_text) is None
     assert x_agenda._groups.get(carmen_text)._single_party == False
@@ -1063,7 +1057,7 @@ def test_agenda_PartyUnit_CorrectlyOverwriteNewPIDGroupUnit():
     carmen_group.set_partylink(
         partylink=partylink_shop(pid=anna_text, creditor_weight=5)
     )
-    x_agenda.set_groupunit(groupunit=carmen_group)
+    x_agenda.set_groupunit(y_groupunit=carmen_group)
     assert len(x_agenda._groups) == 3
     assert x_agenda._partys.get(rico_text) != None
     assert x_agenda._partys.get(carmen_text) is None
@@ -1214,7 +1208,7 @@ def test_agenda_get_partyunits_pid_list_CorrectlyReturnsListOfPartyUnits():
     fun_text = "fun people"
     fun_group = groupunit_shop(brand=fun_text)
     fun_group.set_partylink(partylink=partylink_shop(pid=will_text))
-    x_agenda.set_groupunit(groupunit=fun_group)
+    x_agenda.set_groupunit(y_groupunit=fun_group)
     assert len(x_agenda._groups) == 4
     assert len(x_agenda._partys) == 3
 
