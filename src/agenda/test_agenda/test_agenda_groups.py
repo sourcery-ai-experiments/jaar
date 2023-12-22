@@ -997,37 +997,48 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     assert noa_agenda._groups[fly_text].uid != None
 
 
-# def test_agenda_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
-#     # GIVEN
-#     healer_text = "Noa"
-#     agenda = agendaunit_shop(healer_text)
-#     swim_text = "swim"
-#     pad_text = "pad"
-#     fly_text = "fly"
-#     agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=3))
-#     agenda.set_groupunit(groupunit_shop(brand=pad_text, uid=3))
-#     agenda.set_groupunit(groupunit_shop(brand=fly_text))
-#     assert agenda._groups[swim_text].uid == 3
-#     assert agenda._groups[pad_text].uid == 3
-#     assert agenda._groups[fly_text].uid is None
+def test_agenda_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
+    # GIVEN
+    healer_text = "Noa"
+    agenda = agendaunit_shop(healer_text)
+    swim_text = "swim"
+    run_text = "run"
+    fly_text = "fly"
+    climb_text = "climb"
+    agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=3))
+    agenda.set_groupunit(groupunit_shop(brand=run_text, uid=3))
+    agenda.set_groupunit(groupunit_shop(brand=fly_text))
+    assert agenda._groups[swim_text].uid == 3
+    assert agenda._groups[run_text].uid == 3
+    assert agenda._groups[fly_text].uid is None
 
-#     # WHEN1 / THEN
-#     assert agenda.all_groupunits_uids_are_unique() == False
+    # WHEN1 / THEN
+    assert agenda.all_groupunits_uids_are_unique() == False
 
-#     # WHEN2
-#     agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=4))
-#     # THEN
-#     assert agenda.all_groupunits_uids_are_unique() == False
+    # WHEN2
+    agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=4))
+    # THEN
+    assert agenda.all_groupunits_uids_are_unique() == False
 
-#     # WHEN3
-#     agenda.del_groupunit(groupbrand=fly_text)
-#     # THEN
-#     assert agenda.all_groupunits_uids_are_unique()
+    # WHEN3
+    agenda.del_groupunit(groupbrand=fly_text)
+    # THEN
+    assert agenda.all_groupunits_uids_are_unique()
 
-#     # WHEN
-#     agenda.set_groupunit(groupunit_shop(brand=fly_text, uid=5))
-#     # THEN
-#     assert agenda.all_groupunits_uids_are_unique()
+    # WHEN
+    agenda.set_groupunit(groupunit_shop(brand=fly_text, uid=5))
+    # THEN
+    assert agenda.all_groupunits_uids_are_unique()
+
+    # WHEN
+    agenda.set_groupunit(groupunit_shop(brand=fly_text, uid=5))
+    # THEN
+    assert agenda.all_groupunits_uids_are_unique()
+
+    # WHEN
+    agenda.set_groupunit(groupunit_shop(brand=climb_text, uid=13))
+    # THEN
+    assert agenda.all_groupunits_uids_are_unique()
 
 
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
