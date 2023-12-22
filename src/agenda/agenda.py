@@ -2350,34 +2350,26 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
-    x_idearoot = x_agenda._idearoot
-    x_idearoot.set_idea_label(x_agenda._economy_id, x_agenda._economy_id)
-    x_idearoot._weight = get_obj_from_idea_dict(idearoot_dict, "_weight")
-    x_idearoot._uid = get_obj_from_idea_dict(idearoot_dict, "_uid")
-    x_idearoot._begin = get_obj_from_idea_dict(idearoot_dict, "_begin")
-    x_idearoot._close = get_obj_from_idea_dict(idearoot_dict, "_close")
-    x_idearoot._numor = get_obj_from_idea_dict(idearoot_dict, "_numor")
-    x_idearoot._denom = get_obj_from_idea_dict(idearoot_dict, "_denom")
-    x_idearoot._reest = get_obj_from_idea_dict(idearoot_dict, "_reest")
-    x_idearoot._range_source_road = get_obj_from_idea_dict(
-        idearoot_dict, "_range_source_road"
+    x_agenda._idearoot = idearoot_shop(
+        _label=x_agenda._economy_id,
+        _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
+        _weight=get_obj_from_idea_dict(idearoot_dict, "_weight"),
+        _begin=get_obj_from_idea_dict(idearoot_dict, "_begin"),
+        _close=get_obj_from_idea_dict(idearoot_dict, "_close"),
+        _numor=get_obj_from_idea_dict(idearoot_dict, "_numor"),
+        _denom=get_obj_from_idea_dict(idearoot_dict, "_denom"),
+        _reest=get_obj_from_idea_dict(idearoot_dict, "_reest"),
+        _range_source_road=get_obj_from_idea_dict(idearoot_dict, "_range_source_road"),
+        _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
+        _requiredunits=get_obj_from_idea_dict(idearoot_dict, "_requiredunits"),
+        _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
+        _acptfactunits=get_obj_from_idea_dict(idearoot_dict, "_acptfactunits"),
+        _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
+        _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
+        _road_node_delimiter=get_obj_from_idea_dict(
+            idearoot_dict, "_road_node_delimiter"
+        ),
     )
-    x_idearoot._numeric_road = get_obj_from_idea_dict(idearoot_dict, "_numeric_road")
-    x_idearoot._requiredunits = get_obj_from_idea_dict(idearoot_dict, "_requiredunits")
-    x_idearoot._assignedunit = get_obj_from_idea_dict(idearoot_dict, "_assignedunit")
-    x_idearoot._acptfactunits = get_obj_from_idea_dict(idearoot_dict, "_acptfactunits")
-    x_idearoot._balancelinks = get_obj_from_idea_dict(idearoot_dict, "_balancelinks")
-    x_idearoot._is_expanded = get_obj_from_idea_dict(idearoot_dict, "_is_expanded")
-    x_idearoot.set_acptfactheirs_empty_if_null()
-    x_idearoot.set_acptfactunits_empty_if_null()
-    x_idearoot.set_active_status_hx_empty_if_null()
-    x_idearoot.set_balanceheirs_empty_if_null()
-    x_idearoot.set_balancelines_empty_if_null()
-    x_idearoot.set_balancelinks_empty_if_null()
-    x_idearoot.set_kids_empty_if_null()
-    x_idearoot.set_requiredheirs_empty_if_null()
-    x_idearoot.set_requiredunits_empty_if_null()
-    # if idearoot_dict.get("_kids"):
     set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
 

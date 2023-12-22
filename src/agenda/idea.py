@@ -486,7 +486,13 @@ class IdeaCore:
 
     def set_road_node_delimiter(self, new_road_node_delimiter: str):
         old_delimiter = deepcopy(self._road_node_delimiter)
+        if old_delimiter is None:
+            old_delimiter = get_node_delimiter()
         self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+        if old_delimiter != self._road_node_delimiter:
+            self._find_replace_road_node_delimiter(old_delimiter)
+
+    def _find_replace_road_node_delimiter(self, old_delimiter):
         self._pad = replace_road_node_delimiter(
             road=self._pad,
             old_delimiter=old_delimiter,
@@ -1200,6 +1206,7 @@ def idearoot_shop(
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
+    _road_node_delimiter: str = None,
 ) -> IdeaCore:
     if promise is None:
         promise = False
@@ -1252,6 +1259,7 @@ def idearoot_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=_active_status_hx,
+        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     if x_idearoot._label is None:
         x_idearoot.set_idea_label(_label=root_label())

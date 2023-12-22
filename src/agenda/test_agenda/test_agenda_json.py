@@ -1,4 +1,4 @@
-from src.agenda.road import get_node_delimiter
+from src.agenda.road import get_node_delimiter, get_road
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -417,7 +417,18 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     assert cc1_idea_root._originunit == x_agenda1._idearoot._originunit
     assert ccn_dict_of_obj.get(x_agenda1._healer)._idea_dict == x_agenda1._idea_dict
     assert ccn_dict_of_obj.get(x_agenda1._healer) == x_agenda1
-    assert ccn_dict_of_obj.get(x_agenda2._healer) == x_agenda2
+    ccn2_agenda = ccn_dict_of_obj.get(x_agenda2._healer)
+    assert ccn2_agenda._idearoot._label == x_agenda2._idearoot._label
+    assert ccn2_agenda._idearoot._pad == x_agenda2._idearoot._pad
+    shave_road = get_road("A", "shave")
+    week_road = get_road("A", "weekdays")
+    assert ccn2_agenda.get_idea_kid(shave_road) == x_agenda2.get_idea_kid(shave_road)
+    assert ccn2_agenda.get_idea_kid(week_road) == x_agenda2.get_idea_kid(week_road)
+    assert ccn2_agenda._idearoot == x_agenda2._idearoot
+    print(f"{ccn2_agenda._idea_dict.keys()=}")
+    print(f"{x_agenda2._idea_dict.keys()=}")
+    assert ccn2_agenda._idea_dict == x_agenda2._idea_dict
+    assert ccn2_agenda == x_agenda2
     assert ccn_dict_of_obj.get(x_agenda3._healer) == x_agenda3
 
 
