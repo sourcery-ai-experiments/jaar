@@ -31,7 +31,7 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
-from src.agenda.x_func import x_get_json
+from src.agenda.x_func import x_get_json, get_empty_dict_if_null
 from src.agenda.idea import (
     IdeaCore,
     ideacore_shop,
@@ -448,10 +448,6 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
-    def set_partys_empty_if_null(self):
-        if self._partys is None:
-            self._partys = {}
-
     def add_to_group_agenda_credit_debt(
         self,
         groupbrand: GroupBrand,
@@ -496,10 +492,6 @@ class AgendaUnit:
                     agenda_intent_credit=agenda_intent_credit,
                     agenda_intent_debt=agenda_intent_debt,
                 )
-
-    def set_groupunits_empty_if_null(self):
-        if self._groups is None:
-            self._groups = {}
 
     def del_partyunit(self, pid: str):
         self._groups.pop(pid)
@@ -844,7 +836,6 @@ class AgendaUnit:
         self, ranged_acptfactunits: list[IdeaCore]
     ) -> Lemmas:
         x_lemmas = lemmas_shop()
-        x_lemmas.set_empty_if_null()
         # lemma_ideas = {}
         for acptfact in ranged_acptfactunits:
             acptfact_idea = self.get_idea_kid(acptfact.base)
@@ -1819,7 +1810,6 @@ class AgendaUnit:
         )
         self._idearoot.inherit_balanceheirs()
         self._idearoot.clear_balancelines()
-        self._idearoot.set_originunit_empty_if_null()
         self._idearoot._weight = 1
         self._idearoot._kids_total_weight = 0
         self._idearoot.set_kids_total_weight()
@@ -1860,7 +1850,6 @@ class AgendaUnit:
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
         idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
         idea_kid.clear_balancelines()
-        idea_kid.set_originunit_empty_if_null()
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groups=self._groups,
@@ -2305,10 +2294,11 @@ def agendaunit_shop(
         _weight=_weight,
         _auto_output_to_public=_auto_output_to_public,
         _economy_id=_economy_id,
+        _partys={},
+        _groups={},
+        _idea_dict={},
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_agenda.set_partys_empty_if_null()
-    x_agenda.set_groupunits_empty_if_null()
     x_agenda._idearoot = idearoot_shop(
         _label=x_agenda._economy_id,
         _uid=1,

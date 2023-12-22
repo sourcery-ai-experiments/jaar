@@ -192,10 +192,6 @@ class IdeaCore:
             )
         )
 
-    def set_active_status_hx_empty_if_null(self):
-        if self._active_status_hx is None:
-            self._active_status_hx = {}
-
     def record_active_status_hx(
         self,
         tree_traverse_count: int,
@@ -225,10 +221,6 @@ class IdeaCore:
 
         self._acptfactheirs = x_dict
 
-    def set_acptfactheirs_empty_if_null(self):
-        if self._acptfactheirs is None:
-            self._acptfactheirs = {}
-
     def apply_acptfactunit_transformations(
         self, acptfactheir: AcptFactHeir
     ) -> AcptFactHeir:
@@ -251,10 +243,6 @@ class IdeaCore:
             del self._acptfactunits[acptfactunit.base]
 
         return acptfactheir
-
-    def set_acptfactunits_empty_if_null(self):
-        if self._acptfactunits is None:
-            self._acptfactunits = {}
 
     def set_acptfactunit(self, acptfactunit: AcptFactUnit):
         self._acptfactunits[acptfactunit.base] = acptfactunit
@@ -473,10 +461,6 @@ class IdeaCore:
                 balanceheirs_debtor_weight_sum=balanceheirs_debtor_weight_sum,
             )
 
-    def set_kids_empty_if_null(self):
-        if self._kids is None:
-            self._kids = {}
-
     def clear_balancelines(self):
         self._balancelines = {}
 
@@ -592,7 +576,6 @@ class IdeaCore:
 
     def _meld_originlinks(self, party_pid: PartyPID, party_weight: float):
         if party_pid != None:
-            self.set_originunit_empty_if_null()
             self._originunit.set_originlink(pid=party_pid, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
@@ -600,7 +583,6 @@ class IdeaCore:
             self._originunit = originunit_shop()
 
     def get_originunit_dict(self):
-        self.set_originunit_empty_if_null()
         return self._originunit.get_dict()
 
     def _meld_attributes_that_will_be_equal(self, other_idea):
@@ -776,18 +758,6 @@ class IdeaCore:
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def set_balancelinks_empty_if_null(self):
-        if self._balancelinks is None:
-            self._balancelinks = {}
-
-    def set_balanceheirs_empty_if_null(self):
-        if self._balanceheirs is None:
-            self._balanceheirs = {}
-
-    def set_balancelines_empty_if_null(self):
-        if self._balancelines is None:
-            self._balancelines = {}
-
     def set_balancelink(self, balancelink: BalanceLink):
         self._balancelinks[balancelink.brand] = balancelink
 
@@ -800,10 +770,6 @@ class IdeaCore:
     def set_required_unit(self, required: RequiredUnit):
         required.delimiter = self._road_node_delimiter
         self._requiredunits[required.base] = required
-
-    def set_requiredunits_empty_if_null(self):
-        if self._requiredunits is None:
-            self._requiredunits = {}
 
     def set_requiredheirs_status(self):
         for lu in self._requiredheirs.values():
@@ -899,10 +865,6 @@ class IdeaCore:
 
             x_dict[requiredheir_x.base] = requiredheir_x
         self._requiredheirs = x_dict
-
-    def set_requiredheirs_empty_if_null(self):
-        if self._requiredheirs is None:
-            self._requiredheirs = {}
 
     def get_requiredheir(self, base: RoadPath):
         return self._requiredheirs.get(base)
@@ -1012,7 +974,6 @@ class IdeaCore:
         parent_assignheir: AssignedHeir,
         agenda_groups: dict[GroupBrand:GroupUnit],
     ):
-        self.set_assignedunit_empty_if_null()
         self._assignedheir = assigned_heir_shop()
         self._assignedheir.set_suffgroups(
             parent_assignheir=parent_assignheir,
@@ -1021,7 +982,6 @@ class IdeaCore:
         )
 
     def get_assignedunit_dict(self):
-        self.set_assignedunit_empty_if_null()
         return self._assignedunit.get_dict()
 
     def assignor_in(self, groupbrands: dict[GroupBrand:-1]):
@@ -1090,17 +1050,17 @@ def ideacore_shop(
         _label=_label,
         _uid=_uid,
         _pad=_pad,
-        _kids=_kids,
+        _kids=get_empty_dict_if_null(_kids),
         _weight=_weight,
-        _balancelinks=_balancelinks,
-        _balanceheirs=_balanceheirs,
-        _balancelines=_balancelines,
-        _requiredunits=_requiredunits,
-        _requiredheirs=_requiredheirs,
+        _balancelinks=get_empty_dict_if_null(_balancelinks),
+        _balanceheirs=get_empty_dict_if_null(_balanceheirs),
+        _balancelines=get_empty_dict_if_null(_balancelines),
+        _requiredunits=get_empty_dict_if_null(_requiredunits),
+        _requiredheirs=get_empty_dict_if_null(_requiredheirs),
         _assignedunit=_assignedunit,
         _assignedheir=_assignedheir,
-        _acptfactunits=_acptfactunits,
-        _acptfactheirs=_acptfactheirs,
+        _acptfactunits=get_empty_dict_if_null(_acptfactunits),
+        _acptfactheirs=get_empty_dict_if_null(_acptfactheirs),
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1127,19 +1087,11 @@ def ideacore_shop(
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=_active_status_hx,
+        _active_status_hx=get_empty_dict_if_null(_active_status_hx),
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_ideakid.set_acptfactheirs_empty_if_null()
-    x_ideakid.set_acptfactunits_empty_if_null()
-    x_ideakid.set_active_status_hx_empty_if_null()
-    x_ideakid.set_balanceheirs_empty_if_null()
-    x_ideakid.set_balancelines_empty_if_null()
-    x_ideakid.set_balancelinks_empty_if_null()
-    x_ideakid.set_kids_empty_if_null()
-    x_ideakid.set_requiredheirs_empty_if_null()
-    x_ideakid.set_requiredunits_empty_if_null()
-
+    x_ideakid.set_assignedunit_empty_if_null()
+    x_ideakid.set_originunit_empty_if_null()
     return x_ideakid
 
 
@@ -1221,17 +1173,17 @@ def idearoot_shop(
         _label=_label,
         _uid=_uid,
         _pad=_pad,
-        _kids=_kids,
+        _kids=get_empty_dict_if_null(_kids),
         _weight=_weight,
-        _balancelinks=_balancelinks,
-        _balanceheirs=_balanceheirs,
-        _balancelines=_balancelines,
-        _requiredunits=_requiredunits,
-        _requiredheirs=_requiredheirs,
+        _balancelinks=get_empty_dict_if_null(_balancelinks),
+        _balanceheirs=get_empty_dict_if_null(_balanceheirs),
+        _balancelines=get_empty_dict_if_null(_balancelines),
+        _requiredunits=get_empty_dict_if_null(_requiredunits),
+        _requiredheirs=get_empty_dict_if_null(_requiredheirs),
         _assignedunit=_assignedunit,
         _assignedheir=_assignedheir,
-        _acptfactunits=_acptfactunits,
-        _acptfactheirs=_acptfactheirs,
+        _acptfactunits=get_empty_dict_if_null(_acptfactunits),
+        _acptfactheirs=get_empty_dict_if_null(_acptfactheirs),
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1258,20 +1210,13 @@ def idearoot_shop(
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=_active_status_hx,
+        _active_status_hx=get_empty_dict_if_null(_active_status_hx),
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     if x_idearoot._label is None:
         x_idearoot.set_idea_label(_label=root_label())
-    x_idearoot.set_acptfactheirs_empty_if_null()
-    x_idearoot.set_active_status_hx_empty_if_null()
-    x_idearoot.set_acptfactunits_empty_if_null()
-    x_idearoot.set_balanceheirs_empty_if_null()
-    x_idearoot.set_balancelines_empty_if_null()
-    x_idearoot.set_balancelinks_empty_if_null()
-    x_idearoot.set_kids_empty_if_null()
-    x_idearoot.set_requiredheirs_empty_if_null()
-    x_idearoot.set_requiredunits_empty_if_null()
+    x_idearoot.set_assignedunit_empty_if_null()
+    x_idearoot.set_originunit_empty_if_null()
     return x_idearoot
 
 

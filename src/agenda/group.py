@@ -8,6 +8,7 @@ from src.agenda.x_func import (
     x_get_dict,
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
+    get_empty_dict_if_null,
 )
 from src.agenda.road import RoadPath
 
@@ -100,10 +101,6 @@ class GroupUnit(GroupCore):
 
     def clear_partylinks(self):
         self._partys = {}
-
-    def _set_partylinks_empty_if_null(self):
-        if self._partys is None:
-            self._partys = {}
 
     def get_partys_dict(self):
         partys_x_dict = {}
@@ -211,14 +208,13 @@ def groupunit_shop(
         uid=uid,
         single_party_id=single_party_id,
         _single_party=_single_party,
-        _partys=_partys,
+        _partys=get_empty_dict_if_null(_partys),
         _agenda_credit=_agenda_credit,
         _agenda_debt=_agenda_debt,
         _agenda_intent_credit=_agenda_intent_credit,
         _agenda_intent_debt=_agenda_intent_debt,
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
-    x_groupunit._set_partylinks_empty_if_null()
     return x_groupunit
 
 

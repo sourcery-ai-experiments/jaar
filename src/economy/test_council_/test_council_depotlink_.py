@@ -108,7 +108,6 @@ def test_councilunit_del_depot_agenda_CorrectlyDeletesObj(council_dir_setup_clea
     yao_text = "Yao"
     create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
-    bob_agenda._set_depotlinks_empty_if_null()
     bob_agenda._set_depotlink(yao_text, link_type=assignment_text)
     assert list(bob_agenda._seed._partys.keys()) == [bob_text, yao_text]
     assert bob_agenda._seed.get_party(yao_text).depotlink_type == assignment_text

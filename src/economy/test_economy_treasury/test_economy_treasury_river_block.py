@@ -355,7 +355,6 @@ def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryin
     # GIVEN
     bob_text = "bob"
     x_agenda = agendaunit_shop(_healer=bob_text)
-    x_agenda.set_partys_empty_if_null()
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"

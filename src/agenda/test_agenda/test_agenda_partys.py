@@ -1087,7 +1087,6 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
@@ -1111,7 +1110,6 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
@@ -1138,7 +1136,6 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
@@ -1165,7 +1162,6 @@ def test_agenda_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_partys_empty_if_null()
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
@@ -1196,7 +1192,6 @@ def test_agenda_get_partyunits_pid_list_CorrectlyReturnsListOfPartyUnits():
     # GIVEN
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
-    x_agenda.set_partys_empty_if_null()
     sam_text = "sam"
     will_text = "will"
     fry_text = "fry"
@@ -1225,7 +1220,6 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
     # GIVEN
     bob_text = "bob"
     x_agenda = agendaunit_shop(_healer=bob_text)
-    x_agenda.set_partys_empty_if_null()
 
     sam_text = "sam"
     wil_text = "wil"
@@ -1237,8 +1231,6 @@ def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fry_text))
 
     y_agenda = agendaunit_shop()
-    y_agenda.set_partys_empty_if_null()
-
     y_agenda.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
     y_agenda.set_partyunit(partyunit=partyunit_shop(pid=wil_text))
     y_agenda.set_partyunit(partyunit=partyunit_shop(pid=fry_text))

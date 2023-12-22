@@ -127,10 +127,6 @@ class WorldUnit:
         self._world_dir = f"{self.worlds_dir}/{self.mark}"
         self._persons_dir = f"{self._world_dir}/persons"
 
-    def _set_personunits_empty_if_null(self):
-        if self._personunits is None:
-            self._personunits = {}
-
     def personunit_exists(self, person_id: PersonID):
         return self._personunits.get(person_id) != None
 
@@ -231,7 +227,6 @@ class WorldUnit:
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:
-    world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir)
+    world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir, _personunits={})
     world_x._set_world_dirs()
-    world_x._set_personunits_empty_if_null()
     return world_x

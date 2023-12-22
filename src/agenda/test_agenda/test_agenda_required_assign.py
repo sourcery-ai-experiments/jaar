@@ -12,7 +12,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     run_road = x_agenda.make_l1_road(run_text)
     x_agenda.add_idea(ideacore_shop(run_text), pad=x_agenda._economy_id)
     run_idea = x_agenda.get_idea_kid(run_road)
-    assert run_idea._assignedunit is None
+    assert run_idea._assignedunit == assigned_unit_shop()
 
     # WHEN
     assigned_unit_x = assigned_unit_shop()
@@ -98,7 +98,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     x_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(x_agenda.make_road(four_road=}\n{morn_road=))
     four_idea = x_agenda.get_idea_kid(four_road)
-    assert four_idea._assignedunit is None
+    assert four_idea._assignedunit == assigned_unit_shop()
     assert four_idea._assignedheir is None
 
     # WHEN

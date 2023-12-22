@@ -79,10 +79,6 @@ class CouncilUnit:
         if self.get_seed()._auto_output_to_public:
             self.save_refreshed_output_to_public()
 
-    def _set_depotlinks_empty_if_null(self):
-        self.set_seed_if_empty()
-        self._seed.set_partys_empty_if_null()
-
     def _set_depotlink(
         self,
         outer_healer: str,

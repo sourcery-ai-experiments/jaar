@@ -35,18 +35,6 @@ def test_lemmas_shop_CorrectReturnsObj():
     assert x_lemma.lemmas == {}
 
 
-def test_lemmas_set_empty_if_null():
-    # GIVEN
-    x_lemmas = Lemmas()
-    assert x_lemmas.lemmas is None
-
-    # WHEN
-    x_lemmas.set_empty_if_null()
-
-    # THEN
-    assert x_lemmas.lemmas == {}
-
-
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
     # GIVEN
     x_lemmas_x = lemmas_shop()
@@ -89,8 +77,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     # GIVEN
-    lx = lemmas_shop()
-    lx.set_empty_if_null()
+    x_lemmas = lemmas_shop()
 
     # WHEN
     pad_road = root_label()
@@ -106,7 +93,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
     tr1 = get_road(idea_kid._pad, idea_kid._label)
     src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     src_idea = ideacore_shop("sub_timerange", _pad=pad_road, _begin=-13, _close=500)
-    new_acptfact = lx._create_new_acptfact(
+    new_acptfact = x_lemmas._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
     )
 
@@ -117,8 +104,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
 
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
     # GIVEN
-    lx = lemmas_shop()
-    lx.set_empty_if_null()
+    x_lemmas = lemmas_shop()
 
     # WHEN
     pad_road = root_label()
@@ -132,7 +118,7 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
     )
     ex_road = get_road(ex_idea._pad, ex_idea._label)
     ex_acptfact = acptfactunit_shop(base=ex_road, pick=ex_road, open=7200, nigh=7200)
-    new_acptfact = lx._create_new_acptfact(
+    new_acptfact = x_lemmas._create_new_acptfact(
         idea_x=idea_kid, src_acptfact=ex_acptfact, src_idea=ex_idea
     )
 
@@ -144,7 +130,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
-    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -172,7 +157,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
-    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -201,7 +185,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
     # GIVEN
     pad_road = root_label()
     x_lemmas_x = lemmas_shop()
-    x_lemmas_x.set_empty_if_null()
     idea_src = ideacore_shop(
         _label="timerange1",
         _pad=pad_road,
@@ -273,7 +256,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
 def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
-    x_lemmas_x.set_empty_if_null()
 
     # WHEN
     pad_road = root_label()
@@ -301,7 +283,6 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
     # GIVEN empty x_lemmas
     x_lemmas = lemmas_shop()
-    x_lemmas.set_empty_if_null()
 
     # WHEN
     lem1x = x_lemmas.get_unevaluated_lemma()

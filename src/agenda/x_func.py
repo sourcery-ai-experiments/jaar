@@ -296,6 +296,4 @@ def return1ifnone(x_obj):
 
 
 def get_empty_dict_if_null(x_dict: dict) -> dict:
-    if x_dict is None:
-        x_dict = {}
-    return x_dict
+    return {} if x_dict is None else x_dict

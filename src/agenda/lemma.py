@@ -2,6 +2,7 @@ from src.agenda.road import get_node_delimiter
 from dataclasses import dataclass
 from src.agenda.required_idea import AcptFactUnit, RoadPath, acptfactunit_shop
 from src.agenda.idea import IdeaKid
+from src.agenda.x_func import get_empty_dict_if_null
 
 
 class InvalidLemmaException(Exception):
@@ -20,10 +21,6 @@ class Lemma:
 @dataclass
 class Lemmas:
     lemmas: dict[RoadPath:Lemma] = None
-
-    def set_empty_if_null(self):
-        if self.lemmas is None:
-            self.lemmas = {}
 
     def _get_loop_range_calc_acptfact_attr(
         self,
@@ -249,6 +246,4 @@ class Lemmas:
 
 
 def lemmas_shop(lemmas: dict[RoadPath:Lemma] = None, delimiter: str = None) -> Lemmas:
-    x_lemmas = Lemmas(lemmas=lemmas)
-    x_lemmas.set_empty_if_null()
-    return x_lemmas
+    return Lemmas(lemmas=get_empty_dict_if_null(lemmas))

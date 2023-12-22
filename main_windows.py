@@ -296,8 +296,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_new(self):
         self.agenda_x = agendaunit_shop(_healer="new")
-        self.agenda_x.set_partys_empty_if_null()
-        self.agenda_x.set_groupunits_empty_if_null()
         self.agenda_x.set_time_hreg_ideas(c400_count=7)
         road_minute = f"{self.agenda_x._economy_id},time,jajatime"
         self.agenda_x.set_acptfact(

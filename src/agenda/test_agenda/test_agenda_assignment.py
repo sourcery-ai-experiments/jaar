@@ -15,12 +15,10 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     # GIVEN
     jes_text = "jessi"
     jes1_agenda = agendaunit_shop(_healer=jes_text)
-    jes1_agenda.set_groupunits_empty_if_null()
 
     # WHEN
     bob_text = "bob"
     agenda_x = agendaunit_shop(_healer=jes_text)
-    agenda_x.set_groupunits_empty_if_null()
     assignor_known_partys_x = {}
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
@@ -47,7 +45,6 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     bob_text = "bob"
     y_agenda = agendaunit_shop(_healer=noa_text)
     x_agenda = agendaunit_shop()
-    x_agenda.set_partys_empty_if_null()
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
@@ -76,7 +73,6 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
 
     # WHEN
     tx = agendaunit_shop()
-    tx.set_partys_empty_if_null()
     tx.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
     tx.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
@@ -122,7 +118,6 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
 
     # WHEN
     tx = agendaunit_shop()
-    tx.set_partys_empty_if_null()
     zia_text = "Zia"
     yao_text = "Yao"
     tx.set_partyunit(partyunit=partyunit_shop(pid=bob_text))

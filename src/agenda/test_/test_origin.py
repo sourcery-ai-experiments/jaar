@@ -73,19 +73,6 @@ def test_originunit_ReturnsCorrectObj():
     assert originunit_x._links == {}
 
 
-def test_originunit__set_originlinks_empty_if_null_CorrectlySetsAttribute():
-    # GIVEN
-    originunit_x = originunit_shop()
-    originunit_x._links = None
-    assert originunit_x._links is None
-
-    # WHEN
-    originunit_x._set_originlinks_empty_if_null()
-
-    # THEN
-    assert originunit_x._links == {}
-
-
 def test_originunit_set_originlink_CorrectlySetsOriginLink():
     # GIVEN
     originunit_x = originunit_shop()

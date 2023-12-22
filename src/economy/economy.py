@@ -14,6 +14,7 @@ from src.agenda.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
+    get_empty_dict_if_null,
 )
 from src.economy.council import CouncilUnit, councilunit_shop, CouncilCID
 from dataclasses import dataclass
@@ -360,15 +361,10 @@ class EconomyUnit:
         )
         self.set_councilunit(councilunit=x_councilunit)
 
-    def set_councilunits_empty_if_null(self):
-        if self._councilunits is None:
-            self._councilunits = {}
-
     def councilunit_exists(self, cid: CouncilCID):
         return self._councilunits.get(cid) != None
 
     def create_new_councilunit(self, council_cid: CouncilCID):
-        self.set_councilunits_empty_if_null()
         x_councilunit = councilunit_shop(
             council_cid, self.get_object_root_dir(), self.economy_id
         )
@@ -376,7 +372,6 @@ class EconomyUnit:
         self._councilunits[x_councilunit._council_cid] = x_councilunit
 
     def get_councilunit(self, cid: CouncilCID) -> CouncilUnit:
-        self.set_councilunits_empty_if_null()
         return self._councilunits.get(cid)
 
     def set_councilunit(self, councilunit: CouncilUnit):
@@ -570,11 +565,10 @@ def economyunit_shop(
     economy_x = EconomyUnit(
         economy_id=economy_id,
         economys_dir=economys_dir,
-        _councilunits=_councilunits,
+        _councilunits=get_empty_dict_if_null(_councilunits),
     )
     economy_x.set_road_node_delimiter(_road_node_delimiter)
     economy_x.set_manager_pid(_manager_pid)
-    economy_x.set_councilunits_empty_if_null()
     economy_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
     return economy_x
 

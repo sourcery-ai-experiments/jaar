@@ -58,6 +58,7 @@ def test_IdeaCore_exists():
 
 def test_ideacore_shop_ReturnsCorrectObj():
     x_ideacore = ideacore_shop()
+    print(f"{x_ideacore._active_status=}")
     assert x_ideacore
     assert x_ideacore._kids == {}
     assert x_ideacore._weight >= 1
@@ -91,9 +92,9 @@ def test_ideacore_shop_ReturnsCorrectObj():
     assert x_ideacore._agenda_coin_cease is None
     assert x_ideacore._requiredunits == {}
     assert x_ideacore._requiredheirs == {}
-    assert x_ideacore._assignedunit is None
+    assert x_ideacore._assignedunit == assigned_unit_shop()
     assert x_ideacore._assignedheir is None
-    assert x_ideacore._originunit is None
+    assert x_ideacore._originunit == originunit_shop()
     assert x_ideacore._road_node_delimiter == get_node_delimiter()
 
 
@@ -446,7 +447,6 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     )
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     work_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
-    work_idea.set_originunit_empty_if_null()
     work_idea._originunit.set_originlink(pid="Ray", weight=None)
     work_idea._originunit.set_originlink(pid="Lei", weight=4)
     x_begin = 11
@@ -521,11 +521,9 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     yao_text = "Yao"
     work_idea.set_balancelink(balancelink_shop(yao_text))
 
-    work_idea.set_assignedunit_empty_if_null()
     x_assignedunit = work_idea._assignedunit
     x_assignedunit.set_suffgroup(brand=yao_text)
 
-    work_idea.set_originunit_empty_if_null()
     x_originunit = work_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
 
@@ -566,9 +564,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_idea._on_meld_weight_action == "default"
     assert work_idea._acptfactunits == {}
     assert work_idea._balancelinks == {}
-    work_idea.set_assignedunit_empty_if_null()
     assert work_idea._assignedunit == assigned_unit_shop()
-    work_idea.set_originunit_empty_if_null()
     assert work_idea._originunit == originunit_shop()
     assert work_idea._kids == {}
 
@@ -772,6 +768,7 @@ def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
     run_text = "run"
     run_idea = ideacore_shop(_label=run_text)
+    run_idea._assignedunit = None
     assert run_idea._assignedunit is None
 
     # WHEN
@@ -782,12 +779,11 @@ def test_idea_set_assignedunit_empty_if_null():
     assert run_idea._assignedunit == assigned_unit_shop()
 
 
-def test_idea_set_assignedunit_empty_if_null():
+def test_idea_set_assignedheir_CorrectlySetsAttr():
     # GIVEN
     swim_text = "swimmers"
     sport_text = "sports"
     sport_idea = ideacore_shop(_label=sport_text)
-    sport_idea.set_assignedunit_empty_if_null()
     sport_idea._assignedunit.set_suffgroup(brand=swim_text)
     assert sport_idea._assignedheir is None
 

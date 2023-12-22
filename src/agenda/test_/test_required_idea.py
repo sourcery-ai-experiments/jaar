@@ -316,21 +316,6 @@ def test_RequiredHeir_correctSetsActionState():
     assert range_3_to_6_required._task is None
 
 
-def test_RequiredCore_set_empty_if_null_WorksCorrectly():
-    # GIVEN
-    day_text = "day"
-    day_road = get_road(root_label(), day_text)
-    day_required = requiredcore_shop(base=day_road)
-    day_required.sufffacts = None
-    assert day_required.sufffacts is None
-
-    # WHEN
-    day_required.set_empty_if_null()
-
-    # THEN
-    assert day_required.sufffacts == {}
-
-
 def test_RequiredCore_get_sufffacts_count():
     # GIVEN
     day_text = "day"

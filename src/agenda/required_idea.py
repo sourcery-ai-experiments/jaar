@@ -1,11 +1,13 @@
-from src.agenda.road import is_heir_road, get_node_delimiter
 from dataclasses import dataclass
 from src.agenda.road import (
     RoadPath,
     change_road,
     find_replace_road_key_dict,
     replace_road_node_delimiter,
+    is_heir_road,
+    get_node_delimiter,
 )
+from src.agenda.x_func import get_empty_dict_if_null
 from copy import deepcopy as copy_deepcopy
 
 
@@ -433,12 +435,7 @@ class RequiredCore:
     def get_key_road(self):
         return self.base
 
-    def set_empty_if_null(self):
-        if self.sufffacts is None:
-            self.sufffacts = {}
-
     def get_sufffacts_count(self):
-        self.set_empty_if_null()
         return sum(1 for _ in self.sufffacts.values())
 
     def set_sufffact(
@@ -448,7 +445,6 @@ class RequiredCore:
         nigh: float = None,
         divisor: int = None,
     ):
-        self.set_empty_if_null()
         self.sufffacts[sufffact] = sufffactunit_shop(
             need=sufffact,
             open=open,
@@ -494,7 +490,7 @@ def requiredcore_shop(
 ):
     return RequiredCore(
         base=base,
-        sufffacts=set_None_to_empty_dict(sufffacts),
+        sufffacts=get_empty_dict_if_null(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         delimiter=get_node_delimiter(delimiter),
     )
@@ -521,7 +517,7 @@ def requiredunit_shop(
 ):
     return RequiredUnit(
         base=base,
-        sufffacts=set_None_to_empty_dict(sufffacts),
+        sufffacts=get_empty_dict_if_null(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         delimiter=get_node_delimiter(delimiter),
     )
@@ -593,7 +589,7 @@ def requiredheir_shop(
 ):
     return RequiredHeir(
         base=base,
-        sufffacts=set_None_to_empty_dict(sufffacts),
+        sufffacts=get_empty_dict_if_null(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         _status=_status,
         _task=_task,
@@ -612,7 +608,3 @@ def requireds_get_from_dict(requireds_dict: dict) -> dict[RequiredUnit]:
         )
         requireds[x_required.base] = x_required
     return requireds
-
-
-def set_None_to_empty_dict(x_obj: dict):
-    return {} if x_obj is None else x_obj

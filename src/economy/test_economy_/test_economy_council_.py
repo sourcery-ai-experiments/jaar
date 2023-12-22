@@ -39,7 +39,6 @@ def test_economyunit_change_councilunit_cid_WorksCorrectly(env_dir_setup_cleanup
     bob_councilunit = councilunit_shop(
         old_bob_text, x_economy.get_object_root_dir(), get_temp_env_economy_id()
     )
-    x_economy.set_councilunits_empty_if_null()
     x_economy.set_councilunit(bob_councilunit)
     print(f"{old_bob_dir=}")
 

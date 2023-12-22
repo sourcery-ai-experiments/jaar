@@ -617,7 +617,7 @@ def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
 
     label2_text = "fun"
     yx2 = ideacore_shop(label2_text)
-    assert yx1._originunit is None
+    assert yx1._originunit == originunit_shop()
 
     # WHEN
     sue_text = "Sue"

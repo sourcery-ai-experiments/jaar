@@ -676,7 +676,6 @@ def test_agenda_add_idea_CreatesMissingGroups():
     # GIVEN
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda.set_groupunits_empty_if_null()
     work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
@@ -780,7 +779,6 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda.set_groupunits_empty_if_null()
     work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
@@ -826,8 +824,6 @@ def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda.set_partys_empty_if_null()
-    x_agenda.set_groupunits_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
@@ -865,7 +861,6 @@ def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
-    x_agenda.set_partys_empty_if_null()
     family_text = "family"
     anna_text = "anna"
     beto_text = "beto"
@@ -907,18 +902,17 @@ def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
 def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     healer_text = "bob"
-    agenda = agendaunit_shop(healer_text)
-    agenda.set_partys_empty_if_null()
+    x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
     wiggle_text = "wiggle"
     fly_text = "fly"
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=wiggle_text))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert len(agenda._groups) == 3
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=wiggle_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
+    assert len(x_agenda._groups) == 3
 
     # WHEN
-    groupunit_list_x = agenda.get_groupunits_brand_list()
+    groupunit_list_x = x_agenda.get_groupunits_brand_list()
 
     # THEN
     assert groupunit_list_x[0] == ""
@@ -931,86 +925,82 @@ def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
 def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    agenda = agendaunit_shop(healer_text)
-    agenda.set_partys_empty_if_null()
+    x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert agenda._groups[swim_text].uid is None
-    assert agenda._groups[pad_text].uid is None
-    assert agenda._groups[fly_text].uid is None
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
+    assert x_agenda._groups[swim_text].uid is None
+    assert x_agenda._groups[pad_text].uid is None
+    assert x_agenda._groups[fly_text].uid is None
 
     # WHEN
-    agenda.set_all_groupunits_uids_unique()
+    x_agenda.set_all_groupunits_uids_unique()
 
     # THEN
-    assert agenda._groups[swim_text].uid != None
-    assert agenda._groups[pad_text].uid != None
-    assert agenda._groups[fly_text].uid != None
+    assert x_agenda._groups[swim_text].uid != None
+    assert x_agenda._groups[pad_text].uid != None
+    assert x_agenda._groups[fly_text].uid != None
 
 
 def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
     healer_text = "bob"
-    agenda = agendaunit_shop(healer_text)
-    agenda.set_partys_empty_if_null()
+    x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert agenda._groups[swim_text].uid == 3
-    assert agenda._groups[pad_text].uid == 3
-    assert agenda._groups[fly_text].uid is None
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
+    assert x_agenda._groups[swim_text].uid == 3
+    assert x_agenda._groups[pad_text].uid == 3
+    assert x_agenda._groups[fly_text].uid is None
 
     # WHEN
-    agenda.set_all_groupunits_uids_unique()
+    x_agenda.set_all_groupunits_uids_unique()
 
     # THEN
-    print(f"{agenda._groups[swim_text].uid=}")
-    print(f"{agenda._groups[pad_text].uid=}")
-    assert agenda._groups[swim_text].uid != agenda._groups[pad_text].uid
-    assert agenda._groups[pad_text].uid != 3
-    assert agenda._groups[pad_text].uid != 3
-    assert agenda._groups[fly_text].uid != None
+    print(f"{x_agenda._groups[swim_text].uid=}")
+    print(f"{x_agenda._groups[pad_text].uid=}")
+    assert x_agenda._groups[swim_text].uid != x_agenda._groups[pad_text].uid
+    assert x_agenda._groups[pad_text].uid != 3
+    assert x_agenda._groups[pad_text].uid != 3
+    assert x_agenda._groups[fly_text].uid != None
 
 
 def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
     # GIVEN
-    healer_text = "Noa"
-    agenda = agendaunit_shop(healer_text)
-    agenda.set_partys_empty_if_null()
+    noa_text = "Noa"
+    noa_agenda = agendaunit_shop(noa_text)
     swim_text = "swim"
     pad_text = "pad"
     fly_text = "fly"
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
-    agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert agenda._groups[swim_text].uid == 3
-    assert agenda._groups[pad_text].uid == 3
-    assert agenda._groups[fly_text].uid is None
+    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
+    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
+    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
+    assert noa_agenda._groups[swim_text].uid == 3
+    assert noa_agenda._groups[pad_text].uid == 3
+    assert noa_agenda._groups[fly_text].uid is None
 
     # WHEN
-    agenda.set_all_groupunits_uids_unique()
+    noa_agenda.set_all_groupunits_uids_unique()
 
     # THEN
-    print(f"{agenda._groups[swim_text].uid=}")
-    print(f"{agenda._groups[pad_text].uid=}")
-    assert agenda._groups[swim_text].uid != agenda._groups[pad_text].uid
-    assert agenda._groups[pad_text].uid != 3
-    assert agenda._groups[pad_text].uid != 3
-    assert agenda._groups[fly_text].uid != None
+    print(f"{noa_agenda._groups[swim_text].uid=}")
+    print(f"{noa_agenda._groups[pad_text].uid=}")
+    assert noa_agenda._groups[swim_text].uid != noa_agenda._groups[pad_text].uid
+    assert noa_agenda._groups[pad_text].uid != 3
+    assert noa_agenda._groups[pad_text].uid != 3
+    assert noa_agenda._groups[fly_text].uid != None
 
 
 # def test_agenda_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
 #     # GIVEN
 #     healer_text = "Noa"
 #     agenda = agendaunit_shop(healer_text)
-#     agenda.set_partys_empty_if_null()
 #     swim_text = "swim"
 #     pad_text = "pad"
 #     fly_text = "fly"
@@ -1044,7 +1034,6 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
     bob_text = "bob"
     agenda_with_partys = agendaunit_shop(bob_text)
-    agenda_with_partys.set_partys_empty_if_null()
 
     sam_text = "sam"
     wil_text = "wil"
@@ -1052,8 +1041,6 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     agenda_with_partys.set_partyunit(partyunit=partyunit_shop(pid=sam_text))
 
     agenda_with_groups = agendaunit_shop()
-    agenda_with_groups.set_partys_empty_if_null()
-    agenda_with_groups.set_groupunits_empty_if_null()
 
     # WHEN
     print(f"{len(agenda_with_partys._partys)=} {len(agenda_with_groups._groups)=}")
@@ -1071,13 +1058,11 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     sam_text = "Sam"
     wil_text = "Wil"
     agenda_3groups = agendaunit_shop(bob_text)
-    agenda_3groups.set_partys_empty_if_null()
     agenda_3groups.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
     agenda_3groups.set_partyunit(partyunit=partyunit_shop(pid=sam_text))
     agenda_3groups.set_partyunit(partyunit=partyunit_shop(pid=wil_text))
 
     agenda_2partys = agendaunit_shop(bob_text)
-    agenda_2partys.set_partys_empty_if_null()
     agenda_2partys.set_partyunit(partyunit=partyunit_shop(pid=bob_text))
     agenda_2partys.set_partyunit(partyunit=partyunit_shop(pid=sam_text))
 
