@@ -260,8 +260,8 @@ def get_river_block_table_create_sqlstr() -> str:
         there is no more block
     src_healer: healer that is source of credit
     dst_healer: healer that is destination of credit.
-    currency_start: range of currency affected start
-    currency_close: range of currency affected close
+    currency_start: range of currency influenced start
+    currency_close: range of currency influenced close
     block_num: the sequence number of transactions before this one
     parent_block_num: river blocks can have multiple children but only one parent
     river_tree_level: how many ancestors between currency_master first credit outblock

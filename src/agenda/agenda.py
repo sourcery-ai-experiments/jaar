@@ -565,14 +565,14 @@ class AgendaUnit:
             old_pid_creditor_weight += self._partys.get(new_pid).creditor_weight
 
         self.add_partyunit(pid=new_pid, creditor_weight=old_pid_creditor_weight)
-        groups_affected_list = []
+        groups_influenced_list = []
         for group in self._groups.values():
-            groups_affected_list.extend(
+            groups_influenced_list.extend(
                 group.brand
                 for party_x in group._partys.values()
                 if party_x.pid == old_pid
             )
-        for group_x in groups_affected_list:
+        for group_x in groups_influenced_list:
             partylink_creditor_weight = (
                 self._groups.get(group_x)._partys.get(old_pid).creditor_weight
             )
