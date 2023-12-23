@@ -112,7 +112,7 @@ class GroupUnit(GroupCore):
     def set_partylink(self, partylink: PartyLink):
         self._partys[partylink.pid] = partylink
 
-    def get_partylink(self, party_pid: PartyPID):
+    def get_partylink(self, party_pid: PartyPID) -> PartyLink:
         return self._partys.get(party_pid)
 
     def del_partylink(self, pid):

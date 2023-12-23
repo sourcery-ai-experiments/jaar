@@ -543,27 +543,29 @@ class AgendaUnit:
         allow_party_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
-        old_pid_creditor_weight = self._partys.get(old_pid).creditor_weight
-        if not allow_party_overwite and self._partys.get(new_pid) != None:
+        old_pid_creditor_weight = self.get_party(old_pid).creditor_weight
+        new_pid_groupunit = self.get_groupunit(new_pid)
+        new_pid_partyunit = self.get_party(new_pid)
+        if not allow_party_overwite and new_pid_partyunit != None:
             raise InvalidAgendaException(
                 f"Party '{old_pid}' change to '{new_pid}' failed since '{new_pid}' exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
-            and self._groups.get(new_pid) != None
-            and self._groups.get(new_pid)._single_party == False
+            and new_pid_groupunit != None
+            and new_pid_groupunit._single_party == False
         ):
             raise InvalidAgendaException(
                 f"Party '{old_pid}' change to '{new_pid}' failed since non-single group '{new_pid}' exists."
             )
         elif (
             allow_nonsingle_group_overwrite
-            and self._groups.get(new_pid) != None
-            and self._groups.get(new_pid)._single_party == False
+            and new_pid_groupunit != None
+            and new_pid_groupunit._single_party == False
         ):
             self.del_groupunit(groupbrand=new_pid)
         elif self._partys.get(new_pid) != None:
-            old_pid_creditor_weight += self._partys.get(new_pid).creditor_weight
+            old_pid_creditor_weight += new_pid_partyunit.creditor_weight
 
         self.add_partyunit(pid=new_pid, creditor_weight=old_pid_creditor_weight)
         groups_influenced_list = []
@@ -573,29 +575,25 @@ class AgendaUnit:
                 for party_x in group._partys.values()
                 if party_x.pid == old_pid
             )
-        for group_x in groups_influenced_list:
-            partylink_creditor_weight = (
-                self._groups.get(group_x)._partys.get(old_pid).creditor_weight
-            )
-            partylink_debtor_weight = (
-                self._groups.get(group_x)._partys.get(old_pid).debtor_weight
-            )
-            if self._groups.get(group_x)._partys.get(new_pid) != None:
-                partylink_creditor_weight += (
-                    self._groups.get(group_x)._partys.get(new_pid).creditor_weight
-                )
-                partylink_debtor_weight += (
-                    self._groups.get(group_x)._partys.get(new_pid).debtor_weight
-                )
+        for influenced_groupbrand in groups_influenced_list:
+            x_groupunit = self.get_groupunit(influenced_groupbrand)
+            old_group_partylink = x_groupunit.get_partylink(old_pid)
+            partylink_creditor_weight = old_group_partylink.creditor_weight
+            partylink_debtor_weight = old_group_partylink.debtor_weight
 
-            self._groups.get(group_x).set_partylink(
+            new_partylink = x_groupunit.get_partylink(new_pid)
+            if new_partylink != None:
+                partylink_creditor_weight += new_partylink.creditor_weight
+                partylink_debtor_weight += new_partylink.debtor_weight
+
+            x_groupunit.set_partylink(
                 partylink=partylink_shop(
                     pid=new_pid,
                     creditor_weight=partylink_creditor_weight,
                     debtor_weight=partylink_debtor_weight,
                 )
             )
-            self._groups.get(group_x).del_partylink(pid=old_pid)
+            x_groupunit.del_partylink(pid=old_pid)
 
         self.del_partyunit(pid=old_pid)
 

@@ -1,4 +1,3 @@
-from src.agenda.road import get_node_delimiter
 from dataclasses import dataclass
 from src.agenda.required_idea import AcptFactUnit, RoadUnit, acptfactunit_shop
 from src.agenda.idea import IdeaKid
