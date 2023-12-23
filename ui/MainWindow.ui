@@ -180,7 +180,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Lobby Someone</string>
+     <string>Request Someone</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">

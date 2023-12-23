@@ -2,7 +2,7 @@ from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
 )
 from src.agenda.road import get_road, get_node_delimiter, create_forkunit
-from src.world.lobby import (
+from src.world.request import (
     EconomyAddress,
     economyaddress_shop,
     create_economyaddress,

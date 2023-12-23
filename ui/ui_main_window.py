@@ -394,7 +394,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Change where I am:"))
         self.root_datetime_view.setText(_translate("MainWindow", "Manuparty change"))
         self.pushButton_2.setText(_translate("MainWindow", "Manuparty change"))
-        self.loubby_button.setText(_translate("MainWindow", "Lobby Someone"))
+        self.loubby_button.setText(_translate("MainWindow", "Request Someone"))
         item = self.completeness_status.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID"))
         item = self.completeness_status.horizontalHeaderItem(1)

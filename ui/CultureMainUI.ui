@@ -316,7 +316,7 @@
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="council_cid">
+   <widget class="QLineEdit" name="enact_cid">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -872,7 +872,7 @@
      <string>dest2public and refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="seed_open_button">
+   <widget class="QPushButton" name="contract_open_button">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -887,10 +887,10 @@
      </font>
     </property>
     <property name="text">
-     <string>seed</string>
+     <string>contract</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="seed_save_button">
+   <widget class="QPushButton" name="contract_save_button">
     <property name="geometry">
      <rect>
       <x>530</x>

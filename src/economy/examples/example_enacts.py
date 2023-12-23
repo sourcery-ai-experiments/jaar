@@ -1,7 +1,7 @@
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideacore_shop
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
-from src.economy.council import councilunit_shop, CouncilUnit
-from src.economy.examples.council_env_kit import get_temp_economy_id
+from src.economy.enact import enactunit_shop, EnactUnit
+from src.economy.examples.enact_env_kit import get_temp_economy_id
 
 from random import randrange
 
@@ -123,9 +123,9 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_healer_2agenda(env_dir, economy_id) -> CouncilUnit:
+def get_healer_2agenda(env_dir, economy_id) -> EnactUnit:
     yao_text = "Xio"
-    yao_healer = councilunit_shop(yao_text, env_dir, economy_id)
+    yao_healer = enactunit_shop(yao_text, env_dir, economy_id)
     yao_healer.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
     yao_healer.set_depot_agenda(get_Jnode2node_agenda(), depotlink_type="blind_trust")
     return yao_healer

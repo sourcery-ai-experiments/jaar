@@ -1,7 +1,7 @@
-from src.world.lobby import (
+from src.world.request import (
     create_economyaddress,
     create_concernunit,
-    create_lobbyunit,
+    create_requestunit,
 )
 
 
@@ -24,12 +24,12 @@ def get_farm_concernunit():
     )
 
 
-def get_farm_lobbyunit():
+def get_farm_requestunit():
     bob_text = "Bob"
     real_text = "Real Farmers"
-    farm_lobbyunit = create_lobbyunit(
-        get_farm_concernunit(), bob_text, lobbyee_group=real_text
+    farm_requestunit = create_requestunit(
+        get_farm_concernunit(), bob_text, requestee_group=real_text
     )
     yao_text = "Yao"
-    farm_lobbyunit.add_lobbyee_pid(yao_text)
-    return farm_lobbyunit
+    farm_requestunit.add_requestee_pid(yao_text)
+    return farm_requestunit

@@ -105,16 +105,16 @@ def test_economy_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1
     yao_new_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_new_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_new_agenda.set_partyunit(partyunit_shop(elu_text))
-    x_economy.create_new_councilunit(yao_text)
-    yao_council = x_economy.get_councilunit(cid=yao_text)
-    yao_council.set_seed(yao_new_agenda)
+    x_economy.create_new_enactunit(yao_text)
+    yao_enact = x_economy.get_enactunit(cid=yao_text)
+    yao_enact.set_contract(yao_new_agenda)
 
-    yao_seed_agenda = yao_council.get_seed()
-    ava_partyunit = yao_seed_agenda.get_party(ava_text)
-    bob_partyunit = yao_seed_agenda.get_party(bob_text)
-    cal_partyunit = yao_seed_agenda.get_party(cal_text)
-    dom_partyunit = yao_seed_agenda.get_party(dom_text)
-    elu_partyunit = yao_seed_agenda.get_party(elu_text)
+    yao_contract_agenda = yao_enact.get_contract()
+    ava_partyunit = yao_contract_agenda.get_party(ava_text)
+    bob_partyunit = yao_contract_agenda.get_party(bob_text)
+    cal_partyunit = yao_contract_agenda.get_party(cal_text)
+    dom_partyunit = yao_contract_agenda.get_party(dom_text)
+    elu_partyunit = yao_contract_agenda.get_party(elu_text)
     assert ava_partyunit._treasury_voice_rank is None
     assert bob_partyunit._treasury_voice_rank is None
     assert cal_partyunit._treasury_voice_rank is None

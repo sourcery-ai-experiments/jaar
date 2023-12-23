@@ -3,7 +3,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesRequired_1AcptFact as example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact,
 )
 from src.economy.economy import economyunit_shop
-from src.economy.examples.example_councils import (
+from src.economy.examples.example_enacts import (
     get_1node_agenda as example_healers_get_1node_agenda,
     get_1node_agenda as example_healers_get_7nodeJRootWithH_agenda,
 )

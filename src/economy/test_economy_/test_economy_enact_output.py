@@ -2,7 +2,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v002 as ex_agenda_v002,
 )
 from src.economy.economy import economyunit_shop
-from src.economy.examples.example_councils import (
+from src.economy.examples.example_enacts import (
     get_6node_agenda as example_healers_get_6node_agenda,
     get_agenda_2CleanNodesRandomWeights,
     get_agenda_3CleanNodesRandomWeights,
@@ -24,16 +24,16 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_economy.create_new_councilunit(council_cid=xia_text)
+    x_economy.create_new_enactunit(enact_cid=xia_text)
     x_economy.set_healer_depotlink(
         xia_text, input_agenda._healer, depotlink_type="blind_trust"
     )
-    x_economy.save_councilunit_file(council_cid=xia_text)
-    xia_healer = x_economy.get_councilunit(cid=xia_text)
-    # print(f"{xia_healer._seed._partys.keys()=}")
+    x_economy.save_enactunit_file(enact_cid=xia_text)
+    xia_healer = x_economy.get_enactunit(cid=xia_text)
+    # print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_economy.get_output_agenda(council_cid=xia_text)
+    output_agenda = x_economy.get_output_agenda(enact_cid=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_healer(new_healer=xia_text)
@@ -102,15 +102,15 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_economy.create_new_councilunit(council_cid=xia_text)
+    x_economy.create_new_enactunit(enact_cid=xia_text)
     x_economy.set_healer_depotlink(xia_text, x1_agenda._healer, "blind_trust")
     x_economy.set_healer_depotlink(xia_text, x2_agenda._healer, "blind_trust")
-    x_economy.save_councilunit_file(council_cid=xia_text)
-    xia_healer = x_economy.get_councilunit(cid=xia_text)
-    print(f"{xia_healer._seed._partys.keys()=}")
+    x_economy.save_enactunit_file(enact_cid=xia_text)
+    xia_healer = x_economy.get_enactunit(cid=xia_text)
+    print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_economy.get_output_agenda(council_cid=xia_text)
+    output_agenda = x_economy.get_output_agenda(enact_cid=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._economy_id},C,D"
@@ -146,7 +146,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     assert output_agenda._idearoot != x2_agenda._idearoot
 
 
-def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
+def test_enactunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -154,7 +154,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id=economy_id, economys_dir=env_dir)
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    # ux = councilunit_shop(pid=healer1_text, env_dir=env_dir)
+    # ux = enactunit_shop(pid=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"
@@ -165,12 +165,12 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     x_economy.save_public_agenda(ernie_agenda)
     x_economy.save_public_agenda(jessi_agenda)
     x_economy.save_public_agenda(old_steve_agenda)
-    x_economy.create_new_councilunit(council_cid=ernie_text)
-    x_economy.create_new_councilunit(council_cid=jessi_text)
-    # x_economy.create_new_councilunit(council_cid=steve_text)
-    ux_ernie = x_economy.get_councilunit(cid=ernie_text)
-    ux_jessi = x_economy.get_councilunit(cid=jessi_text)
-    # ux_steve = x_economy.get_councilunit(cid=steve_text)
+    x_economy.create_new_enactunit(enact_cid=ernie_text)
+    x_economy.create_new_enactunit(enact_cid=jessi_text)
+    # x_economy.create_new_enactunit(enact_cid=steve_text)
+    ux_ernie = x_economy.get_enactunit(cid=ernie_text)
+    ux_jessi = x_economy.get_enactunit(cid=jessi_text)
+    # ux_steve = x_economy.get_enactunit(cid=steve_text)
     ux_ernie.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
     ux_ernie.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     ux_jessi.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
@@ -190,7 +190,7 @@ def test_councilunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     #     print(f"{ux._agendas_public_dir=} {file_name=}")
 
     # WHEN
-    x_economy.reload_all_councilunits_src_agendaunits()
+    x_economy.reload_all_enactunits_src_agendaunits()
 
     # THEN
     assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 5

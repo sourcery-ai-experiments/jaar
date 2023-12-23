@@ -180,65 +180,65 @@ def create_concernunit(
 
 
 @dataclass
-class LobbyUnit:
+class RequestUnit:
     _concernunit: ConcernUnit = None
-    _lobbyee_pids: dict[PersonID] = None
-    _lobbyee_groups: dict[GroupBrand:GroupBrand] = None
-    _lobbyer_pid: PersonID = None
+    _requestee_pids: dict[PersonID] = None
+    _requestee_groups: dict[GroupBrand:GroupBrand] = None
+    _requester_pid: PersonID = None
     _action_weight: float = None
 
-    def add_lobbyee_pid(self, pid: PersonID):
-        self._lobbyee_pids[pid] = None
+    def add_requestee_pid(self, pid: PersonID):
+        self._requestee_pids[pid] = None
 
-    def add_lobbyee_groupbrand(self, groupbrand: GroupBrand):
-        self._lobbyee_groups[groupbrand] = groupbrand
+    def add_requestee_groupbrand(self, groupbrand: GroupBrand):
+        self._requestee_groups[groupbrand] = groupbrand
 
-    def set_lobbyee_groups_empty_if_none(self):
-        if self._lobbyee_groups is None:
-            self._lobbyee_groups = {}
+    def set_requestee_groups_empty_if_none(self):
+        if self._requestee_groups is None:
+            self._requestee_groups = {}
 
     def get_str_summary(self):
-        return f"""LobbyUnit: {self._concernunit.get_str_summary()}
- {list(self._lobbyee_pids.keys())} are in groups {list(self._lobbyee_groups.keys())} and are asked to be good."""
+        return f"""RequestUnit: {self._concernunit.get_str_summary()}
+ {list(self._requestee_pids.keys())} are in groups {list(self._requestee_groups.keys())} and are asked to be good."""
 
 
-def lobbyunit_shop(
+def requestunit_shop(
     _concernunit: ConcernUnit,
-    _lobbyee_pids: dict[PersonID],
-    _lobbyee_groups: dict[GroupBrand:GroupBrand] = None,
-    _lobbyer_pid: PersonID = None,
+    _requestee_pids: dict[PersonID],
+    _requestee_groups: dict[GroupBrand:GroupBrand] = None,
+    _requester_pid: PersonID = None,
     _action_weight: float = None,
 ):
     if _action_weight is None:
         _action_weight = 1
-    x_lobbyunit = LobbyUnit(
+    x_requestunit = RequestUnit(
         _concernunit=_concernunit,
-        _lobbyee_pids=_lobbyee_pids,
-        _lobbyee_groups=_lobbyee_groups,
-        _lobbyer_pid=_lobbyer_pid,
+        _requestee_pids=_requestee_pids,
+        _requestee_groups=_requestee_groups,
+        _requester_pid=_requester_pid,
         _action_weight=_action_weight,
     )
-    x_lobbyunit.set_lobbyee_groups_empty_if_none()
-    return x_lobbyunit
+    x_requestunit.set_requestee_groups_empty_if_none()
+    return x_requestunit
 
 
-def create_lobbyunit(
+def create_requestunit(
     concernunit: ConcernUnit,
-    lobbyee_pid: PersonID,
-    lobbyee_group: GroupBrand = None,
-    lobbyer_pid: PersonID = None,
+    requestee_pid: PersonID,
+    requestee_group: GroupBrand = None,
+    requester_pid: PersonID = None,
     action_weight: int = None,
 ):
-    if lobbyer_pid is None:
-        lobbyer_pid = concernunit.get_any_pid()
-    if lobbyee_group is None:
-        lobbyee_group = lobbyee_pid
-    x_lobbyunit = lobbyunit_shop(
+    if requester_pid is None:
+        requester_pid = concernunit.get_any_pid()
+    if requestee_group is None:
+        requestee_group = requestee_pid
+    x_requestunit = requestunit_shop(
         concernunit,
-        _lobbyee_pids={},
-        _lobbyer_pid=lobbyer_pid,
+        _requestee_pids={},
+        _requester_pid=requester_pid,
         _action_weight=action_weight,
     )
-    x_lobbyunit.add_lobbyee_pid(lobbyee_pid)
-    x_lobbyunit.add_lobbyee_groupbrand(lobbyee_group)
-    return x_lobbyunit
+    x_requestunit.add_requestee_pid(requestee_pid)
+    x_requestunit.add_requestee_groupbrand(requestee_group)
+    return x_requestunit

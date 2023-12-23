@@ -343,7 +343,7 @@ class Ui_MainWindow(object):
         )
         self.label_intent_label_header.setText(_translate("MainWindow", "Label"))
         self.root_datetime_view.setText(_translate("MainWindow", "Manuparty change"))
-        self.loubby_button.setText(_translate("MainWindow", "Lobby Someone"))
+        self.loubby_button.setText(_translate("MainWindow", "Request Someone"))
         self.label_7.setText(
             _translate("MainWindow", "Who you are right now. What's missing...")
         )

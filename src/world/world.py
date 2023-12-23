@@ -3,7 +3,7 @@ from src.agenda.group import groupunit_shop
 from src.agenda.idea import IdeaAttrHolder, assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
-from src.world.lobby import EconomyAddress, LobbyUnit
+from src.world.request import EconomyAddress, RequestUnit
 from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
@@ -25,100 +25,105 @@ class WorldUnit:
     _world_dir: str = None
     _personunits: dict[PersonID:PersonUnit] = None
 
-    def apply_lobbyunit(self, x_lobbyunit: LobbyUnit):
-        # create any missing lobbyees
-        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-            self.set_personunit(lobbyee_pid, replace_alert=False)
-        self.set_personunit(x_lobbyunit._lobbyer_pid, replace_alert=False)
+    def apply_requestunit(self, x_requestunit: RequestUnit):
+        # create any missing requestees
+        for requestee_pid in x_requestunit._requestee_pids.keys():
+            self.set_personunit(requestee_pid, replace_alert=False)
+        self.set_personunit(x_requestunit._requester_pid, replace_alert=False)
 
-        # apply lobby to economys
-        x_economyaddress = x_lobbyunit._concernunit.economyaddress
+        # apply request to economys
+        x_economyaddress = x_requestunit._concernunit.economyaddress
         for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
-            self._apply_lobbyunit_to_economy(
-                x_lobbyunit=x_lobbyunit,
+            self._apply_requestunit_to_economy(
+                x_requestunit=x_requestunit,
                 x_treasurer_pid=x_treasurer_pid,
                 x_economy_id=x_economyaddress.economy_id,
             )
 
-    def _apply_lobbyunit_to_economy(
-        self, x_lobbyunit: LobbyUnit, x_treasurer_pid: PersonID, x_economy_id: EconomyID
+    def _apply_requestunit_to_economy(
+        self,
+        x_requestunit: RequestUnit,
+        x_treasurer_pid: PersonID,
+        x_economy_id: EconomyID,
     ):
         self.set_personunit(x_treasurer_pid, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(x_treasurer_pid)
         x_economyunit = x_personunit.get_economyunit(x_economy_id)
-        x_economyunit.full_setup_councilunit(x_treasurer_pid)
-        x_economyunit.full_setup_councilunit(x_lobbyunit._lobbyer_pid)
-        lobbyer_councilunit = x_economyunit.get_councilunit(x_lobbyunit._lobbyer_pid)
-        lobbyer_seed = lobbyer_councilunit.get_seed()
+        x_economyunit.full_setup_enactunit(x_treasurer_pid)
+        x_economyunit.full_setup_enactunit(x_requestunit._requester_pid)
+        requester_enactunit = x_economyunit.get_enactunit(x_requestunit._requester_pid)
+        requester_contract = requester_enactunit.get_contract()
 
-        # add ideas to lobbyer_seed_agenda
-        action_weight = x_lobbyunit._action_weight
-        concernunit_ideas = x_lobbyunit._concernunit.get_forkunit_ideas(action_weight)
+        # add ideas to requester_contract_agenda
+        action_weight = x_requestunit._action_weight
+        concernunit_ideas = x_requestunit._concernunit.get_forkunit_ideas(action_weight)
         for x_idea in concernunit_ideas.values():
             # TODO ideas should not be added if they already exist. Create test, then change code
-            lobbyer_seed.add_idea(x_idea, pad=x_idea._pad)
+            requester_contract.add_idea(x_idea, pad=x_idea._pad)
 
         x_assignedunit = assigned_unit_shop()
         x_balancelinks = {}
-        # for each lobbyee exist in economy, collect attributes for lobbyer_seed agenda
-        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-            # lobbyee_seed changes
-            x_economyunit.full_setup_councilunit(lobbyee_pid)
-            lobbyee_councilunit = x_economyunit.get_councilunit(lobbyee_pid)
-            lobbyee_seed = lobbyee_councilunit.get_seed()
-            lobbyee_seed.add_partyunit(
-                x_lobbyunit._lobbyer_pid,
+        # for each requestee exist in economy, collect attributes for requester_contract agenda
+        for requestee_pid in x_requestunit._requestee_pids.keys():
+            # requestee_contract changes
+            x_economyunit.full_setup_enactunit(requestee_pid)
+            requestee_enactunit = x_economyunit.get_enactunit(requestee_pid)
+            requestee_contract = requestee_enactunit.get_contract()
+            requestee_contract.add_partyunit(
+                x_requestunit._requester_pid,
                 debtor_weight=action_weight,
                 depotlink_type="assignment",
             )
-            lobbyer_seed.add_partyunit(lobbyee_pid, depotlink_type="assignment")
+            requester_contract.add_partyunit(requestee_pid, depotlink_type="assignment")
 
-        for lobby_group in x_lobbyunit._lobbyee_groups.keys():
-            print(f"{lobby_group=}")
-            x_groupunit = groupunit_shop(lobby_group)
-            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-                x_groupunit.set_partylink(partylink_shop(lobbyee_pid))
-            lobbyer_seed.set_groupunit(x_groupunit, False, False, True)
+        for request_group in x_requestunit._requestee_groups.keys():
+            print(f"{request_group=}")
+            x_groupunit = groupunit_shop(request_group)
+            for requestee_pid in x_requestunit._requestee_pids.keys():
+                x_groupunit.set_partylink(partylink_shop(requestee_pid))
+            requester_contract.set_groupunit(x_groupunit, False, False, True)
 
-        if x_lobbyunit._lobbyee_groups == {}:
-            for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-                # lobbyee_seed changes
-                x_assignedunit.set_suffgroup(lobbyee_pid)
-                x_balancelinks[lobbyee_pid] = balancelink_shop(lobbyee_pid)
+        if x_requestunit._requestee_groups == {}:
+            for requestee_pid in x_requestunit._requestee_pids.keys():
+                # requestee_contract changes
+                x_assignedunit.set_suffgroup(requestee_pid)
+                x_balancelinks[requestee_pid] = balancelink_shop(requestee_pid)
         else:
-            for lobby_group in x_lobbyunit._lobbyee_groups.keys():
-                # lobbyee_seed changes
-                print(f"assignunit {lobby_group=}")
-                x_assignedunit.set_suffgroup(lobby_group)
-                x_balancelinks[lobby_group] = balancelink_shop(lobby_group)
+            for request_group in x_requestunit._requestee_groups.keys():
+                # requestee_contract changes
+                print(f"assignunit {request_group=}")
+                x_assignedunit.set_suffgroup(request_group)
+                x_balancelinks[request_group] = balancelink_shop(request_group)
 
-        # for every idea in concernunit set idea attributes to lobbyer_seed
-        x_reason = x_lobbyunit._concernunit.reason
+        # for every idea in concernunit set idea attributes to requester_contract
+        x_reason = x_requestunit._concernunit.reason
         for x_idea in concernunit_ideas.values():
             idea_road = x_idea.get_idea_road()
-            lobbyer_seed.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
+            requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
             for x_balancelink in x_balancelinks.values():
-                lobbyer_seed.edit_idea_attr(idea_road, balancelink=x_balancelink)
+                requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
         # if idea is promise set the promise requiredunits
         for x_idea in concernunit_ideas.values():
             idea_road = x_idea.get_idea_road()
             if x_idea.promise:
-                lobbyer_seed.edit_idea_attr(
+                requester_contract.edit_idea_attr(
                     idea_road,
                     required_base=x_reason.base,
                     required_sufffact=x_reason.get_1_bad(),
                 )
 
-        lobbyer_seed.set_idearoot_acptfactunit(x_reason.base, pick=x_reason.get_1_bad())
-        lobbyer_councilunit.save_seed_agenda(lobbyer_seed)
-        lobbyer_councilunit.save_refreshed_output_to_public()
+        requester_contract.set_idearoot_acptfactunit(
+            x_reason.base, pick=x_reason.get_1_bad()
+        )
+        requester_enactunit.save_contract_agenda(requester_contract)
+        requester_enactunit.save_refreshed_output_to_public()
 
-        # for each lobbyee re
-        for lobbyee_pid in x_lobbyunit._lobbyee_pids.keys():
-            lobbyee_councilunit = x_economyunit.get_councilunit(lobbyee_pid)
-            lobbyee_councilunit.refresh_depot_agendas()
-            lobbyee_councilunit.save_refreshed_output_to_public()
+        # for each requestee re
+        for requestee_pid in x_requestunit._requestee_pids.keys():
+            requestee_enactunit = x_economyunit.get_enactunit(requestee_pid)
+            requestee_enactunit.refresh_depot_agendas()
+            requestee_enactunit.save_refreshed_output_to_public()
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -153,7 +158,7 @@ class WorldUnit:
     def add_cultural_connection(
         self,
         economyaddress: EconomyAddress,
-        council_person_id: PersonID,
+        enact_person_id: PersonID,
     ):
         economy_id = economyaddress.economy_id
 
@@ -166,13 +171,13 @@ class WorldUnit:
                 x_personunit.set_economyunit(economy_id)
             x_economy = x_personunit.get_economyunit(economy_id)
 
-            if self.personunit_exists(council_person_id) == False:
-                self.set_personunit(council_person_id)
+            if self.personunit_exists(enact_person_id) == False:
+                self.set_personunit(enact_person_id)
 
-            if x_economy.councilunit_exists(treasurer_pid) == False:
-                x_economy.add_councilunit(treasurer_pid)
-            if x_economy.councilunit_exists(council_person_id) == False:
-                x_economy.add_councilunit(council_person_id)
+            if x_economy.enactunit_exists(treasurer_pid) == False:
+                x_economy.add_enactunit(treasurer_pid)
+            if x_economy.enactunit_exists(enact_person_id) == False:
+                x_economy.add_enactunit(enact_person_id)
 
     def get_priority_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
@@ -211,19 +216,19 @@ class WorldUnit:
         x_healerunit = self.get_personunit_from_memory(healer_id)
         x_healerunit.set_economyunit(economy_id, replace=False)
         x_economyunit = x_healerunit.get_economyunit(economy_id)
-        x_economyunit.full_setup_councilunit(healer_id)
+        x_economyunit.full_setup_enactunit(healer_id)
         if healer_id != x_personunit.pid:
             self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
 
     def _set_partyunit(
         self, x_economyunit: EconomyUnit, person_id: PersonID, party_pid: PersonID
     ):
-        x_economyunit.full_setup_councilunit(person_id)
-        person_councilunit = x_economyunit.get_councilunit(person_id)
-        person_seed = person_councilunit.get_seed()
-        person_seed.add_partyunit(party_pid)
-        person_councilunit.save_seed_agenda(person_seed)
-        person_councilunit.save_refreshed_output_to_public()
+        x_economyunit.full_setup_enactunit(person_id)
+        person_enactunit = x_economyunit.get_enactunit(person_id)
+        person_contract = person_enactunit.get_contract()
+        person_contract.add_partyunit(party_pid)
+        person_enactunit.save_contract_agenda(person_contract)
+        person_enactunit.save_refreshed_output_to_public()
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:

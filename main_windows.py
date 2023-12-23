@@ -279,7 +279,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             f.write(agenda_x_json)
         self.current_file_path_l.setText(self.file_path)
         # x_func_save_file(
-        #     dest_dir=agenda_councilunit_dir,
+        #     dest_dir=agenda_enactunit_dir,
         #     file_name=f"{self.agenda_x._economy_id}.json",
         #     file_text=agenda_x.get_json(),
         # )

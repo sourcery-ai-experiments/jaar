@@ -24,23 +24,23 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidcouncilException(Exception):
+class InvalidenactException(Exception):
     pass
 
 
-class CouncilCID(PersonID):
+class EnactCID(PersonID):
     pass
 
 
 @dataclass
-class CouncilUnit:
-    _council_cid: CouncilCID = None
+class EnactUnit:
+    _enact_cid: EnactCID = None
     _env_dir: str = None
     _economy_id: str = None
-    _councilunit_dir: str = None
-    _councilunits_dir: str = None
-    _seed_file_name: str = None
-    _seed_file_path: str = None
+    _enactunit_dir: str = None
+    _enactunits_dir: str = None
+    _contract_file_name: str = None
+    _contract_file_path: str = None
     _agenda_output_file_name: str = None
     _agenda_output_file_path: str = None
     _public_file_name: str = None
@@ -49,11 +49,11 @@ class CouncilUnit:
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
     _road_node_delimiter: str = None
-    _seed: AgendaUnit = None
+    _contract: AgendaUnit = None
 
     def refresh_depot_agendas(self):
-        for party_x in self._seed._partys.values():
-            if party_x.pid != self._council_cid:
+        for party_x in self._contract._partys.values():
+            if party_x.pid != self._enact_cid:
                 party_agenda = agendaunit_get_from_json(
                     x_agenda_json=self.open_public_agenda(party_x.pid)
                 )
@@ -71,12 +71,12 @@ class CouncilUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self.set_seed_if_empty()
+        self.set_contract_if_empty()
         self.save_agenda_to_depot(x_agenda)
         self._set_depotlink(
             x_agenda._healer, depotlink_type, creditor_weight, debtor_weight
         )
-        if self.get_seed()._auto_output_to_public:
+        if self.get_contract()._auto_output_to_public:
             self.save_refreshed_output_to_public()
 
     def _set_depotlink(
@@ -104,10 +104,10 @@ class CouncilUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._council_cid)
+        empty_agenda = agendaunit_shop(_healer=self._enact_cid)
         empty_agenda.set_economy_id(self._economy_id)
         assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_seed()._partys, self._council_cid
+            empty_agenda, self.get_contract()._partys, self._enact_cid
         )
         assign_agenda.set_agenda_metrics()
         self.save_agenda_to_digest(assign_agenda, src_agenda._healer)
@@ -119,9 +119,9 @@ class CouncilUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        party_x = self.get_seed().get_party(pid)
+        party_x = self.get_contract().get_party(pid)
         if party_x is None:
-            self.get_seed().set_partyunit(
+            self.get_contract().set_partyunit(
                 partyunit_shop(
                     pid=pid,
                     depotlink_type=link_type,
@@ -138,22 +138,22 @@ class CouncilUnit:
         self.erase_digest_agenda(agenda_healer)
 
     def _del_depotlink(self, partypid: PartyPID):
-        self._seed.get_party(partypid).del_depotlink_type()
+        self._contract.get_party(partypid).del_depotlink_type()
 
-    def get_seed(self):
-        if self._seed is None:
-            self._seed = self.open_seed_agenda()
-        return self._seed
+    def get_contract(self):
+        if self._contract is None:
+            self._contract = self.open_contract_agenda()
+        return self._contract
 
-    def set_seed(self, x_agenda: AgendaUnit = None):
+    def set_contract(self, x_agenda: AgendaUnit = None):
         if x_agenda != None:
-            self._seed = x_agenda
-        self.save_seed_agenda(self._seed)
-        self._seed = None
+            self._contract = x_agenda
+        self.save_contract_agenda(self._contract)
+        self._contract = None
 
-    def set_seed_if_empty(self):
-        # if self._seed is None:
-        self.get_seed()
+    def set_contract_if_empty(self):
+        # if self._contract is None:
+        self.get_contract()
 
     def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agenda_healer: str):
         self.save_ignore_agenda(agendaunit, src_agenda_healer)
@@ -163,50 +163,50 @@ class CouncilUnit:
     def set_env_dir(
         self,
         env_dir: str,
-        council_cid: CouncilCID,
+        enact_cid: EnactCID,
         economy_id: str,
         _road_node_delimiter: str = None,
     ):
-        self._council_cid = council_cid
+        self._enact_cid = enact_cid
         self._env_dir = env_dir
         self._economy_id = economy_id
         self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
 
     def set_dirs(self):
-        env_councilunits_folder = "councilunits"
+        env_enactunits_folder = "enactunits"
         agendas_str = "agendas"
-        self._councilunits_dir = f"{self._env_dir}/{env_councilunits_folder}"
-        self._councilunit_dir = f"{self._councilunits_dir}/{self._council_cid}"
-        self._seed_file_name = "seed_agenda.json"
-        self._seed_file_path = f"{self._councilunit_dir}/{self._seed_file_name}"
+        self._enactunits_dir = f"{self._env_dir}/{env_enactunits_folder}"
+        self._enactunit_dir = f"{self._enactunits_dir}/{self._enact_cid}"
+        self._contract_file_name = "contract_agenda.json"
+        self._contract_file_path = f"{self._enactunit_dir}/{self._contract_file_name}"
         self._agenda_output_file_name = "output_agenda.json"
         self._agenda_output_file_path = (
-            f"{self._councilunit_dir}/{self._agenda_output_file_name}"
+            f"{self._enactunit_dir}/{self._agenda_output_file_name}"
         )
-        self._public_file_name = f"{self._council_cid}.json"
+        self._public_file_name = f"{self._enact_cid}.json"
         self._agendas_public_dir = f"{self._env_dir}/{agendas_str}"
-        self._agendas_depot_dir = f"{self._councilunit_dir}/{agendas_str}"
-        self._agendas_ignore_dir = f"{self._councilunit_dir}/ignores"
-        self._agendas_digest_dir = f"{self._councilunit_dir}/digests"
+        self._agendas_depot_dir = f"{self._enactunit_dir}/{agendas_str}"
+        self._agendas_ignore_dir = f"{self._enactunit_dir}/ignores"
+        self._agendas_digest_dir = f"{self._enactunit_dir}/digests"
 
-    def set_council_cid(self, new_cid: CouncilCID):
-        old_councilunit_dir = self._councilunit_dir
-        self._council_cid = new_cid
+    def set_enact_cid(self, new_cid: EnactCID):
+        old_enactunit_dir = self._enactunit_dir
+        self._enact_cid = new_cid
         self.set_dirs()
 
-        rename_dir(src=old_councilunit_dir, dst=self._councilunit_dir)
+        rename_dir(src=old_enactunit_dir, dst=self._enactunit_dir)
 
-    def create_core_dir_and_files(self, seed_agenda: AgendaUnit = None):
-        single_dir_create_if_null(x_path=self._councilunit_dir)
+    def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
+        single_dir_create_if_null(x_path=self._enactunit_dir)
         single_dir_create_if_null(x_path=self._agendas_public_dir)
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
         single_dir_create_if_null(x_path=self._agendas_digest_dir)
         single_dir_create_if_null(x_path=self._agendas_ignore_dir)
 
-        if seed_agenda is None and self._seed_agenda_exists() == False:
-            self.save_seed_agenda(self._get_empty_seed_agenda())
-        elif seed_agenda != None and self._seed_agenda_exists() == False:
-            self.save_seed_agenda(seed_agenda)
+        if contract_agenda is None and self._contract_agenda_exists() == False:
+            self.save_contract_agenda(self._get_empty_contract_agenda())
+        elif contract_agenda != None and self._contract_agenda_exists() == False:
+            self.save_contract_agenda(contract_agenda)
 
     def _save_agenda_to_path(
         self, x_agenda: AgendaUnit, dest_dir: str, file_name: str = None
@@ -246,23 +246,25 @@ class CouncilUnit:
             file_name = f"{x_agenda._healer}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def save_seed_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_healer(self._council_cid)
+    def save_contract_agenda(self, x_agenda: AgendaUnit):
+        x_agenda.set_healer(self._enact_cid)
         x_agenda.set_road_node_delimiter(self._road_node_delimiter)
-        self._save_agenda_to_path(x_agenda, self._councilunit_dir, self._seed_file_name)
+        self._save_agenda_to_path(
+            x_agenda, self._enactunit_dir, self._contract_file_name
+        )
 
     def save_agenda_to_depot(self, x_agenda: AgendaUnit):
         dest_dir = self._agendas_depot_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
     def save_output_agenda(self) -> AgendaUnit:
-        x_seed_agenda = self.open_seed_agenda()
-        x_seed_agenda.meld(x_seed_agenda, party_weight=1)
+        x_contract_agenda = self.open_contract_agenda()
+        x_contract_agenda.meld(x_contract_agenda, party_weight=1)
         x_agenda = get_meld_of_agenda_files(
-            primary_agenda=x_seed_agenda,
+            primary_agenda=x_contract_agenda,
             meldees_dir=self._agendas_digest_dir,
         )
-        dest_dir = self._councilunit_dir
+        dest_dir = self._enactunit_dir
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
@@ -282,30 +284,30 @@ class CouncilUnit:
         agenda_obj.set_agenda_metrics()
         return agenda_obj
 
-    def open_seed_agenda(self) -> AgendaUnit:
+    def open_contract_agenda(self) -> AgendaUnit:
         x_agenda = None
-        if not self._seed_agenda_exists():
-            self.save_seed_agenda(self._get_empty_seed_agenda())
-        x_json = x_func_open_file(self._councilunit_dir, self._seed_file_name)
+        if not self._contract_agenda_exists():
+            self.save_contract_agenda(self._get_empty_contract_agenda())
+        x_json = x_func_open_file(self._enactunit_dir, self._contract_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
     def open_output_agenda(self) -> AgendaUnit:
         x_agenda_json = x_func_open_file(
-            self._councilunit_dir, self._agenda_output_file_name
+            self._enactunit_dir, self._agenda_output_file_name
         )
         x_agenda = agendaunit_get_from_json(x_agenda_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
-    def _get_empty_seed_agenda(self):
+    def _get_empty_contract_agenda(self):
         x_agenda = agendaunit_shop(
-            _healer=self._council_cid,
+            _healer=self._enact_cid,
             _weight=0,
             _road_node_delimiter=self._road_node_delimiter,
         )
-        x_agenda.add_partyunit(pid=self._council_cid)
+        x_agenda.add_partyunit(pid=self._enact_cid)
         x_agenda.set_economy_id(self._economy_id)
         return x_agenda
 
@@ -315,22 +317,22 @@ class CouncilUnit:
     def erase_digest_agenda(self, healer):
         x_func_delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
 
-    def erase_seed_agenda_file(self):
-        x_func_delete_dir(dir=f"{self._councilunit_dir}/{self._seed_file_name}")
+    def erase_contract_agenda_file(self):
+        x_func_delete_dir(dir=f"{self._enactunit_dir}/{self._contract_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_agenda_file_name = f"{healer}.json"
         if dir_type == "depot":
             x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
-            raise InvalidcouncilException(
-                f"Healer {self._council_cid} cannot find agenda {healer} in {x_agenda_file_path}"
+            raise InvalidenactException(
+                f"Healer {self._enact_cid} cannot find agenda {healer} in {x_agenda_file_path}"
             )
 
-    def _seed_agenda_exists(self) -> bool:
+    def _contract_agenda_exists(self) -> bool:
         bool_x = None
         try:
-            x_func_open_file(self._councilunit_dir, self._seed_file_name)
+            x_func_open_file(self._enactunit_dir, self._contract_file_name)
             bool_x = True
         except Exception:
             bool_x = False
@@ -344,23 +346,23 @@ class CouncilUnit:
         self.save_agenda_to_public(self.get_remelded_output_agenda())
 
 
-def councilunit_shop(
+def enactunit_shop(
     pid: str,
     env_dir: str,
     economy_id: str,
     _auto_output_to_public: bool = None,
     _road_node_delimiter: str = None,
-) -> CouncilUnit:
-    x_council = CouncilUnit()
-    x_council.set_env_dir(
+) -> EnactUnit:
+    x_enact = EnactUnit()
+    x_enact.set_env_dir(
         env_dir=env_dir,
-        council_cid=pid,
+        enact_cid=pid,
         economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_council.set_dirs()
-    x_council.get_seed()
-    x_council._seed._set_auto_output_to_public(_auto_output_to_public)
-    # x_council.save_seed_agenda(x_council.get_seed())
-    x_council.get_seed()
-    return x_council
+    x_enact.set_dirs()
+    x_enact.get_contract()
+    x_enact._contract._set_auto_output_to_public(_auto_output_to_public)
+    # x_enact.save_contract_agenda(x_enact.get_contract())
+    x_enact.get_contract()
+    return x_enact

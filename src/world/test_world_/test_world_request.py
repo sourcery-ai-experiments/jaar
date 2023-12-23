@@ -1,9 +1,9 @@
 from src.agenda.road import get_road
 from src.agenda.required_idea import acptfactunit_shop
 from src.world.world import worldunit_shop
-from src.world.lobby import (
+from src.world.request import (
     create_economyaddress,
-    create_lobbyunit,
+    create_requestunit,
     create_concernunit,
 )
 from src.world.examples.world_env_kit import (
@@ -29,7 +29,7 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     texas_economy = luca_person.get_economyunit(texas_text)
     kari_text = "kari"
     texas_economyaddress = create_economyaddress(luca_text, texas_text)
-    assert texas_economy._councilunits.get(kari_text) is None
+    assert texas_economy._enactunits.get(kari_text) is None
     assert x_world.personunit_exists(kari_text) == False
 
     # WHEN
@@ -37,13 +37,13 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
 
     # THEN
     assert x_world.personunit_exists(kari_text)
-    assert texas_economy._councilunits.get(kari_text) != None
+    assert texas_economy._enactunits.get(kari_text) != None
 
 
-def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
+def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
     worlds_dir_setup_cleanup,
 ):
-    # GIVEN lobbyer and lobbyee seed_agendas does not exist
+    # GIVEN requester and requestee contract_agendas does not exist
     w1_text = "w1"
     x_world = worldunit_shop(w1_text, get_test_worlds_dir())
     yao_text = "Yao"
@@ -65,8 +65,8 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     )
     tim_text = "Tim"
     xio_text = "Xio"
-    highway_lobbyunit = create_lobbyunit(
-        concernunit=highway_concernunit, lobbyee_pid=tim_text, lobbyer_pid=xio_text
+    highway_requestunit = create_requestunit(
+        concernunit=highway_concernunit, requestee_pid=tim_text, requester_pid=xio_text
     )
     assert x_world.get_personunit_from_memory(tim_text) is None
     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -78,7 +78,7 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     assert os_path.exists(public_yao_file_path) is False
 
     # WHEN
-    x_world.apply_lobbyunit(highway_lobbyunit)
+    x_world.apply_requestunit(highway_requestunit)
 
     # THEN
     assert x_world.get_personunit_from_memory(tim_text) != None
@@ -87,12 +87,12 @@ def test_worldunit_apply_lobbyunit_CorrectlyCreates_seed_agendas(
     assert os_path.exists(public_tim_file_path)
     assert os_path.exists(public_xio_file_path)
     assert os_path.exists(public_yao_file_path)
-    assert texas_economy.get_councilunit(tim_text).get_seed() != None
-    assert texas_economy.get_councilunit(xio_text).get_seed() != None
-    assert texas_economy.get_councilunit(yao_text).get_seed() != None
+    assert texas_economy.get_enactunit(tim_text).get_contract() != None
+    assert texas_economy.get_enactunit(xio_text).get_contract() != None
+    assert texas_economy.get_enactunit(yao_text).get_contract() != None
 
 
-def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
+def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
     worlds_dir_setup_cleanup,
 ):
     x_world = worldunit_shop("w1", get_test_worlds_dir())
@@ -122,20 +122,20 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     tim_text = "Tim"
     xio_text = "Xio"
     action_weight = 7
-    highway_lobbyunit = create_lobbyunit(
+    highway_requestunit = create_requestunit(
         concernunit=highway_concernunit,
-        lobbyee_pid=tim_text,
-        lobbyer_pid=xio_text,
+        requestee_pid=tim_text,
+        requester_pid=xio_text,
         action_weight=action_weight,
     )
 
     # WHEN
-    x_world.apply_lobbyunit(highway_lobbyunit)
+    x_world.apply_requestunit(highway_requestunit)
 
     # THEN
-    xio_seed = texas_economy.get_councilunit(xio_text).get_seed()
-    xio_partyunit = xio_seed.get_party(xio_text)
-    tim_partyunit = xio_seed.get_party(tim_text)
+    xio_contract = texas_economy.get_enactunit(xio_text).get_contract()
+    xio_partyunit = xio_contract.get_party(xio_text)
+    tim_partyunit = xio_contract.get_party(tim_text)
     assert xio_partyunit != None
     assert tim_partyunit != None
     assert tim_partyunit.creditor_weight == 1
@@ -146,15 +146,15 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     weather_road = get_road(texas_economy.economy_id, weather_text)
     healthy_road = get_road(weather_road, healthy_text)
     boiling_road = get_road(weather_road, boiling_text)
-    print(f"{xio_seed._idea_dict.keys()=}")
+    print(f"{xio_contract._idea_dict.keys()=}")
     print(f"{flying_road=}")
     print(f"{no_fly_road=}")
-    flying_idea = xio_seed.get_idea_kid(flying_road)
-    no_fly_idea = xio_seed.get_idea_kid(no_fly_road)
-    yesfly_idea = xio_seed.get_idea_kid(yesfly_road)
-    weather_idea = xio_seed.get_idea_kid(weather_road)
-    healthy_idea = xio_seed.get_idea_kid(healthy_road)
-    boiling_idea = xio_seed.get_idea_kid(boiling_road)
+    flying_idea = xio_contract.get_idea_kid(flying_road)
+    no_fly_idea = xio_contract.get_idea_kid(no_fly_road)
+    yesfly_idea = xio_contract.get_idea_kid(yesfly_road)
+    weather_idea = xio_contract.get_idea_kid(weather_road)
+    healthy_idea = xio_contract.get_idea_kid(healthy_road)
+    boiling_idea = xio_contract.get_idea_kid(boiling_road)
     assert flying_idea != None
     assert no_fly_idea != None
     assert yesfly_idea != None
@@ -203,23 +203,23 @@ def test_worldunit_apply_lobbyunit_CorrectlyAddsTaskTo_lobbyer_seed_agenda(
     assert healthy_idea._balancelinks.get(tim_text) != None
     assert boiling_idea._balancelinks.get(tim_text) != None
 
-    xio_acptfactunits = xio_seed._idearoot._acptfactunits
+    xio_acptfactunits = xio_contract._idearoot._acptfactunits
     assert len(xio_acptfactunits) == 1
     static_weather_acptfactunit = acptfactunit_shop(weather_road, pick=boiling_road)
     assert xio_acptfactunits.get(weather_road) == static_weather_acptfactunit
-    assert len(xio_seed.get_intent_items()) == 0
+    assert len(xio_contract.get_intent_items()) == 0
 
-    # check tim seed
-    tim_seed = texas_economy.get_councilunit(tim_text).get_seed()
-    assert tim_seed.get_party(xio_text) != None
-    assert tim_seed.get_party(xio_text).debtor_weight == 7
+    # check tim contract
+    tim_contract = texas_economy.get_enactunit(tim_text).get_contract()
+    assert tim_contract.get_party(xio_text) != None
+    assert tim_contract.get_party(xio_text).debtor_weight == 7
     # check tim public
     tim_public = texas_economy.get_public_agenda(tim_text)
     assert len(tim_public.get_intent_items()) == 1
     assert tim_public.get_intent_items()[0].get_idea_road() == no_fly_road
 
 
-def test_worldunit_apply_lobbyunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
+def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
     x_world = worldunit_shop("w1", get_test_worlds_dir())
     yao_text = "Yao"
     x_world.set_personunit(yao_text)
@@ -248,27 +248,27 @@ def test_worldunit_apply_lobbyunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanu
     xio_text = "Xio"
     environmentalist_text = "Environmentalist"
     action_weight = 7
-    highway_lobbyunit = create_lobbyunit(
+    highway_requestunit = create_requestunit(
         concernunit=highway_concernunit,
-        lobbyee_pid=tim_text,
-        lobbyee_group=environmentalist_text,
-        lobbyer_pid=xio_text,
+        requestee_pid=tim_text,
+        requestee_group=environmentalist_text,
+        requester_pid=xio_text,
         action_weight=action_weight,
     )
 
     # WHEN
-    x_world.apply_lobbyunit(highway_lobbyunit)
+    x_world.apply_requestunit(highway_requestunit)
 
     # THEN
-    xio_seed = texas_economy.get_councilunit(xio_text).get_seed()
-    xio_partyunit = xio_seed.get_party(xio_text)
-    tim_partyunit = xio_seed.get_party(tim_text)
+    xio_contract = texas_economy.get_enactunit(xio_text).get_contract()
+    xio_partyunit = xio_contract.get_party(xio_text)
+    tim_partyunit = xio_contract.get_party(tim_text)
     assert xio_partyunit != None
     assert tim_partyunit != None
     assert tim_partyunit.creditor_weight == 1
     assert tim_partyunit.debtor_weight == 1
-    assert xio_seed._groups.get(environmentalist_text) != None
-    environmentalist_group = xio_seed.get_groupunit(environmentalist_text)
+    assert xio_contract._groups.get(environmentalist_text) != None
+    environmentalist_group = xio_contract.get_groupunit(environmentalist_text)
     assert len(environmentalist_group._partys) == 1
     assert environmentalist_group.get_partylink(tim_text) != None
 
@@ -278,12 +278,12 @@ def test_worldunit_apply_lobbyunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanu
     weather_road = get_road(texas_economy.economy_id, weather_text)
     healthy_road = get_road(weather_road, healthy_text)
     boiling_road = get_road(weather_road, boiling_text)
-    flying_idea = xio_seed.get_idea_kid(flying_road)
-    no_fly_idea = xio_seed.get_idea_kid(no_fly_road)
-    yesfly_idea = xio_seed.get_idea_kid(yesfly_road)
-    weather_idea = xio_seed.get_idea_kid(weather_road)
-    healthy_idea = xio_seed.get_idea_kid(healthy_road)
-    boiling_idea = xio_seed.get_idea_kid(boiling_road)
+    flying_idea = xio_contract.get_idea_kid(flying_road)
+    no_fly_idea = xio_contract.get_idea_kid(no_fly_road)
+    yesfly_idea = xio_contract.get_idea_kid(yesfly_road)
+    weather_idea = xio_contract.get_idea_kid(weather_road)
+    healthy_idea = xio_contract.get_idea_kid(healthy_road)
+    boiling_idea = xio_contract.get_idea_kid(boiling_road)
 
     assert flying_idea._assignedunit.get_suffgroup(tim_text) is None
     assert no_fly_idea._assignedunit.get_suffgroup(tim_text) is None
@@ -299,23 +299,23 @@ def test_worldunit_apply_lobbyunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanu
     assert healthy_idea._assignedunit.get_suffgroup(environmentalist_text) != None
     assert boiling_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 
-    xio_acptfactunits = xio_seed._idearoot._acptfactunits
+    xio_acptfactunits = xio_contract._idearoot._acptfactunits
     assert len(xio_acptfactunits) == 1
     static_weather_acptfactunit = acptfactunit_shop(weather_road, pick=boiling_road)
     assert xio_acptfactunits.get(weather_road) == static_weather_acptfactunit
-    assert len(xio_seed.get_intent_items()) == 0
+    assert len(xio_contract.get_intent_items()) == 0
 
-    # check tim seed
-    tim_seed = texas_economy.get_councilunit(tim_text).get_seed()
-    assert tim_seed.get_party(xio_text) != None
-    assert tim_seed.get_party(xio_text).debtor_weight == 7
+    # check tim contract
+    tim_contract = texas_economy.get_enactunit(tim_text).get_contract()
+    assert tim_contract.get_party(xio_text) != None
+    assert tim_contract.get_party(xio_text).debtor_weight == 7
     # check tim public
     tim_public = texas_economy.get_public_agenda(tim_text)
     assert len(tim_public.get_intent_items()) == 1
     assert tim_public.get_intent_items()[0].get_idea_road() == no_fly_road
 
 
-# def test_worldunit_apply_lobbyunit_Multiple_lobbyunitsCreateMultiple_intent_items(
+# def test_worldunit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
 #     worlds_dir_setup_cleanup,
 # ):
 #     x_world = worldunit_shop("w1", get_test_worlds_dir())
@@ -339,10 +339,10 @@ def test_worldunit_apply_lobbyunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanu
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     action_weight = 7
-#     fly_lobbyunit = create_lobbyunit(fly_concernunit, tim_text, xio_text, action_weight)
-#     fly_lobbyunit = create_lobbyunit(fly_concernunit, tim_text, xio_text, action_weight)
-#     fly_lobbyunit = create_lobbyunit(fly_concernunit, yao_text, xio_text, action_weight)
+#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, action_weight)
+#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, action_weight)
+#     fly_requestunit = create_requestunit(fly_concernunit, yao_text, xio_text, action_weight)
 
 #     # WHEN
-#     x_world.apply_lobbyunit(fly_lobbyunit)
-#     x_world.apply_lobbyunit(fly_lobbyunit)
+#     x_world.apply_requestunit(fly_requestunit)
+#     x_world.apply_requestunit(fly_requestunit)
