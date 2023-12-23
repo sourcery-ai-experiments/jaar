@@ -39,18 +39,6 @@ def test_ForkUnit_exists():
     assert x_fork.delimiter is None
 
 
-def test_ForkUnit_set_descendents_empty_if_none_CorrectlySetsAttr():
-    # GIVEN
-    x_fork = ForkUnit()
-    assert x_fork.descendents is None
-
-    # WHEN
-    x_fork.set_descendents_empty_if_none()
-
-    # THEN
-    assert x_fork.descendents == {}
-
-
 def test_forkunit_shop_CorrectlyReturnsObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")

@@ -12,6 +12,7 @@ from src.agenda.road import (
 )
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideacore_shop, IdeaCore, IdeaAttrHolder
+from src.agenda.y_func import get_empty_dict_if_null
 from src.economy.economy import EconomyID
 from src.world.person import PersonID
 from dataclasses import dataclass
@@ -22,10 +23,6 @@ class EconomyAddress:
     economy_id: EconomyID
     treasurer_pids: dict[PersonID:int]
     _road_node_delimiter: str
-
-    def set_treasurer_pids_empty_if_none(self):
-        if self.treasurer_pids is None:
-            self.treasurer_pids = {}
 
     def add_treasurer_pid(self, treasurer_pid: PersonID):
         self.treasurer_pids[treasurer_pid] = 0
@@ -42,13 +39,11 @@ def economyaddress_shop(
     treasurer_pids: dict[PersonID:int] = None,
     _road_node_delimiter: str = None,
 ) -> EconomyAddress:
-    x_economyaddress = EconomyAddress(
-        treasurer_pids=treasurer_pids,
+    return EconomyAddress(
+        treasurer_pids=get_empty_dict_if_null(treasurer_pids),
         economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_economyaddress.set_treasurer_pids_empty_if_none()
-    return x_economyaddress
 
 
 def create_economyaddress(treasurer_pid: PersonID, economy_id: EconomyID):
@@ -193,10 +188,6 @@ class RequestUnit:
     def add_requestee_groupbrand(self, groupbrand: GroupBrand):
         self._requestee_groups[groupbrand] = groupbrand
 
-    def set_requestee_groups_empty_if_none(self):
-        if self._requestee_groups is None:
-            self._requestee_groups = {}
-
     def get_str_summary(self):
         return f"""RequestUnit: {self._concernunit.get_str_summary()}
  {list(self._requestee_pids.keys())} are in groups {list(self._requestee_groups.keys())} and are asked to be good."""
@@ -211,15 +202,13 @@ def requestunit_shop(
 ):
     if _action_weight is None:
         _action_weight = 1
-    x_requestunit = RequestUnit(
+    return RequestUnit(
         _concernunit=_concernunit,
-        _requestee_pids=_requestee_pids,
-        _requestee_groups=_requestee_groups,
+        _requestee_pids=get_empty_dict_if_null(_requestee_pids),
+        _requestee_groups=get_empty_dict_if_null(_requestee_groups),
         _requester_pid=_requester_pid,
         _action_weight=_action_weight,
     )
-    x_requestunit.set_requestee_groups_empty_if_none()
-    return x_requestunit
 
 
 def create_requestunit(

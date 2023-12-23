@@ -54,10 +54,6 @@ class HealerLink:
         self._manager_importance = person_importance
         self.set_economylinks_weight_metrics()
 
-    def set_economylinks_empty_if_none(self):
-        if self._economylinks is None:
-            self._economylinks = {}
-
     def set_economylink(self, economylink: EconomyLink):
         self._economylinks[economylink.economy_id] = economylink
 
@@ -86,9 +82,9 @@ def healerlink_shop(
 ) -> HealerLink:
     if weight is None:
         weight = 1
-    x_healer = HealerLink(person_id=person_id, weight=weight, in_tribe=in_tribe)
-    x_healer.set_economylinks_empty_if_none()
-    return x_healer
+    return HealerLink(
+        person_id=person_id, weight=weight, in_tribe=in_tribe, _economylinks={}
+    )
 
 
 class PainGenus(str):  # Created to help track the concept
@@ -124,10 +120,6 @@ class PainUnit:
         self._manager_importance = person_importance
         self.set_healerlinks_weight_metrics()
 
-    def set_healerlinks_empty_if_none(self):
-        if self._healerlinks is None:
-            self._healerlinks = {}
-
     def set_healerlink(self, healerlink: HealerLink):
         self._healerlinks[healerlink.person_id] = healerlink
 
@@ -154,6 +146,4 @@ class PainUnit:
 def painunit_shop(genus: PainGenus, weight: float = None) -> PainUnit:
     if weight is None:
         weight = 1
-    pain_x = PainUnit(genus=genus, weight=weight)
-    pain_x.set_healerlinks_empty_if_none()
-    return pain_x
+    return PainUnit(genus=genus, weight=weight, _healerlinks={})

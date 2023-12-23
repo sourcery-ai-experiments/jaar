@@ -7,7 +7,7 @@ from src.agenda.road import (
     is_heir_road,
     get_node_delimiter,
 )
-from src.agenda.x_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_null
 from copy import deepcopy as copy_deepcopy
 
 

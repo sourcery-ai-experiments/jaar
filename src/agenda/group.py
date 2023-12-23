@@ -8,8 +8,8 @@ from src.agenda.x_func import (
     x_get_dict,
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
-    get_empty_dict_if_null,
 )
+from src.agenda.y_func import get_empty_dict_if_null
 from src.agenda.road import RoadUnit
 
 

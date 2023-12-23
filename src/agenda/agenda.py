@@ -31,7 +31,8 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
-from src.agenda.x_func import x_get_json, get_empty_dict_if_null
+
+from src.agenda.x_func import x_get_json
 from src.agenda.idea import (
     IdeaCore,
     ideacore_shop,

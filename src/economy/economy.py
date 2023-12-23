@@ -14,8 +14,8 @@ from src.agenda.x_func import (
     save_file as x_func_save_file,
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
-    get_empty_dict_if_null,
 )
+from src.agenda.y_func import get_empty_dict_if_null
 from src.economy.enact import EnactUnit, enactunit_shop, EnactCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection

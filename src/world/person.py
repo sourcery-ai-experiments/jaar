@@ -10,10 +10,6 @@ class PersonUnit:
     _economys: dict[EconomyID:EconomyUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
 
-    def set_pains_empty_if_none(self):
-        if self._pains is None:
-            self._pains = {}
-
     def create_painunit_from_genus(self, pain_genus: PainGenus):
         self._pains[pain_genus] = painunit_shop(genus=pain_genus)
 
@@ -32,10 +28,6 @@ class PersonUnit:
         )
         for x_painunit in self._pains.values():
             x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
-
-    def set_economys_empty_if_none(self):
-        if self._economys is None:
-            self._economys = {}
 
     def set_economyunit(self, economy_id: EconomyID, replace: bool = False):
         if self.economyunit_exists(economy_id) == False or (
@@ -77,10 +69,7 @@ class PersonUnit:
 def personunit_shop(pid: PersonID, person_dir: str = None) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
-    x_person = PersonUnit(pid=pid, person_dir=person_dir)
-    x_person.set_economys_empty_if_none()
-    x_person.set_pains_empty_if_none()
-    return x_person
+    return PersonUnit(pid=pid, person_dir=person_dir, _economys={}, _pains={})
 
 
 #     world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir)

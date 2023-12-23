@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from src.agenda.y_func import get_empty_dict_if_null
 
 
 class InvalidRoadUnitException(Exception):
@@ -222,10 +223,6 @@ class ForkUnit:
             len(self.get_good_descendents()) > 0 and len(self.get_bad_descendents()) > 0
         )
 
-    def set_descendents_empty_if_none(self):
-        if self.descendents is None:
-            self.descendents = {}
-
     def set_descendent(self, descendent: RoadUnit, affect: float):
         if affect in {None, 0}:
             raise NoneZeroAffectException(
@@ -273,8 +270,9 @@ def forkunit_shop(
     base: RoadUnit, descendents: dict[RoadUnit:float] = None, delimiter: str = None
 ):
     delimiter = get_node_delimiter(delimiter)
-    x_forkunit = ForkUnit(base=base, descendents=descendents, delimiter=delimiter)
-    x_forkunit.set_descendents_empty_if_none()
+    x_forkunit = ForkUnit(
+        base=base, descendents=get_empty_dict_if_null(descendents), delimiter=delimiter
+    )
     return x_forkunit
 
 
