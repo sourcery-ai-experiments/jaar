@@ -1110,7 +1110,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Special RoadPath</string>
+    <string>Special RoadUnit</string>
    </property>
   </widget>
   <widget class="QComboBox" name="required_sufffact_open_combo">

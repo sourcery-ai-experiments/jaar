@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, PartyUnit, RoadPath, PersonID, PartyPID
+from src.agenda.agenda import AgendaUnit, PartyUnit, RoadUnit, PersonID, PartyPID
 from src.agenda.road import get_road_without_root_node
 from src.economy.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
@@ -849,7 +849,7 @@ VALUES (
 """
 
 
-def get_idea_catalog_dict(db_conn: Connection, search_road: RoadPath = None):
+def get_idea_catalog_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:

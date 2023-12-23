@@ -1,4 +1,4 @@
-from src.agenda.road import RoadPath, get_road_from_road_and_node, get_node_delimiter
+from src.agenda.road import RoadUnit, get_road_from_road_and_node, get_node_delimiter
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -541,7 +541,7 @@ class EconomyUnit:
         x_enactunit = self.get_enactunit(cid=enact_cid)
         return x_enactunit.get_remelded_output_agenda()
 
-    def build_economy_road(self, road_wo_economy_root: RoadPath = None):
+    def build_economy_road(self, road_wo_economy_root: RoadUnit = None):
         if road_wo_economy_root is None or road_wo_economy_root == "":
             return self.economy_id
         else:

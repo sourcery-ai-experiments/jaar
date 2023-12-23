@@ -13,21 +13,21 @@ from src.agenda.required_idea import (
     RequiredCore,
     RequiredUnit,
     requiredunit_shop,
-    RoadPath,
+    RoadUnit,
     AcptFactUnit,
     AcptFactUnit,
     acptfactunit_shop,
     RequiredHeir,
     requiredheir_shop,
     sufffactunit_shop,
-    RoadPath,
+    RoadUnit,
     change_road,
     find_replace_road_key_dict,
     requireds_get_from_dict,
     acptfactunits_get_from_dict,
 )
 from src.agenda.road import (
-    RoadPath,
+    RoadUnit,
     RoadNode,
     is_sub_road,
     get_default_economy_root_label as root_label,
@@ -85,13 +85,13 @@ class IdeaAttrHolder:
     weight: int = None
     uid: int = None
     required: RequiredUnit = None
-    required_base: RoadPath = None
-    required_sufffact: RoadPath = None
+    required_base: RoadUnit = None
+    required_sufffact: RoadUnit = None
     required_sufffact_open: float = None
     required_sufffact_nigh: float = None
     required_sufffact_divisor: int = None
-    required_del_sufffact_base: RoadPath = None
-    required_del_sufffact_need: RoadPath = None
+    required_del_sufffact_base: RoadUnit = None
+    required_del_sufffact_need: RoadUnit = None
     required_suff_idea_active_status: str = None
     assignedunit: AssignedUnit = None
     begin: float = None
@@ -100,7 +100,7 @@ class IdeaAttrHolder:
     numor: float = None
     denom: float = None
     reest: bool = None
-    numeric_road: RoadPath = None
+    numeric_road: RoadUnit = None
     range_source_road: float = None
     promise: bool = None
     problem_bool: bool = None
@@ -144,8 +144,8 @@ class IdeaCore:
     _balancelinks: dict[GroupBrand:BalanceLink] = None
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
     _balancelines: dict[GroupBrand:BalanceLine] = None  # Calculated field
-    _requiredunits: dict[RoadPath:RequiredUnit] = None
-    _requiredheirs: dict[RoadPath:RequiredHeir] = None  # Calculated field
+    _requiredunits: dict[RoadUnit:RequiredUnit] = None
+    _requiredheirs: dict[RoadUnit:RequiredHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
     _assignedheir: AssignedHeir = None  # Calculated field
     _acptfactunits: dict[AcptFactUnit] = None
@@ -156,8 +156,8 @@ class IdeaCore:
     _denom: int = None
     _numor: int = None
     _reest: bool = None
-    _range_source_road: RoadPath = None
-    _numeric_road: RoadPath = None
+    _range_source_road: RoadUnit = None
+    _numeric_road: RoadUnit = None
     promise: bool = None
     _problem_bool: bool = None
     _originunit: OriginUnit = None
@@ -179,7 +179,7 @@ class IdeaCore:
     _active_status_hx: dict[int:bool] = None
     _road_node_delimiter: str = None
 
-    def is_intent_item(self, base_x: RoadPath = None):
+    def is_intent_item(self, base_x: RoadUnit = None):
         # bool_x = False
         return (
             self.promise == True
@@ -206,7 +206,7 @@ class IdeaCore:
     def get_key_road(self):
         return self._label
 
-    def set_acptfactheirs(self, acptfacts: dict[RoadPath:AcptFactCore]):
+    def set_acptfactheirs(self, acptfacts: dict[RoadUnit:AcptFactCore]):
         acptfacts = get_empty_dict_if_null(x_dict=acptfacts)
         x_dict = {}
         for h in acptfacts.values():
@@ -250,8 +250,8 @@ class IdeaCore:
     def _set_ideakid_attr(
         self,
         acptfactunit: AcptFactUnit = None,
-        acptfactunit_base: RoadPath = None,
-        acptfactunit_sufffact: RoadPath = None,
+        acptfactunit_base: RoadUnit = None,
+        acptfactunit_sufffact: RoadUnit = None,
         acptfactunit_open: float = None,
         acptfactunit_nigh: float = None,
     ):
@@ -317,7 +317,7 @@ class IdeaCore:
 
     def create_road(
         self,
-        road_begin: RoadPath = None,
+        road_begin: RoadUnit = None,
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
     ):
@@ -328,7 +328,7 @@ class IdeaCore:
             delimiter=self._road_node_delimiter,
         )
 
-    def get_idea_road(self) -> RoadPath:
+    def get_idea_road(self) -> RoadUnit:
         if self._pad in (None, ""):
             return self.create_road(self._label)
         else:
@@ -341,7 +341,7 @@ class IdeaCore:
         if self._descendant_promise_count is None:
             self._descendant_promise_count = 0
 
-    def get_descendant_roads(self) -> dict[RoadPath:int]:
+    def get_descendant_roads(self) -> dict[RoadUnit:int]:
         descendant_roads = {}
         to_evaluate_ideas = list(self._kids.values())
         count_x = 0
@@ -692,14 +692,14 @@ class IdeaCore:
         ):
             self._addin = 0
 
-    def _del_requiredunit_all_cases(self, base: RoadPath, sufffact: RoadPath):
+    def _del_requiredunit_all_cases(self, base: RoadUnit, sufffact: RoadUnit):
         if base != None and sufffact != None:
             self.del_requiredunit_sufffact(base=base, sufffact=sufffact)
             if len(self._requiredunits[base].sufffacts) == 0:
                 self.del_requiredunit_base(base=base)
 
     def set_required_suff_idea_active_status(
-        self, base: RoadPath, suff_idea_active_status: str
+        self, base: RoadUnit, suff_idea_active_status: str
     ):
         requiredunit_x = self._get_or_create_requiredunit(base=base)
         if suff_idea_active_status == False:
@@ -709,7 +709,7 @@ class IdeaCore:
         elif suff_idea_active_status == True:
             requiredunit_x.suff_idea_active_status = True
 
-    def _get_or_create_requiredunit(self, base: RoadPath):
+    def _get_or_create_requiredunit(self, base: RoadUnit):
         requiredunit_x = None
         try:
             requiredunit_x = self._requiredunits[base]
@@ -722,8 +722,8 @@ class IdeaCore:
 
     def set_required_sufffact(
         self,
-        base: RoadPath,
-        sufffact: RoadPath,
+        base: RoadUnit,
+        sufffact: RoadUnit,
         open: float,
         nigh: float,
         divisor: int,
@@ -733,13 +733,13 @@ class IdeaCore:
             sufffact=sufffact, open=open, nigh=nigh, divisor=divisor
         )
 
-    def del_requiredunit_base(self, base: RoadPath):
+    def del_requiredunit_base(self, base: RoadUnit):
         try:
             self._requiredunits.pop(base)
         except KeyError as e:
             raise InvalidIdeaException(f"No RequiredUnit at '{base}'") from e
 
-    def del_requiredunit_sufffact(self, base: RoadPath, sufffact: RoadPath):
+    def del_requiredunit_sufffact(self, base: RoadUnit, sufffact: RoadUnit):
         required_unit = self._requiredunits[base]
         required_unit.del_sufffact(sufffact=sufffact)
 
@@ -824,15 +824,15 @@ class IdeaCore:
         for required in self._requiredheirs.values():
             required.clear_status()
 
-    def _coalesce_with_requiredunits(self, requiredheirs: dict[RoadPath:RequiredHeir]):
+    def _coalesce_with_requiredunits(self, requiredheirs: dict[RoadUnit:RequiredHeir]):
         requiredheirs_new = get_empty_dict_if_null(x_dict=deepcopy(requiredheirs))
         requiredheirs_new.update(self._requiredunits)
         return requiredheirs_new
 
     def set_requiredheirs(
         self,
-        agenda_idea_dict: dict[RoadPath:],
-        requiredheirs: dict[RoadPath:RequiredCore] = None,
+        agenda_idea_dict: dict[RoadUnit:],
+        requiredheirs: dict[RoadUnit:RequiredCore] = None,
     ):
         if requiredheirs is None:
             requiredheirs = self._requiredheirs
@@ -866,7 +866,7 @@ class IdeaCore:
             x_dict[requiredheir_x.base] = requiredheir_x
         self._requiredheirs = x_dict
 
-    def get_requiredheir(self, base: RoadPath):
+    def get_requiredheir(self, base: RoadUnit):
         return self._requiredheirs.get(base)
 
     def get_requiredunits_dict(self):
@@ -947,7 +947,7 @@ class IdeaCore:
 
         return x_dict
 
-    def find_replace_road(self, old_road: RoadPath, new_road: RoadPath):
+    def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         if is_sub_road(ref_road=self._pad, sub_road=old_road):
             self._pad = change_road(self._pad, old_road, new_road)
         if is_sub_road(ref_road=self._range_source_road, sub_road=old_road):
@@ -1002,8 +1002,8 @@ def ideacore_shop(
     _balancelinks: dict[GroupBrand:BalanceLink] = None,
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
     _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
-    _requiredunits: dict[RoadPath:RequiredUnit] = None,
-    _requiredheirs: dict[RoadPath:RequiredHeir] = None,  # Calculated field
+    _requiredunits: dict[RoadUnit:RequiredUnit] = None,
+    _requiredheirs: dict[RoadUnit:RequiredHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
     _assignedheir: AssignedHeir = None,  # Calculated field
     _acptfactunits: dict[AcptFactUnit] = None,
@@ -1014,8 +1014,8 @@ def ideacore_shop(
     _denom: int = None,
     _numor: int = None,
     _reest: bool = None,
-    _range_source_road: RoadPath = None,
-    _numeric_road: RoadPath = None,
+    _range_source_road: RoadUnit = None,
+    _numeric_road: RoadUnit = None,
     promise: bool = None,
     _problem_bool: bool = None,
     _originunit: OriginUnit = None,
@@ -1125,8 +1125,8 @@ def idearoot_shop(
     _balancelinks: dict[GroupBrand:BalanceLink] = None,
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
     _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
-    _requiredunits: dict[RoadPath:RequiredUnit] = None,
-    _requiredheirs: dict[RoadPath:RequiredHeir] = None,  # Calculated field
+    _requiredunits: dict[RoadUnit:RequiredUnit] = None,
+    _requiredheirs: dict[RoadUnit:RequiredHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
     _assignedheir: AssignedHeir = None,  # Calculated field
     _acptfactunits: dict[AcptFactUnit] = None,
@@ -1137,8 +1137,8 @@ def idearoot_shop(
     _denom: int = None,
     _numor: int = None,
     _reest: bool = None,
-    _range_source_road: RoadPath = None,
-    _numeric_road: RoadPath = None,
+    _range_source_road: RoadUnit = None,
+    _numeric_road: RoadUnit = None,
     promise: bool = None,
     _problem_bool: bool = None,
     _originunit: OriginUnit = None,

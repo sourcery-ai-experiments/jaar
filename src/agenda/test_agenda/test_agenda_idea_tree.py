@@ -487,7 +487,7 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
     assert y_1st_road_in_ordered_list == x_agenda._economy_id
 
 
-def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadPaths():
+def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(_healer=healer_text)

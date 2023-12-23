@@ -1,5 +1,5 @@
 from src.agenda.road import (
-    RoadPath,
+    RoadUnit,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -29,7 +29,7 @@ def test_road_exists():
     # GIVEN
     empty_str = ""
     # WHEN
-    x_road = RoadPath(empty_str)
+    x_road = RoadUnit(empty_str)
     # THEN
     assert x_road == empty_str
 
@@ -49,7 +49,7 @@ def test_road_is_sub_road_correctlyReturnsBool():
     assert is_sub_road(bloomers_road, roses_road) == False
 
 
-def test_road_road_validate_correctlyReturnsRoadPath():
+def test_road_road_validate_correctlyReturnsRoadUnit():
     x_s = get_node_delimiter()
     _economy_id = "x"
     casa_road = f"{_economy_id}{x_s}casa"
@@ -65,7 +65,7 @@ def test_road_road_validate_correctlyReturnsRoadPath():
     assert road_validate(f"AA{x_s}casa", x_s, _economy_id) == casa_road
 
 
-def test_road_get_road_ReturnsCorrectRoadPathWith_delimiter():
+def test_road_get_road_ReturnsCorrectRoadUnitWith_delimiter():
     # GIVEN
     rose_text = "rose"
     comma_delimiter = ","
@@ -94,7 +94,7 @@ def test_road_get_road_ReturnsCorrectRoadPathWith_delimiter():
     assert slash_delimiter_rose_road == brackets_road
 
 
-def test_road_change_road_correctlyRoadPath():
+def test_road_change_road_correctlyRoadUnit():
     # GIVEN
     healer_text = "healer"
     healer_road = get_road(root_label(), healer_text)
@@ -283,7 +283,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyIDScena
 #     assert new_kids_x.get(old_roses_road) is None
 
 
-def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadPaths():
+def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():
     # GIVEN
     x_s = get_node_delimiter()
     nation_text = "nation-state"
@@ -308,7 +308,7 @@ def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadPaths():
     assert x_roads == texas_ancestor_roads
 
 
-def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadPathsWithoutSource():
+def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadUnitsWithoutSource():
     # GIVEN
     x_s = get_node_delimiter()
     nation_text = "nation-state"
@@ -486,7 +486,7 @@ def test_replace_road_node_delimiter_CorrectlyRaisesError():
     )
 
 
-def test_replace_road_node_delimiter_WhenNewdelimiterIsFirstCharacterInRoadPathRaisesError():
+def test_replace_road_node_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaisesError():
     # GIVEN
     cooker_text = "/cooker"
     cleaner_text = "cleaner"

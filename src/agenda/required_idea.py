@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.road import (
-    RoadPath,
+    RoadUnit,
     change_road,
     find_replace_road_key_dict,
     replace_road_node_delimiter,
@@ -17,8 +17,8 @@ class InvalidRequiredException(Exception):
 
 @dataclass
 class AcptFactCore:
-    base: RoadPath
-    pick: RoadPath
+    base: RoadUnit
+    pick: RoadUnit
     open: float = None
     nigh: float = None
 
@@ -37,7 +37,7 @@ class AcptFactCore:
         self.open = None
         self.nigh = None
 
-    def set_attr(self, pick: RoadPath = None, open: float = None, nigh: float = None):
+    def set_attr(self, pick: RoadUnit = None, open: float = None, nigh: float = None):
         if pick != None:
             self.pick = pick
         if open != None:
@@ -45,7 +45,7 @@ class AcptFactCore:
         if nigh != None:
             self.nigh = nigh
 
-    def find_replace_road(self, old_road: RoadPath, new_road: RoadPath):
+    def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self.base = change_road(self.base, old_road, new_road)
         self.pick = change_road(self.pick, old_road, new_road)
 
@@ -110,7 +110,7 @@ def acptfactunits_get_from_dict(x_dict: dict):
 
 
 def acptfactunit_shop(
-    base: RoadPath = None, pick: RoadPath = None, open: float = None, nigh: float = None
+    base: RoadUnit = None, pick: RoadUnit = None, open: float = None, nigh: float = None
 ) -> AcptFactUnit:
     return AcptFactUnit(base=base, pick=pick, open=open, nigh=nigh)
 
@@ -130,7 +130,7 @@ class AcptFactHeir(AcptFactCore):
 
 
 def acptfactheir_shop(
-    base: RoadPath = None, pick: RoadPath = None, open: float = None, nigh: float = None
+    base: RoadUnit = None, pick: RoadUnit = None, open: float = None, nigh: float = None
 ) -> AcptFactHeir:
     return AcptFactHeir(base=base, pick=pick, open=open, nigh=nigh)
 
@@ -227,7 +227,7 @@ class SuffFactStatusFinder:
 
 @dataclass
 class SuffFactUnit:
-    need: RoadPath
+    need: RoadUnit
     open: float = None
     nigh: float = None
     divisor: int = None
@@ -260,7 +260,7 @@ class SuffFactUnit:
             road=self.need, old_delimiter=old_delimiter, new_delimiter=self.delimiter
         )
 
-    def is_in_lineage(self, acptfact_pick: RoadPath):
+    def is_in_lineage(self, acptfact_pick: RoadUnit):
         return is_heir_road(
             src=self.need, heir=acptfact_pick, delimiter=self.delimiter
         ) or is_heir_road(src=acptfact_pick, heir=self.need, delimiter=self.delimiter)
@@ -339,7 +339,7 @@ class SuffFactUnit:
             or (self.open >= acptfactheir.open and self.nigh < acptfactheir.nigh)
         )
 
-    def find_replace_road(self, old_road: RoadPath, new_road: RoadPath):
+    def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self.need = change_road(self.need, old_road, new_road)
 
     def meld(self, other_sufffact):
@@ -365,7 +365,7 @@ class SuffFactUnit:
 
 # class sufffactsshop:
 def sufffactunit_shop(
-    need: RoadPath,
+    need: RoadUnit,
     open: float = None,
     nigh: float = None,
     divisor: float = None,
@@ -408,8 +408,8 @@ def sufffacts_get_from_dict(x_dict: dict) -> dict[str:SuffFactUnit]:
 
 @dataclass
 class RequiredCore:
-    base: RoadPath
-    sufffacts: dict[RoadPath:SuffFactUnit]
+    base: RoadUnit
+    sufffacts: dict[RoadUnit:SuffFactUnit]
     # None: ignore,
     # True: base idea._active_status required be True,
     # False: base idea._active_status required be False
@@ -440,7 +440,7 @@ class RequiredCore:
 
     def set_sufffact(
         self,
-        sufffact: RoadPath,
+        sufffact: RoadUnit,
         open: float = None,
         nigh: float = None,
         divisor: int = None,
@@ -453,7 +453,7 @@ class RequiredCore:
             delimiter=self.delimiter,
         )
 
-    def del_sufffact(self, sufffact: RoadPath):
+    def del_sufffact(self, sufffact: RoadUnit):
         try:
             self.sufffacts.pop(sufffact)
         except KeyError as e:
@@ -461,7 +461,7 @@ class RequiredCore:
                 f"Required unable to delete sufffact {e}"
             ) from e
 
-    def find_replace_road(self, old_road: RoadPath, new_road: RoadPath):
+    def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self.base = change_road(self.base, old_road, new_road)
         self.sufffacts = find_replace_road_key_dict(
             dict_x=self.sufffacts, old_road=old_road, new_road=new_road
@@ -483,8 +483,8 @@ class RequiredCore:
 
 
 def requiredcore_shop(
-    base: RoadPath,
-    sufffacts: dict[RoadPath:SuffFactUnit] = None,
+    base: RoadUnit,
+    sufffacts: dict[RoadUnit:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
     delimiter: str = None,
 ):
@@ -510,8 +510,8 @@ class RequiredUnit(RequiredCore):
 
 
 def requiredunit_shop(
-    base: RoadPath,
-    sufffacts: dict[RoadPath:SuffFactUnit] = None,
+    base: RoadUnit,
+    sufffacts: dict[RoadUnit:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
     delimiter: str = None,
 ):
@@ -538,7 +538,7 @@ class RequiredHeir(RequiredCore):
         for sufffact in self.sufffacts.values():
             sufffact.set_status(acptfactheir=acptfactheir)
 
-    def _get_base_acptfact(self, acptfacts: dict[RoadPath:AcptFactHeir]):
+    def _get_base_acptfact(self, acptfacts: dict[RoadUnit:AcptFactHeir]):
         x_acptfact = None
         if acptfacts is None:
             acptfacts = {}
@@ -552,7 +552,7 @@ class RequiredHeir(RequiredCore):
     def set_curr_idea_active_status(self, bool_x: bool):
         self._curr_idea_active_status = bool_x
 
-    def set_status(self, acptfacts: dict[RoadPath:AcptFactHeir]):
+    def set_status(self, acptfacts: dict[RoadUnit:AcptFactHeir]):
         self.clear_status()
         acptfact = self._get_base_acptfact(acptfacts=acptfacts)
         self._set_sufffact_status(acptfactheir=acptfact)
@@ -579,8 +579,8 @@ class RequiredHeir(RequiredCore):
 
 
 def requiredheir_shop(
-    base: RoadPath,
-    sufffacts: dict[RoadPath:SuffFactUnit] = None,
+    base: RoadUnit,
+    sufffacts: dict[RoadUnit:SuffFactUnit] = None,
     suff_idea_active_status: bool = None,
     _status: bool = None,
     _task: bool = None,

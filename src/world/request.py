@@ -1,5 +1,5 @@
 from src.agenda.road import (
-    RoadPath,
+    RoadUnit,
     is_sub_road,
     RoadNode,
     get_road,
@@ -57,7 +57,7 @@ def create_economyaddress(treasurer_pid: PersonID, economy_id: EconomyID):
     return x_economyaddress
 
 
-class ConcernSubRoadPathException(Exception):
+class ConcernSubRoadUnitException(Exception):
     pass
 
 
@@ -78,24 +78,24 @@ class ConcernUnit:
         self._check_subject_road(x_forkunit.base)
         self.action = x_forkunit
 
-    def _check_subject_road(self, road: RoadPath) -> bool:
+    def _check_subject_road(self, road: RoadUnit) -> bool:
         if road == get_road(self.economyaddress.economy_id, ""):
-            raise ConcernSubRoadPathException(
+            raise ConcernSubRoadUnitException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
         double_economy_id_road = get_road(
             self.economyaddress.economy_id, self.economyaddress.economy_id
         )
         if is_sub_road(road, double_economy_id_road):
-            raise ConcernSubRoadPathException(
+            raise ConcernSubRoadUnitException(
                 f"ConcernUnit setting concern_subject '{road}' failed because first child node cannot be economy_id as bug asumption check."
             )
         if is_sub_road(road, self.economyaddress.economy_id) == False:
-            raise ConcernSubRoadPathException(
+            raise ConcernSubRoadUnitException(
                 f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
-    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadPath:IdeaCore]:
+    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadUnit:IdeaCore]:
         action_and_reason_roads = list(self.action.get_all_roads())
         action_and_reason_roads.extend(self.reason.get_all_roads())
         action_and_reason_roads = sorted(action_and_reason_roads)
@@ -153,14 +153,14 @@ def concernunit_shop(
 
 def create_concernunit(
     economyaddress: EconomyAddress,
-    reason: RoadPath,  # road with economy root node
+    reason: RoadUnit,  # road with economy root node
     good: RoadNode,
     bad: RoadNode,
-    action: RoadPath,  # road with economy root node
+    action: RoadUnit,  # road with economy root node
     positive: RoadNode,
     negative: RoadNode,
 ):
-    """creates concernunit object without roadpath root nodes being explictely defined in the reason and action RoadPaths."""
+    """creates concernunit object without RoadUnit root nodes being explictely defined in the reason and action RoadUnits."""
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_reason(
         create_forkunit(

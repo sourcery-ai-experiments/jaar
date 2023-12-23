@@ -1,5 +1,5 @@
 from src.agenda.road import (
-    RoadPath,
+    RoadUnit,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -72,13 +72,13 @@ def test_ForkUnit_set_descendent_CorrectlySetsAttr():
 
     # WHEN
     cheap_road = get_road(cook_road, "cheap food")
-    x_sway = -2
-    cook_fork.set_descendent(cheap_road, sway=x_sway)
+    x_affect = -2
+    cook_fork.set_descendent(cheap_road, affect=x_affect)
 
     # THEN
     assert cook_fork.descendents != {}
     assert cook_fork.descendents.get(cheap_road) != None
-    assert cook_fork.descendents.get(cheap_road) == x_sway
+    assert cook_fork.descendents.get(cheap_road) == x_affect
 
 
 def test_ForkUnit_del_descendent_CorrectlySetsAttr():
@@ -87,8 +87,8 @@ def test_ForkUnit_del_descendent_CorrectlySetsAttr():
     cook_fork = forkunit_shop(cook_road)
     cheap_road = get_road(cook_road, "cheap food")
     metal_road = get_road(cook_road, "metal pots")
-    cook_fork.set_descendent(cheap_road, sway=-2)
-    cook_fork.set_descendent(metal_road, sway=3)
+    cook_fork.set_descendent(cheap_road, affect=-2)
+    cook_fork.set_descendent(metal_road, affect=3)
     assert len(cook_fork.descendents) == 2
     assert cook_fork.descendents.get(cheap_road) != None
     assert cook_fork.descendents.get(metal_road) != None
@@ -112,13 +112,13 @@ def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "cheap food"), sway=-2)
+    cook_fork.set_descendent(get_road(cook_road, "cheap food"), affect=-2)
     assert len(cook_fork.descendents) == 1
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
     farm_text = "farm fresh"
-    cook_fork.set_descendent(get_road(cook_road, farm_text), sway=3)
+    cook_fork.set_descendent(get_road(cook_road, farm_text), affect=3)
     assert len(cook_fork.descendents) == 2
     assert cook_fork.is_dialectic()
 
@@ -128,12 +128,12 @@ def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "plastic pots"), sway=-5)
+    cook_fork.set_descendent(get_road(cook_road, "plastic pots"), affect=-5)
     assert len(cook_fork.descendents) == 2
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "metal pots"), sway=7)
+    cook_fork.set_descendent(get_road(cook_road, "metal pots"), affect=7)
     assert len(cook_fork.descendents) == 3
     assert cook_fork.is_dialectic()
 
@@ -143,11 +143,11 @@ def test_ForkUnit_get_good_descendents_ReturnsCorrectObj():
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
-    farm_sway = 3
-    cook_fork.set_descendent(farm_road, sway=farm_sway)
+    farm_affect = 3
+    cook_fork.set_descendent(farm_road, affect=farm_affect)
     cheap_road = get_road(cook_road, "cheap food")
-    cheap_sway = -3
-    cook_fork.set_descendent(cheap_road, sway=cheap_sway)
+    cheap_affect = -3
+    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
 
     # WHEN
     x_good_descendents = cook_fork.get_good_descendents()
@@ -155,7 +155,7 @@ def test_ForkUnit_get_good_descendents_ReturnsCorrectObj():
     # THEN
     assert x_good_descendents != {}
     assert len(x_good_descendents) == 1
-    assert x_good_descendents.get(farm_road) == farm_sway
+    assert x_good_descendents.get(farm_road) == farm_affect
 
 
 def test_ForkUnit_get_bad_descendents_ReturnsCorrectObj():
@@ -163,11 +163,11 @@ def test_ForkUnit_get_bad_descendents_ReturnsCorrectObj():
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
-    farm_sway = 3
-    cook_fork.set_descendent(farm_road, sway=farm_sway)
+    farm_affect = 3
+    cook_fork.set_descendent(farm_road, affect=farm_affect)
     cheap_road = get_road(cook_road, "cheap food")
-    cheap_sway = -3
-    cook_fork.set_descendent(cheap_road, sway=cheap_sway)
+    cheap_affect = -3
+    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
 
     # WHEN
     x_bad_descendents = cook_fork.get_bad_descendents()
@@ -175,7 +175,7 @@ def test_ForkUnit_get_bad_descendents_ReturnsCorrectObj():
     # THEN
     assert x_bad_descendents != {}
     assert len(x_bad_descendents) == 1
-    assert x_bad_descendents.get(cheap_road) == cheap_sway
+    assert x_bad_descendents.get(cheap_road) == cheap_affect
 
 
 def test_ForkUnit_get_1_good_ReturnsCorrectObj():
@@ -183,11 +183,11 @@ def test_ForkUnit_get_1_good_ReturnsCorrectObj():
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
-    farm_sway = 3
-    cook_fork.set_descendent(farm_road, sway=farm_sway)
+    farm_affect = 3
+    cook_fork.set_descendent(farm_road, affect=farm_affect)
     cheap_road = get_road(cook_road, "cheap food")
-    cheap_sway = -3
-    cook_fork.set_descendent(cheap_road, sway=cheap_sway)
+    cheap_affect = -3
+    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
 
     # WHEN
     x_bad_descendent = cook_fork.get_1_good()
@@ -201,11 +201,11 @@ def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
-    farm_sway = 3
-    cook_fork.set_descendent(farm_road, sway=farm_sway)
+    farm_affect = 3
+    cook_fork.set_descendent(farm_road, affect=farm_affect)
     cheap_road = get_road(cook_road, "cheap food")
-    cheap_sway = -3
-    cook_fork.set_descendent(cheap_road, sway=cheap_sway)
+    cheap_affect = -3
+    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
 
     # WHEN
     x_bad_descendent = cook_fork.get_1_bad()
@@ -214,23 +214,23 @@ def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
     assert x_bad_descendent == cheap_road
 
 
-def test_ForkUnit_set_descendents_CorrectlyRaisesNoneZeroSwayException():
+def test_ForkUnit_set_descendents_CorrectlyRaisesNoneZeroAffectException():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
 
     # WHEN
     cheap_road = get_road(cook_road, "cheap food")
-    x_sway = 0
+    x_affect = 0
     with pytest_raises(Exception) as excinfo:
-        cook_fork.set_descendent(cheap_road, sway=x_sway)
+        cook_fork.set_descendent(cheap_road, affect=x_affect)
     assert (
         str(excinfo.value)
-        == f"set_descendent sway parameter {x_sway} must be Non-zero number"
+        == f"set_descendent affect parameter {x_affect} must be Non-zero number"
     )
 
 
-def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadPathException():
+def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadUnitException():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -238,9 +238,9 @@ def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadPathException():
     go_cheap_road = get_road(go_road, "cheap food")
 
     # WHEN
-    x_sway = -2
+    x_affect = -2
     with pytest_raises(Exception) as excinfo:
-        cook_fork.set_descendent(go_cheap_road, sway=x_sway)
+        cook_fork.set_descendent(go_cheap_road, affect=x_affect)
     assert (
         str(excinfo.value)
         == f"ForkUnit cannot set descendent '{go_cheap_road}' because base road is '{cook_road}'."
@@ -255,10 +255,10 @@ def test_ForkUnit_get_all_roads_ReturnsCorrectObj():
     farm_text = "farm fresh"
     plastic_text = "plastic pots"
     metal_text = "metal pots"
-    cook_fork.set_descendent(get_road(cook_road, cheap_text), sway=-2)
-    cook_fork.set_descendent(get_road(cook_road, farm_text), sway=3)
-    cook_fork.set_descendent(get_road(cook_road, plastic_text), sway=-5)
-    cook_fork.set_descendent(get_road(cook_road, metal_text), sway=7)
+    cook_fork.set_descendent(get_road(cook_road, cheap_text), affect=-2)
+    cook_fork.set_descendent(get_road(cook_road, farm_text), affect=3)
+    cook_fork.set_descendent(get_road(cook_road, plastic_text), affect=-5)
+    cook_fork.set_descendent(get_road(cook_road, metal_text), affect=7)
     assert len(cook_fork.descendents) == 4
 
     # WHEN

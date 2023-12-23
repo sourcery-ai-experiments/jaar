@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agenda.hreg_time import SuffFactUnitHregTime
 from src.agenda.group import BalanceLink, GroupBrand
-from src.agenda.required_idea import RoadPath
+from src.agenda.required_idea import RoadUnit
 from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
 from pyqt_func import (
     num2str,

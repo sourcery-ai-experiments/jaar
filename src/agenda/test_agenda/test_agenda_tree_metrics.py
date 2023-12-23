@@ -82,7 +82,7 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     assert x_agenda.get_idea_kid(swim_road)._uid != None
 
 
-def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadPath():
+def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     # GIVEN
     healer_text = "Nia"
     x_agenda = agendaunit_shop(healer_text, _weight=10)
@@ -94,7 +94,7 @@ def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadPath():
     assert tree_metrics_before.an_promise_idea_road is None
 
 
-def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoadPath():
+def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
     # GIVEN
     x_agenda = agenda_v001()
     tree_metrics_before = x_agenda.get_tree_metrics()

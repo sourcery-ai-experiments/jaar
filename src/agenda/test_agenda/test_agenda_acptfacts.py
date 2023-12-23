@@ -3,7 +3,7 @@ from src.agenda.required_idea import (
     acptfactunit_shop,
     acptfactheir_shop,
 )
-from src.agenda.idea import ideacore_shop, RoadPath
+from src.agenda.idea import ideacore_shop, RoadUnit
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as examples_get_agenda_with_4_levels,
 )

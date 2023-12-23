@@ -412,7 +412,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "root_relative")
         )
         self.label_intent_family_header1.setText(_translate("MainWindow", "Agenda"))
-        self.label_intent_road_header.setText(_translate("MainWindow", "RoadPath:"))
+        self.label_intent_road_header.setText(_translate("MainWindow", "RoadUnit:"))
         self.label_intent_family_header2.setText(_translate("MainWindow", "Family:"))
         self.label_intent_agenda_importance_header2.setText(
             _translate("MainWindow", "weight:")

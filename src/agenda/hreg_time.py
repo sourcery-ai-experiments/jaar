@@ -1,4 +1,4 @@
-from src.agenda.road import get_road, RoadPath, RoadNode
+from src.agenda.road import get_road, RoadUnit, RoadNode
 from src.agenda.idea import IdeaBare as YB
 from dataclasses import dataclass
 from datetime import datetime
@@ -500,21 +500,21 @@ class HregTimeIdeaSource:
         else:
             return f"{num}rd"
 
-    def get_tech_road(self, local_root) -> RoadPath:
+    def get_tech_road(self, local_root) -> RoadUnit:
         return self.roxd(local_root, "tech")
 
-    def get_tech_type_road(self, local_root, tech_type) -> RoadPath:
+    def get_tech_type_road(self, local_root, tech_type) -> RoadUnit:
         return self.roxd(self.get_tech_road(local_root), tech_type)
 
-    def get_jajatime_road(self, local_root) -> RoadPath:
+    def get_jajatime_road(self, local_root) -> RoadUnit:
         return self.roxd(local_root, get_jajatime_text())
 
     def roxd(
         self,
-        road_begin: RoadPath = None,
+        road_begin: RoadUnit = None,
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
-    ) -> RoadPath:
+    ) -> RoadUnit:
         return get_road(
             road_begin=road_begin,
             terminus_node=terminus_node,
