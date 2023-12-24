@@ -109,12 +109,12 @@ class AgendaUnit:
 
     def make_road(
         self,
-        road_begin: RoadUnit = None,
+        roud_foundation: RoadUnit = None,
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
     ) -> RoadUnit:
         x_road = get_road(
-            road_begin=road_begin,
+            roud_foundation=roud_foundation,
             terminus_node=terminus_node,
             road_nodes=road_nodes,
             delimiter=self._road_node_delimiter,
@@ -786,7 +786,7 @@ class AgendaUnit:
             parent_range = False
         else:
             parent_idea = self.get_idea_kid(parent_road)
-            parent_range = parent_idea._begin != None and parent_idea._close != None
+            parent_range = parent_idea.is_arithmetic()
 
         # figure out if numeric source exists
         x_idea = self.get_idea_kid(idea_road)
@@ -822,7 +822,7 @@ class AgendaUnit:
                 )
         return x_lemmas
 
-    def _get_lemma_acptfactunits(self) -> dict:
+    def _get_lemma_acptfactunits(self) -> dict[RoadUnit:AcptFactUnit]:
         # get all range-root first level kids and range_source_road
         x_lemmas = self._get_rangeroot_1stlevel_associates(
             self._get_rangeroot_acptfactunits()
@@ -861,7 +861,7 @@ class AgendaUnit:
         open: float = None,
         nigh: float = None,
         create_missing_ideas: bool = None,
-    ):  # sourcery skip: low-code-quality
+    ):
         if create_missing_ideas:
             self._set_ideakid_if_empty(road=base)
             self._set_ideakid_if_empty(road=pick)
@@ -871,24 +871,19 @@ class AgendaUnit:
         x_acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         x_idearoot = self.get_idea_kid(self._economy_id)
 
-        if acptfact_base_idea._begin is None and acptfact_base_idea._close is None:
+        if acptfact_base_idea.is_arithmetic() == False:
             x_idearoot.set_acptfactunit(x_acptfactunit)
 
         # if acptfact's idea no range or is a "range-root" then allow acptfact to be set by user
         elif (
-            acptfact_base_idea._begin != None
-            and acptfact_base_idea._close != None
-            and self._is_idea_rangeroot(idea_road=base) == False
+            acptfact_base_idea.is_arithmetic()
+            and self._is_idea_rangeroot(base) == False
         ):
             raise InvalidAgendaException(
                 f"Non range-root acptfact:{base} can only be set by range-root acptfact"
             )
 
-        elif (
-            acptfact_base_idea._begin != None
-            and acptfact_base_idea._close != None
-            and self._is_idea_rangeroot(idea_road=base)
-        ):
+        elif acptfact_base_idea.is_arithmetic() and self._is_idea_rangeroot(base):
             # WHEN idea is "range-root" identify any required.bases that are descendants
             # calculate and set those descendant acptfacts
             # example: timeline range (0-, 1.5e9) is range-root
@@ -903,23 +898,10 @@ class AgendaUnit:
 
             # Find all AcptFact descendants and any range_source_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
-            for current_acptfact in x_idearoot._acptfactunits.values():
-                for lemma_acptfact in lemmas_dict.values():
-                    if lemma_acptfact.base == current_acptfact.base:
-                        x_idearoot.set_acptfactunit(
-                            acptfactunit_shop(
-                                base=lemma_acptfact.base,
-                                pick=lemma_acptfact.pick,
-                                open=lemma_acptfact.open,
-                                nigh=lemma_acptfact.nigh,
-                            )
-                        )
-                        x_idearoot._acptfactunits[lemma_acptfact.base] = lemma_acptfact
-
-            for missing_acptfact in self.get_missing_acptfact_bases().keys():
-                for lemma_acptfact in lemmas_dict.values():
-                    if lemma_acptfact.base == missing_acptfact:
-                        x_idearoot._acptfactunits[lemma_acptfact.base] = lemma_acptfact
+            missing_acptfacts = self.get_missing_acptfact_bases().keys()
+            x_idearoot._apply_any_range_source_road_connections(
+                lemmas_dict, missing_acptfacts
+            )
 
         self.set_agenda_metrics()
 

@@ -361,6 +361,21 @@ class IdeaCore:
     def del_acptfactunit(self, base: RoadUnit):
         self._acptfactunits.pop(base)
 
+    def _apply_any_range_source_road_connections(
+        self,
+        lemmas_dict: dict[RoadUnit:AcptFactUnit],
+        missing_acptfacts: list[AcptFactUnit],
+    ):
+        for current_acptfact in self._acptfactunits.values():
+            for lemma_acptfact in lemmas_dict.values():
+                if lemma_acptfact.base == current_acptfact.base:
+                    self.set_acptfactunit(lemma_acptfact)
+
+        for missing_acptfact in missing_acptfacts:
+            for lemma_acptfact in lemmas_dict.values():
+                if lemma_acptfact.base == missing_acptfact:
+                    self.set_acptfactunit(lemma_acptfact)
+
     def set_agenda_importance(
         self,
         coin_onset_x: float,
@@ -392,12 +407,12 @@ class IdeaCore:
 
     def create_road(
         self,
-        road_begin: RoadUnit = None,
+        roud_foundation: RoadUnit = None,
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
     ):
         return road_get_road(
-            road_begin=road_begin,
+            roud_foundation=roud_foundation,
             terminus_node=terminus_node,
             road_nodes=road_nodes,
             delimiter=self._road_node_delimiter,
@@ -971,6 +986,9 @@ class IdeaCore:
 
     def is_kidless(self):
         return self._kids == {}
+
+    def is_arithmetic(self):
+        return self._begin != None and self._close != None
 
     def is_balanceheirless(self):
         x_bool = None
