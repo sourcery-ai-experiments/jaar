@@ -113,6 +113,9 @@ class IdeaAttrFilter:
     is_expanded: bool = None
     on_meld_weight_action: str = None
 
+    def get_sufffact_need(self):
+        return self.required_sufffact
+
     def set_sufffact_range_attributes_influenced_by_sufffact_idea(
         self,
         sufffact_open,
@@ -142,11 +145,23 @@ class IdeaAttrFilter:
             or self.addin != None
         )
 
+    def has_ratio_attrs(self):
+        return (
+            self.denom != None or self.numor != None or self.reest or self.addin != None
+        )
 
-#     def has_ratio_attrs(self):
-#         return (
-# self.denom != None or self.numor != None or self.reest or self.addin != None
-#         )
+    def set_ratio_attr_defaults_if_none(self):
+        if self.addin is None:
+            self.addin = 0
+        if self.denom is None:
+            self.denom = 1
+        if self.numor is None:
+            self.numor = 1
+        if self.reest is None:
+            self.reest = False
+
+    def has_required_sufffact(self):
+        return self.required_sufffact != None
 
 
 def ideaattrfilter_shop(
@@ -181,16 +196,7 @@ def ideaattrfilter_shop(
     is_expanded: bool = None,
     on_meld_weight_action: str = None,
 ) -> IdeaAttrFilter:
-    # if denom != None or numor != None or reest or addin != None:
-    #     if addin is None:
-    #         addin = 0
-    #     if denom is None:
-    #         denom = 1
-    #     if numor is None:
-    #         numor = 1
-    #     if reest is None:
-    #         reest = False
-    return IdeaAttrFilter(
+    x_ideaattrfilter = IdeaAttrFilter(
         weight=weight,
         uid=uid,
         required=required,
@@ -222,6 +228,9 @@ def ideaattrfilter_shop(
         is_expanded=is_expanded,
         on_meld_weight_action=on_meld_weight_action,
     )
+    if x_ideaattrfilter.has_ratio_attrs():
+        x_ideaattrfilter.set_ratio_attr_defaults_if_none()
+    return x_ideaattrfilter
 
 
 @dataclass
@@ -652,7 +661,7 @@ class IdeaCore:
         return self._originunit.get_dict()
 
     def _meld_attributes_that_will_be_equal(self, other_idea):
-        xl = [
+        to_be_equal_attributes = [
             ("_uid", self._uid, other_idea._uid),
             ("_begin", self._begin, other_idea._begin),
             ("_close", self._close, other_idea._close),
@@ -669,8 +678,9 @@ class IdeaCore:
             ("promise", self.promise, other_idea.promise),
             ("_is_expanded", self._is_expanded, other_idea._is_expanded),
         ]
-        while xl != []:
-            attrs = xl.pop()
+        while to_be_equal_attributes != []:
+            attrs = to_be_equal_attributes.pop()
+            print(f"{attrs[0]=} {attrs[1]=} {attrs[2]=}")
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
                     f"Meld fail idea={self.get_idea_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_idea_road()} {attrs[0]}:{attrs[2]}"

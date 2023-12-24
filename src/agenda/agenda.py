@@ -1244,6 +1244,16 @@ class AgendaUnit:
                         )
                     idea_kid.find_replace_road(old_road=old_road, new_road=new_road)
 
+    def _set_ideaattrfilter_sufffact_ranges(self, x_ideaattrfilter: IdeaAttrFilter):
+        suffact_idea = self.get_idea_kid(x_ideaattrfilter.get_sufffact_need())
+        x_ideaattrfilter.set_sufffact_range_attributes_influenced_by_sufffact_idea(
+            sufffact_open=suffact_idea._begin,
+            sufffact_nigh=suffact_idea._close,
+            # suffact_numor=suffact_idea.anc_numor,
+            sufffact_denom=suffact_idea._denom,
+            # anc_reest=suffact_idea.anc_reest,
+        )
+
     def _set_ideaattrfilter_begin_close(
         self, ideaattrfilter: IdeaAttrFilter, idea_road: RoadUnit
     ) -> (float, float):
@@ -1379,17 +1389,7 @@ class AgendaUnit:
         balancelink_del: GroupBrand = None,
         is_expanded: bool = None,
         on_meld_weight_action: str = None,
-    ):  # sourcery skip: low-code-quality
-        if denom != None or numor != None or reest or addin != None:
-            if addin is None:
-                addin = 0
-            if denom is None:
-                denom = 1
-            if numor is None:
-                numor = 1
-            if reest is None:
-                reest = False
-
+    ):
         x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
             uid=uid,
@@ -1423,19 +1423,9 @@ class AgendaUnit:
             on_meld_weight_action=on_meld_weight_action,
         )
         if x_ideaattrfilter.has_numeric_attrs():
-            self._set_ideaattrfilter_begin_close(
-                ideaattrfilter=x_ideaattrfilter, idea_road=road
-            )
-
-        if x_ideaattrfilter.required_sufffact != None:
-            suffact_idea = self.get_idea_kid(required_sufffact)
-            x_ideaattrfilter.set_sufffact_range_attributes_influenced_by_sufffact_idea(
-                sufffact_open=suffact_idea._begin,
-                sufffact_nigh=suffact_idea._close,
-                # suffact_numor=suffact_idea.anc_numor,
-                sufffact_denom=suffact_idea._denom,
-                # anc_reest=suffact_idea.anc_reest,
-            )
+            self._set_ideaattrfilter_begin_close(x_ideaattrfilter, road)
+        if x_ideaattrfilter.has_required_sufffact():
+            self._set_ideaattrfilter_sufffact_ranges(x_ideaattrfilter)
         x_idea = self.get_idea_kid(road)
         x_idea._set_idea_attr(idea_attr=x_ideaattrfilter)
 

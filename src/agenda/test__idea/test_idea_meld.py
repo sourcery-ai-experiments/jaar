@@ -1,4 +1,4 @@
-from src.agenda.idea import ideacore_shop, ideaattrfilter_shop, IdeaCore
+from src.agenda.idea import ideacore_shop, IdeaAttrFilter, IdeaCore
 from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
@@ -43,7 +43,7 @@ def custom_set_idea_attr(
     problem_bool: bool = None,
     on_meld_weight_action: str = None,
 ):
-    idea_attr = ideaattrfilter_shop(
+    idea_attr = IdeaAttrFilter(
         weight=weight,
         uid=uid,
         required=required,
@@ -459,6 +459,7 @@ def test_idea_attributes_meld_FailRaisesError_addin():
     yx1 = ideacore_shop("spirit", _pad=casa_text)
     custom_set_idea_attr(idea=yx1, addin=x_val)
     yx2 = ideacore_shop("fun", _pad=casa_text)
+    print(f"{yx2._addin=}")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
