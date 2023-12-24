@@ -179,17 +179,17 @@ class IdeaCore:
     _active_status_hx: dict[int:bool] = None
     _road_node_delimiter: str = None
 
-    def is_intent_item(self, base_x: RoadUnit = None):
+    def is_intent_item(self, necessary_base: RoadUnit = None):
         # bool_x = False
         return (
-            self.promise == True
-            and self._active_status == True
-            and (
-                base_x is None
-                or any(
-                    required.base == base_x for required in self._requiredunits.values()
-                )
-            )
+            self.promise
+            and self._active_status
+            and self.base_requiredunit_exists(necessary_base)
+        )
+
+    def base_requiredunit_exists(self, necessary_base: RoadUnit = None):
+        return necessary_base is None or any(
+            required.base == necessary_base for required in self._requiredunits.values()
         )
 
     def record_active_status_hx(
@@ -237,7 +237,7 @@ class IdeaCore:
             ) and acptfactunit.nigh < acptfactheir.open:
                 delete_acptfactunit = True
 
-        if delete_acptfactunit == True:
+        if delete_acptfactunit:
             del self._acptfactunits[acptfactunit.base]
 
     def set_acptfactunit(self, acptfactunit: AcptFactUnit):
@@ -260,6 +260,9 @@ class IdeaCore:
             nigh=base_acptfactunit.nigh,
         )
 
+    def del_acptfactunit(self, base: RoadUnit):
+        self._acptfactunits.pop(base)
+
     def set_agenda_importance(
         self,
         coin_onset_x: float,
@@ -280,12 +283,12 @@ class IdeaCore:
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
-            idea_x
-            for idea_x in self._kids.values()
+            x_idea
+            for x_idea in self._kids.values()
             if (
-                (begin >= idea_x._begin and begin < idea_x._close)
-                or (close > idea_x._begin and close < idea_x._close)
-                or (begin <= idea_x._begin and close >= idea_x._close)
+                (begin >= x_idea._begin and begin < x_idea._close)
+                or (close > x_idea._begin and close < x_idea._close)
+                or (begin <= x_idea._begin and close >= x_idea._close)
             )
         ]
 
@@ -321,9 +324,9 @@ class IdeaCore:
         count_x = 0
         max_count = 1000
         while to_evaluate_ideas != [] and count_x < max_count:
-            idea_x = to_evaluate_ideas.pop()
-            descendant_roads[idea_x.get_idea_road()] = -1
-            to_evaluate_ideas.extend(idea_x._kids.values())
+            x_idea = to_evaluate_ideas.pop()
+            descendant_roads[x_idea.get_idea_road()] = -1
+            to_evaluate_ideas.extend(x_idea._kids.values())
             count_x += 1
 
         if count_x == max_count:
@@ -412,8 +415,8 @@ class IdeaCore:
 
     def set_kids_total_weight(self):
         self._kids_total_weight = 0
-        for idea_x in self._kids.values():
-            self._kids_total_weight += idea_x._weight
+        for x_idea in self._kids.values():
+            self._kids_total_weight += x_idea._weight
 
     def get_balanceheirs_creditor_weight_sum(self) -> float:
         return sum(
@@ -680,7 +683,7 @@ class IdeaCore:
             x_requiredunit.suff_idea_active_status = False
         elif suff_idea_active_status == "Set to Ignore":
             x_requiredunit.suff_idea_active_status = None
-        elif suff_idea_active_status == True:
+        elif suff_idea_active_status:
             x_requiredunit.suff_idea_active_status = True
 
     def _get_or_create_requiredunit(self, base: RoadUnit) -> RequiredUnit:
@@ -756,25 +759,18 @@ class IdeaCore:
         agenda_healer: str = None,
     ):
         self.clear_requiredheirs_status()
-        prev_to_now_active_status = bool(self._active_status)
-        self._active_status = True
-        self._task = False
         self.set_requiredheirs_status()
 
-        for requiredheir in self._requiredheirs.values():
-            # one required.status is false, idea.active_status is false
-            if requiredheir._status == False:
-                self._active_status = False
-            # one required.task is true, idea._task is True
-            if requiredheir._task == True:
-                self._task = True
+        prev_to_now_active_status = deepcopy(self._active_status)
+        self._active_status = self._are_all_requiredheir_active_status_true()
+        self._task = self._is_any_requiredheir_task_true()
 
         if self._active_status == False:
             self._task = None
         elif (
-            self.promise == True
-            and self._active_status == True
-            and self._requiredheirs == {}
+            self.promise
+            and self._active_status
+            and (self._requiredheirs == {} or self._is_any_requiredheir_task_true())
         ):
             self._task = True
 
@@ -792,6 +788,26 @@ class IdeaCore:
             tree_traverse_count=tree_traverse_count,
             prev_active_status=prev_to_now_active_status,
             curr_active_status=self._active_status,
+        )
+
+    # def _set_task(self):
+    #     self._task = False
+    #     if self._active_status == False:
+    #         self._task = None
+    #     elif self.promise and self._active_status and self._requiredheirs == {}:
+    #         self._task = True
+    #     elif self.promise and self._active_status:
+    #         self._task = self._is_any_requiredheir_task_true()
+
+    def _is_any_requiredheir_task_true(self):
+        return any(
+            x_requiredheir._task for x_requiredheir in self._requiredheirs.values()
+        )
+
+    def _are_all_requiredheir_active_status_true(self):
+        return all(
+            x_requiredheir._status != False
+            for x_requiredheir in self._requiredheirs.values()
         )
 
     def clear_requiredheirs_status(self):

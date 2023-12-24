@@ -10,19 +10,18 @@ from src.agenda.road import get_default_economy_root_label as root_label, get_ro
 
 def test_idea_label_fails_when_idea_does_not_exist():
     # GIVEN
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop("Tim")
 
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
+    tim_agenda.add_idea(ideacore_shop(work_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
 
     # WHEN / THEN
-    no_idea_road = x_agenda.make_l1_road("bees")
+    no_idea_road = tim_agenda.make_l1_road("bees")
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_label(old_road=no_idea_road, new_label="pigeons")
+        tim_agenda.edit_idea_label(old_road=no_idea_road, new_label="pigeons")
     assert (
         str(excinfo.value)
         == f"Getting idea_label='bees' failed no item at '{no_idea_road}'"
@@ -31,65 +30,65 @@ def test_idea_label_fails_when_idea_does_not_exist():
 
 def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():
     # GIVEN
-    healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_text = "Tim"
+    tim_agenda = agendaunit_shop(_healer=tim_text)
 
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = x_agenda.make_road(work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
-    assert x_agenda._healer == healer_text
-    assert x_agenda._economy_id == x_agenda._economy_id
-    assert x_agenda._idearoot._label == x_agenda._economy_id
-    work_idea = x_agenda.get_idea_kid(work_road)
-    assert work_idea._pad == x_agenda._economy_id
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_road = tim_agenda.make_road(work_road, swim_text)
+    tim_agenda.add_idea(ideacore_shop(work_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
+    assert tim_agenda._healer == tim_text
+    assert tim_agenda._economy_id == tim_agenda._economy_id
+    assert tim_agenda._idearoot._label == tim_agenda._economy_id
+    work_idea = tim_agenda.get_idea_kid(work_road)
+    assert work_idea._pad == tim_agenda._economy_id
+    swim_idea = tim_agenda.get_idea_kid(swim_road)
     assert swim_idea._pad == work_road
 
     # WHEN
     moon_text = "moon"
-    x_agenda.edit_idea_label(old_road=x_agenda._economy_id, new_label=moon_text)
+    tim_agenda.edit_idea_label(old_road=tim_agenda._economy_id, new_label=moon_text)
 
     # THEN
     # with pytest_raises(Exception) as excinfo:
     #     moon_text = "moon"
-    #     x_agenda.edit_idea_label(old_road=x_agenda._economy_id, new_label=moon_text)
+    #     tim_agenda.edit_idea_label(old_road=tim_agenda._economy_id, new_label=moon_text)
     # assert (
     #     str(excinfo.value)
-    #     == f"Cannot set idearoot to string other than '{x_agenda._economy_id}'"
+    #     == f"Cannot set idearoot to string other than '{tim_agenda._economy_id}'"
     # )
 
-    assert x_agenda._idearoot._label != moon_text
-    assert x_agenda._idearoot._label == x_agenda._economy_id
+    assert tim_agenda._idearoot._label != moon_text
+    assert tim_agenda._idearoot._label == tim_agenda._economy_id
 
 
 def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsDifferent():
     # GIVEN
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = x_agenda.make_road(work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
+    swim_road = tim_agenda.make_road(work_road, swim_text)
+    tim_agenda.add_idea(ideacore_shop(work_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(swim_text), pad=work_road)
     sun_text = "sun"
-    x_agenda._economy_id = sun_text
-    assert x_agenda._healer == healer_text
-    assert x_agenda._economy_id == sun_text
-    assert x_agenda._idearoot._label == root_label()
-    work_idea = x_agenda.get_idea_kid(work_road)
+    tim_agenda._economy_id = sun_text
+    assert tim_agenda._healer == healer_text
+    assert tim_agenda._economy_id == sun_text
+    assert tim_agenda._idearoot._label == root_label()
+    work_idea = tim_agenda.get_idea_kid(work_road)
     assert work_idea._pad == root_label()
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_idea = tim_agenda.get_idea_kid(swim_road)
     assert swim_idea._pad == work_road
 
     # WHEN
 
     with pytest_raises(Exception) as excinfo:
         moon_text = "moon"
-        x_agenda.edit_idea_label(old_road=root_label(), new_label=moon_text)
+        tim_agenda.edit_idea_label(old_road=root_label(), new_label=moon_text)
     assert (
         str(excinfo.value) == f"Cannot set idearoot to string other than '{sun_text}'"
     )
@@ -98,57 +97,57 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsDifferent()
 def test_agenda_set_economy_id_CorrectlySetsAttr():
     # GIVEN
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    old_work_road = x_agenda.make_l1_road(work_text)
+    old_work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    old_swim_road = x_agenda.make_road(old_work_road, swim_text)
-    x_agenda.add_idea(ideacore_shop(work_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=old_work_road)
-    assert x_agenda._healer == healer_text
-    assert x_agenda._idearoot._label == x_agenda._economy_id
-    work_idea = x_agenda.get_idea_kid(old_work_road)
-    assert work_idea._pad == x_agenda._economy_id
-    swim_idea = x_agenda.get_idea_kid(old_swim_road)
+    old_swim_road = tim_agenda.make_road(old_work_road, swim_text)
+    tim_agenda.add_idea(ideacore_shop(work_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(swim_text), pad=old_work_road)
+    assert tim_agenda._healer == healer_text
+    assert tim_agenda._idearoot._label == tim_agenda._economy_id
+    work_idea = tim_agenda.get_idea_kid(old_work_road)
+    assert work_idea._pad == tim_agenda._economy_id
+    swim_idea = tim_agenda.get_idea_kid(old_swim_road)
     assert swim_idea._pad == old_work_road
-    assert x_agenda._economy_id == x_agenda._economy_id
+    assert tim_agenda._economy_id == tim_agenda._economy_id
 
     # WHEN
     economy_id_text = "Sun"
-    x_agenda.set_economy_id(economy_id=economy_id_text)
+    tim_agenda.set_economy_id(economy_id=economy_id_text)
 
     # THEN
-    new_work_road = x_agenda.make_road(economy_id_text, work_text)
+    new_work_road = tim_agenda.make_road(economy_id_text, work_text)
     swim_text = "swim"
-    new_swim_road = x_agenda.make_road(new_work_road, swim_text)
-    assert x_agenda._economy_id == economy_id_text
-    assert x_agenda._idearoot._label == economy_id_text
-    work_idea = x_agenda.get_idea_kid(new_work_road)
+    new_swim_road = tim_agenda.make_road(new_work_road, swim_text)
+    assert tim_agenda._economy_id == economy_id_text
+    assert tim_agenda._idearoot._label == economy_id_text
+    work_idea = tim_agenda.get_idea_kid(new_work_road)
     assert work_idea._pad == economy_id_text
-    swim_idea = x_agenda.get_idea_kid(new_swim_road)
+    swim_idea = tim_agenda.get_idea_kid(new_swim_road)
     assert swim_idea._pad == new_work_road
 
 
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_healer=healer_text)
 
     old_healer_text = "healer"
-    old_healer_road = x_agenda.make_l1_road(old_healer_text)
+    old_healer_road = tim_agenda.make_l1_road(old_healer_text)
     bloomers_text = "bloomers"
-    old_bloomers_road = x_agenda.make_road(old_healer_road, bloomers_text)
+    old_bloomers_road = tim_agenda.make_road(old_healer_road, bloomers_text)
     roses_text = "roses"
-    old_roses_road = x_agenda.make_road(old_bloomers_road, roses_text)
+    old_roses_road = tim_agenda.make_road(old_bloomers_road, roses_text)
     red_text = "red"
-    old_red_road = x_agenda.make_road(old_roses_road, red_text)
+    old_red_road = tim_agenda.make_road(old_roses_road, red_text)
 
-    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(bloomers_text), pad=old_healer_road)
-    x_agenda.add_idea(ideacore_shop(roses_text), pad=old_bloomers_road)
-    x_agenda.add_idea(ideacore_shop(red_text), pad=old_roses_road)
-    r_idea_roses = x_agenda.get_idea_kid(old_roses_road)
-    r_idea_bloomers = x_agenda.get_idea_kid(old_bloomers_road)
+    tim_agenda.add_idea(ideacore_shop(old_healer_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(bloomers_text), pad=old_healer_road)
+    tim_agenda.add_idea(ideacore_shop(roses_text), pad=old_bloomers_road)
+    tim_agenda.add_idea(ideacore_shop(red_text), pad=old_roses_road)
+    r_idea_roses = tim_agenda.get_idea_kid(old_roses_road)
+    r_idea_bloomers = tim_agenda.get_idea_kid(old_bloomers_road)
 
     assert r_idea_bloomers._kids.get(roses_text) != None
     assert r_idea_roses._pad == old_bloomers_road
@@ -158,70 +157,70 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 
     # WHEN
     new_healer_text = "globe"
-    new_healer_road = x_agenda.make_l1_road(new_healer_text)
-    x_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
+    new_healer_road = tim_agenda.make_l1_road(new_healer_text)
+    tim_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
 
     # THEN
-    assert x_agenda._idearoot._kids.get(new_healer_text) != None
-    assert x_agenda._idearoot._kids.get(old_healer_text) is None
+    assert tim_agenda._idearoot._kids.get(new_healer_text) != None
+    assert tim_agenda._idearoot._kids.get(old_healer_text) is None
 
     assert r_idea_bloomers._pad == new_healer_road
     assert r_idea_bloomers._kids.get(roses_text) != None
 
     r_idea_roses = r_idea_bloomers._kids.get(roses_text)
-    new_bloomers_road = x_agenda.make_road(new_healer_road, bloomers_text)
+    new_bloomers_road = tim_agenda.make_road(new_healer_road, bloomers_text)
     assert r_idea_roses._pad == new_bloomers_road
     assert r_idea_roses._kids.get(red_text) != None
     r_idea_red = r_idea_roses._kids.get(red_text)
-    new_roses_road = x_agenda.make_road(new_bloomers_road, roses_text)
+    new_roses_road = tim_agenda.make_road(new_bloomers_road, roses_text)
     assert r_idea_red._pad == new_roses_road
 
 
 def test_agenda_edit_idea_label_Changes_acptfactunits():
     # GIVEN agenda with acptfactunits that will be changed
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_healer=healer_text)
 
     healer_text = "healer"
-    healer_road = x_agenda.make_l1_road(healer_text)
+    healer_road = tim_agenda.make_l1_road(healer_text)
     bloomers_text = "bloomers"
-    bloomers_road = x_agenda.make_road(healer_road, bloomers_text)
+    bloomers_road = tim_agenda.make_road(healer_road, bloomers_text)
     roses_text = "roses"
-    roses_road = x_agenda.make_road(bloomers_road, roses_text)
+    roses_road = tim_agenda.make_road(bloomers_road, roses_text)
     old_water_text = "water"
-    old_water_road = x_agenda.make_l1_road(old_water_text)
+    old_water_road = tim_agenda.make_l1_road(old_water_text)
     rain_text = "rain"
-    old_rain_road = x_agenda.make_road(old_water_road, rain_text)
+    old_rain_road = tim_agenda.make_road(old_water_road, rain_text)
 
-    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(roses_text), pad=bloomers_road)
-    x_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
-    x_agenda.set_acptfact(base=old_water_road, pick=old_rain_road)
+    tim_agenda.add_idea(ideacore_shop(healer_text), pad=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideacore_shop(roses_text), pad=bloomers_road)
+    tim_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
+    tim_agenda.set_acptfact(base=old_water_road, pick=old_rain_road)
 
-    idea_x = x_agenda.get_idea_kid(roses_road)
-    assert x_agenda._idearoot._acptfactunits[old_water_road] != None
-    old_water_rain_acptfactunit = x_agenda._idearoot._acptfactunits[old_water_road]
+    idea_x = tim_agenda.get_idea_kid(roses_road)
+    assert tim_agenda._idearoot._acptfactunits[old_water_road] != None
+    old_water_rain_acptfactunit = tim_agenda._idearoot._acptfactunits[old_water_road]
     assert old_water_rain_acptfactunit.base == old_water_road
     assert old_water_rain_acptfactunit.pick == old_rain_road
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = x_agenda.make_l1_road(new_water_text)
-    x_agenda.add_idea(ideacore_shop(new_water_text), pad=x_agenda._economy_id)
-    assert x_agenda._idearoot._acptfactunits.get(new_water_road) is None
-    x_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
+    new_water_road = tim_agenda.make_l1_road(new_water_text)
+    tim_agenda.add_idea(ideacore_shop(new_water_text), pad=tim_agenda._economy_id)
+    assert tim_agenda._idearoot._acptfactunits.get(new_water_road) is None
+    tim_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
     # THEN
-    assert x_agenda._idearoot._acptfactunits.get(old_water_road) is None
-    assert x_agenda._idearoot._acptfactunits.get(new_water_road) != None
-    new_water_rain_acptfactunit = x_agenda._idearoot._acptfactunits[new_water_road]
+    assert tim_agenda._idearoot._acptfactunits.get(old_water_road) is None
+    assert tim_agenda._idearoot._acptfactunits.get(new_water_road) != None
+    new_water_rain_acptfactunit = tim_agenda._idearoot._acptfactunits[new_water_road]
     assert new_water_rain_acptfactunit.base == new_water_road
-    new_rain_road = x_agenda.make_road(new_water_road, rain_text)
+    new_rain_road = tim_agenda.make_road(new_water_road, rain_text)
     assert new_water_rain_acptfactunit.pick == new_rain_road
 
-    assert x_agenda._idearoot._acptfactunits.get(new_water_road)
-    acptfactunit_obj = x_agenda._idearoot._acptfactunits.get(new_water_road)
-    # for acptfactunit_key, acptfactunit_obj in x_agenda._idearoot._acptfactunits.items():
+    assert tim_agenda._idearoot._acptfactunits.get(new_water_road)
+    acptfactunit_obj = tim_agenda._idearoot._acptfactunits.get(new_water_road)
+    # for acptfactunit_key, acptfactunit_obj in tim_agenda._idearoot._acptfactunits.items():
     #     assert acptfactunit_key == new_water_road
     assert acptfactunit_obj.base == new_water_road
     assert acptfactunit_obj.pick == new_rain_road
@@ -230,52 +229,52 @@ def test_agenda_edit_idea_label_Changes_acptfactunits():
 def test_agenda_edit_idea_label_ChangesIdeaRoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_healer=healer_text)
 
     old_healer_text = "healer"
-    old_healer_road = x_agenda.make_l1_road(old_healer_text)
-    x_agenda.add_idea(ideacore_shop(old_healer_text), pad=x_agenda._economy_id)
-    x_agenda.edit_idea_attr(x_agenda._economy_id, range_source_road=old_healer_road)
-    assert x_agenda._idearoot._range_source_road == old_healer_road
+    old_healer_road = tim_agenda.make_l1_road(old_healer_text)
+    tim_agenda.add_idea(ideacore_shop(old_healer_text), pad=tim_agenda._economy_id)
+    tim_agenda.edit_idea_attr(tim_agenda._economy_id, range_source_road=old_healer_road)
+    assert tim_agenda._idearoot._range_source_road == old_healer_road
 
     # WHEN
     new_healer_text = "globe"
-    x_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
+    tim_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
 
     # THEN
-    new_healer_road = x_agenda.make_l1_road(new_healer_text)
-    assert x_agenda._idearoot._range_source_road == new_healer_road
+    new_healer_road = tim_agenda.make_l1_road(new_healer_text)
+    assert tim_agenda._idearoot._range_source_road == new_healer_road
 
 
 def test_agenda_edit_idea_label_ChangesIdeaKidN_range_source_road():
     healer_text = "Bob"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    bob_agenda = agendaunit_shop(_healer=healer_text)
 
     healer_text = "healer"
-    healer_road = x_agenda.make_l1_road(healer_text)
+    healer_road = bob_agenda.make_l1_road(healer_text)
     old_water_text = "water"
-    old_water_road = x_agenda.make_road(healer_road, old_water_text)
+    old_water_road = bob_agenda.make_road(healer_road, old_water_text)
     rain_text = "rain"
-    old_rain_road = x_agenda.make_road(old_water_road, rain_text)
+    old_rain_road = bob_agenda.make_road(old_water_road, rain_text)
     mood_text = "mood"
-    mood_road = x_agenda.make_l1_road(mood_text)
-    x_agenda.add_idea(ideacore_shop(healer_text), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(old_water_text), pad=healer_road)
-    x_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
-    x_agenda.add_idea(ideacore_shop(mood_text), pad=x_agenda._economy_id)
+    mood_road = bob_agenda.make_l1_road(mood_text)
+    bob_agenda.add_idea(ideacore_shop(healer_text), pad=bob_agenda._economy_id)
+    bob_agenda.add_idea(ideacore_shop(old_water_text), pad=healer_road)
+    bob_agenda.add_idea(ideacore_shop(rain_text), pad=old_water_road)
+    bob_agenda.add_idea(ideacore_shop(mood_text), pad=bob_agenda._economy_id)
 
-    x_agenda.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
-    mood_idea = x_agenda.get_idea_kid(mood_road)
+    bob_agenda.edit_idea_attr(road=mood_road, range_source_road=old_rain_road)
+    mood_idea = bob_agenda.get_idea_kid(mood_road)
     assert mood_idea._range_source_road == old_rain_road
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = x_agenda.make_road(healer_road, new_water_text)
-    new_rain_road = x_agenda.make_road(new_water_road, rain_text)
-    x_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
+    new_water_road = bob_agenda.make_road(healer_road, new_water_text)
+    new_rain_road = bob_agenda.make_road(new_water_road, rain_text)
+    bob_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
     # THEN
-    # for idea_x in x_agenda._idearoot._kids.values():
+    # for idea_x in bob_agenda._idearoot._kids.values():
     #     print(f"{idea_x._pad=} {idea_x._label=}")
     #     for idea_y in idea_x._kids.values():
     #         print(f"{idea_y._pad=} {idea_y._label=}")
@@ -287,17 +286,17 @@ def test_agenda_edit_idea_label_ChangesIdeaKidN_range_source_road():
 
 def test_agenda_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
+    sue_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
-    old_weekday_road = x_agenda.make_l1_road(old_weekday_text)
+    old_weekday_road = sue_agenda.make_l1_road(old_weekday_text)
     wednesday_text = "Wednesday"
-    old_wednesday_road = x_agenda.make_road(old_weekday_road, wednesday_text)
-    work_idea = x_agenda.get_idea_kid(x_agenda.make_l1_road("work"))
+    old_wednesday_road = sue_agenda.make_road(old_weekday_road, wednesday_text)
+    work_idea = sue_agenda.get_idea_kid(sue_agenda.make_l1_road("work"))
     # work_wk_required = requiredunit_shop(weekday, sufffacts={wed_sufffact.need: wed_sufffact})
     # nation_required = requiredunit_shop(nationstate, sufffacts={usa_sufffact.need: usa_sufffact})
     assert len(work_idea._requiredunits) == 2
     assert work_idea._requiredunits.get(old_weekday_road) != None
-    wednesday_idea = x_agenda.get_idea_kid(old_weekday_road)
+    wednesday_idea = sue_agenda.get_idea_kid(old_weekday_road)
     work_weekday_required = work_idea._requiredunits.get(old_weekday_road)
     assert work_weekday_required.sufffacts.get(old_wednesday_road) != None
     assert (
@@ -305,8 +304,8 @@ def test_agenda_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
         == old_wednesday_road
     )
     new_weekday_text = "days of week"
-    new_weekday_road = x_agenda.make_l1_road(new_weekday_text)
-    new_wednesday_road = x_agenda.make_road(new_weekday_road, wednesday_text)
+    new_weekday_road = sue_agenda.make_l1_road(new_weekday_text)
+    new_wednesday_road = sue_agenda.make_road(new_weekday_road, wednesday_text)
     assert work_idea._requiredunits.get(new_weekday_text) is None
 
     # WHEN
@@ -314,7 +313,7 @@ def test_agenda_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
     #     print(f"Before {key_x=} {required_x.base=}")
     print(f"BEFORE {wednesday_idea._label=}")
     print(f"BEFORE {wednesday_idea._pad=}")
-    x_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
+    sue_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
     # for key_x, required_x in work_idea._requiredunits.items():
     #     print(f"AFTER {key_x=} {required_x.base=}")
     print(f"AFTER {wednesday_idea._label=}")
@@ -334,36 +333,38 @@ def test_agenda_edit_idea_label_ChangesIdeaRequiredUnitsScenario1():
 
 def test_agenda_set_healer_CorrectlyChangesBoth():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
-    assert x_agenda._healer == "Noa"
-    assert x_agenda._idearoot._label == x_agenda._economy_id
+    sue_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
+    assert sue_agenda._healer == "Sue"
+    assert sue_agenda._idearoot._label == sue_agenda._economy_id
     # mid_label1 = "tim"
-    # x_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
-    # assert x_agenda._healer == old_label
-    # assert x_agenda._idearoot._label == mid_label1
+    # sue_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
+    # assert sue_agenda._healer == old_label
+    # assert sue_agenda._idearoot._label == mid_label1
 
     # WHEN
-    new_label2 = "bob"
-    x_agenda.set_healer(new_healer=new_label2)
+    bob_text = "bob"
+    sue_agenda.set_healer(new_healer=bob_text)
 
     # THEN
-    assert x_agenda._healer == new_label2
-    assert x_agenda._idearoot._label == x_agenda._economy_id
+    assert sue_agenda._healer == bob_text
+    assert sue_agenda._idearoot._label == sue_agenda._economy_id
 
 
 def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
+    sue_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
     old_weekday_text = "weekdays"
-    old_weekday_road = x_agenda.make_l1_road(old_weekday_text)
+    old_weekday_road = sue_agenda.make_l1_road(old_weekday_text)
 
     # WHEN / THEN
     new_weekday_text = "days, of week"
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
+        sue_agenda.edit_idea_label(
+            old_road=old_weekday_road, new_label=new_weekday_text
+        )
     assert (
         str(excinfo.value)
-        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {x_agenda._road_node_delimiter}"
+        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {sue_agenda._road_node_delimiter}"
     )
 
 

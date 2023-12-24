@@ -170,39 +170,31 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # idea "
 
     # test root init status:
-    assert x_agenda._idearoot._descendant_promise_count is None
-    assert x_agenda._idearoot._all_party_credit is None
-    assert x_agenda._idearoot._all_party_debt is None
-    assert x_agenda._idearoot._kids[work_text]._descendant_promise_count is None
-    assert x_agenda._idearoot._kids[work_text]._all_party_credit is None
-    assert x_agenda._idearoot._kids[work_text]._all_party_debt is None
-    assert (
-        x_agenda._idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count
-        is None
-    )
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_credit is None
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_debt is None
+    x_idearoot = x_agenda.get_idea_kid(x_agenda._economy_id)
+    assert x_idearoot._descendant_promise_count is None
+    assert x_idearoot._all_party_credit is None
+    assert x_idearoot._all_party_debt is None
+    assert x_idearoot._kids[work_text]._descendant_promise_count is None
+    assert x_idearoot._kids[work_text]._all_party_credit is None
+    assert x_idearoot._kids[work_text]._all_party_debt is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_credit is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt is None
 
     # WHEN
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._descendant_promise_count == 3
-    assert x_agenda._idearoot._kids[work_text]._descendant_promise_count == 1
-    assert (
-        x_agenda._idearoot._kids[work_text]._kids[email_text]._descendant_promise_count
-        == 0
-    )
-    assert (
-        x_agenda._idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count
-        == 0
-    )
-    assert x_agenda._idearoot._all_party_credit == True
-    assert x_agenda._idearoot._all_party_debt == True
-    assert x_agenda._idearoot._kids[work_text]._all_party_credit == True
-    assert x_agenda._idearoot._kids[work_text]._all_party_debt == True
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_credit == True
-    assert x_agenda._idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
+    assert x_idearoot._descendant_promise_count == 3
+    assert x_idearoot._kids[work_text]._descendant_promise_count == 1
+    assert x_idearoot._kids[work_text]._kids[email_text]._descendant_promise_count == 0
+    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count == 0
+    assert x_idearoot._all_party_credit == True
+    assert x_idearoot._all_party_debt == True
+    assert x_idearoot._kids[work_text]._all_party_credit == True
+    assert x_idearoot._kids[work_text]._all_party_debt == True
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_credit == True
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
 
 
 def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():

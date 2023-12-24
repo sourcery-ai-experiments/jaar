@@ -925,17 +925,9 @@ class AgendaUnit:
     def set_idearoot_acptfactunit(
         self, base: RoadUnit, pick: RoadUnit, open: float = None, nigh: float = None
     ):
-        acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
-        try:
-            acptfact_obj = self._idearoot._acptfactunits[base]
-            if pick != None:
-                acptfact_obj.set_attr(pick=pick)
-            if open != None:
-                acptfact_obj.set_attr(open=open)
-            if nigh != None:
-                acptfact_obj.set_attr(nigh=nigh)
-        except KeyError as e:
-            self._idearoot._acptfactunits[acptfactunit.base] = acptfactunit
+        self._idearoot.set_acptfactunit(
+            acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
+        )
 
     def get_acptfactunits_base_and_acptfact_list(self) -> list:
         acptfact_list = list(self._idearoot._acptfactunits.values())
@@ -955,7 +947,7 @@ class AgendaUnit:
         return list_x
 
     def del_acptfact(self, base: RoadUnit):
-        self._idearoot._acptfactunits.pop(base)
+        self._idearoot.del_acptfactunit(base)
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = TreeMetrics()
@@ -968,16 +960,17 @@ class AgendaUnit:
             idea_road=self._idearoot.get_idea_road(),
         )
 
-        idea_list = [self._idearoot]
-        while idea_list != []:
-            idea_x = idea_list.pop()
-            if idea_x._kids != None:
-                for idea_kid in idea_x._kids.values():
-                    self._eval_tree_metrics(idea_x, idea_kid, tree_metrics, idea_list)
+        x_idea_list = [self._idearoot]
+        while x_idea_list != []:
+            parent_idea = x_idea_list.pop()
+            for idea_kid in parent_idea._kids.values():
+                self._eval_tree_metrics(
+                    parent_idea, idea_kid, tree_metrics, x_idea_list
+                )
         return tree_metrics
 
-    def _eval_tree_metrics(self, idea_x, idea_kid, tree_metrics, idea_list):
-        idea_kid._level = idea_x._level + 1
+    def _eval_tree_metrics(self, parent_idea, idea_kid, tree_metrics, x_idea_list):
+        idea_kid._level = parent_idea._level + 1
         tree_metrics.evaluate_node(
             level=idea_kid._level,
             requireds=idea_kid._requiredunits,
@@ -986,7 +979,7 @@ class AgendaUnit:
             promise=idea_kid.promise,
             idea_road=idea_kid.get_idea_road(),
         )
-        idea_list.append(idea_kid)
+        x_idea_list.append(idea_kid)
 
     def get_idea_uid_max(self) -> int:
         tree_metrics = self.get_tree_metrics()
@@ -1482,7 +1475,9 @@ class AgendaUnit:
         intent_state: bool = True,
     ) -> list[IdeaCore]:
         return [
-            idea for idea in self.get_idea_list() if idea.is_intent_item(base_x=base)
+            idea
+            for idea in self.get_idea_list()
+            if idea.is_intent_item(necessary_base=base)
         ]
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
