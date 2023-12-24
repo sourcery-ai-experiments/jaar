@@ -864,62 +864,58 @@ class IdeaCore:
         self._requiredunits[required.base] = required
 
     def set_requiredheirs_status(self):
+        self.clear_requiredheirs_status()
         for x_requiredheir in self._requiredheirs.values():
             x_requiredheir.set_status(acptfacts=self._acptfactheirs)
 
     def set_active_status(
         self,
         tree_traverse_count: int,
-        agenda_groups: dict[GroupBrand:GroupUnit] = None,
-        agenda_healer: str = None,
+        agenda_groupunits: dict[GroupBrand:GroupUnit] = None,
+        agenda_healer: PartyPID = None,
     ):
-        self.clear_requiredheirs_status()
-        self.set_requiredheirs_status()
-
         prev_to_now_active_status = deepcopy(self._active_status)
-        self._active_status = self._are_all_requiredheir_active_status_true()
-        self._task = self._is_any_requiredheir_task_true()
-
-        if self._active_status == False:
-            self._task = None
-        elif (
-            self.promise
-            and self._active_status
-            and (self._requiredheirs == {} or self._is_any_requiredheir_task_true())
-        ):
-            self._task = True
-
-        if (
-            self._active_status
-            and agenda_groups != None
-            and agenda_healer != None
-            and self._assignedheir._suffgroups != {}
-        ):
-            self._assignedheir.set_group_party(agenda_groups, agenda_healer)
-            if self._assignedheir._group_party == False:
-                self._active_status = False
-
+        self._active_status = self._create_active_status(
+            agenda_groupunits=agenda_groupunits, agenda_healer=agenda_healer
+        )
+        self._set_idea_task()
         self.record_active_status_hx(
             tree_traverse_count=tree_traverse_count,
             prev_active_status=prev_to_now_active_status,
             curr_active_status=self._active_status,
         )
 
-    # def _set_task(self):
-    #     self._task = False
-    #     if self._active_status == False:
-    #         self._task = None
-    #     elif self.promise and self._active_status and self._requiredheirs == {}:
-    #         self._task = True
-    #     elif self.promise and self._active_status:
-    #         self._task = self._is_any_requiredheir_task_true()
+    def _set_idea_task(self):
+        self._task = False
+        if (
+            self.promise
+            and self._active_status
+            and (self._requiredheirs == {} or self._is_any_requiredheir_task_true())
+        ):
+            self._task = True
 
-    def _is_any_requiredheir_task_true(self):
+    def _is_any_requiredheir_task_true(self) -> bool:
         return any(
             x_requiredheir._task for x_requiredheir in self._requiredheirs.values()
         )
 
-    def _are_all_requiredheir_active_status_true(self):
+    def _create_active_status(
+        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_healer: PartyPID
+    ) -> bool:
+        self.set_requiredheirs_status()
+        x_bool = self._are_all_requiredheir_active_status_true()
+        if (
+            x_bool
+            and agenda_groupunits != {}
+            and agenda_healer != None
+            and self._assignedheir._suffgroups != {}
+        ):
+            self._assignedheir.set_healer_assigned(agenda_groupunits, agenda_healer)
+            if self._assignedheir._healer_assigned == False:
+                x_bool = False
+        return x_bool
+
+    def _are_all_requiredheir_active_status_true(self) -> bool:
         return all(
             x_requiredheir._status != False
             for x_requiredheir in self._requiredheirs.values()

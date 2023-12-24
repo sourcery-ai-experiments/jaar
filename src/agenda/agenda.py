@@ -836,9 +836,9 @@ class AgendaUnit:
             if count_x == 9998:
                 raise InvalidAgendaException("lemma loop failed")
 
-            lemma_y = x_lemmas.get_unevaluated_lemma()
-            lemma_idea = lemma_y.x_idea
-            acptfact_x = lemma_y.calc_acptfact
+            y_lemma = x_lemmas.get_unevaluated_lemma()
+            lemma_idea = y_lemma.x_idea
+            acptfact_x = y_lemma.calc_acptfact
 
             road_x = self.make_road(lemma_idea._pad, lemma_idea._label)
             lemma_acptfactunits[road_x] = acptfact_x
@@ -1728,7 +1728,7 @@ class AgendaUnit:
         idea_kid.clear_balancelines()
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
-            agenda_groups=self._groups,
+            agenda_groupunits=self._groups,
             agenda_healer=self._healer,
         )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)

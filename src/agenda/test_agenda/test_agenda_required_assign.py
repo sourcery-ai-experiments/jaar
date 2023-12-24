@@ -64,7 +64,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 
     # THEN
     assert run_idea._assignedheir != None
-    assert run_idea._assignedheir._group_party == False
+    assert run_idea._assignedheir._healer_assigned == False
 
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
@@ -72,8 +72,8 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
         assignunit=assigned_unit_x,
         agenda_groups=x_agenda._groups,
     )
-    print(f"{assigned_heir_x._group_party=}")
-    assert run_idea._assignedheir._group_party == assigned_heir_x._group_party
+    print(f"{assigned_heir_x._healer_assigned=}")
+    assert run_idea._assignedheir._healer_assigned == assigned_heir_x._healer_assigned
     assert run_idea._assignedheir == assigned_heir_x
 
 

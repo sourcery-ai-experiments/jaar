@@ -44,31 +44,33 @@ def create_assignedunit(suffgroup: GroupBrand):
 @dataclass
 class AssignedHeir:
     _suffgroups: dict[GroupBrand:GroupBrand]
-    _group_party: bool
+    _healer_assigned: bool
 
     def _get_all_partys(
         self,
         agenda_groups: dict[GroupBrand:GroupUnit],
         groupbrand_dict: dict[GroupBrand:],
-    ):
+    ) -> dict[GroupBrand:GroupUnit]:
         dict_x = {}
         for groupbrand_x in groupbrand_dict:
             dict_x |= agenda_groups.get(groupbrand_x)._partys
         return dict_x
 
-    def _get_all_suff_partys(self, agenda_groups: dict[GroupBrand:GroupUnit]):
+    def _get_all_suff_partys(
+        self, agenda_groups: dict[GroupBrand:GroupUnit]
+    ) -> dict[GroupBrand:GroupUnit]:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
-    def set_group_party(
+    def set_healer_assigned(
         self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_healer: PartyPID
     ):
-        self._group_party = False
+        self._healer_assigned = False
         if self._suffgroups == {}:
-            self._group_party = True
+            self._healer_assigned = True
         else:
             all_suff_partys_x = self._get_all_suff_partys(agenda_groups)
             if all_suff_partys_x.get(agenda_healer) != None:
-                self._group_party = True
+                self._healer_assigned = True
 
     def set_suffgroups(
         self,
@@ -116,14 +118,14 @@ class AssignedHeir:
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupBrand:GroupBrand] = None, _group_party: bool = None
+    _suffgroups: dict[GroupBrand:GroupBrand] = None, _healer_assigned: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}
-    if _group_party is None:
-        _group_party = False
+    if _healer_assigned is None:
+        _healer_assigned = False
 
-    return AssignedHeir(_suffgroups=_suffgroups, _group_party=_group_party)
+    return AssignedHeir(_suffgroups=_suffgroups, _healer_assigned=_healer_assigned)
 
     # def meld(self, other_required):
     #     for sufffact_x in other_required.sufffacts.values():
