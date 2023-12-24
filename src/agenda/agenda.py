@@ -536,13 +536,14 @@ class AgendaUnit:
             )
             self.set_groupunit(y_groupunit=group_unit)
 
-    def edit_partyunit_pid(
+    def set_partyunit_pid(
         self,
         old_pid: str,
         new_pid: str,
         allow_party_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
+        # Handle scenarios: some are unacceptable
         old_pid_creditor_weight = self.get_party(old_pid).creditor_weight
         new_pid_groupunit = self.get_groupunit(new_pid)
         new_pid_partyunit = self.get_party(new_pid)
@@ -567,35 +568,38 @@ class AgendaUnit:
         elif self._partys.get(new_pid) != None:
             old_pid_creditor_weight += new_pid_partyunit.creditor_weight
 
+        # upsert partyunit
         self.add_partyunit(pid=new_pid, creditor_weight=old_pid_creditor_weight)
-        groups_influenced_list = []
-        for group in self._groups.values():
-            groups_influenced_list.extend(
-                group.brand
-                for party_x in group._partys.values()
-                if party_x.pid == old_pid
+        # change all influenced groupunits partylinks
+        for old_pid_groupbrand in self.get_party_groups(old_pid):
+            self._group_absorb_and_delete_partylink(
+                z_groupbrand=old_pid_groupbrand,
+                to_delete_pid=old_pid,
+                to_absorb_pid=new_pid,
             )
-        for influenced_groupbrand in groups_influenced_list:
-            x_groupunit = self.get_groupunit(influenced_groupbrand)
-            old_group_partylink = x_groupunit.get_partylink(old_pid)
-            partylink_creditor_weight = old_group_partylink.creditor_weight
-            partylink_debtor_weight = old_group_partylink.debtor_weight
-
-            new_partylink = x_groupunit.get_partylink(new_pid)
-            if new_partylink != None:
-                partylink_creditor_weight += new_partylink.creditor_weight
-                partylink_debtor_weight += new_partylink.debtor_weight
-
-            x_groupunit.set_partylink(
-                partylink=partylink_shop(
-                    pid=new_pid,
-                    creditor_weight=partylink_creditor_weight,
-                    debtor_weight=partylink_debtor_weight,
-                )
-            )
-            x_groupunit.del_partylink(pid=old_pid)
-
         self.del_partyunit(pid=old_pid)
+
+    def _group_absorb_and_delete_partylink(
+        self, z_groupbrand: GroupBrand, to_delete_pid: PartyPID, to_absorb_pid: PartyPID
+    ):
+        z_groupunit = self.get_groupunit(z_groupbrand)
+        old_group_partylink = z_groupunit.get_partylink(to_delete_pid)
+        new_partylink_creditor_weight = old_group_partylink.creditor_weight
+        new_partylink_debtor_weight = old_group_partylink.debtor_weight
+
+        new_partylink = z_groupunit.get_partylink(to_absorb_pid)
+        if new_partylink != None:
+            new_partylink_creditor_weight += new_partylink.creditor_weight
+            new_partylink_debtor_weight += new_partylink.debtor_weight
+
+        z_groupunit.set_partylink(
+            partylink=partylink_shop(
+                pid=to_absorb_pid,
+                creditor_weight=new_partylink_creditor_weight,
+                debtor_weight=new_partylink_debtor_weight,
+            )
+        )
+        z_groupunit.del_partylink(pid=to_delete_pid)
 
     def get_party(self, partypid: PartyPID) -> PartyUnit:
         return self._partys.get(partypid)

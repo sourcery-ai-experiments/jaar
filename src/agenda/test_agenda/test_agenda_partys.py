@@ -826,7 +826,7 @@ def test_agenda_PartyUnit_CorrectlyCreatesNewPID():
 
     # WHEN
     beto_text = "beta"
-    x_agenda.edit_partyunit_pid(
+    x_agenda.set_partyunit_pid(
         old_pid=rico_text,
         new_pid=beto_text,
         allow_party_overwite=False,
@@ -861,7 +861,7 @@ def test_agenda_PartyUnit_raiseErrorNewPIDPreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_partyunit_pid(
+        x_agenda.set_partyunit_pid(
             old_pid=rico_text,
             new_pid=carmen_text,
             allow_party_overwite=False,
@@ -903,7 +903,7 @@ def test_agenda_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 
     # WHEN
     beto_text = "beta"
-    x_agenda.edit_partyunit_pid(
+    x_agenda.set_partyunit_pid(
         old_pid=rico_text,
         new_pid=beto_text,
         allow_party_overwite=False,
@@ -947,7 +947,7 @@ def test_agenda_PartyUnit_CorrectlyMergesPIDs():
     assert x_agenda._partys.get(carm_text).creditor_weight == 3
 
     # WHEN / THEN
-    x_agenda.edit_partyunit_pid(
+    x_agenda.set_partyunit_pid(
         old_pid=rico_text,
         new_pid=carm_text,
         allow_party_overwite=True,
@@ -994,7 +994,7 @@ def test_agenda_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     assert swim_group._partys.get(carm_text).debtor_weight == 18
 
     # WHEN
-    x_agenda.edit_partyunit_pid(
+    x_agenda.set_partyunit_pid(
         old_pid=rico_text,
         new_pid=carm_text,
         allow_party_overwite=True,
@@ -1028,7 +1028,7 @@ def test_agenda_PartyUnit_raiseErrorNewPIDGroupUnitPreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_partyunit_pid(
+        x_agenda.set_partyunit_pid(
             old_pid=rico_text,
             new_pid=carmen_text,
             allow_party_overwite=False,
@@ -1065,7 +1065,7 @@ def test_agenda_PartyUnit_CorrectlyOverwriteNewPIDGroupUnit():
     assert x_agenda._groups.get(carmen_text)._partys.get(rico_text).creditor_weight == 3
 
     # WHEN
-    x_agenda.edit_partyunit_pid(
+    x_agenda.set_partyunit_pid(
         old_pid=rico_text,
         new_pid=carmen_text,
         allow_party_overwite=False,
