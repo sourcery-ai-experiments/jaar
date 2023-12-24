@@ -11,7 +11,7 @@ from src.agenda.road import (
     get_pad_from_road,
 )
 from src.agenda.group import GroupBrand
-from src.agenda.idea import ideacore_shop, IdeaCore, IdeaAttrHolder
+from src.agenda.idea import ideacore_shop, IdeaCore, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.person import PersonID
@@ -106,7 +106,7 @@ class ConcernUnit:
         for action_road in self.action.get_good_descendents().keys():
             action_idea = x_idea_dict.get(action_road)
             action_idea._set_idea_attr(
-                IdeaAttrHolder(weight=action_weight, promise=True)
+                ideaattrfilter_shop(weight=action_weight, promise=True)
             )
 
         return x_idea_dict

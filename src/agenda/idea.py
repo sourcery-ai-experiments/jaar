@@ -81,7 +81,7 @@ class IdeaBare:
 
 
 @dataclass
-class IdeaAttrHolder:
+class IdeaAttrFilter:
     weight: int = None
     uid: int = None
     required: RequiredUnit = None
@@ -132,6 +132,72 @@ class IdeaAttrHolder:
                 self.required_sufffact_divisor = sufffact_denom
             # if self.required_sufffact_reest is None:
             #     self.required_sufffact_reest = sufffact_reest
+
+
+def ideaattrfilter_shop(
+    weight: int = None,
+    uid: int = None,
+    required: RequiredUnit = None,
+    required_base: RoadUnit = None,
+    required_sufffact: RoadUnit = None,
+    required_sufffact_open: float = None,
+    required_sufffact_nigh: float = None,
+    required_sufffact_divisor: int = None,
+    required_del_sufffact_base: RoadUnit = None,
+    required_del_sufffact_need: RoadUnit = None,
+    required_suff_idea_active_status: str = None,
+    assignedunit: AssignedUnit = None,
+    begin: float = None,
+    close: float = None,
+    addin: float = None,
+    numor: float = None,
+    denom: float = None,
+    reest: bool = None,
+    numeric_road: RoadUnit = None,
+    range_source_road: float = None,
+    promise: bool = None,
+    problem_bool: bool = None,
+    acptfactunit: AcptFactUnit = None,
+    descendant_promise_count: int = None,
+    all_party_credit: bool = None,
+    all_party_debt: bool = None,
+    balancelink: BalanceLink = None,
+    balancelink_del: GroupBrand = None,
+    is_expanded: bool = None,
+    on_meld_weight_action: str = None,
+) -> IdeaAttrFilter:
+    return IdeaAttrFilter(
+        weight=weight,
+        uid=uid,
+        required=required,
+        required_base=required_base,
+        required_sufffact=required_sufffact,
+        required_sufffact_open=required_sufffact_open,
+        required_sufffact_nigh=required_sufffact_nigh,
+        required_sufffact_divisor=required_sufffact_divisor,
+        required_del_sufffact_base=required_del_sufffact_base,
+        required_del_sufffact_need=required_del_sufffact_need,
+        required_suff_idea_active_status=required_suff_idea_active_status,
+        assignedunit=assignedunit,
+        begin=begin,
+        close=close,
+        addin=addin,
+        numor=numor,
+        denom=denom,
+        reest=reest,
+        numeric_road=numeric_road,
+        range_source_road=range_source_road,
+        promise=promise,
+        problem_bool=problem_bool,
+        acptfactunit=acptfactunit,
+        descendant_promise_count=descendant_promise_count,
+        all_party_credit=all_party_credit,
+        all_party_debt=all_party_debt,
+        balancelink=balancelink,
+        balancelink_del=balancelink_del,
+        is_expanded=is_expanded,
+        on_meld_weight_action=on_meld_weight_action,
+    )
 
 
 @dataclass
@@ -241,8 +307,7 @@ class IdeaCore:
             del self._acptfactunits[acptfactunit.base]
 
     def set_acptfactunit(self, acptfactunit: AcptFactUnit):
-        if acptfactunit != None:
-            self._acptfactunits[acptfactunit.base] = acptfactunit
+        self._acptfactunits[acptfactunit.base] = acptfactunit
 
     def get_acptfactunits_dict(self) -> dict[RoadUnit:AcptFactUnit]:
         return {hc.base: hc.get_dict() for hc in self._acptfactunits.values()}
@@ -587,7 +652,7 @@ class IdeaCore:
                     f"Meld fail idea={self.get_idea_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_idea_road()} {attrs[0]}:{attrs[2]}"
                 )
 
-    def _set_idea_attr(self, idea_attr: IdeaAttrHolder):
+    def _set_idea_attr(self, idea_attr: IdeaAttrFilter):
         if idea_attr.weight != None:
             self._weight = idea_attr.weight
         if idea_attr.uid != None:
@@ -647,6 +712,8 @@ class IdeaCore:
         if idea_attr.on_meld_weight_action != None:
             self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
             self._on_meld_weight_action = idea_attr.on_meld_weight_action
+        if idea_attr.acptfactunit != None:
+            self.set_acptfactunit(idea_attr.acptfactunit)
 
         self._del_requiredunit_all_cases(
             base=idea_attr.required_del_sufffact_base,

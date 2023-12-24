@@ -1,6 +1,6 @@
 from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
-from src.agenda.idea import IdeaAttrHolder, assigned_unit_shop
+from src.agenda.idea import assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
 from src.world.request import EconomyAddress, RequestUnit

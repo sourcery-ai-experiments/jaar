@@ -1,4 +1,4 @@
-from src.agenda.idea import ideacore_shop, IdeaAttrHolder, IdeaCore
+from src.agenda.idea import ideacore_shop, ideaattrfilter_shop, IdeaCore
 from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
@@ -43,7 +43,7 @@ def custom_set_idea_attr(
     problem_bool: bool = None,
     on_meld_weight_action: str = None,
 ):
-    idea_attr = IdeaAttrHolder(
+    idea_attr = ideaattrfilter_shop(
         weight=weight,
         uid=uid,
         required=required,

@@ -39,7 +39,7 @@ from src.agenda.idea import (
     ideacore_shop,
     IdeaRoot,
     idearoot_shop,
-    IdeaAttrHolder,
+    ideaattrfilter_shop,
     get_obj_from_idea_dict,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
@@ -1410,7 +1410,7 @@ class AgendaUnit:
                 numeric_road=numeric_road,
             )
 
-        idea_attr = IdeaAttrHolder(
+        idea_attr = ideaattrfilter_shop(
             weight=weight,
             uid=uid,
             required=required,
@@ -1439,6 +1439,7 @@ class AgendaUnit:
             is_expanded=is_expanded,
             promise=promise,
             problem_bool=problem_bool,
+            acptfactunit=acptfactunit,
             on_meld_weight_action=on_meld_weight_action,
         )
         if idea_attr.required_sufffact != None:
@@ -1452,10 +1453,8 @@ class AgendaUnit:
             )
         temp_idea = self.get_idea_kid(road)
         temp_idea._set_idea_attr(idea_attr=idea_attr)
-        if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
-            temp_idea.set_acptfactunit(acptfactunit=acptfactunit)
 
-        # deleting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
+        # deleting or setting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
         if balancelink_del != None or balancelink != None:
             self.set_agenda_metrics()
 

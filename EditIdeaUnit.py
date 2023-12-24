@@ -1,6 +1,6 @@
 # command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from src.agenda.idea import ideacore_shop, IdeaAttrHolder
+from src.agenda.idea import ideacore_shop, ideaattrfilter_shop
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
@@ -898,7 +898,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea_insert(self):
         new_idea = ideacore_shop(self.yo_deescription.toPlainText())
-        idea_attr_x = IdeaAttrHolder(
+        idea_attr_x = ideaattrfilter_shop(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),

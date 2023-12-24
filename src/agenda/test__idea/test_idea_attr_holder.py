@@ -1,9 +1,9 @@
-from src.agenda.idea import IdeaAttrHolder
+from src.agenda.idea import IdeaAttrFilter
 from pytest import raises as pytest_raise
 
 
 def test_idea_attr_holder_exists():
-    new_obj = IdeaAttrHolder()
+    new_obj = IdeaAttrFilter()
     assert new_obj.weight is None
     assert new_obj.uid is None
     assert new_obj.required is None
@@ -38,7 +38,7 @@ def test_idea_attr_holder_exists():
 
 def test_idea_attr_holder_CorrectlyCalculatesSuffFactRanges():
     # GIVEN
-    idea_attr = IdeaAttrHolder(required_sufffact="some_road")
+    idea_attr = IdeaAttrFilter(required_sufffact="some_road")
     assert idea_attr.required_sufffact_open is None
     assert idea_attr.required_sufffact_nigh is None
     # assert idea_attr.required_sufffact_numor is None
