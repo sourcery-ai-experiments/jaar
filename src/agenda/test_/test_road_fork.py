@@ -1,31 +1,100 @@
 from src.agenda.road import (
-    RoadUnit,
-    change_road,
-    is_sub_road,
-    get_all_road_nodes,
-    get_terminus_node_from_road,
-    find_replace_road_key_dict,
-    get_pad_from_road,
-    get_road_without_root_node,
-    road_validate,
-    get_ancestor_roads,
-    get_forefather_roads,
     get_default_economy_root_label as root_label,
-    get_road_from_nodes,
-    get_road_from_road_and_node,
-    RoadNode,
-    get_diff_road,
     get_road,
-    is_heir_road,
     get_node_delimiter,
-    replace_road_node_delimiter,
+)
+from src.agenda.fork import (
     ForkUnit,
     forkunit_shop,
     create_forkunit,
+    ProngUnit,
+    prongunit_shop,
 )
-from src.agenda.required_idea import sufffactunit_shop
-from src.agenda.idea import IdeaCore
 from pytest import raises as pytest_raises
+
+
+def test_ProngUnit_exists():
+    # GIVEN
+    gas_road = get_road(root_label(), "gas cooking")
+
+    # WHEN
+    beef_prong = ProngUnit(road=gas_road)
+
+    # THEN
+    assert beef_prong != None
+    assert beef_prong.road == gas_road
+    assert beef_prong.affect is None
+    assert beef_prong.tribal is None
+
+
+def test_ProngUnit_set_affect_CorrectSetsAttrs():
+    # GIVEN
+    gas_road = get_road(root_label(), "gas cooking")
+    beef_prong = ProngUnit(road=gas_road)
+    assert beef_prong.affect is None
+
+    # WHEN
+    beef_affect = -3
+    beef_prong.set_affect(beef_affect)
+
+    # THEN
+    assert beef_prong.affect == beef_affect
+
+
+def test_ProngUnit_set_tribal_CorrectSetsAttrs():
+    # GIVEN
+    gas_road = get_road(root_label(), "gas cooking")
+    beef_prong = ProngUnit(road=gas_road)
+    assert beef_prong.tribal is None
+
+    # WHEN
+    beef_tribal = -7
+    beef_prong.set_tribal(beef_tribal)
+
+    # THEN
+    assert beef_prong.tribal == beef_tribal
+
+
+def test_prongunit_shop_CorrectlyReturnsObj():
+    # GIVEN
+    gas_road = get_road(root_label(), "gas cooking")
+
+    # WHEN
+    cook_prong = prongunit_shop(road=gas_road, affect=7, tribal=11)
+
+    # THEN
+    assert cook_prong.road == gas_road
+    assert cook_prong.affect == 7
+    assert cook_prong.tribal == 11
+
+
+def test_prongunit_shop_Sets_tribal_NoneIf():
+    # GIVEN
+    gas_road = get_road(root_label(), "gas cooking")
+
+    # WHEN
+    cook_prong = prongunit_shop(road=gas_road, affect=7)
+
+    # THEN
+    assert cook_prong.road == gas_road
+    assert cook_prong.affect == 7
+    assert cook_prong.tribal == 0
+
+
+def test_ProngUnit_set_affect_CorrectlyRaisesNoneZeroAffectException():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_prong = prongunit_shop(cheap_road, affect=-5)
+
+    # WHEN
+    zero_int = 0
+    with pytest_raises(Exception) as excinfo:
+        cheap_prong.set_affect(x_affect=zero_int)
+    assert (
+        str(excinfo.value)
+        == f"set_affect affect parameter {zero_int} must be Non-zero number"
+    )
 
 
 def test_ForkUnit_exists():
@@ -35,7 +104,7 @@ def test_ForkUnit_exists():
     # THEN
     assert x_fork != None
     assert x_fork.base is None
-    assert x_fork.descendents is None
+    assert x_fork.prongs is None
     assert x_fork.delimiter is None
 
 
@@ -48,46 +117,49 @@ def test_forkunit_shop_CorrectlyReturnsObj():
 
     # THEN
     assert cook_fork.base == cook_road
-    assert cook_fork.descendents == {}
+    assert cook_fork.prongs == {}
     assert cook_fork.delimiter == get_node_delimiter()
 
 
-def test_ForkUnit_set_descendent_CorrectlySetsAttr():
+def test_ForkUnit_set_prong_CorrectlySetsAttr():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
-    assert cook_fork.descendents == {}
+    assert cook_fork.prongs == {}
 
     # WHEN
     cheap_road = get_road(cook_road, "cheap food")
     x_affect = -2
-    cook_fork.set_descendent(cheap_road, affect=x_affect)
+    cheap_prong = prongunit_shop(cheap_road, affect=x_affect)
+    cook_fork.set_prong(x_prongunit=cheap_prong)
 
     # THEN
-    assert cook_fork.descendents != {}
-    assert cook_fork.descendents.get(cheap_road) != None
-    assert cook_fork.descendents.get(cheap_road) == x_affect
+    assert cook_fork.prongs != {}
+    assert cook_fork.prongs.get(cheap_road) != None
+    assert cook_fork.prongs.get(cheap_road) == cheap_prong
 
 
-def test_ForkUnit_del_descendent_CorrectlySetsAttr():
+def test_ForkUnit_del_prong_CorrectlySetsAttr():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     cheap_road = get_road(cook_road, "cheap food")
     metal_road = get_road(cook_road, "metal pots")
-    cook_fork.set_descendent(cheap_road, affect=-2)
-    cook_fork.set_descendent(metal_road, affect=3)
-    assert len(cook_fork.descendents) == 2
-    assert cook_fork.descendents.get(cheap_road) != None
-    assert cook_fork.descendents.get(metal_road) != None
+    cheap_prong = prongunit_shop(cheap_road, affect=-2)
+    metal_prong = prongunit_shop(metal_road, affect=3)
+    cook_fork.set_prong(cheap_prong)
+    cook_fork.set_prong(metal_prong)
+    assert len(cook_fork.prongs) == 2
+    assert cook_fork.prongs.get(cheap_road) != None
+    assert cook_fork.prongs.get(metal_road) != None
 
     # WHEN
-    cook_fork.del_descendent(cheap_road)
+    cook_fork.del_prong(cheap_road)
 
     # THEN
-    assert len(cook_fork.descendents) == 1
-    assert cook_fork.descendents.get(cheap_road) is None
-    assert cook_fork.descendents.get(metal_road) != None
+    assert len(cook_fork.prongs) == 1
+    assert cook_fork.prongs.get(cheap_road) is None
+    assert cook_fork.prongs.get(metal_road) != None
 
 
 def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
@@ -96,74 +168,81 @@ def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
     cook_fork = forkunit_shop(cook_road)
 
     # WHEN / THEN
-    assert len(cook_fork.descendents) == 0
+    assert len(cook_fork.prongs) == 0
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "cheap food"), affect=-2)
-    assert len(cook_fork.descendents) == 1
+    cheap_prong = prongunit_shop(get_road(cook_road, "cheap food"), -2)
+    cook_fork.set_prong(cheap_prong)
+    assert len(cook_fork.prongs) == 1
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
     farm_text = "farm fresh"
-    cook_fork.set_descendent(get_road(cook_road, farm_text), affect=3)
-    assert len(cook_fork.descendents) == 2
+    farm_prong = prongunit_shop(get_road(cook_road, farm_text), 3)
+    cook_fork.set_prong(farm_prong)
+    assert len(cook_fork.prongs) == 2
     assert cook_fork.is_dialectic()
 
     # WHEN / THEN
-    cook_fork.del_descendent(get_road(cook_road, farm_text))
-    assert len(cook_fork.descendents) == 1
+    cook_fork.del_prong(get_road(cook_road, farm_text))
+    assert len(cook_fork.prongs) == 1
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "plastic pots"), affect=-5)
-    assert len(cook_fork.descendents) == 2
+    plastic_prong = prongunit_shop(get_road(cook_road, "plastic pots"), -5)
+    cook_fork.set_prong(plastic_prong)
+    assert len(cook_fork.prongs) == 2
     assert cook_fork.is_dialectic() == False
 
     # WHEN / THEN
-    cook_fork.set_descendent(get_road(cook_road, "metal pots"), affect=7)
-    assert len(cook_fork.descendents) == 3
+    metal_prong = prongunit_shop(get_road(cook_road, "metal pots"), 7)
+    cook_fork.set_prong(metal_prong)
+    assert len(cook_fork.prongs) == 3
     assert cook_fork.is_dialectic()
 
 
-def test_ForkUnit_get_good_descendents_ReturnsCorrectObj():
+def test_ForkUnit_get_good_prongs_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_affect = 3
-    cook_fork.set_descendent(farm_road, affect=farm_affect)
+    farm_prongunit = prongunit_shop(farm_road, farm_affect)
+    cook_fork.set_prong(farm_prongunit)
     cheap_road = get_road(cook_road, "cheap food")
     cheap_affect = -3
-    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
+    cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_good_descendents = cook_fork.get_good_descendents()
+    x_good_prongs = cook_fork.get_good_prongs()
 
     # THEN
-    assert x_good_descendents != {}
-    assert len(x_good_descendents) == 1
-    assert x_good_descendents.get(farm_road) == farm_affect
+    assert x_good_prongs != {}
+    assert len(x_good_prongs) == 1
+    assert x_good_prongs.get(farm_road) == farm_prongunit
 
 
-def test_ForkUnit_get_bad_descendents_ReturnsCorrectObj():
+def test_ForkUnit_get_bad_prongs_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_affect = 3
-    cook_fork.set_descendent(farm_road, affect=farm_affect)
+    farm_prongunit = prongunit_shop(farm_road, farm_affect)
+    cook_fork.set_prong(farm_prongunit)
     cheap_road = get_road(cook_road, "cheap food")
     cheap_affect = -3
-    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
+    cheap_prongunit = prongunit_shop(cheap_road, cheap_affect)
+    cook_fork.set_prong(cheap_prongunit)
 
     # WHEN
-    x_bad_descendents = cook_fork.get_bad_descendents()
+    x_bad_prongs = cook_fork.get_bad_prongs()
 
     # THEN
-    assert x_bad_descendents != {}
-    assert len(x_bad_descendents) == 1
-    assert x_bad_descendents.get(cheap_road) == cheap_affect
+    assert x_bad_prongs != {}
+    assert len(x_bad_prongs) == 1
+    assert x_bad_prongs.get(cheap_road) == cheap_prongunit
 
 
 def test_ForkUnit_get_1_good_ReturnsCorrectObj():
@@ -172,16 +251,16 @@ def test_ForkUnit_get_1_good_ReturnsCorrectObj():
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_affect = 3
-    cook_fork.set_descendent(farm_road, affect=farm_affect)
+    cook_fork.set_prong(prongunit_shop(farm_road, farm_affect))
     cheap_road = get_road(cook_road, "cheap food")
     cheap_affect = -3
-    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
+    cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_bad_descendent = cook_fork.get_1_good()
+    x_bad_prong = cook_fork.get_1_good()
 
     # THEN
-    assert x_bad_descendent == farm_road
+    assert x_bad_prong == farm_road
 
 
 def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
@@ -190,48 +269,33 @@ def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
     cook_fork = forkunit_shop(cook_road)
     farm_road = get_road(cook_road, "farm food")
     farm_affect = 3
-    cook_fork.set_descendent(farm_road, affect=farm_affect)
+    cook_fork.set_prong(prongunit_shop(farm_road, farm_affect))
     cheap_road = get_road(cook_road, "cheap food")
     cheap_affect = -3
-    cook_fork.set_descendent(cheap_road, affect=cheap_affect)
+    cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_bad_descendent = cook_fork.get_1_bad()
+    x_bad_prong = cook_fork.get_1_bad()
 
     # THEN
-    assert x_bad_descendent == cheap_road
+    assert x_bad_prong == cheap_road
 
 
-def test_ForkUnit_set_descendents_CorrectlyRaisesNoneZeroAffectException():
-    # GIVEN
-    cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkunit_shop(cook_road)
-
-    # WHEN
-    cheap_road = get_road(cook_road, "cheap food")
-    x_affect = 0
-    with pytest_raises(Exception) as excinfo:
-        cook_fork.set_descendent(cheap_road, affect=x_affect)
-    assert (
-        str(excinfo.value)
-        == f"set_descendent affect parameter {x_affect} must be Non-zero number"
-    )
-
-
-def test_ForkUnit_set_descendents_CorrectlyRaisesForkSubRoadUnitException():
+def test_ForkUnit_set_prongs_CorrectlyRaisesForkSubRoadUnitException():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
     go_road = "going out"
     go_cheap_road = get_road(go_road, "cheap food")
+    go_cheap_prongunit = prongunit_shop(go_cheap_road, affect=-3)
 
     # WHEN
     x_affect = -2
     with pytest_raises(Exception) as excinfo:
-        cook_fork.set_descendent(go_cheap_road, affect=x_affect)
+        cook_fork.set_prong(go_cheap_prongunit)
     assert (
         str(excinfo.value)
-        == f"ForkUnit cannot set descendent '{go_cheap_road}' because base road is '{cook_road}'."
+        == f"ForkUnit cannot set prong '{go_cheap_road}' because base road is '{cook_road}'."
     )
 
 
@@ -243,11 +307,11 @@ def test_ForkUnit_get_all_roads_ReturnsCorrectObj():
     farm_text = "farm fresh"
     plastic_text = "plastic pots"
     metal_text = "metal pots"
-    cook_fork.set_descendent(get_road(cook_road, cheap_text), affect=-2)
-    cook_fork.set_descendent(get_road(cook_road, farm_text), affect=3)
-    cook_fork.set_descendent(get_road(cook_road, plastic_text), affect=-5)
-    cook_fork.set_descendent(get_road(cook_road, metal_text), affect=7)
-    assert len(cook_fork.descendents) == 4
+    cook_fork.set_prong(prongunit_shop(get_road(cook_road, cheap_text), -2))
+    cook_fork.set_prong(prongunit_shop(get_road(cook_road, farm_text), 3))
+    cook_fork.set_prong(prongunit_shop(get_road(cook_road, plastic_text), -5))
+    cook_fork.set_prong(prongunit_shop(get_road(cook_road, metal_text), 7))
+    assert len(cook_fork.prongs) == 4
 
     # WHEN
     all_roads_dict = cook_fork.get_all_roads()
@@ -263,7 +327,7 @@ def test_ForkUnit_get_all_roads_ReturnsCorrectObj():
     assert all_roads_dict.get(farm_road) != None
     assert all_roads_dict.get(plastic_road) != None
     assert all_roads_dict.get(metal_road) != None
-    assert len(cook_fork.descendents) == 4
+    assert len(cook_fork.prongs) == 4
 
 
 def test_create_forkunit_CorrectlyReturnsObj():
@@ -277,8 +341,8 @@ def test_create_forkunit_CorrectlyReturnsObj():
 
     # THEN
     assert cook_fork.base == cook_road
-    assert cook_fork.descendents != {}
+    assert cook_fork.prongs != {}
     farm_road = get_road(cook_road, farm_text)
     cheap_road = get_road(cook_road, cheap_text)
-    assert cook_fork.descendents.get(farm_road) == 1
-    assert cook_fork.descendents.get(cheap_road) == -1
+    assert cook_fork.prongs.get(farm_road) == prongunit_shop(farm_road, 1)
+    assert cook_fork.prongs.get(cheap_road) == prongunit_shop(cheap_road, -1)

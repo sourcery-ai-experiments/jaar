@@ -5,11 +5,10 @@ from src.agenda.road import (
     get_road,
     get_diff_road,
     get_node_delimiter,
-    ForkUnit,
-    create_forkunit,
     get_terminus_node_from_road,
     get_pad_from_road,
 )
+from src.agenda.fork import ForkUnit, create_forkunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideacore_shop, IdeaCore, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
@@ -103,7 +102,7 @@ class ConcernUnit:
         }
         if action_weight is None:
             action_weight = 1
-        for action_road in self.action.get_good_descendents().keys():
+        for action_road in self.action.get_good_prongs().keys():
             action_idea = x_idea_dict.get(action_road)
             action_idea._set_idea_attr(
                 ideaattrfilter_shop(weight=action_weight, promise=True)
