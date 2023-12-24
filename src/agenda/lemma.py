@@ -70,7 +70,7 @@ class Lemmas:
         idea_close,
         src_open,
         src_nigh,
-    ):  # sourcery skip: remove-redundant-if
+    ) -> (float, float):  # sourcery skip: remove-redundant-if
         acptfact_open = None
         acptfact_nigh = None
         if src_open <= idea_begin and src_nigh >= idea_close:
@@ -104,7 +104,7 @@ class Lemmas:
         idea_denom,
         src_open,
         src_nigh,
-    ):
+    ) -> (float, float):
         return self._get_range_calc_acptfact_attr(
             idea_begin=idea_begin,
             idea_close=idea_close,
@@ -198,12 +198,12 @@ class Lemmas:
             nigh=acptfact_nigh,
         )
 
-    def is_lemmas_evaluated(self):
+    def is_lemmas_evaluated(self) -> bool:
         return sum(lemma.eval_status == True for lemma in self.lemmas.values()) == len(
             self.lemmas
         )
 
-    def get_unevaluated_lemma(self):
+    def get_unevaluated_lemma(self) -> Lemma:
         for lemma in self.lemmas.values():
             if lemma.eval_status == False:
                 # set to True

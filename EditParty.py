@@ -248,7 +248,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_all()
 
     def party_update(self):
-        self.agenda_x.set_partyunit_pid(
+        self.agenda_x.edit_partyunit_pid(
             old_pid=self.party_table.item(self.party_table.currentRow(), 0).text(),
             new_pid=self.party_pid.text(),
             allow_party_overwite=True,

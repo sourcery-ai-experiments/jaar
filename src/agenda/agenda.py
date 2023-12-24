@@ -15,6 +15,7 @@ from src.agenda.group import (
     BalanceLink,
     GroupBrand,
     GroupUnit,
+    GroupMetrics,
     get_from_dict as groupunits_get_from_dict,
     groupunit_shop,
     balancelink_shop,
@@ -42,14 +43,6 @@ from src.agenda.idea import (
     get_obj_from_idea_dict,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
-
-# (
-#     _get_time_hreg_src_idea,
-#     get_time_min_from_dt as hreg_get_time_min_from_dt,
-#     convert1440toReadableTime,
-#     get_number_with_letter_ending,
-#     get_jajatime_legible_from_dt,
-# )
 from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.road import (
     get_pad_from_road,
@@ -118,7 +111,7 @@ class AgendaUnit:
         road_begin: RoadUnit = None,
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
-    ):
+    ) -> RoadUnit:
         x_road = get_road(
             road_begin=road_begin,
             terminus_node=terminus_node,
@@ -168,7 +161,7 @@ class AgendaUnit:
         self.edit_idea_label(old_road=old_economy_id, new_label=self._economy_id)
         self.set_agenda_metrics()
 
-    def import_external_partyunit_metrics(
+    def set_partyunit_external_metrics(
         self, external_metrics: PartyUnitExternalMetrics
     ):
         party_x = self._partys.get(external_metrics.internal_pid)
@@ -184,7 +177,7 @@ class AgendaUnit:
         else:
             self._max_tree_traverse = int_x
 
-    def get_agenda_sprung_from_single_idea(self, road: RoadUnit):
+    def get_agenda_sprung_from_single_idea(self, road: RoadUnit) -> any:
         self.set_agenda_metrics()
         idea_x = self.get_idea_kid(road)
         new_weight = self._weight * idea_x._agenda_importance
@@ -375,7 +368,7 @@ class AgendaUnit:
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
 
-    def get_time_hour_from_min(self, min: int):
+    def get_time_hour_from_min(self, min: int) -> (int, int, list[int]):
         month_num, day_num, day_rem_min, day_x = self.get_time_month_from_min(min=min)
         hr_x = day_x.get_kids_in_range(begin=day_rem_min, close=day_rem_min)[0]
         hr_rem_min = day_rem_min - hr_x._begin
@@ -445,7 +438,7 @@ class AgendaUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_partys_metrics(self):
+    def get_partys_metrics(self) -> dict[GroupBrand:GroupMetrics]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
@@ -536,7 +529,7 @@ class AgendaUnit:
             )
             self.set_groupunit(y_groupunit=group_unit)
 
-    def set_partyunit_pid(
+    def edit_partyunit_pid(
         self,
         old_pid: str,
         new_pid: str,
@@ -568,43 +561,18 @@ class AgendaUnit:
         elif self._partys.get(new_pid) != None:
             old_pid_creditor_weight += new_pid_partyunit.creditor_weight
 
-        # upsert partyunit
+        # upsert new partyunit
         self.add_partyunit(pid=new_pid, creditor_weight=old_pid_creditor_weight)
         # change all influenced groupunits partylinks
-        for old_pid_groupbrand in self.get_party_groups(old_pid):
-            self._group_absorb_and_delete_partylink(
-                z_groupbrand=old_pid_groupbrand,
-                to_delete_pid=old_pid,
-                to_absorb_pid=new_pid,
-            )
+        for old_party_groupbrand in self.get_party_groupbrands(old_pid):
+            old_party_groupunit = self.get_groupunit(old_party_groupbrand)
+            old_party_groupunit._move_partylink(old_pid, new_pid)
         self.del_partyunit(pid=old_pid)
-
-    def _group_absorb_and_delete_partylink(
-        self, z_groupbrand: GroupBrand, to_delete_pid: PartyPID, to_absorb_pid: PartyPID
-    ):
-        z_groupunit = self.get_groupunit(z_groupbrand)
-        old_group_partylink = z_groupunit.get_partylink(to_delete_pid)
-        new_partylink_creditor_weight = old_group_partylink.creditor_weight
-        new_partylink_debtor_weight = old_group_partylink.debtor_weight
-
-        new_partylink = z_groupunit.get_partylink(to_absorb_pid)
-        if new_partylink != None:
-            new_partylink_creditor_weight += new_partylink.creditor_weight
-            new_partylink_debtor_weight += new_partylink.debtor_weight
-
-        z_groupunit.set_partylink(
-            partylink=partylink_shop(
-                pid=to_absorb_pid,
-                creditor_weight=new_partylink_creditor_weight,
-                debtor_weight=new_partylink_debtor_weight,
-            )
-        )
-        z_groupunit.del_partylink(pid=to_delete_pid)
 
     def get_party(self, partypid: PartyPID) -> PartyUnit:
         return self._partys.get(partypid)
 
-    def get_partyunits_pid_list(self):
+    def get_partyunits_pid_list(self) -> dict[PartyPID]:
         partypid_list = list(self._partys.keys())
         partypid_list.append("")
         partypid_dict = {partypid.lower(): partypid for partypid in partypid_list}
@@ -638,13 +606,13 @@ class AgendaUnit:
                 x_partyunit.uid = new_uid_max
                 uid_max = x_partyunit.uid
 
-    def all_partyunits_uids_are_unique(self):
+    def all_partyunits_uids_are_unique(self) -> bool:
         uid_dict = self.get_partyunits_uid_dict()
         return not any(
             uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
         )
 
-    def get_partys_depotlink_count(self):
+    def get_partys_depotlink_count(self) -> int:
         return sum(party_x.depotlink_type != None for party_x in self._partys.values())
 
     def get_groupunits_uid_max(self) -> int:
@@ -784,7 +752,7 @@ class AgendaUnit:
                 idea_x.set_balancelink(balancelink=new_balancelink)
                 idea_x.del_balancelink(groupbrand=old_brand)
 
-    def get_groupunits_brand_list(self):
+    def get_groupunits_brand_list(self) -> list[GroupBrand]:
         groupbrand_list = list(self._groups.keys())
         groupbrand_list.append("")
         groupbrand_dict = {
@@ -826,7 +794,7 @@ class AgendaUnit:
 
         return not numeric_source_road and not parent_range
 
-    def _get_rangeroot_acptfactunits(self):
+    def _get_rangeroot_acptfactunits(self) -> list[AcptFactUnit]:
         return [
             acptfact
             for acptfact in self._idearoot._acptfactunits.values()
@@ -969,7 +937,7 @@ class AgendaUnit:
         except KeyError as e:
             self._idearoot._acptfactunits[acptfactunit.base] = acptfactunit
 
-    def get_acptfactunits_base_and_acptfact_list(self):
+    def get_acptfactunits_base_and_acptfact_list(self) -> list:
         acptfact_list = list(self._idearoot._acptfactunits.values())
         node_dict = {
             acptfact_x.base.lower(): acptfact_x for acptfact_x in acptfact_list
@@ -1035,12 +1003,12 @@ class AgendaUnit:
                 self.edit_idea_attr(road=idea_x.get_idea_road(), uid=new_idea_uid_max)
                 idea_uid_max = new_idea_uid_max
 
-    def get_node_count(self):
+    def get_node_count(self) -> int:
         # tree_metrics = self.get_tree_metrics()
         # return tree_metrics.node_count
         return len(self._idea_dict)
 
-    def get_level_count(self, level):
+    def get_level_count(self, level) -> int:
         tree_metrics = self.get_tree_metrics()
         level_count = None
         try:
@@ -1053,7 +1021,7 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.required_bases
 
-    def get_missing_acptfact_bases(self):
+    def get_missing_acptfact_bases(self) -> dict[RoadUnit:int]:
         tree_metrics = self.get_tree_metrics()
         required_bases = tree_metrics.required_bases
         missing_bases = {}
@@ -1077,9 +1045,6 @@ class AgendaUnit:
         bundling=True,
     ):
         idea_kid._road_node_delimiter = self._road_node_delimiter
-        if adoptees != None:
-            for adoptee_label in adoptees:
-                adoptee_idea = self.get_idea_kid(self.make_road(pad, adoptee_label))
 
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
@@ -1174,18 +1139,9 @@ class AgendaUnit:
             )
             self.add_idea(base_idea, pad=base_idea._pad)
 
-    # def _get_or_create_level1_idea(self, idea_label: str) -> IdeaCore:
-    #     return_idea = None
-    #     try:
-    #         return_idea = self._kids[idea_label]
-    #     except Exception:
-    #         KeyError
-    #         self.add_kid(ideacore_shop(idea_label))
-    #         return_idea = self._kids[idea_label]
-
-    #     return return_idea
-
-    def _get_or_create_leveln_idea(self, parent_idea: IdeaCore, idea_label: str):
+    def _get_or_create_leveln_idea(
+        self, parent_idea: IdeaCore, idea_label: str
+    ) -> IdeaCore:
         return_idea = None
         try:
             return_idea = parent_idea._kids[idea_label]
@@ -1266,12 +1222,12 @@ class AgendaUnit:
             )
 
     def _non_root_idea_label_edit(self, old_road, new_label, pad):
-        idea_z = self.get_idea_kid(old_road)
-        idea_z.set_idea_label(new_label)
-        idea_z._pad = pad
+        x_idea = self.get_idea_kid(old_road)
+        x_idea.set_idea_label(new_label)
+        x_idea._pad = pad
         idea_parent = self.get_idea_kid(get_pad_from_road(old_road))
         idea_parent._kids.pop(get_terminus_node_from_road(old_road))
-        idea_parent._kids[idea_z._label] = idea_z
+        idea_parent._kids[x_idea._label] = x_idea
 
     def _idearoot_find_replace_road(self, old_road, new_road):
         self._idearoot.find_replace_road(old_road=old_road, new_road=new_road)
@@ -1304,7 +1260,7 @@ class AgendaUnit:
         reest: bool,
         idea_road: RoadUnit,
         numeric_road: RoadUnit,
-    ):
+    ) -> (float, float):
         anc_roads = get_ancestor_roads(road=idea_road)
         if (addin != None or numor != None or denom != None or reest != None) and len(
             anc_roads
@@ -1535,12 +1491,12 @@ class AgendaUnit:
             base_acptfactunit=self._idearoot._acptfactunits[base]
         )
 
-    def get_partyunit_total_creditor_weight(self):
+    def get_partyunit_total_creditor_weight(self) -> float:
         return sum(
             partyunit.get_creditor_weight() for partyunit in self._partys.values()
         )
 
-    def get_partyunit_total_debtor_weight(self):
+    def get_partyunit_total_debtor_weight(self) -> float:
         return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
 
     def _add_to_partyunits_agenda_credit_debt(self, idea_agenda_importance: float):
@@ -1664,16 +1620,12 @@ class AgendaUnit:
                 agenda_partyunit_total_debtor_weight=self.get_partyunit_total_debtor_weight(),
             )
 
-    def get_party_groups(self, party_pid: PartyPID):
-        groups = []
-        for group in self._groups.values():
-            groups.extend(
-                group.brand
-                for partylink in group._partys.values()
-                if partylink.pid == party_pid
-            )
-
-        return groups
+    def get_party_groupbrands(self, party_pid: PartyPID) -> list[GroupBrand]:
+        return [
+            x_groupunit.brand
+            for x_groupunit in self._groups.values()
+            if x_groupunit.has_partylink(party_pid)
+        ]
 
     def _reset_partyunit_agenda_credit_debt(self):
         for partyunit in self._partys.values():
@@ -1885,11 +1837,11 @@ class AgendaUnit:
 
     def get_agenda_importance(
         self, parent_agenda_importance: float, weight: int, sibling_total_weight: int
-    ):
+    ) -> float:
         sibling_ratio = weight / sibling_total_weight
         return parent_agenda_importance * sibling_ratio
 
-    def get_idea_list(self):
+    def get_idea_list(self) -> list[IdeaCore]:
         self.set_agenda_metrics()
         return list(self._idea_dict.values())
 
@@ -2086,7 +2038,7 @@ class AgendaUnit:
         # get party's partys: partyzone
 
         # get partyzone groups
-        party_groups = self.get_party_groups(party_pid=party_pid)
+        party_groups = self.get_party_groupbrands(party_pid=party_pid)
 
         # set agenda4party by traversing the idea tree and selecting associated groups
         # set root
@@ -2451,7 +2403,9 @@ class MeldeeOrderUnit:
     file_name: str
 
 
-def get_meldeeorderunit(primary_agenda: AgendaUnit, meldee_file_name: str):
+def get_meldeeorderunit(
+    primary_agenda: AgendaUnit, meldee_file_name: str
+) -> MeldeeOrderUnit:
     file_src_healer = meldee_file_name.replace(".json", "")
     primary_meldee_partyunit = primary_agenda.get_party(file_src_healer)
 

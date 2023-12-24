@@ -149,6 +149,20 @@ def test_GroupUnit_get_partylink_worksCorrectly():
     assert swimmers_group.get_partylink("todd") is None
 
 
+def test_GroupUnit_has_partylink_worksCorrectly():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group.set_partylink(partylink_shop(todd_text, 13, 7))
+    swimmers_group.set_partylink(partylink_shop(mery_text, 23, 5))
+
+    # WHEN / THEN
+    assert swimmers_group.has_partylink(todd_text)
+    assert swimmers_group.has_partylink(mery_text)
+    assert swimmers_group.has_partylink("todd") == False
+
+
 def test_GroupUnit_del_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"

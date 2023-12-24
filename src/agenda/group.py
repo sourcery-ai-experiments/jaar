@@ -3,6 +3,7 @@ from src.agenda.party import (
     PartyPID,
     PartyLink,
     partylinks_get_from_dict,
+    partylink_shop,
 )
 from src.agenda.x_func import (
     x_get_dict,
@@ -46,7 +47,7 @@ class GroupUnit(GroupCore):
         if _partylinks_set_by_economy_road != None:
             self._partylinks_set_by_economy_road = _partylinks_set_by_economy_road
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         x_dict = {"brand": self.brand}
         if self.uid != None:
             x_dict["uid"] = self.uid
@@ -102,7 +103,7 @@ class GroupUnit(GroupCore):
     def clear_partylinks(self):
         self._partys = {}
 
-    def get_partys_dict(self):
+    def get_partys_dict(self) -> dict[str:str]:
         partys_x_dict = {}
         for party in self._partys.values():
             party_dict = party.get_dict()
@@ -115,8 +116,30 @@ class GroupUnit(GroupCore):
     def get_partylink(self, party_pid: PartyPID) -> PartyLink:
         return self._partys.get(party_pid)
 
+    def has_partylink(self, partylink_pid: PartyPID) -> bool:
+        return self.get_partylink(partylink_pid) != None
+
     def del_partylink(self, pid):
         self._partys.pop(pid)
+
+    def _move_partylink(self, to_delete_pid: PartyPID, to_absorb_pid: PartyPID):
+        old_group_partylink = self.get_partylink(to_delete_pid)
+        new_partylink_creditor_weight = old_group_partylink.creditor_weight
+        new_partylink_debtor_weight = old_group_partylink.debtor_weight
+
+        new_partylink = self.get_partylink(to_absorb_pid)
+        if new_partylink != None:
+            new_partylink_creditor_weight += new_partylink.creditor_weight
+            new_partylink_debtor_weight += new_partylink.debtor_weight
+
+        self.set_partylink(
+            partylink=partylink_shop(
+                pid=to_absorb_pid,
+                creditor_weight=new_partylink_creditor_weight,
+                debtor_weight=new_partylink_debtor_weight,
+            )
+        )
+        self.del_partylink(pid=to_delete_pid)
 
     def meld(self, other_group):
         self._meld_attributes_that_will_be_equal(other_group=other_group)
@@ -148,14 +171,13 @@ class GroupUnit(GroupCore):
 
 
 # class GroupUnitsshop:
-def get_from_json(groupunits_json: str):
+def get_from_json(groupunits_json: str) -> dict[GroupBrand:GroupUnit]:
     groupunits_dict = x_get_dict(json_x=groupunits_json)
     return get_from_dict(x_dict=groupunits_dict)
 
 
-def get_from_dict(x_dict: dict):
+def get_from_dict(x_dict: dict) -> dict[GroupBrand:GroupUnit]:
     groupunits = {}
-
     for groupunit_dict in x_dict.values():
         x_group = groupunit_shop(
             brand=groupunit_dict["brand"],
@@ -199,11 +221,9 @@ def groupunit_shop(
             f"_partylinks_set_by_economy_road cannot be '{_partylinks_set_by_economy_road}' for a single_party GroupUnit. It must have no value."
         )
 
-    if _partys is None:
-        _partys = {}
     if _single_party is None:
         _single_party = False
-    x_groupunit = GroupUnit(
+    return GroupUnit(
         brand=brand,
         uid=uid,
         single_party_id=single_party_id,
@@ -215,7 +235,6 @@ def groupunit_shop(
         _agenda_intent_debt=_agenda_intent_debt,
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
-    return x_groupunit
 
 
 @dataclass
@@ -223,7 +242,7 @@ class BalanceLink(GroupCore):
     creditor_weight: float = 1.0
     debtor_weight: float = 1.0
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "brand": self.brand,
             "creditor_weight": self.creditor_weight,

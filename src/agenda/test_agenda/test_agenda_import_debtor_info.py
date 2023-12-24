@@ -29,7 +29,7 @@ def test_agenda_import_debtor_info_CorrectlyWorks():
         debtor_active=jane_debtor_status,
         creditor_active=jane_creditor_status,
     )
-    x_agenda.import_external_partyunit_metrics(jane_metr)
+    x_agenda.set_partyunit_external_metrics(jane_metr)
 
     # THEN
     assert jane_party._debtor_active == jane_debtor_status

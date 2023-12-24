@@ -789,9 +789,9 @@ def test_agenda_intent_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     assert x_agenda_patr_party._agenda_intent_ratio_debt == 0.5
 
 
-def test_agenda_get_party_groups_returnsCorrectData():
+def test_agenda_get_party_groupbrands_returnsCorrectData():
+    # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(ideacore_shop("swim"), pad="prom")
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -799,15 +799,15 @@ def test_agenda_get_party_groups_returnsCorrectData():
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
 
-    carmen_group_list = x_agenda.get_party_groups(party_pid=carm_text)
-    assert carmen_group_list == [carm_text]
+    # WHEN / THEN
+    assert x_agenda.get_party_groupbrands(party_pid=carm_text) == [carm_text]
 
+    # WHEN / THEN
     swimmers = "swimmers"
-    carmen_party_dict = {PartyPID(carm_text): partylink_shop(pid=carm_text)}
-    swim_group = groupunit_shop(brand=swimmers, _partys=carmen_party_dict)
-    x_agenda._groups[swim_group.brand] = swim_group
-    carmen_group_list = x_agenda.get_party_groups(party_pid=carm_text)
-    assert carmen_group_list == [carm_text, swimmers]
+    swim_group = groupunit_shop(brand=swimmers)
+    swim_group.set_partylink(partylink_shop(carm_text))
+    x_agenda.set_groupunit(swim_group)
+    assert x_agenda.get_party_groupbrands(party_pid=carm_text) == [carm_text, swimmers]
 
 
 def test_agenda_PartyUnit_CorrectlyCreatesNewPID():
@@ -826,7 +826,7 @@ def test_agenda_PartyUnit_CorrectlyCreatesNewPID():
 
     # WHEN
     beto_text = "beta"
-    x_agenda.set_partyunit_pid(
+    x_agenda.edit_partyunit_pid(
         old_pid=rico_text,
         new_pid=beto_text,
         allow_party_overwite=False,
@@ -861,7 +861,7 @@ def test_agenda_PartyUnit_raiseErrorNewPIDPreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.set_partyunit_pid(
+        x_agenda.edit_partyunit_pid(
             old_pid=rico_text,
             new_pid=carmen_text,
             allow_party_overwite=False,
@@ -903,7 +903,7 @@ def test_agenda_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 
     # WHEN
     beto_text = "beta"
-    x_agenda.set_partyunit_pid(
+    x_agenda.edit_partyunit_pid(
         old_pid=rico_text,
         new_pid=beto_text,
         allow_party_overwite=False,
@@ -947,7 +947,7 @@ def test_agenda_PartyUnit_CorrectlyMergesPIDs():
     assert x_agenda._partys.get(carm_text).creditor_weight == 3
 
     # WHEN / THEN
-    x_agenda.set_partyunit_pid(
+    x_agenda.edit_partyunit_pid(
         old_pid=rico_text,
         new_pid=carm_text,
         allow_party_overwite=True,
@@ -994,7 +994,7 @@ def test_agenda_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     assert swim_group._partys.get(carm_text).debtor_weight == 18
 
     # WHEN
-    x_agenda.set_partyunit_pid(
+    x_agenda.edit_partyunit_pid(
         old_pid=rico_text,
         new_pid=carm_text,
         allow_party_overwite=True,
@@ -1028,7 +1028,7 @@ def test_agenda_PartyUnit_raiseErrorNewPIDGroupUnitPreviouslyExists():
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.set_partyunit_pid(
+        x_agenda.edit_partyunit_pid(
             old_pid=rico_text,
             new_pid=carmen_text,
             allow_party_overwite=False,
@@ -1065,7 +1065,7 @@ def test_agenda_PartyUnit_CorrectlyOverwriteNewPIDGroupUnit():
     assert x_agenda._groups.get(carmen_text)._partys.get(rico_text).creditor_weight == 3
 
     # WHEN
-    x_agenda.set_partyunit_pid(
+    x_agenda.edit_partyunit_pid(
         old_pid=rico_text,
         new_pid=carmen_text,
         allow_party_overwite=False,
