@@ -113,9 +113,7 @@ class WorldUnit:
                     required_sufffact=x_reason.get_1_bad(),
                 )
 
-        requester_contract.set_idearoot_acptfactunit(
-            x_reason.base, pick=x_reason.get_1_bad()
-        )
+        requester_contract.set_acptfact(x_reason.base, pick=x_reason.get_1_bad())
         requester_enactunit.save_contract_agenda(requester_contract)
         requester_enactunit.save_refreshed_output_to_public()
 

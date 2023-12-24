@@ -12,7 +12,7 @@ class InvalidLemmaException(Exception):
 class Lemma:
     src_acptfact: AcptFactUnit
     calc_acptfact: AcptFactUnit
-    idea_x: IdeaKid
+    x_idea: IdeaKid
     eval_status: bool
     eval_count: int
 
@@ -132,23 +132,23 @@ class Lemmas:
         return acptfact_open, acptfact_nigh
 
     def _create_new_acptfact(
-        self, idea_x: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid
+        self, x_idea: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid
     ) -> AcptFactUnit:
-        if idea_x._begin is None or idea_x._close is None:
+        if x_idea._begin is None or x_idea._close is None:
             raise InvalidLemmaException(
-                f"Idea {idea_x._pad},{idea_x._label} does not have range"
+                f"Idea {x_idea._pad},{x_idea._label} does not have range"
             )
 
-        idea_begin = idea_x._begin
-        idea_close = idea_x._close
-        idea_numor = idea_x._numor
-        idea_denom = idea_x._denom
-        idea_reest = idea_x._reest
+        idea_begin = x_idea._begin
+        idea_close = x_idea._close
+        idea_numor = x_idea._numor
+        idea_denom = x_idea._denom
+        idea_reest = x_idea._reest
         src_open = src_acptfact.open
         src_nigh = src_acptfact.nigh
         src_idea_begin = src_idea._begin
         src_idea_close = src_idea._close
-        idea_road = idea_x.get_idea_road()
+        idea_road = x_idea.get_idea_road()
 
         acptfact_open = None
         acptfact_nigh = None
@@ -211,16 +211,16 @@ class Lemmas:
                 return lemma
 
     # def _add_lemma_idea(
-    def eval(self, idea_x: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid):
+    def eval(self, x_idea: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid):
         new_acptfact = self._create_new_acptfact(
-            idea_x=idea_x, src_acptfact=src_acptfact, src_idea=src_idea
+            x_idea=x_idea, src_acptfact=src_acptfact, src_idea=src_idea
         )
-        road_x = idea_x.get_idea_road()
+        road_x = x_idea.get_idea_road()
         if self.lemmas.get(road_x) is None:
             self.lemmas[road_x] = Lemma(
                 src_acptfact=src_acptfact,
                 calc_acptfact=new_acptfact,
-                idea_x=idea_x,
+                x_idea=x_idea,
                 eval_status=False,
                 eval_count=1,
             )

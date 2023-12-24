@@ -180,8 +180,8 @@ class AgendaUnit:
 
     def get_agenda_sprung_from_single_idea(self, road: RoadUnit) -> any:
         self.set_agenda_metrics()
-        idea_x = self.get_idea_kid(road)
-        new_weight = self._weight * idea_x._agenda_importance
+        x_idea = self.get_idea_kid(road)
+        new_weight = self._weight * x_idea._agenda_importance
         x_agenda = agendaunit_shop(_healer=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
@@ -210,8 +210,8 @@ class AgendaUnit:
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
-            idea_x = self.get_idea_kid(road_x)
-            for requiredunit_obj in idea_x._requiredunits.values():
+            x_idea = self.get_idea_kid(road_x)
+            for requiredunit_obj in x_idea._requiredunits.values():
                 required_base = requiredunit_obj.base
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
@@ -220,19 +220,19 @@ class AgendaUnit:
                     road_type="requiredunit_base",
                 )
 
-            if idea_x._numeric_road != None:
+            if x_idea._numeric_road != None:
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=idea_x._numeric_road,
+                    to_evaluate_road=x_idea._numeric_road,
                     road_type="numeric_road",
                 )
 
-            if idea_x._range_source_road != None:
+            if x_idea._range_source_road != None:
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=idea_x._range_source_road,
+                    to_evaluate_road=x_idea._range_source_road,
                     road_type="range_source_road",
                 )
 
@@ -726,32 +726,32 @@ class AgendaUnit:
         new_brand: GroupBrand,
         allow_group_overwite: bool,
     ):
-        for idea_x in self.get_idea_list():
+        for x_idea in self.get_idea_list():
             if (
-                idea_x._balancelinks.get(new_brand) != None
-                and idea_x._balancelinks.get(old_brand) != None
+                x_idea._balancelinks.get(new_brand) != None
+                and x_idea._balancelinks.get(old_brand) != None
             ):
-                old_balancelink = idea_x._balancelinks.get(old_brand)
+                old_balancelink = x_idea._balancelinks.get(old_brand)
                 old_balancelink.brand = new_brand
-                idea_x._balancelinks.get(new_brand).meld(
+                x_idea._balancelinks.get(new_brand).meld(
                     other_balancelink=old_balancelink,
                     other_on_meld_weight_action="sum",
                     src_on_meld_weight_action="sum",
                 )
 
-                idea_x.del_balancelink(groupbrand=old_brand)
+                x_idea.del_balancelink(groupbrand=old_brand)
             elif (
-                idea_x._balancelinks.get(new_brand) is None
-                and idea_x._balancelinks.get(old_brand) != None
+                x_idea._balancelinks.get(new_brand) is None
+                and x_idea._balancelinks.get(old_brand) != None
             ):
-                old_balancelink = idea_x._balancelinks.get(old_brand)
+                old_balancelink = x_idea._balancelinks.get(old_brand)
                 new_balancelink = balancelink_shop(
                     brand=new_brand,
                     creditor_weight=old_balancelink.creditor_weight,
                     debtor_weight=old_balancelink.debtor_weight,
                 )
-                idea_x.set_balancelink(balancelink=new_balancelink)
-                idea_x.del_balancelink(groupbrand=old_brand)
+                x_idea.set_balancelink(balancelink=new_balancelink)
+                x_idea.del_balancelink(groupbrand=old_brand)
 
     def get_groupunits_brand_list(self) -> list[GroupBrand]:
         groupbrand_list = list(self._groups.keys())
@@ -789,9 +789,9 @@ class AgendaUnit:
             parent_range = parent_idea._begin != None and parent_idea._close != None
 
         # figure out if numeric source exists
-        idea_x = self.get_idea_kid(idea_road)
+        x_idea = self.get_idea_kid(idea_road)
         numeric_source_road = None
-        numeric_source_road = idea_x._numeric_road != None
+        numeric_source_road = x_idea._numeric_road != None
 
         return not numeric_source_road and not parent_range
 
@@ -812,11 +812,11 @@ class AgendaUnit:
         for acptfact in ranged_acptfactunits:
             acptfact_idea = self.get_idea_kid(acptfact.base)
             for kid in acptfact_idea._kids.values():
-                x_lemmas.eval(idea_x=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
+                x_lemmas.eval(x_idea=kid, src_acptfact=acptfact, src_idea=acptfact_idea)
 
             if acptfact_idea._range_source_road != None:
                 x_lemmas.eval(
-                    idea_x=self.get_idea_kid(acptfact_idea._range_source_road),
+                    x_idea=self.get_idea_kid(acptfact_idea._range_source_road),
                     src_acptfact=acptfact,
                     src_idea=acptfact_idea,
                 )
@@ -837,19 +837,19 @@ class AgendaUnit:
                 raise InvalidAgendaException("lemma loop failed")
 
             lemma_y = x_lemmas.get_unevaluated_lemma()
-            idea_x = lemma_y.idea_x
+            lemma_idea = lemma_y.x_idea
             acptfact_x = lemma_y.calc_acptfact
 
-            road_x = self.make_road(idea_x._pad, idea_x._label)
+            road_x = self.make_road(lemma_idea._pad, lemma_idea._label)
             lemma_acptfactunits[road_x] = acptfact_x
 
-            for kid2 in idea_x._kids.values():
-                x_lemmas.eval(idea_x=kid2, src_acptfact=acptfact_x, src_idea=idea_x)
-            if idea_x._range_source_road not in [None, ""]:
+            for kid2 in lemma_idea._kids.values():
+                x_lemmas.eval(x_idea=kid2, src_acptfact=acptfact_x, src_idea=lemma_idea)
+            if lemma_idea._range_source_road not in [None, ""]:
                 x_lemmas.eval(
-                    idea_x=self.get_idea_kid(idea_x._range_source_road),
+                    x_idea=self.get_idea_kid(lemma_idea._range_source_road),
                     src_acptfact=acptfact_x,
-                    src_idea=idea_x,
+                    src_idea=lemma_idea,
                 )
 
         return lemma_acptfactunits
@@ -867,15 +867,17 @@ class AgendaUnit:
             self._set_ideakid_if_empty(road=pick)
 
         self._execute_tree_traverse()
-        acptfact_idea = self.get_idea_kid(base)
+        acptfact_base_idea = self.get_idea_kid(base)
+        x_acptfactunit = acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
+        x_idearoot = self.get_idea_kid(self._economy_id)
 
-        if acptfact_idea._begin is None and acptfact_idea._close is None:
-            self.set_idearoot_acptfactunit(base=base, pick=pick, open=open, nigh=nigh)
+        if acptfact_base_idea._begin is None and acptfact_base_idea._close is None:
+            x_idearoot.set_acptfactunit(x_acptfactunit)
 
         # if acptfact's idea no range or is a "range-root" then allow acptfact to be set by user
         elif (
-            acptfact_idea._begin != None
-            and acptfact_idea._close != None
+            acptfact_base_idea._begin != None
+            and acptfact_base_idea._close != None
             and self._is_idea_rangeroot(idea_road=base) == False
         ):
             raise InvalidAgendaException(
@@ -883,9 +885,9 @@ class AgendaUnit:
             )
 
         elif (
-            acptfact_idea._begin != None
-            and acptfact_idea._close != None
-            and self._is_idea_rangeroot(idea_road=base) == True
+            acptfact_base_idea._begin != None
+            and acptfact_base_idea._close != None
+            and self._is_idea_rangeroot(idea_road=base)
         ):
             # WHEN idea is "range-root" identify any required.bases that are descendants
             # calculate and set those descendant acptfacts
@@ -897,38 +899,29 @@ class AgendaUnit:
             # user should not set "timeline,weeks" acptfact, only "timeline" acptfact and
             # "timeline,weeks" should be set automatica_lly since there exists a required
             # that has that base.
-            self.set_idearoot_acptfactunit(base=base, pick=pick, open=open, nigh=nigh)
+            x_idearoot.set_acptfactunit(x_acptfactunit)
 
             # Find all AcptFact descendants and any range_source_road connections "Lemmas"
             lemmas_dict = self._get_lemma_acptfactunits()
-            for current_acptfact in self._idearoot._acptfactunits.values():
+            for current_acptfact in x_idearoot._acptfactunits.values():
                 for lemma_acptfact in lemmas_dict.values():
                     if lemma_acptfact.base == current_acptfact.base:
-                        self.set_idearoot_acptfactunit(
-                            base=lemma_acptfact.base,
-                            pick=lemma_acptfact.pick,
-                            open=lemma_acptfact.open,
-                            nigh=lemma_acptfact.nigh,
+                        x_idearoot.set_acptfactunit(
+                            acptfactunit_shop(
+                                base=lemma_acptfact.base,
+                                pick=lemma_acptfact.pick,
+                                open=lemma_acptfact.open,
+                                nigh=lemma_acptfact.nigh,
+                            )
                         )
-                        self._idearoot._acptfactunits[
-                            lemma_acptfact.base
-                        ] = lemma_acptfact
+                        x_idearoot._acptfactunits[lemma_acptfact.base] = lemma_acptfact
 
             for missing_acptfact in self.get_missing_acptfact_bases().keys():
                 for lemma_acptfact in lemmas_dict.values():
                     if lemma_acptfact.base == missing_acptfact:
-                        self._idearoot._acptfactunits[
-                            lemma_acptfact.base
-                        ] = lemma_acptfact
+                        x_idearoot._acptfactunits[lemma_acptfact.base] = lemma_acptfact
 
         self.set_agenda_metrics()
-
-    def set_idearoot_acptfactunit(
-        self, base: RoadUnit, pick: RoadUnit, open: float = None, nigh: float = None
-    ):
-        self._idearoot.set_acptfactunit(
-            acptfactunit_shop(base=base, pick=pick, open=open, nigh=nigh)
-        )
 
     def get_acptfactunits_base_and_acptfact_list(self) -> list:
         acptfact_list = list(self._idearoot._acptfactunits.values())
@@ -991,10 +984,10 @@ class AgendaUnit:
         idea_uid_max = tree_metrics.uid_max
         idea_uid_dict = tree_metrics.uid_dict
 
-        for idea_x in self.get_idea_list():
-            if idea_x._uid is None or idea_uid_dict.get(idea_x._uid) > 1:
+        for x_idea in self.get_idea_list():
+            if x_idea._uid is None or idea_uid_dict.get(x_idea._uid) > 1:
                 new_idea_uid_max = idea_uid_max + 1
-                self.edit_idea_attr(road=idea_x.get_idea_road(), uid=new_idea_uid_max)
+                self.edit_idea_attr(road=x_idea.get_idea_road(), uid=new_idea_uid_max)
                 idea_uid_max = new_idea_uid_max
 
     def get_node_count(self) -> int:
@@ -1269,18 +1262,18 @@ class AgendaUnit:
         parent_road = self._economy_id if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
-        parent_idea_x = self.get_idea_kid(parent_road)
-        parent_begin = parent_idea_x._begin
-        parent_close = parent_idea_x._close
+        parent_idea = self.get_idea_kid(parent_road)
+        parent_begin = parent_idea._begin
+        parent_close = parent_idea._close
         parent_has_range = parent_begin is not None and parent_close is not None
 
         numeric_begin = None
         numeric_close = None
         numeric_range = None
         if x_iaf.numeric_road != None:
-            numeric_idea_x = self.get_idea_kid(x_iaf.numeric_road)
-            numeric_begin = numeric_idea_x._begin
-            numeric_close = numeric_idea_x._close
+            numeric_idea = self.get_idea_kid(x_iaf.numeric_road)
+            numeric_begin = numeric_idea._begin
+            numeric_close = numeric_idea._close
             numeric_range = numeric_begin != None and numeric_close != None
 
         if parent_has_range and x_iaf.addin not in [None, 0]:
@@ -1639,7 +1632,7 @@ class AgendaUnit:
             close = begin
 
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
-        return {idea_x._label: idea_x for idea_x in idea_list}
+        return {x_idea._label: x_idea for x_idea in idea_list}
 
     def _set_ancestor_metrics(self, road: RoadUnit):
         # sourcery skip: low-code-quality
@@ -1667,7 +1660,7 @@ class AgendaUnit:
                 else:
                     yu_idea_obj.set_balancelines(child_balancelines=child_balancelines)
 
-                if yu_idea_obj._task == True:
+                if yu_idea_obj._task:
                     da_count += 1
 
                 if (
@@ -1947,7 +1940,7 @@ class AgendaUnit:
             if yb.sr != None:
                 range_source_road_x = self.make_road(self._economy_id, yb.sr)
 
-            idea_x = ideacore_shop(
+            x_idea = ideacore_shop(
                 _label=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -1960,7 +1953,7 @@ class AgendaUnit:
                 _range_source_road=range_source_road_x,
             )
             road_x = self.make_road(self._economy_id, yb.rr)
-            self.add_idea(idea_x, pad=road_x)
+            self.add_idea(x_idea, pad=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
@@ -2161,8 +2154,8 @@ class AgendaUnit:
         assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_pid)
         return {
             idea_road: -1
-            for idea_road, idea_x in self._idea_dict.items()
-            if (idea_x.assignor_in(assignor_groups) and idea_x.promise)
+            for idea_road, x_idea in self._idea_dict.items()
+            if (x_idea.assignor_in(assignor_groups) and x_idea.promise)
         }
 
     def _set_auto_output_to_public(self, bool_x: bool):

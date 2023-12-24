@@ -680,7 +680,6 @@ class IdeaCore:
         ]
         while to_be_equal_attributes != []:
             attrs = to_be_equal_attributes.pop()
-            print(f"{attrs[0]=} {attrs[1]=} {attrs[2]=}")
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
                     f"Meld fail idea={self.get_idea_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_idea_road()} {attrs[0]}:{attrs[2]}"
