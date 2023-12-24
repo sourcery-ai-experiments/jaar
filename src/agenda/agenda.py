@@ -40,6 +40,7 @@ from src.agenda.idea import (
     IdeaRoot,
     idearoot_shop,
     ideaattrfilter_shop,
+    IdeaAttrFilter,
     get_obj_from_idea_dict,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
@@ -1243,21 +1244,17 @@ class AgendaUnit:
                         )
                     idea_kid.find_replace_road(old_road=old_road, new_road=new_road)
 
-    def get_begin_close_if_denom_or_numeric_road(
-        self,
-        begin: float,
-        close: float,
-        addin: float,
-        numor: float,
-        denom: float,
-        reest: bool,
-        idea_road: RoadUnit,
-        numeric_road: RoadUnit,
+    def _set_ideaattrfilter_begin_close(
+        self, ideaattrfilter: IdeaAttrFilter, idea_road: RoadUnit
     ) -> (float, float):
+        x_iaf = ideaattrfilter
         anc_roads = get_ancestor_roads(road=idea_road)
-        if (addin != None or numor != None or denom != None or reest != None) and len(
-            anc_roads
-        ) == 1:
+        if (
+            x_iaf.addin != None
+            or x_iaf.numor != None
+            or x_iaf.denom != None
+            or x_iaf.reest != None
+        ) and len(anc_roads) == 1:
             raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
         parent_road = self._economy_id if len(anc_roads) == 1 else anc_roads[1]
 
@@ -1270,22 +1267,22 @@ class AgendaUnit:
         numeric_begin = None
         numeric_close = None
         numeric_range = None
-        if numeric_road != None:
-            numeric_idea_x = self.get_idea_kid(numeric_road)
+        if x_iaf.numeric_road != None:
+            numeric_idea_x = self.get_idea_kid(x_iaf.numeric_road)
             numeric_begin = numeric_idea_x._begin
             numeric_close = numeric_idea_x._close
             numeric_range = numeric_begin != None and numeric_close != None
 
-        if parent_has_range and addin not in [None, 0]:
-            parent_begin = parent_begin + addin
-            parent_close = parent_close + addin
+        if parent_has_range and x_iaf.addin not in [None, 0]:
+            parent_begin = parent_begin + x_iaf.addin
+            parent_close = parent_close + x_iaf.addin
 
-        begin, close = self._transform_begin_close(
-            reest=reest,
-            begin=begin,
-            close=close,
-            numor=numor,
-            denom=denom,
+        x_begin, x_close = self._transform_begin_close(
+            reest=x_iaf.reest,
+            begin=x_iaf.begin,
+            close=x_iaf.close,
+            numor=x_iaf.numor,
+            denom=x_iaf.denom,
             parent_has_range=parent_has_range,
             parent_begin=parent_begin,
             parent_close=parent_close,
@@ -1298,11 +1295,12 @@ class AgendaUnit:
             raise InvalidAgendaException(
                 "Idea has begin-close range parent, cannot have numeric_road"
             )
-        elif not parent_has_range and not numeric_range and numor != None:
+        elif not parent_has_range and not numeric_range and x_iaf.numor != None:
             raise InvalidAgendaException(
-                f"Idea cannot edit {numor=}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
+                f"Idea cannot edit numor={x_iaf.numor}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
             )
-        return begin, close
+        ideaattrfilter.begin = x_begin
+        ideaattrfilter.close = x_close
 
     def _transform_begin_close(
         self,
@@ -1392,25 +1390,7 @@ class AgendaUnit:
             if reest is None:
                 reest = False
 
-        if (
-            begin != None
-            or close != None
-            or numor != None
-            or numeric_road != None
-            or addin != None
-        ):
-            begin, close = self.get_begin_close_if_denom_or_numeric_road(
-                begin=begin,
-                close=close,
-                addin=addin,
-                numor=numor,
-                denom=denom,
-                reest=reest,
-                idea_road=road,
-                numeric_road=numeric_road,
-            )
-
-        idea_attr = ideaattrfilter_shop(
+        x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
             uid=uid,
             required=required,
@@ -1442,17 +1422,22 @@ class AgendaUnit:
             acptfactunit=acptfactunit,
             on_meld_weight_action=on_meld_weight_action,
         )
-        if idea_attr.required_sufffact != None:
+        if x_ideaattrfilter.has_numeric_attrs():
+            self._set_ideaattrfilter_begin_close(
+                ideaattrfilter=x_ideaattrfilter, idea_road=road
+            )
+
+        if x_ideaattrfilter.required_sufffact != None:
             suffact_idea = self.get_idea_kid(required_sufffact)
-            idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
+            x_ideaattrfilter.set_sufffact_range_attributes_influenced_by_sufffact_idea(
                 sufffact_open=suffact_idea._begin,
                 sufffact_nigh=suffact_idea._close,
                 # suffact_numor=suffact_idea.anc_numor,
                 sufffact_denom=suffact_idea._denom,
                 # anc_reest=suffact_idea.anc_reest,
             )
-        temp_idea = self.get_idea_kid(road)
-        temp_idea._set_idea_attr(idea_attr=idea_attr)
+        x_idea = self.get_idea_kid(road)
+        x_idea._set_idea_attr(idea_attr=x_ideaattrfilter)
 
         # deleting or setting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
         if balancelink_del != None or balancelink != None:

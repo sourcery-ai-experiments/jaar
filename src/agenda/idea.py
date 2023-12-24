@@ -133,6 +133,21 @@ class IdeaAttrFilter:
             # if self.required_sufffact_reest is None:
             #     self.required_sufffact_reest = sufffact_reest
 
+    def has_numeric_attrs(self):
+        return (
+            self.begin != None
+            or self.close != None
+            or self.numor != None
+            or self.numeric_road != None
+            or self.addin != None
+        )
+
+
+#     def has_ratio_attrs(self):
+#         return (
+# self.denom != None or self.numor != None or self.reest or self.addin != None
+#         )
+
 
 def ideaattrfilter_shop(
     weight: int = None,
@@ -166,6 +181,15 @@ def ideaattrfilter_shop(
     is_expanded: bool = None,
     on_meld_weight_action: str = None,
 ) -> IdeaAttrFilter:
+    # if denom != None or numor != None or reest or addin != None:
+    #     if addin is None:
+    #         addin = 0
+    #     if denom is None:
+    #         denom = 1
+    #     if numor is None:
+    #         numor = 1
+    #     if reest is None:
+    #         reest = False
     return IdeaAttrFilter(
         weight=weight,
         uid=uid,

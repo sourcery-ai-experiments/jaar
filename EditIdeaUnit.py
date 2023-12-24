@@ -19,6 +19,10 @@ from pyqt_func import (
 )
 
 
+class PyQtUIException(Exception):
+    pass
+
+
 class EditIdeaUnit(qtw0, Ui_Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -100,7 +104,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def yo_tree_item_setHidden(self, setHiddenBool):
         if type(setHiddenBool) is not bool:
-            raise Exception("input varible is not boolen")
+            raise PyQtUIException("input varible is not boolen")
 
         self.label_parent_id.setHidden(setHiddenBool)
         self.button_hreg_instance.setHidden(setHiddenBool)
@@ -784,7 +788,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def idea2group_update(self):
         bd_pid_new = self.idea2group_insert_combo.currentText()
         if bd_pid_new == "":
-            raise Exception("bd_pid is empty, idea2bd cannot be updated")
+            raise PyQtUIException("bd_pid is empty, idea2bd cannot be updated")
         balancelink_new = BalanceLink(brand=GroupBrand(bd_pid_new), weight=1)
         self.agenda_x.edit_idea_attr(
             road=f"{self.x_idea._pad},{self.x_idea._label}", balancelink=balancelink_new
