@@ -53,8 +53,11 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
             f.close()
 
 
+class CouldNotOpenFileException(Exception):
+    pass
+
+
 def open_file(dest_dir: str, file_name: str):
-    # sourcery skip: raise-specific-error
     file_path = dest_dir if file_name is None else f"{dest_dir}/{file_name}"
     text_x = ""
     try:
@@ -62,7 +65,9 @@ def open_file(dest_dir: str, file_name: str):
             text_x = f.read()
             f.close()
     except Exception as e:
-        raise Exception(f"Could not load file {file_path} {e.args}") from e
+        raise CouldNotOpenFileException(
+            f"Could not load file {file_path} {e.args}"
+        ) from e
     return text_x
 
 
