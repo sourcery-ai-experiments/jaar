@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.required_idea import AcptFactUnit, RoadUnit, acptfactunit_shop
 from src.agenda.idea import IdeaKid
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 
 
 class InvalidLemmaException(Exception):
@@ -245,4 +245,4 @@ class Lemmas:
 
 
 def lemmas_shop(lemmas: dict[RoadUnit:Lemma] = None, delimiter: str = None) -> Lemmas:
-    return Lemmas(lemmas=get_empty_dict_if_null(lemmas))
+    return Lemmas(lemmas=get_empty_dict_if_none(lemmas))

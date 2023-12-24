@@ -260,7 +260,7 @@ class AgendaUnit:
 
             if road_type == "requiredunit_base":
                 ru_base_idea = self.get_idea_kid(to_evaluate_road)
-                for descendant_road in ru_base_idea.get_descendant_roads():
+                for descendant_road in ru_base_idea.get_descendant_roads_from_kids():
                     self._evaluate_relevancy(
                         to_evaluate_list=to_evaluate_list,
                         to_evaluate_hx_dict=to_evaluate_hx_dict,
@@ -1460,7 +1460,7 @@ class AgendaUnit:
         temp_idea = self.get_idea_kid(road)
         temp_idea._set_idea_attr(idea_attr=idea_attr)
         if f"{type(temp_idea)}".find("'.idea.IdeaRoot'>") <= 0:
-            temp_idea._set_ideakid_attr(acptfactunit=acptfactunit)
+            temp_idea.set_acptfactunit(acptfactunit=acptfactunit)
 
         # deleting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
         if balancelink_del != None or balancelink != None:
@@ -1631,23 +1631,6 @@ class AgendaUnit:
         for partyunit in self._partys.values():
             partyunit.reset_agenda_credit_debt()
 
-    def _idearoot_inherit_requiredheirs(self):
-        x_dict = {}
-        for required in self._idearoot._requiredunits.values():
-            x_required = requiredheir_shop(required.base)
-            x_sufffacts = {}
-            for w in required.sufffacts.values():
-                sufffact_x = sufffactunit_shop(
-                    need=w.need,
-                    open=w.open,
-                    nigh=w.nigh,
-                    divisor=w.divisor,
-                )
-                x_sufffacts[sufffact_x.need] = sufffact_x
-            x_required.sufffacts = x_sufffacts
-            x_dict[x_required.base] = x_required
-        self._idearoot._requiredheirs = x_dict
-
     def get_idea_kid(self, road: RoadUnit) -> IdeaCore:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
@@ -1698,7 +1681,7 @@ class AgendaUnit:
 
         group_everyone = None
         if len(get_all_road_nodes(road)) <= 1:
-            group_everyone = self._idearoot._balanceheirs in [None, {}]
+            group_everyone = self._idearoot._balanceheirs == {}
         else:
             ancestor_roads = get_ancestor_roads(road=road)
             # remove root road
@@ -1757,26 +1740,31 @@ class AgendaUnit:
         self._idearoot._descendant_promise_count += da_count
 
     def _set_root_attributes(self):
-        self._idearoot._level = 0
-        self._idearoot.set_pad(parent_road="")
-        self._idearoot.set_requiredheirs(agenda_idea_dict=self._idea_dict)
-        self._idearoot.set_assignedheir(
-            parent_assignheir=None, agenda_groups=self._groups
-        )
-        self._idearoot.inherit_balanceheirs()
-        self._idearoot.clear_balancelines()
-        self._idearoot._weight = 1
-        self._idearoot._kids_total_weight = 0
-        self._idearoot.set_kids_total_weight()
-        self._idearoot.set_sibling_total_weight(1)
-        self._idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
-        self._idearoot.set_balanceheirs_agenda_credit_debt()
-        self._idearoot.set_ancestor_promise_count(0, False)
-        self._idearoot.clear_descendant_promise_count()
-        self._idearoot.clear_all_party_credit_debt()
-        self._idearoot.promise = False
+        x_idearoot = self._idearoot
+        x_idearoot._level = 0
+        x_idearoot.set_pad(parent_road="")
+        x_idearoot.set_idearoot_inherit_requiredheirs()
+        x_idearoot.set_assignedheir(parent_assignheir=None, agenda_groups=self._groups)
+        x_idearoot.set_acptfactheirs(acptfacts=self._idearoot._acptfactunits)
+        x_idearoot.inherit_balanceheirs()
+        x_idearoot.clear_balancelines()
+        x_idearoot._weight = 1
+        x_idearoot._kids_total_weight = 0
+        x_idearoot.set_kids_total_weight()
+        x_idearoot.set_sibling_total_weight(1)
+        # x_idearoot.set_active_status(
+        #     tree_traverse_count=self._tree_traverse_count,
+        #     agenda_groups=self._groups,
+        #     agenda_healer=self._healer,
+        # )
+        x_idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
+        x_idearoot.set_balanceheirs_agenda_credit_debt()
+        x_idearoot.set_ancestor_promise_count(0, False)
+        x_idearoot.clear_descendant_promise_count()
+        x_idearoot.clear_all_party_credit_debt()
+        x_idearoot.promise = False
 
-        if self._idearoot.is_kidless():
+        if x_idearoot.is_kidless():
             self._set_ancestor_metrics(road=self._idearoot._pad)
             self._distribute_agenda_importance(idea=self._idearoot)
 
@@ -1785,23 +1773,12 @@ class AgendaUnit:
         idea_kid: IdeaCore,
         coin_onset: float,
         parent_coin_cease: float,
-        parent_idea: IdeaCore = None,
-    ) -> IdeaCore:
-        parent_acptfacts = None
-        parent_requiredheirs = None
-
-        if parent_idea is None:
-            parent_idea = self._idearoot
-            parent_acptfacts = self._idearoot._acptfactunits
-            parent_requiredheirs = self._idearoot_inherit_requiredheirs()
-        else:
-            parent_acptfacts = parent_idea._acptfactheirs
-            parent_requiredheirs = parent_idea._requiredheirs
-
+        parent_idea: IdeaCore,
+    ):
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_pad(parent_idea._pad, parent_idea._label)
-        idea_kid.set_acptfactheirs(acptfacts=parent_acptfacts)
-        idea_kid.set_requiredheirs(self._idea_dict, parent_requiredheirs)
+        idea_kid.set_acptfactheirs(acptfacts=parent_idea._acptfactheirs)
+        idea_kid.set_requiredheirs(self._idea_dict, parent_idea._requiredheirs)
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
         idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
         idea_kid.clear_balancelines()
@@ -1871,6 +1848,7 @@ class AgendaUnit:
                 idea_kid=idea_kid,
                 coin_onset=coin_onset,
                 parent_coin_cease=parent_coin_cease,
+                parent_idea=self._idearoot,
             )
             cache_idea_list.append(idea_kid)
             coin_onset += idea_kid._agenda_importance
@@ -1913,7 +1891,7 @@ class AgendaUnit:
         self._reset_groupunits_agenda_credit_debt()
         self._reset_partyunit_agenda_credit_debt()
 
-    def get_heir_road_list(self, road_x: RoadUnit):
+    def get_heir_road_list(self, road_x: RoadUnit) -> list[RoadUnit]:
         # create list of all idea roads (road+desc)
         return [
             road
@@ -1921,7 +1899,9 @@ class AgendaUnit:
             if road.find(road_x) == 0
         ]
 
-    def get_idea_tree_ordered_road_list(self, no_range_descendants: bool = False):
+    def get_idea_tree_ordered_road_list(
+        self, no_range_descendants: bool = False
+    ) -> list[RoadUnit]:
         idea_list = self.get_idea_list()
         node_dict = {
             idea.get_idea_road().lower(): idea.get_idea_road() for idea in idea_list
@@ -1949,28 +1929,28 @@ class AgendaUnit:
 
         return list_x
 
-    def get_acptfactunits_dict(self):
+    def get_acptfactunits_dict(self) -> dict[str:str]:
         x_dict = {}
         if self._idearoot._acptfactunits != None:
             for acptfact_road, acptfact_obj in self._idearoot._acptfactunits.items():
                 x_dict[acptfact_road] = acptfact_obj.get_dict()
         return x_dict
 
-    def get_partys_dict(self):
+    def get_partys_dict(self) -> dict[str:str]:
         x_dict = {}
         if self._partys != None:
             for party_pid, party_obj in self._partys.items():
                 x_dict[party_pid] = party_obj.get_dict()
         return x_dict
 
-    def get_groupunits_from_dict(self):
+    def get_groupunits_from_dict(self) -> dict[str:str]:
         x_dict = {}
         if self._groups != None:
             for group_pid, group_obj in self._groups.items():
                 x_dict[group_pid] = group_obj.get_dict()
         return x_dict
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         self.set_agenda_metrics()
         return {
             "_partys": self.get_partys_dict(),
@@ -1985,7 +1965,7 @@ class AgendaUnit:
             "_idearoot": self._idearoot.get_dict(),
         }
 
-    def get_json(self):
+    def get_json(self) -> str:
         x_dict = self.get_dict()
         return x_get_json(dict_x=x_dict)
 
@@ -2074,11 +2054,6 @@ class AgendaUnit:
 
         return agenda4party
 
-    # def get_intent_items(
-    #     self, intent_enterprise: bool = True, intent_state: bool = True, base: RoadUnit = None
-    # ) -> list[IdeaCore]:
-    #     return list(self.get_intent_items(base=base))
-
     def set_dominate_promise_idea(self, idea_kid: IdeaCore):
         idea_kid.promise = True
         self.add_idea(
@@ -2087,7 +2062,7 @@ class AgendaUnit:
             create_missing_ideas_groups=True,
         )
 
-    def get_idea_list_without_idearoot(self):
+    def get_idea_list_without_idearoot(self) -> list[IdeaCore]:
         x_list = self.get_idea_list()
         x_list.pop(0)
         return x_list
@@ -2158,7 +2133,7 @@ class AgendaUnit:
         agenda_x,
         assignor_partys: dict[PartyPID:PartyUnit],
         assignor_pid: PartyPID,
-    ) -> PersonID:
+    ):
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_pid)
         self._set_assignment_groups(agenda_x)

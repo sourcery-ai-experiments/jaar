@@ -1,6 +1,6 @@
 from contextlib import suppress as contextlib_suppress
 from src.agenda.party import PartyPID
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from dataclasses import dataclass
 
 
@@ -44,7 +44,7 @@ class OriginUnit:
 
 
 def originunit_shop(_links: dict[PartyPID:OriginLink] = None) -> OriginUnit:
-    return OriginUnit(_links=get_empty_dict_if_null(_links))
+    return OriginUnit(_links=get_empty_dict_if_none(_links))
 
 
 def originunit_get_from_dict(x_dict: dict) -> OriginUnit:

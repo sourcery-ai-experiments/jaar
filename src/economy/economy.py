@@ -15,7 +15,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.enact import EnactUnit, enactunit_shop, EnactCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -565,7 +565,7 @@ def economyunit_shop(
     economy_x = EconomyUnit(
         economy_id=economy_id,
         economys_dir=economys_dir,
-        _enactunits=get_empty_dict_if_null(_enactunits),
+        _enactunits=get_empty_dict_if_none(_enactunits),
     )
     economy_x.set_road_node_delimiter(_road_node_delimiter)
     economy_x.set_manager_pid(_manager_pid)

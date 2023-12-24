@@ -53,7 +53,7 @@ from src.agenda.x_func import (
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
 )
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy
 
 
@@ -203,12 +203,12 @@ class IdeaCore:
         elif prev_active_status != curr_active_status:
             self._active_status_hx[tree_traverse_count] = curr_active_status
 
-    def get_key_road(self):
+    def get_key_road(self) -> RoadNode:
         return self._label
 
     def set_acptfactheirs(self, acptfacts: dict[RoadUnit:AcptFactCore]):
-        acptfacts = get_empty_dict_if_null(x_dict=acptfacts)
-        x_dict = {}
+        acptfacts = get_empty_dict_if_none(x_dict=acptfacts)
+        self._acptfactheirs = {}
         for h in acptfacts.values():
             x_acptfact = acptfactheir_shop(
                 base=h.base, pick=h.pick, open=h.open, nigh=h.nigh
@@ -217,9 +217,7 @@ class IdeaCore:
             x_acptfact = self.apply_acptfactunit_transformations(
                 acptfactheir=x_acptfact
             )
-            x_dict[x_acptfact.base] = x_acptfact
-
-        self._acptfactheirs = x_dict
+            self._acptfactheirs[x_acptfact.base] = x_acptfact
 
     def apply_acptfactunit_transformations(
         self, acptfactheir: AcptFactHeir
@@ -242,35 +240,12 @@ class IdeaCore:
         if delete_acptfactunit == True:
             del self._acptfactunits[acptfactunit.base]
 
-        return acptfactheir
-
     def set_acptfactunit(self, acptfactunit: AcptFactUnit):
-        self._acptfactunits[acptfactunit.base] = acptfactunit
-
-    def _set_ideakid_attr(
-        self,
-        acptfactunit: AcptFactUnit = None,
-        acptfactunit_base: RoadUnit = None,
-        acptfactunit_sufffact: RoadUnit = None,
-        acptfactunit_open: float = None,
-        acptfactunit_nigh: float = None,
-    ):
         if acptfactunit != None:
-            self.set_acptfactunit(acptfactunit=acptfactunit)
-        if acptfactunit_base != None and acptfactunit_sufffact != None:
-            self.set_acptfactunit(
-                base=acptfactunit_base,
-                need=acptfactunit_sufffact,
-                open=acptfactunit_open,
-                nigh=acptfactunit_nigh,
-            )
+            self._acptfactunits[acptfactunit.base] = acptfactunit
 
-    def get_acptfactunits_dict(self):
-        acptfactunits_dict = {}
-        if self._acptfactunits != None:
-            for hc in self._acptfactunits.values():
-                acptfactunits_dict[hc.base] = hc.get_dict()
-        return acptfactunits_dict
+    def get_acptfactunits_dict(self) -> dict[RoadUnit:AcptFactUnit]:
+        return {hc.base: hc.get_dict() for hc in self._acptfactunits.values()}
 
     def set_acptfactunit_to_complete(self, base_acptfactunit: AcptFactUnit):
         # if a idea is considered a task then a acptfactheir.open attribute can be increased to
@@ -278,13 +253,12 @@ class IdeaCore:
         # the minimal acptfactheir.open to change idea._task == False. idea_core._acptfactheir cannot be straight up manpulated
         # so idea._acptfactunit reqquires being changed.
         # self.set_acptfactunits(base=acptfact, acptfact=base, open=sufffact_nigh, nigh=acptfact_nigh)
-        acptfact_curb_x = acptfactunit_shop(
+        self._acptfactunits[base_acptfactunit.base] = acptfactunit_shop(
             base=base_acptfactunit.base,
             pick=base_acptfactunit.base,
             open=base_acptfactunit.nigh,
             nigh=base_acptfactunit.nigh,
         )
-        self._acptfactunits[base_acptfactunit.base] = acptfact_curb_x
 
     def set_agenda_importance(
         self,
@@ -341,7 +315,7 @@ class IdeaCore:
         if self._descendant_promise_count is None:
             self._descendant_promise_count = 0
 
-    def get_descendant_roads(self) -> dict[RoadUnit:int]:
+    def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
         descendant_roads = {}
         to_evaluate_ideas = list(self._kids.values())
         count_x = 0
@@ -441,12 +415,12 @@ class IdeaCore:
         for idea_x in self._kids.values():
             self._kids_total_weight += idea_x._weight
 
-    def get_balanceheirs_creditor_weight_sum(self):
+    def get_balanceheirs_creditor_weight_sum(self) -> float:
         return sum(
             balancelink.creditor_weight for balancelink in self._balanceheirs.values()
         )
 
-    def get_balanceheirs_debtor_weight_sum(self):
+    def get_balanceheirs_debtor_weight_sum(self) -> float:
         return sum(
             balancelink.debtor_weight for balancelink in self._balanceheirs.values()
         )
@@ -582,7 +556,7 @@ class IdeaCore:
         if self._originunit is None:
             self._originunit = originunit_shop()
 
-    def get_originunit_dict(self):
+    def get_originunit_dict(self) -> dict[str:str]:
         return self._originunit.get_dict()
 
     def _meld_attributes_that_will_be_equal(self, other_idea):
@@ -701,24 +675,24 @@ class IdeaCore:
     def set_required_suff_idea_active_status(
         self, base: RoadUnit, suff_idea_active_status: str
     ):
-        requiredunit_x = self._get_or_create_requiredunit(base=base)
+        x_requiredunit = self._get_or_create_requiredunit(base=base)
         if suff_idea_active_status == False:
-            requiredunit_x.suff_idea_active_status = False
+            x_requiredunit.suff_idea_active_status = False
         elif suff_idea_active_status == "Set to Ignore":
-            requiredunit_x.suff_idea_active_status = None
+            x_requiredunit.suff_idea_active_status = None
         elif suff_idea_active_status == True:
-            requiredunit_x.suff_idea_active_status = True
+            x_requiredunit.suff_idea_active_status = True
 
-    def _get_or_create_requiredunit(self, base: RoadUnit):
-        requiredunit_x = None
+    def _get_or_create_requiredunit(self, base: RoadUnit) -> RequiredUnit:
+        x_requiredunit = None
         try:
-            requiredunit_x = self._requiredunits[base]
+            x_requiredunit = self._requiredunits[base]
         except Exception:
-            requiredunit_x = requiredunit_shop(
+            x_requiredunit = requiredunit_shop(
                 base, delimiter=self._road_node_delimiter
             )
-            self._requiredunits[base] = requiredunit_x
-        return requiredunit_x
+            self._requiredunits[base] = x_requiredunit
+        return x_requiredunit
 
     def set_required_sufffact(
         self,
@@ -728,8 +702,8 @@ class IdeaCore:
         nigh: float,
         divisor: int,
     ):
-        requiredunit_x = self._get_or_create_requiredunit(base=base)
-        requiredunit_x.set_sufffact(
+        x_requiredunit = self._get_or_create_requiredunit(base=base)
+        x_requiredunit.set_sufffact(
             sufffact=sufffact, open=open, nigh=nigh, divisor=divisor
         )
 
@@ -772,8 +746,8 @@ class IdeaCore:
         self._requiredunits[required.base] = required
 
     def set_requiredheirs_status(self):
-        for lu in self._requiredheirs.values():
-            lu.set_status(acptfacts=self._acptfactheirs)
+        for x_requiredheir in self._requiredheirs.values():
+            x_requiredheir.set_status(acptfacts=self._acptfactheirs)
 
     def set_active_status(
         self,
@@ -825,7 +799,7 @@ class IdeaCore:
             required.clear_status()
 
     def _coalesce_with_requiredunits(self, requiredheirs: dict[RoadUnit:RequiredHeir]):
-        requiredheirs_new = get_empty_dict_if_null(x_dict=deepcopy(requiredheirs))
+        requiredheirs_new = get_empty_dict_if_none(x_dict=deepcopy(requiredheirs))
         requiredheirs_new.update(self._requiredunits)
         return requiredheirs_new
 
@@ -838,57 +812,46 @@ class IdeaCore:
             requiredheirs = self._requiredheirs
         coalesced_requireds = self._coalesce_with_requiredunits(requiredheirs)
 
-        x_dict = {}
-        for required in coalesced_requireds.values():
-            requiredheir_x = requiredheir_shop(
-                base=required.base,
-                sufffacts=None,
-                suff_idea_active_status=required.suff_idea_active_status,
+        self._requiredheirs = {}
+        for old_requiredheir in coalesced_requireds.values():
+            new_requiredheir = requiredheir_shop(
+                base=old_requiredheir.base,
+                suff_idea_active_status=old_requiredheir.suff_idea_active_status,
             )
-            sufffacts_x = {}
-            for w in required.sufffacts.values():
-                sufffact_x = sufffactunit_shop(
-                    need=w.need,
-                    open=w.open,
-                    nigh=w.nigh,
-                    divisor=w.divisor,
+            new_requiredheir.inherit_from_requiredheir(old_requiredheir)
+
+            # if agenda_idea_dict != None:
+            base_idea = agenda_idea_dict.get(old_requiredheir.base)
+            if base_idea != None:
+                new_requiredheir.set_curr_idea_active_status(
+                    bool_x=base_idea._active_status
                 )
-                sufffacts_x[sufffact_x.need] = sufffact_x
-            requiredheir_x.sufffacts = sufffacts_x
 
-            if agenda_idea_dict != None:
-                base_idea = agenda_idea_dict.get(required.base)
-                if base_idea != None:
-                    requiredheir_x.set_curr_idea_active_status(
-                        bool_x=base_idea._active_status
-                    )
+            self._requiredheirs[new_requiredheir.base] = new_requiredheir
 
-            x_dict[requiredheir_x.base] = requiredheir_x
-        self._requiredheirs = x_dict
+    def set_idearoot_inherit_requiredheirs(self):
+        self._requiredheirs = {}
+        for curr_requiredunit in self._requiredunits.values():
+            new_requiredheir = requiredheir_shop(curr_requiredunit.base)
+            new_requiredheir.inherit_from_requiredheir(curr_requiredunit)
+            self._requiredheirs[new_requiredheir.base] = new_requiredheir
 
-    def get_requiredheir(self, base: RoadUnit):
+    def get_requiredheir(self, base: RoadUnit) -> RequiredHeir:
         return self._requiredheirs.get(base)
 
     def get_requiredunits_dict(self):
-        x_dict = {}
-        if self._requiredunits != None:
-            for base, required in self._requiredunits.items():
-                x_dict[base] = required.get_dict()
-        return x_dict
+        return {
+            base: required.get_dict() for base, required in self._requiredunits.items()
+        }
 
     def get_kids_dict(self):
-        x_dict = {}
-        if self._kids != None:
-            for c_road, kid in self._kids.items():
-                x_dict[c_road] = kid.get_dict()
-        return x_dict
+        return {c_road: kid.get_dict() for c_road, kid in self._kids.items()}
 
     def get_balancelinks_dict(self):
-        balancelinks_dict = {}
-        if self._balancelinks != None:
-            for group_pid, balancelink in self._balancelinks.items():
-                balancelinks_dict[group_pid] = balancelink.get_dict()
-        return balancelinks_dict
+        return {
+            group_pid: balancelink.get_dict()
+            for group_pid, balancelink in self._balancelinks.items()
+        }
 
     def is_kidless(self):
         return self._kids == {}
@@ -1050,17 +1013,17 @@ def ideacore_shop(
         _label=_label,
         _uid=_uid,
         _pad=_pad,
-        _kids=get_empty_dict_if_null(_kids),
+        _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
-        _balancelinks=get_empty_dict_if_null(_balancelinks),
-        _balanceheirs=get_empty_dict_if_null(_balanceheirs),
-        _balancelines=get_empty_dict_if_null(_balancelines),
-        _requiredunits=get_empty_dict_if_null(_requiredunits),
-        _requiredheirs=get_empty_dict_if_null(_requiredheirs),
+        _balancelinks=get_empty_dict_if_none(_balancelinks),
+        _balanceheirs=get_empty_dict_if_none(_balanceheirs),
+        _balancelines=get_empty_dict_if_none(_balancelines),
+        _requiredunits=get_empty_dict_if_none(_requiredunits),
+        _requiredheirs=get_empty_dict_if_none(_requiredheirs),
         _assignedunit=_assignedunit,
         _assignedheir=_assignedheir,
-        _acptfactunits=get_empty_dict_if_null(_acptfactunits),
-        _acptfactheirs=get_empty_dict_if_null(_acptfactheirs),
+        _acptfactunits=get_empty_dict_if_none(_acptfactunits),
+        _acptfactheirs=get_empty_dict_if_none(_acptfactheirs),
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1087,7 +1050,7 @@ def ideacore_shop(
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=get_empty_dict_if_null(_active_status_hx),
+        _active_status_hx=get_empty_dict_if_none(_active_status_hx),
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     x_ideakid.set_assignedunit_empty_if_null()
@@ -1173,17 +1136,17 @@ def idearoot_shop(
         _label=_label,
         _uid=_uid,
         _pad=_pad,
-        _kids=get_empty_dict_if_null(_kids),
+        _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
-        _balancelinks=get_empty_dict_if_null(_balancelinks),
-        _balanceheirs=get_empty_dict_if_null(_balanceheirs),
-        _balancelines=get_empty_dict_if_null(_balancelines),
-        _requiredunits=get_empty_dict_if_null(_requiredunits),
-        _requiredheirs=get_empty_dict_if_null(_requiredheirs),
+        _balancelinks=get_empty_dict_if_none(_balancelinks),
+        _balanceheirs=get_empty_dict_if_none(_balanceheirs),
+        _balancelines=get_empty_dict_if_none(_balancelines),
+        _requiredunits=get_empty_dict_if_none(_requiredunits),
+        _requiredheirs=get_empty_dict_if_none(_requiredheirs),
         _assignedunit=_assignedunit,
         _assignedheir=_assignedheir,
-        _acptfactunits=get_empty_dict_if_null(_acptfactunits),
-        _acptfactheirs=get_empty_dict_if_null(_acptfactheirs),
+        _acptfactunits=get_empty_dict_if_none(_acptfactunits),
+        _acptfactheirs=get_empty_dict_if_none(_acptfactheirs),
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1210,7 +1173,7 @@ def idearoot_shop(
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=get_empty_dict_if_null(_active_status_hx),
+        _active_status_hx=get_empty_dict_if_none(_active_status_hx),
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
     if x_idearoot._label is None:

@@ -7,7 +7,7 @@ from src.agenda.road import (
     is_heir_road,
     get_node_delimiter,
 )
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
 
 
@@ -490,7 +490,7 @@ def requiredcore_shop(
 ):
     return RequiredCore(
         base=base,
-        sufffacts=get_empty_dict_if_null(sufffacts),
+        sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         delimiter=get_node_delimiter(delimiter),
     )
@@ -517,7 +517,7 @@ def requiredunit_shop(
 ):
     return RequiredUnit(
         base=base,
-        sufffacts=get_empty_dict_if_null(sufffacts),
+        sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         delimiter=get_node_delimiter(delimiter),
     )
@@ -528,6 +528,18 @@ class RequiredHeir(RequiredCore):
     _status: bool = None
     _task: bool = None
     _curr_idea_active_status: bool = None
+
+    def inherit_from_requiredheir(self, x_requiredunit: RequiredUnit):
+        x_sufffacts = {}
+        for w in x_requiredunit.sufffacts.values():
+            sufffact_x = sufffactunit_shop(
+                need=w.need,
+                open=w.open,
+                nigh=w.nigh,
+                divisor=w.divisor,
+            )
+            x_sufffacts[sufffact_x.need] = sufffact_x
+        self.sufffacts = x_sufffacts
 
     def clear_status(self):
         self._status = None
@@ -589,7 +601,7 @@ def requiredheir_shop(
 ):
     return RequiredHeir(
         base=base,
-        sufffacts=get_empty_dict_if_null(sufffacts),
+        sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
         _status=_status,
         _task=_task,

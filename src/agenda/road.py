@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 
 
 class InvalidRoadUnitException(Exception):
@@ -271,7 +271,7 @@ def forkunit_shop(
 ):
     delimiter = get_node_delimiter(delimiter)
     x_forkunit = ForkUnit(
-        base=base, descendents=get_empty_dict_if_null(descendents), delimiter=delimiter
+        base=base, descendents=get_empty_dict_if_none(descendents), delimiter=delimiter
     )
     return x_forkunit
 

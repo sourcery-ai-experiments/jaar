@@ -269,7 +269,7 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromOutside():
     assert ball_idea._requiredheirs == {}
 
     # WHEN
-    ball_idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict=None)
+    ball_idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict={})
 
     # THEN
     assert ball_idea._requiredheirs == requiredheirs
@@ -290,7 +290,7 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
     assert ball_idea._requiredunits != {}
 
     # WHEN
-    ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict=None)
+    ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict={})
 
     # THEN
     requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
@@ -446,7 +446,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
         _problem_bool=True,
     )
     acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    work_idea._set_ideakid_attr(acptfactunit=acptfactunit_x)
+    work_idea.set_acptfactunit(acptfactunit=acptfactunit_x)
     work_idea._originunit.set_originlink(pid="Ray", weight=None)
     work_idea._originunit.set_originlink(pid="Lei", weight=4)
     x_begin = 11
@@ -633,7 +633,7 @@ def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
     tool_text = "tool"
     required_heir_x = requiredheir_shop(base=tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
+    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict={})
 
     # WHEN
     required_heir_z = clean_idea.get_requiredheir(base=tool_text)
@@ -650,7 +650,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
     tool_text = "tool"
     required_heir_x = requiredheir_shop(tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
-    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict=None)
+    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict={})
 
     # WHEN
     test6_text = "test6"
@@ -807,7 +807,7 @@ def test_idea_get_descendants_ReturnsNoRoadUnits():
     nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
 
     # WHEN
-    nation_descendants = nation_idea.get_descendant_roads()
+    nation_descendants = nation_idea.get_descendant_roads_from_kids()
 
     # THEN
     assert nation_descendants == {}
@@ -835,7 +835,7 @@ def test_idea_get_descendants_Returns3DescendantsRoadUnits():
     usa_idea.add_kid(idea_kid=iowa_idea)
 
     # WHEN
-    nation_descendants = nation_idea.get_descendant_roads()
+    nation_descendants = nation_idea.get_descendant_roads_from_kids()
 
     # THEN
     assert len(nation_descendants) == 3
@@ -854,7 +854,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        nation_idea.get_descendant_roads()
+        nation_idea.get_descendant_roads_from_kids()
     assert (
         str(excinfo.value)
         == f"Idea '{nation_idea.get_idea_road()}' either has an infinite loop or more than {max_count} descendants."

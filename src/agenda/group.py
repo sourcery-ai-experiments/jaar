@@ -10,7 +10,7 @@ from src.agenda.x_func import (
     get_meld_weight,
     return1ifnone as x_func_return1ifnone,
 )
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from src.agenda.road import RoadUnit
 
 
@@ -228,7 +228,7 @@ def groupunit_shop(
         uid=uid,
         single_party_id=single_party_id,
         _single_party=_single_party,
-        _partys=get_empty_dict_if_null(_partys),
+        _partys=get_empty_dict_if_none(_partys),
         _agenda_credit=_agenda_credit,
         _agenda_debt=_agenda_debt,
         _agenda_intent_credit=_agenda_intent_credit,

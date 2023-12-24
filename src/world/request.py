@@ -12,7 +12,7 @@ from src.agenda.road import (
 )
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideacore_shop, IdeaCore, IdeaAttrHolder
-from src.agenda.y_func import get_empty_dict_if_null
+from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.person import PersonID
 from dataclasses import dataclass
@@ -40,7 +40,7 @@ def economyaddress_shop(
     _road_node_delimiter: str = None,
 ) -> EconomyAddress:
     return EconomyAddress(
-        treasurer_pids=get_empty_dict_if_null(treasurer_pids),
+        treasurer_pids=get_empty_dict_if_none(treasurer_pids),
         economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
@@ -204,8 +204,8 @@ def requestunit_shop(
         _action_weight = 1
     return RequestUnit(
         _concernunit=_concernunit,
-        _requestee_pids=get_empty_dict_if_null(_requestee_pids),
-        _requestee_groups=get_empty_dict_if_null(_requestee_groups),
+        _requestee_pids=get_empty_dict_if_none(_requestee_pids),
+        _requestee_groups=get_empty_dict_if_none(_requestee_groups),
         _requester_pid=_requester_pid,
         _action_weight=_action_weight,
     )
