@@ -96,10 +96,6 @@ class ForkUnit:
             ),
             None,
         )
-        print(f"{good_in_tribe_road=}")
-        print(f"{bad_in_tribe_road=}")
-        print(f"{good_out_tribe_road=}")
-        print(f"{bad_out_tribe_road=}")
         return (
             good_in_tribe_road != None
             and bad_in_tribe_road != None
