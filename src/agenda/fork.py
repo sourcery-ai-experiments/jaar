@@ -31,6 +31,18 @@ class ProngUnit:
             x_love = 0
         self.love = x_love
 
+    def is_good(self):
+        return self.affect > 0
+
+    def is_bad(self):
+        return self.affect < 0
+
+    def is_in_tribe(self):
+        return self.love > 0
+
+    def is_out_tribe(self):
+        return self.love < 0
+
 
 def prongunit_shop(
     road: RoadUnit, affect: float = None, love: float = None
@@ -50,6 +62,50 @@ class ForkUnit:
     base: RoadUnit = None
     prongs: dict[RoadUnit:ProngUnit] = None
     delimiter: str = None
+
+    def is_dialectic(self):
+        good_in_tribe_road = next(
+            (
+                x_prongunit.road
+                for x_prongunit in self.prongs.values()
+                if x_prongunit.is_good() and x_prongunit.is_in_tribe()
+            ),
+            None,
+        )
+        good_out_tribe_road = next(
+            (
+                x_prongunit.road
+                for x_prongunit in self.prongs.values()
+                if x_prongunit.is_good() and x_prongunit.is_out_tribe()
+            ),
+            None,
+        )
+        bad_in_tribe_road = next(
+            (
+                x_prongunit.road
+                for x_prongunit in self.prongs.values()
+                if x_prongunit.is_bad() and x_prongunit.is_in_tribe()
+            ),
+            None,
+        )
+        bad_out_tribe_road = next(
+            (
+                x_prongunit.road
+                for x_prongunit in self.prongs.values()
+                if x_prongunit.is_bad() and x_prongunit.is_out_tribe()
+            ),
+            None,
+        )
+        print(f"{good_in_tribe_road=}")
+        print(f"{bad_in_tribe_road=}")
+        print(f"{good_out_tribe_road=}")
+        print(f"{bad_out_tribe_road=}")
+        return (
+            good_in_tribe_road != None
+            and bad_in_tribe_road != None
+            and good_out_tribe_road != None
+            and bad_out_tribe_road != None
+        )
 
     def is_tribal(self):
         return (

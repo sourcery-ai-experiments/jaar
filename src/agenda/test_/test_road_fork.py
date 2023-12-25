@@ -419,6 +419,42 @@ def test_ForkUnit_is_tribal_ReturnsCorrectBool():
     assert cook_fork.is_tribal()
 
 
+def test_ForkUnit_is_dialectic_ReturnsCorrectBool_v1():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+
+    # WHEN / THEN
+    assert cook_fork.is_tribal() == False
+    assert cook_fork.is_moral() == False
+    assert cook_fork.is_dialectic() == False
+
+
+def test_ForkUnit_is_dialectic_ReturnsCorrectBool_v2():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    warm_proc_road = get_road(cook_road, "warm processed food")
+    cold_proc_road = get_road(cook_road, "cold processed food")
+    warm_farm_road = get_road(cook_road, "warm farmed food")
+    cold_farm_road = get_road(cook_road, "cold farmed food")
+    cook_fork.set_prong(prongunit_shop(warm_proc_road, affect=44, love=-9))
+    cook_fork.set_prong(prongunit_shop(cold_proc_road, affect=-5, love=-4))
+    cook_fork.set_prong(prongunit_shop(warm_farm_road, affect=33, love=77))
+    cook_fork.set_prong(prongunit_shop(cold_farm_road, affect=-7, love=88))
+    assert len(cook_fork.prongs) == 4
+    assert cook_fork.is_tribal()
+    assert cook_fork.is_moral()
+    assert cook_fork.is_dialectic()
+
+    # WHEN / THEN
+    cook_fork.del_prong(cold_proc_road)
+    assert len(cook_fork.prongs) == 3
+    assert cook_fork.is_tribal()
+    assert cook_fork.is_moral()
+    assert cook_fork.is_dialectic() == False
+
+
 def test_ForkUnit_get_all_roads_ReturnsCorrectObj():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")

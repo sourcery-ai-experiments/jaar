@@ -219,12 +219,10 @@ def test_exammple_AgendaHasCorrectAttributes():
     idea_action_list = x_agenda.get_intent_items()
 
     # THEN
-    print("Test might be deprecated if it's not worthy it to repair this test source.")
     assert len(idea_action_list) == 27
 
-    x_agenda.set_acptfact(
-        base=month_week_road, pick=x_agenda.make_road(month_week_road, "1st week")
-    )
+    week1_road = x_agenda.make_road(month_week_road, "1st week")
+    x_agenda.set_acptfact(month_week_road, week1_road)
     idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 27
 
