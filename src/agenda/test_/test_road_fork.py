@@ -24,7 +24,7 @@ def test_ProngUnit_exists():
     assert beef_prong != None
     assert beef_prong.road == gas_road
     assert beef_prong.affect is None
-    assert beef_prong.tribal is None
+    assert beef_prong.love is None
 
 
 def test_ProngUnit_set_affect_CorrectSetsAttrs():
@@ -41,18 +41,18 @@ def test_ProngUnit_set_affect_CorrectSetsAttrs():
     assert beef_prong.affect == beef_affect
 
 
-def test_ProngUnit_set_tribal_CorrectSetsAttrs():
+def test_ProngUnit_set_love_CorrectSetsAttrs():
     # GIVEN
     gas_road = get_road(root_label(), "gas cooking")
     beef_prong = ProngUnit(road=gas_road)
-    assert beef_prong.tribal is None
+    assert beef_prong.love is None
 
     # WHEN
-    beef_tribal = -7
-    beef_prong.set_tribal(beef_tribal)
+    beef_love = -7
+    beef_prong.set_love(beef_love)
 
     # THEN
-    assert beef_prong.tribal == beef_tribal
+    assert beef_prong.love == beef_love
 
 
 def test_prongunit_shop_CorrectlyReturnsObj():
@@ -60,15 +60,15 @@ def test_prongunit_shop_CorrectlyReturnsObj():
     gas_road = get_road(root_label(), "gas cooking")
 
     # WHEN
-    cook_prong = prongunit_shop(road=gas_road, affect=7, tribal=11)
+    cook_prong = prongunit_shop(road=gas_road, affect=7, love=11)
 
     # THEN
     assert cook_prong.road == gas_road
     assert cook_prong.affect == 7
-    assert cook_prong.tribal == 11
+    assert cook_prong.love == 11
 
 
-def test_prongunit_shop_Sets_tribal_NoneIf():
+def test_prongunit_shop_Sets_love_NoneIf():
     # GIVEN
     gas_road = get_road(root_label(), "gas cooking")
 
@@ -78,7 +78,7 @@ def test_prongunit_shop_Sets_tribal_NoneIf():
     # THEN
     assert cook_prong.road == gas_road
     assert cook_prong.affect == 7
-    assert cook_prong.tribal == 0
+    assert cook_prong.love == 0
 
 
 def test_ProngUnit_set_affect_CorrectlyRaisesNoneZeroAffectException():
@@ -162,47 +162,7 @@ def test_ForkUnit_del_prong_CorrectlySetsAttr():
     assert cook_fork.prongs.get(metal_road) != None
 
 
-def test_ForkUnit_is_dialectic_ReturnsCorrectBool():
-    # GIVEN
-    cook_road = get_road(root_label(), "cooking")
-    cook_fork = forkunit_shop(cook_road)
-
-    # WHEN / THEN
-    assert len(cook_fork.prongs) == 0
-    assert cook_fork.is_dialectic() == False
-
-    # WHEN / THEN
-    cheap_prong = prongunit_shop(get_road(cook_road, "cheap food"), -2)
-    cook_fork.set_prong(cheap_prong)
-    assert len(cook_fork.prongs) == 1
-    assert cook_fork.is_dialectic() == False
-
-    # WHEN / THEN
-    farm_text = "farm fresh"
-    farm_prong = prongunit_shop(get_road(cook_road, farm_text), 3)
-    cook_fork.set_prong(farm_prong)
-    assert len(cook_fork.prongs) == 2
-    assert cook_fork.is_dialectic()
-
-    # WHEN / THEN
-    cook_fork.del_prong(get_road(cook_road, farm_text))
-    assert len(cook_fork.prongs) == 1
-    assert cook_fork.is_dialectic() == False
-
-    # WHEN / THEN
-    plastic_prong = prongunit_shop(get_road(cook_road, "plastic pots"), -5)
-    cook_fork.set_prong(plastic_prong)
-    assert len(cook_fork.prongs) == 2
-    assert cook_fork.is_dialectic() == False
-
-    # WHEN / THEN
-    metal_prong = prongunit_shop(get_road(cook_road, "metal pots"), 7)
-    cook_fork.set_prong(metal_prong)
-    assert len(cook_fork.prongs) == 3
-    assert cook_fork.is_dialectic()
-
-
-def test_ForkUnit_get_good_prongs_ReturnsCorrectObj():
+def test_ForkUnit_get_prongs_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -215,7 +175,7 @@ def test_ForkUnit_get_good_prongs_ReturnsCorrectObj():
     cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_good_prongs = cook_fork.get_good_prongs()
+    x_good_prongs = cook_fork.get_prongs(good=True)
 
     # THEN
     assert x_good_prongs != {}
@@ -223,7 +183,7 @@ def test_ForkUnit_get_good_prongs_ReturnsCorrectObj():
     assert x_good_prongs.get(farm_road) == farm_prongunit
 
 
-def test_ForkUnit_get_bad_prongs_ReturnsCorrectObj():
+def test_ForkUnit_get_prongs_ReturnsCorrectObj_bad():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -237,7 +197,7 @@ def test_ForkUnit_get_bad_prongs_ReturnsCorrectObj():
     cook_fork.set_prong(cheap_prongunit)
 
     # WHEN
-    x_bad_prongs = cook_fork.get_bad_prongs()
+    x_bad_prongs = cook_fork.get_prongs(bad=True)
 
     # THEN
     assert x_bad_prongs != {}
@@ -245,7 +205,7 @@ def test_ForkUnit_get_bad_prongs_ReturnsCorrectObj():
     assert x_bad_prongs.get(cheap_road) == cheap_prongunit
 
 
-def test_ForkUnit_get_1_good_ReturnsCorrectObj():
+def test_ForkUnit_get_1_prong_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -257,13 +217,13 @@ def test_ForkUnit_get_1_good_ReturnsCorrectObj():
     cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_bad_prong = cook_fork.get_1_good()
+    x_bad_prong = cook_fork.get_1_prong(good=True)
 
     # THEN
     assert x_bad_prong == farm_road
 
 
-def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
+def test_ForkUnit_get_1_prong_ReturnsCorrectObj_bad():
     # GIVEN
     cook_road = get_road(root_label(), "cooking")
     cook_fork = forkunit_shop(cook_road)
@@ -275,10 +235,89 @@ def test_ForkUnit_get_1_bad_ReturnsCorrectObj():
     cook_fork.set_prong(prongunit_shop(cheap_road, cheap_affect))
 
     # WHEN
-    x_bad_prong = cook_fork.get_1_bad()
+    x_bad_prong = cook_fork.get_1_prong(bad=True)
 
     # THEN
     assert x_bad_prong == cheap_road
+
+
+def test_ForkUnit_get_prongs_ReturnsCorrectObj_in_tribe():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    farm_road = get_road(cook_road, "farm food")
+    farm_love = 3
+    farm_prongunit = prongunit_shop(farm_road, -2, love=farm_love)
+    cook_fork.set_prong(farm_prongunit)
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_love = -3
+    cook_fork.set_prong(prongunit_shop(cheap_road, -2, love=cheap_love))
+
+    # WHEN
+    x_in_tribe_prongs = cook_fork.get_prongs(in_tribe=True)
+
+    # THEN
+    assert x_in_tribe_prongs != {}
+    assert len(x_in_tribe_prongs) == 1
+    assert x_in_tribe_prongs.get(farm_road) == farm_prongunit
+
+
+def test_ForkUnit_get_prongs_ReturnsCorrectObj_out_tribe():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    farm_road = get_road(cook_road, "farm food")
+    farm_love = 3
+    farm_prongunit = prongunit_shop(farm_road, -2, love=farm_love)
+    cook_fork.set_prong(farm_prongunit)
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_love = -3
+    cheap_prongunit = prongunit_shop(cheap_road, -2, love=cheap_love)
+    cook_fork.set_prong(cheap_prongunit)
+
+    # WHEN
+    x_out_tribe_prongs = cook_fork.get_prongs(out_tribe=True)
+
+    # THEN.
+    assert x_out_tribe_prongs != {}
+    assert len(x_out_tribe_prongs) == 1
+    assert x_out_tribe_prongs.get(cheap_road) == cheap_prongunit
+
+
+def test_ForkUnit_get_1_prong_ReturnsCorrectObj_in_tribe():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    farm_road = get_road(cook_road, "farm food")
+    farm_love = 3
+    cook_fork.set_prong(prongunit_shop(farm_road, -2, love=farm_love))
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_love = -3
+    cook_fork.set_prong(prongunit_shop(cheap_road, -2, love=cheap_love))
+
+    # WHEN
+    x_out_tribe_prong = cook_fork.get_1_prong(in_tribe=True)
+
+    # THEN
+    assert x_out_tribe_prong == farm_road
+
+
+def test_ForkUnit_get_1_prong_ReturnsCorrectObj_out_tribe():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+    farm_road = get_road(cook_road, "farm food")
+    farm_love = 3
+    cook_fork.set_prong(prongunit_shop(farm_road, -2, love=farm_love))
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_love = -3
+    cook_fork.set_prong(prongunit_shop(cheap_road, -2, love=cheap_love))
+
+    # WHEN
+    x_out_tribe_prong = cook_fork.get_1_prong(out_tribe=True)
+
+    # THEN
+    assert x_out_tribe_prong == cheap_road
 
 
 def test_ForkUnit_set_prongs_CorrectlyRaisesForkSubRoadUnitException():
@@ -297,6 +336,87 @@ def test_ForkUnit_set_prongs_CorrectlyRaisesForkSubRoadUnitException():
         str(excinfo.value)
         == f"ForkUnit cannot set prong '{go_cheap_road}' because base road is '{cook_road}'."
     )
+
+
+def test_ForkUnit_is_moral_ReturnsCorrectBool():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+
+    # WHEN / THEN
+    assert len(cook_fork.prongs) == 0
+    assert cook_fork.is_moral() == False
+
+    # WHEN / THEN
+    cheap_prong = prongunit_shop(get_road(cook_road, "cheap food"), -2)
+    cook_fork.set_prong(cheap_prong)
+    assert len(cook_fork.prongs) == 1
+    assert cook_fork.is_moral() == False
+
+    # WHEN / THEN
+    farm_text = "farm fresh"
+    farm_prong = prongunit_shop(get_road(cook_road, farm_text), 3)
+    cook_fork.set_prong(farm_prong)
+    assert len(cook_fork.prongs) == 2
+    assert cook_fork.is_moral()
+
+    # WHEN / THEN
+    cook_fork.del_prong(get_road(cook_road, farm_text))
+    assert len(cook_fork.prongs) == 1
+    assert cook_fork.is_moral() == False
+
+    # WHEN / THEN
+    plastic_prong = prongunit_shop(get_road(cook_road, "plastic pots"), -5)
+    cook_fork.set_prong(plastic_prong)
+    assert len(cook_fork.prongs) == 2
+    assert cook_fork.is_moral() == False
+
+    # WHEN / THEN
+    metal_prong = prongunit_shop(get_road(cook_road, "metal pots"), 7)
+    cook_fork.set_prong(metal_prong)
+    assert len(cook_fork.prongs) == 3
+    assert cook_fork.is_moral()
+
+
+def test_ForkUnit_is_tribal_ReturnsCorrectBool():
+    # GIVEN
+    cook_road = get_road(root_label(), "cooking")
+    cook_fork = forkunit_shop(cook_road)
+
+    # WHEN / THEN
+    assert cook_fork.is_tribal() == False
+
+    # WHEN / THEN
+    cheap_road = get_road(cook_road, "cheap food")
+    cheap_prong = prongunit_shop(cheap_road, -2, love=77)
+    cook_fork.set_prong(cheap_prong)
+    assert cook_fork.is_tribal() == False
+
+    # WHEN / THEN
+    farm_text = "farm fresh"
+    farm_road = get_road(cook_road, farm_text)
+    farm_prong = prongunit_shop(farm_road, -2, love=-55)
+    cook_fork.set_prong(farm_prong)
+    assert cook_fork.is_tribal()
+
+    # WHEN / THEN
+    cook_fork.del_prong(farm_road)
+    assert len(cook_fork.prongs) == 1
+    assert cook_fork.is_tribal() == False
+
+    # WHEN / THEN
+    plastic_road = get_road(cook_road, "plastic pots")
+    plastic_prong = prongunit_shop(plastic_road, -2, love=99)
+    cook_fork.set_prong(plastic_prong)
+    assert len(cook_fork.prongs) == 2
+    assert cook_fork.is_tribal() == False
+
+    # WHEN / THEN
+    metal_road = get_road(cook_road, "metal pots")
+    metal_prong = prongunit_shop(metal_road, -2, love=-44)
+    cook_fork.set_prong(metal_prong)
+    assert len(cook_fork.prongs) == 3
+    assert cook_fork.is_tribal()
 
 
 def test_ForkUnit_get_all_roads_ReturnsCorrectObj():

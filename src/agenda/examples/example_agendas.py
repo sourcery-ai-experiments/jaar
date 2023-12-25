@@ -77,7 +77,7 @@ def agenda_v002() -> AgendaUnit:
 
 def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_healer="Sue", _weight=10)
-    print(f"{sue_agenda._auto_output_to_public=}")
+    # print(f"{sue_agenda._auto_output_to_public=}")
 
     work = "work"
     idea_kid_work = ideacore_shop(work, _weight=30, promise=True)

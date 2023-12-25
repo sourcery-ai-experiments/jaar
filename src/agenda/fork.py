@@ -17,7 +17,7 @@ class NoneZeroAffectException(Exception):
 class ProngUnit:
     road: RoadUnit
     affect: float = None
-    tribal: float = None
+    love: float = None
 
     def set_affect(self, x_affect: float):
         if x_affect in {None, 0}:
@@ -26,18 +26,18 @@ class ProngUnit:
             )
         self.affect = x_affect
 
-    def set_tribal(self, x_tribal: float):
-        if x_tribal is None:
-            x_tribal = 0
-        self.tribal = x_tribal
+    def set_love(self, x_love: float):
+        if x_love is None:
+            x_love = 0
+        self.love = x_love
 
 
 def prongunit_shop(
-    road: RoadUnit, affect: float = None, tribal: float = None
+    road: RoadUnit, affect: float = None, love: float = None
 ) -> ProngUnit:
     x_prongunit = ProngUnit(road=road)
     x_prongunit.set_affect(affect)
-    x_prongunit.set_tribal(tribal)
+    x_prongunit.set_love(love)
     return x_prongunit
 
 
@@ -51,8 +51,16 @@ class ForkUnit:
     prongs: dict[RoadUnit:ProngUnit] = None
     delimiter: str = None
 
-    def is_dialectic(self):
-        return len(self.get_good_prongs()) > 0 and len(self.get_bad_prongs()) > 0
+    def is_tribal(self):
+        return (
+            self.get_1_prong(in_tribe=True) != None
+            and self.get_1_prong(out_tribe=True) != None
+        )
+
+    def is_moral(self):
+        return (
+            self.get_1_prong(good=True) != None and self.get_1_prong(bad=True) != None
+        )
 
     def set_prong(self, x_prongunit: ProngUnit):
         if is_sub_road(x_prongunit.road, self.base) == False:
@@ -64,33 +72,69 @@ class ForkUnit:
     def del_prong(self, prong: RoadUnit):
         self.prongs.pop(prong)
 
-    def get_good_prongs(self) -> dict[RoadUnit:int]:
+    def get_prongs(
+        self,
+        good: bool = None,
+        bad: bool = None,
+        in_tribe: bool = None,
+        out_tribe: bool = None,
+        x_all: bool = None,
+    ) -> dict[RoadUnit:ProngUnit]:
+        if good is None:
+            good = False
+        if bad is None:
+            bad = False
+        if in_tribe is None:
+            in_tribe = False
+        if out_tribe is None:
+            out_tribe = False
+        if x_all is None:
+            x_all = False
         return {
-            x_road: x_prongunnit
-            for x_road, x_prongunnit in self.get_prongs().items()
-            if x_prongunnit.affect > 0
+            x_road: x_prongunit
+            for x_road, x_prongunit in self.prongs.items()
+            if x_all
+            or (x_prongunit.affect > 0 and good)
+            or (x_prongunit.affect < 0 and bad)
+            or (x_prongunit.love > 0 and in_tribe)
+            or (x_prongunit.love < 0 and out_tribe)
         }
-
-    def get_bad_prongs(self) -> dict[RoadUnit:int]:
-        return {
-            x_road: x_prongunnit
-            for x_road, x_prongunnit in self.get_prongs().items()
-            if x_prongunnit.affect < 0
-        }
-
-    def get_prongs(self) -> dict[RoadUnit:int]:
-        return self.prongs
 
     def get_all_roads(self) -> dict[RoadUnit:int]:
-        x_dict = dict(self.get_prongs().items())
+        x_dict = dict(self.get_prongs(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
 
-    def get_1_good(self):
-        return list(self.get_good_prongs())[0]
-
-    def get_1_bad(self):
-        return list(self.get_bad_prongs())[0]
+    def get_1_prong(
+        self,
+        good: bool = None,
+        bad: bool = None,
+        in_tribe: bool = None,
+        out_tribe: bool = None,
+        x_any: bool = None,
+    ):
+        if good is None:
+            good = False
+        if bad is None:
+            bad = False
+        if in_tribe is None:
+            in_tribe = False
+        if out_tribe is None:
+            out_tribe = False
+        if x_any is None:
+            x_any = False
+        return next(
+            (
+                x_prongunit.road
+                for x_prongunit in self.prongs.values()
+                if x_any
+                or (x_prongunit.affect > 0 and good)
+                or (x_prongunit.affect < 0 and bad)
+                or (x_prongunit.love > 0 and in_tribe)
+                or (x_prongunit.love < 0 and out_tribe)
+            ),
+            None,
+        )
 
 
 def forkunit_shop(
@@ -111,5 +155,5 @@ def create_forkunit(
     bad_prongunit = prongunit_shop(get_road(base, bad, delimiter=delimiter), -1)
     x_forkunit.set_prong(good_prongunit)
     x_forkunit.set_prong(bad_prongunit)
-    if x_forkunit.is_dialectic():
+    if x_forkunit.is_moral():
         return x_forkunit

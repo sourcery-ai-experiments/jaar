@@ -77,7 +77,6 @@ class WorldUnit:
             requester_contract.add_partyunit(requestee_pid, depotlink_type="assignment")
 
         for request_group in x_requestunit._requestee_groups.keys():
-            print(f"{request_group=}")
             x_groupunit = groupunit_shop(request_group)
             for requestee_pid in x_requestunit._requestee_pids.keys():
                 x_groupunit.set_partylink(partylink_shop(requestee_pid))
@@ -91,7 +90,6 @@ class WorldUnit:
         else:
             for request_group in x_requestunit._requestee_groups.keys():
                 # requestee_contract changes
-                print(f"assignunit {request_group=}")
                 x_assignedunit.set_suffgroup(request_group)
                 x_balancelinks[request_group] = balancelink_shop(request_group)
 
@@ -110,10 +108,12 @@ class WorldUnit:
                 requester_contract.edit_idea_attr(
                     idea_road,
                     required_base=x_reason.base,
-                    required_sufffact=x_reason.get_1_bad(),
+                    required_sufffact=x_reason.get_1_prong(bad=True),
                 )
 
-        requester_contract.set_acptfact(x_reason.base, pick=x_reason.get_1_bad())
+        requester_contract.set_acptfact(
+            x_reason.base, pick=x_reason.get_1_prong(bad=True)
+        )
         requester_enactunit.save_contract_agenda(requester_contract)
         requester_enactunit.save_refreshed_output_to_public()
 
@@ -153,7 +153,7 @@ class WorldUnit:
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
-    def add_cultural_connection(
+    def add_economy_connection(
         self,
         economyaddress: EconomyAddress,
         enact_person_id: PersonID,

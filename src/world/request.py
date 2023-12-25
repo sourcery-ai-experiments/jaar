@@ -102,7 +102,7 @@ class ConcernUnit:
         }
         if action_weight is None:
             action_weight = 1
-        for action_road in self.action.get_good_prongs().keys():
+        for action_road in self.action.get_prongs(good=True).keys():
             action_idea = x_idea_dict.get(action_road)
             action_idea._set_idea_attr(
                 ideaattrfilter_shop(weight=action_weight, promise=True)
@@ -112,11 +112,11 @@ class ConcernUnit:
 
     def get_str_summary(self):
         _concern_subject = self.reason.base
-        _concern_good = self.reason.get_1_good()
-        _concern_bad = self.reason.get_1_bad()
+        _concern_good = self.reason.get_1_prong(good=True)
+        _concern_bad = self.reason.get_1_prong(bad=True)
         _action_subject = self.action.base
-        _action_positive = self.action.get_1_good()
-        _action_negative = self.action.get_1_bad()
+        _action_positive = self.action.get_1_prong(good=True)
+        _action_negative = self.action.get_1_prong(bad=True)
 
         concern_road = get_diff_road(_concern_subject, self.economyaddress.economy_id)
         bad_road = get_diff_road(_concern_bad, _concern_subject)

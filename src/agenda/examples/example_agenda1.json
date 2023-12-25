@@ -6816,7 +6816,7 @@
                         "_denom": null,
                         "_is_expanded": true,
                         "_kids": {
-                            "PSU Team": {
+                            "PSU Ultimate": {
                                 "_acptfactunits": {},
                                 "_addin": null,
                                 "_assignedunit": {
@@ -6828,7 +6828,7 @@
                                 "_denom": null,
                                 "_is_expanded": true,
                                 "_kids": {},
-                                "_label": "PSU Team",
+                                "_label": "PSU Ultimate",
                                 "_numeric_road": null,
                                 "_numor": null,
                                 "_on_meld_weight_action": "default",

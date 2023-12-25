@@ -15,7 +15,7 @@ from src.world.examples.world_env_kit import (
 from os import path as os_path
 
 
-def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
+def test_worldunit_add_economy_connection_CorrectlyCreatesObj(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -33,7 +33,7 @@ def test_worldunit_add_cultural_connection_CorrectlyCreatesObj(
     assert x_world.personunit_exists(kari_text) == False
 
     # WHEN
-    x_world.add_cultural_connection(texas_economyaddress, kari_text)
+    x_world.add_economy_connection(texas_economyaddress, kari_text)
 
     # THEN
     assert x_world.personunit_exists(kari_text)
