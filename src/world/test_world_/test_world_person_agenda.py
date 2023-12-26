@@ -63,7 +63,7 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgen
     #             f"{x_painunit.genus=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
     #         )
     # print(f"{texas_world._personunits.keys()=}")
-    # gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
+    gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
 
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)
