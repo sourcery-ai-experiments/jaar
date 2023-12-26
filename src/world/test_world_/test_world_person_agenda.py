@@ -56,14 +56,14 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgen
     texas_world.create_person_economy(luca_text, air_text, gilo_text, south_text)
 
     # WHEN
-    luca_personunit = texas_world.get_personunit_from_memory(luca_text)
-    for x_painunit in luca_personunit._pains.values():
-        for x_healerlink in x_painunit._healerlinks.values():
-            print(
-                f"{x_painunit.genus=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
-            )
-    print(f"{texas_world._personunits.keys()=}")
-    gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
+    # luca_personunit = texas_world.get_personunit_from_memory(luca_text)
+    # for x_painunit in luca_personunit._pains.values():
+    #     for x_healerlink in x_painunit._healerlinks.values():
+    #         print(
+    #             f"{x_painunit.genus=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
+    #         )
+    # print(f"{texas_world._personunits.keys()=}")
+    # gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
 
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)
