@@ -1001,6 +1001,14 @@ class AgendaUnit:
         adoptees: list[str] = None,
         bundling=True,
     ):
+        x_road = create_road(pad, idea_kid._label, delimiter=self._road_delimiter)
+        if self._idearoot._label != get_root_node_from_road(
+            x_road, self._road_delimiter
+        ):
+            raise InvalidAgendaException(
+                f"add_idea failed because '{x_road}' has an invalid root node"
+            )
+
         idea_kid._road_delimiter = self._road_delimiter
 
         if not create_missing_ideas_groups:
@@ -2231,7 +2239,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
     pad_text = "pad"
     # for every kid dict, set pad in dict, add to to_evaluate_list
     for x_dict in get_obj_from_idea_dict(idearoot_dict, "_kids").values():
-        x_dict[pad_text] = x_agenda._healer
+        x_dict[pad_text] = x_agenda._economy_id
         to_evaluate_idea_dicts.append(x_dict)
 
     while to_evaluate_idea_dicts != []:
@@ -2265,6 +2273,9 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
         )
         # add idea with created pad
+        # print(
+        #     f"{x_agenda._economy_id=} {x_agenda._idearoot._label=} {idea_dict[pad_text]=}"
+        # )
         x_agenda.add_idea(x_ideakid, pad=idea_dict[pad_text])
 
 

@@ -4,25 +4,27 @@ from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src.agenda.road import default_road_delimiter_if_none
+from src.agenda.road import default_road_delimiter_if_none, create_road
 
 
-def test_root_has_kids():
+def test_agenda_add_idea_RaisesErrorWhen_pad_IsInvalid():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    idearoot_x = x_agenda._idearoot
+    invalid_rootnode_swim_road = "swimming"
+    assert invalid_rootnode_swim_road != x_agenda._economy_id
+    work_text = "work"
+    work_road = create_road(invalid_rootnode_swim_road, work_text)
 
-    # WHEN
-    x_agenda.add_idea(ideacore_shop("work"), pad=x_agenda._healer)
-    x_agenda.add_idea(ideacore_shop("ulty"), pad=x_agenda._healer)
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        x_agenda.add_idea(ideacore_shop(work_text), pad=invalid_rootnode_swim_road)
+    assert (
+        str(excinfo.value)
+        == f"add_idea failed because '{work_road}' has an invalid root node"
+    )
 
-    # THEN
-    assert idearoot_x._weight == 1
-    assert idearoot_x._kids
-    assert len(idearoot_x._kids) == 2
 
-
-def test_kid_can_have_kids():
+def test_agenda_idea_kid_CanHaveKids():
     # GIVEN / WHEN
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -51,7 +53,7 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     assert x_agenda.get_node_count() == 17
     assert x_agenda.get_level_count(level=1) == 4
 
-    new_idea_parent_road = x_agenda._healer
+    new_idea_parent_road = x_agenda._economy_id
 
     # WHEN
     x_agenda.add_idea(ideacore_shop("new_idea"), pad=new_idea_parent_road)
@@ -120,8 +122,8 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"
-    work_road = bob_agenda.make_road(bob_agenda._economy_id, work_text)
-    week_road = bob_agenda.make_road(bob_agenda._economy_id, week_text)
+    work_road = bob_agenda.make_l1_road(work_text)
+    week_road = bob_agenda.make_l1_road(week_text)
     wed_road = bob_agenda.make_road(week_road, wed_text)
     bob_agenda.add_idea(ideacore_shop(work_text), bob_agenda._economy_id)
     bob_agenda.add_idea(ideacore_shop(week_text), bob_agenda._economy_id)

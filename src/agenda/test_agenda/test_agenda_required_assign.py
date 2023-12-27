@@ -53,7 +53,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_text = "run"
     run_road = x_agenda.make_road(bob_text, run_text)
     x_agenda.add_partyunit(pid=bob_text)
-    x_agenda.add_idea(ideacore_shop(run_text), pad=bob_text)
+    x_agenda.add_idea(ideacore_shop(run_text), pad=x_agenda._economy_id)
     x_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = x_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_x

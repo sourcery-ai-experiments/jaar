@@ -157,7 +157,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert len(x_agenda._partys) == 3
     assert len(x_agenda._groups) == 3
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -204,7 +204,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     swim_text = "swim"
     swim_road = x_agenda.make_road(prom_text, swim_text)
 
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -378,7 +378,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportan
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -427,7 +427,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -447,7 +447,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    x_agenda.add_idea(ideacore_shop("hunt", _weight=3), pad="prom")
+    x_agenda.add_idea(ideacore_shop("hunt", _weight=3), pad=x_agenda._economy_id)
 
     # WHEN
     x_agenda.set_agenda_metrics()

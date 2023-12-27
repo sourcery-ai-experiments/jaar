@@ -752,7 +752,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     x_agenda = agendaunit_shop(bob_text)
     work_text = "work"
     work_road = x_agenda.make_road(bob_text, work_text)
-    x_agenda.add_idea(ideacore_shop(work_text, promise=True), pad=bob_text)
+    x_agenda.add_idea(ideacore_shop(work_text, promise=True), pad=x_agenda._economy_id)
     assert len(x_agenda.get_intent_items()) == 1
 
     sue_text = "sue"
@@ -789,7 +789,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     x_agenda.add_partyunit(pid=bob_text)
     work_text = "work"
     work_road = x_agenda.make_road(bob_text, work_text)
-    x_agenda.add_idea(ideacore_shop(work_text, promise=True), pad=bob_text)
+    x_agenda.add_idea(ideacore_shop(work_text, promise=True), pad=x_agenda._economy_id)
 
     sue_text = "sue"
     x_agenda.add_partyunit(pid=sue_text)

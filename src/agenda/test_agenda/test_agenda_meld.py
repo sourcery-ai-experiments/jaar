@@ -332,7 +332,7 @@ def test_agenda_meld_worksCorrectlyForLargeExample():
     assert len(x_agenda1._idearoot._acptfactunits) == len(
         x_agenda2._idearoot._acptfactunits
     )
-    assert x_agenda1._healer == x_agenda2._healer
+    assert x_agenda1._healer != x_agenda2._healer
     print(f"{len(x_agenda1._groups.items())=}")
     # for x_agenda1_group_key, x_agenda1_group_obj in x_agenda1._groups.items():
     #     print(f"{x_agenda1_group_key=}")

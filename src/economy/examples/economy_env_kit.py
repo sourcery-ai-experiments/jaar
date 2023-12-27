@@ -86,14 +86,16 @@ def _delete_and_set_ex3():
     x_economy.save_public_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
     )
-    x_economy.save_public_agenda(example_agendas_agenda_v001())
-    x_economy.save_public_agenda(example_agendas_agenda_v002())
+    example_agenda_v001 = example_agendas_agenda_v001()
+    example_agenda_v002 = example_agendas_agenda_v002()
+    x_economy.save_public_agenda(example_agenda_v001)
+    x_economy.save_public_agenda(example_agenda_v002)
 
     # x_economy.set_healer(x_clerk=clerkunit_shop(pid="w1", env_dir=x_economy.get_object_root_dir()))
     # x_economy.set_healer(x_clerk=clerkunit_shop(pid="w2", env_dir=x_economy.get_object_root_dir()))
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    healer_text = "Myagenda"
+    healer_text = example_agenda_v002._healer
     x_economy.set_healer_depotlink(
         xia_text, agenda_healer=healer_text, depotlink_type="blind_trust"
     )

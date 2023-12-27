@@ -288,7 +288,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -434,7 +434,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=prom_text)
+    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -450,7 +450,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    x_agenda.add_idea(idea_kid=ideacore_shop(hunt_text, _weight=3), pad=prom_text)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(hunt_text, _weight=3), pad=x_agenda._economy_id
+    )
 
     # WHEN
     x_agenda.set_agenda_metrics()
@@ -543,7 +545,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
 def test_agenda_get_idea_list_WithAllPartysWeighted():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(ideacore_shop("swim"), pad="prom")
+    x_agenda.add_idea(ideacore_shop("swim"), pad=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"

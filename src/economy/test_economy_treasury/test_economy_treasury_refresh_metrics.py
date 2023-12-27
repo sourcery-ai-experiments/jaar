@@ -243,22 +243,23 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  create_road(root_label()}sports,swimmer"
     # run set_treasury_metrics
     # assert group "swimming expert" has 2 different party
+    x_economy_id = x_economy.economy_id
 
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
-    bob_agenda = agendaunit_shop(_healer=bob_text)
-    tom_agenda = agendaunit_shop(_healer=tom_text)
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    sal_agenda = agendaunit_shop(sal_text, x_economy_id)
+    bob_agenda = agendaunit_shop(bob_text, x_economy_id)
+    tom_agenda = agendaunit_shop(tom_text, x_economy_id)
+    ava_agenda = agendaunit_shop(ava_text, x_economy_id)
 
     swim_text = "swimming"
     sports_text = "sports"
-    sal_sports_road = create_road(x_economy.economy_id, sports_text)
-    bob_sports_road = create_road(x_economy.economy_id, sports_text)
-    tom_sports_road = create_road(x_economy.economy_id, sports_text)
+    sal_sports_road = create_road(x_economy_id, sports_text)
+    bob_sports_road = create_road(x_economy_id, sports_text)
+    tom_sports_road = create_road(x_economy_id, sports_text)
 
     sal_agenda.add_idea(ideacore_shop(swim_text), pad=sal_sports_road)
     bob_agenda.add_idea(ideacore_shop(swim_text), pad=bob_sports_road)

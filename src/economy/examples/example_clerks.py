@@ -135,7 +135,7 @@ def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     healer_text = _healer if _healer != None else "ernie"
     x_agenda = agendaunit_shop(healer_text)
     casa_text = "casa"
-    x_agenda.add_idea(ideacore_shop(casa_text), pad="")
+    x_agenda.add_idea(ideacore_shop(casa_text), pad=x_agenda._economy_id)
     casa_road = f"{x_agenda._economy_id},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
