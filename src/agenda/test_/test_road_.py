@@ -7,6 +7,7 @@ from src.agenda.road import (
     find_replace_road_key_dict,
     get_pad_from_road,
     get_road_without_root_node,
+    get_root_node_from_road,
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
@@ -25,7 +26,7 @@ from src.agenda.idea import IdeaCore
 from pytest import raises as pytest_raises
 
 
-def test_road_exists():
+def test_RoadUnit_exists():
     # GIVEN
     empty_str = ""
     # WHEN
@@ -94,7 +95,7 @@ def test_road_get_road_ReturnsCorrectRoadUnitWith_delimiter():
     assert slash_delimiter_rose_road == brackets_road
 
 
-def test_road_change_road_correctlyRoadUnit():
+def test_road_change_road_CorrectlyRoadUnit():
     # GIVEN
     healer_text = "healer"
     healer_road = get_road(root_label(), healer_text)
@@ -114,7 +115,7 @@ def test_road_change_road_correctlyRoadUnit():
     assert change_road(old_roses_road, "random_text", plants_road) == old_roses_road
 
 
-def test_road_get_all_road_nodes_works():
+def test_road_get_all_road_nodes_CorrectlyReturnsRoadNodes():
     # GIVEN
     x_s = get_node_delimiter()
     healer_text = "healer"
@@ -137,7 +138,7 @@ def test_road_get_all_road_nodes_works():
     assert get_all_road_nodes(road=roses_road) == roses_list
 
 
-def test_road_get_terminus_node_from_road_works():
+def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNode():
     # GIVEN
     x_s = get_node_delimiter()
     healer_text = "healer"
@@ -152,6 +153,22 @@ def test_road_get_terminus_node_from_road_works():
     assert get_terminus_node_from_road(road=healer_road) == healer_text
     assert get_terminus_node_from_road(road=bloomers_road) == bloomers_text
     assert get_terminus_node_from_road(road=roses_road) == roses_text
+
+
+def test_road_get_root_node_from_road_CorrectlyReturnsRoadNode():
+    # GIVEN
+    healer_text = "healer"
+    healer_road = get_road(root_label(), healer_text)
+    bloomers_text = "bloomers"
+    bloomers_road = get_road(healer_road, bloomers_text)
+    roses_text = "roses"
+    roses_road = get_road(healer_text, roses_text)
+
+    # WHEN/THENs
+    assert get_root_node_from_road(root_label()) == root_label()
+    assert get_root_node_from_road(healer_road) == root_label()
+    assert get_root_node_from_road(bloomers_road) == root_label()
+    assert get_root_node_from_road(roses_road) == healer_text
 
 
 def test_road_get_pad_from_road_works():
