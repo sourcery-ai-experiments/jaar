@@ -157,6 +157,23 @@ def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNode():
     assert get_terminus_node_from_road(road=roses_road) == roses_text
 
 
+def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNodeWhenNonDefaultDelimiter():
+    # GIVEN
+    healer_text = "healer"
+    bloomers_text = "bloomers"
+    roses_text = "roses"
+    slash_text = default_road_delimiter_if_none()
+    slash_healer_road = f"{root_label()}{slash_text}{healer_text}"
+    slash_bloomers_road = f"{slash_healer_road}{slash_text}{bloomers_text}"
+    slash_roses_road = f"{slash_bloomers_road}{slash_text}{roses_text}"
+
+    # WHEN/THENs
+    assert get_terminus_node_from_road(root_label(), slash_text) == root_label()
+    assert get_terminus_node_from_road(slash_healer_road, slash_text) == healer_text
+    assert get_terminus_node_from_road(slash_bloomers_road, slash_text) == bloomers_text
+    assert get_terminus_node_from_road(slash_roses_road, slash_text) == roses_text
+
+
 def test_road_get_root_node_from_road_CorrectlyReturnsRoadNode():
     # GIVEN
     healer_text = "healer"

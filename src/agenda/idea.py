@@ -839,8 +839,11 @@ class IdeaCore:
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def get_kid(self, idea_kid_label: str):
+    def get_kid(self, idea_kid_label: RoadNode):
         return self._kids.get(idea_kid_label)
+
+    def del_kid(self, idea_kid_label: RoadNode):
+        self._kids.pop(idea_kid_label)
 
     def clear_kids(self):
         self._kids = {}

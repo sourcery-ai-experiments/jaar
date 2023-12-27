@@ -1093,7 +1093,9 @@ class AgendaUnit:
             self.get_idea_obj(road)
         except InvalidAgendaException:
             base_idea = ideacore_shop(
-                _label=get_terminus_node_from_road(road=road),
+                _label=get_terminus_node_from_road(
+                    road=road, delimiter=self._road_delimiter
+                ),
                 _pad=get_pad_from_road(road=road),
             )
             self.add_idea(base_idea, pad=base_idea._pad)
@@ -1112,36 +1114,22 @@ class AgendaUnit:
         return return_idea
 
     def del_idea_kid(self, road: RoadUnit, del_children: bool = True):
-        x_road = get_all_road_nodes(road)
-        temp_label = x_road.pop(0)
-        temps_d = [temp_label]
-
-        if x_road == []:
+        if road == self._idearoot.get_road():
             raise InvalidAgendaException("Object cannot delete itself")
-        temp_label = x_road.pop(0)
-        temps_d.append(temp_label)
-
-        if x_road == []:
+        parent_road = get_pad_from_road(road)
+        if self.idea_exists(road):
             if not del_children:
-                self._move_idea_kids(road_nodes=temps_d)
-            self._idearoot._kids.pop(temp_label)
-        elif x_road != []:
-            x_idea = self._idearoot._kids[temp_label]
-            while x_road != []:
-                temp_label = x_road.pop(0)
-                parent_temp_idea = x_idea
-                x_idea = x_idea._kids[temp_label]
-
-            if not del_children:
-                self.set_agenda_metrics()
-                self._move_idea_kids(road_nodes=get_all_road_nodes(road))
-            parent_temp_idea._kids.pop(temp_label)
+                self._move_idea_kids(x_road=road)
+            parent_idea = self.get_idea_obj(parent_road)
+            x_idea_label = get_terminus_node_from_road(road, self._road_delimiter)
+            parent_idea.del_kid(x_idea_label)
         self.set_agenda_metrics()
 
-    def _move_idea_kids(self, road_nodes: list):
-        d_temp_idea = self.get_idea_obj(self.make_road(road_nodes=road_nodes))
+    def _move_idea_kids(self, x_road: RoadUnit):
+        parent_road = get_pad_from_road(x_road)
+        d_temp_idea = self.get_idea_obj(x_road)
         for kid in d_temp_idea._kids.values():
-            self.add_idea(kid, pad=self.make_road(road_nodes=road_nodes[:-1]))
+            self.add_idea(kid, pad=parent_road)
 
     def set_healer(self, new_healer):
         self._healer = new_healer
@@ -1185,7 +1173,9 @@ class AgendaUnit:
         x_idea.set_idea_label(new_label)
         x_idea._pad = pad
         idea_parent = self.get_idea_obj(get_pad_from_road(old_road))
-        idea_parent._kids.pop(get_terminus_node_from_road(old_road))
+        idea_parent._kids.pop(
+            get_terminus_node_from_road(old_road, self._road_delimiter)
+        )
         idea_parent._kids[x_idea._label] = x_idea
 
     def _idearoot_find_replace_road(self, old_road, new_road):

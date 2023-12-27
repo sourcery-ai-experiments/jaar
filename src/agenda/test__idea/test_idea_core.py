@@ -893,3 +893,25 @@ def test_idea_get_kid_ReturnsCorrectObj():
 
     # THEN
     assert france_idea._label == france_text
+
+
+def test_idea_del_kid_CorrectChangesAttr():
+    # GIVEN
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    nation_idea.add_kid(ideacore_shop(usa_text, _pad=nation_road))
+
+    france_text = "France"
+    france_road = create_road(nation_road, france_text)
+    nation_idea.add_kid(ideacore_shop(france_text, _pad=nation_road))
+    assert len(nation_idea._kids) == 2
+
+    # WHEN
+    nation_idea.del_kid(france_text)
+
+    # THEN
+    assert len(nation_idea._kids) == 1
