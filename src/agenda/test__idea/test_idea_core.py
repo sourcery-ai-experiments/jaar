@@ -862,16 +862,8 @@ def test_idea_clear_kids_CorrectlySetsAttr():
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
     nation_idea = ideacore_shop(nation_text, _pad=root_label())
-
-    usa_text = "USA"
-    usa_road = create_road(nation_road, usa_text)
-    usa_idea = ideacore_shop(usa_text, _pad=nation_road)
-    nation_idea.add_kid(idea_kid=usa_idea)
-
-    france_text = "France"
-    france_road = create_road(nation_road, france_text)
-    france_idea = ideacore_shop(france_text, _pad=usa_road)
-    nation_idea.add_kid(idea_kid=france_idea)
+    nation_idea.add_kid(ideacore_shop("USA", _pad=nation_road))
+    nation_idea.add_kid(ideacore_shop("France", _pad=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN
@@ -879,3 +871,25 @@ def test_idea_clear_kids_CorrectlySetsAttr():
 
     # THEN
     assert len(nation_idea._kids) == 0
+
+
+def test_idea_get_kid_ReturnsCorrectObj():
+    # GIVEN
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    nation_idea.add_kid(ideacore_shop(usa_text, _pad=nation_road))
+
+    france_text = "France"
+    france_road = create_road(nation_road, france_text)
+    nation_idea.add_kid(ideacore_shop(france_text, _pad=nation_road))
+    assert len(nation_idea._kids) == 2
+
+    # WHEN
+    france_idea = nation_idea.get_kid(france_text)
+
+    # THEN
+    assert france_idea._label == france_text

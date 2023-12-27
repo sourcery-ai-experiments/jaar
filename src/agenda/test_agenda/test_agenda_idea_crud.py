@@ -189,7 +189,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     required_x.set_sufffact(sufffact=cookery_dirty_road)
     clean_cookery_idea.set_required_unit(required=required_x)
 
-    assert x_agenda._idearoot._kids.get(buildings_text) is None
+    assert x_agenda._idearoot.get_kid(buildings_text) is None
 
     # WHEN
     x_agenda.add_idea(
@@ -203,7 +203,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     print(f"{(len(new_idea_parent_road) == 1)=}")
     # for idea_kid in x_agenda._idearoot._kids.values():
     #     print(f"{idea_kid._label=}")
-    assert x_agenda._idearoot._kids.get(buildings_text) != None
+    assert x_agenda._idearoot.get_kid(buildings_text) != None
     assert x_agenda.get_idea_obj(road=buildings_road) != None
     assert x_agenda.get_idea_obj(road=cookery_dirty_road) != None
     assert x_agenda.get_node_count() == 22

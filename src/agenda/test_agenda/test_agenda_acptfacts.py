@@ -789,13 +789,13 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     issue_road = x_agenda.make_l1_road(issue_text)
     climate_text = "climate"
     climate_road = x_agenda.make_road(issue_road, climate_text)
-    assert x_agenda._idearoot._kids.get(issue_text) is None
+    assert x_agenda._idearoot.get_kid(issue_text) is None
 
     # WHEN
     x_agenda.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
 
     # THEN
-    assert x_agenda._idearoot._kids.get(issue_text) != None
+    assert x_agenda._idearoot.get_kid(issue_text) != None
     assert x_agenda.get_idea_obj(issue_road) != None
     assert x_agenda.get_idea_obj(climate_road) != None
 

@@ -1603,18 +1603,15 @@ class AgendaUnit:
         if self.idea_exists(road) == False:
             raise InvalidAgendaException(f"get_idea_obj failed. no item at '{road}'")
         nodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
-        src = nodes.pop(0)
-        x_idea = None
-
-        if nodes == [] and src == self._idearoot._label:
+        if len(nodes) == 1:
             return self._idearoot
 
+        nodes.pop(0)
         idea_label = nodes.pop(0)
-        x_idea = self._idearoot._kids.get(idea_label)
-
+        x_idea = self._idearoot.get_kid(idea_label)
         while nodes != []:
             idea_label = nodes.pop(0)
-            x_idea = x_idea._kids[idea_label]
+            x_idea = x_idea.get_kid(idea_label)
 
         return x_idea
 
@@ -2122,7 +2119,6 @@ class AgendaUnit:
                     open=afu.open,
                     nigh=afu.nigh,
                 )
-                print("after failure")
 
     def _set_assignment_partys(
         self,
