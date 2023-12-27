@@ -13,7 +13,7 @@ from src.agenda.road import (
     get_forefather_roads,
     get_default_economy_root_label as root_label,
     create_road_from_nodes,
-    create_road_from_road_and_node,
+    create_road,
     RoadNode,
     get_diff_road,
     create_road,
@@ -84,13 +84,8 @@ def test_road_create_road_ReturnsCorrectRoadUnitWith_delimiter():
     assert generated_rose_road != comma_delimiter_rose_road
     assert generated_rose_road == slash_delimiter_rose_road
 
-    # bloomers_text = "bloomers"
-    # static_bloomers_road = (
-    #     f"{root_label()}{slash_delimiter}{rose_text}{slash_delimiter}{bloomers_text}"
-    # )
-
     # WHEN
-    brackets_road = create_road(root_label(), rose_text, [], delimiter=slash_delimiter)
+    brackets_road = create_road(root_label(), rose_text, delimiter=slash_delimiter)
 
     # THEN
     assert generated_rose_road == brackets_road
@@ -106,8 +101,8 @@ def test_road_change_road_CorrectlyRoadUnit():
     plants_text = "plants"
     plants_road = create_road(healer_road, plants_text)
     roses_text = "roses"
-    old_roses_road = create_road(road_nodes=[healer_road, bloomers_text, roses_text])
-    new_roses_road = create_road(road_nodes=[healer_road, plants_text, roses_text])
+    old_roses_road = create_road(bloomers_road, roses_text)
+    new_roses_road = create_road(plants_road, roses_text)
 
     print(f"{change_road(old_roses_road, bloomers_road, plants_road)}")
 
@@ -365,7 +360,7 @@ def test_road_create_road_from_nodes_WorksCorrectly():
     assert roses_road == create_road_from_nodes(roses_list)
 
 
-def test_road_create_road_from_road_and_node_WorksCorrectly():
+def test_road_create_road_WorksCorrectly():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     healer_text = "healer"
@@ -378,12 +373,12 @@ def test_road_create_road_from_road_and_node_WorksCorrectly():
     )
 
     # WHEN / THEN
-    assert root_label() == create_road_from_road_and_node(None, root_label())
-    assert root_label() == create_road_from_road_and_node("", root_label())
-    assert healer_road == create_road_from_road_and_node(root_label(), healer_text)
-    assert bloomers_road == create_road_from_road_and_node(healer_road, bloomers_text)
-    assert roses_road == create_road_from_road_and_node(bloomers_road, roses_text)
-    assert roses_road == create_road_from_road_and_node(roses_road, None)
+    assert root_label() == create_road(None, root_label())
+    assert root_label() == create_road("", root_label())
+    assert healer_road == create_road(root_label(), healer_text)
+    assert bloomers_road == create_road(healer_road, bloomers_text)
+    assert roses_road == create_road(bloomers_road, roses_text)
+    assert roses_road == create_road(roses_road, None)
 
 
 def test_raodnode_exists():
@@ -452,7 +447,7 @@ def test_is_heir_road_CorrectlyIdentifiesHeirs():
 def test_replace_road_delimiter_CorrectlyReturnsNewObj():
     # GIVEN
     healer_text = "healer"
-    gen_healer_road = create_road_from_road_and_node(root_label(), healer_text)
+    gen_healer_road = create_road(root_label(), healer_text)
     comma_delimiter = default_road_delimiter_if_none()
     comma_delimiter_healer_road = f"{root_label()}{comma_delimiter}{healer_text}"
     assert comma_delimiter == ","
@@ -472,7 +467,7 @@ def test_replace_road_delimiter_CorrectlyReturnsNewObj():
 def test_replace_road_delimiter_CorrectlyRaisesError():
     # GIVEN
     cooker_text = "cooker/cleaner"
-    gen_cooker_road = create_road_from_road_and_node(root_label(), cooker_text)
+    gen_cooker_road = create_road(root_label(), cooker_text)
     comma_delimiter = default_road_delimiter_if_none()
     comma_delimiter_cooker_road = f"{root_label()}{comma_delimiter}{cooker_text}"
     assert comma_delimiter == ","

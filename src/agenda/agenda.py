@@ -108,14 +108,12 @@ class AgendaUnit:
 
     def make_road(
         self,
-        roud_foundation: RoadUnit = None,
+        pad: RoadUnit = None,
         terminus_node: RoadNode = None,
-        road_nodes: list[RoadNode] = None,
     ) -> RoadUnit:
         x_road = create_road(
-            roud_foundation=roud_foundation,
+            pad=pad,
             terminus_node=terminus_node,
-            road_nodes=road_nodes,
             delimiter=self._road_delimiter,
         )
         x_road = road_validate(x_road, self._road_delimiter, self._economy_id)
@@ -1025,7 +1023,7 @@ class AgendaUnit:
                 )
                 x_idea._road_delimiter = self._road_delimiter
                 road_nodes.append(temp_road)
-            idea_kid.set_pad(parent_road=self.make_road(road_nodes=road_nodes))
+            idea_kid.set_pad(parent_road=pad)
         idea_kid._road_delimiter = self._road_delimiter
         x_idea.add_kid(idea_kid)
 

@@ -22,7 +22,10 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     casa_text = "casa"
     basket_text = "laundry basket status"
-    basket_road = create_road(road_nodes=[x_economy.economy_id, casa_text, basket_text])
+    casa_road = x_economy.build_economy_road(casa_text)
+    basket_road = create_road(casa_road, basket_text)
+    # print(f"{x1_casa_road=} {basket_road=}")
+    # print(f"{x1_casa_road=} {x1_basket_road=}")
     b_full_text = "full"
     b_full_road = create_road(basket_road, b_full_text)
     b_bare_text = "bare"
@@ -69,9 +72,8 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # print(f"{len(new_cali_agenda._idearoot._acptfactunits.keys())=}")
     assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
-    laundry_task_road = create_road(
-        road_nodes=[x_economy.economy_id, casa_text, laundry_task_text]
-    )
+    casa_road = x_economy.build_economy_road(casa_text)
+    laundry_task_road = create_road(casa_road, laundry_task_text)
     assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
 
 

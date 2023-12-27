@@ -1,6 +1,6 @@
 from src.agenda.road import (
     RoadUnit,
-    create_road_from_road_and_node,
+    create_road,
     default_road_delimiter_if_none,
 )
 from src.agenda.agenda import (
@@ -547,7 +547,7 @@ class EconomyUnit:
         if road_wo_economy_root is None or road_wo_economy_root == "":
             return self.economy_id
         else:
-            return create_road_from_road_and_node(
+            return create_road(
                 pad=self.economy_id,
                 terminus_node=road_wo_economy_root,
                 delimiter=self._road_delimiter,

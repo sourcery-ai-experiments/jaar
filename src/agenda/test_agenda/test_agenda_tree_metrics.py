@@ -5,6 +5,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.tree_metrics import TreeMetrics
 from src.agenda.idea import ideacore_shop
+from src.agenda.road import create_road_from_nodes
 
 
 def test_agenda_get_tree_metrics_exists():
@@ -100,8 +101,8 @@ def test_agenda_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
     tree_metrics_before = x_agenda.get_tree_metrics()
 
     # WHEN/THEN
-    train_road = x_agenda.make_road(
-        road_nodes=[
+    train_road = create_road_from_nodes(
+        [
             x_agenda._economy_id,
             "ACME",
             "ACME Employee Responsiblities",

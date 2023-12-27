@@ -146,8 +146,8 @@ def create_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> Road
     return default_road_delimiter_if_none(delimiter).join(nodes)
 
 
-def create_road_from_road_and_node(
-    pad: RoadUnit, terminus_node: RoadNode, delimiter: str = None
+def create_road(
+    pad: RoadUnit, terminus_node: RoadNode = None, delimiter: str = None
 ) -> RoadUnit:
     if terminus_node is None:
         return RoadUnit(pad)
@@ -157,30 +157,6 @@ def create_road_from_road_and_node(
             if pad in {"", None}
             else f"{pad}{default_road_delimiter_if_none(delimiter)}{terminus_node}"
         )
-
-
-def create_road(
-    roud_foundation: RoadUnit = None,
-    terminus_node: RoadNode = None,
-    road_nodes: list[RoadNode] = None,
-    delimiter: str = None,
-) -> RoadUnit:
-    x_road = ""
-    if roud_foundation != None and road_nodes in (None, []):
-        x_road = roud_foundation
-    if roud_foundation != None and road_nodes not in (None, []):
-        x_road = create_road(
-            roud_foundation=roud_foundation,
-            terminus_node=create_road_from_nodes(road_nodes, delimiter),
-            delimiter=delimiter,
-        )
-    if roud_foundation is None and road_nodes not in (None, []):
-        x_road = create_road_from_nodes(road_nodes, delimiter=delimiter)
-    if terminus_node != None:
-        x_road = create_road_from_road_and_node(
-            x_road, terminus_node, delimiter=delimiter
-        )
-    return x_road
 
 
 def get_diff_road(x_road: RoadUnit, sub_road: RoadUnit, delimiter: str = None):
