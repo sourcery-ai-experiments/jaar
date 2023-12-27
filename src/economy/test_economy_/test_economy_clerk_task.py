@@ -5,7 +5,7 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
     get_test_economys_dir,
 )
-from src.economy.examples.example_enacts import (
+from src.economy.examples.example_clerks import (
     get_agenda_assignment_laundry_example1,
 )
 
@@ -14,11 +14,11 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     amer_text = "Amer"
-    x_economy.create_new_enactunit(enact_cid=amer_text)
-    amer_enact = x_economy.get_enactunit(cid=amer_text)
+    x_economy.create_new_clerkunit(clerk_cid=amer_text)
+    amer_clerk = x_economy.get_clerkunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_economy_id(x_economy.economy_id)
-    amer_enact.set_contract(laundry_agenda)
+    amer_clerk.set_contract(laundry_agenda)
 
     casa_text = "casa"
     basket_text = "laundry basket status"
@@ -28,20 +28,20 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     b_bare_text = "bare"
     b_bare_road = get_road({basket_road}, {b_bare_text})
     # set basket status to "bare"
-    contract_x = amer_enact.get_contract().set_acptfact(
+    contract_x = amer_clerk.get_contract().set_acptfact(
         base=basket_road, pick=b_bare_road
     )
-    amer_enact.set_contract(contract_x)
+    amer_clerk.set_contract(contract_x)
     # save fact change to public
-    amer_enact.save_refreshed_output_to_public()
+    amer_clerk.save_refreshed_output_to_public()
     # print(f"{x_economy.get_public_agenda(amer_text)._idearoot._acptfactunits.keys()=}")
     amer_output = x_economy.get_public_agenda(amer_text)
 
     # create assignment for Cali
     cali_text = "Cali"
-    x_economy.create_new_enactunit(enact_cid=cali_text)
-    cali_enact = x_economy.get_enactunit(cid=cali_text)
-    cali_enact.set_depot_agenda(amer_output, "assignment")
+    x_economy.create_new_clerkunit(clerk_cid=cali_text)
+    cali_clerk = x_economy.get_clerkunit(cid=cali_text)
+    cali_clerk.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_economy.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
     # print(f"{old_cali_agenda._idearoot._acptfactunits.keys()=}")
@@ -51,12 +51,12 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     # WHEN
     # set basket status to "full"
-    amer_enact.get_contract().set_acptfact(base=basket_road, pick=b_full_road)
-    amer_enact.set_contract()
-    amer_enact.save_refreshed_output_to_public()
+    amer_clerk.get_contract().set_acptfact(base=basket_road, pick=b_full_road)
+    amer_clerk.set_contract()
+    amer_clerk.save_refreshed_output_to_public()
 
-    cali_enact.refresh_depot_agendas()
-    new_cali_agenda = cali_enact.get_remelded_output_agenda()
+    cali_clerk.refresh_depot_agendas()
+    new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
     # new_public_amer = x_economy.get_public_agenda(amer_text)
     # a_basket_acptfact = new_public_amer._idearoot._acptfactunits.get(basket_road)
@@ -75,20 +75,20 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     assert new_cali_agenda.get_intent_items()[0].get_idea_road() == laundry_task_road
 
 
-def test_economy_enact_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
+def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     amer_text = "Amer"
     beto_text = "Beto"
-    x_economy.create_new_enactunit(enact_cid=amer_text)
-    x_economy.create_new_enactunit(enact_cid=beto_text)
-    amer_enact = x_economy.get_enactunit(cid=amer_text)
-    beto_enact = x_economy.get_enactunit(cid=beto_text)
-    # print(f"{beto_enact=}")
+    x_economy.create_new_clerkunit(clerk_cid=amer_text)
+    x_economy.create_new_clerkunit(clerk_cid=beto_text)
+    amer_clerk = x_economy.get_clerkunit(cid=amer_text)
+    beto_clerk = x_economy.get_clerkunit(cid=beto_text)
+    # print(f"{beto_clerk=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_economy_id(x_economy.economy_id)
-    amer_enact.set_contract(laundry_agenda)
-    beto_enact.set_contract(laundry_agenda)
+    amer_clerk.set_contract(laundry_agenda)
+    beto_clerk.set_contract(laundry_agenda)
 
     casa_text = "casa"
     casa_road = get_road(x_economy.economy_id, casa_text)
@@ -100,19 +100,19 @@ def test_economy_enact_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     b_bare_road = get_road(basket_road, b_bare_text)
 
     # amer public laundry acptfact as "full"
-    amer_contract_x = amer_enact.get_contract().set_acptfact(basket_road, b_full_road)
-    beto_contract_x = beto_enact.get_contract().set_acptfact(basket_road, b_bare_road)
+    amer_contract_x = amer_clerk.get_contract().set_acptfact(basket_road, b_full_road)
+    beto_contract_x = beto_clerk.get_contract().set_acptfact(basket_road, b_bare_road)
 
-    amer_enact.set_contract(amer_contract_x)
-    beto_enact.set_contract(beto_contract_x)
-    amer_enact.save_refreshed_output_to_public()
-    beto_enact.save_refreshed_output_to_public()
+    amer_clerk.set_contract(amer_contract_x)
+    beto_clerk.set_contract(beto_contract_x)
+    amer_clerk.save_refreshed_output_to_public()
+    beto_clerk.save_refreshed_output_to_public()
     amer_output = x_economy.get_public_agenda(amer_text)
     beto_output = x_economy.get_public_agenda(beto_text)
 
     cali_text = "Cali"
-    x_economy.create_new_enactunit(cali_text)
-    cali_kichen = x_economy.get_enactunit(cali_text)
+    x_economy.create_new_clerkunit(cali_text)
+    cali_kichen = x_economy.get_clerkunit(cali_text)
     cali_kichen.set_depot_agenda(beto_output, "assignment")
     cali_kichen.set_depot_agenda(amer_output, "assignment")
 

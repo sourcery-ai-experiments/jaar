@@ -1,23 +1,23 @@
 from src.agenda.road import get_road
-from src.economy.enact import enactunit_shop
-from src.economy.examples.example_enacts import (
+from src.economy.clerk import clerkunit_shop
+from src.economy.examples.example_clerks import (
     get_agenda_assignment_laundry_example1,
 )
-from src.economy.examples.enact_env_kit import (
-    enact_dir_setup_cleanup,
-    get_temp_enactunit_dir,
+from src.economy.examples.clerk_env_kit import (
+    clerk_dir_setup_cleanup,
+    get_temp_clerkunit_dir,
     get_temp_economy_id,
 )
 
 
 def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
     amer_agenda.set_economy_id(get_temp_economy_id())
     cali_text = "Cali"
-    cali_ux = enactunit_shop(cali_text, get_temp_enactunit_dir(), get_temp_economy_id())
+    cali_ux = clerkunit_shop(cali_text, get_temp_clerkunit_dir(), get_temp_economy_id())
     cali_ux.create_core_dir_and_files()
     print(f"{amer_agenda._idearoot._label=}")
     assert amer_agenda._idearoot._label == get_temp_economy_id()

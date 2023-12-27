@@ -65,9 +65,9 @@ base attributes vs required attributess
 <!-- TODO: Add explanations -->
 EconomyUnit objects
 
-EconomyUnit EnactUnit objects
+EconomyUnit clerkUnit objects
 
-EconomyUnit EnactUnit Agenda objects
+EconomyUnit clerkUnit Agenda objects
 
 EconomyUnit Treasury objects
 

@@ -29,7 +29,7 @@ def test_worldunit_add_economy_connection_CorrectlyCreatesObj(
     texas_economy = luca_person.get_economyunit(texas_text)
     kari_text = "kari"
     texas_economyaddress = create_economyaddress(luca_text, texas_text)
-    assert texas_economy._enactunits.get(kari_text) is None
+    assert texas_economy._clerkunits.get(kari_text) is None
     assert x_world.personunit_exists(kari_text) == False
 
     # WHEN
@@ -37,7 +37,7 @@ def test_worldunit_add_economy_connection_CorrectlyCreatesObj(
 
     # THEN
     assert x_world.personunit_exists(kari_text)
-    assert texas_economy._enactunits.get(kari_text) != None
+    assert texas_economy._clerkunits.get(kari_text) != None
 
 
 def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
@@ -87,9 +87,9 @@ def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
     assert os_path.exists(public_tim_file_path)
     assert os_path.exists(public_xio_file_path)
     assert os_path.exists(public_yao_file_path)
-    assert texas_economy.get_enactunit(tim_text).get_contract() != None
-    assert texas_economy.get_enactunit(xio_text).get_contract() != None
-    assert texas_economy.get_enactunit(yao_text).get_contract() != None
+    assert texas_economy.get_clerkunit(tim_text).get_contract() != None
+    assert texas_economy.get_clerkunit(xio_text).get_contract() != None
+    assert texas_economy.get_clerkunit(yao_text).get_contract() != None
 
 
 def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
@@ -133,7 +133,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     x_world.apply_requestunit(highway_requestunit)
 
     # THEN
-    xio_contract = texas_economy.get_enactunit(xio_text).get_contract()
+    xio_contract = texas_economy.get_clerkunit(xio_text).get_contract()
     xio_partyunit = xio_contract.get_party(xio_text)
     tim_partyunit = xio_contract.get_party(tim_text)
     assert xio_partyunit != None
@@ -210,7 +210,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     assert len(xio_contract.get_intent_items()) == 0
 
     # check tim contract
-    tim_contract = texas_economy.get_enactunit(tim_text).get_contract()
+    tim_contract = texas_economy.get_clerkunit(tim_text).get_contract()
     assert tim_contract.get_party(xio_text) != None
     assert tim_contract.get_party(xio_text).debtor_weight == 7
     # check tim public
@@ -260,7 +260,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     x_world.apply_requestunit(highway_requestunit)
 
     # THEN
-    xio_contract = texas_economy.get_enactunit(xio_text).get_contract()
+    xio_contract = texas_economy.get_clerkunit(xio_text).get_contract()
     xio_partyunit = xio_contract.get_party(xio_text)
     tim_partyunit = xio_contract.get_party(tim_text)
     assert xio_partyunit != None
@@ -306,7 +306,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     assert len(xio_contract.get_intent_items()) == 0
 
     # check tim contract
-    tim_contract = texas_economy.get_enactunit(tim_text).get_contract()
+    tim_contract = texas_economy.get_clerkunit(tim_text).get_contract()
     assert tim_contract.get_party(xio_text) != None
     assert tim_contract.get_party(xio_text).debtor_weight == 7
     # check tim public

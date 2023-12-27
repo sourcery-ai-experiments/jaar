@@ -3,16 +3,16 @@ from src.agenda.x_func import (
     count_files as x_func_count_files,
     open_file as x_func_open_file,
 )
-from src.economy.enact import enactunit_shop
-from src.economy.examples.example_enacts import (
+from src.economy.clerk import clerkunit_shop
+from src.economy.examples.example_clerks import (
     get_2node_agenda,
     get_agenda_2CleanNodesRandomWeights as get_cal2nodes,
     get_agenda_3CleanNodesRandomWeights as get_cal3nodes,
     get_agenda_assignment_laundry_example1 as get_amer_assign_ex,
 )
-from src.economy.examples.enact_env_kit import (
-    enact_dir_setup_cleanup,
-    get_temp_enactunit_dir,
+from src.economy.examples.clerk_env_kit import (
+    clerk_dir_setup_cleanup,
+    get_temp_clerkunit_dir,
     get_temp_economy_id,
     create_agenda_file,
 )
@@ -22,13 +22,13 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-def test_enactunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
-    enact_dir_setup_cleanup,
+def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_enactunit_dir()
-    sue_agenda = enactunit_shop(sue_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_economy_id())
     sue_agenda.set_contract_if_empty()
     tim_text = "Tim"
     assert list(sue_agenda._contract._partys.keys()) == [sue_text]
@@ -44,13 +44,13 @@ def test_enactunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     )
 
 
-def test_enactunit_set_depotlink_CorrectlySetscontractPartys(
-    enact_dir_setup_cleanup,
+def test_clerkunit_set_depotlink_CorrectlySetscontractPartys(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "yao"
-    env_dir = get_temp_enactunit_dir()
-    yao_ux = enactunit_shop(yao_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    yao_ux = clerkunit_shop(yao_text, env_dir, get_temp_economy_id())
     yao_ux.set_contract_if_empty()
     sue_text = "sue"
     create_agenda_file(yao_ux._agendas_depot_dir, sue_text)
@@ -64,12 +64,12 @@ def test_enactunit_set_depotlink_CorrectlySetscontractPartys(
     assert yao_ux._contract.get_party(sue_text).depotlink_type is None
 
 
-def test_enactunit_set_depotlink_CorrectlySetsAssignment(enact_dir_setup_cleanup):
+def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup):
     # GIVEN
     amer_agenda = get_amer_assign_ex()
     print(f"{len(amer_agenda._idea_dict)=}")
     cali_text = "Cali"
-    cali_ux = enactunit_shop(cali_text, get_temp_enactunit_dir(), get_temp_economy_id())
+    cali_ux = clerkunit_shop(cali_text, get_temp_clerkunit_dir(), get_temp_economy_id())
     cali_ux.create_core_dir_and_files()
     cali_ux.set_contract_if_empty()
     cali_ux.save_agenda_to_depot(amer_agenda)
@@ -100,11 +100,11 @@ def test_enactunit_set_depotlink_CorrectlySetsAssignment(enact_dir_setup_cleanup
     assert digest_agenda._healer == cali_text
 
 
-def test_enactunit_del_depot_agenda_CorrectlyDeletesObj(enact_dir_setup_cleanup):
+def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_agenda = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -120,13 +120,13 @@ def test_enactunit_del_depot_agenda_CorrectlyDeletesObj(enact_dir_setup_cleanup)
     assert bob_agenda._contract.get_party(yao_text).depotlink_type is None
 
 
-def test_enactunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
-    enact_dir_setup_cleanup,
+def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_agenda = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     lai_text = "Lai"
     create_agenda_file(bob_agenda._agendas_depot_dir, lai_text)
     bob_agenda.set_contract_if_empty()
@@ -142,13 +142,13 @@ def test_enactunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
 
 
-def test_enactunit_set_depot_agenda_SavesFileCorrectly(
-    enact_dir_setup_cleanup,
+def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_agenda = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     cal1 = get_2node_agenda()
     assert (
         x_func_count_files(bob_agenda._agendas_depot_dir) is None
@@ -165,13 +165,13 @@ def test_enactunit_set_depot_agenda_SavesFileCorrectly(
     assert x_func_count_files(bob_agenda._agendas_depot_dir) == 1
 
 
-def test_enactunit_delete_ignore_depotlink_CorrectlyDeletesObj(
-    enact_dir_setup_cleanup,
+def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_agenda = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     yao_text = "Yao"
     create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
@@ -188,13 +188,13 @@ def test_enactunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_agenda._contract.get_party(yao_text).depotlink_type is None
 
 
-def test_enactunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
-    enact_dir_setup_cleanup,
+def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_agenda = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     zia_text = "Zia"
     create_agenda_file(bob_agenda._agendas_depot_dir, zia_text)
     bob_agenda.set_contract_if_empty()
@@ -212,13 +212,13 @@ def test_enactunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     assert x_func_count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
 
-def test_enactunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
-    enact_dir_setup_cleanup,
+def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    env_dir = get_temp_enactunit_dir()
-    bob_ux = enactunit_shop(bob_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    bob_ux = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     zia_text = "Zia"
     create_agenda_file(bob_ux._agendas_depot_dir, zia_text)
     bob_ux.set_contract_if_empty()
@@ -239,16 +239,16 @@ def test_enactunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert x_func_count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
 
-def test_enactunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
-    enact_dir_setup_cleanup,
+def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_temp_enactunit_dir()
+    env_dir = get_temp_clerkunit_dir()
     economy_id = get_temp_env_economy_id()
     sx = economyunit_shop(economy_id=economy_id, economys_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_enactunit(enact_cid=yao_text)
-    yao_agenda = sx.get_enactunit(cid=yao_text)
+    sx.create_new_clerkunit(clerk_cid=yao_text)
+    yao_agenda = sx.get_clerkunit(cid=yao_text)
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"

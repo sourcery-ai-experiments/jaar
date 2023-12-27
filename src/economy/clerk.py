@@ -24,21 +24,21 @@ from os import path as os_path
 from json import loads as json_loads
 
 
-class InvalidenactException(Exception):
+class InvalidclerkException(Exception):
     pass
 
 
-class EnactCID(PersonID):
+class clerkCID(PersonID):
     pass
 
 
 @dataclass
-class EnactUnit:
-    _enact_cid: EnactCID = None
+class clerkUnit:
+    _clerk_cid: clerkCID = None
     _env_dir: str = None
     _economy_id: str = None
-    _enactunit_dir: str = None
-    _enactunits_dir: str = None
+    _clerkunit_dir: str = None
+    _clerkunits_dir: str = None
     _contract_file_name: str = None
     _contract_file_path: str = None
     _agenda_output_file_name: str = None
@@ -53,7 +53,7 @@ class EnactUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._contract._partys.values():
-            if party_x.pid != self._enact_cid:
+            if party_x.pid != self._clerk_cid:
                 party_agenda = agendaunit_get_from_json(
                     x_agenda_json=self.open_public_agenda(party_x.pid)
                 )
@@ -104,10 +104,10 @@ class EnactUnit:
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._enact_cid)
+        empty_agenda = agendaunit_shop(_healer=self._clerk_cid)
         empty_agenda.set_economy_id(self._economy_id)
         assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_contract()._partys, self._enact_cid
+            empty_agenda, self.get_contract()._partys, self._clerk_cid
         )
         assign_agenda.set_agenda_metrics()
         self.save_agenda_to_digest(assign_agenda, src_agenda._healer)
@@ -163,41 +163,41 @@ class EnactUnit:
     def set_env_dir(
         self,
         env_dir: str,
-        enact_cid: EnactCID,
+        clerk_cid: clerkCID,
         economy_id: str,
         _road_node_delimiter: str = None,
     ):
-        self._enact_cid = enact_cid
+        self._clerk_cid = clerk_cid
         self._env_dir = env_dir
         self._economy_id = economy_id
         self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
 
     def set_dirs(self):
-        env_enactunits_folder = "enactunits"
+        env_clerkunits_folder = "clerkunits"
         agendas_str = "agendas"
-        self._enactunits_dir = f"{self._env_dir}/{env_enactunits_folder}"
-        self._enactunit_dir = f"{self._enactunits_dir}/{self._enact_cid}"
+        self._clerkunits_dir = f"{self._env_dir}/{env_clerkunits_folder}"
+        self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_cid}"
         self._contract_file_name = "contract_agenda.json"
-        self._contract_file_path = f"{self._enactunit_dir}/{self._contract_file_name}"
+        self._contract_file_path = f"{self._clerkunit_dir}/{self._contract_file_name}"
         self._agenda_output_file_name = "output_agenda.json"
         self._agenda_output_file_path = (
-            f"{self._enactunit_dir}/{self._agenda_output_file_name}"
+            f"{self._clerkunit_dir}/{self._agenda_output_file_name}"
         )
-        self._public_file_name = f"{self._enact_cid}.json"
+        self._public_file_name = f"{self._clerk_cid}.json"
         self._agendas_public_dir = f"{self._env_dir}/{agendas_str}"
-        self._agendas_depot_dir = f"{self._enactunit_dir}/{agendas_str}"
-        self._agendas_ignore_dir = f"{self._enactunit_dir}/ignores"
-        self._agendas_digest_dir = f"{self._enactunit_dir}/digests"
+        self._agendas_depot_dir = f"{self._clerkunit_dir}/{agendas_str}"
+        self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
+        self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
 
-    def set_enact_cid(self, new_cid: EnactCID):
-        old_enactunit_dir = self._enactunit_dir
-        self._enact_cid = new_cid
+    def set_clerk_cid(self, new_cid: clerkCID):
+        old_clerkunit_dir = self._clerkunit_dir
+        self._clerk_cid = new_cid
         self.set_dirs()
 
-        rename_dir(src=old_enactunit_dir, dst=self._enactunit_dir)
+        rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)
 
     def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
-        single_dir_create_if_null(x_path=self._enactunit_dir)
+        single_dir_create_if_null(x_path=self._clerkunit_dir)
         single_dir_create_if_null(x_path=self._agendas_public_dir)
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
         single_dir_create_if_null(x_path=self._agendas_digest_dir)
@@ -247,10 +247,10 @@ class EnactUnit:
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_contract_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_healer(self._enact_cid)
+        x_agenda.set_healer(self._clerk_cid)
         x_agenda.set_road_node_delimiter(self._road_node_delimiter)
         self._save_agenda_to_path(
-            x_agenda, self._enactunit_dir, self._contract_file_name
+            x_agenda, self._clerkunit_dir, self._contract_file_name
         )
 
     def save_agenda_to_depot(self, x_agenda: AgendaUnit):
@@ -264,7 +264,7 @@ class EnactUnit:
             primary_agenda=x_contract_agenda,
             meldees_dir=self._agendas_digest_dir,
         )
-        dest_dir = self._enactunit_dir
+        dest_dir = self._clerkunit_dir
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
@@ -288,14 +288,14 @@ class EnactUnit:
         x_agenda = None
         if not self._contract_agenda_exists():
             self.save_contract_agenda(self._get_empty_contract_agenda())
-        x_json = x_func_open_file(self._enactunit_dir, self._contract_file_name)
+        x_json = x_func_open_file(self._clerkunit_dir, self._contract_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
     def open_output_agenda(self) -> AgendaUnit:
         x_agenda_json = x_func_open_file(
-            self._enactunit_dir, self._agenda_output_file_name
+            self._clerkunit_dir, self._agenda_output_file_name
         )
         x_agenda = agendaunit_get_from_json(x_agenda_json)
         x_agenda.set_agenda_metrics()
@@ -303,11 +303,11 @@ class EnactUnit:
 
     def _get_empty_contract_agenda(self):
         x_agenda = agendaunit_shop(
-            _healer=self._enact_cid,
+            _healer=self._clerk_cid,
             _weight=0,
             _road_node_delimiter=self._road_node_delimiter,
         )
-        x_agenda.add_partyunit(pid=self._enact_cid)
+        x_agenda.add_partyunit(pid=self._clerk_cid)
         x_agenda.set_economy_id(self._economy_id)
         return x_agenda
 
@@ -318,21 +318,21 @@ class EnactUnit:
         x_func_delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
 
     def erase_contract_agenda_file(self):
-        x_func_delete_dir(dir=f"{self._enactunit_dir}/{self._contract_file_name}")
+        x_func_delete_dir(dir=f"{self._clerkunit_dir}/{self._contract_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_agenda_file_name = f"{healer}.json"
         if dir_type == "depot":
             x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
-            raise InvalidenactException(
-                f"Healer {self._enact_cid} cannot find agenda {healer} in {x_agenda_file_path}"
+            raise InvalidclerkException(
+                f"Healer {self._clerk_cid} cannot find agenda {healer} in {x_agenda_file_path}"
             )
 
     def _contract_agenda_exists(self) -> bool:
         bool_x = None
         try:
-            x_func_open_file(self._enactunit_dir, self._contract_file_name)
+            x_func_open_file(self._clerkunit_dir, self._contract_file_name)
             bool_x = True
         except Exception:
             bool_x = False
@@ -346,23 +346,23 @@ class EnactUnit:
         self.save_agenda_to_public(self.get_remelded_output_agenda())
 
 
-def enactunit_shop(
+def clerkunit_shop(
     pid: str,
     env_dir: str,
     economy_id: str,
     _auto_output_to_public: bool = None,
     _road_node_delimiter: str = None,
-) -> EnactUnit:
-    x_enact = EnactUnit()
-    x_enact.set_env_dir(
+) -> clerkUnit:
+    x_clerk = clerkUnit()
+    x_clerk.set_env_dir(
         env_dir=env_dir,
-        enact_cid=pid,
+        clerk_cid=pid,
         economy_id=economy_id,
         _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
     )
-    x_enact.set_dirs()
-    x_enact.get_contract()
-    x_enact._contract._set_auto_output_to_public(_auto_output_to_public)
-    # x_enact.save_contract_agenda(x_enact.get_contract())
-    x_enact.get_contract()
-    return x_enact
+    x_clerk.set_dirs()
+    x_clerk.get_contract()
+    x_clerk._contract._set_auto_output_to_public(_auto_output_to_public)
+    # x_clerk.save_contract_agenda(x_clerk.get_contract())
+    x_clerk.get_contract()
+    return x_clerk

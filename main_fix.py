@@ -52,7 +52,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
-            self.main_window.contract = self.main_window.x_enact.open_contract_agenda()
+            self.main_window.contract = self.main_window.x_clerk.open_contract_agenda()
             self.editmain_view.agenda_x = self.main_window.contract
         else:
             self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
@@ -60,8 +60,8 @@ class MainApp(QApplication):
         self.editmain_view.show()
 
     def edit5issue_show(self):
-        if self.main_window.x_enact != None:
-            self.edit5issue_view.x_enact = self.main_window.x_enact
+        if self.main_window.x_clerk != None:
+            self.edit5issue_view.x_clerk = self.main_window.x_clerk
             self.edit5issue_view.refresh_all()
             self.edit5issue_view.show()
 
@@ -110,7 +110,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
         self.five_issue_button.clicked.connect(self.open_edit5issue)
 
-        self.x_enact = None
+        self.x_clerk = None
         self.economy_x = None
         self.ignore_agenda_x = None
         setup_test_example_environment()
@@ -121,24 +121,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
         self.economy_id_combo_refresh()
         self.economy_id_combo.setCurrentText(first_env)
-        self._healer_load(enact_cid="ernie")
+        self._healer_load(clerk_cid="ernie")
 
     def save_contract(self):
         if self.contract != None:
-            self.x_enact.save_contract_agenda(self.contract)
+            self.x_clerk.save_contract_agenda(self.contract)
         self.refresh_healer()
 
     def reload_all_src_agendas(self):
         if self.economy_x != None:
-            self.economy_x.reload_all_enactunits_src_agendaunits()
+            self.economy_x.reload_all_clerkunits_src_agendaunits()
 
     def set_public_and_reload_srcs(self):
         self.save_output_agenda_to_public()
         self.reload_all_src_agendas()
 
     def save_output_agenda_to_public(self):
-        if self.x_enact != None:
-            self.x_enact.save_output_agenda_to_public()
+        if self.x_clerk != None:
+            self.x_clerk.save_output_agenda_to_public()
         self.refresh_economy()
 
     def economy_load_from_file(self):
@@ -164,13 +164,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_pid.setText(f"{selected_healer} - {selected_agenda}")
 
     def healers_table_select(self):
-        x_enact_cid = self.healers_table.item(self.healers_table.currentRow(), 0).text()
-        self._healer_load(enact_cid=x_enact_cid)
+        x_clerk_cid = self.healers_table.item(self.healers_table.currentRow(), 0).text()
+        self._healer_load(clerk_cid=x_clerk_cid)
 
-    def _healer_load(self, enact_cid: str):
-        self.economy_x.create_new_enactunit(enact_cid=enact_cid)
-        self.x_enact = self.economy_x._enactunits.get(enact_cid)
-        self.enact_cid.setText(self.x_enact._enact_cid)
+    def _healer_load(self, clerk_cid: str):
+        self.economy_x.create_new_clerkunit(clerk_cid=clerk_cid)
+        self.x_clerk = self.economy_x._clerkunits.get(clerk_cid)
+        self.clerk_cid.setText(self.x_clerk._clerk_cid)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -190,13 +190,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.economy_x.get_public_agenda(
         self.ignore_agenda_x = self.economy_x.get_agenda_from_ignores_dir(
-            enact_cid=self.x_enact.pid, _healer=ignore_agenda_healer
+            clerk_cid=self.x_clerk.pid, _healer=ignore_agenda_healer
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
         self.economy_x.set_ignore_agenda_file(
-            enact_cid=self.x_enact.pid, agenda_obj=self.ignore_agenda_x
+            clerk_cid=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
 
@@ -250,23 +250,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def healer_insert(self):
-        self.economy_x.create_new_enactunit(enact_cid=self.enact_cid.text())
+        self.economy_x.create_new_clerkunit(clerk_cid=self.clerk_cid.text())
         self.refresh_healers()
 
     def healer_update_pid(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.enact_cid.text()
+        typed_in = self.clerk_cid.text()
         if currently_selected != typed_in:
-            self.economy_x.change_enactunit_cid(
+            self.economy_x.change_clerkunit_cid(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.economy_x.del_enactunit_dir(
-            enact_cid=self.healers_table.item(self.healers_table.currentRow(), 0).text()
+        self.economy_x.del_clerkunit_dir(
+            clerk_cid=self.healers_table.item(self.healers_table.currentRow(), 0).text()
         )
         self.refresh_healers()
 
@@ -274,38 +274,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         agenda_healer = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
-        if self.x_enact != None:
+        if self.x_clerk != None:
             agenda_json = x_func_open_file(
-                dest_dir=self.x_enact._agendas_public_dir,
+                dest_dir=self.x_clerk._agendas_public_dir,
                 file_name=f"{agenda_healer}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
-            self.x_enact.set_depot_agenda(
+            self.x_clerk.set_depot_agenda(
                 agenda_x=agenda_x,
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.economy_x.save_enactunit_file(enact_cid=self.x_enact.pid)
+            self.economy_x.save_clerkunit_file(clerk_cid=self.x_clerk.pid)
         self.refresh_healer()
 
     def depotlink_update(self):
-        enact_cid_x = self.x_enact.pid
+        clerk_cid_x = self.x_clerk.pid
         self.economy_x.update_depotlink(
-            enact_cid=enact_cid_x,
+            clerk_cid=clerk_cid_x,
             partypid=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.economy_x.save_enactunit_file(enact_cid=enact_cid_x)
+        self.economy_x.save_clerkunit_file(clerk_cid=clerk_cid_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        enact_cid_x = self.x_enact.pid
+        clerk_cid_x = self.x_clerk.pid
         self.economy_x.del_depotlink(
-            enact_cid=enact_cid_x, agendaunit_healer=self.depotlink_pid.text()
+            clerk_cid=clerk_cid_x, agendaunit_healer=self.depotlink_pid.text()
         )
-        self.economy_x.save_enactunit_file(enact_cid=enact_cid_x)
+        self.economy_x.save_clerkunit_file(clerk_cid=clerk_cid_x)
         self.refresh_healer()
 
     def get_agenda_healer_list(self):
@@ -318,22 +318,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agendas_list.append([file_name])
         return agendas_list
 
-    def get_enact_cid_list(self):
+    def get_clerk_cid_list(self):
         healers_healer_list = []
         if self.economy_x != None:
             healers_healer_list.extend(
                 [healer_dir]
-                for healer_dir in self.economy_x.get_enactunit_dir_paths_list()
+                for healer_dir in self.economy_x.get_clerkunit_dir_paths_list()
             )
         return healers_healer_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
-        if self.x_enact != None:
-            cl_dir = self.x_enact._agendas_depot_dir
-            enactunit_files = x_func_dir_files(cl_dir)
-            # for cl_val in self.x_enact._depotlinks.values():
-            for cl_filename in enactunit_files:
+        if self.x_clerk != None:
+            cl_dir = self.x_clerk._agendas_depot_dir
+            clerkunit_files = x_func_dir_files(cl_dir)
+            # for cl_val in self.x_clerk._depotlinks.values():
+            for cl_filename in clerkunit_files:
                 print(f"{cl_dir=} {cl_filename=}")
                 agenda_json = x_func_open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
@@ -347,9 +347,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_digests_list(self):
         x_list = []
-        if self.x_enact != None:
+        if self.x_clerk != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_enact._agendas_digest_dir,
+                dir_path=self.x_clerk._agendas_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -359,9 +359,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_ignores_list(self):
         x_list = []
-        if self.x_enact != None:
+        if self.x_clerk != None:
             digest_file_list = x_func_dir_files(
-                dir_path=self.x_enact._agendas_ignore_dir,
+                dir_path=self.x_clerk._agendas_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -454,7 +454,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def _sub_refresh_healers_table(self):
-        self.refresh_x(self.healers_table, ["Healers Table"], self.get_enact_cid_list())
+        self.refresh_x(self.healers_table, ["Healers Table"], self.get_clerk_cid_list())
 
     def _sub_refresh_depotlinks_table(self):
         depotlink_types = list(get_depotlink_types())
@@ -463,10 +463,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_type_combo.addItems(depotlink_types)
         self.depotlink_type_combo.setCurrentText("")
         column_header = ""
-        if self.x_enact is None:
+        if self.x_clerk is None:
             column_header = "Agendalinks Table"
-        elif self.x_enact != None:
-            column_header = f"'{self.x_enact._enact_cid}' agendas"
+        elif self.x_clerk != None:
+            column_header = f"'{self.x_clerk._clerk_cid}' agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
@@ -571,7 +571,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.economy_id_combo.addItems(create_example_economys_list())
 
     def refresh_healers(self):
-        self.x_enact = None
+        self.x_clerk = None
         self._sub_refresh_healers_table()
         self.refresh_healer()
 
@@ -580,8 +580,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
         self.healer_output_agenda = None
-        if self.x_enact != None:
-            self.healer_output_agenda = self.x_enact.get_remelded_output_agenda()
+        if self.x_clerk != None:
+            self.healer_output_agenda = self.x_clerk.get_remelded_output_agenda()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()

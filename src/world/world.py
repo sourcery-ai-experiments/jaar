@@ -49,10 +49,10 @@ class WorldUnit:
         self.set_personunit(x_treasurer_pid, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(x_treasurer_pid)
         x_economyunit = x_personunit.get_economyunit(x_economy_id)
-        x_economyunit.full_setup_enactunit(x_treasurer_pid)
-        x_economyunit.full_setup_enactunit(x_requestunit._requester_pid)
-        requester_enactunit = x_economyunit.get_enactunit(x_requestunit._requester_pid)
-        requester_contract = requester_enactunit.get_contract()
+        x_economyunit.full_setup_clerkunit(x_treasurer_pid)
+        x_economyunit.full_setup_clerkunit(x_requestunit._requester_pid)
+        requester_clerkunit = x_economyunit.get_clerkunit(x_requestunit._requester_pid)
+        requester_contract = requester_clerkunit.get_contract()
 
         # add ideas to requester_contract_agenda
         action_weight = x_requestunit._action_weight
@@ -66,9 +66,9 @@ class WorldUnit:
         # for each requestee exist in economy, collect attributes for requester_contract agenda
         for requestee_pid in x_requestunit._requestee_pids.keys():
             # requestee_contract changes
-            x_economyunit.full_setup_enactunit(requestee_pid)
-            requestee_enactunit = x_economyunit.get_enactunit(requestee_pid)
-            requestee_contract = requestee_enactunit.get_contract()
+            x_economyunit.full_setup_clerkunit(requestee_pid)
+            requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
+            requestee_contract = requestee_clerkunit.get_contract()
             requestee_contract.add_partyunit(
                 x_requestunit._requester_pid,
                 debtor_weight=action_weight,
@@ -114,14 +114,14 @@ class WorldUnit:
         requester_contract.set_acptfact(
             x_reason.base, pick=x_reason.get_1_prong(bad=True)
         )
-        requester_enactunit.save_contract_agenda(requester_contract)
-        requester_enactunit.save_refreshed_output_to_public()
+        requester_clerkunit.save_contract_agenda(requester_contract)
+        requester_clerkunit.save_refreshed_output_to_public()
 
         # for each requestee re
         for requestee_pid in x_requestunit._requestee_pids.keys():
-            requestee_enactunit = x_economyunit.get_enactunit(requestee_pid)
-            requestee_enactunit.refresh_depot_agendas()
-            requestee_enactunit.save_refreshed_output_to_public()
+            requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
+            requestee_clerkunit.refresh_depot_agendas()
+            requestee_clerkunit.save_refreshed_output_to_public()
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -156,7 +156,7 @@ class WorldUnit:
     def add_economy_connection(
         self,
         economyaddress: EconomyAddress,
-        enact_person_id: PersonID,
+        clerk_person_id: PersonID,
     ):
         economy_id = economyaddress.economy_id
 
@@ -169,13 +169,13 @@ class WorldUnit:
                 x_personunit.set_economyunit(economy_id)
             x_economy = x_personunit.get_economyunit(economy_id)
 
-            if self.personunit_exists(enact_person_id) == False:
-                self.set_personunit(enact_person_id)
+            if self.personunit_exists(clerk_person_id) == False:
+                self.set_personunit(clerk_person_id)
 
-            if x_economy.enactunit_exists(treasurer_pid) == False:
-                x_economy.add_enactunit(treasurer_pid)
-            if x_economy.enactunit_exists(enact_person_id) == False:
-                x_economy.add_enactunit(enact_person_id)
+            if x_economy.clerkunit_exists(treasurer_pid) == False:
+                x_economy.add_clerkunit(treasurer_pid)
+            if x_economy.clerkunit_exists(clerk_person_id) == False:
+                x_economy.add_clerkunit(clerk_person_id)
 
     def get_priority_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
@@ -214,19 +214,19 @@ class WorldUnit:
         x_healerunit = self.get_personunit_from_memory(healer_id)
         x_healerunit.set_economyunit(economy_id, replace=False)
         x_economyunit = x_healerunit.get_economyunit(economy_id)
-        x_economyunit.full_setup_enactunit(healer_id)
+        x_economyunit.full_setup_clerkunit(healer_id)
         if healer_id != x_personunit.pid:
             self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
 
     def _set_partyunit(
         self, x_economyunit: EconomyUnit, person_id: PersonID, party_pid: PersonID
     ):
-        x_economyunit.full_setup_enactunit(person_id)
-        person_enactunit = x_economyunit.get_enactunit(person_id)
-        person_contract = person_enactunit.get_contract()
+        x_economyunit.full_setup_clerkunit(person_id)
+        person_clerkunit = x_economyunit.get_clerkunit(person_id)
+        person_contract = person_clerkunit.get_contract()
         person_contract.add_partyunit(party_pid)
-        person_enactunit.save_contract_agenda(person_contract)
-        person_enactunit.save_refreshed_output_to_public()
+        person_clerkunit.save_contract_agenda(person_contract)
+        person_clerkunit.save_refreshed_output_to_public()
 
 
 def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:

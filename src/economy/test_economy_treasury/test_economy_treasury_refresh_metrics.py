@@ -27,7 +27,7 @@ from src.economy.treasury_sqlstr import (
     get_groupunit_catalog_dict,
     get_table_count_sqlstr,
 )
-from src.economy.examples.example_enacts import (
+from src.economy.examples.example_clerks import (
     get_3node_agenda,
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,

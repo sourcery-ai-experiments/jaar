@@ -44,7 +44,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(economy_dir)
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
-    assert x_economy._enactunits == {}
+    assert x_economy._clerkunits == {}
     assert x_economy._road_node_delimiter == get_node_delimiter()
 
 
@@ -88,7 +88,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(economy_dir)
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
-    assert x_economy._enactunits == {}
+    assert x_economy._clerkunits == {}
     assert x_economy._road_node_delimiter == get_node_delimiter()
 
 
@@ -103,7 +103,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     economy_file_name = "economy.json"
     economy_file_path = f"{economy_dir}/{economy_file_name}"
     agendas_dir = f"{economy_dir}/agendas"
-    enactunits_dir = f"{economy_dir}/enactunits"
+    clerkunits_dir = f"{economy_dir}/clerkunits"
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{economy_dir}/{treasury_file_name}"
 
@@ -111,7 +111,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(economy_dir) is False
     assert os_path.exists(economy_file_path) is False
     assert os_path.exists(agendas_dir) is False
-    assert os_path.exists(enactunits_dir) is False
+    assert os_path.exists(clerkunits_dir) is False
     assert os_path.exists(treasury_file_path) is False
 
     # WHEN
@@ -122,11 +122,11 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.isdir(economy_dir)
     assert os_path.exists(economy_file_path)
     assert os_path.exists(agendas_dir)
-    assert os_path.exists(enactunits_dir)
+    assert os_path.exists(clerkunits_dir)
     assert os_path.exists(treasury_file_path)
     assert x_economy.get_object_root_dir() == economy_dir
     assert x_economy.get_public_dir() == agendas_dir
-    assert x_economy.get_enactunits_dir() == enactunits_dir
+    assert x_economy.get_clerkunits_dir() == clerkunits_dir
     assert x_economy.get_treasury_db_path() == treasury_file_path
 
 
@@ -139,14 +139,14 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
     old_agendas_dir = f"{old_economy_dir}/agendas"
-    old_enactunits_dir = f"{old_economy_dir}/enactunits"
+    old_clerkunits_dir = f"{old_economy_dir}/clerkunits"
 
     new_x_economy_id = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_x_economy_id}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
     new_agendas_dir = f"{new_economy_dir}/agendas"
-    new_enactunits_dir = f"{new_economy_dir}/enactunits"
+    new_clerkunits_dir = f"{new_economy_dir}/clerkunits"
     x_func_delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
 
@@ -162,17 +162,17 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_enactunits_dir)
+    assert os_path.exists(old_clerkunits_dir)
     assert x_economy.get_public_dir() == old_agendas_dir
-    assert x_economy.get_enactunits_dir() == old_enactunits_dir
+    assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
-    assert os_path.exists(new_enactunits_dir) is False
+    assert os_path.exists(new_clerkunits_dir) is False
     assert x_economy.get_public_dir() != new_agendas_dir
-    assert x_economy.get_enactunits_dir() != new_enactunits_dir
+    assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
     # WHEN
@@ -185,17 +185,17 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.isdir(old_economy_dir) is False
     assert os_path.exists(old_economy_file_path) is False
     assert os_path.exists(old_agendas_dir) is False
-    assert os_path.exists(old_enactunits_dir) is False
+    assert os_path.exists(old_clerkunits_dir) is False
     assert x_economy.get_public_dir() != old_agendas_dir
-    assert x_economy.get_enactunits_dir() != old_enactunits_dir
+    assert x_economy.get_clerkunits_dir() != old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_agendas_dir)
-    assert os_path.exists(new_enactunits_dir)
+    assert os_path.exists(new_clerkunits_dir)
     assert x_economy.get_public_dir() == new_agendas_dir
-    assert x_economy.get_enactunits_dir() == new_enactunits_dir
+    assert x_economy.get_clerkunits_dir() == new_clerkunits_dir
     assert x_economy.economy_id == new_x_economy_id
 
     # Undo change to directory
@@ -212,7 +212,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
     old_agendas_dir = f"{old_economy_dir}/agendas"
-    old_enactunits_dir = f"{old_economy_dir}/enactunits"
+    old_clerkunits_dir = f"{old_economy_dir}/clerkunits"
 
     x_economy = economyunit_shop(old_x_economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null()
@@ -221,24 +221,24 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_enactunits_dir)
+    assert os_path.exists(old_clerkunits_dir)
     assert x_economy.get_public_dir() == old_agendas_dir
-    assert x_economy.get_enactunits_dir() == old_enactunits_dir
+    assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     new_x_economy_id = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_x_economy_id}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
     new_agendas_dir = f"{new_economy_dir}/agendas"
-    new_enactunits_dir = f"{new_economy_dir}/enactunits"
+    new_clerkunits_dir = f"{new_economy_dir}/clerkunits"
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
-    assert os_path.exists(new_enactunits_dir) is False
+    assert os_path.exists(new_clerkunits_dir) is False
     assert x_economy.get_public_dir() != new_agendas_dir
-    assert x_economy.get_enactunits_dir() != new_enactunits_dir
+    assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
     # WHEN
@@ -251,17 +251,17 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
-    assert os_path.exists(old_enactunits_dir)
+    assert os_path.exists(old_clerkunits_dir)
     assert x_economy.get_public_dir() == old_agendas_dir
-    assert x_economy.get_enactunits_dir() == old_enactunits_dir
+    assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_agendas_dir)
-    assert os_path.exists(new_enactunits_dir)
+    assert os_path.exists(new_clerkunits_dir)
     assert x_economy.get_public_dir() != new_agendas_dir
-    assert x_economy.get_enactunits_dir() != new_enactunits_dir
+    assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
     # Undo change to directory

@@ -316,7 +316,7 @@
      <string>delete Healer</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="enact_cid">
+   <widget class="QLineEdit" name="clerk_cid">
     <property name="geometry">
      <rect>
       <x>190</x>

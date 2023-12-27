@@ -16,7 +16,7 @@ from src.agenda.x_func import (
     dir_files as x_func_dir_files,
 )
 from src.agenda.y_func import get_empty_dict_if_none
-from src.economy.enact import EnactUnit, enactunit_shop, EnactCID
+from src.economy.clerk import clerkUnit, clerkunit_shop, clerkCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.economy.treasury_sqlstr import (
@@ -54,7 +54,7 @@ class EconomyUnit:
     economy_id: EconomyID
     economys_dir: str
     _manager_pid: PersonID = None
-    _enactunits: dict[str:EnactUnit] = None
+    _clerkunits: dict[str:clerkUnit] = None
     _treasury_db = None
     _road_node_delimiter: str = None
 
@@ -67,12 +67,12 @@ class EconomyUnit:
     # treasurying
     def set_voice_ranks(self, healer: PersonID, sort_order: str):
         if sort_order == "descretional":
-            x_enact = self.get_enactunit(healer)
-            x_contract = x_enact.get_contract()
+            x_clerk = self.get_clerkunit(healer)
+            x_contract = x_clerk.get_contract()
             for count_x, x_partyunit in enumerate(x_contract._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            x_enact.set_contract(x_contract)
-            x_enact.save_refreshed_output_to_public()
+            x_clerk.set_contract(x_contract)
+            x_clerk.save_refreshed_output_to_public()
 
     def set_agenda_treasury_attrs(self, x_healer: PersonID):
         healer_agenda = self.get_public_agenda(x_healer)
@@ -332,82 +332,82 @@ class EconomyUnit:
     def create_dirs_if_null(self, in_memory_treasury: bool = None):
         economy_dir = self.get_object_root_dir()
         agendas_dir = self.get_public_dir()
-        enactunits_dir = self.get_enactunits_dir()
+        clerkunits_dir = self.get_clerkunits_dir()
         single_dir_create_if_null(x_path=economy_dir)
         single_dir_create_if_null(x_path=agendas_dir)
-        single_dir_create_if_null(x_path=enactunits_dir)
+        single_dir_create_if_null(x_path=clerkunits_dir)
         self._create_main_file_if_null(x_dir=economy_dir)
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
-    # EnactUnit management
-    def get_enactunits_dir(self):
-        return f"{self.get_object_root_dir()}/enactunits"
+    # clerkUnit management
+    def get_clerkunits_dir(self):
+        return f"{self.get_object_root_dir()}/clerkunits"
 
-    def get_enactunit_dir_paths_list(self):
+    def get_clerkunit_dir_paths_list(self):
         return list(
             x_func_dir_files(
-                dir_path=self.get_enactunits_dir(),
+                dir_path=self.get_clerkunits_dir(),
                 remove_extensions=False,
                 include_dirs=True,
             ).keys()
         )
 
-    def add_enactunit(self, pid: PersonID, _auto_output_to_public: bool = None):
-        x_enactunit = enactunit_shop(
+    def add_clerkunit(self, pid: PersonID, _auto_output_to_public: bool = None):
+        x_clerkunit = clerkunit_shop(
             pid=pid,
             env_dir=self.get_object_root_dir(),
             economy_id=self.economy_id,
             _auto_output_to_public=_auto_output_to_public,
         )
-        self.set_enactunit(enactunit=x_enactunit)
+        self.set_clerkunit(clerkunit=x_clerkunit)
 
-    def enactunit_exists(self, cid: EnactCID):
-        return self._enactunits.get(cid) != None
+    def clerkunit_exists(self, cid: clerkCID):
+        return self._clerkunits.get(cid) != None
 
-    def create_new_enactunit(self, enact_cid: EnactCID):
-        x_enactunit = enactunit_shop(
-            enact_cid, self.get_object_root_dir(), self.economy_id
+    def create_new_clerkunit(self, clerk_cid: clerkCID):
+        x_clerkunit = clerkunit_shop(
+            clerk_cid, self.get_object_root_dir(), self.economy_id
         )
-        x_enactunit.create_core_dir_and_files()
-        self._enactunits[x_enactunit._enact_cid] = x_enactunit
+        x_clerkunit.create_core_dir_and_files()
+        self._clerkunits[x_clerkunit._clerk_cid] = x_clerkunit
 
-    def get_enactunit(self, cid: EnactCID) -> EnactUnit:
-        return self._enactunits.get(cid)
+    def get_clerkunit(self, cid: clerkCID) -> clerkUnit:
+        return self._clerkunits.get(cid)
 
-    def set_enactunit(self, enactunit: EnactUnit):
-        self._enactunits[enactunit._enact_cid] = enactunit
-        self.save_enactunit_file(enact_cid=enactunit._enact_cid)
+    def set_clerkunit(self, clerkunit: clerkUnit):
+        self._clerkunits[clerkunit._clerk_cid] = clerkunit
+        self.save_clerkunit_file(clerk_cid=clerkunit._clerk_cid)
 
-    def save_enactunit_file(self, enact_cid: EnactCID):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
-        x_enactunit.save_contract_agenda(x_enactunit.get_contract())
+    def save_clerkunit_file(self, clerk_cid: clerkCID):
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
+        x_clerkunit.save_contract_agenda(x_clerkunit.get_contract())
 
-    def change_enactunit_cid(self, old_cid: EnactCID, new_cid: EnactCID):
-        enact_x = self.get_enactunit(cid=old_cid)
-        old_enactunit_dir = enact_x._enactunit_dir
-        enact_x.set_enact_cid(new_cid=new_cid)
-        self.set_enactunit(enact_x)
-        x_func_delete_dir(old_enactunit_dir)
-        self.del_enactunit_from_economy(enact_cid=old_cid)
+    def change_clerkunit_cid(self, old_cid: clerkCID, new_cid: clerkCID):
+        clerk_x = self.get_clerkunit(cid=old_cid)
+        old_clerkunit_dir = clerk_x._clerkunit_dir
+        clerk_x.set_clerk_cid(new_cid=new_cid)
+        self.set_clerkunit(clerk_x)
+        x_func_delete_dir(old_clerkunit_dir)
+        self.del_clerkunit_from_economy(clerk_cid=old_cid)
 
-    def del_enactunit_from_economy(self, enact_cid: EnactCID):
-        self._enactunits.pop(enact_cid)
+    def del_clerkunit_from_economy(self, clerk_cid: clerkCID):
+        self._clerkunits.pop(clerk_cid)
 
-    def del_enactunit_dir(self, enact_cid: EnactCID):
-        x_func_delete_dir(f"{self.get_enactunits_dir()}/{enact_cid}")
+    def del_clerkunit_dir(self, clerk_cid: clerkCID):
+        x_func_delete_dir(f"{self.get_clerkunits_dir()}/{clerk_cid}")
 
-    def full_setup_enactunit(self, healer_id: PersonID):
-        self.add_enactunit(healer_id, _auto_output_to_public=True)
-        requestee_enactunit = self.get_enactunit(healer_id)
-        requestee_enactunit.create_core_dir_and_files()
-        requestee_enactunit.save_refreshed_output_to_public()
+    def full_setup_clerkunit(self, healer_id: PersonID):
+        self.add_clerkunit(healer_id, _auto_output_to_public=True)
+        requestee_clerkunit = self.get_clerkunit(healer_id)
+        requestee_clerkunit.create_core_dir_and_files()
+        requestee_clerkunit.save_refreshed_output_to_public()
 
     # public dir management
     def get_public_dir(self):
         return f"{self.get_object_root_dir()}/agendas"
 
-    def get_ignores_dir(self, enact_cid: EnactCID):
-        per_x = self.get_enactunit(enact_cid)
+    def get_ignores_dir(self, clerk_cid: clerkCID):
+        per_x = self.get_clerkunit(clerk_cid)
         return per_x._agendas_ignore_dir
 
     def get_public_agenda(self, healer: str) -> AgendaUnit:
@@ -416,18 +416,18 @@ class EconomyUnit:
         )
 
     def get_agenda_from_ignores_dir(
-        self, enact_cid: EnactCID, _healer: str
+        self, clerk_cid: clerkCID, _healer: str
     ) -> AgendaUnit:
         return get_agenda_from_json(
             x_func_open_file(
-                dest_dir=self.get_ignores_dir(enact_cid=enact_cid),
+                dest_dir=self.get_ignores_dir(clerk_cid=clerk_cid),
                 file_name=f"{_healer}.json",
             )
         )
 
-    def set_ignore_agenda_file(self, enact_cid: EnactCID, agenda_obj: AgendaUnit):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
-        x_enactunit.set_ignore_agenda_file(
+    def set_ignore_agenda_file(self, clerk_cid: clerkCID, agenda_obj: AgendaUnit):
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
+        x_clerkunit.set_ignore_agenda_file(
             agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
         )
 
@@ -448,47 +448,47 @@ class EconomyUnit:
             file_text=x_agenda.get_json(),
         )
 
-    def reload_all_enactunits_src_agendaunits(self):
-        for x_enactunit in self._enactunits.values():
-            x_enactunit.refresh_depot_agendas()
+    def reload_all_clerkunits_src_agendaunits(self):
+        for x_clerkunit in self._clerkunits.values():
+            x_clerkunit.refresh_depot_agendas()
 
     def get_public_dir_file_names_list(self):
         return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
 
     # agendas_dir to healer_agendas_dir management
-    def _enactunit_set_depot_agenda(
+    def _clerkunit_set_depot_agenda(
         self,
-        enactunit: EnactUnit,
+        clerkunit: clerkUnit,
         agendaunit: AgendaUnit,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_agenda: AgendaUnit = None,
     ):
-        enactunit.set_depot_agenda(
+        clerkunit.set_depot_agenda(
             x_agenda=agendaunit,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
         if depotlink_type == "ignore" and ignore_agenda != None:
-            enactunit.set_ignore_agenda_file(
+            clerkunit.set_ignore_agenda_file(
                 agendaunit=ignore_agenda, src_agenda_healer=agendaunit._healer
             )
 
     def set_healer_depotlink(
         self,
-        enact_cid: EnactCID,
+        clerk_cid: clerkCID,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_agenda: AgendaUnit = None,
     ):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
         x_agenda = self.get_public_agenda(healer=agenda_healer)
-        self._enactunit_set_depot_agenda(
-            enactunit=x_enactunit,
+        self._clerkunit_set_depot_agenda(
+            clerkunit=x_clerkunit,
             agendaunit=x_agenda,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -498,16 +498,16 @@ class EconomyUnit:
 
     def create_depotlink_to_generated_agenda(
         self,
-        enact_cid: EnactCID,
+        clerk_cid: clerkCID,
         agenda_healer: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
         x_agenda = agendaunit_shop(_healer=agenda_healer)
-        self._enactunit_set_depot_agenda(
-            enactunit=x_enactunit,
+        self._clerkunit_set_depot_agenda(
+            clerkunit=x_clerkunit,
             agendaunit=x_agenda,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
@@ -516,30 +516,30 @@ class EconomyUnit:
 
     def update_depotlink(
         self,
-        enact_cid: EnactCID,
+        clerk_cid: clerkCID,
         partypid: PartyPID,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
         x_agenda = self.get_public_agenda(_healer=partypid)
-        self._enactunit_set_depot_agenda(
-            enactunit=x_enactunit,
+        self._clerkunit_set_depot_agenda(
+            clerkunit=x_clerkunit,
             agendaunit=x_agenda,
             depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, enact_cid: EnactCID, agendaunit_healer: str):
-        x_enactunit = self.get_enactunit(cid=enact_cid)
-        x_enactunit.del_depot_agenda(agenda_healer=agendaunit_healer)
+    def del_depotlink(self, clerk_cid: clerkCID, agendaunit_healer: str):
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
+        x_clerkunit.del_depot_agenda(agenda_healer=agendaunit_healer)
 
     # Healer output_agenda
-    def get_output_agenda(self, enact_cid: EnactCID) -> AgendaUnit:
-        x_enactunit = self.get_enactunit(cid=enact_cid)
-        return x_enactunit.get_remelded_output_agenda()
+    def get_output_agenda(self, clerk_cid: clerkCID) -> AgendaUnit:
+        x_clerkunit = self.get_clerkunit(cid=clerk_cid)
+        return x_clerkunit.get_remelded_output_agenda()
 
     def build_economy_road(self, road_wo_economy_root: RoadUnit = None):
         if road_wo_economy_root is None or road_wo_economy_root == "":
@@ -556,7 +556,7 @@ def economyunit_shop(
     economy_id: EconomyID,
     economys_dir: str,
     _manager_pid: PersonID = None,
-    _enactunits: dict[str:EnactUnit] = None,
+    _clerkunits: dict[str:clerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_node_delimiter: str = None,
 ) -> EconomyUnit:
@@ -565,7 +565,7 @@ def economyunit_shop(
     economy_x = EconomyUnit(
         economy_id=economy_id,
         economys_dir=economys_dir,
-        _enactunits=get_empty_dict_if_none(_enactunits),
+        _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
     economy_x.set_road_node_delimiter(_road_node_delimiter)
     economy_x.set_manager_pid(_manager_pid)

@@ -522,7 +522,7 @@ WHERE currency_master = '{currency_agenda_healer}'
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the pid of every agenda. The healer pip of the one running that agenda's enact."""
+    """Create table that references the pid of every agenda. The healer pip of the one running that agenda's clerk."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   healer VARCHAR(255) PRIMARY KEY ASC

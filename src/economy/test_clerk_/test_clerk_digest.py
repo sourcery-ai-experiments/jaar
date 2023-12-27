@@ -6,14 +6,14 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     count_files as x_func_count_files,
 )
-from src.economy.enact import enactunit_shop
-from src.economy.examples.example_enacts import (
+from src.economy.clerk import clerkunit_shop
+from src.economy.examples.example_clerks import (
     get_2node_agenda as example_healers_get_2node_agenda,
     get_7nodeJRoot_agenda as example_healers_get_7nodeJRoot_agenda,
 )
-from src.economy.examples.enact_env_kit import (
-    enact_dir_setup_cleanup,
-    get_temp_enactunit_dir,
+from src.economy.examples.clerk_env_kit import (
+    clerk_dir_setup_cleanup,
+    get_temp_clerkunit_dir,
     get_temp_economy_id,
 )
 from os import path as os_path
@@ -21,15 +21,15 @@ from pytest import raises as pytest_raises
 
 
 # def test_healer_save_contract_agenda_CreateStartingAgendaFile(
-#     enact_dir_setup_cleanup,
+#     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_pid = "Lai"
-#     env_dir = get_temp_enactunit_dir()
-#     lai_agenda = enactunit_shop(pid=lai_pid, env_dir=env_dir)
+#     env_dir = get_temp_clerkunit_dir()
+#     lai_agenda = clerkunit_shop(pid=lai_pid, env_dir=env_dir)
 #     lai_contract_file_name = lai_agenda._contract_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_agenda._enactunit_dir, lai_contract_file_name)
+#         x_func_open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_agenda._contract_file_path} (2, 'No such file or directory')"
@@ -41,20 +41,20 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_agenda._enactunit_dir, lai_contract_file_name) != None
+#     assert x_func_open_file(lai_agenda._clerkunit_dir, lai_contract_file_name) != None
 
 
 def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
-    env_dir = get_temp_enactunit_dir()
+    env_dir = get_temp_clerkunit_dir()
     economy_id_text = get_temp_economy_id()
-    x_enact = enactunit_shop(pid=tim_text, env_dir=env_dir, economy_id=economy_id_text)
+    x_clerk = clerkunit_shop(pid=tim_text, env_dir=env_dir, economy_id=economy_id_text)
 
     # WHEN
-    contract_agenda = x_enact.open_contract_agenda()
+    contract_agenda = x_clerk.open_contract_agenda()
     assert contract_agenda != None
     assert contract_agenda._economy_id == economy_id_text
 
@@ -77,33 +77,33 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
 
 
 def test_healer_save_contract_agenda_contractPersonIDMustBeHealer(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
-    env_dir = get_temp_enactunit_dir()
-    x_enact = enactunit_shop(gio_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_economy_id())
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._healer != gio_text
 
     # WHEN
-    x_enact.save_contract_agenda(x_agenda=x_agenda)
+    x_clerk.save_contract_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_enact.open_contract_agenda()._healer == x_enact._enact_cid
+    assert x_clerk.open_contract_agenda()._healer == x_clerk._clerk_cid
 
 
 def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
-    x_enact = enactunit_shop(gio_text, get_temp_enactunit_dir(), get_temp_economy_id())
-    x_enact.save_contract_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
+    x_clerk = clerkunit_shop(gio_text, get_temp_clerkunit_dir(), get_temp_economy_id())
+    x_clerk.save_contract_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
     # WHEN
-    assert x_enact.open_contract_agenda() != None
-    contract_agenda = x_enact.open_contract_agenda()
+    assert x_clerk.open_contract_agenda() != None
+    contract_agenda = x_clerk.open_contract_agenda()
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
@@ -115,69 +115,69 @@ def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
     assert contract_agenda._idearoot._acptfactunits == {}
     assert contract_agenda._partys == {}
     assert contract_agenda._groups == {}
-    assert contract_agenda._healer == x_enact._enact_cid
+    assert contract_agenda._healer == x_clerk._clerk_cid
 
 
 def test_healer_erase_contract_agenda_file_DeletesFileCorrectly(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
-    env_dir = get_temp_enactunit_dir()
-    x_enact = enactunit_shop(gio_text, env_dir, get_temp_economy_id())
-    x_enact.save_contract_agenda(example_agendas_get_agenda_with_4_levels())
-    file_name = x_enact._contract_file_name
-    assert x_func_open_file(x_enact._enactunit_dir, file_name) != None
+    env_dir = get_temp_clerkunit_dir()
+    x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_economy_id())
+    x_clerk.save_contract_agenda(example_agendas_get_agenda_with_4_levels())
+    file_name = x_clerk._contract_file_name
+    assert x_func_open_file(x_clerk._clerkunit_dir, file_name) != None
 
     # WHEN
-    x_enact.erase_contract_agenda_file()
+    x_clerk.erase_contract_agenda_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(x_enact._enactunit_dir, file_name)
+        x_func_open_file(x_clerk._clerkunit_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {x_enact._enactunit_dir}/contract_agenda.json (2, 'No such file or directory')"
+        == f"Could not load file {x_clerk._clerkunit_dir}/contract_agenda.json (2, 'No such file or directory')"
     )
 
 
-def test_enactunit_save_agenda_to_digest_SavesFileCorrectly(
-    enact_dir_setup_cleanup,
+def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    enact_cid = "healer1"
-    env_dir = get_temp_enactunit_dir()
-    x_enact = enactunit_shop(enact_cid, env_dir, get_temp_economy_id())
-    x_enact.create_core_dir_and_files()
+    clerk_cid = "healer1"
+    env_dir = get_temp_clerkunit_dir()
+    x_clerk = clerkunit_shop(clerk_cid, env_dir, get_temp_economy_id())
+    x_clerk.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
-    assert x_func_count_files(x_enact._agendas_digest_dir) == 0
+    assert x_func_count_files(x_clerk._agendas_digest_dir) == 0
 
     # WHEN
-    x_enact.save_agenda_to_digest(x_agenda, src_agenda_healer=src_agenda_healer)
+    x_clerk.save_agenda_to_digest(x_agenda, src_agenda_healer=src_agenda_healer)
 
     # THEN
     x_agenda_file_name = f"{x_agenda._healer}.json"
-    digest_file_path = f"{x_enact._agendas_digest_dir}/{x_agenda_file_name}"
+    digest_file_path = f"{x_clerk._agendas_digest_dir}/{x_agenda_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
-    # for path_x in os_scandir(x_enact._agendas_digest_dir):
+    # for path_x in os_scandir(x_clerk._agendas_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(x_enact._agendas_digest_dir) == 1
+    assert x_func_count_files(x_clerk._agendas_digest_dir) == 1
     digest_x_agenda_json = x_func_open_file(
-        dest_dir=x_enact._agendas_digest_dir,
+        dest_dir=x_clerk._agendas_digest_dir,
         file_name=f"{src_agenda_healer}.json",
     )
     assert digest_x_agenda_json == x_agenda.get_json()
 
 
 def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    env_dir = get_temp_enactunit_dir()
-    sue_agenda = enactunit_shop(sue_text, env_dir, get_temp_economy_id())
+    env_dir = get_temp_clerkunit_dir()
+    sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_economy_id())
     sue_agenda.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
@@ -203,25 +203,25 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
 
 
 def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    enact_cid_x = "boots3"
-    x_enact = enactunit_shop(
-        enact_cid_x, get_temp_enactunit_dir(), get_temp_economy_id()
+    clerk_cid_x = "boots3"
+    x_clerk = clerkunit_shop(
+        clerk_cid_x, get_temp_clerkunit_dir(), get_temp_economy_id()
     )
-    x_enact.create_core_dir_and_files()
-    x_agenda_output_before = x_enact.get_remelded_output_agenda()
+    x_clerk.create_core_dir_and_files()
+    x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._healer == enact_cid_x
+    assert x_agenda_output_before._healer == clerk_cid_x
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
-    # x_enact.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
+    # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
 
     # WHEN
-    sx_output_after = x_enact.get_remelded_output_agenda()
+    sx_output_after = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    healer_agenda_x = agendaunit_shop(_healer=enact_cid_x, _weight=0.0)
+    healer_agenda_x = agendaunit_shop(_healer=clerk_cid_x, _weight=0.0)
     healer_agenda_x.set_economy_id(get_temp_economy_id())
     healer_agenda_x._idearoot._pad = ""
     healer_agenda_x.set_agenda_metrics()
@@ -237,23 +237,23 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
 
 
 def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    env_dir = get_temp_enactunit_dir()
-    x_enact = enactunit_shop(yao_text, env_dir, get_temp_economy_id())
-    x_enact.create_core_dir_and_files()
-    x_agenda_output_before = x_enact.get_remelded_output_agenda()
+    env_dir = get_temp_clerkunit_dir()
+    x_clerk = clerkunit_shop(yao_text, env_dir, get_temp_economy_id())
+    x_clerk.create_core_dir_and_files()
+    x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
     assert x_agenda_output_before._healer == yao_text
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
     input_agenda = example_healers_get_2node_agenda()
     input_agenda.meld(input_agenda)
-    x_enact.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
+    x_clerk.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
 
     # WHEN
-    new_output_agenda = x_enact.get_remelded_output_agenda()
+    new_output_agenda = x_clerk.get_remelded_output_agenda()
 
     # THEN
     assert str(type(new_output_agenda)).find(".agenda.AgendaUnit'>")
@@ -274,11 +274,11 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     assert new_output_agenda != input_agenda
 
 
-# def test_healer_set_digested_agenda_with2Groups(enact_dir_setup_cleanup):
+# def test_healer_set_digested_agenda_with2Groups(clerk_dir_setup_cleanup):
 #     # GIVEN
-#     env_dir = get_temp_enactunit_dir()
-#     x_enact = enactunit_shop(pid="test8", env_dir=env_dir)
-#     x_agenda_output_before = x_enact.get_remelded_output_agenda()
+#     env_dir = get_temp_clerkunit_dir()
+#     x_clerk = clerkunit_shop(pid="test8", env_dir=env_dir)
+#     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
 #     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
 #     assert x_agenda_output_before._groups == {}
 #     assert x_agenda_output_before._partys == {}
@@ -306,8 +306,8 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert s1._acptfacts.get(yaya_road).base == yaya_road
 
 #     # WHEN
-#     x_enact.set_single_digested_agenda(_agenda_healer="test1", digest_agenda_x=s1)
-#     new_output_agenda = x_enact.get_remelded_output_agenda()
+#     x_clerk.set_single_digested_agenda(_agenda_healer="test1", digest_agenda_x=s1)
+#     new_output_agenda = x_clerk.get_remelded_output_agenda()
 
 #     # THEN
 #     assert str(type(new_output_agenda)).find(".agenda.AgendaUnit'>")
@@ -326,10 +326,10 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 
 def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
-    enact_dir_setup_cleanup,
+    clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    # enactunit with contract_agenda and no other depot agendas
+    # clerkunit with contract_agenda and no other depot agendas
     yao_text = "Yao"
     contract_origin_weight = 1
     yao_originunit = originunit_shop()
@@ -340,12 +340,12 @@ def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     assert contract_agenda_x._idearoot._originunit == originunit_shop()
     assert contract_agenda_x._idearoot._originunit != yao_originunit
 
-    x_enact = enactunit_shop(yao_text, get_temp_enactunit_dir(), get_temp_economy_id())
-    x_enact.create_core_dir_and_files()
-    x_enact.save_contract_agenda(x_agenda=contract_agenda_x)
+    x_clerk = clerkunit_shop(yao_text, get_temp_clerkunit_dir(), get_temp_economy_id())
+    x_clerk.create_core_dir_and_files()
+    x_clerk.save_contract_agenda(x_agenda=contract_agenda_x)
 
     # WHEN
-    output_agenda_x = x_enact.get_remelded_output_agenda()
+    output_agenda_x = x_clerk.get_remelded_output_agenda()
 
     # THEN
     print(f"{output_agenda_x._economy_id=} {output_agenda_x._idearoot._label=}")
