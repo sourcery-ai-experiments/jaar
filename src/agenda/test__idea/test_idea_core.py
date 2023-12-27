@@ -855,3 +855,27 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
         str(excinfo.value)
         == f"Idea '{nation_idea.get_road()}' either has an infinite loop or more than {max_count} descendants."
     )
+
+
+def test_idea_clear_kids_CorrectlySetsAttr():
+    # GIVEN
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    usa_idea = ideacore_shop(usa_text, _pad=nation_road)
+    nation_idea.add_kid(idea_kid=usa_idea)
+
+    france_text = "France"
+    france_road = create_road(nation_road, france_text)
+    france_idea = ideacore_shop(france_text, _pad=usa_road)
+    nation_idea.add_kid(idea_kid=france_idea)
+    assert len(nation_idea._kids) == 2
+
+    # WHEN
+    nation_idea.clear_kids()
+
+    # THEN
+    assert len(nation_idea._kids) == 0

@@ -16,14 +16,14 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     rx1_road = x_agenda.make_road(l1_road, rx1)
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
-    y_idea = x_agenda.get_idea_kid(rx1_road)
+    y_idea = x_agenda.get_idea_obj(rx1_road)
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
     x_agenda.add_idea(ideacore_shop(rcA, _weight=30, _begin=10, _close=25), rx1_road)
 
     rcA_road = x_agenda.make_road(rx1_road, rcA)
-    x_idea = x_agenda.get_idea_kid(rcA_road)
+    x_idea = x_agenda.get_idea_obj(rcA_road)
 
     assert x_idea._begin == 10
     assert x_idea._close == 25
@@ -50,14 +50,14 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     rx1_road = x_agenda.make_road(l1_road, rx1)
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
-    y_idea = x_agenda.get_idea_kid(rx1_road)
+    y_idea = x_agenda.get_idea_obj(rx1_road)
     print(f"Add example child idea to road='{rx1_road}'")
 
     rcA = "range_child_example"
     x_agenda.add_idea(ideacore_shop(rcA, _weight=30, _begin=10, _close=25), rx1_road)
 
     rcA_road = x_agenda.make_road(rx1_road, rcA)
-    x_idea = x_agenda.get_idea_kid(rcA_road)
+    x_idea = x_agenda.get_idea_obj(rcA_road)
 
     assert x_idea._begin == 10
     assert x_idea._close == 25

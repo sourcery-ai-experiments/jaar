@@ -128,7 +128,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     bob_agenda.add_idea(ideacore_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     assert len(bob_agenda._idearoot._kids) == 2
-    wed_idea = bob_agenda.get_idea_kid(wed_road)
+    wed_idea = bob_agenda.get_idea_obj(wed_road)
     assert wed_idea._road_delimiter == slash_text
     assert wed_idea._road_delimiter == bob_agenda._road_delimiter
 
@@ -138,7 +138,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     )
 
     # THEN
-    work_idea = bob_agenda.get_idea_kid(work_road)
+    work_idea = bob_agenda.get_idea_obj(work_road)
     assert work_idea._requiredunits.get(week_road) != None
 
 
@@ -204,8 +204,8 @@ def test_agenda_add_idea_creates_requireds_ideas():
     # for idea_kid in x_agenda._idearoot._kids.values():
     #     print(f"{idea_kid._label=}")
     assert x_agenda._idearoot._kids.get(buildings_text) != None
-    assert x_agenda.get_idea_kid(road=buildings_road) != None
-    assert x_agenda.get_idea_kid(road=cookery_dirty_road) != None
+    assert x_agenda.get_idea_obj(road=buildings_road) != None
+    assert x_agenda.get_idea_obj(road=cookery_dirty_road) != None
     assert x_agenda.get_node_count() == 22
     assert x_agenda.get_level_count(level=3) == 4
 
@@ -228,26 +228,20 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     week_road = x_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
     sun_road = x_agenda.make_road(week_road, sun_text)
-    assert x_agenda.get_idea_kid(road=week_road)
-    assert x_agenda.get_idea_kid(road=sun_road)
+    assert x_agenda.get_idea_obj(road=week_road)
+    assert x_agenda.get_idea_obj(road=sun_road)
 
     # WHEN
     x_agenda.del_idea_kid(road=week_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=week_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='weekdays' failed no item at '{week_road}'"
-    )
+        x_agenda.get_idea_obj(road=week_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{week_road}'"
     new_sunday_road = x_agenda.make_l1_road("Sunday")
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=new_sunday_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='Sunday' failed no item at '{new_sunday_road}'"
-    )
+        x_agenda.get_idea_obj(road=new_sunday_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{new_sunday_road}'"
 
 
 def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
@@ -258,21 +252,18 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     week_road = x_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
     old_sunday_road = x_agenda.make_road(week_road, sun_text)
-    assert x_agenda.get_idea_kid(road=old_sunday_road)
+    assert x_agenda.get_idea_obj(road=old_sunday_road)
 
     # WHEN
     x_agenda.del_idea_kid(road=week_road, del_children=False)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=old_sunday_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='{sun_text}' failed no item at '{old_sunday_road}'"
-    )
+        x_agenda.get_idea_obj(road=old_sunday_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{old_sunday_road}'"
     new_sunday_road = x_agenda.make_l1_road(sun_text)
-    assert x_agenda.get_idea_kid(road=new_sunday_road)
-    new_sunday_idea = x_agenda.get_idea_kid(road=new_sunday_road)
+    assert x_agenda.get_idea_obj(road=new_sunday_road)
+    new_sunday_idea = x_agenda.get_idea_obj(road=new_sunday_road)
     assert new_sunday_idea._pad == x_agenda._economy_id
 
 
@@ -313,18 +304,15 @@ def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     x_agenda = get_agenda_with_4_levels()
     wkday_road = x_agenda.make_l1_road("weekdays")
     monday_road = x_agenda.make_road(wkday_road, "Monday")
-    assert x_agenda.get_idea_kid(road=monday_road)
+    assert x_agenda.get_idea_obj(road=monday_road)
 
     # WHEN
     x_agenda.del_idea_kid(road=monday_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=monday_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='Monday' failed no item at '{monday_road}'"
-    )
+        x_agenda.get_idea_obj(road=monday_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{monday_road}'"
 
 
 def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
@@ -336,18 +324,15 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     usa_road = x_agenda.make_road(states_road, usa_text)
     texas_text = "Texas"
     usa_texas_road = x_agenda.make_road(usa_road, texas_text)
-    assert x_agenda.get_idea_kid(road=usa_texas_road)
+    assert x_agenda.get_idea_obj(road=usa_texas_road)
 
     # WHEN
     x_agenda.del_idea_kid(road=usa_texas_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=usa_texas_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='Texas' failed no item at '{usa_texas_road}'"
-    )
+        x_agenda.get_idea_obj(road=usa_texas_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{usa_texas_road}'"
 
 
 def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
@@ -514,7 +499,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
     # GIVEN
     x_agenda.edit_idea_attr(road=work_road, begin=44, close=110)
     x_agenda.edit_idea_attr(road=clean_road, denom=11)
-    clean_idea = x_agenda.get_idea_kid(road=clean_road)
+    clean_idea = x_agenda.get_idea_obj(road=clean_road)
     assert clean_idea._begin == 4
     assert clean_idea._close == 10
 
@@ -533,7 +518,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     c_road = x_agenda.make_road(w_road, clean)
     x_agenda.add_idea(clean_idea, pad=w_road)
 
-    clean_idea = x_agenda.get_idea_kid(road=c_road)
+    clean_idea = x_agenda.get_idea_obj(road=c_road)
 
     day = "day_range"
     day_idea = ideacore_shop(day, _begin=44, _close=110)
@@ -563,7 +548,7 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     day_road = x_agenda.make_l1_road(day_text)
     x_agenda.add_idea(day_idea, pad=x_agenda._economy_id)
 
-    work_idea = x_agenda.get_idea_kid(road=work_road)
+    work_idea = x_agenda.get_idea_obj(road=work_road)
     assert work_idea._begin is None
     assert work_idea._close is None
 
@@ -579,7 +564,7 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     x_agenda.edit_idea_attr(road=work_road, numeric_road=day_road)
 
     # THEN
-    work_idea3 = x_agenda.get_idea_kid(road=work_road)
+    work_idea3 = x_agenda.get_idea_obj(road=work_road)
     assert work_idea3._addin is None
     assert work_idea3._numor is None
     assert work_idea3._denom is None
@@ -630,10 +615,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
             pad=sports_road,
             adoptees=[swim_text, hike_text],
         )
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='{hike_text}' failed no item at '{hike_road}'"
-    )
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{hike_road}'"
 
 
 def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
@@ -667,7 +649,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     )
 
     # THEN
-    summer_idea = x_agenda.get_idea_kid(summer_road)
+    summer_idea = x_agenda.get_idea_obj(summer_road)
     print(f"{summer_idea._kids.keys()=}")
     x_agenda.set_agenda_metrics()
     assert x_agenda._idea_dict.get(summer_swim_road) != None

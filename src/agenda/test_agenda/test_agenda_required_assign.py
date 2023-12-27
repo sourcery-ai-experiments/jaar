@@ -11,7 +11,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     run_text = "run"
     run_road = x_agenda.make_l1_road(run_text)
     x_agenda.add_idea(ideacore_shop(run_text), pad=x_agenda._economy_id)
-    run_idea = x_agenda.get_idea_kid(run_road)
+    run_idea = x_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_shop()
 
     # WHEN
@@ -55,7 +55,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     x_agenda.add_partyunit(pid=bob_text)
     x_agenda.add_idea(ideacore_shop(run_text), pad=bob_text)
     x_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
-    run_idea = x_agenda.get_idea_kid(run_road)
+    run_idea = x_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_x
     assert run_idea._assignedheir is None
 
@@ -97,7 +97,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     x_agenda.add_idea(ideacore_shop(four_text), pad=morn_road)
     x_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(x_agenda.make_road(four_road=}\n{morn_road=))
-    four_idea = x_agenda.get_idea_kid(four_road)
+    four_idea = x_agenda.get_idea_obj(four_road)
     assert four_idea._assignedunit == assigned_unit_shop()
     assert four_idea._assignedheir is None
 
@@ -134,7 +134,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     swim_assignedunit.set_suffgroup(brand=xia_text)
     swim_assignedunit.set_suffgroup(brand=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
-    x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
+    x_agenda1_swim_idea = x_agenda1.get_idea_obj(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups
     assert len(x_agenda1_swim_suffgroups) == 2
 
@@ -168,7 +168,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     swim_assignedunit.set_suffgroup(brand=xia_text)
     swim_assignedunit.set_suffgroup(brand=zoa_text)
     x_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
-    x_agenda1_swim_idea = x_agenda1.get_idea_kid(swim_road)
+    x_agenda1_swim_idea = x_agenda1.get_idea_obj(swim_road)
     x_agenda1_swim_suffgroups = x_agenda1_swim_idea._assignedunit._suffgroups
     assert len(x_agenda1_swim_suffgroups) == 2
 
@@ -182,7 +182,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     )
 
     # THEN
-    x_agenda2_swim_idea = x_agenda2.get_idea_kid(swim_road)
+    x_agenda2_swim_idea = x_agenda2.get_idea_obj(swim_road)
     x_agenda2_swim_suffgroups = x_agenda2_swim_idea._assignedunit._suffgroups
     assert len(x_agenda2_swim_suffgroups) == 1
     assert list(x_agenda2_swim_suffgroups) == [xia_text]

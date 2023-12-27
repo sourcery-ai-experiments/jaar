@@ -209,7 +209,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
 
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_idea = x_agenda.get_idea_obj(swim_road)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
@@ -230,7 +230,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     x_agenda.edit_idea_attr(road=swim_road, balancelink_del=rico_text)
 
     # THEN
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_idea = x_agenda.get_idea_obj(swim_road)
     print(f"{swim_idea._label=}")
     print(f"{swim_idea._balancelinks=}")
     print(f"{swim_idea._balanceheirs=}")
@@ -603,7 +603,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
     x_agenda.add_idea(ideacore_shop(camping_text), pad=outdoor_road)
 
-    camping_idea = x_agenda.get_idea_kid(camping_road)
+    camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
         brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
     )
@@ -644,7 +644,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
     x_agenda.add_idea(ideacore_shop(camping_text), pad=outdoor_road)
 
-    camping_idea = x_agenda.get_idea_kid(camping_road)
+    camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
         brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
     )
@@ -723,7 +723,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=zoa_text)
     )
-    x1_agenda_swim_idea = x1_agenda.get_idea_kid(swim_road)
+    x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
     assert len(x1_agenda_swim_idea._balancelinks) == 2
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.add_partyunit(pid=xia_text)
@@ -757,7 +757,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=zoa_text)
     )
-    x1_agenda_swim_idea = x1_agenda.get_idea_kid(swim_road)
+    x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
     assert len(x1_agenda_swim_idea._balancelinks) == 2
 
     # WHEN
@@ -770,7 +770,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     )
 
     # THEN
-    x_agenda_swim_idea = x_agenda.get_idea_kid(swim_road)
+    x_agenda_swim_idea = x_agenda.get_idea_obj(swim_road)
     assert len(x_agenda_swim_idea._balancelinks) == 1
     assert list(x_agenda_swim_idea._balancelinks.keys()) == [xia_text]
 

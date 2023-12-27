@@ -80,7 +80,7 @@ def test_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     assert yrx._all_party_debt == True
 
 
-def test_get_idea_kid_CorrectlyReturnsIdea():
+def test_get_idea_obj_CorrectlyReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"
@@ -89,7 +89,7 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     brazil_road = x_agenda.make_road(nation_road, brazil_text)
 
     # WHEN
-    brazil_idea = x_agenda.get_idea_kid(road=brazil_road)
+    brazil_idea = x_agenda.get_idea_obj(road=brazil_road)
 
     # THEN
     assert brazil_idea != None
@@ -98,14 +98,14 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     # WHEN
     week_text = "weekdays"
     week_road = x_agenda.make_l1_road(week_text)
-    week_idea = x_agenda.get_idea_kid(road=week_road)
+    week_idea = x_agenda.get_idea_obj(road=week_road)
 
     # THEN
     assert week_idea != None
     assert week_idea._label == week_text
 
     # WHEN
-    root_idea = x_agenda.get_idea_kid(road=x_agenda._economy_id)
+    root_idea = x_agenda.get_idea_obj(road=x_agenda._economy_id)
 
     # THEN
     assert root_idea != None
@@ -115,11 +115,8 @@ def test_get_idea_kid_CorrectlyReturnsIdea():
     bobdylan_text = "bobdylan"
     wrong_road = x_agenda.make_l1_road(bobdylan_text)
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_kid(road=wrong_road)
-    assert (
-        str(excinfo.value)
-        == f"Getting idea_label='bobdylan' failed no item at '{wrong_road}'"
-    )
+        x_agenda.get_idea_obj(road=wrong_road)
+    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{wrong_road}'"
 
 
 def test_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
@@ -170,7 +167,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # idea "
 
     # test root init status:
-    x_idearoot = x_agenda.get_idea_kid(x_agenda._economy_id)
+    x_idearoot = x_agenda.get_idea_obj(x_agenda._economy_id)
     assert x_idearoot._descendant_promise_count is None
     assert x_idearoot._all_party_credit is None
     assert x_idearoot._all_party_debt is None
@@ -296,20 +293,20 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) != None
     assert x_agenda._idearoot._balanceheirs.get(sandy_text).brand == sandy_text
     assert x_agenda._idearoot._balancelines != {}
-    root_idea = x_agenda.get_idea_kid(road=x_agenda._idearoot._label)
+    root_idea = x_agenda.get_idea_obj(road=x_agenda._idearoot._label)
     sandy_balanceline = x_agenda._idearoot._balancelines.get(sandy_text)
     print(f"{sandy_balanceline._agenda_credit=} {root_idea._agenda_importance=} ")
     print(f"  {sandy_balanceline._agenda_debt=} {root_idea._agenda_importance=} ")
     sum_x = 0
     cat_road = x_agenda.make_l1_road("feed cat")
-    cat_idea = x_agenda.get_idea_kid(cat_road)
+    cat_idea = x_agenda.get_idea_obj(cat_road)
     week_road = x_agenda.make_l1_road(week_text)
-    week_idea = x_agenda.get_idea_kid(week_road)
+    week_idea = x_agenda.get_idea_obj(week_road)
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    work_idea = x_agenda.get_idea_kid(work_road)
+    work_idea = x_agenda.get_idea_obj(work_road)
     nation_road = x_agenda.make_l1_road(nation_text)
-    nation_idea = x_agenda.get_idea_kid(nation_road)
+    nation_idea = x_agenda.get_idea_obj(nation_road)
     sum_x = cat_idea._agenda_importance
     print(f"{cat_idea._agenda_importance=} {sum_x} ")
     sum_x += week_idea._agenda_importance
@@ -429,7 +426,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     assert len(sandy_agenda4party._idearoot._kids) > 0
     print(f"{len(sandy_agenda4party._idearoot._kids)=}")
 
-    work_idea = sandy_agenda4party.get_idea_kid(work_road)
+    work_idea = sandy_agenda4party.get_idea_obj(work_road)
     type_check_IdeaCore = str(type(work_idea)).find(".idea.IdeaCore'>")
     print(f"{type_check_IdeaCore=}")
     type_check_IdeaKid = str(type(work_idea)).find(".idea.IdeaKid'>")
@@ -558,25 +555,78 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
 
 #     # check generated sandy is correct
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance == 0.5
-#     assert gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},B")._agenda_importance == 0.13
+#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance == 0.07
+#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance == 0.07
+#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance == 0.5
+#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance == 0.13
 #     assert (
-#         gen_sandy.get_idea_kid(f"{x_agenda._economy_id},A")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A")._agenda_importance
+#         gen_sandy.get_idea_obj(f"{x_agenda._economy_id},A")._agenda_importance
+#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C")._agenda_importance
+#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance
+#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
+#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
+#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
 #     )
 #     assert (
-#         gen_sandy.get_idea_kid(road=f"{x_agenda._economy_id},B")._agenda_importance
-#         == exp_sandy.get_idea_kid(road=f"{x_agenda._economy_id},B")._agenda_importance
+#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance
+#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance
 #     )
 #     gen_sandy_list = gen_sandy.get_idea_list()
 #     assert len(gen_sandy_list) == 5
+
+
+def test_agenda_idea_exists_ReturnsCorrectBool():
+    # GIVEN
+    sue_agenda = example_agendas_get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
+    cat_road = sue_agenda.make_l1_road("feed cat")
+    week_road = sue_agenda.make_l1_road("weekdays")
+    work_road = sue_agenda.make_l1_road("work")
+    nation_road = sue_agenda.make_l1_road("nation-state")
+    sun_road = sue_agenda.make_road(week_road, "Sunday")
+    mon_road = sue_agenda.make_road(week_road, "Monday")
+    tue_road = sue_agenda.make_road(week_road, "Tuesday")
+    wed_road = sue_agenda.make_road(week_road, "Wednesday")
+    thu_road = sue_agenda.make_road(week_road, "Thursday")
+    fri_road = sue_agenda.make_road(week_road, "Friday")
+    sat_road = sue_agenda.make_road(week_road, "Saturday")
+    france_road = sue_agenda.make_road(nation_road, "France")
+    brazil_road = sue_agenda.make_road(nation_road, "Brazil")
+    usa_road = sue_agenda.make_road(nation_road, "USA")
+    texas_road = sue_agenda.make_road(usa_road, "Texas")
+    oregon_road = sue_agenda.make_road(usa_road, "Oregon")
+    # do not exist in agenda
+    sports_road = sue_agenda.make_l1_road("sports")
+    swim_road = sue_agenda.make_road(sports_road, "swimming")
+    idaho_road = sue_agenda.make_road(usa_road, "Idaho")
+    japan_road = sue_agenda.make_road(nation_road, "Japan")
+
+    # WHEN/THEN
+    assert sue_agenda.idea_exists("") == False
+    assert sue_agenda.idea_exists(None) == False
+    assert sue_agenda.idea_exists("A")
+    assert sue_agenda.idea_exists(cat_road)
+    assert sue_agenda.idea_exists(week_road)
+    assert sue_agenda.idea_exists(work_road)
+    assert sue_agenda.idea_exists(nation_road)
+    assert sue_agenda.idea_exists(sun_road)
+    assert sue_agenda.idea_exists(mon_road)
+    assert sue_agenda.idea_exists(tue_road)
+    assert sue_agenda.idea_exists(wed_road)
+    assert sue_agenda.idea_exists(thu_road)
+    assert sue_agenda.idea_exists(fri_road)
+    assert sue_agenda.idea_exists(sat_road)
+    assert sue_agenda.idea_exists(usa_road)
+    assert sue_agenda.idea_exists(france_road)
+    assert sue_agenda.idea_exists(brazil_road)
+    assert sue_agenda.idea_exists(texas_road)
+    assert sue_agenda.idea_exists(oregon_road)
+    assert sue_agenda.idea_exists("B") == False
+    assert sue_agenda.idea_exists(sports_road) == False
+    assert sue_agenda.idea_exists(swim_road) == False
+    assert sue_agenda.idea_exists(idaho_road) == False
+    assert sue_agenda.idea_exists(japan_road) == False

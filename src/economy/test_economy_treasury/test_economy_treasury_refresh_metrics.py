@@ -434,11 +434,11 @@ def test_refresh_treasury_public_agendas_data_Populates_acptfact_catalog_table(
     tim_agenda.set_healer(new_healer=tim_text)
     sal_agenda.set_healer(new_healer=sal_text)
     c_text = "C"
-    c_road = create_road(tim_agenda._healer, c_text)
+    c_road = create_road(tim_agenda._economy_id, c_text)
     f_text = "F"
     f_road = create_road(c_road, f_text)
     b_text = "B"
-    b_road = create_road(tim_agenda._healer, b_text)
+    b_road = create_road(tim_agenda._economy_id, b_text)
     # for idea_x in tim_agenda._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
     tim_agenda.set_acptfact(base=c_road, pick=f_road)
@@ -447,7 +447,7 @@ def test_refresh_treasury_public_agendas_data_Populates_acptfact_catalog_table(
     bob_agenda.set_acptfact(base=b_road, pick=b_road)
 
     casa_text = "casa"
-    casa_road = create_road(sal_agenda._healer, casa_text)
+    casa_road = create_road(sal_agenda._economy_id, casa_text)
     cookery_text = "clean cookery"
     cookery_road = create_road(casa_road, cookery_text)
     sal_agenda.set_acptfact(base=cookery_road, pick=cookery_road)

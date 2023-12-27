@@ -267,42 +267,6 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyIDScena
     assert new_sufffacts_x.get(old_seasons_road) is None
 
 
-# def test_find_replace_road_key_dict_ReturnsCorrectDict_Scenario2():
-#     # GIVEN
-#     src = f"{root_label()}"
-#     healer_text = "healer"
-#     healer_road = f"{root_label()}{x_s}{healer_text}")
-#     bloomers_text = "bloomers"
-#     bloomers_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}")
-#     old_roses_text = "roses"
-#     old_roses_road = f"{root_label()}{x_s}{healer_text}{x_s}{bloomers_text}{x_s}{old_roses_text}")
-#     idea_roses = ideacore_shop(old_roses_text, _pad=bloomers_road)
-#     idea_bloomers = ideacore_shop(bloomers_text, _pad=healer_road)
-#     idea_bloomers.add_kid(idea_kid=idea_roses)
-
-#     for idea_key, idea_obj in idea_bloomers._kids.items():
-#         assert idea_key == old_roses_text
-#         assert idea_obj.get_key_road() == old_roses_text
-#         assert idea_obj._label == old_roses_text
-
-#     # WHEN
-#     new_roses_text = "roses2"
-#     new_roses_road = ff"{root_label()},healer{x_s}{new_roses_text}")
-#     new_kids_x = find_replace_road_key_dict(
-#         dict_x=idea_bloomers._kids,
-#         old_road=old_roses_road,
-#         new_road=new_roses_road,
-#         key_is_last_node=True,
-#     )
-
-#     # THEN
-#     for idea_key, idea_obj in new_kids_x.items():
-#         assert idea_key == new_roses_text
-#         assert idea_obj.get_key_road() == new_roses_text
-#         assert idea_obj._label == new_roses_text
-#     assert new_kids_x.get(old_roses_road) is None
-
-
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():
     # GIVEN
     x_s = default_road_delimiter_if_none()

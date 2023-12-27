@@ -116,7 +116,7 @@ def test_agenda_get_idea_list_returns_correct_list():
 
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    work_idea = x_agenda.get_idea_kid(work_road)
+    work_idea = x_agenda.get_idea_obj(work_road)
     print(f"{x_agenda._healer=} {len(work_idea._requiredunits)=}")
     # print(f"{work_idea._requiredunits=}")
     print(f"{x_agenda._healer=} {len(x_agenda._idearoot._acptfactunits)=}")
@@ -295,10 +295,10 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     assert x_agenda._idearoot._kids.get(barn_text)._agenda_coin_cease is None
     assert x_agenda._idearoot._kids.get(coal_text)._agenda_coin_onset is None
     assert x_agenda._idearoot._kids.get(coal_text)._agenda_coin_cease is None
-    lamb_before = x_agenda.get_idea_kid(road=lamb_road)
+    lamb_before = x_agenda.get_idea_obj(road=lamb_road)
     assert lamb_before._agenda_coin_onset is None
     assert lamb_before._agenda_coin_cease is None
-    duck_before = x_agenda.get_idea_kid(road=duck_road)
+    duck_before = x_agenda.get_idea_obj(road=duck_road)
     assert duck_before._agenda_coin_onset is None
     assert duck_before._agenda_coin_cease is None
 
@@ -315,10 +315,10 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     assert x_agenda._idearoot._kids.get(coal_text)._agenda_coin_onset == 0.7
     assert x_agenda._idearoot._kids.get(coal_text)._agenda_coin_cease == 1.0
 
-    duck_after = x_agenda.get_idea_kid(road=duck_road)
+    duck_after = x_agenda.get_idea_obj(road=duck_road)
     assert duck_after._agenda_coin_onset == 0.1
     assert duck_after._agenda_coin_cease == 0.5
-    lamb_after = x_agenda.get_idea_kid(road=lamb_road)
+    lamb_after = x_agenda.get_idea_obj(road=lamb_road)
     assert lamb_after._agenda_coin_onset == 0.5
     assert lamb_after._agenda_coin_cease == 0.7
 
@@ -588,7 +588,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
     casa_road = x_agenda.make_l1_road("casa")
     cleaning_road = x_agenda.make_road(casa_road, "cleaning")
     clean_couch_road = x_agenda.make_road(cleaning_road, "clean sheets couch blankets")
-    clean_sheet_idea = x_agenda.get_idea_kid(clean_couch_road)
+    clean_sheet_idea = x_agenda.get_idea_obj(clean_couch_road)
     # print(f"{clean_sheet_idea._requiredunits.values()=}")
     ced_week_required = clean_sheet_idea._requiredunits.get(ced_week_base)
     ced_week_suffact = ced_week_required.sufffacts.get(ced_week_base)
@@ -635,7 +635,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
     cleaning_road = x_agenda.make_road(casa_road, "cleaning")
     clean_couch_text = "clean sheets couch blankets"
     clean_couch_road = x_agenda.make_road(cleaning_road, clean_couch_text)
-    clean_couch_idea = x_agenda.get_idea_kid(road=clean_couch_road)
+    clean_couch_idea = x_agenda.get_idea_obj(road=clean_couch_road)
     week_required = clean_couch_idea._requiredunits.get(week_road)
     week_sufffact = week_required.sufffacts.get(week_road)
     print(f"{clean_couch_idea._label=} {week_required.base=} {week_sufffact=}")

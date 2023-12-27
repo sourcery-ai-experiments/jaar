@@ -25,8 +25,10 @@ def change_road(
 ) -> RoadUnit:
     if current_road is None:
         return current_road
-    else:
+    elif is_sub_road(current_road, old_road):
         return current_road.replace(old_road, new_road, 1)
+    else:
+        return current_road
 
 
 def is_sub_road(ref_road: RoadUnit, sub_road: RoadUnit) -> bool:
@@ -48,21 +50,10 @@ def find_replace_road_key_dict(
     keys_to_delete = []
     objs_to_add = []
     for x_key, x_obj in dict_x.items():
-        # rint(f"{x_key=} {old_road=} {new_road=}")
-        if is_sub_road(ref_road=x_key, sub_road=old_road):
-            #  or (
-            #     key_is_last_node
-            #     and is_sub_road(
-            #         ref_road=RoadUnit(f"{x_obj._pad},{x_obj._label}"), sub_road=old_road
-            #     )
-            # changed_road = change_road(
-            #     current_road=x_key, old_road=old_road, new_road=new_road
-            # )
+        if old_road != new_road and is_sub_road(ref_road=x_key, sub_road=old_road):
             x_obj.find_replace_road(old_road=old_road, new_road=new_road)
             objs_to_add.append(x_obj)
-
             keys_to_delete.append(x_key)
-            # rint(f"{changed_road=} {keys_to_delete=} {len(objs_to_add)=}")
 
     for x_obj in objs_to_add:
         dict_x[x_obj.get_key_road()] = x_obj

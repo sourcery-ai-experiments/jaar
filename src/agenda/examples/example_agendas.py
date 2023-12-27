@@ -433,6 +433,8 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     cali_assignunit = assigned_unit_shop()
     cali_assignunit.set_suffgroup(cali_text)
     amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    # print(f"{basket_road=}")
+    # print(f"{amer_agenda._economy_id=}")
     amer_agenda.set_acptfact(base=basket_road, pick=b_full_road)
 
     return amer_agenda

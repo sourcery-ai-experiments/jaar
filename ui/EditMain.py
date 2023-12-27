@@ -80,8 +80,8 @@ class EditMainView(qtw.QWidget, Ui_Form):
                 acptfact
                 for acptfact in self.agenda_x._idearoot._acptfactunits.values()
                 if (
-                    self.agenda_x.get_idea_kid(road=acptfact.base)._problem_bool
-                    or self.agenda_x.get_idea_kid(road=acptfact.pick)._problem_bool
+                    self.agenda_x.get_idea_obj(road=acptfact.base)._problem_bool
+                    or self.agenda_x.get_idea_obj(road=acptfact.pick)._problem_bool
                 )
             )
         else:

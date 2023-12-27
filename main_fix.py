@@ -376,7 +376,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             idea_list = self.healer_output_agenda.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.healer_output_agenda.get_idea_kid(idea_road)
+                idea_obj = self.healer_output_agenda.get_idea_obj(idea_road)
 
                 if idea_obj._pad.find("time") != 3:
                     x_list.append(

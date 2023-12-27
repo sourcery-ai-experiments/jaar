@@ -27,8 +27,8 @@ def test_agenda_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFacts(
     assert len(missing_bases) == 11
 
     x_agenda.set_acptfact(
-        base="{root_label()},day_minute",
-        pick="{root_label()},day_minute",
+        base=x_agenda.make_l1_road("day_minute"),
+        pick=x_agenda.make_l1_road("day_minute"),
         open=0,
         nigh=1439,
     )

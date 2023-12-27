@@ -65,7 +65,7 @@ class EditAcptFactTime(qtw.QTableWidget, Ui_Form):
         self.close()
 
     def display_acptfact_time(self):
-        # minutes_idea = self.agenda_x.get_idea_kid(
+        # minutes_idea = self.agenda_x.get_idea_obj(
         #     road=f"{root_label},time,jajatime"
         # )
         minutes_acptfact = self.agenda_x._idearoot._acptfactunits[

@@ -839,6 +839,9 @@ class IdeaCore:
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
+    def clear_kids(self):
+        self._kids = {}
+
     def set_balancelink(self, balancelink: BalanceLink):
         self._balancelinks[balancelink.brand] = balancelink
 

@@ -79,7 +79,9 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
 
     # WHEN
     assignment_text = "assignment"
+    print("next set depotlink")
     cali_ux._set_depotlink(amer_agenda._healer, link_type=assignment_text)
+    print("after set depotlink")
 
     # THEN
     assert (

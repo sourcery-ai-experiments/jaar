@@ -266,7 +266,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
         idea_pad = self.baseideaunit.currentItem().data(2, 11)
         if idea_pad not in ("", None):
-            self.x_idea = self.agenda_x.get_idea_kid(road=f"{idea_pad},{idea_label}")
+            self.x_idea = self.agenda_x.get_idea_obj(road=f"{idea_pad},{idea_label}")
         else:
             self.x_idea = self.agenda_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
@@ -296,7 +296,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.agenda_x._healer,
             "",
         ]:
-            sufffact_idea = self.agenda_x.get_idea_kid(
+            sufffact_idea = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_combo.currentText()
             )
             if sufffact_idea._range_source_road != None:
@@ -325,7 +325,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.required_sufffact_open_combo_sel_actions()
 
     def required_sufffact_open_combo_sel_actions(self):
-        open_idea_x = self.agenda_x.get_idea_kid(
+        open_idea_x = self.agenda_x.get_idea_obj(
             road=self.required_sufffact_open_combo.currentText()
         )
         if open_idea_x._begin != None:
@@ -346,13 +346,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.agenda_x._healer,
             "",
         ]:
-            open_idea_x = self.agenda_x.get_idea_kid(
+            open_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_open_combo.currentText()
             )
-            # nigh_idea_x = self.agenda_x.get_idea_kid(
+            # nigh_idea_x = self.agenda_x.get_idea_obj(
             #     road=self.required_sufffact_nigh_combo.currentText()
             # )
-            # divisor_idea_x = self.agenda_x.get_idea_kid(
+            # divisor_idea_x = self.agenda_x.get_idea_obj(
             #     road=self.required_sufffact_divisor_combo.currentText()
             # )
             # if open_idea_x._begin != None:
@@ -369,7 +369,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_open.toPlainText() != ""
         ):
-            open_idea_x = self.agenda_x.get_idea_kid(
+            open_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_open_combo.currentText()
             )
             open_int = str2float(self.required_sufffact_open.toPlainText())
@@ -389,7 +389,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_nigh.toPlainText() != ""
         ):
-            nigh_idea_x = self.agenda_x.get_idea_kid(
+            nigh_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             nigh_int = int(self.required_sufffact_nigh.toPlainText())
@@ -409,7 +409,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             ]
             and self.required_sufffact_divisor.toPlainText() != ""
         ):
-            divisor_idea_x = self.agenda_x.get_idea_kid(
+            divisor_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             divisor_int = int(self.required_sufffact_divisor.toPlainText())
@@ -428,7 +428,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.agenda_x._healer,
             "",
         ]:
-            nigh_idea_x = self.agenda_x.get_idea_kid(
+            nigh_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_nigh_combo.currentText()
             )
             if nigh_idea_x._close != None:
@@ -440,7 +440,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.agenda_x._healer,
             "",
         ]:
-            divisor_idea_x = self.agenda_x.get_idea_kid(
+            divisor_idea_x = self.agenda_x.get_idea_obj(
                 road=self.required_sufffact_divisor_combo.currentText()
             )
             if divisor_idea_x._denom != None:

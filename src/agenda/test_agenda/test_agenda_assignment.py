@@ -321,7 +321,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     work_text = "work"
     work_road = yao_agenda.make_road(yao_agenda._economy_id, work_text)
     yao_agenda.add_idea(ideacore_shop(work_text), pad=yao_agenda._economy_id)
-    work_idea = yao_agenda.get_idea_kid(work_road)
+    work_idea = yao_agenda.get_idea_obj(work_road)
     day_text = "day_range"
     day_road = yao_agenda.make_road(yao_agenda._economy_id, day_text)
     day_idea = ideacore_shop(day_text, _begin=44, _close=110)
@@ -379,12 +379,12 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
     assert relevant_roads.get(yao_agenda._economy_id) != None
-    # min_days_idea = yao_agenda.get_idea_kid(min_days_road)
+    # min_days_idea = yao_agenda.get_idea_obj(min_days_road)
 
 
 # def test_agenda__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
 #
-def test_agenda__set_assignment_ideas_ReturnsCorrectIdeas():
+def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
@@ -400,13 +400,13 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeas():
         yao_agenda._economy_id: "descendant",
         casa_road: "requirementunit_base",
     }
-    yao_agenda._set_assignment_ideas(agenda_x=bob_agenda, relevant_roads=relevant_roads)
+    yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
 
     # THEN
     bob_agenda.set_agenda_metrics()
     print(f"{bob_agenda._idea_dict.keys()=}")
     assert len(bob_agenda._idea_dict) == 2
-    assert bob_agenda.get_idea_kid(casa_road) != None
+    assert bob_agenda.get_idea_obj(casa_road) != None
 
 
 def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
@@ -444,7 +444,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
         casa_road: "requirementunit_base",
         basket_road: "assigned",
     }
-    yao_agenda._set_assignment_ideas(agenda_x=bob_agenda, relevant_roads=relevant_roads)
+    yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
 
     # THEN
     bob_agenda.set_agenda_metrics()
@@ -503,7 +503,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     casa_road = amer_agenda.make_road(amer_agenda._economy_id, casa_text)
     laundry_task_road_text = "do_laundry"
     laundry_task_road_road = amer_agenda.make_road(casa_road, laundry_task_road_text)
-    do_laundery_idea = amer_agenda.get_idea_kid(laundry_task_road_road)
+    do_laundery_idea = amer_agenda.get_idea_obj(laundry_task_road_road)
     print(f"{do_laundery_idea._requiredunits.keys()=}")
 
     # WHEN
@@ -557,7 +557,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     assert cali_assignment._idea_dict.get(b_half_road) != None
     assert cali_assignment._idea_dict.get(laundry_task_road_road) != None
 
-    laundry_do_idea = cali_assignment.get_idea_kid(laundry_task_road_road)
+    laundry_do_idea = cali_assignment.get_idea_obj(laundry_task_road_road)
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._requiredunits.keys()=}")
     print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")

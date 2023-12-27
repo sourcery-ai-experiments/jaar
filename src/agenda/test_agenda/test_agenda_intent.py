@@ -362,7 +362,7 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
         required_sufffact_divisor=2,
     )
 
-    run_idea = x_agenda.get_idea_kid(run_road)
+    run_idea = x_agenda.get_idea_obj(run_road)
     # print(f"{run_idea._acptfactheirs=}")
     x_agenda.set_acptfact(base=day_road, pick=day_road, open=1, nigh=2)
     assert len(x_agenda.get_intent_items()) == 1
@@ -400,7 +400,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     body_road = x_agenda.make_road(casa_road, body_text)
     veg_text = "cook veggies every morning"
     veg_road = x_agenda.make_road(body_road, veg_text)
-    veg_idea = x_agenda.get_idea_kid(veg_road)
+    veg_idea = x_agenda.get_idea_obj(veg_road)
     assert not veg_idea._active_status
     assert veg_idea.promise
 
@@ -479,7 +479,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_agenda.edit_idea_attr(v_road, required_base=sat_road, required_sufffact=sat_road)
     x_agenda.edit_idea_attr(l_road, required_base=sun_road, required_sufffact=sun_road)
 
-    c_idea = x_agenda.get_idea_kid(c_road)
+    c_idea = x_agenda.get_idea_obj(c_road)
     c_required = c_idea._requiredunits
     # for required_y in c_required.values():
     #     for sufffact_y in required_y.sufffacts.values():
@@ -649,8 +649,8 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     assert len(x_agenda._partys) == 0
     assert len(x_agenda._groups) == 0
     assert len(x_agenda._idearoot._kids) == 1
-    assert x_agenda.get_idea_kid(daytime_road)._begin == 0
-    assert x_agenda.get_idea_kid(daytime_road)._close == 1440
+    assert x_agenda.get_idea_obj(daytime_road)._begin == 0
+    assert x_agenda.get_idea_obj(daytime_road)._close == 1440
     print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
@@ -661,15 +661,15 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     #     print(f"  {idea_kid=}")
 
     print(f"{clean_cookery_idea.get_road()=}")
-    assert x_agenda.get_idea_kid(clean_cookery_road) != None
-    assert x_agenda.get_idea_kid(clean_cookery_road)._label == clean_cookery_text
-    assert x_agenda.get_idea_kid(clean_cookery_road).promise
-    assert len(x_agenda.get_idea_kid(clean_cookery_road)._requiredunits) == 2
-    assert x_agenda.get_idea_kid(clean_things_road) != None
-    assert x_agenda.get_idea_kid(cookery_room_road) != None
-    assert x_agenda.get_idea_kid(cookery_dirty_road) != None
-    assert x_agenda.get_idea_kid(daytime_road)._begin == 0
-    assert x_agenda.get_idea_kid(daytime_road)._close == 1440
+    assert x_agenda.get_idea_obj(clean_cookery_road) != None
+    assert x_agenda.get_idea_obj(clean_cookery_road)._label == clean_cookery_text
+    assert x_agenda.get_idea_obj(clean_cookery_road).promise
+    assert len(x_agenda.get_idea_obj(clean_cookery_road)._requiredunits) == 2
+    assert x_agenda.get_idea_obj(clean_things_road) != None
+    assert x_agenda.get_idea_obj(cookery_room_road) != None
+    assert x_agenda.get_idea_obj(cookery_dirty_road) != None
+    assert x_agenda.get_idea_obj(daytime_road)._begin == 0
+    assert x_agenda.get_idea_obj(daytime_road)._close == 1440
     assert len(x_agenda._groups) == 1
     assert x_agenda._groups.get(family_text) != None
     assert x_agenda._groups.get(family_text)._partys in (None, {})

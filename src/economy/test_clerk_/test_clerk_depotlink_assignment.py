@@ -58,7 +58,7 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     assert output_agenda._idea_dict.get(b_half_road) != None
     assert output_agenda._idea_dict.get(laundry_task_road) != None
 
-    laundry_do_idea = output_agenda.get_idea_kid(laundry_task_road)
+    laundry_do_idea = output_agenda.get_idea_obj(laundry_task_road)
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._requiredunits.keys()=}")
     print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")

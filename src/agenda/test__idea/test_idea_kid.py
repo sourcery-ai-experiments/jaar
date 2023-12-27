@@ -2,5 +2,5 @@ from src.agenda.idea import IdeaKid
 
 
 def test_idea_kid_exists():
-    new_obj = IdeaKid()
-    assert new_obj
+    x_ideakid = IdeaKid()
+    assert x_ideakid

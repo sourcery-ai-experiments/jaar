@@ -74,12 +74,12 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._economy_id)
     x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._economy_id)
     swim_road = x_agenda.make_l1_road(swim_text)
-    assert x_agenda.get_idea_kid(swim_road)._uid is None
+    assert x_agenda.get_idea_obj(swim_road)._uid is None
 
     x_agenda.set_all_idea_uids_unique()
 
     # THEN
-    assert x_agenda.get_idea_kid(swim_road)._uid != None
+    assert x_agenda.get_idea_obj(swim_road)._uid != None
 
 
 def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():

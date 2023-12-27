@@ -149,12 +149,12 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     print(f"{xio_contract._idea_dict.keys()=}")
     print(f"{flying_road=}")
     print(f"{no_fly_road=}")
-    flying_idea = xio_contract.get_idea_kid(flying_road)
-    no_fly_idea = xio_contract.get_idea_kid(no_fly_road)
-    yesfly_idea = xio_contract.get_idea_kid(yesfly_road)
-    weather_idea = xio_contract.get_idea_kid(weather_road)
-    healthy_idea = xio_contract.get_idea_kid(healthy_road)
-    boiling_idea = xio_contract.get_idea_kid(boiling_road)
+    flying_idea = xio_contract.get_idea_obj(flying_road)
+    no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
+    yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
+    weather_idea = xio_contract.get_idea_obj(weather_road)
+    healthy_idea = xio_contract.get_idea_obj(healthy_road)
+    boiling_idea = xio_contract.get_idea_obj(boiling_road)
     assert flying_idea != None
     assert no_fly_idea != None
     assert yesfly_idea != None
@@ -278,12 +278,12 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     weather_road = create_road(texas_economy.economy_id, weather_text)
     healthy_road = create_road(weather_road, healthy_text)
     boiling_road = create_road(weather_road, boiling_text)
-    flying_idea = xio_contract.get_idea_kid(flying_road)
-    no_fly_idea = xio_contract.get_idea_kid(no_fly_road)
-    yesfly_idea = xio_contract.get_idea_kid(yesfly_road)
-    weather_idea = xio_contract.get_idea_kid(weather_road)
-    healthy_idea = xio_contract.get_idea_kid(healthy_road)
-    boiling_idea = xio_contract.get_idea_kid(boiling_road)
+    flying_idea = xio_contract.get_idea_obj(flying_road)
+    no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
+    yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
+    weather_idea = xio_contract.get_idea_obj(weather_road)
+    healthy_idea = xio_contract.get_idea_obj(healthy_road)
+    boiling_idea = xio_contract.get_idea_obj(boiling_road)
 
     assert flying_idea._assignedunit.get_suffgroup(tim_text) is None
     assert no_fly_idea._assignedunit.get_suffgroup(tim_text) is None

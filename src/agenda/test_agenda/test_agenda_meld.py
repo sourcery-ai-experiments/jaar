@@ -132,10 +132,10 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
 
     # THEN
     assert len(x_agenda1.get_idea_list()) == 5
-    assert x_agenda1.get_idea_kid(tech_road)._label == tech_text
-    assert x_agenda1.get_idea_kid(bowl_road)._label == bowl_text
-    assert x_agenda1.get_idea_kid(swim_road)._label == swim_text
-    assert x_agenda1.get_idea_kid(free_road)._label == free_text
+    assert x_agenda1.get_idea_obj(tech_road)._label == tech_text
+    assert x_agenda1.get_idea_obj(bowl_road)._label == bowl_text
+    assert x_agenda1.get_idea_obj(swim_road)._label == swim_text
+    assert x_agenda1.get_idea_obj(free_road)._label == free_text
 
 
 def test_agenda_idearoot_meld_2SameIdeasScenario():
@@ -154,12 +154,12 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     x_agenda2.add_idea(ideacore_shop(tech_text), pad=x_agenda2._economy_id)
     x_agenda2.add_idea(ideacore_shop(bowl_text), pad=tech_road)
 
-    assert x_agenda1.get_idea_kid(bowl_road)._weight == 1
+    assert x_agenda1.get_idea_obj(bowl_road)._weight == 1
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
-    assert x_agenda1.get_idea_kid(bowl_road)._weight == 1
+    assert x_agenda1.get_idea_obj(bowl_road)._weight == 1
     assert len(x_agenda1.get_idea_list()) == 3
 
 
@@ -243,7 +243,7 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     # THEN
     print()
     assert len(x_agenda1._idearoot._acptfactunits) == 1
-    assert x_agenda1.get_idea_kid(swim_road)._label == swim_text
+    assert x_agenda1.get_idea_obj(swim_road)._label == swim_text
     assert x_agenda1._idearoot._kids[swim_text]._label == swim_text
     assert len(x_agenda1._idearoot._acptfactunits) == len(
         x_agenda2._idearoot._acptfactunits
@@ -442,8 +442,8 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     sue_originunit.set_originlink(pid=sue_text, weight=sue_weight)
     assert len(bob_x_agenda._originunit._links) == 1
     assert bob_x_agenda._originunit == sue_originunit
-    bob_free_idea = bob_x_agenda.get_idea_kid(free_road)
-    bob_back_idea = bob_x_agenda.get_idea_kid(back_road)
+    bob_free_idea = bob_x_agenda.get_idea_obj(free_road)
+    bob_back_idea = bob_x_agenda.get_idea_obj(back_road)
     print(f"{bob_free_idea._originunit=}")
     print(f"{bob_back_idea._originunit=}")
     assert bob_free_idea._originunit != None

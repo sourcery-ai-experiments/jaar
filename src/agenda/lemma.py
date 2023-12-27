@@ -225,24 +225,6 @@ class Lemmas:
                 eval_status=False,
                 eval_count=1,
             )
-        # else:
-        #     # if new acptfactunit is inactive (acptfact.open == None and acptfact.nigh == None)
-        #     # or current lemma acptfactunit acptfact.open == idea._being and acptfact.acptfact == idea._close
-        #     # do nothing
-        #     pass
-        #     # current_lemma_acptfact = lemma_dict.get(road_x)[1]
-        #     # if (
-        #     #     acptfact_open != None
-        #     #     and acptfact_nigh != None
-        #     #     and (
-        #     #         current_lemma_acptfact.open != acptfact_open
-        #     #         or current_lemma_acptfact.nigh != acptfact_nigh
-        #     #     )
-        #     # ):
-        #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
-
-        #     # if current_lemma_acptfact.base == "{root_label()},time,week":
-        #     #     prin(f"{current_lemma_acptfact=} {acptfact_open=} {acptfact_nigh=}")
 
 
 def lemmas_shop(lemmas: dict[RoadUnit:Lemma] = None, delimiter: str = None) -> Lemmas:

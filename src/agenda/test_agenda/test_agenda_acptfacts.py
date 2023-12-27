@@ -117,9 +117,9 @@ def test_agenda_get_idea_list_AcptFactHeirsCorrectlyInherited():
     earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._economy_id)
 
-    swim_idea = x_agenda.get_idea_kid(swim_road)
-    fast_idea = x_agenda.get_idea_kid(fast_road)
-    slow_idea = x_agenda.get_idea_kid(slow_road)
+    swim_idea = x_agenda.get_idea_obj(swim_road)
+    fast_idea = x_agenda.get_idea_obj(fast_road)
+    slow_idea = x_agenda.get_idea_obj(slow_road)
 
     assert swim_idea._acptfactheirs == {}
     assert fast_idea._acptfactheirs == {}
@@ -163,7 +163,7 @@ def test_agenda_get_idea_list_AcptFactUnitCorrectlyTransformsacptfactheir_shop()
     swim_text = "swim"
     swim_road = x_agenda.make_l1_road(swim_text)
     x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_idea = x_agenda.get_idea_obj(swim_road)
 
     fast_text = "fast"
     slow_text = "slow"
@@ -214,7 +214,7 @@ def test_agenda_get_idea_list_AcptFactHeirCorrectlyDeletesAcptFactUnit():
     earth_road = x_agenda.make_l1_road(earth_text)
     x_agenda.add_idea(ideacore_shop(earth_text), pad=x_agenda._economy_id)
 
-    swim_idea = x_agenda.get_idea_kid(swim_road)
+    swim_idea = x_agenda.get_idea_obj(swim_road)
 
     first_earthheir = acptfactheir_shop(
         base=earth_road, pick=earth_road, open=200.0, nigh=500.0
@@ -240,19 +240,19 @@ def test_get_ranged_acptfacts():
     # GIVEN a single ranged acptfact
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    time_x = "time_x"
+    time_text = "time"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_text, _begin=0, _close=140),
         pad=x_agenda._economy_id,
     )
 
     clean = "clean"
     x_agenda.add_idea(ideacore_shop(clean, promise=True), pad=x_agenda._economy_id)
     c_road = x_agenda.make_l1_road(clean)
-    t_x_road = x_agenda.make_l1_road(time_x)
-    # x_agenda.edit_idea_attr(road=c_road, required_base=t_x_road, required_sufffact=t_x_road, required_sufffact_open=5, required_sufffact_nigh=10)
+    time_road = x_agenda.make_l1_road(time_text)
+    # x_agenda.edit_idea_attr(road=c_road, required_base=time_road, required_sufffact=time_road, required_sufffact_open=5, required_sufffact_nigh=10)
 
-    x_agenda.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
+    x_agenda.set_acptfact(base=time_road, pick=time_road, open=5, nigh=10)
     print(f"Given a single ranged acptfact {x_agenda._idearoot._acptfactunits=}")
     assert len(x_agenda._idearoot._acptfactunits) == 1
 
@@ -289,12 +289,12 @@ def test_get_roots_ranged_acptfacts():
     # GIVEN a two ranged acptfacts where one is "range-root" get_root_ranged_acptfacts returns one "range-root" acptfact
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    time_x = "time_x"
+    time_text = "time"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_text, _begin=0, _close=140),
         pad=x_agenda._economy_id,
     )
-    t_x_road = x_agenda.make_l1_road(time_x)
+    time_road = x_agenda.make_l1_road(time_text)
     mood_x = "mood_x"
     x_agenda.add_idea(ideacore_shop(mood_x), pad=x_agenda._economy_id)
     m_x_road = x_agenda.make_l1_road(mood_x)
@@ -302,7 +302,7 @@ def test_get_roots_ranged_acptfacts():
     sad = "Sad"
     x_agenda.add_idea(ideacore_shop(happy), pad=m_x_road)
     x_agenda.add_idea(ideacore_shop(sad), pad=m_x_road)
-    x_agenda.set_acptfact(base=t_x_road, pick=t_x_road, open=5, nigh=10)
+    x_agenda.set_acptfact(base=time_road, pick=time_road, open=5, nigh=10)
     x_agenda.set_acptfact(base=m_x_road, pick=x_agenda.make_road(m_x_road, happy))
     print(
         f"Given a root ranged acptfact and non-range acptfact:\n{x_agenda._idearoot._acptfactunits=}"
@@ -311,36 +311,36 @@ def test_get_roots_ranged_acptfacts():
 
     # WHEN / THEN
     assert len(x_agenda._get_rangeroot_acptfactunits()) == 1
-    assert x_agenda._get_rangeroot_acptfactunits()[0].base == t_x_road
+    assert x_agenda._get_rangeroot_acptfactunits()[0].base == time_road
 
     # a acptfact who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(mirrow_x, _numeric_road=time_x),
+        idea_kid=ideacore_shop(mirrow_x, _numeric_road=time_text),
         pad=x_agenda._economy_id,
     )
     m_x_road = x_agenda.make_l1_road(mirrow_x)
-    x_agenda.set_acptfact(base=m_x_road, pick=t_x_road, open=5, nigh=10)
+    x_agenda.set_acptfact(base=m_x_road, pick=time_road, open=5, nigh=10)
     assert len(x_agenda._idearoot._acptfactunits) == 3
 
     # WHEN / THEN
     assert len(x_agenda._get_rangeroot_acptfactunits()) == 1
-    assert x_agenda._get_rangeroot_acptfactunits()[0].base == t_x_road
+    assert x_agenda._get_rangeroot_acptfactunits()[0].base == time_road
 
 
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1():
     healer_text = "Tim"
-    x_agenda = agendaunit_shop(healer_text)
+    tim_agenda = agendaunit_shop(healer_text)
     # # the action
     # clean = "clean"
-    # x_agenda.add_idea(ideacore_shop(clean, promise=True), pad=x_agenda._economy_id)
+    # tim_agenda.add_idea(ideacore_shop(clean, promise=True), pad=tim_agenda._economy_id)
 
-    time_x = "time_x"
-    x_agenda.add_idea(
-        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
-        pad=x_agenda._economy_id,
+    time_text = "time"
+    tim_agenda.add_idea(
+        idea_kid=ideacore_shop(time_text, _begin=0, _close=140),
+        pad=tim_agenda._economy_id,
     )
-    t_x_road = x_agenda.make_l1_road(time_x)
+    time_road = tim_agenda.make_l1_road(time_text)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -348,27 +348,27 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario1(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    x_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    tim_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=time_road)
+    tim_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=time_road)
 
     # set for instant moment in 3rd age
-    x_agenda.set_acptfact(base=time_x, pick=time_x, open=45, nigh=45)
-    lemma_dict = x_agenda._get_lemma_acptfactunits()
+    tim_agenda.set_acptfact(base=time_road, pick=time_road, open=45, nigh=45)
+    lemma_dict = tim_agenda._get_lemma_acptfactunits()
     print(f"{len(lemma_dict)=}")
     print(f"{lemma_dict=}")
     assert len(lemma_dict) == 7
-    age1st_lemma = lemma_dict[x_agenda.make_road(t_x_road, age1st)]
-    age2nd_lemma = lemma_dict[x_agenda.make_road(t_x_road, age2nd)]
-    age3rd_lemma = lemma_dict[x_agenda.make_road(t_x_road, age3rd)]
-    age4th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age4th)]
-    age5th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age5th)]
-    age6th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age6th)]
-    age7th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age7th)]
+    age1st_lemma = lemma_dict[tim_agenda.make_road(time_road, age1st)]
+    age2nd_lemma = lemma_dict[tim_agenda.make_road(time_road, age2nd)]
+    age3rd_lemma = lemma_dict[tim_agenda.make_road(time_road, age3rd)]
+    age4th_lemma = lemma_dict[tim_agenda.make_road(time_road, age4th)]
+    age5th_lemma = lemma_dict[tim_agenda.make_road(time_road, age5th)]
+    age6th_lemma = lemma_dict[tim_agenda.make_road(time_road, age6th)]
+    age7th_lemma = lemma_dict[tim_agenda.make_road(time_road, age7th)]
     # assert age1st_lemma.active == False
     # assert age2nd_lemma.active == False
     # assert age3rd_lemma.active == True
@@ -399,12 +399,12 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
     # clean = "clean"
     # x_agenda.add_idea(ideacore_shop(clean, promise=True), pad=x_agenda._economy_id)
 
-    time_x = "time_x"
+    time_text = "time"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_text, _begin=0, _close=140),
         pad=x_agenda._economy_id,
     )
-    t_x_road = x_agenda.make_l1_road(time_x)
+    time_road = x_agenda.make_l1_road(time_text)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -412,25 +412,25 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario2(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    x_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    x_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=time_road)
 
     # set for instant moment in 3rd age
-    x_agenda.set_acptfact(base=time_x, pick=time_x, open=35, nigh=65)
+    x_agenda.set_acptfact(base=time_road, pick=time_road, open=35, nigh=65)
     lemma_dict = x_agenda._get_lemma_acptfactunits()
     assert len(lemma_dict) == 7
-    age1st_lemma = lemma_dict[x_agenda.make_road(t_x_road, age1st)]
-    age2nd_lemma = lemma_dict[x_agenda.make_road(t_x_road, age2nd)]
-    age3rd_lemma = lemma_dict[x_agenda.make_road(t_x_road, age3rd)]
-    age4th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age4th)]
-    age5th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age5th)]
-    age6th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age6th)]
-    age7th_lemma = lemma_dict[x_agenda.make_road(t_x_road, age7th)]
+    age1st_lemma = lemma_dict[x_agenda.make_road(time_road, age1st)]
+    age2nd_lemma = lemma_dict[x_agenda.make_road(time_road, age2nd)]
+    age3rd_lemma = lemma_dict[x_agenda.make_road(time_road, age3rd)]
+    age4th_lemma = lemma_dict[x_agenda.make_road(time_road, age4th)]
+    age5th_lemma = lemma_dict[x_agenda.make_road(time_road, age5th)]
+    age6th_lemma = lemma_dict[x_agenda.make_road(time_road, age6th)]
+    age7th_lemma = lemma_dict[x_agenda.make_road(time_road, age7th)]
     # assert age1st_lemma.active == False
     # assert age2nd_lemma.active == True
     # assert age3rd_lemma.active == True
@@ -461,12 +461,12 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     # clean = "clean"
     # x_agenda.add_idea(ideacore_shop(clean, promise=True), pad=x_agenda._economy_id)
 
-    time_x = "time_x"
+    time_text = "time"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(time_x, _begin=0, _close=140),
+        idea_kid=ideacore_shop(time_text, _begin=0, _close=140),
         pad=x_agenda._economy_id,
     )
-    t_x_road = x_agenda.make_l1_road(time_x)
+    time_road = x_agenda.make_l1_road(time_text)
     age1st = "age1st"
     age2nd = "age2nd"
     age3rd = "age3rd"
@@ -474,15 +474,15 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     age5th = "age5th"
     age6th = "age6th"
     age7th = "age7th"
-    x_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=t_x_road)
-    x_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=t_x_road)
+    x_agenda.add_idea(ideacore_shop(age1st, _begin=0, _close=20), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age2nd, _begin=20, _close=40), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age3rd, _begin=40, _close=60), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age4th, _begin=60, _close=80), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age5th, _begin=80, _close=100), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age6th, _begin=100, _close=120), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(age7th, _begin=120, _close=140), pad=time_road)
 
-    a2_road = x_agenda.make_road(t_x_road, age2nd)
+    a2_road = x_agenda.make_road(time_road, age2nd)
     a2e1st = "a1_era1st"
     a2e2nd = "a1_era2nd"
     a2e3rd = "a1_era3rd"
@@ -492,7 +492,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     x_agenda.add_idea(ideacore_shop(a2e3rd, _begin=34, _close=38), pad=a2_road)
     x_agenda.add_idea(ideacore_shop(a2e4th, _begin=38, _close=40), pad=a2_road)
 
-    a3_road = x_agenda.make_road(t_x_road, age3rd)
+    a3_road = x_agenda.make_road(time_road, age3rd)
     a3e1st = "a3_era1st"
     a3e2nd = "a3_era2nd"
     a3e3rd = "a3_era3rd"
@@ -503,7 +503,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
     x_agenda.add_idea(ideacore_shop(a3e4th, _begin=58, _close=60), pad=a3_road)
 
     # set for instant moment in 3rd age
-    x_agenda.set_acptfact(base=time_x, pick=time_x, open=35, nigh=55)
+    x_agenda.set_acptfact(base=time_road, pick=time_road, open=35, nigh=55)
     lemma_dict = x_agenda._get_lemma_acptfactunits()
     assert len(lemma_dict) == 15
     a2e1st_lemma = lemma_dict[x_agenda.make_road(a2_road, a2e1st)]
@@ -543,7 +543,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario3(
 def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4():
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    time_x = "time_x"
+    time_text = "time"
     arsub1 = "descretional_subsection1"
     as1_road = x_agenda.make_l1_road(arsub1)
     x_agenda.add_idea(
@@ -551,7 +551,7 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     )
     # range-root idea has range_source_road
     x_agenda.add_idea(
-        ideacore_shop(time_x, _begin=0, _close=140, _range_source_road=as1_road),
+        ideacore_shop(time_text, _begin=0, _close=140, _range_source_road=as1_road),
         pad=x_agenda._economy_id,
     )
 
@@ -562,18 +562,18 @@ def test_create_lemma_acptfacts_CorrectlyCreates1stLevelLemmaAcptFact_Scenario4(
     )
 
     # non-range-root child idea has range_source_road
-    t_x_road = x_agenda.make_l1_road(time_x)
+    time_road = x_agenda.make_l1_road(time_text)
     age1st = "age1st"
     x_agenda.add_idea(
         ideacore_shop(age1st, _begin=0, _close=20, _range_source_road=as2_road),
-        pad=t_x_road,
+        pad=time_road,
     )
 
     # set for instant moment in 3rd age
-    x_agenda.set_acptfact(base=time_x, pick=time_x, open=35, nigh=55)
+    x_agenda.set_acptfact(base=time_road, pick=time_road, open=35, nigh=55)
     lemma_dict = x_agenda._get_lemma_acptfactunits()
     assert len(lemma_dict) == 3
-    a1_lemma = lemma_dict[x_agenda.make_road(t_x_road, age1st)]
+    a1_lemma = lemma_dict[x_agenda.make_road(time_road, age1st)]
     as1_lemma = lemma_dict[as1_road]
     as2_lemma = lemma_dict[as2_road]
     # assert a1_lemma.active == False
@@ -796,8 +796,8 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
 
     # THEN
     assert x_agenda._idearoot._kids.get(issue_text) != None
-    assert x_agenda.get_idea_kid(issue_road) != None
-    assert x_agenda.get_idea_kid(climate_road) != None
+    assert x_agenda.get_idea_obj(issue_road) != None
+    assert x_agenda.get_idea_obj(climate_road) != None
 
 
 def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfAcptFactUnits():

@@ -355,7 +355,7 @@ def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     c_road = output_agenda_x.make_road(output_agenda_x._economy_id, "C")
     d_road = output_agenda_x.make_road(c_road, "D")
     print(f"{d_road=}")
-    d_idea = output_agenda_x.get_idea_kid(d_road)
+    d_idea = output_agenda_x.get_idea_obj(d_road)
     assert d_idea._originunit == yao_originunit
 
     print(f"{output_agenda_x._originunit=}")
