@@ -3,8 +3,8 @@ import sys
 from ui.EditPartyUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
-from EditParty2bd import EditParty2bd
-from pyqt_func import agenda_importance_diplay
+from ui.EditParty2bd import EditParty2bd
+from ui.pyqt_func import agenda_importance_diplay
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.party import partylink_shop
@@ -149,7 +149,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
                 and self.partyunit_x.pid != groupunit.brand
             )
         ]
-        groups_in_list.sort(key=lambda x: x.pid, reverse=False)
+        groups_in_list.sort(key=lambda x: x.brand, reverse=False)
 
         self.groups_in_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_in_list)})", "Group", "Group Count"]
@@ -184,7 +184,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             )
             or self.partyunit_x is None
         ]
-        groups_out_list.sort(key=lambda x: x.pid, reverse=False)
+        groups_out_list.sort(key=lambda x: x.brand, reverse=False)
         self.groups_out_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_out_list)})", "Group", "Group Count"]
         )
@@ -214,7 +214,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
                 and self.partyunit_x.pid == groupunit.brand
             )
         ]
-        groups_stand_list.sort(key=lambda x: x.pid, reverse=False)
+        groups_stand_list.sort(key=lambda x: x.brand, reverse=False)
         self.groups_stan_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_stand_list)})", "Group", "Group Count"]
         )

@@ -1,15 +1,15 @@
 # # command to for converting ui form to python file: pyuic5 ui\MainWindow.ui -o ui\MainWindow.py
 import contextlib
 from datetime import datetime, timedelta
-from ui.MainWindow import Ui_MainWindow
-from EditMain import EditMainView
-from EditAcptFactTime import EditAcptFactTime
-from Edit_Agenda import Edit_Agenda
-from EditProblem import EditProblem
+from ui.MainWindowUI import Ui_MainWindow
+from ui.EditMain import EditMainView
+from ui.EditAcptFactTime import EditAcptFactTime
+from ui.Edit_Agenda import Edit_Agenda
+from ui.EditProblem import EditProblem
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.hreg_time import HregTimeIdeaSource
-from pyqt_func import (
+from ui.pyqt_func import (
     agenda_importance_diplay as pyqt_func_agenda_importance_diplay,
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,

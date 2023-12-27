@@ -1,7 +1,8 @@
 # # command to for converting ui form to python file: pyuic5 ui\economyMainUI.ui -o ui\economyMainUI.py
-from ui.EconomyMainUI import Ui_MainWindow
-from Edit5Issue import Edit5Issue
-from EditMain import EditMainView
+from ui.MainWindowUI import Ui_MainWindow
+
+# from ui.Edit5Issue import Edit5Issue
+from ui.EditMain import EditMainView
 from PyQt5 import QtCore as qtc
 from src.agenda.agenda import (
     agendaunit_shop,
@@ -28,7 +29,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     dir_files as x_func_dir_files,
 )
-from pyqt_func import agenda_importance_diplay
+from ui.pyqt_func import agenda_importance_diplay
 
 
 class MainApp(QApplication):

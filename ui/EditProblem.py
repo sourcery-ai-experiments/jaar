@@ -4,9 +4,9 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from EditIdeaUnit import EditIdeaUnit
-from EditParty import EditParty
-from pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
+from ui.EditIdeaUnit import EditIdeaUnit
+from ui.EditParty import EditParty
+from ui.pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.road import RoadUnit, get_pad_from_road, get_terminus_node_from_road

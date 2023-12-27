@@ -8,7 +8,7 @@ from src.agenda.hreg_time import SuffFactUnitHregTime
 from src.agenda.group import BalanceLink, GroupBrand
 from src.agenda.required_idea import RoadUnit
 from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
-from pyqt_func import (
+from ui.pyqt_func import (
     num2str,
     bool_val,
     str2float,

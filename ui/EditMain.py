@@ -4,9 +4,9 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
-from EditIdeaUnit import EditIdeaUnit
-from EditParty import EditParty
-from pyqt_func import (
+from ui.EditIdeaUnit import EditIdeaUnit
+from ui.EditParty import EditParty
+from ui.pyqt_func import (
     agenda_importance_diplay,
     get_pyqttree,
     str2float as pyqt_func_str2float,

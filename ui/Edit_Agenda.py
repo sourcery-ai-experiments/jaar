@@ -3,7 +3,7 @@ from ui.Edit_AgendaUI import Ui_Form
 from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
-from pyqt_func import num2str, agenda_importance_diplay
+from ui.pyqt_func import num2str, agenda_importance_diplay
 from src.agenda.hreg_time import SuffFactUnitHregTime, HregTimeIdeaSource
 
 
