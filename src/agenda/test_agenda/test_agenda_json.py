@@ -1,4 +1,4 @@
-from src.agenda.road import get_node_delimiter, get_road
+from src.agenda.road import get_road_delimiter, get_road
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -59,7 +59,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
-    assert agenda_dict["_road_node_delimiter"] == x_agenda._road_node_delimiter
+    assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
@@ -210,7 +210,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
-    assert agenda_dict["_road_node_delimiter"] == x_agenda._road_node_delimiter
+    assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
 
     x_idearoot = x_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -310,8 +310,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert x_agenda._max_tree_traverse == 23
     assert x_agenda._max_tree_traverse == y_agenda._max_tree_traverse
     assert x_agenda._auto_output_to_public == y_agenda._auto_output_to_public
-    assert x_agenda._road_node_delimiter == y_agenda._road_node_delimiter
-    # assert x_agenda._road_node_delimiter == slash_road_node_delimiter
+    assert x_agenda._road_delimiter == y_agenda._road_delimiter
+    # assert x_agenda._road_delimiter == slash_road_delimiter
 
     idearoot_x = x_agenda._idearoot
     assert idearoot_x._pad == ""
@@ -350,17 +350,17 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
     # GIVEN
     slash_delimiter = "/"
-    a_bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_delimiter)
-    assert a_bob_agenda._road_node_delimiter != get_node_delimiter()
+    a_bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_delimiter)
+    assert a_bob_agenda._road_delimiter != get_road_delimiter()
 
     # WHEN
     bob_json = a_bob_agenda.get_json()
     b_bob_agenda = agenda_get_from_json(bob_json)
 
     # THEN
-    assert b_bob_agenda._road_node_delimiter != get_node_delimiter()
-    assert b_bob_agenda._road_node_delimiter == slash_delimiter
-    assert b_bob_agenda._road_node_delimiter == a_bob_agenda._road_node_delimiter
+    assert b_bob_agenda._road_delimiter != get_road_delimiter()
+    assert b_bob_agenda._road_delimiter == slash_delimiter
+    assert b_bob_agenda._road_delimiter == a_bob_agenda._road_delimiter
 
 
 # def test_agenda_get_json_CorrectlyWorksForNotSimpleExample():

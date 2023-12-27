@@ -24,11 +24,9 @@ from src.agenda.required_idea import (
     AcptFactCore,
     AcptFactUnit,
     AcptFactUnit,
-    requiredheir_shop,
     RequiredUnit,
     RoadUnit,
     acptfactunit_shop,
-    sufffactunit_shop,
 )
 from src.agenda.required_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
@@ -57,7 +55,7 @@ from src.agenda.road import (
     get_all_road_nodes,
     get_forefather_roads,
     get_road,
-    get_node_delimiter,
+    get_road_delimiter,
     RoadNode,
     RoadUnit,
     is_string_in_road,
@@ -105,7 +103,7 @@ class AgendaUnit:
     _originunit: OriginUnit = None
     _economy_id: str = None
     _auto_output_to_public: bool = None
-    _road_node_delimiter: str = None
+    _road_delimiter: str = None
 
     def make_road(
         self,
@@ -117,9 +115,9 @@ class AgendaUnit:
             roud_foundation=roud_foundation,
             terminus_node=terminus_node,
             road_nodes=road_nodes,
-            delimiter=self._road_node_delimiter,
+            delimiter=self._road_delimiter,
         )
-        x_road = road_validate(x_road, self._road_node_delimiter, self._economy_id)
+        x_road = road_validate(x_road, self._road_delimiter, self._economy_id)
         return x_road
 
     def make_l1_road(self, l1_node: RoadNode):
@@ -135,13 +133,13 @@ class AgendaUnit:
         for x_partyunit in self._partys.values():
             x_partyunit.clear_output_agenda_meld_order()
 
-    def set_road_node_delimiter(self, new_road_node_delimiter: str):
+    def set_road_delimiter(self, new_road_delimiter: str):
         self.set_agenda_metrics()
-        if self._road_node_delimiter != new_road_node_delimiter:
+        if self._road_delimiter != new_road_delimiter:
             for x_idea_road in self._idea_dict.keys():
-                if is_string_in_road(new_road_node_delimiter, x_idea_road):
+                if is_string_in_road(new_road_delimiter, x_idea_road):
                     raise NewDelimiterException(
-                        f"Cannot change delimiter to '{new_road_node_delimiter}' because it already exists an idea label '{x_idea_road}'"
+                        f"Cannot change delimiter to '{new_road_delimiter}' because it already exists an idea label '{x_idea_road}'"
                     )
 
             # Grab pointers to every idea
@@ -151,10 +149,10 @@ class AgendaUnit:
             }
 
             # change all road attributes in idea
-            # old_road_node_delimiter = copy_deepcopy(self._road_node_delimiter)
-            self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+            # old_road_delimiter = copy_deepcopy(self._road_delimiter)
+            self._road_delimiter = get_road_delimiter(new_road_delimiter)
             for x_idea in idea_pointers.values():
-                x_idea.set_road_node_delimiter(self._road_node_delimiter)
+                x_idea.set_road_delimiter(self._road_delimiter)
 
     def set_economy_id(self, economy_id: str):
         old_economy_id = copy_deepcopy(self._economy_id)
@@ -302,7 +300,7 @@ class AgendaUnit:
         return len(self._partys) == len(balanceheir_partyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
-        x_hregidea = HregIdea(self._road_node_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         return x_hregidea.get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
@@ -390,13 +388,13 @@ class AgendaUnit:
 
     def get_jajatime_legible_one_time_event(self, jajatime_min: int) -> str:
         dt_x = self.get_time_dt_from_min(min=jajatime_min)
-        x_hregidea = HregIdea(self._road_node_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         return x_hregidea.get_jajatime_legible_from_dt(dt=dt_x)
 
     def get_jajatime_repeating_legible_text(
         self, open: float = None, nigh: float = None, divisor: float = None
     ) -> str:
-        x_hregidea = HregIdea(self._road_node_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         str_x = "test3"
         if divisor is None:
             str_x = self.get_jajatime_legible_one_time_event(jajatime_min=open)
@@ -420,7 +418,7 @@ class AgendaUnit:
         return str_x
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
-        x_hregidea = HregIdea(self._road_node_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         open_in_week = open % divisor
         time_road = self.make_road(self._economy_id, "time")
         tech_road = self.make_road(time_road, "tech")
@@ -1013,14 +1011,14 @@ class AgendaUnit:
         adoptees: list[str] = None,
         bundling=True,
     ):
-        idea_kid._road_node_delimiter = self._road_node_delimiter
+        idea_kid._road_delimiter = self._road_delimiter
 
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        pad = road_validate(pad, self._road_node_delimiter, self._economy_id)
-        temp_idea = self._idearoot
-        pad_nodes = get_all_road_nodes(pad, delimiter=self._road_node_delimiter)
+        pad = road_validate(pad, self._road_delimiter, self._economy_id)
+        x_idea = self._idearoot
+        pad_nodes = get_all_road_nodes(pad, delimiter=self._road_delimiter)
         temp_road = pad_nodes.pop(0)
 
         # idearoot cannot be replaced
@@ -1030,14 +1028,14 @@ class AgendaUnit:
             road_nodes = [temp_road]
             while pad_nodes != []:
                 temp_road = pad_nodes.pop(0)
-                temp_idea = self._get_or_create_leveln_idea(
-                    parent_idea=temp_idea, idea_label=temp_road
+                x_idea = self._get_or_create_leveln_idea(
+                    parent_idea=x_idea, idea_label=temp_road
                 )
-                temp_idea._road_node_delimiter = self._road_node_delimiter
+                x_idea._road_delimiter = self._road_delimiter
                 road_nodes.append(temp_road)
             idea_kid.set_pad(parent_road=self.make_road(road_nodes=road_nodes))
-        idea_kid._road_node_delimiter = self._road_node_delimiter
-        temp_idea.add_kid(idea_kid)
+        idea_kid._road_delimiter = self._road_delimiter
+        x_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(pad, idea_kid._label)
 
@@ -1161,9 +1159,9 @@ class AgendaUnit:
         old_road: RoadUnit,
         new_label: str,
     ):
-        if self._road_node_delimiter in new_label:
+        if self._road_delimiter in new_label:
             raise InvalidLabelException(
-                f"Cannot change '{old_road}' because new_label {new_label} contains delimiter {self._road_node_delimiter}"
+                f"Cannot change '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
             )
 
         # check idea exists
@@ -1578,30 +1576,30 @@ class AgendaUnit:
     def get_idea_kid(self, road: RoadUnit) -> IdeaCore:
         if road is None:
             raise InvalidAgendaException("get_idea_kid received road=None")
-        nodes = get_all_road_nodes(road, delimiter=self._road_node_delimiter)
+        nodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
         src = nodes.pop(0)
-        temp_idea = None
+        x_idea = None
 
         if nodes == [] and src == self._idearoot._label:
-            temp_idea = self._idearoot
+            x_idea = self._idearoot
         else:
             idea_label = src if nodes == [] else nodes.pop(0)
             try:
-                temp_idea = self._idearoot._kids.get(idea_label)
+                x_idea = self._idearoot._kids.get(idea_label)
 
                 while nodes != []:
                     idea_label = nodes.pop(0)
-                    temp_idea = temp_idea._kids[idea_label]
-                if temp_idea is None:
+                    x_idea = x_idea._kids[idea_label]
+                if x_idea is None:
                     raise InvalidAgendaException(
-                        f"Temp_idea is None {idea_label=}. No item at '{road}'"
+                        f"x_idea is None {idea_label=}. No item at '{road}'"
                     )
             except:
                 raise InvalidAgendaException(
                     f"Getting {idea_label=} failed no item at '{road}'"
                 )
 
-        return temp_idea
+        return x_idea
 
     def get_idea_ranged_kids(
         self, idea_road: str, begin: float = None, close: float = None
@@ -1905,7 +1903,7 @@ class AgendaUnit:
             "_economy_id": self._economy_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
-            "_road_node_delimiter": self._road_node_delimiter,
+            "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
 
@@ -1914,7 +1912,7 @@ class AgendaUnit:
         return x_get_json(dict_x=x_dict)
 
     def set_time_hreg_ideas(self, c400_count):
-        x_hregidea = HregIdea(self._road_node_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         ideabase_list = x_hregidea._get_time_hreg_src_idea(c400_count=c400_count)
         while len(ideabase_list) != 0:
             yb = ideabase_list.pop(0)
@@ -2034,7 +2032,7 @@ class AgendaUnit:
         for o_idea in o_idea_list:
             o_road = road_validate(
                 self.make_road(o_idea._pad, o_idea._label),
-                self._road_node_delimiter,
+                self._road_delimiter,
                 self._economy_id,
             )
             try:
@@ -2152,7 +2150,7 @@ def agendaunit_shop(
     _economy_id: EconomyID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
@@ -2171,14 +2169,14 @@ def agendaunit_shop(
         _partys={},
         _groups={},
         _idea_dict={},
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+        _road_delimiter=get_road_delimiter(_road_delimiter),
     )
     x_agenda._idearoot = idearoot_shop(
         _label=x_agenda._economy_id,
         _uid=1,
         _level=0,
     )
-    x_agenda._idearoot._road_node_delimiter = x_agenda._road_node_delimiter
+    x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
@@ -2200,8 +2198,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
     x_agenda.set_economy_id(get_obj_from_agenda_dict(agenda_dict, "_economy_id"))
-    x_agenda._road_node_delimiter = get_node_delimiter(
-        get_obj_from_agenda_dict(agenda_dict, "_road_node_delimiter")
+    x_agenda._road_delimiter = get_road_delimiter(
+        get_obj_from_agenda_dict(agenda_dict, "_road_delimiter")
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
@@ -2230,9 +2228,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _acptfactunits=get_obj_from_idea_dict(idearoot_dict, "_acptfactunits"),
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
-        _road_node_delimiter=get_obj_from_idea_dict(
-            idearoot_dict, "_road_node_delimiter"
-        ),
+        _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
     )
     set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
@@ -2252,7 +2248,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             pad_road = get_obj_from_idea_dict(idea_dict, pad_text)
             kid_label = get_obj_from_idea_dict(idea_dict, "_label")
             kid_dict[pad_text] = get_road(
-                pad_road, kid_label, delimiter=x_agenda._road_node_delimiter
+                pad_road, kid_label, delimiter=x_agenda._road_delimiter
             )
             to_evaluate_idea_dicts.append(kid_dict)
 

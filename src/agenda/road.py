@@ -8,7 +8,7 @@ class InvalidRoadUnitException(Exception):
 
 class RoadNode(str):
     def is_node(self, delimiter: str = None) -> bool:
-        return self.find(get_node_delimiter(delimiter)) == -1
+        return self.find(get_road_delimiter(delimiter)) == -1
         # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
@@ -16,7 +16,7 @@ class RoadUnit(str):  # Created to help track the concept
     pass
 
 
-def get_node_delimiter(delimiter: str = None) -> str:
+def get_road_delimiter(delimiter: str = None) -> str:
     return delimiter if delimiter != None else ","
 
 
@@ -36,7 +36,7 @@ def is_sub_road(ref_road: RoadUnit, sub_road: RoadUnit) -> bool:
 
 
 def is_heir_road(src: RoadUnit, heir: RoadUnit, delimiter: str = None) -> bool:
-    return src == heir or heir.find(f"{src}{get_node_delimiter(delimiter)}") == 0
+    return src == heir or heir.find(f"{src}{get_road_delimiter(delimiter)}") == 0
 
 
 def find_replace_road_key_dict(
@@ -71,7 +71,7 @@ def find_replace_road_key_dict(
 
 
 def get_all_road_nodes(road: RoadUnit, delimiter: str = None) -> list[RoadNode]:
-    return road.split(get_node_delimiter(delimiter))
+    return road.split(get_road_delimiter(delimiter))
 
 
 def get_terminus_node_from_road(road: RoadUnit) -> RoadNode:
@@ -85,12 +85,12 @@ def get_pad_from_road(road: RoadUnit) -> RoadUnit:  # road without terminus node
 def get_road_without_root_node(
     road: RoadUnit, delimiter: str = None
 ) -> RoadUnit:  # road without terminus node
-    if road[:1] == get_node_delimiter(delimiter):
+    if road[:1] == get_road_delimiter(delimiter):
         raise InvalidRoadUnitException(
             f"Cannot get_road_without_root_node of '{road}' because it has no root node."
         )
     road_without_root_node = get_road_from_nodes(get_all_road_nodes(road=road)[1:])
-    return f"{get_node_delimiter(delimiter)}{road_without_root_node}"
+    return f"{get_road_delimiter(delimiter)}{road_without_root_node}"
 
 
 def get_root_node_from_road(road: RoadUnit, delimiter: str = None) -> RoadNode:
@@ -149,7 +149,7 @@ def get_default_economy_root_label() -> str:
 
 
 def get_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> RoadUnit:
-    return get_node_delimiter(delimiter).join(nodes)
+    return get_road_delimiter(delimiter).join(nodes)
 
 
 def get_road_from_road_and_node(
@@ -161,7 +161,7 @@ def get_road_from_road_and_node(
         return RoadUnit(
             terminus_node
             if pad in {"", None}
-            else f"{pad}{get_node_delimiter(delimiter)}{terminus_node}"
+            else f"{pad}{get_road_delimiter(delimiter)}{terminus_node}"
         )
 
 
@@ -188,7 +188,7 @@ def get_road(
 
 
 def get_diff_road(x_road: RoadUnit, sub_road: RoadUnit, delimiter: str = None):
-    sub_road = f"{sub_road}{get_node_delimiter(delimiter)}"
+    sub_road = f"{sub_road}{get_road_delimiter(delimiter)}"
     return x_road.replace(sub_road, "")
 
 
@@ -200,9 +200,9 @@ def is_string_in_road(string: str, road: RoadUnit) -> bool:
     return road.find(string) >= 0
 
 
-def replace_road_node_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: str):
+def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: str):
     if is_string_in_road(string=new_delimiter, road=road):
         raise InvaliddelimiterReplaceException(
-            f"Cannot replace_road_node_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
+            f"Cannot replace_road_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
         )
     return road.replace(old_delimiter, new_delimiter)

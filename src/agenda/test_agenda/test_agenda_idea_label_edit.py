@@ -364,11 +364,11 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
         )
     assert (
         str(excinfo.value)
-        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {sue_agenda._road_node_delimiter}"
+        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {sue_agenda._road_delimiter}"
     )
 
 
-def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
+def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
@@ -383,14 +383,14 @@ def test_agenda_set_road_node_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel
     home_road = luca_agenda.make_road(work_road, home_text)
     print(f"{home_road=}")
     with pytest_raises(Exception) as excinfo:
-        luca_agenda.set_road_node_delimiter(slash_text)
+        luca_agenda.set_road_delimiter(slash_text)
     assert (
         str(excinfo.value)
         == f"Cannot change delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
     )
 
 
-def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
+def test_agenda_set_road_delimiter_CorrectlyChanges_pad():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -410,7 +410,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
 
     # WHEN
     slash_text = "/"
-    luca_agenda.set_road_node_delimiter(slash_text)
+    luca_agenda.set_road_delimiter(slash_text)
 
     # THEN
     assert cook_idea.get_idea_road() != comma_cook_road
@@ -419,7 +419,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_pad():
     assert cook_idea.get_idea_road() == slash_cook_road
 
 
-def test_agenda_set_road_node_delimiter_CorrectlyChangesRequiredUnit():
+def test_agenda_set_road_delimiter_CorrectlyChangesRequiredUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -441,7 +441,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesRequiredUnit():
 
     # WHEN
     slash_text = "/"
-    luca_agenda.set_road_node_delimiter(slash_text)
+    luca_agenda.set_road_delimiter(slash_text)
 
     # THEN
     slash_time_road = luca_agenda.make_l1_road(time_text)
@@ -458,7 +458,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesRequiredUnit():
     assert gen_time_requiredunit.sufffacts.get(comma_8am_road) is None
 
 
-def test_agenda_set_road_node_delimiter_CorrectlyChangesAcptFactUnit():
+def test_agenda_set_road_delimiter_CorrectlyChangesAcptFactUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -478,7 +478,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesAcptFactUnit():
 
     # WHEN
     slash_text = "/"
-    luca_agenda.set_road_node_delimiter(slash_text)
+    luca_agenda.set_road_delimiter(slash_text)
 
     # THEN
     slash_time_road = luca_agenda.make_l1_road(time_text)
@@ -496,7 +496,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChangesAcptFactUnit():
     assert work_idea._acptfactunits.get(comma_time_road) is None
 
 
-def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():
+def test_agenda_set_road_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -528,7 +528,7 @@ def test_agenda_set_road_node_delimiter_CorrectlyChanges_numeric_roadAND_range_s
 
     # WHEN
     slash_text = "/"
-    luca_agenda.set_road_node_delimiter(slash_text)
+    luca_agenda.set_road_delimiter(slash_text)
 
     # THEN
     slash_taste_road = luca_agenda.make_l1_road(taste_text)

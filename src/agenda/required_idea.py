@@ -3,9 +3,9 @@ from src.agenda.road import (
     RoadUnit,
     change_road,
     find_replace_road_key_dict,
-    replace_road_node_delimiter,
+    replace_road_delimiter,
     is_heir_road,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
@@ -256,7 +256,7 @@ class SuffFactUnit:
     def set_delimiter(self, new_delimiter: str):
         old_delimiter = copy_deepcopy(self.delimiter)
         self.delimiter = new_delimiter
-        self.need = replace_road_node_delimiter(
+        self.need = replace_road_delimiter(
             road=self.need, old_delimiter=old_delimiter, new_delimiter=self.delimiter
         )
 
@@ -376,7 +376,7 @@ def sufffactunit_shop(
         open=open,
         nigh=nigh,
         divisor=divisor,
-        delimiter=get_node_delimiter(delimiter),
+        delimiter=get_road_delimiter(delimiter),
     )
 
 
@@ -419,11 +419,11 @@ class RequiredCore:
     def set_delimiter(self, new_delimiter: str):
         old_delimiter = copy_deepcopy(self.delimiter)
         self.delimiter = new_delimiter
-        self.base = replace_road_node_delimiter(self.base, old_delimiter, new_delimiter)
+        self.base = replace_road_delimiter(self.base, old_delimiter, new_delimiter)
 
         new_sufffacts = {}
         for sufffact_road, sufffact_obj in self.sufffacts.items():
-            new_sufffact_road = replace_road_node_delimiter(
+            new_sufffact_road = replace_road_delimiter(
                 road=sufffact_road,
                 old_delimiter=old_delimiter,
                 new_delimiter=self.delimiter,
@@ -492,7 +492,7 @@ def requiredcore_shop(
         base=base,
         sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
-        delimiter=get_node_delimiter(delimiter),
+        delimiter=get_road_delimiter(delimiter),
     )
 
 
@@ -519,7 +519,7 @@ def requiredunit_shop(
         base=base,
         sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
-        delimiter=get_node_delimiter(delimiter),
+        delimiter=get_road_delimiter(delimiter),
     )
 
 
@@ -606,7 +606,7 @@ def requiredheir_shop(
         _status=_status,
         _task=_task,
         _curr_idea_active_status=_curr_idea_active_status,
-        delimiter=get_node_delimiter(delimiter),
+        delimiter=get_road_delimiter(delimiter),
     )
 
 

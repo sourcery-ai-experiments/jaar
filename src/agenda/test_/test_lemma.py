@@ -4,7 +4,7 @@ from src.agenda.idea import ideacore_shop
 from src.agenda.road import (
     get_default_economy_root_label as root_label,
     get_road,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 
 

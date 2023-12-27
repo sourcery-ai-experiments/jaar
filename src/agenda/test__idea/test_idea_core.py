@@ -11,7 +11,7 @@ from src.agenda.origin import originunit_shop
 from src.agenda.road import (
     get_default_economy_root_label as root_label,
     get_road,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 from pytest import raises as pytest_raises
 
@@ -53,7 +53,7 @@ def test_IdeaCore_exists():
     assert x_ideacore._assignedunit is None
     assert x_ideacore._assignedheir is None
     assert x_ideacore._originunit is None
-    assert x_ideacore._road_node_delimiter is None
+    assert x_ideacore._road_delimiter is None
 
 
 def test_ideacore_shop_ReturnsCorrectObj():
@@ -95,7 +95,7 @@ def test_ideacore_shop_ReturnsCorrectObj():
     assert x_ideacore._assignedunit == assigned_unit_shop()
     assert x_ideacore._assignedheir is None
     assert x_ideacore._originunit == originunit_shop()
-    assert x_ideacore._road_node_delimiter == get_node_delimiter()
+    assert x_ideacore._road_delimiter == get_road_delimiter()
 
 
 def test_IdeaCore_get_key_road_ReturnsCorrectObj():
@@ -119,9 +119,7 @@ def test_IdeaCore_get_idea_road_ReturnsCorrectObj():
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(
-        ball_text, _pad=round_road, _road_node_delimiter=slash_text
-    )
+    ball_idea = ideacore_shop(ball_text, _pad=round_road, _road_delimiter=slash_text)
 
     # THEN
     ball_road = get_road(round_road, ball_text, delimiter=slash_text)
@@ -134,9 +132,7 @@ def test_IdeaCore_set_pad_ReturnsCorrectObj():
     slash_text = "/"
     round_road = get_road(root_label(), round_text, delimiter=slash_text)
     ball_text = "ball"
-    ball_idea = ideacore_shop(
-        ball_text, _pad=round_road, _road_node_delimiter=slash_text
-    )
+    ball_idea = ideacore_shop(ball_text, _pad=round_road, _road_delimiter=slash_text)
     assert ball_idea._pad == round_road
 
     # WHEN

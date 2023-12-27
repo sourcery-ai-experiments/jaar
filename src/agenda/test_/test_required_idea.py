@@ -9,7 +9,7 @@ from src.agenda.required_idea import (
 from src.agenda.road import (
     get_default_economy_root_label as root_label,
     get_road,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 from pytest import raises as pytest_raises
 
@@ -59,7 +59,7 @@ def test_requiredheir_shop_ReturnsCorrectObj():
 
     # THEN
     assert work_required.sufffacts == {}
-    assert work_required.delimiter == get_node_delimiter()
+    assert work_required.delimiter == get_road_delimiter()
 
 
 def test_RequiredHeir_clear_CorrectlyClearsField():
@@ -230,7 +230,7 @@ def test_requiredunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert wkday_requiredunit.sufffacts == {}
-    assert wkday_requiredunit.delimiter == get_node_delimiter()
+    assert wkday_requiredunit.delimiter == get_road_delimiter()
 
 
 def test_RequiredUnit_get_dict_ReturnsCorrectDictWithSinglethu_sufffactequireds():

@@ -60,13 +60,13 @@ def test_agenda_edit_idea_attr_requiredunit_CorrectlySets_delimiter():
     work_idea = x_agenda.get_idea_kid(work_road)
     week_requiredunit = work_idea._requiredunits.get(week_road)
     assert week_requiredunit.delimiter != slash_text
-    assert week_requiredunit.delimiter == x_agenda._road_node_delimiter
+    assert week_requiredunit.delimiter == x_agenda._road_delimiter
 
 
 def test_agenda_edit_idea_attr_required_base_CorrectlySets_delimiter():
     # GIVEN
     slash_text = "/"
-    bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_text)
+    bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_text)
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"
@@ -78,8 +78,8 @@ def test_agenda_edit_idea_attr_required_base_CorrectlySets_delimiter():
     bob_agenda.add_idea(ideacore_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     wed_idea = bob_agenda.get_idea_kid(wed_road)
-    assert wed_idea._road_node_delimiter == slash_text
-    assert wed_idea._road_node_delimiter == bob_agenda._road_node_delimiter
+    assert wed_idea._road_delimiter == slash_text
+    assert wed_idea._road_delimiter == bob_agenda._road_delimiter
 
     # WHEN
     bob_agenda.edit_idea_attr(
@@ -88,10 +88,10 @@ def test_agenda_edit_idea_attr_required_base_CorrectlySets_delimiter():
 
     # THEN
     work_idea = bob_agenda.get_idea_kid(work_road)
-    assert work_idea._road_node_delimiter == slash_text
+    assert work_idea._road_delimiter == slash_text
     week_requiredunit = work_idea._requiredunits.get(week_road)
     assert week_requiredunit.delimiter != ","
-    assert week_requiredunit.delimiter == bob_agenda._road_node_delimiter
+    assert week_requiredunit.delimiter == bob_agenda._road_delimiter
 
 
 def test_agenda_set_requiredunits_status():

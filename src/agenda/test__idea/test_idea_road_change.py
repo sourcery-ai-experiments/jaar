@@ -175,7 +175,7 @@ def test_idea_get_key_road_returnsCorrectInfo():
     assert red_idea.get_key_road() == red_text
 
 
-def test_idea_set_road_node_delimiter_CorrectlyChangesRequiredRoadUnits():
+def test_idea_set_road_delimiter_CorrectlyChangesRequiredRoadUnits():
     # GIVEN
     casa_text = "casa"
     casa_idea = ideacore_shop(casa_text)
@@ -183,7 +183,7 @@ def test_idea_set_road_node_delimiter_CorrectlyChangesRequiredRoadUnits():
 
     # WHEN
     slash_text = "/"
-    casa_idea.set_road_node_delimiter(slash_text)
+    casa_idea.set_road_delimiter(slash_text)
 
     # THEN
-    assert casa_idea._road_node_delimiter == slash_text
+    assert casa_idea._road_delimiter == slash_text

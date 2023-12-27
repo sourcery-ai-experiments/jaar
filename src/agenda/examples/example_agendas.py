@@ -71,7 +71,7 @@ def agenda_v002() -> AgendaUnit:
             file_name="example_agenda2.json",
         )
     )
-    print(f"{x_agenda._economy_id=} {x_agenda._road_node_delimiter=}")
+    print(f"{x_agenda._economy_id=} {x_agenda._road_delimiter=}")
     return x_agenda
 
 

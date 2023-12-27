@@ -3,7 +3,7 @@ from src.agenda.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_node_delimiter,
+    get_road_delimiter,
     get_road,
 )
 from src.agenda.y_func import get_empty_dict_if_none
@@ -195,7 +195,7 @@ def forkunit_shop(
     return ForkUnit(
         base=base,
         prongs=get_empty_dict_if_none(prongs),
-        delimiter=get_node_delimiter(delimiter),
+        delimiter=get_road_delimiter(delimiter),
     )
 
 

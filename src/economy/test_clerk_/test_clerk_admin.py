@@ -27,7 +27,7 @@ def test_clerkUnit_exists():
     assert bob_clerkadmin._clerk_cid != None
     assert bob_clerkadmin._env_dir != None
     assert bob_clerkadmin._economy_id != None
-    assert bob_clerkadmin._road_node_delimiter is None
+    assert bob_clerkadmin._road_delimiter is None
     assert bob_clerkadmin._clerkunit_dir is None
     assert bob_clerkadmin._contract_file_name is None
     assert bob_clerkadmin._contract_file_path is None
@@ -106,7 +106,7 @@ def test_clerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
         _clerk_cid=jul_text,
         _env_dir=env_dir,
         _economy_id=get_temp_economy_id(),
-        _road_node_delimiter=",",
+        _road_delimiter=",",
     )
     jul_clerkunit.set_dirs()
     assert os_path.exists(jul_clerkunit._clerkunits_dir) is False

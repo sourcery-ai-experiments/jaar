@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.road import (
     get_default_economy_root_label as root_label,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
@@ -27,7 +27,7 @@ def test_AgendaUnit_exists():
     assert x_agenda._originunit is None
     assert x_agenda._auto_output_to_public is None
     assert x_agenda._idearoot is None
-    assert x_agenda._road_node_delimiter is None
+    assert x_agenda._road_delimiter is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -35,13 +35,13 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     healer_text = "Noa"
     iowa_economy_id = "Iowa"
-    slash_road_node_delimiter = "/"
+    slash_road_delimiter = "/"
 
     # WHEN
     x_agenda = agendaunit_shop(
         _healer=healer_text,
         _economy_id=iowa_economy_id,
-        _road_node_delimiter=slash_road_node_delimiter,
+        _road_delimiter=slash_road_delimiter,
     )
 
     assert x_agenda
@@ -54,7 +54,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._originunit == originunit_shop()
     assert x_agenda._auto_output_to_public == False
     assert x_agenda._idearoot != None
-    assert x_agenda._road_node_delimiter == slash_road_node_delimiter
+    assert x_agenda._road_delimiter == slash_road_delimiter
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaRoot'>") > 0
 
@@ -65,7 +65,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
 
     assert x_agenda._healer == ""
     assert x_agenda._economy_id == root_label()
-    assert x_agenda._road_node_delimiter == get_node_delimiter()
+    assert x_agenda._road_delimiter == get_road_delimiter()
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():
@@ -205,37 +205,37 @@ def test_agenda_set_economy_id_CorrectlySetsAttr():
     assert x_agenda._economy_id == economy_id_text
 
 
-def test_agenda_set_road_node_delimiter_CorrectlySetsAttr():
+def test_agenda_set_road_delimiter_CorrectlySetsAttr():
     # GIVEN
     economy_id_text = "Sun"
     healer_text = "Noa"
-    slash_road_node_delimiter = "/"
+    slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
         _economy_id=economy_id_text,
         _auto_output_to_public=True,
-        _road_node_delimiter=slash_road_node_delimiter,
+        _road_delimiter=slash_road_delimiter,
     )
-    assert x_agenda._road_node_delimiter == slash_road_node_delimiter
+    assert x_agenda._road_delimiter == slash_road_delimiter
 
     # WHEN
     at_node_delimiter = "@"
-    x_agenda.set_road_node_delimiter(new_road_node_delimiter=at_node_delimiter)
+    x_agenda.set_road_delimiter(new_road_delimiter=at_node_delimiter)
 
     # THEN
-    assert x_agenda._road_node_delimiter == at_node_delimiter
+    assert x_agenda._road_delimiter == at_node_delimiter
 
 
 def test_agendaunit_make_road_ReturnsCorrectObj():
     # GIVEN
     economy_id_text = "Sun"
     healer_text = "Noa"
-    slash_road_node_delimiter = "/"
+    slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _healer=healer_text,
         _economy_id=economy_id_text,
         _auto_output_to_public=True,
-        _road_node_delimiter=slash_road_node_delimiter,
+        _road_delimiter=slash_road_delimiter,
     )
     work_text = "work"
     v1_work_road = x_agenda.make_l1_road(work_text)

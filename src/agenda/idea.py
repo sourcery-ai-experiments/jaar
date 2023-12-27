@@ -32,8 +32,8 @@ from src.agenda.road import (
     is_sub_road,
     get_default_economy_root_label as root_label,
     get_road as road_get_road,
-    get_node_delimiter,
-    replace_road_node_delimiter,
+    get_road_delimiter,
+    replace_road_delimiter,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -276,7 +276,7 @@ class IdeaCore:
     _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_status_hx: dict[int:bool] = None
-    _road_node_delimiter: str = None
+    _road_delimiter: str = None
 
     def is_intent_item(self, necessary_base: RoadUnit = None):
         # bool_x = False
@@ -415,7 +415,7 @@ class IdeaCore:
             roud_foundation=roud_foundation,
             terminus_node=terminus_node,
             road_nodes=road_nodes,
-            delimiter=self._road_node_delimiter,
+            delimiter=self._road_delimiter,
         )
 
     def get_idea_road(self) -> RoadUnit:
@@ -558,56 +558,56 @@ class IdeaCore:
         if _label != None:
             self._label = _label
 
-    def set_road_node_delimiter(self, new_road_node_delimiter: str):
-        old_delimiter = deepcopy(self._road_node_delimiter)
+    def set_road_delimiter(self, new_road_delimiter: str):
+        old_delimiter = deepcopy(self._road_delimiter)
         if old_delimiter is None:
-            old_delimiter = get_node_delimiter()
-        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
-        if old_delimiter != self._road_node_delimiter:
-            self._find_replace_road_node_delimiter(old_delimiter)
+            old_delimiter = get_road_delimiter()
+        self._road_delimiter = get_road_delimiter(new_road_delimiter)
+        if old_delimiter != self._road_delimiter:
+            self._find_replace_road_delimiter(old_delimiter)
 
-    def _find_replace_road_node_delimiter(self, old_delimiter):
-        self._pad = replace_road_node_delimiter(
+    def _find_replace_road_delimiter(self, old_delimiter):
+        self._pad = replace_road_delimiter(
             road=self._pad,
             old_delimiter=old_delimiter,
-            new_delimiter=self._road_node_delimiter,
+            new_delimiter=self._road_delimiter,
         )
         if self._numeric_road != None:
-            self._numeric_road = replace_road_node_delimiter(
+            self._numeric_road = replace_road_delimiter(
                 road=self._numeric_road,
                 old_delimiter=old_delimiter,
-                new_delimiter=self._road_node_delimiter,
+                new_delimiter=self._road_delimiter,
             )
         if self._range_source_road != None:
-            self._range_source_road = replace_road_node_delimiter(
+            self._range_source_road = replace_road_delimiter(
                 road=self._range_source_road,
                 old_delimiter=old_delimiter,
-                new_delimiter=self._road_node_delimiter,
+                new_delimiter=self._road_delimiter,
             )
 
         new_requiredunits = {}
         for requiredunit_road, requiredunit_obj in self._requiredunits.items():
-            new_requiredunit_road = replace_road_node_delimiter(
+            new_requiredunit_road = replace_road_delimiter(
                 road=requiredunit_road,
                 old_delimiter=old_delimiter,
-                new_delimiter=self._road_node_delimiter,
+                new_delimiter=self._road_delimiter,
             )
-            requiredunit_obj.set_delimiter(self._road_node_delimiter)
+            requiredunit_obj.set_delimiter(self._road_delimiter)
             new_requiredunits[new_requiredunit_road] = requiredunit_obj
         self._requiredunits = new_requiredunits
 
         new_acptfactunits = {}
         for acptfactunit_road, acptfactunit_obj in self._acptfactunits.items():
-            new_base_road = replace_road_node_delimiter(
+            new_base_road = replace_road_delimiter(
                 road=acptfactunit_road,
                 old_delimiter=old_delimiter,
-                new_delimiter=self._road_node_delimiter,
+                new_delimiter=self._road_delimiter,
             )
             acptfactunit_obj.base = new_base_road
-            new_pick_road = replace_road_node_delimiter(
+            new_pick_road = replace_road_delimiter(
                 road=acptfactunit_obj.pick,
                 old_delimiter=old_delimiter,
-                new_delimiter=self._road_node_delimiter,
+                new_delimiter=self._road_delimiter,
             )
             acptfactunit_obj.set_attr(pick=new_pick_road)
             new_acptfactunits[new_base_road] = acptfactunit_obj
@@ -806,9 +806,7 @@ class IdeaCore:
         try:
             x_requiredunit = self._requiredunits[base]
         except Exception:
-            x_requiredunit = requiredunit_shop(
-                base, delimiter=self._road_node_delimiter
-            )
+            x_requiredunit = requiredunit_shop(base, delimiter=self._road_delimiter)
             self._requiredunits[base] = x_requiredunit
         return x_requiredunit
 
@@ -860,7 +858,7 @@ class IdeaCore:
             raise (f"Cannot delete balancelink '{groupbrand}'.") from e
 
     def set_required_unit(self, required: RequiredUnit):
-        required.delimiter = self._road_node_delimiter
+        required.delimiter = self._road_delimiter
         self._requiredunits[required.base] = required
 
     def set_requiredheirs_status(self):
@@ -1128,7 +1126,7 @@ def ideacore_shop(
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> IdeaCore:
     if promise is None:
         promise = False
@@ -1181,7 +1179,7 @@ def ideacore_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+        _road_delimiter=get_road_delimiter(_road_delimiter),
     )
     x_ideakid.set_assignedunit_empty_if_null()
     x_ideakid.set_originunit_empty_if_null()
@@ -1251,7 +1249,7 @@ def idearoot_shop(
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> IdeaCore:
     if promise is None:
         promise = False
@@ -1304,7 +1302,7 @@ def idearoot_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+        _road_delimiter=get_road_delimiter(_road_delimiter),
     )
     if x_idearoot._label is None:
         x_idearoot.set_idea_label(_label=root_label())

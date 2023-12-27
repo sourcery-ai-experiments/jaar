@@ -1,7 +1,7 @@
 from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
 )
-from src.agenda.road import get_road, get_node_delimiter
+from src.agenda.road import get_road, get_road_delimiter
 from src.agenda.fork import create_forkunit
 from src.world.request import (
     EconomyAddress,
@@ -23,12 +23,12 @@ def test_EconomyAddress_exists():
 
     # WHEN
     texas_address = EconomyAddress(
-        treasurer_pids=luca_dict, economy_id=texas_text, _road_node_delimiter=slash_text
+        treasurer_pids=luca_dict, economy_id=texas_text, _road_delimiter=slash_text
     )
 
     # THEN
     assert texas_address.economy_id == texas_text
-    assert texas_address._road_node_delimiter == slash_text
+    assert texas_address._road_delimiter == slash_text
     assert texas_address.treasurer_pids == luca_dict
 
 
@@ -41,16 +41,16 @@ def test_economyaddress_shop_ReturnsCorrectObject():
 
     # WHEN
     texas_address = economyaddress_shop(
-        treasurer_pids=luca_dict, economy_id=texas_text, _road_node_delimiter=slash_text
+        treasurer_pids=luca_dict, economy_id=texas_text, _road_delimiter=slash_text
     )
 
     # THEN
     assert texas_address.economy_id == texas_text
     assert texas_address.treasurer_pids == luca_dict
-    assert texas_address._road_node_delimiter == slash_text
+    assert texas_address._road_delimiter == slash_text
 
 
-def test_economyaddress_shop_ReturnsCorrectObjectWithDefault_road_node_delimiter():
+def test_economyaddress_shop_ReturnsCorrectObjectWithDefault_road_delimiter():
     # GIVEN
     luca_text = "Luca"
     luca_dict = {luca_text: 0}
@@ -60,7 +60,7 @@ def test_economyaddress_shop_ReturnsCorrectObjectWithDefault_road_node_delimiter
     texas_address = economyaddress_shop(luca_dict, texas_text)
 
     # THEN
-    assert texas_address._road_node_delimiter == get_node_delimiter()
+    assert texas_address._road_delimiter == get_road_delimiter()
 
 
 def test_EconomyAddress_add_treasurer_pid_CorrectChangesAttribute():
@@ -145,8 +145,8 @@ def test_concernunit_shop_ReturnsCorrectObj():
     assert farm_concernunit.reason == food_forkunit
     assert farm_concernunit.action == cultivate_forkunit
     assert farm_concernunit.economyaddress == texas_economyaddress
-    assert farm_concernunit.get_road_node_delimiter() == get_node_delimiter(
-        texas_economyaddress._road_node_delimiter
+    assert farm_concernunit.get_economyaddress_road_delimiter() == get_road_delimiter(
+        texas_economyaddress._road_delimiter
     )
 
 

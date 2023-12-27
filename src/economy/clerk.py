@@ -17,7 +17,7 @@ from src.agenda.x_func import (
     open_file as x_func_open_file,
     delete_dir as x_func_delete_dir,
 )
-from src.agenda.road import get_node_delimiter
+from src.agenda.road import get_road_delimiter
 from src.economy.y_func import rename_dir
 from dataclasses import dataclass
 from os import path as os_path
@@ -48,7 +48,7 @@ class clerkUnit:
     _agendas_depot_dir: str = None
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
-    _road_node_delimiter: str = None
+    _road_delimiter: str = None
     _contract: AgendaUnit = None
 
     def refresh_depot_agendas(self):
@@ -165,12 +165,12 @@ class clerkUnit:
         env_dir: str,
         clerk_cid: clerkCID,
         economy_id: str,
-        _road_node_delimiter: str = None,
+        _road_delimiter: str = None,
     ):
         self._clerk_cid = clerk_cid
         self._env_dir = env_dir
         self._economy_id = economy_id
-        self._road_node_delimiter = get_node_delimiter(_road_node_delimiter)
+        self._road_delimiter = get_road_delimiter(_road_delimiter)
 
     def set_dirs(self):
         env_clerkunits_folder = "clerkunits"
@@ -248,7 +248,7 @@ class clerkUnit:
 
     def save_contract_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_healer(self._clerk_cid)
-        x_agenda.set_road_node_delimiter(self._road_node_delimiter)
+        x_agenda.set_road_delimiter(self._road_delimiter)
         self._save_agenda_to_path(
             x_agenda, self._clerkunit_dir, self._contract_file_name
         )
@@ -305,7 +305,7 @@ class clerkUnit:
         x_agenda = agendaunit_shop(
             _healer=self._clerk_cid,
             _weight=0,
-            _road_node_delimiter=self._road_node_delimiter,
+            _road_delimiter=self._road_delimiter,
         )
         x_agenda.add_partyunit(pid=self._clerk_cid)
         x_agenda.set_economy_id(self._economy_id)
@@ -351,14 +351,14 @@ def clerkunit_shop(
     env_dir: str,
     economy_id: str,
     _auto_output_to_public: bool = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> clerkUnit:
     x_clerk = clerkUnit()
     x_clerk.set_env_dir(
         env_dir=env_dir,
         clerk_cid=pid,
         economy_id=economy_id,
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+        _road_delimiter=get_road_delimiter(_road_delimiter),
     )
     x_clerk.set_dirs()
     x_clerk.get_contract()

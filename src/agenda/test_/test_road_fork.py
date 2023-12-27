@@ -1,7 +1,7 @@
 from src.agenda.road import (
     get_default_economy_root_label as root_label,
     get_road,
-    get_node_delimiter,
+    get_road_delimiter,
 )
 from src.agenda.fork import (
     ForkUnit,
@@ -118,7 +118,7 @@ def test_forkunit_shop_CorrectlyReturnsObj():
     # THEN
     assert cook_fork.base == cook_road
     assert cook_fork.prongs == {}
-    assert cook_fork.delimiter == get_node_delimiter()
+    assert cook_fork.delimiter == get_road_delimiter()
 
 
 def test_ForkUnit_set_prong_CorrectlySetsAttr():

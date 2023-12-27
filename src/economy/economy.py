@@ -1,4 +1,4 @@
-from src.agenda.road import RoadUnit, get_road_from_road_and_node, get_node_delimiter
+from src.agenda.road import RoadUnit, get_road_from_road_and_node, get_road_delimiter
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -56,10 +56,10 @@ class EconomyUnit:
     _manager_pid: PersonID = None
     _clerkunits: dict[str:clerkUnit] = None
     _treasury_db = None
-    _road_node_delimiter: str = None
+    _road_delimiter: str = None
 
-    def set_road_node_delimiter(self, new_road_node_delimiter: str):
-        self._road_node_delimiter = get_node_delimiter(new_road_node_delimiter)
+    def set_road_delimiter(self, new_road_delimiter: str):
+        self._road_delimiter = get_road_delimiter(new_road_delimiter)
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id
@@ -548,7 +548,7 @@ class EconomyUnit:
             return get_road_from_road_and_node(
                 pad=self.economy_id,
                 terminus_node=road_wo_economy_root,
-                delimiter=self._road_node_delimiter,
+                delimiter=self._road_delimiter,
             )
 
 
@@ -558,7 +558,7 @@ def economyunit_shop(
     _manager_pid: PersonID = None,
     _clerkunits: dict[str:clerkUnit] = None,
     in_memory_treasury: bool = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> EconomyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
@@ -567,7 +567,7 @@ def economyunit_shop(
         economys_dir=economys_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
-    economy_x.set_road_node_delimiter(_road_node_delimiter)
+    economy_x.set_road_delimiter(_road_delimiter)
     economy_x.set_manager_pid(_manager_pid)
     economy_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
     return economy_x

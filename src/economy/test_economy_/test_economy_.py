@@ -1,4 +1,4 @@
-from src.agenda.road import get_road, get_all_road_nodes, get_node_delimiter
+from src.agenda.road import get_road, get_all_road_nodes, get_road_delimiter
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -23,7 +23,7 @@ def test_EconomyUnit_exists():
     assert x_economy.economy_id == x_economy_id
     assert x_economy.economys_dir == get_test_economys_dir()
     assert x_economy._manager_pid is None
-    assert x_economy._road_node_delimiter is None
+    assert x_economy._road_delimiter is None
 
 
 def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
@@ -45,10 +45,10 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
     assert x_economy._clerkunits == {}
-    assert x_economy._road_node_delimiter == get_node_delimiter()
+    assert x_economy._road_delimiter == get_road_delimiter()
 
 
-def test_EconomyUnit_set_road_node_delimiter_CorrectSetsAttribute(
+def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -58,14 +58,14 @@ def test_EconomyUnit_set_road_node_delimiter_CorrectSetsAttribute(
     x_economy = economyunit_shop(
         x_economy_id, get_test_economys_dir(), _manager_pid=sue_text
     )
-    assert x_economy._road_node_delimiter == get_node_delimiter()
+    assert x_economy._road_delimiter == get_road_delimiter()
 
     # WHEN
     slash_text = "/"
-    x_economy.set_road_node_delimiter(slash_text)
+    x_economy.set_road_delimiter(slash_text)
 
     # THEN
-    assert x_economy._road_node_delimiter == slash_text
+    assert x_economy._road_delimiter == slash_text
 
 
 def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
@@ -89,7 +89,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
     assert x_economy._clerkunits == {}
-    assert x_economy._road_node_delimiter == get_node_delimiter()
+    assert x_economy._road_delimiter == get_road_delimiter()
 
 
 def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):

@@ -4,7 +4,7 @@ from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src.agenda.road import get_node_delimiter
+from src.agenda.road import get_road_delimiter
 
 
 def test_root_has_kids():
@@ -84,7 +84,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert x_agenda.get_level_count(level=2) == 11
     new_york_idea = x_agenda._idearoot._kids["work"]._kids["new_york"]
     assert new_york_idea._pad == x_agenda.make_l1_road("work")
-    assert new_york_idea._road_node_delimiter == x_agenda._road_node_delimiter
+    assert new_york_idea._road_delimiter == x_agenda._road_delimiter
     new_york_idea.set_pad(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._pad == "testing"
     assert x_agenda.get_intent_items()
@@ -115,8 +115,8 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
 def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     # GIVEN
     slash_text = "/"
-    assert slash_text != get_node_delimiter()
-    bob_agenda = agendaunit_shop("bob", _road_node_delimiter=slash_text)
+    assert slash_text != get_road_delimiter()
+    bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_text)
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"
@@ -129,8 +129,8 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     assert len(bob_agenda._idearoot._kids) == 2
     wed_idea = bob_agenda.get_idea_kid(wed_road)
-    assert wed_idea._road_node_delimiter == slash_text
-    assert wed_idea._road_node_delimiter == bob_agenda._road_node_delimiter
+    assert wed_idea._road_delimiter == slash_text
+    assert wed_idea._road_delimiter == bob_agenda._road_delimiter
 
     # WHEN
     bob_agenda.edit_idea_attr(

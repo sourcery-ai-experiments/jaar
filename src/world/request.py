@@ -4,7 +4,7 @@ from src.agenda.road import (
     RoadNode,
     get_road,
     get_diff_road,
-    get_node_delimiter,
+    get_road_delimiter,
     get_terminus_node_from_road,
     get_pad_from_road,
 )
@@ -21,7 +21,7 @@ from dataclasses import dataclass
 class EconomyAddress:
     economy_id: EconomyID
     treasurer_pids: dict[PersonID:int]
-    _road_node_delimiter: str
+    _road_delimiter: str
 
     def add_treasurer_pid(self, treasurer_pid: PersonID):
         self.treasurer_pids[treasurer_pid] = 0
@@ -36,12 +36,12 @@ class EconomyAddress:
 def economyaddress_shop(
     economy_id: EconomyID,
     treasurer_pids: dict[PersonID:int] = None,
-    _road_node_delimiter: str = None,
+    _road_delimiter: str = None,
 ) -> EconomyAddress:
     return EconomyAddress(
         treasurer_pids=get_empty_dict_if_none(treasurer_pids),
         economy_id=economy_id,
-        _road_node_delimiter=get_node_delimiter(_road_node_delimiter),
+        _road_delimiter=get_road_delimiter(_road_delimiter),
     )
 
 
@@ -61,8 +61,8 @@ class ConcernUnit:
     action: ForkUnit = None
     reason: ForkUnit = None
 
-    def get_road_node_delimiter(self):
-        return self.economyaddress._road_node_delimiter
+    def get_economyaddress_road_delimiter(self):
+        return self.economyaddress._road_delimiter
 
     def set_reason(self, x_forkunit: ForkUnit):
         self._check_subject_road(x_forkunit.base)
