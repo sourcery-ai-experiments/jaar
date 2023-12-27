@@ -436,9 +436,10 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     assert sandy_agenda4party._idearoot._kids.get(feed_text) is None
     assert sandy_agenda4party._idearoot._agenda_importance == 1
     assert work_idea._agenda_importance == yrx._kids[work_text]._agenda_importance
-    assert sandy_agenda4party._idearoot._kids.get("__other__") != None
+    __other__road = sandy_agenda4party.make_l1_road("__other__")
+    assert sandy_agenda4party.get_idea_obj(__other__road) != None
 
-    y4a_others = sandy_agenda4party._idearoot._kids.get("__other__")
+    y4a_others = sandy_agenda4party.get_idea_obj(__other__road)
     others_agenda_importance = yrx._kids[week_text]._agenda_importance
     others_agenda_importance += yrx._kids[feed_text]._agenda_importance
     others_agenda_importance += yrx._kids[nation_text]._agenda_importance

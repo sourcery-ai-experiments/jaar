@@ -776,23 +776,14 @@ class AgendaUnit:
         )
 
     def _is_idea_rangeroot(self, idea_road: RoadUnit) -> bool:
-        anc_roads = get_ancestor_roads(road=idea_road)
-        parent_road = self._economy_id if len(anc_roads) == 1 else anc_roads[1]
-
-        # figure out if parent is range
-        parent_range = None
-        if len(get_all_road_nodes(parent_road)) == 1:
-            parent_range = False
-        else:
-            parent_idea = self.get_idea_obj(parent_road)
-            parent_range = parent_idea.is_arithmetic()
-
-        # figure out if numeric source exists
+        if self._economy_id == idea_road:
+            raise InvalidAgendaException(
+                "its difficult to foresee a scenario where idearoot is rangeroot"
+            )
+        parent_road = get_pad_from_road(idea_road)
+        parent_idea = self.get_idea_obj(parent_road)
         x_idea = self.get_idea_obj(idea_road)
-        numeric_source_road = None
-        numeric_source_road = x_idea._numeric_road != None
-
-        return not numeric_source_road and not parent_range
+        return x_idea._numeric_road is None and not parent_idea.is_arithmetic()
 
     def _get_rangeroot_acptfactunits(self) -> list[AcptFactUnit]:
         return [
@@ -1058,25 +1049,25 @@ class AgendaUnit:
             self._create_missing_ideas(road=kid_road)
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
-    def _get_filtered_balancelinks_idea(self, idea: IdeaCore) -> IdeaCore:
+    def _get_filtered_balancelinks_idea(self, x_idea: IdeaCore) -> IdeaCore:
         _balancelinks_to_delete = [
             _balancelink_pid
-            for _balancelink_pid in idea._balancelinks.keys()
+            for _balancelink_pid in x_idea._balancelinks.keys()
             if self._groups.get(_balancelink_pid) is None
         ]
         for _balancelink_pid in _balancelinks_to_delete:
-            idea._balancelinks.pop(_balancelink_pid)
+            x_idea._balancelinks.pop(_balancelink_pid)
 
-        if idea._assignedunit != None:
+        if x_idea._assignedunit != None:
             _suffgroups_to_delete = [
                 _suffgroup_pid
-                for _suffgroup_pid in idea._assignedunit._suffgroups.keys()
+                for _suffgroup_pid in x_idea._assignedunit._suffgroups.keys()
                 if self._groups.get(_suffgroup_pid) is None
             ]
             for _suffgroup_pid in _suffgroups_to_delete:
-                idea._assignedunit.del_suffgroup(_suffgroup_pid)
+                x_idea._assignedunit.del_suffgroup(_suffgroup_pid)
 
-        return idea
+        return x_idea
 
     def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:BalanceLink]):
         for balancelink_x in balancelinks.values():
@@ -1587,12 +1578,12 @@ class AgendaUnit:
             return True
 
         idea_label = nodes.pop(0)
-        x_idea = self._idearoot._kids.get(idea_label)
+        x_idea = self._idearoot.get_kid(idea_label)
         if x_idea is None:
             return False
         while nodes != []:
             idea_label = nodes.pop(0)
-            x_idea = x_idea._kids.get(idea_label)
+            x_idea = x_idea.get_kid(idea_label)
             if x_idea is None:
                 return False
         return True
@@ -1602,15 +1593,15 @@ class AgendaUnit:
             raise InvalidAgendaException("get_idea_obj received road=None")
         if self.idea_exists(road) == False:
             raise InvalidAgendaException(f"get_idea_obj failed. no item at '{road}'")
-        nodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
-        if len(nodes) == 1:
+        roadnodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
+        if len(roadnodes) == 1:
             return self._idearoot
 
-        nodes.pop(0)
-        idea_label = nodes.pop(0)
+        idearoot_label = roadnodes.pop(0)
+        idea_label = roadnodes.pop(0)
         x_idea = self._idearoot.get_kid(idea_label)
-        while nodes != []:
-            idea_label = nodes.pop(0)
+        while roadnodes != []:
+            idea_label = roadnodes.pop(0)
             x_idea = x_idea.get_kid(idea_label)
 
         return x_idea

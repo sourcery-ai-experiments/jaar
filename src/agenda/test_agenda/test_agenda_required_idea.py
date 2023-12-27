@@ -95,6 +95,7 @@ def test_agenda_edit_idea_attr_required_base_CorrectlySets_delimiter():
 
 
 def test_agenda_set_requiredunits_status():
+    # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
@@ -109,8 +110,12 @@ def test_agenda_set_requiredunits_status():
     )
     print(f"{type(work_wk_required.base)=}")
     print(f"{work_wk_required.base=}")
+
+    # WHEN
     x_agenda.edit_idea_attr(road=work_road, required=work_wk_required)
-    work_idea = x_agenda._idearoot._kids[work_text]
+
+    # THEN
+    work_idea = x_agenda.get_idea_obj(work_road)
     assert work_idea._requiredunits != None
     print(work_idea._requiredunits)
     assert work_idea._requiredunits[weekday_road] != None
@@ -118,12 +123,17 @@ def test_agenda_set_requiredunits_status():
 
 
 def test_intent_returned_WhenNoRequiredsExist():
-    agenda_x = example_agendas_get_agenda_with_4_levels()
-    agenda_x.set_agenda_metrics()
-    work_text = "work"
-    assert agenda_x._idearoot._kids[work_text]._task == True
-    cat_text = "feed cat"
-    assert agenda_x._idearoot._kids[cat_text]._task == True
+    # GIVEN
+    x_agenda = example_agendas_get_agenda_with_4_levels()
+
+    # WHEN
+    x_agenda.set_agenda_metrics()
+
+    # THEN
+    work_road = x_agenda.make_l1_road("work")
+    assert x_agenda.get_idea_obj(work_road)._task == True
+    cat_road = x_agenda.make_l1_road("feed cat")
+    assert x_agenda.get_idea_obj(cat_road)._task == True
 
 
 def test_agenda_requiredheirs_AreCorrectlyInherited_v1():
@@ -283,9 +293,9 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     cost_road = a4_agenda.make_road(rla_road, cost_text)
     a4_agenda.add_idea(ideacore_shop(cost_text), pad=cost_road)
 
-    work_idea = a4_agenda._idearoot._kids[work_text]
-    rla_idea = work_idea._kids[rla_text]
-    cost_idea = rla_idea._kids[cost_text]
+    work_idea = a4_agenda._idearoot.get_kid(work_text)
+    rla_idea = work_idea.get_kid(rla_text)
+    cost_idea = rla_idea.get_kid(cost_text)
 
     assert a4_agenda._idearoot._requiredheirs == {}
     assert work_idea._requiredheirs == {}

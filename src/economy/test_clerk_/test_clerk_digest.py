@@ -264,8 +264,8 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     input_idearoot = input_agenda._idearoot
     assert sx_idearoot._pad == input_idearoot._pad
     assert sx_idearoot._acptfactunits == input_idearoot._acptfactunits
-    input_b_idea = input_idearoot._kids.get("B")
-    new_output_agenda_b_idea = sx_idearoot._kids.get("B")
+    input_b_idea = input_idearoot.get_kid("B")
+    new_output_agenda_b_idea = sx_idearoot.get_kid("B")
     assert new_output_agenda_b_idea._pad == input_b_idea._pad
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight

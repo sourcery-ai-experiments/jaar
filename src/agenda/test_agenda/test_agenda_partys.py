@@ -298,9 +298,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_rico)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_carm)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_patr)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     rico_partyunit = x_agenda._partys.get(rico_text)
     carm_partyunit = x_agenda._partys.get(carm_text)
@@ -444,9 +444,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_rico)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_carm)
-    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=bl_patr)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    x_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     # no balancelinks attached to this one
     hunt_text = "hunt"

@@ -291,6 +291,11 @@ def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():
     ]
     assert x_roads == texas_ancestor_roads
 
+    # WHEN
+    assert get_ancestor_roads(None) == []
+    assert get_ancestor_roads("") == [""]
+    assert get_ancestor_roads(root_label()) == [root_label()]
+
 
 def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadUnitsWithoutSource():
     # GIVEN

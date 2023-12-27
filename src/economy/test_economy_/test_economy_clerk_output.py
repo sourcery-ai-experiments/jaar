@@ -55,9 +55,9 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # idea_b = output_agenda.get_idea_obj("B")
     # for idea_kid_x1 in input_agenda._idearoot._kids.values():
     #     print(f"{idea_kid_x1._label=}")
-    #     output_agenda_counterpart_x1 = output_agenda._idearoot._kids.get(idea_kid_x1._label)
+    #     output_agenda_counterpart_x1 = output_agenda.get_idea_obj(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
-    #         output_agenda_counterpart_x2 = output_agenda_counterpart_x1._kids.get(
+    #         output_agenda_counterpart_x2 = output_agenda_counterpart_x1._get_kid(
     #             idea_kid_x2._label
     #         )
     #         print(
@@ -84,8 +84,9 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     assert output_agenda._originunit == input_agenda._originunit
 
     b_text = "B"
-    print(f"{output_agenda._idearoot._kids.get(b_text)._originunit=}")
-    print(f"{input_agenda._idearoot._kids.get(b_text)._originunit=}")
+    b_road = output_agenda.make_l1_road(b_text)
+    print(f"{output_agenda.get_idea_obj(b_road)._originunit=}")
+    print(f"{input_agenda.get_idea_obj(b_road)._originunit=}")
     assert output_agenda._idearoot == input_agenda._idearoot
 
 
@@ -118,9 +119,9 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     print(f" {output_agenda_d_idea._weight=} ")
     assert output_agenda != None
     # for idea_kid_x1 in x1_agenda._idearoot._kids.values():
-    #     output_agenda_counterpart_x1 = output_agenda._idearoot._kids.get(idea_kid_x1._label)
+    #     output_agenda_counterpart_x1 = output_agenda.get_idea_obj(idea_kid_x1._label)
     #     for idea_kid_x2 in idea_kid_x1._kids.values():
-    #         output_agenda_counterpart_x2 = output_agenda_counterpart_x1._kids.get(
+    #         output_agenda_counterpart_x2 = output_agenda_counterpart_x1._get_kid(
     #             idea_kid_x2._label
     #         )
     #         print(
