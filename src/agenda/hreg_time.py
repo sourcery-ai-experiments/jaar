@@ -1,4 +1,4 @@
-from src.agenda.road import get_road, RoadUnit, RoadNode
+from src.agenda.road import create_road, RoadUnit, RoadNode
 from src.agenda.idea import IdeaBare as YB
 from dataclasses import dataclass
 from datetime import datetime
@@ -515,7 +515,7 @@ class HregTimeIdeaSource:
         terminus_node: RoadNode = None,
         road_nodes: list[RoadNode] = None,
     ) -> RoadUnit:
-        return get_road(
+        return create_road(
             roud_foundation=roud_foundation,
             terminus_node=terminus_node,
             road_nodes=road_nodes,

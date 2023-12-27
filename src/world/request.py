@@ -2,9 +2,9 @@ from src.agenda.road import (
     RoadUnit,
     is_sub_road,
     RoadNode,
-    get_road,
+    create_road,
     get_diff_road,
-    get_road_delimiter,
+    default_road_delimiter_if_none,
     get_terminus_node_from_road,
     get_pad_from_road,
 )
@@ -41,7 +41,7 @@ def economyaddress_shop(
     return EconomyAddress(
         treasurer_pids=get_empty_dict_if_none(treasurer_pids),
         economy_id=economy_id,
-        _road_delimiter=get_road_delimiter(_road_delimiter),
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
 
 
@@ -73,11 +73,11 @@ class ConcernUnit:
         self.action = x_forkunit
 
     def _check_subject_road(self, road: RoadUnit) -> bool:
-        if road == get_road(self.economyaddress.economy_id, ""):
+        if road == create_road(self.economyaddress.economy_id, ""):
             raise ConcernSubRoadUnitException(
                 f"ConcernUnit subject level 1 cannot be empty. ({road})"
             )
-        double_economy_id_road = get_road(
+        double_economy_id_road = create_road(
             self.economyaddress.economy_id, self.economyaddress.economy_id
         )
         if is_sub_road(road, double_economy_id_road):
@@ -158,14 +158,14 @@ def create_concernunit(
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_reason(
         create_forkunit(
-            base=get_road(economyaddress.economy_id, reason),
+            base=create_road(economyaddress.economy_id, reason),
             good=good,
             bad=bad,
         )
     )
     x_concernunit.set_action(
         create_forkunit(
-            base=get_road(economyaddress.economy_id, action),
+            base=create_road(economyaddress.economy_id, action),
             good=positive,
             bad=negative,
         )

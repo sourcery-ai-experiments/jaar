@@ -149,7 +149,7 @@ class Lemmas:
         src_nigh = src_acptfact.nigh
         src_idea_begin = src_idea._begin
         src_idea_close = src_idea._close
-        idea_road = x_idea.get_idea_road()
+        idea_road = x_idea.get_road()
 
         acptfact_open = None
         acptfact_nigh = None
@@ -216,7 +216,7 @@ class Lemmas:
         new_acptfact = self._create_new_acptfact(
             x_idea=x_idea, src_acptfact=src_acptfact, src_idea=src_idea
         )
-        road_x = x_idea.get_idea_road()
+        road_x = x_idea.get_road()
         if self.lemmas.get(road_x) is None:
             self.lemmas[road_x] = Lemma(
                 src_acptfact=src_acptfact,

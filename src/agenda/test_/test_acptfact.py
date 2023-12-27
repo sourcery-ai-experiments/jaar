@@ -7,16 +7,16 @@ from src.agenda.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     acptfactunits_get_from_dict,
 )
-from src.agenda.road import get_default_economy_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, create_road
 from pytest import raises as pytest_raises
 
 
 def test_AcptFactUnit_exists():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
 
     # WHEN
     sunday_acptfact = AcptFactUnit(
@@ -35,7 +35,7 @@ def test_AcptFactUnit_exists():
 def test_AcptFactUnit_clear_range_works_1():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     weekday_acptfact = acptfactunit_shop(weekday_road, weekday_road, open=1.0, nigh=5.0)
     assert weekday_acptfact.open == 1.0
     assert weekday_acptfact.nigh == 5.0
@@ -51,12 +51,12 @@ def test_AcptFactUnit_clear_range_works_1():
 def test_AcptFactUnit_clear_range_works_2():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     weekday_acptfact = acptfactunit_shop(weekday_road, weekday_road, open=1.0, nigh=5.0)
 
     # WHEN
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
     weekday_acptfact.set_attr(pick=sunday_road)
     # THEN
     assert weekday_acptfact.pick == sunday_road
@@ -75,9 +75,9 @@ def test_AcptFactUnit_clear_range_works_2():
 def test_AcptFactUnit_get_dict_CorrectlyReturnsDict():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
     x_open = 35
     x_nigh = 50
     sunday_acptfact = acptfactunit_shop(
@@ -102,9 +102,9 @@ def test_AcptFactUnit_get_dict_CorrectlyReturnsDict():
 def test_AcptFactUnit_get_dict_CorrectlyReturnsPartialDict():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
     sunday_acptfact = acptfactunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_acptfact)
 
@@ -123,9 +123,9 @@ def test_AcptFactUnit_get_dict_CorrectlyReturnsPartialDict():
 def test_AcptFactUnit_find_replace_road_works():
     # GIVEN
     weekday_text = "weekday"
-    old_weekday_road = get_road(root_label(), weekday_text)
+    old_weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    old_sunday_road = get_road(old_weekday_road, sunday_text)
+    old_sunday_road = create_road(old_weekday_road, sunday_text)
     sunday_acptfact = acptfactunit_shop(base=old_weekday_road, pick=old_sunday_road)
     print(sunday_acptfact)
     assert sunday_acptfact.base == old_weekday_road
@@ -135,8 +135,8 @@ def test_AcptFactUnit_find_replace_road_works():
     old_road = root_label()
     new_road = "fun"
     sunday_acptfact.find_replace_road(old_road=old_road, new_road=new_road)
-    new_weekday_road = get_road(new_road, weekday_text)
-    new_sunday_road = get_road(new_weekday_road, sunday_text)
+    new_weekday_road = create_road(new_road, weekday_text)
+    new_sunday_road = create_road(new_weekday_road, sunday_text)
 
     # THEN
     assert sunday_acptfact.base == new_weekday_road
@@ -146,7 +146,7 @@ def test_AcptFactUnit_find_replace_road_works():
 def test_AcptFactHeir_IsChangedByAcptFactUnit():
     # GIVEN
     ced_min_text = "ced_minute"
-    min_road = get_road(root_label(), ced_min_text)
+    min_road = create_road(root_label(), ced_min_text)
     ced_acptfactheir = acptfactheir_shop(min_road, min_road, 10.0, 30.0)
     ced_acptfactunit = acptfactunit_shop(min_road, min_road, 20.0, 30.0)
     assert ced_acptfactheir.open == 10
@@ -192,7 +192,7 @@ def test_AcptFactHeir_IsChangedByAcptFactUnit():
 def test_AcptFactHeir_is_range_ReturnsRangeStatus():
     # GIVEN
     ced_min_text = "ced_minute"
-    min_road = get_road(root_label(), ced_min_text)
+    min_road = create_road(root_label(), ced_min_text)
 
     # WHEN
     x_acptfactheir = acptfactheir_shop(base=min_road, pick=min_road)
@@ -206,7 +206,7 @@ def test_AcptFactHeir_is_range_ReturnsRangeStatus():
 def test_acptfactheir_is_range_ReturnsRangeStatus():
     # GIVEN
     ced_min_text = "ced_minute"
-    min_road = get_road(root_label(), ced_min_text)
+    min_road = create_road(root_label(), ced_min_text)
 
     # WHEN
     x_acptfactheir = acptfactheir_shop(base=min_road, pick=min_road)
@@ -224,9 +224,9 @@ def test_acptfactheir_is_range_ReturnsRangeStatus():
 def test_AcptFactCore_get_key_road_works():
     # GIVEN
     ced_min_text = "ced_minute"
-    min_road = get_road(root_label(), ced_min_text)
+    min_road = create_road(root_label(), ced_min_text)
     secs_text = "seconds"
-    secs_road = get_road(min_road, secs_text)
+    secs_road = create_road(min_road, secs_text)
 
     # WHEN
     x_acptfactcore = AcptFactCore(base=min_road, pick=secs_road)
@@ -238,9 +238,9 @@ def test_AcptFactCore_get_key_road_works():
 def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v1():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     hc_y1 = c_acptfactunit(base=tech_road, pick=bowl_road)
 
@@ -251,9 +251,9 @@ def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v1():
 def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v2():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x2 = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
     hc_y2 = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
 
@@ -264,11 +264,11 @@ def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v2():
 def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v1():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     dish_text = "dish"
-    dish_road = get_road(tech_road, dish_text)
+    dish_road = create_road(tech_road, dish_text)
     bowl_af = c_acptfactunit(base=tech_road, pick=bowl_road)
     dish_af = c_acptfactunit(base=tech_road, pick=dish_road)
 
@@ -279,11 +279,11 @@ def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v1():
 def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v2():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     dish_text = "dish"
-    dish_road = get_road(tech_road, dish_text)
+    dish_road = create_road(tech_road, dish_text)
     bowl_af = c_acptfactunit(base=tech_road, pick=bowl_road, open=45, nigh=55)
     dish_af = c_acptfactunit(base=tech_road, pick=dish_road, open=45, nigh=55)
     # WHEN/THEN
@@ -293,9 +293,9 @@ def test_acptfactcores_meld_CorrectlyMeldDifferentObjs_v2():
 def test_acptfactcores_meld_raises_NotSameBaseRoadUnitError():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x = c_acptfactunit(base=tech_road, pick=tech_road)
     hc_y = c_acptfactunit(base=bowl_road, pick=tech_road)
 
@@ -311,9 +311,9 @@ def test_acptfactcores_meld_raises_NotSameBaseRoadUnitError():
 def test_acptfactcores_meld_raises_NotSameAcptFactRoadUnitError():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x = c_acptfactunit(base=tech_road, pick=tech_road, open=1, nigh=3)
     hc_y = c_acptfactunit(base=tech_road, pick=bowl_road, open=1, nigh=3)
 
@@ -329,9 +329,9 @@ def test_acptfactcores_meld_raises_NotSameAcptFactRoadUnitError():
 def test_acptfactcores_meld_raises_NotSameOpenError():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x = c_acptfactunit(base=tech_road, pick=bowl_road, open=6, nigh=55)
     hc_y = c_acptfactunit(base=tech_road, pick=bowl_road, open=1, nigh=55)
 
@@ -347,9 +347,9 @@ def test_acptfactcores_meld_raises_NotSameOpenError():
 def test_acptfactcores_meld_raises_NotSameNighError():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     hc_x = c_acptfactunit(base=tech_road, pick=bowl_road, open=1, nigh=34)
     hc_y = c_acptfactunit(base=tech_road, pick=bowl_road, open=1, nigh=55)
 
@@ -365,9 +365,9 @@ def test_acptfactcores_meld_raises_NotSameNighError():
 def test_acptfactunits_get_from_dict_CorrectlyBuildsObj():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
     static_dict = {
         weekday_road: {
             "base": weekday_road,
@@ -389,9 +389,9 @@ def test_acptfactunits_get_from_dict_CorrectlyBuildsObj():
 def test_acptfactunits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     # GIVEN
     weekday_text = "weekdays"
-    weekday_road = get_road(root_label(), weekday_text)
+    weekday_road = create_road(root_label(), weekday_text)
     sunday_text = "Sunday"
-    sunday_road = get_road(weekday_road, sunday_text)
+    sunday_road = create_road(weekday_road, sunday_text)
     static_dict = {
         weekday_road: {
             "base": weekday_road,

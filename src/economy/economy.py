@@ -1,4 +1,8 @@
-from src.agenda.road import RoadUnit, get_road_from_road_and_node, get_road_delimiter
+from src.agenda.road import (
+    RoadUnit,
+    create_road_from_road_and_node,
+    default_road_delimiter_if_none,
+)
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -59,7 +63,7 @@ class EconomyUnit:
     _road_delimiter: str = None
 
     def set_road_delimiter(self, new_road_delimiter: str):
-        self._road_delimiter = get_road_delimiter(new_road_delimiter)
+        self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
     def set_manager_pid(self, person_id: PersonID):
         self._manager_pid = person_id
@@ -267,9 +271,7 @@ class EconomyUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(
-                    agendaunit_x._healer, idea_x.get_idea_road()
-                )
+                idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
@@ -545,7 +547,7 @@ class EconomyUnit:
         if road_wo_economy_root is None or road_wo_economy_root == "":
             return self.economy_id
         else:
-            return get_road_from_road_and_node(
+            return create_road_from_road_and_node(
                 pad=self.economy_id,
                 terminus_node=road_wo_economy_root,
                 delimiter=self._road_delimiter,

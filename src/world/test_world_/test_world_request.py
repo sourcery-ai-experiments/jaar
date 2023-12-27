@@ -1,4 +1,4 @@
-from src.agenda.road import get_road
+from src.agenda.road import create_road
 from src.agenda.required_idea import acptfactunit_shop
 from src.world.world import worldunit_shop
 from src.world.request import (
@@ -140,12 +140,12 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     assert tim_partyunit != None
     assert tim_partyunit.creditor_weight == 1
     assert tim_partyunit.debtor_weight == 1
-    flying_road = get_road(texas_economy.economy_id, flying_text)
-    no_fly_road = get_road(flying_road, no_fly_text)
-    yesfly_road = get_road(flying_road, yesfly_text)
-    weather_road = get_road(texas_economy.economy_id, weather_text)
-    healthy_road = get_road(weather_road, healthy_text)
-    boiling_road = get_road(weather_road, boiling_text)
+    flying_road = create_road(texas_economy.economy_id, flying_text)
+    no_fly_road = create_road(flying_road, no_fly_text)
+    yesfly_road = create_road(flying_road, yesfly_text)
+    weather_road = create_road(texas_economy.economy_id, weather_text)
+    healthy_road = create_road(weather_road, healthy_text)
+    boiling_road = create_road(weather_road, boiling_text)
     print(f"{xio_contract._idea_dict.keys()=}")
     print(f"{flying_road=}")
     print(f"{no_fly_road=}")
@@ -216,7 +216,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     # check tim public
     tim_public = texas_economy.get_public_agenda(tim_text)
     assert len(tim_public.get_intent_items()) == 1
-    assert tim_public.get_intent_items()[0].get_idea_road() == no_fly_road
+    assert tim_public.get_intent_items()[0].get_road() == no_fly_road
 
 
 def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
@@ -272,12 +272,12 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     assert len(environmentalist_group._partys) == 1
     assert environmentalist_group.get_partylink(tim_text) != None
 
-    flying_road = get_road(texas_economy.economy_id, flying_text)
-    no_fly_road = get_road(flying_road, no_fly_text)
-    yesfly_road = get_road(flying_road, yesfly_text)
-    weather_road = get_road(texas_economy.economy_id, weather_text)
-    healthy_road = get_road(weather_road, healthy_text)
-    boiling_road = get_road(weather_road, boiling_text)
+    flying_road = create_road(texas_economy.economy_id, flying_text)
+    no_fly_road = create_road(flying_road, no_fly_text)
+    yesfly_road = create_road(flying_road, yesfly_text)
+    weather_road = create_road(texas_economy.economy_id, weather_text)
+    healthy_road = create_road(weather_road, healthy_text)
+    boiling_road = create_road(weather_road, boiling_text)
     flying_idea = xio_contract.get_idea_kid(flying_road)
     no_fly_idea = xio_contract.get_idea_kid(no_fly_road)
     yesfly_idea = xio_contract.get_idea_kid(yesfly_road)
@@ -312,7 +312,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     # check tim public
     tim_public = texas_economy.get_public_agenda(tim_text)
     assert len(tim_public.get_intent_items()) == 1
-    assert tim_public.get_intent_items()[0].get_idea_road() == no_fly_road
+    assert tim_public.get_intent_items()[0].get_road() == no_fly_road
 
 
 # def test_worldunit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(

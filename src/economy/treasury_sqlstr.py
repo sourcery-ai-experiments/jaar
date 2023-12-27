@@ -1,5 +1,5 @@
 from src.agenda.agenda import AgendaUnit, PartyUnit, RoadUnit, PersonID, PartyPID
-from src.agenda.road import get_road_without_root_node
+from src.agenda.road import create_road_without_root_node
 from src.economy.y_func import sqlite_bool, sqlite_null, sqlite_text, sqlite_to_python
 from dataclasses import dataclass
 from sqlite3 import Connection
@@ -843,7 +843,7 @@ INSERT INTO idea_catalog (
 )
 VALUES (
   '{idea_catalog.agenda_healer}'
-, '{get_road_without_root_node(idea_catalog.idea_road)}'
+, '{create_road_without_root_node(idea_catalog.idea_road)}'
 )
 ;
 """
@@ -853,7 +853,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:
-        search_road_without_root_node = get_road_without_root_node(search_road)
+        search_road_without_root_node = create_road_without_root_node(search_road)
         where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
 SELECT 

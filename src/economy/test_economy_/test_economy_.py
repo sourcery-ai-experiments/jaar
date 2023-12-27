@@ -1,4 +1,8 @@
-from src.agenda.road import get_road, get_all_road_nodes, get_road_delimiter
+from src.agenda.road import (
+    create_road,
+    get_all_road_nodes,
+    default_road_delimiter_if_none,
+)
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from os import path as os_path
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -45,7 +49,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
     assert x_economy._clerkunits == {}
-    assert x_economy._road_delimiter == get_road_delimiter()
+    assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
@@ -58,7 +62,7 @@ def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
     x_economy = economyunit_shop(
         x_economy_id, get_test_economys_dir(), _manager_pid=sue_text
     )
-    assert x_economy._road_delimiter == get_road_delimiter()
+    assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
     # WHEN
     slash_text = "/"
@@ -89,7 +93,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy._treasury_db != None
     assert x_economy._manager_pid == sue_text
     assert x_economy._clerkunits == {}
-    assert x_economy._road_delimiter == get_road_delimiter()
+    assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -307,16 +311,16 @@ def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     healer_text = "healer"
-    healer_road_with_woot = get_road(x_economy.economy_id, healer_text)
+    healer_road_with_woot = create_road(x_economy.economy_id, healer_text)
     healer_road_wo_root = healer_text
     healer_list_wo_root = get_all_road_nodes(healer_road_wo_root)
     bloomers_text = "bloomers"
-    bloomers_road_with_root = get_road(healer_road_with_woot, bloomers_text)
-    bloomers_road_wo_root = get_road(healer_road_wo_root, bloomers_text)
+    bloomers_road_with_root = create_road(healer_road_with_woot, bloomers_text)
+    bloomers_road_wo_root = create_road(healer_road_wo_root, bloomers_text)
     bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
     roses_text = "roses"
-    roses_road_with_root = get_road(bloomers_road_with_root, roses_text)
-    roses_road_wo_root = get_road(bloomers_road_wo_root, roses_text)
+    roses_road_with_root = create_road(bloomers_road_with_root, roses_text)
+    roses_road_wo_root = create_road(bloomers_road_wo_root, roses_text)
     roses_list_wo_root = get_all_road_nodes(roses_road_wo_root)
 
     # WHEN / THEN

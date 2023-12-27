@@ -1,7 +1,7 @@
 from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
 )
-from src.agenda.road import get_road, get_road_delimiter
+from src.agenda.road import create_road, default_road_delimiter_if_none
 from src.agenda.fork import create_forkunit
 from src.world.request import (
     EconomyAddress,
@@ -60,7 +60,7 @@ def test_economyaddress_shop_ReturnsCorrectObjectWithDefault_road_delimiter():
     texas_address = economyaddress_shop(luca_dict, texas_text)
 
     # THEN
-    assert texas_address._road_delimiter == get_road_delimiter()
+    assert texas_address._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_EconomyAddress_add_treasurer_pid_CorrectChangesAttribute():
@@ -124,12 +124,12 @@ def test_concernunit_shop_ReturnsCorrectObj():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
 
-    food_road = get_road(texas_economyaddress.economy_id, "food")
+    food_road = create_road(texas_economyaddress.economy_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
 
-    cultivate_road = get_road(texas_economyaddress.economy_id, "cultivate")
+    cultivate_road = create_road(texas_economyaddress.economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -145,19 +145,20 @@ def test_concernunit_shop_ReturnsCorrectObj():
     assert farm_concernunit.reason == food_forkunit
     assert farm_concernunit.action == cultivate_forkunit
     assert farm_concernunit.economyaddress == texas_economyaddress
-    assert farm_concernunit.get_economyaddress_road_delimiter() == get_road_delimiter(
-        texas_economyaddress._road_delimiter
+    assert (
+        farm_concernunit.get_economyaddress_road_delimiter()
+        == default_road_delimiter_if_none(texas_economyaddress._road_delimiter)
     )
 
 
 def test_ConcernUnit_set_reason_SetsAttributesCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
-    food_road = get_road(texas_economyaddress.economy_id, "food")
+    food_road = create_road(texas_economyaddress.economy_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
-    cultivate_road = get_road(texas_economyaddress.economy_id, "cultivate")
+    cultivate_road = create_road(texas_economyaddress.economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -168,8 +169,8 @@ def test_ConcernUnit_set_reason_SetsAttributesCorrectly():
     )
 
     # WHEN
-    environ_road = get_road(texas_economyaddress.economy_id, "environment")
-    soil_road = get_road(environ_road, "soil")
+    environ_road = create_road(texas_economyaddress.economy_id, "environment")
+    soil_road = create_road(environ_road, "soil")
     unsafe_text = "unsafe soil"
     fertile_text = "fertile soil"
     soil_forkunit = create_forkunit(soil_road, good=fertile_text, bad=unsafe_text)
@@ -184,13 +185,13 @@ def test_ConcernUnit_set_reason_EmptySubjectRaisesErrorCorrectly():
     # GIVEN
     farm_concernunit = examples_get_farm_concernunit()
     texas_economyaddress = farm_concernunit.economyaddress
-    food_road = get_road(texas_economyaddress.economy_id, "")
+    food_road = create_road(texas_economyaddress.economy_id, "")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
 
     # WHEN / THEN
-    environ_road = get_road(texas_economyaddress.economy_id, "")
+    environ_road = create_road(texas_economyaddress.economy_id, "")
     with pytest_raises(Exception) as excinfo:
         farm_concernunit.set_reason(food_forkunit)
     assert (
@@ -202,11 +203,11 @@ def test_ConcernUnit_set_reason_EmptySubjectRaisesErrorCorrectly():
 def test_ConcernUnit_set_reason_NotEconomyRootRaisesSubjectErrorCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
-    food_road = get_road(texas_economyaddress.economy_id, "food")
+    food_road = create_road(texas_economyaddress.economy_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
-    cultivate_road = get_road(texas_economyaddress.economy_id, "cultivate")
+    cultivate_road = create_road(texas_economyaddress.economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -217,11 +218,11 @@ def test_ConcernUnit_set_reason_NotEconomyRootRaisesSubjectErrorCorrectly():
     )
 
     environ_text = "environment"
-    incorrect_soil_road = get_road(environ_text, "soil")
+    incorrect_soil_road = create_road(environ_text, "soil")
     infertile_text = "infertile soil"
     fertile_text = "fertile soil"
-    # infertile_road = get_road(incorrect_soil_road, "infertile soil")
-    # fertile_road = get_road(incorrect_soil_road, "fertile soil")
+    # infertile_road = create_road(incorrect_soil_road, "infertile soil")
+    # fertile_road = create_road(incorrect_soil_road, "fertile soil")
     incorrect_soil_forkunit = create_forkunit(
         incorrect_soil_road, good=fertile_text, bad=infertile_text
     )
@@ -239,11 +240,11 @@ def test_ConcernUnit_set_reason_RaisesDouble_economy_id_SubjectErrorCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     texas_economy_id = texas_economyaddress.economy_id
-    food_road = get_road(texas_economy_id, "food")
+    food_road = create_road(texas_economy_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
-    cultivate_road = get_road(texas_economy_id, "cultivate")
+    cultivate_road = create_road(texas_economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -254,7 +255,7 @@ def test_ConcernUnit_set_reason_RaisesDouble_economy_id_SubjectErrorCorrectly():
     )
 
     # WHEN / THEN
-    double_economy_id = get_road(texas_economy_id, texas_economy_id)
+    double_economy_id = create_road(texas_economy_id, texas_economy_id)
     double_economy_forkunit = create_forkunit(double_economy_id, farm_text, cheap_text)
     with pytest_raises(Exception) as excinfo:
         farm_concernunit.set_reason(double_economy_forkunit)
@@ -268,11 +269,11 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     texas_economy_id = texas_economyaddress.economy_id
-    food_road = get_road(texas_economy_id, "food")
+    food_road = create_road(texas_economy_id, "food")
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
-    cultivate_road = get_road(texas_economy_id, "cultivate")
+    cultivate_road = create_road(texas_economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -283,8 +284,8 @@ def test_ConcernUnit_set_action_SetsAttributesCorrectly():
     )
 
     # WHEN
-    home_road = get_road(texas_economyaddress.economy_id, "home")
-    cook_road = get_road(home_road, "cook")
+    home_road = create_road(texas_economyaddress.economy_id, "home")
+    cook_road = create_road(home_road, "cook")
     cook_forkunit = create_forkunit(cook_road, good="unsafe cook", bad="safe cook")
     farm_concernunit.set_action(cook_forkunit)
 
@@ -299,12 +300,12 @@ def test_ConcernUnit_get_str_summary_ReturnsCorrectObj():
     texas_economyaddress = create_economyaddress(luca_text, texas_text)
     texas_economy_id = texas_economyaddress.economy_id
     food_text = "food"
-    food_road = get_road(texas_economy_id, food_text)
+    food_road = create_road(texas_economy_id, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_text = "cultivate"
-    cultivate_road = get_road(texas_economy_id, cultivate_text)
+    cultivate_road = create_road(texas_economy_id, cultivate_text)
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -331,12 +332,12 @@ def test_ConcernUnit_get_forkunit_ideas_ReturnsCorrectObj():
     texas_economyaddress = create_economyaddress(luca_text, texas_text)
     texas_economy_id = texas_economyaddress.economy_id
     food_text = "food"
-    food_road = get_road(texas_economy_id, food_text)
+    food_road = create_road(texas_economy_id, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
     cultivate_text = "cultivate"
-    cultivate_road = get_road(texas_economy_id, cultivate_text)
+    cultivate_road = create_road(texas_economy_id, cultivate_text)
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -352,13 +353,13 @@ def test_ConcernUnit_get_forkunit_ideas_ReturnsCorrectObj():
     # THEN
     print(f"{farm_forkunit_ideas.keys()=}")
     assert farm_forkunit_ideas.get(food_road) != None
-    farm_road = get_road(food_road, farm_text)
-    cheap_road = get_road(food_road, cheap_text)
+    farm_road = create_road(food_road, farm_text)
+    cheap_road = create_road(food_road, cheap_text)
     assert farm_forkunit_ideas.get(farm_road)
     assert farm_forkunit_ideas.get(cheap_road)
     assert farm_forkunit_ideas.get(cultivate_road)
-    well_road = get_road(cultivate_road, well_text)
-    poor_road = get_road(cultivate_road, poor_text)
+    well_road = create_road(cultivate_road, well_text)
+    poor_road = create_road(cultivate_road, poor_text)
     assert farm_forkunit_ideas.get(well_road)
     assert farm_forkunit_ideas.get(poor_road)
 
@@ -367,11 +368,11 @@ def test_create_concernunit_CorrectlyCreatesObj():
     # GIVEN
     texas_economyaddress = create_economyaddress("Luca", "Texas")
     food_text = "food"
-    food_road = get_road(texas_economyaddress.economy_id, food_text)
+    food_road = create_road(texas_economyaddress.economy_id, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
     food_forkunit = create_forkunit(food_road, good=farm_text, bad=cheap_text)
-    cultivate_road = get_road(texas_economyaddress.economy_id, "cultivate")
+    cultivate_road = create_road(texas_economyaddress.economy_id, "cultivate")
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
     cultivate_forkunit = create_forkunit(cultivate_road, good=well_text, bad=poor_text)
@@ -395,13 +396,13 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
 
     enjoy_text = "enjoying life"
     food_text = "food"
-    texas_no_food_road = get_road(enjoy_text, food_text)
+    texas_no_food_road = create_road(enjoy_text, food_text)
     farm_text = "farm food"
     cheap_text = "cheap food"
 
     work_text = "working"
     cultivate_text = "cultivate"
-    texas_no_cultivate_road = get_road(work_text, cultivate_text)
+    texas_no_cultivate_road = create_road(work_text, cultivate_text)
     well_text = "cultivate well"
     poor_text = "cultivate poorly"
 
@@ -418,15 +419,15 @@ def test_create_concernunit_CorrectlyCreatesObjWithCorrect_delimiter():
 
     # THEN
     assert farm_concernunit.economyaddress == texas_economyaddress
-    texas_yes_enjoy_road = get_road(texas_economyaddress.economy_id, enjoy_text)
-    texas_yes_food_road = get_road(texas_yes_enjoy_road, food_text)
+    texas_yes_enjoy_road = create_road(texas_economyaddress.economy_id, enjoy_text)
+    texas_yes_food_road = create_road(texas_yes_enjoy_road, food_text)
     texas_yes_food_forkunit = create_forkunit(
         texas_yes_food_road, farm_text, cheap_text
     )
     assert farm_concernunit.reason == texas_yes_food_forkunit
 
-    texas_yes_work_road = get_road(texas_economyaddress.economy_id, work_text)
-    texas_yes_cultivate_road = get_road(texas_yes_work_road, cultivate_text)
+    texas_yes_work_road = create_road(texas_economyaddress.economy_id, work_text)
+    texas_yes_cultivate_road = create_road(texas_yes_work_road, cultivate_text)
     texas_yes_cultivate_forkunit = create_forkunit(
         texas_yes_cultivate_road, well_text, poor_text
     )

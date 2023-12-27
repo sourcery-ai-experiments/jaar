@@ -96,14 +96,14 @@ class WorldUnit:
         # for every idea in concernunit set idea attributes to requester_contract
         x_reason = x_requestunit._concernunit.reason
         for x_idea in concernunit_ideas.values():
-            idea_road = x_idea.get_idea_road()
+            idea_road = x_idea.get_road()
             requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
             for x_balancelink in x_balancelinks.values():
                 requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
         # if idea is promise set the promise requiredunits
         for x_idea in concernunit_ideas.values():
-            idea_road = x_idea.get_idea_road()
+            idea_road = x_idea.get_road()
             if x_idea.promise:
                 requester_contract.edit_idea_attr(
                     idea_road,

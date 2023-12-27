@@ -1,4 +1,4 @@
-from src.agenda.road import get_road
+from src.agenda.road import create_road
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_economy_id,
@@ -22,11 +22,11 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
 
     casa_text = "casa"
     basket_text = "laundry basket status"
-    basket_road = get_road(road_nodes=[x_economy.economy_id, casa_text, basket_text])
+    basket_road = create_road(road_nodes=[x_economy.economy_id, casa_text, basket_text])
     b_full_text = "full"
-    b_full_road = get_road(basket_road, b_full_text)
+    b_full_road = create_road(basket_road, b_full_text)
     b_bare_text = "bare"
-    b_bare_road = get_road({basket_road}, {b_bare_text})
+    b_bare_road = create_road({basket_road}, {b_bare_text})
     # set basket status to "bare"
     contract_x = amer_clerk.get_contract().set_acptfact(
         base=basket_road, pick=b_bare_road
@@ -69,10 +69,10 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     # print(f"{len(new_cali_agenda._idearoot._acptfactunits.keys())=}")
     assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
-    laundry_task_road = get_road(
+    laundry_task_road = create_road(
         road_nodes=[x_economy.economy_id, casa_text, laundry_task_text]
     )
-    assert new_cali_agenda.get_intent_items()[0].get_idea_road() == laundry_task_road
+    assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
 
 
 def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
@@ -91,13 +91,13 @@ def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     beto_clerk.set_contract(laundry_agenda)
 
     casa_text = "casa"
-    casa_road = get_road(x_economy.economy_id, casa_text)
+    casa_road = create_road(x_economy.economy_id, casa_text)
     basket_text = "laundry basket status"
-    basket_road = get_road(casa_road, basket_text)
+    basket_road = create_road(casa_road, basket_text)
     b_full_text = "full"
-    b_full_road = get_road(basket_road, b_full_text)
+    b_full_road = create_road(basket_road, b_full_text)
     b_bare_text = "bare"
-    b_bare_road = get_road(basket_road, b_bare_text)
+    b_bare_road = create_road(basket_road, b_bare_text)
 
     # amer public laundry acptfact as "full"
     amer_contract_x = amer_clerk.get_contract().set_acptfact(basket_road, b_full_road)

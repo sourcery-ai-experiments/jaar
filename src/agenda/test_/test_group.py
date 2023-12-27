@@ -11,7 +11,7 @@ from src.agenda.group import (
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src.agenda.road import get_default_economy_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, create_road
 from src.agenda.x_func import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
@@ -44,8 +44,8 @@ def test_GroupUnit_exists():
 def test_groupunit_shop_ReturnsCorrectObj():
     # GIVEN
     swimmers = "swimmers"
-    nation_road = get_road(root_label(), "nation-states")
-    usa_road = get_road(nation_road, "USA")
+    nation_road = create_road(root_label(), "nation-states")
+    usa_road = create_road(nation_road, "USA")
 
     # WHEN
     swimmers_group = groupunit_shop(
@@ -90,8 +90,8 @@ def test_GroupUnit_set_attr_WorksCorrectly():
     assert swim_group._partylinks_set_by_economy_road is None
 
     # WHEN
-    sports_road = get_road(root_label(), "sports")
-    water_road = get_road(sports_road, "water")
+    sports_road = create_road(root_label(), "sports")
+    water_road = create_road(sports_road, "water")
     swim_group.set_attr(_partylinks_set_by_economy_road=water_road)
 
     # THEN
@@ -101,8 +101,8 @@ def test_GroupUnit_set_attr_WorksCorrectly():
 def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_economy_road():
     # GIVEN
     swimmers = "swimmers"
-    nation_road = get_road(root_label(), "nation-states")
-    usa_road = get_road(nation_road, "USA")
+    nation_road = create_road(root_label(), "nation-states")
+    usa_road = create_road(nation_road, "USA")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:

@@ -31,8 +31,8 @@ from src.agenda.road import (
     RoadNode,
     is_sub_road,
     get_default_economy_root_label as root_label,
-    get_road as road_get_road,
-    get_road_delimiter,
+    create_road as road_create_road,
+    default_road_delimiter_if_none,
     replace_road_delimiter,
 )
 from src.agenda.group import (
@@ -405,24 +405,13 @@ class IdeaCore:
             )
         ]
 
-    def create_road(
-        self,
-        roud_foundation: RoadUnit = None,
-        terminus_node: RoadNode = None,
-        road_nodes: list[RoadNode] = None,
-    ):
-        return road_get_road(
-            roud_foundation=roud_foundation,
-            terminus_node=terminus_node,
-            road_nodes=road_nodes,
-            delimiter=self._road_delimiter,
-        )
-
-    def get_idea_road(self) -> RoadUnit:
+    def get_road(self) -> RoadUnit:
         if self._pad in (None, ""):
-            return self.create_road(self._label)
+            return road_create_road(self._label, delimiter=self._road_delimiter)
         else:
-            return self.create_road(self._pad, self._label)
+            return road_create_road(
+                self._pad, self._label, delimiter=self._road_delimiter
+            )
 
     def clear_descendant_promise_count(self):
         self._descendant_promise_count = None
@@ -438,13 +427,13 @@ class IdeaCore:
         max_count = 1000
         while to_evaluate_ideas != [] and count_x < max_count:
             x_idea = to_evaluate_ideas.pop()
-            descendant_roads[x_idea.get_idea_road()] = -1
+            descendant_roads[x_idea.get_road()] = -1
             to_evaluate_ideas.extend(x_idea._kids.values())
             count_x += 1
 
         if count_x == max_count:
             raise IdeaGetDescendantsException(
-                f"Idea '{self.get_idea_road()}' either has an infinite loop or more than {max_count} descendants."
+                f"Idea '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
             )
 
         return descendant_roads
@@ -472,9 +461,11 @@ class IdeaCore:
         elif parent_road == "" and parent_label != None:
             self._pad = parent_label
         elif parent_road != "" and parent_label in ("", None):
-            self._pad = self.create_road(parent_road)
+            self._pad = road_create_road(parent_road, delimiter=self._road_delimiter)
         else:
-            self._pad = self.create_road(parent_road, parent_label)
+            self._pad = road_create_road(
+                parent_road, parent_label, delimiter=self._road_delimiter
+            )
 
     def inherit_balanceheirs(
         self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
@@ -561,8 +552,8 @@ class IdeaCore:
     def set_road_delimiter(self, new_road_delimiter: str):
         old_delimiter = deepcopy(self._road_delimiter)
         if old_delimiter is None:
-            old_delimiter = get_road_delimiter()
-        self._road_delimiter = get_road_delimiter(new_road_delimiter)
+            old_delimiter = default_road_delimiter_if_none()
+        self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
         if old_delimiter != self._road_delimiter:
             self._find_replace_road_delimiter(old_delimiter)
 
@@ -697,7 +688,7 @@ class IdeaCore:
             attrs = to_be_equal_attributes.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self.get_idea_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_idea_road()} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrFilter):
@@ -839,7 +830,7 @@ class IdeaCore:
             # if idea_kid._reest != None:
             if self._begin is None or self._close is None:
                 raise InvalidIdeaException(
-                    f"Idea {idea_kid.get_idea_road()} cannot have numor,denom,reest if parent does not have begin/close range"
+                    f"Idea {idea_kid.get_road()} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
             idea_kid._begin = self._begin * idea_kid._numor / idea_kid._denom
@@ -1179,7 +1170,7 @@ def ideacore_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
-        _road_delimiter=get_road_delimiter(_road_delimiter),
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_ideakid.set_assignedunit_empty_if_null()
     x_ideakid.set_originunit_empty_if_null()
@@ -1302,7 +1293,7 @@ def idearoot_shop(
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
-        _road_delimiter=get_road_delimiter(_road_delimiter),
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     if x_idearoot._label is None:
         x_idearoot.set_idea_label(_label=root_label())

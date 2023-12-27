@@ -50,7 +50,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenAcptFactSaysNo():
     assert len(idea_list) == 17
 
     # for idea in x_agenda._idea_dict.values():
-    #     print(f"{work_road=} {idea.get_idea_road()=}")
+    #     print(f"{work_road=} {idea.get_road()=}")
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
     assert x_agenda._idea_dict.get(work_road)._active_status == False
@@ -169,7 +169,7 @@ def test_agenda_get_idea_list_returns_correct_list():
 
     # THEN
     work_idea = x_agenda._idea_dict.get(work_road)
-    print(f"\nlook at {work_idea.get_idea_road()=}")
+    print(f"\nlook at {work_idea.get_road()=}")
     assert work_idea._pad == x_agenda._economy_id
     assert work_idea._kids == {}
     assert work_idea._weight == 30
@@ -605,7 +605,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
     # for idea in idea_list:
     #     # print(f"{idea._pad=}")
     #     if idea._label == "clean sheets couch blankets":
-    #         print(f"{idea.get_idea_road()=}")
+    #         print(f"{idea.get_road()=}")
 
     assert sufffact_divisor == 6
     assert sufffact_open == 1

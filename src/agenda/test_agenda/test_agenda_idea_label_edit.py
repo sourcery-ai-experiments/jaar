@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from pytest import raises as pytest_raises
 from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
-from src.agenda.road import get_default_economy_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, create_road
 
 
 def test_idea_label_fails_when_idea_does_not_exist():
@@ -401,22 +401,24 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_pad():
     comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
     cook_idea = luca_agenda.get_idea_kid(comma_cook_road)
     comma_text = ","
-    comma_cook_road = get_road(comma_work_road, cook_text, delimiter=comma_text)
+    comma_cook_road = create_road(comma_work_road, cook_text, delimiter=comma_text)
     # print(f"{luca_agenda._economy_id=} {luca_agenda._idearoot._label=} {work_road=}")
     # print(f"{cook_idea._pad=} {cook_idea._label=}")
     # comma_work_idea = luca_agenda.get_idea_kid(comma_work_road)
     # print(f"{comma_work_idea._pad=} {comma_work_idea._label=}")
-    assert cook_idea.get_idea_road() == comma_cook_road
+    assert cook_idea.get_road() == comma_cook_road
 
     # WHEN
     slash_text = "/"
     luca_agenda.set_road_delimiter(slash_text)
 
     # THEN
-    assert cook_idea.get_idea_road() != comma_cook_road
-    slash_work_road = get_road(luca_agenda._economy_id, work_text, delimiter=slash_text)
-    slash_cook_road = get_road(slash_work_road, cook_text, delimiter=slash_text)
-    assert cook_idea.get_idea_road() == slash_cook_road
+    assert cook_idea.get_road() != comma_cook_road
+    slash_work_road = create_road(
+        luca_agenda._economy_id, work_text, delimiter=slash_text
+    )
+    slash_cook_road = create_road(slash_work_road, cook_text, delimiter=slash_text)
+    assert cook_idea.get_road() == slash_cook_road
 
 
 def test_agenda_set_road_delimiter_CorrectlyChangesRequiredUnit():

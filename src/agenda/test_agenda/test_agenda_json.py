@@ -1,4 +1,4 @@
-from src.agenda.road import get_road_delimiter, get_road
+from src.agenda.road import default_road_delimiter_if_none, create_road
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideacore_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -351,14 +351,14 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
     # GIVEN
     slash_delimiter = "/"
     a_bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_delimiter)
-    assert a_bob_agenda._road_delimiter != get_road_delimiter()
+    assert a_bob_agenda._road_delimiter != default_road_delimiter_if_none()
 
     # WHEN
     bob_json = a_bob_agenda.get_json()
     b_bob_agenda = agenda_get_from_json(bob_json)
 
     # THEN
-    assert b_bob_agenda._road_delimiter != get_road_delimiter()
+    assert b_bob_agenda._road_delimiter != default_road_delimiter_if_none()
     assert b_bob_agenda._road_delimiter == slash_delimiter
     assert b_bob_agenda._road_delimiter == a_bob_agenda._road_delimiter
 
@@ -420,8 +420,8 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     ccn2_agenda = ccn_dict_of_obj.get(x_agenda2._healer)
     assert ccn2_agenda._idearoot._label == x_agenda2._idearoot._label
     assert ccn2_agenda._idearoot._pad == x_agenda2._idearoot._pad
-    shave_road = get_road("A", "shave")
-    week_road = get_road("A", "weekdays")
+    shave_road = create_road("A", "shave")
+    week_road = create_road("A", "weekdays")
     assert ccn2_agenda.get_idea_kid(shave_road) == x_agenda2.get_idea_kid(shave_road)
     assert ccn2_agenda.get_idea_kid(week_road) == x_agenda2.get_idea_kid(week_road)
     assert ccn2_agenda._idearoot == x_agenda2._idearoot

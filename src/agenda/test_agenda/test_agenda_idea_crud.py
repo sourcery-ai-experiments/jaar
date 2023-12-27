@@ -4,7 +4,7 @@ from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src.agenda.road import get_road_delimiter
+from src.agenda.road import default_road_delimiter_if_none
 
 
 def test_root_has_kids():
@@ -115,7 +115,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
 def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     # GIVEN
     slash_text = "/"
-    assert slash_text != get_road_delimiter()
+    assert slash_text != default_road_delimiter_if_none()
     bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_text)
     work_text = "work"
     week_text = "week"

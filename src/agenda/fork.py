@@ -3,8 +3,8 @@ from src.agenda.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_road_delimiter,
-    get_road,
+    default_road_delimiter_if_none,
+    create_road,
 )
 from src.agenda.y_func import get_empty_dict_if_none
 
@@ -195,7 +195,7 @@ def forkunit_shop(
     return ForkUnit(
         base=base,
         prongs=get_empty_dict_if_none(prongs),
-        delimiter=get_road_delimiter(delimiter),
+        delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 
@@ -203,8 +203,8 @@ def create_forkunit(
     base: RoadUnit, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
     x_forkunit = forkunit_shop(base=base)
-    good_prongunit = prongunit_shop(get_road(base, good, delimiter=delimiter), 1)
-    bad_prongunit = prongunit_shop(get_road(base, bad, delimiter=delimiter), -1)
+    good_prongunit = prongunit_shop(create_road(base, good, delimiter=delimiter), 1)
+    bad_prongunit = prongunit_shop(create_road(base, bad, delimiter=delimiter), -1)
     x_forkunit.set_prong(good_prongunit)
     x_forkunit.set_prong(bad_prongunit)
     if x_forkunit.is_moral():

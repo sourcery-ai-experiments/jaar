@@ -8,7 +8,7 @@ class InvalidRoadUnitException(Exception):
 
 class RoadNode(str):
     def is_node(self, delimiter: str = None) -> bool:
-        return self.find(get_road_delimiter(delimiter)) == -1
+        return self.find(default_road_delimiter_if_none(delimiter)) == -1
         # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
@@ -16,7 +16,7 @@ class RoadUnit(str):  # Created to help track the concept
     pass
 
 
-def get_road_delimiter(delimiter: str = None) -> str:
+def default_road_delimiter_if_none(delimiter: str = None) -> str:
     return delimiter if delimiter != None else ","
 
 
@@ -36,7 +36,10 @@ def is_sub_road(ref_road: RoadUnit, sub_road: RoadUnit) -> bool:
 
 
 def is_heir_road(src: RoadUnit, heir: RoadUnit, delimiter: str = None) -> bool:
-    return src == heir or heir.find(f"{src}{get_road_delimiter(delimiter)}") == 0
+    return (
+        src == heir
+        or heir.find(f"{src}{default_road_delimiter_if_none(delimiter)}") == 0
+    )
 
 
 def find_replace_road_key_dict(
@@ -71,7 +74,7 @@ def find_replace_road_key_dict(
 
 
 def get_all_road_nodes(road: RoadUnit, delimiter: str = None) -> list[RoadNode]:
-    return road.split(get_road_delimiter(delimiter))
+    return road.split(default_road_delimiter_if_none(delimiter))
 
 
 def get_terminus_node_from_road(road: RoadUnit) -> RoadNode:
@@ -79,18 +82,18 @@ def get_terminus_node_from_road(road: RoadUnit) -> RoadNode:
 
 
 def get_pad_from_road(road: RoadUnit) -> RoadUnit:  # road without terminus node
-    return get_road_from_nodes(get_all_road_nodes(road=road)[:-1])
+    return create_road_from_nodes(get_all_road_nodes(road=road)[:-1])
 
 
-def get_road_without_root_node(
+def create_road_without_root_node(
     road: RoadUnit, delimiter: str = None
-) -> RoadUnit:  # road without terminus node
-    if road[:1] == get_road_delimiter(delimiter):
+) -> RoadUnit:  # road without terminus nodef
+    if road[:1] == default_road_delimiter_if_none(delimiter):
         raise InvalidRoadUnitException(
-            f"Cannot get_road_without_root_node of '{road}' because it has no root node."
+            f"Cannot create_road_without_root_node of '{road}' because it has no root node."
         )
-    road_without_root_node = get_road_from_nodes(get_all_road_nodes(road=road)[1:])
-    return f"{get_road_delimiter(delimiter)}{road_without_root_node}"
+    road_without_root_node = create_road_from_nodes(get_all_road_nodes(road=road)[1:])
+    return f"{default_road_delimiter_if_none(delimiter)}{road_without_root_node}"
 
 
 def get_root_node_from_road(road: RoadUnit, delimiter: str = None) -> RoadNode:
@@ -121,7 +124,7 @@ def get_ancestor_roads(road: RoadUnit) -> list[RoadUnit:None]:
     temp_roads = [temp_road]
     if nodes != []:
         while nodes != []:
-            temp_road = get_road(temp_road, nodes.pop(0))
+            temp_road = create_road(temp_road, nodes.pop(0))
             temp_roads.append(temp_road)
 
     x_roads = []
@@ -148,11 +151,11 @@ def get_default_economy_root_label() -> str:
     return "A"
 
 
-def get_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> RoadUnit:
-    return get_road_delimiter(delimiter).join(nodes)
+def create_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> RoadUnit:
+    return default_road_delimiter_if_none(delimiter).join(nodes)
 
 
-def get_road_from_road_and_node(
+def create_road_from_road_and_node(
     pad: RoadUnit, terminus_node: RoadNode, delimiter: str = None
 ) -> RoadUnit:
     if terminus_node is None:
@@ -161,11 +164,11 @@ def get_road_from_road_and_node(
         return RoadUnit(
             terminus_node
             if pad in {"", None}
-            else f"{pad}{get_road_delimiter(delimiter)}{terminus_node}"
+            else f"{pad}{default_road_delimiter_if_none(delimiter)}{terminus_node}"
         )
 
 
-def get_road(
+def create_road(
     roud_foundation: RoadUnit = None,
     terminus_node: RoadNode = None,
     road_nodes: list[RoadNode] = None,
@@ -175,20 +178,22 @@ def get_road(
     if roud_foundation != None and road_nodes in (None, []):
         x_road = roud_foundation
     if roud_foundation != None and road_nodes not in (None, []):
-        x_road = get_road(
+        x_road = create_road(
             roud_foundation=roud_foundation,
-            terminus_node=get_road_from_nodes(road_nodes, delimiter),
+            terminus_node=create_road_from_nodes(road_nodes, delimiter),
             delimiter=delimiter,
         )
     if roud_foundation is None and road_nodes not in (None, []):
-        x_road = get_road_from_nodes(road_nodes, delimiter=delimiter)
+        x_road = create_road_from_nodes(road_nodes, delimiter=delimiter)
     if terminus_node != None:
-        x_road = get_road_from_road_and_node(x_road, terminus_node, delimiter=delimiter)
+        x_road = create_road_from_road_and_node(
+            x_road, terminus_node, delimiter=delimiter
+        )
     return x_road
 
 
 def get_diff_road(x_road: RoadUnit, sub_road: RoadUnit, delimiter: str = None):
-    sub_road = f"{sub_road}{get_road_delimiter(delimiter)}"
+    sub_road = f"{sub_road}{default_road_delimiter_if_none(delimiter)}"
     return x_road.replace(sub_road, "")
 
 

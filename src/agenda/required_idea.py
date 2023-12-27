@@ -5,7 +5,7 @@ from src.agenda.road import (
     find_replace_road_key_dict,
     replace_road_delimiter,
     is_heir_road,
-    get_road_delimiter,
+    default_road_delimiter_if_none,
 )
 from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
@@ -376,7 +376,7 @@ def sufffactunit_shop(
         open=open,
         nigh=nigh,
         divisor=divisor,
-        delimiter=get_road_delimiter(delimiter),
+        delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 
@@ -492,7 +492,7 @@ def requiredcore_shop(
         base=base,
         sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
-        delimiter=get_road_delimiter(delimiter),
+        delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 
@@ -519,7 +519,7 @@ def requiredunit_shop(
         base=base,
         sufffacts=get_empty_dict_if_none(sufffacts),
         suff_idea_active_status=suff_idea_active_status,
-        delimiter=get_road_delimiter(delimiter),
+        delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 
@@ -606,7 +606,7 @@ def requiredheir_shop(
         _status=_status,
         _task=_task,
         _curr_idea_active_status=_curr_idea_active_status,
-        delimiter=get_road_delimiter(delimiter),
+        delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 

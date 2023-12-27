@@ -6,7 +6,7 @@ from src.agenda.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     RoadUnit,
 )
-from src.agenda.road import get_default_economy_root_label as root_label, get_road
+from src.agenda.road import get_default_economy_root_label as root_label, create_road
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy
@@ -80,9 +80,9 @@ def custom_set_idea_attr(
 def test_idea_required_meld_BaseScenarioWorks():
     # GIVEN
     ball_text = "ball"
-    ball_road = get_road(root_label(), ball_text)
+    ball_road = create_road(root_label(), ball_text)
     run_text = "run"
-    run_road = get_road(ball_road, run_text)
+    run_road = create_road(ball_road, run_text)
     required_base_x1 = run_road
 
     _label_text = "spirit"
@@ -115,11 +115,11 @@ def test_idea_required_meld_BaseScenarioWorks():
 def test_idea_required_meld_TwoRequiredsScenarioWorks():
     # GIVEN
     ball_text = "ball"
-    ball_road = get_road(root_label(), ball_text)
+    ball_road = create_road(root_label(), ball_text)
     run_text = "run"
-    run_road = get_road(ball_road, run_text)
+    run_road = create_road(ball_road, run_text)
     swim_text = "swim"
-    swim_road = get_road(ball_road, swim_text)
+    swim_road = create_road(ball_road, swim_text)
     required_base_x1 = run_road
     required_base_x2 = swim_road
 
@@ -150,11 +150,11 @@ def test_idea_required_meld_TwoRequiredsScenarioWorks():
 def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     # GIVEN
     ball_text = "ball"
-    ball_road = get_road(root_label(), ball_text)
+    ball_road = create_road(root_label(), ball_text)
     run_text = "run"
-    run_road = get_road(ball_road, run_text)
+    run_road = create_road(ball_road, run_text)
     swim_text = "swim"
-    swim_road = get_road(ball_road, swim_text)
+    swim_road = create_road(ball_road, swim_text)
     required_base_x1 = run_road
     required_base_x2 = swim_road
 
@@ -274,9 +274,9 @@ def test_idea_balancelink_meld_TwoGroupsScenarioWorks():
 def test_idea_acptfactunits_meld_BaseScenarioWorks():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     casa_text = "casa"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
     yx1 = ideacore_shop("spirit", _pad=casa_text)
@@ -298,11 +298,11 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
 def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     plate_text = "plate"
-    plate_road = get_road(tech_road, plate_text)
+    plate_road = create_road(tech_road, plate_text)
     casa_text = "casa"
 
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
@@ -325,11 +325,11 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
 def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     # GIVEN
     tech_text = "tech"
-    tech_road = get_road(root_label(), tech_text)
+    tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
-    bowl_road = get_road(tech_road, bowl_text)
+    bowl_road = create_road(tech_road, bowl_text)
     plate_text = "plate"
-    plate_road = get_road(tech_road, plate_text)
+    plate_road = create_road(tech_road, plate_text)
 
     uid_x = "uid1xx"
     all_party_credit_x = "am_cx"
@@ -404,9 +404,9 @@ def test_idea_attributes_meld_FailRaisesError_uid():
     yx2 = ideacore_shop("fun", _pad=casa_text)
 
     # WHEN/THEN
-    error_message = f"Meld fail idea={yx1.get_idea_road()} {x_pid}:{x_val} with {yx2.get_idea_road()} {x_pid}:None"
+    error_message = f"Meld fail idea={yx1.get_road()} {x_pid}:{x_val} with {yx2.get_road()} {x_pid}:None"
 
-    huh_text = f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+    huh_text = f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     print(f"{error_message=}")
 
     with pytest_raises(Exception) as excinfo:
@@ -415,7 +415,7 @@ def test_idea_attributes_meld_FailRaisesError_uid():
     assert str(excinfo.value) == error_message
     assert str(excinfo.value) == huh_text
 
-    # == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+    # == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
 
 
 def test_idea_attributes_meld_FailRaisesError_begin():
@@ -431,7 +431,7 @@ def test_idea_attributes_meld_FailRaisesError_begin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -448,7 +448,7 @@ def test_idea_attributes_meld_FailRaisesError_close():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -466,7 +466,7 @@ def test_idea_attributes_meld_FailRaisesError_addin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -483,7 +483,7 @@ def test_idea_attributes_meld_FailRaisesError_denom():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -500,7 +500,7 @@ def test_idea_attributes_meld_FailRaisesError_numor():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -517,7 +517,7 @@ def test_idea_attributes_meld_FailRaisesError_reest():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -534,7 +534,7 @@ def test_idea_attributes_meld_FailRaisesError_range_source_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -551,7 +551,7 @@ def test_idea_attributes_meld_FailRaisesError_numeric_road():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
     )
 
 
@@ -568,7 +568,7 @@ def test_idea_attributes_meld_FailRaisesError_action():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad, yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad, yx2._label)} {x_pid}:False"
+        == f"Meld fail idea={create_road(yx1._pad, yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad, yx2._label)} {x_pid}:False"
     )
 
 
@@ -588,7 +588,7 @@ def test_idea_attributes_meld_FailRaisesError_action():
 #         yx1.meld(yx2)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:None"
+#         == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
 #     )
 
 
@@ -607,7 +607,7 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={get_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {get_road(yx2._pad,yx2._label)} {x_pid}:True"
+        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:True"
     )
 
 

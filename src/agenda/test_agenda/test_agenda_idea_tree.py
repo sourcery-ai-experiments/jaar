@@ -323,7 +323,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
 
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._agenda_importance
-    #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_idea_road()=}")
+    #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_road()=}")
     assert round(sandy_balanceline._agenda_credit, 15) == 1
     assert round(sandy_balanceline._agenda_debt, 15) == 1
     x_balanceline = balanceline_shop(

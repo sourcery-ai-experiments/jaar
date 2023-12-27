@@ -1,4 +1,4 @@
-from src.agenda.road import get_road_delimiter
+from src.agenda.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.x_func import delete_dir as x_func_delete_dir
 from src.economy.clerk import clerkunit_shop, clerkUnit
@@ -49,7 +49,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     assert x_clerk._clerk_cid != None
     assert x_clerk._economy_id != None
     assert x_clerk._economy_id == get_temp_economy_id()
-    assert x_clerk._road_delimiter == get_road_delimiter()
+    assert x_clerk._road_delimiter == default_road_delimiter_if_none()
     assert x_clerk._contract != None
     assert x_clerk._contract._economy_id == get_temp_economy_id()
 
@@ -117,7 +117,7 @@ def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
         env_dir=get_temp_clerkunit_dir(),
         clerk_cid="Tim",
         economy_id=get_temp_economy_id(),
-        _road_delimiter=get_road_delimiter(slash_text),
+        _road_delimiter=default_road_delimiter_if_none(slash_text),
     )
     tim_clerk.set_dirs()
     tim_clerk.create_core_dir_and_files()
