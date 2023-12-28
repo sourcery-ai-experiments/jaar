@@ -999,7 +999,8 @@ class AgendaUnit:
         pad: RoadUnit,
         create_missing_ideas_groups: bool = None,
         adoptees: list[str] = None,
-        bundling=True,
+        bundling: bool = True,
+        create_missing_ancestors: bool = True,
     ):
         x_road = create_road(pad, idea_kid._label, delimiter=self._road_delimiter)
         if self._idearoot._label != get_root_node_from_road(
@@ -1010,33 +1011,21 @@ class AgendaUnit:
             )
 
         idea_kid._road_delimiter = self._road_delimiter
-
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
 
-        pad = road_validate(pad, self._road_delimiter, self._economy_id)
-        x_idea = self._idearoot
-        pad_nodes = get_all_road_nodes(pad, delimiter=self._road_delimiter)
-        temp_road = pad_nodes.pop(0)
+        idea_kid.set_pad(parent_road=pad)
+        idea_kid.set_road_delimiter(self._road_delimiter)
 
-        # idearoot cannot be replaced
-        if temp_road == self._economy_id and pad_nodes == []:
-            idea_kid.set_pad(parent_road=self._economy_id)
-        else:
-            road_nodes = [temp_road]
-            while pad_nodes != []:
-                temp_road = pad_nodes.pop(0)
-                x_idea = self._get_or_create_leveln_idea(
-                    parent_idea=x_idea, idea_label=temp_road
-                )
-                x_idea._road_delimiter = self._road_delimiter
-                road_nodes.append(temp_road)
-            idea_kid.set_pad(parent_road=pad)
-        idea_kid._road_delimiter = self._road_delimiter
-        x_idea.add_kid(idea_kid)
+        # create any missing ideas
+        if not create_missing_ancestors and self.idea_exists(pad) == False:
+            raise InvalidAgendaException(
+                f"add_idea failed because '{pad}' idea does not exist."
+            )
+        pad_idea = self._get_or_create_idea(x_road=pad)
+        pad_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(pad, idea_kid._label)
-
         if adoptees != None:
             weight_sum = 0
             for adoptee_label in adoptees:
@@ -1106,18 +1095,13 @@ class AgendaUnit:
             )
             self.add_idea(base_idea, pad=base_idea._pad)
 
-    def _get_or_create_leveln_idea(
-        self, parent_idea: IdeaCore, idea_label: str
-    ) -> IdeaCore:
-        return_idea = None
-        try:
-            return_idea = parent_idea._kids[idea_label]
-        except Exception:
-            KeyError
-            parent_idea.add_kid(ideacore_shop(idea_label))
-            return_idea = parent_idea._kids[idea_label]
-
-        return return_idea
+    def _get_or_create_idea(self, x_road: RoadUnit) -> IdeaCore:
+        pad_nodes = get_all_road_nodes(x_road, delimiter=self._road_delimiter)
+        pad_nodes.pop(0)
+        pad_idea = self._idearoot
+        while pad_nodes != []:
+            pad_idea = pad_idea.get_kid(pad_nodes.pop(0), if_missing_create=True)
+        return pad_idea
 
     def del_idea_kid(self, road: RoadUnit, del_children: bool = True):
         if road == self._idearoot.get_road():

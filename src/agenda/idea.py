@@ -839,8 +839,16 @@ class IdeaCore:
         self._kids[idea_kid._label] = idea_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def get_kid(self, idea_kid_label: RoadNode):
-        return self._kids.get(idea_kid_label)
+    def get_kid(self, idea_kid_label: RoadNode, if_missing_create=False):
+        if if_missing_create == False:
+            return self._kids.get(idea_kid_label)
+        try:
+            return self._kids[idea_kid_label]
+        except Exception:
+            KeyError
+            self.add_kid(ideacore_shop(idea_kid_label))
+            return_idea = self._kids.get(idea_kid_label)
+        return return_idea
 
     def del_kid(self, idea_kid_label: RoadNode):
         self._kids.pop(idea_kid_label)

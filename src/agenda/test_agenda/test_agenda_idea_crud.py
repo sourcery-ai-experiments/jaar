@@ -24,6 +24,23 @@ def test_agenda_add_idea_RaisesErrorWhen_pad_IsInvalid():
     )
 
 
+def test_agenda_add_idea_RaisesErrorWhen_pad_IdeaDoesNotExist():
+    # GIVEN
+    x_agenda = agendaunit_shop(_healer="prom")
+    swim_road = x_agenda.make_l1_road("swimming")
+    work_text = "work"
+
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        x_agenda.add_idea(
+            ideacore_shop(work_text), pad=swim_road, create_missing_ancestors=False
+        )
+    assert (
+        str(excinfo.value)
+        == f"add_idea failed because '{swim_road}' idea does not exist."
+    )
+
+
 def test_agenda_idea_kid_CanHaveKids():
     # GIVEN / WHEN
     x_agenda = get_agenda_with_4_levels()
