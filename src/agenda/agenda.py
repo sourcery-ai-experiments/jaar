@@ -1669,11 +1669,11 @@ class AgendaUnit:
         x_idearoot._kids_total_weight = 0
         x_idearoot.set_kids_total_weight()
         x_idearoot.set_sibling_total_weight(1)
-        # x_idearoot.set_active_status(
-        #     tree_traverse_count=self._tree_traverse_count,
-        #     agenda_groups=self._groups,
-        #     agenda_healer=self._healer,
-        # )
+        x_idearoot.set_active_status(
+            tree_traverse_count=self._tree_traverse_count,
+            agenda_groupunits=self._groups,
+            agenda_healer=self._healer,
+        )
         x_idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
         x_idearoot.set_balanceheirs_agenda_credit_debt()
         x_idearoot.set_ancestor_promise_count(0, False)

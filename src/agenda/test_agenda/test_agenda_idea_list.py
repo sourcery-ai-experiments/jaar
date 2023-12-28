@@ -510,36 +510,44 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     tue_text = "Tuesday"
     tue_road = x_agenda.make_road(week_road, tue_text)
     mon_sufffact_x = sufffactunit_shop(need=mon_road)
+    mon_sufffact_x._status = False
+    mon_sufffact_x._task = False
     tue_sufffact_x = sufffactunit_shop(need=tue_road)
+    tue_sufffact_x._status = False
+    tue_sufffact_x._task = False
     mt_sufffacts = {
         mon_sufffact_x.need: mon_sufffact_x,
         tue_sufffact_x.need: tue_sufffact_x,
     }
-    mt_required = requiredunit_shop(week_road, sufffacts=mt_sufffacts)
-    mt_required_x = requiredheir_shop(week_road, sufffacts=mt_sufffacts)
-    x_agenda._idearoot.set_required_unit(required=mt_required)
+    mt_requiredunit = requiredunit_shop(week_road, sufffacts=mt_sufffacts)
+    mt_requiredheir = requiredheir_shop(
+        week_road, sufffacts=mt_sufffacts, _status=False
+    )
+    x_idearoot = x_agenda.get_idea_obj(x_agenda._economy_id)
+    x_idearoot.set_required_unit(required=mt_requiredunit)
     # print(f"{x_agenda._requiredunits[week_road].base=}")
     # print(f"{x_agenda._requiredunits[week_road].sufffacts[mon_road].need=}")
     # print(f"{x_agenda._requiredunits[week_road].sufffacts[tue_road].need=}")
-    print(f"{x_agenda._idearoot._requiredunits[week_road].sufffacts=}")
-    sufffact_mon = x_agenda._idearoot._requiredunits[week_road].sufffacts.get(mon_road)
-    sufffact_tue = x_agenda._idearoot._requiredunits[week_road].sufffacts.get(tue_road)
+    week_requiredunit = x_idearoot._requiredunits[week_road]
+    print(f"{week_requiredunit.sufffacts=}")
+    sufffact_mon = week_requiredunit.sufffacts.get(mon_road)
+    sufffact_tue = week_requiredunit.sufffacts.get(tue_road)
     assert sufffact_mon
-    assert sufffact_mon == mt_required.sufffacts[sufffact_mon.need]
+    assert sufffact_mon == mt_requiredunit.sufffacts[sufffact_mon.need]
     assert sufffact_tue
-    assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
-    assert x_agenda._idearoot._requiredunits[week_road] == mt_required
+    assert sufffact_tue == mt_requiredunit.sufffacts[sufffact_tue.need]
+    assert week_requiredunit == mt_requiredunit
 
     # WHEN
     idea_list = x_agenda.get_idea_list()
 
     # THEN
-    assert sufffact_mon
-    assert sufffact_mon == mt_required.sufffacts[sufffact_mon.need]
-    assert sufffact_tue
-    assert sufffact_tue == mt_required.sufffacts[sufffact_tue.need]
-
-    assert x_agenda._idearoot._requiredheirs[week_road] == mt_required_x
+    gen_week_requiredheir = x_idearoot.get_requiredheir(week_road)
+    gen_mon_sufffact = gen_week_requiredheir.sufffacts.get(mon_road)
+    assert gen_mon_sufffact._status == mt_requiredheir.sufffacts.get(mon_road)._status
+    assert gen_mon_sufffact == mt_requiredheir.sufffacts.get(mon_road)
+    assert gen_week_requiredheir.sufffacts == mt_requiredheir.sufffacts
+    assert gen_week_requiredheir == mt_requiredheir
 
     casa_text = "casa"
     casa_road = x_agenda.make_l1_road(casa_text)
@@ -549,9 +557,9 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
 
     x_agenda.set_acptfact(base=week_road, pick=mon_road)
     idea_list = x_agenda.get_idea_list()
-    casa_idea = x_agenda._idearoot._kids[casa_text]
+    casa_idea = x_idearoot._kids[casa_text]
     twee_idea = casa_idea._kids[bird_text]
-    print(f"{len(x_agenda._idearoot._requiredheirs)=}")
+    print(f"{len(x_idearoot._requiredheirs)=}")
     print(f"{len(casa_idea._requiredheirs)=}")
     print(f"{len(twee_idea._requiredheirs)=}")
 
@@ -695,8 +703,7 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     #     assert idea._active_status in (True, False)
     # assert idea_kid_count == len(idea_list_without_idearoot)
 
-    assert len(idea_list) - 1 == sum(idea._active_status != None for idea in idea_list)
-    assert 1 == sum(idea._active_status is None for idea in idea_list)
+    assert len(idea_list) == sum(idea._active_status != None for idea in idea_list)
 
 
 def test_exammple_idea_list_EveryOtherMonthWorks():
