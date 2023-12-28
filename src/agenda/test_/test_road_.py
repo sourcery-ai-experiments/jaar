@@ -5,7 +5,7 @@ from src.agenda.road import (
     get_all_road_nodes,
     get_terminus_node_from_road,
     find_replace_road_key_dict,
-    get_pad_from_road,
+    get_parent_road_from_road,
     create_road_without_root_node,
     get_root_node_from_road,
     road_validate,
@@ -185,7 +185,7 @@ def test_road_get_root_node_from_road_CorrectlyReturnsRoadNode():
     assert get_root_node_from_road(roses_road) == healer_text
 
 
-def test_road_get_pad_from_road_works():
+def test_road_get_parent_road_from_road_works():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     healer_text = "healer"
@@ -196,10 +196,10 @@ def test_road_get_pad_from_road_works():
     roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN/THENs
-    assert get_pad_from_road(road=root_label()) == ""
-    assert get_pad_from_road(road=healer_road) == root_label()
-    assert get_pad_from_road(road=bloomers_road) == healer_road
-    assert get_pad_from_road(road=roses_road) == bloomers_road
+    assert get_parent_road_from_road(road=root_label()) == ""
+    assert get_parent_road_from_road(road=healer_road) == root_label()
+    assert get_parent_road_from_road(road=bloomers_road) == healer_road
+    assert get_parent_road_from_road(road=roses_road) == bloomers_road
 
 
 def test_road_create_road_without_root_node_WorksCorrectly():

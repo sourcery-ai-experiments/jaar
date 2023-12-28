@@ -129,7 +129,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_action_cb.setHidden(setHiddenBool)
         self.yo_problem_bool_cb.setHidden(setHiddenBool)
         self.yo_deescription.setHidden(setHiddenBool)
-        self.yo_pad.setHidden(setHiddenBool)
+        self.yo_parent_road.setHidden(setHiddenBool)
         self.yo_weight.setHidden(setHiddenBool)
         self.yo_begin.setHidden(setHiddenBool)
         self.yo_addin.setHidden(setHiddenBool)
@@ -226,10 +226,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.x_idea_populate()
 
     def x_idea_populate(self):
-        self.label_parent_id.setText(f"Current Node road : {self.x_idea._pad}")
+        self.label_parent_id.setText(f"Current Node road : {self.x_idea._parent_road}")
         self.yo_deescription.setText(self.x_idea._label)
         # self.idea_label_on_populate = self.x_idea._label
-        self.yo_pad.setText(self.x_idea._pad)
+        self.yo_parent_road.setText(self.x_idea._parent_road)
         self.yo_weight.setText(num2str(self.x_idea._weight))
         self.yo_begin.setText(num2str(self.x_idea._begin))
         self.yo_range_source_road.clear()
@@ -264,9 +264,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def yo_tree_item_selected(self):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
-        idea_pad = self.baseideaunit.currentItem().data(2, 11)
-        if idea_pad not in ("", None):
-            self.x_idea = self.agenda_x.get_idea_obj(road=f"{idea_pad},{idea_label}")
+        idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
+        if idea_parent_road not in ("", None):
+            self.x_idea = self.agenda_x.get_idea_obj(
+                road=f"{idea_parent_road},{idea_label}"
+            )
         else:
             self.x_idea = self.agenda_x._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
@@ -377,7 +379,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(open_kids) == 1:
                 idea_x = open_kids[0]
                 self.required_sufffact_open_combo.setCurrentText(
-                    f"{idea_x._pad},{idea_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def set_sufffact_nigh_combo(self):
@@ -397,7 +399,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(nigh_kids) == 1:
                 idea_x = nigh_kids[0]
                 self.required_sufffact_nigh_combo.setCurrentText(
-                    f"{idea_x._pad},{idea_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def set_sufffact_divisor_combo(self):
@@ -419,7 +421,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             if len(divisor_kids) == 1:
                 idea_x = divisor_kids[0]
                 self.required_sufffact_divisor_combo.setCurrentText(
-                    f"{idea_x._pad},{idea_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def required_sufffact_nigh_combo_select(self):
@@ -696,9 +698,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
             nigh_x = str2float(self.required_sufffact_nigh.toPlainText())
             divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
             idea_label = self.baseideaunit.currentItem().data(2, 10)
-            idea_pad = self.baseideaunit.currentItem().data(2, 11)
+            idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
             self.agenda_x.edit_idea_attr(
-                road=f"{idea_pad},{idea_label}",
+                road=f"{idea_parent_road},{idea_label}",
                 required_base=base_x,
                 required_sufffact=sufffact_x,
                 required_sufffact_open=open_x,
@@ -791,7 +793,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
             raise PyQtUIException("bd_pid is empty, idea2bd cannot be updated")
         balancelink_new = BalanceLink(brand=GroupBrand(bd_pid_new), weight=1)
         self.agenda_x.edit_idea_attr(
-            road=f"{self.x_idea._pad},{self.x_idea._label}", balancelink=balancelink_new
+            road=f"{self.x_idea._parent_road},{self.x_idea._label}",
+            balancelink=balancelink_new,
         )
         self.idea2group_insert_combo_load()
         self.idea2group_table_load()
@@ -803,14 +806,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.idea2group_table.currentRow(), 1
             ).text()
             self.agenda_x.edit_idea_attr(
-                road=f"{self.x_idea._pad},{self.x_idea._label}",
+                road=f"{self.x_idea._parent_road},{self.x_idea._label}",
                 balancelink_del=delete_group_pid,
             )
             self.idea2group_insert_combo_load()
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.agenda_x.del_idea_kid(road=f"{self.x_idea._pad},{self.x_idea._label}")
+        self.agenda_x.del_idea_kid(
+            road=f"{self.x_idea._parent_road},{self.x_idea._label}"
+        )
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
@@ -856,8 +861,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea_update(self):
         idea_road = None
-        if self.x_idea._pad not in (None, ""):
-            idea_road = f"{self.x_idea._pad},{self.x_idea._label}"
+        if self.x_idea._parent_road not in (None, ""):
+            idea_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
         else:
             idea_road = f"{self.x_idea._label}"
         self.idea_edit_nonroad_data(idea_road=idea_road)
@@ -871,22 +876,22 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea_edit_road(idea_road=idea_road)
 
     def idea_duty_insert(self):
-        new_pad = f"{self.x_idea._label}"
-        if self.x_idea._pad not in ("", None):
-            new_pad = f"{self.x_idea._pad},{self.x_idea._label}"
-        new_road = f"{new_pad},{self.yo_deescription.toPlainText()}"
+        new_parent_road = f"{self.x_idea._label}"
+        if self.x_idea._parent_road not in ("", None):
+            new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
+        new_road = f"{new_parent_road},{self.yo_deescription.toPlainText()}"
         self.idea_insert()
 
         # add done/not_done children
         not_done_text = "not done"
         self.agenda_x.add_idea(
             idea_kid=ideacore_shop(not_done_text),
-            pad=new_road,
+            parent_road=new_road,
         )
         done_text = "done"
         self.agenda_x.add_idea(
             idea_kid=ideacore_shop(done_text),
-            pad=new_road,
+            parent_road=new_road,
         )
         # set required to "not done"
         self.agenda_x.edit_idea_attr(
@@ -935,12 +940,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         )
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
-        new_pad = f"{self.x_idea._label}"
-        if self.x_idea._pad not in ("", None):
-            new_pad = f"{self.x_idea._pad},{self.x_idea._label}"
+        new_parent_road = f"{self.x_idea._label}"
+        if self.x_idea._parent_road not in ("", None):
+            new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
         self.agenda_x.add_idea(
             idea_kid=new_idea,
-            pad=new_pad,
+            parent_road=new_parent_road,
         )
         self.refresh_tree()
 

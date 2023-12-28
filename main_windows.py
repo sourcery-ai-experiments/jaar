@@ -415,7 +415,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.populate_intent_table_row(row=row, intent_item=intent_item)
                 row += 1
             elif intent_item._task == True and self.current_task_road is None:
-                self.current_task_road = f"{intent_item._pad},{intent_item._label}"
+                self.current_task_road = (
+                    f"{intent_item._parent_road},{intent_item._label}"
+                )
                 self.intent_task_display(intent_item)
 
     def populate_intent_table_row(self, row, intent_item):
@@ -447,7 +449,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(
             row, 4, qtw1(pyqt_func_agenda_importance_diplay(ax._agenda_importance))
         )
-        self.intent_states.setItem(row, 5, qtw1(ax._pad))
+        self.intent_states.setItem(row, 5, qtw1(ax._parent_road))
         self.intent_states.setItem(row, 6, qtw1(""))
 
     def set_intent_states_table_properties(self):
@@ -503,7 +505,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             str(intent_item._agenda_importance)
         )
         self.label_intent_family_data.setText("")
-        self.label_intent_road_data.setText(intent_item._pad)
+        self.label_intent_road_data.setText(intent_item._parent_road)
 
     def get_jajaday_open_nigh(self, intent_item):
         jajatime_required = intent_item._requiredunits.get(

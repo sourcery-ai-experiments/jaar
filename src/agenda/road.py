@@ -72,7 +72,7 @@ def get_terminus_node_from_road(road: RoadUnit, delimiter: str = None) -> RoadNo
     return get_all_road_nodes(road=road, delimiter=delimiter)[-1]
 
 
-def get_pad_from_road(road: RoadUnit) -> RoadUnit:  # road without terminus node
+def get_parent_road_from_road(road: RoadUnit) -> RoadUnit:  # road without terminus node
     return create_road_from_nodes(get_all_road_nodes(road=road)[:-1])
 
 
@@ -147,15 +147,15 @@ def create_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> Road
 
 
 def create_road(
-    pad: RoadUnit, terminus_node: RoadNode = None, delimiter: str = None
+    parent_road: RoadUnit, terminus_node: RoadNode = None, delimiter: str = None
 ) -> RoadUnit:
     if terminus_node is None:
-        return RoadUnit(pad)
+        return RoadUnit(parent_road)
     else:
         return RoadUnit(
             terminus_node
-            if pad in {"", None}
-            else f"{pad}{default_road_delimiter_if_none(delimiter)}{terminus_node}"
+            if parent_road in {"", None}
+            else f"{parent_road}{default_road_delimiter_if_none(delimiter)}{terminus_node}"
         )
 
 

@@ -378,7 +378,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for idea_road in idea_list:
                 idea_obj = self.healer_output_agenda.get_idea_obj(idea_road)
 
-                if idea_obj._pad.find("time") != 3:
+                if idea_obj._parent_road.find("time") != 3:
                     x_list.append(
                         [
                             agenda_importance_diplay(idea_obj._agenda_importance),
@@ -445,7 +445,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 [
                     agenda_importance_diplay(intent_item._agenda_importance),
                     intent_item._label,
-                    intent_item._pad,
+                    intent_item._parent_road,
                 ]
                 for intent_item in intent_list
             )
@@ -557,7 +557,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         column_headers = [
             "agenda_importance",
             f"Agenda ({len(p_intent_list)})",
-            "Idea Pad",
+            "Idea parent_road",
         ]
 
         self.refresh_x(

@@ -227,17 +227,17 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     floor_text = "mop floor"
     floor_road = x_agenda.make_road(casa_road, floor_text)
     floor_idea = ideacore_shop(floor_text)
-    x_agenda.add_idea(floor_idea, pad=casa_road)
+    x_agenda.add_idea(floor_idea, parent_road=casa_road)
 
     unim_text = "unimportant"
     unim_road = x_agenda.make_l1_road(unim_text)
     unim_idea = ideacore_shop(unim_text)
-    x_agenda.add_idea(unim_idea, pad=x_agenda._economy_id)
+    x_agenda.add_idea(unim_idea, parent_road=x_agenda._economy_id)
 
     status_text = "cleaniness status"
     status_road = x_agenda.make_road(casa_road, status_text)
     status_idea = ideacore_shop(status_text)
-    x_agenda.add_idea(status_idea, pad=casa_road)
+    x_agenda.add_idea(status_idea, parent_road=casa_road)
     floor_required = requiredunit_shop(base=status_road)
     floor_required.set_sufffact(sufffact=status_road)
     x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
@@ -320,12 +320,12 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     yao_agenda = agendaunit_shop(_healer=yao_text)
     work_text = "work"
     work_road = yao_agenda.make_road(yao_agenda._economy_id, work_text)
-    yao_agenda.add_idea(ideacore_shop(work_text), pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(ideacore_shop(work_text), parent_road=yao_agenda._economy_id)
     work_idea = yao_agenda.get_idea_obj(work_road)
     day_text = "day_range"
     day_road = yao_agenda.make_road(yao_agenda._economy_id, day_text)
     day_idea = ideacore_shop(day_text, _begin=44, _close=110)
-    yao_agenda.add_idea(day_idea, pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(day_idea, parent_road=yao_agenda._economy_id)
     yao_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -354,17 +354,17 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     min_range_text = "a_minute_range"
     min_range_road = yao_agenda.make_road(yao_agenda._economy_id, min_range_text)
     min_range_idea = ideacore_shop(min_range_text, _begin=0, _close=2880)
-    yao_agenda.add_idea(min_range_idea, pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(min_range_idea, parent_road=yao_agenda._economy_id)
 
     day_len_text = "day_length"
     day_len_road = yao_agenda.make_road(yao_agenda._economy_id, day_len_text)
     day_len_idea = ideacore_shop(day_len_text, _begin=0, _close=1440)
-    yao_agenda.add_idea(day_len_idea, pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(day_len_idea, parent_road=yao_agenda._economy_id)
 
     min_days_text = "days in minute_range"
     min_days_road = yao_agenda.make_road(min_range_road, min_days_text)
     min_days_idea = ideacore_shop(min_days_text, _range_source_road=day_len_road)
-    yao_agenda.add_idea(min_days_idea, pad=min_range_road)
+    yao_agenda.add_idea(min_days_idea, parent_road=min_range_road)
 
     # WHEN
     yao_agenda.set_agenda_metrics()
@@ -390,7 +390,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     yao_agenda = agendaunit_shop(_healer=yao_text)
     casa_text = "casa"
     casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
-    yao_agenda.add_idea(ideacore_shop(casa_text), pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(ideacore_shop(casa_text), parent_road=yao_agenda._economy_id)
     yao_agenda.set_agenda_metrics()
 
     # WHEN
@@ -416,17 +416,17 @@ def test_agenda__set_assignment_ideas_ReturnsCorrectIdeaRoot_acptfacts():
 
     casa_text = "casa"
     casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
-    yao_agenda.add_idea(ideacore_shop(casa_text), pad=yao_agenda._economy_id)
+    yao_agenda.add_idea(ideacore_shop(casa_text), parent_road=yao_agenda._economy_id)
 
     basket_text = "laundry basket status"
     basket_road = yao_agenda.make_road(casa_road, basket_text)
-    yao_agenda.add_idea(ideacore_shop(basket_text), pad=casa_road)
+    yao_agenda.add_idea(ideacore_shop(basket_text), parent_road=casa_road)
     yao_agenda.set_acptfact(base=basket_road, pick=basket_road)
     # print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
 
     room_text = "room status"
     room_road = yao_agenda.make_road(casa_road, room_text)
-    yao_agenda.add_idea(ideacore_shop(room_text), pad=casa_road)
+    yao_agenda.add_idea(ideacore_shop(room_text), parent_road=casa_road)
     yao_agenda.set_acptfact(base=room_road, pick=room_road)
     print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
 

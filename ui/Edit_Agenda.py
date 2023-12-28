@@ -132,7 +132,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         self.intent_table.setRowCount(row + 1)
         self.intent_table.setItem(row, 0, qti(a._label))
-        self.intent_table.setItem(row, 1, qti(a._pad))
+        self.intent_table.setItem(row, 1, qti(a._parent_road))
         self.intent_table.setItem(row, 2, qti(agenda_display_x))
         self.intent_table.setItem(row, 3, qti(num2str(a._weight)))
         self.intent_table.setItem(row, 4, qti(base))

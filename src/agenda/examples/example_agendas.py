@@ -81,16 +81,16 @@ def get_agenda_with_4_levels() -> AgendaUnit:
 
     work = "work"
     idea_kid_work = ideacore_shop(work, _weight=30, promise=True)
-    sue_agenda.add_idea(idea_kid_work, pad=sue_agenda._economy_id)
+    sue_agenda.add_idea(idea_kid_work, parent_road=sue_agenda._economy_id)
 
     cat = "feed cat"
     idea_kid_feedcat = ideacore_shop(cat, _weight=30, promise=True)
-    sue_agenda.add_idea(idea_kid_feedcat, pad=sue_agenda._economy_id)
+    sue_agenda.add_idea(idea_kid_feedcat, parent_road=sue_agenda._economy_id)
 
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
     idea_kid_weekdays = ideacore_shop(week_text, _weight=40)
-    sue_agenda.add_idea(idea_kid_weekdays, pad=sue_agenda._economy_id)
+    sue_agenda.add_idea(idea_kid_weekdays, parent_road=sue_agenda._economy_id)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -108,18 +108,18 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     idea_grandkidF = ideacore_shop(fri_text, _weight=40)
     idea_grandkidA = ideacore_shop(sat_text, _weight=50)
 
-    sue_agenda.add_idea(idea_grandkidU, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidM, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidT, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidW, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidR, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidF, pad=week_road)
-    sue_agenda.add_idea(idea_grandkidA, pad=week_road)
+    sue_agenda.add_idea(idea_grandkidU, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidM, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidT, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidW, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidR, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidF, parent_road=week_road)
+    sue_agenda.add_idea(idea_grandkidA, parent_road=week_road)
 
     states_text = "nation-state"
     states_road = sue_agenda.make_l1_road(states_text)
     idea_kid_states = ideacore_shop(states_text, _weight=30)
-    sue_agenda.add_idea(idea_kid_states, pad=sue_agenda._economy_id)
+    sue_agenda.add_idea(idea_kid_states, parent_road=sue_agenda._economy_id)
 
     usa_text = "USA"
     usa_road = sue_agenda.make_road(states_road, usa_text)
@@ -225,11 +225,11 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     soap_idea = ideacore_shop(soap_text, promise=True)
     grab_idea = ideacore_shop(grab_text, promise=True)
 
-    sue_agenda.add_idea(house_idea, pad=sue_agenda._economy_id)
-    sue_agenda.add_idea(clean_idea, pad=house_road)
-    sue_agenda.add_idea(dish_idea, pad=clean_road)
-    sue_agenda.add_idea(soap_idea, pad=clean_road)
-    sue_agenda.add_idea(grab_idea, pad=soap_road)
+    sue_agenda.add_idea(house_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_idea(clean_idea, parent_road=house_road)
+    sue_agenda.add_idea(dish_idea, parent_road=clean_road)
+    sue_agenda.add_idea(soap_idea, parent_road=clean_road)
+    sue_agenda.add_idea(grab_idea, parent_road=soap_road)
 
     clean_table_7am_base = day24hr_road
     clean_table_7am_sufffact_road = day24hr_road
@@ -253,10 +253,10 @@ def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
     ced_min_label = "CE0_minutes"
     ced_minutes = ideacore_shop(ced_min_label)
     ced_road = bob_agenda.make_l1_road(ced_min_label)
-    bob_agenda.add_idea(ced_minutes, pad=bob_agenda._economy_id)
+    bob_agenda.add_idea(ced_minutes, parent_road=bob_agenda._economy_id)
     mail_label = "obtain mail"
     mail_task = ideacore_shop(mail_label, promise=True)
-    bob_agenda.add_idea(mail_task, pad=bob_agenda._economy_id)
+    bob_agenda.add_idea(mail_task, parent_road=bob_agenda._economy_id)
 
     sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
     x_task_required = requiredunit_shop(
@@ -285,11 +285,11 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     shave_text = "shave"
     shave_road = kol_agenda.make_l1_road(shave_text)
     idea_kid_shave = ideacore_shop(shave_text, _weight=30, promise=True)
-    kol_agenda.add_idea(idea_kid_shave, pad=kol_agenda._economy_id)
+    kol_agenda.add_idea(idea_kid_shave, parent_road=kol_agenda._economy_id)
     week_text = "weekdays"
     week_road = kol_agenda.make_l1_road(week_text)
     week_idea = ideacore_shop(week_text, _weight=40)
-    kol_agenda.add_idea(week_idea, pad=kol_agenda._economy_id)
+    kol_agenda.add_idea(week_idea, parent_road=kol_agenda._economy_id)
 
     sun_text = "Sunday"
     sun_road = kol_agenda.make_road(week_road, sun_text)
@@ -299,8 +299,8 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     mon_road = kol_agenda.make_road(week_road, mon_text)
     idea_grandkidU = ideacore_shop(sun_text, _weight=20)
     idea_grandkidM = ideacore_shop(mon_text, _weight=20)
-    kol_agenda.add_idea(idea_grandkidU, pad=week_road)
-    kol_agenda.add_idea(idea_grandkidM, pad=week_road)
+    kol_agenda.add_idea(idea_grandkidU, parent_road=week_road)
+    kol_agenda.add_idea(idea_grandkidM, parent_road=week_road)
 
     shave_required = requiredunit_shop(week_road)
     shave_required.set_sufffact(mon_road)
@@ -315,7 +315,7 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
 def get_agenda_base_time_example() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_healer="Sue")
     plant_idea = ideacore_shop("plant")
-    sue_agenda.add_idea(plant_idea, pad=sue_agenda._economy_id)
+    sue_agenda.add_idea(plant_idea, parent_road=sue_agenda._economy_id)
     return sue_agenda
 
 
@@ -337,11 +337,15 @@ def get_agenda_irrational_example() -> AgendaUnit:
 
     egg_text = "egg first"
     egg_road = hatter_agenda.make_l1_road(egg_text)
-    hatter_agenda.add_idea(ideacore_shop(egg_text), pad=hatter_agenda._economy_id)
+    hatter_agenda.add_idea(
+        ideacore_shop(egg_text), parent_road=hatter_agenda._economy_id
+    )
 
     chicken_text = "chicken first"
     chicken_road = hatter_agenda.make_l1_road(chicken_text)
-    hatter_agenda.add_idea(ideacore_shop(chicken_text), pad=hatter_agenda._economy_id)
+    hatter_agenda.add_idea(
+        ideacore_shop(chicken_text), parent_road=hatter_agenda._economy_id
+    )
 
     # set egg promise is True when chicken first is False
     hatter_agenda.edit_idea_attr(
@@ -369,20 +373,22 @@ def get_assignment_agenda_example1():
     floor_text = "mop floor"
     floor_road = neo_agenda.make_road(casa_road, floor_text)
     floor_idea = ideacore_shop(floor_text, promise=True)
-    neo_agenda.add_idea(floor_idea, pad=casa_road)
+    neo_agenda.add_idea(floor_idea, parent_road=casa_road)
 
-    neo_agenda.add_idea(ideacore_shop("unimportant"), pad=neo_agenda._economy_id)
+    neo_agenda.add_idea(
+        ideacore_shop("unimportant"), parent_road=neo_agenda._economy_id
+    )
 
     status_text = "cleaniness status"
     status_road = neo_agenda.make_road(casa_road, status_text)
-    neo_agenda.add_idea(ideacore_shop(status_text), pad=casa_road)
+    neo_agenda.add_idea(ideacore_shop(status_text), parent_road=casa_road)
 
     clean_text = "clean"
     clean_road = neo_agenda.make_road(status_road, clean_text)
-    neo_agenda.add_idea(ideacore_shop(clean_text), pad=status_road)
-    neo_agenda.add_idea(ideacore_shop("very_much"), pad=clean_road)
-    neo_agenda.add_idea(ideacore_shop("moderately"), pad=clean_road)
-    neo_agenda.add_idea(ideacore_shop("dirty"), pad=status_road)
+    neo_agenda.add_idea(ideacore_shop(clean_text), parent_road=status_road)
+    neo_agenda.add_idea(ideacore_shop("very_much"), parent_road=clean_road)
+    neo_agenda.add_idea(ideacore_shop("moderately"), parent_road=clean_road)
+    neo_agenda.add_idea(ideacore_shop("dirty"), parent_road=status_road)
 
     floor_required = requiredunit_shop(status_road)
     floor_required.set_sufffact(sufffact=status_road)

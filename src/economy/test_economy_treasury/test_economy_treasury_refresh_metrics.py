@@ -261,9 +261,9 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     bob_sports_road = create_road(x_economy_id, sports_text)
     tom_sports_road = create_road(x_economy_id, sports_text)
 
-    sal_agenda.add_idea(ideacore_shop(swim_text), pad=sal_sports_road)
-    bob_agenda.add_idea(ideacore_shop(swim_text), pad=bob_sports_road)
-    tom_agenda.add_idea(ideacore_shop(swim_text), pad=tom_sports_road)
+    sal_agenda.add_idea(ideacore_shop(swim_text), parent_road=sal_sports_road)
+    bob_agenda.add_idea(ideacore_shop(swim_text), parent_road=bob_sports_road)
+    tom_agenda.add_idea(ideacore_shop(swim_text), parent_road=tom_sports_road)
 
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2, debtor_weight=2)
 

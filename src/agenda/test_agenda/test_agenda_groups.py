@@ -157,7 +157,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert len(x_agenda._partys) == 3
     assert len(x_agenda._groups) == 3
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -169,7 +169,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert x_agenda._idearoot._balancelinks in (None, {})
     assert len(x_agenda._idearoot._kids[swim_text]._balancelinks) == 3
 
-    x_agenda.add_idea(ideacore_shop("streets"), pad=swim_road)
+    x_agenda.add_idea(ideacore_shop("streets"), parent_road=swim_road)
 
     # WHEN
     idea_list = x_agenda.get_idea_list()
@@ -204,7 +204,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     swim_text = "swim"
     swim_road = x_agenda.make_road(prom_text, swim_text)
 
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
     balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
@@ -378,7 +378,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportan
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -427,7 +427,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -447,7 +447,9 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    x_agenda.add_idea(ideacore_shop("hunt", _weight=3), pad=x_agenda._economy_id)
+    x_agenda.add_idea(
+        ideacore_shop("hunt", _weight=3), parent_road=x_agenda._economy_id
+    )
 
     # WHEN
     x_agenda.set_agenda_metrics()
@@ -601,7 +603,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     outdoor_road = x_agenda.make_road(x_agenda._healer, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
-    x_agenda.add_idea(ideacore_shop(camping_text), pad=outdoor_road)
+    x_agenda.add_idea(ideacore_shop(camping_text), parent_road=outdoor_road)
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
@@ -642,7 +644,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
     outdoor_road = x_agenda.make_road(x_agenda._healer, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
-    x_agenda.add_idea(ideacore_shop(camping_text), pad=outdoor_road)
+    x_agenda.add_idea(ideacore_shop(camping_text), parent_road=outdoor_road)
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
@@ -692,7 +694,7 @@ def test_agenda_add_idea_CreatesMissingGroups():
     # WHEN
     x_agenda.add_idea(
         idea_kid=clean_cookery_idea,
-        pad=new_idea_parent_road,
+        parent_road=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
 
@@ -715,8 +717,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     work_road = x1_agenda.make_road(x1_agenda._economy_id, work_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_road(x1_agenda._economy_id, swim_text)
-    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._economy_id)
-    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._economy_id)
+    x1_agenda.add_idea(ideacore_shop(work_text), parent_road=x1_agenda._economy_id)
+    x1_agenda.add_idea(ideacore_shop(swim_text), parent_road=x1_agenda._economy_id)
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=xia_text)
     )
@@ -749,8 +751,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     work_road = x1_agenda.make_road(x1_agenda._economy_id, work_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_road(x1_agenda._economy_id, swim_text)
-    x1_agenda.add_idea(ideacore_shop(work_text), pad=x1_agenda._economy_id)
-    x1_agenda.add_idea(ideacore_shop(swim_text), pad=x1_agenda._economy_id)
+    x1_agenda.add_idea(ideacore_shop(work_text), parent_road=x1_agenda._economy_id)
+    x1_agenda.add_idea(ideacore_shop(swim_text), parent_road=x1_agenda._economy_id)
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(brand=xia_text)
     )
@@ -765,7 +767,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x_agenda.add_partyunit(pid=xia_text)
     x_agenda.add_idea(
         idea_kid=x1_agenda_swim_idea,
-        pad=x_agenda._economy_id,
+        parent_road=x_agenda._economy_id,
         create_missing_ideas_groups=False,
     )
 
@@ -803,7 +805,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     # WHEN
     x_agenda.add_idea(
         idea_kid=clean_cookery_idea,
-        pad=new_idea_parent_road,
+        parent_road=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
 

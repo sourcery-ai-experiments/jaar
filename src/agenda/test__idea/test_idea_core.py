@@ -105,7 +105,7 @@ def test_IdeaCore_get_obj_key_ReturnsCorrectObj():
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(_label=ball_text, _pad=round_road)
+    ball_idea = ideacore_shop(_label=ball_text, _parent_road=round_road)
 
     # THEN
     assert ball_idea.get_obj_key() == ball_text
@@ -119,36 +119,32 @@ def test_IdeaCore_get_road_ReturnsCorrectObj():
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(ball_text, _pad=round_road, _road_delimiter=slash_text)
+    ball_idea = ideacore_shop(
+        ball_text, _parent_road=round_road, _road_delimiter=slash_text
+    )
 
     # THEN
     ball_road = create_road(round_road, ball_text, delimiter=slash_text)
     assert ball_idea.get_road() == ball_road
 
 
-def test_IdeaCore_set_pad_ReturnsCorrectObj():
+def test_IdeaCore_set_parent_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     slash_text = "/"
     round_road = create_road(root_label(), round_text, delimiter=slash_text)
     ball_text = "ball"
-    ball_idea = ideacore_shop(ball_text, _pad=round_road, _road_delimiter=slash_text)
-    assert ball_idea._pad == round_road
+    ball_idea = ideacore_shop(
+        ball_text, _parent_road=round_road, _road_delimiter=slash_text
+    )
+    assert ball_idea._parent_road == round_road
 
     # WHEN
     sports_road = create_road(root_label(), "sports", delimiter=slash_text)
-    ball_idea.set_pad(parent_road=sports_road)
+    ball_idea.set_parent_road(parent_road=sports_road)
 
     # THEN
-    assert ball_idea._pad == sports_road
-
-    # WHEN
-    soccer_text = "soccer"
-    ball_idea.set_pad(parent_road=sports_road, parent_label=soccer_text)
-
-    # THEN
-    soccer_road = create_road(sports_road, soccer_text, delimiter=slash_text)
-    assert ball_idea._pad == soccer_road
+    assert ball_idea._parent_road == sports_road
 
 
 def test_IdeaCore_balancelinks_exist():
@@ -428,7 +424,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     work_text = "work"
     work_road = create_road(root_label(), work_text)
     work_idea = ideacore_shop(
-        _pad=work_road,
+        _parent_road=work_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
@@ -610,7 +606,7 @@ def test_idea_invaild_DenomThrowsError():
     clean_road = create_road(casa_road, clean_text)
     print(f"{clean_road=}")
     kid_idea = ideacore_shop(
-        clean_text, _pad=casa_road, _numor=1, _denom=11.0, _reest=False
+        clean_text, _parent_road=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -800,7 +796,7 @@ def test_idea_set_assignedheir_CorrectlySetsAttr():
 def test_idea_get_descendants_ReturnsNoRoadUnits():
     # GIVEN
     nation_text = "nation-state"
-    nation_idea = ideacore_shop(_label=nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(_label=nation_text, _parent_road=root_label())
 
     # WHEN
     nation_descendants = nation_idea.get_descendant_roads_from_kids()
@@ -813,21 +809,21 @@ def test_idea_get_descendants_Returns3DescendantsRoadUnits():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    usa_idea = ideacore_shop(usa_text, _pad=nation_road)
+    usa_idea = ideacore_shop(usa_text, _parent_road=nation_road)
     nation_idea.add_kid(idea_kid=usa_idea)
 
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    texas_idea = ideacore_shop(texas_text, _pad=usa_road)
+    texas_idea = ideacore_shop(texas_text, _parent_road=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
     iowa_text = "Iowa"
     iowa_road = create_road(usa_road, iowa_text)
-    iowa_idea = ideacore_shop(iowa_text, _pad=usa_road)
+    iowa_idea = ideacore_shop(iowa_text, _parent_road=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
 
     # WHEN
@@ -844,7 +840,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
     nation_idea.add_kid(idea_kid=nation_idea)
     max_count = 1000
 
@@ -861,9 +857,9 @@ def test_idea_clear_kids_CorrectlySetsAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _pad=root_label())
-    nation_idea.add_kid(ideacore_shop("USA", _pad=nation_road))
-    nation_idea.add_kid(ideacore_shop("France", _pad=nation_road))
+    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
+    nation_idea.add_kid(ideacore_shop("USA", _parent_road=nation_road))
+    nation_idea.add_kid(ideacore_shop("France", _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN
@@ -877,15 +873,15 @@ def test_idea_get_kid_ReturnsCorrectObj():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_idea.add_kid(ideacore_shop(usa_text, _pad=nation_road))
+    nation_idea.add_kid(ideacore_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_idea.add_kid(ideacore_shop(france_text, _pad=nation_road))
+    nation_idea.add_kid(ideacore_shop(france_text, _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN
@@ -899,15 +895,15 @@ def test_idea_del_kid_CorrectChangesAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _pad=root_label())
+    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_idea.add_kid(ideacore_shop(usa_text, _pad=nation_road))
+    nation_idea.add_kid(ideacore_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_idea.add_kid(ideacore_shop(france_text, _pad=nation_road))
+    nation_idea.add_kid(ideacore_shop(france_text, _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN

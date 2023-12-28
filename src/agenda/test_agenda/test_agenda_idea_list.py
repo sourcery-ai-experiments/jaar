@@ -170,7 +170,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     # THEN
     work_idea = x_agenda._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_road()=}")
-    assert work_idea._pad == x_agenda._economy_id
+    assert work_idea._parent_road == x_agenda._economy_id
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -269,25 +269,25 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     auto_text = "auto"
     auto_road = x_agenda.make_l1_road(auto_text)
     auto_idea = ideacore_shop(auto_text, _weight=10)
-    x_agenda.add_idea(auto_idea, pad=x_agenda._economy_id)
+    x_agenda.add_idea(auto_idea, parent_road=x_agenda._economy_id)
 
     barn_text = "barn"
     barn_road = x_agenda.make_l1_road(barn_text)
     barn_idea = ideacore_shop(barn_text, _weight=60)
-    x_agenda.add_idea(barn_idea, pad=x_agenda._economy_id)
+    x_agenda.add_idea(barn_idea, parent_road=x_agenda._economy_id)
     lamb_text = "lambs"
     lamb_road = x_agenda.make_road(barn_road, lamb_text)
     lamb_idea = ideacore_shop(lamb_text, _weight=1)
-    x_agenda.add_idea(lamb_idea, pad=barn_road)
+    x_agenda.add_idea(lamb_idea, parent_road=barn_road)
     duck_text = "ducks"
     duck_road = x_agenda.make_road(barn_road, duck_text)
     duck_idea = ideacore_shop(duck_text, _weight=2)
-    x_agenda.add_idea(duck_idea, pad=barn_road)
+    x_agenda.add_idea(duck_idea, parent_road=barn_road)
 
     coal_text = "coal"
     coal_road = x_agenda.make_l1_road(coal_text)
     coal_idea = ideacore_shop(coal_text, _weight=30)
-    x_agenda.add_idea(coal_idea, pad=x_agenda._economy_id)
+    x_agenda.add_idea(coal_idea, parent_road=x_agenda._economy_id)
 
     assert x_agenda._idearoot._agenda_coin_onset is None
     assert x_agenda._idearoot._agenda_coin_cease is None
@@ -605,7 +605,7 @@ def test_exammple_idea_list_Every6WeeksRequired():
     assert clean_sheet_idea._active_status == False
 
     # for idea in idea_list:
-    #     # print(f"{idea._pad=}")
+    #     # print(f"{idea._parent_road=}")
     #     if idea._label == "clean sheets couch blankets":
     #         print(f"{idea.get_road()=}")
 
@@ -651,7 +651,7 @@ def print_sufffact_info(road: str, idea_list):
     sufffact_nigh = None
 
     for idea in idea_list:
-        if idea._pad == road:
+        if idea._parent_road == road:
             for required in idea._requiredunits.values():
                 for sufffact_x in required.sufffacts.values():
                     print(

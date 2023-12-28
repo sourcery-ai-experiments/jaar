@@ -137,7 +137,7 @@ class Lemmas:
     ) -> AcptFactUnit:
         if x_idea._begin is None or x_idea._close is None:
             raise InvalidLemmaException(
-                f"Idea {x_idea._pad},{x_idea._label} does not have range"
+                f"Idea {x_idea._parent_road},{x_idea._label} does not have range"
             )
 
         idea_begin = x_idea._begin

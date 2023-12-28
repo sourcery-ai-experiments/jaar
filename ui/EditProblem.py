@@ -9,7 +9,11 @@ from ui.EditParty import EditParty
 from ui.pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideacore_shop
-from src.agenda.road import RoadUnit, get_pad_from_road, get_terminus_node_from_road
+from src.agenda.road import (
+    RoadUnit,
+    get_parent_road_from_road,
+    get_terminus_node_from_road,
+)
 from sys import exit as sys_exit
 
 # self.problem_pid_text
@@ -121,9 +125,9 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
     def set_problem_dominate_action_idea(self, road):
         if road != "":
-            prob_pad = get_pad_from_road(road)
+            prob_parent_road = get_parent_road_from_road(road)
             prob_label = get_terminus_node_from_road(road)
-            prob_idea = ideacore_shop(prob_label, _pad=prob_pad)
+            prob_idea = ideacore_shop(prob_label, _parent_road=prob_parent_road)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
             self.agenda_x.set_dominate_promise_idea(idea_kid=prob_idea)
@@ -215,7 +219,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
 
         self.intent_table.setRowCount(row + 1)
         self.intent_table.setItem(row, 0, qti(a._label))
-        self.intent_table.setItem(row, 1, qti(a._pad))
+        self.intent_table.setItem(row, 1, qti(a._parent_road))
         self.intent_table.setItem(row, 2, qti(agenda_display_x))
         self.intent_table.setItem(row, 3, qti(num2str(a._weight)))
         self.intent_table.setItem(row, 4, qti(base))

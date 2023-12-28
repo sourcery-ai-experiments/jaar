@@ -180,7 +180,7 @@ def yr_print_idea_base_info(idea, filter: bool):
 
 
 def yr_explanation(idea):
-    str1 = f"'{yr_d(idea._pad)}' idea"
+    str1 = f"'{yr_d(idea._parent_road)}' idea"
     str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
     str3 = f" {str(type(idea))}"
     str4 = " "

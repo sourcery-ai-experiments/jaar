@@ -583,7 +583,7 @@
     </column>
     <column>
      <property name="text">
-      <string>Idea pad</string>
+      <string>Idea parent_road</string>
      </property>
     </column>
     <column>

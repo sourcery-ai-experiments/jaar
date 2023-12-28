@@ -194,7 +194,7 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
 def test_idea_balancelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
     # GIVEN
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     br1 = "Running"
     default_text = "default"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=default_text)
@@ -220,7 +220,7 @@ def test_idea_balancelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum
     sum_text = "sum"
     casa_text = "casa"
 
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
@@ -247,7 +247,7 @@ def test_idea_balancelink_meld_TwoGroupsScenarioWorks():
     sum_text = "sum"
     casa_text = "casa"
 
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     br1 = "Running"
     custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
@@ -279,11 +279,11 @@ def test_idea_acptfactunits_meld_BaseScenarioWorks():
     bowl_road = create_road(tech_road, bowl_text)
     casa_text = "casa"
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     yx1.set_acptfactunit(acptfactunit=hc_1)
 
     hc_2 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
     yx2.set_acptfactunit(acptfactunit=hc_2)
 
     # WHEN
@@ -306,11 +306,11 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     casa_text = "casa"
 
     hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     yx1.set_acptfactunit(acptfactunit=hc_1)
 
     hc_2 = c_acptfactunit(base=plate_road, pick=plate_road)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
     yx2.set_acptfactunit(acptfactunit=hc_2)
 
     # WHEN
@@ -399,14 +399,14 @@ def test_idea_attributes_meld_FailRaisesError_uid():
     x_pid = "_uid"
     x_val = "test_uid1"
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, uid=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     error_message = f"Meld fail idea={yx1.get_road()} {x_pid}:{x_val} with {yx2.get_road()} {x_pid}:None"
 
-    huh_text = f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+    huh_text = f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     print(f"{error_message=}")
 
     with pytest_raises(Exception) as excinfo:
@@ -415,23 +415,23 @@ def test_idea_attributes_meld_FailRaisesError_uid():
     assert str(excinfo.value) == error_message
     assert str(excinfo.value) == huh_text
 
-    # == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+    # == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
 
 
 def test_idea_attributes_meld_FailRaisesError_begin():
     x_pid = "_begin"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, begin=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -439,16 +439,16 @@ def test_idea_attributes_meld_FailRaisesError_close():
     x_pid = "_close"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, close=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -456,9 +456,9 @@ def test_idea_attributes_meld_FailRaisesError_addin():
     x_pid = "_addin"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, addin=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
     print(f"{yx2._addin=}")
 
     # WHEN/THEN
@@ -466,7 +466,7 @@ def test_idea_attributes_meld_FailRaisesError_addin():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -474,16 +474,16 @@ def test_idea_attributes_meld_FailRaisesError_denom():
     x_pid = "_denom"
     x_val = 15
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, denom=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -491,16 +491,16 @@ def test_idea_attributes_meld_FailRaisesError_numor():
     x_pid = "_numor"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, numor=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -508,16 +508,16 @@ def test_idea_attributes_meld_FailRaisesError_reest():
     x_pid = "_reest"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, reest=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -525,16 +525,16 @@ def test_idea_attributes_meld_FailRaisesError_range_source_road():
     x_pid = "_range_source_road"
     x_val = "test_range_source_road1"
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, range_source_road=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -542,16 +542,16 @@ def test_idea_attributes_meld_FailRaisesError_numeric_road():
     x_pid = "_numeric_road"
     x_val = "test_numeric_road1"
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, numeric_road=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
     )
 
 
@@ -559,16 +559,16 @@ def test_idea_attributes_meld_FailRaisesError_action():
     x_pid = "promise"
     x_val = True
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, promise=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad, yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad, yx2._label)} {x_pid}:False"
+        == f"Meld fail idea={create_road(yx1._parent_road, yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road, yx2._label)} {x_pid}:False"
     )
 
 
@@ -578,17 +578,17 @@ def test_idea_attributes_meld_FailRaisesError_action():
 #     x_pid = "_all_party_debt"
 #     x_val = "test_all_party_credit1"
 #     x_val = "test_all_party_debt1"
-#     yx1 = ideacore_shop("spirit", _pad=casa_text)
+#     yx1 = ideacore_shop("spirit", _parent_road=casa_text)
 #     custom_set_idea_attr(idea=yx1, all_party_credit=x_val)
 #     custom_set_idea_attr(idea=yx1, all_party_debt=x_val)
-#     yx2 = ideacore_shop("fun", _pad=casa_text)
+#     yx2 = ideacore_shop("fun", _parent_road=casa_text)
 
 #     # WHEN/THEN
 #     with pytest_raises(Exception) as excinfo:
 #         yx1.meld(yx2)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:None"
+#         == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
 #     )
 
 
@@ -597,9 +597,9 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
     x_val = False
     outside_val = True
     casa_text = "casa"
-    yx1 = ideacore_shop("spirit", _pad=casa_text)
+    yx1 = ideacore_shop("spirit", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx1, is_expanded=x_val)
-    yx2 = ideacore_shop("fun", _pad=casa_text)
+    yx2 = ideacore_shop("fun", _parent_road=casa_text)
     custom_set_idea_attr(idea=yx2, is_expanded=outside_val)
 
     # WHEN/THEN
@@ -607,7 +607,7 @@ def test_idea_attributes_meld_FailRaisesError_is_expanded():
         yx1.meld(yx2)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._pad,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._pad,yx2._label)} {x_pid}:True"
+        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:True"
     )
 
 

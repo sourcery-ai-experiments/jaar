@@ -511,11 +511,11 @@ class HregTimeIdeaSource:
 
     def roxd(
         self,
-        pad: RoadUnit = None,
+        parent_road: RoadUnit = None,
         terminus_node: RoadNode = None,
     ) -> RoadUnit:
         return create_road(
-            pad=pad,
+            parent_road=parent_road,
             terminus_node=terminus_node,
             delimiter=self.delimiter,
         )

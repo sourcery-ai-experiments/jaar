@@ -9,17 +9,17 @@ from src.agenda.road import get_default_economy_root_label as root_label, create
 from pytest import raises as pytest_raises
 
 
-def test_idea_find_replace_road_Changes_pad():
-    # GIVEN Idea with _pad that will be changed
+def test_idea_find_replace_road_Changes_parent_road():
+    # GIVEN Idea with _parent_road that will be changed
     old_healer_text = "healer1"
     old_healer_road = create_road(root_label(), old_healer_text)
     bloomers_text = "bloomers"
     old_bloomers_road = create_road(old_healer_road, bloomers_text)
     roses_text = "roses"
     old_roses_road = create_road(old_bloomers_road, roses_text)
-    idea_x = ideacore_shop(roses_text, _pad=old_bloomers_road)
-    assert create_road(idea_x._pad) == old_bloomers_road
-    assert create_road(idea_x._pad, idea_x._label) == old_roses_road
+    idea_x = ideacore_shop(roses_text, _parent_road=old_bloomers_road)
+    assert create_road(idea_x._parent_road) == old_bloomers_road
+    assert create_road(idea_x._parent_road, idea_x._label) == old_roses_road
 
     # WHEN
     new_healer = "healer1"
@@ -29,8 +29,8 @@ def test_idea_find_replace_road_Changes_pad():
     # THEN
     new_bloomers_road = create_road(new_healer_road, bloomers_text)
     new_roses_road = create_road(new_bloomers_road, roses_text)
-    assert create_road(idea_x._pad) == new_bloomers_road
-    assert create_road(idea_x._pad, idea_x._label) == new_roses_road
+    assert create_road(idea_x._parent_road) == new_bloomers_road
+    assert create_road(idea_x._parent_road, idea_x._label) == new_roses_road
 
 
 def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
@@ -54,7 +54,7 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     farm_road = create_road(root_label(), farm_text)
     idea_x = ideacore_shop(
         _label=roses_text,
-        _pad=bloomers_road,
+        _parent_road=bloomers_road,
         _range_source_road=old_rain_road,
         _numeric_road=old_snow_road,
     )
@@ -179,7 +179,7 @@ def test_idea_set_road_delimiter_CorrectlyChangesRequiredRoadUnits():
     # GIVEN
     casa_text = "casa"
     casa_idea = ideacore_shop(casa_text)
-    casa_idea.set_pad("")
+    casa_idea.set_parent_road("")
 
     # WHEN
     slash_text = "/"

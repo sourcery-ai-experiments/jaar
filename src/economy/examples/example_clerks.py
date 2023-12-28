@@ -16,7 +16,7 @@ def get_1node_agenda() -> AgendaUnit:
 def get_Jnode2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
     x_agenda.set_economy_id(get_temp_economy_id())
-    x_agenda.add_idea(ideacore_shop("A"), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop("A"), parent_road=x_agenda._economy_id)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -27,7 +27,7 @@ def get_2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop(_healer=healer_text)
     x_agenda.set_economy_id(get_temp_economy_id())
     idea_b = ideacore_shop(b_text)
-    x_agenda.add_idea(idea_b, pad=get_temp_economy_id())
+    x_agenda.add_idea(idea_b, parent_road=get_temp_economy_id())
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -36,8 +36,8 @@ def get_3node_agenda() -> AgendaUnit:
     a_text = "A"
     x_agenda = agendaunit_shop(a_text)
     x_agenda.set_economy_id(get_temp_economy_id())
-    x_agenda.add_idea(ideacore_shop("B"), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop("C"), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop("B"), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop("C"), parent_road=x_agenda._economy_id)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -46,8 +46,8 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
     d_text = "D"
     x_agenda = agendaunit_shop(d_text)
     x_agenda.set_economy_id(get_temp_economy_id())
-    x_agenda.add_idea(ideacore_shop("E"), pad=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop("F"), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop("E"), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop("F"), parent_road=x_agenda._economy_id)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -135,14 +135,14 @@ def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     healer_text = _healer if _healer != None else "ernie"
     x_agenda = agendaunit_shop(healer_text)
     casa_text = "casa"
-    x_agenda.add_idea(ideacore_shop(casa_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(casa_text), parent_road=x_agenda._economy_id)
     casa_road = f"{x_agenda._economy_id},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     cookery_idea = ideacore_shop(cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = ideacore_shop(bedroom_text, _weight=randrange(1, 50), promise=True)
-    x_agenda.add_idea(cookery_idea, pad=casa_road)
-    x_agenda.add_idea(bedroom_idea, pad=casa_road)
+    x_agenda.add_idea(cookery_idea, parent_road=casa_road)
+    x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
 
@@ -151,7 +151,7 @@ def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     healer_text = _healer if _healer != None else "ernie"
     x_agenda = agendaunit_shop(healer_text)
     casa_text = "casa"
-    x_agenda.add_idea(ideacore_shop(casa_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(casa_text), parent_road=x_agenda._economy_id)
     casa_road = f"{x_agenda._economy_id},{casa_text}"
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
@@ -159,8 +159,8 @@ def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     cookery_idea = ideacore_shop(cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = ideacore_shop(bedroom_text, _weight=randrange(1, 50), promise=True)
     hallway_idea = ideacore_shop(hallway_text, _weight=randrange(1, 50), promise=True)
-    x_agenda.add_idea(cookery_idea, pad=casa_road)
-    x_agenda.add_idea(bedroom_idea, pad=casa_road)
-    x_agenda.add_idea(hallway_idea, pad=casa_road)
+    x_agenda.add_idea(cookery_idea, parent_road=casa_road)
+    x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
+    x_agenda.add_idea(hallway_idea, parent_road=casa_road)
     x_agenda.set_agenda_metrics()
     return x_agenda

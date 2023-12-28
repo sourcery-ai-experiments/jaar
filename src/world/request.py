@@ -6,7 +6,7 @@ from src.agenda.road import (
     get_diff_road,
     default_road_delimiter_if_none,
     get_terminus_node_from_road,
-    get_pad_from_road,
+    get_parent_road_from_road,
 )
 from src.agenda.fork import ForkUnit, create_forkunit
 from src.agenda.group import GroupBrand
@@ -96,7 +96,8 @@ class ConcernUnit:
 
         x_idea_dict = {
             x_key: ideacore_shop(
-                get_terminus_node_from_road(x_key), _pad=get_pad_from_road(x_key)
+                get_terminus_node_from_road(x_key),
+                _parent_road=get_parent_road_from_road(x_key),
             )
             for x_key in action_and_reason_roads
         }

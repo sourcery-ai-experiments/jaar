@@ -8,11 +8,11 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(l1, _weight=30), parent_road=x_agenda._economy_id)
     l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
-    x_agenda.add_idea(ideacore_shop(rx1, _weight=30), pad=l1_road)
+    x_agenda.add_idea(ideacore_shop(rx1, _weight=30), parent_road=l1_road)
     rx1_road = x_agenda.make_road(l1_road, rx1)
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
 
@@ -42,11 +42,11 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
 
     l1 = "level1"
-    x_agenda.add_idea(ideacore_shop(l1, _weight=30), pad=x_agenda._economy_id)
+    x_agenda.add_idea(ideacore_shop(l1, _weight=30), parent_road=x_agenda._economy_id)
     l1_road = x_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
-    x_agenda.add_idea(ideacore_shop(rx1, _weight=30), pad=l1_road)
+    x_agenda.add_idea(ideacore_shop(rx1, _weight=30), parent_road=l1_road)
     rx1_road = x_agenda.make_road(l1_road, rx1)
     x_agenda.edit_idea_attr(road=rx1_road, begin=10, close=25)
 

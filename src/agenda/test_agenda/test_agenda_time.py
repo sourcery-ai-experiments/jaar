@@ -114,7 +114,7 @@ def test_get_time_():
     # for idea_x in idea_list:
     #     if idea_x._label in ["min2010", "years"]:
     #         print(
-    #             f"{idea_x._pad=} \t{idea_x._label=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
+    #             f"{idea_x._parent_road=} \t{idea_x._label=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
     #         )
 
     # WHEN

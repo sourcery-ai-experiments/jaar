@@ -237,7 +237,7 @@ def ideaattrfilter_shop(
 class IdeaCore:
     _label: RoadNode = None
     _uid: int = None  # Calculated field?
-    _pad: RoadUnit = None
+    _parent_road: RoadUnit = None
     _kids: dict = None
     _weight: int = None
     _balancelinks: dict[GroupBrand:BalanceLink] = None
@@ -406,11 +406,11 @@ class IdeaCore:
         return self._label
 
     def get_road(self) -> RoadUnit:
-        if self._pad in (None, ""):
+        if self._parent_road in (None, ""):
             return road_create_road(self._label, delimiter=self._road_delimiter)
         else:
             return road_create_road(
-                self._pad, self._label, delimiter=self._road_delimiter
+                self._parent_road, self._label, delimiter=self._road_delimiter
             )
 
     def clear_descendant_promise_count(self):
@@ -455,17 +455,8 @@ class IdeaCore:
     def set_level(self, parent_level):
         self._level = parent_level + 1
 
-    def set_pad(self, parent_road, parent_label=None):
-        if parent_road == "" and parent_label is None:
-            self._pad = ""
-        elif parent_road == "" and parent_label != None:
-            self._pad = parent_label
-        elif parent_road != "" and parent_label in ("", None):
-            self._pad = road_create_road(parent_road, delimiter=self._road_delimiter)
-        else:
-            self._pad = road_create_road(
-                parent_road, parent_label, delimiter=self._road_delimiter
-            )
+    def set_parent_road(self, parent_road):
+        self._parent_road = parent_road
 
     def inherit_balanceheirs(
         self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
@@ -558,8 +549,8 @@ class IdeaCore:
             self._find_replace_road_delimiter(old_delimiter)
 
     def _find_replace_road_delimiter(self, old_delimiter):
-        self._pad = replace_road_delimiter(
-            road=self._pad,
+        self._parent_road = replace_road_delimiter(
+            road=self._parent_road,
             old_delimiter=old_delimiter,
             new_delimiter=self._road_delimiter,
         )
@@ -1047,8 +1038,8 @@ class IdeaCore:
         return x_dict
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
-        if is_sub_road(ref_road=self._pad, sub_road=old_road):
-            self._pad = change_road(self._pad, old_road, new_road)
+        if is_sub_road(ref_road=self._parent_road, sub_road=old_road):
+            self._parent_road = change_road(self._parent_road, old_road, new_road)
         if is_sub_road(ref_road=self._range_source_road, sub_road=old_road):
             self._range_source_road = change_road(
                 self._range_source_road, old_road, new_road
@@ -1095,7 +1086,7 @@ class IdeaKid(IdeaCore):
 def ideacore_shop(
     _label: RoadNode = None,
     _uid: int = None,  # Calculated field?
-    _pad: RoadUnit = None,
+    _parent_road: RoadUnit = None,
     _kids: dict = None,
     _weight: int = 1,
     _balancelinks: dict[GroupBrand:BalanceLink] = None,
@@ -1148,7 +1139,7 @@ def ideacore_shop(
     x_ideakid = IdeaKid(
         _label=_label,
         _uid=_uid,
-        _pad=_pad,
+        _parent_road=_parent_road,
         _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
         _balancelinks=get_empty_dict_if_none(_balancelinks),
@@ -1218,7 +1209,7 @@ class IdeaRoot(IdeaCore):
 def idearoot_shop(
     _label: str = None,
     _uid: int = None,  # Calculated field?
-    _pad: str = None,
+    _parent_road: str = None,
     _kids: dict = None,
     _weight: int = 1,
     _balancelinks: dict[GroupBrand:BalanceLink] = None,
@@ -1271,7 +1262,7 @@ def idearoot_shop(
     x_idearoot = IdeaRoot(
         _label=_label,
         _uid=_uid,
-        _pad=_pad,
+        _parent_road=_parent_road,
         _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
         _balancelinks=get_empty_dict_if_none(_balancelinks),

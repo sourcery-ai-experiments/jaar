@@ -134,7 +134,9 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = x_agenda.make_l1_road(morn_text)
-    x_agenda.add_idea(idea_kid=ideacore_shop(morn_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(morn_text), parent_road=x_agenda._economy_id
+    )
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
     x_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -269,7 +271,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     shave_idea_y1 = y_agenda.get_idea_obj(shave_road)
     shave_idea_y1._originunit.set_originlink(pid="Sue", weight=4.3)
     # print(f"{shave_road=}")
-    # print(f"{shave_idea_x._label=} {shave_idea_x._pad=}")
+    # print(f"{shave_idea_x._label=} {shave_idea_x._parent_road=}")
 
     sue_text = "sue"
     y_agenda.add_partyunit(pid=sue_text)
@@ -314,8 +316,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # assert x_agenda._road_delimiter == slash_road_delimiter
 
     idearoot_x = x_agenda._idearoot
-    assert idearoot_x._pad == ""
-    assert idearoot_x._pad == y_agenda._idearoot._pad
+    assert idearoot_x._parent_road == ""
+    assert idearoot_x._parent_road == y_agenda._idearoot._parent_road
     assert idearoot_x._requiredunits == {}
     assert idearoot_x._assignedunit == y_agenda._idearoot._assignedunit
     assert idearoot_x._assignedunit == run_assigned_unit
@@ -387,8 +389,8 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
 #     assert x_agenda3._max_tree_traverse == x_agenda1._max_tree_traverse
 #     assert x_agenda3._idearoot._healer != None
 #     assert x_agenda3._idearoot._healer == x_agenda1._idearoot._healer
-#     assert x_agenda3._idearoot._pad == ""
-#     assert x_agenda3._idearoot._pad == x_agenda1._idearoot._pad
+#     assert x_agenda3._idearoot._parent_road == ""
+#     assert x_agenda3._idearoot._parent_road == x_agenda1._idearoot._parent_road
 #     assert len(x_agenda3._idearoot._kids) == len(x_agenda1._idearoot._kids)
 #     assert len(x_agenda3._groups) == 34
 #     assert len(x_agenda3._partys) == 22
@@ -419,7 +421,7 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     assert ccn_dict_of_obj.get(x_agenda1._healer) == x_agenda1
     ccn2_agenda = ccn_dict_of_obj.get(x_agenda2._healer)
     assert ccn2_agenda._idearoot._label == x_agenda2._idearoot._label
-    assert ccn2_agenda._idearoot._pad == x_agenda2._idearoot._pad
+    assert ccn2_agenda._idearoot._parent_road == x_agenda2._idearoot._parent_road
     shave_road = create_road("A", "shave")
     week_road = create_road("A", "weekdays")
     assert ccn2_agenda.get_idea_obj(shave_road) == x_agenda2.get_idea_obj(shave_road)

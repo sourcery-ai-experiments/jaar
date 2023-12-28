@@ -59,7 +59,7 @@ class WorldUnit:
         concernunit_ideas = x_requestunit._concernunit.get_forkunit_ideas(action_weight)
         for x_idea in concernunit_ideas.values():
             # TODO ideas should not be added if they already exist. Create test, then change code
-            requester_contract.add_idea(x_idea, pad=x_idea._pad)
+            requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
 
         x_assignedunit = assigned_unit_shop()
         x_balancelinks = {}

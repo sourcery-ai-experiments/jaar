@@ -74,7 +74,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     treenode_l = _create_treenode_l(pth)
     item = QTreeWidgetItem([treenode_l])
     item.setData(2, 10, pth.ideacore._label)
-    item.setData(2, 11, pth.ideacore._pad)
+    item.setData(2, 11, pth.ideacore._parent_road)
     # item.setData(2, 12, ideacore._weight)
     # item.setData(2, 13, ideacore._begin)
     # item.setData(2, 14, ideacore._close)
@@ -229,16 +229,16 @@ def _create_treenode_l(pth: PYQTTreeHolder):
         treenode_l = _get_treenode_l_required_count(treenode_l, pth)
     elif pth.required_view_flag:
         treenode_l = _get_treenode_l_required_view(treenode_l, pth)
-    elif pth.acptfactheir_view_flag and pth.ideacore._pad != "":
+    elif pth.acptfactheir_view_flag and pth.ideacore._parent_road != "":
         treenode_l = _get_treenode_l_acptfactheir_view(treenode_l, pth)
     elif pth.yo_action_flag and pth.ideacore.promise:
         treenode_l += " (task)" if pth.ideacore._task else " (state)"
     elif pth.yo_acptfactunit_count_flag:
         treenode_l += f" ({len(pth.ideacore._acptfactunits)})"
-    elif pth.yo_acptfactheir_count_flag and pth.ideacore._pad != "":
+    elif pth.yo_acptfactheir_count_flag and pth.ideacore._parent_road != "":
         treenode_l += f" ({len(pth.ideacore._acptfactheirs)})"
 
-    if pth.requiredheir_count_flag and pth.ideacore._pad not in (None, ""):
+    if pth.requiredheir_count_flag and pth.ideacore._parent_road not in (None, ""):
         # requiredunit_count = sum(
         #     str(type(requiredheir)) == "<class 'src.agenda.required.RequiredUnit'>"
         #     for requiredheir in pth.ideacore._requiredheirs.values()

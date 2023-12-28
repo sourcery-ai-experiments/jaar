@@ -166,7 +166,7 @@ class GroupUnit(GroupCore):
 
         # if self.brand != other_group.brand:
         #     raise InvalidGroupException(
-        #             f"Meld fail idea={self._pad},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._pad},{other_idea._label} {attrs[0]}:{attrs[2]}"
+        #             f"Meld fail idea={self._parent_road},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._parent_road},{other_idea._label} {attrs[0]}:{attrs[2]}"
         #     )
 
 

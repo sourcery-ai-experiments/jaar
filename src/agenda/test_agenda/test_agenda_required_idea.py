@@ -223,10 +223,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # WHEN
     rla_text = "hp"
     rla_road = a4_agenda.make_road(work_road, rla_text)
-    a4_agenda.add_idea(ideacore_shop(rla_text), pad=rla_road)
+    a4_agenda.add_idea(ideacore_shop(rla_text), parent_road=rla_road)
     cost_text = "cost_tracking"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
-    a4_agenda.add_idea(ideacore_shop(cost_text), pad=cost_road)
+    a4_agenda.add_idea(ideacore_shop(cost_text), parent_road=cost_road)
     a4_agenda.get_idea_list()
 
     # THEN
@@ -288,10 +288,10 @@ def test_agenda_requiredheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_agenda.edit_idea_attr(road=work_road, required=work_wk_build_requiredunit)
     rla_text = "hp"
     rla_road = a4_agenda.make_road(work_road, rla_text)
-    a4_agenda.add_idea(ideacore_shop(rla_text), pad=rla_road)
+    a4_agenda.add_idea(ideacore_shop(rla_text), parent_road=rla_road)
     cost_text = "cost_tracking"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
-    a4_agenda.add_idea(ideacore_shop(cost_text), pad=cost_road)
+    a4_agenda.add_idea(ideacore_shop(cost_text), parent_road=cost_road)
 
     work_idea = a4_agenda._idearoot.get_kid(work_text)
     rla_idea = work_idea.get_kid(rla_text)
@@ -423,9 +423,9 @@ def test_agenda_requiredunits_set_sufffactIdeaWithDenomSetsSuffFactDivision():
     week_road = x_agenda.make_road(time_road, week_text)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(time_text, _begin=100, _close=2000),
-        pad=x_agenda._economy_id,
+        parent_road=x_agenda._economy_id,
     )
-    x_agenda.add_idea(ideacore_shop(week_text, _denom=7), pad=time_road)
+    x_agenda.add_idea(ideacore_shop(week_text, _denom=7), parent_road=time_road)
 
     # WHEN
     x_agenda.edit_idea_attr(
@@ -456,10 +456,10 @@ def test_agenda_requiredunits_set_sufffactIdeaWithBeginCloseSetsSuffFactOpenNigh
     rus_war_road = x_agenda.make_road(time_road, rus_war)
     x_agenda.add_idea(
         idea_kid=ideacore_shop(time, _begin=100, _close=2000),
-        pad=x_agenda._economy_id,
+        parent_road=x_agenda._economy_id,
     )
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(rus_war, _begin=22, _close=34), pad=time_road
+        idea_kid=ideacore_shop(rus_war, _begin=22, _close=34), parent_road=time_road
     )
 
     # WHEN
@@ -547,7 +547,9 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
 
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(idea_kid=ideacore_shop(commute_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(commute_text), parent_road=x_agenda._economy_id
+    )
     x_agenda.get_idea_list()  # set tree metrics
     commute_idea = x_agenda.get_idea_obj(commute_road)
     assert len(commute_idea._requiredunits) == 0
@@ -627,7 +629,9 @@ def test_agenda_requiredunits_IdeaUnitActiveStatusInfluencesRequiredUnitStatus()
     # 5.2. idea(...,work).active_status = False
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(idea_kid=ideacore_shop(commute_text), pad=x_agenda._economy_id)
+    x_agenda.add_idea(
+        idea_kid=ideacore_shop(commute_text), parent_road=x_agenda._economy_id
+    )
     x_agenda.edit_idea_attr(
         road=commute_road,
         required_base=work_road,
