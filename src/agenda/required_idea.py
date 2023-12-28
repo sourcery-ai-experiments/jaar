@@ -49,7 +49,7 @@ class AcptFactCore:
         self.base = change_road(self.base, old_road, new_road)
         self.pick = change_road(self.pick, old_road, new_road)
 
-    def get_key_road(self):
+    def get_obj_key(self):
         return self.base
 
     def meld(self, other_acptfactcore, same_required: bool = False):
@@ -235,7 +235,7 @@ class SuffFactUnit:
     _task: bool = None
     delimiter: str = None
 
-    def get_key_road(self):
+    def get_obj_key(self):
         return self.need
 
     def get_dict(self):
@@ -432,7 +432,7 @@ class RequiredCore:
             new_sufffacts[new_sufffact_road] = sufffact_obj
         self.sufffacts = new_sufffacts
 
-    def get_key_road(self):
+    def get_obj_key(self):
         return self.base
 
     def get_sufffacts_count(self):

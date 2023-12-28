@@ -13,14 +13,13 @@ def test_agenda_add_idea_RaisesErrorWhen_pad_IsInvalid():
     invalid_rootnode_swim_road = "swimming"
     assert invalid_rootnode_swim_road != x_agenda._economy_id
     work_text = "work"
-    work_road = create_road(invalid_rootnode_swim_road, work_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(ideacore_shop(work_text), pad=invalid_rootnode_swim_road)
     assert (
         str(excinfo.value)
-        == f"add_idea failed because '{work_road}' has an invalid root node"
+        == f"add_idea failed because pad '{invalid_rootnode_swim_road}' has an invalid root node"
     )
 
 
@@ -56,7 +55,7 @@ def test_agenda_idea_kid_CanHaveKids():
     print(f"{weekdays_len=} {x_agenda._idearoot._pad=}")
     # for idea in weekdays_kids.values():
     #     print(f"{idea._label=}")
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=1) == 4
     assert x_agenda.get_level_count(level=2) == 10
     assert x_agenda.get_level_count(level=3) == 2
@@ -67,7 +66,7 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=1) == 4
 
     new_idea_parent_road = x_agenda._economy_id
@@ -79,7 +78,7 @@ def test_agenda_add_idea_CanAddKidToRootIdea():
     # THEN
     print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_node_count() == 18
+    assert x_agenda.get_idea_count() == 18
     assert x_agenda.get_level_count(level=1) == 5
 
 
@@ -87,7 +86,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=2) == 10
 
     # WHEN
@@ -99,7 +98,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     # print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
     # print(x_agenda._idearoot._kids["work"])
     # print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_node_count() == 18
+    assert x_agenda.get_idea_count() == 18
     assert x_agenda.get_level_count(level=2) == 11
     new_york_idea = x_agenda._idearoot._kids["work"]._kids["new_york"]
     assert new_york_idea._pad == x_agenda.make_l1_road("work")
@@ -114,7 +113,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
     wkday_road = x_agenda.make_l1_road("weekdays")
     new_idea_parent_road = x_agenda.make_road(wkday_road, "Wednesday")
@@ -127,7 +126,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
     print(x_agenda._idearoot._kids["work"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_node_count() == 18
+    assert x_agenda.get_idea_count() == 18
     assert x_agenda.get_level_count(level=3) == 3
 
 
@@ -166,7 +165,7 @@ def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
     ww2_road = x_agenda.make_l1_road("ww2")
     battles_road = x_agenda.make_road(ww2_road, "battles")
@@ -182,7 +181,7 @@ def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda._idearoot._kids["ww2"]._label == "ww2"
     assert x_agenda._idearoot._kids["ww2"]._kids["battles"]._label == "battles"
-    assert x_agenda.get_node_count() == 21
+    assert x_agenda.get_idea_count() == 21
     assert x_agenda.get_level_count(level=3) == 3
 
 
@@ -191,7 +190,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_node_count() == 17
+    assert x_agenda.get_idea_count() == 17
     assert x_agenda.get_level_count(level=3) == 2
     work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
@@ -225,7 +224,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     assert x_agenda._idearoot.get_kid(buildings_text) != None
     assert x_agenda.get_idea_obj(road=buildings_road) != None
     assert x_agenda.get_idea_obj(road=cookery_dirty_road) != None
-    assert x_agenda.get_node_count() == 22
+    assert x_agenda.get_idea_count() == 22
     assert x_agenda.get_level_count(level=3) == 4
 
 

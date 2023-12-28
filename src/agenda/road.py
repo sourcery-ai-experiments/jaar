@@ -56,7 +56,7 @@ def find_replace_road_key_dict(
             keys_to_delete.append(x_key)
 
     for x_obj in objs_to_add:
-        dict_x[x_obj.get_key_road()] = x_obj
+        dict_x[x_obj.get_obj_key()] = x_obj
 
     for x_key in keys_to_delete:
         dict_x.pop(x_key)

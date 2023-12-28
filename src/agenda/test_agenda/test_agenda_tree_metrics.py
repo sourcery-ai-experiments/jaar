@@ -68,28 +68,28 @@ def test_agenda_get_tree_set_all_idea_uids_unique():
 
 def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(_healer=zia_text)
     swim_text = "swim"
-    pad_text = "pad"
-    x_agenda.add_idea(ideacore_shop(swim_text, _uid=None), x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(pad_text, _uid=2), x_agenda._economy_id)
-    swim_road = x_agenda.make_l1_road(swim_text)
-    assert x_agenda.get_idea_obj(swim_road)._uid is None
+    sports_text = "sports"
+    zia_agenda.add_idea(ideacore_shop(swim_text, _uid=None), zia_agenda._economy_id)
+    zia_agenda.add_idea(ideacore_shop(sports_text, _uid=2), zia_agenda._economy_id)
+    swim_road = zia_agenda.make_l1_road(swim_text)
+    assert zia_agenda.get_idea_obj(swim_road)._uid is None
 
-    x_agenda.set_all_idea_uids_unique()
+    zia_agenda.set_all_idea_uids_unique()
 
     # THEN
-    assert x_agenda.get_idea_obj(swim_road)._uid != None
+    assert zia_agenda.get_idea_obj(swim_road)._uid != None
 
 
 def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     # GIVEN
-    healer_text = "Nia"
-    x_agenda = agendaunit_shop(healer_text, _weight=10)
+    nia_text = "Nia"
+    nia_agenda = agendaunit_shop(nia_text, _weight=10)
     weekdays = "weekdays"
-    x_agenda.add_idea(ideacore_shop(weekdays, _weight=40), x_agenda._economy_id)
-    tree_metrics_before = x_agenda.get_tree_metrics()
+    nia_agenda.add_idea(ideacore_shop(weekdays, _weight=40), nia_agenda._economy_id)
+    tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN
     assert tree_metrics_before.an_promise_idea_road is None

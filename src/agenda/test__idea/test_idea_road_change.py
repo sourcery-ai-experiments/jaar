@@ -164,7 +164,7 @@ def test_idea_find_replace_road_Changes_acptfactunits():
     assert acptfactunit_obj.pick == new_rain_road
 
 
-def test_idea_get_key_road_returnsCorrectInfo():
+def test_idea_get_obj_key_returnsCorrectInfo():
     # GIVEN
     red_text = "red"
 
@@ -172,7 +172,7 @@ def test_idea_get_key_road_returnsCorrectInfo():
     red_idea = ideacore_shop(red_text)
 
     # THEN
-    assert red_idea.get_key_road() == red_text
+    assert red_idea.get_obj_key() == red_text
 
 
 def test_idea_set_road_delimiter_CorrectlyChangesRequiredRoadUnits():

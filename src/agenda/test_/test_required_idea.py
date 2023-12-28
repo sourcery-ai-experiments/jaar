@@ -422,7 +422,7 @@ def test_RequiredCore_set_delimiter_SetsAttrsCorrectly():
     assert week_requiredunit.sufffacts.get(star_sun_road).need == star_sun_road
 
 
-def test_RequiredCore_get_key_road():
+def test_RequiredCore_get_obj_key():
     # GIVEN
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -435,7 +435,7 @@ def test_RequiredCore_get_key_road():
     x_required = requiredheir_shop(work_road, sufffacts=sufffacts_x)
 
     # THEN
-    assert x_required.get_key_road() == work_road
+    assert x_required.get_obj_key() == work_road
 
 
 def test_RequiredCore_meld_BaseScenarioWorks():

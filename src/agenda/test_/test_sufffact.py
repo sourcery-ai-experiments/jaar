@@ -650,7 +650,7 @@ def test_sufffact_get_dict_ReturnsCorrectDictWithOnlyRoadUnit():
     assert sufffact_dict == static_dict
 
 
-def test_sufffact_get_key_road():
+def test_sufffact_get_obj_key():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -659,7 +659,7 @@ def test_sufffact_get_key_road():
     week_sufffact = sufffactunit_shop(need=week_road)
 
     # WHEN / THEN
-    assert week_sufffact.get_key_road() == week_road
+    assert week_sufffact.get_obj_key() == week_road
 
 
 def test_sufffact_find_replace_road_works():

@@ -1104,13 +1104,13 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=swim_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=pad_text))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=run_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fly_text))
     assert x_agenda._partys[swim_text].uid is None
-    assert x_agenda._partys[pad_text].uid is None
+    assert x_agenda._partys[run_text].uid is None
     assert x_agenda._partys[fly_text].uid is None
 
     # WHEN
@@ -1118,7 +1118,7 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
     # THEN
     assert x_agenda._partys[swim_text].uid != None
-    assert x_agenda._partys[pad_text].uid != None
+    assert x_agenda._partys[run_text].uid != None
     assert x_agenda._partys[fly_text].uid != None
 
 
@@ -1127,13 +1127,13 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=swim_text, uid=3))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=pad_text, uid=3))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=run_text, uid=3))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fly_text))
     assert x_agenda._partys[swim_text].uid == 3
-    assert x_agenda._partys[pad_text].uid == 3
+    assert x_agenda._partys[run_text].uid == 3
     assert x_agenda._partys[fly_text].uid is None
 
     # WHEN
@@ -1141,10 +1141,10 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
 
     # THEN
     print(f"{x_agenda._partys[swim_text].uid=}")
-    print(f"{x_agenda._partys[pad_text].uid=}")
-    assert x_agenda._partys[swim_text].uid != x_agenda._partys[pad_text].uid
-    assert x_agenda._partys[pad_text].uid != 3
-    assert x_agenda._partys[pad_text].uid != 3
+    print(f"{x_agenda._partys[run_text].uid=}")
+    assert x_agenda._partys[swim_text].uid != x_agenda._partys[run_text].uid
+    assert x_agenda._partys[run_text].uid != 3
+    assert x_agenda._partys[run_text].uid != 3
     assert x_agenda._partys[fly_text].uid != None
 
 
@@ -1153,13 +1153,13 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=swim_text, uid=3))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=pad_text, uid=3))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=run_text, uid=3))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fly_text))
     assert x_agenda._partys[swim_text].uid == 3
-    assert x_agenda._partys[pad_text].uid == 3
+    assert x_agenda._partys[run_text].uid == 3
     assert x_agenda._partys[fly_text].uid is None
 
     # WHEN
@@ -1167,10 +1167,10 @@ def test_agenda_set_all_partyunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
 
     # THEN
     print(f"{x_agenda._partys[swim_text].uid=}")
-    print(f"{x_agenda._partys[pad_text].uid=}")
-    assert x_agenda._partys[swim_text].uid != x_agenda._partys[pad_text].uid
-    assert x_agenda._partys[pad_text].uid != 3
-    assert x_agenda._partys[pad_text].uid != 3
+    print(f"{x_agenda._partys[run_text].uid=}")
+    assert x_agenda._partys[swim_text].uid != x_agenda._partys[run_text].uid
+    assert x_agenda._partys[run_text].uid != 3
+    assert x_agenda._partys[run_text].uid != 3
     assert x_agenda._partys[fly_text].uid != None
 
 
@@ -1179,13 +1179,13 @@ def test_agenda_all_partyunits_uids_are_unique_ReturnsCorrectBoolean():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=swim_text, uid=3))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=pad_text, uid=3))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=run_text, uid=3))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=fly_text))
     assert x_agenda._partys[swim_text].uid == 3
-    assert x_agenda._partys[pad_text].uid == 3
+    assert x_agenda._partys[run_text].uid == 3
     assert x_agenda._partys[fly_text].uid is None
 
     # WHEN1 / THEN

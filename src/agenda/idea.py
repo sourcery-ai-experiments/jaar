@@ -235,9 +235,9 @@ def ideaattrfilter_shop(
 
 @dataclass
 class IdeaCore:
-    _label: str = None
+    _label: RoadNode = None
     _uid: int = None  # Calculated field?
-    _pad: str = None
+    _pad: RoadUnit = None
     _kids: dict = None
     _weight: int = None
     _balancelinks: dict[GroupBrand:BalanceLink] = None
@@ -278,7 +278,7 @@ class IdeaCore:
     _active_status_hx: dict[int:bool] = None
     _road_delimiter: str = None
 
-    def is_intent_item(self, necessary_base: RoadUnit = None):
+    def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
         return (
             self.promise
@@ -286,7 +286,7 @@ class IdeaCore:
             and self.base_requiredunit_exists(necessary_base)
         )
 
-    def base_requiredunit_exists(self, necessary_base: RoadUnit = None):
+    def base_requiredunit_exists(self, necessary_base: RoadUnit = None) -> bool:
         return necessary_base is None or any(
             required.base == necessary_base for required in self._requiredunits.values()
         )
@@ -301,9 +301,6 @@ class IdeaCore:
             self._active_status_hx = {0: curr_active_status}
         elif prev_active_status != curr_active_status:
             self._active_status_hx[tree_traverse_count] = curr_active_status
-
-    def get_key_road(self) -> RoadNode:
-        return self._label
 
     def set_acptfactheirs(self, acptfacts: dict[RoadUnit:AcptFactCore]):
         acptfacts = get_empty_dict_if_none(x_dict=acptfacts)
@@ -404,6 +401,9 @@ class IdeaCore:
                 or (begin <= x_idea._begin and close >= x_idea._close)
             )
         ]
+
+    def get_obj_key(self) -> RoadNode:
+        return self._label
 
     def get_road(self) -> RoadUnit:
         if self._pad in (None, ""):
@@ -1093,9 +1093,9 @@ class IdeaKid(IdeaCore):
 
 
 def ideacore_shop(
-    _label: str = None,
+    _label: RoadNode = None,
     _uid: int = None,  # Calculated field?
-    _pad: str = None,
+    _pad: RoadUnit = None,
     _kids: dict = None,
     _weight: int = 1,
     _balancelinks: dict[GroupBrand:BalanceLink] = None,

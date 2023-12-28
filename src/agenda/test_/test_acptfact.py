@@ -221,7 +221,7 @@ def test_acptfactheir_is_range_ReturnsRangeStatus():
     assert x_acptfactheir.is_range() == True
 
 
-def test_AcptFactCore_get_key_road_works():
+def test_AcptFactCore_get_obj_key_works():
     # GIVEN
     ced_min_text = "ced_minute"
     min_road = create_road(root_label(), ced_min_text)
@@ -232,7 +232,7 @@ def test_AcptFactCore_get_key_road_works():
     x_acptfactcore = AcptFactCore(base=min_road, pick=secs_road)
 
     # THEN
-    assert x_acptfactcore.get_key_road() == min_road
+    assert x_acptfactcore.get_obj_key() == min_road
 
 
 def test_acptfactcores_meld_CorrectlyMeldLikeObjs_v1():

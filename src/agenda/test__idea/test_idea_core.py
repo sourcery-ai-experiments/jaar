@@ -98,7 +98,7 @@ def test_ideacore_shop_ReturnsCorrectObj():
     assert x_ideacore._road_delimiter == default_road_delimiter_if_none()
 
 
-def test_IdeaCore_get_key_road_ReturnsCorrectObj():
+def test_IdeaCore_get_obj_key_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     round_road = create_road(root_label(), round_text)
@@ -108,7 +108,7 @@ def test_IdeaCore_get_key_road_ReturnsCorrectObj():
     ball_idea = ideacore_shop(_label=ball_text, _pad=round_road)
 
     # THEN
-    assert ball_idea.get_key_road() == ball_text
+    assert ball_idea.get_obj_key() == ball_text
 
 
 def test_IdeaCore_get_road_ReturnsCorrectObj():

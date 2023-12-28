@@ -960,9 +960,7 @@ class AgendaUnit:
                 self.edit_idea_attr(road=x_idea.get_road(), uid=new_idea_uid_max)
                 idea_uid_max = new_idea_uid_max
 
-    def get_node_count(self) -> int:
-        # tree_metrics = self.get_tree_metrics()
-        # return tree_metrics.node_count
+    def get_idea_count(self) -> int:
         return len(self._idea_dict)
 
     def get_level_count(self, level) -> int:
@@ -1002,27 +1000,22 @@ class AgendaUnit:
         bundling: bool = True,
         create_missing_ancestors: bool = True,
     ):
-        x_road = create_road(pad, idea_kid._label, delimiter=self._road_delimiter)
-        if self._idearoot._label != get_root_node_from_road(
-            x_road, self._road_delimiter
-        ):
+        if self._idearoot._label != get_root_node_from_road(pad, self._road_delimiter):
             raise InvalidAgendaException(
-                f"add_idea failed because '{x_road}' has an invalid root node"
+                f"add_idea failed because pad '{pad}' has an invalid root node"
             )
 
         idea_kid._road_delimiter = self._road_delimiter
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
-
         idea_kid.set_pad(parent_road=pad)
-        idea_kid.set_road_delimiter(self._road_delimiter)
 
         # create any missing ideas
         if not create_missing_ancestors and self.idea_exists(pad) == False:
             raise InvalidAgendaException(
                 f"add_idea failed because '{pad}' idea does not exist."
             )
-        pad_idea = self._get_or_create_idea(x_road=pad)
+        pad_idea = self.get_idea_obj(pad, create_missing_ancestors)
         pad_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(pad, idea_kid._label)
@@ -1094,14 +1087,6 @@ class AgendaUnit:
                 _pad=get_pad_from_road(road=road),
             )
             self.add_idea(base_idea, pad=base_idea._pad)
-
-    def _get_or_create_idea(self, x_road: RoadUnit) -> IdeaCore:
-        pad_nodes = get_all_road_nodes(x_road, delimiter=self._road_delimiter)
-        pad_nodes.pop(0)
-        pad_idea = self._idearoot
-        while pad_nodes != []:
-            pad_idea = pad_idea.get_kid(pad_nodes.pop(0), if_missing_create=True)
-        return pad_idea
 
     def del_idea_kid(self, road: RoadUnit, del_children: bool = True):
         if road == self._idearoot.get_road():
@@ -1568,21 +1553,20 @@ class AgendaUnit:
                 return False
         return True
 
-    def get_idea_obj(self, road: RoadUnit) -> IdeaCore:
+    def get_idea_obj(self, road: RoadUnit, if_missing_create: bool = False) -> IdeaCore:
         if road is None:
             raise InvalidAgendaException("get_idea_obj received road=None")
-        if self.idea_exists(road) == False:
+        if self.idea_exists(road) == False and not if_missing_create:
             raise InvalidAgendaException(f"get_idea_obj failed. no item at '{road}'")
         roadnodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
         if len(roadnodes) == 1:
             return self._idearoot
 
-        idearoot_label = roadnodes.pop(0)
+        roadnodes.pop(0)
         idea_label = roadnodes.pop(0)
-        x_idea = self._idearoot.get_kid(idea_label)
+        x_idea = self._idearoot.get_kid(idea_label, if_missing_create)
         while roadnodes != []:
-            idea_label = roadnodes.pop(0)
-            x_idea = x_idea.get_kid(idea_label)
+            x_idea = x_idea.get_kid(roadnodes.pop(0), if_missing_create)
 
         return x_idea
 
@@ -2230,11 +2214,9 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
         idea_dict = to_evaluate_idea_dicts.pop(0)
         # for every kid dict, set pad in dict, add to to_evaluate_list
         for kid_dict in get_obj_from_idea_dict(idea_dict, "_kids").values():
-            pad_road = get_obj_from_idea_dict(idea_dict, pad_text)
+            pad = get_obj_from_idea_dict(idea_dict, pad_text)
             kid_label = get_obj_from_idea_dict(idea_dict, "_label")
-            kid_dict[pad_text] = create_road(
-                pad_road, kid_label, delimiter=x_agenda._road_delimiter
-            )
+            kid_dict[pad_text] = x_agenda.make_road(pad, kid_label)
             to_evaluate_idea_dicts.append(kid_dict)
 
         x_ideakid = ideacore_shop(

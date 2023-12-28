@@ -927,13 +927,13 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text))
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
     assert x_agenda._groups[swim_text].uid is None
-    assert x_agenda._groups[pad_text].uid is None
+    assert x_agenda._groups[run_text].uid is None
     assert x_agenda._groups[fly_text].uid is None
 
     # WHEN
@@ -941,7 +941,7 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
 
     # THEN
     assert x_agenda._groups[swim_text].uid != None
-    assert x_agenda._groups[pad_text].uid != None
+    assert x_agenda._groups[run_text].uid != None
     assert x_agenda._groups[fly_text].uid != None
 
 
@@ -950,13 +950,13 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     healer_text = "bob"
     x_agenda = agendaunit_shop(healer_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text, uid=3))
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
     assert x_agenda._groups[swim_text].uid == 3
-    assert x_agenda._groups[pad_text].uid == 3
+    assert x_agenda._groups[run_text].uid == 3
     assert x_agenda._groups[fly_text].uid is None
 
     # WHEN
@@ -964,10 +964,10 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
 
     # THEN
     print(f"{x_agenda._groups[swim_text].uid=}")
-    print(f"{x_agenda._groups[pad_text].uid=}")
-    assert x_agenda._groups[swim_text].uid != x_agenda._groups[pad_text].uid
-    assert x_agenda._groups[pad_text].uid != 3
-    assert x_agenda._groups[pad_text].uid != 3
+    print(f"{x_agenda._groups[run_text].uid=}")
+    assert x_agenda._groups[swim_text].uid != x_agenda._groups[run_text].uid
+    assert x_agenda._groups[run_text].uid != 3
+    assert x_agenda._groups[run_text].uid != 3
     assert x_agenda._groups[fly_text].uid != None
 
 
@@ -976,13 +976,13 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
     noa_text = "Noa"
     noa_agenda = agendaunit_shop(noa_text)
     swim_text = "swim"
-    pad_text = "pad"
+    run_text = "run"
     fly_text = "fly"
     noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=pad_text, uid=3))
+    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text, uid=3))
     noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
     assert noa_agenda._groups[swim_text].uid == 3
-    assert noa_agenda._groups[pad_text].uid == 3
+    assert noa_agenda._groups[run_text].uid == 3
     assert noa_agenda._groups[fly_text].uid is None
 
     # WHEN
@@ -990,10 +990,10 @@ def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs
 
     # THEN
     print(f"{noa_agenda._groups[swim_text].uid=}")
-    print(f"{noa_agenda._groups[pad_text].uid=}")
-    assert noa_agenda._groups[swim_text].uid != noa_agenda._groups[pad_text].uid
-    assert noa_agenda._groups[pad_text].uid != 3
-    assert noa_agenda._groups[pad_text].uid != 3
+    print(f"{noa_agenda._groups[run_text].uid=}")
+    assert noa_agenda._groups[swim_text].uid != noa_agenda._groups[run_text].uid
+    assert noa_agenda._groups[run_text].uid != 3
+    assert noa_agenda._groups[run_text].uid != 3
     assert noa_agenda._groups[fly_text].uid != None
 
 
