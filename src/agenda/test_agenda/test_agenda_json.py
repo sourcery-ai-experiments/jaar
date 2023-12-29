@@ -1,6 +1,6 @@
 from src.agenda.road import default_road_delimiter_if_none, create_road
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.required_idea import acptfactunit_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
@@ -135,7 +135,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     morn_text = "morning"
     morn_road = x_agenda.make_l1_road(morn_text)
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(morn_text), parent_road=x_agenda._economy_id
+        idea_kid=idea_kid_shop(morn_text), parent_road=x_agenda._economy_id
     )
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)

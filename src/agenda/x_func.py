@@ -141,7 +141,7 @@ def from_list_get_active_status(
         if idea.get_road() == road:
             temp_idea = idea
             print(
-                f"searched for IdeaKid {temp_idea.get_road()} found {temp_idea._active_status=}"
+                f"searched for IdeaUnit {temp_idea.get_road()} found {temp_idea._active_status=}"
             )
 
         if idea._active_status:
@@ -170,7 +170,7 @@ def yr_print_idea_base_info(idea, filter: bool):
             print(
                 f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
             )
-            if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+            if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
                 yr_print_acptfact(
                     lh_base=l.base,
                     lh_status=l._status,
@@ -184,7 +184,7 @@ def yr_explanation(idea):
     str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
     str3 = f" {str(type(idea))}"
     str4 = " "
-    if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+    if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
         str3 = f" AcptFacts:{yr_x(idea._acptfactheirs)} Status: {idea._active_status}"
 
         print(f"\n{str1}{str2}{str3}")
@@ -214,7 +214,7 @@ def yr_explanation(idea):
                 print(
                     f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
                 )
-                if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+                if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
                     yr_print_acptfact(
                         lh_base=l.base,
                         lh_status=l._status,

@@ -22,7 +22,7 @@ from src.agenda.road import (
     replace_road_delimiter,
 )
 from src.agenda.required_idea import sufffactunit_shop
-from src.agenda.idea import IdeaCore
+from src.agenda.idea import IdeaUnit
 from pytest import raises as pytest_raises
 
 

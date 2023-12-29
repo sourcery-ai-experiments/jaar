@@ -37,7 +37,7 @@ def test_agenda_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFacts(
     assert len(missing_bases) == 11
 
 
-def test_agenda_3AdvocatesNoideacore_shop():
+def test_agenda_3AdvocatesNoidea_kid_shop():
     # GIVEN
     rico_text = "rico"
     carm_text = "carmen"

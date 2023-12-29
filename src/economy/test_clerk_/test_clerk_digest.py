@@ -62,7 +62,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     x_agenda = agendaunit_shop(_healer=tim_text)
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda.set_agenda_metrics()
-    # x_idearoot = idearoot_shop(_label=gio_text, _parent_road="")
+    # x_idearoot = idea_kid_shop(_is_root=True, _label=gio_text, _parent_road="")
     # x_idearoot._agenda_importance = 1
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0
@@ -244,31 +244,37 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_clerkunit_dir()
-    x_clerk = clerkunit_shop(yao_text, env_dir, get_temp_economy_id())
-    x_clerk.create_core_dir_and_files()
-    x_agenda_output_before = x_clerk.get_remelded_output_agenda()
+    yao_clerk = clerkunit_shop(yao_text, env_dir, get_temp_economy_id())
+    yao_clerk.create_core_dir_and_files()
+    x_agenda_output_before = yao_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
     assert x_agenda_output_before._healer == yao_text
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
     input_agenda = example_healers_get_2node_agenda()
     input_agenda.meld(input_agenda)
-    x_clerk.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
+    input_idearoot = input_agenda._idearoot
+    input_b_idea = input_idearoot.get_kid("B")
+    assert input_b_idea._agenda_economy_id == get_temp_economy_id()
+    yao_clerk.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
 
     # WHEN
-    new_output_agenda = x_clerk.get_remelded_output_agenda()
+    new_output_agenda = yao_clerk.get_remelded_output_agenda()
 
     # THEN
     assert str(type(new_output_agenda)).find(".agenda.AgendaUnit'>")
 
     assert new_output_agenda._weight == 0
     assert new_output_agenda._weight != input_agenda._weight
+    assert new_output_agenda._economy_id == input_agenda._economy_id
     sx_idearoot = new_output_agenda._idearoot
-    input_idearoot = input_agenda._idearoot
+    assert sx_idearoot._agenda_economy_id == input_idearoot._agenda_economy_id
     assert sx_idearoot._parent_road == input_idearoot._parent_road
     assert sx_idearoot._acptfactunits == input_idearoot._acptfactunits
-    input_b_idea = input_idearoot.get_kid("B")
     new_output_agenda_b_idea = sx_idearoot.get_kid("B")
     assert new_output_agenda_b_idea._parent_road == input_b_idea._parent_road
+    assert (
+        new_output_agenda_b_idea._agenda_economy_id == input_b_idea._agenda_economy_id
+    )
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
@@ -299,7 +305,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     yaya_text = "yaya"
 #     yaya_road = f"{src1},{yaya_text}"
-#     s1.add_idea(ideacore_shop(yaya_text), parent_road=src1_road)
+#     s1.add_idea(idea_kid_shop(yaya_text), parent_road=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).pid == swim_text

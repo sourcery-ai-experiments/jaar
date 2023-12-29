@@ -1,4 +1,4 @@
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.party import partyunit_shop
@@ -91,7 +91,7 @@ def test_agenda_meld_GroupUnits():
     # assert x_agenda1._groups.get(x2_pid).uid == 5
 
 
-def test_agenda_idearoot_meld_IdeaRootAttrCorrectlyMelded():
+def test_agenda_idearoot_meld_idearoot_AttrCorrectlyMelded():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="spirit")
     x_agenda2 = agendaunit_shop(_healer="spirit")
@@ -123,9 +123,9 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
     free_road = x_agenda1.make_road(swim_road, free_text)
 
     x_agenda2 = agendaunit_shop(_healer=spirit_text)
-    x_agenda2.add_idea(ideacore_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda2.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda2._economy_id)
+    x_agenda2.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
+    x_agenda2.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
 
     # WHEN
     x_agenda1.meld(x_agenda2)
@@ -147,12 +147,12 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     bowl_text = "bowl"
     bowl_road = x_agenda1.make_road(tech_road, bowl_text)
 
-    x_agenda1.add_idea(ideacore_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
+    x_agenda1.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
 
     x_agenda2 = agendaunit_shop(_healer=healer_text)
-    x_agenda2.add_idea(ideacore_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
+    x_agenda2.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda2._economy_id)
+    x_agenda2.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
 
     assert x_agenda1.get_idea_obj(bowl_road)._weight == 1
     # WHEN
@@ -171,13 +171,13 @@ def test_agenda_acptfactunits_meld_BaseScenarioWorks():
     bowl_text = "bowl"
     bowl_road = x_agenda1.make_road(tech_road, bowl_text)
 
-    x_agenda1.add_idea(ideacore_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
+    x_agenda1.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
     x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
-    x_agenda2.add_idea(ideacore_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
+    x_agenda2.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda2._economy_id)
+    x_agenda2.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
     x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
 
     # WHEN
@@ -202,15 +202,15 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
     free_text = "freestyle"
 
-    x_agenda1.add_idea(ideacore_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
-    x_agenda1.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda1.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
+    x_agenda1.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
     x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
-    x_agenda2.add_idea(ideacore_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideacore_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda2.add_idea(idea_kid_shop(tech_text), parent_road=x_agenda2._economy_id)
+    x_agenda2.add_idea(idea_kid_shop(bowl_text), parent_road=tech_road)
+    x_agenda2.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
     x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
     x_agenda2.set_acptfact(base=swim_road, pick=swim_road)
 
@@ -234,7 +234,7 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
     free_text = "freestyle"
 
     x_agenda2 = agendaunit_shop(_healer="test7")
-    x_agenda2.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda2.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
     x_agenda2.set_acptfact(base=swim_road, pick=swim_road)
 
     # WHEN
@@ -281,10 +281,10 @@ def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
     free_text = "freestyle"
     free_road = x_agenda1.make_road(x_agenda1._economy_id, free_text)
-    x_agenda1.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda1.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
-    x_agenda2.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    x_agenda2.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
     x_agenda2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
 
     # WHEN
@@ -424,14 +424,14 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     free_road = bob_x_agenda.make_road(swim_road, free_text)
     back_text = "backstroke"
     back_road = bob_x_agenda.make_road(swim_road, back_text)
-    bob_x_agenda.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    bob_x_agenda.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
 
     sue_text = "Sue"
     sue_weight = 4
     sue_x_agenda = agendaunit_shop(_healer=sue_text)
-    sue_x_agenda.add_idea(ideacore_shop(free_text), parent_road=swim_road)
+    sue_x_agenda.add_idea(idea_kid_shop(free_text), parent_road=swim_road)
     sue_x_agenda.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
-    sue_x_agenda.add_idea(ideacore_shop(back_text), parent_road=swim_road)
+    sue_x_agenda.add_idea(idea_kid_shop(back_text), parent_road=swim_road)
     assert len(bob_x_agenda._originunit._links) == 0
 
     # WHEN

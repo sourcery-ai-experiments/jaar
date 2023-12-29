@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, IdeaCore
+from src.agenda.agenda import AgendaUnit, IdeaUnit
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 
@@ -9,7 +9,7 @@ class InvalidPyQtException(Exception):
 
 @dataclass
 class PYQTTreeHolder:
-    ideacore: IdeaCore
+    ideacore: IdeaUnit
     yo_action_flag: str
     yo_intent_flag: str
     yo_complete_flag: str
@@ -29,7 +29,7 @@ class PYQTTreeHolder:
 
 
 def get_pyqttree(
-    idearoot: IdeaCore,
+    idearoot: IdeaUnit,
     root_percent_flag: bool = None,
     yo2bd_count_flag: bool = None,
     yo2bd_view_bd_flag: bool = None,

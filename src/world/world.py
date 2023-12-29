@@ -13,7 +13,7 @@ class PersonExistsException(Exception):
     pass
 
 
-class WorldMark(str):  # Created to help track the concept
+class WorldMark(str):  # Created to help track the abstraction
     pass
 
 

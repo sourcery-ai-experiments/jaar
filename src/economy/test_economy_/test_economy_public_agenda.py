@@ -72,7 +72,7 @@ def test_economy_change_public_agenda_healer_ChangesAgendaPID(
     assert os_path.exists(new_y_agenda_path)
 
 
-def test_economy_SetsIdeaRootLabel(
+def test_economy_Sets_idearoot_Label(
     env_dir_setup_cleanup,
 ):
     # GIVEN

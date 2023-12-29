@@ -1,7 +1,7 @@
 from datetime import datetime
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
-from src.agenda.idea import IdeaCore, ideacore_shop
+from src.agenda.idea import IdeaUnit, idea_kid_shop
 from src.agenda.required_idea import requiredunit_shop, SuffFactStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop

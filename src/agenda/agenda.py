@@ -33,13 +33,12 @@ from src.agenda.tree_metrics import TreeMetrics
 
 from src.agenda.x_func import x_get_json
 from src.agenda.idea import (
-    IdeaCore,
-    ideacore_shop,
-    IdeaRoot,
-    idearoot_shop,
+    IdeaUnit,
+    idea_kid_shop,
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
+    EconomyID,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
@@ -86,18 +85,14 @@ class NewDelimiterException(Exception):
     pass
 
 
-class EconomyID(str):  # Created to help track the concept
-    pass
-
-
 @dataclass
 class AgendaUnit:
     _healer: PersonID = None
     _weight: float = None
     _partys: dict[PartyPID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
-    _idearoot: IdeaRoot = None
-    _idea_dict: dict[RoadUnit:IdeaCore] = None
+    _idearoot: IdeaUnit = None
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _max_tree_traverse: int = None
     _tree_traverse_count: int = None
     _rational: bool = None
@@ -156,6 +151,12 @@ class AgendaUnit:
     def set_economy_id(self, economy_id: str):
         old_economy_id = copy_deepcopy(self._economy_id)
         self._economy_id = economy_id
+        print(f"{self._economy_id} {old_economy_id=}")
+
+        self.set_agenda_metrics()
+        for idea_obj in self._idea_dict.values():
+            idea_obj._agenda_economy_id = self._economy_id
+
         self.edit_idea_label(old_road=old_economy_id, new_label=self._economy_id)
         self.set_agenda_metrics()
 
@@ -793,7 +794,7 @@ class AgendaUnit:
         ]
 
     def _get_rangeroot_1stlevel_associates(
-        self, ranged_acptfactunits: list[IdeaCore]
+        self, ranged_acptfactunits: list[IdeaUnit]
     ) -> Lemmas:
         x_lemmas = lemmas_shop()
         # lemma_ideas = {}
@@ -993,7 +994,7 @@ class AgendaUnit:
 
     def add_idea(
         self,
-        idea_kid: IdeaCore,
+        idea_kid: IdeaUnit,
         parent_road: RoadUnit,
         create_missing_ideas_groups: bool = None,
         adoptees: list[str] = None,
@@ -1008,6 +1009,8 @@ class AgendaUnit:
             )
 
         idea_kid._road_delimiter = self._road_delimiter
+        if idea_kid._agenda_economy_id != self._economy_id:
+            idea_kid._agenda_economy_id = self._economy_id
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
         idea_kid.set_parent_road(parent_road=parent_road)
@@ -1041,7 +1044,7 @@ class AgendaUnit:
             self._create_missing_ideas(road=kid_road)
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
-    def _get_filtered_balancelinks_idea(self, x_idea: IdeaCore) -> IdeaCore:
+    def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
             _balancelink_pid
             for _balancelink_pid in x_idea._balancelinks.keys()
@@ -1084,7 +1087,7 @@ class AgendaUnit:
         try:
             self.get_idea_obj(road)
         except InvalidAgendaException:
-            base_idea = ideacore_shop(
+            base_idea = idea_kid_shop(
                 _label=get_terminus_node_from_road(
                     road=road, delimiter=self._road_delimiter
                 ),
@@ -1136,9 +1139,7 @@ class AgendaUnit:
         if old_road != new_road:
             # if root _label is changed
             if parent_road == "":
-                self._idearoot.set_idea_label(
-                    new_label, agenda_economy_id=self._economy_id
-                )
+                self._idearoot.set_idea_label(new_label)
                 self._idearoot._parent_road = parent_road
             else:
                 self._non_root_idea_label_edit(old_road, new_label, parent_road)
@@ -1383,7 +1384,7 @@ class AgendaUnit:
         base: RoadUnit = None,
         intent_enterprise: bool = True,
         intent_state: bool = True,
-    ) -> list[IdeaCore]:
+    ) -> list[IdeaUnit]:
         return [
             idea
             for idea in self.get_idea_list()
@@ -1559,7 +1560,7 @@ class AgendaUnit:
                 return False
         return True
 
-    def get_idea_obj(self, road: RoadUnit, if_missing_create: bool = False) -> IdeaCore:
+    def get_idea_obj(self, road: RoadUnit, if_missing_create: bool = False) -> IdeaUnit:
         if road is None:
             raise InvalidAgendaException("get_idea_obj received road=None")
         if self.idea_exists(road) == False and not if_missing_create:
@@ -1578,7 +1579,7 @@ class AgendaUnit:
 
     def get_idea_ranged_kids(
         self, idea_road: str, begin: float = None, close: float = None
-    ) -> dict[IdeaCore]:
+    ) -> dict[IdeaUnit]:
         parent_idea = self.get_idea_obj(idea_road)
         if begin is None and close is None:
             begin = parent_idea._begin
@@ -1687,10 +1688,10 @@ class AgendaUnit:
 
     def _set_kids_attributes(
         self,
-        idea_kid: IdeaCore,
+        idea_kid: IdeaUnit,
         coin_onset: float,
         parent_coin_cease: float,
-        parent_idea: IdeaCore,
+        parent_idea: IdeaUnit,
     ):
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_parent_road(parent_idea.get_road())
@@ -1721,7 +1722,7 @@ class AgendaUnit:
             self._set_ancestor_metrics(road=idea_kid.get_road())
             self._distribute_agenda_importance(idea=idea_kid)
 
-    def _distribute_agenda_importance(self, idea: IdeaCore):
+    def _distribute_agenda_importance(self, idea: IdeaUnit):
         # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
         if idea.is_balanceheirless() == False:
@@ -1735,7 +1736,7 @@ class AgendaUnit:
         sibling_ratio = weight / sibling_total_weight
         return parent_agenda_importance * sibling_ratio
 
-    def get_idea_list(self) -> list[IdeaCore]:
+    def get_idea_list(self) -> list[IdeaUnit]:
         self.set_agenda_metrics()
         return list(self._idea_dict.values())
 
@@ -1893,7 +1894,7 @@ class AgendaUnit:
             if yb.sr != None:
                 range_source_road_x = self.make_road(self._economy_id, yb.sr)
 
-            x_idea = ideacore_shop(
+            x_idea = idea_kid_shop(
                 _label=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -1946,7 +1947,7 @@ class AgendaUnit:
             )
 
             if y4a_included:
-                y4a_new = ideacore_shop(
+                y4a_new = idea_kid_shop(
                     _label=ykx._label,
                     _agenda_importance=ykx._agenda_importance,
                     _requiredunits=ykx._requiredunits,
@@ -1961,7 +1962,7 @@ class AgendaUnit:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = ideacore_shop(
+            y4a_other = idea_kid_shop(
                 _label="__other__",
                 _agenda_importance=not_included_agenda_importance,
             )
@@ -1969,7 +1970,7 @@ class AgendaUnit:
 
         return agenda4party
 
-    def set_dominate_promise_idea(self, idea_kid: IdeaCore):
+    def set_dominate_promise_idea(self, idea_kid: IdeaUnit):
         idea_kid.promise = True
         self.add_idea(
             idea_kid=idea_kid,
@@ -1977,7 +1978,7 @@ class AgendaUnit:
             create_missing_ideas_groups=True,
         )
 
-    def get_idea_list_without_idearoot(self) -> list[IdeaCore]:
+    def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:
         x_list = self.get_idea_list()
         x_list.pop(0)
         return x_list
@@ -2146,10 +2147,8 @@ def agendaunit_shop(
         _idea_dict={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-    x_agenda._idearoot = idearoot_shop(
-        _label=x_agenda._economy_id,
-        _uid=1,
-        _level=0,
+    x_agenda._idearoot = idea_kid_shop(
+        _is_root=True, _uid=1, _level=0, _agenda_economy_id=x_agenda._economy_id
     )
     x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
     x_agenda.set_max_tree_traverse(3)
@@ -2187,7 +2186,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
-    x_agenda._idearoot = idearoot_shop(
+    x_agenda._idearoot = idea_kid_shop(
+        _is_root=True,
         _label=x_agenda._economy_id,
         _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
         _weight=get_obj_from_idea_dict(idearoot_dict, "_weight"),
@@ -2204,6 +2204,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
         _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
+        _agenda_economy_id=x_agenda._economy_id,
     )
     set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
@@ -2225,7 +2226,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             kid_dict[parent_road_text] = x_agenda.make_road(parent_road, kid_label)
             to_evaluate_idea_dicts.append(kid_dict)
 
-        x_ideakid = ideacore_shop(
+        x_ideakid = idea_kid_shop(
             _label=get_obj_from_idea_dict(idea_dict, "_label"),
             _weight=get_obj_from_idea_dict(idea_dict, "_weight"),
             _uid=get_obj_from_idea_dict(idea_dict, "_uid"),
@@ -2243,6 +2244,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
             _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
+            _agenda_economy_id=x_agenda._economy_id,
         )
         # add idea with created parent_road
         # print(

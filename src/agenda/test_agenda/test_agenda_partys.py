@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
-from src.agenda.idea import ideacore_shop, IdeaCore
+from src.agenda.idea import idea_kid_shop, IdeaUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
 
@@ -288,7 +288,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -434,7 +434,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     prom_text = "prom"
     x_agenda = agendaunit_shop(_healer=prom_text)
     swim_text = "swim"
-    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -451,7 +451,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     # no balancelinks attached to this one
     hunt_text = "hunt"
     x_agenda.add_idea(
-        idea_kid=ideacore_shop(hunt_text, _weight=3), parent_road=x_agenda._economy_id
+        idea_kid=idea_kid_shop(hunt_text, _weight=3), parent_road=x_agenda._economy_id
     )
 
     # WHEN
@@ -545,7 +545,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
 def test_agenda_get_idea_list_WithAllPartysWeighted():
     # GIVEN
     x_agenda = agendaunit_shop(_healer="prom")
-    x_agenda.add_idea(ideacore_shop("swim"), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop("swim"), parent_road=x_agenda._economy_id)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -653,7 +653,7 @@ class BalanceIntentMetrics:
     intent_no_agenda_i_sum = 0
     intent_yes_agenda_i_sum = 0
 
-    def set_sums(self, intent_list: list[IdeaCore]):
+    def set_sums(self, intent_list: list[IdeaUnit]):
         for intent_item in intent_list:
             self.sum_agenda_intent_importance += intent_item._agenda_importance
             if intent_item._balancelines == {}:

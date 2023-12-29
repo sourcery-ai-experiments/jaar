@@ -56,7 +56,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._idearoot != None
     assert x_agenda._road_delimiter == slash_road_delimiter
     print(f"{type(x_agenda._idearoot)=}") == 0
-    assert str(type(x_agenda._idearoot)).find(".idea.IdeaRoot'>") > 0
+    assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
 
 def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():

@@ -8,7 +8,7 @@ from ui.EditIdeaUnit import EditIdeaUnit
 from ui.EditParty import EditParty
 from ui.pyqt_func import agenda_importance_diplay, get_pyqttree, num2str
 from src.agenda.group import groupunit_shop, balancelink_shop
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.road import (
     RoadUnit,
     get_parent_road_from_road,
@@ -127,7 +127,7 @@ class EditProblem(qtw.QWidget, Ui_Form):
         if road != "":
             prob_parent_road = get_parent_road_from_road(road)
             prob_label = get_terminus_node_from_road(road)
-            prob_idea = ideacore_shop(prob_label, _parent_road=prob_parent_road)
+            prob_idea = idea_kid_shop(prob_label, _parent_road=prob_parent_road)
             for balancelink_x in self.create_balancelinks_list():
                 prob_idea.set_balancelink(balancelink_x)
             self.agenda_x.set_dominate_promise_idea(idea_kid=prob_idea)

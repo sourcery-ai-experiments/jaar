@@ -57,27 +57,16 @@ from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy
 
 
+class EconomyID(str):  # Created to help track the abstraction
+    pass
+
+
 class InvalidIdeaException(Exception):
     pass
 
 
 class IdeaGetDescendantsException(Exception):
     pass
-
-
-@dataclass
-class IdeaBare:
-    n: str = None  # pid
-    weight: int = 1
-    b: float = None  # begin
-    c: float = None  # close  # where
-    a: float = None  # addin
-    rr: str = None  # relative_road # not road since it doesn't know root _label
-    mn: int = None  # numor
-    md: int = None  # denom
-    mr: bool = None  # reest
-    sr: str = None  # range_source_road # not road since it doesn't know root _label
-    nr: str = None  # numeric_road # not road since it doesn't know root _label
 
 
 @dataclass
@@ -234,7 +223,7 @@ def ideaattrfilter_shop(
 
 
 @dataclass
-class IdeaCore:
+class IdeaUnit:
     _label: RoadNode = None
     _uid: int = None  # Calculated field?
     _parent_road: RoadUnit = None
@@ -261,6 +250,8 @@ class IdeaCore:
     _problem_bool: bool = None
     _originunit: OriginUnit = None
     _on_meld_weight_action: str = None
+    _is_root: bool = None
+    _agenda_economy_id: EconomyID = None
     # Calculated fields
     _level: int = None
     _kids_total_weight: int = None
@@ -536,8 +527,20 @@ class IdeaCore:
     def clear_balancelines(self):
         self._balancelines = {}
 
-    def set_idea_label(self, _label):
-        if _label != None:
+    def set_idea_label(self, _label: str):
+        if (
+            self._is_root
+            and _label != None
+            and _label != self._agenda_economy_id
+            and self._agenda_economy_id != None
+        ):
+            raise Idea_is_root_LabelNotEmptyException(
+                f"Cannot set idearoot to string other than '{self._agenda_economy_id}'"
+            )
+        elif self._is_root and self._agenda_economy_id is None:
+            self._label = root_label()
+        # elif _label != None:
+        else:
             self._label = _label
 
     def set_road_delimiter(self, new_road_delimiter: str):
@@ -754,7 +757,7 @@ class IdeaCore:
     def _check_get_on_meld_weight_actions(self, on_meld_weight_action: str):
         if on_meld_weight_action not in (list(get_on_meld_weight_actions())):
             raise InvalidIdeaException(
-                f"IdeaCore unit '{self._label}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
+                f"IdeaUnit unit '{self._label}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
             )
 
     def _set_addin_to_zero_if_any_transformations_exist(self):
@@ -837,7 +840,7 @@ class IdeaCore:
             return self._kids[idea_kid_label]
         except Exception:
             KeyError
-            self.add_kid(ideacore_shop(idea_kid_label))
+            self.add_kid(idea_kid_shop(idea_kid_label))
             return_idea = self._kids.get(idea_kid_label)
         return return_idea
 
@@ -1078,12 +1081,7 @@ class IdeaCore:
         return self._assignedheir.group_in(groupbrands)
 
 
-@dataclass
-class IdeaKid(IdeaCore):
-    pass
-
-
-def ideacore_shop(
+def idea_kid_shop(
     _label: RoadNode = None,
     _uid: int = None,  # Calculated field?
     _parent_road: RoadUnit = None,
@@ -1110,6 +1108,8 @@ def ideacore_shop(
     _problem_bool: bool = None,
     _originunit: OriginUnit = None,
     _on_meld_weight_action: str = None,
+    _is_root: bool = None,
+    _agenda_economy_id: EconomyID = None,
     # Calculated fields
     _level: int = None,
     _kids_total_weight: int = None,
@@ -1126,7 +1126,7 @@ def ideacore_shop(
     _sibling_total_weight: int = None,
     _active_status_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
-) -> IdeaCore:
+) -> IdeaUnit:
     if promise is None:
         promise = False
     if _problem_bool is None:
@@ -1135,9 +1135,13 @@ def ideacore_shop(
         _on_meld_weight_action = "default"
     if _kids_total_weight is None:
         _kids_total_weight = 0
+    if _is_root is None:
+        _is_root = False
+    if _agenda_economy_id is None:
+        _agenda_economy_id = root_label()
 
-    x_ideakid = IdeaKid(
-        _label=_label,
+    x_ideakid = IdeaUnit(
+        _label=None,
         _uid=_uid,
         _parent_road=_parent_road,
         _kids=get_empty_dict_if_none(_kids),
@@ -1163,6 +1167,8 @@ def ideacore_shop(
         _problem_bool=_problem_bool,
         _originunit=_originunit,
         _on_meld_weight_action=_on_meld_weight_action,
+        _is_root=_is_root,
+        _agenda_economy_id=_agenda_economy_id,
         # Calculated fields
         _level=_level,
         _kids_total_weight=_kids_total_weight,
@@ -1180,134 +1186,17 @@ def ideacore_shop(
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
+    if x_ideakid._is_root:
+        x_ideakid.set_idea_label(_label=_agenda_economy_id)
+    else:
+        x_ideakid.set_idea_label(_label=_label)
     x_ideakid.set_assignedunit_empty_if_null()
     x_ideakid.set_originunit_empty_if_null()
     return x_ideakid
 
 
-class IdeaRootLabelNotEmptyException(Exception):
+class Idea_is_root_LabelNotEmptyException(Exception):
     pass
-
-
-@dataclass
-class IdeaRoot(IdeaCore):
-    def set_idea_label(self, _label: str, agenda_economy_id: str = None):
-        if _label != root_label() and agenda_economy_id is None:
-            raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{root_label()}'"
-            )
-        elif _label != agenda_economy_id != None:
-            raise IdeaRootLabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{agenda_economy_id}'"
-            )
-        elif _label != root_label() and agenda_economy_id == _label:
-            self._label = _label
-        else:
-            self._label = root_label()
-
-
-def idearoot_shop(
-    _label: str = None,
-    _uid: int = None,  # Calculated field?
-    _parent_road: str = None,
-    _kids: dict = None,
-    _weight: int = 1,
-    _balancelinks: dict[GroupBrand:BalanceLink] = None,
-    _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
-    _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
-    _requiredunits: dict[RoadUnit:RequiredUnit] = None,
-    _requiredheirs: dict[RoadUnit:RequiredHeir] = None,  # Calculated field
-    _assignedunit: AssignedUnit = None,
-    _assignedheir: AssignedHeir = None,  # Calculated field
-    _acptfactunits: dict[AcptFactUnit] = None,
-    _acptfactheirs: dict[AcptFactHeir] = None,  # Calculated field
-    _begin: float = None,
-    _close: float = None,
-    _addin: float = None,
-    _denom: int = None,
-    _numor: int = None,
-    _reest: bool = None,
-    _range_source_road: RoadUnit = None,
-    _numeric_road: RoadUnit = None,
-    promise: bool = None,
-    _problem_bool: bool = None,
-    _originunit: OriginUnit = None,
-    _on_meld_weight_action: str = None,
-    # Calculated fields
-    _level: int = None,
-    _kids_total_weight: int = None,
-    _agenda_importance: float = None,
-    _agenda_coin_onset: float = None,
-    _agenda_coin_cease: float = None,
-    _task: bool = None,
-    _active_status: bool = None,
-    _ancestor_promise_count: int = None,
-    _descendant_promise_count: int = None,
-    _all_party_credit: bool = None,
-    _all_party_debt: bool = None,
-    _is_expanded: bool = True,
-    _sibling_total_weight: int = None,
-    _active_status_hx: dict[int:bool] = None,
-    _road_delimiter: str = None,
-) -> IdeaCore:
-    if promise is None:
-        promise = False
-    if _problem_bool is None:
-        _problem_bool = False
-    if _on_meld_weight_action is None:
-        _on_meld_weight_action = "default"
-    if _kids_total_weight is None:
-        _kids_total_weight = 0
-
-    x_idearoot = IdeaRoot(
-        _label=_label,
-        _uid=_uid,
-        _parent_road=_parent_road,
-        _kids=get_empty_dict_if_none(_kids),
-        _weight=_weight,
-        _balancelinks=get_empty_dict_if_none(_balancelinks),
-        _balanceheirs=get_empty_dict_if_none(_balanceheirs),
-        _balancelines=get_empty_dict_if_none(_balancelines),
-        _requiredunits=get_empty_dict_if_none(_requiredunits),
-        _requiredheirs=get_empty_dict_if_none(_requiredheirs),
-        _assignedunit=_assignedunit,
-        _assignedheir=_assignedheir,
-        _acptfactunits=get_empty_dict_if_none(_acptfactunits),
-        _acptfactheirs=get_empty_dict_if_none(_acptfactheirs),
-        _begin=_begin,
-        _close=_close,
-        _addin=_addin,
-        _denom=_denom,
-        _numor=_numor,
-        _reest=_reest,
-        _range_source_road=_range_source_road,
-        _numeric_road=_numeric_road,
-        promise=promise,
-        _problem_bool=_problem_bool,
-        _originunit=_originunit,
-        _on_meld_weight_action=_on_meld_weight_action,
-        # Calculated fields
-        _level=_level,
-        _kids_total_weight=_kids_total_weight,
-        _agenda_importance=_agenda_importance,
-        _agenda_coin_onset=_agenda_coin_onset,
-        _agenda_coin_cease=_agenda_coin_cease,
-        _task=_task,
-        _active_status=_active_status,
-        _ancestor_promise_count=_ancestor_promise_count,
-        _descendant_promise_count=_descendant_promise_count,
-        _all_party_credit=_all_party_credit,
-        _all_party_debt=_all_party_debt,
-        _is_expanded=_is_expanded,
-        _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=get_empty_dict_if_none(_active_status_hx),
-        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-    )
-    if x_idearoot._label is None:
-        x_idearoot.set_idea_label(_label=root_label())
-    x_idearoot.set_assignedunit_empty_if_null()
-    x_idearoot.set_originunit_empty_if_null()
-    return x_idearoot
 
 
 def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:

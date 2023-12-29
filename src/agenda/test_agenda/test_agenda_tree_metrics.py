@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.tree_metrics import TreeMetrics
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.road import create_road_from_nodes
 
 
@@ -72,8 +72,8 @@ def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     zia_agenda = agendaunit_shop(_healer=zia_text)
     swim_text = "swim"
     sports_text = "sports"
-    zia_agenda.add_idea(ideacore_shop(swim_text, _uid=None), zia_agenda._economy_id)
-    zia_agenda.add_idea(ideacore_shop(sports_text, _uid=2), zia_agenda._economy_id)
+    zia_agenda.add_idea(idea_kid_shop(swim_text, _uid=None), zia_agenda._economy_id)
+    zia_agenda.add_idea(idea_kid_shop(sports_text, _uid=2), zia_agenda._economy_id)
     swim_road = zia_agenda.make_l1_road(swim_text)
     assert zia_agenda.get_idea_obj(swim_road)._uid is None
 
@@ -88,7 +88,7 @@ def test_agenda_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     nia_text = "Nia"
     nia_agenda = agendaunit_shop(nia_text, _weight=10)
     weekdays = "weekdays"
-    nia_agenda.add_idea(ideacore_shop(weekdays, _weight=40), nia_agenda._economy_id)
+    nia_agenda.add_idea(idea_kid_shop(weekdays, _weight=40), nia_agenda._economy_id)
     tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN

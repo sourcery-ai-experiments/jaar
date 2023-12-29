@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with7amCleanTableRequired,
     agenda_v001,
 )
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.required_idea import (
     sufffactunit_shop,
     requiredunit_shop,
@@ -202,7 +202,7 @@ def test_agenda_get_idea_list_returns_correct_list():
 
     # print("iterate through every idea...")
     # for curr_idea in idea_list:
-    #     if str(type(curr_idea)).find(".idea.IdeaKid'>") > 0:
+    #     if str(type(curr_idea)).find(".idea.IdeaUnit'>") > 0:
     #         assert curr_idea._active_status != None
 
     #     # print("")
@@ -268,25 +268,25 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
 
     auto_text = "auto"
     auto_road = x_agenda.make_l1_road(auto_text)
-    auto_idea = ideacore_shop(auto_text, _weight=10)
+    auto_idea = idea_kid_shop(auto_text, _weight=10)
     x_agenda.add_idea(auto_idea, parent_road=x_agenda._economy_id)
 
     barn_text = "barn"
     barn_road = x_agenda.make_l1_road(barn_text)
-    barn_idea = ideacore_shop(barn_text, _weight=60)
+    barn_idea = idea_kid_shop(barn_text, _weight=60)
     x_agenda.add_idea(barn_idea, parent_road=x_agenda._economy_id)
     lamb_text = "lambs"
     lamb_road = x_agenda.make_road(barn_road, lamb_text)
-    lamb_idea = ideacore_shop(lamb_text, _weight=1)
+    lamb_idea = idea_kid_shop(lamb_text, _weight=1)
     x_agenda.add_idea(lamb_idea, parent_road=barn_road)
     duck_text = "ducks"
     duck_road = x_agenda.make_road(barn_road, duck_text)
-    duck_idea = ideacore_shop(duck_text, _weight=2)
+    duck_idea = idea_kid_shop(duck_text, _weight=2)
     x_agenda.add_idea(duck_idea, parent_road=barn_road)
 
     coal_text = "coal"
     coal_road = x_agenda.make_l1_road(coal_text)
-    coal_idea = ideacore_shop(coal_text, _weight=30)
+    coal_idea = idea_kid_shop(coal_text, _weight=30)
     x_agenda.add_idea(coal_idea, parent_road=x_agenda._economy_id)
 
     assert x_agenda._idearoot._agenda_coin_onset is None
@@ -338,7 +338,7 @@ def test_agenda_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
     assert len(idea_list_without_idearoot) + 1 == len(idea_list_with_idearoot)
 
     # for idea in x_agenda.get_idea_list_without_idearoot():
-    #     assert str(type(idea)).find(".idea.IdeaKid'>") > 0
+    #     assert str(type(idea)).find(".idea.IdeaUnit'>") > 0
 
     # for idea in x_agenda.get_idea_list_without_idearoot():
     #     print(f"{idea._label=}")
@@ -446,8 +446,8 @@ def test_exammple_idea_list_HasCorrectData():
 
     # for idea in idea_list:
     #     assert (
-    #         str(type(idea)).find(".idea.IdeaRoot'>") > 0
-    #         or str(type(idea)).find(".idea.IdeaKid'>") > 0
+    #         str(type(idea)).find(".idea.IdeaUnit'>") > 0
+    #         or str(type(idea)).find(".idea.IdeaUnit'>") > 0
     #     )
     #     # print(f"{idea._label=}")
     #     if idea._label == laundry_text:
@@ -681,7 +681,7 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # first_idea_kid_true_count = 0
     # first_idea_kid_false_count = 0
     # for idea in idea_list:
-    #     if str(type(idea)).find(".idea.IdeaKid'>") > 0:
+    #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
     #         first_idea_kid_count += 1
     #         if idea._active_status is None:
     #             first_idea_kid_none_count += 1

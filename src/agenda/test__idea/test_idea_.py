@@ -1,4 +1,4 @@
-from src.agenda.idea import IdeaCore, ideacore_shop, get_obj_from_idea_dict
+from src.agenda.idea import IdeaUnit, idea_kid_shop, get_obj_from_idea_dict
 from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
@@ -16,8 +16,8 @@ from src.agenda.road import (
 from pytest import raises as pytest_raises
 
 
-def test_IdeaCore_exists():
-    x_ideacore = IdeaCore()
+def test_IdeaUnit_exists():
+    x_ideacore = IdeaUnit()
     assert x_ideacore
     assert x_ideacore._kids is None
     assert x_ideacore._weight is None
@@ -54,10 +54,12 @@ def test_IdeaCore_exists():
     assert x_ideacore._assignedheir is None
     assert x_ideacore._originunit is None
     assert x_ideacore._road_delimiter is None
+    assert x_ideacore._is_root is None
+    assert x_ideacore._agenda_economy_id is None
 
 
-def test_ideacore_shop_ReturnsCorrectObj():
-    x_ideacore = ideacore_shop()
+def test_idea_kid_shop_ReturnsCorrectObj():
+    x_ideacore = idea_kid_shop()
     print(f"{x_ideacore._active_status=}")
     assert x_ideacore
     assert x_ideacore._kids == {}
@@ -96,22 +98,24 @@ def test_ideacore_shop_ReturnsCorrectObj():
     assert x_ideacore._assignedheir is None
     assert x_ideacore._originunit == originunit_shop()
     assert x_ideacore._road_delimiter == default_road_delimiter_if_none()
+    assert x_ideacore._is_root == False
+    assert x_ideacore._agenda_economy_id == root_label()
 
 
-def test_IdeaCore_get_obj_key_ReturnsCorrectObj():
+def test_IdeaUnit_get_obj_key_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     round_road = create_road(root_label(), round_text)
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(_label=ball_text, _parent_road=round_road)
+    ball_idea = idea_kid_shop(_label=ball_text, _parent_road=round_road)
 
     # THEN
     assert ball_idea.get_obj_key() == ball_text
 
 
-def test_IdeaCore_get_road_ReturnsCorrectObj():
+def test_IdeaUnit_get_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     slash_text = "/"
@@ -119,7 +123,7 @@ def test_IdeaCore_get_road_ReturnsCorrectObj():
     ball_text = "ball"
 
     # WHEN
-    ball_idea = ideacore_shop(
+    ball_idea = idea_kid_shop(
         ball_text, _parent_road=round_road, _road_delimiter=slash_text
     )
 
@@ -128,13 +132,13 @@ def test_IdeaCore_get_road_ReturnsCorrectObj():
     assert ball_idea.get_road() == ball_road
 
 
-def test_IdeaCore_set_parent_road_ReturnsCorrectObj():
+def test_IdeaUnit_set_parent_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     slash_text = "/"
     round_road = create_road(root_label(), round_text, delimiter=slash_text)
     ball_text = "ball"
-    ball_idea = ideacore_shop(
+    ball_idea = idea_kid_shop(
         ball_text, _parent_road=round_road, _road_delimiter=slash_text
     )
     assert ball_idea._parent_road == round_road
@@ -147,7 +151,7 @@ def test_IdeaCore_set_parent_road_ReturnsCorrectObj():
     assert ball_idea._parent_road == sports_road
 
 
-def test_IdeaCore_balancelinks_exist():
+def test_IdeaUnit_balancelinks_exist():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -170,7 +174,7 @@ def test_IdeaCore_balancelinks_exist():
 
     # WHEN
     sport_text = "sport"
-    sport_idea = ideacore_shop(_label=sport_text, _balancelinks=group_links)
+    sport_idea = idea_kid_shop(_label=sport_text, _balancelinks=group_links)
 
     # THEN
     assert sport_idea._balancelinks == group_links
@@ -179,7 +183,7 @@ def test_IdeaCore_balancelinks_exist():
     # assert group_link_x.weight == 3.0
 
 
-def test_IdeaCore_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
+def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -204,7 +208,7 @@ def test_IdeaCore_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues
 
     # WHEN
     sport_text = "sport"
-    sport_idea = ideacore_shop(_label=sport_text, _balanceheirs=group_links)
+    sport_idea = idea_kid_shop(_label=sport_text, _balanceheirs=group_links)
 
     # THEN
     assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
@@ -235,10 +239,10 @@ def test_IdeaCore_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues
     assert biker_balanceheir._agenda_debt != None
 
 
-def test_IdeaCore_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
+def test_IdeaUnit_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     # GIVEN /WHEN
     sport_text = "sport"
-    sport_idea = ideacore_shop(_label=sport_text)
+    sport_idea = idea_kid_shop(_label=sport_text)
     assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
     assert sport_idea.get_balanceheirs_debtor_weight_sum() != None
 
@@ -247,13 +251,13 @@ def test_IdeaCore_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     sport_idea.set_balanceheirs_agenda_credit_debt()
 
 
-def test_IdeaCore_set_requiredheirsCorrectlyTakesFromOutside():
+def test_IdeaUnit_set_requiredheirsCorrectlyTakesFromOutside():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
     run_text = "run"
     run_road = create_road(ball_road, run_text)
-    ball_idea = ideacore_shop(_label=ball_text)
+    ball_idea = idea_kid_shop(_label=ball_text)
     run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
     run_sufffacts = {run_sufffact.need: run_sufffact}
     requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
@@ -268,7 +272,7 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromOutside():
     assert id(ball_idea._requiredheirs) != id(requiredheirs)
 
 
-def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
+def test_IdeaUnit_set_requiredheirsCorrectlyTakesFromSelf():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
@@ -278,7 +282,7 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
     run_sufffacts = {run_sufffact.need: run_sufffact}
     run_requiredunit = requiredunit_shop(base=run_road, sufffacts=run_sufffacts)
     run_requiredunits = {run_requiredunit.base: run_requiredunit}
-    ball_idea = ideacore_shop(_label=ball_text, _requiredunits=run_requiredunits)
+    ball_idea = idea_kid_shop(_label=ball_text, _requiredunits=run_requiredunits)
     assert ball_idea._requiredunits != {}
 
     # WHEN
@@ -290,10 +294,10 @@ def test_IdeaCore_set_requiredheirsCorrectlyTakesFromSelf():
     assert ball_idea._requiredheirs == requiredheirs
 
 
-def test_IdeaCore_clear_descendant_promise_count_ClearsCorrectly():
+def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideacore_shop(_label=ball_text, _descendant_promise_count=55)
+    ball_idea = idea_kid_shop(_label=ball_text, _descendant_promise_count=55)
     assert ball_idea._descendant_promise_count == 55
 
     # WHEN
@@ -303,10 +307,10 @@ def test_IdeaCore_clear_descendant_promise_count_ClearsCorrectly():
     assert ball_idea._descendant_promise_count is None
 
 
-def test_IdeaCore_clear_all_party_credit_debt_ClearsCorrectly():
+def test_IdeaUnit_clear_all_party_credit_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideacore_shop(
+    ball_idea = idea_kid_shop(
         _label=ball_text, _all_party_credit=55, _all_party_debt=33
     )
     assert ball_idea._all_party_credit == 55
@@ -323,13 +327,13 @@ def test_IdeaCore_clear_all_party_credit_debt_ClearsCorrectly():
 def test_get_kids_in_range_GetsCorrectIdeas():
     # GIVEN
     mon366_text = "366months"
-    mon366_idea = ideacore_shop(_label=mon366_text, _begin=0, _close=366)
+    mon366_idea = idea_kid_shop(_label=mon366_text, _begin=0, _close=366)
     jan_text = "Jan"
     feb29_text = "Feb29"
     mar_text = "Mar"
-    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=jan_text, _begin=0, _close=31))
-    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=feb29_text, _begin=31, _close=60))
-    mon366_idea.add_kid(idea_kid=ideacore_shop(_label=mar_text, _begin=31, _close=91))
+    mon366_idea.add_kid(idea_kid=idea_kid_shop(_label=jan_text, _begin=0, _close=31))
+    mon366_idea.add_kid(idea_kid=idea_kid_shop(_label=feb29_text, _begin=31, _close=60))
+    mon366_idea.add_kid(idea_kid=idea_kid_shop(_label=mar_text, _begin=31, _close=91))
 
     # WHEN / THEN
     assert len(mon366_idea.get_kids_in_range(begin=100, close=120)) == 0
@@ -423,7 +427,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
 
     work_text = "work"
     work_road = create_road(root_label(), work_text)
-    work_idea = ideacore_shop(
+    work_idea = idea_kid_shop(
         _parent_road=work_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
@@ -454,7 +458,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     work_idea._numor = x_numor
     work_idea._reest = x_reest
     work_idea._uid = 17
-    work_idea.add_kid(ideacore_shop("paper"))
+    work_idea.add_kid(idea_kid_shop("paper"))
 
     # WHEN
     work_dict = work_idea.get_dict()
@@ -487,7 +491,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
 
 def test_idea_get_dict_ReturnsCorrectIncompleteDict():
     # GIVEN
-    work_idea = ideacore_shop()
+    work_idea = idea_kid_shop()
 
     # WHEN
     work_dict = work_idea.get_dict()
@@ -499,7 +503,7 @@ def test_idea_get_dict_ReturnsCorrectIncompleteDict():
 
 def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
-    work_idea = ideacore_shop()
+    work_idea = idea_kid_shop()
     work_idea._is_expanded = False
     work_idea.promise = True
     work_idea._problem_bool = True
@@ -520,7 +524,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     x_originunit.set_originlink(yao_text, 1)
 
     rock_text = "Rock"
-    work_idea.add_kid(ideacore_shop(rock_text))
+    work_idea.add_kid(idea_kid_shop(rock_text))
 
     assert not work_idea._is_expanded
     assert work_idea.promise
@@ -549,7 +553,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
 
 def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
-    work_idea = ideacore_shop()
+    work_idea = idea_kid_shop()
     assert work_idea._is_expanded
     assert work_idea.promise == False
     assert work_idea._problem_bool == False
@@ -580,9 +584,9 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
     work_text = "work"
     clean_text = "clean"
     # parent idea
-    work_idea = ideacore_shop(_label=work_text, _begin=22.0, _close=66.0)
+    work_idea = idea_kid_shop(_label=work_text, _begin=22.0, _close=66.0)
     # kid idea
-    clean_idea = ideacore_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
+    clean_idea = idea_kid_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
 
     # WHEN
     work_idea.add_kid(idea_kid=clean_idea)
@@ -590,7 +594,7 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
     # THEN
     assert work_idea._kids[clean_text]._begin == 2
     assert work_idea._kids[clean_text]._close == 6
-    kid_idea_expected = ideacore_shop(
+    kid_idea_expected = idea_kid_shop(
         clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
     assert work_idea._kids[clean_text] == kid_idea_expected
@@ -599,13 +603,13 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
 def test_idea_invaild_DenomThrowsError():
     # GIVEN
     work_text = "work"
-    parent_idea = ideacore_shop(_label=work_text)
+    parent_idea = idea_kid_shop(_label=work_text)
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
     clean_text = "clean"
     clean_road = create_road(casa_road, clean_text)
     print(f"{clean_road=}")
-    kid_idea = ideacore_shop(
+    kid_idea = idea_kid_shop(
         clean_text, _parent_road=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # WHEN / THEN
@@ -621,7 +625,7 @@ def test_idea_invaild_DenomThrowsError():
 def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
     # GIVEN
     clean_text = "clean"
-    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea = idea_kid_shop(_label=clean_text)
     tool_text = "tool"
     required_heir_x = requiredheir_shop(base=tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
@@ -638,7 +642,7 @@ def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
 def test_idea_get_requiredheir_correctlyReturnsNone():
     # GIVEN
     clean_text = "clean"
-    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea = idea_kid_shop(_label=clean_text)
     tool_text = "tool"
     required_heir_x = requiredheir_shop(tool_text)
     required_heirs_x = {required_heir_x.base: required_heir_x}
@@ -655,7 +659,7 @@ def test_idea_get_requiredheir_correctlyReturnsNone():
 def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
     clean_text = "clean"
-    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea = idea_kid_shop(_label=clean_text)
     assert clean_idea._active_status_hx == {}
 
     # WHEN
@@ -667,7 +671,7 @@ def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
 def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
     # GIVEN
     clean_text = "clean"
-    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea = idea_kid_shop(_label=clean_text)
     clean_idea._active_status_hx = {0: True, 4: False}
     assert clean_idea._active_status_hx != {0: True}
     # WHEN
@@ -679,7 +683,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 # def test_idea_set_active_status_IfFullactive_status_hxResetToFalse():
 #     # GIVEN
 # clean_text = "clean"
-# clean_idea = ideacore_shop(_label=clean_text)
+# clean_idea = idea_kid_shop(_label=clean_text)
 #     clean_idea.set_required_sufffact(
 #         base="testing1,second",
 #         sufffact="testing1,second,next",
@@ -698,7 +702,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
     clean_text = "clean"
-    clean_idea = ideacore_shop(_label=clean_text)
+    clean_idea = idea_kid_shop(_label=clean_text)
     assert clean_idea._active_status_hx == {}
 
     # WHEN
@@ -759,7 +763,7 @@ def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
 def test_idea_set_assignedunit_empty_if_null():
     # GIVEN
     run_text = "run"
-    run_idea = ideacore_shop(_label=run_text)
+    run_idea = idea_kid_shop(_label=run_text)
     run_idea._assignedunit = None
     assert run_idea._assignedunit is None
 
@@ -775,7 +779,7 @@ def test_idea_set_assignedheir_CorrectlySetsAttr():
     # GIVEN
     swim_text = "swimmers"
     sport_text = "sports"
-    sport_idea = ideacore_shop(_label=sport_text)
+    sport_idea = idea_kid_shop(_label=sport_text)
     sport_idea._assignedunit.set_suffgroup(brand=swim_text)
     assert sport_idea._assignedheir is None
 
@@ -796,7 +800,7 @@ def test_idea_set_assignedheir_CorrectlySetsAttr():
 def test_idea_get_descendants_ReturnsNoRoadUnits():
     # GIVEN
     nation_text = "nation-state"
-    nation_idea = ideacore_shop(_label=nation_text, _parent_road=root_label())
+    nation_idea = idea_kid_shop(_label=nation_text, _parent_road=root_label())
 
     # WHEN
     nation_descendants = nation_idea.get_descendant_roads_from_kids()
@@ -809,21 +813,21 @@ def test_idea_get_descendants_Returns3DescendantsRoadUnits():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
+    nation_idea = idea_kid_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    usa_idea = ideacore_shop(usa_text, _parent_road=nation_road)
+    usa_idea = idea_kid_shop(usa_text, _parent_road=nation_road)
     nation_idea.add_kid(idea_kid=usa_idea)
 
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    texas_idea = ideacore_shop(texas_text, _parent_road=usa_road)
+    texas_idea = idea_kid_shop(texas_text, _parent_road=usa_road)
     usa_idea.add_kid(idea_kid=texas_idea)
 
     iowa_text = "Iowa"
     iowa_road = create_road(usa_road, iowa_text)
-    iowa_idea = ideacore_shop(iowa_text, _parent_road=usa_road)
+    iowa_idea = idea_kid_shop(iowa_text, _parent_road=usa_road)
     usa_idea.add_kid(idea_kid=iowa_idea)
 
     # WHEN
@@ -840,7 +844,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
+    nation_idea = idea_kid_shop(nation_text, _parent_road=root_label())
     nation_idea.add_kid(idea_kid=nation_idea)
     max_count = 1000
 
@@ -857,9 +861,9 @@ def test_idea_clear_kids_CorrectlySetsAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
-    nation_idea.add_kid(ideacore_shop("USA", _parent_road=nation_road))
-    nation_idea.add_kid(ideacore_shop("France", _parent_road=nation_road))
+    nation_idea = idea_kid_shop(nation_text, _parent_road=root_label())
+    nation_idea.add_kid(idea_kid_shop("USA", _parent_road=nation_road))
+    nation_idea.add_kid(idea_kid_shop("France", _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN
@@ -873,15 +877,15 @@ def test_idea_get_kid_ReturnsCorrectObj():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
+    nation_idea = idea_kid_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_idea.add_kid(ideacore_shop(usa_text, _parent_road=nation_road))
+    nation_idea.add_kid(idea_kid_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_idea.add_kid(ideacore_shop(france_text, _parent_road=nation_road))
+    nation_idea.add_kid(idea_kid_shop(france_text, _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN
@@ -895,15 +899,15 @@ def test_idea_del_kid_CorrectChangesAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_idea = ideacore_shop(nation_text, _parent_road=root_label())
+    nation_idea = idea_kid_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_idea.add_kid(ideacore_shop(usa_text, _parent_road=nation_road))
+    nation_idea.add_kid(idea_kid_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_idea.add_kid(ideacore_shop(france_text, _parent_road=nation_road))
+    nation_idea.add_kid(idea_kid_shop(france_text, _parent_road=nation_road))
     assert len(nation_idea._kids) == 2
 
     # WHEN

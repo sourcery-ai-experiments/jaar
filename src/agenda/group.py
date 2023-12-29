@@ -18,7 +18,7 @@ class InvalidGroupException(Exception):
     pass
 
 
-class GroupBrand(str):  # Created to help track the concept
+class GroupBrand(str):  # Created to help track the abstraction
     pass
 
 

@@ -87,7 +87,7 @@ def healerlink_shop(
     )
 
 
-class PainGenus(str):  # Created to help track the concept
+class PainGenus(str):  # Created to help track the abstraction
     pass
 
 

@@ -1,7 +1,22 @@
 from src.agenda.road import create_road, RoadUnit, RoadNode
-from src.agenda.idea import IdeaBare as YB
 from dataclasses import dataclass
 from datetime import datetime
+
+
+# created to help make code readable. Holds some IdeaUnit attributes
+@dataclass
+class YB:
+    n: str = None  # pid
+    weight: int = 1
+    b: float = None  # begin
+    c: float = None  # close  # where
+    a: float = None  # addin
+    rr: str = None  # relative_road # not road since it doesn't know root _label
+    mn: int = None  # numor
+    md: int = None  # denom
+    mr: bool = None  # reest
+    sr: str = None  # range_source_road # not road since it doesn't know root _label
+    nr: str = None  # numeric_road # not road since it doesn't know root _label
 
 
 class InvalidSuffFactUnitException(Exception):

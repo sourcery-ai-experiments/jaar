@@ -1,6 +1,6 @@
 from src.agenda.required_assign import assigned_heir_shop, assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.idea import ideacore_shop
+from src.agenda.idea import idea_kid_shop
 from src.agenda.group import groupunit_shop
 
 
@@ -10,7 +10,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     x_agenda = agendaunit_shop(_healer=healer_text)
     run_text = "run"
     run_road = x_agenda.make_l1_road(run_text)
-    x_agenda.add_idea(ideacore_shop(run_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop(run_text), parent_road=x_agenda._economy_id)
     run_idea = x_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_shop()
 
@@ -53,7 +53,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_text = "run"
     run_road = x_agenda.make_road(bob_text, run_text)
     x_agenda.add_partyunit(pid=bob_text)
-    x_agenda.add_idea(ideacore_shop(run_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop(run_text), parent_road=x_agenda._economy_id)
     x_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = x_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_x
@@ -92,9 +92,9 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assigned_unit_x.set_suffgroup(brand=swimmers_text)
 
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swimmers_text))
-    x_agenda.add_idea(ideacore_shop(swim_text), parent_road=x_agenda._economy_id)
-    x_agenda.add_idea(ideacore_shop(morn_text), parent_road=swim_road)
-    x_agenda.add_idea(ideacore_shop(four_text), parent_road=morn_road)
+    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(idea_kid_shop(morn_text), parent_road=swim_road)
+    x_agenda.add_idea(idea_kid_shop(four_text), parent_road=morn_road)
     x_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
     # print(x_agenda.make_road(four_road=}\n{morn_road=))
     four_idea = x_agenda.get_idea_obj(four_road)
@@ -128,8 +128,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     work_road = x_agenda1.make_road(x_agenda1._economy_id, work_text)
     swim_text = "swim"
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
-    x_agenda1.add_idea(ideacore_shop(work_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideacore_shop(swim_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(work_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda1._economy_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(brand=xia_text)
     swim_assignedunit.set_suffgroup(brand=zoa_text)
@@ -162,8 +162,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     work_road = x_agenda1.make_road(x_agenda1._economy_id, work_text)
     swim_text = "swim"
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
-    x_agenda1.add_idea(ideacore_shop(work_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideacore_shop(swim_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(work_text), parent_road=x_agenda1._economy_id)
+    x_agenda1.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda1._economy_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(brand=xia_text)
     swim_assignedunit.set_suffgroup(brand=zoa_text)

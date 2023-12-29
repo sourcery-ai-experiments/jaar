@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.required_idea import AcptFactUnit, RoadUnit, acptfactunit_shop
-from src.agenda.idea import IdeaKid
+from src.agenda.idea import IdeaUnit
 from src.agenda.y_func import get_empty_dict_if_none
 
 
@@ -12,7 +12,7 @@ class InvalidLemmaException(Exception):
 class Lemma:
     src_acptfact: AcptFactUnit
     calc_acptfact: AcptFactUnit
-    x_idea: IdeaKid
+    x_idea: IdeaUnit
     eval_status: bool
     eval_count: int
 
@@ -133,7 +133,7 @@ class Lemmas:
         return acptfact_open, acptfact_nigh
 
     def _create_new_acptfact(
-        self, x_idea: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid
+        self, x_idea: IdeaUnit, src_acptfact: AcptFactUnit, src_idea: IdeaUnit
     ) -> AcptFactUnit:
         if x_idea._begin is None or x_idea._close is None:
             raise InvalidLemmaException(
@@ -212,7 +212,7 @@ class Lemmas:
                 return lemma
 
     # def _add_lemma_idea(
-    def eval(self, x_idea: IdeaKid, src_acptfact: AcptFactUnit, src_idea: IdeaKid):
+    def eval(self, x_idea: IdeaUnit, src_acptfact: AcptFactUnit, src_idea: IdeaUnit):
         new_acptfact = self._create_new_acptfact(
             x_idea=x_idea, src_acptfact=src_acptfact, src_idea=src_idea
         )

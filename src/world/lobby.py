@@ -10,7 +10,7 @@ from src.agenda.road import (
 )
 from src.agenda.fork import ForkUnit, create_forkunit
 from src.agenda.group import GroupBrand
-from src.agenda.idea import ideacore_shop, IdeaCore, ideaattrfilter_shop
+from src.agenda.idea import idea_kid_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.person import PersonID
@@ -89,13 +89,13 @@ class ConcernUnit:
                 f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
-    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadUnit:IdeaCore]:
+    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadUnit:IdeaUnit]:
         action_and_reason_roads = list(self.action.get_all_roads())
         action_and_reason_roads.extend(self.reason.get_all_roads())
         action_and_reason_roads = sorted(action_and_reason_roads)
 
         x_idea_dict = {
-            x_key: ideacore_shop(
+            x_key: idea_kid_shop(
                 get_terminus_node_from_road(x_key),
                 _parent_road=get_parent_road_from_road(x_key),
             )
