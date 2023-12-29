@@ -1,7 +1,7 @@
 from src.agenda.required_idea import acptfactunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import idea_kid_shop
-from src.agenda.road import get_default_economy_root_label as root_label, create_road
+from src.agenda.road import get_default_economy_root_roadnode as root_label, create_road
 
 
 def test_lemma_attributes_exist():

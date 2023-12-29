@@ -51,7 +51,7 @@ from src.agenda.road import (
     get_root_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_economy_root_label,
+    get_default_economy_root_roadnode,
     get_all_road_nodes,
     get_forefather_roads,
     create_road,
@@ -2135,7 +2135,7 @@ def agendaunit_shop(
     if _auto_output_to_public is None:
         _auto_output_to_public = False
     if _economy_id is None:
-        _economy_id = get_default_economy_root_label()
+        _economy_id = get_default_economy_root_roadnode()
 
     x_agenda = AgendaUnit(
         _healer=_healer,

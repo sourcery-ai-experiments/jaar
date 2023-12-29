@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.agenda.road import (
-    get_default_economy_root_label as root_label,
+    get_default_economy_root_roadnode as root_label,
     default_road_delimiter_if_none,
 )
 from src.agenda.origin import originunit_shop

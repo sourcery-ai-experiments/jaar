@@ -4,7 +4,7 @@ from src.agenda.required_idea import (
     sufffactunit_shop,
     sufffacts_get_from_dict,
 )
-from src.agenda.road import get_default_economy_root_label as root_label, create_road
+from src.agenda.road import get_default_economy_root_roadnode as root_label, create_road
 from pytest import raises as pytest_raises
 
 

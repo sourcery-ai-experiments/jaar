@@ -30,10 +30,11 @@ from src.agenda.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_default_economy_root_label as root_label,
+    get_default_economy_root_roadnode as root_label,
     create_road as road_create_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
+    EconomyID,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -55,10 +56,6 @@ from src.agenda.x_func import (
 )
 from src.agenda.y_func import get_empty_dict_if_none
 from copy import deepcopy
-
-
-class EconomyID(str):  # Created to help track the abstraction
-    pass
 
 
 class InvalidIdeaException(Exception):

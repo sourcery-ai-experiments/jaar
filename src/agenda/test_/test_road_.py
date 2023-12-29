@@ -11,7 +11,7 @@ from src.agenda.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_economy_root_label as root_label,
+    get_default_economy_root_roadnode as root_label,
     create_road_from_nodes,
     create_road,
     RoadNode,
@@ -333,7 +333,7 @@ def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadUnitsWithoutSourc
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_economy_root_label_ReturnsCorrectObj():
+def test_road_get_default_economy_root_roadnode_ReturnsCorrectObj():
     assert root_label() == "A"
 
 

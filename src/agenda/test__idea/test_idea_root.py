@@ -1,5 +1,5 @@
 from src.agenda.idea import idea_kid_shop
-from src.agenda.road import get_default_economy_root_label as root_label
+from src.agenda.road import get_default_economy_root_roadnode as root_label
 from pytest import raises as pytest_raises
 
 
@@ -15,7 +15,7 @@ def test_idea_kid_shop_With_is_root_ReturnsCorrectObj():
     assert x_idearoot._is_root == True
 
 
-def test_IdeaUnit_set_idea_label_get_default_economy_root_label_DoesNotRaisesError():
+def test_IdeaUnit_set_idea_label_get_default_economy_root_roadnode_DoesNotRaisesError():
     # GIVEN
     x_idearoot = idea_kid_shop(_is_root=True)
 

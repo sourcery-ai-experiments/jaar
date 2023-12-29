@@ -12,6 +12,10 @@ class RoadNode(str):
         # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
+class EconomyID(RoadNode):  # Created to help track the abstraction
+    pass
+
+
 class RoadUnit(str):  # Created to help track the abstraction
     pass
 
@@ -138,7 +142,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_economy_root_label() -> str:
+def get_default_economy_root_roadnode() -> EconomyID:
     return "A"
 
 

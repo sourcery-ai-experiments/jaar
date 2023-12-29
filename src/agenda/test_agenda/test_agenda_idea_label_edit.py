@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from pytest import raises as pytest_raises
 from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
-from src.agenda.road import get_default_economy_root_label as root_label, create_road
+from src.agenda.road import get_default_economy_root_roadnode as root_label, create_road
 
 
 def test_idea_label_fails_when_idea_does_not_exist():
