@@ -162,7 +162,7 @@ class AgendaUnit:
     def set_partyunit_external_metrics(
         self, external_metrics: PartyUnitExternalMetrics
     ):
-        party_x = self._partys.get(external_metrics.internal_pid)
+        party_x = self.get_party(external_metrics.internal_pid)
         party_x._creditor_active = external_metrics.creditor_active
         party_x._debtor_active = external_metrics.debtor_active
         # self.set_partyunit(partyunit=party_x)
@@ -291,9 +291,9 @@ class AgendaUnit:
         # get dict of all partylinks that are in all balanceheirs
         balanceheir_partyunits = {}
         for balanceheir_pid in balanceheir_dict:
-            groupunit = self._groups.get(balanceheir_pid)
+            groupunit = self.get_groupunit(balanceheir_pid)
             for partylink in groupunit._partys.values():
-                balanceheir_partyunits[partylink.pid] = self._partys.get(partylink.pid)
+                balanceheir_partyunits[partylink.pid] = self.get_party(partylink.pid)
 
         # check all agenda._partys are in balanceheir_partyunits
         return len(self._partys) == len(balanceheir_partyunits)
@@ -556,7 +556,7 @@ class AgendaUnit:
             and new_pid_groupunit._single_party == False
         ):
             self.del_groupunit(groupbrand=new_pid)
-        elif self._partys.get(new_pid) != None:
+        elif self.get_party(new_pid) != None:
             old_pid_creditor_weight += new_pid_partyunit.creditor_weight
 
         # upsert new partyunit
@@ -675,7 +675,7 @@ class AgendaUnit:
 
     def _create_missing_partys(self, partylinks: dict[PartyPID:PartyLink]):
         for partylink_x in partylinks.values():
-            if self._partys.get(partylink_x.pid) is None:
+            if self.get_party(partylink_x.pid) is None:
                 self.set_partyunit(
                     partyunit=partyunit_shop(
                         pid=partylink_x.pid,
@@ -690,17 +690,17 @@ class AgendaUnit:
     def edit_groupunit_brand(
         self, old_brand: GroupBrand, new_brand: GroupBrand, allow_group_overwite: bool
     ):
-        if not allow_group_overwite and self._groups.get(new_brand) != None:
+        if not allow_group_overwite and self.get_groupunit(new_brand) != None:
             raise InvalidAgendaException(
                 f"Group '{old_brand}' change to '{new_brand}' failed since '{new_brand}' exists."
             )
-        elif self._groups.get(new_brand) != None:
-            old_groupunit = self._groups.get(old_brand)
+        elif self.get_groupunit(new_brand) != None:
+            old_groupunit = self.get_groupunit(old_brand)
             old_groupunit.set_brand(brand=new_brand)
-            self._groups.get(new_brand).meld(other_group=old_groupunit)
+            self.get_groupunit(new_brand).meld(other_group=old_groupunit)
             self.del_groupunit(groupbrand=old_brand)
-        elif self._groups.get(new_brand) is None:
-            old_groupunit = self._groups.get(old_brand)
+        elif self.get_groupunit(new_brand) is None:
+            old_groupunit = self.get_groupunit(old_brand)
             groupunit_x = groupunit_shop(
                 brand=new_brand,
                 uid=old_groupunit.uid,
@@ -1045,7 +1045,7 @@ class AgendaUnit:
         _balancelinks_to_delete = [
             _balancelink_pid
             for _balancelink_pid in x_idea._balancelinks.keys()
-            if self._groups.get(_balancelink_pid) is None
+            if self.get_groupunit(_balancelink_pid) is None
         ]
         for _balancelink_pid in _balancelinks_to_delete:
             x_idea._balancelinks.pop(_balancelink_pid)
@@ -1054,7 +1054,7 @@ class AgendaUnit:
             _suffgroups_to_delete = [
                 _suffgroup_pid
                 for _suffgroup_pid in x_idea._assignedunit._suffgroups.keys()
-                if self._groups.get(_suffgroup_pid) is None
+                if self.get_groupunit(_suffgroup_pid) is None
             ]
             for _suffgroup_pid in _suffgroups_to_delete:
                 x_idea._assignedunit.del_suffgroup(_suffgroup_pid)
@@ -1063,7 +1063,7 @@ class AgendaUnit:
 
     def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:BalanceLink]):
         for balancelink_x in balancelinks.values():
-            if self._groups.get(balancelink_x.brand) is None:
+            if self.get_groupunit(balancelink_x.brand) is None:
                 groupunit_x = groupunit_shop(brand=balancelink_x.brand, _partys={})
                 self.set_groupunit(y_groupunit=groupunit_x)
 
@@ -2018,17 +2018,17 @@ class AgendaUnit:
 
     def _meld_partys(self, other_agenda):
         for partyunit in other_agenda._partys.values():
-            if self._partys.get(partyunit.pid) is None:
+            if self.get_party(partyunit.pid) is None:
                 self.set_partyunit(partyunit=partyunit)
             else:
-                self._partys.get(partyunit.pid).meld(partyunit)
+                self.get_party(partyunit.pid).meld(partyunit)
 
     def _meld_groups(self, other_agenda):
         for brx in other_agenda._groups.values():
-            if self._groups.get(brx.brand) is None:
+            if self.get_groupunit(brx.brand) is None:
                 self.set_groupunit(y_groupunit=brx)
             else:
-                self._groups.get(brx.brand).meld(brx)
+                self.get_groupunit(brx.brand).meld(brx)
 
     def _meld_acptfacts(self, other_agenda):
         for hx in other_agenda._idearoot._acptfactunits.values():
@@ -2087,11 +2087,11 @@ class AgendaUnit:
         assignor_partys: dict[PartyPID:PartyUnit],
         assignor_pid: PartyPID,
     ):
-        if self._partys.get(assignor_pid) != None:
+        if self.get_party(assignor_pid) != None:
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
             for partypid_x in partys_set:
-                agenda_x.set_partyunit(partyunit=self._partys.get(partypid_x))
+                agenda_x.set_partyunit(partyunit=self.get_party(partypid_x))
         return agenda_x
 
     def _set_assignment_groups(self, agenda_x):

@@ -231,3 +231,47 @@ def create_requestunit(
     x_requestunit.add_requestee_pid(requestee_pid)
     x_requestunit.add_requestee_groupbrand(requestee_group)
     return x_requestunit
+
+
+@dataclass
+class LobbyUnit:
+    _src_requestunit: RequestUnit = None
+    _dst_requestunit: RequestUnit = None
+
+
+def lobbyunit_shop(
+    _src_requestunit: RequestUnit = None,
+    _dst_requestunit: RequestUnit = None,
+):
+    return LobbyUnit(
+        _src_requestunit=_src_requestunit,
+        _dst_requestunit=_dst_requestunit,
+    )
+
+
+# def create_lobbyunit(
+#     src_requestee_pid: PersonID, # also dst_requestee_pid
+#     dst_requestee_pid: PersonID, # also src_requester_pid
+#     src_concernunit: ConcernUnit,
+#     dst_concernunit: ConcernUnit = None,
+#     src_requestee_group: GroupBrand = None,
+#     src_action_weight: int = None, # also same as dst_action_weight
+#     dst_requestee_group: GroupBrand = None,
+# ):
+#     src_requestunit = create_requestunit(
+#         concernunit=src_concernunit,
+#         requestee_pid=src_requestee_pid,
+#         requestee_group=src_requestee_group,
+#         requester_pid=src_requester_pid,
+#         action_weight=src_action_weight,
+#     )
+#     dst_requestunit = create_requestunit(
+#         concernunit=dst_concernunit,
+#         requestee_pid=dst_requestee_pid,
+#         requestee_group=dst_requestee_group,
+#         requester_pid=dst_requester_pid,
+#         action_weight=dst_action_weight,
+#     )
+#     x_lobbyunit
+
+#     return

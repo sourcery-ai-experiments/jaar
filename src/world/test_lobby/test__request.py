@@ -2,7 +2,7 @@ from src.world.examples.examples import (
     get_farm_concernunit as examples_get_farm_concernunit,
     get_farm_requestunit as examples_get_farm_requestunit,
 )
-from src.world.request import RequestUnit, requestunit_shop, create_requestunit
+from src.world.lobby import RequestUnit, requestunit_shop, create_requestunit
 
 
 def test_RequestUnit_exists():

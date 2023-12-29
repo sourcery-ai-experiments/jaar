@@ -1,7 +1,7 @@
 from src.agenda.road import create_road
 from src.agenda.required_idea import acptfactunit_shop
 from src.world.world import worldunit_shop
-from src.world.request import (
+from src.world.lobby import (
     create_economyaddress,
     create_requestunit,
     create_concernunit,

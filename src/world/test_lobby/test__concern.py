@@ -3,7 +3,7 @@ from src.world.examples.examples import (
 )
 from src.agenda.road import create_road, default_road_delimiter_if_none
 from src.agenda.fork import create_forkunit
-from src.world.request import (
+from src.world.lobby import (
     EconomyAddress,
     economyaddress_shop,
     create_economyaddress,

@@ -3,7 +3,7 @@ from src.agenda.group import groupunit_shop
 from src.agenda.idea import assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
-from src.world.request import EconomyAddress, RequestUnit
+from src.world.lobby import EconomyAddress, RequestUnit
 from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
