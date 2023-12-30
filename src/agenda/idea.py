@@ -408,6 +408,10 @@ class IdeaUnit:
         if self._descendant_promise_count is None:
             self._descendant_promise_count = 0
 
+    def add_to_descendant_promise_count(self, x_int: int):
+        self.set_descendant_promise_count_zero_if_null()
+        self._descendant_promise_count += x_int
+
     def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
         descendant_roads = {}
         to_evaluate_ideas = list(self._kids.values())

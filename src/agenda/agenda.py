@@ -1590,73 +1590,40 @@ class AgendaUnit:
         return {x_idea._label: x_idea for x_idea in idea_list}
 
     def _set_ancestors_metrics(self, road: RoadUnit):
-        # sourcery skip: low-code-quality
         task_count = 0
         child_balancelines = None
-        if road is None:
-            road = ""
-
         group_everyone = None
-        if len(get_all_road_nodes(road)) <= 1:
-            group_everyone = self._idearoot._balanceheirs == {}
-        else:
-            ancestor_roads = get_ancestor_roads(road=road)
-            # remove root road
-            ancestor_roads.pop(len(ancestor_roads) - 1)
+        ancestor_roads = get_ancestor_roads(road=road)
 
-            while ancestor_roads != []:
-                youngest_road = ancestor_roads.pop(0)
-                # self._set_non_root_ancestor_metrics(youngest_road, task_count, group_everyone)
-                # youngest_unprocessed_idea
-                yu_idea_obj = self.get_idea_obj(road=youngest_road)
-                yu_idea_obj.set_descendant_promise_count_zero_if_null()
-                yu_idea_obj._descendant_promise_count += task_count
-                if yu_idea_obj.is_kidless():
-                    yu_idea_obj.set_kidless_balancelines()
-                    child_balancelines = yu_idea_obj._balancelines
-                else:
-                    yu_idea_obj.set_balancelines(child_balancelines=child_balancelines)
+        while ancestor_roads != []:
+            youngest_road = ancestor_roads.pop(0)
+            # _set_non_root_ancestor_metrics(youngest_road, task_count, group_everyone)
+            x_idea_obj = self.get_idea_obj(road=youngest_road)
+            x_idea_obj.add_to_descendant_promise_count(task_count)
+            if x_idea_obj.is_kidless():
+                x_idea_obj.set_kidless_balancelines()
+                child_balancelines = x_idea_obj._balancelines
+            else:
+                x_idea_obj.set_balancelines(child_balancelines=child_balancelines)
 
-                if yu_idea_obj._task:
-                    task_count += 1
-
-                if (
-                    group_everyone != False
-                    and yu_idea_obj._all_party_credit != False
-                    and yu_idea_obj._all_party_debt != False
-                    and yu_idea_obj._balanceheirs != {}
-                    or group_everyone != False
-                    and yu_idea_obj._all_party_credit == False
-                    and yu_idea_obj._all_party_debt == False
-                ):
-                    group_everyone = False
-                elif group_everyone != False:
-                    group_everyone = True
-                yu_idea_obj._all_party_credit = group_everyone
-                yu_idea_obj._all_party_debt = group_everyone
+            if x_idea_obj._task:
+                task_count += 1
 
             if (
                 group_everyone != False
-                and self._idearoot._all_party_credit != False
-                and self._idearoot._all_party_debt != False
-                and self._idearoot._balanceheirs != {}
-                or group_everyone != False
-                and self._idearoot._all_party_credit == False
-                and self._idearoot._all_party_debt == False
+                and x_idea_obj._all_party_credit != False
+                and x_idea_obj._all_party_debt != False
+                and x_idea_obj._balanceheirs != {}
+            ) or (
+                group_everyone != False
+                and x_idea_obj._all_party_credit == False
+                and x_idea_obj._all_party_debt == False
             ):
                 group_everyone = False
-            elif group_everyone != False and yu_idea_obj._balanceheirs == {}:
+            elif group_everyone != False:
                 group_everyone = True
-
-        self._idearoot._all_party_credit = group_everyone
-        self._idearoot._all_party_debt = group_everyone
-
-        if self._idearoot.is_kidless():
-            self._idearoot.set_kidless_balancelines()
-        else:
-            self._idearoot.set_balancelines(child_balancelines=child_balancelines)
-        self._idearoot.set_descendant_promise_count_zero_if_null()
-        self._idearoot._descendant_promise_count += task_count
+            x_idea_obj._all_party_credit = group_everyone
+            x_idea_obj._all_party_debt = group_everyone
 
     def _set_root_attributes(self):
         x_idearoot = self._idearoot
@@ -1684,7 +1651,7 @@ class AgendaUnit:
         x_idearoot.promise = False
 
         if x_idearoot.is_kidless():
-            self._set_ancestors_metrics(road=self._idearoot._parent_road)
+            self._set_ancestors_metrics(road=self._idearoot.get_road())
             self._distribute_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(

@@ -307,6 +307,26 @@ def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
     assert ball_idea._descendant_promise_count is None
 
 
+def test_IdeaUnit_add_to_descendant_promise_count_CorrectlyAdds():
+    # GIVEN
+    ball_text = "ball"
+    ball_idea = idea_kid_shop(_label=ball_text, _descendant_promise_count=55)
+    ball_idea.clear_descendant_promise_count()
+    assert ball_idea._descendant_promise_count is None
+
+    # WHEN
+    ball_idea.add_to_descendant_promise_count(44)
+
+    # THEN
+    assert ball_idea._descendant_promise_count == 44
+
+    # WHEN
+    ball_idea.add_to_descendant_promise_count(33)
+
+    # THEN
+    assert ball_idea._descendant_promise_count == 77
+
+
 def test_IdeaUnit_clear_all_party_credit_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
