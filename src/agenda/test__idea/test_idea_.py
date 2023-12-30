@@ -54,7 +54,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit is None
     assert x_ideaunit._road_delimiter is None
-    assert x_ideaunit._is_root is None
+    assert x_ideaunit._root is None
     assert x_ideaunit._agenda_economy_id is None
 
 
@@ -98,7 +98,7 @@ def test_idea_kid_shop_ReturnsCorrectObj():
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
-    assert x_ideaunit._is_root == False
+    assert x_ideaunit._root == False
     assert x_ideaunit._agenda_economy_id == root_label()
 
 

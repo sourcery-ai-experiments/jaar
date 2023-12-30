@@ -2148,7 +2148,7 @@ def agendaunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_agenda._idearoot = idea_kid_shop(
-        _is_root=True, _uid=1, _level=0, _agenda_economy_id=x_agenda._economy_id
+        _root=True, _uid=1, _level=0, _agenda_economy_id=x_agenda._economy_id
     )
     x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
     x_agenda.set_max_tree_traverse(3)
@@ -2187,7 +2187,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
     x_agenda._idearoot = idea_kid_shop(
-        _is_root=True,
+        _root=True,
         _label=x_agenda._economy_id,
         _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
         _weight=get_obj_from_idea_dict(idearoot_dict, "_weight"),

@@ -62,7 +62,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     x_agenda = agendaunit_shop(_healer=tim_text)
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda.set_agenda_metrics()
-    # x_idearoot = idea_kid_shop(_is_root=True, _label=gio_text, _parent_road="")
+    # x_idearoot = idea_kid_shop(_root=True, _label=gio_text, _parent_road="")
     # x_idearoot._agenda_importance = 1
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0

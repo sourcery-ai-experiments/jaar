@@ -247,7 +247,7 @@ class IdeaUnit:
     _problem_bool: bool = None
     _originunit: OriginUnit = None
     _on_meld_weight_action: str = None
-    _is_root: bool = None
+    _root: bool = None
     _agenda_economy_id: EconomyID = None
     # Calculated fields
     _level: int = None
@@ -526,15 +526,15 @@ class IdeaUnit:
 
     def set_idea_label(self, _label: str):
         if (
-            self._is_root
+            self._root
             and _label != None
             and _label != self._agenda_economy_id
             and self._agenda_economy_id != None
         ):
-            raise Idea_is_root_LabelNotEmptyException(
+            raise Idea_root_LabelNotEmptyException(
                 f"Cannot set idearoot to string other than '{self._agenda_economy_id}'"
             )
-        elif self._is_root and self._agenda_economy_id is None:
+        elif self._root and self._agenda_economy_id is None:
             self._label = root_label()
         # elif _label != None:
         else:
@@ -1105,7 +1105,7 @@ def idea_kid_shop(
     _problem_bool: bool = None,
     _originunit: OriginUnit = None,
     _on_meld_weight_action: str = None,
-    _is_root: bool = None,
+    _root: bool = None,
     _agenda_economy_id: EconomyID = None,
     # Calculated fields
     _level: int = None,
@@ -1132,8 +1132,8 @@ def idea_kid_shop(
         _on_meld_weight_action = "default"
     if _kids_total_weight is None:
         _kids_total_weight = 0
-    if _is_root is None:
-        _is_root = False
+    if _root is None:
+        _root = False
     if _agenda_economy_id is None:
         _agenda_economy_id = root_label()
 
@@ -1164,7 +1164,7 @@ def idea_kid_shop(
         _problem_bool=_problem_bool,
         _originunit=_originunit,
         _on_meld_weight_action=_on_meld_weight_action,
-        _is_root=_is_root,
+        _root=_root,
         _agenda_economy_id=_agenda_economy_id,
         # Calculated fields
         _level=_level,
@@ -1183,7 +1183,7 @@ def idea_kid_shop(
         _active_status_hx=get_empty_dict_if_none(_active_status_hx),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-    if x_ideakid._is_root:
+    if x_ideakid._root:
         x_ideakid.set_idea_label(_label=_agenda_economy_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
@@ -1192,7 +1192,7 @@ def idea_kid_shop(
     return x_ideakid
 
 
-class Idea_is_root_LabelNotEmptyException(Exception):
+class Idea_root_LabelNotEmptyException(Exception):
     pass
 
 
