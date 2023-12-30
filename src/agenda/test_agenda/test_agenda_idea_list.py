@@ -13,7 +13,7 @@ from src.agenda.required_idea import (
 from src.agenda.agenda import agendaunit_shop
 
 
-def _check_all_elements_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
+def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
     bool_x = True
     for x_value in x_dict.values():
         if type_str not in str(type(x_value)):
@@ -218,7 +218,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     #         assert required._status != None
     #         for sufffact_x in required.sufffacts.values():
     #             assert sufffact_x._status != None
-    #         assert _check_all_elements_in_dict_are_correct_type(
+    #         assert _check_all_objects_in_dict_are_correct_type(
     #             x_dict=required.sufffacts, type_str="src.agenda.required.SuffFactUnit"
     #         )
 
