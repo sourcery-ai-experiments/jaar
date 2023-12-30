@@ -56,7 +56,9 @@ class WorldUnit:
 
         # add ideas to requester_contract_agenda
         action_weight = x_requestunit._action_weight
-        concernunit_ideas = x_requestunit._concernunit.get_forkunit_ideas(action_weight)
+        concernunit_ideas = x_requestunit._concernunit.get_beliefunit_ideas(
+            action_weight
+        )
         for x_idea in concernunit_ideas.values():
             # TODO ideas should not be added if they already exist. Create test, then change code
             requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
@@ -108,11 +110,11 @@ class WorldUnit:
                 requester_contract.edit_idea_attr(
                     idea_road,
                     required_base=x_reason.base,
-                    required_sufffact=x_reason.get_1_prong(bad=True),
+                    required_sufffact=x_reason.get_1_idealink(bad=True),
                 )
 
         requester_contract.set_acptfact(
-            x_reason.base, pick=x_reason.get_1_prong(bad=True)
+            x_reason.base, pick=x_reason.get_1_idealink(bad=True)
         )
         requester_clerkunit.save_contract_agenda(requester_contract)
         requester_clerkunit.save_refreshed_output_to_public()

@@ -14,7 +14,7 @@ class NoneZeroAffectException(Exception):
 
 
 @dataclass
-class ProngUnit:
+class IdeaLink:
     road: RoadUnit
     affect: float = None
     love: float = None
@@ -44,55 +44,53 @@ class ProngUnit:
         return self.love < 0
 
 
-def prongunit_shop(
-    road: RoadUnit, affect: float = None, love: float = None
-) -> ProngUnit:
-    x_prongunit = ProngUnit(road=road)
-    x_prongunit.set_affect(affect)
-    x_prongunit.set_love(love)
-    return x_prongunit
+def idealink_shop(road: RoadUnit, affect: float = None, love: float = None) -> IdeaLink:
+    x_idealink = IdeaLink(road=road)
+    x_idealink.set_affect(affect)
+    x_idealink.set_love(love)
+    return x_idealink
 
 
-class ForkSubRoadUnitException(Exception):
+class BeliefSubRoadUnitException(Exception):
     pass
 
 
 @dataclass
-class ForkUnit:
+class BeliefUnit:
     base: RoadUnit = None
-    prongs: dict[RoadUnit:ProngUnit] = None
+    idealinks: dict[RoadUnit:IdeaLink] = None
     delimiter: str = None
 
     def is_dialectic(self):
         good_in_tribe_road = next(
             (
-                x_prongunit.road
-                for x_prongunit in self.prongs.values()
-                if x_prongunit.is_good() and x_prongunit.is_in_tribe()
+                x_idealink.road
+                for x_idealink in self.idealinks.values()
+                if x_idealink.is_good() and x_idealink.is_in_tribe()
             ),
             None,
         )
         good_out_tribe_road = next(
             (
-                x_prongunit.road
-                for x_prongunit in self.prongs.values()
-                if x_prongunit.is_good() and x_prongunit.is_out_tribe()
+                x_idealink.road
+                for x_idealink in self.idealinks.values()
+                if x_idealink.is_good() and x_idealink.is_out_tribe()
             ),
             None,
         )
         bad_in_tribe_road = next(
             (
-                x_prongunit.road
-                for x_prongunit in self.prongs.values()
-                if x_prongunit.is_bad() and x_prongunit.is_in_tribe()
+                x_idealink.road
+                for x_idealink in self.idealinks.values()
+                if x_idealink.is_bad() and x_idealink.is_in_tribe()
             ),
             None,
         )
         bad_out_tribe_road = next(
             (
-                x_prongunit.road
-                for x_prongunit in self.prongs.values()
-                if x_prongunit.is_bad() and x_prongunit.is_out_tribe()
+                x_idealink.road
+                for x_idealink in self.idealinks.values()
+                if x_idealink.is_bad() and x_idealink.is_out_tribe()
             ),
             None,
         )
@@ -105,33 +103,34 @@ class ForkUnit:
 
     def is_tribal(self):
         return (
-            self.get_1_prong(in_tribe=True) != None
-            and self.get_1_prong(out_tribe=True) != None
+            self.get_1_idealink(in_tribe=True) != None
+            and self.get_1_idealink(out_tribe=True) != None
         )
 
     def is_moral(self):
         return (
-            self.get_1_prong(good=True) != None and self.get_1_prong(bad=True) != None
+            self.get_1_idealink(good=True) != None
+            and self.get_1_idealink(bad=True) != None
         )
 
-    def set_prong(self, x_prongunit: ProngUnit):
-        if is_sub_road(x_prongunit.road, self.base) == False:
-            raise ForkSubRoadUnitException(
-                f"ForkUnit cannot set prong '{x_prongunit.road}' because base road is '{self.base}'."
+    def set_idealink(self, x_idealink: IdeaLink):
+        if is_sub_road(x_idealink.road, self.base) == False:
+            raise BeliefSubRoadUnitException(
+                f"BeliefUnit cannot set idealink '{x_idealink.road}' because base road is '{self.base}'."
             )
-        self.prongs[x_prongunit.road] = x_prongunit
+        self.idealinks[x_idealink.road] = x_idealink
 
-    def del_prong(self, prong: RoadUnit):
-        self.prongs.pop(prong)
+    def del_idealink(self, idealink: RoadUnit):
+        self.idealinks.pop(idealink)
 
-    def get_prongs(
+    def get_idealinks(
         self,
         good: bool = None,
         bad: bool = None,
         in_tribe: bool = None,
         out_tribe: bool = None,
         x_all: bool = None,
-    ) -> dict[RoadUnit:ProngUnit]:
+    ) -> dict[RoadUnit:IdeaLink]:
         if good is None:
             good = False
         if bad is None:
@@ -143,21 +142,21 @@ class ForkUnit:
         if x_all is None:
             x_all = False
         return {
-            x_road: x_prongunit
-            for x_road, x_prongunit in self.prongs.items()
+            x_road: x_idealink
+            for x_road, x_idealink in self.idealinks.items()
             if x_all
-            or (x_prongunit.affect > 0 and good)
-            or (x_prongunit.affect < 0 and bad)
-            or (x_prongunit.love > 0 and in_tribe)
-            or (x_prongunit.love < 0 and out_tribe)
+            or (x_idealink.affect > 0 and good)
+            or (x_idealink.affect < 0 and bad)
+            or (x_idealink.love > 0 and in_tribe)
+            or (x_idealink.love < 0 and out_tribe)
         }
 
     def get_all_roads(self) -> dict[RoadUnit:int]:
-        x_dict = dict(self.get_prongs(x_all=True).items())
+        x_dict = dict(self.get_idealinks(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
 
-    def get_1_prong(
+    def get_1_idealink(
         self,
         good: bool = None,
         bad: bool = None,
@@ -177,35 +176,35 @@ class ForkUnit:
             x_any = False
         return next(
             (
-                x_prongunit.road
-                for x_prongunit in self.prongs.values()
+                x_idealink.road
+                for x_idealink in self.idealinks.values()
                 if x_any
-                or (x_prongunit.affect > 0 and good)
-                or (x_prongunit.affect < 0 and bad)
-                or (x_prongunit.love > 0 and in_tribe)
-                or (x_prongunit.love < 0 and out_tribe)
+                or (x_idealink.affect > 0 and good)
+                or (x_idealink.affect < 0 and bad)
+                or (x_idealink.love > 0 and in_tribe)
+                or (x_idealink.love < 0 and out_tribe)
             ),
             None,
         )
 
 
-def forkunit_shop(
-    base: RoadUnit, prongs: dict[RoadUnit:float] = None, delimiter: str = None
+def beliefunit_shop(
+    base: RoadUnit, idealinks: dict[RoadUnit:float] = None, delimiter: str = None
 ):
-    return ForkUnit(
+    return BeliefUnit(
         base=base,
-        prongs=get_empty_dict_if_none(prongs),
+        idealinks=get_empty_dict_if_none(idealinks),
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
 
-def create_forkunit(
+def create_beliefunit(
     base: RoadUnit, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
-    x_forkunit = forkunit_shop(base=base)
-    good_prongunit = prongunit_shop(create_road(base, good, delimiter=delimiter), 1)
-    bad_prongunit = prongunit_shop(create_road(base, bad, delimiter=delimiter), -1)
-    x_forkunit.set_prong(good_prongunit)
-    x_forkunit.set_prong(bad_prongunit)
-    if x_forkunit.is_moral():
-        return x_forkunit
+    x_beliefunit = beliefunit_shop(base=base)
+    good_idealink = idealink_shop(create_road(base, good, delimiter=delimiter), 1)
+    bad_idealink = idealink_shop(create_road(base, bad, delimiter=delimiter), -1)
+    x_beliefunit.set_idealink(good_idealink)
+    x_beliefunit.set_idealink(bad_idealink)
+    if x_beliefunit.is_moral():
+        return x_beliefunit

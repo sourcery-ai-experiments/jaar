@@ -484,7 +484,7 @@
             "single_party_id": 22,
             "uid": 33
         },
-        "OceanView Apt": {
+        "OceanVista Apt": {
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -503,7 +503,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "OceanView Apt",
+            "brand": "OceanVista Apt",
             "single_party_id": null,
             "uid": 34
         },
@@ -4121,8 +4121,8 @@
                         "_acptfactunits": {},
                         "_addin": null,
                         "_balancelinks": {
-                            "OceanView Apt": {
-                                "brand": "OceanView Apt",
+                            "OceanVista Apt": {
+                                "brand": "OceanVista Apt",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1
                             }

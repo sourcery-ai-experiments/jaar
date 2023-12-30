@@ -1244,7 +1244,7 @@ class AgendaUnit:
             )
         elif not parent_has_range and not numeric_range and x_iaf.numor != None:
             raise InvalidAgendaException(
-                f"Idea cannot edit numor={x_iaf.numor}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideacore._numeric_road does not have begin/close range"
+                f"Idea cannot edit numor={x_iaf.numor}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideaunit._numeric_road does not have begin/close range"
             )
         ideaattrfilter.begin = x_begin
         ideaattrfilter.close = x_close

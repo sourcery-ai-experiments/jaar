@@ -9,7 +9,7 @@ class InvalidPyQtException(Exception):
 
 @dataclass
 class PYQTTreeHolder:
-    ideacore: IdeaUnit
+    ideaunit: IdeaUnit
     yo_action_flag: str
     yo_intent_flag: str
     yo_complete_flag: str
@@ -48,7 +48,7 @@ def get_pyqttree(
     source_agenda: AgendaUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
-        ideacore=idearoot,
+        ideaunit=idearoot,
         yo_action_flag=yo_action_flag,
         yo_intent_flag=yo_intent_flag,
         yo_complete_flag=yo_complete_flag,
@@ -73,20 +73,20 @@ def get_pyqttree(
 def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     treenode_l = _create_treenode_l(pth)
     item = QTreeWidgetItem([treenode_l])
-    item.setData(2, 10, pth.ideacore._label)
-    item.setData(2, 11, pth.ideacore._parent_road)
-    # item.setData(2, 12, ideacore._weight)
-    # item.setData(2, 13, ideacore._begin)
-    # item.setData(2, 14, ideacore._close)
-    item.setData(2, 20, pth.ideacore._is_expanded)
-    if pth.ideacore._requiredunits is None:
+    item.setData(2, 10, pth.ideaunit._label)
+    item.setData(2, 11, pth.ideaunit._parent_road)
+    # item.setData(2, 12, ideaunit._weight)
+    # item.setData(2, 13, ideaunit._begin)
+    # item.setData(2, 14, ideaunit._close)
+    item.setData(2, 20, pth.ideaunit._is_expanded)
+    if pth.ideaunit._requiredunits is None:
         item.setData(2, 21, 0)
     else:
-        item.setData(2, 21, len(pth.ideacore._requiredunits))
-    if pth.ideacore._kids is None:
-        raise InvalidPyQtException(f"Idea {pth.ideacore._label} has null kids.")
+        item.setData(2, 21, len(pth.ideaunit._requiredunits))
+    if pth.ideaunit._kids is None:
+        raise InvalidPyQtException(f"Idea {pth.ideaunit._label} has null kids.")
 
-    sort_ideas_list = list(pth.ideacore._kids.values())
+    sort_ideas_list = list(pth.ideaunit._kids.values())
     # print(f"{len(sort_ideas_list)=}")
     # print(f"{type(sort_ideas_list)=}")
     # print(f"{len(unsorted_ideas_list.sort(key=lambda x: x._label, reverse=False))=}")
@@ -96,7 +96,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     for kid_idea in sort_ideas_list:
         # for kid_idea in sort_ideas_list.sort(key=lambda x: x._agenda_importance, reverse=True):
         child_pth = PYQTTreeHolder(
-            ideacore=kid_idea,
+            ideaunit=kid_idea,
             yo_action_flag=pth.yo_action_flag,
             yo_intent_flag=pth.yo_intent_flag,
             yo_complete_flag=pth.yo_complete_flag,
@@ -171,16 +171,16 @@ def agenda_importance_diplay(agenda_importance: float):
 def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
     sufffact_count = sum(
         required.get_sufffacts_count()
-        for required in pth.ideacore._requiredunits.values()
+        for required in pth.ideaunit._requiredunits.values()
     )
-    required_count = len(pth.ideacore._requiredunits)
+    required_count = len(pth.ideaunit._requiredunits)
     if required_count != 0:
-        treenode_l += f" (lim {len(pth.ideacore._requiredunits)}/c{sufffact_count})"
+        treenode_l += f" (lim {len(pth.ideaunit._requiredunits)}/c{sufffact_count})"
     return treenode_l
 
 
 def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    requiredheir = pth.ideacore._requiredheirs.get(pth.required_view_pid)
+    requiredheir = pth.ideaunit._requiredheirs.get(pth.required_view_pid)
     if requiredheir != None:
         # treenode_l += f"{get_terminus_node_from_road(requiredheir.base)}"
         grabed_sufffact = None
@@ -193,7 +193,7 @@ def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    acptfactheir = pth.ideacore._acptfactheirs.get(pth.required_view_pid)
+    acptfactheir = pth.ideaunit._acptfactheirs.get(pth.required_view_pid)
     if acptfactheir != None:
         time_road = f"{pth.source_agenda._idearoot._label},time,jajatime"
         if (
@@ -219,35 +219,35 @@ def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _create_treenode_l(pth: PYQTTreeHolder):
-    treenode_l = pth.ideacore._label
+    treenode_l = pth.ideaunit._label
 
     if pth.root_percent_flag:
-        treenode_l += f" ({agenda_importance_diplay(pth.ideacore._agenda_importance)})"
+        treenode_l += f" ({agenda_importance_diplay(pth.ideaunit._agenda_importance)})"
     elif pth.yo2bd_count_flag:
-        treenode_l += f" ({len(pth.ideacore._balancelinks)})"
+        treenode_l += f" ({len(pth.ideaunit._balancelinks)})"
     elif pth.required_count_flag:
         treenode_l = _get_treenode_l_required_count(treenode_l, pth)
     elif pth.required_view_flag:
         treenode_l = _get_treenode_l_required_view(treenode_l, pth)
-    elif pth.acptfactheir_view_flag and pth.ideacore._parent_road != "":
+    elif pth.acptfactheir_view_flag and pth.ideaunit._parent_road != "":
         treenode_l = _get_treenode_l_acptfactheir_view(treenode_l, pth)
-    elif pth.yo_action_flag and pth.ideacore.promise:
-        treenode_l += " (task)" if pth.ideacore._task else " (state)"
+    elif pth.yo_action_flag and pth.ideaunit.promise:
+        treenode_l += " (task)" if pth.ideaunit._task else " (state)"
     elif pth.yo_acptfactunit_count_flag:
-        treenode_l += f" ({len(pth.ideacore._acptfactunits)})"
-    elif pth.yo_acptfactheir_count_flag and pth.ideacore._parent_road != "":
-        treenode_l += f" ({len(pth.ideacore._acptfactheirs)})"
+        treenode_l += f" ({len(pth.ideaunit._acptfactunits)})"
+    elif pth.yo_acptfactheir_count_flag and pth.ideaunit._parent_road != "":
+        treenode_l += f" ({len(pth.ideaunit._acptfactheirs)})"
 
-    if pth.requiredheir_count_flag and pth.ideacore._parent_road not in (None, ""):
+    if pth.requiredheir_count_flag and pth.ideaunit._parent_road not in (None, ""):
         # requiredunit_count = sum(
         #     str(type(requiredheir)) == "<class 'src.agenda.required.RequiredUnit'>"
-        #     for requiredheir in pth.ideacore._requiredheirs.values()
+        #     for requiredheir in pth.ideaunit._requiredheirs.values()
         # )
-        treenode_l += f" (RequiredHeirs {len(pth.ideacore._requiredheirs)})"
+        treenode_l += f" (RequiredHeirs {len(pth.ideaunit._requiredheirs)})"
 
     if pth.yo_acptfactunit_time_flag:
         time_road = f"{pth.source_agenda._idearoot._label},time,jajatime"
-        acptfactunit_time_obj = pth.ideacore._acptfactunits.get(time_road)
+        acptfactunit_time_obj = pth.ideaunit._acptfactunits.get(time_road)
         if acptfactunit_time_obj != None:
             hc_open_text = pth.source_agenda.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactunit_time_obj.open

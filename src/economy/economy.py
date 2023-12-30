@@ -114,17 +114,16 @@ class EconomyUnit:
             parent_range = parent_agenda_ledger.get_range()
             parent_close = parent_agenda_ledger.currency_cease
 
-            curr_onset = (
-                parent_agenda_ledger.currency_onset
-            )  # changes in river_block loop
-            ledgers_count = 0  # changes in river_block loop
+            # changes in river_block loop
+            curr_onset = parent_agenda_ledger.currency_onset
+            ledgers_count = 0
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
 
                 curr_range = parent_range * x_child_ledger._agenda_intent_ratio_credit
                 curr_close = curr_onset + curr_range
 
-                # implies last element in dict
+                # implies last object in dict
                 if ledgers_count == ledgers_len and curr_close != parent_close:
                     curr_close = parent_close
 

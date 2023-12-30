@@ -307,8 +307,8 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
         assert get_idea_catalog_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    element_road = create_road(get_temp_env_economy_id(), "elements")
-    water_road = create_road(element_road, "water")
+    resources_road = create_road(get_temp_env_economy_id(), "resources")
+    water_road = create_road(resources_road, "water")
     water_idea_catalog = IdeaCatalog(agenda_healer=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with x_economy.get_treasury_conn() as treasury_conn:

@@ -536,7 +536,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
         x_agenda.edit_idea_attr(road=clean_road, denom=46)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{clean_road}' if parent '{work_road}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{clean_road}' if parent '{work_road}' or ideaunit._numeric_road does not have begin/close range"
     )
 
     # GIVEN
@@ -600,7 +600,7 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
         x_agenda.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._economy_id}' or ideacore._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._economy_id}' or ideaunit._numeric_road does not have begin/close range"
     )
 
     # WHEN

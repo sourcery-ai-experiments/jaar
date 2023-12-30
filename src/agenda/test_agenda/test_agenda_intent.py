@@ -678,7 +678,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
 
 
 def get_tasks_count(idea_list: list[IdeaUnit]) -> int:
-    return sum(bool(ideacore._task) for ideacore in idea_list)
+    return sum(bool(ideaunit._task) for ideaunit in idea_list)
 
 
 def test_Issue116Resolved_correctlySetsTaskAsTrue():

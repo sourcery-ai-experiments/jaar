@@ -17,89 +17,89 @@ from pytest import raises as pytest_raises
 
 
 def test_IdeaUnit_exists():
-    x_ideacore = IdeaUnit()
-    assert x_ideacore
-    assert x_ideacore._kids is None
-    assert x_ideacore._weight is None
-    assert x_ideacore._label is None
-    assert x_ideacore._uid is None
-    assert x_ideacore._all_party_credit is None
-    assert x_ideacore._all_party_debt is None
-    assert x_ideacore._begin is None
-    assert x_ideacore._close is None
-    assert x_ideacore._addin is None
-    assert x_ideacore._numor is None
-    assert x_ideacore._denom is None
-    assert x_ideacore._reest is None
-    assert x_ideacore._numeric_road is None
-    assert x_ideacore._range_source_road is None
-    assert x_ideacore.promise is None
-    assert x_ideacore._problem_bool is None
-    assert x_ideacore._descendant_promise_count is None
-    assert x_ideacore._balancelines is None
-    assert x_ideacore._balanceheirs is None
-    assert x_ideacore._is_expanded is None
-    assert x_ideacore._acptfactheirs is None
-    assert x_ideacore._acptfactunits is None
-    assert x_ideacore._on_meld_weight_action is None
-    assert x_ideacore._level is None
-    assert x_ideacore._kids_total_weight is None
-    assert x_ideacore._active_status_hx is None
-    assert x_ideacore._agenda_importance is None
-    assert x_ideacore._agenda_coin_onset is None
-    assert x_ideacore._agenda_coin_cease is None
-    assert x_ideacore._requiredunits is None
-    assert x_ideacore._requiredheirs is None
-    assert x_ideacore._assignedunit is None
-    assert x_ideacore._assignedheir is None
-    assert x_ideacore._originunit is None
-    assert x_ideacore._road_delimiter is None
-    assert x_ideacore._is_root is None
-    assert x_ideacore._agenda_economy_id is None
+    x_ideaunit = IdeaUnit()
+    assert x_ideaunit
+    assert x_ideaunit._kids is None
+    assert x_ideaunit._weight is None
+    assert x_ideaunit._label is None
+    assert x_ideaunit._uid is None
+    assert x_ideaunit._all_party_credit is None
+    assert x_ideaunit._all_party_debt is None
+    assert x_ideaunit._begin is None
+    assert x_ideaunit._close is None
+    assert x_ideaunit._addin is None
+    assert x_ideaunit._numor is None
+    assert x_ideaunit._denom is None
+    assert x_ideaunit._reest is None
+    assert x_ideaunit._numeric_road is None
+    assert x_ideaunit._range_source_road is None
+    assert x_ideaunit.promise is None
+    assert x_ideaunit._problem_bool is None
+    assert x_ideaunit._descendant_promise_count is None
+    assert x_ideaunit._balancelines is None
+    assert x_ideaunit._balanceheirs is None
+    assert x_ideaunit._is_expanded is None
+    assert x_ideaunit._acptfactheirs is None
+    assert x_ideaunit._acptfactunits is None
+    assert x_ideaunit._on_meld_weight_action is None
+    assert x_ideaunit._level is None
+    assert x_ideaunit._kids_total_weight is None
+    assert x_ideaunit._active_status_hx is None
+    assert x_ideaunit._agenda_importance is None
+    assert x_ideaunit._agenda_coin_onset is None
+    assert x_ideaunit._agenda_coin_cease is None
+    assert x_ideaunit._requiredunits is None
+    assert x_ideaunit._requiredheirs is None
+    assert x_ideaunit._assignedunit is None
+    assert x_ideaunit._assignedheir is None
+    assert x_ideaunit._originunit is None
+    assert x_ideaunit._road_delimiter is None
+    assert x_ideaunit._is_root is None
+    assert x_ideaunit._agenda_economy_id is None
 
 
 def test_idea_kid_shop_ReturnsCorrectObj():
-    x_ideacore = idea_kid_shop()
-    print(f"{x_ideacore._active_status=}")
-    assert x_ideacore
-    assert x_ideacore._kids == {}
-    assert x_ideacore._weight >= 1
-    assert x_ideacore._label is None
-    assert x_ideacore._uid is None
-    assert x_ideacore._all_party_credit is None
-    assert x_ideacore._all_party_debt is None
-    assert x_ideacore._begin is None
-    assert x_ideacore._close is None
-    assert x_ideacore._addin is None
-    assert x_ideacore._numor is None
-    assert x_ideacore._denom is None
-    assert x_ideacore._reest is None
-    assert x_ideacore._numeric_road is None
-    assert x_ideacore._range_source_road is None
-    assert x_ideacore.promise is False
-    assert x_ideacore._problem_bool is False
-    assert x_ideacore._descendant_promise_count is None
-    assert x_ideacore._balancelines == {}
-    assert x_ideacore._balancelinks == {}
-    assert x_ideacore._balanceheirs == {}
-    assert x_ideacore._is_expanded == True
-    assert x_ideacore._acptfactheirs == {}
-    assert x_ideacore._acptfactunits == {}
-    assert x_ideacore._on_meld_weight_action == "default"
-    assert x_ideacore._level is None
-    assert x_ideacore._kids_total_weight == 0
-    assert x_ideacore._active_status_hx == {}
-    assert x_ideacore._agenda_importance is None
-    assert x_ideacore._agenda_coin_onset is None
-    assert x_ideacore._agenda_coin_cease is None
-    assert x_ideacore._requiredunits == {}
-    assert x_ideacore._requiredheirs == {}
-    assert x_ideacore._assignedunit == assigned_unit_shop()
-    assert x_ideacore._assignedheir is None
-    assert x_ideacore._originunit == originunit_shop()
-    assert x_ideacore._road_delimiter == default_road_delimiter_if_none()
-    assert x_ideacore._is_root == False
-    assert x_ideacore._agenda_economy_id == root_label()
+    x_ideaunit = idea_kid_shop()
+    print(f"{x_ideaunit._active_status=}")
+    assert x_ideaunit
+    assert x_ideaunit._kids == {}
+    assert x_ideaunit._weight >= 1
+    assert x_ideaunit._label is None
+    assert x_ideaunit._uid is None
+    assert x_ideaunit._all_party_credit is None
+    assert x_ideaunit._all_party_debt is None
+    assert x_ideaunit._begin is None
+    assert x_ideaunit._close is None
+    assert x_ideaunit._addin is None
+    assert x_ideaunit._numor is None
+    assert x_ideaunit._denom is None
+    assert x_ideaunit._reest is None
+    assert x_ideaunit._numeric_road is None
+    assert x_ideaunit._range_source_road is None
+    assert x_ideaunit.promise is False
+    assert x_ideaunit._problem_bool is False
+    assert x_ideaunit._descendant_promise_count is None
+    assert x_ideaunit._balancelines == {}
+    assert x_ideaunit._balancelinks == {}
+    assert x_ideaunit._balanceheirs == {}
+    assert x_ideaunit._is_expanded == True
+    assert x_ideaunit._acptfactheirs == {}
+    assert x_ideaunit._acptfactunits == {}
+    assert x_ideaunit._on_meld_weight_action == "default"
+    assert x_ideaunit._level is None
+    assert x_ideaunit._kids_total_weight == 0
+    assert x_ideaunit._active_status_hx == {}
+    assert x_ideaunit._agenda_importance is None
+    assert x_ideaunit._agenda_coin_onset is None
+    assert x_ideaunit._agenda_coin_cease is None
+    assert x_ideaunit._requiredunits == {}
+    assert x_ideaunit._requiredheirs == {}
+    assert x_ideaunit._assignedunit == assigned_unit_shop()
+    assert x_ideaunit._assignedheir is None
+    assert x_ideaunit._originunit == originunit_shop()
+    assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
+    assert x_ideaunit._is_root == False
+    assert x_ideaunit._agenda_economy_id == root_label()
 
 
 def test_IdeaUnit_get_obj_key_ReturnsCorrectObj():

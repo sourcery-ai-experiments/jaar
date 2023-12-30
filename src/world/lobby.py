@@ -8,7 +8,7 @@ from src.agenda.road import (
     get_terminus_node_from_road,
     get_parent_road_from_road,
 )
-from src.agenda.fork import ForkUnit, create_forkunit
+from src.agenda.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import idea_kid_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
@@ -58,19 +58,19 @@ class ConcernSubRoadUnitException(Exception):
 @dataclass
 class ConcernUnit:
     economyaddress: EconomyAddress  # Economy and healers
-    action: ForkUnit = None
-    reason: ForkUnit = None
+    action: BeliefUnit = None
+    reason: BeliefUnit = None
 
     def get_economyaddress_road_delimiter(self):
         return self.economyaddress._road_delimiter
 
-    def set_reason(self, x_forkunit: ForkUnit):
-        self._check_subject_road(x_forkunit.base)
-        self.reason = x_forkunit
+    def set_reason(self, x_beliefunit: BeliefUnit):
+        self._check_subject_road(x_beliefunit.base)
+        self.reason = x_beliefunit
 
-    def set_action(self, x_forkunit: ForkUnit):
-        self._check_subject_road(x_forkunit.base)
-        self.action = x_forkunit
+    def set_action(self, x_beliefunit: BeliefUnit):
+        self._check_subject_road(x_beliefunit.base)
+        self.action = x_beliefunit
 
     def _check_subject_road(self, road: RoadUnit) -> bool:
         if road == create_road(self.economyaddress.economy_id, ""):
@@ -89,7 +89,9 @@ class ConcernUnit:
                 f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
-    def get_forkunit_ideas(self, action_weight: int = None) -> dict[RoadUnit:IdeaUnit]:
+    def get_beliefunit_ideas(
+        self, action_weight: int = None
+    ) -> dict[RoadUnit:IdeaUnit]:
         action_and_reason_roads = list(self.action.get_all_roads())
         action_and_reason_roads.extend(self.reason.get_all_roads())
         action_and_reason_roads = sorted(action_and_reason_roads)
@@ -103,7 +105,7 @@ class ConcernUnit:
         }
         if action_weight is None:
             action_weight = 1
-        for action_road in self.action.get_prongs(good=True).keys():
+        for action_road in self.action.get_idealinks(good=True).keys():
             action_idea = x_idea_dict.get(action_road)
             action_idea._set_idea_attr(
                 ideaattrfilter_shop(weight=action_weight, promise=True)
@@ -113,11 +115,11 @@ class ConcernUnit:
 
     def get_str_summary(self):
         _concern_subject = self.reason.base
-        _concern_good = self.reason.get_1_prong(good=True)
-        _concern_bad = self.reason.get_1_prong(bad=True)
+        _concern_good = self.reason.get_1_idealink(good=True)
+        _concern_bad = self.reason.get_1_idealink(bad=True)
         _action_subject = self.action.base
-        _action_positive = self.action.get_1_prong(good=True)
-        _action_negative = self.action.get_1_prong(bad=True)
+        _action_positive = self.action.get_1_idealink(good=True)
+        _action_negative = self.action.get_1_idealink(bad=True)
 
         concern_road = get_diff_road(_concern_subject, self.economyaddress.economy_id)
         bad_road = get_diff_road(_concern_bad, _concern_subject)
@@ -138,7 +140,7 @@ class ConcernUnit:
 
 
 def concernunit_shop(
-    economyaddress: EconomyAddress, reason: ForkUnit, action: ForkUnit
+    economyaddress: EconomyAddress, reason: BeliefUnit, action: BeliefUnit
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_reason(reason)
@@ -158,14 +160,14 @@ def create_concernunit(
     """creates concernunit object without RoadUnit root nodes being explictely defined in the reason and action RoadUnits."""
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
     x_concernunit.set_reason(
-        create_forkunit(
+        create_beliefunit(
             base=create_road(economyaddress.economy_id, reason),
             good=good,
             bad=bad,
         )
     )
     x_concernunit.set_action(
-        create_forkunit(
+        create_beliefunit(
             base=create_road(economyaddress.economy_id, action),
             good=positive,
             bad=negative,
