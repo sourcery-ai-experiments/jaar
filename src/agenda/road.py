@@ -12,11 +12,11 @@ class RoadNode(str):
         # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
-class EconomyID(RoadNode):  # Created to help track the abstraction
+class EconomyID(RoadNode):  # Created to help track the concept
     pass
 
 
-class RoadUnit(str):  # Created to help track the abstraction
+class RoadUnit(str):  # Created to help track the concept
     pass
 
 

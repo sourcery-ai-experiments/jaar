@@ -151,7 +151,6 @@ class AgendaUnit:
     def set_economy_id(self, economy_id: str):
         old_economy_id = copy_deepcopy(self._economy_id)
         self._economy_id = economy_id
-        print(f"{self._economy_id} {old_economy_id=}")
 
         self.set_agenda_metrics()
         for idea_obj in self._idea_dict.values():
@@ -1590,9 +1589,9 @@ class AgendaUnit:
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
         return {x_idea._label: x_idea for x_idea in idea_list}
 
-    def _set_ancestor_metrics(self, road: RoadUnit):
+    def _set_ancestors_metrics(self, road: RoadUnit):
         # sourcery skip: low-code-quality
-        da_count = 0
+        task_count = 0
         child_balancelines = None
         if road is None:
             road = ""
@@ -1606,10 +1605,12 @@ class AgendaUnit:
             ancestor_roads.pop(len(ancestor_roads) - 1)
 
             while ancestor_roads != []:
+                youngest_road = ancestor_roads.pop(0)
+                # self._set_non_root_ancestor_metrics(youngest_road, task_count, group_everyone)
                 # youngest_unprocessed_idea
-                yu_idea_obj = self.get_idea_obj(road=ancestor_roads.pop(0))
+                yu_idea_obj = self.get_idea_obj(road=youngest_road)
                 yu_idea_obj.set_descendant_promise_count_zero_if_null()
-                yu_idea_obj._descendant_promise_count += da_count
+                yu_idea_obj._descendant_promise_count += task_count
                 if yu_idea_obj.is_kidless():
                     yu_idea_obj.set_kidless_balancelines()
                     child_balancelines = yu_idea_obj._balancelines
@@ -1617,7 +1618,7 @@ class AgendaUnit:
                     yu_idea_obj.set_balancelines(child_balancelines=child_balancelines)
 
                 if yu_idea_obj._task:
-                    da_count += 1
+                    task_count += 1
 
                 if (
                     group_everyone != False
@@ -1655,7 +1656,7 @@ class AgendaUnit:
         else:
             self._idearoot.set_balancelines(child_balancelines=child_balancelines)
         self._idearoot.set_descendant_promise_count_zero_if_null()
-        self._idearoot._descendant_promise_count += da_count
+        self._idearoot._descendant_promise_count += task_count
 
     def _set_root_attributes(self):
         x_idearoot = self._idearoot
@@ -1683,7 +1684,7 @@ class AgendaUnit:
         x_idearoot.promise = False
 
         if x_idearoot.is_kidless():
-            self._set_ancestor_metrics(road=self._idearoot._parent_road)
+            self._set_ancestors_metrics(road=self._idearoot._parent_road)
             self._distribute_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
@@ -1719,7 +1720,7 @@ class AgendaUnit:
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
-            self._set_ancestor_metrics(road=idea_kid.get_road())
+            self._set_ancestors_metrics(road=idea_kid.get_road())
             self._distribute_agenda_importance(idea=idea_kid)
 
     def _distribute_agenda_importance(self, idea: IdeaUnit):
@@ -2246,10 +2247,6 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
             _agenda_economy_id=x_agenda._economy_id,
         )
-        # add idea with created parent_road
-        # print(
-        #     f"{x_agenda._economy_id=} {x_agenda._idearoot._label=} {idea_dict[parent_road_text]=}"
-        # )
         x_agenda.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 
 

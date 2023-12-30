@@ -5,7 +5,6 @@ from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView
 from ui.EditAcptFactTime import EditAcptFactTime
 from ui.Edit_Agenda import Edit_Agenda
-from ui.EditProblem import EditProblem
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.hreg_time import HregTimeIdeaSource
@@ -58,19 +57,10 @@ class MainApp(QApplication):
         self.main_window.open_edittime.connect(self.editacptfact_show)
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 
-        self.editproblem_view = EditProblem()
-        self.main_window.open_editproblem.connect(self.editproblem_show)
-        self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
-
     def editmain_show(self):
         self.editmain_view.agenda_x = self.main_window.agenda_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
-
-    def editproblem_show(self):
-        self.editproblem_view.agenda_x = self.main_window.agenda_x
-        self.editproblem_view.refresh_all()
-        self.editproblem_view.show()
 
     def edit_intent_show(self):
         self.edit_intent_view.agenda_x = self.main_window.agenda_x
@@ -87,7 +77,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     """The main application window"""
 
     open_editmain = qtc.pyqtSignal(bool)
-    open_editproblem = qtc.pyqtSignal(bool)
     open_edit_intent = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
     agenda_x_signal = qtc.pyqtSignal(AgendaUnit)
@@ -99,7 +88,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # signals for opening windows
         self.save_close_button.clicked.connect(self.save_file_and_quit)
         self.editmain_button.clicked.connect(self.open_editmain)
-        self.problem_popup_button.clicked.connect(self.open_editproblem)
         self.edit_intent_button.clicked.connect(self.open_edit_intent)
         self.acptfact_nigh_now.clicked.connect(self.set_acptfact_time_nigh_now)
         self.acptfact_open_5daysago.clicked.connect(

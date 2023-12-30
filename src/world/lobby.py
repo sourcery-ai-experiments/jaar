@@ -13,42 +13,34 @@ from src.agenda.group import GroupBrand
 from src.agenda.idea import idea_kid_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
+from src.world.pain import PainGenus
 from src.world.person import PersonID
 from dataclasses import dataclass
 
 
 @dataclass
 class EconomyAddress:
+    pain: PainGenus
+    treasurer_pid: PersonID
     economy_id: EconomyID
-    treasurer_pids: dict[PersonID:int]
     _road_delimiter: str
 
-    def add_treasurer_pid(self, treasurer_pid: PersonID):
-        self.treasurer_pids[treasurer_pid] = 0
-
-    def get_any_pid(self):
-        x_pid = None
-        for y_pid in self.treasurer_pids:
-            x_pid = y_pid
-        return x_pid
+    def set_treasurer_pid(self, treasurer_pid: PersonID):
+        self.treasurer_pid = treasurer_pid
 
 
 def economyaddress_shop(
+    pain: PainGenus,
+    treasurer_pid: PersonID,
     economy_id: EconomyID,
-    treasurer_pids: dict[PersonID:int] = None,
     _road_delimiter: str = None,
 ) -> EconomyAddress:
     return EconomyAddress(
-        treasurer_pids=get_empty_dict_if_none(treasurer_pids),
+        pain=pain,
+        treasurer_pid=treasurer_pid,
         economy_id=economy_id,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-
-
-def create_economyaddress(treasurer_pid: PersonID, economy_id: EconomyID):
-    x_economyaddress = economyaddress_shop(economy_id=economy_id)
-    x_economyaddress.add_treasurer_pid(treasurer_pid)
-    return x_economyaddress
 
 
 class ConcernSubRoadUnitException(Exception):
@@ -58,19 +50,19 @@ class ConcernSubRoadUnitException(Exception):
 @dataclass
 class ConcernUnit:
     economyaddress: EconomyAddress  # Economy and healers
-    action: BeliefUnit = None
-    reason: BeliefUnit = None
+    fix: BeliefUnit = None
+    issue: BeliefUnit = None
 
     def get_economyaddress_road_delimiter(self):
         return self.economyaddress._road_delimiter
 
-    def set_reason(self, x_beliefunit: BeliefUnit):
+    def set_issue(self, x_beliefunit: BeliefUnit):
         self._check_subject_road(x_beliefunit.base)
-        self.reason = x_beliefunit
+        self.issue = x_beliefunit
 
-    def set_action(self, x_beliefunit: BeliefUnit):
+    def set_fix(self, x_beliefunit: BeliefUnit):
         self._check_subject_road(x_beliefunit.base)
-        self.action = x_beliefunit
+        self.fix = x_beliefunit
 
     def _check_subject_road(self, road: RoadUnit) -> bool:
         if road == create_road(self.economyaddress.economy_id, ""):
@@ -89,86 +81,84 @@ class ConcernUnit:
                 f"ConcernUnit setting concern_subject '{road}' failed because economy_id is not first node."
             )
 
-    def get_beliefunit_ideas(
-        self, action_weight: int = None
-    ) -> dict[RoadUnit:IdeaUnit]:
-        action_and_reason_roads = list(self.action.get_all_roads())
-        action_and_reason_roads.extend(self.reason.get_all_roads())
-        action_and_reason_roads = sorted(action_and_reason_roads)
+    def get_beliefunit_ideas(self, fix_weight: int = None) -> dict[RoadUnit:IdeaUnit]:
+        fix_and_issue_roads = list(self.fix.get_all_roads())
+        fix_and_issue_roads.extend(self.issue.get_all_roads())
+        fix_and_issue_roads = sorted(fix_and_issue_roads)
 
         x_idea_dict = {
             x_key: idea_kid_shop(
                 get_terminus_node_from_road(x_key),
                 _parent_road=get_parent_road_from_road(x_key),
             )
-            for x_key in action_and_reason_roads
+            for x_key in fix_and_issue_roads
         }
-        if action_weight is None:
-            action_weight = 1
-        for action_road in self.action.get_idealinks(good=True).keys():
-            action_idea = x_idea_dict.get(action_road)
-            action_idea._set_idea_attr(
-                ideaattrfilter_shop(weight=action_weight, promise=True)
+        if fix_weight is None:
+            fix_weight = 1
+        for fix_road in self.fix.get_idealinks(good=True).keys():
+            fix_idea = x_idea_dict.get(fix_road)
+            fix_idea._set_idea_attr(
+                ideaattrfilter_shop(weight=fix_weight, promise=True)
             )
 
         return x_idea_dict
 
     def get_str_summary(self):
-        _concern_subject = self.reason.base
-        _concern_good = self.reason.get_1_idealink(good=True)
-        _concern_bad = self.reason.get_1_idealink(bad=True)
-        _action_subject = self.action.base
-        _action_positive = self.action.get_1_idealink(good=True)
-        _action_negative = self.action.get_1_idealink(bad=True)
+        _concern_subject = self.issue.base
+        _concern_good = self.issue.get_1_idealink(good=True)
+        _concern_bad = self.issue.get_1_idealink(bad=True)
+        _fix_subject = self.fix.base
+        _fix_positive = self.fix.get_1_idealink(good=True)
+        _fix_negative = self.fix.get_1_idealink(bad=True)
 
         concern_road = get_diff_road(_concern_subject, self.economyaddress.economy_id)
         bad_road = get_diff_road(_concern_bad, _concern_subject)
         good_road = get_diff_road(_concern_good, _concern_subject)
-        action_road = get_diff_road(_action_subject, self.economyaddress.economy_id)
-        negative_road = get_diff_road(_action_negative, _action_subject)
-        positive_road = get_diff_road(_action_positive, _action_subject)
+        fix_road = get_diff_road(_fix_subject, self.economyaddress.economy_id)
+        negative_road = get_diff_road(_fix_negative, _fix_subject)
+        positive_road = get_diff_road(_fix_positive, _fix_subject)
 
-        return f"""Within {list(self.economyaddress.treasurer_pids.keys())}'s {self.economyaddress.economy_id} economy subject: {concern_road}
+        return f"""Within {self.economyaddress.treasurer_pid}'s {self.economyaddress.economy_id} economy subject: {concern_road}
  {bad_road} is bad. 
  {good_road} is good.
- Within the action domain of '{action_road}'
+ Within the fix domain of '{fix_road}'
  It is good to {positive_road}
  It is bad to {negative_road}"""
 
     def get_any_pid(self):
-        return self.economyaddress.get_any_pid()
+        return self.economyaddress.treasurer_pid
 
 
 def concernunit_shop(
-    economyaddress: EconomyAddress, reason: BeliefUnit, action: BeliefUnit
+    economyaddress: EconomyAddress, issue: BeliefUnit, fix: BeliefUnit
 ) -> ConcernUnit:
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
-    x_concernunit.set_reason(reason)
-    x_concernunit.set_action(action)
+    x_concernunit.set_issue(issue)
+    x_concernunit.set_fix(fix)
     return x_concernunit
 
 
 def create_concernunit(
     economyaddress: EconomyAddress,
-    reason: RoadUnit,  # road with economy root node
+    issue: RoadUnit,  # road with economy root node
     good: RoadNode,
     bad: RoadNode,
-    action: RoadUnit,  # road with economy root node
+    fix: RoadUnit,  # road with economy root node
     positive: RoadNode,
     negative: RoadNode,
 ):
-    """creates concernunit object without RoadUnit root nodes being explictely defined in the reason and action RoadUnits."""
+    """creates concernunit object without RoadUnit root nodes being explictely defined in the issue and fix RoadUnits."""
     x_concernunit = ConcernUnit(economyaddress=economyaddress)
-    x_concernunit.set_reason(
+    x_concernunit.set_issue(
         create_beliefunit(
-            base=create_road(economyaddress.economy_id, reason),
+            base=create_road(economyaddress.economy_id, issue),
             good=good,
             bad=bad,
         )
     )
-    x_concernunit.set_action(
+    x_concernunit.set_fix(
         create_beliefunit(
-            base=create_road(economyaddress.economy_id, action),
+            base=create_road(economyaddress.economy_id, fix),
             good=positive,
             bad=negative,
         )
@@ -182,7 +172,7 @@ class RequestUnit:
     _requestee_pids: dict[PersonID] = None
     _requestee_groups: dict[GroupBrand:GroupBrand] = None
     _requester_pid: PersonID = None
-    _action_weight: float = None
+    _fix_weight: float = None
 
     def add_requestee_pid(self, pid: PersonID):
         self._requestee_pids[pid] = None
@@ -200,16 +190,16 @@ def requestunit_shop(
     _requestee_pids: dict[PersonID],
     _requestee_groups: dict[GroupBrand:GroupBrand] = None,
     _requester_pid: PersonID = None,
-    _action_weight: float = None,
+    _fix_weight: float = None,
 ):
-    if _action_weight is None:
-        _action_weight = 1
+    if _fix_weight is None:
+        _fix_weight = 1
     return RequestUnit(
         _concernunit=_concernunit,
         _requestee_pids=get_empty_dict_if_none(_requestee_pids),
         _requestee_groups=get_empty_dict_if_none(_requestee_groups),
         _requester_pid=_requester_pid,
-        _action_weight=_action_weight,
+        _fix_weight=_fix_weight,
     )
 
 
@@ -218,7 +208,7 @@ def create_requestunit(
     requestee_pid: PersonID,
     requestee_group: GroupBrand = None,
     requester_pid: PersonID = None,
-    action_weight: int = None,
+    fix_weight: int = None,
 ):
     if requester_pid is None:
         requester_pid = concernunit.get_any_pid()
@@ -228,7 +218,7 @@ def create_requestunit(
         concernunit,
         _requestee_pids={},
         _requester_pid=requester_pid,
-        _action_weight=action_weight,
+        _fix_weight=fix_weight,
     )
     x_requestunit.add_requestee_pid(requestee_pid)
     x_requestunit.add_requestee_groupbrand(requestee_group)
@@ -257,7 +247,7 @@ def lobbyunit_shop(
 #     src_concernunit: ConcernUnit,
 #     dst_concernunit: ConcernUnit = None,
 #     src_requestee_group: GroupBrand = None,
-#     src_action_weight: int = None, # also same as dst_action_weight
+#     src_fix_weight: int = None, # also same as dst_fix_weight
 #     dst_requestee_group: GroupBrand = None,
 # ):
 #     src_requestunit = create_requestunit(
@@ -265,14 +255,14 @@ def lobbyunit_shop(
 #         requestee_pid=src_requestee_pid,
 #         requestee_group=src_requestee_group,
 #         requester_pid=src_requester_pid,
-#         action_weight=src_action_weight,
+#         fix_weight=src_fix_weight,
 #     )
 #     dst_requestunit = create_requestunit(
 #         concernunit=dst_concernunit,
 #         requestee_pid=dst_requestee_pid,
 #         requestee_group=dst_requestee_group,
 #         requester_pid=dst_requester_pid,
-#         action_weight=dst_action_weight,
+#         fix_weight=dst_fix_weight,
 #     )
 #     x_lobbyunit
 

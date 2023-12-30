@@ -825,18 +825,20 @@ def test_agenda_set_acptfact_create_missing_ideas_CreatesBaseAndAcptFact():
     # GIVEN
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
-    issue_text = "issues"
-    issue_road = x_agenda.make_l1_road(issue_text)
+    trouble_text = ""
+    trouble_road = x_agenda.make_l1_road(trouble_text)
     climate_text = "climate"
-    climate_road = x_agenda.make_road(issue_road, climate_text)
-    assert x_agenda._idearoot.get_kid(issue_text) is None
+    climate_road = x_agenda.make_road(trouble_road, climate_text)
+    assert x_agenda._idearoot.get_kid(trouble_text) is None
 
     # WHEN
-    x_agenda.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
+    x_agenda.set_acptfact(
+        base=trouble_road, pick=climate_road, create_missing_ideas=True
+    )
 
     # THEN
-    assert x_agenda._idearoot.get_kid(issue_text) != None
-    assert x_agenda.get_idea_obj(issue_road) != None
+    assert x_agenda._idearoot.get_kid(trouble_text) != None
+    assert x_agenda.get_idea_obj(trouble_road) != None
     assert x_agenda.get_idea_obj(climate_road) != None
 
 
@@ -845,11 +847,13 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     healer_text = "Tim"
     x_agenda = agendaunit_shop(healer_text)
 
-    issue_text = "issues"
-    issue_road = x_agenda.make_l1_road(issue_text)
+    trouble_text = "troubles"
+    trouble_road = x_agenda.make_l1_road(trouble_text)
     climate_text = "climate"
-    climate_road = x_agenda.make_road(issue_road, climate_text)
-    x_agenda.set_acptfact(base=issue_road, pick=climate_road, create_missing_ideas=True)
+    climate_road = x_agenda.make_road(trouble_road, climate_text)
+    x_agenda.set_acptfact(
+        base=trouble_road, pick=climate_road, create_missing_ideas=True
+    )
 
     weather_text = "weather"
     weather_road = x_agenda.make_l1_road(weather_text)
@@ -878,7 +882,7 @@ def test_agenda_get_acptfactunits_base_and_acptfact_list_CorrectlyReturnsListOfA
     assert acptfactunit_list_x[0][0] == ""
     assert acptfactunit_list_x[1][0] == games_road
     assert acptfactunit_list_x[1][1] == football_road
-    assert acptfactunit_list_x[2][0] == issue_road
+    assert acptfactunit_list_x[2][0] == trouble_road
     assert acptfactunit_list_x[2][1] == climate_road
     assert acptfactunit_list_x[3][0] == weather_road
     assert acptfactunit_list_x[3][1] == cold_road

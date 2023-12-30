@@ -1,12 +1,12 @@
 from src.world.lobby import (
-    create_economyaddress,
+    economyaddress_shop,
     create_concernunit,
     create_requestunit,
 )
 
 
 def get_farm_concernunit():
-    texas_economyaddress = create_economyaddress("Luca", "Texas")
+    texas_economyaddress = economyaddress_shop("war", "Luca", "Texas")
     food_text = "food"
     good_text = "farm food"
     bad_text = "cheap food"
@@ -15,10 +15,10 @@ def get_farm_concernunit():
     poor_text = "cultivate poorly"
     return create_concernunit(
         economyaddress=texas_economyaddress,
-        reason=food_text,
+        issue=food_text,
         good=good_text,
         bad=bad_text,
-        action=farm_text,
+        fix=farm_text,
         positive=well_text,
         negative=poor_text,
     )

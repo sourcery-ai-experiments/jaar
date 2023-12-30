@@ -71,7 +71,7 @@ class Lemmas:
         src_open,
         src_nigh,
     ) -> (float, float):  # sourcery skip: remove-redundant-if
-        # TODO the sourcery notifications surely comes from a mistake in the code AND the tests. Fix both
+        # TODO the sourcery notifications surely comes from a mistake in the code AND the tests. Correct both
         acptfact_open = None
         acptfact_nigh = None
         if src_open <= idea_begin and src_nigh >= idea_close:

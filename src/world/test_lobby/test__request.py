@@ -85,7 +85,7 @@ def test_create_requestunit_ReturnsCorrectObj():
 
     # THEN
     assert farm_requestunit._concernunit == farm_concernunit
-    assert farm_requestunit._action_weight == 1
+    assert farm_requestunit._fix_weight == 1
     bob_dict = {bob_text: None}
     assert farm_requestunit._requestee_pids == bob_dict
     bob_group_dict = {bob_text: bob_text}
@@ -109,13 +109,13 @@ def test_RequestUnit_get_str_summary_ReturnsCorrectObj():
     food_text = "food"
     farm_text = "farm food"
     cheap_text = "cheap food"
-    action_text = "cultivate"
+    fix_text = "cultivate"
     positive_text = "cultivate well"
     negative_text = "cultivate poorly"
-    static_farm_string = f"""RequestUnit: Within ['{luca_text}']'s {texas_text} economy subject: {food_text}
+    static_farm_string = f"""RequestUnit: Within {luca_text}'s {texas_text} economy subject: {food_text}
  {cheap_text} is bad. 
  {farm_text} is good.
- Within the action domain of '{action_text}'
+ Within the fix domain of '{fix_text}'
  It is good to {positive_text}
  It is bad to {negative_text}
  ['{bob_text}', '{yao_text}'] are in groups ['{real_text}'] and are asked to be good."""

@@ -13,7 +13,7 @@ class PersonExistsException(Exception):
     pass
 
 
-class WorldMark(str):  # Created to help track the abstraction
+class WorldMark(str):  # Created to help track the concept
     pass
 
 
@@ -33,12 +33,12 @@ class WorldUnit:
 
         # apply request to economys
         x_economyaddress = x_requestunit._concernunit.economyaddress
-        for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
-            self._apply_requestunit_to_economy(
-                x_requestunit=x_requestunit,
-                x_treasurer_pid=x_treasurer_pid,
-                x_economy_id=x_economyaddress.economy_id,
-            )
+        # for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
+        self._apply_requestunit_to_economy(
+            x_requestunit=x_requestunit,
+            x_treasurer_pid=x_economyaddress.treasurer_pid,
+            x_economy_id=x_economyaddress.economy_id,
+        )
 
     def _apply_requestunit_to_economy(
         self,
@@ -55,10 +55,8 @@ class WorldUnit:
         requester_contract = requester_clerkunit.get_contract()
 
         # add ideas to requester_contract_agenda
-        action_weight = x_requestunit._action_weight
-        concernunit_ideas = x_requestunit._concernunit.get_beliefunit_ideas(
-            action_weight
-        )
+        fix_weight = x_requestunit._fix_weight
+        concernunit_ideas = x_requestunit._concernunit.get_beliefunit_ideas(fix_weight)
         for x_idea in concernunit_ideas.values():
             # TODO ideas should not be added if they already exist. Create test, then change code
             requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
@@ -73,7 +71,7 @@ class WorldUnit:
             requestee_contract = requestee_clerkunit.get_contract()
             requestee_contract.add_partyunit(
                 x_requestunit._requester_pid,
-                debtor_weight=action_weight,
+                debtor_weight=fix_weight,
                 depotlink_type="assignment",
             )
             requester_contract.add_partyunit(requestee_pid, depotlink_type="assignment")
@@ -96,7 +94,7 @@ class WorldUnit:
                 x_balancelinks[request_group] = balancelink_shop(request_group)
 
         # for every idea in concernunit set idea attributes to requester_contract
-        x_reason = x_requestunit._concernunit.reason
+        x_issue = x_requestunit._concernunit.issue
         for x_idea in concernunit_ideas.values():
             idea_road = x_idea.get_road()
             requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
@@ -109,12 +107,12 @@ class WorldUnit:
             if x_idea.promise:
                 requester_contract.edit_idea_attr(
                     idea_road,
-                    required_base=x_reason.base,
-                    required_sufffact=x_reason.get_1_idealink(bad=True),
+                    required_base=x_issue.base,
+                    required_sufffact=x_issue.get_1_idealink(bad=True),
                 )
 
         requester_contract.set_acptfact(
-            x_reason.base, pick=x_reason.get_1_idealink(bad=True)
+            x_issue.base, pick=x_issue.get_1_idealink(bad=True)
         )
         requester_clerkunit.save_contract_agenda(requester_contract)
         requester_clerkunit.save_refreshed_output_to_public()
@@ -161,23 +159,25 @@ class WorldUnit:
         clerk_person_id: PersonID,
     ):
         economy_id = economyaddress.economy_id
+        treasurer_pid = economyaddress.treasurer_pid
 
-        for treasurer_pid in economyaddress.treasurer_pids.keys():
-            if self.personunit_exists(treasurer_pid) == False:
-                self.set_personunit(treasurer_pid)
-            x_personunit = self.get_personunit_from_memory(treasurer_pid)
+        # for treasurer_pid in economyaddress.treasurer_pids.keys():
 
-            if x_personunit.economyunit_exists(economy_id) == False:
-                x_personunit.set_economyunit(economy_id)
-            x_economy = x_personunit.get_economyunit(economy_id)
+        if self.personunit_exists(treasurer_pid) == False:
+            self.set_personunit(treasurer_pid)
+        x_personunit = self.get_personunit_from_memory(treasurer_pid)
 
-            if self.personunit_exists(clerk_person_id) == False:
-                self.set_personunit(clerk_person_id)
+        if x_personunit.economyunit_exists(economy_id) == False:
+            x_personunit.set_economyunit(economy_id)
+        x_economy = x_personunit.get_economyunit(economy_id)
 
-            if x_economy.clerkunit_exists(treasurer_pid) == False:
-                x_economy.add_clerkunit(treasurer_pid)
-            if x_economy.clerkunit_exists(clerk_person_id) == False:
-                x_economy.add_clerkunit(clerk_person_id)
+        if self.personunit_exists(clerk_person_id) == False:
+            self.set_personunit(clerk_person_id)
+
+        if x_economy.clerkunit_exists(treasurer_pid) == False:
+            x_economy.add_clerkunit(treasurer_pid)
+        if x_economy.clerkunit_exists(clerk_person_id) == False:
+            x_economy.add_clerkunit(clerk_person_id)
 
     def get_priority_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)

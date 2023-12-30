@@ -2,7 +2,7 @@ from src.agenda.road import create_road
 from src.agenda.required_idea import acptfactunit_shop
 from src.world.world import worldunit_shop
 from src.world.lobby import (
-    create_economyaddress,
+    economyaddress_shop,
     create_requestunit,
     create_concernunit,
 )
@@ -28,7 +28,7 @@ def test_worldunit_add_economy_connection_CorrectlyCreatesObj(
     luca_person.set_economyunit(texas_text)
     texas_economy = luca_person.get_economyunit(texas_text)
     kari_text = "kari"
-    texas_economyaddress = create_economyaddress(luca_text, texas_text)
+    texas_economyaddress = economyaddress_shop("war", luca_text, texas_text)
     assert texas_economy._clerkunits.get(kari_text) is None
     assert x_world.personunit_exists(kari_text) == False
 
@@ -55,11 +55,11 @@ def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
     texas_public_dir = texas_economy.get_public_dir()
 
     highway_concernunit = create_concernunit(
-        economyaddress=create_economyaddress(yao_text, texas_text),
-        action="flying in airplanes",
+        economyaddress=economyaddress_shop("war", yao_text, texas_text),
+        fix="flying in airplanes",
         positive="Do not fly",
         negative="Continue flying",
-        reason="global environment",
+        issue="global environment",
         good="healthy",
         bad="boiling",
     )
@@ -111,22 +111,22 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     boiling_text = "boiling"
 
     highway_concernunit = create_concernunit(
-        economyaddress=create_economyaddress(yao_text, texas_text),
-        action=flying_text,
+        economyaddress=economyaddress_shop("war", yao_text, texas_text),
+        fix=flying_text,
         positive=no_fly_text,
         negative=yesfly_text,
-        reason=weather_text,
+        issue=weather_text,
         good=healthy_text,
         bad=boiling_text,
     )
     tim_text = "Tim"
     xio_text = "Xio"
-    action_weight = 7
+    fix_weight = 7
     highway_requestunit = create_requestunit(
         concernunit=highway_concernunit,
         requestee_pid=tim_text,
         requester_pid=xio_text,
-        action_weight=action_weight,
+        fix_weight=fix_weight,
     )
 
     # WHEN
@@ -183,7 +183,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
 
     assert flying_idea._weight == 1
     assert no_fly_idea._weight != 1
-    assert no_fly_idea._weight == action_weight
+    assert no_fly_idea._weight == fix_weight
     assert yesfly_idea._weight == 1
     assert weather_idea._weight == 1
     assert healthy_idea._weight == 1
@@ -236,24 +236,24 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     boiling_text = "boiling"
 
     highway_concernunit = create_concernunit(
-        economyaddress=create_economyaddress(yao_text, texas_text),
-        action=flying_text,
+        economyaddress=economyaddress_shop("war", yao_text, texas_text),
+        fix=flying_text,
         positive=no_fly_text,
         negative=yesfly_text,
-        reason=weather_text,
+        issue=weather_text,
         good=healthy_text,
         bad=boiling_text,
     )
     tim_text = "Tim"
     xio_text = "Xio"
     environmentalist_text = "Environmentalist"
-    action_weight = 7
+    fix_weight = 7
     highway_requestunit = create_requestunit(
         concernunit=highway_concernunit,
         requestee_pid=tim_text,
         requestee_group=environmentalist_text,
         requester_pid=xio_text,
-        action_weight=action_weight,
+        fix_weight=fix_weight,
     )
 
     # WHEN
@@ -327,21 +327,21 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
 #     texas_economy = yao_person.get_economyunit(texas_text)
 
 #     fly_concernunit = create_concernunit(
-#         economyaddress=create_economyaddress(yao_text, texas_text),
-#         action="flying in airplanes",
+#         economyaddress=economyaddress_shop("war", yao_text, texas_text),
+#         fix="flying in airplanes",
 #         positive="Do not fly",
 #         negative="Continue flying",
-#         reason="global weather",
+#         issue="global weather",
 #         good="healthy",
 #         bad="boiling",
 #     )
 #     sue_text = "Sue"
 #     tim_text = "Tim"
 #     xio_text = "Xio"
-#     action_weight = 7
-#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, action_weight)
-#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, action_weight)
-#     fly_requestunit = create_requestunit(fly_concernunit, yao_text, xio_text, action_weight)
+#     fix_weight = 7
+#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, fix_weight)
+#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, fix_weight)
+#     fly_requestunit = create_requestunit(fly_concernunit, yao_text, xio_text, fix_weight)
 
 #     # WHEN
 #     x_world.apply_requestunit(fly_requestunit)

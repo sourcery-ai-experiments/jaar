@@ -681,7 +681,7 @@ def get_tasks_count(idea_list: list[IdeaUnit]) -> int:
     return sum(bool(ideaunit._task) for ideaunit in idea_list)
 
 
-def test_Issue116Resolved_correctlySetsTaskAsTrue():
+def test_Isue116Resolved_correctlySetsTaskAsTrue():
     # GIVEN
     x_agenda = example_agendas_agenda_v002()
 

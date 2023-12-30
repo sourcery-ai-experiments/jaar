@@ -1,7 +1,5 @@
 # # command to for converting ui form to python file: pyuic5 ui\economyMainUI.ui -o ui\economyMainUI.py
 from ui.MainWindowUI import Ui_MainWindow
-
-# from ui.Edit5Issue import Edit5Issue
 from ui.EditMain import EditMainView
 from PyQt5 import QtCore as qtc
 from src.agenda.agenda import (
@@ -46,11 +44,6 @@ class MainApp(QApplication):
         # create slot for making editmain visible
         self.main_window.open_editmain.connect(self.editmain_show)
 
-        # create instance
-        self.edit5issue_view = Edit5Issue()
-        # create slot for making visible
-        self.main_window.open_edit5issue.connect(self.edit5issue_show)
-
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
             self.main_window.contract = self.main_window.x_clerk.open_contract_agenda()
@@ -60,18 +53,11 @@ class MainApp(QApplication):
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
-    def edit5issue_show(self):
-        if self.main_window.x_clerk != None:
-            self.edit5issue_view.x_clerk = self.main_window.x_clerk
-            self.edit5issue_view.refresh_all()
-            self.edit5issue_view.show()
-
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """The main application window"""
 
     open_editmain = qtc.pyqtSignal(bool)
-    open_edit5issue = qtc.pyqtSignal(bool)
 
     def __init__(self):
         super().__init__()
@@ -109,7 +95,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlink_update_button.clicked.connect(self.depotlink_update)
         self.depotlink_delete_button.clicked.connect(self.depotlink_delete)
         self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
-        self.five_issue_button.clicked.connect(self.open_edit5issue)
 
         self.x_clerk = None
         self.economy_x = None

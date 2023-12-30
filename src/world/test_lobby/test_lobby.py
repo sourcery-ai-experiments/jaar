@@ -66,7 +66,7 @@ def test_lobbyunit_shop_ReturnsCorrectObj():
 #     action_text = "cultivate"
 #     positive_text = "cultivate well"
 #     negative_text = "cultivate poorly"
-#     static_farm_string = f"""RequestUnit: Within ['{luca_text}']'s {texas_text} economy subject: {food_text}
+#     static_farm_string = f"""RequestUnit: Within {luca_text}'s {texas_text} economy subject: {food_text}
 #  {cheap_text} is bad.
 #  {farm_text} is good.
 #  Within the action domain of '{action_text}'
