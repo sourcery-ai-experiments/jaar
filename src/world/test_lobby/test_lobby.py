@@ -1,5 +1,5 @@
 from src.world.examples.examples import (
-    get_farm_concernunit as examples_get_farm_concernunit,
+    get_farm_wantunit as examples_get_farm_wantunit,
     get_farm_requestunit as examples_get_farm_requestunit,
 )
 from src.world.lobby import LobbyUnit, lobbyunit_shop, create_requestunit
@@ -35,10 +35,10 @@ def test_lobbyunit_shop_ReturnsCorrectObj():
 
 #     # WHEN
 #     bob_text = "Bob"
-#     farm_requestunit = create_requestunit(farm_concernunit, requestee_pid=bob_text)
+#     farm_requestunit = create_requestunit(farm_wantunit, requestee_pid=bob_text)
 
 #     # THEN
-#     assert farm_requestunit._concernunit == farm_concernunit
+#     assert farm_requestunit._wantunit == farm_wantunit
 #     assert farm_requestunit._action_weight == 1
 #     bob_dict = {bob_text: None}
 #     assert farm_requestunit._requestee_pids == bob_dict

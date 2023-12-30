@@ -4,7 +4,7 @@ from src.world.world import worldunit_shop
 from src.world.lobby import (
     economyaddress_shop,
     create_requestunit,
-    create_concernunit,
+    create_wantunit,
 )
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
@@ -54,7 +54,7 @@ def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
     texas_economy = yao_person.get_economyunit(texas_text)
     texas_public_dir = texas_economy.get_public_dir()
 
-    highway_concernunit = create_concernunit(
+    highway_wantunit = create_wantunit(
         economyaddress=economyaddress_shop("war", yao_text, texas_text),
         fix="flying in airplanes",
         positive="Do not fly",
@@ -66,7 +66,7 @@ def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
     tim_text = "Tim"
     xio_text = "Xio"
     highway_requestunit = create_requestunit(
-        concernunit=highway_concernunit, requestee_pid=tim_text, requester_pid=xio_text
+        wantunit=highway_wantunit, requestee_pid=tim_text, requester_pid=xio_text
     )
     assert x_world.get_personunit_from_memory(tim_text) is None
     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -110,7 +110,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     healthy_text = "healthy"
     boiling_text = "boiling"
 
-    highway_concernunit = create_concernunit(
+    highway_wantunit = create_wantunit(
         economyaddress=economyaddress_shop("war", yao_text, texas_text),
         fix=flying_text,
         positive=no_fly_text,
@@ -123,7 +123,7 @@ def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agen
     xio_text = "Xio"
     fix_weight = 7
     highway_requestunit = create_requestunit(
-        concernunit=highway_concernunit,
+        wantunit=highway_wantunit,
         requestee_pid=tim_text,
         requester_pid=xio_text,
         fix_weight=fix_weight,
@@ -235,7 +235,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     healthy_text = "healthy"
     boiling_text = "boiling"
 
-    highway_concernunit = create_concernunit(
+    highway_wantunit = create_wantunit(
         economyaddress=economyaddress_shop("war", yao_text, texas_text),
         fix=flying_text,
         positive=no_fly_text,
@@ -249,7 +249,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
     environmentalist_text = "Environmentalist"
     fix_weight = 7
     highway_requestunit = create_requestunit(
-        concernunit=highway_concernunit,
+        wantunit=highway_wantunit,
         requestee_pid=tim_text,
         requestee_group=environmentalist_text,
         requester_pid=xio_text,
@@ -326,7 +326,7 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
 #     yao_person.set_economyunit(texas_text)
 #     texas_economy = yao_person.get_economyunit(texas_text)
 
-#     fly_concernunit = create_concernunit(
+#     fly_wantunit = create_wantunit(
 #         economyaddress=economyaddress_shop("war", yao_text, texas_text),
 #         fix="flying in airplanes",
 #         positive="Do not fly",
@@ -339,9 +339,9 @@ def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_clea
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     fix_weight = 7
-#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, fix_weight)
-#     fly_requestunit = create_requestunit(fly_concernunit, tim_text, xio_text, fix_weight)
-#     fly_requestunit = create_requestunit(fly_concernunit, yao_text, xio_text, fix_weight)
+#     fly_requestunit = create_requestunit(fly_wantunit, tim_text, xio_text, fix_weight)
+#     fly_requestunit = create_requestunit(fly_wantunit, tim_text, xio_text, fix_weight)
+#     fly_requestunit = create_requestunit(fly_wantunit, yao_text, xio_text, fix_weight)
 
 #     # WHEN
 #     x_world.apply_requestunit(fly_requestunit)

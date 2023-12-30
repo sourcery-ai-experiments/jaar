@@ -32,7 +32,7 @@ class WorldUnit:
         self.set_personunit(x_requestunit._requester_pid, replace_alert=False)
 
         # apply request to economys
-        x_economyaddress = x_requestunit._concernunit.economyaddress
+        x_economyaddress = x_requestunit._wantunit.economyaddress
         # for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
         self._apply_requestunit_to_economy(
             x_requestunit=x_requestunit,
@@ -56,8 +56,8 @@ class WorldUnit:
 
         # add ideas to requester_contract_agenda
         fix_weight = x_requestunit._fix_weight
-        concernunit_ideas = x_requestunit._concernunit.get_beliefunit_ideas(fix_weight)
-        for x_idea in concernunit_ideas.values():
+        wantunit_ideas = x_requestunit._wantunit.get_beliefunit_ideas(fix_weight)
+        for x_idea in wantunit_ideas.values():
             # TODO ideas should not be added if they already exist. Create test, then change code
             requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
 
@@ -93,16 +93,16 @@ class WorldUnit:
                 x_assignedunit.set_suffgroup(request_group)
                 x_balancelinks[request_group] = balancelink_shop(request_group)
 
-        # for every idea in concernunit set idea attributes to requester_contract
-        x_issue = x_requestunit._concernunit.issue
-        for x_idea in concernunit_ideas.values():
+        # for every idea in wantunit set idea attributes to requester_contract
+        x_issue = x_requestunit._wantunit.issue
+        for x_idea in wantunit_ideas.values():
             idea_road = x_idea.get_road()
             requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
             for x_balancelink in x_balancelinks.values():
                 requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
         # if idea is promise set the promise requiredunits
-        for x_idea in concernunit_ideas.values():
+        for x_idea in wantunit_ideas.values():
             idea_road = x_idea.get_road()
             if x_idea.promise:
                 requester_contract.edit_idea_attr(

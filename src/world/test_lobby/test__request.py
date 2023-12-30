@@ -1,5 +1,5 @@
 from src.world.examples.examples import (
-    get_farm_concernunit as examples_get_farm_concernunit,
+    get_farm_wantunit as examples_get_farm_wantunit,
     get_farm_requestunit as examples_get_farm_requestunit,
 )
 from src.world.lobby import RequestUnit, requestunit_shop, create_requestunit
@@ -10,7 +10,7 @@ def test_RequestUnit_exists():
     farm_requestunit = RequestUnit()
 
     # THEN
-    assert farm_requestunit._concernunit is None
+    assert farm_requestunit._wantunit is None
     assert farm_requestunit._requestee_pids is None
     assert farm_requestunit._requestee_groups is None
     assert farm_requestunit._requester_pid is None
@@ -18,7 +18,7 @@ def test_RequestUnit_exists():
 
 def test_requestunit_shop_ReturnsCorrectObj():
     # GIVEN
-    farm_concernunit = examples_get_farm_concernunit()
+    farm_wantunit = examples_get_farm_wantunit()
 
     # WHEN
     bob_text = "Bob"
@@ -27,14 +27,14 @@ def test_requestunit_shop_ReturnsCorrectObj():
     aggie_text = "aggie"
     aggie_dict = {aggie_text: aggie_text}
     farm_requestunit = requestunit_shop(
-        _concernunit=farm_concernunit,
+        _wantunit=farm_wantunit,
         _requestee_pids=bob_dict,
         _requestee_groups=aggie_dict,
         _requester_pid=yao_text,
     )
 
     # THEN
-    assert farm_requestunit._concernunit == farm_concernunit
+    assert farm_requestunit._wantunit == farm_wantunit
     assert farm_requestunit._requestee_pids == bob_dict
     assert farm_requestunit._requestee_groups == aggie_dict
     assert farm_requestunit._requester_pid == yao_text
@@ -44,7 +44,7 @@ def test_RequestUnit_add_requestee_pid_CorrectlyChangesAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_requestunit = create_requestunit(
-        examples_get_farm_concernunit(), requestee_pid=bob_text
+        examples_get_farm_wantunit(), requestee_pid=bob_text
     )
     assert len(farm_requestunit._requestee_pids) == 1
 
@@ -62,7 +62,7 @@ def test_RequestUnit_add_groupbrand_CorrectlyChangesAttribute():
     bob_text = "Bob"
     bob_dict = {bob_text: None}
     farm_requestunit = requestunit_shop(
-        examples_get_farm_concernunit(), _requestee_pids=bob_dict
+        examples_get_farm_wantunit(), _requestee_pids=bob_dict
     )
     assert len(farm_requestunit._requestee_groups) == 0
 
@@ -77,14 +77,14 @@ def test_RequestUnit_add_groupbrand_CorrectlyChangesAttribute():
 
 def test_create_requestunit_ReturnsCorrectObj():
     # GIVEN
-    farm_concernunit = examples_get_farm_concernunit()
+    farm_wantunit = examples_get_farm_wantunit()
 
     # WHEN
     bob_text = "Bob"
-    farm_requestunit = create_requestunit(farm_concernunit, requestee_pid=bob_text)
+    farm_requestunit = create_requestunit(farm_wantunit, requestee_pid=bob_text)
 
     # THEN
-    assert farm_requestunit._concernunit == farm_concernunit
+    assert farm_requestunit._wantunit == farm_wantunit
     assert farm_requestunit._fix_weight == 1
     bob_dict = {bob_text: None}
     assert farm_requestunit._requestee_pids == bob_dict
