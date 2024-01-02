@@ -1,32 +1,32 @@
-from src.world.examples.examples import (
-    get_farm_wantunit as examples_get_farm_wantunit,
-    get_farm_requestunit as examples_get_farm_requestunit,
-)
-from src.world.lobby import LobbyUnit, lobbyunit_shop, create_requestunit
+# from src.world.examples.examples import (
+#     get_farm_wantunit as examples_get_farm_wantunit,
+#     get_farm_requestunit as examples_get_farm_requestunit,
+# )
+# from src.world.lobby import LobbyUnit, lobbyunit_shop, create_requestunit
 
 
-def test_LobbyUnit_exists():
-    # GIVEN / WHEN
-    bob_farm_lobbyunit = LobbyUnit()
+# def test_LobbyUnit_exists():
+#     # GIVEN / WHEN
+#     bob_farm_lobbyunit = LobbyUnit()
 
-    # THEN
-    assert bob_farm_lobbyunit._src_requestunit is None
-    assert bob_farm_lobbyunit._dst_requestunit is None
+#     # THEN
+#     assert bob_farm_lobbyunit._src_requestunit is None
+#     assert bob_farm_lobbyunit._dst_requestunit is None
 
 
-def test_lobbyunit_shop_ReturnsCorrectObj():
-    # GIVEN
-    farm_requestnunit = examples_get_farm_requestunit()
+# def test_lobbyunit_shop_ReturnsCorrectObj():
+#     # GIVEN
+#     farm_requestnunit = examples_get_farm_requestunit()
 
-    # WHEN
-    farm_lobbyunit = lobbyunit_shop(
-        _src_requestunit=farm_requestnunit,
-        _dst_requestunit=-1,
-    )
+#     # WHEN
+#     farm_lobbyunit = lobbyunit_shop(
+#         _src_requestunit=farm_requestnunit,
+#         _dst_requestunit=-1,
+#     )
 
-    # THEN
-    assert farm_lobbyunit._src_requestunit == farm_requestnunit
-    assert farm_lobbyunit._dst_requestunit == -1
+#     # THEN
+#     assert farm_lobbyunit._src_requestunit == farm_requestnunit
+#     assert farm_lobbyunit._dst_requestunit == -1
 
 
 # def test_create_lobbyunit_ReturnsCorrectObj():

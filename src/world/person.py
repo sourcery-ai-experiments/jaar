@@ -1,6 +1,11 @@
+from src.agenda.road import create_road, default_road_delimiter_if_none
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, EconomyID, economyunit_shop
 from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
+
+
+class InvalidEconomyException(Exception):
+    pass
 
 
 @dataclass
@@ -9,6 +14,7 @@ class PersonUnit:
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
     _pains: dict[PainGenus:PainUnit] = None
+    _road_delimiter: str = None
 
     def create_painunit_from_genus(self, pain_genus: PainGenus):
         self._pains[pain_genus] = painunit_shop(genus=pain_genus)
@@ -35,8 +41,19 @@ class PersonUnit:
         ):
             economys_dir = f"{self.person_dir}/economys"
             self._economys[economy_id] = economyunit_shop(
-                economy_id=economy_id, economys_dir=economys_dir, _manager_pid=self.pid
+                economy_id=economy_id,
+                economys_dir=economys_dir,
+                _manager_pid=self.pid,
+                _road_delimiter=self._road_delimiter,
             )
+
+    def get_economyaddress(self, economy_id: EconomyID):
+        if self.economyunit_exists(economy_id) == False:
+            raise InvalidEconomyException(
+                f"Cannot get economyaddress for {self.pid} because economy {economy_id} does not exist"
+            )
+
+        return create_road(self.pid, economy_id)
 
     def economyunit_exists(self, economy_id: EconomyID):
         return self._economys.get(economy_id) != None
@@ -66,10 +83,18 @@ class PersonUnit:
         }
 
 
-def personunit_shop(pid: PersonID, person_dir: str = None) -> PersonUnit:
+def personunit_shop(
+    pid: PersonID, person_dir: str = None, _road_delimiter: str = None
+) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
-    return PersonUnit(pid=pid, person_dir=person_dir, _economys={}, _pains={})
+    return PersonUnit(
+        pid=pid,
+        person_dir=person_dir,
+        _economys={},
+        _pains={},
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+    )
 
 
 #     world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir)

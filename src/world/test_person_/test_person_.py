@@ -1,5 +1,7 @@
+from src.agenda.road import create_road, default_road_delimiter_if_none
 from src.world.person import PersonUnit, personunit_shop
 from src.world.pain import painunit_shop
+from pytest import raises as pytest_raises
 
 
 def test_personunit_exists():
@@ -11,6 +13,7 @@ def test_personunit_exists():
     assert x_person.person_dir is None
     assert x_person._economys is None
     assert x_person._pains is None
+    assert x_person._road_delimiter is None
 
 
 def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
@@ -25,26 +28,34 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person.person_dir == ""
     assert x_person._economys == {}
     assert x_person._pains == {}
+    assert x_person._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     # GIVEN
     dallas_text = "dallas"
     dallas_dir = ""
+    slash_text = "/"
 
     # WHEN
-    x_person = personunit_shop(pid=dallas_text, person_dir=dallas_dir)
+    x_person = personunit_shop(
+        pid=dallas_text, person_dir=dallas_dir, _road_delimiter=slash_text
+    )
 
     # THEN
     assert x_person.pid == dallas_text
     assert x_person.person_dir == dallas_dir
+    assert x_person._road_delimiter == slash_text
 
 
 def test_personunit_set_economyunit_CorrectlyCreatesEconomyUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    slash_text = "/"
+    xao_person_obj = personunit_shop(
+        pid=xao_text, person_dir=xao_person_dir, _road_delimiter=slash_text
+    )
 
     # WHEN
     diet_text = "diet"
@@ -57,6 +68,7 @@ def test_personunit_set_economyunit_CorrectlyCreatesEconomyUnit():
     assert diet_economy.economy_id == diet_text
     assert diet_economy.economys_dir == f"{xao_person_dir}/economys"
     assert diet_economy._manager_pid == xao_text
+    assert diet_economy._road_delimiter == slash_text
 
 
 def test_personunit_economyunit_exists_ReturnsCorrectObj():
@@ -89,6 +101,40 @@ def test_personunit_get_economyunit_CorrectlyGetsEconomyUnit():
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
     assert diet_economy.economys_dir == f"{xao_person_dir}/economys"
+
+
+def test_personunit_get_economyaddress_ReturnsCorrectObj():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    diet_text = "diet"
+    xao_person_obj.set_economyunit(diet_text)
+
+    # WHEN
+    diet_economyaddress = xao_person_obj.get_economyaddress(diet_text)
+
+    # THEN
+    assert diet_economyaddress != None
+    assert diet_economyaddress == create_road(xao_text, diet_text)
+
+
+def test_personunit_get_economyaddress_RaisesException():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    diet_text = "diet"
+    xao_person_obj.set_economyunit(diet_text)
+
+    # WHEN/THEN
+    texas_text = "Texas"
+    with pytest_raises(Exception) as excinfo:
+        xao_person_obj.get_economyaddress(texas_text)
+    assert (
+        str(excinfo.value)
+        == f"Cannot get economyaddress for {xao_text} because economy {texas_text} does not exist"
+    )
 
 
 def test_personunit_del_economyunit_CorrectlyDeletesEconomyUnit():

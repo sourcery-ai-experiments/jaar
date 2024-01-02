@@ -1,9 +1,11 @@
+from src.agenda.road import default_road_delimiter_if_none, RoadUnit
 from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
-from src.world.lobby import EconomyAddress, RequestUnit
+
+# from src.world.lobby import EconomyDELETEMEaddress, RequestUnit
 from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
@@ -24,104 +26,105 @@ class WorldUnit:
     _persons_dir: str = None
     _world_dir: str = None
     _personunits: dict[PersonID:PersonUnit] = None
+    _road_delimiter: str = None
 
-    def apply_requestunit(self, x_requestunit: RequestUnit):
-        # create any missing requestees
-        for requestee_pid in x_requestunit._requestee_pids.keys():
-            self.set_personunit(requestee_pid, replace_alert=False)
-        self.set_personunit(x_requestunit._requester_pid, replace_alert=False)
+    # def apply_requestunit(self, x_requestunit: RequestUnit):
+    #     # create any missing requestees
+    #     for requestee_pid in x_requestunit._requestee_pids.keys():
+    #         self.set_personunit(requestee_pid, replace_alert=False)
+    #     self.set_personunit(x_requestunit._requester_pid, replace_alert=False)
 
-        # apply request to economys
-        x_economyaddress = x_requestunit._wantunit.economyaddress
-        # for x_treasurer_pid in x_economyaddress.treasurer_pids.keys():
-        self._apply_requestunit_to_economy(
-            x_requestunit=x_requestunit,
-            x_treasurer_pid=x_economyaddress.treasurer_pid,
-            x_economy_id=x_economyaddress.economy_id,
-        )
+    #     # apply request to economys
+    #     x_economydeletemeaddress = x_requestunit._wantunit.economydeletemeaddress
+    #     # for x_treasurer_pid in x_economydeletemeaddress.treasurer_pids.keys():
+    #     self._apply_requestunit_to_economy(
+    #         x_requestunit=x_requestunit,
+    #         x_treasurer_pid=x_economydeletemeaddress.treasurer_pid,
+    #         x_economy_id=x_economydeletemeaddress.economy_id,
+    #     )
 
-    def _apply_requestunit_to_economy(
-        self,
-        x_requestunit: RequestUnit,
-        x_treasurer_pid: PersonID,
-        x_economy_id: EconomyID,
-    ):
-        self.set_personunit(x_treasurer_pid, replace_alert=False)
-        x_personunit = self.get_personunit_from_memory(x_treasurer_pid)
-        x_economyunit = x_personunit.get_economyunit(x_economy_id)
-        x_economyunit.full_setup_clerkunit(x_treasurer_pid)
-        x_economyunit.full_setup_clerkunit(x_requestunit._requester_pid)
-        requester_clerkunit = x_economyunit.get_clerkunit(x_requestunit._requester_pid)
-        requester_contract = requester_clerkunit.get_contract()
+    # def _apply_requestunit_to_economy(
+    #     self,
+    #     x_requestunit: RequestUnit,
+    #     x_treasurer_pid: PersonID,
+    #     x_economy_id: EconomyID,
+    # ):
+    #     self.set_personunit(x_treasurer_pid, replace_alert=False)
+    #     x_personunit = self.get_personunit_from_memory(x_treasurer_pid)
+    #     x_economyunit = x_personunit.get_economyunit(x_economy_id)
+    #     x_economyunit.full_setup_clerkunit(x_treasurer_pid)
+    #     x_economyunit.full_setup_clerkunit(x_requestunit._requester_pid)
+    #     requester_clerkunit = x_economyunit.get_clerkunit(x_requestunit._requester_pid)
+    #     requester_contract = requester_clerkunit.get_contract()
 
-        # add ideas to requester_contract_agenda
-        fix_weight = x_requestunit._fix_weight
-        wantunit_ideas = x_requestunit._wantunit.get_beliefunit_ideas(fix_weight)
-        for x_idea in wantunit_ideas.values():
-            # TODO ideas should not be added if they already exist. Create test, then change code
-            requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
+    #     # add ideas to requester_contract_agenda
+    #     fix_weight = x_requestunit._fix_weight
+    #     wantunit_ideas = x_requestunit._wantunit.get_beliefunit_ideas(fix_weight)
+    #     for x_idea in wantunit_ideas.values():
+    #         # TODO ideas should not be added if they already exist. Create test, then change code
+    #         requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
 
-        x_assignedunit = assigned_unit_shop()
-        x_balancelinks = {}
-        # for each requestee exist in economy, collect attributes for requester_contract agenda
-        for requestee_pid in x_requestunit._requestee_pids.keys():
-            # requestee_contract changes
-            x_economyunit.full_setup_clerkunit(requestee_pid)
-            requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
-            requestee_contract = requestee_clerkunit.get_contract()
-            requestee_contract.add_partyunit(
-                x_requestunit._requester_pid,
-                debtor_weight=fix_weight,
-                depotlink_type="assignment",
-            )
-            requester_contract.add_partyunit(requestee_pid, depotlink_type="assignment")
+    #     x_assignedunit = assigned_unit_shop()
+    #     x_balancelinks = {}
+    #     # for each requestee exist in economy, collect attributes for requester_contract agenda
+    #     for requestee_pid in x_requestunit._requestee_pids.keys():
+    #         # requestee_contract changes
+    #         x_economyunit.full_setup_clerkunit(requestee_pid)
+    #         requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
+    #         requestee_contract = requestee_clerkunit.get_contract()
+    #         requestee_contract.add_partyunit(
+    #             x_requestunit._requester_pid,
+    #             debtor_weight=fix_weight,
+    #             depotlink_type="assignment",
+    #         )
+    #         requester_contract.add_partyunit(requestee_pid, depotlink_type="assignment")
 
-        for request_group in x_requestunit._requestee_groups.keys():
-            x_groupunit = groupunit_shop(request_group)
-            for requestee_pid in x_requestunit._requestee_pids.keys():
-                x_groupunit.set_partylink(partylink_shop(requestee_pid))
-            requester_contract.set_groupunit(x_groupunit, False, False, True)
+    #     for request_group in x_requestunit._requestee_groups.keys():
+    #         x_groupunit = groupunit_shop(request_group)
+    #         for requestee_pid in x_requestunit._requestee_pids.keys():
+    #             x_groupunit.set_partylink(partylink_shop(requestee_pid))
+    #         requester_contract.set_groupunit(x_groupunit, False, False, True)
 
-        if x_requestunit._requestee_groups == {}:
-            for requestee_pid in x_requestunit._requestee_pids.keys():
-                # requestee_contract changes
-                x_assignedunit.set_suffgroup(requestee_pid)
-                x_balancelinks[requestee_pid] = balancelink_shop(requestee_pid)
-        else:
-            for request_group in x_requestunit._requestee_groups.keys():
-                # requestee_contract changes
-                x_assignedunit.set_suffgroup(request_group)
-                x_balancelinks[request_group] = balancelink_shop(request_group)
+    #     if x_requestunit._requestee_groups == {}:
+    #         for requestee_pid in x_requestunit._requestee_pids.keys():
+    #             # requestee_contract changes
+    #             x_assignedunit.set_suffgroup(requestee_pid)
+    #             x_balancelinks[requestee_pid] = balancelink_shop(requestee_pid)
+    #     else:
+    #         for request_group in x_requestunit._requestee_groups.keys():
+    #             # requestee_contract changes
+    #             x_assignedunit.set_suffgroup(request_group)
+    #             x_balancelinks[request_group] = balancelink_shop(request_group)
 
-        # for every idea in wantunit set idea attributes to requester_contract
-        x_issue = x_requestunit._wantunit.issue
-        for x_idea in wantunit_ideas.values():
-            idea_road = x_idea.get_road()
-            requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
-            for x_balancelink in x_balancelinks.values():
-                requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
+    #     # for every idea in wantunit set idea attributes to requester_contract
+    #     x_issue = x_requestunit._wantunit.issue
+    #     for x_idea in wantunit_ideas.values():
+    #         idea_road = x_idea.get_road()
+    #         requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
+    #         for x_balancelink in x_balancelinks.values():
+    #             requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
-        # if idea is promise set the promise requiredunits
-        for x_idea in wantunit_ideas.values():
-            idea_road = x_idea.get_road()
-            if x_idea.promise:
-                requester_contract.edit_idea_attr(
-                    idea_road,
-                    required_base=x_issue.base,
-                    required_sufffact=x_issue.get_1_idealink(bad=True),
-                )
+    #     # if idea is promise set the promise requiredunits
+    #     for x_idea in wantunit_ideas.values():
+    #         idea_road = x_idea.get_road()
+    #         if x_idea.promise:
+    #             requester_contract.edit_idea_attr(
+    #                 idea_road,
+    #                 required_base=x_issue.base,
+    #                 required_sufffact=x_issue.get_1_idealink(bad=True),
+    #             )
 
-        requester_contract.set_acptfact(
-            x_issue.base, pick=x_issue.get_1_idealink(bad=True)
-        )
-        requester_clerkunit.save_contract_agenda(requester_contract)
-        requester_clerkunit.save_refreshed_output_to_public()
+    #     requester_contract.set_acptfact(
+    #         x_issue.base, pick=x_issue.get_1_idealink(bad=True)
+    #     )
+    #     requester_clerkunit.save_contract_agenda(requester_contract)
+    #     requester_clerkunit.save_refreshed_output_to_public()
 
-        # for each requestee re
-        for requestee_pid in x_requestunit._requestee_pids.keys():
-            requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
-            requestee_clerkunit.refresh_depot_agendas()
-            requestee_clerkunit.save_refreshed_output_to_public()
+    #     # for each requestee re
+    #     for requestee_pid in x_requestunit._requestee_pids.keys():
+    #         requestee_clerkunit = x_economyunit.get_clerkunit(requestee_pid)
+    #         requestee_clerkunit.refresh_depot_agendas()
+    #         requestee_clerkunit.save_refreshed_output_to_public()
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -142,7 +145,11 @@ class WorldUnit:
         replace_personunit: bool = False,
         replace_alert: bool = True,
     ):
-        x_personunit = personunit_shop(person_id, self._get_person_dir(person_id))
+        x_personunit = personunit_shop(
+            person_id,
+            self._get_person_dir(person_id),
+            _road_delimiter=self._road_delimiter,
+        )
         if self.personunit_exists(x_personunit.pid) == False and not replace_personunit:
             self._set_person_in_memory(x_personunit)
         elif replace_alert:
@@ -155,14 +162,10 @@ class WorldUnit:
 
     def add_economy_connection(
         self,
-        economyaddress: EconomyAddress,
+        treasurer_pid: PersonID,
+        economy_id: EconomyID,
         clerk_person_id: PersonID,
     ):
-        economy_id = economyaddress.economy_id
-        treasurer_pid = economyaddress.treasurer_pid
-
-        # for treasurer_pid in economyaddress.treasurer_pids.keys():
-
         if self.personunit_exists(treasurer_pid) == False:
             self.set_personunit(treasurer_pid)
         x_personunit = self.get_personunit_from_memory(treasurer_pid)
@@ -231,7 +234,10 @@ class WorldUnit:
         person_clerkunit.save_refreshed_output_to_public()
 
 
-def worldunit_shop(mark: WorldMark, worlds_dir: str) -> WorldUnit:
+def worldunit_shop(
+    mark: WorldMark, worlds_dir: str, _road_delimiter: str = None
+) -> WorldUnit:
     world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir, _personunits={})
     world_x._set_world_dirs()
+    world_x._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return world_x

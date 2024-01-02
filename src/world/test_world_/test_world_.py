@@ -1,3 +1,4 @@
+from src.agenda.road import default_road_delimiter_if_none
 from src.world.pain import painunit_shop, healerlink_shop, economylink_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
@@ -17,6 +18,7 @@ def test_worldunit_exists(worlds_dir_setup_cleanup):
     assert x_world.mark == dallas_text
     assert x_world.worlds_dir == get_test_worlds_dir()
     assert x_world._persons_dir is None
+    assert x_world._road_delimiter is None
 
 
 def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
@@ -30,6 +32,21 @@ def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
     assert x_world.mark == dallas_text
     assert x_world.worlds_dir == get_test_worlds_dir()
     assert x_world._personunits == {}
+    assert x_world._road_delimiter == default_road_delimiter_if_none()
+
+
+def test_worldunit_shop_ReturnsWorldUnitWith_road_delimiter(worlds_dir_setup_cleanup):
+    # GIVEN
+    dallas_text = "dallas"
+    slash_text = "/"
+
+    # WHEN
+    x_world = worldunit_shop(
+        mark=dallas_text, worlds_dir=get_test_worlds_dir(), _road_delimiter=slash_text
+    )
+
+    # THEN
+    assert x_world._road_delimiter == slash_text
 
 
 def test_worldunit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
@@ -97,10 +114,10 @@ def test_worldunit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
 def test_worldunit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
-    x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+    slash_text = "/"
+    x_world = worldunit_shop(dallas_text, get_test_worlds_dir(), slash_text)
     luca_text = "Luca"
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
-    luca_person_obj = personunit_shop(pid=luca_text, person_dir=luca_person_dir)
 
     # WHEN
     x_world.set_personunit(luca_text)
@@ -108,6 +125,10 @@ def test_worldunit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # THEN
     assert x_world._personunits[luca_text] != None
     assert x_world._personunits[luca_text].person_dir == luca_person_dir
+    assert x_world._personunits[luca_text]._road_delimiter == slash_text
+    luca_person_obj = personunit_shop(
+        pid=luca_text, person_dir=luca_person_dir, _road_delimiter=slash_text
+    )
     assert x_world._personunits[luca_text] == luca_person_obj
 
 
