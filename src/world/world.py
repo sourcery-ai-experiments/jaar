@@ -111,11 +111,11 @@ class WorldUnit:
     #             requester_contract.edit_idea_attr(
     #                 idea_road,
     #                 required_base=x_issue.base,
-    #                 required_sufffact=x_issue.get_1_idealink(bad=True),
+    #                 required_sufffact=x_issue.get_1_ideaview(bad=True),
     #             )
 
     #     requester_contract.set_acptfact(
-    #         x_issue.base, pick=x_issue.get_1_idealink(bad=True)
+    #         x_issue.base, pick=x_issue.get_1_ideaview(bad=True)
     #     )
     #     requester_clerkunit.save_contract_agenda(requester_contract)
     #     requester_clerkunit.save_refreshed_output_to_public()

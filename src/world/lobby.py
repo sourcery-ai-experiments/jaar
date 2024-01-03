@@ -68,7 +68,7 @@ class WantSubRoadUnitException(Exception):
 #         }
 #         if fix_weight is None:
 #             fix_weight = 1
-#         for fix_road in self.fix.get_idealinks(good=True).keys():
+#         for fix_road in self.fix.get_ideaviews(good=True).keys():
 #             fix_idea = x_idea_dict.get(fix_road)
 #             fix_idea._set_idea_attr(
 #                 ideaattrfilter_shop(weight=fix_weight, promise=True)
@@ -78,11 +78,11 @@ class WantSubRoadUnitException(Exception):
 
 #     def get_str_summary(self):
 #         _want_subject = self.issue.base
-#         _want_good = self.issue.get_1_idealink(good=True)
-#         _want_bad = self.issue.get_1_idealink(bad=True)
+#         _want_good = self.issue.get_1_ideaview(good=True)
+#         _want_bad = self.issue.get_1_ideaview(bad=True)
 #         _fix_subject = self.fix.base
-#         _fix_positive = self.fix.get_1_idealink(good=True)
-#         _fix_negative = self.fix.get_1_idealink(bad=True)
+#         _fix_positive = self.fix.get_1_ideaview(good=True)
+#         _fix_negative = self.fix.get_1_ideaview(bad=True)
 
 #         want_road = get_diff_road(_want_subject, self.economydeletemeaddress.economy_id)
 #         bad_road = get_diff_road(_want_bad, _want_subject)

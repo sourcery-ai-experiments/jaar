@@ -373,7 +373,7 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
     )
 
 
-def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdeaLabel():
+def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
