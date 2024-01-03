@@ -1,7 +1,13 @@
-from src.agenda.road import create_road, default_road_delimiter_if_none
+from src.agenda.road import (
+    default_road_delimiter_if_none,
+    EconomyID,
+    PersonID,
+    EconomyAddress,
+    create_economyaddress,
+)
 from dataclasses import dataclass
-from src.economy.economy import EconomyUnit, EconomyID, economyunit_shop
-from src.world.pain import PainGenus, PainUnit, PersonID, painunit_shop
+from src.economy.economy import EconomyUnit, economyunit_shop
+from src.world.pain import PainGenus, PainUnit, painunit_shop
 
 
 class InvalidEconomyException(Exception):
@@ -47,13 +53,13 @@ class PersonUnit:
                 _road_delimiter=self._road_delimiter,
             )
 
-    def get_economyaddress(self, economy_id: EconomyID):
+    def get_economyaddress(self, economy_id: EconomyID) -> EconomyAddress:
         if self.economyunit_exists(economy_id) == False:
             raise InvalidEconomyException(
                 f"Cannot get economyaddress for {self.pid} because economy {economy_id} does not exist"
             )
 
-        return create_road(self.pid, economy_id)
+        return create_economyaddress(self.pid, economy_id, self._road_delimiter)
 
     def economyunit_exists(self, economy_id: EconomyID):
         return self._economys.get(economy_id) != None

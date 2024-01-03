@@ -7,6 +7,7 @@ from src.agenda.road import (
     default_road_delimiter_if_none,
     get_terminus_node_from_road,
     get_parent_road_from_road,
+    PersonRoad,
 )
 from src.agenda.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
@@ -26,7 +27,7 @@ class WantSubRoadUnitException(Exception):
 class DealUnit:
     _author: PersonID = None
     _reader: PersonID = None
-    _beliefunits: dict[RoadUnit:BeliefUnit] = None
+    _beliefunits: dict[PersonRoad:BeliefUnit] = None
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):

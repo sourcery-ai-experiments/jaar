@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.road import (
-    RoadUnit,
+    PersonRoad,
     RoadNode,
     is_sub_road,
     default_road_delimiter_if_none,
@@ -15,7 +15,7 @@ class NoneZeroAffectException(Exception):
 
 @dataclass
 class IdeaView:
-    road: RoadUnit
+    road: PersonRoad
     affect: float = None
     love: float = None
 
@@ -44,7 +44,9 @@ class IdeaView:
         return self.love < 0
 
 
-def ideaview_shop(road: RoadUnit, affect: float = None, love: float = None) -> IdeaView:
+def ideaview_shop(
+    road: PersonRoad, affect: float = None, love: float = None
+) -> IdeaView:
     x_ideaview = IdeaView(road=road)
     x_ideaview.set_affect(affect)
     x_ideaview.set_love(love)
@@ -57,8 +59,8 @@ class BeliefSubRoadUnitException(Exception):
 
 @dataclass
 class BeliefUnit:
-    base: RoadUnit = None
-    ideaviews: dict[RoadUnit:IdeaView] = None
+    base: PersonRoad = None
+    ideaviews: dict[PersonRoad:IdeaView] = None
     delimiter: str = None
 
     def is_dialectic(self):
@@ -120,7 +122,7 @@ class BeliefUnit:
             )
         self.ideaviews[x_ideaview.road] = x_ideaview
 
-    def del_ideaview(self, ideaview: RoadUnit):
+    def del_ideaview(self, ideaview: PersonRoad):
         self.ideaviews.pop(ideaview)
 
     def get_ideaviews(
@@ -130,7 +132,7 @@ class BeliefUnit:
         in_tribe: bool = None,
         out_tribe: bool = None,
         x_all: bool = None,
-    ) -> dict[RoadUnit:IdeaView]:
+    ) -> dict[PersonRoad:IdeaView]:
         if good is None:
             good = False
         if bad is None:
@@ -151,7 +153,7 @@ class BeliefUnit:
             or (x_ideaview.love < 0 and out_tribe)
         }
 
-    def get_all_roads(self) -> dict[RoadUnit:int]:
+    def get_all_roads(self) -> dict[PersonRoad:int]:
         x_dict = dict(self.get_ideaviews(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
@@ -189,7 +191,9 @@ class BeliefUnit:
 
 
 def beliefunit_shop(
-    base: RoadUnit, ideaviews: dict[RoadUnit:float] = None, delimiter: str = None
+    base: PersonRoad,
+    ideaviews: dict[PersonRoad:float] = None,
+    delimiter: str = None,
 ):
     return BeliefUnit(
         base=base,
@@ -199,7 +203,7 @@ def beliefunit_shop(
 
 
 def create_beliefunit(
-    base: RoadUnit, good: RoadNode, bad: RoadNode, delimiter: str = None
+    base: PersonRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
     x_beliefunit = beliefunit_shop(base=base)
     good_ideaview = ideaview_shop(create_road(base, good, delimiter=delimiter), 1)

@@ -1,5 +1,12 @@
 from src.agenda.road import (
     RoadUnit,
+    PersonID,
+    EconomyID,
+    PersonRoad,
+    EconomyAddress,
+    create_economyaddress,
+    get_economyaddress_from_personroad,
+    get_economyroad_from_personroad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -507,3 +514,92 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
         str(excinfo.value)
         == f"Cannot replace_road_delimiter '{comma_delimiter}' with '{slash_delimiter}' because the new one already exists in road '{comma_delimiter_cooker_road}'."
     )
+
+
+def test_EconomyRoad_Exists():
+    # GIVEN
+    bob_texas_text = "bob,texas"
+
+    # WHEN
+    bob_texas_economyaddress = EconomyAddress(bob_texas_text)
+
+    # THEN
+    assert bob_texas_economyaddress != None
+    assert bob_texas_economyaddress == bob_texas_text
+
+
+def test_EconomyAddress_Exists():
+    # GIVEN
+    bob_texas_text = "bob,texas"
+
+    # WHEN
+    bob_texas_economyaddress = EconomyAddress(bob_texas_text)
+
+    # THEN
+    assert bob_texas_economyaddress != None
+    assert bob_texas_economyaddress == bob_texas_text
+
+
+def test_create_economyaddress_ReturnsCorrect():
+    # GIVEN
+    bob_text = "Bob"
+    bob_person_id = PersonID(bob_text)
+    texas_text = "Texas"
+    texas_economy_id = EconomyID(texas_text)
+
+    # WHEN
+    bob_texas_economyaddress = create_economyaddress(bob_person_id, texas_economy_id)
+
+    # THEN
+    assert bob_texas_economyaddress != None
+    bob_texas_road = create_road("Bob", "Texas")
+    assert bob_texas_economyaddress == EconomyAddress(bob_texas_road)
+
+
+def test_PersonRoad_Exists():
+    # GIVEN
+    texas_road = create_road("bob", "texas")
+    sports_road = create_road(texas_road, "sports")
+
+    # WHEN
+    sports_personroad = PersonRoad(sports_road)
+
+    # THEN
+    assert sports_personroad != None
+    assert sports_personroad == sports_road
+
+
+def test_get_economyaddress_from_personroad_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    bob_person_id = PersonID(bob_text)
+    texas_text = "Texas"
+    texas_economy_id = EconomyID(texas_text)
+    sports_road = create_road(
+        create_economyaddress(bob_person_id, texas_economy_id), "sports"
+    )
+    sports_personroad = PersonRoad(sports_road)
+
+    # WHEN
+    bob_texas_economyaddress = get_economyaddress_from_personroad(sports_personroad)
+
+    # THEN
+    assert bob_texas_economyaddress == create_economyaddress(
+        bob_person_id, texas_economy_id
+    )
+
+
+def test_get_economyroad_from_personroad_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "bob"
+    texas_text = "texas"
+    bob_texas_road = create_road(bob_text, texas_text)
+    roses_text = "roses"
+    bob_roses_road = create_road(bob_texas_road, roses_text)
+
+    # WHEN
+    texas_roses_road = get_economyroad_from_personroad(bob_roses_road)
+
+    # THEN
+    print(f"{texas_roses_road=}")
+    assert texas_roses_road == create_road(texas_text, roses_text)

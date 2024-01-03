@@ -1,7 +1,3 @@
-from dataclasses import dataclass
-from src.agenda.y_func import get_empty_dict_if_none
-
-
 class InvalidRoadUnitException(Exception):
     pass
 
@@ -13,10 +9,38 @@ class RoadNode(str):
 
 
 class EconomyID(RoadNode):  # Created to help track the concept
+    """Must be node thus not include road delimiter"""
+
     pass
 
 
-class RoadUnit(str):  # Created to help track the concept
+class PersonID(RoadNode):  # Created to help track the concept
+    """Must be node thus not include road delimiter"""
+
+    pass
+
+
+class RoadUnit(str):
+    """A string presentation of a tree path. Nodes are seperated by road delimiter"""
+
+    pass
+
+
+class PersonRoad(RoadUnit):
+    """A RoadUnit that starts with PersonID"""
+
+    pass
+
+
+class EconomyRoad(RoadUnit):
+    """A RoadUnit that starts with EconomyID"""
+
+    pass
+
+
+class EconomyAddress(RoadUnit):
+    """A RoadUnit of only PersonID and EconomyID"""
+
     pass
 
 
@@ -182,3 +206,21 @@ def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: st
             f"Cannot replace_road_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
         )
     return road.replace(old_delimiter, new_delimiter)
+
+
+def create_economyaddress(
+    person_id: PersonID, economy_id: EconomyID, delimiter: str = None
+) -> EconomyAddress:
+    return EconomyAddress(create_road(person_id, economy_id, delimiter))
+
+
+def get_economyaddress_from_personroad(x_personroad: PersonRoad, delimiter: str = None):
+    road_nodes = get_all_road_nodes(x_personroad, delimiter=delimiter)
+    return create_road(road_nodes[0], road_nodes[1])
+
+
+def get_economyroad_from_personroad(
+    x_personroad: PersonRoad, delimiter: str = None
+) -> EconomyRoad:
+    x_roadnodes = get_all_road_nodes(x_personroad, delimiter=delimiter)
+    return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)
