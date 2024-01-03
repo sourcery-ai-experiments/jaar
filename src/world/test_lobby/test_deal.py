@@ -2,7 +2,10 @@
 #     get_farm_wantunit as examples_get_farm_wantunit,
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
+from src._road.road import create_road
+from src._road.belief import beliefunit_shop
 from src.world.deal import DealUnit, dealunit_shop
+from src.world.examples.example_beliefs import get_cooking_beliefunit
 
 
 def test_DealUnit_exists():
@@ -30,6 +33,26 @@ def test_dealunit_shop_ReturnsCorrectObj():
     assert farm_dealunit._author == bob_text
     assert farm_dealunit._reader == tim_text
     assert farm_dealunit._beliefunits == {}
+
+
+def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
+    # GIVEN
+    bob_text = "Bob"
+    tim_text = "Tim"
+    farm_dealunit = dealunit_shop(
+        _author=bob_text,
+        _reader=tim_text,
+    )
+    assert farm_dealunit._beliefunits == {}
+
+    # WHEN
+    cooking_beliefunit = get_cooking_beliefunit()
+    farm_dealunit.set_beliefunit(cooking_beliefunit)
+
+    # THEN
+    assert len(farm_dealunit._beliefunits) == 1
+    assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) != None
+    assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) == cooking_beliefunit
 
 
 # def test_create_dealunit_ReturnsCorrectObj():

@@ -1,4 +1,4 @@
-from src.agenda.road import (
+from src._road.road import (
     RoadUnit,
     is_sub_road,
     RoadNode,
@@ -9,7 +9,7 @@ from src.agenda.road import (
     get_parent_road_from_road,
     PersonRoad,
 )
-from src.agenda.belief import BeliefUnit, create_beliefunit
+from src._road.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
@@ -28,6 +28,9 @@ class DealUnit:
     _author: PersonID = None
     _reader: PersonID = None
     _beliefunits: dict[PersonRoad:BeliefUnit] = None
+
+    def set_beliefunit(self, x_beliefunit: BeliefUnit):
+        self._beliefunits[x_beliefunit.base] = x_beliefunit
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):

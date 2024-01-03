@@ -1,4 +1,4 @@
-from src.agenda.road import create_road, default_road_delimiter_if_none
+from src._road.road import create_road, default_road_delimiter_if_none
 from src.world.person import PersonUnit, personunit_shop
 from src.world.pain import painunit_shop
 from pytest import raises as pytest_raises

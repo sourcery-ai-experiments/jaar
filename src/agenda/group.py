@@ -11,7 +11,7 @@ from src.agenda.x_func import (
     return1ifnone as x_func_return1ifnone,
 )
 from src.agenda.y_func import get_empty_dict_if_none
-from src.agenda.road import RoadUnit
+from src._road.road import RoadUnit
 
 
 class InvalidGroupException(Exception):

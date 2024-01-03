@@ -7,7 +7,7 @@ from src.agenda.required_idea import (
     acptfactunit_shop as c_acptfactunit,
     acptfactunits_get_from_dict,
 )
-from src.agenda.road import get_default_economy_root_roadnode as root_label, create_road
+from src._road.road import get_default_economy_root_roadnode as root_label, create_road
 from pytest import raises as pytest_raises
 
 

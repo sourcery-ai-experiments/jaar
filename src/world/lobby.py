@@ -1,4 +1,4 @@
-from src.agenda.road import (
+from src._road.road import (
     RoadUnit,
     is_sub_road,
     RoadNode,
@@ -8,7 +8,7 @@ from src.agenda.road import (
     get_terminus_node_from_road,
     get_parent_road_from_road,
 )
-from src.agenda.belief import BeliefUnit, create_beliefunit
+from src._road.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
@@ -68,7 +68,7 @@ class WantSubRoadUnitException(Exception):
 #         }
 #         if fix_weight is None:
 #             fix_weight = 1
-#         for fix_road in self.fix.get_ideaviews(good=True).keys():
+#         for fix_road in self.fix.get_opinionunits(good=True).keys():
 #             fix_idea = x_idea_dict.get(fix_road)
 #             fix_idea._set_idea_attr(
 #                 ideaattrfilter_shop(weight=fix_weight, promise=True)
@@ -78,11 +78,11 @@ class WantSubRoadUnitException(Exception):
 
 #     def get_str_summary(self):
 #         _want_subject = self.issue.base
-#         _want_good = self.issue.get_1_ideaview(good=True)
-#         _want_bad = self.issue.get_1_ideaview(bad=True)
+#         _want_good = self.issue.get_1_opinionunit(good=True)
+#         _want_bad = self.issue.get_1_opinionunit(bad=True)
 #         _fix_subject = self.fix.base
-#         _fix_positive = self.fix.get_1_ideaview(good=True)
-#         _fix_negative = self.fix.get_1_ideaview(bad=True)
+#         _fix_positive = self.fix.get_1_opinionunit(good=True)
+#         _fix_negative = self.fix.get_1_opinionunit(bad=True)
 
 #         want_road = get_diff_road(_want_subject, self.economydeletemeaddress.economy_id)
 #         bad_road = get_diff_road(_want_bad, _want_subject)

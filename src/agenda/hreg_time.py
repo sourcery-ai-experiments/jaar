@@ -1,4 +1,4 @@
-from src.agenda.road import create_road, RoadUnit, RoadNode
+from src._road.road import create_road, RoadUnit, RoadNode
 from dataclasses import dataclass
 from datetime import datetime
 

@@ -6,7 +6,7 @@ from src.agenda.required_idea import (
     acptfactheir_shop,
     sufffactunit_shop,
 )
-from src.agenda.road import (
+from src._road.road import (
     get_default_economy_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,

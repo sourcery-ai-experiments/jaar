@@ -8,7 +8,7 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
-from src.agenda.road import (
+from src._road.road import (
     get_default_economy_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,

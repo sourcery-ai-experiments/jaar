@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from src.agenda.road import (
-    PersonRoad,
+from src._road.road import (
+    RoadUnit,
     RoadNode,
+    PersonRoad,
     is_sub_road,
     default_road_delimiter_if_none,
     create_road,
@@ -14,8 +15,8 @@ class NoneZeroAffectException(Exception):
 
 
 @dataclass
-class IdeaView:
-    road: PersonRoad
+class OpinionUnit:
+    road: RoadUnit
     affect: float = None
     love: float = None
 
@@ -44,13 +45,13 @@ class IdeaView:
         return self.love < 0
 
 
-def ideaview_shop(
+def opinionunit_shop(
     road: PersonRoad, affect: float = None, love: float = None
-) -> IdeaView:
-    x_ideaview = IdeaView(road=road)
-    x_ideaview.set_affect(affect)
-    x_ideaview.set_love(love)
-    return x_ideaview
+) -> OpinionUnit:
+    x_opinionunit = OpinionUnit(road=road)
+    x_opinionunit.set_affect(affect)
+    x_opinionunit.set_love(love)
+    return x_opinionunit
 
 
 class BeliefSubRoadUnitException(Exception):
@@ -60,39 +61,39 @@ class BeliefSubRoadUnitException(Exception):
 @dataclass
 class BeliefUnit:
     base: PersonRoad = None
-    ideaviews: dict[PersonRoad:IdeaView] = None
+    opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
 
     def is_dialectic(self):
         good_in_tribe_road = next(
             (
-                x_ideaview.road
-                for x_ideaview in self.ideaviews.values()
-                if x_ideaview.is_good() and x_ideaview.is_in_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_good() and x_opinionunit.is_in_tribe()
             ),
             None,
         )
         good_out_tribe_road = next(
             (
-                x_ideaview.road
-                for x_ideaview in self.ideaviews.values()
-                if x_ideaview.is_good() and x_ideaview.is_out_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_good() and x_opinionunit.is_out_tribe()
             ),
             None,
         )
         bad_in_tribe_road = next(
             (
-                x_ideaview.road
-                for x_ideaview in self.ideaviews.values()
-                if x_ideaview.is_bad() and x_ideaview.is_in_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_bad() and x_opinionunit.is_in_tribe()
             ),
             None,
         )
         bad_out_tribe_road = next(
             (
-                x_ideaview.road
-                for x_ideaview in self.ideaviews.values()
-                if x_ideaview.is_bad() and x_ideaview.is_out_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_bad() and x_opinionunit.is_out_tribe()
             ),
             None,
         )
@@ -105,34 +106,34 @@ class BeliefUnit:
 
     def is_tribal(self):
         return (
-            self.get_1_ideaview(in_tribe=True) != None
-            and self.get_1_ideaview(out_tribe=True) != None
+            self.get_1_opinionunit(in_tribe=True) != None
+            and self.get_1_opinionunit(out_tribe=True) != None
         )
 
     def is_moral(self):
         return (
-            self.get_1_ideaview(good=True) != None
-            and self.get_1_ideaview(bad=True) != None
+            self.get_1_opinionunit(good=True) != None
+            and self.get_1_opinionunit(bad=True) != None
         )
 
-    def set_ideaview(self, x_ideaview: IdeaView):
-        if is_sub_road(x_ideaview.road, self.base) == False:
+    def set_opinionunit(self, x_opinionunit: OpinionUnit):
+        if is_sub_road(x_opinionunit.road, self.base) == False:
             raise BeliefSubRoadUnitException(
-                f"BeliefUnit cannot set ideaview '{x_ideaview.road}' because base road is '{self.base}'."
+                f"BeliefUnit cannot set opinionunit '{x_opinionunit.road}' because base road is '{self.base}'."
             )
-        self.ideaviews[x_ideaview.road] = x_ideaview
+        self.opinionunits[x_opinionunit.road] = x_opinionunit
 
-    def del_ideaview(self, ideaview: PersonRoad):
-        self.ideaviews.pop(ideaview)
+    def del_opinionunit(self, opinionunit: PersonRoad):
+        self.opinionunits.pop(opinionunit)
 
-    def get_ideaviews(
+    def get_opinionunits(
         self,
         good: bool = None,
         bad: bool = None,
         in_tribe: bool = None,
         out_tribe: bool = None,
         x_all: bool = None,
-    ) -> dict[PersonRoad:IdeaView]:
+    ) -> dict[PersonRoad:OpinionUnit]:
         if good is None:
             good = False
         if bad is None:
@@ -144,21 +145,21 @@ class BeliefUnit:
         if x_all is None:
             x_all = False
         return {
-            x_road: x_ideaview
-            for x_road, x_ideaview in self.ideaviews.items()
+            x_road: x_opinionunit
+            for x_road, x_opinionunit in self.opinionunits.items()
             if x_all
-            or (x_ideaview.affect > 0 and good)
-            or (x_ideaview.affect < 0 and bad)
-            or (x_ideaview.love > 0 and in_tribe)
-            or (x_ideaview.love < 0 and out_tribe)
+            or (x_opinionunit.affect > 0 and good)
+            or (x_opinionunit.affect < 0 and bad)
+            or (x_opinionunit.love > 0 and in_tribe)
+            or (x_opinionunit.love < 0 and out_tribe)
         }
 
     def get_all_roads(self) -> dict[PersonRoad:int]:
-        x_dict = dict(self.get_ideaviews(x_all=True).items())
+        x_dict = dict(self.get_opinionunits(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
 
-    def get_1_ideaview(
+    def get_1_opinionunit(
         self,
         good: bool = None,
         bad: bool = None,
@@ -178,13 +179,13 @@ class BeliefUnit:
             x_any = False
         return next(
             (
-                x_ideaview.road
-                for x_ideaview in self.ideaviews.values()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
                 if x_any
-                or (x_ideaview.affect > 0 and good)
-                or (x_ideaview.affect < 0 and bad)
-                or (x_ideaview.love > 0 and in_tribe)
-                or (x_ideaview.love < 0 and out_tribe)
+                or (x_opinionunit.affect > 0 and good)
+                or (x_opinionunit.affect < 0 and bad)
+                or (x_opinionunit.love > 0 and in_tribe)
+                or (x_opinionunit.love < 0 and out_tribe)
             ),
             None,
         )
@@ -192,12 +193,12 @@ class BeliefUnit:
 
 def beliefunit_shop(
     base: PersonRoad,
-    ideaviews: dict[PersonRoad:float] = None,
+    opinionunits: dict[PersonRoad:float] = None,
     delimiter: str = None,
 ):
     return BeliefUnit(
         base=base,
-        ideaviews=get_empty_dict_if_none(ideaviews),
+        opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -206,9 +207,9 @@ def create_beliefunit(
     base: PersonRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
     x_beliefunit = beliefunit_shop(base=base)
-    good_ideaview = ideaview_shop(create_road(base, good, delimiter=delimiter), 1)
-    bad_ideaview = ideaview_shop(create_road(base, bad, delimiter=delimiter), -1)
-    x_beliefunit.set_ideaview(good_ideaview)
-    x_beliefunit.set_ideaview(bad_ideaview)
+    good_opinionunit = opinionunit_shop(create_road(base, good, delimiter=delimiter), 1)
+    bad_opinionunit = opinionunit_shop(create_road(base, bad, delimiter=delimiter), -1)
+    x_beliefunit.set_opinionunit(good_opinionunit)
+    x_beliefunit.set_opinionunit(bad_opinionunit)
     if x_beliefunit.is_moral():
         return x_beliefunit

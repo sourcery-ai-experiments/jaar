@@ -1,5 +1,5 @@
 from json import loads as json_loads, dumps as json_dumps
-from src.agenda.road import RoadUnit
+from src._road.road import RoadUnit
 from os import (
     path as os_path,
     makedirs as os_makedirs,

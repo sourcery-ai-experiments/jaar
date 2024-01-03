@@ -42,7 +42,7 @@ from src.agenda.idea import (
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
-from src.agenda.road import (
+from src._road.road import (
     get_parent_road_from_road,
     is_sub_road,
     road_validate,

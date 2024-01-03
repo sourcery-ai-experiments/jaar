@@ -1,4 +1,4 @@
-from src.agenda.road import PersonID
+from src._road.road import PersonID
 from dataclasses import dataclass
 from src.agenda.x_func import x_get_dict, return1ifnone as x_func_return1ifnone
 
