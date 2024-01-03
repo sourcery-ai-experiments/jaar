@@ -1,4 +1,4 @@
-from src._road.road import (
+from src._prime.road import (
     default_road_delimiter_if_none,
     EconomyID,
     PersonID,

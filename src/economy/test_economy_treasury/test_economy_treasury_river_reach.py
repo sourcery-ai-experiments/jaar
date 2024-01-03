@@ -6,7 +6,7 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
 )
 from src.economy.examples.economy_env_kit import _delete_and_set_ex6
-from src.economy.y_func import get_single_result
+from src.tools.sqlite import get_single_result
 from src.economy.treasury_sqlstr import (
     get_table_count_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
@@ -20,7 +20,7 @@ from src.economy.treasury_sqlstr import (
     get_partyunit_table_update_credit_score_sqlstr,
     get_partyunit_table_update_treasury_voice_rank_sqlstr,
 )
-from src.economy.y_func import get_single_result
+from src.tools.sqlite import get_single_result
 from sqlite3 import connect as sqlite3_connect
 
 

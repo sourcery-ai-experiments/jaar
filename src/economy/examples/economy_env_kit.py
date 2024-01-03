@@ -1,12 +1,12 @@
 # from lw.agenda import AgendaUnit
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.x_func import (
+from src.tools.file import (
     single_dir_create_if_null,
-    delete_dir as x_func_delete_dir,
+    delete_dir,
     copy_dir,
-    save_file as x_func_save_file,
-    open_file as x_func_open_file,
-    dir_files as x_func_dir_files,
+    save_file,
+    open_file,
+    dir_files,
 )
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
@@ -43,9 +43,9 @@ def get_test_economys_dir():
 @pytest_fixture()
 def env_dir_setup_cleanup():
     env_dir = get_temp_env_dir()
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
     yield env_dir
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
 
 
 def create_agenda_file_for_economys(economy_dir: str, agenda_healer: str):
@@ -55,7 +55,7 @@ def create_agenda_file_for_economys(economy_dir: str, agenda_healer: str):
     # if not path.exists(file_path):
     # print(f"{file_path=} {x_agenda._healer=}")
 
-    x_func_save_file(
+    save_file(
         dest_dir=agenda_dir,
         file_name=f"{x_agenda._healer}.json",
         file_text=x_agenda.get_json(),
@@ -63,7 +63,7 @@ def create_agenda_file_for_economys(economy_dir: str, agenda_healer: str):
 
 
 def create_example_economys_list():
-    return x_func_dir_files(
+    return dir_files(
         dir_path=get_test_economys_dir(), include_dirs=True, include_files=False
     )
 
@@ -80,7 +80,7 @@ def _delete_and_set_ex3():
     x_economy = economyunit_shop(
         economy_id=economy_id, economys_dir=get_test_economys_dir()
     )
-    x_func_delete_dir(x_economy.get_object_root_dir())
+    delete_dir(x_economy.get_object_root_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
     x_economy.save_public_agenda(example_healers_get_1node_agenda())
     x_economy.save_public_agenda(
@@ -119,7 +119,7 @@ def _delete_and_set_ex3():
     x_economy.save_clerkunit_file(clerk_cid=xia_text)
     # print(f"WHAT WHAT {x_economy.get_object_root_dir()}")
     # print(f"WHAT WHAT {x_economy.get_object_root_dir()}/clerkunits/w1/w1.json")
-    # file_text = x_func_open_file(
+    # file_text = open_file(
     #     dest_dir=f"{x_economy.get_object_root_dir}/clerkunits/w1", file_name="w1.json"
     # )
     # print(f"{file_text=}")
@@ -136,7 +136,7 @@ def _delete_and_set_ex3():
 def _delete_and_set_ex4():
     x_economy_id = "ex4"
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
-    x_func_delete_dir(x_economy.get_object_root_dir())
+    delete_dir(x_economy.get_object_root_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
     x_economy.save_public_agenda(example_healers_get_7nodeJRootWithH_agenda())
     x_economy.save_public_agenda(example_agendas_get_agenda_with7amCleanTableRequired())
@@ -149,7 +149,7 @@ def _delete_and_set_ex4():
 def _delete_and_set_ex5():
     x_economy_id = "ex5"
     x_p = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
-    x_func_delete_dir(x_p.get_object_root_dir())
+    delete_dir(x_p.get_object_root_dir())
     x_p.create_dirs_if_null(in_memory_treasury=True)
 
     # ethical code ernie
@@ -214,7 +214,7 @@ def _delete_and_set_ex6(x_economy_id: str = None):
     if x_economy_id is None:
         x_economy_id = "ex6"
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
-    x_func_delete_dir(x_economy.get_object_root_dir())
+    delete_dir(x_economy.get_object_root_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=False)
 
     sal_text = "sal"
@@ -261,7 +261,7 @@ def create_example_economy(economy_id: str):
 
 
 def delete_dir_example_economy(economy_obj: EconomyUnit):
-    x_func_delete_dir(economy_obj.get_object_root_dir())
+    delete_dir(economy_obj.get_object_root_dir())
 
 
 def change_economy_id_example_economy(economy_obj: EconomyUnit, new_economy_id):

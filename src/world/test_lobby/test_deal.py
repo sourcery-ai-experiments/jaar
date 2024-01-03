@@ -2,8 +2,8 @@
 #     get_farm_wantunit as examples_get_farm_wantunit,
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
-from src._road.road import create_road
-from src._road.belief import beliefunit_shop
+from src._prime.road import create_road
+from src._prime.belief import beliefunit_shop
 from src.world.deal import DealUnit, dealunit_shop
 from src.world.examples.example_beliefs import get_cooking_beliefunit
 

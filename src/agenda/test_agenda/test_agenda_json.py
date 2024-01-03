@@ -1,4 +1,4 @@
-from src._road.road import default_road_delimiter_if_none, create_road
+from src._prime.road import default_road_delimiter_if_none, create_road
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import acptfactunit_shop
@@ -18,13 +18,9 @@ from src.agenda.examples.agenda_env import (
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.required_assign import assigned_unit_shop
-from src.agenda.x_func import (
-    x_is_json,
-    save_file as x_func_save_file,
-    open_file as x_func_open_file,
-)
+from src.tools.python import x_is_json
+from src.tools.file import save_file, open_file
 from json import loads as json_loads
-from pytest import raises as pytest_raises
 
 
 def test_agenda_get_dict_ReturnsDictObject():
@@ -249,14 +245,14 @@ def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
     file_name_x = "example_agenda1.json"
 
     # WHEN
-    x_func_save_file(
+    save_file(
         dest_dir=get_agenda_temp_env_dir(),
         file_name=file_name_x,
         file_text=x_x_agenda_json,
     )
 
     # THEN
-    assert x_func_open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
+    assert open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
 
 
 def test_agenda_get_json_CorrectlyWorksForSimpleExample():
@@ -375,7 +371,7 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
 #     file_name = "example_agenda1.json"
 #     file_dir = agenda_env()
 #     print("File may fail since example_agenda1.json is created by a later test")
-#     x_agenda3_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
+#     x_agenda3_json = open_file(dest_dir=file_dir, file_name=file_name)
 #     # print(x_agenda3_json[299000:299155])
 
 #     # WHEN

@@ -1,7 +1,4 @@
-from src.agenda.x_func import (
-    delete_dir as x_func_delete_dir,
-    dir_files as x_func_dir_files,
-)
+from src.tools.file import delete_dir, dir_files
 from pytest import fixture as pytest_fixture
 
 
@@ -20,13 +17,13 @@ def get_test_worlds_dir():
 @pytest_fixture()
 def worlds_dir_setup_cleanup():
     env_dir = get_test_worlds_dir()
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
     yield env_dir
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
 
 
 def create_example_worlds_list():
-    return x_func_dir_files(
+    return dir_files(
         dir_path=get_test_worlds_dir(), include_dirs=True, include_files=False
     )
 
@@ -37,7 +34,7 @@ def create_example_worlds_list():
 
 
 # def delete_dir_example_world(world_obj: EconomyUnit):
-#     x_func_delete_dir(world_obj.get_object_root_dir())
+#     delete_dir(world_obj.get_object_root_dir())
 
 
 # def renam_example_world(world_obj: EconomyUnit, new_pid):

@@ -14,8 +14,9 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
+    yr_explanation,
 )
-from src.agenda.x_func import yr_explanation, open_file as x_func_open_file
+from src.tools.file import open_file
 
 
 def test_get_intent_returns_intent():
@@ -31,7 +32,7 @@ def test_get_intent_returns_intent():
     assert intent_list[0]._label in ["work", "feed cat"]
 
 
-def test_get_intent_returns_intent_with_only_required_allowed():
+def test_agenda_get_intent_items_ReturnsIntentWithOnlyCorrectItems():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2requireds()
     week_text = "weekdays"
@@ -386,7 +387,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     # GIVEN
     file_dir = agenda_env()
     file_name = "example_agenda1.json"
-    x_agenda_json = x_func_open_file(dest_dir=file_dir, file_name=file_name)
+    x_agenda_json = open_file(dest_dir=file_dir, file_name=file_name)
 
     # WHEN
     x_agenda = get_from_json(x_agenda_json=x_agenda_json)

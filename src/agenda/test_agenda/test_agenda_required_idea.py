@@ -2,6 +2,7 @@ from pytest import raises as pytest_raises
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_irrational_example as example_agendas_get_agenda_irrational_example,
+    from_list_get_active_status,
 )
 from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import (
@@ -10,7 +11,6 @@ from src.agenda.required_idea import (
     requiredheir_shop,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.x_func import from_list_get_active_status
 
 
 def test_agenda_requiredunits_create():

@@ -1,5 +1,4 @@
 from sqlite3 import Connection
-from os import rename as os_rename
 
 
 def sqlite_null(obj_x):
@@ -37,7 +36,3 @@ def check_connection(conn: Connection) -> bool:
 def get_single_result(db_conn: Connection, sqlstr: str) -> str:
     results = db_conn.execute(sqlstr)
     return results.fetchone()[0]
-
-
-def rename_dir(src, dst):
-    os_rename(src=src, dst=dst)

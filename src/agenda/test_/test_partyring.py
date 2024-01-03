@@ -4,8 +4,7 @@ from src.agenda.party import (
     partyrings_get_from_json,
     PartyRing,
 )
-from src.agenda.x_func import x_is_json, x_get_json
-from pytest import raises as pytest_raises
+from src.tools.python import x_is_json, x_get_json
 
 
 def test_PartyPID_exists():

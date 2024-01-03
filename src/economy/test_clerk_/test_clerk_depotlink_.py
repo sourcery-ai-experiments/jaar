@@ -1,8 +1,5 @@
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
-from src.agenda.x_func import (
-    count_files as x_func_count_files,
-    open_file as x_func_open_file,
-)
+from src.tools.file import count_files, open_file
 from src.economy.clerk import clerkunit_shop
 from src.economy.examples.example_clerks import (
     get_2node_agenda,
@@ -90,7 +87,7 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     )
     assert os_path.exists(amer_digest_path)
     digest_agenda = agenda_get_from_json(
-        x_func_open_file(
+        open_file(
             dest_dir=cali_ux._agendas_digest_dir,
             file_name=f"{amer_agenda._healer}.json",
         )
@@ -133,15 +130,15 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     create_agenda_file(bob_agenda._agendas_depot_dir, lai_text)
     bob_agenda.set_contract_if_empty()
     bob_agenda._set_depotlink(lai_text, link_type="blind_trust")
-    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
 
     # WHEN
     bob_agenda.del_depot_agenda(agenda_healer=lai_text)
 
     # THEN
-    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
+    assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
+    assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
 
 
 def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
@@ -152,9 +149,7 @@ def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
     env_dir = get_temp_clerkunit_dir()
     bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_economy_id())
     cal1 = get_2node_agenda()
-    assert (
-        x_func_count_files(bob_agenda._agendas_depot_dir) is None
-    )  # dir does not exist
+    assert count_files(bob_agenda._agendas_depot_dir) is None  # dir does not exist
 
     # WHEN
     bob_agenda.set_contract_if_empty()
@@ -164,7 +159,7 @@ def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
     print(f"Saving to {bob_agenda._agendas_depot_dir=}")
     # for path_x in os_scandir(ux._agendas_depot_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(bob_agenda._agendas_depot_dir) == 1
+    assert count_files(bob_agenda._agendas_depot_dir) == 1
 
 
 def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
@@ -201,17 +196,17 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     create_agenda_file(bob_agenda._agendas_depot_dir, zia_text)
     bob_agenda.set_contract_if_empty()
     bob_agenda._set_depotlink(zia_text, link_type="ignore")
-    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
-    assert x_func_count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
     # WHEN
     bob_agenda.del_depot_agenda(agenda_healer=zia_text)
 
     # THEN
-    assert x_func_count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
-    assert x_func_count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
+    assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
+    assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
+    assert count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
 
 def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
@@ -225,7 +220,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     create_agenda_file(bob_ux._agendas_depot_dir, zia_text)
     bob_ux.set_contract_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
-    assert x_func_count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
+    assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
     cx1 = bob_ux.open_ignore_agenda(healer=zia_text)
     assert len(cx1._partys) == 0
     cx1.add_partyunit(pid="tim")
@@ -238,7 +233,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     # THEN
     cx2 = bob_ux.open_ignore_agenda(healer=zia_text)
     assert len(cx2._partys) == 0
-    assert x_func_count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
+    assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
 
 def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
@@ -266,10 +261,10 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     new_steve_agenda = get_cal3nodes(_healer=steve_text)
     sx.save_public_agenda(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._agendas_public_dir=}")
-    # for file_name in x_func_dir_files(dir_path=env_dir):
+    # for file_name in dir_files(dir_path=env_dir):
     #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=bob_agenda._agendas_public_dir):
+    # for file_name in dir_files(dir_path=bob_agenda._agendas_public_dir):
     #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
 
     # WHEN

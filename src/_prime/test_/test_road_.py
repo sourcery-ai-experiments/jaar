@@ -1,4 +1,4 @@
-from src._road.road import (
+from src._prime.road import (
     RoadUnit,
     PersonID,
     EconomyID,
@@ -28,9 +28,8 @@ from src._road.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
 )
-from src.agenda.required_idea import sufffactunit_shop
-from src.agenda.idea import IdeaUnit
 from pytest import raises as pytest_raises
+from dataclasses import dataclass
 
 
 def test_RoadUnit_exists():
@@ -240,50 +239,35 @@ def test_road_create_road_without_root_node_WorksCorrectly():
     )
 
 
+@dataclass
+class EmptyObj:
+    x_road: RoadUnit = ""
+
+    def find_replace_road(self, old_road, new_road):
+        self.x_road = change_road(self.x_road, old_road=old_road, new_road=new_road)
+
+    def get_obj_key(self) -> RoadUnit:
+        return self.x_road
+
+
 def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     old_seasons_road = f"{root_label()}{x_s}healer{x_s}seasons"
-    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
-    old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
-
-    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
+    old_dict_x = {old_seasons_road: EmptyObj(old_seasons_road)}
+    assert old_dict_x.get(old_seasons_road) != None
 
     # WHEN
     new_seasons_road = f"{root_label()}{x_s}healer{x_s}kookies"
-    new_sufffacts_x = find_replace_road_key_dict(
-        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
+    new_dict_x = find_replace_road_key_dict(
+        dict_x=old_dict_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
-    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
 
-    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
-    assert new_sufffacts_x.get(old_seasons_road) is None
-
-
-def test_road_find_replace_road_key_dict_ReturnsCorrectDict_ChangeEconomyIDScenario():
-    # GIVEN
-    x_s = default_road_delimiter_if_none()
-    old_economy_id = "El Paso"
-    healer_text = "healer"
-    old_healer_road = f"{old_economy_id}{x_s}{healer_text}"
-    seasons_text = "seasons"
-    old_seasons_road = f"{old_healer_road}{x_s}{seasons_text}"
-    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
-    old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
-
-    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
-
-    # WHEN
-    new_economy_id = "Austin"
-    new_healer_road = f"{new_economy_id}{x_s}{healer_text}"
-    new_seasons_road = f"{new_healer_road}{x_s}{seasons_text}"
-    new_sufffacts_x = find_replace_road_key_dict(
-        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
-    )
-    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
-
-    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
-    assert new_sufffacts_x.get(old_seasons_road) is None
+    assert new_dict_x != {}
+    assert len(new_dict_x) == 1
+    print(f"{new_dict_x=}")
+    assert new_dict_x.get(new_seasons_road) != None
+    assert new_dict_x.get(old_seasons_road) is None
 
 
 def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():

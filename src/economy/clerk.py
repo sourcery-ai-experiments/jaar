@@ -1,6 +1,5 @@
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
-    get_dict_of_agenda_from_dict,
     get_meld_of_agenda_files,
     PersonID,
     AgendaUnit,
@@ -9,19 +8,16 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     PartyPID,
 )
-from src.agenda.x_func import (
-    x_get_json,
+from src.tools.file import (
     single_dir_create_if_null,
-    save_file as x_func_save_file,
-    dir_files as x_func_dir_files,
-    open_file as x_func_open_file,
-    delete_dir as x_func_delete_dir,
+    save_file,
+    open_file,
+    delete_dir,
+    rename_dir as x_func_rename_dir,
 )
-from src._road.road import default_road_delimiter_if_none
-from src.economy.y_func import rename_dir
+from src._prime.road import default_road_delimiter_if_none
 from dataclasses import dataclass
 from os import path as os_path
-from json import loads as json_loads
 
 
 class InvalidclerkException(Exception):
@@ -194,7 +190,7 @@ class clerkUnit:
         self._clerk_cid = new_cid
         self.set_dirs()
 
-        rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)
+        x_func_rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)
 
     def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
         single_dir_create_if_null(x_path=self._clerkunit_dir)
@@ -215,7 +211,7 @@ class clerkUnit:
             file_name = f"{x_agenda._healer}.json"
         # if dest_dir == self._agendas_public_dir:
         #     file_name = self._public_file_name
-        x_func_save_file(
+        save_file(
             dest_dir=dest_dir,
             file_name=file_name,
             file_text=x_agenda.get_json(),
@@ -270,16 +266,16 @@ class clerkUnit:
 
     def open_public_agenda(self, healer: PersonID) -> str:
         file_name_x = f"{healer}.json"
-        return x_func_open_file(self._agendas_public_dir, file_name_x)
+        return open_file(self._agendas_public_dir, file_name_x)
 
     def open_depot_agenda(self, healer: PersonID) -> AgendaUnit:
         file_name_x = f"{healer}.json"
-        x_agenda_json = x_func_open_file(self._agendas_depot_dir, file_name_x)
+        x_agenda_json = open_file(self._agendas_depot_dir, file_name_x)
         return agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
     def open_ignore_agenda(self, healer: PersonID) -> AgendaUnit:
         ignore_file_name = f"{healer}.json"
-        agenda_json = x_func_open_file(self._agendas_ignore_dir, ignore_file_name)
+        agenda_json = open_file(self._agendas_ignore_dir, ignore_file_name)
         agenda_obj = agendaunit_get_from_json(x_agenda_json=agenda_json)
         agenda_obj.set_agenda_metrics()
         return agenda_obj
@@ -288,15 +284,13 @@ class clerkUnit:
         x_agenda = None
         if not self._contract_agenda_exists():
             self.save_contract_agenda(self._get_empty_contract_agenda())
-        x_json = x_func_open_file(self._clerkunit_dir, self._contract_file_name)
+        x_json = open_file(self._clerkunit_dir, self._contract_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
 
     def open_output_agenda(self) -> AgendaUnit:
-        x_agenda_json = x_func_open_file(
-            self._clerkunit_dir, self._agenda_output_file_name
-        )
+        x_agenda_json = open_file(self._clerkunit_dir, self._agenda_output_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
@@ -312,13 +306,13 @@ class clerkUnit:
         return x_agenda
 
     def erase_depot_agenda(self, healer):
-        x_func_delete_dir(f"{self._agendas_depot_dir}/{healer}.json")
+        delete_dir(f"{self._agendas_depot_dir}/{healer}.json")
 
     def erase_digest_agenda(self, healer):
-        x_func_delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
+        delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
 
     def erase_contract_agenda_file(self):
-        x_func_delete_dir(dir=f"{self._clerkunit_dir}/{self._contract_file_name}")
+        delete_dir(dir=f"{self._clerkunit_dir}/{self._contract_file_name}")
 
     def raise_exception_if_no_file(self, dir_type: str, healer: str):
         x_agenda_file_name = f"{healer}.json"
@@ -332,7 +326,7 @@ class clerkUnit:
     def _contract_agenda_exists(self) -> bool:
         bool_x = None
         try:
-            x_func_open_file(self._clerkunit_dir, self._contract_file_name)
+            open_file(self._clerkunit_dir, self._contract_file_name)
             bool_x = True
         except Exception:
             bool_x = False

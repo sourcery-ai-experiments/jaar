@@ -3,7 +3,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels,
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
-from src._road.road import (
+from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     default_road_delimiter_if_none,
 )

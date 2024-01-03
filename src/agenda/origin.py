@@ -1,6 +1,6 @@
 from contextlib import suppress as contextlib_suppress
 from src.agenda.party import PartyPID
-from src.agenda.y_func import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
 

@@ -1,7 +1,4 @@
-from src.agenda.x_func import (
-    open_file as x_func_open_file,
-    save_file as x_func_save_file,
-)
+from src.tools.file import open_file, save_file
 from src.economy.clerk import clerkUnit, clerkunit_shop
 from src.economy.examples.example_clerks import (
     get_6node_agenda as example_healers_get_6node_agenda,
@@ -144,17 +141,15 @@ def test_clerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     assert os_path.exists(jul_clerkunit._contract_file_path)
-    # jul_cx = agenda_get_from_json(x_func_open_file(jul_clerkunit._contract_file_path))
+    # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._contract_file_path))
     ex1 = "teesting text"
-    x_func_save_file(
+    save_file(
         dest_dir=jul_clerkunit._clerkunit_dir,
         file_name=jul_clerkunit._contract_file_name,
         file_text=ex1,
     )
     assert (
-        x_func_open_file(
-            jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name
-        )
+        open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name)
         == ex1
     )
 
@@ -163,9 +158,7 @@ def test_clerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
 
     # THEN
     assert (
-        x_func_open_file(
-            jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name
-        )
+        open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name)
         == ex1
     )
 

@@ -1,4 +1,4 @@
-from src._road.road import create_road
+from src._prime.road import create_road
 from src.agenda.agenda import (
     agendaunit_shop,
     ideaunit_shop,
@@ -11,7 +11,7 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.economy.y_func import get_single_result
+from src.tools.sqlite import get_single_result
 from src.economy.treasury_sqlstr import (
     get_table_count_sqlstr,
     get_idea_catalog_table_count,
@@ -32,7 +32,7 @@ from src.economy.examples.example_clerks import (
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
 )
-from src.economy.y_func import get_single_result
+from src.tools.sqlite import get_single_result
 
 
 def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasuryInMemory(

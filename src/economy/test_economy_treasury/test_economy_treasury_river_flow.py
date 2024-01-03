@@ -5,7 +5,7 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.economy.y_func import get_single_result
+from src.tools.sqlite import get_single_result
 from src.economy.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_river_block_dict,

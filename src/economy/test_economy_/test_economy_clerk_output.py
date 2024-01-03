@@ -184,10 +184,10 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_healer="steve")
     x_economy.save_public_agenda(new_steve_agenda)
     # print(f"{env_dir=} {ux._agendas_public_dir=}")
-    # for file_name in x_func_dir_files(dir_path=env_dir):
+    # for file_name in dir_files(dir_path=env_dir):
     #     print(f"{ux._agendas_public_dir=} {file_name=}")
 
-    # for file_name in x_func_dir_files(dir_path=ux._agendas_public_dir):
+    # for file_name in dir_files(dir_path=ux._agendas_public_dir):
     #     print(f"{ux._agendas_public_dir=} {file_name=}")
 
     # WHEN

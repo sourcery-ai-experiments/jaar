@@ -26,7 +26,7 @@ from src.agenda.required_idea import (
     requireds_get_from_dict,
     acptfactunits_get_from_dict,
 )
-from src._road.road import (
+from src._prime.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
@@ -49,12 +49,8 @@ from src.agenda.group import (
 from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyPID
 from src.agenda.origin import originunit_shop
-from src.agenda.x_func import (
-    get_on_meld_weight_actions,
-    get_meld_weight,
-    return1ifnone as x_func_return1ifnone,
-)
-from src.agenda.y_func import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none, return1ifnone
+from src._prime.meld import get_meld_weight, get_on_meld_weight_actions
 from copy import deepcopy
 
 
@@ -367,7 +363,7 @@ class IdeaUnit:
         parent_agenda_importance: float = None,
         parent_coin_cease: float = None,
     ):
-        parent_agenda_importance = x_func_return1ifnone(parent_agenda_importance)
+        parent_agenda_importance = return1ifnone(parent_agenda_importance)
         self.set_kids_total_weight()
         self._agenda_importance = None
         self._agenda_coin_onset = None

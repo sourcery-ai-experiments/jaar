@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._road.road import (
+from src._prime.road import (
     RoadUnit,
     change_road,
     find_replace_road_key_dict,
@@ -7,7 +7,7 @@ from src._road.road import (
     is_heir_road,
     default_road_delimiter_if_none,
 )
-from src.agenda.y_func import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
 
 

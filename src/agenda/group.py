@@ -5,13 +5,9 @@ from src.agenda.party import (
     partylinks_get_from_dict,
     partylink_shop,
 )
-from src.agenda.x_func import (
-    x_get_dict,
-    get_meld_weight,
-    return1ifnone as x_func_return1ifnone,
-)
-from src.agenda.y_func import get_empty_dict_if_none
-from src._road.road import RoadUnit
+from src._prime.meld import get_meld_weight
+from src.tools.python import get_empty_dict_if_none, return1ifnone, x_get_dict
+from src._prime.road import RoadUnit
 
 
 class InvalidGroupException(Exception):
@@ -290,8 +286,8 @@ def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, BalanceLink]:
 def balancelink_shop(
     brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
 ) -> BalanceLink:
-    creditor_weight = x_func_return1ifnone(creditor_weight)
-    debtor_weight = x_func_return1ifnone(debtor_weight)
+    creditor_weight = return1ifnone(creditor_weight)
+    debtor_weight = return1ifnone(debtor_weight)
     return BalanceLink(
         brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
@@ -325,8 +321,8 @@ def balanceheir_shop(
     _agenda_credit: float = None,
     _agenda_debt: float = None,
 ) -> BalanceHeir:
-    creditor_weight = x_func_return1ifnone(creditor_weight)
-    debtor_weight = x_func_return1ifnone(debtor_weight)
+    creditor_weight = return1ifnone(creditor_weight)
+    debtor_weight = return1ifnone(debtor_weight)
     return BalanceHeir(
         brand=brand,
         creditor_weight=creditor_weight,

@@ -13,10 +13,7 @@ from ui.pyqt_func import (
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.agenda.x_func import (
-    save_file as x_func_save_file,
-    open_file as x_func_open_file,
-)
+from src.tools.file import open_file
 from sys import exit as sys_exit
 
 # from PyQt5 import QtWidgets as qtw
@@ -266,7 +263,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with open(f"{self.file_path}", "w") as f:
             f.write(agenda_x_json)
         self.current_file_path_l.setText(self.file_path)
-        # x_func_save_file(
+        # save_file(
         #     dest_dir=agenda_clerkunit_dir,
         #     file_name=f"{self.agenda_x._economy_id}.json",
         #     file_text=agenda_x.get_json(),
@@ -274,7 +271,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def load_file(self):
         x_json = ""
-        x_json = x_func_open_file(dest_dir=self.file_path, file_name=None)
+        x_json = open_file(dest_dir=self.file_path, file_name=None)
         self.current_file_path_l.setText(self.file_path)
         return x_json
 

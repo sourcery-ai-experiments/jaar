@@ -1,4 +1,4 @@
-from src._road.road import default_road_delimiter_if_none, RoadUnit
+from src._prime.road import default_road_delimiter_if_none, RoadUnit
 from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import assigned_unit_shop

@@ -1,4 +1,5 @@
-from src.agenda.idea import ideaunit_shop, EconomyID
+from src._prime.road import RoadUnit
+from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import (
     acptfactunit_shop,
     sufffactunit_shop,
@@ -11,13 +12,13 @@ from src.agenda.agenda import (
     get_from_json as agenda_get_from_json,
 )
 from src.agenda.required_assign import assigned_unit_shop
-from src.agenda.x_func import open_file as x_func_open_file
+from src.tools.file import open_file
 from src.agenda.examples.agenda_env import agenda_env
 
 
 def agenda_v001() -> AgendaUnit:
     return agenda_get_from_json(
-        x_func_open_file(dest_dir=agenda_env(), file_name="example_agenda1.json")
+        open_file(dest_dir=agenda_env(), file_name="example_agenda1.json")
     )
 
 
@@ -66,7 +67,7 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
 
 def agenda_v002() -> AgendaUnit:
     x_agenda = agenda_get_from_json(
-        x_func_open_file(
+        open_file(
             dest_dir=agenda_env(),
             file_name="example_agenda2.json",
         )
@@ -444,3 +445,141 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_agenda.set_acptfact(base=basket_road, pick=b_full_road)
 
     return amer_agenda
+
+
+# class YR:
+def from_list_get_active_status(
+    road: RoadUnit, idea_list: list, asse_bool: bool = None
+) -> bool:
+    active_status = None
+    temp_idea = None
+
+    active_true_count = 0
+    active_false_count = 0
+    for idea in idea_list:
+        if idea.get_road() == road:
+            temp_idea = idea
+            print(
+                f"searched for IdeaUnit {temp_idea.get_road()} found {temp_idea._active_status=}"
+            )
+
+        if idea._active_status:
+            active_true_count += 1
+        elif idea._active_status == False:
+            active_false_count += 1
+
+    active_status = temp_idea._active_status
+    print(
+        f"Set Active_status: {idea._label=} {active_status} {active_true_count=} {active_false_count=}"
+    )
+
+    if asse_bool in {True, False}:
+        if active_status != asse_bool:
+            yr_explanation(temp_idea)
+
+        assert active_status == asse_bool
+    else:
+        yr_explanation(temp_idea)
+    return active_status
+
+
+def yr_print_idea_base_info(idea, filter: bool):
+    for l in idea._requiredheirs.values():
+        if l._status == filter:
+            print(
+                f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
+            )
+            if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+                yr_print_acptfact(
+                    lh_base=l.base,
+                    lh_status=l._status,
+                    sufffacts=l.sufffacts,
+                    acptfactheirs=idea._acptfactheirs,
+                )
+
+
+def yr_explanation(idea):
+    str1 = f"'{yr_d(idea._parent_road)}' idea"
+    str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
+    str3 = f" {str(type(idea))}"
+    str4 = " "
+    if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+        str3 = f" AcptFacts:{yr_x(idea._acptfactheirs)} Status: {idea._active_status}"
+
+        print(f"\n{str1}{str2}{str3}")
+        hh_wo_matched_required = []
+        for hh in idea._acptfactheirs.values():
+            hh_wo_matched_required = []
+            try:
+                idea._requiredheirs[hh.base]
+            except Exception:
+                hh_wo_matched_required.append(hh.base)
+
+        for base in hh_wo_matched_required:
+            print(f"AcptFacts that don't matter to this Idea: {base}")
+
+    # if idea._requiredunits != None:
+    #     for lu in idea._requiredunits.values():
+    #         print(f"  RequiredUnit   '{lu.base}' sufffacts: {len(lu.sufffacts)} ")
+    if idea._requiredheirs != None:
+        filter_x = True
+        yr_print_idea_base_info(idea=idea, filter=True)
+
+        filter_x = False
+        print("\nRequireds that failed:")
+
+        for l in idea._requiredheirs.values():
+            if l._status == filter_x:
+                print(
+                    f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
+                )
+                if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+                    yr_print_acptfact(
+                        lh_base=l.base,
+                        lh_status=l._status,
+                        sufffacts=l.sufffacts,
+                        acptfactheirs=idea._acptfactheirs,
+                    )
+                print("")
+    # print(idea._acptfactheirs)
+    # print(f"{(idea._acptfactheirs != None)=}")
+    # print(f"{len(idea._acptfactheirs)=} ")
+
+    print("")
+
+
+def yr_print_acptfact(lh_base, lh_status, sufffacts, acptfactheirs):
+    for ww in sufffacts.values():
+        ww_open = ""
+        ww_open = f"\topen:{ww.open}" if ww.open != None else ""
+        ww_nigh = ""
+        ww_nigh = f"\tnigh:{ww.nigh}" if ww.nigh != None else ""
+        ww_task = f" Task: {ww._task}"
+        hh_open = ""
+        hh_nigh = ""
+        hh_pick = ""
+        print(
+            f"\t    '{lh_base}' SuffFact LH:{lh_status} W:{ww._status}\tneed:{ww.need}{ww_open}{ww_nigh}"
+        )
+
+        for hh in acptfactheirs.values():
+            if hh.base == lh_base:
+                if hh.open != None:
+                    hh_open = f"\topen:{hh.open}"
+                if hh.nigh != None:
+                    hh_nigh = f"\tnigh:{hh.nigh}"
+                hh_pick = hh.pick
+                # if hh_pick != "":
+                print(
+                    f"\t    '{hh.base}' AcptFact LH:{lh_status} W:{ww._status}\tAcptFact:{hh_pick}{hh_open}{hh_nigh}"
+                )
+        if hh_pick == "":
+            print(f"\t    Base: No AcptFact")
+
+
+def yr_d(self):
+    return "no road" if self is None else self[self.find(",") + 1 :]
+
+
+def yr_x(self):
+    return 0 if self is None else len(self)

@@ -1,8 +1,8 @@
-from src._road.road import (
+from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     create_road,
 )
-from src._road.belief import beliefunit_shop, opinionunit_shop
+from src._prime.belief import beliefunit_shop, opinionunit_shop
 
 
 def get_cooking_beliefunit():

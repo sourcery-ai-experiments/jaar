@@ -30,8 +30,6 @@ from src.agenda.required_idea import (
 )
 from src.agenda.required_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
-
-from src.agenda.x_func import x_get_json
 from src.agenda.idea import (
     IdeaUnit,
     ideaunit_shop,
@@ -42,7 +40,7 @@ from src.agenda.idea import (
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
-from src._road.road import (
+from src._prime.road import (
     get_parent_road_from_road,
     is_sub_road,
     road_validate,
@@ -61,12 +59,10 @@ from src._road.road import (
     is_string_in_road,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
+from src.tools.python import x_get_json
+from src._prime.meld import get_meld_weight
 from copy import deepcopy as copy_deepcopy
-from src.agenda.x_func import (
-    dir_files as x_func_dir_files,
-    open_file as x_func_open_file,
-    get_meld_weight,
-)
+from src.tools.file import dir_files, open_file
 
 
 class InvalidAgendaException(Exception):
@@ -2290,7 +2286,7 @@ def get_meldeeorderunit(
 
 def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]:
     agenda_voice_ranks = {}
-    for meldee_file_name in x_func_dir_files(dir_path=meldees_dir):
+    for meldee_file_name in dir_files(dir_path=meldees_dir):
         meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
         agenda_voice_ranks[meldee_orderunit.healer] = meldee_orderunit
     agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
@@ -2307,7 +2303,7 @@ def get_meld_of_agenda_files(
     primary_agenda: AgendaUnit, meldees_dir: str
 ) -> AgendaUnit:
     for x_filename in get_file_names_in_voice_rank_order(primary_agenda, meldees_dir):
-        primary_agenda.meld(get_from_json(x_func_open_file(meldees_dir, x_filename)))
+        primary_agenda.meld(get_from_json(open_file(meldees_dir, x_filename)))
     primary_agenda.set_agenda_metrics()
     return primary_agenda
 

@@ -1,4 +1,4 @@
-from src.agenda.x_func import delete_dir as x_func_delete_dir
+from src.tools.file import delete_dir
 from src.economy.economy import economyunit_shop, EconomyUnit
 from os import path as os_path
 from src.economy.examples.economy_env_kit import (
@@ -7,7 +7,7 @@ from src.economy.examples.economy_env_kit import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from src.economy.y_func import check_connection
+from src.tools.sqlite import check_connection
 
 
 def test_economy_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
@@ -15,9 +15,7 @@ def test_economy_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
 ):
     # GIVEN create economy
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_func_delete_dir(
-        dir=x_economy.get_treasury_db_path()
-    )  # clear out any treasury.db file
+    delete_dir(dir=x_economy.get_treasury_db_path())  # clear out any treasury.db file
     assert os_path.exists(x_economy.get_treasury_db_path()) == False
 
     # WHEN

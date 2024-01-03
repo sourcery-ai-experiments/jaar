@@ -4,7 +4,12 @@ from src.agenda.required_idea import (
     sufffactunit_shop,
     sufffacts_get_from_dict,
 )
-from src._road.road import get_default_economy_root_roadnode as root_label, create_road
+from src._prime.road import (
+    get_default_economy_root_roadnode as root_label,
+    create_road,
+    default_road_delimiter_if_none,
+    find_replace_road_key_dict,
+)
 from pytest import raises as pytest_raises
 
 
@@ -825,3 +830,49 @@ def test_SuffFactsUnit_set_delimiter_SetsAttrsCorrectly():
     star_week_road = create_road(root_label(), week_text, delimiter=star_text)
     star_sun_road = create_road(star_week_road, sun_text, delimiter=star_text)
     assert sun_sufffactunit.need == star_sun_road
+
+
+def test_road_find_replace_road_key_dict_ReturnsCorrectSuffFactsUnit_Scenario1():
+    # GIVEN
+    healer_road = create_road(root_label(), "healer")
+    old_seasons_road = create_road(healer_road, "seasons")
+    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
+    old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
+
+    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
+
+    # WHEN
+    new_seasons_road = create_road(healer_road, "kookies")
+    new_sufffacts_x = find_replace_road_key_dict(
+        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
+    )
+    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
+
+    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
+    assert new_sufffacts_x.get(old_seasons_road) is None
+
+
+def test_road_find_replace_road_key_dict_ReturnsCorrectSuffFactsUnit_ChangeEconomyIDScenario():
+    # GIVEN
+    old_economy_id = "El Paso"
+    healer_text = "healer"
+    old_healer_road = create_road(old_economy_id, healer_text)
+    seasons_text = "seasons"
+    old_seasons_road = create_road(old_healer_road, seasons_text)
+    old_sufffact_x = sufffactunit_shop(need=old_seasons_road)
+    old_sufffacts_x = {old_sufffact_x.need: old_sufffact_x}
+
+    assert old_sufffacts_x.get(old_seasons_road) == old_sufffact_x
+
+    # WHEN
+    new_economy_id = "Austin"
+    new_healer_road = create_road(new_economy_id, healer_text)
+    new_seasons_road = create_road(new_healer_road, seasons_text)
+
+    new_sufffacts_x = find_replace_road_key_dict(
+        dict_x=old_sufffacts_x, old_road=old_seasons_road, new_road=new_seasons_road
+    )
+    new_sufffact_x = sufffactunit_shop(need=new_seasons_road)
+
+    assert new_sufffacts_x.get(new_seasons_road) == new_sufffact_x
+    assert new_sufffacts_x.get(old_seasons_road) is None

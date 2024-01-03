@@ -15,7 +15,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
 )
-from src.agenda.x_func import yr_explanation, open_file as x_func_open_file
+from src.tools.file import open_file
 from src.world.person import personunit_shop, painunit_shop
 from pytest import raises as pytest_raises
 

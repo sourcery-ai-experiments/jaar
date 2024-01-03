@@ -23,10 +23,7 @@ from src.economy.examples.economy_env_kit import (
 )
 
 from src.agenda.party import get_depotlink_types
-from src.agenda.x_func import (
-    open_file as x_func_open_file,
-    dir_files as x_func_dir_files,
-)
+from src.tools.file import open_file, dir_files
 from ui.pyqt_func import agenda_importance_diplay
 
 
@@ -261,7 +258,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.agendas_table.currentRow(), 0
         ).text()
         if self.x_clerk != None:
-            agenda_json = x_func_open_file(
+            agenda_json = open_file(
                 dest_dir=self.x_clerk._agendas_public_dir,
                 file_name=f"{agenda_healer}.json",
             )
@@ -296,8 +293,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_agenda_healer_list(self):
         agendas_list = []
-        for file_name in x_func_dir_files(self.economy_x.get_public_dir()):
-            # agenda_json = x_func_open_file(
+        for file_name in dir_files(self.economy_x.get_public_dir()):
+            # agenda_json = open_file(
             #     dest_dir=self.economy_x.get_public_dir(), file_name=file_name
             # )
             # x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
@@ -317,11 +314,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         depotlinks_list = []
         if self.x_clerk != None:
             cl_dir = self.x_clerk._agendas_depot_dir
-            clerkunit_files = x_func_dir_files(cl_dir)
+            clerkunit_files = dir_files(cl_dir)
             # for cl_val in self.x_clerk._depotlinks.values():
             for cl_filename in clerkunit_files:
                 print(f"{cl_dir=} {cl_filename=}")
-                agenda_json = x_func_open_file(cl_dir, file_name=f"{cl_filename}")
+                agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
                 depotlink_row = [
                     cl_val._healer,
@@ -334,7 +331,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_digests_list(self):
         x_list = []
         if self.x_clerk != None:
-            digest_file_list = x_func_dir_files(
+            digest_file_list = dir_files(
                 dir_path=self.x_clerk._agendas_digest_dir,
                 remove_extensions=True,
                 include_dirs=False,
@@ -346,7 +343,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_ignores_list(self):
         x_list = []
         if self.x_clerk != None:
-            digest_file_list = x_func_dir_files(
+            digest_file_list = dir_files(
                 dir_path=self.x_clerk._agendas_ignore_dir,
                 remove_extensions=True,
                 include_dirs=False,

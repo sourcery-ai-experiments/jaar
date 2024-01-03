@@ -12,7 +12,7 @@ from src.economy.treasury_sqlstr import (
     get_river_reach_table_insert_sqlstr,
     get_river_score_select_sqlstr,
 )
-from src.economy.y_func import sqlite_text, get_single_result
+from src.tools.sqlite import sqlite_text, get_single_result
 from sqlite3 import connect as sqlite3_connect
 
 

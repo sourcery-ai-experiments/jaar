@@ -1,8 +1,8 @@
-from src.agenda.x_func import from_list_get_active_status
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2requireds,
     get_agenda_with7amCleanTableRequired,
     agenda_v001,
+    from_list_get_active_status,
 )
 from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import (

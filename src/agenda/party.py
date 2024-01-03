@@ -1,6 +1,6 @@
-from src._road.road import PersonID
+from src._prime.road import PersonID
 from dataclasses import dataclass
-from src.agenda.x_func import x_get_dict, return1ifnone as x_func_return1ifnone
+from src.tools.python import return1ifnone, x_get_dict
 
 
 class InvalidPartyException(Exception):
@@ -177,10 +177,10 @@ class PartyUnit(PartyCore):
         return x_dict
 
     def get_creditor_weight(self):
-        return x_func_return1ifnone(self.creditor_weight)
+        return return1ifnone(self.creditor_weight)
 
     def get_debtor_weight(self):
-        return x_func_return1ifnone(self.debtor_weight)
+        return return1ifnone(self.debtor_weight)
 
     def set_empty_agenda_credit_debt_to_zero(self):
         if self._agenda_credit is None:
@@ -350,8 +350,8 @@ def partyunit_shop(
     x_partyunit = PartyUnit(
         pid=pid,
         uid=uid,
-        creditor_weight=x_func_return1ifnone(creditor_weight),
-        debtor_weight=x_func_return1ifnone(debtor_weight),
+        creditor_weight=return1ifnone(creditor_weight),
+        debtor_weight=return1ifnone(debtor_weight),
         _creditor_active=_creditor_active,
         _debtor_active=_debtor_active,
         _agenda_credit=_agenda_credit,
@@ -396,8 +396,8 @@ class PartyLink(PartyCore):
         group_agenda_intent_credit: float,
         group_agenda_intent_debt: float,
     ):
-        group_agenda_credit = x_func_return1ifnone(group_agenda_credit)
-        group_agenda_debt = x_func_return1ifnone(group_agenda_debt)
+        group_agenda_credit = return1ifnone(group_agenda_credit)
+        group_agenda_debt = return1ifnone(group_agenda_debt)
         creditor_ratio = self.creditor_weight / partylinks_creditor_weight_sum
         debtor_ratio = self.debtor_weight / partylinks_debtor_weight_sum
 
@@ -448,8 +448,8 @@ def partylink_shop(
     _agenda_intent_credit: float = None,
     _agenda_intent_debt: float = None,
 ) -> PartyLink:
-    creditor_weight = x_func_return1ifnone(creditor_weight)
-    debtor_weight = x_func_return1ifnone(debtor_weight)
+    creditor_weight = return1ifnone(creditor_weight)
+    debtor_weight = return1ifnone(debtor_weight)
     return PartyLink(
         pid=pid,
         creditor_weight=creditor_weight,

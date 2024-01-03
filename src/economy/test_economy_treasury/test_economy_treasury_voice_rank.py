@@ -3,9 +3,9 @@ from src.agenda.agenda import (
     get_file_names_in_voice_rank_order,
     partyunit_shop,
 )
-from src.agenda.x_func import (
-    save_file as x_func_save_file,
-    delete_dir as x_func_delete_dir,
+from src.tools.file import (
+    save_file,
+    delete_dir,
 )
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
@@ -36,11 +36,11 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     dom_filename = f"{dom_text}.json"
     elu_filename = f"{elu_text}.json"
     empty_str = ""
-    x_func_save_file(temp_dir, ava_filename, empty_str)
-    x_func_save_file(temp_dir, bob_filename, empty_str)
-    x_func_save_file(temp_dir, cal_filename, empty_str)
-    x_func_save_file(temp_dir, dom_filename, empty_str)
-    x_func_save_file(temp_dir, elu_filename, empty_str)
+    save_file(temp_dir, ava_filename, empty_str)
+    save_file(temp_dir, bob_filename, empty_str)
+    save_file(temp_dir, cal_filename, empty_str)
+    save_file(temp_dir, dom_filename, empty_str)
+    save_file(temp_dir, elu_filename, empty_str)
     ava_partyunit = partyunit_shop(pid=ava_text)
     bob_partyunit = partyunit_shop(pid=bob_text)
     cal_partyunit = partyunit_shop(pid=cal_text)
@@ -84,7 +84,7 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     assert ava_filename == x2[4]
     assert bob_filename == x2[3]
 
-    x_func_delete_dir(temp_dir)
+    delete_dir(temp_dir)
 
 
 def test_economy_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(

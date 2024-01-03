@@ -1,11 +1,10 @@
-from src.agenda.idea import ideaunit_shop
+from src.agenda.idea import ideaunit_shop, get_on_meld_weight_actions
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.party import partyunit_shop
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.agenda.examples.example_agendas import agenda_v001
-from src.agenda.x_func import get_on_meld_weight_actions
 
 
 def test_agenda_meld_BaseScenario():

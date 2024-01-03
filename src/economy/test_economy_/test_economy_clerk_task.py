@@ -1,4 +1,4 @@
-from src._road.road import create_road
+from src._prime.road import create_road
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
     get_temp_env_economy_id,

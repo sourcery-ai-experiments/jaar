@@ -1,7 +1,7 @@
 # from os import listdir as os_listdir
 from pytest import fixture as pytest_fixture
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.x_func import delete_dir, save_file as x_func_save_file
+from src.tools.file import delete_dir, save_file
 
 
 def get_temp_clerkunit_dir() -> str:
@@ -28,7 +28,7 @@ def create_agenda_file(agenda_clerkunit_dir: str, agenda_healer: str):
     # with open(f"{file_path}", "w") as f:
     #     print(f" saving {agenda_x._healer=} to {file_path=}")
     #     f.write(agenda_x.get_json())
-    x_func_save_file(
+    save_file(
         dest_dir=agenda_clerkunit_dir,
         file_name=f"{agenda_x._healer}.json",
         file_text=agenda_x.get_json(),

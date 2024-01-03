@@ -2,10 +2,7 @@ from src.agenda.agenda import agendaunit_shop, originunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
-from src.agenda.x_func import (
-    open_file as x_func_open_file,
-    count_files as x_func_count_files,
-)
+from src.tools.file import open_file, count_files
 from src.economy.clerk import clerkunit_shop
 from src.economy.examples.example_clerks import (
     get_2node_agenda as example_healers_get_2node_agenda,
@@ -29,7 +26,7 @@ from pytest import raises as pytest_raises
 #     lai_agenda = clerkunit_shop(pid=lai_pid, env_dir=env_dir)
 #     lai_contract_file_name = lai_agenda._contract_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         x_func_open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
+#         open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
 #     assert (
 #         str(excinfo.value)
 #         == f"Could not load file {lai_agenda._contract_file_path} (2, 'No such file or directory')"
@@ -41,7 +38,7 @@ from pytest import raises as pytest_raises
 #     )
 
 #     # THEN
-#     assert x_func_open_file(lai_agenda._clerkunit_dir, lai_contract_file_name) != None
+#     assert open_file(lai_agenda._clerkunit_dir, lai_contract_file_name) != None
 
 
 def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
@@ -127,14 +124,14 @@ def test_healer_erase_contract_agenda_file_DeletesFileCorrectly(
     x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_economy_id())
     x_clerk.save_contract_agenda(example_agendas_get_agenda_with_4_levels())
     file_name = x_clerk._contract_file_name
-    assert x_func_open_file(x_clerk._clerkunit_dir, file_name) != None
+    assert open_file(x_clerk._clerkunit_dir, file_name) != None
 
     # WHEN
     x_clerk.erase_contract_agenda_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_func_open_file(x_clerk._clerkunit_dir, file_name)
+        open_file(x_clerk._clerkunit_dir, file_name)
     assert (
         str(excinfo.value)
         == f"Could not load file {x_clerk._clerkunit_dir}/contract_agenda.json (2, 'No such file or directory')"
@@ -151,7 +148,7 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     x_clerk.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
-    assert x_func_count_files(x_clerk._agendas_digest_dir) == 0
+    assert count_files(x_clerk._agendas_digest_dir) == 0
 
     # WHEN
     x_clerk.save_agenda_to_digest(x_agenda, src_agenda_healer=src_agenda_healer)
@@ -163,8 +160,8 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     assert os_path.exists(digest_file_path)
     # for path_x in os_scandir(x_clerk._agendas_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(x_clerk._agendas_digest_dir) == 1
-    digest_x_agenda_json = x_func_open_file(
+    assert count_files(x_clerk._agendas_digest_dir) == 1
+    digest_x_agenda_json = open_file(
         dest_dir=x_clerk._agendas_digest_dir,
         file_name=f"{src_agenda_healer}.json",
     )
@@ -181,7 +178,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_agenda.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
     src_agenda_healer = x_agenda._healer
-    assert x_func_count_files(sue_agenda._agendas_digest_dir) == 0
+    assert count_files(sue_agenda._agendas_digest_dir) == 0
     print(f"{x_agenda._economy_id=}")
 
     # WHEN
@@ -194,8 +191,8 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     assert os_path.exists(digest_file_path)
     # for path_x in os_scandir(sue_agenda._agendas_digest_dir):
     #     print(f"{path_x=}")
-    assert x_func_count_files(sue_agenda._agendas_digest_dir) == 1
-    digest_x_agenda_json = x_func_open_file(
+    assert count_files(sue_agenda._agendas_digest_dir) == 1
+    digest_x_agenda_json = open_file(
         dest_dir=sue_agenda._agendas_digest_dir,
         file_name=f"{src_agenda_healer}.json",
     )

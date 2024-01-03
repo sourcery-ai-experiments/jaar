@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.tree_metrics import TreeMetrics
 from src.agenda.idea import ideaunit_shop
-from src._road.road import create_road_from_nodes
+from src._prime.road import create_road_from_nodes
 
 
 def test_agenda_get_tree_metrics_exists():

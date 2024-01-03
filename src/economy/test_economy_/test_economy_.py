@@ -1,9 +1,9 @@
-from src._road.road import (
+from src._prime.road import (
     create_road,
     get_all_road_nodes,
     default_road_delimiter_if_none,
 )
-from src.agenda.x_func import delete_dir as x_func_delete_dir
+from src.tools.file import delete_dir
 from os import path as os_path
 from src.economy.economy import EconomyUnit, economyunit_shop
 from src.economy.examples.economy_env_kit import (
@@ -101,7 +101,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     x_economy_id = get_temp_env_economy_id()
     x_economy = EconomyUnit(x_economy_id, economys_dir=get_test_economys_dir())
     print(f"{get_test_economys_dir()=} {x_economy.economys_dir=}")
-    # x_func_delete_dir(x_economy.get_object_root_dir())
+    # delete_dir(x_economy.get_object_root_dir())
     print(f"delete {x_economy.get_object_root_dir()=}")
     economy_dir = f"src/economy/examples/economys/{x_economy_id}"
     economy_file_name = "economy.json"
@@ -151,13 +151,13 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
     new_agendas_dir = f"{new_economy_dir}/agendas"
     new_clerkunits_dir = f"{new_economy_dir}/clerkunits"
-    x_func_delete_dir(dir=new_economy_dir)
+    delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
 
     x_economy = economyunit_shop(
         economy_id=old_x_economy_id, economys_dir=get_test_economys_dir()
     )
-    # x_func_delete_dir(x_economy.get_object_root_dir())
+    # delete_dir(x_economy.get_object_root_dir())
     # print(f"{x_economy.get_object_root_dir()=}")
 
     x_economy.create_dirs_if_null(in_memory_treasury=True)
@@ -203,9 +203,9 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert x_economy.economy_id == new_x_economy_id
 
     # Undo change to directory
-    # x_func_delete_dir(dir=old_economy_dir)
+    # delete_dir(dir=old_economy_dir)
     # print(f"{old_economy_dir=}")
-    x_func_delete_dir(dir=new_economy_dir)
+    delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
 
 
@@ -269,9 +269,9 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert x_economy.economy_id != new_x_economy_id
 
     # Undo change to directory
-    # x_func_delete_dir(x_economy.get_object_root_dir())
-    # x_func_delete_dir(dir=old_economy_dir)
-    x_func_delete_dir(dir=new_economy_dir)
+    # delete_dir(x_economy.get_object_root_dir())
+    # delete_dir(dir=old_economy_dir)
+    delete_dir(dir=new_economy_dir)
 
 
 def test_copy_evaluation_economy_CorrectlyRaisesError(env_dir_setup_cleanup):

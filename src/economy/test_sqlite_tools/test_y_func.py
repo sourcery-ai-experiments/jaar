@@ -1,4 +1,4 @@
-from src.economy.y_func import sqlite_bool, sqlite_text, sqlite_null
+from src.tools.sqlite import sqlite_bool, sqlite_text, sqlite_null
 from pytest import raises as pytest_raises
 
 

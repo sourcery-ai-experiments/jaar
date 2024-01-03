@@ -1,4 +1,4 @@
-from src._road.road import (
+from src._prime.road import (
     RoadUnit,
     is_sub_road,
     RoadNode,
@@ -9,10 +9,10 @@ from src._road.road import (
     get_parent_road_from_road,
     PersonRoad,
 )
-from src._road.belief import BeliefUnit, create_beliefunit
+from src._prime.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
-from src.agenda.y_func import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.pain import PainGenus
 from src.world.person import PersonID

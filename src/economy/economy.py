@@ -1,4 +1,4 @@
-from src._road.road import (
+from src._prime.road import (
     RoadUnit,
     create_road,
     default_road_delimiter_if_none,
@@ -12,14 +12,14 @@ from src.agenda.agenda import (
     PersonID,
     EconomyID,
 )
-from src.agenda.x_func import (
+from src.tools.file import (
     single_dir_create_if_null,
-    delete_dir as x_func_delete_dir,
-    save_file as x_func_save_file,
-    open_file as x_func_open_file,
-    dir_files as x_func_dir_files,
+    delete_dir,
+    save_file,
+    open_file,
+    dir_files,
 )
-from src.agenda.y_func import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none
 from src.economy.clerk import clerkUnit, clerkunit_shop, clerkCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -228,7 +228,7 @@ class EconomyUnit:
 
     def _treasury_populate_agendas_data(self):
         for file_name in self.get_public_dir_file_names_list():
-            agenda_json = x_func_open_file(self.get_public_dir(), file_name)
+            agenda_json = open_file(self.get_public_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
@@ -311,7 +311,7 @@ class EconomyUnit:
 
     def _delete_treasury(self):
         self._treasury_db = None
-        x_func_delete_dir(dir=self.get_treasury_db_path())
+        delete_dir(dir=self.get_treasury_db_path())
 
     def set_economy_id(self, economy_id: str):
         self.economy_id = economy_id
@@ -324,7 +324,7 @@ class EconomyUnit:
 
     def _create_main_file_if_null(self, x_dir):
         economy_file_name = "economy.json"
-        x_func_save_file(
+        save_file(
             dest_dir=x_dir,
             file_name=economy_file_name,
             file_text="",
@@ -346,7 +346,7 @@ class EconomyUnit:
 
     def get_clerkunit_dir_paths_list(self):
         return list(
-            x_func_dir_files(
+            dir_files(
                 dir_path=self.get_clerkunits_dir(),
                 remove_extensions=False,
                 include_dirs=True,
@@ -388,14 +388,14 @@ class EconomyUnit:
         old_clerkunit_dir = clerk_x._clerkunit_dir
         clerk_x.set_clerk_cid(new_cid=new_cid)
         self.set_clerkunit(clerk_x)
-        x_func_delete_dir(old_clerkunit_dir)
+        delete_dir(old_clerkunit_dir)
         self.del_clerkunit_from_economy(clerk_cid=old_cid)
 
     def del_clerkunit_from_economy(self, clerk_cid: clerkCID):
         self._clerkunits.pop(clerk_cid)
 
     def del_clerkunit_dir(self, clerk_cid: clerkCID):
-        x_func_delete_dir(f"{self.get_clerkunits_dir()}/{clerk_cid}")
+        delete_dir(f"{self.get_clerkunits_dir()}/{clerk_cid}")
 
     def full_setup_clerkunit(self, healer_id: PersonID):
         self.add_clerkunit(healer_id, _auto_output_to_public=True)
@@ -413,14 +413,14 @@ class EconomyUnit:
 
     def get_public_agenda(self, healer: str) -> AgendaUnit:
         return get_agenda_from_json(
-            x_func_open_file(dest_dir=self.get_public_dir(), file_name=f"{healer}.json")
+            open_file(dest_dir=self.get_public_dir(), file_name=f"{healer}.json")
         )
 
     def get_agenda_from_ignores_dir(
         self, clerk_cid: clerkCID, _healer: str
     ) -> AgendaUnit:
         return get_agenda_from_json(
-            x_func_open_file(
+            open_file(
                 dest_dir=self.get_ignores_dir(clerk_cid=clerk_cid),
                 file_name=f"{_healer}.json",
             )
@@ -439,11 +439,11 @@ class EconomyUnit:
         self.del_public_agenda(x_agenda_healer=old_healer)
 
     def del_public_agenda(self, x_agenda_healer: str):
-        x_func_delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
+        delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
 
     def save_public_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_economy_id(economy_id=self.economy_id)
-        x_func_save_file(
+        save_file(
             dest_dir=self.get_public_dir(),
             file_name=f"{x_agenda._healer}.json",
             file_text=x_agenda.get_json(),
@@ -454,7 +454,7 @@ class EconomyUnit:
             x_clerkunit.refresh_depot_agendas()
 
     def get_public_dir_file_names_list(self):
-        return list(x_func_dir_files(dir_path=self.get_public_dir()).keys())
+        return list(dir_files(dir_path=self.get_public_dir()).keys())
 
     # agendas_dir to healer_agendas_dir management
     def _clerkunit_set_depot_agenda(

@@ -1,4 +1,4 @@
-from src.agenda.x_func import delete_dir as x_func_delete_dir
+from src.tools.file import delete_dir
 from pytest import fixture as pytest_fixture
 
 
@@ -13,6 +13,6 @@ def get_agenda_temp_env_dir():
 @pytest_fixture()
 def env_dir_setup_cleanup():
     env_dir = get_agenda_temp_env_dir()
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
     yield env_dir
-    x_func_delete_dir(dir=env_dir)
+    delete_dir(dir=env_dir)
