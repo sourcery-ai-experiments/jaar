@@ -2,7 +2,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
 from src.agenda.party import PartyPID
-from src.agenda.idea import idea_kid_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balanceline_shop, balancelink_shop
 from pytest import raises as pytest_raises
@@ -145,7 +145,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     mon_text = "Monday"
 
     email_text = "email"
-    email_idea = idea_kid_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, parent_road=work_road)
 
     # idea ",{week_text},Sunday"
@@ -206,9 +206,9 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     sandy_text = "sandy"
 
     work_road = x_agenda.make_l1_road(work_text)
-    email_idea = idea_kid_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, parent_road=work_road)
-    vaccum_idea = idea_kid_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
     x_agenda.add_partyunit(pid=sandy_text)
@@ -370,9 +370,9 @@ def test_agenda4party_Exists():
     vaccum_text = "vaccum"
     sandy_text = "sandy"
     work_road = x_agenda.make_l1_road(work_text)
-    email_idea = idea_kid_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, parent_road=work_road)
-    vaccum_idea = idea_kid_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
     sandy_pid = PartyPID(sandy_text)
@@ -400,9 +400,9 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     week_text = "weekdays"
     feed_text = "feed cat"
     work_road = x_agenda.make_l1_road(work_text)
-    email_idea = idea_kid_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, promise=True)
     x_agenda.add_idea(email_idea, parent_road=work_road)
-    vaccum_idea = idea_kid_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
     billy_pid = PartyPID("billy")
@@ -485,12 +485,12 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
     # WHEN
     time = "timeline"
     x_agenda.add_idea(
-        idea_kid_shop(_label=time, _begin=0, _close=700),
+        ideaunit_shop(_label=time, _begin=0, _close=700),
         parent_road=x_agenda._economy_id,
     )
     t_road = x_agenda.make_l1_road(time)
     week = "weeks"
-    x_agenda.add_idea(idea_kid_shop(_label=week, _denom=7), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(_label=week, _denom=7), parent_road=t_road)
 
     # THEN
     assert len(x_agenda.get_idea_tree_ordered_road_list()) == 3
@@ -520,18 +520,18 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
 #     x_agenda = agendaunit_shop(_healer=healer_text)
-#     x_agenda.add_idea(idea_kid_shop("A", _weight=7), parent_road="blahblah")
-#     x_agenda.add_idea(idea_kid_shop("C", _weight=3), parent_road=f"{x_agenda._economy_id},A")
-#     x_agenda.add_idea(idea_kid_shop("E", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
-#     x_agenda.add_idea(idea_kid_shop("D", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
-#     x_agenda.add_idea(idea_kid_shop("B", _weight=13), parent_road="blahblah")
-#     x_agenda.add_idea(idea_kid_shop("F", _weight=23), parent_road="blahblah")
-#     x_agenda.add_idea(idea_kid_shop("G", _weight=57), parent_road="blahblah")
-#     x_agenda.add_idea(idea_kid_shop("I"), parent_road=f"{x_agenda._economy_id},G")
-#     x_agenda.add_idea(idea_kid_shop("H"), parent_road=f"{x_agenda._economy_id},G")
-#     x_agenda.add_idea(idea_kid_shop("J"), parent_road=f"{x_agenda._economy_id},G,I")
-#     x_agenda.add_idea(idea_kid_shop("K"), parent_road=f"{x_agenda._economy_id},G,I")
-#     x_agenda.add_idea(idea_kid_shop("M"), parent_road=f"{x_agenda._economy_id},G,H")
+#     x_agenda.add_idea(ideaunit_shop("A", _weight=7), parent_road="blahblah")
+#     x_agenda.add_idea(ideaunit_shop("C", _weight=3), parent_road=f"{x_agenda._economy_id},A")
+#     x_agenda.add_idea(ideaunit_shop("E", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
+#     x_agenda.add_idea(ideaunit_shop("D", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
+#     x_agenda.add_idea(ideaunit_shop("B", _weight=13), parent_road="blahblah")
+#     x_agenda.add_idea(ideaunit_shop("F", _weight=23), parent_road="blahblah")
+#     x_agenda.add_idea(ideaunit_shop("G", _weight=57), parent_road="blahblah")
+#     x_agenda.add_idea(ideaunit_shop("I"), parent_road=f"{x_agenda._economy_id},G")
+#     x_agenda.add_idea(ideaunit_shop("H"), parent_road=f"{x_agenda._economy_id},G")
+#     x_agenda.add_idea(ideaunit_shop("J"), parent_road=f"{x_agenda._economy_id},G,I")
+#     x_agenda.add_idea(ideaunit_shop("K"), parent_road=f"{x_agenda._economy_id},G,I")
+#     x_agenda.add_idea(ideaunit_shop("M"), parent_road=f"{x_agenda._economy_id},G,H")
 
 #     billy_pid = PartyPID("billy")
 #     x_agenda.add_partyunit(pid=billy_pid)
@@ -548,10 +548,10 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 #     # expected sandy
 #     exp_sandy = agendaunit_shop(_healer=healer_text)
-#     exp_sandy.add_idea(idea_kid_shop("A", _agenda_importance=0.07), parent_road="blahblah")
-#     exp_sandy.add_idea(idea_kid_shop("C", _agenda_importance=0.07), parent_road=f"{x_agenda._economy_id},A")
-#     exp_sandy.add_idea(idea_kid_shop("E", _agenda_importance=0.5), parent_road=f"{x_agenda._economy_id},A,C")
-#     exp_sandy.add_idea(idea_kid_shop("B", _agenda_importance=0.13), parent_road="blahblah")
+#     exp_sandy.add_idea(ideaunit_shop("A", _agenda_importance=0.07), parent_road="blahblah")
+#     exp_sandy.add_idea(ideaunit_shop("C", _agenda_importance=0.07), parent_road=f"{x_agenda._economy_id},A")
+#     exp_sandy.add_idea(ideaunit_shop("E", _agenda_importance=0.5), parent_road=f"{x_agenda._economy_id},A,C")
+#     exp_sandy.add_idea(ideaunit_shop("B", _agenda_importance=0.13), parent_road="blahblah")
 
 #     # generated sandy
 #     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)

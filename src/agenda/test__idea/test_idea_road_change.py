@@ -1,4 +1,4 @@
-from src.agenda.idea import idea_kid_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import (
     requiredunit_shop,
     sufffactunit_shop,
@@ -17,7 +17,7 @@ def test_idea_find_replace_road_Changes_parent_road():
     old_bloomers_road = create_road(old_healer_road, bloomers_text)
     roses_text = "roses"
     old_roses_road = create_road(old_bloomers_road, roses_text)
-    idea_x = idea_kid_shop(roses_text, _parent_road=old_bloomers_road)
+    idea_x = ideaunit_shop(roses_text, _parent_road=old_bloomers_road)
     assert create_road(idea_x._parent_road) == old_bloomers_road
     assert create_road(idea_x._parent_road, idea_x._label) == old_roses_road
 
@@ -52,7 +52,7 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     fertilizer_text = "fertilizer"
     fertilizer_road = create_road(farm_road, fertilizer_text)
     farm_road = create_road(root_label(), farm_text)
-    idea_x = idea_kid_shop(
+    idea_x = ideaunit_shop(
         _label=roses_text,
         _parent_road=bloomers_road,
         _range_source_road=old_rain_road,
@@ -91,7 +91,7 @@ def test_idea_find_replace_road_Changes_requiredunits():
     sufffacts_x = {sufffact_x.need: sufffact_x}
     required_x = requiredunit_shop(old_water_road, sufffacts=sufffacts_x)
     requireds_x = {required_x.base: required_x}
-    idea_x = idea_kid_shop(roses_text, _requiredunits=requireds_x)
+    idea_x = ideaunit_shop(roses_text, _requiredunits=requireds_x)
     # check asserts
     assert idea_x._requiredunits.get(old_water_road) != None
     old_water_rain_required = idea_x._requiredunits[old_water_road]
@@ -137,7 +137,7 @@ def test_idea_find_replace_road_Changes_acptfactunits():
 
     acptfactunit_x = acptfactunit_shop(base=old_water_road, pick=old_rain_road)
     acptfactunits_x = {acptfactunit_x.base: acptfactunit_x}
-    idea_x = idea_kid_shop(roses_text, _acptfactunits=acptfactunits_x)
+    idea_x = ideaunit_shop(roses_text, _acptfactunits=acptfactunits_x)
     assert idea_x._acptfactunits[old_water_road] != None
     old_water_rain_acptfactunit = idea_x._acptfactunits[old_water_road]
     assert old_water_rain_acptfactunit.base == old_water_road
@@ -169,7 +169,7 @@ def test_idea_get_obj_key_returnsCorrectInfo():
     red_text = "red"
 
     # WHEN
-    red_idea = idea_kid_shop(red_text)
+    red_idea = ideaunit_shop(red_text)
 
     # THEN
     assert red_idea.get_obj_key() == red_text
@@ -178,7 +178,7 @@ def test_idea_get_obj_key_returnsCorrectInfo():
 def test_idea_set_road_delimiter_CorrectlyChangesRequiredRoadUnits():
     # GIVEN
     casa_text = "casa"
-    casa_idea = idea_kid_shop(casa_text)
+    casa_idea = ideaunit_shop(casa_text)
     casa_idea.set_parent_road("")
 
     # WHEN

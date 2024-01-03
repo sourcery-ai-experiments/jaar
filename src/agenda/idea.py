@@ -841,7 +841,7 @@ class IdeaUnit:
             return self._kids[idea_kid_label]
         except Exception:
             KeyError
-            self.add_kid(idea_kid_shop(idea_kid_label))
+            self.add_kid(ideaunit_shop(idea_kid_label))
             return_idea = self._kids.get(idea_kid_label)
         return return_idea
 
@@ -1082,7 +1082,7 @@ class IdeaUnit:
         return self._assignedheir.group_in(groupbrands)
 
 
-def idea_kid_shop(
+def ideaunit_shop(
     _label: RoadNode = None,
     _uid: int = None,  # Calculated field?
     _parent_road: RoadUnit = None,

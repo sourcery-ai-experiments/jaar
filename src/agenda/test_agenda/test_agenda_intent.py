@@ -1,7 +1,7 @@
 from datetime import datetime
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
-from src.agenda.idea import IdeaUnit, idea_kid_shop
+from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.required_idea import requiredunit_shop, SuffFactStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
@@ -122,7 +122,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     x_agenda = agendaunit_shop(healer_text)
     x_agenda.set_time_hreg_ideas(c400_count=7)
     c_label = "clean"
-    c_idea = idea_kid_shop(c_label, promise=True)
+    c_idea = ideaunit_shop(c_label, promise=True)
     x_agenda.add_idea(c_idea, parent_road=x_agenda._economy_id)
     c_road = x_agenda.make_l1_road(c_label)
     time_road = x_agenda.make_l1_road("time")
@@ -301,11 +301,11 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     day_road = x_agenda.make_road(time_road, day_text)
 
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(run_text, promise=True),
+        idea_kid=ideaunit_shop(run_text, promise=True),
         parent_road=x_agenda._economy_id,
     )
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(day_text, _begin=0, _close=500), parent_road=time_road
+        idea_kid=ideaunit_shop(day_text, _begin=0, _close=500), parent_road=time_road
     )
     x_agenda.edit_idea_attr(
         road=run_road,
@@ -347,11 +347,11 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     day_road = x_agenda.make_road(time_road, day_text)
 
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(run_text, promise=True),
+        idea_kid=ideaunit_shop(run_text, promise=True),
         parent_road=x_agenda._economy_id,
     )
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(day_text, _begin=0, _close=500), parent_road=time_road
+        idea_kid=ideaunit_shop(day_text, _begin=0, _close=500), parent_road=time_road
     )
     x_agenda.edit_idea_attr(
         road=run_road,
@@ -436,7 +436,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     x_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    x_agenda.add_idea(idea_kid_shop(things_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(things_text), parent_road=x_agenda._economy_id)
     t_road = x_agenda.make_l1_road(things_text)
     clean = "clean"
     run = "run"
@@ -444,12 +444,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     jog = "jog"
     veg = "veg"
     lift = "life"
-    x_agenda.add_idea(idea_kid_shop(clean, promise=True), parent_road=t_road)
-    x_agenda.add_idea(idea_kid_shop(run, promise=True), parent_road=t_road)
-    x_agenda.add_idea(idea_kid_shop(swim, promise=True), parent_road=t_road)
-    x_agenda.add_idea(idea_kid_shop(jog, promise=True), parent_road=t_road)
-    x_agenda.add_idea(idea_kid_shop(veg, promise=True), parent_road=t_road)
-    x_agenda.add_idea(idea_kid_shop(lift, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(run, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(swim, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(jog, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(veg, promise=True), parent_road=t_road)
+    x_agenda.add_idea(ideaunit_shop(lift, promise=True), parent_road=t_road)
     time_text = "time"
     time_road = x_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
@@ -605,7 +605,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     clean_things_road = x_agenda.make_l1_road(clean_things_text)
     clean_cookery_text = "clean cookery"
     clean_cookery_road = x_agenda.make_road(clean_things_road, clean_cookery_text)
-    clean_cookery_idea = idea_kid_shop(
+    clean_cookery_idea = ideaunit_shop(
         _label=clean_cookery_text, _parent_road=clean_things_road
     )
     print(f"{clean_cookery_idea.get_road()=}")
@@ -753,7 +753,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     work_text = "work"
     work_road = x_agenda.make_road(bob_text, work_text)
     x_agenda.add_idea(
-        idea_kid_shop(work_text, promise=True), parent_road=x_agenda._economy_id
+        ideaunit_shop(work_text, promise=True), parent_road=x_agenda._economy_id
     )
     assert len(x_agenda.get_intent_items()) == 1
 
@@ -792,7 +792,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     work_text = "work"
     work_road = x_agenda.make_road(bob_text, work_text)
     x_agenda.add_idea(
-        idea_kid_shop(work_text, promise=True), parent_road=x_agenda._economy_id
+        ideaunit_shop(work_text, promise=True), parent_road=x_agenda._economy_id
     )
 
     sue_text = "sue"

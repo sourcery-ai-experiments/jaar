@@ -10,7 +10,7 @@ from src.agenda.road import (
 )
 from src.agenda.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
-from src.agenda.idea import idea_kid_shop, IdeaUnit, ideaattrfilter_shop
+from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.pain import PainGenus
@@ -60,7 +60,7 @@ class WantSubRoadUnitException(Exception):
 #         fix_and_issue_roads = sorted(fix_and_issue_roads)
 
 #         x_idea_dict = {
-#             x_key: idea_kid_shop(
+#             x_key: ideaunit_shop(
 #                 get_terminus_node_from_road(x_key),
 #                 _parent_road=get_parent_road_from_road(x_key),
 #             )

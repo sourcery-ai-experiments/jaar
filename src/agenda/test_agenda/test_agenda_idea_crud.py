@@ -1,5 +1,5 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
-from src.agenda.idea import idea_kid_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
@@ -17,7 +17,7 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(
-            idea_kid_shop(work_text), parent_road=invalid_rootnode_swim_road
+            ideaunit_shop(work_text), parent_road=invalid_rootnode_swim_road
         )
     assert (
         str(excinfo.value)
@@ -34,7 +34,7 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(
-            idea_kid_shop(work_text),
+            ideaunit_shop(work_text),
             parent_road=swim_road,
             create_missing_ancestors=False,
         )
@@ -76,7 +76,7 @@ def test_agenda_add_idea_CanAddKidTo_idearoot():
     new_idea_parent_road = x_agenda._economy_id
 
     # WHEN
-    x_agenda.add_idea(idea_kid_shop("new_idea"), parent_road=new_idea_parent_road)
+    x_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -95,7 +95,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
 
     # WHEN
     new_idea_parent_road = x_agenda.make_l1_road("work")
-    x_agenda.add_idea(idea_kid_shop("new_york"), parent_road=new_idea_parent_road)
+    x_agenda.add_idea(ideaunit_shop("new_york"), parent_road=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -123,7 +123,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     new_idea_parent_road = x_agenda.make_road(wkday_road, "Wednesday")
 
     # WHEN
-    x_agenda.add_idea(idea_kid_shop("new_idea"), parent_road=new_idea_parent_road)
+    x_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
     x_agenda.set_agenda_metrics()
 
     # THEN
@@ -145,9 +145,9 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     work_road = bob_agenda.make_l1_road(work_text)
     week_road = bob_agenda.make_l1_road(week_text)
     wed_road = bob_agenda.make_road(week_road, wed_text)
-    bob_agenda.add_idea(idea_kid_shop(work_text), bob_agenda._economy_id)
-    bob_agenda.add_idea(idea_kid_shop(week_text), bob_agenda._economy_id)
-    bob_agenda.add_idea(idea_kid_shop(wed_text), week_road)
+    bob_agenda.add_idea(ideaunit_shop(work_text), bob_agenda._economy_id)
+    bob_agenda.add_idea(ideaunit_shop(week_text), bob_agenda._economy_id)
+    bob_agenda.add_idea(ideaunit_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     assert len(bob_agenda._idearoot._kids) == 2
     wed_idea = bob_agenda.get_idea_obj(wed_road)
@@ -174,7 +174,7 @@ def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     ww2_road = x_agenda.make_l1_road("ww2")
     battles_road = x_agenda.make_road(ww2_road, "battles")
     new_idea_parent_road = x_agenda.make_road(battles_road, "coralsea")
-    new_idea = idea_kid_shop(_label="USS Saratoga")
+    new_idea = ideaunit_shop(_label="USS Saratoga")
 
     # WHEN
     x_agenda.add_idea(new_idea, parent_road=new_idea_parent_road)
@@ -199,7 +199,7 @@ def test_agenda_add_idea_creates_requireds_ideas():
     work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = idea_kid_shop(clean_cookery_text, _weight=40, promise=True)
+    clean_cookery_idea = ideaunit_shop(clean_cookery_text, _weight=40, promise=True)
 
     buildings_text = "buildings"
     buildings_road = x_agenda.make_l1_road(buildings_text)
@@ -246,7 +246,7 @@ def test_agenda_add_idea_CorrectlySets_agenda_economy_id():
     cookery_road = x_agenda.make_road(clean_road, cookery_text)
 
     # WHEN
-    x_agenda.add_idea(idea_kid_shop(cookery_text), clean_road)
+    x_agenda.add_idea(ideaunit_shop(cookery_text), clean_road)
 
     # THEN
     cookery_idea = x_agenda.get_idea_obj(cookery_road)
@@ -524,10 +524,10 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
 
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    work_idea = idea_kid_shop(work_text)
+    work_idea = ideaunit_shop(work_text)
     x_agenda.add_idea(work_idea, parent_road=x_agenda._economy_id)
     clean_text = "clean"
-    clean_idea = idea_kid_shop(clean_text)
+    clean_idea = ideaunit_shop(clean_text)
     clean_road = x_agenda.make_road(work_road, clean_text)
     x_agenda.add_idea(clean_idea, parent_road=work_road)
 
@@ -553,18 +553,18 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     x_agenda = agendaunit_shop(_healer=healer_text)
     work = "work"
     w_road = x_agenda.make_l1_road(work)
-    work_idea = idea_kid_shop(work, _begin=8, _close=14)
+    work_idea = ideaunit_shop(work, _begin=8, _close=14)
     x_agenda.add_idea(work_idea, parent_road=x_agenda._economy_id)
 
     clean = "clean"
-    clean_idea = idea_kid_shop(clean, _denom=1)
+    clean_idea = ideaunit_shop(clean, _denom=1)
     c_road = x_agenda.make_road(w_road, clean)
     x_agenda.add_idea(clean_idea, parent_road=w_road)
 
     clean_idea = x_agenda.get_idea_obj(road=c_road)
 
     day = "day_range"
-    day_idea = idea_kid_shop(day, _begin=44, _close=110)
+    day_idea = ideaunit_shop(day, _begin=44, _close=110)
     day_road = x_agenda.make_l1_road(day)
     x_agenda.add_idea(day_idea, parent_road=x_agenda._economy_id)
 
@@ -585,9 +585,9 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    x_agenda.add_idea(idea_kid_shop(work_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(work_text), parent_road=x_agenda._economy_id)
     day_text = "day_range"
-    day_idea = idea_kid_shop(day_text, _begin=44, _close=110)
+    day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
     day_road = x_agenda.make_l1_road(day_text)
     x_agenda.add_idea(day_idea, parent_road=x_agenda._economy_id)
 
@@ -628,9 +628,9 @@ def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
     healer_text = "Noa"
     x_agenda = agendaunit_shop(_healer=healer_text)
     work_text = "work"
-    x_agenda.add_idea(idea_kid_shop(work_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(work_text), parent_road=x_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=x_agenda._economy_id)
 
     # WHEN
     idea_list = list(x_agenda._idearoot._kids.values())
@@ -644,9 +644,9 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(idea_kid_shop(sports_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(sports_text), parent_road=x_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=sports_road)
+    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
 
     # WHEN / THEN
     summer_text = "summer"
@@ -654,7 +654,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     hike_road = x_agenda.make_road(sports_road, hike_text)
     with pytest_raises(Exception) as excinfo:
         x_agenda.add_idea(
-            idea_kid=idea_kid_shop(summer_text),
+            idea_kid=ideaunit_shop(summer_text),
             parent_road=sports_road,
             adoptees=[swim_text, hike_text],
         )
@@ -666,11 +666,11 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     x_agenda = agendaunit_shop(_healer=healer_text)
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(idea_kid_shop(sports_text), parent_road=x_agenda._economy_id)
+    x_agenda.add_idea(ideaunit_shop(sports_text), parent_road=x_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(idea_kid_shop(swim_text), parent_road=sports_road)
+    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
     hike_text = "hike"
-    x_agenda.add_idea(idea_kid_shop(hike_text), parent_road=sports_road)
+    x_agenda.add_idea(ideaunit_shop(hike_text), parent_road=sports_road)
 
     x_agenda.set_agenda_metrics()
     sports_swim_road = x_agenda.make_road(sports_road, swim_text)
@@ -686,7 +686,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
 
     # WHEN / THEN
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(summer_text),
+        idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
     )
@@ -707,22 +707,22 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
     x_agenda.add_idea(
-        idea_kid_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
+        ideaunit_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
     )
     swim_text = "swim"
     swim_weight = 3
     x_agenda.add_idea(
-        idea_kid_shop(swim_text, _weight=swim_weight), parent_road=sports_road
+        ideaunit_shop(swim_text, _weight=swim_weight), parent_road=sports_road
     )
     hike_text = "hike"
     hike_weight = 5
     x_agenda.add_idea(
-        idea_kid_shop(hike_text, _weight=hike_weight), parent_road=sports_road
+        ideaunit_shop(hike_text, _weight=hike_weight), parent_road=sports_road
     )
     bball_text = "bball"
     bball_weight = 7
     x_agenda.add_idea(
-        idea_kid_shop(bball_text, _weight=bball_weight), parent_road=sports_road
+        ideaunit_shop(bball_text, _weight=bball_weight), parent_road=sports_road
     )
 
     x_agenda.set_agenda_metrics()
@@ -743,7 +743,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
 
     # WHEN / THEN
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(summer_text),
+        idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
         bundling=True,
@@ -766,22 +766,22 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     sports_text = "sports"
     sports_road = x_agenda.make_l1_road(sports_text)
     x_agenda.add_idea(
-        idea_kid_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
+        ideaunit_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
     )
     swim_text = "swim"
     swim_weight = 3
     x_agenda.add_idea(
-        idea_kid_shop(swim_text, _weight=swim_weight), parent_road=sports_road
+        ideaunit_shop(swim_text, _weight=swim_weight), parent_road=sports_road
     )
     hike_text = "hike"
     hike_weight = 5
     x_agenda.add_idea(
-        idea_kid_shop(hike_text, _weight=hike_weight), parent_road=sports_road
+        ideaunit_shop(hike_text, _weight=hike_weight), parent_road=sports_road
     )
     bball_text = "bball"
     bball_weight = 7
     x_agenda.add_idea(
-        idea_kid_shop(bball_text, _weight=bball_weight), parent_road=sports_road
+        ideaunit_shop(bball_text, _weight=bball_weight), parent_road=sports_road
     )
 
     x_agenda.set_agenda_metrics()
@@ -800,7 +800,7 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     assert x_agenda._idea_dict.get(summer_hike_road) is None
     assert x_agenda._idea_dict.get(summer_bball_road) is None
     x_agenda.add_idea(
-        idea_kid=idea_kid_shop(summer_text),
+        idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
         bundling=True,

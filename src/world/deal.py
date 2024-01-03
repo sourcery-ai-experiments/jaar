@@ -10,7 +10,7 @@ from src.agenda.road import (
 )
 from src.agenda.belief import BeliefUnit, create_beliefunit
 from src.agenda.group import GroupBrand
-from src.agenda.idea import idea_kid_shop, IdeaUnit, ideaattrfilter_shop
+from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.agenda.y_func import get_empty_dict_if_none
 from src.economy.economy import EconomyID
 from src.world.pain import PainGenus

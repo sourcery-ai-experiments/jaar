@@ -34,7 +34,7 @@ from src.agenda.tree_metrics import TreeMetrics
 from src.agenda.x_func import x_get_json
 from src.agenda.idea import (
     IdeaUnit,
-    idea_kid_shop,
+    ideaunit_shop,
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
@@ -1086,7 +1086,7 @@ class AgendaUnit:
         try:
             self.get_idea_obj(road)
         except InvalidAgendaException:
-            base_idea = idea_kid_shop(
+            base_idea = ideaunit_shop(
                 _label=get_terminus_node_from_road(
                     road=road, delimiter=self._road_delimiter
                 ),
@@ -1862,7 +1862,7 @@ class AgendaUnit:
             if yb.sr != None:
                 range_source_road_x = self.make_road(self._economy_id, yb.sr)
 
-            x_idea = idea_kid_shop(
+            x_idea = ideaunit_shop(
                 _label=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -1915,7 +1915,7 @@ class AgendaUnit:
             )
 
             if y4a_included:
-                y4a_new = idea_kid_shop(
+                y4a_new = ideaunit_shop(
                     _label=ykx._label,
                     _agenda_importance=ykx._agenda_importance,
                     _requiredunits=ykx._requiredunits,
@@ -1930,7 +1930,7 @@ class AgendaUnit:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = idea_kid_shop(
+            y4a_other = ideaunit_shop(
                 _label="__other__",
                 _agenda_importance=not_included_agenda_importance,
             )
@@ -2115,7 +2115,7 @@ def agendaunit_shop(
         _idea_dict={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-    x_agenda._idearoot = idea_kid_shop(
+    x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_economy_id=x_agenda._economy_id
     )
     x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
@@ -2154,7 +2154,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
 
 def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
-    x_agenda._idearoot = idea_kid_shop(
+    x_agenda._idearoot = ideaunit_shop(
         _root=True,
         _label=x_agenda._economy_id,
         _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
@@ -2194,7 +2194,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             kid_dict[parent_road_text] = x_agenda.make_road(parent_road, kid_label)
             to_evaluate_idea_dicts.append(kid_dict)
 
-        x_ideakid = idea_kid_shop(
+        x_ideakid = ideaunit_shop(
             _label=get_obj_from_idea_dict(idea_dict, "_label"),
             _weight=get_obj_from_idea_dict(idea_dict, "_weight"),
             _uid=get_obj_from_idea_dict(idea_dict, "_uid"),

@@ -62,7 +62,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     x_agenda = agendaunit_shop(_healer=tim_text)
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda.set_agenda_metrics()
-    # x_idearoot = idea_kid_shop(_root=True, _label=gio_text, _parent_road="")
+    # x_idearoot = ideaunit_shop(_root=True, _label=gio_text, _parent_road="")
     # x_idearoot._agenda_importance = 1
     # x_idearoot._level = 0
     # x_idearoot._ancestor_promise_count = 0
@@ -305,7 +305,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     yaya_text = "yaya"
 #     yaya_road = f"{src1},{yaya_text}"
-#     s1.add_idea(idea_kid_shop(yaya_text), parent_road=src1_road)
+#     s1.add_idea(ideaunit_shop(yaya_text), parent_road=src1_road)
 #     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
 
 #     assert s1._groups.get(swim_text).pid == swim_text
