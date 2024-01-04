@@ -57,6 +57,19 @@ def test_DealUnit_get_beliefunit_ReturnsCorrectObj():
     assert farm_dealunit.get_beliefunit(cooking_beliefunit.base) != None
 
 
+def test_DealUnit_beliefunit_exists_ReturnsCorrectObj():
+    # GIVEN
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
+    cooking_beliefunit = get_cooking_beliefunit()
+    assert farm_dealunit.beliefunit_exists(cooking_beliefunit.base) == False
+
+    # WHEN
+    farm_dealunit.set_beliefunit(cooking_beliefunit)
+
+    # THEN
+    assert farm_dealunit.beliefunit_exists(cooking_beliefunit.base)
+
+
 def test_DealUnit_del_beliefunit_CorrectlySetsAttr():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
@@ -69,6 +82,41 @@ def test_DealUnit_del_beliefunit_CorrectlySetsAttr():
 
     # THEN
     assert len(farm_dealunit._beliefunits) == 0
+
+
+def test_DealUnit_set_owner_beliefunit_CorrectlySetsAttr():
+    # GIVEN
+    bob_text = "Bob"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
+    farm_dealunit.set_beliefunit(get_cooking_beliefunit())
+
+    cooking_base = get_cooking_beliefunit().base
+    cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
+    assert cooking_beliefunit.get_owner(bob_text) is None
+
+    # WHEN
+    farm_dealunit.set_owner(owner=bob_text, beliefbase=cooking_base)
+
+    # THEN
+    assert cooking_beliefunit.get_owner(bob_text) != None
+
+
+def test_DealUnit_del_owner_beliefunit_CorrectlySetsAttr():
+    # GIVEN
+    bob_text = "Bob"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
+    farm_dealunit.set_beliefunit(get_cooking_beliefunit())
+
+    cooking_base = get_cooking_beliefunit().base
+    cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
+    farm_dealunit.set_owner(owner=bob_text, beliefbase=cooking_base)
+    assert cooking_beliefunit.get_owner(bob_text) != None
+
+    # WHEN
+    farm_dealunit.del_owner(owner=bob_text, beliefbase=cooking_base)
+
+    # THEN
+    assert cooking_beliefunit.get_owner(bob_text) is None
 
 
 # def test_create_dealunit_ReturnsCorrectObj():

@@ -106,6 +106,7 @@ def test_BeliefUnit_exists():
     assert x_belief.base is None
     assert x_belief.opinionunits is None
     assert x_belief.delimiter is None
+    assert x_belief.owners is None
 
 
 def test_beliefunit_shop_CorrectlyReturnsObj():
@@ -119,6 +120,61 @@ def test_beliefunit_shop_CorrectlyReturnsObj():
     assert cook_belief.base == cook_road
     assert cook_belief.opinionunits == {}
     assert cook_belief.delimiter == default_road_delimiter_if_none()
+    assert cook_belief.owners == {}
+
+
+def test_BeliefUnit_set_owner_CorrectlySetsAttr():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_belief = beliefunit_shop(cook_road)
+    assert cook_belief.owners == {}
+
+    # WHEN
+    bob_text = "Bob"
+    cook_belief.set_owner(x_owner=bob_text)
+
+    # THEN
+    assert cook_belief.owners != {}
+    assert cook_belief.owners.get(bob_text) != None
+    assert cook_belief.owners.get(bob_text) == bob_text
+
+
+def test_BeliefUnit_del_owner_CorrectlySetsAttr():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_belief = beliefunit_shop(cook_road)
+    bob_text = "Bob"
+    yao_text = "Yao"
+    cook_belief.set_owner(bob_text)
+    cook_belief.set_owner(yao_text)
+    assert len(cook_belief.owners) == 2
+    assert cook_belief.owners.get(bob_text) != None
+    assert cook_belief.owners.get(yao_text) != None
+
+    # WHEN
+    cook_belief.del_owner(bob_text)
+
+    # THEN
+    assert len(cook_belief.owners) == 1
+    assert cook_belief.owners.get(bob_text) is None
+    assert cook_belief.owners.get(yao_text) != None
+
+
+def test_BeliefUnit_get_owners_ReturnsCorrectObj_good():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_belief = beliefunit_shop(cook_road)
+    bob_text = "Bob"
+    yao_text = "Yao"
+    cook_belief.set_owner(bob_text)
+    cook_belief.set_owner(yao_text)
+
+    # WHEN
+    bob_owner = cook_belief.get_owner(bob_text)
+
+    # THEN
+    assert bob_owner != None
+    assert bob_owner == bob_text
 
 
 def test_BeliefUnit_set_opinionunit_CorrectlySetsAttr():

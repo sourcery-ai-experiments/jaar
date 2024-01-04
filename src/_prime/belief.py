@@ -3,6 +3,7 @@ from src._prime.road import (
     RoadUnit,
     RoadNode,
     PersonRoad,
+    PersonID,
     is_sub_road,
     default_road_delimiter_if_none,
     create_road,
@@ -63,6 +64,7 @@ class BeliefUnit:
     base: PersonRoad = None
     opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
+    owners: dict[PersonID:PersonID] = None
 
     def is_dialectic(self):
         good_in_tribe_road = next(
@@ -190,16 +192,26 @@ class BeliefUnit:
             None,
         )
 
+    def set_owner(self, x_owner: PersonID):
+        self.owners[x_owner] = x_owner
+
+    def del_owner(self, owner: PersonRoad):
+        self.owners.pop(owner)
+
+    def get_owner(self, x_owner: PersonID) -> PersonID:
+        return self.owners.get(x_owner)
+
 
 def beliefunit_shop(
     base: PersonRoad,
-    opinionunits: dict[PersonRoad:float] = None,
+    opinionunits: dict[PersonRoad:OpinionUnit] = None,
     delimiter: str = None,
 ):
     return BeliefUnit(
         base=base,
         opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
+        owners=get_empty_dict_if_none(None),
     )
 
 

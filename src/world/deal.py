@@ -32,11 +32,24 @@ class DealUnit:
     def set_beliefunit(self, x_beliefunit: BeliefUnit):
         self._beliefunits[x_beliefunit.base] = x_beliefunit
 
+    def beliefunit_exists(self, beliefbase: PersonRoad) -> bool:
+        return self._beliefunits.get(beliefbase) != None
+
     def get_beliefunit(self, personroad: PersonRoad) -> BeliefUnit:
         return self._beliefunits.get(personroad)
 
     def del_beliefunit(self, personroad: PersonRoad):
         self._beliefunits.pop(personroad)
+
+    def set_owner(self, owner: PersonID, beliefbase: PersonRoad):
+        if self.beliefunit_exists(beliefbase):
+            x_beliefunit = self.get_beliefunit(beliefbase)
+            x_beliefunit.set_owner(owner)
+
+    def del_owner(self, owner: PersonID, beliefbase: PersonRoad):
+        if self.beliefunit_exists(beliefbase):
+            x_beliefunit = self.get_beliefunit(beliefbase)
+            x_beliefunit.del_owner(owner)
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
