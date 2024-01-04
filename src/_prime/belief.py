@@ -62,9 +62,13 @@ class BeliefSubRoadUnitException(Exception):
 @dataclass
 class BeliefUnit:
     base: PersonRoad = None
+    action: bool = None
     opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
     owners: dict[PersonID:PersonID] = None
+
+    def set_action(self, action_bool: bool):
+        self.action = action_bool
 
     def is_dialectic(self):
         good_in_tribe_road = next(
@@ -112,7 +116,7 @@ class BeliefUnit:
             and self.get_1_opinionunit(out_tribe=True) != None
         )
 
-    def is_moral(self):
+    def is_meaningful(self):
         return (
             self.get_1_opinionunit(good=True) != None
             and self.get_1_opinionunit(bad=True) != None
@@ -201,14 +205,21 @@ class BeliefUnit:
     def get_owner(self, x_owner: PersonID) -> PersonID:
         return self.owners.get(x_owner)
 
+    def owner_exists(self, x_owner: PersonID) -> bool:
+        return self.owners.get(x_owner) != None
+
 
 def beliefunit_shop(
     base: PersonRoad,
+    action: bool = None,
     opinionunits: dict[PersonRoad:OpinionUnit] = None,
     delimiter: str = None,
 ):
+    if action is None:
+        action = False
     return BeliefUnit(
         base=base,
+        action=action,
         opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
         owners=get_empty_dict_if_none(None),
@@ -223,5 +234,5 @@ def create_beliefunit(
     bad_opinionunit = opinionunit_shop(create_road(base, bad, delimiter=delimiter), -1)
     x_beliefunit.set_opinionunit(good_opinionunit)
     x_beliefunit.set_opinionunit(bad_opinionunit)
-    if x_beliefunit.is_moral():
+    if x_beliefunit.is_meaningful():
         return x_beliefunit

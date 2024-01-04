@@ -5,7 +5,11 @@
 from src._prime.road import create_road
 from src._prime.belief import beliefunit_shop
 from src.world.deal import DealUnit, dealunit_shop
-from src.world.examples.example_beliefs import get_cooking_beliefunit
+from src._prime.examples.example_beliefs import (
+    get_cooking_belief,
+    get_speedboats_action_belief,
+    get_climate_belief,
+)
 
 
 def test_DealUnit_exists():
@@ -38,7 +42,7 @@ def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
     assert farm_dealunit._beliefunits == {}
 
     # WHEN
-    cooking_beliefunit = get_cooking_beliefunit()
+    cooking_beliefunit = get_cooking_belief()
     farm_dealunit.set_beliefunit(cooking_beliefunit)
 
     # THEN
@@ -50,7 +54,7 @@ def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
 def test_DealUnit_get_beliefunit_ReturnsCorrectObj():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_beliefunit()
+    cooking_beliefunit = get_cooking_belief()
     farm_dealunit.set_beliefunit(cooking_beliefunit)
 
     # WHEN / THEN
@@ -60,7 +64,7 @@ def test_DealUnit_get_beliefunit_ReturnsCorrectObj():
 def test_DealUnit_beliefunit_exists_ReturnsCorrectObj():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_beliefunit()
+    cooking_beliefunit = get_cooking_belief()
     assert farm_dealunit.beliefunit_exists(cooking_beliefunit.base) == False
 
     # WHEN
@@ -73,7 +77,7 @@ def test_DealUnit_beliefunit_exists_ReturnsCorrectObj():
 def test_DealUnit_del_beliefunit_CorrectlySetsAttr():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_beliefunit()
+    cooking_beliefunit = get_cooking_belief()
     farm_dealunit.set_beliefunit(cooking_beliefunit)
     assert len(farm_dealunit._beliefunits) == 1
 
@@ -88,9 +92,9 @@ def test_DealUnit_set_owner_beliefunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
-    farm_dealunit.set_beliefunit(get_cooking_beliefunit())
+    farm_dealunit.set_beliefunit(get_cooking_belief())
 
-    cooking_base = get_cooking_beliefunit().base
+    cooking_base = get_cooking_belief().base
     cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
     assert cooking_beliefunit.get_owner(bob_text) is None
 
@@ -105,9 +109,9 @@ def test_DealUnit_del_owner_beliefunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
-    farm_dealunit.set_beliefunit(get_cooking_beliefunit())
+    farm_dealunit.set_beliefunit(get_cooking_belief())
 
-    cooking_base = get_cooking_beliefunit().base
+    cooking_base = get_cooking_belief().base
     cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
     farm_dealunit.set_owner(owner=bob_text, beliefbase=cooking_base)
     assert cooking_beliefunit.get_owner(bob_text) != None
@@ -117,6 +121,81 @@ def test_DealUnit_del_owner_beliefunit_CorrectlySetsAttr():
 
     # THEN
     assert cooking_beliefunit.get_owner(bob_text) is None
+
+
+def test_DealUnit_get_owner_beliefunits_ReturnsCorrectObjs():
+    # GIVEN
+    bob_text = "Bob"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
+    farm_dealunit.set_beliefunit(get_cooking_belief())
+    assert farm_dealunit.get_owner_beliefunits(bob_text) == {}
+
+    # WHEN
+    cooking_base = get_cooking_belief().base
+    farm_dealunit.get_beliefunit(cooking_base)
+    farm_dealunit.set_owner(owner=bob_text, beliefbase=cooking_base)
+
+    # THEN
+    assert farm_dealunit.get_owner_beliefunits(bob_text) != {}
+    bob_beliefunits = farm_dealunit.get_owner_beliefunits(bob_text)
+    assert len(bob_beliefunits) == 1
+    example_cooking_beliefunit = get_cooking_belief()
+    example_cooking_beliefunit.set_owner(bob_text)
+    assert bob_beliefunits.get(cooking_base) == example_cooking_beliefunit
+
+
+def test_DealUnit_get_owner_beliefunits_ReturnsCorrectActionBeliefs():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
+    assert farm_dealunit.owner_has_belief(bob_text, action_filter=True) == False
+    assert farm_dealunit.owner_has_belief(yao_text, action_filter=True) == False
+
+    # WHEN
+    farm_dealunit.set_beliefunit(get_cooking_belief(), bob_text)
+    farm_dealunit.set_beliefunit(get_speedboats_action_belief(), yao_text)
+    farm_dealunit.set_beliefunit(get_climate_belief(), yao_text)
+
+    # THEN
+    assert farm_dealunit.owner_has_belief(bob_text, action_filter=True) == False
+    assert farm_dealunit.owner_has_belief(yao_text, action_filter=True)
+
+
+def test_DealUnit_set_beliefunit_WithOwnerSetsCorrectAttrs():
+    # GIVEN
+    bob_text = "Bob"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
+
+    # WHEN
+    farm_dealunit.set_beliefunit(get_cooking_belief(), owner=bob_text)
+
+    # THEN
+    bob_beliefunits = farm_dealunit.get_owner_beliefunits(bob_text)
+    assert len(bob_beliefunits) == 1
+    example_cooking_beliefunit = get_cooking_belief()
+    example_cooking_beliefunit.set_owner(bob_text)
+    cooking_base = get_cooking_belief().base
+    assert bob_beliefunits.get(cooking_base) == example_cooking_beliefunit
+
+
+def test_DealUnit_owners_has_beliefs_ReturnsCorrectObjs():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
+    farm_dealunit.set_beliefunit(get_cooking_belief(), bob_text)
+
+    # WHEN / THEN
+    bob_list = [bob_text]
+    assert farm_dealunit.owners_has_beliefs(bob_list)
+    bob_yao_list = [bob_text, yao_text]
+    assert farm_dealunit.owners_has_beliefs(bob_yao_list) == False
+
+    # WHEN / THEN
+    farm_dealunit.set_beliefunit(get_speedboats_action_belief(), yao_text)
+    farm_dealunit.set_beliefunit(get_climate_belief(), yao_text)
+    assert farm_dealunit.owners_has_beliefs(bob_yao_list)
 
 
 # def test_create_dealunit_ReturnsCorrectObj():

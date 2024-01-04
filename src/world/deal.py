@@ -29,8 +29,10 @@ class DealUnit:
     _reader: PersonID = None
     _beliefunits: dict[PersonRoad:BeliefUnit] = None
 
-    def set_beliefunit(self, x_beliefunit: BeliefUnit):
+    def set_beliefunit(self, x_beliefunit: BeliefUnit, owner: PersonID = None):
         self._beliefunits[x_beliefunit.base] = x_beliefunit
+        if owner != None:
+            self.set_owner(owner, x_beliefunit.base)
 
     def beliefunit_exists(self, beliefbase: PersonRoad) -> bool:
         return self._beliefunits.get(beliefbase) != None
@@ -50,6 +52,30 @@ class DealUnit:
         if self.beliefunit_exists(beliefbase):
             x_beliefunit = self.get_beliefunit(beliefbase)
             x_beliefunit.del_owner(owner)
+
+    def get_owner_beliefunits(
+        self, owner: PersonID, action_filter: bool = None
+    ) -> dict[RoadUnit:BeliefUnit]:
+        x_dict = {}
+        for x_base, x_belief in self._beliefunits.items():
+            print(f"{x_belief.base=} {x_belief.action=}")
+            if x_belief.owner_exists(owner) and (
+                x_belief.action == action_filter or action_filter is None
+            ):
+                x_dict[x_base] = x_belief
+
+        print(f"{owner=} {action_filter=} {x_dict=} {self._beliefunits.keys()=}")
+        return x_dict
+
+    def owner_has_belief(self, owner: PersonID, action_filter: bool = None) -> bool:
+        return self.get_owner_beliefunits(owner, action_filter=action_filter) != {}
+
+    def owners_has_beliefs(self, owner_dict: dict[PersonID]):
+        x_bool = True
+        for x_owner in owner_dict:
+            if self.owner_has_belief(x_owner) == False:
+                x_bool = False
+        return x_bool
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
