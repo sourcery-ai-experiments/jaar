@@ -32,6 +32,12 @@ class DealUnit:
     def set_beliefunit(self, x_beliefunit: BeliefUnit):
         self._beliefunits[x_beliefunit.base] = x_beliefunit
 
+    def get_beliefunit(self, personroad: PersonRoad) -> BeliefUnit:
+        return self._beliefunits.get(personroad)
+
+    def del_beliefunit(self, personroad: PersonRoad):
+        self._beliefunits.pop(personroad)
+
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
     return DealUnit(

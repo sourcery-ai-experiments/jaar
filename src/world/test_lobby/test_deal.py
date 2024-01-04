@@ -24,10 +24,7 @@ def test_dealunit_shop_ReturnsCorrectObj():
     tim_text = "Tim"
 
     # WHEN
-    farm_dealunit = dealunit_shop(
-        _author=bob_text,
-        _reader=tim_text,
-    )
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=tim_text)
 
     # THEN
     assert farm_dealunit._author == bob_text
@@ -37,12 +34,7 @@ def test_dealunit_shop_ReturnsCorrectObj():
 
 def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
     # GIVEN
-    bob_text = "Bob"
-    tim_text = "Tim"
-    farm_dealunit = dealunit_shop(
-        _author=bob_text,
-        _reader=tim_text,
-    )
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     assert farm_dealunit._beliefunits == {}
 
     # WHEN
@@ -53,6 +45,30 @@ def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
     assert len(farm_dealunit._beliefunits) == 1
     assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) != None
     assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) == cooking_beliefunit
+
+
+def test_DealUnit_get_beliefunit_ReturnsCorrectObj():
+    # GIVEN
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
+    cooking_beliefunit = get_cooking_beliefunit()
+    farm_dealunit.set_beliefunit(cooking_beliefunit)
+
+    # WHEN / THEN
+    assert farm_dealunit.get_beliefunit(cooking_beliefunit.base) != None
+
+
+def test_DealUnit_del_beliefunit_CorrectlySetsAttr():
+    # GIVEN
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
+    cooking_beliefunit = get_cooking_beliefunit()
+    farm_dealunit.set_beliefunit(cooking_beliefunit)
+    assert len(farm_dealunit._beliefunits) == 1
+
+    # WHEN
+    farm_dealunit.del_beliefunit(cooking_beliefunit.base)
+
+    # THEN
+    assert len(farm_dealunit._beliefunits) == 0
 
 
 # def test_create_dealunit_ReturnsCorrectObj():
