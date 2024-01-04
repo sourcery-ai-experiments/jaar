@@ -11,7 +11,7 @@ def sqlite_bool(int_x) -> bool:
 
 
 def sqlite_text(bool_x) -> str:
-    """convert_sqlite_true_to_python_true"""
+    """convert_python_bool_to_SQLITE_bool"""
     if bool_x == True:
         x_text = "TRUE"
     elif bool_x == False:
@@ -22,6 +22,7 @@ def sqlite_text(bool_x) -> str:
 
 
 def sqlite_to_python(query_value) -> str:
+    """Convert SQLite string to Python None or True"""
     return None if query_value == "NULL" else query_value
 
 
