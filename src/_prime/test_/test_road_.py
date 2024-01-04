@@ -10,7 +10,7 @@ from src._prime.road import (
     change_road,
     is_sub_road,
     get_all_road_nodes,
-    get_terminus_node_from_road,
+    get_terminus_node,
     find_replace_road_key_dict,
     get_parent_road_from_road,
     create_road_without_root_node,
@@ -141,7 +141,7 @@ def test_road_get_all_road_nodes_CorrectlyReturnsRoadNodes():
     assert get_all_road_nodes(road=roses_road) == roses_list
 
 
-def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNode():
+def test_road_get_terminus_node_CorrectlyReturnsRoadNode():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     healer_text = "healer"
@@ -152,13 +152,13 @@ def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNode():
     roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN/THENs
-    assert get_terminus_node_from_road(road=root_label()) == root_label()
-    assert get_terminus_node_from_road(road=healer_road) == healer_text
-    assert get_terminus_node_from_road(road=bloomers_road) == bloomers_text
-    assert get_terminus_node_from_road(road=roses_road) == roses_text
+    assert get_terminus_node(road=root_label()) == root_label()
+    assert get_terminus_node(road=healer_road) == healer_text
+    assert get_terminus_node(road=bloomers_road) == bloomers_text
+    assert get_terminus_node(road=roses_road) == roses_text
 
 
-def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNodeWhenNonDefaultDelimiter():
+def test_road_get_terminus_node_CorrectlyReturnsRoadNodeWhenNonDefaultDelimiter():
     # GIVEN
     healer_text = "healer"
     bloomers_text = "bloomers"
@@ -169,10 +169,10 @@ def test_road_get_terminus_node_from_road_CorrectlyReturnsRoadNodeWhenNonDefault
     slash_roses_road = f"{slash_bloomers_road}{slash_text}{roses_text}"
 
     # WHEN/THENs
-    assert get_terminus_node_from_road(root_label(), slash_text) == root_label()
-    assert get_terminus_node_from_road(slash_healer_road, slash_text) == healer_text
-    assert get_terminus_node_from_road(slash_bloomers_road, slash_text) == bloomers_text
-    assert get_terminus_node_from_road(slash_roses_road, slash_text) == roses_text
+    assert get_terminus_node(root_label(), slash_text) == root_label()
+    assert get_terminus_node(slash_healer_road, slash_text) == healer_text
+    assert get_terminus_node(slash_bloomers_road, slash_text) == bloomers_text
+    assert get_terminus_node(slash_roses_road, slash_text) == roses_text
 
 
 def test_road_get_root_node_from_road_CorrectlyReturnsRoadNode():

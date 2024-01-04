@@ -555,13 +555,13 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     bird_road = x_agenda.make_road(casa_road, bird_text)
     assert from_list_get_active_status(road=bird_road, idea_list=idea_list) == False
 
-    x_agenda.set_acptfact(base=week_road, pick=mon_road)
-    idea_list = x_agenda.get_idea_list()
-    casa_idea = x_idearoot._kids[casa_text]
-    twee_idea = casa_idea._kids[bird_text]
-    print(f"{len(x_idearoot._requiredheirs)=}")
-    print(f"{len(casa_idea._requiredheirs)=}")
-    print(f"{len(twee_idea._requiredheirs)=}")
+    # x_agenda.set_acptfact(base=week_road, pick=mon_road)
+    # idea_list = x_agenda.get_idea_list()
+    # casa_idea = x_idearoot._kids[casa_text]
+    # twee_idea = casa_idea._kids[bird_text]
+    # print(f"{len(x_idearoot._requiredheirs)=}")
+    # print(f"{len(casa_idea._requiredheirs)=}")
+    # print(f"{len(twee_idea._requiredheirs)=}")
 
     # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
 

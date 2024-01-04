@@ -96,7 +96,7 @@ def get_all_road_nodes(road: RoadUnit, delimiter: str = None) -> list[RoadNode]:
     return road.split(default_road_delimiter_if_none(delimiter))
 
 
-def get_terminus_node_from_road(road: RoadUnit, delimiter: str = None) -> RoadNode:
+def get_terminus_node(road: RoadUnit, delimiter: str = None) -> RoadNode:
     return get_all_road_nodes(road=road, delimiter=delimiter)[-1]
 
 

@@ -502,10 +502,10 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
     weekdays = x_agenda.make_l1_road(week_text)
-    assert x_agenda.get_heir_road_list(road_x=weekdays)
+    assert x_agenda.get_heir_road_list(x_road=weekdays)
 
     # WHEN
-    heir_nodes_road_list = x_agenda.get_heir_road_list(road_x=weekdays)
+    heir_nodes_road_list = x_agenda.get_heir_road_list(x_road=weekdays)
 
     # THEN
     # for node in heir_nodes_road_list:

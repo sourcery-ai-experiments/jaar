@@ -182,7 +182,7 @@ def _get_treenode_l_required_count(treenode_l, pth: PYQTTreeHolder) -> str:
 def _get_treenode_l_required_view(treenode_l, pth: PYQTTreeHolder) -> str:
     requiredheir = pth.ideaunit._requiredheirs.get(pth.required_view_pid)
     if requiredheir != None:
-        # treenode_l += f"{get_terminus_node_from_road(requiredheir.base)}"
+        # treenode_l += f"{get_terminus_node(requiredheir.base)}"
         grabed_sufffact = None
         for sufffact in requiredheir.sufffacts.values():
             grabed_sufffact = sufffact.need
@@ -207,7 +207,7 @@ def _get_treenode_l_acptfactheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
             hc_nigh_text = pth.source_agenda.get_jajatime_legible_one_time_event(
                 jajatime_min=acptfactheir.nigh
             )
-            # treenode_l += f"{get_terminus_node_from_road(acptfactheir.base)}"
+            # treenode_l += f"{get_terminus_node(acptfactheir.base)}"
             treenode_l += f" ({hc_open_text}-{hc_nigh_text})"
         elif (
             acptfactheir.base != time_road

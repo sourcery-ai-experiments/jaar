@@ -5,7 +5,7 @@ from src._prime.road import (
     create_road,
     get_diff_road,
     default_road_delimiter_if_none,
-    get_terminus_node_from_road,
+    get_terminus_node,
     get_parent_road_from_road,
     PersonRoad,
 )

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.required_idea import RequiredUnit, RoadUnit
 from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
+from src.tools.python import get_empty_dict_if_none
 
 
 @dataclass
@@ -24,7 +25,7 @@ class TreeMetrics:
         self.set_balancelinks_metrics_empty_if_null()
         if self.uid_max is None:
             self.uid_max = 0
-        self.set_uid_dict_emtpy_if_null()
+        self.uid_dict = get_empty_dict_if_none(self.uid_dict)
         self.all_idea_uids_are_unique = True
 
     def set_balancelinks_metrics_empty_if_null(self):
@@ -72,10 +73,6 @@ class TreeMetrics:
         if balancelinks != None:
             for balancelink in balancelinks.values():
                 self.balancelinks_metrics[balancelink.brand] = balancelink
-
-    def set_uid_dict_emtpy_if_null(self):
-        if self.uid_dict is None:
-            self.uid_dict = {}
 
     def evaluate_uid_max(self, uid):
         if uid != None and self.uid_max < uid:

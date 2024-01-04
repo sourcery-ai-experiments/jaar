@@ -261,7 +261,7 @@ def test_agenda_del_idea_kid_Level0CannotBeDeleted():
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         x_agenda.del_idea_kid(road=root_road)
-    assert str(excinfo.value) == "Object cannot delete itself"
+    assert str(excinfo.value) == "Idearoot cannot be deleted"
 
 
 def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():

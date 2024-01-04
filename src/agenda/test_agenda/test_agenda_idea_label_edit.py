@@ -8,7 +8,7 @@ from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
 from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
 
 
-def test_idea_label_fails_when_idea_does_not_exist():
+def test_idea_edit_idea_label_FailsWhenIdeaDoesNotExist():
     # GIVEN
     tim_agenda = agendaunit_shop("Tim")
 
@@ -22,7 +22,7 @@ def test_idea_label_fails_when_idea_does_not_exist():
     no_idea_road = tim_agenda.make_l1_road("bees")
     with pytest_raises(Exception) as excinfo:
         tim_agenda.edit_idea_label(old_road=no_idea_road, new_label="pigeons")
-    assert str(excinfo.value) == f"get_idea_obj failed. no item at '{no_idea_road}'"
+    assert str(excinfo.value) == f"Idea old_road='{no_idea_road}' does not exist"
 
 
 def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():

@@ -45,7 +45,7 @@ from src._prime.road import (
     is_sub_road,
     road_validate,
     change_road,
-    get_terminus_node_from_road,
+    get_terminus_node,
     get_root_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
@@ -976,14 +976,11 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         required_bases = tree_metrics.required_bases
         missing_bases = {}
-        if self._idearoot._acptfactunits is None:
-            missing_bases = required_bases
-        elif self._idearoot._acptfactunits != None:
-            for base, base_count in required_bases.items():
-                try:
-                    level_count = self._idearoot._acptfactunits[base]
-                except KeyError:
-                    missing_bases[base] = base_count
+        for base, base_count in required_bases.items():
+            try:
+                self._idearoot._acptfactunits[base]
+            except KeyError:
+                missing_bases[base] = base_count
 
         return missing_bases
 
@@ -1079,27 +1076,21 @@ class AgendaUnit:
             self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
     def _set_ideakid_if_empty(self, road: RoadUnit):
-        try:
-            self.get_idea_obj(road)
-        except InvalidAgendaException:
-            base_idea = ideaunit_shop(
-                _label=get_terminus_node_from_road(
-                    road=road, delimiter=self._road_delimiter
-                ),
-                _parent_road=get_parent_road_from_road(road=road),
+        if self.idea_exists(road) == False:
+            self.add_idea(
+                ideaunit_shop(get_terminus_node(road, self._road_delimiter)),
+                parent_road=get_parent_road_from_road(road),
             )
-            self.add_idea(base_idea, parent_road=base_idea._parent_road)
 
     def del_idea_kid(self, road: RoadUnit, del_children: bool = True):
         if road == self._idearoot.get_road():
-            raise InvalidAgendaException("Object cannot delete itself")
+            raise InvalidAgendaException("Idearoot cannot be deleted")
         parent_road = get_parent_road_from_road(road)
         if self.idea_exists(road):
             if not del_children:
                 self._move_idea_kids(x_road=road)
             parent_idea = self.get_idea_obj(parent_road)
-            x_idea_label = get_terminus_node_from_road(road, self._road_delimiter)
-            parent_idea.del_kid(x_idea_label)
+            parent_idea.del_kid(get_terminus_node(road, self._road_delimiter))
         self.set_agenda_metrics()
 
     def _move_idea_kids(self, x_road: RoadUnit):
@@ -1114,15 +1105,13 @@ class AgendaUnit:
     def edit_idea_label(
         self,
         old_road: RoadUnit,
-        new_label: str,
+        new_label: RoadNode,
     ):
         if self._road_delimiter in new_label:
             raise InvalidLabelException(
                 f"Cannot change '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
             )
-
-        # check idea exists
-        if self.get_idea_obj(old_road) is None:
+        if self.idea_exists(old_road) == False:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         parent_road = get_parent_road_from_road(road=old_road)
@@ -1132,10 +1121,8 @@ class AgendaUnit:
             else self.make_road(parent_road, new_label)
         )
         if old_road != new_road:
-            # if root _label is changed
             if parent_road == "":
                 self._idearoot.set_idea_label(new_label)
-                self._idearoot._parent_road = parent_road
             else:
                 self._non_root_idea_label_edit(old_road, new_label, parent_road)
             self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
@@ -1145,17 +1132,17 @@ class AgendaUnit:
                 new_road=new_road,
             )
 
-    def _non_root_idea_label_edit(self, old_road, new_label, parent_road):
+    def _non_root_idea_label_edit(
+        self, old_road: RoadUnit, new_label: RoadNode, parent_road: RoadUnit
+    ):
         x_idea = self.get_idea_obj(old_road)
         x_idea.set_idea_label(new_label)
         x_idea._parent_road = parent_road
         idea_parent = self.get_idea_obj(get_parent_road_from_road(old_road))
-        idea_parent._kids.pop(
-            get_terminus_node_from_road(old_road, self._road_delimiter)
-        )
+        idea_parent._kids.pop(get_terminus_node(old_road, self._road_delimiter))
         idea_parent._kids[x_idea._label] = x_idea
 
-    def _idearoot_find_replace_road(self, old_road, new_road):
+    def _idearoot_find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self._idearoot.find_replace_road(old_road=old_road, new_road=new_road)
 
         idea_iter_list = [self._idearoot]
@@ -1247,16 +1234,16 @@ class AgendaUnit:
     def _transform_begin_close(
         self,
         reest,
-        begin,
-        close,
-        numor,
-        denom,
-        parent_has_range,
-        parent_begin,
-        parent_close,
-        numeric_range,
-        numeric_begin,
-        numeric_close,
+        begin: float,
+        close: float,
+        numor: float,
+        denom: float,
+        parent_has_range: float,
+        parent_begin: float,
+        parent_close: float,
+        numeric_range: float,
+        numeric_begin: float,
+        numeric_close: float,
     ):
         if not reest and parent_has_range and numor != None:
             begin = parent_begin * numor / denom
@@ -1388,9 +1375,7 @@ class AgendaUnit:
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
         promise_item = self.get_idea_obj(task_road)
-        promise_item.set_acptfactunit_to_complete(
-            base_acptfactunit=self._idearoot._acptfactunits[base]
-        )
+        promise_item.set_acptfactunit_to_complete(self._idearoot._acptfactunits[base])
 
     def get_partyunit_total_creditor_weight(self) -> float:
         return sum(
@@ -1773,12 +1758,11 @@ class AgendaUnit:
         self._reset_groupunits_agenda_credit_debt()
         self._reset_partyunit_agenda_credit_debt()
 
-    def get_heir_road_list(self, road_x: RoadUnit) -> list[RoadUnit]:
-        # create list of all idea roads (road+desc)
+    def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
         return [
-            road
-            for road in self.get_idea_tree_ordered_road_list()
-            if road.find(road_x) == 0
+            idea_road
+            for idea_road in self.get_idea_tree_ordered_road_list()
+            if is_sub_road(idea_road, x_road)
         ]
 
     def get_idea_tree_ordered_road_list(
@@ -1849,7 +1833,7 @@ class AgendaUnit:
         x_dict = self.get_dict()
         return x_get_json(dict_x=x_dict)
 
-    def set_time_hreg_ideas(self, c400_count):
+    def set_time_hreg_ideas(self, c400_count: int):
         x_hregidea = HregIdea(self._road_delimiter)
         ideabase_list = x_hregidea._get_time_hreg_src_idea(c400_count=c400_count)
         while len(ideabase_list) != 0:
