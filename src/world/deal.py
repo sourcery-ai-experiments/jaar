@@ -29,10 +29,20 @@ class DealUnit:
     _reader: PersonID = None
     _beliefunits: dict[PersonRoad:BeliefUnit] = None
 
-    def set_beliefunit(self, x_beliefunit: BeliefUnit, owner: PersonID = None):
+    def is_meaningful(self) -> bool:
+        return next(
+            (
+                False
+                for x_beliefunit in self._beliefunits.values()
+                if x_beliefunit.is_meaningful() == False
+            ),
+            self._beliefunits != {},
+        )
+
+    def set_beliefunit(self, x_beliefunit: BeliefUnit, actor: PersonID = None):
         self._beliefunits[x_beliefunit.base] = x_beliefunit
-        if owner != None:
-            self.set_owner(owner, x_beliefunit.base)
+        if actor != None:
+            self.set_actor(actor, x_beliefunit.base)
 
     def beliefunit_exists(self, beliefbase: PersonRoad) -> bool:
         return self._beliefunits.get(beliefbase) != None
@@ -43,37 +53,33 @@ class DealUnit:
     def del_beliefunit(self, personroad: PersonRoad):
         self._beliefunits.pop(personroad)
 
-    def set_owner(self, owner: PersonID, beliefbase: PersonRoad):
+    def set_actor(self, actor: PersonID, beliefbase: PersonRoad):
         if self.beliefunit_exists(beliefbase):
             x_beliefunit = self.get_beliefunit(beliefbase)
-            x_beliefunit.set_owner(owner)
+            x_beliefunit.set_actor(actor)
 
-    def del_owner(self, owner: PersonID, beliefbase: PersonRoad):
+    def del_actor(self, actor: PersonID, beliefbase: PersonRoad):
         if self.beliefunit_exists(beliefbase):
             x_beliefunit = self.get_beliefunit(beliefbase)
-            x_beliefunit.del_owner(owner)
+            x_beliefunit.del_actor(actor)
 
-    def get_owner_beliefunits(
-        self, owner: PersonID, action_filter: bool = None
+    def get_actor_beliefunits(
+        self, actor: PersonID, action_filter: bool = None
     ) -> dict[RoadUnit:BeliefUnit]:
-        x_dict = {}
-        for x_base, x_belief in self._beliefunits.items():
-            print(f"{x_belief.base=} {x_belief.action=}")
-            if x_belief.owner_exists(owner) and (
-                x_belief.action == action_filter or action_filter is None
-            ):
-                x_dict[x_base] = x_belief
+        return {
+            x_base: x_belief
+            for x_base, x_belief in self._beliefunits.items()
+            if x_belief.actor_exists(actor)
+            and (x_belief.action == action_filter or action_filter is None)
+        }
 
-        print(f"{owner=} {action_filter=} {x_dict=} {self._beliefunits.keys()=}")
-        return x_dict
+    def actor_has_belief(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_beliefunits(actor, action_filter=action_filter) != {}
 
-    def owner_has_belief(self, owner: PersonID, action_filter: bool = None) -> bool:
-        return self.get_owner_beliefunits(owner, action_filter=action_filter) != {}
-
-    def owners_has_beliefs(self, owner_dict: dict[PersonID]):
+    def actors_has_beliefs(self, actor_dict: dict[PersonID]):
         x_bool = True
-        for x_owner in owner_dict:
-            if self.owner_has_belief(x_owner) == False:
+        for x_actor in actor_dict:
+            if self.actor_has_belief(x_actor) == False:
                 x_bool = False
         return x_bool
 

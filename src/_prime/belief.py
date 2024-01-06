@@ -63,9 +63,12 @@ class BeliefSubRoadUnitException(Exception):
 class BeliefUnit:
     base: PersonRoad = None
     action: bool = None
+    actors: dict[PersonID:PersonID] = None
     opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
-    owners: dict[PersonID:PersonID] = None
+    _calc_is_meaningful: bool = None
+    _calc_is_tribal: bool = None
+    _calc_is_dialectic: bool = None
 
     def set_action(self, action_bool: bool):
         self.action = action_bool
@@ -122,12 +125,14 @@ class BeliefUnit:
             and self.get_1_opinionunit(bad=True) != None
         )
 
-    def set_opinionunit(self, x_opinionunit: OpinionUnit):
+    def set_opinionunit(self, x_opinionunit: OpinionUnit, set_metrics: bool = True):
         if is_sub_road(x_opinionunit.road, self.base) == False:
             raise BeliefSubRoadUnitException(
                 f"BeliefUnit cannot set opinionunit '{x_opinionunit.road}' because base road is '{self.base}'."
             )
         self.opinionunits[x_opinionunit.road] = x_opinionunit
+        if set_metrics:
+            self.set_metrics()
 
     def del_opinionunit(self, opinionunit: PersonRoad):
         self.opinionunits.pop(opinionunit)
@@ -196,17 +201,22 @@ class BeliefUnit:
             None,
         )
 
-    def set_owner(self, x_owner: PersonID):
-        self.owners[x_owner] = x_owner
+    def set_actor(self, x_actor: PersonID):
+        self.actors[x_actor] = x_actor
 
-    def del_owner(self, owner: PersonRoad):
-        self.owners.pop(owner)
+    def del_actor(self, actor: PersonRoad):
+        self.actors.pop(actor)
 
-    def get_owner(self, x_owner: PersonID) -> PersonID:
-        return self.owners.get(x_owner)
+    def get_actor(self, x_actor: PersonID) -> PersonID:
+        return self.actors.get(x_actor)
 
-    def owner_exists(self, x_owner: PersonID) -> bool:
-        return self.owners.get(x_owner) != None
+    def actor_exists(self, x_actor: PersonID) -> bool:
+        return self.actors.get(x_actor) != None
+
+    def set_metrics(self):
+        self._calc_is_meaningful = self.is_meaningful()
+        self._calc_is_tribal = self.is_tribal()
+        self._calc_is_dialectic = self.is_dialectic()
 
 
 def beliefunit_shop(
@@ -217,12 +227,16 @@ def beliefunit_shop(
 ):
     if action is None:
         action = False
+
     return BeliefUnit(
         base=base,
         action=action,
         opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
-        owners=get_empty_dict_if_none(None),
+        actors=get_empty_dict_if_none(None),
+        _calc_is_meaningful=False,
+        _calc_is_tribal=False,
+        _calc_is_dialectic=False,
     )
 
 

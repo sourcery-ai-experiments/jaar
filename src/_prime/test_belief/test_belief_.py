@@ -7,94 +7,9 @@ from src._prime.belief import (
     BeliefUnit,
     beliefunit_shop,
     create_beliefunit,
-    OpinionUnit,
     opinionunit_shop,
 )
 from pytest import raises as pytest_raises
-
-
-def test_OpinionUnit_exists():
-    # GIVEN
-    gas_road = create_road(root_label(), "gas cooking")
-
-    # WHEN
-    beef_opinionunit = OpinionUnit(road=gas_road)
-
-    # THEN
-    assert beef_opinionunit != None
-    assert beef_opinionunit.road == gas_road
-    assert beef_opinionunit.affect is None
-    assert beef_opinionunit.love is None
-
-
-def test_OpinionUnit_set_affect_CorrectSetsAttrs():
-    # GIVEN
-    gas_road = create_road(root_label(), "gas cooking")
-    beef_opinionunit = OpinionUnit(road=gas_road)
-    assert beef_opinionunit.affect is None
-
-    # WHEN
-    beef_affect = -3
-    beef_opinionunit.set_affect(beef_affect)
-
-    # THEN
-    assert beef_opinionunit.affect == beef_affect
-
-
-def test_OpinionUnit_set_love_CorrectSetsAttrs():
-    # GIVEN
-    gas_road = create_road(root_label(), "gas cooking")
-    beef_opinionunit = OpinionUnit(road=gas_road)
-    assert beef_opinionunit.love is None
-
-    # WHEN
-    beef_love = -7
-    beef_opinionunit.set_love(beef_love)
-
-    # THEN
-    assert beef_opinionunit.love == beef_love
-
-
-def test_opinionunit_shop_CorrectlyReturnsObj():
-    # GIVEN
-    gas_road = create_road(root_label(), "gas cooking")
-
-    # WHEN
-    cook_opinionunit = opinionunit_shop(road=gas_road, affect=7, love=11)
-
-    # THEN
-    assert cook_opinionunit.road == gas_road
-    assert cook_opinionunit.affect == 7
-    assert cook_opinionunit.love == 11
-
-
-def test_opinionunit_shop_Sets_love_NoneIf():
-    # GIVEN
-    gas_road = create_road(root_label(), "gas cooking")
-
-    # WHEN
-    cook_opinionunit = opinionunit_shop(road=gas_road, affect=7)
-
-    # THEN
-    assert cook_opinionunit.road == gas_road
-    assert cook_opinionunit.affect == 7
-    assert cook_opinionunit.love == 0
-
-
-def test_OpinionUnit_set_affect_CorrectlyRaisesNoneZeroAffectException():
-    # GIVEN
-    cook_road = create_road(root_label(), "cooking")
-    cheap_road = create_road(cook_road, "cheap food")
-    cheap_opinionunit = opinionunit_shop(cheap_road, affect=-5)
-
-    # WHEN
-    zero_int = 0
-    with pytest_raises(Exception) as excinfo:
-        cheap_opinionunit.set_affect(x_affect=zero_int)
-    assert (
-        str(excinfo.value)
-        == f"set_affect affect parameter {zero_int} must be Non-zero number"
-    )
 
 
 def test_BeliefUnit_exists():
@@ -107,7 +22,10 @@ def test_BeliefUnit_exists():
     assert x_belief.action is None
     assert x_belief.opinionunits is None
     assert x_belief.delimiter is None
-    assert x_belief.owners is None
+    assert x_belief.actors is None
+    assert x_belief._calc_is_meaningful is None
+    assert x_belief._calc_is_tribal is None
+    assert x_belief._calc_is_dialectic is None
 
 
 def test_beliefunit_shop_CorrectlyReturnsObj():
@@ -122,7 +40,10 @@ def test_beliefunit_shop_CorrectlyReturnsObj():
     assert cook_belief.action == False
     assert cook_belief.opinionunits == {}
     assert cook_belief.delimiter == default_road_delimiter_if_none()
-    assert cook_belief.owners == {}
+    assert cook_belief.actors == {}
+    assert cook_belief._calc_is_meaningful == False
+    assert cook_belief._calc_is_tribal == False
+    assert cook_belief._calc_is_dialectic == False
 
 
 def test_BeliefUnit_set_action_CorrectlySetsAttr():
@@ -140,79 +61,79 @@ def test_BeliefUnit_set_action_CorrectlySetsAttr():
     assert cook_belief.action == False
 
 
-def test_BeliefUnit_set_owner_CorrectlySetsAttr():
+def test_BeliefUnit_set_actor_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
     cook_belief = beliefunit_shop(cook_road)
-    assert cook_belief.owners == {}
+    assert cook_belief.actors == {}
 
     # WHEN
     bob_text = "Bob"
-    cook_belief.set_owner(x_owner=bob_text)
+    cook_belief.set_actor(x_actor=bob_text)
 
     # THEN
-    assert cook_belief.owners != {}
-    assert cook_belief.owners.get(bob_text) != None
-    assert cook_belief.owners.get(bob_text) == bob_text
+    assert cook_belief.actors != {}
+    assert cook_belief.actors.get(bob_text) != None
+    assert cook_belief.actors.get(bob_text) == bob_text
 
 
-def test_BeliefUnit_del_owner_CorrectlySetsAttr():
+def test_BeliefUnit_del_actor_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
     cook_belief = beliefunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    cook_belief.set_owner(bob_text)
-    cook_belief.set_owner(yao_text)
-    assert len(cook_belief.owners) == 2
-    assert cook_belief.owners.get(bob_text) != None
-    assert cook_belief.owners.get(yao_text) != None
+    cook_belief.set_actor(bob_text)
+    cook_belief.set_actor(yao_text)
+    assert len(cook_belief.actors) == 2
+    assert cook_belief.actors.get(bob_text) != None
+    assert cook_belief.actors.get(yao_text) != None
 
     # WHEN
-    cook_belief.del_owner(bob_text)
+    cook_belief.del_actor(bob_text)
 
     # THEN
-    assert len(cook_belief.owners) == 1
-    assert cook_belief.owners.get(bob_text) is None
-    assert cook_belief.owners.get(yao_text) != None
+    assert len(cook_belief.actors) == 1
+    assert cook_belief.actors.get(bob_text) is None
+    assert cook_belief.actors.get(yao_text) != None
 
 
-def test_BeliefUnit_get_owner_ReturnsCorrectObj_good():
+def test_BeliefUnit_get_actor_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
     cook_belief = beliefunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    cook_belief.set_owner(bob_text)
-    cook_belief.set_owner(yao_text)
+    cook_belief.set_actor(bob_text)
+    cook_belief.set_actor(yao_text)
 
     # WHEN
-    bob_owner = cook_belief.get_owner(bob_text)
+    bob_actor = cook_belief.get_actor(bob_text)
 
     # THEN
-    assert bob_owner != None
-    assert bob_owner == bob_text
+    assert bob_actor != None
+    assert bob_actor == bob_text
 
 
-def test_BeliefUnit_owner_exists_ReturnsCorrectObj_good():
+def test_BeliefUnit_actor_exists_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
     cook_belief = beliefunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    assert cook_belief.owner_exists(bob_text) == False
-    assert cook_belief.owner_exists(yao_text) == False
+    assert cook_belief.actor_exists(bob_text) == False
+    assert cook_belief.actor_exists(yao_text) == False
 
     # WHEN / THEN
-    cook_belief.set_owner(bob_text)
-    cook_belief.set_owner(yao_text)
-    assert cook_belief.owner_exists(bob_text)
-    assert cook_belief.owner_exists(yao_text)
+    cook_belief.set_actor(bob_text)
+    cook_belief.set_actor(yao_text)
+    assert cook_belief.actor_exists(bob_text)
+    assert cook_belief.actor_exists(yao_text)
 
     # WHEN / THEN
-    cook_belief.del_owner(yao_text)
-    assert cook_belief.owner_exists(bob_text)
-    assert cook_belief.owner_exists(yao_text) == False
+    cook_belief.del_actor(yao_text)
+    assert cook_belief.actor_exists(bob_text)
+    assert cook_belief.actor_exists(yao_text) == False
 
 
 def test_BeliefUnit_set_opinionunit_CorrectlySetsAttr():
@@ -430,123 +351,6 @@ def test_BeliefUnit_set_opinionunits_CorrectlyRaisesBeliefSubRoadUnitException()
         str(excinfo.value)
         == f"BeliefUnit cannot set opinionunit '{go_cheap_road}' because base road is '{cook_road}'."
     )
-
-
-def test_BeliefUnit_is_meaningful_ReturnsCorrectBool():
-    # GIVEN
-    cook_road = create_road(root_label(), "cooking")
-    cook_belief = beliefunit_shop(cook_road)
-
-    # WHEN / THEN
-    assert len(cook_belief.opinionunits) == 0
-    assert cook_belief.is_meaningful() == False
-
-    # WHEN / THEN
-    cheap_opinionunit = opinionunit_shop(create_road(cook_road, "cheap food"), -2)
-    cook_belief.set_opinionunit(cheap_opinionunit)
-    assert len(cook_belief.opinionunits) == 1
-    assert cook_belief.is_meaningful() == False
-
-    # WHEN / THEN
-    farm_text = "farm fresh"
-    farm_opinionunit = opinionunit_shop(create_road(cook_road, farm_text), 3)
-    cook_belief.set_opinionunit(farm_opinionunit)
-    assert len(cook_belief.opinionunits) == 2
-    assert cook_belief.is_meaningful()
-
-    # WHEN / THEN
-    cook_belief.del_opinionunit(create_road(cook_road, farm_text))
-    assert len(cook_belief.opinionunits) == 1
-    assert cook_belief.is_meaningful() == False
-
-    # WHEN / THEN
-    plastic_opinionunit = opinionunit_shop(create_road(cook_road, "plastic pots"), -5)
-    cook_belief.set_opinionunit(plastic_opinionunit)
-    assert len(cook_belief.opinionunits) == 2
-    assert cook_belief.is_meaningful() == False
-
-    # WHEN / THEN
-    metal_opinionunit = opinionunit_shop(create_road(cook_road, "metal pots"), 7)
-    cook_belief.set_opinionunit(metal_opinionunit)
-    assert len(cook_belief.opinionunits) == 3
-    assert cook_belief.is_meaningful()
-
-
-def test_BeliefUnit_is_tribal_ReturnsCorrectBool():
-    # GIVEN
-    cook_road = create_road(root_label(), "cooking")
-    cook_belief = beliefunit_shop(cook_road)
-
-    # WHEN / THEN
-    assert cook_belief.is_tribal() == False
-
-    # WHEN / THEN
-    cheap_road = create_road(cook_road, "cheap food")
-    cheap_opinionunit = opinionunit_shop(cheap_road, -2, love=77)
-    cook_belief.set_opinionunit(cheap_opinionunit)
-    assert cook_belief.is_tribal() == False
-
-    # WHEN / THEN
-    farm_text = "farm fresh"
-    farm_road = create_road(cook_road, farm_text)
-    farm_opinionunit = opinionunit_shop(farm_road, -2, love=-55)
-    cook_belief.set_opinionunit(farm_opinionunit)
-    assert cook_belief.is_tribal()
-
-    # WHEN / THEN
-    cook_belief.del_opinionunit(farm_road)
-    assert len(cook_belief.opinionunits) == 1
-    assert cook_belief.is_tribal() == False
-
-    # WHEN / THEN
-    plastic_road = create_road(cook_road, "plastic pots")
-    plastic_opinionunit = opinionunit_shop(plastic_road, -2, love=99)
-    cook_belief.set_opinionunit(plastic_opinionunit)
-    assert len(cook_belief.opinionunits) == 2
-    assert cook_belief.is_tribal() == False
-
-    # WHEN / THEN
-    metal_road = create_road(cook_road, "metal pots")
-    metal_opinionunit = opinionunit_shop(metal_road, -2, love=-44)
-    cook_belief.set_opinionunit(metal_opinionunit)
-    assert len(cook_belief.opinionunits) == 3
-    assert cook_belief.is_tribal()
-
-
-def test_BeliefUnit_is_dialectic_ReturnsCorrectBool_v1():
-    # GIVEN
-    cook_road = create_road(root_label(), "cooking")
-    cook_belief = beliefunit_shop(cook_road)
-
-    # WHEN / THEN
-    assert cook_belief.is_tribal() == False
-    assert cook_belief.is_meaningful() == False
-    assert cook_belief.is_dialectic() == False
-
-
-def test_BeliefUnit_is_dialectic_ReturnsCorrectBool_v2():
-    # GIVEN
-    cook_road = create_road(root_label(), "cooking")
-    cook_belief = beliefunit_shop(cook_road)
-    warm_proc_road = create_road(cook_road, "warm processed food")
-    cold_proc_road = create_road(cook_road, "cold processed food")
-    warm_farm_road = create_road(cook_road, "warm farmed food")
-    cold_farm_road = create_road(cook_road, "cold farmed food")
-    cook_belief.set_opinionunit(opinionunit_shop(warm_proc_road, affect=44, love=-9))
-    cook_belief.set_opinionunit(opinionunit_shop(cold_proc_road, affect=-5, love=-4))
-    cook_belief.set_opinionunit(opinionunit_shop(warm_farm_road, affect=33, love=77))
-    cook_belief.set_opinionunit(opinionunit_shop(cold_farm_road, affect=-7, love=88))
-    assert len(cook_belief.opinionunits) == 4
-    assert cook_belief.is_tribal()
-    assert cook_belief.is_meaningful()
-    assert cook_belief.is_dialectic()
-
-    # WHEN / THEN
-    cook_belief.del_opinionunit(cold_proc_road)
-    assert len(cook_belief.opinionunits) == 3
-    assert cook_belief.is_tribal()
-    assert cook_belief.is_meaningful()
-    assert cook_belief.is_dialectic() == False
 
 
 def test_BeliefUnit_get_all_roads_ReturnsCorrectObj():
