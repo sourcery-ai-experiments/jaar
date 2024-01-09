@@ -90,7 +90,7 @@
    </column>
    <column>
     <property name="text">
-     <string>AcptFactBase_display</string>
+     <string>FactBase_display</string>
     </property>
    </column>
   </widget>
@@ -112,7 +112,7 @@
     <string>Select what it to be done immediately</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="acptfact_base_update_combo">
+  <widget class="QComboBox" name="fact_base_update_combo">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -132,13 +132,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>AcptFact Base:</string>
+    <string>Fact Base:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_acptfactbase_display">
+  <widget class="QCheckBox" name="cb_factbase_display">
    <property name="geometry">
     <rect>
      <x>910</x>
@@ -153,7 +153,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Display acptfactbase/open/nigh</string>
+    <string>Display factbase/open/nigh</string>
    </property>
   </widget>
  </widget>

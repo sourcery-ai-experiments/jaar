@@ -2,15 +2,15 @@ from datetime import datetime
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.idea import IdeaUnit, ideaunit_shop
-from src.agenda.required_idea import requiredunit_shop, SuffFactStatusFinder
+from src.agenda.reason_idea import reasonunit_shop, PremiseStatusFinder
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
-from src.agenda.required_assign import assigned_unit_shop
+from src.agenda.reason_assign import assigned_unit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
-    get_agenda_with_4_levels_and_2requireds as example_agendas_get_agenda_with_4_levels_and_2requireds,
-    get_agenda_with7amCleanTableRequired as example_agendas_get_agenda_with7amCleanTableRequired,
-    get_agenda_with_4_levels_and_2requireds_2acptfacts as example_agendas_get_agenda_with_4_levels_and_2requireds_2acptfacts,
+    get_agenda_with_4_levels_and_2reasons as example_agendas_get_agenda_with_4_levels_and_2reasons,
+    get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
+    get_agenda_with_4_levels_and_2reasons_2facts as example_agendas_get_agenda_with_4_levels_and_2reasons_2facts,
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,

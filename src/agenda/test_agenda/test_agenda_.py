@@ -1,5 +1,5 @@
 from src.agenda.examples.example_agendas import (
-    get_agenda_1Task_1CE0MinutesRequired_1AcptFact,
+    get_agenda_1Task_1CE0MinutesReason_1Fact,
     get_agenda_with_4_levels,
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
@@ -69,10 +69,10 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
 
 
 def test_agenda_IsAbleToSetTaskAsComplete():
-    x_agenda = get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
+    x_agenda = get_agenda_1Task_1CE0MinutesReason_1Fact()
 
     assert x_agenda != None
-    assert len(x_agenda._idearoot._kids["obtain mail"]._requiredunits) == 1
+    assert len(x_agenda._idearoot._kids["obtain mail"]._reasonunits) == 1
     idea_list = x_agenda.get_idea_list()
     # for idea in idea_list:
     #     print(idea._label)
@@ -82,23 +82,23 @@ def test_agenda_IsAbleToSetTaskAsComplete():
 
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
-    x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
+    x_agenda.set_fact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     assert mail_idea.promise == True
     assert mail_idea._task == False
 
 
-def test_agenda_IsAbleToEditAcptFactUnitAnyAncestor_Idea_1():
-    x_agenda = get_agenda_1Task_1CE0MinutesRequired_1AcptFact()
+def test_agenda_IsAbleToEditFactUnitAnyAncestor_Idea_1():
+    x_agenda = get_agenda_1Task_1CE0MinutesReason_1Fact()
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
-    x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=85)
+    x_agenda.set_fact(base=ced_road, pick=ced_road, open=82, nigh=85)
     idea_list = x_agenda.get_idea_list()
     mail_idea = idea_list[1]
     assert mail_idea.promise == True
     assert mail_idea._task == False
 
-    x_agenda.set_acptfact(base=ced_road, pick=ced_road, open=82, nigh=95)
+    x_agenda.set_fact(base=ced_road, pick=ced_road, open=82, nigh=95)
     idea_list = x_agenda.get_idea_list()
     mail_idea = idea_list[1]
     assert mail_idea.promise == True

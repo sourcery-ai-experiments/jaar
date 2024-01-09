@@ -1,12 +1,12 @@
 from src.agenda.idea import IdeaUnit, ideaunit_shop, get_obj_from_idea_dict
 from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
-from src.agenda.required_idea import (
-    requiredunit_shop,
-    requiredheir_shop,
-    acptfactunit_shop,
-    sufffactunit_shop,
+from src.agenda.reason_idea import (
+    reasonunit_shop,
+    reasonheir_shop,
+    factunit_shop,
+    premiseunit_shop,
 )
-from src.agenda.required_assign import assigned_unit_shop, assigned_heir_shop
+from src.agenda.reason_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
 from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
@@ -39,8 +39,8 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._balancelines is None
     assert x_ideaunit._balanceheirs is None
     assert x_ideaunit._is_expanded is None
-    assert x_ideaunit._acptfactheirs is None
-    assert x_ideaunit._acptfactunits is None
+    assert x_ideaunit._factheirs is None
+    assert x_ideaunit._factunits is None
     assert x_ideaunit._on_meld_weight_action is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
@@ -48,8 +48,8 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._agenda_importance is None
     assert x_ideaunit._agenda_coin_onset is None
     assert x_ideaunit._agenda_coin_cease is None
-    assert x_ideaunit._requiredunits is None
-    assert x_ideaunit._requiredheirs is None
+    assert x_ideaunit._reasonunits is None
+    assert x_ideaunit._reasonheirs is None
     assert x_ideaunit._assignedunit is None
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit is None
@@ -83,8 +83,8 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._balancelinks == {}
     assert x_ideaunit._balanceheirs == {}
     assert x_ideaunit._is_expanded == True
-    assert x_ideaunit._acptfactheirs == {}
-    assert x_ideaunit._acptfactunits == {}
+    assert x_ideaunit._factheirs == {}
+    assert x_ideaunit._factunits == {}
     assert x_ideaunit._on_meld_weight_action == "default"
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
@@ -92,8 +92,8 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._agenda_importance is None
     assert x_ideaunit._agenda_coin_onset is None
     assert x_ideaunit._agenda_coin_cease is None
-    assert x_ideaunit._requiredunits == {}
-    assert x_ideaunit._requiredheirs == {}
+    assert x_ideaunit._reasonunits == {}
+    assert x_ideaunit._reasonheirs == {}
     assert x_ideaunit._assignedunit == assigned_unit_shop()
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit == originunit_shop()
@@ -251,47 +251,47 @@ def test_IdeaUnit_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
     sport_idea.set_balanceheirs_agenda_credit_debt()
 
 
-def test_IdeaUnit_set_requiredheirsCorrectlyTakesFromOutside():
+def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromOutside():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
     run_text = "run"
     run_road = create_road(ball_road, run_text)
     ball_idea = ideaunit_shop(_label=ball_text)
-    run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
-    run_sufffacts = {run_sufffact.need: run_sufffact}
-    requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
-    requiredheirs = {requiredheir.base: requiredheir}
-    assert ball_idea._requiredheirs == {}
+    run_premise = premiseunit_shop(need=run_road, open=0, nigh=7)
+    run_premises = {run_premise.need: run_premise}
+    reasonheir = reasonheir_shop(run_road, premises=run_premises)
+    reasonheirs = {reasonheir.base: reasonheir}
+    assert ball_idea._reasonheirs == {}
 
     # WHEN
-    ball_idea.set_requiredheirs(requiredheirs=requiredheirs, agenda_idea_dict={})
+    ball_idea.set_reasonheirs(reasonheirs=reasonheirs, agenda_idea_dict={})
 
     # THEN
-    assert ball_idea._requiredheirs == requiredheirs
-    assert id(ball_idea._requiredheirs) != id(requiredheirs)
+    assert ball_idea._reasonheirs == reasonheirs
+    assert id(ball_idea._reasonheirs) != id(reasonheirs)
 
 
-def test_IdeaUnit_set_requiredheirsCorrectlyTakesFromSelf():
+def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromSelf():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
     run_text = "run"
     run_road = create_road(ball_road, run_text)
-    run_sufffact = sufffactunit_shop(need=run_road, open=0, nigh=7)
-    run_sufffacts = {run_sufffact.need: run_sufffact}
-    run_requiredunit = requiredunit_shop(base=run_road, sufffacts=run_sufffacts)
-    run_requiredunits = {run_requiredunit.base: run_requiredunit}
-    ball_idea = ideaunit_shop(_label=ball_text, _requiredunits=run_requiredunits)
-    assert ball_idea._requiredunits != {}
+    run_premise = premiseunit_shop(need=run_road, open=0, nigh=7)
+    run_premises = {run_premise.need: run_premise}
+    run_reasonunit = reasonunit_shop(base=run_road, premises=run_premises)
+    run_reasonunits = {run_reasonunit.base: run_reasonunit}
+    ball_idea = ideaunit_shop(_label=ball_text, _reasonunits=run_reasonunits)
+    assert ball_idea._reasonunits != {}
 
     # WHEN
-    ball_idea.set_requiredheirs(requiredheirs=None, agenda_idea_dict={})
+    ball_idea.set_reasonheirs(reasonheirs=None, agenda_idea_dict={})
 
     # THEN
-    requiredheir = requiredheir_shop(run_road, sufffacts=run_sufffacts)
-    requiredheirs = {requiredheir.base: requiredheir}
-    assert ball_idea._requiredheirs == requiredheirs
+    reasonheir = reasonheir_shop(run_road, premises=run_premises)
+    reasonheirs = {reasonheir.base: reasonheir}
+    assert ball_idea._reasonheirs == reasonheirs
 
 
 def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
@@ -396,25 +396,25 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     usa_text = "USA"
     usa_road = create_road(states_road, usa_text)
 
-    wed_sufffact = sufffactunit_shop(need=wed_road)
-    wed_sufffact._status = True
-    usa_sufffact = sufffactunit_shop(need=usa_road)
-    usa_sufffact._status = False
+    wed_premise = premiseunit_shop(need=wed_road)
+    wed_premise._status = True
+    usa_premise = premiseunit_shop(need=usa_road)
+    usa_premise._status = False
 
-    x1_requiredunits = {
-        week_road: requiredunit_shop(
-            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}
+    x1_reasonunits = {
+        week_road: reasonunit_shop(
+            base=week_road, premises={wed_premise.need: wed_premise}
         ),
-        states_road: requiredunit_shop(
-            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}
+        states_road: reasonunit_shop(
+            base=states_road, premises={usa_premise.need: usa_premise}
         ),
     }
-    x1_requiredheirs = {
-        week_road: requiredheir_shop(
-            base=week_road, sufffacts={wed_sufffact.need: wed_sufffact}, _status=True
+    x1_reasonheirs = {
+        week_road: reasonheir_shop(
+            base=week_road, premises={wed_premise.need: wed_premise}, _status=True
         ),
-        states_road: requiredheir_shop(
-            base=states_road, sufffacts={usa_sufffact.need: usa_sufffact}, _status=False
+        states_road: reasonheir_shop(
+            base=states_road, premises={usa_premise.need: usa_premise}, _status=False
         ),
     }
     biker_pid = GroupBrand("bikers")
@@ -454,15 +454,15 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
         _weight=30,
         _label=work_text,
         _level=1,
-        _requiredunits=x1_requiredunits,
-        _requiredheirs=x1_requiredheirs,
+        _reasonunits=x1_reasonunits,
+        _reasonheirs=x1_reasonheirs,
         _active_status=True,
         _range_source_road="test123",
         promise=True,
         _problem_bool=True,
     )
-    acptfactunit_x = acptfactunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    work_idea.set_acptfactunit(acptfactunit=acptfactunit_x)
+    factunit_x = factunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
+    work_idea.set_factunit(factunit=factunit_x)
     work_idea._originunit.set_originlink(pid="Ray", weight=None)
     work_idea._originunit.set_originlink(pid="Lei", weight=4)
     x_begin = 11
@@ -487,7 +487,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict != None
     assert len(work_dict["_kids"]) == 1
     assert work_dict["_kids"] == work_idea.get_kids_dict()
-    assert work_dict["_requiredunits"] == work_idea.get_requiredunits_dict()
+    assert work_dict["_reasonunits"] == work_idea.get_reasonunits_dict()
     assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
     assert work_dict["_balancelinks"] == x1_balancelinks
     assert work_dict["_originunit"] == work_idea.get_originunit_dict()
@@ -504,7 +504,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict["_problem_bool"] == work_idea._problem_bool
     assert work_idea._is_expanded
     assert work_dict.get("_is_expanded") is None
-    assert len(work_dict["_acptfactunits"]) == len(work_idea.get_acptfactunits_dict())
+    assert len(work_dict["_factunits"]) == len(work_idea.get_factunits_dict())
     assert work_idea._on_meld_weight_action == "default"
     assert work_dict.get("_on_meld_weight_action") is None
 
@@ -532,7 +532,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
 
     a_text = "a"
     a_road = create_road(root_label(), a_text)
-    work_idea.set_acptfactunit(acptfactunit_shop(a_road, a_road))
+    work_idea.set_factunit(factunit_shop(a_road, a_road))
 
     yao_text = "Yao"
     work_idea.set_balancelink(balancelink_shop(yao_text))
@@ -550,7 +550,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_idea.promise
     assert work_idea._problem_bool
     assert work_idea._on_meld_weight_action != "default"
-    assert work_idea._acptfactunits != None
+    assert work_idea._factunits != None
     assert work_idea._balancelinks != None
     assert work_idea._assignedunit != None
     assert work_idea._originunit != None
@@ -564,7 +564,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_dict.get("promise")
     assert work_dict.get("_problem_bool")
     assert work_dict.get("_on_meld_weight_action") == ignore_text
-    assert work_dict.get("_acptfactunits") != None
+    assert work_dict.get("_factunits") != None
     assert work_dict.get("_balancelinks") != None
     assert work_dict.get("_assignedunit") != None
     assert work_dict.get("_originunit") != None
@@ -578,7 +578,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_idea.promise == False
     assert work_idea._problem_bool == False
     assert work_idea._on_meld_weight_action == "default"
-    assert work_idea._acptfactunits == {}
+    assert work_idea._factunits == {}
     assert work_idea._balancelinks == {}
     assert work_idea._assignedunit == assigned_unit_shop()
     assert work_idea._originunit == originunit_shop()
@@ -592,7 +592,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_dict.get("promise") is None
     assert work_dict.get("_problem_bool") is None
     assert work_dict.get("_on_meld_weight_action") is None
-    assert work_dict.get("_acptfactunits") is None
+    assert work_dict.get("_factunits") is None
     assert work_dict.get("_balancelinks") is None
     assert work_dict.get("_assignedunit") is None
     assert work_dict.get("_originunit") is None
@@ -642,38 +642,38 @@ def test_idea_invaild_DenomThrowsError():
     )
 
 
-def test_idea_get_requiredheir_correctlyReturnsrequiredheir_shop():
+def test_idea_get_reasonheir_correctlyReturnsreasonheir_shop():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = requiredheir_shop(base=tool_text)
-    required_heirs_x = {required_heir_x.base: required_heir_x}
-    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict={})
+    reason_heir_x = reasonheir_shop(base=tool_text)
+    reason_heirs_x = {reason_heir_x.base: reason_heir_x}
+    clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 
     # WHEN
-    required_heir_z = clean_idea.get_requiredheir(base=tool_text)
+    reason_heir_z = clean_idea.get_reasonheir(base=tool_text)
 
     # THEN
-    assert required_heir_z != None
-    assert required_heir_z.base == tool_text
+    assert reason_heir_z != None
+    assert reason_heir_z.base == tool_text
 
 
-def test_idea_get_requiredheir_correctlyReturnsNone():
+def test_idea_get_reasonheir_correctlyReturnsNone():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
     tool_text = "tool"
-    required_heir_x = requiredheir_shop(tool_text)
-    required_heirs_x = {required_heir_x.base: required_heir_x}
-    clean_idea.set_requiredheirs(requiredheirs=required_heirs_x, agenda_idea_dict={})
+    reason_heir_x = reasonheir_shop(tool_text)
+    reason_heirs_x = {reason_heir_x.base: reason_heir_x}
+    clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 
     # WHEN
     test6_text = "test6"
-    required_heir_test6 = clean_idea.get_requiredheir(base=test6_text)
+    reason_heir_test6 = clean_idea.get_reasonheir(base=test6_text)
 
     # THEN
-    assert required_heir_test6 is None
+    assert reason_heir_test6 is None
 
 
 def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
@@ -704,9 +704,9 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 #     # GIVEN
 # clean_text = "clean"
 # clean_idea = ideaunit_shop(_label=clean_text)
-#     clean_idea.set_required_sufffact(
+#     clean_idea.set_reason_premise(
 #         base="testing1,second",
-#         sufffact="testing1,second,next",
+#         premise="testing1,second,next",
 #         open=None,
 #         nigh=None,
 #         divisor=None,

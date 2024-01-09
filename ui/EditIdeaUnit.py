@@ -4,9 +4,9 @@ from src.agenda.idea import ideaunit_shop, ideaattrfilter_shop
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
-from src.agenda.hreg_time import SuffFactUnitHregTime
+from src.agenda.hreg_time import PremiseUnitHregTime
 from src.agenda.group import BalanceLink, GroupBrand
-from src.agenda.required_idea import RoadUnit
+from src.agenda.reason_idea import RoadUnit
 from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
 from ui.pyqt_func import (
     num2str,
@@ -45,58 +45,58 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.cb_yo_intent.stateChanged.connect(self.refresh_tree)
         self.cb_yo_action.stateChanged.connect(self.refresh_tree)
         self.cb_yo_complete.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_acptfactunit_time.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_acptfactunit_count.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_acptfactheir_count.stateChanged.connect(self.refresh_tree)
-        self.cb_requiredheir_count.stateChanged.connect(self.refresh_tree)
-        self.cb_required_count.stateChanged.connect(self.refresh_tree)
-        self.cb_required_view.stateChanged.connect(self.refresh_tree)
-        self.cb_acptfactheir_view.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_factunit_time.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_factunit_count.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_factheir_count.stateChanged.connect(self.refresh_tree)
+        self.cb_reasonheir_count.stateChanged.connect(self.refresh_tree)
+        self.cb_reason_count.stateChanged.connect(self.refresh_tree)
+        self.cb_reason_view.stateChanged.connect(self.refresh_tree)
+        self.cb_factheir_view.stateChanged.connect(self.refresh_tree)
         self.cb_yo2bd_count.stateChanged.connect(self.refresh_tree)
         self.combo_dim_root.currentTextChanged.connect(self.refresh_tree)
 
         self.idea2group_table.itemClicked.connect(self.idea2group_table_select)
         self.idea2group_delete_button.clicked.connect(self.idea2group_delete)
         self.idea2group_insert_button.clicked.connect(self.idea2group_update)
-        self.required_table.itemClicked.connect(self.required_table_select)
-        self.required_base_combo.currentTextChanged.connect(
-            self.required_sufffact_combo_load
+        self.reason_table.itemClicked.connect(self.reason_table_select)
+        self.reason_base_combo.currentTextChanged.connect(
+            self.reason_premise_combo_load
         )
-        self.required_sufffact_combo.currentTextChanged.connect(
-            self.required_sufffact_xxxx_combo_load
+        self.reason_premise_combo.currentTextChanged.connect(
+            self.reason_premise_xxxx_combo_load
         )
-        self.required_sufffact_open_combo.currentTextChanged.connect(
-            self.required_sufffact_open_combo_select
+        self.reason_premise_open_combo.currentTextChanged.connect(
+            self.reason_premise_open_combo_select
         )
-        self.required_sufffact_nigh_combo.currentTextChanged.connect(
-            self.required_sufffact_nigh_combo_select
+        self.reason_premise_nigh_combo.currentTextChanged.connect(
+            self.reason_premise_nigh_combo_select
         )
-        self.required_sufffact_divisor_combo.currentTextChanged.connect(
-            self.required_sufffact_divisor_combo_select
+        self.reason_premise_divisor_combo.currentTextChanged.connect(
+            self.reason_premise_divisor_combo_select
         )
-        self.button_required_upsert.clicked.connect(self.required_upsert)
-        self.button_required_delete.clicked.connect(self.required_delete)
-        self.button_sufffactunit_hreg_update_days.clicked.connect(
-            self.sufffactunit_hreg_update_days
+        self.button_reason_upsert.clicked.connect(self.reason_upsert)
+        self.button_reason_delete.clicked.connect(self.reason_delete)
+        self.button_premiseunit_hreg_update_days.clicked.connect(
+            self.premiseunit_hreg_update_days
         )
-        self.button_sufffactunit_hreg_update_weeks.clicked.connect(
-            self.sufffactunit_hreg_update_weeks
+        self.button_premiseunit_hreg_update_weeks.clicked.connect(
+            self.premiseunit_hreg_update_weeks
         )
         self.button_hreg_base.clicked.connect(self.set_base_to_hregtime)
         self.create_hreg_button.clicked.connect(self.add_hreg_to_agenda)
-        self.button_view_requiredheirs.clicked.connect(self.toogle_requiredheir_tables)
-        self.requiredheir_table_hidden = True
+        self.button_view_reasonheirs.clicked.connect(self.toogle_reasonheir_tables)
+        self.reasonheir_table_hidden = True
 
         self.yo_tree_item_setHidden(setHiddenBool=True)
         self.show
         self.x_idea = None
 
-    def toogle_requiredheir_tables(self):
-        self.requiredheir_table_hidden = self.requiredheir_table_hidden == False
-        self.requiredheir_table.setHidden(self.requiredheir_table_hidden)
+    def toogle_reasonheir_tables(self):
+        self.reasonheir_table_hidden = self.reasonheir_table_hidden == False
+        self.reasonheir_table.setHidden(self.reasonheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.required_base_combo.setCurrentText("A,time,jajatime")
+        self.reason_base_combo.setCurrentText("A,time,jajatime")
 
     def add_hreg_to_agenda(self):
         self.agenda_x.set_time_hreg_ideas(c400_count=7)
@@ -152,24 +152,24 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_insert_combo.setHidden(setHiddenBool)
         self.idea2group_delete_button.setHidden(setHiddenBool)
         self.idea2group_insert_button.setHidden(setHiddenBool)
-        self.requiredheir_table.setHidden(True)
-        self.required_table.setHidden(setHiddenBool)
-        self.required_base_combo.setHidden(setHiddenBool)
-        self.required_sufffact_combo.setHidden(setHiddenBool)
-        self.required_sufffact_open_combo.setHidden(setHiddenBool)
-        self.required_sufffact_nigh_combo.setHidden(setHiddenBool)
-        self.required_sufffact_divisor_combo.setHidden(setHiddenBool)
-        self.required_sufffact_open.setHidden(setHiddenBool)
-        self.required_sufffact_nigh.setHidden(setHiddenBool)
-        self.required_sufffact_divisor.setHidden(setHiddenBool)
+        self.reasonheir_table.setHidden(True)
+        self.reason_table.setHidden(setHiddenBool)
+        self.reason_base_combo.setHidden(setHiddenBool)
+        self.reason_premise_combo.setHidden(setHiddenBool)
+        self.reason_premise_open_combo.setHidden(setHiddenBool)
+        self.reason_premise_nigh_combo.setHidden(setHiddenBool)
+        self.reason_premise_divisor_combo.setHidden(setHiddenBool)
+        self.reason_premise_open.setHidden(setHiddenBool)
+        self.reason_premise_nigh.setHidden(setHiddenBool)
+        self.reason_premise_divisor.setHidden(setHiddenBool)
         self.label_9.setHidden(setHiddenBool)
         self.label_15.setHidden(setHiddenBool)
         self.label_16.setHidden(setHiddenBool)
         self.label_17.setHidden(setHiddenBool)
-        self.button_required_upsert.setHidden(setHiddenBool)
-        self.button_sufffactunit_hreg_update_days.setHidden(setHiddenBool)
-        self.button_sufffactunit_hreg_update_weeks.setHidden(setHiddenBool)
-        self.button_required_delete.setHidden(setHiddenBool)
+        self.button_reason_upsert.setHidden(setHiddenBool)
+        self.button_premiseunit_hreg_update_days.setHidden(setHiddenBool)
+        self.button_premiseunit_hreg_update_weeks.setHidden(setHiddenBool)
+        self.button_reason_delete.setHidden(setHiddenBool)
         self.button_hreg_base.setHidden(setHiddenBool)
         self.submit_child_insert.setHidden(setHiddenBool)
         self.submit_node_update.setHidden(setHiddenBool)
@@ -208,18 +208,18 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_deescription.setText("")
         self.idea_label_on_populate = ""
         self.yo_weight.setText("")
-        # self.required_base_combo.setText("")
-        # self.required_sufffact_combo.setText("")
-        self.required_sufffact_open.setText("")
-        self.required_sufffact_nigh.setText("")
-        self.required_sufffact_divisor.setText("")
+        # self.reason_base_combo.setText("")
+        # self.reason_premise_combo.setText("")
+        self.reason_premise_open.setText("")
+        self.reason_premise_nigh.setText("")
+        self.reason_premise_divisor.setText("")
 
-        self.required_table.setRowCount(0)
-        self.required_base_combo.clear()
-        self.required_sufffact_combo.clear()
-        self.required_sufffact_open_combo.clear()
-        self.required_sufffact_nigh_combo.clear()
-        self.required_sufffact_divisor_combo.clear()
+        self.reason_table.setRowCount(0)
+        self.reason_base_combo.clear()
+        self.reason_premise_combo.clear()
+        self.reason_premise_open_combo.clear()
+        self.reason_premise_nigh_combo.clear()
+        self.reason_premise_divisor_combo.clear()
         self.idea2group_insert_combo.clear()
 
         if setHiddenBool == False:
@@ -242,13 +242,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_task_status.setText(str(self.x_idea._task))
         self.yo_active_status.setText(str(self.x_idea._active_status))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
-        self.required_table_load()
-        self.requiredheir_table_load()
-        self.required_base_combo_load()
+        self.reason_table_load()
+        self.reasonheir_table_load()
+        self.reason_base_combo_load()
         self.idea2group_table_load()
         self.idea2group_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
-            self.combo_dim_root.addItems(list(self.agenda_x.get_required_bases()))
+            self.combo_dim_root.addItems(list(self.agenda_x.get_reason_bases()))
 
     def populate_idea_kid_actions(self):
         self.yo_addin.setText(num2str(self.x_idea._addin))
@@ -277,249 +277,247 @@ class EditIdeaUnit(qtw0, Ui_Form):
         root = self.baseideaunit.invisibleRootItem()
         self.idea_tree_set_is_expanded(root)
 
-    def required_base_combo_load(self):
+    def reason_base_combo_load(self):
         # create list of all idea roads (road+_label)
-        self.required_base_combo.clear()
-        self.required_base_combo.addItems([""])
-        self.required_base_combo.addItems(
-            self.agenda_x.get_idea_tree_ordered_road_list()
+        self.reason_base_combo.clear()
+        self.reason_base_combo.addItems([""])
+        self.reason_base_combo.addItems(self.agenda_x.get_idea_tree_ordered_road_list())
+
+    def reason_premise_combo_load(self):
+        self.reason_premise_combo.clear()
+        self.reason_premise_combo.addItems([""])
+        self.reason_premise_combo.addItems(
+            self.agenda_x.get_heir_road_list(self.reason_base_combo.currentText())
         )
 
-    def required_sufffact_combo_load(self):
-        self.required_sufffact_combo.clear()
-        self.required_sufffact_combo.addItems([""])
-        self.required_sufffact_combo.addItems(
-            self.agenda_x.get_heir_road_list(self.required_base_combo.currentText())
-        )
-
-    def required_sufffact_xxxx_combo_load(self):
+    def reason_premise_xxxx_combo_load(self):
         filtered_list = []
-        if self.required_sufffact_combo.currentText() not in [
+        if self.reason_premise_combo.currentText() not in [
             self.agenda_x._healer,
             "",
         ]:
-            sufffact_idea = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_combo.currentText()
+            premise_idea = self.agenda_x.get_idea_obj(
+                road=self.reason_premise_combo.currentText()
             )
-            if sufffact_idea._range_source_road != None:
+            if premise_idea._range_source_road != None:
                 filtered_list = self.agenda_x.get_heir_road_list(
-                    sufffact_idea._range_source_road
+                    premise_idea._range_source_road
                 )
-        self.required_sufffact_open_combo.clear()
-        self.required_sufffact_nigh_combo.clear()
-        self.required_sufffact_divisor_combo.clear()
-        self.required_sufffact_open_combo.addItems(filtered_list)
-        self.required_sufffact_nigh_combo.addItems(filtered_list)
-        self.required_sufffact_divisor_combo.addItems(filtered_list)
-        self.set_sufffact_open_combo()
-        self.set_sufffact_nigh_combo()
-        self.set_sufffact_divisor_combo()
+        self.reason_premise_open_combo.clear()
+        self.reason_premise_nigh_combo.clear()
+        self.reason_premise_divisor_combo.clear()
+        self.reason_premise_open_combo.addItems(filtered_list)
+        self.reason_premise_nigh_combo.addItems(filtered_list)
+        self.reason_premise_divisor_combo.addItems(filtered_list)
+        self.set_premise_open_combo()
+        self.set_premise_nigh_combo()
+        self.set_premise_divisor_combo()
 
-    def required_sufffact_open_combo_select(self):
-        self.required_sufffact_open.setText("")
-        self.required_sufffact_nigh.setText("")
-        self.required_sufffact_divisor.setText("")
+    def reason_premise_open_combo_select(self):
+        self.reason_premise_open.setText("")
+        self.reason_premise_nigh.setText("")
+        self.reason_premise_divisor.setText("")
 
-        if self.required_sufffact_open_combo.currentText() not in [
+        if self.reason_premise_open_combo.currentText() not in [
             self.agenda_x._healer,
             "",
         ]:
-            self.required_sufffact_open_combo_sel_actions()
+            self.reason_premise_open_combo_sel_actions()
 
-    def required_sufffact_open_combo_sel_actions(self):
+    def reason_premise_open_combo_sel_actions(self):
         open_idea_x = self.agenda_x.get_idea_obj(
-            road=self.required_sufffact_open_combo.currentText()
+            road=self.reason_premise_open_combo.currentText()
         )
         if open_idea_x._begin != None:
-            self.required_sufffact_open.setText(str(open_idea_x._begin))
+            self.reason_premise_open.setText(str(open_idea_x._begin))
         if open_idea_x._close != None:
-            self.required_sufffact_nigh.setText(str(open_idea_x._close))
+            self.reason_premise_nigh.setText(str(open_idea_x._close))
         if open_idea_x._addin != None:
-            self.required_sufffact_divisor.setText(str(open_idea_x._addin))
+            self.reason_premise_divisor.setText(str(open_idea_x._addin))
         if open_idea_x._numor != None:
-            self.required_sufffact_divisor.setText(str(open_idea_x._numor))
+            self.reason_premise_divisor.setText(str(open_idea_x._numor))
         if open_idea_x._denom != None:
-            self.required_sufffact_divisor.setText(str(open_idea_x._denom))
+            self.reason_premise_divisor.setText(str(open_idea_x._denom))
         if open_idea_x._reest != None:
-            self.required_sufffact_divisor.setText(str(open_idea_x._reest))
+            self.reason_premise_divisor.setText(str(open_idea_x._reest))
 
     def numeric_road_combo_select(self):
-        if self.required_sufffact_open_combo.currentText() not in [
+        if self.reason_premise_open_combo.currentText() not in [
             self.agenda_x._healer,
             "",
         ]:
             open_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_open_combo.currentText()
+                road=self.reason_premise_open_combo.currentText()
             )
             # nigh_idea_x = self.agenda_x.get_idea_obj(
-            #     road=self.required_sufffact_nigh_combo.currentText()
+            #     road=self.reason_premise_nigh_combo.currentText()
             # )
             # divisor_idea_x = self.agenda_x.get_idea_obj(
-            #     road=self.required_sufffact_divisor_combo.currentText()
+            #     road=self.reason_premise_divisor_combo.currentText()
             # )
             # if open_idea_x._begin != None:
-            #     self.required_sufffact_open.setText(str(open_idea_x._begin))
+            #     self.reason_premise_open.setText(str(open_idea_x._begin))
             # if open_idea_x._close != None:
-            #     self.required_sufffact_nigh.setText(str(open_idea_x._close))
+            #     self.reason_premise_nigh.setText(str(open_idea_x._close))
 
-    def set_sufffact_open_combo(self):
+    def set_premise_open_combo(self):
         if (
-            self.required_sufffact_open_combo.currentText()
+            self.reason_premise_open_combo.currentText()
             not in [
                 self.agenda_x._healer,
                 "",
             ]
-            and self.required_sufffact_open.toPlainText() != ""
+            and self.reason_premise_open.toPlainText() != ""
         ):
             open_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_open_combo.currentText()
+                road=self.reason_premise_open_combo.currentText()
             )
-            open_int = str2float(self.required_sufffact_open.toPlainText())
+            open_int = str2float(self.reason_premise_open.toPlainText())
             open_kids = open_idea_x.get_kids_in_range(begin=open_int, close=open_int)
             if len(open_kids) == 1:
                 idea_x = open_kids[0]
-                self.required_sufffact_open_combo.setCurrentText(
+                self.reason_premise_open_combo.setCurrentText(
                     f"{idea_x._parent_road},{idea_x._label}"
                 )
 
-    def set_sufffact_nigh_combo(self):
+    def set_premise_nigh_combo(self):
         if (
-            self.required_sufffact_nigh_combo.currentText()
+            self.reason_premise_nigh_combo.currentText()
             not in [
                 self.agenda_x._healer,
                 "",
             ]
-            and self.required_sufffact_nigh.toPlainText() != ""
+            and self.reason_premise_nigh.toPlainText() != ""
         ):
             nigh_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_nigh_combo.currentText()
+                road=self.reason_premise_nigh_combo.currentText()
             )
-            nigh_int = int(self.required_sufffact_nigh.toPlainText())
+            nigh_int = int(self.reason_premise_nigh.toPlainText())
             nigh_kids = nigh_idea_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
             if len(nigh_kids) == 1:
                 idea_x = nigh_kids[0]
-                self.required_sufffact_nigh_combo.setCurrentText(
+                self.reason_premise_nigh_combo.setCurrentText(
                     f"{idea_x._parent_road},{idea_x._label}"
                 )
 
-    def set_sufffact_divisor_combo(self):
+    def set_premise_divisor_combo(self):
         if (
-            self.required_sufffact_divisor_combo.currentText()
+            self.reason_premise_divisor_combo.currentText()
             not in [
                 self.agenda_x._healer,
                 "",
             ]
-            and self.required_sufffact_divisor.toPlainText() != ""
+            and self.reason_premise_divisor.toPlainText() != ""
         ):
             divisor_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_divisor_combo.currentText()
+                road=self.reason_premise_divisor_combo.currentText()
             )
-            divisor_int = int(self.required_sufffact_divisor.toPlainText())
+            divisor_int = int(self.reason_premise_divisor.toPlainText())
             divisor_kids = divisor_idea_x.get_kids_in_range(
                 begin=divisor_int, close=divisor_int
             )
             if len(divisor_kids) == 1:
                 idea_x = divisor_kids[0]
-                self.required_sufffact_divisor_combo.setCurrentText(
+                self.reason_premise_divisor_combo.setCurrentText(
                     f"{idea_x._parent_road},{idea_x._label}"
                 )
 
-    def required_sufffact_nigh_combo_select(self):
-        self.required_sufffact_nigh.setText("")
-        if self.required_sufffact_nigh_combo.currentText() not in [
+    def reason_premise_nigh_combo_select(self):
+        self.reason_premise_nigh.setText("")
+        if self.reason_premise_nigh_combo.currentText() not in [
             self.agenda_x._healer,
             "",
         ]:
             nigh_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_nigh_combo.currentText()
+                road=self.reason_premise_nigh_combo.currentText()
             )
             if nigh_idea_x._close != None:
-                self.required_sufffact_nigh.setText(str(nigh_idea_x._close))
+                self.reason_premise_nigh.setText(str(nigh_idea_x._close))
 
-    def required_sufffact_divisor_combo_select(self):
-        self.required_sufffact_divisor.setText("")
-        if self.required_sufffact_divisor_combo.currentText() not in [
+    def reason_premise_divisor_combo_select(self):
+        self.reason_premise_divisor.setText("")
+        if self.reason_premise_divisor_combo.currentText() not in [
             self.agenda_x._healer,
             "",
         ]:
             divisor_idea_x = self.agenda_x.get_idea_obj(
-                road=self.required_sufffact_divisor_combo.currentText()
+                road=self.reason_premise_divisor_combo.currentText()
             )
             if divisor_idea_x._denom != None:
-                self.required_sufffact_divisor.setText(str(divisor_idea_x._denom))
+                self.reason_premise_divisor.setText(str(divisor_idea_x._denom))
 
-    def required_table_load(self):
-        self.required_table.clear()
+    def reason_table_load(self):
+        self.reason_table.clear()
         row = 0
-        for required in self.x_idea._requiredunits.values():
-            requiredheir = self.x_idea._requiredheirs.get(required.base)
-            for sufffact in required.sufffacts.values():
-                required_text = required.base.replace(f"{self.agenda_x._healer}", "")
-                required_text = required_text[1:]
-                sufffact_text = sufffact.need.replace(required.base, "")
-                sufffact_text = sufffact_text[1:]
-                sufffact_open = sufffact.open
-                sufffact_nigh = sufffact.nigh
-                if required_text == "time,jajatime":
-                    sufffact_open = self.agenda_x.get_jajatime_repeating_legible_text(
-                        open=sufffact.open,
-                        nigh=sufffact.nigh,
-                        divisor=sufffact.divisor,
+        for reason in self.x_idea._reasonunits.values():
+            reasonheir = self.x_idea._reasonheirs.get(reason.base)
+            for premise in reason.premises.values():
+                reason_text = reason.base.replace(f"{self.agenda_x._healer}", "")
+                reason_text = reason_text[1:]
+                premise_text = premise.need.replace(reason.base, "")
+                premise_text = premise_text[1:]
+                premise_open = premise.open
+                premise_nigh = premise.nigh
+                if reason_text == "time,jajatime":
+                    premise_open = self.agenda_x.get_jajatime_repeating_legible_text(
+                        open=premise.open,
+                        nigh=premise.nigh,
+                        divisor=premise.divisor,
                     )
-                    sufffact_nigh = ""
-                    sufffact_text = f"{sufffact_open}"
+                    premise_nigh = ""
+                    premise_text = f"{premise_open}"
 
-                elif sufffact.divisor != None:
-                    sufffact_text = f"{sufffact_text}  Open-Nigh {sufffact_open}-{sufffact.nigh} Divisor {sufffact.divisor}"
-                elif sufffact.open != None:
-                    sufffact_text = (
-                        f"{sufffact_text}  Open-Nigh {sufffact.open}-{sufffact.nigh}"
+                elif premise.divisor != None:
+                    premise_text = f"{premise_text}  Open-Nigh {premise_open}-{premise.nigh} Divisor {premise.divisor}"
+                elif premise.open != None:
+                    premise_text = (
+                        f"{premise_text}  Open-Nigh {premise.open}-{premise.nigh}"
                     )
                 else:
-                    sufffact_text = f"{sufffact_text}"
+                    premise_text = f"{premise_text}"
 
-                self.required_table.setRowCount(row + 1)
-                self.required_table.setItem(row, 0, qtw1(required_text))
-                self.required_table.setItem(row, 1, qtw1(sufffact_text))
-                self.required_table.setItem(row, 2, qtw1(required.base))
-                self.required_table.setItem(row, 3, qtw1(sufffact.need))
-                self.required_table.setItem(row, 4, qtw1(num2str(sufffact.open)))
-                self.required_table.setItem(row, 5, qtw1(num2str(sufffact.nigh)))
-                self.required_table.setItem(row, 6, qtw1(num2str(sufffact.divisor)))
-                self.required_table.setItem(row, 7, qtw1(f"{requiredheir._task}"))
-                self.required_table.setItem(row, 8, qtw1(f"{requiredheir._status}"))
-                self.required_table.setItem(row, 9, qtw1(str(sufffact._status)))
-                self.required_table.setItem(row, 10, qtw1(str(sufffact._task)))
+                self.reason_table.setRowCount(row + 1)
+                self.reason_table.setItem(row, 0, qtw1(reason_text))
+                self.reason_table.setItem(row, 1, qtw1(premise_text))
+                self.reason_table.setItem(row, 2, qtw1(reason.base))
+                self.reason_table.setItem(row, 3, qtw1(premise.need))
+                self.reason_table.setItem(row, 4, qtw1(num2str(premise.open)))
+                self.reason_table.setItem(row, 5, qtw1(num2str(premise.nigh)))
+                self.reason_table.setItem(row, 6, qtw1(num2str(premise.divisor)))
+                self.reason_table.setItem(row, 7, qtw1(f"{reasonheir._task}"))
+                self.reason_table.setItem(row, 8, qtw1(f"{reasonheir._status}"))
+                self.reason_table.setItem(row, 9, qtw1(str(premise._status)))
+                self.reason_table.setItem(row, 10, qtw1(str(premise._task)))
                 row += 1
 
-        self.required_table.horizontalHeaderVisible = False
-        self.required_table.verticalHeaderVisible = False
-        self.required_table.setColumnWidth(0, 300)
-        self.required_table.setColumnWidth(1, 400)
-        self.required_table.setColumnWidth(2, 30)
-        self.required_table.setColumnWidth(3, 30)
-        self.required_table.setColumnWidth(4, 30)
-        self.required_table.setColumnWidth(5, 30)
-        self.required_table.setColumnWidth(6, 60)
-        self.required_table.setColumnWidth(7, 60)
-        self.required_table.setColumnWidth(8, 60)
-        self.required_table.setColumnWidth(9, 60)
-        self.required_table.setColumnWidth(10, 60)
-        self.required_table.setColumnHidden(0, False)
-        self.required_table.setColumnHidden(1, False)
-        self.required_table.setColumnHidden(2, True)
-        self.required_table.setColumnHidden(3, True)
-        self.required_table.setColumnHidden(4, True)
-        self.required_table.setColumnHidden(5, True)
-        self.required_table.setColumnHidden(6, False)
-        self.required_table.setColumnHidden(7, False)
-        self.required_table.setColumnHidden(8, False)
-        self.required_table.setColumnHidden(9, False)
-        self.required_table.setColumnHidden(10, False)
-        self.required_table.setHorizontalHeaderLabels(
+        self.reason_table.horizontalHeaderVisible = False
+        self.reason_table.verticalHeaderVisible = False
+        self.reason_table.setColumnWidth(0, 300)
+        self.reason_table.setColumnWidth(1, 400)
+        self.reason_table.setColumnWidth(2, 30)
+        self.reason_table.setColumnWidth(3, 30)
+        self.reason_table.setColumnWidth(4, 30)
+        self.reason_table.setColumnWidth(5, 30)
+        self.reason_table.setColumnWidth(6, 60)
+        self.reason_table.setColumnWidth(7, 60)
+        self.reason_table.setColumnWidth(8, 60)
+        self.reason_table.setColumnWidth(9, 60)
+        self.reason_table.setColumnWidth(10, 60)
+        self.reason_table.setColumnHidden(0, False)
+        self.reason_table.setColumnHidden(1, False)
+        self.reason_table.setColumnHidden(2, True)
+        self.reason_table.setColumnHidden(3, True)
+        self.reason_table.setColumnHidden(4, True)
+        self.reason_table.setColumnHidden(5, True)
+        self.reason_table.setColumnHidden(6, False)
+        self.reason_table.setColumnHidden(7, False)
+        self.reason_table.setColumnHidden(8, False)
+        self.reason_table.setColumnHidden(9, False)
+        self.reason_table.setColumnHidden(10, False)
+        self.reason_table.setHorizontalHeaderLabels(
             [
-                "Required",
-                "SuffFact",
+                "Reason",
+                "Premise",
                 "Base",
                 "Need",
                 "Open",
@@ -527,86 +525,86 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "sufffactstatus",
-                "SuffFactTask",
+                "premisestatus",
+                "PremiseTask",
             ]
         )
 
-    def requiredheir_table_load(self):
-        self.requiredheir_table.clear()
+    def reasonheir_table_load(self):
+        self.reasonheir_table.clear()
         row = 0
-        for requiredheir in self.x_idea._requiredheirs.values():
-            for sufffact in requiredheir.sufffacts.values():
-                requiredheir_text = requiredheir.base.replace(
+        for reasonheir in self.x_idea._reasonheirs.values():
+            for premise in reasonheir.premises.values():
+                reasonheir_text = reasonheir.base.replace(
                     f"{self.agenda_x._healer}", ""
                 )
-                requiredheir_text = requiredheir_text[1:]
-                sufffact_text = sufffact.need.replace(requiredheir.base, "")
-                sufffact_text = sufffact_text[1:]
-                sufffact_open = sufffact.open
-                sufffact_nigh = sufffact.nigh
-                if requiredheir_text == "time,jajatime":
-                    sufffact_open = self.agenda_x.get_jajatime_repeating_legible_text(
-                        open=sufffact.open,
-                        nigh=sufffact.nigh,
-                        divisor=sufffact.divisor,
+                reasonheir_text = reasonheir_text[1:]
+                premise_text = premise.need.replace(reasonheir.base, "")
+                premise_text = premise_text[1:]
+                premise_open = premise.open
+                premise_nigh = premise.nigh
+                if reasonheir_text == "time,jajatime":
+                    premise_open = self.agenda_x.get_jajatime_repeating_legible_text(
+                        open=premise.open,
+                        nigh=premise.nigh,
+                        divisor=premise.divisor,
                     )
-                    sufffact_nigh = ""
-                    sufffact_text = f"{sufffact_open}"
+                    premise_nigh = ""
+                    premise_text = f"{premise_open}"
 
-                elif sufffact.divisor != None:
-                    sufffact_text = f"{sufffact_text}  Open-Nigh {sufffact_open}-{sufffact.nigh} Divisor {sufffact.divisor}"
-                elif sufffact.open != None:
-                    sufffact_text = (
-                        f"{sufffact_text}  Open-Nigh {sufffact.open}-{sufffact.nigh}"
+                elif premise.divisor != None:
+                    premise_text = f"{premise_text}  Open-Nigh {premise_open}-{premise.nigh} Divisor {premise.divisor}"
+                elif premise.open != None:
+                    premise_text = (
+                        f"{premise_text}  Open-Nigh {premise.open}-{premise.nigh}"
                     )
                 else:
-                    sufffact_text = f"{sufffact_text}"
+                    premise_text = f"{premise_text}"
 
-                sufffact_text += f"{type(requiredheir)}"
+                premise_text += f"{type(reasonheir)}"
 
-                self.requiredheir_table.setRowCount(row + 1)
-                self.requiredheir_table.setItem(row, 0, qtw1(requiredheir_text))
-                self.requiredheir_table.setItem(row, 1, qtw1(sufffact_text))
-                self.requiredheir_table.setItem(row, 2, qtw1(requiredheir.base))
-                self.requiredheir_table.setItem(row, 3, qtw1(sufffact.need))
-                self.requiredheir_table.setItem(row, 4, qtw1(num2str(sufffact.open)))
-                self.requiredheir_table.setItem(row, 5, qtw1(num2str(sufffact.nigh)))
-                self.requiredheir_table.setItem(row, 6, qtw1(num2str(sufffact.divisor)))
-                self.requiredheir_table.setItem(row, 7, qtw1(f"{requiredheir._task}"))
-                self.requiredheir_table.setItem(row, 8, qtw1(f"{requiredheir._status}"))
-                self.requiredheir_table.setItem(row, 9, qtw1(str(sufffact._status)))
-                self.requiredheir_table.setItem(row, 10, qtw1(str(sufffact._task)))
+                self.reasonheir_table.setRowCount(row + 1)
+                self.reasonheir_table.setItem(row, 0, qtw1(reasonheir_text))
+                self.reasonheir_table.setItem(row, 1, qtw1(premise_text))
+                self.reasonheir_table.setItem(row, 2, qtw1(reasonheir.base))
+                self.reasonheir_table.setItem(row, 3, qtw1(premise.need))
+                self.reasonheir_table.setItem(row, 4, qtw1(num2str(premise.open)))
+                self.reasonheir_table.setItem(row, 5, qtw1(num2str(premise.nigh)))
+                self.reasonheir_table.setItem(row, 6, qtw1(num2str(premise.divisor)))
+                self.reasonheir_table.setItem(row, 7, qtw1(f"{reasonheir._task}"))
+                self.reasonheir_table.setItem(row, 8, qtw1(f"{reasonheir._status}"))
+                self.reasonheir_table.setItem(row, 9, qtw1(str(premise._status)))
+                self.reasonheir_table.setItem(row, 10, qtw1(str(premise._task)))
                 row += 1
 
-        self.requiredheir_table.horizontalHeaderVisible = False
-        self.requiredheir_table.verticalHeaderVisible = False
-        self.requiredheir_table.setColumnWidth(0, 300)
-        self.requiredheir_table.setColumnWidth(1, 400)
-        self.requiredheir_table.setColumnWidth(2, 30)
-        self.requiredheir_table.setColumnWidth(3, 30)
-        self.requiredheir_table.setColumnWidth(4, 30)
-        self.requiredheir_table.setColumnWidth(5, 30)
-        self.requiredheir_table.setColumnWidth(6, 60)
-        self.requiredheir_table.setColumnWidth(7, 60)
-        self.requiredheir_table.setColumnWidth(8, 60)
-        self.requiredheir_table.setColumnWidth(9, 60)
-        self.requiredheir_table.setColumnWidth(10, 60)
-        self.requiredheir_table.setColumnHidden(0, False)
-        self.requiredheir_table.setColumnHidden(1, False)
-        self.requiredheir_table.setColumnHidden(2, True)
-        self.requiredheir_table.setColumnHidden(3, True)
-        self.requiredheir_table.setColumnHidden(4, True)
-        self.requiredheir_table.setColumnHidden(5, True)
-        self.requiredheir_table.setColumnHidden(6, False)
-        self.requiredheir_table.setColumnHidden(7, False)
-        self.requiredheir_table.setColumnHidden(8, False)
-        self.requiredheir_table.setColumnHidden(9, False)
-        self.requiredheir_table.setColumnHidden(10, False)
-        self.requiredheir_table.setHorizontalHeaderLabels(
+        self.reasonheir_table.horizontalHeaderVisible = False
+        self.reasonheir_table.verticalHeaderVisible = False
+        self.reasonheir_table.setColumnWidth(0, 300)
+        self.reasonheir_table.setColumnWidth(1, 400)
+        self.reasonheir_table.setColumnWidth(2, 30)
+        self.reasonheir_table.setColumnWidth(3, 30)
+        self.reasonheir_table.setColumnWidth(4, 30)
+        self.reasonheir_table.setColumnWidth(5, 30)
+        self.reasonheir_table.setColumnWidth(6, 60)
+        self.reasonheir_table.setColumnWidth(7, 60)
+        self.reasonheir_table.setColumnWidth(8, 60)
+        self.reasonheir_table.setColumnWidth(9, 60)
+        self.reasonheir_table.setColumnWidth(10, 60)
+        self.reasonheir_table.setColumnHidden(0, False)
+        self.reasonheir_table.setColumnHidden(1, False)
+        self.reasonheir_table.setColumnHidden(2, True)
+        self.reasonheir_table.setColumnHidden(3, True)
+        self.reasonheir_table.setColumnHidden(4, True)
+        self.reasonheir_table.setColumnHidden(5, True)
+        self.reasonheir_table.setColumnHidden(6, False)
+        self.reasonheir_table.setColumnHidden(7, False)
+        self.reasonheir_table.setColumnHidden(8, False)
+        self.reasonheir_table.setColumnHidden(9, False)
+        self.reasonheir_table.setColumnHidden(10, False)
+        self.reasonheir_table.setHorizontalHeaderLabels(
             [
-                "Requiredheir",
-                "SuffFact",
+                "Reasonheir",
+                "Premise",
                 "Base",
                 "Need",
                 "Open",
@@ -614,12 +612,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "sufffactstatus",
-                "SuffFactTask",
+                "premisestatus",
+                "PremiseTask",
             ]
         )
 
-    def sufffactunit_hreg_update_weeks(self):
+    def premiseunit_hreg_update_weeks(self):
         self.hreg_days_repeat.setText("")
         self.hreg_days_remainder.setText("")
 
@@ -638,7 +636,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if self.hreg_weeks_remainder.toPlainText() == "":
             self.hreg_weeks_remainder.setText("0")
 
-        hu = SuffFactUnitHregTime()
+        hu = PremiseUnitHregTime()
         event_minutes = (int(self.hreg_length_hr.currentText()) * 60) + int(
             self.hreg_length_min.currentText()
         )
@@ -650,11 +648,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
             start_minute=int(self.hreg_open_min.currentText()),
             event_minutes=event_minutes,
         )
-        self.required_sufffact_open.setText(str(hu.jajatime_open))
-        self.required_sufffact_nigh.setText(str(hu.jajatime_nigh))
-        self.required_sufffact_divisor.setText(str(hu.jajatime_divisor))
+        self.reason_premise_open.setText(str(hu.jajatime_open))
+        self.reason_premise_nigh.setText(str(hu.jajatime_nigh))
+        self.reason_premise_divisor.setText(str(hu.jajatime_divisor))
 
-    def sufffactunit_hreg_update_days(self):
+    def premiseunit_hreg_update_days(self):
         self.hreg_weekday.setCurrentText("")
         self.hreg_weeks_repeat.setText("")
         self.hreg_weeks_remainder.setText("")
@@ -672,7 +670,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if self.hreg_days_remainder.toPlainText() == "":
             self.hreg_days_remainder.setText("0")
 
-        hu = SuffFactUnitHregTime()
+        hu = PremiseUnitHregTime()
         event_minutes = (int(self.hreg_length_hr.currentText()) * 60) + int(
             self.hreg_length_min.currentText()
         )
@@ -683,51 +681,51 @@ class EditIdeaUnit(qtw0, Ui_Form):
             start_minute=int(self.hreg_open_min.currentText()),
             event_minutes=event_minutes,
         )
-        self.required_sufffact_open.setText(str(hu.jajatime_open))
-        self.required_sufffact_nigh.setText(str(hu.jajatime_nigh))
-        self.required_sufffact_divisor.setText(str(hu.jajatime_divisor))
+        self.reason_premise_open.setText(str(hu.jajatime_open))
+        self.reason_premise_nigh.setText(str(hu.jajatime_nigh))
+        self.reason_premise_divisor.setText(str(hu.jajatime_divisor))
 
-    def required_upsert(self):
+    def reason_upsert(self):
         if (
-            self.required_base_combo.currentText() != ""
-            and self.required_sufffact_combo.currentText() != ""
+            self.reason_base_combo.currentText() != ""
+            and self.reason_premise_combo.currentText() != ""
         ):
-            base_x = self.required_base_combo.currentText()
-            sufffact_x = self.required_sufffact_combo.currentText()
-            open_x = str2float(self.required_sufffact_open.toPlainText())
-            nigh_x = str2float(self.required_sufffact_nigh.toPlainText())
-            divisor_x = str2float(self.required_sufffact_divisor.toPlainText())
+            base_x = self.reason_base_combo.currentText()
+            premise_x = self.reason_premise_combo.currentText()
+            open_x = str2float(self.reason_premise_open.toPlainText())
+            nigh_x = str2float(self.reason_premise_nigh.toPlainText())
+            divisor_x = str2float(self.reason_premise_divisor.toPlainText())
             idea_label = self.baseideaunit.currentItem().data(2, 10)
             idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
             self.agenda_x.edit_idea_attr(
                 road=f"{idea_parent_road},{idea_label}",
-                required_base=base_x,
-                required_sufffact=sufffact_x,
-                required_sufffact_open=open_x,
-                required_sufffact_nigh=nigh_x,
-                required_sufffact_divisor=divisor_x,
+                reason_base=base_x,
+                reason_premise=premise_x,
+                reason_premise_open=open_x,
+                reason_premise_nigh=nigh_x,
+                reason_premise_divisor=divisor_x,
             )
 
-            # self.x_idea.set_required_sufffact(
+            # self.x_idea.set_reason_premise(
             #     base=base_x,
-            #     need=sufffact_x,
+            #     need=premise_x,
             #     open=open_x,
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
             self.agenda_x.get_idea_list()
-            self.required_table_load()
+            self.reason_table_load()
 
-    def required_delete(self):
+    def reason_delete(self):
         if (
-            self.required_base_combo.currentText() != ""
-            and self.required_sufffact_combo.currentText() != ""
+            self.reason_base_combo.currentText() != ""
+            and self.reason_premise_combo.currentText() != ""
         ):
-            self.x_idea.del_requiredunit_sufffact(
-                base=self.required_base_combo.currentText(),
-                need=self.required_sufffact_combo.currentText(),
+            self.x_idea.del_reasonunit_premise(
+                base=self.reason_base_combo.currentText(),
+                need=self.reason_premise_combo.currentText(),
             )
-            self.required_table_load()
+            self.reason_table_load()
 
     def idea2group_table_select(self):
         self.idea2group_delete_button.setText(
@@ -833,15 +831,15 @@ class EditIdeaUnit(qtw0, Ui_Form):
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
             promise=(self.yo_action_cb.checkState() == 2),
             problem_bool=(self.yo_problem_bool_cb.checkState() == 2),
-            required_base=None,
-            required_sufffact=None,
-            required_sufffact_open=None,
-            required_sufffact_nigh=None,
-            required_sufffact_divisor=None,
-            required_del_sufffact_base=None,
-            required_del_sufffact_need=None,
+            reason_base=None,
+            reason_premise=None,
+            reason_premise_open=None,
+            reason_premise_nigh=None,
+            reason_premise_divisor=None,
+            reason_del_premise_base=None,
+            reason_del_premise_need=None,
             uid=None,
-            required=None,
+            reason=None,
             descendant_promise_count=None,
             all_party_credit=None,
             all_party_debt=None,
@@ -893,13 +891,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
             idea_kid=ideaunit_shop(done_text),
             parent_road=new_road,
         )
-        # set required to "not done"
+        # set reason to "not done"
         self.agenda_x.edit_idea_attr(
             road=new_road,
-            required_base=new_road,
-            required_sufffact=f"{new_road},{not_done_text}",
+            reason_base=new_road,
+            reason_premise=f"{new_road},{not_done_text}",
         )
-        self.agenda_x.set_acptfact(
+        self.agenda_x.set_fact(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
@@ -921,14 +919,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
             numeric_road=emptystring_returns_none(self.yo_numeric_road.currentText()),
             promise=(self.yo_action_cb.checkState() == 2),
             uid=None,
-            required=None,
-            required_base=None,
-            required_sufffact=None,
-            required_sufffact_open=None,
-            required_sufffact_nigh=None,
-            required_sufffact_divisor=None,
-            required_del_sufffact_base=None,
-            required_del_sufffact_need=None,
+            reason=None,
+            reason_base=None,
+            reason_premise=None,
+            reason_premise_open=None,
+            reason_premise_nigh=None,
+            reason_premise_divisor=None,
+            reason_del_premise_base=None,
+            reason_del_premise_need=None,
             descendant_promise_count=None,
             all_party_credit=None,
             all_party_debt=None,
@@ -957,14 +955,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         yo2bd_count_flag = self.cb_yo2bd_count.checkState() == 2
         # yo2bd_spec1_flag = self.yo2bd_spec1_flag.checkState() == 2
         yo_complete_flag = self.cb_yo_complete.checkState() == 2
-        yo_acptfactunit_time_flag = self.cb_yo_acptfactunit_time.checkState() == 2
-        yo_acptfactunit_count_flag = self.cb_yo_acptfactunit_count.checkState() == 2
-        yo_acptfactheir_count_flag = self.cb_yo_acptfactheir_count.checkState() == 2
-        requiredheir_count_flag = self.cb_requiredheir_count.checkState() == 2
-        required_count_flag = self.cb_required_count.checkState() == 2
-        required_view_flag = self.cb_required_view.checkState() == 2
-        required_view_base = self.combo_dim_root.currentText()
-        acptfactheir_view_flag = self.cb_acptfactheir_view.checkState() == 2
+        yo_factunit_time_flag = self.cb_yo_factunit_time.checkState() == 2
+        yo_factunit_count_flag = self.cb_yo_factunit_count.checkState() == 2
+        yo_factheir_count_flag = self.cb_yo_factheir_count.checkState() == 2
+        reasonheir_count_flag = self.cb_reasonheir_count.checkState() == 2
+        reason_count_flag = self.cb_reason_count.checkState() == 2
+        reason_view_flag = self.cb_reason_view.checkState() == 2
+        reason_view_base = self.combo_dim_root.currentText()
+        factheir_view_flag = self.cb_factheir_view.checkState() == 2
 
         # root = self.baseideaunit.invisibleRootItem()
         # self.yo_tree_isExpanded(node=root, level=1)
@@ -976,16 +974,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
             idearoot=self.agenda_x._idearoot,
             yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
-            yo_acptfactunit_time_flag=yo_acptfactunit_time_flag,
-            yo_acptfactunit_count_flag=yo_acptfactunit_count_flag,
-            yo_acptfactheir_count_flag=yo_acptfactheir_count_flag,
+            yo_factunit_time_flag=yo_factunit_time_flag,
+            yo_factunit_count_flag=yo_factunit_count_flag,
+            yo_factheir_count_flag=yo_factheir_count_flag,
             yo_complete_flag=yo_complete_flag,
             yo2bd_count_flag=yo2bd_count_flag,
-            requiredheir_count_flag=requiredheir_count_flag,
-            required_count_flag=required_count_flag,
-            required_view_flag=required_view_flag,
-            required_view_pid=required_view_base,
-            acptfactheir_view_flag=acptfactheir_view_flag,
+            reasonheir_count_flag=reasonheir_count_flag,
+            reason_count_flag=reason_count_flag,
+            reason_view_flag=reason_view_flag,
+            reason_view_pid=reason_view_base,
+            factheir_view_flag=factheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_agenda=self.agenda_x,
         )
@@ -1020,34 +1018,34 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.agenda_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
             self.idea_tree_set_is_expanded(item)
 
-    def required_table_select(self):
-        self.required_base_combo_load()
-        self.required_base_combo.setCurrentText(
-            self.required_table.item(self.required_table.currentRow(), 2).text()
+    def reason_table_select(self):
+        self.reason_base_combo_load()
+        self.reason_base_combo.setCurrentText(
+            self.reason_table.item(self.reason_table.currentRow(), 2).text()
         )
-        self.required_sufffact_combo.setCurrentText(
-            self.required_table.item(self.required_table.currentRow(), 3).text()
+        self.reason_premise_combo.setCurrentText(
+            self.reason_table.item(self.reason_table.currentRow(), 3).text()
         )
-        self.required_sufffact_open.setText(
-            self.required_table.item(self.required_table.currentRow(), 4).text()
+        self.reason_premise_open.setText(
+            self.reason_table.item(self.reason_table.currentRow(), 4).text()
         )
-        self.required_sufffact_nigh.setText(
-            self.required_table.item(self.required_table.currentRow(), 5).text()
+        self.reason_premise_nigh.setText(
+            self.reason_table.item(self.reason_table.currentRow(), 5).text()
         )
-        self.required_sufffact_divisor.setText(
-            self.required_table.item(self.required_table.currentRow(), 6).text()
+        self.reason_premise_divisor.setText(
+            self.reason_table.item(self.reason_table.currentRow(), 6).text()
         )
 
-        if self.required_sufffact_divisor.toPlainText() != "":
-            if float(self.required_sufffact_divisor.toPlainText()) % 10080 == 0:
-                self.set_weeks_repeat_sufffactunit_hregtime()
-            elif float(self.required_sufffact_divisor.toPlainText()) % 1440 == 0:
-                self.set_days_repeat_sufffactunit_hregtime()
+        if self.reason_premise_divisor.toPlainText() != "":
+            if float(self.reason_premise_divisor.toPlainText()) % 10080 == 0:
+                self.set_weeks_repeat_premiseunit_hregtime()
+            elif float(self.reason_premise_divisor.toPlainText()) % 1440 == 0:
+                self.set_days_repeat_premiseunit_hregtime()
 
-    def set_days_repeat_sufffactunit_hregtime(self):
-        days_minutes = float(self.required_sufffact_open.toPlainText())
+    def set_days_repeat_premiseunit_hregtime(self):
+        days_minutes = float(self.reason_premise_open.toPlainText())
         day_minutes = days_minutes % 1440
-        days_repeat = float(self.required_sufffact_divisor.toPlainText()) / 1440
+        days_repeat = float(self.reason_premise_divisor.toPlainText()) / 1440
         self.hreg_days_repeat.setText(str(int(days_repeat)))
 
         days_remainder = (days_minutes - day_minutes) / 1440
@@ -1059,14 +1057,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         event_hour = (day_minutes - event_minute) / 60
         self.hreg_open_hr.setCurrentText(str(int(event_hour)))
 
-    def set_weeks_repeat_sufffactunit_hregtime(self):
+    def set_weeks_repeat_premiseunit_hregtime(self):
         self.hreg_weeks_repeat.setText(
-            str(int(float(self.required_sufffact_divisor.toPlainText()) / 1440))
+            str(int(float(self.reason_premise_divisor.toPlainText()) / 1440))
         )
 
-        week_extra_min = float(self.required_sufffact_open.toPlainText()) % 10080
+        week_extra_min = float(self.reason_premise_open.toPlainText()) % 10080
         week_remainder = (
-            float(self.required_sufffact_open.toPlainText()) - week_extra_min
+            float(self.reason_premise_open.toPlainText()) - week_extra_min
         ) / 10080
         self.hreg_weeks_remainder.setText(str(int(week_remainder)))
 
@@ -1095,14 +1093,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         days_extra = week_extra_min - 0
 
-    def set_weeks_repeat_sufffactunit_hregtime(self):
+    def set_weeks_repeat_premiseunit_hregtime(self):
         self.hreg_weeks_repeat.setText(
-            str(int(float(self.required_sufffact_divisor.toPlainText()) / 10080))
+            str(int(float(self.reason_premise_divisor.toPlainText()) / 10080))
         )
 
-        week_extra_min = float(self.required_sufffact_open.toPlainText()) % 10080
+        week_extra_min = float(self.reason_premise_open.toPlainText()) % 10080
         week_remainder = (
-            float(self.required_sufffact_open.toPlainText()) - week_extra_min
+            float(self.reason_premise_open.toPlainText()) - week_extra_min
         ) / 10080
         self.hreg_weeks_remainder.setText(str(int(week_remainder)))
 

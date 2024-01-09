@@ -21,7 +21,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     input_agenda = example_healers_get_6node_agenda()
     x_economy.save_public_agenda(input_agenda)
-    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
+    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Fact())
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
@@ -71,10 +71,8 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     #     )
     #     assert output_agenda_counterpart_x1._label == idea_kid_x1._label
     # assert output_agenda._idearoot._kids == input_agenda._idearoot._kids
-    assert output_agenda._idearoot._acptfactunits == {}
-    assert (
-        output_agenda._idearoot._acptfactunits == input_agenda._idearoot._acptfactunits
-    )
+    assert output_agenda._idearoot._factunits == {}
+    assert output_agenda._idearoot._factunits == input_agenda._idearoot._factunits
     assert list(output_agenda._partys.keys()) == [xia_text, a_text]
     assert output_agenda._partys != input_agenda._partys
     assert list(output_agenda._groups.keys()) == [xia_text, a_text]
@@ -100,7 +98,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
 
     x_economy.save_public_agenda(x1_agenda)
     x_economy.save_public_agenda(x2_agenda)
-    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesRequired_1AcptFact())
+    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Fact())
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
@@ -135,9 +133,9 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     #     )
     #     assert output_agenda_counterpart_x1._label == idea_kid_x1._label
     # assert output_agenda._idearoot._kids == x1_agenda._idearoot._kids
-    assert len(output_agenda._idearoot._acptfactunits) == 9
-    assert len(output_agenda._idearoot._acptfactunits) == len(
-        x2_agenda._idearoot._acptfactunits
+    assert len(output_agenda._idearoot._factunits) == 9
+    assert len(output_agenda._idearoot._factunits) == len(
+        x2_agenda._idearoot._factunits
     )
     assert len(output_agenda._partys) == 25
     assert len(output_agenda._partys) == len(x2_agenda._partys) + 2 + 1

@@ -520,7 +520,7 @@
     <string>All Day</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactunit_count">
+  <widget class="QCheckBox" name="cb_yo_factunit_count">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -530,10 +530,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>acptfactunits</string>
+    <string>factunits</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactunit_time">
+  <widget class="QCheckBox" name="cb_yo_factunit_time">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -543,10 +543,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>time acptfactunit</string>
+    <string>time factunit</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_base_combo">
+  <widget class="QComboBox" name="reason_base_combo">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -561,7 +561,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QTableWidget" name="required_table">
+  <widget class="QTableWidget" name="reason_table">
    <property name="geometry">
     <rect>
      <x>580</x>
@@ -572,12 +572,12 @@
    </property>
    <column>
     <property name="text">
-     <string>Required Base</string>
+     <string>Reason Base</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SuffFact</string>
+     <string>Premise</string>
     </property>
    </column>
    <column>
@@ -617,7 +617,7 @@
    </column>
    <column>
     <property name="text">
-     <string>SuffFact_status</string>
+     <string>Premise_status</string>
     </property>
    </column>
    <column>
@@ -626,7 +626,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QCheckBox" name="cb_requiredheir_count">
+  <widget class="QCheckBox" name="cb_reasonheir_count">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -636,10 +636,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>RequiredHeir count</string>
+    <string>ReasonHeir count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_required_count">
+  <widget class="QCheckBox" name="cb_reason_count">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -649,10 +649,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>RequiredUnit count</string>
+    <string>ReasonUnit count</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_required_view">
+  <widget class="QCheckBox" name="cb_reason_view">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -662,7 +662,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Required:</string>
+    <string>Reason:</string>
    </property>
   </widget>
   <widget class="QComboBox" name="combo_dim_root">
@@ -690,7 +690,7 @@
     </font>
    </property>
    <property name="text">
-    <string>SuffFact</string>
+    <string>Premise</string>
    </property>
   </widget>
   <widget class="QLabel" name="prom_l_02">
@@ -729,7 +729,7 @@
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_required_upsert">
+  <widget class="QPushButton" name="button_reason_upsert">
    <property name="geometry">
     <rect>
      <x>1330</x>
@@ -744,7 +744,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Required Update</string>
+    <string>Reason Update</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
@@ -864,7 +864,7 @@
     <string>create hreg</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_combo">
+  <widget class="QComboBox" name="reason_premise_combo">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -879,7 +879,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_open">
+  <widget class="QTextEdit" name="reason_premise_open">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -894,7 +894,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_nigh">
+  <widget class="QTextEdit" name="reason_premise_nigh">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -909,7 +909,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QTextEdit" name="required_sufffact_divisor">
+  <widget class="QTextEdit" name="reason_premise_divisor">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -978,7 +978,7 @@
     <string>Base</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_required_delete">
+  <widget class="QPushButton" name="button_reason_delete">
    <property name="geometry">
     <rect>
      <x>1330</x>
@@ -993,7 +993,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Required Del</string>
+    <string>Reason Del</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_task_status">
@@ -1113,7 +1113,7 @@
     <string>Special RoadUnit</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_open_combo">
+  <widget class="QComboBox" name="reason_premise_open_combo">
    <property name="geometry">
     <rect>
      <x>700</x>
@@ -1128,7 +1128,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_nigh_combo">
+  <widget class="QComboBox" name="reason_premise_nigh_combo">
    <property name="geometry">
     <rect>
      <x>700</x>
@@ -1143,7 +1143,7 @@
     </font>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_sufffact_divisor_combo">
+  <widget class="QComboBox" name="reason_premise_divisor_combo">
    <property name="geometry">
     <rect>
      <x>700</x>
@@ -1588,7 +1588,7 @@
     <string>Monthday:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_sufffactunit_hreg_update_weeks">
+  <widget class="QPushButton" name="button_premiseunit_hreg_update_weeks">
    <property name="geometry">
     <rect>
      <x>1530</x>
@@ -1598,7 +1598,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>apply sufffactunit_hregtime</string>
+    <string>apply premiseunit_hregtime</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="hreg_weeks_remainder">
@@ -1649,7 +1649,7 @@
     <string>Starting...</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_sufffactunit_hreg_update_days">
+  <widget class="QPushButton" name="button_premiseunit_hreg_update_days">
    <property name="geometry">
     <rect>
      <x>1530</x>
@@ -1659,7 +1659,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>apply sufffactunit_hregtime_days</string>
+    <string>apply premiseunit_hregtime_days</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="yo_problem_bool_cb">
@@ -1675,7 +1675,7 @@
     <string>Problem</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_acptfactheir_view">
+  <widget class="QCheckBox" name="cb_factheir_view">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -1685,10 +1685,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>AcptFactheir:</string>
+    <string>Factheir:</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_acptfactheir_count">
+  <widget class="QCheckBox" name="cb_yo_factheir_count">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -1698,7 +1698,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>acptfactheirs</string>
+    <string>factheirs</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_active_status">
@@ -1734,7 +1734,7 @@
     <string>Active Status:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_view_requiredheirs">
+  <widget class="QPushButton" name="button_view_reasonheirs">
    <property name="geometry">
     <rect>
      <x>1430</x>
@@ -1749,10 +1749,10 @@
     </font>
    </property>
    <property name="text">
-    <string>view RequiredHeirs</string>
+    <string>view ReasonHeirs</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="requiredheir_table">
+  <widget class="QTableWidget" name="reasonheir_table">
    <property name="geometry">
     <rect>
      <x>580</x>
@@ -1763,12 +1763,12 @@
    </property>
    <column>
     <property name="text">
-     <string>Required Base</string>
+     <string>Reason Base</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>SuffFact</string>
+     <string>Premise</string>
     </property>
    </column>
    <column>
@@ -1808,7 +1808,7 @@
    </column>
    <column>
     <property name="text">
-     <string>SuffFact_status</string>
+     <string>Premise_status</string>
     </property>
    </column>
    <column>
@@ -1845,10 +1845,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Required Base Agenda Status is Sufficient when Promise status is </string>
+    <string>Reason Base Agenda Status is Sufficient when Promise status is </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="required_suff_active_status_combo">
+  <widget class="QComboBox" name="reason_suff_active_status_combo">
    <property name="geometry">
     <rect>
      <x>1420</x>

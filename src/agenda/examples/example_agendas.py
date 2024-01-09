@@ -1,17 +1,17 @@
 from src._prime.road import RoadUnit
 from src.agenda.idea import ideaunit_shop
-from src.agenda.required_idea import (
-    acptfactunit_shop,
-    sufffactunit_shop,
-    requiredunit_shop,
-    acptfactunit_shop,
+from src.agenda.reason_idea import (
+    factunit_shop,
+    premiseunit_shop,
+    reasonunit_shop,
+    factunit_shop,
 )
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.agenda.required_assign import assigned_unit_shop
+from src.agenda.reason_assign import assigned_unit_shop
 from src.tools.file import open_file
 from src.agenda.examples.agenda_env import agenda_env
 
@@ -49,18 +49,18 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
     # movie_text = "No Movie playing"
     # movie_road = x_agenda.make_road(x_agenda._economy_id,movie_text)
 
-    x_agenda.set_acptfact(base=aaron_road, pick=aaron_road)
-    x_agenda.set_acptfact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
-    x_agenda.set_acptfact(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
-    # x_agenda.set_acptfact(base=internet, pick=internet)
-    x_agenda.set_acptfact(base=month_week_road, pick=month_week_road, open=0, nigh=5)
-    x_agenda.set_acptfact(base=mood_road, pick=mood_road)
-    # x_agenda.set_acptfact(base=movie, pick=movie)
-    x_agenda.set_acptfact(base=nations_road, pick=nations_road)
-    x_agenda.set_acptfact(base=season_road, pick=season_road)
-    x_agenda.set_acptfact(base=year_month_road, pick=year_month_road, open=0, nigh=12)
-    # x_agenda.set_acptfact(base=water, pick=water)
-    x_agenda.set_acptfact(base=weekdays_road, pick=weekdays_road)
+    x_agenda.set_fact(base=aaron_road, pick=aaron_road)
+    x_agenda.set_fact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
+    x_agenda.set_fact(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
+    # x_agenda.set_fact(base=internet, pick=internet)
+    x_agenda.set_fact(base=month_week_road, pick=month_week_road, open=0, nigh=5)
+    x_agenda.set_fact(base=mood_road, pick=mood_road)
+    # x_agenda.set_fact(base=movie, pick=movie)
+    x_agenda.set_fact(base=nations_road, pick=nations_road)
+    x_agenda.set_fact(base=season_road, pick=season_road)
+    x_agenda.set_fact(base=year_month_road, pick=year_month_road, open=0, nigh=12)
+    # x_agenda.set_fact(base=water, pick=water)
+    x_agenda.set_fact(base=weekdays_road, pick=weekdays_road)
 
     return x_agenda
 
@@ -142,31 +142,31 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     return sue_agenda
 
 
-def get_agenda_with_4_levels_and_2requireds() -> AgendaUnit:
+def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
     sue_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
     wed_text = "Wednesday"
     wed_road = sue_agenda.make_road(week_road, wed_text)
-    week_required = requiredunit_shop(week_road)
-    week_required.set_sufffact(wed_road)
+    week_reason = reasonunit_shop(week_road)
+    week_reason.set_premise(wed_road)
 
     nation_text = "nation-state"
     nation_road = sue_agenda.make_l1_road(nation_text)
     usa_text = "USA"
     usa_road = sue_agenda.make_road(nation_road, usa_text)
-    nation_required = requiredunit_shop(nation_road)
-    nation_required.set_sufffact(usa_road)
+    nation_reason = reasonunit_shop(nation_road)
+    nation_reason.set_premise(usa_road)
 
     work_text = "work"
     work_road = sue_agenda.make_l1_road(work_text)
-    sue_agenda.edit_idea_attr(road=work_road, required=week_required)
-    sue_agenda.edit_idea_attr(road=work_road, required=nation_required)
+    sue_agenda.edit_idea_attr(road=work_road, reason=week_reason)
+    sue_agenda.edit_idea_attr(road=work_road, reason=nation_reason)
     return sue_agenda
 
 
-def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels_and_2requireds()
+def get_agenda_with_4_levels_and_2reasons_2facts() -> AgendaUnit:
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
     wed_text = "Wednesday"
@@ -175,13 +175,13 @@ def get_agenda_with_4_levels_and_2requireds_2acptfacts() -> AgendaUnit:
     states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
     usa_road = sue_agenda.make_road(states_road, usa_text)
-    sue_agenda.set_acptfact(base=week_road, pick=wed_road)
-    sue_agenda.set_acptfact(base=states_road, pick=usa_road)
+    sue_agenda.set_fact(base=week_road, pick=wed_road)
+    sue_agenda.set_fact(base=states_road, pick=usa_road)
     return sue_agenda
 
 
-def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels_and_2requireds_2acptfacts()
+def get_agenda_with7amCleanTableReason() -> AgendaUnit:
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
 
     time_text = "timetech"
     time_road = sue_agenda.make_l1_road(time_text)
@@ -233,23 +233,23 @@ def get_agenda_with7amCleanTableRequired() -> AgendaUnit:
     sue_agenda.add_idea(grab_idea, parent_road=soap_road)
 
     clean_table_7am_base = day24hr_road
-    clean_table_7am_sufffact_road = day24hr_road
-    clean_table_7am_sufffact_open = 7.0
-    clean_table_7am_sufffact_nigh = 7.0
-    clean_table_7am_required = requiredunit_shop(clean_table_7am_base)
-    clean_table_7am_required.set_sufffact(
-        sufffact=clean_table_7am_sufffact_road,
-        open=clean_table_7am_sufffact_open,
-        nigh=clean_table_7am_sufffact_nigh,
+    clean_table_7am_premise_road = day24hr_road
+    clean_table_7am_premise_open = 7.0
+    clean_table_7am_premise_nigh = 7.0
+    clean_table_7am_reason = reasonunit_shop(clean_table_7am_base)
+    clean_table_7am_reason.set_premise(
+        premise=clean_table_7am_premise_road,
+        open=clean_table_7am_premise_open,
+        nigh=clean_table_7am_premise_nigh,
     )
-    sue_agenda.edit_idea_attr(road=clean_road, required=clean_table_7am_required)
+    sue_agenda.edit_idea_attr(road=clean_road, reason=clean_table_7am_reason)
     work_text = "work"
     work_road = sue_agenda.make_l1_road(work_text)
-    sue_agenda.edit_idea_attr(road=work_road, required=clean_table_7am_required)
+    sue_agenda.edit_idea_attr(road=work_road, reason=clean_table_7am_reason)
     return sue_agenda
 
 
-def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
+def get_agenda_1Task_1CE0MinutesReason_1Fact() -> AgendaUnit:
     bob_agenda = agendaunit_shop(_healer="Bob", _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = ideaunit_shop(ced_min_label)
@@ -259,29 +259,29 @@ def get_agenda_1Task_1CE0MinutesRequired_1AcptFact() -> AgendaUnit:
     mail_task = ideaunit_shop(mail_label, promise=True)
     bob_agenda.add_idea(mail_task, parent_road=bob_agenda._economy_id)
 
-    sufffact_x = sufffactunit_shop(need=ced_road, open=80, nigh=90)
-    x_task_required = requiredunit_shop(
-        base=sufffact_x.need, sufffacts={sufffact_x.need: sufffact_x}
+    premise_x = premiseunit_shop(need=ced_road, open=80, nigh=90)
+    x_task_reason = reasonunit_shop(
+        base=premise_x.need, premises={premise_x.need: premise_x}
     )
     mail_road = bob_agenda.make_l1_road(mail_label)
-    bob_agenda.edit_idea_attr(road=mail_road, required=x_task_required)
+    bob_agenda.edit_idea_attr(road=mail_road, reason=x_task_reason)
 
-    x_acptfact = acptfactunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
+    x_fact = factunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
     # print(
-    #     f"1Task_1CE0MinutesRequired_1AcptFact 2. {len(bob_agenda._idearoot._kids)=} {x_acptfact.base=}"
+    #     f"1Task_1CE0MinutesReason_1Fact 2. {len(bob_agenda._idearoot._kids)=} {x_fact.base=}"
     # )
-    bob_agenda.set_acptfact(
-        base=x_acptfact.base,
-        pick=x_acptfact.pick,
-        open=x_acptfact.open,
-        nigh=x_acptfact.nigh,
+    bob_agenda.set_fact(
+        base=x_fact.base,
+        pick=x_fact.pick,
+        open=x_fact.open,
+        nigh=x_fact.nigh,
     )
-    # print(f"1Task_1CE0MinutesRequired_1AcptFact 3. {len(bob_agenda._idearoot._kids)=}")
+    # print(f"1Task_1CE0MinutesReason_1Fact 3. {len(bob_agenda._idearoot._kids)=}")
 
     return bob_agenda
 
 
-def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
+def get_agenda_x1_3levels_1reason_1facts() -> AgendaUnit:
     kol_agenda = agendaunit_shop(_healer="Kol", _weight=10)
     shave_text = "shave"
     shave_road = kol_agenda.make_l1_road(shave_text)
@@ -303,13 +303,13 @@ def get_agenda_x1_3levels_1required_1acptfacts() -> AgendaUnit:
     kol_agenda.add_idea(idea_grandkidU, parent_road=week_road)
     kol_agenda.add_idea(idea_grandkidM, parent_road=week_road)
 
-    shave_required = requiredunit_shop(week_road)
-    shave_required.set_sufffact(mon_road)
+    shave_reason = reasonunit_shop(week_road)
+    shave_reason.set_premise(mon_road)
 
-    kol_agenda.edit_idea_attr(road=shave_road, required=shave_required)
-    kol_agenda.set_acptfact(base=week_road, pick=sun_road)
-    acptfactunit_x = acptfactunit_shop(base=week_road, pick=church_road)
-    kol_agenda.edit_idea_attr(road=shave_road, acptfactunit=acptfactunit_x)
+    kol_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
+    kol_agenda.set_fact(base=week_road, pick=sun_road)
+    factunit_x = factunit_shop(base=week_road, pick=church_road)
+    kol_agenda.edit_idea_attr(road=shave_road, factunit=factunit_x)
     return kol_agenda
 
 
@@ -352,16 +352,16 @@ def get_agenda_irrational_example() -> AgendaUnit:
     hatter_agenda.edit_idea_attr(
         road=egg_road,
         promise=True,
-        required_base=chicken_road,
-        required_suff_idea_active_status=True,
+        reason_base=chicken_road,
+        reason_suff_idea_active_status=True,
     )
 
     # set chick promise is True when egg first is False
     hatter_agenda.edit_idea_attr(
         road=chicken_road,
         promise=True,
-        required_base=egg_road,
-        required_suff_idea_active_status=False,
+        reason_base=egg_road,
+        reason_suff_idea_active_status=False,
     )
 
     return hatter_agenda
@@ -391,9 +391,9 @@ def get_assignment_agenda_example1():
     neo_agenda.add_idea(ideaunit_shop("moderately"), parent_road=clean_road)
     neo_agenda.add_idea(ideaunit_shop("dirty"), parent_road=status_road)
 
-    floor_required = requiredunit_shop(status_road)
-    floor_required.set_sufffact(sufffact=status_road)
-    neo_agenda.edit_idea_attr(road=floor_road, required=floor_required)
+    floor_reason = reasonunit_shop(status_road)
+    floor_reason.set_premise(premise=status_road)
+    neo_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
 
     return neo_agenda
 
@@ -430,11 +430,11 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
 
     # laundry requirement
     amer_agenda.edit_idea_attr(
-        road=laundry_task_road, required_base=basket_road, required_sufffact=b_full_road
+        road=laundry_task_road, reason_base=basket_road, reason_premise=b_full_road
     )
     # laundry requirement
     amer_agenda.edit_idea_attr(
-        road=laundry_task_road, required_base=basket_road, required_sufffact=b_smel_road
+        road=laundry_task_road, reason_base=basket_road, reason_premise=b_smel_road
     )
     # assign Cali to task
     cali_assignunit = assigned_unit_shop()
@@ -442,7 +442,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
     # print(f"{amer_agenda._economy_id=}")
-    amer_agenda.set_acptfact(base=basket_road, pick=b_full_road)
+    amer_agenda.set_fact(base=basket_road, pick=b_full_road)
 
     return amer_agenda
 
@@ -484,72 +484,72 @@ def from_list_get_active_status(
 
 
 def yr_print_idea_base_info(idea, filter: bool):
-    for l in idea._requiredheirs.values():
+    for l in idea._reasonheirs.values():
         if l._status == filter:
             print(
-                f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
+                f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
             )
             if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-                yr_print_acptfact(
+                yr_print_fact(
                     lh_base=l.base,
                     lh_status=l._status,
-                    sufffacts=l.sufffacts,
-                    acptfactheirs=idea._acptfactheirs,
+                    premises=l.premises,
+                    factheirs=idea._factheirs,
                 )
 
 
 def yr_explanation(idea):
     str1 = f"'{yr_d(idea._parent_road)}' idea"
-    str2 = f" has RequiredU:{yr_x(idea._requiredunits)} LH:{yr_x(idea._requiredheirs)}"
+    str2 = f" has ReasonU:{yr_x(idea._reasonunits)} LH:{yr_x(idea._reasonheirs)}"
     str3 = f" {str(type(idea))}"
     str4 = " "
     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-        str3 = f" AcptFacts:{yr_x(idea._acptfactheirs)} Status: {idea._active_status}"
+        str3 = f" Facts:{yr_x(idea._factheirs)} Status: {idea._active_status}"
 
         print(f"\n{str1}{str2}{str3}")
-        hh_wo_matched_required = []
-        for hh in idea._acptfactheirs.values():
-            hh_wo_matched_required = []
+        hh_wo_matched_reason = []
+        for hh in idea._factheirs.values():
+            hh_wo_matched_reason = []
             try:
-                idea._requiredheirs[hh.base]
+                idea._reasonheirs[hh.base]
             except Exception:
-                hh_wo_matched_required.append(hh.base)
+                hh_wo_matched_reason.append(hh.base)
 
-        for base in hh_wo_matched_required:
-            print(f"AcptFacts that don't matter to this Idea: {base}")
+        for base in hh_wo_matched_reason:
+            print(f"Facts that don't matter to this Idea: {base}")
 
-    # if idea._requiredunits != None:
-    #     for lu in idea._requiredunits.values():
-    #         print(f"  RequiredUnit   '{lu.base}' sufffacts: {len(lu.sufffacts)} ")
-    if idea._requiredheirs != None:
+    # if idea._reasonunits != None:
+    #     for lu in idea._reasonunits.values():
+    #         print(f"  ReasonUnit   '{lu.base}' premises: {len(lu.premises)} ")
+    if idea._reasonheirs != None:
         filter_x = True
         yr_print_idea_base_info(idea=idea, filter=True)
 
         filter_x = False
-        print("\nRequireds that failed:")
+        print("\nReasons that failed:")
 
-        for l in idea._requiredheirs.values():
+        for l in idea._reasonheirs.values():
             if l._status == filter_x:
                 print(
-                    f"  RequiredHeir '{l.base}' Base LH:{l._status} W:{len(l.sufffacts)}"  # \t_task {l._task}"
+                    f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
                 )
                 if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-                    yr_print_acptfact(
+                    yr_print_fact(
                         lh_base=l.base,
                         lh_status=l._status,
-                        sufffacts=l.sufffacts,
-                        acptfactheirs=idea._acptfactheirs,
+                        premises=l.premises,
+                        factheirs=idea._factheirs,
                     )
                 print("")
-    # print(idea._acptfactheirs)
-    # print(f"{(idea._acptfactheirs != None)=}")
-    # print(f"{len(idea._acptfactheirs)=} ")
+    # print(idea._factheirs)
+    # print(f"{(idea._factheirs != None)=}")
+    # print(f"{len(idea._factheirs)=} ")
 
     print("")
 
 
-def yr_print_acptfact(lh_base, lh_status, sufffacts, acptfactheirs):
-    for ww in sufffacts.values():
+def yr_print_fact(lh_base, lh_status, premises, factheirs):
+    for ww in premises.values():
         ww_open = ""
         ww_open = f"\topen:{ww.open}" if ww.open != None else ""
         ww_nigh = ""
@@ -559,10 +559,10 @@ def yr_print_acptfact(lh_base, lh_status, sufffacts, acptfactheirs):
         hh_nigh = ""
         hh_pick = ""
         print(
-            f"\t    '{lh_base}' SuffFact LH:{lh_status} W:{ww._status}\tneed:{ww.need}{ww_open}{ww_nigh}"
+            f"\t    '{lh_base}' Premise LH:{lh_status} W:{ww._status}\tneed:{ww.need}{ww_open}{ww_nigh}"
         )
 
-        for hh in acptfactheirs.values():
+        for hh in factheirs.values():
             if hh.base == lh_base:
                 if hh.open != None:
                     hh_open = f"\topen:{hh.open}"
@@ -571,10 +571,10 @@ def yr_print_acptfact(lh_base, lh_status, sufffacts, acptfactheirs):
                 hh_pick = hh.pick
                 # if hh_pick != "":
                 print(
-                    f"\t    '{hh.base}' AcptFact LH:{lh_status} W:{ww._status}\tAcptFact:{hh_pick}{hh_open}{hh_nigh}"
+                    f"\t    '{hh.base}' Fact LH:{lh_status} W:{ww._status}\tFact:{hh_pick}{hh_open}{hh_nigh}"
                 )
         if hh_pick == "":
-            print(f"\t    Base: No AcptFact")
+            print(f"\t    Base: No Fact")
 
 
 def yr_d(self):

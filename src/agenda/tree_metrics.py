@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.agenda.required_idea import RequiredUnit, RoadUnit
+from src.agenda.reason_idea import ReasonUnit, RoadUnit
 from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
 from src.tools.python import get_empty_dict_if_none
 
@@ -8,7 +8,7 @@ from src.tools.python import get_empty_dict_if_none
 class TreeMetrics:
     node_count: int = None
     level_count: dict[int:int] = None
-    required_bases: dict[RoadUnit:int] = None
+    reason_bases: dict[RoadUnit:int] = None
     balancelinks_metrics: dict[GroupBrand:GroupMetrics] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
@@ -20,8 +20,8 @@ class TreeMetrics:
             self.node_count = 0
         if self.level_count is None:
             self.level_count = {}
-        if self.required_bases is None:
-            self.required_bases = {}
+        if self.reason_bases is None:
+            self.reason_bases = {}
         self.set_balancelinks_metrics_empty_if_null()
         if self.uid_max is None:
             self.uid_max = 0
@@ -35,7 +35,7 @@ class TreeMetrics:
     def evaluate_node(
         self,
         level: int,
-        requireds: dict[RoadUnit:RequiredUnit],
+        reasons: dict[RoadUnit:ReasonUnit],
         balancelinks: dict[GroupBrand:BalanceLink],
         uid: int,
         promise: bool,
@@ -44,7 +44,7 @@ class TreeMetrics:
         self.node_count += 1
         self.evaluate_action(promise=promise, idea_road=idea_road)
         self.evaluate_level(level=level)
-        self.evaluate_requiredunits(requireds=requireds)
+        self.evaluate_reasonunits(reasons=reasons)
         self.evaluate_balancelinks(balancelinks=balancelinks)
         self.evaluate_uid_max(uid=uid)
 
@@ -58,16 +58,14 @@ class TreeMetrics:
         else:
             self.level_count[level] = self.level_count[level] + 1
 
-    def evaluate_requiredunits(self, requireds: dict[RoadUnit:RequiredUnit]):
-        if requireds is None:
-            requireds = {}
-        for required in requireds.values():
-            if self.required_bases.get(required.base) is None:
-                self.required_bases[required.base] = 1
+    def evaluate_reasonunits(self, reasons: dict[RoadUnit:ReasonUnit]):
+        if reasons is None:
+            reasons = {}
+        for reason in reasons.values():
+            if self.reason_bases.get(reason.base) is None:
+                self.reason_bases[reason.base] = 1
             else:
-                self.required_bases[required.base] = (
-                    self.required_bases[required.base] + 1
-                )
+                self.reason_bases[reason.base] = self.reason_bases[reason.base] + 1
 
     def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:BalanceLink]):
         if balancelinks != None:

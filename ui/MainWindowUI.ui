@@ -27,7 +27,7 @@
      <string>Agendas /  Party /  dimension</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_lower_spec1">
+   <widget class="QPushButton" name="fact_open_lower_spec1">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -45,7 +45,7 @@
      <string>set minutes next midnight</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_nigh_now">
+   <widget class="QPushButton" name="fact_nigh_now">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -240,7 +240,7 @@
      <string>view current intent</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="acptfacts_table">
+   <widget class="QTableWidget" name="facts_table">
     <property name="geometry">
      <rect>
       <x>1270</x>
@@ -251,12 +251,12 @@
     </property>
     <column>
      <property name="text">
-      <string>AcptFactBase</string>
+      <string>FactBase</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>AcptFactPick</string>
+      <string>FactPick</string>
      </property>
     </column>
     <column>
@@ -616,7 +616,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_soft_spec1">
+   <widget class="QPushButton" name="fact_open_soft_spec1">
     <property name="geometry">
      <rect>
       <x>380</x>
@@ -695,7 +695,7 @@
      <string>Things you promised to be right now</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="acptfact_open_5daysago">
+   <widget class="QPushButton" name="fact_open_5daysago">
     <property name="geometry">
      <rect>
       <x>30</x>

@@ -1,15 +1,13 @@
-from src.agenda.required_idea import acptfactunit_shop
+from src.agenda.reason_idea import factunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import ideaunit_shop
 from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
 
 
 def test_lemma_attributes_exist():
-    x_lemma = Lemma(
-        src_acptfact=1, calc_acptfact=2, x_idea=3, eval_status=4, eval_count=5
-    )
-    assert x_lemma.src_acptfact == 1
-    assert x_lemma.calc_acptfact == 2
+    x_lemma = Lemma(src_fact=1, calc_fact=2, x_idea=3, eval_status=4, eval_count=5)
+    assert x_lemma.src_fact == 1
+    assert x_lemma.calc_fact == 2
     assert x_lemma.x_idea == 3
     assert x_lemma.eval_status == 4
     assert x_lemma.eval_count == 5
@@ -31,7 +29,7 @@ def test_lemmas_shop_CorrectReturnsObj():
     assert x_lemma.lemmas == {}
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario1():
     # GIVEN
     x_lemmas_x = lemmas_shop()
 
@@ -42,19 +40,19 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario1():
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    new_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
+    new_fact = x_lemmas_x._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.base == tr1
-    assert new_acptfact.pick == tr1
-    assert new_acptfact.open == 0
-    assert new_acptfact.nigh == 12
+    assert new_fact.base == tr1
+    assert new_fact.pick == tr1
+    assert new_fact.open == 0
+    assert new_fact.nigh == 12
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario2():
     # GIVEN
     x_lemmas_x = lemmas_shop()
 
@@ -62,20 +60,20 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario2():
     hist_road = create_road(root_label(), "history")
     idea_kid = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    new_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    new_fact = x_lemmas_x._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.open == 7
-    assert new_acptfact.nigh == 12
+    assert new_fact.open == 7
+    assert new_fact.nigh == 12
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario3_denom():
     # GIVEN
     x_lemmas = lemmas_shop()
 
@@ -91,20 +89,20 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_denom():
         _reest=False,
     )
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    new_acptfact = x_lemmas._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    new_fact = x_lemmas._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.open == 0
-    assert new_acptfact.nigh == 3
+    assert new_fact.open == 0
+    assert new_fact.nigh == 3
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario3_2_denom():
     # GIVEN
     x_lemmas = lemmas_shop()
 
@@ -119,17 +117,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario3_2_denom():
         _reest=False,
     )
     ex_road = create_road(ex_idea._parent_road, ex_idea._label)
-    ex_acptfact = acptfactunit_shop(base=ex_road, pick=ex_road, open=7200, nigh=7200)
-    new_acptfact = x_lemmas._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=ex_acptfact, src_idea=ex_idea
+    ex_fact = factunit_shop(base=ex_road, pick=ex_road, open=7200, nigh=7200)
+    new_fact = x_lemmas._create_new_fact(
+        x_idea=idea_kid, src_fact=ex_fact, src_idea=ex_idea
     )
 
     # THEN
-    assert new_acptfact.open == 7200
-    assert new_acptfact.nigh == 7200
+    assert new_fact.open == 7200
+    assert new_fact.nigh == 7200
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario4_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
 
@@ -145,20 +143,20 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario4_denomReest(
         _reest=True,
     )
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    new_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    new_fact = x_lemmas_x._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.open == 0
-    assert new_acptfact.nigh == 30
+    assert new_fact.open == 0
+    assert new_fact.nigh == 30
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario5_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
 
@@ -174,20 +172,20 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario5_denomReest(
         _reest=True,
     )
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    new_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    new_fact = x_lemmas_x._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.open == 40
-    assert new_acptfact.nigh == 30
+    assert new_fact.open == 40
+    assert new_fact.nigh == 30
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario6_denomReest():
     # GIVEN
     hist_road = create_road(root_label(), "history")
     x_lemmas_x = lemmas_shop()
@@ -206,12 +204,12 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
         _close=50,
     )
     tr3 = create_road(tr3_kid._parent_road, tr3_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr3, pick=tr3, open=30, nigh=20)
-    tr3_30_20_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=tr3_kid, src_acptfact=src_acptfact, src_idea=idea_src
+    src_fact = factunit_shop(base=tr3, pick=tr3, open=30, nigh=20)
+    tr3_30_20_fact = x_lemmas_x._create_new_fact(
+        x_idea=tr3_kid, src_fact=src_fact, src_idea=idea_src
     )
-    assert tr3_30_20_acptfact.open == 40
-    assert tr3_30_20_acptfact.nigh == 50
+    assert tr3_30_20_fact.open == 40
+    assert tr3_30_20_fact.nigh == 50
 
     # WHEN / THEN Check
     trb_kid = ideaunit_shop(
@@ -221,12 +219,12 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
         _close=60,
     )
     trb = create_road(trb_kid._parent_road, trb_kid._label)
-    src_acptfact = acptfactunit_shop(base=trb, pick=trb, open=30, nigh=20)
-    trb_30_20_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=trb_kid, src_acptfact=src_acptfact, src_idea=idea_src
+    src_fact = factunit_shop(base=trb, pick=trb, open=30, nigh=20)
+    trb_30_20_fact = x_lemmas_x._create_new_fact(
+        x_idea=trb_kid, src_fact=src_fact, src_idea=idea_src
     )
-    assert trb_30_20_acptfact.open == 40
-    assert trb_30_20_acptfact.nigh == 60
+    assert trb_30_20_fact.open == 40
+    assert trb_30_20_fact.nigh == 60
 
     # WHEN / THEN Check
     tr4_kid = ideaunit_shop(
@@ -236,12 +234,12 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
         _close=10,
     )
     tr4 = create_road(tr4_kid._parent_road, tr4_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr4, pick=tr4, open=30, nigh=20)
-    tr4_30_20_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=tr4_kid, src_acptfact=src_acptfact, src_idea=idea_src
+    src_fact = factunit_shop(base=tr4, pick=tr4, open=30, nigh=20)
+    tr4_30_20_fact = x_lemmas_x._create_new_fact(
+        x_idea=tr4_kid, src_fact=src_fact, src_idea=idea_src
     )
-    assert tr4_30_20_acptfact.open == 55
-    assert tr4_30_20_acptfact.nigh == 10
+    assert tr4_30_20_fact.open == 55
+    assert tr4_30_20_fact.nigh == 10
 
     # WHEN / THEN Check
     tr5_kid = ideaunit_shop(
@@ -251,15 +249,15 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario6_denomReest(
         _close=60,
     )
     tr5 = create_road(tr5_kid._parent_road, tr5_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr5, pick=tr5, open=30, nigh=20)
-    tr5_0_60_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=tr5_kid, src_acptfact=src_acptfact, src_idea=idea_src
+    src_fact = factunit_shop(base=tr5, pick=tr5, open=30, nigh=20)
+    tr5_0_60_fact = x_lemmas_x._create_new_fact(
+        x_idea=tr5_kid, src_fact=src_fact, src_idea=idea_src
     )
-    assert tr5_0_60_acptfact.open == 30
-    assert tr5_0_60_acptfact.nigh == 20
+    assert tr5_0_60_fact.open == 30
+    assert tr5_0_60_fact.nigh == 20
 
 
-def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest():
+def test_lemmas_create_new_fact_createsCorrectFact_scenario7_denomReest():
     # GIVEN
     x_lemmas_x = lemmas_shop()
 
@@ -275,17 +273,17 @@ def test_lemmas_create_new_acptfact_createsCorrectAcptFact_scenario7_denomReest(
         _reest=True,
     )
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    new_acptfact = x_lemmas_x._create_new_acptfact(
-        x_idea=idea_kid, src_acptfact=src_acptfact, src_idea=src_idea
+    new_fact = x_lemmas_x._create_new_fact(
+        x_idea=idea_kid, src_fact=src_fact, src_idea=src_idea
     )
 
     # THEN
-    assert new_acptfact.open == 0
-    assert new_acptfact.nigh == 60
+    assert new_fact.open == 0
+    assert new_fact.nigh == 60
 
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
@@ -313,13 +311,13 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
 
     tr1_idea = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
     tr1 = create_road(tr1_idea._parent_road, tr1_idea._label)
-    src_acptfact = acptfactunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    x_lemmas_x.eval(x_idea=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    src_fact = factunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
+    x_lemmas_x.eval(x_idea=tr1_idea, src_fact=src_fact, src_idea=src_idea)
 
     tr2_idea = ideaunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
     tr2 = create_road(tr2_idea._parent_road, tr2_idea._label)
-    src_acptfact = acptfactunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
-    x_lemmas_x.eval(x_idea=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    src_fact = factunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
+    x_lemmas_x.eval(x_idea=tr2_idea, src_fact=src_fact, src_idea=src_idea)
 
     # WHEN
     lem1 = x_lemmas_x.get_unevaluated_lemma()
@@ -348,42 +346,42 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     )
 
     # for x_lemma in z_lemmas.lemmas.values():
-    #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_acptfact=}")
+    #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_fact=}")
 
     tr1_idea = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
     tr1_road = create_road(tr1_idea._parent_road, tr1_idea._label)
-    src_acptfact = acptfactunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
-    z_lemmas.eval(x_idea=tr1_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    src_fact = factunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
+    z_lemmas.eval(x_idea=tr1_idea, src_fact=src_fact, src_idea=src_idea)
 
     tr2_idea = ideaunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
     tr2_road = create_road(tr2_idea._parent_road, tr2_idea._label)
-    src_acptfact = acptfactunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
-    z_lemmas.eval(x_idea=tr2_idea, src_acptfact=src_acptfact, src_idea=src_idea)
+    src_fact = factunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
+    z_lemmas.eval(x_idea=tr2_idea, src_fact=src_fact, src_idea=src_idea)
 
     # WHEN / THEN
     assert len(z_lemmas.lemmas) == 2
     tr1_lemma = z_lemmas.lemmas.get(tr1_road)
     tr2_lemma = z_lemmas.lemmas.get(tr2_road)
-    tr1_src_acptfact = tr1_lemma.src_acptfact
-    tr2_src_acptfact = tr2_lemma.src_acptfact
-    print(f"0 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
-    print(f"0 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
+    tr1_src_fact = tr1_lemma.src_fact
+    tr2_src_fact = tr2_lemma.src_fact
+    print(f"0 changes: {tr1_src_fact.base=} {tr1_lemma.eval_status=}")
+    print(f"0 changes: {tr2_src_fact.base=} {tr2_lemma.eval_status=}")
     assert z_lemmas.is_lemmas_evaluated() == False
 
     # WHEN
     lem1 = z_lemmas.get_unevaluated_lemma()
     # THEN
     assert len(z_lemmas.lemmas) == 2
-    print(f"1 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
-    print(f"1 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
+    print(f"1 changes: {tr1_src_fact.base=} {tr1_lemma.eval_status=}")
+    print(f"1 changes: {tr2_src_fact.base=} {tr2_lemma.eval_status=}")
     assert z_lemmas.is_lemmas_evaluated() == False
 
     # WHEN
     lem2 = z_lemmas.get_unevaluated_lemma()
     # THEN
     assert len(z_lemmas.lemmas) == 2
-    print(f"2 changes: {tr1_src_acptfact.base=} {tr1_lemma.eval_status=}")
-    print(f"2 changes: {tr2_src_acptfact.base=} {tr2_lemma.eval_status=}")
+    print(f"2 changes: {tr1_src_fact.base=} {tr1_lemma.eval_status=}")
+    print(f"2 changes: {tr2_src_fact.base=} {tr2_lemma.eval_status=}")
     assert z_lemmas.is_lemmas_evaluated() == True
 
 

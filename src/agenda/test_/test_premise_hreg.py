@@ -1,10 +1,10 @@
-from src.agenda.hreg_time import SuffFactUnitHregTime
+from src.agenda.hreg_time import PremiseUnitHregTime
 from pytest import raises as pytest_raises
 
 
-def test_SuffFactUnitHregTime_attributesSet_x_weeks():
+def test_PremiseUnitHregTime_attributesSet_x_weeks():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
     wu._every_x_days = 4
     wu._every_x_months = 2
     wu._every_x_years = 7
@@ -35,9 +35,9 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeks():
     assert wu._every_x_years is None
 
 
-def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_TooBig():
+def test_PremiseUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_TooBig():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -55,9 +55,9 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks
     )
 
 
-def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_LessThanZero():
+def test_PremiseUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_LessThanZero():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -72,35 +72,35 @@ def test_SuffFactUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks
     assert str(excinfo.value) == "remainder_weeks reqquires being >= 0"
 
 
-def test_SuffFactUnitHregTime_attributesSet_weekday1():
+def test_PremiseUnitHregTime_attributesSet_weekday1():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
     # WHEN
     wu._set_weekday(weekday="Sunday")
     # THEN
     assert wu._weekday == "Sunday"
 
 
-def test_SuffFactUnitHregTime_attributesSet_start_hr1():
+def test_PremiseUnitHregTime_attributesSet_start_hr1():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
     # WHEN
     wu._set_start_hr(1)
     # THEN
     assert wu._start_hr == 1
 
 
-def test_SuffFactUnitHregTime_attributesSet_weekdayInvalid():
+def test_PremiseUnitHregTime_attributesSet_weekdayInvalid():
     # GIVEN
-    wu = SuffFactUnitHregTime()
+    wu = PremiseUnitHregTime()
     # WHEN
     wu._set_weekday(weekday="FUNFUN")
     # THEN
     assert wu._weekday is None
 
 
-def test_SuffFactUnitHregTime_attributesGet_1week1stDay():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_1week1stDay():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=1,
         remainder_weeks=0,
@@ -114,8 +114,8 @@ def test_SuffFactUnitHregTime_attributesGet_1week1stDay():
     assert wu.jajatime_nigh == 0
 
 
-def test_SuffFactUnitHregTime_attributesGet_1week2ndDay():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_1week2ndDay():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=1,
         remainder_weeks=0,
@@ -129,8 +129,8 @@ def test_SuffFactUnitHregTime_attributesGet_1week2ndDay():
     assert wu.jajatime_nigh == 1440
 
 
-def test_SuffFactUnitHregTime_attributesGet_2weeks0remainder3rdday():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_2weeks0remainder3rdday():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=2,
         remainder_weeks=0,
@@ -144,8 +144,8 @@ def test_SuffFactUnitHregTime_attributesGet_2weeks0remainder3rdday():
     assert wu.jajatime_nigh == 2880
 
 
-def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder1stday():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_2weeks1remainder1stday():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=2,
         remainder_weeks=1,
@@ -159,8 +159,8 @@ def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder1stday():
     assert wu.jajatime_nigh == 10080
 
 
-def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder4thday():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_2weeks1remainder4thday():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=2,
         remainder_weeks=1,
@@ -174,8 +174,8 @@ def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder4thday():
     assert wu.jajatime_nigh == 14400
 
 
-def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder4thday7am():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet_2weeks1remainder4thday7am():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=2,
         remainder_weeks=1,
@@ -189,8 +189,8 @@ def test_SuffFactUnitHregTime_attributesGet_2weeks1remainder4thday7am():
     assert wu.jajatime_nigh == 14820
 
 
-def test_SuffFactUnitHregTime_attributesGet3weeks1remainder1stDay():
-    wu = SuffFactUnitHregTime()
+def test_PremiseUnitHregTime_attributesGet3weeks1remainder1stDay():
+    wu = PremiseUnitHregTime()
     wu.set_weekly_event(
         every_x_weeks=3,
         remainder_weeks=2,

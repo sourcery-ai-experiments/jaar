@@ -592,7 +592,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_acptfacts_table">
+   <widget class="QTableWidget" name="w_facts_table">
     <property name="geometry">
      <rect>
       <x>1180</x>
@@ -608,12 +608,12 @@
     </property>
     <column>
      <property name="text">
-      <string>AcptFacts Base</string>
+      <string>Facts Base</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>AcptFacts AcptFact</string>
+      <string>Facts Fact</string>
      </property>
     </column>
     <column>

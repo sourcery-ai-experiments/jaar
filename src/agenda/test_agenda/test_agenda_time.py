@@ -118,7 +118,7 @@ def test_get_time_():
     #         )
 
     # WHEN
-    x_agenda.set_time_acptfacts(
+    x_agenda.set_time_facts(
         open=datetime(2000, 1, 1, 0, 0), nigh=datetime(2003, 11, 15, 4, 0)
     )
 
@@ -127,9 +127,9 @@ def test_get_time_():
     time_road = x_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
     jaja_road = x_agenda.make_road(time_road, jaja_text)
-    assert x_agenda._idearoot._acptfactunits[jaja_road]
-    assert x_agenda._idearoot._acptfactunits[jaja_road].open == 1051898400  # - 1440
-    assert x_agenda._idearoot._acptfactunits[jaja_road].nigh == 1053934800  # - 1440
+    assert x_agenda._idearoot._factunits[jaja_road]
+    assert x_agenda._idearoot._factunits[jaja_road].open == 1051898400  # - 1440
+    assert x_agenda._idearoot._factunits[jaja_road].nigh == 1053934800  # - 1440
 
 
 # def test_time_hreg_set_exists():
@@ -294,16 +294,16 @@ def test_get_time_():
 # x_x_agenda = agendaunit_shop()
 # x_agenda.get_idea_obj({x_agenda.make_l1_road("hreg,weekday"})
 
-# wed_sufffact_x = sufffactunit_shop(need=wednesday_road)
-# work_wk_required = requiredunit_shop(weekday_road, sufffacts={wed_sufffact.need: wed_sufffact})
-# print(f"{type(work_wk_required.base)=}")
-# print(f"{work_wk_required.base=}")
-# agenda_x.edit_idea_attr(road=work_road, required=work_wk_required)
+# wed_premise_x = premiseunit_shop(need=wednesday_road)
+# work_wk_reason = reasonunit_shop(weekday_road, premises={wed_premise.need: wed_premise})
+# print(f"{type(work_wk_reason.base)=}")
+# print(f"{work_wk_reason.base=}")
+# agenda_x.edit_idea_attr(road=work_road, reason=work_wk_reason)
 # work_idea = agenda_x.get_kid("work"]
-# assert work_idea._requiredunits != None
-# print(work_idea._requiredunits)
-# assert work_idea._requiredunits[weekday_road] != None
-# assert work_idea._requiredunits[weekday_road] == work_wk_required
+# assert work_idea._reasonunits != None
+# print(work_idea._reasonunits)
+# assert work_idea._reasonunits[weekday_road] != None
+# assert work_idea._reasonunits[weekday_road] == work_wk_reason
 
 # x_agenda = examples.get_agenda_gregorian_years()
 

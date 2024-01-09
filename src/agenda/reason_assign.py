@@ -13,7 +13,7 @@ class AssignedUnit:
 
     def get_dict(self) -> dict[str:str]:
         _suffgroups = {
-            x_groupbrand: x_groupbrand  # sufffact.get_dict()
+            x_groupbrand: x_groupbrand  # premise.get_dict()
             for x_groupbrand, _suffgroup in self._suffgroups.items()
         }
         return {"_suffgroups": _suffgroups}
@@ -127,15 +127,15 @@ def assigned_heir_shop(
 
     return AssignedHeir(_suffgroups=_suffgroups, _healer_assigned=_healer_assigned)
 
-    # def meld(self, other_required):
-    #     for sufffact_x in other_required.sufffacts.values():
-    #         if self.sufffacts.get(sufffact_x.need) is None:
-    #             self.sufffacts[sufffact_x.need] = sufffact_x
+    # def meld(self, other_reason):
+    #     for premise_x in other_reason.premises.values():
+    #         if self.premises.get(premise_x.need) is None:
+    #             self.premises[premise_x.need] = premise_x
     #         else:
-    #             self.sufffacts.get(sufffact_x.need).meld(sufffact_x)
-    #     if other_required.base != self.base:
-    #         raise InvalidRequiredException(
-    #             f"Meld fail: required={other_required.base} is different {self.base=}"
+    #             self.premises.get(premise_x.need).meld(premise_x)
+    #     if other_reason.base != self.base:
+    #         raise InvalidReasonException(
+    #             f"Meld fail: reason={other_reason.base} is different {self.base=}"
     #         )
 
 

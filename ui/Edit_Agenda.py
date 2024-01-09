@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from ui.pyqt_func import num2str, agenda_importance_diplay
-from src.agenda.hreg_time import SuffFactUnitHregTime, HregTimeIdeaSource
+from src.agenda.hreg_time import PremiseUnitHregTime, HregTimeIdeaSource
 
 
 class Edit_Agenda(qw, Ui_Form):
@@ -18,18 +18,16 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.itemClicked.connect(self.select_intent_item)
         self.intent_table.setObjectName("Current Agenda")
         self.intent_table.setRowCount(0)
-        self.acptfact_base_update_combo.currentTextChanged.connect(
-            self.refreshAgendaTable
-        )
-        self.cb_acptfactbase_display.stateChanged.connect(self.refresh_all)
-        self.acptfact_base_update_init_road = "time,jajatime"
+        self.fact_base_update_combo.currentTextChanged.connect(self.refreshAgendaTable)
+        self.cb_factbase_display.stateChanged.connect(self.refresh_all)
+        self.fact_base_update_init_road = "time,jajatime"
         # self.refresh_all()
 
     def select_intent_item(self):
         _road = self.intent_table.item(self.intent_table.currentRow(), 1).text()
         _label = self.intent_table.item(self.intent_table.currentRow(), 0).text()
         # base_x = "A,time,jajatime"
-        base_x = self.acptfact_base_update_combo.currentText()
+        base_x = self.fact_base_update_combo.currentText()
         self.agenda_x.set_intent_task_complete(
             task_road=f"{_road},{_label}", base=base_x
         )
@@ -45,33 +43,31 @@ class Edit_Agenda(qw, Ui_Form):
         #     self.close()
 
     def refresh_all(self):
-        self.refreshRequiredBaseCombo()
+        self.refreshReasonBaseCombo()
         self.refreshAgendaTable()
 
-    def refreshRequiredBaseCombo(self):
-        if self.acptfact_base_update_init_road is None:
-            temp_x = self.acptfact_base_update_combo.currentText()
+    def refreshReasonBaseCombo(self):
+        if self.fact_base_update_init_road is None:
+            temp_x = self.fact_base_update_combo.currentText()
 
-        self.acptfact_base_update_combo.clear()
-        required_bases = list(self.agenda_x.get_required_bases())
-        required_bases.sort(key=lambda x: x, reverse=False)
-        self.acptfact_base_update_combo.addItems(required_bases)
-        if self.acptfact_base_update_init_road is None:
-            self.acptfact_base_update_combo.setCurrentText(temp_x)
+        self.fact_base_update_combo.clear()
+        reason_bases = list(self.agenda_x.get_reason_bases())
+        reason_bases.sort(key=lambda x: x, reverse=False)
+        self.fact_base_update_combo.addItems(reason_bases)
+        if self.fact_base_update_init_road is None:
+            self.fact_base_update_combo.setCurrentText(temp_x)
 
         else:
-            self.acptfact_base_update_init_road = (
+            self.fact_base_update_init_road = (
                 f"{self.agenda_x._economy_id},time,jajatime"
             )
-            self.acptfact_base_update_combo.setCurrentText(
-                self.acptfact_base_update_init_road
-            )
-            self.acptfact_base_update_init_road = None
+            self.fact_base_update_combo.setCurrentText(self.fact_base_update_init_road)
+            self.fact_base_update_init_road = None
 
     def refreshAgendaTable(self):
         self.intent_table.clear()
         self.intent_table.setRowCount(0)
-        base_x = self.acptfact_base_update_combo.currentText()
+        base_x = self.fact_base_update_combo.currentText()
         if base_x == "":
             base_x = None
 
@@ -90,44 +86,44 @@ class Edit_Agenda(qw, Ui_Form):
 
     def populate_intent_table_row(self, row, intent_item, base):
         a = intent_item
-        requiredheir_x = a.get_requiredheir(base=base)
-        sufffact_open_x = None
-        sufffact_nigh_x = None
-        sufffact_divisor_x = None
+        reasonheir_x = a.get_reasonheir(base=base)
+        premise_open_x = None
+        premise_nigh_x = None
+        premise_divisor_x = None
         agenda_display_x = agenda_importance_diplay(
             agenda_importance=a._agenda_importance
         )
 
-        display_acptfactbase = self.cb_acptfactbase_display.checkState() != 2
+        display_factbase = self.cb_factbase_display.checkState() != 2
 
-        if requiredheir_x != None:
-            for sufffact in requiredheir_x.sufffacts.values():
-                # if sufffact_task == True:
-                sufffact_need_x = sufffact.need
-                sufffact_open_x = sufffact.open
-                sufffact_nigh_x = sufffact.nigh
-                sufffact_divisor_x = sufffact.divisor
+        if reasonheir_x != None:
+            for premise in reasonheir_x.premises.values():
+                # if premise_task == True:
+                premise_need_x = premise.need
+                premise_open_x = premise.open
+                premise_nigh_x = premise.nigh
+                premise_divisor_x = premise.divisor
 
         legible_x_text = ""
         if (
-            sufffact_open_x != None
-            and sufffact_nigh_x != None
+            premise_open_x != None
+            and premise_nigh_x != None
             and (
-                sufffact_need_x == f"{self.agenda_x._economy_id},time,jajatime"
-                or sufffact_need_x[:21] == f"{self.agenda_x._economy_id},time,jajatime"
+                premise_need_x == f"{self.agenda_x._economy_id},time,jajatime"
+                or premise_need_x[:21] == f"{self.agenda_x._economy_id},time,jajatime"
             )
         ):
             legible_x_text = self.agenda_x.get_jajatime_repeating_legible_text(
-                open=sufffact_open_x, nigh=sufffact_nigh_x, divisor=sufffact_divisor_x
+                open=premise_open_x, nigh=premise_nigh_x, divisor=premise_divisor_x
             )
-        elif sufffact_open_x != None and sufffact_nigh_x != None:
+        elif premise_open_x != None and premise_nigh_x != None:
             text_x = f"{self.agenda_x._economy_id},time,jajatime"
             legible_x_text = (
-                f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
+                f"premise {premise_open_x}-{premise_nigh_x} {premise_divisor_x=}"
             )
         else:
             legible_x_text = (
-                f"sufffact {sufffact_open_x}-{sufffact_nigh_x} {sufffact_divisor_x=}"
+                f"premise {premise_open_x}-{premise_nigh_x} {premise_divisor_x=}"
             )
 
         self.intent_table.setRowCount(row + 1)
@@ -136,9 +132,9 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.setItem(row, 2, qti(agenda_display_x))
         self.intent_table.setItem(row, 3, qti(num2str(a._weight)))
         self.intent_table.setItem(row, 4, qti(base))
-        self.intent_table.setItem(row, 5, qti(num2str(sufffact_open_x)))
-        self.intent_table.setItem(row, 6, qti(num2str(sufffact_nigh_x)))
-        self.intent_table.setItem(row, 7, qti(num2str(sufffact_divisor_x)))
+        self.intent_table.setItem(row, 5, qti(num2str(premise_open_x)))
+        self.intent_table.setItem(row, 6, qti(num2str(premise_nigh_x)))
+        self.intent_table.setItem(row, 7, qti(num2str(premise_divisor_x)))
         self.intent_table.setItem(row, 8, qti(legible_x_text))
         # if a._task in (True, False):
         #     self.intent_table.setItem(row, 7, qti(f"task {a._task}"))
@@ -158,18 +154,18 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.setColumnHidden(1, False)
         self.intent_table.setColumnHidden(2, False)
         self.intent_table.setColumnHidden(3, True)
-        self.intent_table.setColumnHidden(4, display_acptfactbase)
-        self.intent_table.setColumnHidden(5, display_acptfactbase)
-        self.intent_table.setColumnHidden(6, display_acptfactbase)
-        self.intent_table.setColumnHidden(7, display_acptfactbase)
-        self.intent_table.setColumnHidden(8, not display_acptfactbase)
+        self.intent_table.setColumnHidden(4, display_factbase)
+        self.intent_table.setColumnHidden(5, display_factbase)
+        self.intent_table.setColumnHidden(6, display_factbase)
+        self.intent_table.setColumnHidden(7, display_factbase)
+        self.intent_table.setColumnHidden(8, not display_factbase)
         self.intent_table.setHorizontalHeaderLabels(
             [
                 "_label",
                 "road",
                 "agenda_importance",
                 "weight",
-                "acptfact",
+                "fact",
                 "open",
                 "nigh",
                 "divisor",

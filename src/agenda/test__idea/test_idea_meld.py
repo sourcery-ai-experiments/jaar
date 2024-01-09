@@ -1,9 +1,9 @@
 from src.agenda.idea import ideaunit_shop, IdeaAttrFilter, IdeaUnit, EconomyID
 from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
-from src.agenda.required_idea import (
-    requiredunit_shop,
-    RequiredUnit,
-    acptfactunit_shop as c_acptfactunit,
+from src.agenda.reason_idea import (
+    reasonunit_shop,
+    ReasonUnit,
+    factunit_shop as c_factunit,
     RoadUnit,
 )
 from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
@@ -16,15 +16,15 @@ def custom_set_idea_attr(
     idea: IdeaUnit,
     weight: int = None,
     uid: int = None,
-    required: RequiredUnit = None,  # delete/replace RequiredUnit
-    required_base: RoadUnit = None,
-    required_sufffact: RoadUnit = None,
-    required_sufffact_open: float = None,
-    required_sufffact_nigh: float = None,
-    required_sufffact_divisor: int = None,
-    required_del_sufffact_base: RoadUnit = None,
-    required_del_sufffact_need: RoadUnit = None,
-    required_suff_idea_active_status: str = None,
+    reason: ReasonUnit = None,  # delete/replace ReasonUnit
+    reason_base: RoadUnit = None,
+    reason_premise: RoadUnit = None,
+    reason_premise_open: float = None,
+    reason_premise_nigh: float = None,
+    reason_premise_divisor: int = None,
+    reason_del_premise_base: RoadUnit = None,
+    reason_del_premise_need: RoadUnit = None,
+    reason_suff_idea_active_status: str = None,
     begin: float = None,
     close: float = None,
     addin: int = None,
@@ -46,15 +46,15 @@ def custom_set_idea_attr(
     idea_attr = IdeaAttrFilter(
         weight=weight,
         uid=uid,
-        required=required,
-        required_base=required_base,
-        required_sufffact=required_sufffact,
-        required_sufffact_open=required_sufffact_open,
-        required_sufffact_nigh=required_sufffact_nigh,
-        required_sufffact_divisor=required_sufffact_divisor,
-        required_del_sufffact_base=required_del_sufffact_base,
-        required_del_sufffact_need=required_del_sufffact_need,
-        required_suff_idea_active_status=required_suff_idea_active_status,
+        reason=reason,
+        reason_base=reason_base,
+        reason_premise=reason_premise,
+        reason_premise_open=reason_premise_open,
+        reason_premise_nigh=reason_premise_nigh,
+        reason_premise_divisor=reason_premise_divisor,
+        reason_del_premise_base=reason_del_premise_base,
+        reason_del_premise_need=reason_del_premise_need,
+        reason_suff_idea_active_status=reason_suff_idea_active_status,
         begin=begin,
         close=close,
         addin=addin,
@@ -77,42 +77,42 @@ def custom_set_idea_attr(
     idea._set_idea_attr(idea_attr=idea_attr)
 
 
-def test_idea_required_meld_BaseScenarioWorks():
+def test_idea_reason_meld_BaseScenarioWorks():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
     run_text = "run"
     run_road = create_road(ball_road, run_text)
-    required_base_x1 = run_road
+    reason_base_x1 = run_road
 
     _label_text = "spirit"
     yx1 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx1,
-        required_base=required_base_x1,
-        required_sufffact=required_base_x1,
+        reason_base=reason_base_x1,
+        reason_premise=reason_base_x1,
     )
 
     yx2 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx2,
-        required_base=required_base_x1,
-        required_sufffact=required_base_x1,
+        reason_base=reason_base_x1,
+        reason_premise=reason_base_x1,
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    lu_x = requiredunit_shop(base=required_base_x1)
-    lu_x.set_sufffact(sufffact=required_base_x1)
-    requiredunits_x = {lu_x.base: lu_x}
-    assert yx1._requiredunits == requiredunits_x
+    lu_x = reasonunit_shop(base=reason_base_x1)
+    lu_x.set_premise(premise=reason_base_x1)
+    reasonunits_x = {lu_x.base: lu_x}
+    assert yx1._reasonunits == reasonunits_x
     print(f"{yx1._on_meld_weight_action=}")
     assert yx1._weight == 1
 
 
-def test_idea_required_meld_TwoRequiredsScenarioWorks():
+def test_idea_reason_meld_TwoReasonsScenarioWorks():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -120,34 +120,34 @@ def test_idea_required_meld_TwoRequiredsScenarioWorks():
     run_road = create_road(ball_road, run_text)
     swim_text = "swim"
     swim_road = create_road(ball_road, swim_text)
-    required_base_x1 = run_road
-    required_base_x2 = swim_road
+    reason_base_x1 = run_road
+    reason_base_x2 = swim_road
 
     _label_text = "spirit"
     yx1 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx1,
-        required_base=required_base_x1,
-        required_sufffact=required_base_x1,
+        reason_base=reason_base_x1,
+        reason_premise=reason_base_x1,
     )
 
     yx2 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx2,
-        required_base=required_base_x2,
-        required_sufffact=required_base_x2,
+        reason_base=reason_base_x2,
+        reason_premise=reason_base_x2,
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    assert len(yx1._requiredunits) == 2
-    assert yx1._requiredunits[required_base_x1] != None
-    assert yx1._requiredunits[required_base_x2] != None
+    assert len(yx1._reasonunits) == 2
+    assert yx1._reasonunits[reason_base_x1] != None
+    assert yx1._reasonunits[reason_base_x2] != None
 
 
-def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
+def test_idea_reason_meld_TwoReasonsMeldScenarioWorks():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -155,40 +155,40 @@ def test_idea_required_meld_TwoRequiredsMeldScenarioWorks():
     run_road = create_road(ball_road, run_text)
     swim_text = "swim"
     swim_road = create_road(ball_road, swim_text)
-    required_base_x1 = run_road
-    required_base_x2 = swim_road
+    reason_base_x1 = run_road
+    reason_base_x2 = swim_road
 
     _label_text = "spirit"
     yx1 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx1,
-        required_base=required_base_x1,
-        required_sufffact=required_base_x1,
+        reason_base=reason_base_x1,
+        reason_premise=reason_base_x1,
     )
     custom_set_idea_attr(
         idea=yx1,
-        required_base=required_base_x2,
-        required_sufffact=required_base_x2,
+        reason_base=reason_base_x2,
+        reason_premise=reason_base_x2,
     )
 
     yx2 = ideaunit_shop(_label_text)
     custom_set_idea_attr(
         idea=yx2,
-        required_base=required_base_x2,
-        required_sufffact=required_base_x2,
+        reason_base=reason_base_x2,
+        reason_premise=reason_base_x2,
     )
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    # lu_x = requiredunit_shop(base=required_base_x1)
-    # lu_x.set_sufffact(sufffact=required_base_x1)
-    # lu_x.set_sufffact(sufffact=required_base_x2)
-    # requiredunits_x = {lu_x.base: lu_x}
-    assert len(yx1._requiredunits) == 2
-    assert yx1._requiredunits[required_base_x1] != None
-    assert yx1._requiredunits[required_base_x2] != None
+    # lu_x = reasonunit_shop(base=reason_base_x1)
+    # lu_x.set_premise(premise=reason_base_x1)
+    # lu_x.set_premise(premise=reason_base_x2)
+    # reasonunits_x = {lu_x.base: lu_x}
+    assert len(yx1._reasonunits) == 2
+    assert yx1._reasonunits[reason_base_x1] != None
+    assert yx1._reasonunits[reason_base_x2] != None
 
 
 def test_idea_balancelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
@@ -271,31 +271,31 @@ def test_idea_balancelink_meld_TwoGroupsScenarioWorks():
     assert yx1._balancelinks[br2] == lu_x2
 
 
-def test_idea_acptfactunits_meld_BaseScenarioWorks():
+def test_idea_factunits_meld_BaseScenarioWorks():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
     bowl_road = create_road(tech_road, bowl_text)
     casa_text = "casa"
-    hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
+    hc_1 = c_factunit(base=tech_road, pick=bowl_road)
     yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_acptfactunit(acptfactunit=hc_1)
+    yx1.set_factunit(factunit=hc_1)
 
-    hc_2 = c_acptfactunit(base=tech_road, pick=bowl_road)
+    hc_2 = c_factunit(base=tech_road, pick=bowl_road)
     yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_acptfactunit(acptfactunit=hc_2)
+    yx2.set_factunit(factunit=hc_2)
 
     # WHEN
     yx1.meld(yx2)
 
     # THEN
-    assert len(yx1._acptfactunits) == 1
-    assert len(yx1._acptfactunits) == len(yx2._acptfactunits)
-    assert yx1._acptfactunits == yx2._acptfactunits
+    assert len(yx1._factunits) == 1
+    assert len(yx1._factunits) == len(yx2._factunits)
+    assert yx1._factunits == yx2._factunits
 
 
-def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
+def test_idea_factunits_meld_2FactUnitsWorks():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -305,21 +305,21 @@ def test_idea_acptfactunits_meld_2AcptFactUnitsWorks():
     plate_road = create_road(tech_road, plate_text)
     casa_text = "casa"
 
-    hc_1 = c_acptfactunit(base=tech_road, pick=bowl_road)
+    hc_1 = c_factunit(base=tech_road, pick=bowl_road)
     yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_acptfactunit(acptfactunit=hc_1)
+    yx1.set_factunit(factunit=hc_1)
 
-    hc_2 = c_acptfactunit(base=plate_road, pick=plate_road)
+    hc_2 = c_factunit(base=plate_road, pick=plate_road)
     yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_acptfactunit(acptfactunit=hc_2)
+    yx2.set_factunit(factunit=hc_2)
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    assert len(yx1._acptfactunits) == 2
-    assert len(yx1._acptfactunits) == len(yx2._acptfactunits) + 1
-    assert yx1._acptfactunits != yx2._acptfactunits
+    assert len(yx1._factunits) == 2
+    assert len(yx1._factunits) == len(yx2._factunits) + 1
+    assert yx1._factunits != yx2._factunits
 
 
 def test_idea_attributes_meld_CorrectlyMeldsIdeas():

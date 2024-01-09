@@ -1,4 +1,4 @@
-from src.agenda.required_assign import (
+from src.agenda.reason_assign import (
     AssignedUnit,
     assigned_unit_shop,
     AssignedHeir,

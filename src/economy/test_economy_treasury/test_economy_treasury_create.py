@@ -117,8 +117,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
 
     base_text = "base"
     pick_text = "pick"
-    acptfact_catalog_text = "acptfact_catalog"
-    acptfact_catalog_columns = {agenda_healer_text: 1, base_text: 1, pick_text: 1}
+    fact_catalog_text = "fact_catalog"
+    fact_catalog_columns = {agenda_healer_text: 1, base_text: 1, pick_text: 1}
 
     groupunit_brand_text = "groupunit_brand"
     partylinks_set_by_economy_road_text = "partylinks_set_by_economy_road"
@@ -136,7 +136,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         river_circle_text: river_circle_columns,
         river_reach_text: river_reach_columns,
         idea_catalog_text: idea_catalog_columns,
-        acptfact_catalog_text: acptfact_catalog_columns,
+        fact_catalog_text: fact_catalog_columns,
         groupunit_catalog_text: groupunit_catalog_columns,
     }
 
@@ -144,7 +144,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #     print(f"{x_table_key=} {x_table_value=} {curr_tables.get(x_table_key)=}")
     #     assert curr_tables.get(x_table_key) != None
 
-    assert db_tables.get(acptfact_catalog_text) != None  # 6
+    assert db_tables.get(fact_catalog_text) != None  # 6
     assert db_tables.get(agendaunit_text) != None  # 0
     assert db_tables.get(groupunit_catalog_text) != None  # 7
     assert db_tables.get(idea_catalog_text) != None  # 5
@@ -161,7 +161,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #         print(f"{y_table_key=} {y_column_key=}")
     #     assert curr_tables.get(y_table_key) == y_columns_value
 
-    assert db_tables_columns.get(acptfact_catalog_text) == acptfact_catalog_columns
+    assert db_tables_columns.get(fact_catalog_text) == fact_catalog_columns
     assert db_tables_columns.get(agendaunit_text) == agendaunit_columns
     assert db_tables_columns.get(groupunit_catalog_text) == groupunit_catalog_columns
     assert db_tables_columns.get(idea_catalog_text) == idea_catalog_columns

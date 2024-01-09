@@ -1,4 +1,4 @@
-from src.agenda.required_assign import assigned_heir_shop, assigned_unit_shop
+from src.agenda.reason_assign import assigned_heir_shop, assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop

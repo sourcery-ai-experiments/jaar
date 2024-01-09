@@ -382,7 +382,7 @@ def test_agenda4party_Exists():
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
+    sandy_agenda4party = x_agenda.get_agenda4party(facts=None, party_pid=sandy_pid)
 
     # THEN
     assert sandy_agenda4party
@@ -420,7 +420,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(sandy_pid, acptfacts=None)
+    sandy_agenda4party = x_agenda.get_agenda4party(sandy_pid, facts=None)
 
     # THEN
     assert len(sandy_agenda4party._idearoot._kids) > 0
@@ -554,7 +554,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     exp_sandy.add_idea(ideaunit_shop("B", _agenda_importance=0.13), parent_road="blahblah")
 
 #     # generated sandy
-#     gen_sandy = x_agenda.get_agenda4party(acptfacts=None, party_pid=sandy_pid)
+#     gen_sandy = x_agenda.get_agenda4party(facts=None, party_pid=sandy_pid)
 
 #     # check generated sandy is correct
 #     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance == 0.07

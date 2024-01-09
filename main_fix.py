@@ -397,22 +397,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return x_list
 
-    def get_p_acptfacts_list(self):
+    def get_p_facts_list(self):
         x_list = []
         if self.healer_output_agenda != None:
-            for (
-                acptfactunit
-            ) in self.healer_output_agenda._idearoot._acptfactunits.values():
+            for factunit in self.healer_output_agenda._idearoot._factunits.values():
                 open_nigh = ""
-                if acptfactunit.open is None and acptfactunit.nigh is None:
+                if factunit.open is None and factunit.nigh is None:
                     open_nigh = ""
                 else:
-                    open_nigh = f"{acptfactunit.open}-{acptfactunit.nigh}"
+                    open_nigh = f"{factunit.open}-{factunit.nigh}"
 
                 x_list.append(
                     [
-                        acptfactunit.base,
-                        acptfactunit.pick.replace(acptfactunit.base, ""),
+                        factunit.base,
+                        factunit.pick.replace(factunit.base, ""),
                         open_nigh,
                     ]
                 )
@@ -523,14 +521,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 300, 100],
         )
 
-    def _sub_refresh_p_acptfacts_table(self):
-        p_acptfacts_list = self.get_p_acptfacts_list()
-        column_headers = [f"Bases ({len(p_acptfacts_list)})", "AcptFacts", "Open-Nigh"]
+    def _sub_refresh_p_facts_table(self):
+        p_facts_list = self.get_p_facts_list()
+        column_headers = [f"Bases ({len(p_facts_list)})", "Facts", "Open-Nigh"]
 
         self.refresh_x(
-            table_x=self.w_acptfacts_table,
+            table_x=self.w_facts_table,
             column_header=column_headers,
-            populate_list=p_acptfacts_list,
+            populate_list=p_facts_list,
             column_width=[200, 100, 200],
         )
 
@@ -568,7 +566,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
-        self._sub_refresh_p_acptfacts_table()
+        self._sub_refresh_p_facts_table()
         self._sub_refresh_p_intent_table()
 
     def refresh_economy(self):

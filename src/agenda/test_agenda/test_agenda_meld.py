@@ -162,7 +162,7 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     assert len(x_agenda1.get_idea_list()) == 3
 
 
-def test_agenda_acptfactunits_meld_BaseScenarioWorks():
+def test_agenda_factunits_meld_BaseScenarioWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
@@ -172,25 +172,23 @@ def test_agenda_acptfactunits_meld_BaseScenarioWorks():
 
     x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
     x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
+    x_agenda1.set_fact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
+    x_agenda2.set_fact(base=tech_road, pick=bowl_road)
 
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
-    assert len(x_agenda1._idearoot._acptfactunits) == 1
-    assert len(x_agenda1._idearoot._acptfactunits) == len(
-        x_agenda2._idearoot._acptfactunits
-    )
-    assert x_agenda1._idearoot._acptfactunits == x_agenda2._idearoot._acptfactunits
+    assert len(x_agenda1._idearoot._factunits) == 1
+    assert len(x_agenda1._idearoot._factunits) == len(x_agenda2._idearoot._factunits)
+    assert x_agenda1._idearoot._factunits == x_agenda2._idearoot._factunits
 
 
-def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
+def test_agenda_factunits_meld_2FactUnitsWorks():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
     tech_text = "tech"
@@ -204,27 +202,25 @@ def test_agenda_acptfactunits_meld_2AcptFactUnitsWorks():
     x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
     x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda1.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda1.set_acptfact(base=tech_road, pick=bowl_road)
+    x_agenda1.set_fact(base=tech_road, pick=bowl_road)
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_acptfact(base=tech_road, pick=bowl_road)
-    x_agenda2.set_acptfact(base=swim_road, pick=swim_road)
+    x_agenda2.set_fact(base=tech_road, pick=bowl_road)
+    x_agenda2.set_fact(base=swim_road, pick=swim_road)
 
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
-    assert len(x_agenda1._idearoot._acptfactunits) == 2
-    assert len(x_agenda1._idearoot._acptfactunits) == len(
-        x_agenda2._idearoot._acptfactunits
-    )
-    assert x_agenda1._idearoot._acptfactunits == x_agenda2._idearoot._acptfactunits
+    assert len(x_agenda1._idearoot._factunits) == 2
+    assert len(x_agenda1._idearoot._factunits) == len(x_agenda2._idearoot._factunits)
+    assert x_agenda1._idearoot._factunits == x_agenda2._idearoot._factunits
 
 
-def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
+def test_agenda_factunits_meld_IdeasMeldedBeforeFacts():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
 
@@ -234,23 +230,21 @@ def test_agenda_acptfactunits_meld_IdeasMeldedBeforeAcptFacts():
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_acptfact(base=swim_road, pick=swim_road)
+    x_agenda2.set_fact(base=swim_road, pick=swim_road)
 
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
     print()
-    assert len(x_agenda1._idearoot._acptfactunits) == 1
+    assert len(x_agenda1._idearoot._factunits) == 1
     assert x_agenda1.get_idea_obj(swim_road)._label == swim_text
     assert x_agenda1._idearoot._kids[swim_text]._label == swim_text
-    assert len(x_agenda1._idearoot._acptfactunits) == len(
-        x_agenda2._idearoot._acptfactunits
-    )
-    assert x_agenda1._idearoot._acptfactunits == x_agenda2._idearoot._acptfactunits
+    assert len(x_agenda1._idearoot._factunits) == len(x_agenda2._idearoot._factunits)
+    assert x_agenda1._idearoot._factunits == x_agenda2._idearoot._factunits
 
 
-def test_agenda_acptfactunits_meld_GroupsMeldedBefore_Partys():
+def test_agenda_factunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     healer_text = "Yoa"
     x_agenda1 = agendaunit_shop(_healer=healer_text)
@@ -272,7 +266,7 @@ def test_agenda_acptfactunits_meld_GroupsMeldedBefore_Partys():
     # )
 
 
-def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
+def test_agenda_factunits_meld_FactsAttributeCorrectlySet():
     # GIVEN
     x_agenda1 = agendaunit_shop(_healer="test7")
 
@@ -284,18 +278,18 @@ def test_agenda_acptfactunits_meld_AcptFactsAttributeCorrectlySet():
 
     x_agenda2 = agendaunit_shop(_healer="test7")
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
+    x_agenda2.set_fact(base=swim_road, pick=free_road, open=23, nigh=27)
 
     # WHEN
     x_agenda1.meld(x_agenda2)
 
     # THEN
     print()
-    assert len(x_agenda1._idearoot._acptfactunits) == 1
-    assert x_agenda1._idearoot._acptfactunits[swim_road].base == swim_road
-    assert x_agenda1._idearoot._acptfactunits[swim_road].pick == free_road
-    assert x_agenda1._idearoot._acptfactunits[swim_road].open == 23
-    assert x_agenda1._idearoot._acptfactunits[swim_road].nigh == 27
+    assert len(x_agenda1._idearoot._factunits) == 1
+    assert x_agenda1._idearoot._factunits[swim_road].base == swim_road
+    assert x_agenda1._idearoot._factunits[swim_road].pick == free_road
+    assert x_agenda1._idearoot._factunits[swim_road].open == 23
+    assert x_agenda1._idearoot._factunits[swim_road].nigh == 27
 
 
 def test_agenda_meld_worksCorrectlyForLargeExample():
@@ -323,14 +317,12 @@ def test_agenda_meld_worksCorrectlyForLargeExample():
     assert x_agenda1._weight == x_agenda2._weight
     assert x_agenda1._idearoot._kids == x_agenda2._idearoot._kids
     assert x_agenda1._idearoot._uid == x_agenda2._idearoot._uid
-    assert x_agenda1._idearoot._acptfactunits == x_agenda2._idearoot._acptfactunits
+    assert x_agenda1._idearoot._factunits == x_agenda2._idearoot._factunits
     assert x_agenda1._groups == x_agenda2._groups
     assert x_agenda1._partys == x_agenda2._partys
 
-    assert len(x_agenda1._idearoot._acptfactunits) == 2
-    assert len(x_agenda1._idearoot._acptfactunits) == len(
-        x_agenda2._idearoot._acptfactunits
-    )
+    assert len(x_agenda1._idearoot._factunits) == 2
+    assert len(x_agenda1._idearoot._factunits) == len(x_agenda2._idearoot._factunits)
     assert x_agenda1._healer != x_agenda2._healer
     print(f"{len(x_agenda1._groups.items())=}")
     # for x_agenda1_group_key, x_agenda1_group_obj in x_agenda1._groups.items():
@@ -429,7 +421,7 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
     sue_weight = 4
     sue_x_agenda = agendaunit_shop(_healer=sue_text)
     sue_x_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    sue_x_agenda.set_acptfact(base=swim_road, pick=free_road, open=23, nigh=27)
+    sue_x_agenda.set_fact(base=swim_road, pick=free_road, open=23, nigh=27)
     sue_x_agenda.add_idea(ideaunit_shop(back_text), parent_road=swim_road)
     assert len(bob_x_agenda._originunit._links) == 0
 

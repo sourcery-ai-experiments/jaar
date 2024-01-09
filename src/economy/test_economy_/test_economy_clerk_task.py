@@ -31,13 +31,11 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     b_bare_text = "bare"
     b_bare_road = create_road({basket_road}, {b_bare_text})
     # set basket status to "bare"
-    contract_x = amer_clerk.get_contract().set_acptfact(
-        base=basket_road, pick=b_bare_road
-    )
+    contract_x = amer_clerk.get_contract().set_fact(base=basket_road, pick=b_bare_road)
     amer_clerk.set_contract(contract_x)
     # save fact change to public
     amer_clerk.save_refreshed_output_to_public()
-    # print(f"{x_economy.get_public_agenda(amer_text)._idearoot._acptfactunits.keys()=}")
+    # print(f"{x_economy.get_public_agenda(amer_text)._idearoot._factunits.keys()=}")
     amer_output = x_economy.get_public_agenda(amer_text)
 
     # create assignment for Cali
@@ -47,14 +45,14 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     cali_clerk.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_economy.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
-    # print(f"{old_cali_agenda._idearoot._acptfactunits.keys()=}")
-    basket_acptfact = old_cali_agenda._idearoot._acptfactunits.get(basket_road)
-    # print(f"Cali: {basket_acptfact.base=} {basket_acptfact.pick=}")
+    # print(f"{old_cali_agenda._idearoot._factunits.keys()=}")
+    basket_fact = old_cali_agenda._idearoot._factunits.get(basket_road)
+    # print(f"Cali: {basket_fact.base=} {basket_fact.pick=}")
     assert len(old_cali_agenda.get_intent_items()) == 0
 
     # WHEN
     # set basket status to "full"
-    amer_clerk.get_contract().set_acptfact(base=basket_road, pick=b_full_road)
+    amer_clerk.get_contract().set_fact(base=basket_road, pick=b_full_road)
     amer_clerk.set_contract()
     amer_clerk.save_refreshed_output_to_public()
 
@@ -62,14 +60,14 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
     # new_public_amer = x_economy.get_public_agenda(amer_text)
-    # a_basket_acptfact = new_public_amer._idearoot._acptfactunits.get(basket_road)
-    # print(f"Amer after when {a_basket_acptfact.base=} {a_basket_acptfact.pick=}")
+    # a_basket_fact = new_public_amer._idearoot._factunits.get(basket_road)
+    # print(f"Amer after when {a_basket_fact.base=} {a_basket_fact.pick=}")
 
     # THEN
     # print(f"{new_cali_agenda._partys.keys()=}")
-    # basket_acptfact = new_cali_agenda._idearoot._acptfactunits.get(basket_road)
-    # print(f"{basket_acptfact.base=} {basket_acptfact.pick=}")
-    # print(f"{len(new_cali_agenda._idearoot._acptfactunits.keys())=}")
+    # basket_fact = new_cali_agenda._idearoot._factunits.get(basket_road)
+    # print(f"{basket_fact.base=} {basket_fact.pick=}")
+    # print(f"{len(new_cali_agenda._idearoot._factunits.keys())=}")
     assert len(new_cali_agenda.get_intent_items()) == 1
     laundry_task_text = "do_laundry"
     casa_road = x_economy.build_economy_road(casa_text)
@@ -77,7 +75,7 @@ def test_economy_ChangingOneHealersFactChangesAnotherAgenda(env_dir_setup_cleanu
     assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
 
 
-def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
+def test_economy_clerk_MeldOrderChangesOutputFact(env_dir_setup_cleanup):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     amer_text = "Amer"
@@ -101,9 +99,9 @@ def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     b_bare_text = "bare"
     b_bare_road = create_road(basket_road, b_bare_text)
 
-    # amer public laundry acptfact as "full"
-    amer_contract_x = amer_clerk.get_contract().set_acptfact(basket_road, b_full_road)
-    beto_contract_x = beto_clerk.get_contract().set_acptfact(basket_road, b_bare_road)
+    # amer public laundry fact as "full"
+    amer_contract_x = amer_clerk.get_contract().set_fact(basket_road, b_full_road)
+    beto_contract_x = beto_clerk.get_contract().set_fact(basket_road, b_bare_road)
 
     amer_clerk.set_contract(amer_contract_x)
     beto_clerk.set_contract(beto_contract_x)
@@ -124,15 +122,15 @@ def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
     # THEN
     old_cali_output = x_economy.get_public_agenda(cali_text)
     assert len(old_cali_output.get_intent_items()) == 0
-    old_cali_acptfacts = old_cali_output._idearoot._acptfactunits
-    # print(f"{old_cali_output._idearoot._acptfactunits=}")
-    assert old_cali_acptfacts.get(basket_road) != None
-    old_cali_basket_acptfact = old_cali_acptfacts.get(basket_road)
-    # print(f"{old_cali_basket_acptfact.base=}")
-    # print(f"{old_cali_basket_acptfact.pick=}")
-    # print(f"{old_cali_basket_acptfact.open=}")
-    # print(f"{old_cali_basket_acptfact.nigh=}")
-    assert old_cali_basket_acptfact.pick == b_bare_road
+    old_cali_facts = old_cali_output._idearoot._factunits
+    # print(f"{old_cali_output._idearoot._factunits=}")
+    assert old_cali_facts.get(basket_road) != None
+    old_cali_basket_fact = old_cali_facts.get(basket_road)
+    # print(f"{old_cali_basket_fact.base=}")
+    # print(f"{old_cali_basket_fact.pick=}")
+    # print(f"{old_cali_basket_fact.open=}")
+    # print(f"{old_cali_basket_fact.nigh=}")
+    assert old_cali_basket_fact.pick == b_bare_road
 
     # WHEN voice_rank is changed
     cali_contract = cali_kichen.get_contract()
@@ -156,15 +154,15 @@ def test_economy_clerk_MeldOrderChangesOutputAcptFact(env_dir_setup_cleanup):
 
     cali_kichen.save_refreshed_output_to_public()
 
-    # THEN final acptfact changed
+    # THEN final fact changed
     new_cali_output = x_economy.get_public_agenda(cali_text)
     assert len(new_cali_output.get_intent_items()) == 1
-    new_cali_acptfacts = new_cali_output._idearoot._acptfactunits
-    # print(f"{new_cali_output._idearoot._acptfactunits=}")
-    assert new_cali_acptfacts.get(basket_road) != None
-    new_cali_basket_acptfact = new_cali_acptfacts.get(basket_road)
-    print(f"{new_cali_basket_acptfact.base=}")
-    print(f"{new_cali_basket_acptfact.pick=}")
-    print(f"{new_cali_basket_acptfact.open=}")
-    print(f"{new_cali_basket_acptfact.nigh=}")
-    assert new_cali_basket_acptfact.pick == b_full_road
+    new_cali_facts = new_cali_output._idearoot._factunits
+    # print(f"{new_cali_output._idearoot._factunits=}")
+    assert new_cali_facts.get(basket_road) != None
+    new_cali_basket_fact = new_cali_facts.get(basket_road)
+    print(f"{new_cali_basket_fact.base=}")
+    print(f"{new_cali_basket_fact.pick=}")
+    print(f"{new_cali_basket_fact.open=}")
+    print(f"{new_cali_basket_fact.nigh=}")
+    assert new_cali_basket_fact.pick == b_full_road

@@ -104,17 +104,17 @@ class WorldUnit:
     #         for x_balancelink in x_balancelinks.values():
     #             requester_contract.edit_idea_attr(idea_road, balancelink=x_balancelink)
 
-    #     # if idea is promise set the promise requiredunits
+    #     # if idea is promise set the promise reasonunits
     #     for x_idea in wantunit_ideas.values():
     #         idea_road = x_idea.get_road()
     #         if x_idea.promise:
     #             requester_contract.edit_idea_attr(
     #                 idea_road,
-    #                 required_base=x_issue.base,
-    #                 required_sufffact=x_issue.get_1_opinionunit(bad=True),
+    #                 reason_base=x_issue.base,
+    #                 reason_premise=x_issue.get_1_opinionunit(bad=True),
     #             )
 
-    #     requester_contract.set_acptfact(
+    #     requester_contract.set_fact(
     #         x_issue.base, pick=x_issue.get_1_opinionunit(bad=True)
     #     )
     #     requester_clerkunit.save_contract_agenda(requester_contract)

@@ -60,7 +60,7 @@ screenshots and explanatory text.
 ## 1.2 Notes about data structure
 
 <!-- TODO: Add explanations -->
-base attributes vs required attributess
+base attributes vs reason attributess
 
 <!-- TODO: Add explanations -->
 EconomyUnit objects
@@ -90,13 +90,13 @@ AgendaUnit IdeaUnit BalanceHeir objects
 
 AgendaUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit IdeaUnit RequiredFactUnit objects
+AgendaUnit IdeaUnit Reason PremiseUnit objects
 
-AgendaUnit IdeaUnit RequiredFactHeir objects
+AgendaUnit IdeaUnit Reason PremiseHeir objects
 
-AgendaUnit IdeaUnit AcptFactUnit objects
+AgendaUnit IdeaUnit FactUnit objects
 
-AgendaUnit IdeaUnit AcptFactHeir objects
+AgendaUnit IdeaUnit FactHeir objects
 
 
 ## 1.3 Test-Driven-Development

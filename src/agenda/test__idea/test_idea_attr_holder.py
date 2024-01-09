@@ -6,15 +6,15 @@ def test_idea_attr_holder_exists():
     new_obj = IdeaAttrFilter()
     assert new_obj.weight is None
     assert new_obj.uid is None
-    assert new_obj.required is None
-    assert new_obj.required_base is None
-    assert new_obj.required_sufffact is None
-    assert new_obj.required_sufffact_open is None
-    assert new_obj.required_sufffact_nigh is None
-    assert new_obj.required_sufffact_divisor is None
-    assert new_obj.required_del_sufffact_base is None
-    assert new_obj.required_del_sufffact_need is None
-    assert new_obj.required_suff_idea_active_status is None
+    assert new_obj.reason is None
+    assert new_obj.reason_base is None
+    assert new_obj.reason_premise is None
+    assert new_obj.reason_premise_open is None
+    assert new_obj.reason_premise_nigh is None
+    assert new_obj.reason_premise_divisor is None
+    assert new_obj.reason_del_premise_base is None
+    assert new_obj.reason_del_premise_need is None
+    assert new_obj.reason_suff_idea_active_status is None
     assert new_obj.assignedunit is None
     assert new_obj.begin is None
     assert new_obj.close is None
@@ -26,7 +26,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.range_source_road is None
     assert new_obj.promise is None
     assert new_obj.problem_bool is None
-    assert new_obj.acptfactunit is None
+    assert new_obj.factunit is None
     assert new_obj.descendant_promise_count is None
     assert new_obj.all_party_credit is None
     assert new_obj.all_party_debt is None
@@ -36,25 +36,25 @@ def test_idea_attr_holder_exists():
     assert new_obj.on_meld_weight_action is None
 
 
-def test_idea_attr_holder_CorrectlyCalculatesSuffFactRanges():
+def test_idea_attr_holder_CorrectlyCalculatesPremiseRanges():
     # GIVEN
-    idea_attr = IdeaAttrFilter(required_sufffact="some_road")
-    assert idea_attr.required_sufffact_open is None
-    assert idea_attr.required_sufffact_nigh is None
-    # assert idea_attr.required_sufffact_numor is None
-    assert idea_attr.required_sufffact_divisor is None
-    # assert idea_attr.required_sufffact_reest is None
+    idea_attr = IdeaAttrFilter(reason_premise="some_road")
+    assert idea_attr.reason_premise_open is None
+    assert idea_attr.reason_premise_nigh is None
+    # assert idea_attr.reason_premise_numor is None
+    assert idea_attr.reason_premise_divisor is None
+    # assert idea_attr.reason_premise_reest is None
 
     # WHEN
-    idea_attr.set_sufffact_range_attributes_influenced_by_sufffact_idea(
-        sufffact_open=5.0,
-        sufffact_nigh=20.0,
-        # sufffact_numor,
-        sufffact_denom=4.0,
-        # sufffact_reest,
+    idea_attr.set_premise_range_attributes_influenced_by_premise_idea(
+        premise_open=5.0,
+        premise_nigh=20.0,
+        # premise_numor,
+        premise_denom=4.0,
+        # premise_reest,
     )
-    assert idea_attr.required_sufffact_open == 5.0
-    assert idea_attr.required_sufffact_nigh == 20.0
-    # assert idea_attr.required_sufffact_numor is None
-    assert idea_attr.required_sufffact_divisor == 4.0
-    # assert idea_attr.required_sufffact_reest is None
+    assert idea_attr.reason_premise_open == 5.0
+    assert idea_attr.reason_premise_nigh == 20.0
+    # assert idea_attr.reason_premise_numor is None
+    assert idea_attr.reason_premise_divisor == 4.0
+    # assert idea_attr.reason_premise_reest is None

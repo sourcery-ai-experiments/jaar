@@ -68,7 +68,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     # x_idearoot._all_party_debt = True
 
     assert contract_agenda._idearoot == x_agenda._idearoot
-    assert contract_agenda._idearoot._acptfactunits == {}
+    assert contract_agenda._idearoot._factunits == {}
     assert list(contract_agenda._partys.keys()) == [tim_text]
     assert list(contract_agenda._groups.keys()) == [tim_text]
 
@@ -109,7 +109,7 @@ def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
 
     assert contract_agenda._idearoot._kids == x_agenda._idearoot._kids
     assert contract_agenda._idearoot == x_agenda._idearoot
-    assert contract_agenda._idearoot._acptfactunits == {}
+    assert contract_agenda._idearoot._factunits == {}
     assert contract_agenda._partys == {}
     assert contract_agenda._groups == {}
     assert contract_agenda._healer == x_clerk._clerk_cid
@@ -228,10 +228,7 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     assert (
         sx_output_after._idearoot._parent_road == healer_agenda_x._idearoot._parent_road
     )
-    assert (
-        sx_output_after._idearoot._acptfactunits
-        == healer_agenda_x._idearoot._acptfactunits
-    )
+    assert sx_output_after._idearoot._factunits == healer_agenda_x._idearoot._factunits
     assert sx_output_after._idearoot == healer_agenda_x._idearoot
 
 
@@ -266,7 +263,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     sx_idearoot = new_output_agenda._idearoot
     assert sx_idearoot._agenda_economy_id == input_idearoot._agenda_economy_id
     assert sx_idearoot._parent_road == input_idearoot._parent_road
-    assert sx_idearoot._acptfactunits == input_idearoot._acptfactunits
+    assert sx_idearoot._factunits == input_idearoot._factunits
     new_output_agenda_b_idea = sx_idearoot.get_kid("B")
     assert new_output_agenda_b_idea._parent_road == input_b_idea._parent_road
     assert (
@@ -287,7 +284,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
 #     assert x_agenda_output_before._groups == {}
 #     assert x_agenda_output_before._partys == {}
-#     assert x_agenda_output_before._acptfacts == {}
+#     assert x_agenda_output_before._facts == {}
 
 #     src1 = "test1"
 #     src1_road = f"{src1}"
@@ -303,12 +300,12 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     yaya_text = "yaya"
 #     yaya_road = f"{src1},{yaya_text}"
 #     s1.add_idea(ideaunit_shop(yaya_text), parent_road=src1_road)
-#     s1.set_acptfact(base=yaya_road, acptfact=yaya_road)
+#     s1.set_fact(base=yaya_road, fact=yaya_road)
 
 #     assert s1._groups.get(swim_text).pid == swim_text
 #     assert s1._partys.get(ceci_text).pid == ceci_text
 #     assert s1._idearoot._label == src1
-#     assert s1._acptfacts.get(yaya_road).base == yaya_road
+#     assert s1._facts.get(yaya_road).base == yaya_road
 
 #     # WHEN
 #     x_clerk.set_single_digested_agenda(_agenda_healer="test1", digest_agenda_x=s1)
@@ -316,13 +313,13 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     # THEN
 #     assert str(type(new_output_agenda)).find(".agenda.AgendaUnit'>")
-#     assert new_output_agenda._acptfacts == s1._acptfacts
+#     assert new_output_agenda._facts == s1._facts
 #     assert new_output_agenda._partys == s1._partys
 #     assert new_output_agenda._groups == s1._groups
 #     assert new_output_agenda._weight == s1._weight
 #     assert new_output_agenda._weight == s1._weight
 #     assert new_output_agenda._idearoot._parent_road == s1._idearoot._parent_road
-#     assert new_output_agenda._idearoot._acptfactunits == s1._idearoot._acptfactunits
+#     assert new_output_agenda._idearoot._factunits == s1._idearoot._factunits
 #     assert new_output_agenda._idearoot._kids == s1._idearoot._kids
 #     assert new_output_agenda._idearoot._kids_total_weight == s1._idearoot._kids_total_weight
 #     assert new_output_agenda._idearoot == s1._idearoot

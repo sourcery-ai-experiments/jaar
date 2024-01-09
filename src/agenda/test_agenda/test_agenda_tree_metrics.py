@@ -19,7 +19,7 @@ def test_agenda_get_tree_metrics_exists():
 
     # THEN
     assert x_agenda_tree_metrics.node_count != None
-    assert x_agenda_tree_metrics.required_bases != None
+    assert x_agenda_tree_metrics.reason_bases != None
     assert x_agenda_tree_metrics.level_count != None
     assert x_agenda_tree_metrics.balancelinks_metrics != None
 

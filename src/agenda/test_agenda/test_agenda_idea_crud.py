@@ -1,6 +1,6 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.agenda.idea import ideaunit_shop
-from src.agenda.required_idea import requiredunit_shop, acptfactunit_shop
+from src.agenda.reason_idea import reasonunit_shop, factunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
@@ -156,12 +156,12 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
 
     # WHEN
     bob_agenda.edit_idea_attr(
-        road=work_road, required_base=week_road, required_sufffact=wed_road
+        road=work_road, reason_base=week_road, reason_premise=wed_road
     )
 
     # THEN
     work_idea = bob_agenda.get_idea_obj(work_road)
-    assert work_idea._requiredunits.get(week_road) != None
+    assert work_idea._reasonunits.get(week_road) != None
 
 
 def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
@@ -189,7 +189,7 @@ def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     assert x_agenda.get_level_count(level=3) == 3
 
 
-def test_agenda_add_idea_creates_requireds_ideas():
+def test_agenda_add_idea_creates_reasons_ideas():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -207,9 +207,9 @@ def test_agenda_add_idea_creates_requireds_ideas():
     cookery_room_road = x_agenda.make_road(buildings_road, cookery_room_text)
     cookery_dirty_text = "dirty"
     cookery_dirty_road = x_agenda.make_road(cookery_room_road, cookery_dirty_text)
-    required_x = requiredunit_shop(base=cookery_room_road)
-    required_x.set_sufffact(sufffact=cookery_dirty_road)
-    clean_cookery_idea.set_required_unit(required=required_x)
+    reason_x = reasonunit_shop(base=cookery_room_road)
+    reason_x.set_premise(premise=cookery_dirty_road)
+    clean_cookery_idea.set_reason_unit(reason=reason_x)
 
     assert x_agenda._idearoot.get_kid(buildings_text) is None
 
@@ -409,20 +409,20 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     assert x_agenda._idearoot._kids[work_text]._begin == 25
     assert x_agenda._idearoot._kids[work_text]._close == 29
 
-    # acptfactunit: acptfactunit_shop = None,
-    # x_agenda._idearoot._kids[work_text]._acptfactunits = None
-    assert x_agenda._idearoot._kids[work_text]._acptfactunits == {}
+    # factunit: factunit_shop = None,
+    # x_agenda._idearoot._kids[work_text]._factunits = None
+    assert x_agenda._idearoot._kids[work_text]._factunits == {}
     wkdays_road = x_agenda.make_l1_road("weekdays")
-    acptfact_road = x_agenda.make_road(wkdays_road, "Sunday")
-    acptfactunit_x = acptfactunit_shop(base=acptfact_road, pick=acptfact_road)
+    fact_road = x_agenda.make_road(wkdays_road, "Sunday")
+    factunit_x = factunit_shop(base=fact_road, pick=fact_road)
 
-    work_acptfactunits = x_agenda._idearoot._kids[work_text]._acptfactunits
-    print(f"{work_acptfactunits=}")
-    x_agenda.edit_idea_attr(road=work_road, acptfactunit=acptfactunit_x)
-    work_acptfactunits = x_agenda._idearoot._kids[work_text]._acptfactunits
-    print(f"{work_acptfactunits=}")
-    assert x_agenda._idearoot._kids[work_text]._acptfactunits == {
-        acptfactunit_x.base: acptfactunit_x
+    work_factunits = x_agenda._idearoot._kids[work_text]._factunits
+    print(f"{work_factunits=}")
+    x_agenda.edit_idea_attr(road=work_road, factunit=factunit_x)
+    work_factunits = x_agenda._idearoot._kids[work_text]._factunits
+    print(f"{work_factunits=}")
+    assert x_agenda._idearoot._kids[work_text]._factunits == {
+        factunit_x.base: factunit_x
     }
 
     # _descendant_promise_count: int = None,

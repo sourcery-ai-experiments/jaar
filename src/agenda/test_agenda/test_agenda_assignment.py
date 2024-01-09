@@ -1,11 +1,11 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
-from src.agenda.required_idea import requiredunit_shop
+from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
-    get_agenda_with7amCleanTableRequired as example_agendas_get_agenda_with7amCleanTableRequired,
+    get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
     get_assignment_agenda_example1 as example_agenda_get_assignment_agenda_example1,
     get_agenda_assignment_laundry_example1,
 )
@@ -143,7 +143,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
 
 def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoadUnits():
     # GIVEN
-    x_agenda = example_agendas_get_agenda_with7amCleanTableRequired()
+    x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
     x_agenda.set_agenda_metrics()
 
     # WHEN
@@ -218,7 +218,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
     assert relevant_roads == {x_agenda._economy_id: -1, sun_road: -1, week_road: -1}
 
 
-def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
+def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     # GIVEN
     healer_text = "Neo"
     x_agenda = agendaunit_shop(_healer=healer_text)
@@ -238,9 +238,9 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     status_road = x_agenda.make_road(casa_road, status_text)
     status_idea = ideaunit_shop(status_text)
     x_agenda.add_idea(status_idea, parent_road=casa_road)
-    floor_required = requiredunit_shop(base=status_road)
-    floor_required.set_sufffact(sufffact=status_road)
-    x_agenda.edit_idea_attr(road=floor_road, required=floor_required)
+    floor_reason = reasonunit_shop(base=status_road)
+    floor_reason.set_premise(premise=status_road)
+    x_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
 
     # WHEN
     x_agenda.set_agenda_metrics()
@@ -259,7 +259,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleRequiredUnitBase():
     assert relevant_roads.get(unim_road) is None
 
 
-def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
+def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseAndDescendents():
     # GIVEN
     x_agenda = example_agenda_get_assignment_agenda_example1()
     casa_text = "casa"
@@ -310,7 +310,7 @@ def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseAndDescendents():
     assert relevant_roads.get(unim_road) is None
 
 
-# def test_agenda__get_relevant_roads_ReturnsRequiredUnitBaseRecursively():
+# def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseRecursively():
 #     pass
 
 
@@ -409,7 +409,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     assert bob_agenda.get_idea_obj(casa_road) != None
 
 
-def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_acptfacts():
+def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_facts():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
@@ -421,22 +421,22 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_acptfacts():
     basket_text = "laundry basket status"
     basket_road = yao_agenda.make_road(casa_road, basket_text)
     yao_agenda.add_idea(ideaunit_shop(basket_text), parent_road=casa_road)
-    yao_agenda.set_acptfact(base=basket_road, pick=basket_road)
-    # print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
+    yao_agenda.set_fact(base=basket_road, pick=basket_road)
+    # print(f"{list(yao_agenda._idearoot._factunits.keys())=}")
 
     room_text = "room status"
     room_road = yao_agenda.make_road(casa_road, room_text)
     yao_agenda.add_idea(ideaunit_shop(room_text), parent_road=casa_road)
-    yao_agenda.set_acptfact(base=room_road, pick=room_road)
-    print(f"{list(yao_agenda._idearoot._acptfactunits.keys())=}")
+    yao_agenda.set_fact(base=room_road, pick=room_road)
+    print(f"{list(yao_agenda._idearoot._factunits.keys())=}")
 
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(_healer=bob_text)
 
     yao_agenda.set_agenda_metrics()
     bob_agenda.set_agenda_metrics()
-    assert list(yao_agenda._idearoot._acptfactunits.keys()) == [basket_road, room_road]
-    assert not list(bob_agenda._idearoot._acptfactunits.keys())
+    assert list(yao_agenda._idearoot._factunits.keys()) == [basket_road, room_road]
+    assert not list(bob_agenda._idearoot._factunits.keys())
 
     # WHEN
     relevant_roads = {
@@ -448,8 +448,8 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_acptfacts():
 
     # THEN
     bob_agenda.set_agenda_metrics()
-    assert bob_agenda._idearoot._acptfactunits.get(room_road) is None
-    assert list(bob_agenda._idearoot._acptfactunits.keys()) == [basket_road]
+    assert bob_agenda._idearoot._factunits.get(room_road) is None
+    assert list(bob_agenda._idearoot._factunits.keys()) == [basket_road]
 
 
 def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
@@ -504,7 +504,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     laundry_task_road_text = "do_laundry"
     laundry_task_road_road = amer_agenda.make_road(casa_road, laundry_task_road_text)
     do_laundery_idea = amer_agenda.get_idea_obj(laundry_task_road_road)
-    print(f"{do_laundery_idea._requiredunits.keys()=}")
+    print(f"{do_laundery_idea._reasonunits.keys()=}")
 
     # WHEN
     cali_text = "Cali"
@@ -559,19 +559,19 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     laundry_do_idea = cali_assignment.get_idea_obj(laundry_task_road_road)
     print(f"{laundry_do_idea.promise=}")
-    print(f"{laundry_do_idea._requiredunits.keys()=}")
-    print(f"{laundry_do_idea._requiredunits.get(basket_road).sufffacts.keys()=}")
-    print(f"{laundry_do_idea._acptfactheirs=}")
+    print(f"{laundry_do_idea._reasonunits.keys()=}")
+    print(f"{laundry_do_idea._reasonunits.get(basket_road).premises.keys()=}")
+    print(f"{laundry_do_idea._factheirs=}")
     print(f"{laundry_do_idea._assignedunit=}")
 
     assert laundry_do_idea.promise == True
-    assert list(laundry_do_idea._requiredunits.keys()) == [basket_road]
-    laundry_do_sufffacts = laundry_do_idea._requiredunits.get(basket_road).sufffacts
-    assert list(laundry_do_sufffacts.keys()) == [b_full_road, b_smel_road]
+    assert list(laundry_do_idea._reasonunits.keys()) == [basket_road]
+    laundry_do_premises = laundry_do_idea._reasonunits.get(basket_road).premises
+    assert list(laundry_do_premises.keys()) == [b_full_road, b_smel_road]
     assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [cali_text]
-    assert list(laundry_do_idea._acptfactheirs.keys()) == [basket_road]
+    assert list(laundry_do_idea._factheirs.keys()) == [basket_road]
 
-    assert laundry_do_idea._acptfactheirs.get(basket_road).pick == b_full_road
+    assert laundry_do_idea._factheirs.get(basket_road).pick == b_full_road
 
     # print(f"{laundry_do_idea=}")
 

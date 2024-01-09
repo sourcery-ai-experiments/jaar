@@ -1,5 +1,5 @@
 # from src.agenda.road import create_road
-# from src.agenda.required_idea import acptfactunit_shop
+# from src.agenda.reason_idea import factunit_shop
 # from src.world.world import worldunit_shop
 # from src.world.lobby import (
 #     economydeletemeaddress_shop,
@@ -169,17 +169,17 @@
 #     assert healthy_idea.promise == False
 #     assert boiling_idea.promise == False
 
-#     assert len(flying_idea._requiredunits) == 0
-#     assert len(no_fly_idea._requiredunits) == 1
-#     assert len(yesfly_idea._requiredunits) == 0
-#     assert len(weather_idea._requiredunits) == 0
-#     assert len(healthy_idea._requiredunits) == 0
-#     assert len(boiling_idea._requiredunits) == 0
+#     assert len(flying_idea._reasonunits) == 0
+#     assert len(no_fly_idea._reasonunits) == 1
+#     assert len(yesfly_idea._reasonunits) == 0
+#     assert len(weather_idea._reasonunits) == 0
+#     assert len(healthy_idea._reasonunits) == 0
+#     assert len(boiling_idea._reasonunits) == 0
 
-#     assert no_fly_idea._requiredunits.get(weather_road) != None
-#     weather_requiredunit = no_fly_idea._requiredunits.get(weather_road)
-#     assert len(weather_requiredunit.sufffacts) == 1
-#     assert weather_requiredunit.sufffacts.get(boiling_road) != None
+#     assert no_fly_idea._reasonunits.get(weather_road) != None
+#     weather_reasonunit = no_fly_idea._reasonunits.get(weather_road)
+#     assert len(weather_reasonunit.premises) == 1
+#     assert weather_reasonunit.premises.get(boiling_road) != None
 
 #     assert flying_idea._weight == 1
 #     assert no_fly_idea._weight != 1
@@ -203,10 +203,10 @@
 #     assert healthy_idea._balancelinks.get(tim_text) != None
 #     assert boiling_idea._balancelinks.get(tim_text) != None
 
-#     xio_acptfactunits = xio_contract._idearoot._acptfactunits
-#     assert len(xio_acptfactunits) == 1
-#     static_weather_acptfactunit = acptfactunit_shop(weather_road, pick=boiling_road)
-#     assert xio_acptfactunits.get(weather_road) == static_weather_acptfactunit
+#     xio_factunits = xio_contract._idearoot._factunits
+#     assert len(xio_factunits) == 1
+#     static_weather_factunit = factunit_shop(weather_road, pick=boiling_road)
+#     assert xio_factunits.get(weather_road) == static_weather_factunit
 #     assert len(xio_contract.get_intent_items()) == 0
 
 #     # check tim contract
@@ -299,10 +299,10 @@
 #     assert healthy_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 #     assert boiling_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 
-#     xio_acptfactunits = xio_contract._idearoot._acptfactunits
-#     assert len(xio_acptfactunits) == 1
-#     static_weather_acptfactunit = acptfactunit_shop(weather_road, pick=boiling_road)
-#     assert xio_acptfactunits.get(weather_road) == static_weather_acptfactunit
+#     xio_factunits = xio_contract._idearoot._factunits
+#     assert len(xio_factunits) == 1
+#     static_weather_factunit = factunit_shop(weather_road, pick=boiling_road)
+#     assert xio_factunits.get(weather_road) == static_weather_factunit
 #     assert len(xio_contract.get_intent_items()) == 0
 
 #     # check tim contract

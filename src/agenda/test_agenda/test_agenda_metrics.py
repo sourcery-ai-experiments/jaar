@@ -6,33 +6,33 @@ from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_agenda_get_tree_metrics_TracksRequiredsThatHaveNoAcptFactBases():
+def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoFactBases():
     x_agenda = example_agendas_agenda_v001()
     x_agenda_metrics = x_agenda.get_tree_metrics()
 
     print(f"{x_agenda_metrics.level_count=}")
-    print(f"{x_agenda_metrics.required_bases=}")
+    print(f"{x_agenda_metrics.reason_bases=}")
     assert x_agenda_metrics != None
-    required_bases_x = x_agenda_metrics.required_bases
-    assert required_bases_x != None
-    assert len(required_bases_x) > 0
+    reason_bases_x = x_agenda_metrics.reason_bases
+    assert reason_bases_x != None
+    assert len(reason_bases_x) > 0
 
 
-def test_agenda_get_missing_acptfact_bases_ReturnsAllBasesNotCoveredByAcptFacts():
+def test_agenda_get_missing_fact_bases_ReturnsAllBasesNotCoveredByFacts():
     x_agenda = example_agendas_agenda_v001()
-    missing_bases = x_agenda.get_missing_acptfact_bases()
+    missing_bases = x_agenda.get_missing_fact_bases()
     assert missing_bases != None
     print(f"{missing_bases=}")
     print(f"{len(missing_bases)=}")
     assert len(missing_bases) == 11
 
-    x_agenda.set_acptfact(
+    x_agenda.set_fact(
         base=x_agenda.make_l1_road("day_minute"),
         pick=x_agenda.make_l1_road("day_minute"),
         open=0,
         nigh=1439,
     )
-    missing_bases = x_agenda.get_missing_acptfact_bases()
+    missing_bases = x_agenda.get_missing_fact_bases()
 
     assert len(missing_bases) == 11
 

@@ -43,8 +43,8 @@ from src.economy.treasury_sqlstr import (
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
-    AcptFactCatalog,
-    get_acptfact_catalog_table_insert_sqlstr,
+    FactCatalog,
+    get_fact_catalog_table_insert_sqlstr,
     GroupUnitCatalog,
     get_groupunit_catalog_table_insert_sqlstr,
     get_groupunit_catalog_dict,
@@ -236,7 +236,7 @@ class EconomyUnit:
             self._treasury_insert_partyunit(agendaunit_x)
             self._treasury_insert_groupunit(agendaunit_x)
             self._treasury_insert_ideaunit(agendaunit_x)
-            self._treasury_insert_acptfact(agendaunit_x)
+            self._treasury_insert_fact(agendaunit_x)
 
     def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
@@ -274,16 +274,16 @@ class EconomyUnit:
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_acptfact(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_fact(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for acptfact_x in agendaunit_x._idearoot._acptfactunits.values():
-                acptfact_catalog_x = AcptFactCatalog(
+            for fact_x in agendaunit_x._idearoot._factunits.values():
+                fact_catalog_x = FactCatalog(
                     agenda_healer=agendaunit_x._healer,
-                    base=acptfact_x.base,
-                    pick=acptfact_x.pick,
+                    base=fact_x.base,
+                    pick=fact_x.pick,
                 )
-                sqlstr = get_acptfact_catalog_table_insert_sqlstr(acptfact_catalog_x)
+                sqlstr = get_fact_catalog_table_insert_sqlstr(fact_catalog_x)
                 cur.execute(sqlstr)
 
     def get_treasury_conn(self) -> Connection:
