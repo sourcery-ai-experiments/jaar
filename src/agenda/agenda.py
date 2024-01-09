@@ -1164,13 +1164,13 @@ class AgendaUnit:
                     idea_kid.find_replace_road(old_road=old_road, new_road=new_road)
 
     def _set_ideaattrfilter_sufffact_ranges(self, x_ideaattrfilter: IdeaAttrFilter):
-        suffact_idea = self.get_idea_obj(x_ideaattrfilter.get_sufffact_need())
+        sufffact_idea = self.get_idea_obj(x_ideaattrfilter.get_sufffact_need())
         x_ideaattrfilter.set_sufffact_range_attributes_influenced_by_sufffact_idea(
-            sufffact_open=suffact_idea._begin,
-            sufffact_nigh=suffact_idea._close,
-            # suffact_numor=suffact_idea.anc_numor,
-            sufffact_denom=suffact_idea._denom,
-            # anc_reest=suffact_idea.anc_reest,
+            sufffact_open=sufffact_idea._begin,
+            sufffact_nigh=sufffact_idea._close,
+            # sufffact_numor=sufffact_idea.anc_numor,
+            sufffact_denom=sufffact_idea._denom,
+            # anc_reest=sufffact_idea.anc_reest,
         )
 
     def _set_ideaattrfilter_begin_close(

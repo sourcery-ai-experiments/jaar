@@ -601,14 +601,14 @@ def test_exammple_idea_list_Every6WeeksRequired():
     clean_sheet_idea = x_agenda.get_idea_obj(clean_couch_road)
     # print(f"{clean_sheet_idea._requiredunits.values()=}")
     ced_week_required = clean_sheet_idea._requiredunits.get(ced_week_base)
-    ced_week_suffact = ced_week_required.sufffacts.get(ced_week_base)
+    ced_week_sufffact = ced_week_required.sufffacts.get(ced_week_base)
     print(
-        f"{clean_sheet_idea._label=} {ced_week_required.base=} {ced_week_suffact.need=}"
+        f"{clean_sheet_idea._label=} {ced_week_required.base=} {ced_week_sufffact.need=}"
     )
     # print(f"{clean_sheet_idea._label=} {ced_week_required.base=} {sufffact_x=}")
-    sufffact_divisor = ced_week_suffact.divisor
-    sufffact_open = ced_week_suffact.open
-    sufffact_nigh = ced_week_suffact.nigh
+    sufffact_divisor = ced_week_sufffact.divisor
+    sufffact_open = ced_week_sufffact.open
+    sufffact_nigh = ced_week_sufffact.nigh
     # print(f"{idea._requiredunits=}")
     assert clean_sheet_idea._active_status == False
 
