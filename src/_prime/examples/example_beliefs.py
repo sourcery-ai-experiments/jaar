@@ -74,12 +74,12 @@ def get_childcare_belief() -> BeliefUnit:
     childcare_road = create_road(family_road, "childcare")
     childcare_belief = beliefunit_shop(childcare_road)
 
-    serious_road = create_road(childcare_road, "serious professionalism, passion")
-    easy_road = create_road(childcare_road, "easy, anyone can do it.")
-    serious_opinion = opinionunit_shop(serious_road, affect=3)
-    easy_opinion = opinionunit_shop(easy_road, affect=-4)
-    childcare_belief.set_opinionunit(serious_opinion)
-    childcare_belief.set_opinionunit(easy_opinion)
+    school_road = create_road(childcare_road, "school most beneficial for kids")
+    home_road = create_road(childcare_road, "home most beneficial for kids")
+    school_opinion = opinionunit_shop(school_road, affect=3)
+    home_opinion = opinionunit_shop(home_road, affect=-4)
+    childcare_belief.set_opinionunit(school_opinion)
+    childcare_belief.set_opinionunit(home_opinion)
     return childcare_belief
 
 
