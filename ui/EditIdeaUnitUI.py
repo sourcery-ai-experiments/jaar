@@ -279,7 +279,7 @@ class Ui_Form(object):
         self.create_hreg_button.setFont(font)
         self.create_hreg_button.setObjectName("create_hreg_button")
         self.reason_premise_combo = QtWidgets.QComboBox(Form)
-        self.reason_premise_combo.setGeometry(QtCore.QRect(620, 400, 701, 26))
+        self.reason_premise_combo.setGeometry(QtCore.QRect(620, 400, 481, 26))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.reason_premise_combo.setFont(font)
@@ -540,12 +540,8 @@ class Ui_Form(object):
         self.label_35.setFont(font)
         self.label_35.setObjectName("label_35")
         self.button_premiseunit_hreg_update_weeks = QtWidgets.QPushButton(Form)
-        self.button_premiseunit_hreg_update_weeks.setGeometry(
-            QtCore.QRect(1530, 490, 291, 24)
-        )
-        self.button_premiseunit_hreg_update_weeks.setObjectName(
-            "button_premiseunit_hreg_update_weeks"
-        )
+        self.button_premiseunit_hreg_update_weeks.setGeometry(QtCore.QRect(1530, 490, 291, 24))
+        self.button_premiseunit_hreg_update_weeks.setObjectName("button_premiseunit_hreg_update_weeks")
         self.hreg_weeks_remainder = QtWidgets.QTextEdit(Form)
         self.hreg_weeks_remainder.setGeometry(QtCore.QRect(1720, 380, 41, 26))
         font = QtGui.QFont()
@@ -565,15 +561,8 @@ class Ui_Form(object):
         self.label_30.setFont(font)
         self.label_30.setObjectName("label_30")
         self.button_premiseunit_hreg_update_days = QtWidgets.QPushButton(Form)
-        self.button_premiseunit_hreg_update_days.setGeometry(
-            QtCore.QRect(1530, 520, 291, 24)
-        )
-        self.button_premiseunit_hreg_update_days.setObjectName(
-            "button_premiseunit_hreg_update_days"
-        )
-        self.yo_problem_bool_cb = QtWidgets.QCheckBox(Form)
-        self.yo_problem_bool_cb.setGeometry(QtCore.QRect(930, 190, 81, 20))
-        self.yo_problem_bool_cb.setObjectName("yo_problem_bool_cb")
+        self.button_premiseunit_hreg_update_days.setGeometry(QtCore.QRect(1530, 520, 291, 24))
+        self.button_premiseunit_hreg_update_days.setObjectName("button_premiseunit_hreg_update_days")
         self.cb_beliefheir_view = QtWidgets.QCheckBox(Form)
         self.cb_beliefheir_view.setGeometry(QtCore.QRect(10, 90, 71, 20))
         self.cb_beliefheir_view.setObjectName("cb_beliefheir_view")
@@ -628,13 +617,25 @@ class Ui_Form(object):
         self.submit_duty_insert = QtWidgets.QPushButton(Form)
         self.submit_duty_insert.setGeometry(QtCore.QRect(1190, 800, 171, 26))
         self.submit_duty_insert.setObjectName("submit_duty_insert")
+        self.label_39 = QtWidgets.QLabel(Form)
+        self.label_39.setGeometry(QtCore.QRect(1110, 400, 311, 21))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.label_39.setFont(font)
+        self.label_39.setObjectName("label_39")
+        self.reason_suff_active_status_combo = QtWidgets.QComboBox(Form)
+        self.reason_suff_active_status_combo.setGeometry(QtCore.QRect(1420, 400, 91, 26))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.reason_suff_active_status_combo.setFont(font)
+        self.reason_suff_active_status_combo.setObjectName("reason_suff_active_status_combo")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setProperty("windowkind", _translate("Form", "Form"))
         self.label_14.setText(_translate("Form", "Ideas: Edit or Add Children "))
         self.label_1.setText(_translate("Form", "Label"))
         self.label_4.setText(_translate("Form", "Weight"))
@@ -658,9 +659,7 @@ class Ui_Form(object):
         self.cb_yo_id.setText(_translate("Form", "uid"))
         self.cb_yo2bd_count.setText(_translate("Form", "Group count"))
         self.cb_yo_intent.setText(_translate("Form", "lf intent"))
-        self.cb_yo_insert_allChildren.setText(
-            _translate("Form", "New node gets all children")
-        )
+        self.cb_yo_insert_allChildren.setText(_translate("Form", "New node gets all children"))
         self.label_37.setText(_translate("Form", "Hour"))
         self.label_38.setText(_translate("Form", "Min"))
         self.cb_yo_intent_current.setText(_translate("Form", "Agenda"))
@@ -727,14 +726,9 @@ class Ui_Form(object):
         self.label_33.setText(_translate("Form", "Monthday:"))
         self.label_34.setText(_translate("Form", "Month:"))
         self.label_35.setText(_translate("Form", "Monthday:"))
-        self.button_premiseunit_hreg_update_weeks.setText(
-            _translate("Form", "apply premiseunit_hregtime")
-        )
+        self.button_premiseunit_hreg_update_weeks.setText(_translate("Form", "apply premiseunit_hregtime"))
         self.label_30.setText(_translate("Form", "Starting..."))
-        self.button_premiseunit_hreg_update_days.setText(
-            _translate("Form", "apply premiseunit_hregtime_days")
-        )
-        self.yo_problem_bool_cb.setText(_translate("Form", "Problem"))
+        self.button_premiseunit_hreg_update_days.setText(_translate("Form", "apply premiseunit_hregtime_days"))
         self.cb_beliefheir_view.setText(_translate("Form", "Beliefheir:"))
         self.cb_yo_beliefheir_count.setText(_translate("Form", "beliefheirs"))
         self.label_36.setText(_translate("Form", "Active Status:"))
@@ -762,3 +756,4 @@ class Ui_Form(object):
         item = self.reasonheir_table.horizontalHeaderItem(10)
         item.setText(_translate("Form", "11"))
         self.submit_duty_insert.setText(_translate("Form", "Add Duty child idea"))
+        self.label_39.setText(_translate("Form", "Reason Base Agenda Status is Sufficient when Promise status is "))

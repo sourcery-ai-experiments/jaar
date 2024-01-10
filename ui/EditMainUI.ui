@@ -10,7 +10,7 @@
     <height>712</height>
    </rect>
   </property>
-  <property name="windowkind">
+  <property name="windowkind" stdset="0">
    <string>Form</string>
   </property>
   <widget class="QLineEdit" name="input">
@@ -181,24 +181,6 @@
      <width>161</width>
      <height>31</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="display_problem_beliefs_cb">
-   <property name="geometry">
-    <rect>
-     <x>1190</x>
-     <y>140</y>
-     <width>161</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>8</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Only Problem Beliefs</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_9">

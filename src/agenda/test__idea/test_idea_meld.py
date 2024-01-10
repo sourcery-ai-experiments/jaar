@@ -40,7 +40,6 @@ def custom_set_idea_attr(
     balancelink_del: GroupBrand = None,
     is_expanded: bool = None,
     promise: bool = None,
-    problem_bool: bool = None,
     on_meld_weight_action: str = None,
 ):
     idea_attr = IdeaAttrFilter(
@@ -70,7 +69,6 @@ def custom_set_idea_attr(
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
         promise=promise,
-        problem_bool=problem_bool,
         on_meld_weight_action=on_meld_weight_action,
     )
 

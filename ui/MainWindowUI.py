@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\MainWindow.ui'
+# Form implementation generated from reading ui file 'ui\MainWindowUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1693, 914)
+        MainWindow.resize(1693, 878)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.editmain_button = QtWidgets.QPushButton(self.centralwidget)
@@ -127,18 +127,12 @@ class Ui_MainWindow(object):
         font.setPointSize(20)
         self.label_intent_end_header.setFont(font)
         self.label_intent_end_header.setObjectName("label_intent_end_header")
-        self.label_intent_agenda_importance_header1 = QtWidgets.QLabel(
-            self.centralwidget
-        )
-        self.label_intent_agenda_importance_header1.setGeometry(
-            QtCore.QRect(30, 640, 91, 31)
-        )
+        self.label_intent_agenda_importance_header1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_intent_agenda_importance_header1.setGeometry(QtCore.QRect(30, 640, 91, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.label_intent_agenda_importance_header1.setFont(font)
-        self.label_intent_agenda_importance_header1.setObjectName(
-            "label_intent_agenda_importance_header1"
-        )
+        self.label_intent_agenda_importance_header1.setObjectName("label_intent_agenda_importance_header1")
         self.label_intent_family_header1 = QtWidgets.QLabel(self.centralwidget)
         self.label_intent_family_header1.setGeometry(QtCore.QRect(30, 700, 81, 31))
         font = QtGui.QFont()
@@ -165,18 +159,12 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.label_intent_family_header2.setFont(font)
         self.label_intent_family_header2.setObjectName("label_intent_family_header2")
-        self.label_intent_agenda_importance_header2 = QtWidgets.QLabel(
-            self.centralwidget
-        )
-        self.label_intent_agenda_importance_header2.setGeometry(
-            QtCore.QRect(30, 660, 101, 31)
-        )
+        self.label_intent_agenda_importance_header2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_intent_agenda_importance_header2.setGeometry(QtCore.QRect(30, 660, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.label_intent_agenda_importance_header2.setFont(font)
-        self.label_intent_agenda_importance_header2.setObjectName(
-            "label_intent_agenda_importance_header2"
-        )
+        self.label_intent_agenda_importance_header2.setObjectName("label_intent_agenda_importance_header2")
         self.label_intent_road_data = QtWidgets.QLabel(self.centralwidget)
         self.label_intent_road_data.setGeometry(QtCore.QRect(80, 330, 561, 21))
         font = QtGui.QFont()
@@ -194,17 +182,13 @@ class Ui_MainWindow(object):
         self.label_intent_family_data.setFont(font)
         self.label_intent_family_data.setObjectName("label_intent_family_data")
         self.label_intent_agenda_importance_data = QtWidgets.QLabel(self.centralwidget)
-        self.label_intent_agenda_importance_data.setGeometry(
-            QtCore.QRect(130, 650, 221, 41)
-        )
+        self.label_intent_agenda_importance_data.setGeometry(QtCore.QRect(130, 650, 221, 41))
         font = QtGui.QFont()
         font.setPointSize(22)
         font.setBold(True)
         font.setWeight(75)
         self.label_intent_agenda_importance_data.setFont(font)
-        self.label_intent_agenda_importance_data.setObjectName(
-            "label_intent_agenda_importance_data"
-        )
+        self.label_intent_agenda_importance_data.setObjectName("label_intent_agenda_importance_data")
         self.label_intent_end_data = QtWidgets.QLabel(self.centralwidget)
         self.label_intent_end_data.setGeometry(QtCore.QRect(130, 610, 221, 31))
         font = QtGui.QFont()
@@ -240,9 +224,7 @@ class Ui_MainWindow(object):
         self.belief_open_soft_spec1.setObjectName("belief_open_soft_spec1")
         self.intent_states = QtWidgets.QTableWidget(self.centralwidget)
         self.intent_states.setGeometry(QtCore.QRect(1020, 30, 641, 351))
-        self.intent_states.setSizeAdjustPolicy(
-            QtWidgets.QAbstractScrollArea.AdjustToContents
-        )
+        self.intent_states.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.intent_states.setObjectName("intent_states")
         self.intent_states.setColumnCount(8)
         self.intent_states.setRowCount(0)
@@ -286,9 +268,6 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.label_last_burb.setFont(font)
         self.label_last_burb.setObjectName("label_last_burb")
-        self.problem_popup_button = QtWidgets.QPushButton(self.centralwidget)
-        self.problem_popup_button.setGeometry(QtCore.QRect(750, 170, 151, 41))
-        self.problem_popup_button.setObjectName("problem_popup_button")
         self.current_file_path_l = QtWidgets.QLabel(self.centralwidget)
         self.current_file_path_l.setGeometry(QtCore.QRect(540, 10, 471, 20))
         self.current_file_path_l.setText("")
@@ -301,6 +280,7 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1693, 21))
         self.menubar.setObjectName("menubar")
         self.file_menu = QtWidgets.QMenu(self.menubar)
+        self.file_menu.setTitle("")
         self.file_menu.setObjectName("file_menu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -326,27 +306,19 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.editmain_button.setText(
-            _translate("MainWindow", "Agendas /  Party /  dimension")
-        )
-        self.belief_open_lower_spec1.setText(
-            _translate("MainWindow", "set minutes next midnight")
-        )
+        MainWindow.setProperty("windowkind", _translate("MainWindow", "MainWindow"))
+        self.editmain_button.setText(_translate("MainWindow", "Agendas /  Party /  dimension"))
+        self.belief_open_lower_spec1.setText(_translate("MainWindow", "set minutes next midnight"))
         self.belief_nigh_now.setText(_translate("MainWindow", "Update nigh to Now"))
         self.intent_task_complete.setText(_translate("MainWindow", "Complete Promise"))
         self.root_datetime_prev_l.setText(_translate("MainWindow", "Past:"))
         self.root_datetime_curr_l.setText(_translate("MainWindow", "Now:"))
         self.label_2.setText(_translate("MainWindow", "What is your present?"))
-        self.label_3.setText(
-            _translate("MainWindow", "When is the past you have not let go?")
-        )
+        self.label_3.setText(_translate("MainWindow", "When is the past you have not let go?"))
         self.label_intent_label_header.setText(_translate("MainWindow", "Label"))
         self.root_datetime_view.setText(_translate("MainWindow", "Manuparty change"))
         self.loubby_button.setText(_translate("MainWindow", "Request Someone"))
-        self.label_7.setText(
-            _translate("MainWindow", "Who you are right now. What's missing...")
-        )
+        self.label_7.setText(_translate("MainWindow", "Who you are right now. What\'s missing..."))
         self.cb_update_now_repeat.setText(_translate("MainWindow", "Update now per"))
         self.label_time_display.setText(_translate("MainWindow", "Current Time:"))
         self.edit_intent_button.setText(_translate("MainWindow", "view current intent"))
@@ -362,31 +334,23 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Open"))
         item = self.beliefs_table.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Close"))
-        self.agenda_l.setText(_translate("MainWindow", "Agenda: "))
+        self.agenda_l.setText(_translate("MainWindow", "AGENDA: "))
         self.agenda_label_update_button.setText(_translate("MainWindow", "Update"))
         self.label_intent_day_header.setText(_translate("MainWindow", "Day:"))
         self.label_intent_time_header.setText(_translate("MainWindow", "Time:"))
         self.label_intent_end_header.setText(_translate("MainWindow", "End:"))
-        self.label_intent_agenda_importance_header1.setText(
-            _translate("MainWindow", "root_relative")
-        )
+        self.label_intent_agenda_importance_header1.setText(_translate("MainWindow", "root_relative"))
         self.label_intent_family_header1.setText(_translate("MainWindow", "Agenda"))
         self.label_intent_road_header.setText(_translate("MainWindow", "RoadUnit:"))
         self.label_intent_family_header2.setText(_translate("MainWindow", "Family:"))
-        self.label_intent_agenda_importance_header2.setText(
-            _translate("MainWindow", "weight:")
-        )
+        self.label_intent_agenda_importance_header2.setText(_translate("MainWindow", "weight:"))
         self.label_intent_road_data.setText(_translate("MainWindow", "Idea_id:"))
         self.label_intent_family_data.setText(_translate("MainWindow", "Agenda"))
-        self.label_intent_agenda_importance_data.setText(
-            _translate("MainWindow", "weight:")
-        )
+        self.label_intent_agenda_importance_data.setText(_translate("MainWindow", "weight:"))
         self.label_intent_end_data.setText(_translate("MainWindow", "End:"))
         self.label_intent_time_data.setText(_translate("MainWindow", "Time:"))
         self.label_intent_day_data.setText(_translate("MainWindow", "Day:"))
-        self.belief_open_soft_spec1.setText(
-            _translate("MainWindow", '"Soft" moving up the past')
-        )
+        self.belief_open_soft_spec1.setText(_translate("MainWindow", "\"Soft\" moving up the past"))
         item = self.intent_states.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "admiration"))
         item = self.intent_states.horizontalHeaderItem(1)
@@ -403,20 +367,13 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "jaja_nigh"))
         item = self.intent_states.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "range_source_road"))
-        self.label_8.setText(
-            _translate("MainWindow", "Things you promised to be right now")
-        )
-        self.belief_open_5daysago.setText(
-            _translate("MainWindow", "Set open 5 days ago")
-        )
+        self.label_8.setText(_translate("MainWindow", "Things you promised to be right now"))
+        self.belief_open_5daysago.setText(_translate("MainWindow", "Set open 5 days ago"))
         self.label_last_burb.setText(_translate("MainWindow", "Last Complete:"))
-        self.problem_popup_button.setText(_translate("MainWindow", "Problem Creation"))
         self.save_close_button.setText(_translate("MainWindow", "Save And Close"))
-        self.menubar.setAccessibleName(_translate("MainWindow", "File"))
-        self.menubar.setAccessibleDescription(
-            _translate("MainWindow", "General Operations")
-        )
-        self.file_menu.setTitle(_translate("MainWindow", "File"))
+        self.menubar.setAccessibleDescription(_translate("MainWindow", "General Operations"))
+        self.menubar.setProperty("accessiblePID", _translate("MainWindow", "File"))
+        self.file_menu.setProperty("kind", _translate("MainWindow", "File"))
         self.fm_open.setText(_translate("MainWindow", "Open"))
         self.fm_save.setText(_translate("MainWindow", "Save"))
         self.save_as.setText(_translate("MainWindow", "Save as..."))

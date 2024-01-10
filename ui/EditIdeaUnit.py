@@ -127,7 +127,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.prom_l_02.setHidden(setHiddenBool)
         self.prom_l_03.setHidden(setHiddenBool)
         self.yo_action_cb.setHidden(setHiddenBool)
-        self.yo_problem_bool_cb.setHidden(setHiddenBool)
         self.yo_deescription.setHidden(setHiddenBool)
         self.yo_parent_road.setHidden(setHiddenBool)
         self.yo_weight.setHidden(setHiddenBool)
@@ -238,7 +237,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.x_idea._close))
         self.yo_action_cb.setChecked(self.x_idea.promise)
-        self.yo_problem_bool_cb.setChecked(self.x_idea._problem_bool)
         self.yo_task_status.setText(str(self.x_idea._task))
         self.yo_active_status.setText(str(self.x_idea._active_status))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
@@ -830,7 +828,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
             range_source_road=emptystr(self.yo_range_source_road.currentText()),
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
             promise=(self.yo_action_cb.checkState() == 2),
-            problem_bool=(self.yo_problem_bool_cb.checkState() == 2),
             reason_base=None,
             reason_premise=None,
             reason_premise_open=None,
@@ -933,7 +930,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
             balancelink=None,
             balancelink_del=None,
             is_expanded=None,
-            problem_bool=None,
             on_meld_weight_action=None,
         )
         new_idea._set_idea_attr(idea_attr=idea_attr_x)

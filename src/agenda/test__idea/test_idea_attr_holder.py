@@ -25,7 +25,6 @@ def test_idea_attr_holder_exists():
     assert new_obj.numeric_road is None
     assert new_obj.range_source_road is None
     assert new_obj.promise is None
-    assert new_obj.problem_bool is None
     assert new_obj.beliefunit is None
     assert new_obj.descendant_promise_count is None
     assert new_obj.all_party_credit is None

@@ -68,12 +68,6 @@ class Ui_Form(object):
         self.belief_open = QtWidgets.QLineEdit(Form)
         self.belief_open.setGeometry(QtCore.QRect(760, 140, 161, 31))
         self.belief_open.setObjectName("belief_open")
-        self.display_problem_beliefs_cb = QtWidgets.QCheckBox(Form)
-        self.display_problem_beliefs_cb.setGeometry(QtCore.QRect(1190, 140, 161, 31))
-        font = QtGui.QFont()
-        font.setPointSize(8)
-        self.display_problem_beliefs_cb.setFont(font)
-        self.display_problem_beliefs_cb.setObjectName("display_problem_beliefs_cb")
         self.label_9 = QtWidgets.QLabel(Form)
         self.label_9.setGeometry(QtCore.QRect(690, 110, 61, 20))
         self.label_9.setObjectName("label_9")
@@ -98,7 +92,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setProperty("windowkind", _translate("Form", "Form"))
         self.refresh_button.setText(_translate("Form", "Refresh All"))
         self.close_button.setText(_translate("Form", "Close"))
         self.open_groupedit_button.setText(_translate("Form", "Open Group Edit"))
@@ -116,9 +110,6 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Close"))
         self.label_10.setText(_translate("Form", "Open"))
         self.belief_delete_button.setText(_translate("Form", "Del Belief"))
-        self.display_problem_beliefs_cb.setText(
-            _translate("Form", "Only Problem Beliefs")
-        )
         self.label_9.setText(_translate("Form", "Belief Pick:"))
         self.label_6.setText(_translate("Form", "Belief Base:"))
         self.label_11.setText(_translate("Form", "Nigh"))

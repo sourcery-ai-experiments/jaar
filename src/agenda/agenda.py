@@ -1295,7 +1295,6 @@ class AgendaUnit:
         numeric_road: RoadUnit = None,
         range_source_road: float = None,
         promise: bool = None,
-        problem_bool: bool = None,
         beliefunit: BeliefUnit = None,
         descendant_promise_count: int = None,
         all_party_credit: bool = None,
@@ -1333,7 +1332,6 @@ class AgendaUnit:
             balancelink_del=balancelink_del,
             is_expanded=is_expanded,
             promise=promise,
-            problem_bool=problem_bool,
             beliefunit=beliefunit,
             on_meld_weight_action=on_meld_weight_action,
         )

@@ -738,7 +738,7 @@
                         "_is_expanded": true,
                         "_label": "interesting",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 262,
                         "_weight": 1,
                         "promise": false
@@ -747,7 +747,7 @@
                         "_is_expanded": true,
                         "_label": "not interesting",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 263,
                         "_weight": 1,
                         "promise": false
@@ -755,7 +755,7 @@
                 },
                 "_label": "Aaron Donald things effected by him",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 261,
                 "_weight": 1,
                 "promise": false
@@ -770,7 +770,7 @@
                                 "_is_expanded": false,
                                 "_label": "Employee Beliefbook.",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -806,7 +806,7 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -838,7 +838,7 @@
                                 },
                                 "_label": "Know Abuse Prevention and Reporting guildlines",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 106,
                                 "_weight": 1,
                                 "promise": false
@@ -850,7 +850,7 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -882,7 +882,7 @@
                                 },
                                 "_label": "Know Discrimination Harassment Bully guildlines",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 107,
                                 "_weight": 1,
                                 "promise": false
@@ -894,7 +894,7 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -926,7 +926,7 @@
                                 },
                                 "_label": "PC1025 Identifying and Supporting houseless Youth",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 109,
                                 "_weight": 1,
                                 "promise": false
@@ -938,7 +938,7 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 122,
                                         "_weight": 1,
                                         "promise": false
@@ -946,7 +946,7 @@
                                 },
                                 "_label": "PC1026 Rick Management and Hazard Communication",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 112,
                                 "_weight": 1,
                                 "promise": false
@@ -958,7 +958,7 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -990,7 +990,7 @@
                                 },
                                 "_label": "PC1027 Adult Sexual Misconduct: Staff to Student/ IX",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 108,
                                 "_weight": 1,
                                 "promise": false
@@ -1002,7 +1002,7 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1034,7 +1034,7 @@
                                 },
                                 "_label": "PC1029 Information Security Awareness Training",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 111,
                                 "_weight": 1,
                                 "promise": false
@@ -1046,7 +1046,7 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1078,7 +1078,7 @@
                                 },
                                 "_label": "PRM1003 ACME OSHA COVID-19 Rick Reduction Training",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 110,
                                 "_weight": 1,
                                 "promise": false
@@ -1090,7 +1090,7 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1122,7 +1122,7 @@
                                 },
                                 "_label": "PRM1005 ACME Staff  and Safety",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 105,
                                 "_weight": 1,
                                 "promise": false
@@ -1130,7 +1130,7 @@
                         },
                         "_label": "ACME Employee Responsiblities",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 102,
                         "_weight": 1,
                         "promise": false
@@ -1148,7 +1148,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "check emails",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1173,7 +1173,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER2",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 171,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1182,7 +1182,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER3",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 172,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1191,7 +1191,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER5",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 173,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1200,7 +1200,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER7",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 170,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1208,7 +1208,7 @@
                                                 },
                                                 "_label": "check workers",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1229,7 +1229,7 @@
                                         },
                                         "_label": "check ETLs work correctly",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1251,7 +1251,7 @@
                                         "_is_expanded": true,
                                         "_label": "dress to slightly impress",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1273,7 +1273,7 @@
                                         "_is_expanded": false,
                                         "_label": "go to work",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1294,7 +1294,7 @@
                                 },
                                 "_label": "IT DEPT off-hours responsiblities",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -1319,7 +1319,7 @@
                                         "_is_expanded": true,
                                         "_label": "Add work items to Azure DevOps",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1341,7 +1341,7 @@
                                         "_is_expanded": true,
                                         "_label": "consider management perspective",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1366,7 +1366,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "Datawarehouse Learning",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1391,7 +1391,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER2",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 176,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1400,7 +1400,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WORKER7",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 175,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1409,7 +1409,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WPRD",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 177,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1418,7 +1418,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "WPRDD",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 174,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1426,7 +1426,7 @@
                                                 },
                                                 "_label": "dev metric tracking script \"TIMOTHY\"",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1448,7 +1448,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "go to daily stand-up ",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1469,7 +1469,7 @@
                                         },
                                         "_label": "Datawarehouse",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 135,
                                         "_weight": 1,
                                         "promise": false
@@ -1478,7 +1478,7 @@
                                         "_is_expanded": true,
                                         "_label": "IT DEPT general",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1500,7 +1500,7 @@
                                         "_is_expanded": true,
                                         "_label": "Keep track of Chatroom conversations",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1525,7 +1525,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "check for access",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1546,7 +1546,7 @@
                                         },
                                         "_label": "Synergy",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1567,7 +1567,7 @@
                                 },
                                 "_label": "IT DEPT regular hours responsiblities",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -1588,7 +1588,7 @@
                         },
                         "_label": "IT DEPT",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -1609,7 +1609,7 @@
                 },
                 "_label": "ACME",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 100,
                 "_weight": 1,
                 "promise": false
@@ -1633,7 +1633,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "apartment",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1655,7 +1655,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "be reponsible for rent",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1680,7 +1680,7 @@
                                                                 "_is_expanded": true,
                                                                 "_label": "maybe watch a video",
                                                                 "_on_meld_weight_action": "default",
-                                                                "_problem_bool": false,
+                                                                
                                                                 "_reasonunits": {
                                                                     "A,Internet": {
                                                                         "base": "A,Internet",
@@ -1701,7 +1701,7 @@
                                                         },
                                                         "_label": "go for parent_road",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1723,7 +1723,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "gym time",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Moods": {
                                                                 "base": "A,Moods",
@@ -1744,7 +1744,7 @@
                                                 },
                                                 "_label": "apartment building",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,Nation-States": {
                                                         "base": "A,Nation-States",
@@ -1769,7 +1769,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "browsing",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1791,7 +1791,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "picnic",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Seasons": {
                                                                 "base": "A,Seasons",
@@ -1813,7 +1813,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "street soccer",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1835,7 +1835,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "swimming",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1856,7 +1856,7 @@
                                                 },
                                                 "_label": "PSU Sports",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_reasonunits": {
                                                     "A,Nation-States": {
                                                         "base": "A,Nation-States",
@@ -1877,7 +1877,7 @@
                                         },
                                         "_label": "downtown",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,Nation-States": {
                                                 "base": "A,Nation-States",
@@ -1898,7 +1898,7 @@
                                 },
                                 "_label": "portland sovereignty",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Nation-States": {
                                         "base": "A,Nation-States",
@@ -1920,7 +1920,7 @@
                                 "_is_expanded": true,
                                 "_label": "texas sovereignty",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Nation-States": {
                                         "base": "A,Nation-States",
@@ -1941,7 +1941,7 @@
                         },
                         "_label": "American sovereignty",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -1963,7 +1963,7 @@
                         "_is_expanded": true,
                         "_label": "French sovereignty",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -1984,7 +1984,7 @@
                 },
                 "_label": "Asset management",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 199,
                 "_weight": 1,
                 "promise": false
@@ -1996,7 +1996,7 @@
                         "_is_expanded": true,
                         "_label": "Aint me Babe",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 270,
                         "_weight": 1,
                         "promise": false
@@ -2005,7 +2005,7 @@
                         "_is_expanded": true,
                         "_label": "tangled up in blue",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 271,
                         "_weight": 1,
                         "promise": false
@@ -2013,7 +2013,7 @@
                 },
                 "_label": "Bob Dylan Root",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 269,
                 "_weight": 1,
                 "promise": false
@@ -2035,7 +2035,7 @@
                                 "_is_expanded": true,
                                 "_label": "clip fingernails",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,ced_week": {
                                         "base": "A,ced_week",
@@ -2097,7 +2097,7 @@
                                 "_is_expanded": true,
                                 "_label": "get rid of toy buy new toy",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2141,7 +2141,7 @@
                                 "_is_expanded": true,
                                 "_label": "pciking them up",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2173,7 +2173,7 @@
                         },
                         "_label": "being responsible for kids",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -2202,7 +2202,7 @@
                         "_is_expanded": true,
                         "_label": "call high school friend",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -2235,7 +2235,7 @@
                         "_is_expanded": true,
                         "_label": "check up on old family friends",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -2267,7 +2267,7 @@
                                 "_is_expanded": true,
                                 "_label": "check cat water",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2311,7 +2311,7 @@
                                 "_is_expanded": true,
                                 "_label": "check humidifer levels",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2351,7 +2351,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean baby seats",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2402,7 +2402,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean bathroom",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2442,7 +2442,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean cat poo",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2493,7 +2493,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean humidifiers",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2544,7 +2544,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean sheets couch blankets",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,ced_week": {
                                         "base": "A,ced_week",
@@ -2606,7 +2606,7 @@
                                 "_is_expanded": true,
                                 "_label": "clean table",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2657,7 +2657,7 @@
                                 "_is_expanded": true,
                                 "_label": "deep clean play mat",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2719,7 +2719,7 @@
                                 "_is_expanded": true,
                                 "_label": "empty roomba",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2770,7 +2770,7 @@
                                 "_is_expanded": true,
                                 "_label": "empty roomba Friday",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2821,7 +2821,7 @@
                                 "_is_expanded": true,
                                 "_label": "laundry monday",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2872,7 +2872,7 @@
                                 "_is_expanded": true,
                                 "_label": "laundry saturday",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2923,7 +2923,7 @@
                                 "_is_expanded": true,
                                 "_label": "laundry wednesday",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2967,7 +2967,7 @@
                                 "_is_expanded": true,
                                 "_label": "morning cookery clean-up",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3007,7 +3007,7 @@
                                 "_is_expanded": true,
                                 "_label": "prepare_bed clean bedroom",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3047,7 +3047,7 @@
                                 "_is_expanded": true,
                                 "_label": "roomba bedroom",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3098,7 +3098,7 @@
                                 "_is_expanded": true,
                                 "_label": "roomba bedroom Friday",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3149,7 +3149,7 @@
                                 "_is_expanded": true,
                                 "_label": "roomba living area",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3200,7 +3200,7 @@
                                 "_is_expanded": true,
                                 "_label": "roomba living area thur",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3251,7 +3251,7 @@
                                 "_is_expanded": true,
                                 "_label": "roomba maintenance",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3302,7 +3302,7 @@
                                 "_is_expanded": true,
                                 "_label": "wipe down play mat2",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3345,7 +3345,7 @@
                         },
                         "_label": "cleaning",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -3377,7 +3377,7 @@
                                 "_is_expanded": true,
                                 "_label": "be reponsible for rent",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3417,7 +3417,7 @@
                                 "_is_expanded": true,
                                 "_label": "be responsible for expenses card",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3457,7 +3457,7 @@
                                 "_is_expanded": true,
                                 "_label": "be responsible for utilities",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3497,7 +3497,7 @@
                                 "_is_expanded": true,
                                 "_label": "set resturant bucks for the week",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3529,7 +3529,7 @@
                         },
                         "_label": "Financial Ops",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 148,
                         "_weight": 1,
                         "promise": false
@@ -3551,7 +3551,7 @@
                                         "_is_expanded": true,
                                         "_label": "bathroom #2",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 196,
                                         "_weight": 1,
                                         "promise": false
@@ -3563,7 +3563,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "big bathroom",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 195,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3572,7 +3572,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "closet",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 194,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3580,7 +3580,7 @@
                                         },
                                         "_label": "bedroom #1",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 191,
                                         "_weight": 1,
                                         "promise": false
@@ -3602,7 +3602,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "heater maintenance",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 198,
                                                         "_weight": 1,
                                                         "promise": false
@@ -3610,7 +3610,7 @@
                                                 },
                                                 "_label": "bed area",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 197,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3619,7 +3619,7 @@
                                                 "_is_expanded": true,
                                                 "_label": "closet",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 193,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3627,7 +3627,7 @@
                                         },
                                         "_label": "bedroom #2",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 192,
                                         "_weight": 1,
                                         "promise": false
@@ -3636,7 +3636,7 @@
                                         "_is_expanded": true,
                                         "_label": "cookery",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 189,
                                         "_weight": 1,
                                         "promise": false
@@ -3645,7 +3645,7 @@
                                         "_is_expanded": true,
                                         "_label": "dining area",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 190,
                                         "_weight": 1,
                                         "promise": false
@@ -3654,7 +3654,7 @@
                                         "_is_expanded": true,
                                         "_label": "hallway",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 188,
                                         "_weight": 1,
                                         "promise": false
@@ -3663,7 +3663,7 @@
                                         "_is_expanded": true,
                                         "_label": "maintenance",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 187,
                                         "_weight": 1,
                                         "promise": false
@@ -3671,7 +3671,7 @@
                                 },
                                 "_label": "Apartment",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 181,
                                 "_weight": 1,
                                 "promise": false
@@ -3680,7 +3680,7 @@
                                 "_is_expanded": true,
                                 "_label": "Bike Garage",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 185,
                                 "_weight": 1,
                                 "promise": false
@@ -3689,7 +3689,7 @@
                                 "_is_expanded": true,
                                 "_label": "Bike Gym",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 184,
                                 "_weight": 1,
                                 "promise": false
@@ -3698,7 +3698,7 @@
                                 "_is_expanded": true,
                                 "_label": "Playing in hallways",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 186,
                                 "_weight": 1,
                                 "promise": false
@@ -3707,7 +3707,7 @@
                                 "_is_expanded": true,
                                 "_label": "Pool",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 182,
                                 "_weight": 1,
                                 "promise": false
@@ -3716,7 +3716,7 @@
                                 "_is_expanded": true,
                                 "_label": "Weight Lifting Gym",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 183,
                                 "_weight": 1,
                                 "promise": false
@@ -3724,7 +3724,7 @@
                         },
                         "_label": "Housing",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 180,
                         "_weight": 1,
                         "promise": false
@@ -3733,7 +3733,7 @@
                         "_is_expanded": false,
                         "_label": "keep up with friends",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Internet": {
                                 "base": "A,Internet",
@@ -3762,7 +3762,7 @@
                         "_is_expanded": true,
                         "_label": "say hi to birds",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -3805,7 +3805,7 @@
                                 "_is_expanded": true,
                                 "_label": "5 push-ups",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3834,7 +3834,7 @@
                                 "_is_expanded": true,
                                 "_label": "check protein for week is adequate",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3863,7 +3863,7 @@
                                 "_is_expanded": true,
                                 "_label": "clip nails",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3903,7 +3903,7 @@
                                 "_is_expanded": true,
                                 "_label": "cook veggies every morning",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3935,7 +3935,7 @@
                                         "_is_expanded": true,
                                         "_label": "I do not feel like I have to exercise",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -3956,7 +3956,7 @@
                                 },
                                 "_label": "daily exercise 20min",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3985,7 +3985,7 @@
                                 "_is_expanded": true,
                                 "_label": "morning multivitamin",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4007,7 +4007,7 @@
                                 "_is_expanded": true,
                                 "_label": "night multivitamin",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4036,7 +4036,7 @@
                                 "_is_expanded": true,
                                 "_label": "noce hair removal",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4076,7 +4076,7 @@
                                 "_is_expanded": true,
                                 "_label": "pull ear hair",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4116,7 +4116,7 @@
                                 "_is_expanded": true,
                                 "_label": "shampoo hair",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4156,7 +4156,7 @@
                                 "_is_expanded": true,
                                 "_label": "straight back for 45 secs",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4185,7 +4185,7 @@
                                 "_is_expanded": true,
                                 "_label": "trim beard",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4228,7 +4228,7 @@
                                         "_is_expanded": true,
                                         "_label": "bike or something",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4271,7 +4271,7 @@
                                                 "_is_expanded": false,
                                                 "_label": "bi and triceps exercises",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 130,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4280,7 +4280,7 @@
                                                 "_is_expanded": false,
                                                 "_label": "chest  exercises",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 129,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4288,7 +4288,7 @@
                                         },
                                         "_label": "chest and arms (mon)",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4321,7 +4321,7 @@
                                         "_is_expanded": true,
                                         "_label": "core and squats",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4361,7 +4361,7 @@
                                         "_is_expanded": true,
                                         "_label": "core lower back",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4401,7 +4401,7 @@
                                         "_is_expanded": false,
                                         "_label": "rest",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,weekdays": {
                                                 "base": "A,weekdays",
@@ -4433,7 +4433,7 @@
                                                 "_is_expanded": false,
                                                 "_label": "shoulder exercises",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 131,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4442,7 +4442,7 @@
                                                 "_is_expanded": false,
                                                 "_label": "upper back exercises",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 132,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4450,7 +4450,7 @@
                                         },
                                         "_label": "shoulders and upper back",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4490,7 +4490,7 @@
                                         "_is_expanded": true,
                                         "_label": "squats hamstrings and calves",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4522,7 +4522,7 @@
                                 },
                                 "_label": "weight training",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 81,
                                 "_weight": 1,
                                 "promise": false
@@ -4530,7 +4530,7 @@
                         },
                         "_label": "workout",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 147,
                         "_weight": 1,
                         "promise": false
@@ -4538,7 +4538,7 @@
                 },
                 "_label": "casa",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 2,
                 "_weight": 1,
                 "promise": false
@@ -4549,7 +4549,7 @@
                 "_is_expanded": true,
                 "_label": "ced_day",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4560,7 +4560,7 @@
                 "_is_expanded": true,
                 "_label": "ced_week",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4571,7 +4571,7 @@
                 "_is_expanded": true,
                 "_label": "ced_year",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4617,7 +4617,7 @@
                                 "_is_expanded": true,
                                 "_label": "Ask Charles monthly what I can do",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4638,7 +4638,7 @@
                         },
                         "_label": "charles friends would like housing support",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4670,7 +4670,7 @@
                                 "_is_expanded": true,
                                 "_label": "test program",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4713,7 +4713,7 @@
                         },
                         "_label": "develop D&B software",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4745,7 +4745,7 @@
                                 "_is_expanded": true,
                                 "_label": "donate to influential people that are pro climate change",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4799,7 +4799,7 @@
                         },
                         "_label": "donate to action committees",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4821,7 +4821,7 @@
                         "_is_expanded": true,
                         "_label": "late_night_go_to_sleep",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4863,7 +4863,7 @@
                                         "_is_expanded": true,
                                         "_label": "be available for phone call",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,Aaron Donald things effected by him": {
                                                 "base": "A,Aaron Donald things effected by him",
@@ -4908,7 +4908,7 @@
                                         "_is_expanded": true,
                                         "_label": "call David and discuss strategy",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_reasonunits": {
                                             "A,Aaron Donald things effected by him": {
                                                 "base": "A,Aaron Donald things effected by him",
@@ -4951,7 +4951,7 @@
                                 },
                                 "_label": "listening to David",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4972,7 +4972,7 @@
                         },
                         "_label": "listening",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -5004,7 +5004,7 @@
                                 "_is_expanded": true,
                                 "_label": "write letters about climate change to congressman",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -5036,7 +5036,7 @@
                         },
                         "_label": "write letters to reps",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -5057,7 +5057,7 @@
                 },
                 "_label": "D&B",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_reasonunits": {
                     "A,Aaron Donald things effected by him": {
                         "base": "A,Aaron Donald things effected by him",
@@ -5081,7 +5081,7 @@
                 "_is_expanded": true,
                 "_label": "day_hour",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5100,7 +5100,7 @@
                 "_is_expanded": true,
                 "_label": "day_minute",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5112,7 +5112,7 @@
                         "_is_expanded": false,
                         "_label": "Submit hours on website",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -5144,7 +5144,7 @@
                 },
                 "_label": "Freelancing",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_reasonunits": {
                     "A,day_minute": {
                         "base": "A,day_minute",
@@ -5172,7 +5172,7 @@
                                 "_is_expanded": true,
                                 "_label": "PSU Ultimate",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 254,
                                 "_weight": 1,
                                 "promise": false
@@ -5180,7 +5180,7 @@
                         },
                         "_label": "AOL AIM",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 253,
                         "_weight": 1,
                         "promise": false
@@ -5189,7 +5189,7 @@
                         "_is_expanded": true,
                         "_label": "Facebook",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 251,
                         "_weight": 1,
                         "promise": false
@@ -5198,7 +5198,7 @@
                         "_is_expanded": true,
                         "_label": "Github",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 252,
                         "_weight": 1,
                         "promise": false
@@ -5207,7 +5207,7 @@
                         "_is_expanded": true,
                         "_label": "Youtube",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 255,
                         "_weight": 1,
                         "promise": false
@@ -5215,7 +5215,7 @@
                 },
                 "_label": "Internet",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 250,
                 "_weight": 1,
                 "promise": false
@@ -5226,7 +5226,7 @@
                 "_is_expanded": true,
                 "_label": "month_day",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5242,7 +5242,7 @@
                         "_is_expanded": true,
                         "_label": "1st week",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5253,7 +5253,7 @@
                         "_is_expanded": true,
                         "_label": "2nd week",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5264,7 +5264,7 @@
                         "_is_expanded": true,
                         "_label": "3rd week",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5275,7 +5275,7 @@
                         "_is_expanded": true,
                         "_label": "4th week",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5286,7 +5286,7 @@
                         "_is_expanded": true,
                         "_label": "5th week",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5294,7 +5294,7 @@
                 },
                 "_label": "month_week",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_range_source_road": "A,ced_week",
                 "_uid": null,
                 "_weight": 40,
@@ -5307,7 +5307,7 @@
                         "_is_expanded": true,
                         "_label": "Bllod Meridan by Cormac",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 265,
                         "_weight": 1,
                         "promise": false
@@ -5319,7 +5319,7 @@
                                 "_is_expanded": true,
                                 "_label": "Happy - angerish",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 267,
                                 "_weight": 1,
                                 "promise": false
@@ -5327,7 +5327,7 @@
                         },
                         "_label": "Happy",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 266,
                         "_weight": 1,
                         "promise": false
@@ -5336,7 +5336,7 @@
                         "_is_expanded": true,
                         "_label": "hungry",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 268,
                         "_weight": 1,
                         "promise": false
@@ -5344,7 +5344,7 @@
                 },
                 "_label": "Moods",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 264,
                 "_weight": 1,
                 "promise": false
@@ -5356,7 +5356,7 @@
                         "_is_expanded": true,
                         "_label": "France2",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 235,
                         "_weight": 1,
                         "promise": false
@@ -5377,7 +5377,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "library",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 244,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5386,7 +5386,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Park Squares",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 241,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5395,7 +5395,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Pool",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 242,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5404,7 +5404,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Stott Field",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 243,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5412,7 +5412,7 @@
                                                 },
                                                 "_label": "PSU",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 240,
                                                 "_weight": 1,
                                                 "promise": false
@@ -5424,7 +5424,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "10th floor garden",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 246,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5433,7 +5433,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Apt X4XX",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 247,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5442,7 +5442,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Gym",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 248,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5451,7 +5451,7 @@
                                                         "_is_expanded": true,
                                                         "_label": "Office",
                                                         "_on_meld_weight_action": "default",
-                                                        "_problem_bool": false,
+                                                        
                                                         "_uid": 249,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5459,7 +5459,7 @@
                                                 },
                                                 "_label": "Southpark Apt",
                                                 "_on_meld_weight_action": "default",
-                                                "_problem_bool": false,
+                                                
                                                 "_uid": 245,
                                                 "_weight": 1,
                                                 "promise": false
@@ -5467,7 +5467,7 @@
                                         },
                                         "_label": "Downtown",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 239,
                                         "_weight": 1,
                                         "promise": false
@@ -5475,7 +5475,7 @@
                                 },
                                 "_label": "Portland OR",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 237,
                                 "_weight": 1,
                                 "promise": false
@@ -5484,7 +5484,7 @@
                                 "_is_expanded": true,
                                 "_label": "Texas",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 238,
                                 "_weight": 1,
                                 "promise": false
@@ -5492,7 +5492,7 @@
                         },
                         "_label": "USA",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 236,
                         "_weight": 1,
                         "promise": false
@@ -5500,7 +5500,7 @@
                 },
                 "_label": "Nation-States",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 234,
                 "_weight": 1,
                 "promise": false
@@ -5512,7 +5512,7 @@
                         "_is_expanded": true,
                         "_label": "Big Lewbowski",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 273,
                         "_weight": 1,
                         "promise": false
@@ -5521,7 +5521,7 @@
                         "_is_expanded": true,
                         "_label": "Star Wars Episode IV",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 274,
                         "_weight": 1,
                         "promise": false
@@ -5529,7 +5529,7 @@
                 },
                 "_label": "No Movie playing",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 272,
                 "_weight": 1,
                 "promise": false
@@ -5541,7 +5541,7 @@
                 "_label": "numeric_road_test",
                 "_numeric_road": "A,month_week",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5553,7 +5553,7 @@
                         "_is_expanded": true,
                         "_label": "Summer",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 276,
                         "_weight": 1,
                         "promise": false
@@ -5561,7 +5561,7 @@
                 },
                 "_label": "Seasons",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 275,
                 "_weight": 1,
                 "promise": false
@@ -5573,7 +5573,7 @@
                         "_is_expanded": true,
                         "_label": "Not tired",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 278,
                         "_weight": 1,
                         "promise": false
@@ -5582,7 +5582,7 @@
                         "_is_expanded": true,
                         "_label": "Tired",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 279,
                         "_weight": 1,
                         "promise": false
@@ -5590,7 +5590,7 @@
                 },
                 "_label": "Tired Status",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 277,
                 "_weight": 1,
                 "promise": false
@@ -5602,7 +5602,7 @@
                         "_is_expanded": true,
                         "_label": "check on community",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -5624,7 +5624,7 @@
                         "_is_expanded": true,
                         "_label": "contemplate the disc",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,No Movie playing": {
                                 "base": "A,No Movie playing",
@@ -5649,7 +5649,7 @@
                                 "_is_expanded": true,
                                 "_label": "check PSU mini",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,Moods": {
                                         "base": "A,Moods",
@@ -5670,7 +5670,7 @@
                         },
                         "_label": "playing ultimate",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -5692,7 +5692,7 @@
                         "_is_expanded": true,
                         "_label": "relaxing",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,No Movie playing": {
                                 "base": "A,No Movie playing",
@@ -5713,7 +5713,7 @@
                 },
                 "_label": "Ultimate Frisbee",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_reasonunits": {
                     "A,Moods": {
                         "base": "A,Moods",
@@ -5741,7 +5741,7 @@
                                 "_is_expanded": true,
                                 "_label": "bike around",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,WaterBeing": {
                                         "base": "A,WaterBeing",
@@ -5763,7 +5763,7 @@
                                 "_is_expanded": true,
                                 "_label": "Go climbing at east Circuit",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,WaterBeing": {
                                         "base": "A,WaterBeing",
@@ -5785,7 +5785,7 @@
                                 "_is_expanded": true,
                                 "_label": "live",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_reasonunits": {
                                     "A,WaterBeing": {
                                         "base": "A,WaterBeing",
@@ -5806,7 +5806,7 @@
                         },
                         "_label": "Being in Williamette watershed",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_reasonunits": {
                             "A,WaterBeing": {
                                 "base": "A,WaterBeing",
@@ -5827,7 +5827,7 @@
                 },
                 "_label": "WaterAir Living",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 223,
                 "_weight": 1,
                 "promise": false
@@ -5845,7 +5845,7 @@
                                         "_is_expanded": true,
                                         "_label": "apartment",
                                         "_on_meld_weight_action": "default",
-                                        "_problem_bool": false,
+                                        
                                         "_uid": 260,
                                         "_weight": 1,
                                         "promise": false
@@ -5853,7 +5853,7 @@
                                 },
                                 "_label": "East Side of Watershed",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 258,
                                 "_weight": 1,
                                 "promise": false
@@ -5862,7 +5862,7 @@
                                 "_is_expanded": true,
                                 "_label": "West side of Watershed",
                                 "_on_meld_weight_action": "default",
-                                "_problem_bool": false,
+                                
                                 "_uid": 259,
                                 "_weight": 1,
                                 "promise": false
@@ -5870,7 +5870,7 @@
                         },
                         "_label": "Williamette WaterShed",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": 257,
                         "_weight": 1,
                         "promise": false
@@ -5878,7 +5878,7 @@
                 },
                 "_label": "WaterBeing",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": 256,
                 "_weight": 1,
                 "promise": false
@@ -5890,7 +5890,7 @@
                         "_is_expanded": true,
                         "_label": "Friday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5899,7 +5899,7 @@
                         "_is_expanded": true,
                         "_label": "Monday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5908,7 +5908,7 @@
                         "_is_expanded": true,
                         "_label": "Saturday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 50,
                         "promise": false
@@ -5917,7 +5917,7 @@
                         "_is_expanded": true,
                         "_label": "Sunday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5926,7 +5926,7 @@
                         "_is_expanded": true,
                         "_label": "Thursday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 30,
                         "promise": false
@@ -5935,7 +5935,7 @@
                         "_is_expanded": true,
                         "_label": "Tuesday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5944,7 +5944,7 @@
                         "_is_expanded": true,
                         "_label": "Wednesday",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5952,7 +5952,7 @@
                 },
                 "_label": "weekdays",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5968,7 +5968,7 @@
                         "_is_expanded": true,
                         "_label": "April",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5979,7 +5979,7 @@
                         "_is_expanded": true,
                         "_label": "August",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5990,7 +5990,7 @@
                         "_is_expanded": true,
                         "_label": "December",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6001,7 +6001,7 @@
                         "_is_expanded": true,
                         "_label": "February",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6012,7 +6012,7 @@
                         "_is_expanded": true,
                         "_label": "January",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6023,7 +6023,7 @@
                         "_is_expanded": true,
                         "_label": "July",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6034,7 +6034,7 @@
                         "_is_expanded": true,
                         "_label": "June",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6045,7 +6045,7 @@
                         "_is_expanded": true,
                         "_label": "March",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6056,7 +6056,7 @@
                         "_is_expanded": true,
                         "_label": "May",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6067,7 +6067,7 @@
                         "_is_expanded": true,
                         "_label": "November",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6078,7 +6078,7 @@
                         "_is_expanded": true,
                         "_label": "October",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6089,7 +6089,7 @@
                         "_is_expanded": true,
                         "_label": "September",
                         "_on_meld_weight_action": "default",
-                        "_problem_bool": false,
+                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6097,7 +6097,7 @@
                 },
                 "_label": "year_month",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -6108,14 +6108,14 @@
                 "_is_expanded": true,
                 "_label": "year_week",
                 "_on_meld_weight_action": "default",
-                "_problem_bool": false,
+                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
             }
         },
         "_on_meld_weight_action": "default",
-        "_problem_bool": false,
+        
         "_uid": 1,
         "_weight": 1
     },

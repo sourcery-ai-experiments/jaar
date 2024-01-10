@@ -83,7 +83,6 @@ class IdeaAttrFilter:
     numeric_road: RoadUnit = None
     range_source_road: float = None
     promise: bool = None
-    problem_bool: bool = None
     beliefunit: BeliefUnit = None
     descendant_promise_count: int = None
     all_party_credit: bool = None
@@ -166,7 +165,6 @@ def ideaattrfilter_shop(
     numeric_road: RoadUnit = None,
     range_source_road: float = None,
     promise: bool = None,
-    problem_bool: bool = None,
     beliefunit: BeliefUnit = None,
     descendant_promise_count: int = None,
     all_party_credit: bool = None,
@@ -198,7 +196,6 @@ def ideaattrfilter_shop(
         numeric_road=numeric_road,
         range_source_road=range_source_road,
         promise=promise,
-        problem_bool=problem_bool,
         beliefunit=beliefunit,
         descendant_promise_count=descendant_promise_count,
         all_party_credit=all_party_credit,
@@ -238,7 +235,6 @@ class IdeaUnit:
     _range_source_road: RoadUnit = None
     _numeric_road: RoadUnit = None
     promise: bool = None
-    _problem_bool: bool = None
     _originunit: OriginUnit = None
     _on_meld_weight_action: str = None
     _root: bool = None
@@ -731,8 +727,6 @@ class IdeaUnit:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
             self.promise = idea_attr.promise
-        if idea_attr.problem_bool != None:
-            self._problem_bool = idea_attr.problem_bool
         if idea_attr.on_meld_weight_action != None:
             self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
             self._on_meld_weight_action = idea_attr.on_meld_weight_action
@@ -1013,8 +1007,6 @@ class IdeaUnit:
             x_dict["_numeric_road"] = self._numeric_road
         if self.promise:
             x_dict["promise"] = self.promise
-        if self._problem_bool:
-            x_dict["_problem_bool"] = self._problem_bool
         if self._beliefunits not in [{}, None]:
             x_dict["_beliefunits"] = self.get_beliefunits_dict()
         if self._is_expanded == False:
@@ -1089,7 +1081,6 @@ def ideaunit_shop(
     _range_source_road: RoadUnit = None,
     _numeric_road: RoadUnit = None,
     promise: bool = None,
-    _problem_bool: bool = None,
     _originunit: OriginUnit = None,
     _on_meld_weight_action: str = None,
     _root: bool = None,
@@ -1113,8 +1104,6 @@ def ideaunit_shop(
 ) -> IdeaUnit:
     if promise is None:
         promise = False
-    if _problem_bool is None:
-        _problem_bool = False
     if _on_meld_weight_action is None:
         _on_meld_weight_action = "default"
     if _kids_total_weight is None:
@@ -1148,7 +1137,6 @@ def ideaunit_shop(
         _range_source_road=_range_source_road,
         _numeric_road=_numeric_road,
         promise=promise,
-        _problem_bool=_problem_bool,
         _originunit=_originunit,
         _on_meld_weight_action=_on_meld_weight_action,
         _root=_root,

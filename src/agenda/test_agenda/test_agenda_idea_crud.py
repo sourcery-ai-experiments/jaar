@@ -483,13 +483,6 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     x_agenda.edit_idea_attr(road=work_road, promise=True)
     assert x_agenda._idearoot._kids[work_text].promise == True
 
-    # _problem_bool
-    x_agenda._idearoot._kids[work_text]._problem_bool = "heat2"
-    _problem_bool = x_agenda._idearoot._kids[work_text]._problem_bool
-    assert _problem_bool == "heat2"
-    x_agenda.edit_idea_attr(road=work_road, problem_bool=True)
-    assert x_agenda._idearoot._kids[work_text]._problem_bool == True
-
     # _range_source_road: dict = None,
     x_agenda._idearoot._kids[work_text]._range_source_road = "fun3rol"
     range_source_road = x_agenda._idearoot._kids[work_text]._range_source_road

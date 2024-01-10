@@ -74,19 +74,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def get_beliefs_list(self):
-        x_list = []
-        if self.display_problem_beliefs_cb.checkState() == 2:
-            x_list.extend(
-                belief
-                for belief in self.agenda_x._idearoot._beliefunits.values()
-                if (
-                    self.agenda_x.get_idea_obj(road=belief.base)._problem_bool
-                    or self.agenda_x.get_idea_obj(road=belief.pick)._problem_bool
-                )
-            )
-        else:
-            x_list = self.agenda_x._idearoot._beliefunits.values()
-        return x_list
+        return self.agenda_x._idearoot._beliefunits.values()
 
     def beliefs_table_load(self):
         self.beliefs_table.setRowCount(0)

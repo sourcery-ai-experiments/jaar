@@ -16,7 +16,7 @@
     <height>0</height>
    </size>
   </property>
-  <property name="windowkind">
+  <property name="windowkind" stdset="0">
    <string>Form</string>
   </property>
   <widget class="QLabel" name="label_14">
@@ -1660,19 +1660,6 @@
    </property>
    <property name="text">
     <string>apply premiseunit_hregtime_days</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="yo_problem_bool_cb">
-   <property name="geometry">
-    <rect>
-     <x>930</x>
-     <y>190</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Problem</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="cb_beliefheir_view">

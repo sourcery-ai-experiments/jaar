@@ -7,10 +7,10 @@
     <x>0</x>
     <y>0</y>
     <width>1693</width>
-    <height>914</height>
+    <height>878</height>
    </rect>
   </property>
-  <property name="windowkind">
+  <property name="windowkind" stdset="0">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -751,19 +751,6 @@
      <string>Last Complete:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="problem_popup_button">
-    <property name="geometry">
-     <rect>
-      <x>750</x>
-      <y>170</y>
-      <width>151</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Problem Creation</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="current_file_path_l">
     <property name="geometry">
      <rect>
@@ -800,14 +787,17 @@
      <height>21</height>
     </rect>
    </property>
-   <property name="accessiblePID">
-    <string>File</string>
-   </property>
    <property name="accessibleDescription">
     <string>General Operations</string>
    </property>
+   <property name="accessiblePID" stdset="0">
+    <string>File</string>
+   </property>
    <widget class="QMenu" name="file_menu">
-    <property name="kind">
+    <property name="title">
+     <string/>
+    </property>
+    <property name="kind" stdset="0">
      <string>File</string>
     </property>
     <addaction name="fm_new"/>
