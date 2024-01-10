@@ -1,8 +1,11 @@
-from src._prime.road import (
-    create_road,
-    create_economyaddress,
+from src._prime.road import create_road, create_economyaddress
+from src._prime.deal import sectionunit_shop, SectionUnit
+from src._prime.topic import (
+    topicunit_shop,
+    opinionunit_shop,
+    TopicUnit,
+    topiclink_shop,
 )
-from src._prime.topic import topicunit_shop, opinionunit_shop, TopicUnit
 
 
 def get_cooking_topic() -> TopicUnit:
@@ -97,3 +100,30 @@ def get_helen_action_topic() -> TopicUnit:
     helen_topic.set_opinionunit(in_school_opinion)
     helen_topic.set_opinionunit(no_school_opinion)
     return helen_topic
+
+
+def get_cooking_sectionunit() -> SectionUnit:
+    yao_economyaddress = create_economyaddress("Yao", "Texas")
+    cook_road = create_road(yao_economyaddress, "cooking")
+    eight_uid = 8
+    eight_sectionunit = sectionunit_shop(uid=eight_uid)
+    eight_sectionunit.set_topiclink(topiclink_shop(cook_road))
+    return eight_sectionunit
+
+
+def get_climate_sectionunit() -> SectionUnit:
+    yao_economyaddress = create_economyaddress("Yao", "Texas")
+    climate_road = create_road(yao_economyaddress, "climate")
+    six_uid = 6
+    six_sectionunit = sectionunit_shop(uid=six_uid)
+    six_sectionunit.set_topiclink(topiclink_shop(climate_road))
+    return six_sectionunit
+
+
+def get_speedboat_action_sectionunit() -> SectionUnit:
+    yao_economyaddress = create_economyaddress("Yao", "Texas")
+    speedboat_road = create_road(yao_economyaddress, "speedboats")
+    seven_uid = 7
+    seven_sectionunit = sectionunit_shop(uid=seven_uid)
+    seven_sectionunit.set_topiclink(topiclink_shop(speedboat_road, True))
+    return seven_sectionunit

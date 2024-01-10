@@ -80,6 +80,9 @@ class TopicLink:
     action: bool = None
     weight: float = None
 
+    def set_action(self, action_bool: bool):
+        self.action = action_bool
+
 
 def topiclink_shop(
     base: PersonRoad,
@@ -100,16 +103,11 @@ class TopicSubRoadUnitException(Exception):
 @dataclass
 class TopicUnit:
     base: PersonRoad = None
-    action: bool = None
-    actors: dict[PersonID:PersonID] = None
     opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
     _calc_is_meaningful: bool = None
     _calc_is_tribal: bool = None
     _calc_is_dialectic: bool = None
-
-    def set_action(self, action_bool: bool):
-        self.action = action_bool
 
     def is_dialectic(self):
         good_in_tribe_road = next(
@@ -242,18 +240,6 @@ class TopicUnit:
             None,
         )
 
-    def set_actor(self, x_actor: PersonID):
-        self.actors[x_actor] = x_actor
-
-    def del_actor(self, actor: PersonRoad):
-        self.actors.pop(actor)
-
-    def get_actor(self, x_actor: PersonID) -> PersonID:
-        return self.actors.get(x_actor)
-
-    def actor_exists(self, x_actor: PersonID) -> bool:
-        return self.actors.get(x_actor) != None
-
     def set_metrics(self):
         good_affect_sum = 0
         bad_affect_sum = 0
@@ -290,10 +276,8 @@ def topicunit_shop(
 
     return TopicUnit(
         base=base,
-        action=action,
         opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
-        actors=get_empty_dict_if_none(None),
         _calc_is_meaningful=False,
         _calc_is_tribal=False,
         _calc_is_dialectic=False,

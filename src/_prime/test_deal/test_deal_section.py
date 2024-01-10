@@ -86,3 +86,16 @@ def test_DealUnit_add_sectionunit_SetsAttrCorrectly():
     assert two_sectionunit.get_section_id() == "Section 0002"
     assert len(farm_dealunit._sectionunits) == 2
     assert farm_dealunit.get_sectionunit(two_sectionunit.uid) != None
+
+    x_int = 7
+    farm_dealunit.set_sectionunit(sectionunit_shop(x_int))
+    assert len(farm_dealunit._sectionunits) == 3
+
+    # WHEN
+    eight_sectionunit = farm_dealunit.add_sectionunit()
+
+    # THEN
+    assert eight_sectionunit.uid == 8
+    assert eight_sectionunit.get_section_id() == "Section 0008"
+    assert len(farm_dealunit._sectionunits) == 4
+    assert farm_dealunit.get_sectionunit(eight_sectionunit.uid) != None

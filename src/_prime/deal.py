@@ -15,6 +15,7 @@ class SectionID(int):
 @dataclass
 class SectionUnit:
     uid: SectionID = None
+    actors: dict[PersonID:PersonID] = None
     _topiclinks: dict[PersonRoad, TopicLink] = None
 
     def set_topiclink(self, x_topiclink: TopicLink):
@@ -32,12 +33,29 @@ class SectionUnit:
     def get_section_id(self) -> SectionID:
         return f"Section {self.uid:04d}"
 
+    def set_actor(self, x_actor: PersonID):
+        self.actors[x_actor] = x_actor
+
+    def del_actor(self, actor: PersonRoad):
+        self.actors.pop(actor)
+
+    def get_actor(self, x_actor: PersonID) -> PersonID:
+        return self.actors.get(x_actor)
+
+    def actor_exists(self, x_actor: PersonID) -> bool:
+        return self.actors.get(x_actor) != None
+
 
 def sectionunit_shop(
     uid: SectionID,
+    actors: dict[PersonID:PersonID] = None,
     _topiclinks: dict[PersonRoad, TopicLink] = None,
 ):
-    return SectionUnit(uid=uid, _topiclinks=get_empty_dict_if_none(_topiclinks))
+    return SectionUnit(
+        uid=uid,
+        _topiclinks=get_empty_dict_if_none(_topiclinks),
+        actors=get_empty_dict_if_none(actors),
+    )
 
 
 class WantSubRoadUnitException(Exception):
@@ -51,8 +69,10 @@ class DealUnit:
     _topicunits: dict[PersonRoad:TopicUnit] = None
     _sectionunits: dict[SectionID:SectionUnit] = None
 
-    def set_sectionunit(self, x_sectionunit: SectionUnit):
+    def set_sectionunit(self, x_sectionunit: SectionUnit, actor: PersonID = None):
         self._sectionunits[x_sectionunit.uid] = x_sectionunit
+        if actor != None:
+            self.set_actor(actor, x_sectionunit.uid)
 
     def get_sectionunit(self, x_section_id: SectionID) -> SectionUnit:
         return self._sectionunits.get(x_section_id)
@@ -74,20 +94,18 @@ class DealUnit:
             max_sectionunit_uid = max(x_sectionunit.uid, max_sectionunit_uid)
         return max_sectionunit_uid
 
-    def is_meaningful(self) -> bool:
-        return next(
-            (
-                False
-                for x_topicunit in self._topicunits.values()
-                if x_topicunit.is_meaningful() == False
-            ),
-            self._topicunits != {},
-        )
+    # def is_meaningful(self) -> bool:
+    #     return next(
+    #         (
+    #             False
+    #             for x_topicunit in self._topicunits.values()
+    #             if x_topicunit.is_meaningful() == False
+    #         ),
+    #         self._topicunits != {},
+    #     )
 
-    def set_topicunit(self, x_topicunit: TopicUnit, actor: PersonID = None):
+    def set_topicunit(self, x_topicunit: TopicUnit):
         self._topicunits[x_topicunit.base] = x_topicunit
-        if actor != None:
-            self.set_actor(actor, x_topicunit.base)
 
     def topicunit_exists(self, topicbase: PersonRoad) -> bool:
         return self._topicunits.get(topicbase) != None
@@ -98,35 +116,35 @@ class DealUnit:
     def del_topicunit(self, personroad: PersonRoad):
         self._topicunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, topicbase: PersonRoad):
-        if self.topicunit_exists(topicbase):
-            x_topicunit = self.get_topicunit(topicbase)
-            x_topicunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, section_uid: SectionID):
+        if self.sectionunit_exists(section_uid):
+            x_sectionunit = self.get_sectionunit(section_uid)
+            x_sectionunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, topicbase: PersonRoad):
-        if self.topicunit_exists(topicbase):
-            x_topicunit = self.get_topicunit(topicbase)
-            x_topicunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, section_uid: PersonRoad):
+        if self.sectionunit_exists(section_uid):
+            x_sectionunit = self.get_sectionunit(section_uid)
+            x_sectionunit.del_actor(actor)
 
-    def get_actor_topicunits(
+    def get_actor_sectionunits(
         self, actor: PersonID, action_filter: bool = None
     ) -> dict[RoadUnit:TopicUnit]:
         return {
-            x_base: x_topic
-            for x_base, x_topic in self._topicunits.items()
-            if x_topic.actor_exists(actor)
-            and (x_topic.action == action_filter or action_filter is None)
+            x_base: x_sectionunit
+            for x_base, x_sectionunit in self._sectionunits.items()
+            if x_sectionunit.actor_exists(actor)
+            and (x_sectionunit.actors.get(actor) != None or action_filter is None)
         }
 
-    def actor_has_topic(self, actor: PersonID, action_filter: bool = None) -> bool:
-        return self.get_actor_topicunits(actor, action_filter=action_filter) != {}
+    # def actor_has_topic(self, actor: PersonID, action_filter: bool = None) -> bool:
+    #     return self.get_actor_sectionunits(actor, action_filter=action_filter) != {}
 
-    def actors_has_topics(self, actor_dict: dict[PersonID]):
-        x_bool = True
-        for x_actor in actor_dict:
-            if self.actor_has_topic(x_actor) == False:
-                x_bool = False
-        return x_bool
+    # def actors_has_topics(self, actor_dict: dict[PersonID]):
+    #     x_bool = True
+    #     for x_actor in actor_dict:
+    #         if self.actor_has_topic(x_actor) == False:
+    #             x_bool = False
+    #     return x_bool
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
