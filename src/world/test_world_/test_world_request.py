@@ -1,5 +1,5 @@
 # from src.agenda.road import create_road
-# from src.agenda.reason_idea import factunit_shop
+# from src.agenda.reason_idea import beliefunit_shop
 # from src.world.world import worldunit_shop
 # from src.world.lobby import (
 #     economydeletemeaddress_shop,
@@ -59,7 +59,7 @@
 #         fix="flying in airplanes",
 #         positive="Do not fly",
 #         negative="Continue flying",
-#         issue="global environment",
+#         isssue="global environment",
 #         good="healthy",
 #         bad="boiling",
 #     )
@@ -115,7 +115,7 @@
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
-#         issue=weather_text,
+#         isssue=weather_text,
 #         good=healthy_text,
 #         bad=boiling_text,
 #     )
@@ -203,10 +203,10 @@
 #     assert healthy_idea._balancelinks.get(tim_text) != None
 #     assert boiling_idea._balancelinks.get(tim_text) != None
 
-#     xio_factunits = xio_contract._idearoot._factunits
-#     assert len(xio_factunits) == 1
-#     static_weather_factunit = factunit_shop(weather_road, pick=boiling_road)
-#     assert xio_factunits.get(weather_road) == static_weather_factunit
+#     xio_beliefunits = xio_contract._idearoot._beliefunits
+#     assert len(xio_beliefunits) == 1
+#     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
+#     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
 #     assert len(xio_contract.get_intent_items()) == 0
 
 #     # check tim contract
@@ -240,7 +240,7 @@
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
-#         issue=weather_text,
+#         isssue=weather_text,
 #         good=healthy_text,
 #         bad=boiling_text,
 #     )
@@ -299,10 +299,10 @@
 #     assert healthy_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 #     assert boiling_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 
-#     xio_factunits = xio_contract._idearoot._factunits
-#     assert len(xio_factunits) == 1
-#     static_weather_factunit = factunit_shop(weather_road, pick=boiling_road)
-#     assert xio_factunits.get(weather_road) == static_weather_factunit
+#     xio_beliefunits = xio_contract._idearoot._beliefunits
+#     assert len(xio_beliefunits) == 1
+#     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
+#     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
 #     assert len(xio_contract.get_intent_items()) == 0
 
 #     # check tim contract
@@ -331,7 +331,7 @@
 # #         fix="flying in airplanes",
 # #         positive="Do not fly",
 # #         negative="Continue flying",
-# #         issue="global weather",
+# #         isssue="global weather",
 # #         good="healthy",
 # #         bad="boiling",
 # #     )

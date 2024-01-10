@@ -6,7 +6,7 @@ from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoFactBases():
+def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
     x_agenda = example_agendas_agenda_v001()
     x_agenda_metrics = x_agenda.get_tree_metrics()
 
@@ -18,21 +18,21 @@ def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoFactBases():
     assert len(reason_bases_x) > 0
 
 
-def test_agenda_get_missing_fact_bases_ReturnsAllBasesNotCoveredByFacts():
+def test_agenda_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
     x_agenda = example_agendas_agenda_v001()
-    missing_bases = x_agenda.get_missing_fact_bases()
+    missing_bases = x_agenda.get_missing_belief_bases()
     assert missing_bases != None
     print(f"{missing_bases=}")
     print(f"{len(missing_bases)=}")
     assert len(missing_bases) == 11
 
-    x_agenda.set_fact(
+    x_agenda.set_belief(
         base=x_agenda.make_l1_road("day_minute"),
         pick=x_agenda.make_l1_road("day_minute"),
         open=0,
         nigh=1439,
     )
-    missing_bases = x_agenda.get_missing_fact_bases()
+    missing_bases = x_agenda.get_missing_belief_bases()
 
     assert len(missing_bases) == 11
 

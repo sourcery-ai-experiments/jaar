@@ -1,6 +1,6 @@
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.agenda.idea import ideaunit_shop
-from src.agenda.reason_idea import reasonunit_shop, factunit_shop
+from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
@@ -409,20 +409,20 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     assert x_agenda._idearoot._kids[work_text]._begin == 25
     assert x_agenda._idearoot._kids[work_text]._close == 29
 
-    # factunit: factunit_shop = None,
-    # x_agenda._idearoot._kids[work_text]._factunits = None
-    assert x_agenda._idearoot._kids[work_text]._factunits == {}
+    # beliefunit: beliefunit_shop = None,
+    # x_agenda._idearoot._kids[work_text]._beliefunits = None
+    assert x_agenda._idearoot._kids[work_text]._beliefunits == {}
     wkdays_road = x_agenda.make_l1_road("weekdays")
-    fact_road = x_agenda.make_road(wkdays_road, "Sunday")
-    factunit_x = factunit_shop(base=fact_road, pick=fact_road)
+    belief_road = x_agenda.make_road(wkdays_road, "Sunday")
+    beliefunit_x = beliefunit_shop(base=belief_road, pick=belief_road)
 
-    work_factunits = x_agenda._idearoot._kids[work_text]._factunits
-    print(f"{work_factunits=}")
-    x_agenda.edit_idea_attr(road=work_road, factunit=factunit_x)
-    work_factunits = x_agenda._idearoot._kids[work_text]._factunits
-    print(f"{work_factunits=}")
-    assert x_agenda._idearoot._kids[work_text]._factunits == {
-        factunit_x.base: factunit_x
+    work_beliefunits = x_agenda._idearoot._kids[work_text]._beliefunits
+    print(f"{work_beliefunits=}")
+    x_agenda.edit_idea_attr(road=work_road, beliefunit=beliefunit_x)
+    work_beliefunits = x_agenda._idearoot._kids[work_text]._beliefunits
+    print(f"{work_beliefunits=}")
+    assert x_agenda._idearoot._kids[work_text]._beliefunits == {
+        beliefunit_x.base: beliefunit_x
     }
 
     # _descendant_promise_count: int = None,

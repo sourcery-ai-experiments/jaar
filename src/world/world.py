@@ -59,7 +59,7 @@ class WorldUnit:
 
     #     # add ideas to requester_contract_agenda
     #     fix_weight = x_requestunit._fix_weight
-    #     wantunit_ideas = x_requestunit._wantunit.get_beliefunit_ideas(fix_weight)
+    #     wantunit_ideas = x_requestunit._wantunit.get_issueunit_ideas(fix_weight)
     #     for x_idea in wantunit_ideas.values():
     #         # TODO ideas should not be added if they already exist. Create test, then change code
     #         requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
@@ -97,7 +97,7 @@ class WorldUnit:
     #             x_balancelinks[request_group] = balancelink_shop(request_group)
 
     #     # for every idea in wantunit set idea attributes to requester_contract
-    #     x_issue = x_requestunit._wantunit.issue
+    #     x_isssue = x_requestunit._wantunit.isssue
     #     for x_idea in wantunit_ideas.values():
     #         idea_road = x_idea.get_road()
     #         requester_contract.edit_idea_attr(idea_road, assignedunit=x_assignedunit)
@@ -110,12 +110,12 @@ class WorldUnit:
     #         if x_idea.promise:
     #             requester_contract.edit_idea_attr(
     #                 idea_road,
-    #                 reason_base=x_issue.base,
-    #                 reason_premise=x_issue.get_1_opinionunit(bad=True),
+    #                 reason_base=x_isssue.base,
+    #                 reason_premise=x_isssue.get_1_factunit(bad=True),
     #             )
 
-    #     requester_contract.set_fact(
-    #         x_issue.base, pick=x_issue.get_1_opinionunit(bad=True)
+    #     requester_contract.set_belief(
+    #         x_isssue.base, pick=x_isssue.get_1_factunit(bad=True)
     #     )
     #     requester_clerkunit.save_contract_agenda(requester_contract)
     #     requester_clerkunit.save_refreshed_output_to_public()

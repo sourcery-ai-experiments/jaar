@@ -10,7 +10,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_with_4_levels_and_2reasons as example_agendas_get_agenda_with_4_levels_and_2reasons,
     get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
-    get_agenda_with_4_levels_and_2reasons_2facts as example_agendas_get_agenda_with_4_levels_and_2reasons_2facts,
+    get_agenda_with_4_levels_and_2reasons_2beliefs as example_agendas_get_agenda_with_4_levels_and_2reasons_2beliefs,
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,

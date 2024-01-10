@@ -21,12 +21,12 @@ from src.agenda.group import (
     balancelink_shop,
 )
 from src.agenda.reason_idea import (
-    FactCore,
-    FactUnit,
-    FactUnit,
+    BeliefCore,
+    BeliefUnit,
+    BeliefUnit,
     ReasonUnit,
     RoadUnit,
-    factunit_shop,
+    beliefunit_shop,
 )
 from src.agenda.reason_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics
@@ -186,7 +186,7 @@ class AgendaUnit:
 
         # TODO grab groups
         # TODO grab all group partys
-        # TODO grab facts
+        # TODO grab beliefs
         return x_agenda
 
     def _get_relevant_roads(self, roads: dict[RoadUnit:]) -> dict[RoadUnit:str]:
@@ -757,14 +757,14 @@ class AgendaUnit:
             groupbrand_dict[group_l] for group_l in groupbrand_lowercase_ordered_list
         ]
 
-    def set_time_facts(self, open: datetime = None, nigh: datetime = None) -> None:
+    def set_time_beliefs(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
         time_road = self.make_road(self._economy_id, "time")
-        minutes_fact = self.make_road(time_road, "jajatime")
-        self.set_fact(
-            base=minutes_fact,
-            pick=minutes_fact,
+        minutes_belief = self.make_road(time_road, "jajatime")
+        self.set_belief(
+            base=minutes_belief,
+            pick=minutes_belief,
             open=open_minutes,
             nigh=nigh_minutes,
         )
@@ -779,41 +779,41 @@ class AgendaUnit:
         x_idea = self.get_idea_obj(idea_road)
         return x_idea._numeric_road is None and not parent_idea.is_arithmetic()
 
-    def _get_rangeroot_factunits(self) -> list[FactUnit]:
+    def _get_rangeroot_beliefunits(self) -> list[BeliefUnit]:
         return [
-            fact
-            for fact in self._idearoot._factunits.values()
-            if fact.open != None
-            and fact.nigh != None
-            and self._is_idea_rangeroot(idea_road=fact.base)
+            belief
+            for belief in self._idearoot._beliefunits.values()
+            if belief.open != None
+            and belief.nigh != None
+            and self._is_idea_rangeroot(idea_road=belief.base)
         ]
 
     def _get_rangeroot_1stlevel_associates(
-        self, ranged_factunits: list[IdeaUnit]
+        self, ranged_beliefunits: list[IdeaUnit]
     ) -> Lemmas:
         x_lemmas = lemmas_shop()
         # lemma_ideas = {}
-        for fact in ranged_factunits:
-            fact_idea = self.get_idea_obj(fact.base)
-            for kid in fact_idea._kids.values():
-                x_lemmas.eval(x_idea=kid, src_fact=fact, src_idea=fact_idea)
+        for belief in ranged_beliefunits:
+            belief_idea = self.get_idea_obj(belief.base)
+            for kid in belief_idea._kids.values():
+                x_lemmas.eval(x_idea=kid, src_belief=belief, src_idea=belief_idea)
 
-            if fact_idea._range_source_road != None:
+            if belief_idea._range_source_road != None:
                 x_lemmas.eval(
-                    x_idea=self.get_idea_obj(fact_idea._range_source_road),
-                    src_fact=fact,
-                    src_idea=fact_idea,
+                    x_idea=self.get_idea_obj(belief_idea._range_source_road),
+                    src_belief=belief,
+                    src_idea=belief_idea,
                 )
         return x_lemmas
 
-    def _get_lemma_factunits(self) -> dict[RoadUnit:FactUnit]:
+    def _get_lemma_beliefunits(self) -> dict[RoadUnit:BeliefUnit]:
         # get all range-root first level kids and range_source_road
         x_lemmas = self._get_rangeroot_1stlevel_associates(
-            self._get_rangeroot_factunits()
+            self._get_rangeroot_beliefunits()
         )
 
         # Now get associates (all their descendants and range_source_roads)
-        lemma_factunits = {}  # fact.base : factUnit
+        lemma_beliefunits = {}  # belief.base : beliefUnit
         count_x = 0
         while x_lemmas.is_lemmas_evaluated() == False or count_x > 10000:
             count_x += 1
@@ -822,23 +822,23 @@ class AgendaUnit:
 
             y_lemma = x_lemmas.get_unevaluated_lemma()
             lemma_idea = y_lemma.x_idea
-            fact_x = y_lemma.calc_fact
+            belief_x = y_lemma.calc_belief
 
             road_x = self.make_road(lemma_idea._parent_road, lemma_idea._label)
-            lemma_factunits[road_x] = fact_x
+            lemma_beliefunits[road_x] = belief_x
 
             for kid2 in lemma_idea._kids.values():
-                x_lemmas.eval(x_idea=kid2, src_fact=fact_x, src_idea=lemma_idea)
+                x_lemmas.eval(x_idea=kid2, src_belief=belief_x, src_idea=lemma_idea)
             if lemma_idea._range_source_road not in [None, ""]:
                 x_lemmas.eval(
                     x_idea=self.get_idea_obj(lemma_idea._range_source_road),
-                    src_fact=fact_x,
+                    src_belief=belief_x,
                     src_idea=lemma_idea,
                 )
 
-        return lemma_factunits
+        return lemma_beliefunits
 
-    def set_fact(
+    def set_belief(
         self,
         base: RoadUnit,
         pick: RoadUnit,
@@ -851,44 +851,46 @@ class AgendaUnit:
             self._set_ideakid_if_empty(road=pick)
 
         self._execute_tree_traverse()
-        fact_base_idea = self.get_idea_obj(base)
-        x_factunit = factunit_shop(base=base, pick=pick, open=open, nigh=nigh)
+        belief_base_idea = self.get_idea_obj(base)
+        x_beliefunit = beliefunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         x_idearoot = self.get_idea_obj(self._economy_id)
 
-        if fact_base_idea.is_arithmetic() == False:
-            x_idearoot.set_factunit(x_factunit)
+        if belief_base_idea.is_arithmetic() == False:
+            x_idearoot.set_beliefunit(x_beliefunit)
 
-        # if fact's idea no range or is a "range-root" then allow fact to be set by user
-        elif fact_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) == False:
+        # if belief's idea no range or is a "range-root" then allow belief to be set by user
+        elif (
+            belief_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) == False
+        ):
             raise InvalidAgendaException(
-                f"Non range-root fact:{base} can only be set by range-root fact"
+                f"Non range-root belief:{base} can only be set by range-root belief"
             )
 
-        elif fact_base_idea.is_arithmetic() and self._is_idea_rangeroot(base):
+        elif belief_base_idea.is_arithmetic() and self._is_idea_rangeroot(base):
             # WHEN idea is "range-root" identify any reason.bases that are descendants
-            # calculate and set those descendant facts
+            # calculate and set those descendant beliefs
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendant
             # there exists a reason base "timeline,weeks" with premise.need = "timeline,weeks"
             # and (1,2) divisor=2 (every other week)
             #
-            # user should not set "timeline,weeks" fact, only "timeline" fact and
+            # user should not set "timeline,weeks" belief, only "timeline" belief and
             # "timeline,weeks" should be set automatica_lly since there exists a reason
             # that has that base.
-            x_idearoot.set_factunit(x_factunit)
+            x_idearoot.set_beliefunit(x_beliefunit)
 
-            # Find all Fact descendants and any range_source_road connections "Lemmas"
-            lemmas_dict = self._get_lemma_factunits()
-            missing_facts = self.get_missing_fact_bases().keys()
+            # Find all Belief descendants and any range_source_road connections "Lemmas"
+            lemmas_dict = self._get_lemma_beliefunits()
+            missing_beliefs = self.get_missing_belief_bases().keys()
             x_idearoot._apply_any_range_source_road_connections(
-                lemmas_dict, missing_facts
+                lemmas_dict, missing_beliefs
             )
 
         self.set_agenda_metrics()
 
-    def get_factunits_base_and_fact_list(self) -> list:
-        fact_list = list(self._idearoot._factunits.values())
-        node_dict = {fact_x.base.lower(): fact_x for fact_x in fact_list}
+    def get_beliefunits_base_and_belief_list(self) -> list:
+        belief_list = list(self._idearoot._beliefunits.values())
+        node_dict = {belief_x.base.lower(): belief_x for belief_x in belief_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
             node_dict[node_l] for node_l in node_lowercase_ordered_list
@@ -896,12 +898,12 @@ class AgendaUnit:
 
         list_x = [["", ""]]
         list_x.extend(
-            [fact_x.base, fact_x.pick] for fact_x in node_orginalcase_ordered_list
+            [belief_x.base, belief_x.pick] for belief_x in node_orginalcase_ordered_list
         )
         return list_x
 
-    def del_fact(self, base: RoadUnit):
-        self._idearoot.del_factunit(base)
+    def del_belief(self, base: RoadUnit):
+        self._idearoot.del_beliefunit(base)
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = TreeMetrics()
@@ -966,13 +968,13 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.reason_bases
 
-    def get_missing_fact_bases(self) -> dict[RoadUnit:int]:
+    def get_missing_belief_bases(self) -> dict[RoadUnit:int]:
         tree_metrics = self.get_tree_metrics()
         reason_bases = tree_metrics.reason_bases
         missing_bases = {}
         for base, base_count in reason_bases.items():
             try:
-                self._idearoot._factunits[base]
+                self._idearoot._beliefunits[base]
             except KeyError:
                 missing_bases[base] = base_count
 
@@ -1120,8 +1122,8 @@ class AgendaUnit:
             else:
                 self._non_root_idea_label_edit(old_road, new_label, parent_road)
             self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
-            self._idearoot._factunits = find_replace_road_key_dict(
-                dict_x=self._idearoot._factunits,
+            self._idearoot._beliefunits = find_replace_road_key_dict(
+                dict_x=self._idearoot._beliefunits,
                 old_road=old_road,
                 new_road=new_road,
             )
@@ -1294,7 +1296,7 @@ class AgendaUnit:
         range_source_road: float = None,
         promise: bool = None,
         problem_bool: bool = None,
-        factunit: FactUnit = None,
+        beliefunit: BeliefUnit = None,
         descendant_promise_count: int = None,
         all_party_credit: bool = None,
         all_party_debt: bool = None,
@@ -1332,7 +1334,7 @@ class AgendaUnit:
             is_expanded=is_expanded,
             promise=promise,
             problem_bool=problem_bool,
-            factunit=factunit,
+            beliefunit=beliefunit,
             on_meld_weight_action=on_meld_weight_action,
         )
         if x_ideaattrfilter.has_numeric_attrs():
@@ -1369,7 +1371,7 @@ class AgendaUnit:
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
         promise_item = self.get_idea_obj(task_road)
-        promise_item.set_factunit_to_complete(self._idearoot._factunits[base])
+        promise_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
 
     def get_partyunit_total_creditor_weight(self) -> float:
         return sum(
@@ -1606,7 +1608,7 @@ class AgendaUnit:
         x_idearoot.set_parent_road(parent_road="")
         x_idearoot.set_idearoot_inherit_reasonheirs()
         x_idearoot.set_assignedheir(parent_assignheir=None, agenda_groups=self._groups)
-        x_idearoot.set_factheirs(facts=self._idearoot._factunits)
+        x_idearoot.set_beliefheirs(beliefs=self._idearoot._beliefunits)
         x_idearoot.inherit_balanceheirs()
         x_idearoot.clear_balancelines()
         x_idearoot._weight = 1
@@ -1638,7 +1640,7 @@ class AgendaUnit:
     ):
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_parent_road(parent_idea.get_road())
-        idea_kid.set_factheirs(facts=parent_idea._factheirs)
+        idea_kid.set_beliefheirs(beliefs=parent_idea._beliefheirs)
         idea_kid.set_reasonheirs(self._idea_dict, parent_idea._reasonheirs)
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
         idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
@@ -1787,11 +1789,11 @@ class AgendaUnit:
 
         return list_x
 
-    def get_factunits_dict(self) -> dict[str:str]:
+    def get_beliefunits_dict(self) -> dict[str:str]:
         x_dict = {}
-        if self._idearoot._factunits != None:
-            for fact_road, fact_obj in self._idearoot._factunits.items():
-                x_dict[fact_road] = fact_obj.get_dict()
+        if self._idearoot._beliefunits != None:
+            for belief_road, belief_obj in self._idearoot._beliefunits.items():
+                x_dict[belief_road] = belief_obj.get_dict()
         return x_dict
 
     def get_partys_dict(self) -> dict[str:str]:
@@ -1867,7 +1869,7 @@ class AgendaUnit:
 
         self.set_agenda_metrics()
 
-    def get_agenda4party(self, party_pid: PartyPID, facts: dict[RoadUnit:FactCore]):
+    def get_agenda4party(self, party_pid: PartyPID, beliefs: dict[RoadUnit:BeliefCore]):
         self.set_agenda_metrics()
         agenda4party = agendaunit_shop(_healer=party_pid)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
@@ -1927,7 +1929,7 @@ class AgendaUnit:
         self._meld_groups(other_agenda)
         self._meld_partys(other_agenda)
         self._meld_ideas(other_agenda, party_weight)
-        self._meld_facts(other_agenda)
+        self._meld_beliefs(other_agenda)
         self._weight = get_meld_weight(
             src_weight=self._weight,
             src_on_meld_weight_action="default",
@@ -1971,12 +1973,14 @@ class AgendaUnit:
             else:
                 self.get_groupunit(brx.brand).meld(brx)
 
-    def _meld_facts(self, other_agenda):
-        for hx in other_agenda._idearoot._factunits.values():
-            if self._idearoot._factunits.get(hx.base) is None:
-                self.set_fact(base=hx.base, fact=hx.fact, open=hx.open, nigh=hx.nigh)
+    def _meld_beliefs(self, other_agenda):
+        for hx in other_agenda._idearoot._beliefunits.values():
+            if self._idearoot._beliefunits.get(hx.base) is None:
+                self.set_belief(
+                    base=hx.base, belief=hx.belief, open=hx.open, nigh=hx.nigh
+                )
             else:
-                self._idearoot._factunits.get(hx.base).meld(hx)
+                self._idearoot._beliefunits.get(hx.base).meld(hx)
 
     def _meld_originlinks(self, party_pid: PartyPID, party_weight: float):
         if party_pid != None:
@@ -2011,9 +2015,9 @@ class AgendaUnit:
             relevant_idea.clear_kids()
             x_agenda.add_idea(relevant_idea, parent_road=relevant_idea._parent_road)
 
-        for afu in self._idearoot._factunits.values():
+        for afu in self._idearoot._beliefunits.values():
             if relevant_roads.get(afu.base) != None:
-                x_agenda.set_fact(
+                x_agenda.set_belief(
                     base=change_road(afu.base, self._economy_id, x_agenda._economy_id),
                     pick=change_road(afu.pick, self._economy_id, x_agenda._economy_id),
                     open=afu.open,
@@ -2138,7 +2142,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
         _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
         _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
-        _factunits=get_obj_from_idea_dict(idearoot_dict, "_factunits"),
+        _beliefunits=get_obj_from_idea_dict(idearoot_dict, "_beliefunits"),
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
         _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
@@ -2178,7 +2182,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
             _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
-            _factunits=get_obj_from_idea_dict(idea_dict, "_factunits"),
+            _beliefunits=get_obj_from_idea_dict(idea_dict, "_beliefunits"),
             _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
             _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),

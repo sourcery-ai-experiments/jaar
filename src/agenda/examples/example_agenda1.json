@@ -715,7 +715,7 @@
     },
     "_healer": "Yao",
     "_idearoot": {
-        "_factunits": {
+        "_beliefunits": {
             "A,day_hour": {
                 "base": "A,day_hour",
                 "nigh": 23,
@@ -766,9 +766,9 @@
                     "ACME Employee Responsiblities": {
                         "_is_expanded": false,
                         "_kids": {
-                            "Employee Factbook.": {
+                            "Employee Beliefbook.": {
                                 "_is_expanded": false,
-                                "_label": "Employee Factbook.",
+                                "_label": "Employee Beliefbook.",
                                 "_on_meld_weight_action": "default",
                                 "_problem_bool": false,
                                 "_reasonunits": {
@@ -5089,7 +5089,7 @@
             "day_minute": {
                 "_begin": 0,
                 "_close": 1439,
-                "_factunits": {
+                "_beliefunits": {
                     "A,day_minute": {
                         "base": "A,day_minute",
                         "nigh": 59,

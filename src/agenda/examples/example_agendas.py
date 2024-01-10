@@ -1,10 +1,10 @@
 from src._prime.road import RoadUnit
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import (
-    factunit_shop,
+    beliefunit_shop,
     premiseunit_shop,
     reasonunit_shop,
-    factunit_shop,
+    beliefunit_shop,
 )
 from src.agenda.agenda import (
     AgendaUnit,
@@ -49,18 +49,18 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
     # movie_text = "No Movie playing"
     # movie_road = x_agenda.make_road(x_agenda._economy_id,movie_text)
 
-    x_agenda.set_fact(base=aaron_road, pick=aaron_road)
-    x_agenda.set_fact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
-    x_agenda.set_fact(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
-    # x_agenda.set_fact(base=internet, pick=internet)
-    x_agenda.set_fact(base=month_week_road, pick=month_week_road, open=0, nigh=5)
-    x_agenda.set_fact(base=mood_road, pick=mood_road)
-    # x_agenda.set_fact(base=movie, pick=movie)
-    x_agenda.set_fact(base=nations_road, pick=nations_road)
-    x_agenda.set_fact(base=season_road, pick=season_road)
-    x_agenda.set_fact(base=year_month_road, pick=year_month_road, open=0, nigh=12)
-    # x_agenda.set_fact(base=water, pick=water)
-    x_agenda.set_fact(base=weekdays_road, pick=weekdays_road)
+    x_agenda.set_belief(base=aaron_road, pick=aaron_road)
+    x_agenda.set_belief(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
+    x_agenda.set_belief(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
+    # x_agenda.set_belief(base=internet, pick=internet)
+    x_agenda.set_belief(base=month_week_road, pick=month_week_road, open=0, nigh=5)
+    x_agenda.set_belief(base=mood_road, pick=mood_road)
+    # x_agenda.set_belief(base=movie, pick=movie)
+    x_agenda.set_belief(base=nations_road, pick=nations_road)
+    x_agenda.set_belief(base=season_road, pick=season_road)
+    x_agenda.set_belief(base=year_month_road, pick=year_month_road, open=0, nigh=12)
+    # x_agenda.set_belief(base=water, pick=water)
+    x_agenda.set_belief(base=weekdays_road, pick=weekdays_road)
 
     return x_agenda
 
@@ -165,7 +165,7 @@ def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
     return sue_agenda
 
 
-def get_agenda_with_4_levels_and_2reasons_2facts() -> AgendaUnit:
+def get_agenda_with_4_levels_and_2reasons_2beliefs() -> AgendaUnit:
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
@@ -175,13 +175,13 @@ def get_agenda_with_4_levels_and_2reasons_2facts() -> AgendaUnit:
     states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
     usa_road = sue_agenda.make_road(states_road, usa_text)
-    sue_agenda.set_fact(base=week_road, pick=wed_road)
-    sue_agenda.set_fact(base=states_road, pick=usa_road)
+    sue_agenda.set_belief(base=week_road, pick=wed_road)
+    sue_agenda.set_belief(base=states_road, pick=usa_road)
     return sue_agenda
 
 
 def get_agenda_with7amCleanTableReason() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
 
     time_text = "timetech"
     time_road = sue_agenda.make_l1_road(time_text)
@@ -249,7 +249,7 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     return sue_agenda
 
 
-def get_agenda_1Task_1CE0MinutesReason_1Fact() -> AgendaUnit:
+def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
     bob_agenda = agendaunit_shop(_healer="Bob", _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = ideaunit_shop(ced_min_label)
@@ -266,22 +266,22 @@ def get_agenda_1Task_1CE0MinutesReason_1Fact() -> AgendaUnit:
     mail_road = bob_agenda.make_l1_road(mail_label)
     bob_agenda.edit_idea_attr(road=mail_road, reason=x_task_reason)
 
-    x_fact = factunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
+    x_belief = beliefunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
     # print(
-    #     f"1Task_1CE0MinutesReason_1Fact 2. {len(bob_agenda._idearoot._kids)=} {x_fact.base=}"
+    #     f"1Task_1CE0MinutesReason_1Belief 2. {len(bob_agenda._idearoot._kids)=} {x_belief.base=}"
     # )
-    bob_agenda.set_fact(
-        base=x_fact.base,
-        pick=x_fact.pick,
-        open=x_fact.open,
-        nigh=x_fact.nigh,
+    bob_agenda.set_belief(
+        base=x_belief.base,
+        pick=x_belief.pick,
+        open=x_belief.open,
+        nigh=x_belief.nigh,
     )
-    # print(f"1Task_1CE0MinutesReason_1Fact 3. {len(bob_agenda._idearoot._kids)=}")
+    # print(f"1Task_1CE0MinutesReason_1Belief 3. {len(bob_agenda._idearoot._kids)=}")
 
     return bob_agenda
 
 
-def get_agenda_x1_3levels_1reason_1facts() -> AgendaUnit:
+def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
     kol_agenda = agendaunit_shop(_healer="Kol", _weight=10)
     shave_text = "shave"
     shave_road = kol_agenda.make_l1_road(shave_text)
@@ -307,9 +307,9 @@ def get_agenda_x1_3levels_1reason_1facts() -> AgendaUnit:
     shave_reason.set_premise(mon_road)
 
     kol_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
-    kol_agenda.set_fact(base=week_road, pick=sun_road)
-    factunit_x = factunit_shop(base=week_road, pick=church_road)
-    kol_agenda.edit_idea_attr(road=shave_road, factunit=factunit_x)
+    kol_agenda.set_belief(base=week_road, pick=sun_road)
+    beliefunit_x = beliefunit_shop(base=week_road, pick=church_road)
+    kol_agenda.edit_idea_attr(road=shave_road, beliefunit=beliefunit_x)
     return kol_agenda
 
 
@@ -442,7 +442,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
     # print(f"{amer_agenda._economy_id=}")
-    amer_agenda.set_fact(base=basket_road, pick=b_full_road)
+    amer_agenda.set_belief(base=basket_road, pick=b_full_road)
 
     return amer_agenda
 
@@ -490,11 +490,11 @@ def yr_print_idea_base_info(idea, filter: bool):
                 f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
             )
             if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-                yr_print_fact(
+                yr_print_belief(
                     lh_base=l.base,
                     lh_status=l._status,
                     premises=l.premises,
-                    factheirs=idea._factheirs,
+                    beliefheirs=idea._beliefheirs,
                 )
 
 
@@ -504,11 +504,11 @@ def yr_explanation(idea):
     str3 = f" {str(type(idea))}"
     str4 = " "
     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-        str3 = f" Facts:{yr_x(idea._factheirs)} Status: {idea._active_status}"
+        str3 = f" Beliefs:{yr_x(idea._beliefheirs)} Status: {idea._active_status}"
 
         print(f"\n{str1}{str2}{str3}")
         hh_wo_matched_reason = []
-        for hh in idea._factheirs.values():
+        for hh in idea._beliefheirs.values():
             hh_wo_matched_reason = []
             try:
                 idea._reasonheirs[hh.base]
@@ -516,7 +516,7 @@ def yr_explanation(idea):
                 hh_wo_matched_reason.append(hh.base)
 
         for base in hh_wo_matched_reason:
-            print(f"Facts that don't matter to this Idea: {base}")
+            print(f"Beliefs that don't matter to this Idea: {base}")
 
     # if idea._reasonunits != None:
     #     for lu in idea._reasonunits.values():
@@ -534,21 +534,21 @@ def yr_explanation(idea):
                     f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
                 )
                 if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-                    yr_print_fact(
+                    yr_print_belief(
                         lh_base=l.base,
                         lh_status=l._status,
                         premises=l.premises,
-                        factheirs=idea._factheirs,
+                        beliefheirs=idea._beliefheirs,
                     )
                 print("")
-    # print(idea._factheirs)
-    # print(f"{(idea._factheirs != None)=}")
-    # print(f"{len(idea._factheirs)=} ")
+    # print(idea._beliefheirs)
+    # print(f"{(idea._beliefheirs != None)=}")
+    # print(f"{len(idea._beliefheirs)=} ")
 
     print("")
 
 
-def yr_print_fact(lh_base, lh_status, premises, factheirs):
+def yr_print_belief(lh_base, lh_status, premises, beliefheirs):
     for ww in premises.values():
         ww_open = ""
         ww_open = f"\topen:{ww.open}" if ww.open != None else ""
@@ -562,7 +562,7 @@ def yr_print_fact(lh_base, lh_status, premises, factheirs):
             f"\t    '{lh_base}' Premise LH:{lh_status} W:{ww._status}\tneed:{ww.need}{ww_open}{ww_nigh}"
         )
 
-        for hh in factheirs.values():
+        for hh in beliefheirs.values():
             if hh.base == lh_base:
                 if hh.open != None:
                     hh_open = f"\topen:{hh.open}"
@@ -571,10 +571,10 @@ def yr_print_fact(lh_base, lh_status, premises, factheirs):
                 hh_pick = hh.pick
                 # if hh_pick != "":
                 print(
-                    f"\t    '{hh.base}' Fact LH:{lh_status} W:{ww._status}\tFact:{hh_pick}{hh_open}{hh_nigh}"
+                    f"\t    '{hh.base}' Belief LH:{lh_status} W:{ww._status}\tBelief:{hh_pick}{hh_open}{hh_nigh}"
                 )
         if hh_pick == "":
-            print(f"\t    Base: No Fact")
+            print(f"\t    Base: No Belief")
 
 
 def yr_d(self):

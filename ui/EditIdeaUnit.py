@@ -45,13 +45,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.cb_yo_intent.stateChanged.connect(self.refresh_tree)
         self.cb_yo_action.stateChanged.connect(self.refresh_tree)
         self.cb_yo_complete.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_factunit_time.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_factunit_count.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_factheir_count.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_beliefunit_time.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_beliefunit_count.stateChanged.connect(self.refresh_tree)
+        self.cb_yo_beliefheir_count.stateChanged.connect(self.refresh_tree)
         self.cb_reasonheir_count.stateChanged.connect(self.refresh_tree)
         self.cb_reason_count.stateChanged.connect(self.refresh_tree)
         self.cb_reason_view.stateChanged.connect(self.refresh_tree)
-        self.cb_factheir_view.stateChanged.connect(self.refresh_tree)
+        self.cb_beliefheir_view.stateChanged.connect(self.refresh_tree)
         self.cb_yo2bd_count.stateChanged.connect(self.refresh_tree)
         self.combo_dim_root.currentTextChanged.connect(self.refresh_tree)
 
@@ -897,7 +897,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_base=new_road,
             reason_premise=f"{new_road},{not_done_text}",
         )
-        self.agenda_x.set_fact(
+        self.agenda_x.set_belief(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
@@ -955,14 +955,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         yo2bd_count_flag = self.cb_yo2bd_count.checkState() == 2
         # yo2bd_spec1_flag = self.yo2bd_spec1_flag.checkState() == 2
         yo_complete_flag = self.cb_yo_complete.checkState() == 2
-        yo_factunit_time_flag = self.cb_yo_factunit_time.checkState() == 2
-        yo_factunit_count_flag = self.cb_yo_factunit_count.checkState() == 2
-        yo_factheir_count_flag = self.cb_yo_factheir_count.checkState() == 2
+        yo_beliefunit_time_flag = self.cb_yo_beliefunit_time.checkState() == 2
+        yo_beliefunit_count_flag = self.cb_yo_beliefunit_count.checkState() == 2
+        yo_beliefheir_count_flag = self.cb_yo_beliefheir_count.checkState() == 2
         reasonheir_count_flag = self.cb_reasonheir_count.checkState() == 2
         reason_count_flag = self.cb_reason_count.checkState() == 2
         reason_view_flag = self.cb_reason_view.checkState() == 2
         reason_view_base = self.combo_dim_root.currentText()
-        factheir_view_flag = self.cb_factheir_view.checkState() == 2
+        beliefheir_view_flag = self.cb_beliefheir_view.checkState() == 2
 
         # root = self.baseideaunit.invisibleRootItem()
         # self.yo_tree_isExpanded(node=root, level=1)
@@ -974,16 +974,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
             idearoot=self.agenda_x._idearoot,
             yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
-            yo_factunit_time_flag=yo_factunit_time_flag,
-            yo_factunit_count_flag=yo_factunit_count_flag,
-            yo_factheir_count_flag=yo_factheir_count_flag,
+            yo_beliefunit_time_flag=yo_beliefunit_time_flag,
+            yo_beliefunit_count_flag=yo_beliefunit_count_flag,
+            yo_beliefheir_count_flag=yo_beliefheir_count_flag,
             yo_complete_flag=yo_complete_flag,
             yo2bd_count_flag=yo2bd_count_flag,
             reasonheir_count_flag=reasonheir_count_flag,
             reason_count_flag=reason_count_flag,
             reason_view_flag=reason_view_flag,
             reason_view_pid=reason_view_base,
-            factheir_view_flag=factheir_view_flag,
+            beliefheir_view_flag=beliefheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_agenda=self.agenda_x,
         )

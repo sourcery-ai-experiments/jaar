@@ -7,24 +7,22 @@ from src.agenda.reason_assign import (
     assignedunit_get_from_dict,
 )
 from src.agenda.reason_idea import (
-    FactCore,
-    FactHeir,
-    factheir_shop,
+    BeliefCore,
+    BeliefHeir,
+    beliefheir_shop,
     ReasonCore,
     ReasonUnit,
     reasonunit_shop,
     RoadUnit,
-    FactUnit,
-    FactUnit,
-    factunit_shop,
+    BeliefUnit,
+    beliefunit_shop,
     ReasonHeir,
     reasonheir_shop,
-    premiseunit_shop,
     RoadUnit,
     change_road,
     find_replace_road_key_dict,
     reasons_get_from_dict,
-    factunits_get_from_dict,
+    beliefunits_get_from_dict,
 )
 from src._prime.road import (
     RoadUnit,
@@ -86,7 +84,7 @@ class IdeaAttrFilter:
     range_source_road: float = None
     promise: bool = None
     problem_bool: bool = None
-    factunit: FactUnit = None
+    beliefunit: BeliefUnit = None
     descendant_promise_count: int = None
     all_party_credit: bool = None
     all_party_debt: bool = None
@@ -169,7 +167,7 @@ def ideaattrfilter_shop(
     range_source_road: float = None,
     promise: bool = None,
     problem_bool: bool = None,
-    factunit: FactUnit = None,
+    beliefunit: BeliefUnit = None,
     descendant_promise_count: int = None,
     all_party_credit: bool = None,
     all_party_debt: bool = None,
@@ -201,7 +199,7 @@ def ideaattrfilter_shop(
         range_source_road=range_source_road,
         promise=promise,
         problem_bool=problem_bool,
-        factunit=factunit,
+        beliefunit=beliefunit,
         descendant_promise_count=descendant_promise_count,
         all_party_credit=all_party_credit,
         all_party_debt=all_party_debt,
@@ -229,8 +227,8 @@ class IdeaUnit:
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
     _assignedheir: AssignedHeir = None  # Calculated field
-    _factunits: dict[FactUnit] = None
-    _factheirs: dict[FactHeir] = None  # Calculated field
+    _beliefunits: dict[BeliefUnit] = None
+    _beliefheirs: dict[BeliefHeir] = None  # Calculated field
     _begin: float = None
     _close: float = None
     _addin: float = None
@@ -286,70 +284,72 @@ class IdeaUnit:
         elif prev_active_status != curr_active_status:
             self._active_status_hx[tree_traverse_count] = curr_active_status
 
-    def set_factheirs(self, facts: dict[RoadUnit:FactCore]):
-        facts = get_empty_dict_if_none(x_dict=facts)
-        self._factheirs = {}
-        for h in facts.values():
-            x_fact = factheir_shop(base=h.base, pick=h.pick, open=h.open, nigh=h.nigh)
-            self.delete_factunit_if_past(factheir=x_fact)
-            x_fact = self.apply_factunit_transformations(factheir=x_fact)
-            self._factheirs[x_fact.base] = x_fact
+    def set_beliefheirs(self, beliefs: dict[RoadUnit:BeliefCore]):
+        beliefs = get_empty_dict_if_none(x_dict=beliefs)
+        self._beliefheirs = {}
+        for h in beliefs.values():
+            x_belief = beliefheir_shop(
+                base=h.base, pick=h.pick, open=h.open, nigh=h.nigh
+            )
+            self.delete_beliefunit_if_past(beliefheir=x_belief)
+            x_belief = self.apply_beliefunit_transformations(beliefheir=x_belief)
+            self._beliefheirs[x_belief.base] = x_belief
 
-    def apply_factunit_transformations(self, factheir: FactHeir) -> FactHeir:
-        for factunit in self._factunits.values():
-            if factunit.base == factheir.base:
-                factheir.transform(factunit=factunit)
-        return factheir
+    def apply_beliefunit_transformations(self, beliefheir: BeliefHeir) -> BeliefHeir:
+        for beliefunit in self._beliefunits.values():
+            if beliefunit.base == beliefheir.base:
+                beliefheir.transform(beliefunit=beliefunit)
+        return beliefheir
 
-    def delete_factunit_if_past(self, factheir: FactHeir):
-        delete_factunit = False
-        for factunit in self._factunits.values():
+    def delete_beliefunit_if_past(self, beliefheir: BeliefHeir):
+        delete_beliefunit = False
+        for beliefunit in self._beliefunits.values():
             if (
-                factunit.base == factheir.base
-                and factunit.nigh != None
-                and factheir.open != None
-            ) and factunit.nigh < factheir.open:
-                delete_factunit = True
+                beliefunit.base == beliefheir.base
+                and beliefunit.nigh != None
+                and beliefheir.open != None
+            ) and beliefunit.nigh < beliefheir.open:
+                delete_beliefunit = True
 
-        if delete_factunit:
-            del self._factunits[factunit.base]
+        if delete_beliefunit:
+            del self._beliefunits[beliefunit.base]
 
-    def set_factunit(self, factunit: FactUnit):
-        self._factunits[factunit.base] = factunit
+    def set_beliefunit(self, beliefunit: BeliefUnit):
+        self._beliefunits[beliefunit.base] = beliefunit
 
-    def get_factunits_dict(self) -> dict[RoadUnit:FactUnit]:
-        return {hc.base: hc.get_dict() for hc in self._factunits.values()}
+    def get_beliefunits_dict(self) -> dict[RoadUnit:BeliefUnit]:
+        return {hc.base: hc.get_dict() for hc in self._beliefunits.values()}
 
-    def set_factunit_to_complete(self, base_factunit: FactUnit):
-        # if a idea is considered a task then a factheir.open attribute can be increased to
-        # a number <= factheir.nigh so the idea no longer is a task. This method finds
-        # the minimal factheir.open to change idea._task == False. idea_core._factheir cannot be straight up manpulated
-        # so idea._factunit reqquires being changed.
-        # self.set_factunits(base=fact, fact=base, open=premise_nigh, nigh=fact_nigh)
-        self._factunits[base_factunit.base] = factunit_shop(
-            base=base_factunit.base,
-            pick=base_factunit.base,
-            open=base_factunit.nigh,
-            nigh=base_factunit.nigh,
+    def set_beliefunit_to_complete(self, base_beliefunit: BeliefUnit):
+        # if a idea is considered a task then a beliefheir.open attribute can be increased to
+        # a number <= beliefheir.nigh so the idea no longer is a task. This method finds
+        # the minimal beliefheir.open to change idea._task == False. idea_core._beliefheir cannot be straight up manpulated
+        # so idea._beliefunit reqquires being changed.
+        # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
+        self._beliefunits[base_beliefunit.base] = beliefunit_shop(
+            base=base_beliefunit.base,
+            pick=base_beliefunit.base,
+            open=base_beliefunit.nigh,
+            nigh=base_beliefunit.nigh,
         )
 
-    def del_factunit(self, base: RoadUnit):
-        self._factunits.pop(base)
+    def del_beliefunit(self, base: RoadUnit):
+        self._beliefunits.pop(base)
 
     def _apply_any_range_source_road_connections(
         self,
-        lemmas_dict: dict[RoadUnit:FactUnit],
-        missing_facts: list[FactUnit],
+        lemmas_dict: dict[RoadUnit:BeliefUnit],
+        missing_beliefs: list[BeliefUnit],
     ):
-        for current_fact in self._factunits.values():
-            for lemma_fact in lemmas_dict.values():
-                if lemma_fact.base == current_fact.base:
-                    self.set_factunit(lemma_fact)
+        for current_belief in self._beliefunits.values():
+            for lemma_belief in lemmas_dict.values():
+                if lemma_belief.base == current_belief.base:
+                    self.set_beliefunit(lemma_belief)
 
-        for missing_fact in missing_facts:
-            for lemma_fact in lemmas_dict.values():
-                if lemma_fact.base == missing_fact:
-                    self.set_factunit(lemma_fact)
+        for missing_belief in missing_beliefs:
+            for lemma_belief in lemmas_dict.values():
+                if lemma_belief.base == missing_belief:
+                    self.set_beliefunit(lemma_belief)
 
     def set_agenda_importance(
         self,
@@ -572,22 +572,22 @@ class IdeaUnit:
             new_reasonunits[new_reasonunit_road] = reasonunit_obj
         self._reasonunits = new_reasonunits
 
-        new_factunits = {}
-        for factunit_road, factunit_obj in self._factunits.items():
+        new_beliefunits = {}
+        for beliefunit_road, beliefunit_obj in self._beliefunits.items():
             new_base_road = replace_road_delimiter(
-                road=factunit_road,
+                road=beliefunit_road,
                 old_delimiter=old_delimiter,
                 new_delimiter=self._road_delimiter,
             )
-            factunit_obj.base = new_base_road
+            beliefunit_obj.base = new_base_road
             new_pick_road = replace_road_delimiter(
-                road=factunit_obj.pick,
+                road=beliefunit_obj.pick,
                 old_delimiter=old_delimiter,
                 new_delimiter=self._road_delimiter,
             )
-            factunit_obj.set_attr(pick=new_pick_road)
-            new_factunits[new_base_road] = factunit_obj
-        self._factunits = new_factunits
+            beliefunit_obj.set_attr(pick=new_pick_road)
+            new_beliefunits[new_base_road] = beliefunit_obj
+        self._beliefunits = new_beliefunits
 
     def _meld_reasonunits(self, other_idea):
         for lx in other_idea._reasonunits.values():
@@ -607,12 +607,12 @@ class IdeaUnit:
             else:
                 self._balancelinks[bl.brand] = bl
 
-    def _meld_factunits(self, other_idea):
-        for hc in other_idea._factunits.values():
-            if self._factunits.get(hc.base) is None:
-                self._factunits[hc.base] = hc
+    def _meld_beliefunits(self, other_idea):
+        for hc in other_idea._beliefunits.values():
+            if self._beliefunits.get(hc.base) is None:
+                self._beliefunits[hc.base] = hc
             else:
-                self._factunits.get(hc.base).meld(hc)
+                self._beliefunits.get(hc.base).meld(hc)
 
     def meld(
         self,
@@ -636,7 +636,7 @@ class IdeaUnit:
             )
         self._meld_reasonunits(other_idea=other_idea)
         self._meld_balancelinks(other_idea=other_idea)
-        self._meld_factunits(other_idea=other_idea)
+        self._meld_beliefunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
         self._meld_originlinks(party_pid, party_weight)
 
@@ -736,8 +736,8 @@ class IdeaUnit:
         if idea_attr.on_meld_weight_action != None:
             self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
             self._on_meld_weight_action = idea_attr.on_meld_weight_action
-        if idea_attr.factunit != None:
-            self.set_factunit(idea_attr.factunit)
+        if idea_attr.beliefunit != None:
+            self.set_beliefunit(idea_attr.beliefunit)
 
         self._del_reasonunit_all_cases(
             base=idea_attr.reason_del_premise_base,
@@ -855,7 +855,7 @@ class IdeaUnit:
     def set_reasonheirs_status(self):
         self.clear_reasonheirs_status()
         for x_reasonheir in self._reasonheirs.values():
-            x_reasonheir.set_status(facts=self._factheirs)
+            x_reasonheir.set_status(beliefs=self._beliefheirs)
 
     def set_active_status(
         self,
@@ -1015,8 +1015,8 @@ class IdeaUnit:
             x_dict["promise"] = self.promise
         if self._problem_bool:
             x_dict["_problem_bool"] = self._problem_bool
-        if self._factunits not in [{}, None]:
-            x_dict["_factunits"] = self.get_factunits_dict()
+        if self._beliefunits not in [{}, None]:
+            x_dict["_beliefunits"] = self.get_beliefunits_dict()
         if self._is_expanded == False:
             x_dict["_is_expanded"] = self._is_expanded
         if self._on_meld_weight_action != "default":
@@ -1038,8 +1038,8 @@ class IdeaUnit:
             dict_x=self._reasonunits, old_road=old_road, new_road=new_road
         )
 
-        self._factunits == find_replace_road_key_dict(
-            dict_x=self._factunits, old_road=old_road, new_road=new_road
+        self._beliefunits == find_replace_road_key_dict(
+            dict_x=self._beliefunits, old_road=old_road, new_road=new_road
         )
 
     def set_assignedunit_empty_if_null(self):
@@ -1078,8 +1078,8 @@ def ideaunit_shop(
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
     _assignedheir: AssignedHeir = None,  # Calculated field
-    _factunits: dict[FactUnit] = None,
-    _factheirs: dict[FactHeir] = None,  # Calculated field
+    _beliefunits: dict[BeliefUnit] = None,
+    _beliefheirs: dict[BeliefHeir] = None,  # Calculated field
     _begin: float = None,
     _close: float = None,
     _addin: float = None,
@@ -1137,8 +1137,8 @@ def ideaunit_shop(
         _reasonheirs=get_empty_dict_if_none(_reasonheirs),
         _assignedunit=_assignedunit,
         _assignedheir=_assignedheir,
-        _factunits=get_empty_dict_if_none(_factunits),
-        _factheirs=get_empty_dict_if_none(_factheirs),
+        _beliefunits=get_empty_dict_if_none(_beliefunits),
+        _beliefheirs=get_empty_dict_if_none(_beliefheirs),
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1202,11 +1202,11 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
             if x_dict.get(dict_key) != None
             else originunit_shop()
         )
-    elif dict_key == "_factunits":
+    elif dict_key == "_beliefunits":
         return (
-            factunits_get_from_dict(x_dict[dict_key])
+            beliefunits_get_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else factunits_get_from_dict({})
+            else beliefunits_get_from_dict({})
         )
     elif dict_key == "_balancelinks":
         return (

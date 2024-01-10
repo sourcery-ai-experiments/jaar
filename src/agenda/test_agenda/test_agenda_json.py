@@ -1,10 +1,10 @@
 from src._prime.road import default_road_delimiter_if_none, create_road
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
-from src.agenda.reason_idea import factunit_shop
+from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
-    get_agenda_x1_3levels_1reason_1facts as example_agendas_get_agenda_x1_3levels_1reason_1facts,
+    get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
 )
 from src.agenda.agenda import (
@@ -30,14 +30,14 @@ def test_agenda_get_dict_ReturnsDictObject():
     day_hour_road = x_agenda.make_l1_road(day_hour_text)
     day_hour_idea = x_agenda.get_idea_obj(day_hour_road)
     day_hour_idea._originunit.set_originlink(pid="bob", weight=2)
-    x_agenda.set_fact(
+    x_agenda.set_belief(
         base=day_hour_road,
         pick=day_hour_road,
         open=0,
         nigh=23,
     )
     time_minute = x_agenda.make_l1_road("day_minute")
-    x_agenda.set_fact(base=time_minute, pick=time_minute, open=0, nigh=1440)
+    x_agenda.set_belief(base=time_minute, pick=time_minute, open=0, nigh=1440)
     yao_text = "Yao"
     x_agenda._originunit.set_originlink(yao_text, 1)
     agenda_weight = 23
@@ -152,7 +152,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
 def test_export_to_JSON_simple_example_works():
     # GIVEN
-    x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1facts()
+    x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_economy_id = "tiger_econ"
     x_agenda.set_economy_id(tiger_economy_id)
 
@@ -177,10 +177,10 @@ def test_export_to_JSON_simple_example_works():
 
     shave_text = "shave"
     shave_dict = idearoot_dict[_kids][shave_text]
-    shave_factunits = shave_dict["_factunits"]
-    print(f"{shave_factunits=}")
-    assert len(shave_factunits) == 1
-    assert len(shave_factunits) == len(x_idearoot._kids[shave_text]._factunits)
+    shave_beliefunits = shave_dict["_beliefunits"]
+    print(f"{shave_beliefunits=}")
+    assert len(shave_beliefunits) == 1
+    assert len(shave_beliefunits) == len(x_idearoot._kids[shave_text]._beliefunits)
 
 
 def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
@@ -188,12 +188,12 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
     day_hour_road = x_agenda.make_l1_road(day_hour_text)
-    x_agenda.set_fact(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
+    x_agenda.set_belief(base=day_hour_road, pick=day_hour_road, open=0, nigh=23)
     day_min_text = "day_minute"
     day_min_road = x_agenda.make_l1_road(day_min_text)
-    x_agenda.set_fact(base=day_min_road, pick=day_min_road, open=0, nigh=59)
-    factunit_x = factunit_shop(day_min_road, day_min_road, 5, 59)
-    x_agenda.edit_idea_attr(road=factunit_x.base, factunit=factunit_x)
+    x_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=59)
+    beliefunit_x = beliefunit_shop(day_min_road, day_min_road, 5, 59)
+    x_agenda.edit_idea_attr(road=beliefunit_x.base, beliefunit=beliefunit_x)
     x_agenda.set_max_tree_traverse(int_x=2)
     yao_text = "Yao"
     x_agenda._originunit.set_originlink(yao_text, 1)
@@ -216,11 +216,11 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
 
     kids = idearoot_dict[_kids]
     day_min_dict = kids[day_min_text]
-    day_min_factunits_dict = day_min_dict["_factunits"]
+    day_min_beliefunits_dict = day_min_dict["_beliefunits"]
     day_min_idea_x = x_agenda.get_idea_obj(day_min_road)
-    print(f"{day_min_factunits_dict=}")
-    assert len(day_min_factunits_dict) == 1
-    assert len(day_min_factunits_dict) == len(day_min_idea_x._factunits)
+    print(f"{day_min_beliefunits_dict=}")
+    assert len(day_min_beliefunits_dict) == 1
+    assert len(day_min_beliefunits_dict) == len(day_min_idea_x._beliefunits)
 
     _reasonunits = "_reasonunits"
     cont_text = "Freelancing"
@@ -257,7 +257,7 @@ def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
 
 def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
-    y_agenda = example_agendas_get_agenda_x1_3levels_1reason_1facts()
+    y_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     y_agenda.set_max_tree_traverse(23)
     tiger_economy_id = "tiger_econ"
     y_agenda.set_economy_id(tiger_economy_id)
@@ -317,7 +317,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert idearoot_x._reasonunits == {}
     assert idearoot_x._assignedunit == y_agenda._idearoot._assignedunit
     assert idearoot_x._assignedunit == run_assigned_unit
-    assert len(idearoot_x._factunits) == 1
+    assert len(idearoot_x._beliefunits) == 1
     assert len(idearoot_x._balancelinks) == 1
 
     assert len(x_agenda._idearoot._kids) == 2
@@ -339,7 +339,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert shave_idea_x._assignedunit == tim_assigned_unit
     assert shave_idea_x._originunit == shave_idea_y2._originunit
     assert len(shave_idea_x._balancelinks) == 2
-    assert len(shave_idea_x._factunits) == 1
+    assert len(shave_idea_x._beliefunits) == 1
 
     assert len(x_agenda._originunit._links) == 1
     assert x_agenda._originunit == y_agenda._originunit
@@ -395,7 +395,7 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
 def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     # GIVEN
     x_agenda1 = example_agendas_agenda_v001()
-    x_agenda2 = example_agendas_get_agenda_x1_3levels_1reason_1facts()
+    x_agenda2 = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     x_agenda3 = example_agendas_get_agenda_base_time_example()
 
     cn_dict_of_dicts = {

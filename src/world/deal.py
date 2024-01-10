@@ -9,7 +9,7 @@ from src._prime.road import (
     get_parent_road_from_road,
     PersonRoad,
 )
-from src._prime.belief import BeliefUnit, create_beliefunit
+from src._prime.issue import IssueUnit, create_issueunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.tools.python import get_empty_dict_if_none
@@ -27,66 +27,66 @@ class WantSubRoadUnitException(Exception):
 class DealUnit:
     _author: PersonID = None
     _reader: PersonID = None
-    _beliefunits: dict[PersonRoad:BeliefUnit] = None
+    _issueunits: dict[PersonRoad:IssueUnit] = None
 
     def is_meaningful(self) -> bool:
         return next(
             (
                 False
-                for x_beliefunit in self._beliefunits.values()
-                if x_beliefunit.is_meaningful() == False
+                for x_issueunit in self._issueunits.values()
+                if x_issueunit.is_meaningful() == False
             ),
-            self._beliefunits != {},
+            self._issueunits != {},
         )
 
-    def set_beliefunit(self, x_beliefunit: BeliefUnit, actor: PersonID = None):
-        self._beliefunits[x_beliefunit.base] = x_beliefunit
+    def set_issueunit(self, x_issueunit: IssueUnit, actor: PersonID = None):
+        self._issueunits[x_issueunit.base] = x_issueunit
         if actor != None:
-            self.set_actor(actor, x_beliefunit.base)
+            self.set_actor(actor, x_issueunit.base)
 
-    def beliefunit_exists(self, beliefbase: PersonRoad) -> bool:
-        return self._beliefunits.get(beliefbase) != None
+    def issueunit_exists(self, issuebase: PersonRoad) -> bool:
+        return self._issueunits.get(issuebase) != None
 
-    def get_beliefunit(self, personroad: PersonRoad) -> BeliefUnit:
-        return self._beliefunits.get(personroad)
+    def get_issueunit(self, personroad: PersonRoad) -> IssueUnit:
+        return self._issueunits.get(personroad)
 
-    def del_beliefunit(self, personroad: PersonRoad):
-        self._beliefunits.pop(personroad)
+    def del_issueunit(self, personroad: PersonRoad):
+        self._issueunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, beliefbase: PersonRoad):
-        if self.beliefunit_exists(beliefbase):
-            x_beliefunit = self.get_beliefunit(beliefbase)
-            x_beliefunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, issuebase: PersonRoad):
+        if self.issueunit_exists(issuebase):
+            x_issueunit = self.get_issueunit(issuebase)
+            x_issueunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, beliefbase: PersonRoad):
-        if self.beliefunit_exists(beliefbase):
-            x_beliefunit = self.get_beliefunit(beliefbase)
-            x_beliefunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, issuebase: PersonRoad):
+        if self.issueunit_exists(issuebase):
+            x_issueunit = self.get_issueunit(issuebase)
+            x_issueunit.del_actor(actor)
 
-    def get_actor_beliefunits(
+    def get_actor_issueunits(
         self, actor: PersonID, action_filter: bool = None
-    ) -> dict[RoadUnit:BeliefUnit]:
+    ) -> dict[RoadUnit:IssueUnit]:
         return {
-            x_base: x_belief
-            for x_base, x_belief in self._beliefunits.items()
-            if x_belief.actor_exists(actor)
-            and (x_belief.action == action_filter or action_filter is None)
+            x_base: x_issue
+            for x_base, x_issue in self._issueunits.items()
+            if x_issue.actor_exists(actor)
+            and (x_issue.action == action_filter or action_filter is None)
         }
 
-    def actor_has_belief(self, actor: PersonID, action_filter: bool = None) -> bool:
-        return self.get_actor_beliefunits(actor, action_filter=action_filter) != {}
+    def actor_has_issue(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_issueunits(actor, action_filter=action_filter) != {}
 
-    def actors_has_beliefs(self, actor_dict: dict[PersonID]):
+    def actors_has_issues(self, actor_dict: dict[PersonID]):
         x_bool = True
         for x_actor in actor_dict:
-            if self.actor_has_belief(x_actor) == False:
+            if self.actor_has_issue(x_actor) == False:
                 x_bool = False
         return x_bool
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
     return DealUnit(
-        _author=_author, _reader=_reader, _beliefunits=get_empty_dict_if_none(None)
+        _author=_author, _reader=_reader, _issueunits=get_empty_dict_if_none(None)
     )
 
 

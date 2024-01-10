@@ -11,10 +11,10 @@ from src.tools.file import (
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v002 as example_agendas_agenda_v002,
-    get_agenda_1Task_1CE0MinutesReason_1Fact as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Fact,
+    get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
-    get_agenda_x1_3levels_1reason_1facts as example_agendas_get_agenda_x1_3levels_1reason_1facts,
+    get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
 
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -84,7 +84,7 @@ def _delete_and_set_ex3():
     x_economy.create_dirs_if_null(in_memory_treasury=True)
     x_economy.save_public_agenda(example_healers_get_1node_agenda())
     x_economy.save_public_agenda(
-        example_agendas_get_agenda_1Task_1CE0MinutesReason_1Fact()
+        example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     )
     example_agenda_v001 = example_agendas_agenda_v001()
     example_agenda_v002 = example_agendas_agenda_v002()
@@ -141,7 +141,9 @@ def _delete_and_set_ex4():
     x_economy.save_public_agenda(example_healers_get_7nodeJRootWithH_agenda())
     x_economy.save_public_agenda(example_agendas_get_agenda_with7amCleanTableReason())
     x_economy.save_public_agenda(example_agendas_get_agenda_base_time_example())
-    x_economy.save_public_agenda(example_agendas_get_agenda_x1_3levels_1reason_1facts())
+    x_economy.save_public_agenda(
+        example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
+    )
 
 
 def _delete_and_set_ex5():

@@ -397,20 +397,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return x_list
 
-    def get_p_facts_list(self):
+    def get_p_beliefs_list(self):
         x_list = []
         if self.healer_output_agenda != None:
-            for factunit in self.healer_output_agenda._idearoot._factunits.values():
+            for beliefunit in self.healer_output_agenda._idearoot._beliefunits.values():
                 open_nigh = ""
-                if factunit.open is None and factunit.nigh is None:
+                if beliefunit.open is None and beliefunit.nigh is None:
                     open_nigh = ""
                 else:
-                    open_nigh = f"{factunit.open}-{factunit.nigh}"
+                    open_nigh = f"{beliefunit.open}-{beliefunit.nigh}"
 
                 x_list.append(
                     [
-                        factunit.base,
-                        factunit.pick.replace(factunit.base, ""),
+                        beliefunit.base,
+                        beliefunit.pick.replace(beliefunit.base, ""),
                         open_nigh,
                     ]
                 )
@@ -521,14 +521,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 300, 100],
         )
 
-    def _sub_refresh_p_facts_table(self):
-        p_facts_list = self.get_p_facts_list()
-        column_headers = [f"Bases ({len(p_facts_list)})", "Facts", "Open-Nigh"]
+    def _sub_refresh_p_beliefs_table(self):
+        p_beliefs_list = self.get_p_beliefs_list()
+        column_headers = [f"Bases ({len(p_beliefs_list)})", "Beliefs", "Open-Nigh"]
 
         self.refresh_x(
-            table_x=self.w_facts_table,
+            table_x=self.w_beliefs_table,
             column_header=column_headers,
-            populate_list=p_facts_list,
+            populate_list=p_beliefs_list,
             column_width=[200, 100, 200],
         )
 
@@ -566,7 +566,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
-        self._sub_refresh_p_facts_table()
+        self._sub_refresh_p_beliefs_table()
         self._sub_refresh_p_intent_table()
 
     def refresh_economy(self):

@@ -43,8 +43,8 @@ from src.economy.treasury_sqlstr import (
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
-    FactCatalog,
-    get_fact_catalog_table_insert_sqlstr,
+    BeliefCatalog,
+    get_belief_catalog_table_insert_sqlstr,
     GroupUnitCatalog,
     get_groupunit_catalog_table_insert_sqlstr,
     get_groupunit_catalog_dict,
@@ -236,7 +236,7 @@ class EconomyUnit:
             self._treasury_insert_partyunit(agendaunit_x)
             self._treasury_insert_groupunit(agendaunit_x)
             self._treasury_insert_ideaunit(agendaunit_x)
-            self._treasury_insert_fact(agendaunit_x)
+            self._treasury_insert_belief(agendaunit_x)
 
     def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
@@ -274,16 +274,16 @@ class EconomyUnit:
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_fact(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_belief(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for fact_x in agendaunit_x._idearoot._factunits.values():
-                fact_catalog_x = FactCatalog(
+            for belief_x in agendaunit_x._idearoot._beliefunits.values():
+                belief_catalog_x = BeliefCatalog(
                     agenda_healer=agendaunit_x._healer,
-                    base=fact_x.base,
-                    pick=fact_x.pick,
+                    base=belief_x.base,
+                    pick=belief_x.pick,
                 )
-                sqlstr = get_fact_catalog_table_insert_sqlstr(fact_catalog_x)
+                sqlstr = get_belief_catalog_table_insert_sqlstr(belief_catalog_x)
                 cur.execute(sqlstr)
 
     def get_treasury_conn(self) -> Connection:

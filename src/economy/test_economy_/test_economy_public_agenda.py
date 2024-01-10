@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_agendas import (
-    get_agenda_1Task_1CE0MinutesReason_1Fact as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Fact,
+    get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
 )
 from src.economy.economy import economyunit_shop
 from src.economy.examples.example_clerks import (
@@ -79,7 +79,7 @@ def test_economy_Sets_idearoot_Label(
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesReason_1Fact()
+    old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     assert old_x_agenda._idearoot._label == "A"
 
     # WHEN

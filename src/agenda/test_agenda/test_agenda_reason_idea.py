@@ -593,7 +593,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
 
 
 def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
-    # GIVEN an Agenda with 5 ideas, 1 Fact:
+    # GIVEN an Agenda with 5 ideas, 1 Belief:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
     # 3. idea(...,weekdays,thursday) exists
@@ -636,17 +636,17 @@ def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
     x_agenda.get_idea_list()
     assert commute_idea._active_status == False
 
-    # Fact: base: (...,weekdays) pick: (...,weekdays,wednesday)
-    x_agenda.set_fact(base=weekdays_road, pick=wed_road)
+    # Belief: base: (...,weekdays) pick: (...,weekdays,wednesday)
+    x_agenda.set_belief(base=weekdays_road, pick=wed_road)
     x_agenda.set_agenda_metrics()
 
     assert work_idea._active_status == False
     assert commute_idea._active_status == False
 
     # WHEN
-    print("before changing fact")
-    x_agenda.set_fact(base=weekdays_road, pick=thu_road)
-    print("after changing fact")
+    print("before changing belief")
+    x_agenda.set_belief(base=weekdays_road, pick=thu_road)
+    print("after changing belief")
     x_agenda.get_idea_list()
     assert work_idea._active_status == True
 

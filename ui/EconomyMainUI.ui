@@ -592,7 +592,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_facts_table">
+   <widget class="QTableWidget" name="w_beliefs_table">
     <property name="geometry">
      <rect>
       <x>1180</x>
@@ -608,12 +608,12 @@
     </property>
     <column>
      <property name="text">
-      <string>Facts Base</string>
+      <string>Beliefs Base</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Facts Fact</string>
+      <string>Beliefs Belief</string>
      </property>
     </column>
     <column>

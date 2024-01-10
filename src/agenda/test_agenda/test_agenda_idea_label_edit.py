@@ -1,10 +1,10 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.examples.example_agendas import (
-    get_agenda_with_4_levels_and_2reasons_2facts,
+    get_agenda_with_4_levels_and_2reasons_2beliefs,
 )
 from pytest import raises as pytest_raises
-from src.agenda.reason_idea import reasonunit_shop, factunit_shop
+from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
 from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
 
 
@@ -177,8 +177,8 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     assert r_idea_red._parent_road == new_roses_road
 
 
-def test_agenda_edit_idea_label_Changes_factunits():
-    # GIVEN agenda with factunits that will be changed
+def test_agenda_edit_idea_label_Changes_beliefunits():
+    # GIVEN agenda with beliefunits that will be changed
     healer_text = "Tim"
     tim_agenda = agendaunit_shop(_healer=healer_text)
 
@@ -196,13 +196,13 @@ def test_agenda_edit_idea_label_Changes_factunits():
     tim_agenda.add_idea(ideaunit_shop(healer_text), parent_road=tim_agenda._economy_id)
     tim_agenda.add_idea(ideaunit_shop(roses_text), parent_road=bloomers_road)
     tim_agenda.add_idea(ideaunit_shop(rain_text), parent_road=old_water_road)
-    tim_agenda.set_fact(base=old_water_road, pick=old_rain_road)
+    tim_agenda.set_belief(base=old_water_road, pick=old_rain_road)
 
     idea_x = tim_agenda.get_idea_obj(roses_road)
-    assert tim_agenda._idearoot._factunits[old_water_road] != None
-    old_water_rain_factunit = tim_agenda._idearoot._factunits[old_water_road]
-    assert old_water_rain_factunit.base == old_water_road
-    assert old_water_rain_factunit.pick == old_rain_road
+    assert tim_agenda._idearoot._beliefunits[old_water_road] != None
+    old_water_rain_beliefunit = tim_agenda._idearoot._beliefunits[old_water_road]
+    assert old_water_rain_beliefunit.base == old_water_road
+    assert old_water_rain_beliefunit.pick == old_rain_road
 
     # WHEN
     new_water_text = "h2o"
@@ -210,23 +210,23 @@ def test_agenda_edit_idea_label_Changes_factunits():
     tim_agenda.add_idea(
         ideaunit_shop(new_water_text), parent_road=tim_agenda._economy_id
     )
-    assert tim_agenda._idearoot._factunits.get(new_water_road) is None
+    assert tim_agenda._idearoot._beliefunits.get(new_water_road) is None
     tim_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
     # THEN
-    assert tim_agenda._idearoot._factunits.get(old_water_road) is None
-    assert tim_agenda._idearoot._factunits.get(new_water_road) != None
-    new_water_rain_factunit = tim_agenda._idearoot._factunits[new_water_road]
-    assert new_water_rain_factunit.base == new_water_road
+    assert tim_agenda._idearoot._beliefunits.get(old_water_road) is None
+    assert tim_agenda._idearoot._beliefunits.get(new_water_road) != None
+    new_water_rain_beliefunit = tim_agenda._idearoot._beliefunits[new_water_road]
+    assert new_water_rain_beliefunit.base == new_water_road
     new_rain_road = tim_agenda.make_road(new_water_road, rain_text)
-    assert new_water_rain_factunit.pick == new_rain_road
+    assert new_water_rain_beliefunit.pick == new_rain_road
 
-    assert tim_agenda._idearoot._factunits.get(new_water_road)
-    factunit_obj = tim_agenda._idearoot._factunits.get(new_water_road)
-    # for factunit_key, factunit_obj in tim_agenda._idearoot._factunits.items():
-    #     assert factunit_key == new_water_road
-    assert factunit_obj.base == new_water_road
-    assert factunit_obj.pick == new_rain_road
+    assert tim_agenda._idearoot._beliefunits.get(new_water_road)
+    beliefunit_obj = tim_agenda._idearoot._beliefunits.get(new_water_road)
+    # for beliefunit_key, beliefunit_obj in tim_agenda._idearoot._beliefunits.items():
+    #     assert beliefunit_key == new_water_road
+    assert beliefunit_obj.base == new_water_road
+    assert beliefunit_obj.pick == new_rain_road
 
 
 def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
@@ -291,7 +291,7 @@ def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
 
 def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
     # GIVEN
-    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     old_weekday_text = "weekdays"
     old_weekday_road = sue_agenda.make_l1_road(old_weekday_text)
     wednesday_text = "Wednesday"
@@ -336,7 +336,7 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
 
 def test_agenda_set_healer_CorrectlyChangesBoth():
     # GIVEN
-    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     assert sue_agenda._healer == "Sue"
     assert sue_agenda._idearoot._label == sue_agenda._economy_id
     # mid_label1 = "tim"
@@ -355,7 +355,7 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
 
 def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
     # GIVEN
-    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     old_weekday_text = "weekdays"
     old_weekday_road = sue_agenda.make_l1_road(old_weekday_text)
 
@@ -463,7 +463,7 @@ def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
     assert gen_time_reasonunit.premises.get(comma_8am_road) is None
 
 
-def test_agenda_set_road_delimiter_CorrectlyChangesFactUnit():
+def test_agenda_set_road_delimiter_CorrectlyChangesBeliefUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     work_text = "work"
@@ -472,14 +472,14 @@ def test_agenda_set_road_delimiter_CorrectlyChangesFactUnit():
     comma_time_road = luca_agenda.make_l1_road(time_text)
     _8am_text = "8am"
     comma_8am_road = luca_agenda.make_road(comma_time_road, _8am_text)
-    comma_time_factunit = factunit_shop(comma_time_road, comma_8am_road)
+    comma_time_beliefunit = beliefunit_shop(comma_time_road, comma_8am_road)
 
     comma_work_road = luca_agenda.make_l1_road(work_text)
-    luca_agenda.edit_idea_attr(comma_work_road, factunit=comma_time_factunit)
+    luca_agenda.edit_idea_attr(comma_work_road, beliefunit=comma_time_beliefunit)
     work_idea = luca_agenda.get_idea_obj(comma_work_road)
-    print(f"{work_idea._factunits=} {comma_time_road=}")
-    assert work_idea._factunits.get(comma_time_road) != None
-    gen_time_factunit = work_idea._factunits.get(comma_time_road)
+    print(f"{work_idea._beliefunits=} {comma_time_road=}")
+    assert work_idea._beliefunits.get(comma_time_road) != None
+    gen_time_beliefunit = work_idea._beliefunits.get(comma_time_road)
 
     # WHEN
     slash_text = "/"
@@ -491,14 +491,14 @@ def test_agenda_set_road_delimiter_CorrectlyChangesFactUnit():
     work_idea = luca_agenda.get_idea_obj(slash_work_road)
     slash_time_road = luca_agenda.make_l1_road(time_text)
     slash_8am_road = luca_agenda.make_road(slash_time_road, _8am_text)
-    assert work_idea._factunits.get(slash_time_road) != None
-    gen_time_factunit = work_idea._factunits.get(slash_time_road)
-    assert gen_time_factunit.base != None
-    assert gen_time_factunit.base == slash_time_road
-    assert gen_time_factunit.pick != None
-    assert gen_time_factunit.pick == slash_8am_road
+    assert work_idea._beliefunits.get(slash_time_road) != None
+    gen_time_beliefunit = work_idea._beliefunits.get(slash_time_road)
+    assert gen_time_beliefunit.base != None
+    assert gen_time_beliefunit.base == slash_time_road
+    assert gen_time_beliefunit.pick != None
+    assert gen_time_beliefunit.pick == slash_8am_road
 
-    assert work_idea._factunits.get(comma_time_road) is None
+    assert work_idea._beliefunits.get(comma_time_road) is None
 
 
 def test_agenda_set_road_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():

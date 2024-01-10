@@ -1,11 +1,11 @@
-# command to for converting ui form to python file: pyuic5 ui\EditFactTimeUI.ui -o ui\EditFactTimeUI.py
-from ui.EditFactTimeUI import Ui_Form
+# command to for converting ui form to python file: pyuic5 ui\EditBeliefTimeUI.ui -o ui\EditBeliefTimeUI.py
+from ui.EditBeliefTimeUI import Ui_Form
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from datetime import datetime
 
 
-class EditFactTime(qtw.QTableWidget, Ui_Form):
+class EditBeliefTime(qtw.QTableWidget, Ui_Form):
     root_changes_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
@@ -25,13 +25,13 @@ class EditFactTime(qtw.QTableWidget, Ui_Form):
         self.prev_hour.addItems(self.listHour())
         self.prev_min.addItems(self.listMin())
 
-        self.american_update.clicked.connect(self.update_fact)
-        self.refresh_root_values.clicked.connect(self.display_fact_time)
+        self.american_update.clicked.connect(self.update_belief)
+        self.refresh_root_values.clicked.connect(self.display_belief_time)
 
         self.show
 
-    def update_fact(self):
-        # change time fact so that the open is the date entered
+    def update_belief(self):
+        # change time belief so that the open is the date entered
         open_month = self.prev_month.currentText()
         open_monthday = self.prev_monthday.currentText()
         open_year = self.prev_year.currentText()
@@ -60,20 +60,20 @@ class EditFactTime(qtw.QTableWidget, Ui_Form):
             minute=int(nigh_minute),
         )
 
-        self.agenda_x.set_time_facts(open=open_dt_x, nigh=nigh_dt_x)
+        self.agenda_x.set_time_beliefs(open=open_dt_x, nigh=nigh_dt_x)
         self.root_changes_submitted.emit(True)
         self.close()
 
-    def display_fact_time(self):
+    def display_belief_time(self):
         # minutes_idea = self.agenda_x.get_idea_obj(
         #     road=f"{root_label},time,jajatime"
         # )
-        minutes_fact = self.agenda_x._idearoot._factunits[
+        minutes_belief = self.agenda_x._idearoot._beliefunits[
             f"{self.agenda_x._economy_id},time,jajatime"
         ]
 
-        dt_open = self.agenda_x.get_time_dt_from_min(min=minutes_fact.open)
-        dt_nigh = self.agenda_x.get_time_dt_from_min(min=minutes_fact.nigh)
+        dt_open = self.agenda_x.get_time_dt_from_min(min=minutes_belief.open)
+        dt_nigh = self.agenda_x.get_time_dt_from_min(min=minutes_belief.nigh)
 
         self.curr_hour.setCurrentIndex(self.curr_hour.findText(str(dt_nigh.hour)))
         self.curr_min.setCurrentIndex(self.curr_min.findText(str(dt_nigh.minute)))

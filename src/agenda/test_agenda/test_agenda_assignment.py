@@ -409,7 +409,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     assert bob_agenda.get_idea_obj(casa_road) != None
 
 
-def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_facts():
+def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_healer=yao_text)
@@ -421,22 +421,22 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_facts():
     basket_text = "laundry basket status"
     basket_road = yao_agenda.make_road(casa_road, basket_text)
     yao_agenda.add_idea(ideaunit_shop(basket_text), parent_road=casa_road)
-    yao_agenda.set_fact(base=basket_road, pick=basket_road)
-    # print(f"{list(yao_agenda._idearoot._factunits.keys())=}")
+    yao_agenda.set_belief(base=basket_road, pick=basket_road)
+    # print(f"{list(yao_agenda._idearoot._beliefunits.keys())=}")
 
     room_text = "room status"
     room_road = yao_agenda.make_road(casa_road, room_text)
     yao_agenda.add_idea(ideaunit_shop(room_text), parent_road=casa_road)
-    yao_agenda.set_fact(base=room_road, pick=room_road)
-    print(f"{list(yao_agenda._idearoot._factunits.keys())=}")
+    yao_agenda.set_belief(base=room_road, pick=room_road)
+    print(f"{list(yao_agenda._idearoot._beliefunits.keys())=}")
 
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(_healer=bob_text)
 
     yao_agenda.set_agenda_metrics()
     bob_agenda.set_agenda_metrics()
-    assert list(yao_agenda._idearoot._factunits.keys()) == [basket_road, room_road]
-    assert not list(bob_agenda._idearoot._factunits.keys())
+    assert list(yao_agenda._idearoot._beliefunits.keys()) == [basket_road, room_road]
+    assert not list(bob_agenda._idearoot._beliefunits.keys())
 
     # WHEN
     relevant_roads = {
@@ -448,8 +448,8 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_facts():
 
     # THEN
     bob_agenda.set_agenda_metrics()
-    assert bob_agenda._idearoot._factunits.get(room_road) is None
-    assert list(bob_agenda._idearoot._factunits.keys()) == [basket_road]
+    assert bob_agenda._idearoot._beliefunits.get(room_road) is None
+    assert list(bob_agenda._idearoot._beliefunits.keys()) == [basket_road]
 
 
 def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
@@ -561,7 +561,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._reasonunits.keys()=}")
     print(f"{laundry_do_idea._reasonunits.get(basket_road).premises.keys()=}")
-    print(f"{laundry_do_idea._factheirs=}")
+    print(f"{laundry_do_idea._beliefheirs=}")
     print(f"{laundry_do_idea._assignedunit=}")
 
     assert laundry_do_idea.promise == True
@@ -569,9 +569,9 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     laundry_do_premises = laundry_do_idea._reasonunits.get(basket_road).premises
     assert list(laundry_do_premises.keys()) == [b_full_road, b_smel_road]
     assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [cali_text]
-    assert list(laundry_do_idea._factheirs.keys()) == [basket_road]
+    assert list(laundry_do_idea._beliefheirs.keys()) == [basket_road]
 
-    assert laundry_do_idea._factheirs.get(basket_road).pick == b_full_road
+    assert laundry_do_idea._beliefheirs.get(basket_road).pick == b_full_road
 
     # print(f"{laundry_do_idea=}")
 

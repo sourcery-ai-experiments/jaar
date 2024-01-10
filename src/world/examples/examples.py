@@ -15,7 +15,7 @@
 #     poor_text = "cultivate poorly"
 #     return create_wantunit(
 #         economydeletemeaddress=texas_economydeletemeaddress,
-#         issue=food_text,
+#         isssue=food_text,
 #         good=good_text,
 #         bad=bad_text,
 #         fix=farm_text,

@@ -62,7 +62,7 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     print(f"{laundry_do_idea.promise=}")
     print(f"{laundry_do_idea._reasonunits.keys()=}")
     print(f"{laundry_do_idea._reasonunits.get(basket_road).premises.keys()=}")
-    print(f"{laundry_do_idea._factheirs=}")
+    print(f"{laundry_do_idea._beliefheirs=}")
     print(f"{laundry_do_idea._assignedunit=}")
 
     assert laundry_do_idea.promise == True
@@ -70,9 +70,9 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     laundry_do_premises = laundry_do_idea._reasonunits.get(basket_road).premises
     assert list(laundry_do_premises.keys()) == [b_full_road, b_smel_road]
     assert list(laundry_do_idea._assignedunit._suffgroups.keys()) == [cali_text]
-    assert list(laundry_do_idea._factheirs.keys()) == [basket_road]
+    assert list(laundry_do_idea._beliefheirs.keys()) == [basket_road]
 
-    assert laundry_do_idea._factheirs.get(basket_road).pick == b_full_road
+    assert laundry_do_idea._beliefheirs.get(basket_road).pick == b_full_road
 
     assert len(output_agenda.get_intent_items()) == 1
     assert output_agenda.get_intent_items()[0]._label == "do_laundry"

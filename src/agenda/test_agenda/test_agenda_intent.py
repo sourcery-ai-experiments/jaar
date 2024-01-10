@@ -10,7 +10,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_with_4_levels_and_2reasons as example_agendas_get_agenda_with_4_levels_and_2reasons,
     get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
-    get_agenda_with_4_levels_and_2reasons_2facts as example_agendas_get_agenda_with_4_levels_and_2reasons_2facts,
+    get_agenda_with_4_levels_and_2reasons_2beliefs as example_agendas_get_agenda_with_4_levels_and_2reasons_2beliefs,
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
@@ -39,7 +39,7 @@ def test_agenda_get_intent_items_ReturnsIntentWithOnlyCorrectItems():
     week_road = x_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
     sun_road = x_agenda.make_road(week_road, sun_text)
-    x_agenda.set_fact(base=week_road, pick=sun_road)
+    x_agenda.set_belief(base=week_road, pick=sun_road)
 
     # WHEN
     intent_list = x_agenda.get_intent_items()
@@ -57,7 +57,7 @@ def test_agenda_get_intent_items_ReturnsIntentWithOnlyCorrectItems():
 
 def test_get_intent_returns_intent_with_agenda_importance():
     # GIVEN
-    x_agenda = example_agendas_get_agenda_with_4_levels_and_2reasons_2facts()
+    x_agenda = example_agendas_get_agenda_with_4_levels_and_2reasons_2beliefs()
 
     # WHEN
     intent_list = x_agenda.get_intent_items()
@@ -91,7 +91,7 @@ def test_get_intent_with_No7amItem():
 
 def test_get_intent_with_7amItem():
     # GIVEN
-    # set facts as midnight to 8am
+    # set beliefs as midnight to 8am
     x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
     print(f"{len(x_agenda.get_intent_items())=}")
     assert len(x_agenda.get_intent_items()) == 1
@@ -103,10 +103,10 @@ def test_get_intent_with_7amItem():
     day24hr_nigh = 8.0
     housework_text = "housework"
     clean_text = "clean table"
-    x_agenda.set_fact(
+    x_agenda.set_belief(
         base=day24hr_road, pick=day24hr_road, open=day24hr_open, nigh=day24hr_nigh
     )
-    print(x_agenda._idearoot._factunits[day24hr_road])
+    print(x_agenda._idearoot._beliefunits[day24hr_road])
     print(x_agenda._idearoot._kids[housework_text]._kids[clean_text]._reasonunits)
     print(x_agenda._idearoot._kids[housework_text]._kids[clean_text]._active_status)
 
@@ -140,7 +140,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
 
     open_x = 1063971180
     nigh_x1 = 2063971523
-    x_agenda.set_fact(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x1)
+    x_agenda.set_belief(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x1)
 
     intent_list = x_agenda.get_intent_items()
     assert len(intent_list) == 1
@@ -148,7 +148,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     assert intent_list[0]._label in [c_label]
 
     nigh_x2 = 1063971923
-    x_agenda.set_fact(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x2)
+    x_agenda.set_belief(base=jajatime_road, pick=jajaday, open=open_x, nigh=nigh_x2)
 
     intent_list = x_agenda.get_intent_items()
     assert len(intent_list) == 0
@@ -159,7 +159,7 @@ def test_exammple_intent_exists():
     x_agenda = example_agendas_agenda_v001()
     min_text = "day_minute"
     min_road = x_agenda.make_l1_road(min_text)
-    x_agenda.set_fact(base=min_road, pick=min_road, open=0, nigh=1399)
+    x_agenda.set_belief(base=min_road, pick=min_road, open=0, nigh=1399)
     assert x_agenda
     # for idea_kid in x_agenda._idearoot._kids.values():
     #     # print(idea_kid._label)
@@ -184,7 +184,7 @@ def test_exammple_AgendaHasCorrectAttributes():
 
     day_min_text = "day_minute"
     day_min_road = x_agenda.make_l1_road(day_min_text)
-    x_agenda.set_fact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
+    x_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     nations_text = "Nation-States"
@@ -197,24 +197,24 @@ def test_exammple_AgendaHasCorrectAttributes():
     # internet_road = x_agenda.make_road(x_agenda._economy_id,internet_text)
     year_month_text = "year_month"
     year_month_road = x_agenda.make_l1_road(year_month_text)
-    x_agenda.set_fact(base=month_week_road, pick=month_week_road)
-    x_agenda.set_fact(base=nations_road, pick=nations_road)
-    x_agenda.set_fact(base=mood_road, pick=mood_road)
-    x_agenda.set_fact(base=aaron_road, pick=aaron_road)
-    # x_agenda.set_fact(base=internet_road, pick=internet_road)
-    x_agenda.set_fact(base=year_month_road, pick=year_month_road)
+    x_agenda.set_belief(base=month_week_road, pick=month_week_road)
+    x_agenda.set_belief(base=nations_road, pick=nations_road)
+    x_agenda.set_belief(base=mood_road, pick=mood_road)
+    x_agenda.set_belief(base=aaron_road, pick=aaron_road)
+    # x_agenda.set_belief(base=internet_road, pick=internet_road)
+    x_agenda.set_belief(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
     # season_road = x_agenda.make_road(x_agenda._economy_id,season_text)
-    # x_agenda.set_fact(base=season_road, pick=season_road)
+    # x_agenda.set_belief(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
     ced_week_road = x_agenda.make_l1_road(ced_week_text)
-    x_agenda.set_fact(base=ced_week_road, pick=ced_week_road)
+    x_agenda.set_belief(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterBeing"
     # water_road = x_agenda.make_road(x_agenda._economy_id,water_text)
-    # x_agenda.set_fact(base=water_road, pick=water_road)
+    # x_agenda.set_belief(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
     # movie_road = x_agenda.make_road(x_agenda._economy_id,movie_text)
-    # x_agenda.set_fact(base=movie_road, pick=movie_text)
+    # x_agenda.set_belief(base=movie_road, pick=movie_text)
 
     # WHEN
     idea_action_list = x_agenda.get_intent_items()
@@ -223,7 +223,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     assert len(idea_action_list) == 27
 
     week1_road = x_agenda.make_road(month_week_road, "1st week")
-    x_agenda.set_fact(month_week_road, week1_road)
+    x_agenda.set_belief(month_week_road, week1_road)
     idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 27
 
@@ -232,19 +232,19 @@ def test_exammple_AgendaHasCorrectAttributes():
     monday_text = "Monday"
     monday_road = x_agenda.make_road(weekday_road, monday_text)
 
-    x_agenda.set_fact(base=weekday_road, pick=monday_road)
+    x_agenda.set_belief(base=weekday_road, pick=monday_road)
     idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 39
 
-    x_agenda.set_fact(base=weekday_road, pick=weekday_road)
+    x_agenda.set_belief(base=weekday_road, pick=weekday_road)
     idea_action_list = x_agenda.get_intent_items()
     assert len(idea_action_list) == 53
 
-    # x_agenda.set_fact(base=nations_road, pick=nations_road)
+    # x_agenda.set_belief(base=nations_road, pick=nations_road)
     # idea_action_list = x_agenda.get_intent_items()
     # assert len(idea_action_list) == 53
 
-    # for base in x_agenda.get_missing_fact_bases():
+    # for base in x_agenda.get_missing_belief_bases():
     #     print(f"{base=}")
 
     # for intent_item in idea_action_list:
@@ -263,7 +263,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     week_text = "weekdays"
     week_road = x_agenda.make_l1_road(week_text)
     print(f"{type(x_agenda)=}")
-    # for base in x_agenda.get_missing_fact_bases():
+    # for base in x_agenda.get_missing_belief_bases():
     #     print(f"{base=}")
 
     # for intent_item in x_agenda.get_intent_items():
@@ -315,7 +315,7 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
         reason_premise_open=25,
         reason_premise_nigh=81,
     )
-    x_agenda.set_fact(base=day_road, pick=day_road, open=30, nigh=87)
+    x_agenda.set_belief(base=day_road, pick=day_road, open=30, nigh=87)
     x_agenda.get_intent_items()
     run_reasonunits = x_agenda._idearoot._kids[run_text]._reasonunits[day_road]
     print(f"{run_reasonunits=}")
@@ -364,22 +364,22 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     )
 
     run_idea = x_agenda.get_idea_obj(run_road)
-    # print(f"{run_idea._factheirs=}")
-    x_agenda.set_fact(base=day_road, pick=day_road, open=1, nigh=2)
+    # print(f"{run_idea._beliefheirs=}")
+    x_agenda.set_belief(base=day_road, pick=day_road, open=1, nigh=2)
     assert len(x_agenda.get_intent_items()) == 1
-    x_agenda.set_fact(base=day_road, pick=day_road, open=2, nigh=2)
+    x_agenda.set_belief(base=day_road, pick=day_road, open=2, nigh=2)
     assert len(x_agenda.get_intent_items()) == 0
-    x_agenda.set_fact(base=day_road, pick=day_road, open=400, nigh=400)
+    x_agenda.set_belief(base=day_road, pick=day_road, open=400, nigh=400)
     assert len(x_agenda.get_intent_items()) == 0
-    x_agenda.set_fact(base=day_road, pick=day_road, open=401, nigh=402)
+    x_agenda.set_belief(base=day_road, pick=day_road, open=401, nigh=402)
     assert len(x_agenda.get_intent_items()) == 1
-    # print(f"{run_idea._factheirs=}")
-    print(f"{run_idea._factunits=}")
+    # print(f"{run_idea._beliefheirs=}")
+    print(f"{run_idea._beliefunits=}")
 
     # WHEN
     x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
-    print(f"{run_idea._factunits=}")
-    # print(f"{run_idea._factheirs=}")
+    print(f"{run_idea._beliefunits=}")
+    # print(f"{run_idea._beliefheirs=}")
     assert len(x_agenda.get_intent_items()) == 0
 
 
@@ -424,7 +424,7 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
     # WHEN
     day_min_text = "day_minute"
     day_min_road = x_agenda.make_l1_road(day_min_text)
-    x_agenda.set_fact(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
+    x_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=1399)
 
     # THEN
     assert len(x_agenda.get_intent_items()) > 0
@@ -505,87 +505,89 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_min = x_agenda.get_time_min_from_dt(dt=fri_dt)
     sat_min = x_agenda.get_time_min_from_dt(dt=sat_dt)
     sun_min = x_agenda.get_time_min_from_dt(dt=sun_dt)
-    assert x_agenda._idearoot._factunits.get(jaja_road) is None
+    assert x_agenda._idearoot._beliefunits.get(jaja_road) is None
 
     # WHEN
-    print("\nset fact for Sunday")
-    x_agenda.set_fact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
-    # for fact in x_agenda._idearoot._factunits.values():
-    #     print(f"{fact.base=} (H: {fact.fact}) {fact.active=} {fact.open=} {fact.nigh=}")
+    print("\nset belief for Sunday")
+    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
+    # for belief in x_agenda._idearoot._beliefunits.values():
+    #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    assert len(x_agenda._idearoot._factunits) == 7
-    print(x_agenda._idearoot._factunits[jaja_road])
-    print(x_agenda._idearoot._factunits[sat_road])
-    print(x_agenda._idearoot._factunits[sun_road])
-    print(x_agenda._idearoot._factunits[tue_road])
-    print(x_agenda._idearoot._factunits[wed_road])
-    print(x_agenda._idearoot._factunits[thu_road])
-    print(x_agenda._idearoot._factunits[fri_road])
-    assert x_agenda._idearoot._factunits[sun_road]
-    assert x_agenda._idearoot._factunits[sun_road].open == 1440
-    assert x_agenda._idearoot._factunits[sun_road].nigh == 1440
-    # assert x_agenda._idearoot._factunits[sun_road].active == True
+    assert len(x_agenda._idearoot._beliefunits) == 7
+    print(x_agenda._idearoot._beliefunits[jaja_road])
+    print(x_agenda._idearoot._beliefunits[sat_road])
+    print(x_agenda._idearoot._beliefunits[sun_road])
+    print(x_agenda._idearoot._beliefunits[tue_road])
+    print(x_agenda._idearoot._beliefunits[wed_road])
+    print(x_agenda._idearoot._beliefunits[thu_road])
+    print(x_agenda._idearoot._beliefunits[fri_road])
+    assert x_agenda._idearoot._beliefunits[sun_road]
+    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 1440
+    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
 
-    # assert x_agenda._idearoot._factunits[tue_road].active == False
-    # assert x_agenda._idearoot._factunits[wed_road].active == False
-    # assert x_agenda._idearoot._factunits[thu_road].active == False
-    # assert x_agenda._idearoot._factunits[fri_road].active == False
-    # assert x_agenda._idearoot._factunits[sat_road].active == False
+    # assert x_agenda._idearoot._beliefunits[tue_road].active == False
+    # assert x_agenda._idearoot._beliefunits[wed_road].active == False
+    # assert x_agenda._idearoot._beliefunits[thu_road].active == False
+    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
+    # assert x_agenda._idearoot._beliefunits[sat_road].active == False
 
     # WHEN
-    print("\nset fact for Sat through Monday")
-    x_agenda.set_fact(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
-    # for fact in x_agenda._idearoot._factunits.values():
-    #     print(f"{fact.base=} (H: {fact.fact}) {fact.active=} {fact.open=} {fact.nigh=}")
+    print("\nset belief for Sat through Monday")
+    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
+    # for belief in x_agenda._idearoot._beliefunits.values():
+    #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    assert x_agenda._idearoot._factunits[sat_road]
-    # assert x_agenda._idearoot._factunits[sat_road].active == True
-    # assert x_agenda._idearoot._factunits[sun_road].active == True
-    # assert x_agenda._idearoot._factunits[tue_road].active == False
-    # assert x_agenda._idearoot._factunits[wed_road].active == False
-    # assert x_agenda._idearoot._factunits[thu_road].active == False
-    # assert x_agenda._idearoot._factunits[fri_road].active == False
+    assert x_agenda._idearoot._beliefunits[sat_road]
+    # assert x_agenda._idearoot._beliefunits[sat_road].active == True
+    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert x_agenda._idearoot._beliefunits[tue_road].active == False
+    # assert x_agenda._idearoot._beliefunits[wed_road].active == False
+    # assert x_agenda._idearoot._beliefunits[thu_road].active == False
+    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
 
-    assert x_agenda._idearoot._factunits[sat_road].open == 0
-    assert x_agenda._idearoot._factunits[sat_road].nigh == 1440
-    assert x_agenda._idearoot._factunits[sun_road].open == 1440
-    assert x_agenda._idearoot._factunits[sun_road].nigh == 2880
+    assert x_agenda._idearoot._beliefunits[sat_road].open == 0
+    assert x_agenda._idearoot._beliefunits[sat_road].nigh == 1440
+    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 2880
 
     # WHEN
-    print("\nset facts for Sunday through Friday")
-    x_agenda.set_fact(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
-    # for fact in x_agenda._idearoot._factunits.values():
-    #     print(f"{fact.base=} (H: {fact.fact}) {fact.active=} {fact.open=} {fact.nigh=}")
+    print("\nset beliefs for Sunday through Friday")
+    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
+    # for belief in x_agenda._idearoot._beliefunits.values():
+    #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    # assert x_agenda._idearoot._factunits[sat_road].active == False
-    # assert x_agenda._idearoot._factunits[sun_road].active == True
-    # assert x_agenda._idearoot._factunits[tue_road].active == True
-    # assert x_agenda._idearoot._factunits[wed_road].active == True
-    # assert x_agenda._idearoot._factunits[thu_road].active == True
-    # assert x_agenda._idearoot._factunits[fri_road].active == False
+    # assert x_agenda._idearoot._beliefunits[sat_road].active == False
+    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert x_agenda._idearoot._beliefunits[tue_road].active == True
+    # assert x_agenda._idearoot._beliefunits[wed_road].active == True
+    # assert x_agenda._idearoot._beliefunits[thu_road].active == True
+    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
 
-    assert x_agenda._idearoot._factunits[sun_road].open == 1440
-    assert x_agenda._idearoot._factunits[sun_road].nigh == 2880
+    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 2880
 
     # WHEN
-    print("\nset facts for 10 day stretch")
+    print("\nset beliefs for 10 day stretch")
     dayzero_dt = datetime(2010, 1, 3)
     dayten_dt = datetime(2010, 1, 13)
     dayzero_min = x_agenda.get_time_min_from_dt(dt=dayzero_dt)
     dayten_min = x_agenda.get_time_min_from_dt(dt=dayten_dt)
-    x_agenda.set_fact(base=jaja_road, pick=jaja_road, open=dayzero_min, nigh=dayten_min)
-    # for fact in x_agenda._idearoot._factunits.values():
-    #     print(f"{fact.base=} (H: {fact.fact}) {fact.active=} {fact.open=} {fact.nigh=}")
+    x_agenda.set_belief(
+        base=jaja_road, pick=jaja_road, open=dayzero_min, nigh=dayten_min
+    )
+    # for belief in x_agenda._idearoot._beliefunits.values():
+    #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
-    # assert x_agenda._idearoot._factunits[sat_road].active == True
-    # assert x_agenda._idearoot._factunits[sun_road].active == True
-    # assert x_agenda._idearoot._factunits[tue_road].active == True
-    # assert x_agenda._idearoot._factunits[wed_road].active == True
-    # assert x_agenda._idearoot._factunits[thu_road].active == True
-    # assert x_agenda._idearoot._factunits[fri_road].active == True
+    # assert x_agenda._idearoot._beliefunits[sat_road].active == True
+    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert x_agenda._idearoot._beliefunits[tue_road].active == True
+    # assert x_agenda._idearoot._beliefunits[wed_road].active == True
+    # assert x_agenda._idearoot._beliefunits[thu_road].active == True
+    # assert x_agenda._idearoot._beliefunits[fri_road].active == True
 
 
 def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
@@ -689,7 +691,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     jajatime_road = x_agenda.make_road(time_road, "jajatime")
 
     # WHEN
-    x_agenda.set_fact(
+    x_agenda.set_belief(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
     action_idea_list = x_agenda.get_intent_items()
@@ -708,8 +710,8 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     #         print(f"{idea_x.get_road()=}")
 
     print(f"\nIdea = '{night_text}' and reason '{jajatime_road}'")
-    factheir_jajatime = night_idea._factheirs.get(jajatime_road)
-    print(f"\n{factheir_jajatime=}")
+    beliefheir_jajatime = night_idea._beliefheirs.get(jajatime_road)
+    print(f"\n{beliefheir_jajatime=}")
     print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1063998720)}")
     print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1064130373)}")
 
@@ -721,14 +723,14 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
 
     premiseunit = reasonheir_jajatime.premises.get(jajatime_road)
     print(f"----\n {premiseunit=}")
-    print(f" {premiseunit._get_task_status(factheir=factheir_jajatime)=}")
+    print(f" {premiseunit._get_task_status(beliefheir=beliefheir_jajatime)=}")
     print(f" {premiseunit._status=} , {premiseunit._is_range()=} premiseunit fails")
     print(
         f" {premiseunit._status=} , {premiseunit._is_segregate()=} premiseunit passes"
     )
     segr_obj = PremiseStatusFinder(
-        fact_open=factheir_jajatime.open,
-        fact_nigh=factheir_jajatime.nigh,
+        belief_open=beliefheir_jajatime.open,
+        belief_nigh=beliefheir_jajatime.nigh,
         premise_open=premiseunit.open,
         premise_nigh=premiseunit.nigh,
         premise_divisor=premiseunit.divisor,
@@ -737,7 +739,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
         f"----\n  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
     )
     print(
-        f"       {segr_obj.fact_open=}         {segr_obj.fact_nigh=} \tdifference:{segr_obj.fact_nigh-segr_obj.fact_open}"
+        f"       {segr_obj.belief_open=}         {segr_obj.belief_nigh=} \tdifference:{segr_obj.belief_nigh-segr_obj.belief_open}"
     )
 
     print(f"  {segr_obj.premise_open_trans=}  {segr_obj.premise_nigh_trans=}")

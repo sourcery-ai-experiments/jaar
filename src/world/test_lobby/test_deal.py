@@ -3,13 +3,13 @@
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
 from src._prime.road import create_road
-from src._prime.belief import beliefunit_shop
+from src._prime.issue import issueunit_shop
 from src.world.deal import DealUnit, dealunit_shop
-from src._prime.examples.example_beliefs import (
-    get_cooking_belief,
-    get_speedboats_action_belief,
-    get_climate_belief,
-    get_gasheater_action_belief,
+from src._prime.examples.example_issues import (
+    get_cooking_issue,
+    get_speedboats_action_issue,
+    get_climate_issue,
+    get_gasheater_action_issue,
 )
 
 
@@ -20,7 +20,7 @@ def test_DealUnit_exists():
     # THEN
     assert x_dealunit._author is None
     assert x_dealunit._reader is None
-    assert x_dealunit._beliefunits is None
+    assert x_dealunit._issueunits is None
 
 
 def test_dealunit_shop_ReturnsCorrectObj():
@@ -34,169 +34,169 @@ def test_dealunit_shop_ReturnsCorrectObj():
     # THEN
     assert farm_dealunit._author == bob_text
     assert farm_dealunit._reader == tim_text
-    assert farm_dealunit._beliefunits == {}
+    assert farm_dealunit._issueunits == {}
 
 
-def test_DealUnit_set_beliefunit_SetsAttrCorrectly():
+def test_DealUnit_set_issueunit_SetsAttrCorrectly():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    assert farm_dealunit._beliefunits == {}
+    assert farm_dealunit._issueunits == {}
 
     # WHEN
-    cooking_beliefunit = get_cooking_belief()
-    farm_dealunit.set_beliefunit(cooking_beliefunit)
+    cooking_issueunit = get_cooking_issue()
+    farm_dealunit.set_issueunit(cooking_issueunit)
 
     # THEN
-    assert len(farm_dealunit._beliefunits) == 1
-    assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) != None
-    assert farm_dealunit._beliefunits.get(cooking_beliefunit.base) == cooking_beliefunit
+    assert len(farm_dealunit._issueunits) == 1
+    assert farm_dealunit._issueunits.get(cooking_issueunit.base) != None
+    assert farm_dealunit._issueunits.get(cooking_issueunit.base) == cooking_issueunit
 
 
-def test_DealUnit_get_beliefunit_ReturnsCorrectObj():
+def test_DealUnit_get_issueunit_ReturnsCorrectObj():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_belief()
-    farm_dealunit.set_beliefunit(cooking_beliefunit)
+    cooking_issueunit = get_cooking_issue()
+    farm_dealunit.set_issueunit(cooking_issueunit)
 
     # WHEN / THEN
-    assert farm_dealunit.get_beliefunit(cooking_beliefunit.base) != None
+    assert farm_dealunit.get_issueunit(cooking_issueunit.base) != None
 
 
-def test_DealUnit_beliefunit_exists_ReturnsCorrectObj():
+def test_DealUnit_issueunit_exists_ReturnsCorrectObj():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_belief()
-    assert farm_dealunit.beliefunit_exists(cooking_beliefunit.base) == False
+    cooking_issueunit = get_cooking_issue()
+    assert farm_dealunit.issueunit_exists(cooking_issueunit.base) == False
 
     # WHEN
-    farm_dealunit.set_beliefunit(cooking_beliefunit)
+    farm_dealunit.set_issueunit(cooking_issueunit)
 
     # THEN
-    assert farm_dealunit.beliefunit_exists(cooking_beliefunit.base)
+    assert farm_dealunit.issueunit_exists(cooking_issueunit.base)
 
 
-def test_DealUnit_del_beliefunit_CorrectlySetsAttr():
+def test_DealUnit_del_issueunit_CorrectlySetsAttr():
     # GIVEN
     farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
-    cooking_beliefunit = get_cooking_belief()
-    farm_dealunit.set_beliefunit(cooking_beliefunit)
-    assert len(farm_dealunit._beliefunits) == 1
+    cooking_issueunit = get_cooking_issue()
+    farm_dealunit.set_issueunit(cooking_issueunit)
+    assert len(farm_dealunit._issueunits) == 1
 
     # WHEN
-    farm_dealunit.del_beliefunit(cooking_beliefunit.base)
+    farm_dealunit.del_issueunit(cooking_issueunit.base)
 
     # THEN
-    assert len(farm_dealunit._beliefunits) == 0
+    assert len(farm_dealunit._issueunits) == 0
 
 
-def test_DealUnit_set_actor_beliefunit_CorrectlySetsAttr():
+def test_DealUnit_set_actor_issueunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
-    farm_dealunit.set_beliefunit(get_cooking_belief())
+    farm_dealunit.set_issueunit(get_cooking_issue())
 
-    cooking_base = get_cooking_belief().base
-    cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
-    assert cooking_beliefunit.get_actor(bob_text) is None
+    cooking_base = get_cooking_issue().base
+    cooking_issueunit = farm_dealunit.get_issueunit(cooking_base)
+    assert cooking_issueunit.get_actor(bob_text) is None
 
     # WHEN
-    farm_dealunit.set_actor(actor=bob_text, beliefbase=cooking_base)
+    farm_dealunit.set_actor(actor=bob_text, issuebase=cooking_base)
 
     # THEN
-    assert cooking_beliefunit.get_actor(bob_text) != None
+    assert cooking_issueunit.get_actor(bob_text) != None
 
 
-def test_DealUnit_del_actor_beliefunit_CorrectlySetsAttr():
+def test_DealUnit_del_actor_issueunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
-    farm_dealunit.set_beliefunit(get_cooking_belief())
+    farm_dealunit.set_issueunit(get_cooking_issue())
 
-    cooking_base = get_cooking_belief().base
-    cooking_beliefunit = farm_dealunit.get_beliefunit(cooking_base)
-    farm_dealunit.set_actor(actor=bob_text, beliefbase=cooking_base)
-    assert cooking_beliefunit.get_actor(bob_text) != None
+    cooking_base = get_cooking_issue().base
+    cooking_issueunit = farm_dealunit.get_issueunit(cooking_base)
+    farm_dealunit.set_actor(actor=bob_text, issuebase=cooking_base)
+    assert cooking_issueunit.get_actor(bob_text) != None
 
     # WHEN
-    farm_dealunit.del_actor(actor=bob_text, beliefbase=cooking_base)
+    farm_dealunit.del_actor(actor=bob_text, issuebase=cooking_base)
 
     # THEN
-    assert cooking_beliefunit.get_actor(bob_text) is None
+    assert cooking_issueunit.get_actor(bob_text) is None
 
 
-def test_DealUnit_get_actor_beliefunits_ReturnsCorrectObjs():
+def test_DealUnit_get_actor_issueunits_ReturnsCorrectObjs():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
-    farm_dealunit.set_beliefunit(get_cooking_belief())
-    assert farm_dealunit.get_actor_beliefunits(bob_text) == {}
+    farm_dealunit.set_issueunit(get_cooking_issue())
+    assert farm_dealunit.get_actor_issueunits(bob_text) == {}
 
     # WHEN
-    cooking_base = get_cooking_belief().base
-    farm_dealunit.get_beliefunit(cooking_base)
-    farm_dealunit.set_actor(actor=bob_text, beliefbase=cooking_base)
+    cooking_base = get_cooking_issue().base
+    farm_dealunit.get_issueunit(cooking_base)
+    farm_dealunit.set_actor(actor=bob_text, issuebase=cooking_base)
 
     # THEN
-    assert farm_dealunit.get_actor_beliefunits(bob_text) != {}
-    bob_beliefunits = farm_dealunit.get_actor_beliefunits(bob_text)
-    assert len(bob_beliefunits) == 1
-    example_cooking_beliefunit = get_cooking_belief()
-    example_cooking_beliefunit.set_actor(bob_text)
-    assert bob_beliefunits.get(cooking_base) == example_cooking_beliefunit
+    assert farm_dealunit.get_actor_issueunits(bob_text) != {}
+    bob_issueunits = farm_dealunit.get_actor_issueunits(bob_text)
+    assert len(bob_issueunits) == 1
+    example_cooking_issueunit = get_cooking_issue()
+    example_cooking_issueunit.set_actor(bob_text)
+    assert bob_issueunits.get(cooking_base) == example_cooking_issueunit
 
 
-def test_DealUnit_get_actor_beliefunits_ReturnsCorrectActionBeliefs():
+def test_DealUnit_get_actor_issueunits_ReturnsCorrectActionIssues():
     # GIVEN
     bob_text = "Bob"
     yao_text = "Yao"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
-    assert farm_dealunit.actor_has_belief(bob_text, action_filter=True) == False
-    assert farm_dealunit.actor_has_belief(yao_text, action_filter=True) == False
+    assert farm_dealunit.actor_has_issue(bob_text, action_filter=True) == False
+    assert farm_dealunit.actor_has_issue(yao_text, action_filter=True) == False
 
     # WHEN
-    farm_dealunit.set_beliefunit(get_cooking_belief(), bob_text)
-    farm_dealunit.set_beliefunit(get_speedboats_action_belief(), yao_text)
-    farm_dealunit.set_beliefunit(get_climate_belief(), yao_text)
+    farm_dealunit.set_issueunit(get_cooking_issue(), bob_text)
+    farm_dealunit.set_issueunit(get_speedboats_action_issue(), yao_text)
+    farm_dealunit.set_issueunit(get_climate_issue(), yao_text)
 
     # THEN
-    assert farm_dealunit.actor_has_belief(bob_text, action_filter=True) == False
-    assert farm_dealunit.actor_has_belief(yao_text, action_filter=True)
+    assert farm_dealunit.actor_has_issue(bob_text, action_filter=True) == False
+    assert farm_dealunit.actor_has_issue(yao_text, action_filter=True)
 
 
-def test_DealUnit_set_beliefunit_WithactorSetsCorrectAttrs():
+def test_DealUnit_set_issueunit_WithactorSetsCorrectAttrs():
     # GIVEN
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
 
     # WHEN
-    farm_dealunit.set_beliefunit(get_cooking_belief(), actor=bob_text)
+    farm_dealunit.set_issueunit(get_cooking_issue(), actor=bob_text)
 
     # THEN
-    bob_beliefunits = farm_dealunit.get_actor_beliefunits(bob_text)
-    assert len(bob_beliefunits) == 1
-    example_cooking_beliefunit = get_cooking_belief()
-    example_cooking_beliefunit.set_actor(bob_text)
-    cooking_base = get_cooking_belief().base
-    assert bob_beliefunits.get(cooking_base) == example_cooking_beliefunit
+    bob_issueunits = farm_dealunit.get_actor_issueunits(bob_text)
+    assert len(bob_issueunits) == 1
+    example_cooking_issueunit = get_cooking_issue()
+    example_cooking_issueunit.set_actor(bob_text)
+    cooking_base = get_cooking_issue().base
+    assert bob_issueunits.get(cooking_base) == example_cooking_issueunit
 
 
-def test_DealUnit_actors_has_beliefs_ReturnsCorrectObjs():
+def test_DealUnit_actors_has_issues_ReturnsCorrectObjs():
     # GIVEN
     bob_text = "Bob"
     yao_text = "Yao"
     farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
-    farm_dealunit.set_beliefunit(get_cooking_belief(), bob_text)
+    farm_dealunit.set_issueunit(get_cooking_issue(), bob_text)
 
     # WHEN / THEN
     bob_list = [bob_text]
-    assert farm_dealunit.actors_has_beliefs(bob_list)
+    assert farm_dealunit.actors_has_issues(bob_list)
     bob_yao_list = [bob_text, yao_text]
-    assert farm_dealunit.actors_has_beliefs(bob_yao_list) == False
+    assert farm_dealunit.actors_has_issues(bob_yao_list) == False
 
     # WHEN / THEN
-    farm_dealunit.set_beliefunit(get_speedboats_action_belief(), yao_text)
-    farm_dealunit.set_beliefunit(get_climate_belief(), yao_text)
-    assert farm_dealunit.actors_has_beliefs(bob_yao_list)
+    farm_dealunit.set_issueunit(get_speedboats_action_issue(), yao_text)
+    farm_dealunit.set_issueunit(get_climate_issue(), yao_text)
+    assert farm_dealunit.actors_has_issues(bob_yao_list)
 
 
 def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
@@ -210,19 +210,19 @@ def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
     assert farm_dealunit.is_meaningful() == False
 
     # WHEN
-    farm_dealunit.set_beliefunit(get_cooking_belief(), bob_text)
+    farm_dealunit.set_issueunit(get_cooking_issue(), bob_text)
     # THEN
     assert farm_dealunit.is_meaningful()
 
     # WHEN
-    farm_dealunit.set_beliefunit(get_speedboats_action_belief(), yao_text)
-    farm_dealunit.set_beliefunit(get_climate_belief(), yao_text)
+    farm_dealunit.set_issueunit(get_speedboats_action_issue(), yao_text)
+    farm_dealunit.set_issueunit(get_climate_issue(), yao_text)
 
     # THEN
     assert farm_dealunit.is_meaningful()
 
     # WHEN
-    farm_dealunit.set_beliefunit(get_gasheater_action_belief(), yao_text)
+    farm_dealunit.set_issueunit(get_gasheater_action_issue(), yao_text)
 
     # THEN
     assert farm_dealunit.is_meaningful() == False

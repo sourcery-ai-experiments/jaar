@@ -520,7 +520,7 @@
     <string>All Day</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_factunit_count">
+  <widget class="QCheckBox" name="cb_yo_beliefunit_count">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -530,10 +530,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>factunits</string>
+    <string>beliefunits</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_factunit_time">
+  <widget class="QCheckBox" name="cb_yo_beliefunit_time">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -543,7 +543,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>time factunit</string>
+    <string>time beliefunit</string>
    </property>
   </widget>
   <widget class="QComboBox" name="reason_base_combo">
@@ -1675,7 +1675,7 @@
     <string>Problem</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_factheir_view">
+  <widget class="QCheckBox" name="cb_beliefheir_view">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -1685,10 +1685,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Factheir:</string>
+    <string>Beliefheir:</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_factheir_count">
+  <widget class="QCheckBox" name="cb_yo_beliefheir_count">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -1698,7 +1698,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>factheirs</string>
+    <string>beliefheirs</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_active_status">

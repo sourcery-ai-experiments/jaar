@@ -3,7 +3,7 @@ from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
     ReasonUnit,
-    factunit_shop as c_factunit,
+    beliefunit_shop as c_beliefunit,
     RoadUnit,
 )
 from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
@@ -271,31 +271,31 @@ def test_idea_balancelink_meld_TwoGroupsScenarioWorks():
     assert yx1._balancelinks[br2] == lu_x2
 
 
-def test_idea_factunits_meld_BaseScenarioWorks():
+def test_idea_beliefunits_meld_BaseScenarioWorks():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
     bowl_text = "bowl"
     bowl_road = create_road(tech_road, bowl_text)
     casa_text = "casa"
-    hc_1 = c_factunit(base=tech_road, pick=bowl_road)
+    hc_1 = c_beliefunit(base=tech_road, pick=bowl_road)
     yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_factunit(factunit=hc_1)
+    yx1.set_beliefunit(beliefunit=hc_1)
 
-    hc_2 = c_factunit(base=tech_road, pick=bowl_road)
+    hc_2 = c_beliefunit(base=tech_road, pick=bowl_road)
     yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_factunit(factunit=hc_2)
+    yx2.set_beliefunit(beliefunit=hc_2)
 
     # WHEN
     yx1.meld(yx2)
 
     # THEN
-    assert len(yx1._factunits) == 1
-    assert len(yx1._factunits) == len(yx2._factunits)
-    assert yx1._factunits == yx2._factunits
+    assert len(yx1._beliefunits) == 1
+    assert len(yx1._beliefunits) == len(yx2._beliefunits)
+    assert yx1._beliefunits == yx2._beliefunits
 
 
-def test_idea_factunits_meld_2FactUnitsWorks():
+def test_idea_beliefunits_meld_2BeliefUnitsWorks():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -305,21 +305,21 @@ def test_idea_factunits_meld_2FactUnitsWorks():
     plate_road = create_road(tech_road, plate_text)
     casa_text = "casa"
 
-    hc_1 = c_factunit(base=tech_road, pick=bowl_road)
+    hc_1 = c_beliefunit(base=tech_road, pick=bowl_road)
     yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_factunit(factunit=hc_1)
+    yx1.set_beliefunit(beliefunit=hc_1)
 
-    hc_2 = c_factunit(base=plate_road, pick=plate_road)
+    hc_2 = c_beliefunit(base=plate_road, pick=plate_road)
     yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_factunit(factunit=hc_2)
+    yx2.set_beliefunit(beliefunit=hc_2)
 
     # WHEN
     yx1.meld(other_idea=yx2)
 
     # THEN
-    assert len(yx1._factunits) == 2
-    assert len(yx1._factunits) == len(yx2._factunits) + 1
-    assert yx1._factunits != yx2._factunits
+    assert len(yx1._beliefunits) == 2
+    assert len(yx1._beliefunits) == len(yx2._beliefunits) + 1
+    assert yx1._beliefunits != yx2._beliefunits
 
 
 def test_idea_attributes_meld_CorrectlyMeldsIdeas():

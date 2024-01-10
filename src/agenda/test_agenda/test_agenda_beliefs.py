@@ -1,7 +1,7 @@
 from src.agenda.reason_idea import (
-    factunit_shop,
-    factunit_shop,
-    factheir_shop,
+    beliefunit_shop,
+    beliefunit_shop,
+    beliefheir_shop,
 )
 from src.agenda.idea import ideaunit_shop, RoadUnit
 from src.agenda.examples.example_agendas import (
@@ -11,47 +11,47 @@ from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_agenda_fact_exists():
+def test_agenda_belief_exists():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
-    sunday_agenda_fact = factunit_shop(base=weekday_road, pick=sunday_road)
-    print(sunday_agenda_fact)
-    x_agenda._idearoot._factunits = {sunday_agenda_fact.base: sunday_agenda_fact}
-    assert x_agenda._idearoot._factunits != None
-    x_agenda._idearoot._factunits = {}
-    assert not x_agenda._idearoot._factunits
-    x_agenda.set_fact(base=weekday_road, pick=sunday_road)
-    assert x_agenda._idearoot._factunits == {
-        sunday_agenda_fact.base: sunday_agenda_fact
+    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
+    print(sunday_agenda_belief)
+    x_agenda._idearoot._beliefunits = {sunday_agenda_belief.base: sunday_agenda_belief}
+    assert x_agenda._idearoot._beliefunits != None
+    x_agenda._idearoot._beliefunits = {}
+    assert not x_agenda._idearoot._beliefunits
+    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+    assert x_agenda._idearoot._beliefunits == {
+        sunday_agenda_belief.base: sunday_agenda_belief
     }
 
-    x_agenda._idearoot._factunits = {}
-    assert not x_agenda._idearoot._factunits
+    x_agenda._idearoot._beliefunits = {}
+    assert not x_agenda._idearoot._beliefunits
     usa_week_road = x_agenda.make_l1_road("nation-state")
-    usa_week_unit = factunit_shop(usa_week_road, usa_week_road, open=608, nigh=610)
-    x_agenda._idearoot._factunits = {usa_week_unit.base: usa_week_unit}
+    usa_week_unit = beliefunit_shop(usa_week_road, usa_week_road, open=608, nigh=610)
+    x_agenda._idearoot._beliefunits = {usa_week_unit.base: usa_week_unit}
 
-    x_agenda._idearoot._factunits = {}
-    assert not x_agenda._idearoot._factunits
-    x_agenda.set_fact(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
-    assert x_agenda._idearoot._factunits != None
-    assert x_agenda._idearoot._factunits == {usa_week_unit.base: usa_week_unit}
+    x_agenda._idearoot._beliefunits = {}
+    assert not x_agenda._idearoot._beliefunits
+    x_agenda.set_belief(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
+    assert x_agenda._idearoot._beliefunits != None
+    assert x_agenda._idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
 
 
-def test_agenda_fact_create():
+def test_agenda_belief_create():
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
-    x_agenda.set_fact(base=weekday_road, pick=sunday_road)
-    sunday_agenda_fact = factunit_shop(base=weekday_road, pick=sunday_road)
-    assert x_agenda._idearoot._factunits == {
-        sunday_agenda_fact.base: sunday_agenda_fact
+    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
+    assert x_agenda._idearoot._beliefunits == {
+        sunday_agenda_belief.base: sunday_agenda_belief
     }
 
 
-def test_set_fact_FailsToCreateWhenBaseAndFactAreDifferenctAndFactIdeaIsNotRangeRoot():
+def test_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBeliefIdeaIsNotRangeRoot():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     time_text = "time"
@@ -66,36 +66,36 @@ def test_set_fact_FailsToCreateWhenBaseAndFactAreDifferenctAndFactIdeaIsNotRange
     a1e1st_idea = ideaunit_shop(a1e1st_text, _begin=20, _close=30)
     bob_agenda.add_idea(a1e1st_idea, parent_road=a1st_road)
     a1e1_road = bob_agenda.make_road(a1st_road, a1e1st_text)
-    assert bob_agenda._idearoot._factunits in (None, {})
+    assert bob_agenda._idearoot._beliefunits in (None, {})
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        bob_agenda.set_fact(base=a1e1_road, pick=a1e1_road, open=20, nigh=23)
+        bob_agenda.set_belief(base=a1e1_road, pick=a1e1_road, open=20, nigh=23)
     assert (
         str(excinfo.value)
-        == f"Non range-root fact:{a1e1_road} can only be set by range-root fact"
+        == f"Non range-root belief:{a1e1_road} can only be set by range-root belief"
     )
 
 
-def test_agenda_fact_create():
+def test_agenda_belief_create():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
-    x_agenda.set_fact(base=weekday_road, pick=sunday_road)
-    sunday_agenda_fact = factunit_shop(base=weekday_road, pick=sunday_road)
-    assert x_agenda._idearoot._factunits == {
-        sunday_agenda_fact.base: sunday_agenda_fact
+    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
+    assert x_agenda._idearoot._beliefunits == {
+        sunday_agenda_belief.base: sunday_agenda_belief
     }
 
     # WHEN
-    x_agenda.del_fact(base=weekday_road)
+    x_agenda.del_belief(base=weekday_road)
 
     # THEN
-    assert x_agenda._idearoot._factunits == {}
+    assert x_agenda._idearoot._beliefunits == {}
 
 
-def test_agenda_get_idea_list_FactHeirsCorrectlyInherited():
+def test_agenda_get_idea_list_BeliefHeirsCorrectlyInherited():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
@@ -116,42 +116,42 @@ def test_agenda_get_idea_list_FactHeirsCorrectlyInherited():
     fast_idea = bob_agenda.get_idea_obj(fast_road)
     slow_idea = bob_agenda.get_idea_obj(slow_road)
 
-    assert swim_idea._factheirs == {}
-    assert fast_idea._factheirs == {}
-    assert slow_idea._factheirs == {}
+    assert swim_idea._beliefheirs == {}
+    assert fast_idea._beliefheirs == {}
+    assert slow_idea._beliefheirs == {}
 
     # WHEN
-    bob_agenda.set_fact(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
-    factheir_set_range = factheir_shop(earth_road, earth_road, 1.0, 5.0)
-    factheirs_set_range = {factheir_set_range.base: factheir_set_range}
-    fact_none_range = factheir_shop(earth_road, earth_road, None, None)
-    facts_none_range = {fact_none_range.base: fact_none_range}
+    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
+    beliefheir_set_range = beliefheir_shop(earth_road, earth_road, 1.0, 5.0)
+    beliefheirs_set_range = {beliefheir_set_range.base: beliefheir_set_range}
+    belief_none_range = beliefheir_shop(earth_road, earth_road, None, None)
+    beliefs_none_range = {belief_none_range.base: belief_none_range}
 
     # THEN
-    assert swim_idea._factheirs != None
-    assert fast_idea._factheirs != None
-    assert slow_idea._factheirs != None
-    assert swim_idea._factheirs == factheirs_set_range
-    assert fast_idea._factheirs == factheirs_set_range
-    assert slow_idea._factheirs == factheirs_set_range
-    print(f"{swim_idea._factheirs=}")
-    assert len(swim_idea._factheirs) == 1
+    assert swim_idea._beliefheirs != None
+    assert fast_idea._beliefheirs != None
+    assert slow_idea._beliefheirs != None
+    assert swim_idea._beliefheirs == beliefheirs_set_range
+    assert fast_idea._beliefheirs == beliefheirs_set_range
+    assert slow_idea._beliefheirs == beliefheirs_set_range
+    print(f"{swim_idea._beliefheirs=}")
+    assert len(swim_idea._beliefheirs) == 1
 
     # WHEN
-    swim_idea._factheirs.get(earth_road).set_range_null()
+    swim_idea._beliefheirs.get(earth_road).set_range_null()
 
     # THEN
-    assert swim_idea._factheirs == facts_none_range
-    assert fast_idea._factheirs == factheirs_set_range
-    assert slow_idea._factheirs == factheirs_set_range
+    assert swim_idea._beliefheirs == beliefs_none_range
+    assert fast_idea._beliefheirs == beliefheirs_set_range
+    assert slow_idea._beliefheirs == beliefheirs_set_range
 
-    fact_x1 = swim_idea._factheirs.get(earth_road)
-    fact_x1.set_range_null()
-    print(type(fact_x1))
-    assert str(type(fact_x1)).find(".reason.FactHeir'>")
+    belief_x1 = swim_idea._beliefheirs.get(earth_road)
+    belief_x1.set_range_null()
+    print(type(belief_x1))
+    assert str(type(belief_x1)).find(".reason.BeliefHeir'>")
 
 
-def test_agenda_get_idea_list_FactUnitCorrectlyTransformsfactheir_shop():
+def test_agenda_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
@@ -168,28 +168,28 @@ def test_agenda_get_idea_list_FactUnitCorrectlyTransformsfactheir_shop():
     earth_road = bob_agenda.make_l1_road(earth_text)
     bob_agenda.add_idea(ideaunit_shop(earth_text), parent_road=bob_agenda._economy_id)
 
-    assert swim_idea._factheirs == {}
+    assert swim_idea._beliefheirs == {}
 
     # WHEN
-    bob_agenda.set_fact(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
+    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
 
     # THEN
-    first_earthheir = factheir_shop(earth_road, earth_road, open=1.0, nigh=5.0)
+    first_earthheir = beliefheir_shop(earth_road, earth_road, open=1.0, nigh=5.0)
     first_earthdict = {first_earthheir.base: first_earthheir}
-    assert swim_idea._factheirs == first_earthdict
+    assert swim_idea._beliefheirs == first_earthdict
 
     # WHEN
-    # earth_curb = factunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
-    # swim_y.set_factunit(factunit=earth_curb) Not sure what this is for. Testing how "set_factunit" works?
-    bob_agenda.set_fact(base=earth_road, pick=earth_road, open=3.0, nigh=5.0)
+    # earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
+    # swim_y.set_beliefunit(beliefunit=earth_curb) Not sure what this is for. Testing how "set_beliefunit" works?
+    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=3.0, nigh=5.0)
 
     # THEN
-    after_earthheir = factheir_shop(earth_road, earth_road, open=3.0, nigh=5.0)
+    after_earthheir = beliefheir_shop(earth_road, earth_road, open=3.0, nigh=5.0)
     after_earthdict = {after_earthheir.base: after_earthheir}
-    assert swim_idea._factheirs == after_earthdict
+    assert swim_idea._beliefheirs == after_earthdict
 
 
-def test_agenda_get_idea_list_FactHeirCorrectlyDeletesFactUnit():
+def test_agenda_get_idea_list_BeliefHeirCorrectlyDeletesBeliefUnit():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     swim_text = "swim"
@@ -205,26 +205,26 @@ def test_agenda_get_idea_list_FactHeirCorrectlyDeletesFactUnit():
 
     swim_idea = sue_agenda.get_idea_obj(swim_road)
 
-    first_earthheir = factheir_shop(earth_road, earth_road, open=200.0, nigh=500.0)
+    first_earthheir = beliefheir_shop(earth_road, earth_road, open=200.0, nigh=500.0)
     first_earthdict = {first_earthheir.base: first_earthheir}
 
-    assert swim_idea._factheirs == {}
+    assert swim_idea._beliefheirs == {}
 
     # WHEN
-    sue_agenda.set_fact(base=earth_road, pick=earth_road, open=200.0, nigh=500.0)
+    sue_agenda.set_belief(base=earth_road, pick=earth_road, open=200.0, nigh=500.0)
 
     # THEN
-    assert swim_idea._factheirs == first_earthdict
+    assert swim_idea._beliefheirs == first_earthdict
 
-    earth_curb = factunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
-    swim_idea.set_factunit(factunit=earth_curb)
+    earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
+    swim_idea.set_beliefunit(beliefunit=earth_curb)
     sue_agenda.set_agenda_metrics()
-    assert swim_idea._factheirs == first_earthdict
-    assert swim_idea._factunits == {}
+    assert swim_idea._beliefheirs == first_earthdict
+    assert swim_idea._beliefunits == {}
 
 
-def test_get_ranged_facts():
-    # GIVEN a single ranged fact
+def test_get_ranged_beliefs():
+    # GIVEN a single ranged belief
     sue_agenda = agendaunit_shop("Sue")
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
@@ -237,39 +237,39 @@ def test_get_ranged_facts():
     time_road = sue_agenda.make_l1_road(time_text)
     # sue_agenda.edit_idea_attr(road=c_road, reason_base=time_road, reason_premise=time_road, reason_premise_open=5, reason_premise_nigh=10)
 
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=5, nigh=10)
-    print(f"Given a single ranged fact {sue_agenda._idearoot._factunits=}")
-    assert len(sue_agenda._idearoot._factunits) == 1
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=5, nigh=10)
+    print(f"Given a single ranged belief {sue_agenda._idearoot._beliefunits=}")
+    assert len(sue_agenda._idearoot._beliefunits) == 1
 
     # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_factunits()) == 1
+    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
 
-    # WHEN one ranged fact added
+    # WHEN one ranged belief added
     place_text = "place_x"
     place_idea = ideaunit_shop(place_text, _begin=600, _close=800)
     sue_agenda.add_idea(place_idea, parent_road=sue_agenda._economy_id)
     place_road = sue_agenda.make_l1_road(place_text)
-    sue_agenda.set_fact(base=place_road, pick=place_road, open=5, nigh=10)
-    print(f"When one ranged fact added {sue_agenda._idearoot._factunits=}")
-    assert len(sue_agenda._idearoot._factunits) == 2
+    sue_agenda.set_belief(base=place_road, pick=place_road, open=5, nigh=10)
+    print(f"When one ranged belief added {sue_agenda._idearoot._beliefunits=}")
+    assert len(sue_agenda._idearoot._beliefunits) == 2
 
     # THEN
-    assert len(sue_agenda._get_rangeroot_factunits()) == 2
+    assert len(sue_agenda._get_rangeroot_beliefunits()) == 2
 
-    # WHEN one non-ranged_fact added
+    # WHEN one non-ranged_belief added
     mood = "mood_x"
     sue_agenda.add_idea(ideaunit_shop(mood), parent_road=sue_agenda._economy_id)
     m_road = sue_agenda.make_l1_road(mood)
-    sue_agenda.set_fact(base=m_road, pick=m_road)
-    print(f"When one non-ranged_fact added {sue_agenda._idearoot._factunits=}")
-    assert len(sue_agenda._idearoot._factunits) == 3
+    sue_agenda.set_belief(base=m_road, pick=m_road)
+    print(f"When one non-ranged_belief added {sue_agenda._idearoot._beliefunits=}")
+    assert len(sue_agenda._idearoot._beliefunits) == 3
 
     # THEN
-    assert len(sue_agenda._get_rangeroot_factunits()) == 2
+    assert len(sue_agenda._get_rangeroot_beliefunits()) == 2
 
 
-def test_get_roots_ranged_facts():
-    # GIVEN a two ranged facts where one is "range-root" get_root_ranged_facts returns one "range-root" fact
+def test_get_roots_ranged_beliefs():
+    # GIVEN a two ranged beliefs where one is "range-root" get_root_ranged_beliefs returns one "range-root" belief
     sue_agenda = agendaunit_shop("Sue")
     time_text = "time"
     sue_agenda.add_idea(
@@ -284,33 +284,33 @@ def test_get_roots_ranged_facts():
     sad = "Sad"
     sue_agenda.add_idea(ideaunit_shop(happy), parent_road=m_x_road)
     sue_agenda.add_idea(ideaunit_shop(sad), parent_road=m_x_road)
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=5, nigh=10)
-    sue_agenda.set_fact(base=m_x_road, pick=sue_agenda.make_road(m_x_road, happy))
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=5, nigh=10)
+    sue_agenda.set_belief(base=m_x_road, pick=sue_agenda.make_road(m_x_road, happy))
     print(
-        f"Given a root ranged fact and non-range fact:\n{sue_agenda._idearoot._factunits=}"
+        f"Given a root ranged belief and non-range belief:\n{sue_agenda._idearoot._beliefunits=}"
     )
-    assert len(sue_agenda._idearoot._factunits) == 2
+    assert len(sue_agenda._idearoot._beliefunits) == 2
 
     # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_factunits()) == 1
-    assert sue_agenda._get_rangeroot_factunits()[0].base == time_road
+    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
+    assert sue_agenda._get_rangeroot_beliefunits()[0].base == time_road
 
-    # a fact who's idea range is defined by numeric_root is not "rangeroot"
+    # a belief who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
     sue_agenda.add_idea(
         idea_kid=ideaunit_shop(mirrow_x, _numeric_road=time_text),
         parent_road=sue_agenda._economy_id,
     )
     m_x_road = sue_agenda.make_l1_road(mirrow_x)
-    sue_agenda.set_fact(base=m_x_road, pick=time_road, open=5, nigh=10)
-    assert len(sue_agenda._idearoot._factunits) == 3
+    sue_agenda.set_belief(base=m_x_road, pick=time_road, open=5, nigh=10)
+    assert len(sue_agenda._idearoot._beliefunits) == 3
 
     # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_factunits()) == 1
-    assert sue_agenda._get_rangeroot_factunits()[0].base == time_road
+    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
+    assert sue_agenda._get_rangeroot_beliefunits()[0].base == time_road
 
 
-def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario1():
+def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario1():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
@@ -345,8 +345,8 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario1():
     sue_agenda.add_idea(age7th_idea, parent_road=time_road)
 
     # set for instant moment in 3rd age
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=45, nigh=45)
-    lemma_dict = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=45, nigh=45)
+    lemma_dict = sue_agenda._get_lemma_beliefunits()
     print(f"{len(lemma_dict)=}")
     print(f"{lemma_dict=}")
     assert len(lemma_dict) == 7
@@ -380,7 +380,7 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario1():
     assert age7th_lemma.nigh is None
 
 
-def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario2():
+def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario2():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
@@ -413,8 +413,8 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario2():
     sue_agenda.add_idea(age7th_idea, parent_road=time_road)
 
     # set for instant moment in 3rd age
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=35, nigh=65)
-    lemma_dict = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=65)
+    lemma_dict = sue_agenda._get_lemma_beliefunits()
     assert len(lemma_dict) == 7
     age1st_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st_text)]
     age2nd_lemma = lemma_dict[sue_agenda.make_road(time_road, age2nd_text)]
@@ -446,7 +446,7 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario2():
     assert age7th_lemma.nigh is None
 
 
-def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario3():
+def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
@@ -507,8 +507,8 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario3():
     sue_agenda.add_idea(a3e4th_idea, parent_road=a3_road)
 
     # set for instant moment in 3rd age
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=35, nigh=55)
-    lemma_dict = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=55)
+    lemma_dict = sue_agenda._get_lemma_beliefunits()
     assert len(lemma_dict) == 15
     a2e1st_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e1st_text)]
     a2e2nd_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e2nd_text)]
@@ -544,7 +544,7 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario3():
     assert a3e4th_lemma.nigh is None
 
 
-def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario4():
+def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
     sue_agenda = agendaunit_shop("Sue")
     arsub1 = "descretional_subsection1"
     arsub1_idea = ideaunit_shop(arsub1, _begin=0, _close=140)
@@ -571,8 +571,8 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario4():
     sue_agenda.add_idea(age1st_idea, parent_road=time_road)
 
     # set for instant moment in 3rd age
-    sue_agenda.set_fact(base=time_road, pick=time_road, open=35, nigh=55)
-    lemma_dict = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=55)
+    lemma_dict = sue_agenda._get_lemma_beliefunits()
     assert len(lemma_dict) == 3
     a1_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st)]
     as1_lemma = lemma_dict[as1_road]
@@ -588,14 +588,14 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario4():
     assert as2_lemma.nigh is None
 
 
-def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario4_1():
+def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario4_1():
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_time_hreg_ideas(c400_count=7)
     time_road = sue_agenda.make_l1_road("time")
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
     timetech_road = sue_agenda.make_road(time_road, "tech")
-    sue_agenda.set_fact(jajatime_road, jajatime_road, open=1500, nigh=1500)
-    lhu = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(jajatime_road, jajatime_road, open=1500, nigh=1500)
+    lhu = sue_agenda._get_lemma_beliefunits()
 
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 1500
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 1500
@@ -615,14 +615,14 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario4_1():
     assert int(lhu[sue_agenda.make_road(timetech_road, "week")].nigh) == 1500
 
 
-def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario5():
+def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario5():
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_time_hreg_ideas(c400_count=7)
     time_road = sue_agenda.make_l1_road("time")
     timetech_road = sue_agenda.make_road(time_road, "tech")
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-    sue_agenda.set_fact(jajatime_road, jajatime_road, 1500, nigh=1063954002)
-    lhu = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(jajatime_road, jajatime_road, 1500, nigh=1063954002)
+    lhu = sue_agenda._get_lemma_beliefunits()
 
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 0
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 210379680
@@ -644,13 +644,13 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario5():
     assert int(lemma_timetech_week.nigh) == 10080  # 1063953183 / 1440
 
 
-def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario6():
+def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario6():
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_time_hreg_ideas(c400_count=7)
     time_road = sue_agenda.make_l1_road("time")
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-    sue_agenda.set_fact(jajatime_road, jajatime_road, 1063954000, nigh=1063954002)
-    lhu = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063954000, nigh=1063954002)
+    lhu = sue_agenda._get_lemma_beliefunits()
 
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 12055600.0
     assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 12055602.0
@@ -666,7 +666,7 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario6():
     assert int(lemma_day.nigh) == 1362  # 1063953183 / 1440
 
 
-def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario7():
+def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario7():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_time_hreg_ideas(c400_count=7)
@@ -676,8 +676,8 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario7():
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
 
     # WHEN given a minute range that should be Thursday to Monday midnight
-    sue_agenda.set_fact(jajatime_road, jajatime_road, 1063951200, nigh=1063956960)
-    lhu = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063956960)
+    lhu = sue_agenda._get_lemma_beliefunits()
 
     # THEN
     week_open = lhu[sue_agenda.make_road(jajatime_road, "week")].open
@@ -715,7 +715,7 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario7():
     # assert lhu[sue_agenda.make_road(timetech_road,"week,Wednesday")].active == False
 
 
-def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario8():
+def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_time_hreg_ideas(c400_count=7)
@@ -725,8 +725,8 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario8():
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
 
     # WHEN given a minute range that should be Thursday to Monday midnight
-    sue_agenda.set_fact(jajatime_road, jajatime_road, 1063951200, nigh=1063951200)
-    lhu = sue_agenda._get_lemma_factunits()
+    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063951200)
+    lhu = sue_agenda._get_lemma_beliefunits()
 
     # THEN
     week_open = lhu[techweek_road].open
@@ -761,7 +761,7 @@ def test_create_lemma_facts_CorrectlyCreatesNthLevelLemmaFact_Scenario8():
     # assert lhu[sue_agenda.make_road(timetech_road,"week,Wednesday")].active == False
 
 
-def test_agenda_set_fact_create_missing_ideas_CreatesBaseAndFact():
+def test_agenda_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     trouble_text = ""
@@ -771,7 +771,7 @@ def test_agenda_set_fact_create_missing_ideas_CreatesBaseAndFact():
     assert sue_agenda._idearoot.get_kid(trouble_text) is None
 
     # WHEN
-    sue_agenda.set_fact(trouble_road, climate_road, create_missing_ideas=True)
+    sue_agenda.set_belief(trouble_road, climate_road, create_missing_ideas=True)
 
     # THEN
     assert sue_agenda._idearoot.get_kid(trouble_text) != None
@@ -779,7 +779,7 @@ def test_agenda_set_fact_create_missing_ideas_CreatesBaseAndFact():
     assert sue_agenda.get_idea_obj(climate_road) != None
 
 
-def test_agenda_get_factunits_base_and_fact_list_CorrectlyReturnsListOfFactUnits():
+def test_agenda_get_beliefunits_base_and_belief_list_CorrectlyReturnsListOfBeliefUnits():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
 
@@ -787,35 +787,35 @@ def test_agenda_get_factunits_base_and_fact_list_CorrectlyReturnsListOfFactUnits
     trouble_road = sue_agenda.make_l1_road(trouble_text)
     climate_text = "climate"
     climate_road = sue_agenda.make_road(trouble_road, climate_text)
-    sue_agenda.set_fact(trouble_road, climate_road, create_missing_ideas=True)
+    sue_agenda.set_belief(trouble_road, climate_road, create_missing_ideas=True)
 
     weather_text = "weather"
     weather_road = sue_agenda.make_l1_road(weather_text)
     windy_text = "windy"
     windy_road = sue_agenda.make_road(weather_road, windy_text)
-    sue_agenda.set_fact(weather_road, windy_road, create_missing_ideas=True)
+    sue_agenda.set_belief(weather_road, windy_road, create_missing_ideas=True)
     hot_text = "hot"
     hot_road = sue_agenda.make_road(weather_road, hot_text)
-    sue_agenda.set_fact(base=weather_road, pick=hot_road, create_missing_ideas=True)
+    sue_agenda.set_belief(base=weather_road, pick=hot_road, create_missing_ideas=True)
     cold_text = "cold"
     cold_road = sue_agenda.make_road(weather_road, cold_text)
-    sue_agenda.set_fact(weather_road, cold_road, create_missing_ideas=True)
+    sue_agenda.set_belief(weather_road, cold_road, create_missing_ideas=True)
 
     games_text = "games"
     games_road = sue_agenda.make_l1_road(games_text)
     football_text = "football"
     football_road = sue_agenda.make_road(weather_road, football_text)
-    sue_agenda.set_fact(games_road, football_road, create_missing_ideas=True)
+    sue_agenda.set_belief(games_road, football_road, create_missing_ideas=True)
 
     # WHEN
-    factunit_list_x = sue_agenda.get_factunits_base_and_fact_list()
+    beliefunit_list_x = sue_agenda.get_beliefunits_base_and_belief_list()
 
     # THEN
-    assert factunit_list_x[0][0] == ""
-    assert factunit_list_x[1][0] == games_road
-    assert factunit_list_x[1][1] == football_road
-    assert factunit_list_x[2][0] == trouble_road
-    assert factunit_list_x[2][1] == climate_road
-    assert factunit_list_x[3][0] == weather_road
-    assert factunit_list_x[3][1] == cold_road
-    assert len(factunit_list_x) == 4
+    assert beliefunit_list_x[0][0] == ""
+    assert beliefunit_list_x[1][0] == games_road
+    assert beliefunit_list_x[1][1] == football_road
+    assert beliefunit_list_x[2][0] == trouble_road
+    assert beliefunit_list_x[2][1] == climate_road
+    assert beliefunit_list_x[3][0] == weather_road
+    assert beliefunit_list_x[3][1] == cold_road
+    assert len(beliefunit_list_x) == 4

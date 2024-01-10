@@ -873,11 +873,11 @@ FROM idea_catalog
     return dict_x
 
 
-# fact_catalog
-def get_fact_catalog_table_create_sqlstr() -> str:
-    """table that holds every fact base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
+# belief_catalog
+def get_belief_catalog_table_create_sqlstr() -> str:
+    """table that holds every belief base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
-CREATE TABLE IF NOT EXISTS fact_catalog (
+CREATE TABLE IF NOT EXISTS belief_catalog (
   agenda_healer VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
@@ -886,9 +886,9 @@ CREATE TABLE IF NOT EXISTS fact_catalog (
 """
 
 
-def get_fact_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
+def get_belief_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("fact_catalog")} WHERE agenda_healer = '{agenda_healer}'
+{get_table_count_sqlstr("belief_catalog")} WHERE agenda_healer = '{agenda_healer}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -899,25 +899,25 @@ def get_fact_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str
 
 
 @dataclass
-class FactCatalog:
+class BeliefCatalog:
     agenda_healer: str
     base: str
     pick: str
 
 
-def get_fact_catalog_table_insert_sqlstr(
-    fact_catalog: FactCatalog,
+def get_belief_catalog_table_insert_sqlstr(
+    belief_catalog: BeliefCatalog,
 ) -> str:
     return f"""
-INSERT INTO fact_catalog (
+INSERT INTO belief_catalog (
   agenda_healer
 , base
 , pick
 )
 VALUES (
-  '{fact_catalog.agenda_healer}'
-, '{fact_catalog.base}'
-, '{fact_catalog.pick}'
+  '{belief_catalog.agenda_healer}'
+, '{belief_catalog.base}'
+, '{belief_catalog.pick}'
 )
 ;
 """
@@ -999,7 +999,7 @@ FROM groupunit_catalog
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
-    list_x.append(get_fact_catalog_table_create_sqlstr())
+    list_x.append(get_belief_catalog_table_create_sqlstr())
     list_x.append(get_idea_catalog_table_create_sqlstr())
     list_x.append(get_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())

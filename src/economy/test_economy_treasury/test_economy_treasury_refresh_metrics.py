@@ -18,9 +18,9 @@ from src.economy.treasury_sqlstr import (
     IdeaCatalog,
     get_idea_catalog_table_insert_sqlstr,
     get_idea_catalog_dict,
-    get_fact_catalog_table_count,
-    FactCatalog,
-    get_fact_catalog_table_insert_sqlstr,
+    get_belief_catalog_table_count,
+    BeliefCatalog,
+    get_belief_catalog_table_insert_sqlstr,
     get_groupunit_catalog_table_count,
     GroupUnitCatalog,
     get_groupunit_catalog_table_insert_sqlstr,
@@ -390,7 +390,7 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     assert len(get_idea_catalog_dict(x_economy.get_treasury_conn(), ex_road)) == 4
 
 
-def test_economy_get_fact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_belief_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -399,32 +399,32 @@ def test_economy_get_fact_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     with x_economy.get_treasury_conn() as treasury_conn:
-        assert get_fact_catalog_table_count(treasury_conn, bob_text) == 0
+        assert get_belief_catalog_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
     weather_road = create_road(get_temp_env_economy_id(), "weather")
-    weather_rain = FactCatalog(
+    weather_rain = BeliefCatalog(
         agenda_healer=bob_text,
         base=weather_road,
         pick=create_road(weather_road, "rain"),
     )
-    water_insert_sqlstr = get_fact_catalog_table_insert_sqlstr(weather_rain)
+    water_insert_sqlstr = get_belief_catalog_table_insert_sqlstr(weather_rain)
     with x_economy.get_treasury_conn() as treasury_conn:
         print(water_insert_sqlstr)
         treasury_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_fact_catalog_table_count(treasury_conn, bob_text) == 1
+    assert get_belief_catalog_table_count(treasury_conn, bob_text) == 1
 
 
-def test_refresh_treasury_public_agendas_data_Populates_fact_catalog_table(
+def test_refresh_treasury_public_agendas_data_Populates_belief_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     x_economy.refresh_treasury_public_agendas_data()
 
-    # TODO create 3 agendas with varying numbers of facts
+    # TODO create 3 agendas with varying numbers of beliefs
     bob_text = "bob"
     sal_text = "sal"
     tim_text = "tim"
@@ -442,37 +442,37 @@ def test_refresh_treasury_public_agendas_data_Populates_fact_catalog_table(
     b_road = create_road(tim_agenda._economy_id, b_text)
     # for idea_x in tim_agenda._idea_dict.values():
     #     print(f"{f_road=} {idea_x.get_road()=}")
-    tim_agenda.set_fact(base=c_road, pick=f_road)
+    tim_agenda.set_belief(base=c_road, pick=f_road)
 
-    bob_agenda.set_fact(base=c_road, pick=f_road)
-    bob_agenda.set_fact(base=b_road, pick=b_road)
+    bob_agenda.set_belief(base=c_road, pick=f_road)
+    bob_agenda.set_belief(base=b_road, pick=b_road)
 
     casa_text = "casa"
     casa_road = create_road(sal_agenda._economy_id, casa_text)
     cookery_text = "clean cookery"
     cookery_road = create_road(casa_road, cookery_text)
-    sal_agenda.set_fact(base=cookery_road, pick=cookery_road)
+    sal_agenda.set_belief(base=cookery_road, pick=cookery_road)
 
     x_economy.save_public_agenda(bob_agenda)
     x_economy.save_public_agenda(tim_agenda)
     x_economy.save_public_agenda(sal_agenda)
 
     with x_economy.get_treasury_conn() as treasury_conn:
-        assert get_fact_catalog_table_count(treasury_conn, bob_text) == 0
-        assert get_fact_catalog_table_count(treasury_conn, tim_text) == 0
-        assert get_fact_catalog_table_count(treasury_conn, sal_text) == 0
+        assert get_belief_catalog_table_count(treasury_conn, bob_text) == 0
+        assert get_belief_catalog_table_count(treasury_conn, tim_text) == 0
+        assert get_belief_catalog_table_count(treasury_conn, sal_text) == 0
 
     # WHEN
     x_economy.refresh_treasury_public_agendas_data()
 
     # THEN
-    print(f"{get_fact_catalog_table_count(treasury_conn, bob_text)=}")
-    print(f"{get_fact_catalog_table_count(treasury_conn, tim_text)=}")
-    print(f"{get_fact_catalog_table_count(treasury_conn, sal_text)=}")
+    print(f"{get_belief_catalog_table_count(treasury_conn, bob_text)=}")
+    print(f"{get_belief_catalog_table_count(treasury_conn, tim_text)=}")
+    print(f"{get_belief_catalog_table_count(treasury_conn, sal_text)=}")
     with x_economy.get_treasury_conn() as treasury_conn:
-        assert get_fact_catalog_table_count(treasury_conn, bob_text) == 2
-        assert get_fact_catalog_table_count(treasury_conn, tim_text) == 1
-        assert get_fact_catalog_table_count(treasury_conn, sal_text) == 1
+        assert get_belief_catalog_table_count(treasury_conn, bob_text) == 2
+        assert get_belief_catalog_table_count(treasury_conn, tim_text) == 1
+        assert get_belief_catalog_table_count(treasury_conn, sal_text) == 1
 
 
 def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(

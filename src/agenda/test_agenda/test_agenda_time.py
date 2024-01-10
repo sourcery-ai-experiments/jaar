@@ -118,7 +118,7 @@ def test_get_time_():
     #         )
 
     # WHEN
-    x_agenda.set_time_facts(
+    x_agenda.set_time_beliefs(
         open=datetime(2000, 1, 1, 0, 0), nigh=datetime(2003, 11, 15, 4, 0)
     )
 
@@ -127,9 +127,9 @@ def test_get_time_():
     time_road = x_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
     jaja_road = x_agenda.make_road(time_road, jaja_text)
-    assert x_agenda._idearoot._factunits[jaja_road]
-    assert x_agenda._idearoot._factunits[jaja_road].open == 1051898400  # - 1440
-    assert x_agenda._idearoot._factunits[jaja_road].nigh == 1053934800  # - 1440
+    assert x_agenda._idearoot._beliefunits[jaja_road]
+    assert x_agenda._idearoot._beliefunits[jaja_road].open == 1051898400  # - 1440
+    assert x_agenda._idearoot._beliefunits[jaja_road].nigh == 1053934800  # - 1440
 
 
 # def test_time_hreg_set_exists():

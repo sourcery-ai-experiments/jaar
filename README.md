@@ -94,15 +94,15 @@ AgendaUnit IdeaUnit Reason PremiseUnit objects
 
 AgendaUnit IdeaUnit Reason PremiseHeir objects
 
-AgendaUnit IdeaUnit FactUnit objects
+AgendaUnit IdeaUnit BeliefUnit objects
 
-AgendaUnit IdeaUnit FactHeir objects
+AgendaUnit IdeaUnit BeliefHeir objects
 
 
 ## 1.3 Test-Driven-Development
 
 Jaar was developed using Test-Driven-Development so every feature should have a test
-that could represent an example. Tests can be hard to understand. Some tests have many 
+that could represent an example. Tests can be hard to comprehend. Some tests have many 
 variables and can be hard to follow.
 
 <!-- TODO: Add examples 
