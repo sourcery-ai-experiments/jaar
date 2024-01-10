@@ -234,3 +234,73 @@ def test_TopicUnit_set_metrics_SetsAttr_calc_is_dialectic_Correctly():
     assert cook_topic._calc_is_tribal
     assert cook_topic._calc_is_meaningful
     assert cook_topic._calc_is_dialectic
+
+
+def test_TopicUnit_set_metrics_SetsFactUnit_ratio_AttrsCorrectly():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_topic = topicunit_shop(cook_road)
+    warm_proc_road = create_road(cook_road, "warm processed food")
+    cold_proc_road = create_road(cook_road, "cold processed food")
+    warm_farm_road = create_road(cook_road, "warm farmed food")
+    cold_farm_road = create_road(cook_road, "cold farmed food")
+    warm_proc_affect = 44
+    cold_proc_affect = -5
+    warm_farm_affect = 33
+    cold_farm_affect = -7
+    warm_proc_love = -9
+    cold_proc_love = -4
+    warm_farm_love = 77
+    cold_farm_love = 88
+    cook_topic.set_factunit(
+        factunit_shop(warm_proc_road, warm_proc_affect, warm_proc_love), False
+    )
+    cook_topic.set_factunit(
+        factunit_shop(cold_proc_road, cold_proc_affect, cold_proc_love), False
+    )
+    cook_topic.set_factunit(
+        factunit_shop(warm_farm_road, warm_farm_affect, warm_farm_love), False
+    )
+    cook_topic.set_factunit(
+        factunit_shop(cold_farm_road, cold_farm_affect, cold_farm_love), False
+    )
+    warm_proc_factunit = cook_topic.get_factunit(warm_proc_road)
+    cold_proc_factunit = cook_topic.get_factunit(cold_proc_road)
+    warm_farm_factunit = cook_topic.get_factunit(warm_farm_road)
+    cold_farm_factunit = cook_topic.get_factunit(cold_farm_road)
+
+    assert warm_proc_factunit._topic_affect_ratio is None
+    assert cold_proc_factunit._topic_affect_ratio is None
+    assert warm_farm_factunit._topic_affect_ratio is None
+    assert cold_farm_factunit._topic_affect_ratio is None
+    assert warm_proc_factunit._topic_love_ratio is None
+    assert cold_proc_factunit._topic_love_ratio is None
+    assert warm_farm_factunit._topic_love_ratio is None
+    assert cold_farm_factunit._topic_love_ratio is None
+
+    # WHEN
+    cook_topic.set_metrics()
+
+    # THEN
+    good_affect_sum = warm_proc_affect + warm_farm_affect
+    bad_affect_sum = cold_proc_affect + cold_farm_affect
+    in_tribe_sum = warm_farm_love + cold_farm_love
+    out_tribe_sum = warm_proc_love + cold_proc_love
+
+    warm_proc_affect = 44
+    cold_proc_affect = -5
+    warm_farm_affect = 33
+    cold_farm_affect = -7
+    warm_proc_love = -9
+    cold_proc_love = -4
+    warm_farm_love = 77
+    cold_farm_love = 88
+
+    assert warm_proc_factunit._topic_affect_ratio == warm_proc_affect / good_affect_sum
+    assert cold_proc_factunit._topic_affect_ratio == cold_proc_affect / bad_affect_sum
+    assert warm_farm_factunit._topic_affect_ratio == warm_farm_affect / good_affect_sum
+    assert cold_farm_factunit._topic_affect_ratio == cold_farm_affect / bad_affect_sum
+    assert warm_proc_factunit._topic_love_ratio == warm_proc_love / out_tribe_sum
+    assert cold_proc_factunit._topic_love_ratio == cold_proc_love / out_tribe_sum
+    assert warm_farm_factunit._topic_love_ratio == warm_farm_love / in_tribe_sum
+    assert cold_farm_factunit._topic_love_ratio == cold_farm_love / in_tribe_sum

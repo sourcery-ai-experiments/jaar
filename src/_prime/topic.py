@@ -153,8 +153,11 @@ class TopicUnit:
         if set_metrics:
             self.set_metrics()
 
-    def del_factunit(self, factunit: PersonRoad):
-        self.factunits.pop(factunit)
+    def del_factunit(self, fact_road: PersonRoad):
+        self.factunits.pop(fact_road)
+
+    def get_factunit(self, fact_road: PersonRoad) -> FactUnit:
+        return self.factunits.get(fact_road)
 
     def get_factunits(
         self,
@@ -233,6 +236,25 @@ class TopicUnit:
         return self.actors.get(x_actor) != None
 
     def set_metrics(self):
+        good_affect_sum = 0
+        bad_affect_sum = 0
+        in_tribe_sum = 0
+        out_tribe_sum = 0
+        for x_factunit in self.factunits.values():
+            if x_factunit.is_good():
+                good_affect_sum += x_factunit.affect
+            elif x_factunit.is_bad():
+                bad_affect_sum += x_factunit.affect
+
+            if x_factunit.is_in_tribe():
+                in_tribe_sum += x_factunit.love
+            elif x_factunit.is_out_tribe():
+                out_tribe_sum += x_factunit.love
+
+        for x_factunit in self.factunits.values():
+            x_factunit.set_topic_affect_ratio(good_affect_sum, bad_affect_sum)
+            x_factunit.set_topic_love_ratio(in_tribe_sum, out_tribe_sum)
+
         self._calc_is_meaningful = self.is_meaningful()
         self._calc_is_tribal = self.is_tribal()
         self._calc_is_dialectic = self.is_dialectic()

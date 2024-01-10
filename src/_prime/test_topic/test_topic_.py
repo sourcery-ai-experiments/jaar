@@ -177,6 +177,23 @@ def test_TopicUnit_del_factunit_CorrectlySetsAttr():
     assert cook_topic.factunits.get(metal_road) != None
 
 
+def test_TopicUnit_get_factunit_ReturnsCorrectObj():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_topic = topicunit_shop(cook_road)
+    farm_road = create_road(cook_road, "farm food")
+    farm_affect = 3
+    cook_topic.set_factunit(factunit_shop(farm_road, farm_affect))
+
+    # WHEN
+    farm_factunit = cook_topic.get_factunit(farm_road)
+
+    # THEN
+    assert farm_factunit != None
+    assert farm_factunit.road == farm_road
+    assert farm_factunit.affect == farm_affect
+
+
 def test_TopicUnit_get_factunits_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
@@ -398,5 +415,11 @@ def test_create_topicunit_CorrectlyReturnsObj():
     assert cook_topic.factunits != {}
     farm_road = create_road(cook_road, farm_text)
     cheap_road = create_road(cook_road, cheap_text)
-    assert cook_topic.factunits.get(farm_road) == factunit_shop(farm_road, 1)
-    assert cook_topic.factunits.get(cheap_road) == factunit_shop(cheap_road, -1)
+    farm_factunit = factunit_shop(farm_road, 1)
+    cheap_factunit = factunit_shop(cheap_road, -1)
+    farm_factunit.set_topic_affect_ratio(1, -1)
+    cheap_factunit.set_topic_affect_ratio(1, -1)
+    farm_factunit.set_topic_love_ratio(1, -1)
+    cheap_factunit.set_topic_love_ratio(1, -1)
+    assert cook_topic.get_factunit(farm_road) == farm_factunit
+    assert cook_topic.get_factunit(cheap_road) == cheap_factunit
