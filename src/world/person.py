@@ -7,7 +7,7 @@ from src._prime.road import (
 )
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, economyunit_shop
-from src.world.pain import PainGenus, PainUnit, painunit_shop
+from src.world.problem import ProblemGenus, ProblemUnit, problemunit_shop
 
 
 class InvalidEconomyException(Exception):
@@ -19,27 +19,29 @@ class PersonUnit:
     pid: PersonID = None
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
-    _pains: dict[PainGenus:PainUnit] = None
+    _problems: dict[ProblemGenus:ProblemUnit] = None
     _road_delimiter: str = None
 
-    def create_painunit_from_genus(self, pain_genus: PainGenus):
-        self._pains[pain_genus] = painunit_shop(genus=pain_genus)
+    def create_problemunit_from_genus(self, problem_genus: ProblemGenus):
+        self._problems[problem_genus] = problemunit_shop(genus=problem_genus)
 
-    def set_painunit(self, painunit: PainUnit):
-        self._pains[painunit.genus] = painunit
+    def set_problemunit(self, problemunit: ProblemUnit):
+        self._problems[problemunit.genus] = problemunit
 
-    def get_painunit(self, pain_genus: PainGenus) -> PainUnit:
-        return self._pains.get(pain_genus)
+    def get_problemunit(self, problem_genus: ProblemGenus) -> ProblemUnit:
+        return self._problems.get(problem_genus)
 
-    def del_painunit(self, pain_genus: PainGenus):
-        self._pains.pop(pain_genus)
+    def del_problemunit(self, problem_genus: ProblemGenus):
+        self._problems.pop(problem_genus)
 
-    def set_painunits_weight_metrics(self):
-        total_painunits_weight = sum(
-            x_painunit.weight for x_painunit in self._pains.values()
+    def set_problemunits_weight_metrics(self):
+        total_problemunits_weight = sum(
+            x_problemunit.weight for x_problemunit in self._problems.values()
         )
-        for x_painunit in self._pains.values():
-            x_painunit.set_relative_weight(x_painunit.weight / total_painunits_weight)
+        for x_problemunit in self._problems.values():
+            x_problemunit.set_relative_weight(
+                x_problemunit.weight / total_problemunits_weight
+            )
 
     def set_economyunit(self, economy_id: EconomyID, replace: bool = False):
         if self.economyunit_exists(economy_id) == False or (
@@ -75,17 +77,17 @@ class PersonUnit:
             economyunit_x.economy_id: None for economyunit_x in self._economys.values()
         }
 
-    def get_pains_dict(self) -> dict:
+    def get_problems_dict(self) -> dict:
         return {
-            painunit_x.genus: painunit_x.get_dict()
-            for painunit_x in self._pains.values()
+            problemunit_x.genus: problemunit_x.get_dict()
+            for problemunit_x in self._problems.values()
         }
 
     def get_dict(self) -> dict:
         return {
             "pid": self.pid,
             "_economys": self.get_economys_dict(),
-            "_pains": self.get_pains_dict(),
+            "_problems": self.get_problems_dict(),
         }
 
 
@@ -98,7 +100,7 @@ def personunit_shop(
         pid=pid,
         person_dir=person_dir,
         _economys={},
-        _pains={},
+        _problems={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
 

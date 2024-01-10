@@ -14,7 +14,7 @@ from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.tools.python import get_empty_dict_if_none
 from src.economy.economy import EconomyID
-from src.world.pain import PainGenus
+from src.world.problem import ProblemGenus
 from src.world.person import PersonID
 from dataclasses import dataclass
 

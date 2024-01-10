@@ -10,16 +10,16 @@ def test_personunit_get_dict_CorrectlyGetsDict():
     xao_personunit.set_economyunit(diet_text)
 
     knee_text = "knee discomfort"
-    xao_personunit.create_painunit_from_genus(knee_text)
+    xao_personunit.create_problemunit_from_genus(knee_text)
 
     # WHEN
     xao_personunit_get_dict = xao_personunit.get_dict()
 
     # THEN
-    knee_painunit = xao_personunit.get_painunit(knee_text)
+    knee_problemunit = xao_personunit.get_problemunit(knee_text)
     xao_personunit_x_dict = {
         "pid": xao_text,
         "_economys": {diet_text: None},
-        "_pains": {knee_text: knee_painunit.get_dict()},
+        "_problems": {knee_text: knee_problemunit.get_dict()},
     }
     assert xao_personunit_x_dict == xao_personunit_get_dict

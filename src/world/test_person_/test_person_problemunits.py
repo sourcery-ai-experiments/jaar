@@ -1,12 +1,12 @@
 from src.world.person import personunit_shop
-from src.world.pain import painunit_shop, healerlink_shop, economylink_shop
+from src.world.problem import problemunit_shop, healerlink_shop, economylink_shop
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
     worlds_dir_setup_cleanup,
 )
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV1(
+def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -18,31 +18,31 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV1(
     bore_text = "bore"
     rain_text = "rain"
 
-    xao_personunit.set_painunit(painunit_shop(genus=knee_text, weight=60))
-    xao_personunit.set_painunit(painunit_shop(genus=bore_text, weight=35))
-    xao_personunit.set_painunit(painunit_shop(genus=rain_text, weight=5))
+    xao_personunit.set_problemunit(problemunit_shop(genus=knee_text, weight=60))
+    xao_personunit.set_problemunit(problemunit_shop(genus=bore_text, weight=35))
+    xao_personunit.set_problemunit(problemunit_shop(genus=rain_text, weight=5))
 
-    knee_painunit = xao_personunit.get_painunit(knee_text)
-    bore_painunit = xao_personunit.get_painunit(bore_text)
-    rain_painunit = xao_personunit.get_painunit(rain_text)
+    knee_problemunit = xao_personunit.get_problemunit(knee_text)
+    bore_problemunit = xao_personunit.get_problemunit(bore_text)
+    rain_problemunit = xao_personunit.get_problemunit(rain_text)
 
-    assert knee_painunit._relative_weight is None
-    assert bore_painunit._relative_weight is None
-    assert rain_painunit._relative_weight is None
+    assert knee_problemunit._relative_weight is None
+    assert bore_problemunit._relative_weight is None
+    assert rain_problemunit._relative_weight is None
 
     # WHEN
-    xao_personunit.set_painunits_weight_metrics()
+    xao_personunit.set_problemunits_weight_metrics()
 
     # THEN
-    assert knee_painunit._relative_weight == 0.6
-    assert bore_painunit._relative_weight == 0.35
-    assert rain_painunit._relative_weight == 0.05
-    assert knee_painunit._manager_importance == 0.6
-    assert bore_painunit._manager_importance == 0.35
-    assert rain_painunit._manager_importance == 0.05
+    assert knee_problemunit._relative_weight == 0.6
+    assert bore_problemunit._relative_weight == 0.35
+    assert rain_problemunit._relative_weight == 0.05
+    assert knee_problemunit._manager_importance == 0.6
+    assert bore_problemunit._manager_importance == 0.35
+    assert rain_problemunit._manager_importance == 0.05
 
 
-def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
+def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -54,9 +54,9 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     bore_genus = "bore"
     rain_genus = "rain"
 
-    x_knee_painunit = painunit_shop(knee_text, 60)
-    x_bore_painunit = painunit_shop(bore_genus, 35)
-    x_rain_painunit = painunit_shop(rain_genus, 5)
+    x_knee_problemunit = problemunit_shop(knee_text, 60)
+    x_bore_problemunit = problemunit_shop(bore_genus, 35)
+    x_rain_problemunit = problemunit_shop(rain_genus, 5)
 
     tim_text = "Tim"
     sue_text = "Sue"
@@ -75,33 +75,33 @@ def test_personunit_set_painunits_weight_metrics_SetsCorrectlyV2(
     bore_tim_healerlink.set_economylink(economylink_shop(plan3_economy_id, 8))
     rain_ray_healerlink.set_economylink(economylink_shop(plan3_economy_id, 11))
 
-    x_knee_painunit.set_healerlink(knee_tim_healerlink)
-    x_bore_painunit.set_healerlink(bore_sue_healerlink)
-    x_bore_painunit.set_healerlink(bore_tim_healerlink)
-    x_rain_painunit.set_healerlink(rain_ray_healerlink)
+    x_knee_problemunit.set_healerlink(knee_tim_healerlink)
+    x_bore_problemunit.set_healerlink(bore_sue_healerlink)
+    x_bore_problemunit.set_healerlink(bore_tim_healerlink)
+    x_rain_problemunit.set_healerlink(rain_ray_healerlink)
 
-    xao_personunit.set_painunit(x_knee_painunit)
-    xao_personunit.set_painunit(x_bore_painunit)
-    xao_personunit.set_painunit(x_rain_painunit)
+    xao_personunit.set_problemunit(x_knee_problemunit)
+    xao_personunit.set_problemunit(x_bore_problemunit)
+    xao_personunit.set_problemunit(x_rain_problemunit)
 
     # WHEN
-    xao_personunit.set_painunits_weight_metrics()
+    xao_personunit.set_problemunits_weight_metrics()
 
     # THEN
-    z_knee_painunit = xao_personunit.get_painunit(knee_text)
-    z_bore_painunit = xao_personunit.get_painunit(bore_genus)
-    z_rain_painunit = xao_personunit.get_painunit(rain_genus)
-    assert z_knee_painunit._relative_weight == 0.6
-    assert z_bore_painunit._relative_weight == 0.35
-    assert z_rain_painunit._relative_weight == 0.05
-    assert z_knee_painunit._manager_importance == 0.6
-    assert z_bore_painunit._manager_importance == 0.35
-    assert z_rain_painunit._manager_importance == 0.05
+    z_knee_problemunit = xao_personunit.get_problemunit(knee_text)
+    z_bore_problemunit = xao_personunit.get_problemunit(bore_genus)
+    z_rain_problemunit = xao_personunit.get_problemunit(rain_genus)
+    assert z_knee_problemunit._relative_weight == 0.6
+    assert z_bore_problemunit._relative_weight == 0.35
+    assert z_rain_problemunit._relative_weight == 0.05
+    assert z_knee_problemunit._manager_importance == 0.6
+    assert z_bore_problemunit._manager_importance == 0.35
+    assert z_rain_problemunit._manager_importance == 0.05
 
-    z_knee_tim_healerlink = z_knee_painunit.get_healerlink(tim_text)
-    z_bore_tim_healerlink = z_bore_painunit.get_healerlink(tim_text)
-    z_bore_sue_healerlink = z_bore_painunit.get_healerlink(sue_text)
-    z_rain_ray_healerlink = z_rain_painunit.get_healerlink(ray_text)
+    z_knee_tim_healerlink = z_knee_problemunit.get_healerlink(tim_text)
+    z_bore_tim_healerlink = z_bore_problemunit.get_healerlink(tim_text)
+    z_bore_sue_healerlink = z_bore_problemunit.get_healerlink(sue_text)
+    z_rain_ray_healerlink = z_rain_problemunit.get_healerlink(ray_text)
 
     assert z_knee_tim_healerlink._manager_importance == 0.6
     assert z_bore_tim_healerlink._manager_importance == 0.21

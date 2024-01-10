@@ -1,5 +1,5 @@
 from src._prime.road import default_road_delimiter_if_none
-from src.world.pain import painunit_shop, healerlink_shop, economylink_shop
+from src.world.problem import problemunit_shop, healerlink_shop, economylink_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
@@ -8,7 +8,7 @@ from src.world.examples.world_env_kit import (
     worlds_dir_setup_cleanup,
 )
 
-from src.world.person import personunit_shop, painunit_shop
+from src.world.person import personunit_shop, problemunit_shop
 from pytest import raises as pytest_raises
 
 
@@ -175,9 +175,9 @@ def test_worldunit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_c
     luca_text = "Luca"
     x_world.set_personunit(luca_text)
     luca_person = x_world.get_personunit_from_memory(luca_text)
-    luca_person.set_painunit(painunit_shop("Bob"))
+    luca_person.set_problemunit(problemunit_shop("Bob"))
     assert x_world.personunit_exists(luca_text)
-    assert len(x_world._personunits.get(luca_text)._pains) == 1
+    assert len(x_world._personunits.get(luca_text)._problems) == 1
 
     # WHEN
     luca_person_dir = f"{x_world._persons_dir}/{luca_text}"
@@ -186,7 +186,7 @@ def test_worldunit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_c
     )
 
     # THEN
-    assert len(x_world._personunits.get(luca_text)._pains) == 0
+    assert len(x_world._personunits.get(luca_text)._problems) == 0
 
 
 def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson(
@@ -237,7 +237,7 @@ def test_worldunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
     rest_text = "rest"
     x_world.create_person_economy(
         person_id=xao_text,
-        pain_genus=knee_text,
+        problem_genus=knee_text,
         healer_id=tim_text,
         economy_id=rest_text,
     )
@@ -246,11 +246,11 @@ def test_worldunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
     xao_personunit = x_world.get_personunit_from_memory(xao_text)
     tim_healerlink = healerlink_shop(tim_text)
     tim_healerlink.set_economylink(economylink_shop(rest_text))
-    static_knee_painunit = painunit_shop(knee_text)
-    static_knee_painunit.set_healerlink(tim_healerlink)
-    gen_knee_painunit = xao_personunit.get_painunit(knee_text)
-    assert gen_knee_painunit._healerlinks == static_knee_painunit._healerlinks
-    assert gen_knee_painunit == static_knee_painunit
+    static_knee_problemunit = problemunit_shop(knee_text)
+    static_knee_problemunit.set_healerlink(tim_healerlink)
+    gen_knee_problemunit = xao_personunit.get_problemunit(knee_text)
+    assert gen_knee_problemunit._healerlinks == static_knee_problemunit._healerlinks
+    assert gen_knee_problemunit == static_knee_problemunit
     assert xao_personunit.get_economyunit(rest_text) is None
 
     tim_personunit = x_world.get_personunit_from_memory(tim_text)

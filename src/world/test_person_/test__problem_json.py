@@ -1,4 +1,4 @@
-from src.world.pain import painunit_shop, economylink_shop, healerlink_shop
+from src.world.problem import problemunit_shop, economylink_shop, healerlink_shop
 
 
 def test_economylink_get_dict_ReturnsCorrectDict():
@@ -38,11 +38,11 @@ def test_healerlink_get_dict_ReturnsCorrectDict():
     }
 
 
-def test_painunit_get_dict_ReturnsCorrectDict():
+def test_problemunit_get_dict_ReturnsCorrectDict():
     # GIVEN
     knee_text = "knee discomfort"
     knee_weight = 13
-    knee_painunit = painunit_shop(genus=knee_text, weight=knee_weight)
+    knee_problemunit = problemunit_shop(genus=knee_text, weight=knee_weight)
 
     yao_text = "yao"
     yao_weight = 7
@@ -53,10 +53,10 @@ def test_painunit_get_dict_ReturnsCorrectDict():
     diet_economylink = economylink_shop(economy_id=diet_text, weight=diet_weight)
     yao_healerlink.set_economylink(diet_economylink)
 
-    knee_painunit.set_healerlink(yao_healerlink)
+    knee_problemunit.set_healerlink(yao_healerlink)
 
     # WHEN
-    knee_dict = knee_painunit.get_dict()
+    knee_dict = knee_problemunit.get_dict()
 
     # THEN
     print(f"{knee_dict.keys()=}")

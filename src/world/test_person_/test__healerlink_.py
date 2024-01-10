@@ -1,4 +1,4 @@
-from src.world.pain import HealerLink, healerlink_shop
+from src.world.problem import HealerLink, healerlink_shop
 
 
 def test_healerlink_exists():

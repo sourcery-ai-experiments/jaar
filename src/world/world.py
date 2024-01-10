@@ -6,7 +6,12 @@ from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
 
 # from src.world.lobby import EconomyDELETEMEaddress, RequestUnit
-from src.world.pain import PainGenus, painunit_shop, healerlink_shop, economylink_shop
+from src.world.problem import (
+    ProblemGenus,
+    problemunit_shop,
+    healerlink_shop,
+    economylink_shop,
+)
 from src.world.person import PersonID, PersonUnit, personunit_shop
 from dataclasses import dataclass
 
@@ -185,8 +190,8 @@ class WorldUnit:
     def get_priority_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
         x_agenda = agendaunit_shop(person_id)
-        for x_painunit in x_personunit._pains.values():
-            for x_healerlink in x_painunit._healerlinks.values():
+        for x_problemunit in x_personunit._problems.values():
+            for x_healerlink in x_problemunit._healerlinks.values():
                 healer_personunit = self.get_personunit_from_memory(
                     x_healerlink.person_id
                 )
@@ -202,18 +207,18 @@ class WorldUnit:
     def create_person_economy(
         self,
         person_id: PersonID,
-        pain_genus: PainGenus,
+        problem_genus: ProblemGenus,
         healer_id: PersonID,
         economy_id: EconomyID,
     ):
         x_healerlink = healerlink_shop(healer_id)
         x_healerlink.set_economylink(economylink_shop(economy_id))
-        x_painunit = painunit_shop(pain_genus)
-        x_painunit.set_healerlink(x_healerlink)
+        x_problemunit = problemunit_shop(problem_genus)
+        x_problemunit.set_healerlink(x_healerlink)
 
         self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_personunit.set_painunit(x_painunit)
+        x_personunit.set_problemunit(x_problemunit)
 
         self.set_personunit(healer_id, replace_personunit=False, replace_alert=False)
         x_healerunit = self.get_personunit_from_memory(healer_id)

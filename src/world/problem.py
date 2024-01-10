@@ -87,13 +87,13 @@ def healerlink_shop(
     )
 
 
-class PainGenus(str):  # Created to help track the concept
+class ProblemGenus(str):  # Created to help track the concept
     pass
 
 
 @dataclass
-class PainUnit:
-    genus: PainGenus
+class ProblemUnit:
+    genus: ProblemGenus
     weight: float = None
     _healerlinks: dict[PersonID:HealerLink] = None
     _relative_weight: float = None
@@ -143,7 +143,7 @@ class PainUnit:
         }
 
 
-def painunit_shop(genus: PainGenus, weight: float = None) -> PainUnit:
+def problemunit_shop(genus: ProblemGenus, weight: float = None) -> ProblemUnit:
     if weight is None:
         weight = 1
-    return PainUnit(genus=genus, weight=weight, _healerlinks={})
+    return ProblemUnit(genus=genus, weight=weight, _healerlinks={})

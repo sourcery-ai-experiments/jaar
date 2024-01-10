@@ -1,6 +1,6 @@
 from src._prime.road import create_road, default_road_delimiter_if_none
 from src.world.person import PersonUnit, personunit_shop
-from src.world.pain import painunit_shop
+from src.world.problem import problemunit_shop
 from pytest import raises as pytest_raises
 
 
@@ -12,7 +12,7 @@ def test_personunit_exists():
     assert x_person.pid is None
     assert x_person.person_dir is None
     assert x_person._economys is None
-    assert x_person._pains is None
+    assert x_person._problems is None
     assert x_person._road_delimiter is None
 
 
@@ -27,7 +27,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person.pid == dallas_text
     assert x_person.person_dir == ""
     assert x_person._economys == {}
-    assert x_person._pains == {}
+    assert x_person._problems == {}
     assert x_person._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -157,7 +157,7 @@ def test_personunit_del_economyunit_CorrectlyDeletesEconomyUnit():
     assert after_diet_economy is None
 
 
-def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
+def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -165,15 +165,15 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
 
     # WHEN
     knee_text = "knee discomfort"
-    xao_person_obj.create_painunit_from_genus(knee_text)
+    xao_person_obj.create_problemunit_from_genus(knee_text)
 
     # THEN
-    knee_pain = xao_person_obj._pains.get(knee_text)
-    assert knee_pain != None
-    assert knee_pain.genus == knee_text
+    knee_problem = xao_person_obj._problems.get(knee_text)
+    assert knee_problem != None
+    assert knee_problem.genus == knee_text
 
 
-def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
+def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -181,45 +181,45 @@ def test_personunit_create_painunit_from_genus_CorrectlyCreatesPainUnit():
 
     # WHEN
     knee_text = "knee discomfort"
-    knee_painunit = painunit_shop(knee_text)
-    xao_person_obj.set_painunit(knee_painunit)
+    knee_problemunit = problemunit_shop(knee_text)
+    xao_person_obj.set_problemunit(knee_problemunit)
 
     # THEN
-    knee_pain = xao_person_obj._pains.get(knee_text)
-    assert knee_pain != None
-    assert knee_pain.genus == knee_text
+    knee_problem = xao_person_obj._problems.get(knee_text)
+    assert knee_problem != None
+    assert knee_problem.genus == knee_text
 
 
-def test_personunit_get_painunit_CorrectlyGetsPainUnit():
+def test_personunit_get_problemunit_CorrectlyGetsProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
-    xao_person_obj.create_painunit_from_genus(knee_text)
+    xao_person_obj.create_problemunit_from_genus(knee_text)
 
     # WHEN
-    knee_pain = xao_person_obj.get_painunit(knee_text)
+    knee_problem = xao_person_obj.get_problemunit(knee_text)
 
     # THEN
-    assert knee_pain != None
-    assert knee_pain.genus == knee_text
+    assert knee_problem != None
+    assert knee_problem.genus == knee_text
 
 
-def test_personunit_del_painunit_CorrectlyDeletesPainUnit():
+def test_personunit_del_problemunit_CorrectlyDeletesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
-    xao_person_obj.create_painunit_from_genus(knee_text)
-    before_knee_pain = xao_person_obj.get_painunit(knee_text)
-    assert before_knee_pain != None
-    assert before_knee_pain.genus == knee_text
+    xao_person_obj.create_problemunit_from_genus(knee_text)
+    before_knee_problem = xao_person_obj.get_problemunit(knee_text)
+    assert before_knee_problem != None
+    assert before_knee_problem.genus == knee_text
 
     # WHEN
-    xao_person_obj.del_painunit(knee_text)
+    xao_person_obj.del_problemunit(knee_text)
 
     # THEN
-    after_knee_pain = xao_person_obj.get_painunit(knee_text)
-    assert after_knee_pain is None
+    after_knee_problem = xao_person_obj.get_problemunit(knee_text)
+    assert after_knee_problem is None

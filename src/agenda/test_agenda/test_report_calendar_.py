@@ -16,7 +16,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v002 as example_agendas_agenda_v002,
 )
 from src.tools.file import open_file
-from src.world.person import personunit_shop, painunit_shop
+from src.world.person import personunit_shop, problemunit_shop
 from pytest import raises as pytest_raises
 
 # from src.agenda.reporting import CalendarRangeUnit

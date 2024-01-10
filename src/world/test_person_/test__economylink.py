@@ -1,4 +1,4 @@
-from src.world.pain import EconomyLink, economylink_shop
+from src.world.problem import EconomyLink, economylink_shop
 
 
 def test_economylink_exists():

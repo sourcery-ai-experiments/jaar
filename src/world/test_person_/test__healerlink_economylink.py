@@ -1,4 +1,4 @@
-from src.world.pain import economylink_shop, healerlink_shop
+from src.world.problem import economylink_shop, healerlink_shop
 
 
 def test_healerlink_set_economylink_CorrectlySetsObj():
@@ -12,7 +12,7 @@ def test_healerlink_set_economylink_CorrectlySetsObj():
     yao_healerlink.set_economylink(diet_economylink)
 
     # THEN
-    # diet_economy = xao_pain.get_economy()
+    # diet_economy = xao_problem.get_economy()
     diet_economy = yao_healerlink._economylinks.get(diet_text)
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
