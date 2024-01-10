@@ -1,21 +1,43 @@
 from src._prime.road import (
     RoadUnit,
-    is_sub_road,
-    RoadNode,
-    create_road,
-    get_diff_road,
-    default_road_delimiter_if_none,
-    get_terminus_node,
-    get_parent_road_from_road,
     PersonRoad,
     PersonID,
-    EconomyID,
 )
-from src._prime.topic import TopicUnit, create_topicunit
-from src.agenda.group import GroupBrand
-from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
+from src._prime.topic import TopicUnit, create_topicunit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
+
+
+class SectionID(int):
+    pass
+
+
+@dataclass
+class SectionUnit:
+    uid: SectionID = None
+    _topiclinks: dict[PersonRoad, TopicLink] = None
+
+    def set_topiclink(self, x_topiclink: TopicLink):
+        self._topiclinks[x_topiclink.base] = x_topiclink
+
+    def get_topiclink(self, topiclink_base: PersonRoad) -> TopicLink:
+        return self._topiclinks.get(topiclink_base)
+
+    def topiclink_exists(self, topiclink_base: PersonRoad) -> bool:
+        return self.get_topiclink(topiclink_base) != None
+
+    def del_topiclink(self, topiclink_base: PersonRoad):
+        self._topiclinks.pop(topiclink_base)
+
+    def get_section_id(self) -> SectionID:
+        return f"Section {self.uid:04d}"
+
+
+def sectionunit_shop(
+    uid: SectionID,
+    _topiclinks: dict[PersonRoad, TopicLink] = None,
+):
+    return SectionUnit(uid=uid, _topiclinks=get_empty_dict_if_none(_topiclinks))
 
 
 class WantSubRoadUnitException(Exception):
@@ -27,6 +49,30 @@ class DealUnit:
     _author: PersonID = None
     _reader: PersonID = None
     _topicunits: dict[PersonRoad:TopicUnit] = None
+    _sectionunits: dict[SectionID:SectionUnit] = None
+
+    def set_sectionunit(self, x_sectionunit: SectionUnit):
+        self._sectionunits[x_sectionunit.uid] = x_sectionunit
+
+    def get_sectionunit(self, x_section_id: SectionID) -> SectionUnit:
+        return self._sectionunits.get(x_section_id)
+
+    def sectionunit_exists(self, x_section_id: SectionID) -> bool:
+        return self.get_sectionunit(x_section_id) != None
+
+    def del_sectionunit(self, x_section_id: SectionID):
+        self._sectionunits.pop(x_section_id)
+
+    def add_sectionunit(self) -> SectionUnit:
+        next_section_int = self._get_max_sectionunit_uid() + 1
+        self.set_sectionunit(sectionunit_shop(uid=next_section_int))
+        return self.get_sectionunit(next_section_int)
+
+    def _get_max_sectionunit_uid(self) -> SectionID:
+        max_sectionunit_uid = 0
+        for x_sectionunit in self._sectionunits.values():
+            max_sectionunit_uid = max(x_sectionunit.uid, max_sectionunit_uid)
+        return max_sectionunit_uid
 
     def is_meaningful(self) -> bool:
         return next(
@@ -85,7 +131,10 @@ class DealUnit:
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
     return DealUnit(
-        _author=_author, _reader=_reader, _topicunits=get_empty_dict_if_none(None)
+        _author=_author,
+        _reader=_reader,
+        _topicunits=get_empty_dict_if_none(None),
+        _sectionunits=get_empty_dict_if_none(None),
     )
 
 

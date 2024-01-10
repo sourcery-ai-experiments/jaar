@@ -74,6 +74,25 @@ def opinionunit_shop(
     return x_opinionunit
 
 
+@dataclass
+class TopicLink:
+    base: PersonRoad = None
+    action: bool = None
+    weight: float = None
+
+
+def topiclink_shop(
+    base: PersonRoad,
+    action: bool = None,
+    weight: float = None,
+) -> TopicLink:
+    if weight is None:
+        weight = 1
+    if action is None:
+        action = False
+    return TopicLink(base=base, action=action, weight=weight)
+
+
 class TopicSubRoadUnitException(Exception):
     pass
 

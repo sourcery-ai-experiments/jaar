@@ -21,6 +21,7 @@ def test_DealUnit_exists():
     assert x_dealunit._author is None
     assert x_dealunit._reader is None
     assert x_dealunit._topicunits is None
+    assert x_dealunit._sectionunits is None
 
 
 def test_dealunit_shop_ReturnsCorrectObj():
@@ -35,6 +36,7 @@ def test_dealunit_shop_ReturnsCorrectObj():
     assert farm_dealunit._author == bob_text
     assert farm_dealunit._reader == tim_text
     assert farm_dealunit._topicunits == {}
+    assert farm_dealunit._sectionunits == {}
 
 
 def test_DealUnit_set_topicunit_SetsAttrCorrectly():
