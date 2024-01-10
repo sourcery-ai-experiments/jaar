@@ -55,12 +55,12 @@ def factunit_shop(
     return x_factunit
 
 
-class IssueSubRoadUnitException(Exception):
+class TopicSubRoadUnitException(Exception):
     pass
 
 
 @dataclass
-class IssueUnit:
+class TopicUnit:
     base: PersonRoad = None
     action: bool = None
     actors: dict[PersonID:PersonID] = None
@@ -127,8 +127,8 @@ class IssueUnit:
 
     def set_factunit(self, x_factunit: FactUnit, set_metrics: bool = True):
         if is_sub_road(x_factunit.road, self.base) == False:
-            raise IssueSubRoadUnitException(
-                f"IssueUnit cannot set factunit '{x_factunit.road}' because base road is '{self.base}'."
+            raise TopicSubRoadUnitException(
+                f"TopicUnit cannot set factunit '{x_factunit.road}' because base road is '{self.base}'."
             )
         self.factunits[x_factunit.road] = x_factunit
         if set_metrics:
@@ -219,7 +219,7 @@ class IssueUnit:
         self._calc_is_dialectic = self.is_dialectic()
 
 
-def issueunit_shop(
+def topicunit_shop(
     base: PersonRoad,
     action: bool = None,
     factunits: dict[PersonRoad:FactUnit] = None,
@@ -228,7 +228,7 @@ def issueunit_shop(
     if action is None:
         action = False
 
-    return IssueUnit(
+    return TopicUnit(
         base=base,
         action=action,
         factunits=get_empty_dict_if_none(factunits),
@@ -240,13 +240,13 @@ def issueunit_shop(
     )
 
 
-def create_issueunit(
+def create_topicunit(
     base: PersonRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
-    x_issueunit = issueunit_shop(base=base)
+    x_topicunit = topicunit_shop(base=base)
     good_factunit = factunit_shop(create_road(base, good, delimiter=delimiter), 1)
     bad_factunit = factunit_shop(create_road(base, bad, delimiter=delimiter), -1)
-    x_issueunit.set_factunit(good_factunit)
-    x_issueunit.set_factunit(bad_factunit)
-    if x_issueunit.is_meaningful():
-        return x_issueunit
+    x_topicunit.set_factunit(good_factunit)
+    x_topicunit.set_factunit(bad_factunit)
+    if x_topicunit.is_meaningful():
+        return x_topicunit

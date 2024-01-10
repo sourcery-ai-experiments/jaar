@@ -34,7 +34,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario1():
     x_lemmas_x = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=0, _close=12)
     src_idea = ideaunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
@@ -57,7 +57,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario2():
     x_lemmas_x = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
     tr1 = create_road(idea_kid._parent_road, idea_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
@@ -78,7 +78,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario3_denom():
     x_lemmas = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
@@ -107,7 +107,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario3_2_denom():
     x_lemmas = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     ex_idea = ideaunit_shop("range_x", _parent_road=hist_road, _begin=0, _close=10080)
     idea_kid = ideaunit_shop(
         _label="timerange1",
@@ -132,7 +132,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario4_denomReest():
     x_lemmas_x = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
@@ -161,7 +161,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario5_denomReest():
     x_lemmas_x = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
@@ -187,7 +187,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario5_denomReest():
 
 def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     # GIVEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     x_lemmas_x = lemmas_shop()
     idea_src = ideaunit_shop(
         _label="timerange1",
@@ -262,7 +262,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario7_denomReest():
     x_lemmas_x = lemmas_shop()
 
     # WHEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     idea_kid = ideaunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
@@ -302,7 +302,7 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenEmpty():
 
 def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     # GIVEN 2 in x_lemmas
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     x_lemmas_x = lemmas_shop()
     x_lemmas_x.lemmas = {}
     src_idea = ideaunit_shop(
@@ -338,7 +338,7 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
 
 def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     # GIVEN
-    hist_road = create_road(root_label(), "history")
+    hist_road = create_road(root_label(), "histoory")
     z_lemmas = lemmas_shop()
     z_lemmas.lemmas = {}
     src_idea = ideaunit_shop(

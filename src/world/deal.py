@@ -9,7 +9,7 @@ from src._prime.road import (
     get_parent_road_from_road,
     PersonRoad,
 )
-from src._prime.issue import IssueUnit, create_issueunit
+from src._prime.topic import TopicUnit, create_topicunit
 from src.agenda.group import GroupBrand
 from src.agenda.idea import ideaunit_shop, IdeaUnit, ideaattrfilter_shop
 from src.tools.python import get_empty_dict_if_none
@@ -27,66 +27,66 @@ class WantSubRoadUnitException(Exception):
 class DealUnit:
     _author: PersonID = None
     _reader: PersonID = None
-    _issueunits: dict[PersonRoad:IssueUnit] = None
+    _topicunits: dict[PersonRoad:TopicUnit] = None
 
     def is_meaningful(self) -> bool:
         return next(
             (
                 False
-                for x_issueunit in self._issueunits.values()
-                if x_issueunit.is_meaningful() == False
+                for x_topicunit in self._topicunits.values()
+                if x_topicunit.is_meaningful() == False
             ),
-            self._issueunits != {},
+            self._topicunits != {},
         )
 
-    def set_issueunit(self, x_issueunit: IssueUnit, actor: PersonID = None):
-        self._issueunits[x_issueunit.base] = x_issueunit
+    def set_topicunit(self, x_topicunit: TopicUnit, actor: PersonID = None):
+        self._topicunits[x_topicunit.base] = x_topicunit
         if actor != None:
-            self.set_actor(actor, x_issueunit.base)
+            self.set_actor(actor, x_topicunit.base)
 
-    def issueunit_exists(self, issuebase: PersonRoad) -> bool:
-        return self._issueunits.get(issuebase) != None
+    def topicunit_exists(self, topicbase: PersonRoad) -> bool:
+        return self._topicunits.get(topicbase) != None
 
-    def get_issueunit(self, personroad: PersonRoad) -> IssueUnit:
-        return self._issueunits.get(personroad)
+    def get_topicunit(self, personroad: PersonRoad) -> TopicUnit:
+        return self._topicunits.get(personroad)
 
-    def del_issueunit(self, personroad: PersonRoad):
-        self._issueunits.pop(personroad)
+    def del_topicunit(self, personroad: PersonRoad):
+        self._topicunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, issuebase: PersonRoad):
-        if self.issueunit_exists(issuebase):
-            x_issueunit = self.get_issueunit(issuebase)
-            x_issueunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, topicbase: PersonRoad):
+        if self.topicunit_exists(topicbase):
+            x_topicunit = self.get_topicunit(topicbase)
+            x_topicunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, issuebase: PersonRoad):
-        if self.issueunit_exists(issuebase):
-            x_issueunit = self.get_issueunit(issuebase)
-            x_issueunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, topicbase: PersonRoad):
+        if self.topicunit_exists(topicbase):
+            x_topicunit = self.get_topicunit(topicbase)
+            x_topicunit.del_actor(actor)
 
-    def get_actor_issueunits(
+    def get_actor_topicunits(
         self, actor: PersonID, action_filter: bool = None
-    ) -> dict[RoadUnit:IssueUnit]:
+    ) -> dict[RoadUnit:TopicUnit]:
         return {
-            x_base: x_issue
-            for x_base, x_issue in self._issueunits.items()
-            if x_issue.actor_exists(actor)
-            and (x_issue.action == action_filter or action_filter is None)
+            x_base: x_topic
+            for x_base, x_topic in self._topicunits.items()
+            if x_topic.actor_exists(actor)
+            and (x_topic.action == action_filter or action_filter is None)
         }
 
-    def actor_has_issue(self, actor: PersonID, action_filter: bool = None) -> bool:
-        return self.get_actor_issueunits(actor, action_filter=action_filter) != {}
+    def actor_has_topic(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_topicunits(actor, action_filter=action_filter) != {}
 
-    def actors_has_issues(self, actor_dict: dict[PersonID]):
+    def actors_has_topics(self, actor_dict: dict[PersonID]):
         x_bool = True
         for x_actor in actor_dict:
-            if self.actor_has_issue(x_actor) == False:
+            if self.actor_has_topic(x_actor) == False:
                 x_bool = False
         return x_bool
 
 
 def dealunit_shop(_author: PersonID, _reader: PersonID):
     return DealUnit(
-        _author=_author, _reader=_reader, _issueunits=get_empty_dict_if_none(None)
+        _author=_author, _reader=_reader, _topicunits=get_empty_dict_if_none(None)
     )
 
 

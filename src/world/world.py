@@ -64,7 +64,7 @@ class WorldUnit:
 
     #     # add ideas to requester_contract_agenda
     #     fix_weight = x_requestunit._fix_weight
-    #     wantunit_ideas = x_requestunit._wantunit.get_issueunit_ideas(fix_weight)
+    #     wantunit_ideas = x_requestunit._wantunit.get_topicunit_ideas(fix_weight)
     #     for x_idea in wantunit_ideas.values():
     #         # TODO ideas should not be added if they already exist. Create test, then change code
     #         requester_contract.add_idea(x_idea, parent_road=x_idea._parent_road)
