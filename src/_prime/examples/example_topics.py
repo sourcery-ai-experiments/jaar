@@ -2,7 +2,7 @@ from src._prime.road import (
     create_road,
     create_economyaddress,
 )
-from src._prime.topic import topicunit_shop, factunit_shop, TopicUnit
+from src._prime.topic import topicunit_shop, opinionunit_shop, TopicUnit
 
 
 def get_cooking_topic() -> TopicUnit:
@@ -14,14 +14,14 @@ def get_cooking_topic() -> TopicUnit:
     fresh_road = create_road(cook_road, "farm fresh")
     resin_road = create_road(cook_road, "plastic pots")
     metal_road = create_road(cook_road, "metal pots")
-    fresh_fact = factunit_shop(fresh_road, affect=3)
-    cheap_fact = factunit_shop(cheap_road, affect=-2)
-    metal_fact = factunit_shop(metal_road, affect=7)
-    resin_fact = factunit_shop(resin_road, affect=-5)
-    cook_topic.set_factunit(cheap_fact)
-    cook_topic.set_factunit(fresh_fact)
-    cook_topic.set_factunit(resin_fact)
-    cook_topic.set_factunit(metal_fact)
+    fresh_opinion = opinionunit_shop(fresh_road, affect=3)
+    cheap_opinion = opinionunit_shop(cheap_road, affect=-2)
+    metal_opinion = opinionunit_shop(metal_road, affect=7)
+    resin_opinion = opinionunit_shop(resin_road, affect=-5)
+    cook_topic.set_opinionunit(cheap_opinion)
+    cook_topic.set_opinionunit(fresh_opinion)
+    cook_topic.set_opinionunit(resin_opinion)
+    cook_topic.set_opinionunit(metal_opinion)
     return cook_topic
 
 
@@ -33,10 +33,10 @@ def get_climate_topic() -> TopicUnit:
 
     crazy_road = create_road(climate_road, "crazy weather")
     usual_road = create_road(climate_road, "usual weather")
-    crazy_fact = factunit_shop(crazy_road, affect=-2)
-    usual_fact = factunit_shop(usual_road, affect=3)
-    climate_topic.set_factunit(crazy_fact)
-    climate_topic.set_factunit(usual_fact)
+    crazy_opinion = opinionunit_shop(crazy_road, affect=-2)
+    usual_opinion = opinionunit_shop(usual_road, affect=3)
+    climate_topic.set_opinionunit(crazy_opinion)
+    climate_topic.set_opinionunit(usual_opinion)
     return climate_topic
 
 
@@ -48,10 +48,10 @@ def get_speedboats_action_topic() -> TopicUnit:
 
     stop_road = create_road(climate_road, "stop using")
     keep_road = create_road(climate_road, "keep using")
-    stop_fact = factunit_shop(stop_road, affect=3)
-    keep_fact = factunit_shop(keep_road, affect=-5)
-    climate_topic.set_factunit(stop_fact)
-    climate_topic.set_factunit(keep_fact)
+    stop_opinion = opinionunit_shop(stop_road, affect=3)
+    keep_opinion = opinionunit_shop(keep_road, affect=-5)
+    climate_topic.set_opinionunit(stop_opinion)
+    climate_topic.set_opinionunit(keep_opinion)
     return climate_topic
 
 
@@ -62,8 +62,8 @@ def get_gasheater_action_topic() -> TopicUnit:
     gasheater_topic = topicunit_shop(gasheater_road, action=True)
 
     keep_road = create_road(gasheater_road, "keep using")
-    keep_fact = factunit_shop(keep_road, affect=3)
-    gasheater_topic.set_factunit(keep_fact)
+    keep_opinion = opinionunit_shop(keep_road, affect=3)
+    gasheater_topic.set_opinionunit(keep_opinion)
     return gasheater_topic
 
 
@@ -76,10 +76,10 @@ def get_childcare_topic() -> TopicUnit:
 
     school_road = create_road(childcare_road, "school most beneficial for kids")
     home_road = create_road(childcare_road, "home most beneficial for kids")
-    school_fact = factunit_shop(school_road, affect=3)
-    home_fact = factunit_shop(home_road, affect=-4)
-    childcare_topic.set_factunit(school_fact)
-    childcare_topic.set_factunit(home_fact)
+    school_opinion = opinionunit_shop(school_road, affect=3)
+    home_opinion = opinionunit_shop(home_road, affect=-4)
+    childcare_topic.set_opinionunit(school_opinion)
+    childcare_topic.set_opinionunit(home_opinion)
     return childcare_topic
 
 
@@ -92,8 +92,8 @@ def get_helen_action_topic() -> TopicUnit:
 
     in_school_road = create_road(helen_road, "kids in school")
     no_school_road = create_road(helen_road, "kids not in school")
-    in_school_fact = factunit_shop(in_school_road, affect=3)
-    no_school_fact = factunit_shop(no_school_road, affect=-4)
-    helen_topic.set_factunit(in_school_fact)
-    helen_topic.set_factunit(no_school_fact)
+    in_school_opinion = opinionunit_shop(in_school_road, affect=3)
+    no_school_opinion = opinionunit_shop(no_school_road, affect=-4)
+    helen_topic.set_opinionunit(in_school_opinion)
+    helen_topic.set_opinionunit(no_school_opinion)
     return helen_topic

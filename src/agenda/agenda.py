@@ -2030,7 +2030,7 @@ class AgendaUnit:
     ):
         if self.get_party(assignor_pid) != None:
             # get all partys that are both in self._partys and assignor_known_partys
-            partys_set = get_intersection_of_partys(self._partys, assignor_partys)
+            partys_set = get_intersecttion_of_partys(self._partys, assignor_partys)
             for partypid_x in partys_set:
                 agenda_x.set_partyunit(partyunit=self.get_party(partypid_x))
         return agenda_x
@@ -2284,13 +2284,13 @@ def get_meld_of_agenda_files(
     return primary_agenda
 
 
-def get_intersection_of_partys(
+def get_intersecttion_of_partys(
     partys_x: dict[PartyPID:PartyUnit], partys_y: dict[PartyPID:PartyUnit]
 ) -> dict[PartyPID:-1]:
     x_set = set(partys_x)
     y_set = set(partys_y)
-    intersection_x = x_set.intersection(y_set)
-    return {partypid_x: -1 for partypid_x in intersection_x}
+    intersecttion_x = x_set.intersection(y_set)
+    return {partypid_x: -1 for partypid_x in intersecttion_x}
 
 
 def get_partys_relevant_groups(

@@ -4,7 +4,7 @@
 # )
 from src._prime.road import create_road
 from src._prime.topic import topicunit_shop
-from src.world.deal import DealUnit, dealunit_shop
+from src._prime.deal import DealUnit, dealunit_shop
 from src._prime.examples.example_topics import (
     get_cooking_topic,
     get_speedboats_action_topic,

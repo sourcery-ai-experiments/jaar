@@ -1,11 +1,10 @@
 from src._prime.road import default_road_delimiter_if_none, RoadUnit
-from src.agenda.party import partylink_shop
-from src.agenda.group import groupunit_shop
-from src.agenda.idea import assigned_unit_shop
+
+# from src.agenda.party import partylink_shop
+# from src.agenda.group import groupunit_shop
+# from src.agenda.idea import assigned_unit_shop
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
-
-# from src.world.lobby import EconomyDELETEMEaddress, RequestUnit
 from src.world.problem import (
     ProblemGenus,
     problemunit_shop,
@@ -116,11 +115,11 @@ class WorldUnit:
     #             requester_contract.edit_idea_attr(
     #                 idea_road,
     #                 reason_base=x_isssue.base,
-    #                 reason_premise=x_isssue.get_1_factunit(bad=True),
+    #                 reason_premise=x_isssue.get_1_opinionunit(bad=True),
     #             )
 
     #     requester_contract.set_belief(
-    #         x_isssue.base, pick=x_isssue.get_1_factunit(bad=True)
+    #         x_isssue.base, pick=x_isssue.get_1_opinionunit(bad=True)
     #     )
     #     requester_clerkunit.save_contract_agenda(requester_contract)
     #     requester_clerkunit.save_refreshed_output_to_public()

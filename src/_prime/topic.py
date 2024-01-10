@@ -16,7 +16,7 @@ class NoneZeroAffectException(Exception):
 
 
 @dataclass
-class FactUnit:
+class OpinionUnit:
     road: RoadUnit
     affect: float = None
     love: float = None
@@ -65,13 +65,13 @@ class FactUnit:
         return self.love == 0
 
 
-def factunit_shop(
+def opinionunit_shop(
     road: PersonRoad, affect: float = None, love: float = None
-) -> FactUnit:
-    x_factunit = FactUnit(road=road)
-    x_factunit.set_affect(affect)
-    x_factunit.set_love(love)
-    return x_factunit
+) -> OpinionUnit:
+    x_opinionunit = OpinionUnit(road=road)
+    x_opinionunit.set_affect(affect)
+    x_opinionunit.set_love(love)
+    return x_opinionunit
 
 
 class TopicSubRoadUnitException(Exception):
@@ -83,7 +83,7 @@ class TopicUnit:
     base: PersonRoad = None
     action: bool = None
     actors: dict[PersonID:PersonID] = None
-    factunits: dict[PersonRoad:FactUnit] = None
+    opinionunits: dict[PersonRoad:OpinionUnit] = None
     delimiter: str = None
     _calc_is_meaningful: bool = None
     _calc_is_tribal: bool = None
@@ -95,33 +95,33 @@ class TopicUnit:
     def is_dialectic(self):
         good_in_tribe_road = next(
             (
-                x_factunit.road
-                for x_factunit in self.factunits.values()
-                if x_factunit.is_good() and x_factunit.is_in_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_good() and x_opinionunit.is_in_tribe()
             ),
             None,
         )
         good_out_tribe_road = next(
             (
-                x_factunit.road
-                for x_factunit in self.factunits.values()
-                if x_factunit.is_good() and x_factunit.is_out_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_good() and x_opinionunit.is_out_tribe()
             ),
             None,
         )
         bad_in_tribe_road = next(
             (
-                x_factunit.road
-                for x_factunit in self.factunits.values()
-                if x_factunit.is_bad() and x_factunit.is_in_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_bad() and x_opinionunit.is_in_tribe()
             ),
             None,
         )
         bad_out_tribe_road = next(
             (
-                x_factunit.road
-                for x_factunit in self.factunits.values()
-                if x_factunit.is_bad() and x_factunit.is_out_tribe()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
+                if x_opinionunit.is_bad() and x_opinionunit.is_out_tribe()
             ),
             None,
         )
@@ -134,39 +134,39 @@ class TopicUnit:
 
     def is_tribal(self):
         return (
-            self.get_1_factunit(in_tribe=True) != None
-            and self.get_1_factunit(out_tribe=True) != None
+            self.get_1_opinionunit(in_tribe=True) != None
+            and self.get_1_opinionunit(out_tribe=True) != None
         )
 
     def is_meaningful(self):
         return (
-            self.get_1_factunit(good=True) != None
-            and self.get_1_factunit(bad=True) != None
+            self.get_1_opinionunit(good=True) != None
+            and self.get_1_opinionunit(bad=True) != None
         )
 
-    def set_factunit(self, x_factunit: FactUnit, set_metrics: bool = True):
-        if is_sub_road(x_factunit.road, self.base) == False:
+    def set_opinionunit(self, x_opinionunit: OpinionUnit, set_metrics: bool = True):
+        if is_sub_road(x_opinionunit.road, self.base) == False:
             raise TopicSubRoadUnitException(
-                f"TopicUnit cannot set factunit '{x_factunit.road}' because base road is '{self.base}'."
+                f"TopicUnit cannot set opinionunit '{x_opinionunit.road}' because base road is '{self.base}'."
             )
-        self.factunits[x_factunit.road] = x_factunit
+        self.opinionunits[x_opinionunit.road] = x_opinionunit
         if set_metrics:
             self.set_metrics()
 
-    def del_factunit(self, fact_road: PersonRoad):
-        self.factunits.pop(fact_road)
+    def del_opinionunit(self, opinion_road: PersonRoad):
+        self.opinionunits.pop(opinion_road)
 
-    def get_factunit(self, fact_road: PersonRoad) -> FactUnit:
-        return self.factunits.get(fact_road)
+    def get_opinionunit(self, opinion_road: PersonRoad) -> OpinionUnit:
+        return self.opinionunits.get(opinion_road)
 
-    def get_factunits(
+    def get_opinionunits(
         self,
         good: bool = None,
         bad: bool = None,
         in_tribe: bool = None,
         out_tribe: bool = None,
         x_all: bool = None,
-    ) -> dict[PersonRoad:FactUnit]:
+    ) -> dict[PersonRoad:OpinionUnit]:
         if good is None:
             good = False
         if bad is None:
@@ -178,21 +178,21 @@ class TopicUnit:
         if x_all is None:
             x_all = False
         return {
-            x_road: x_factunit
-            for x_road, x_factunit in self.factunits.items()
+            x_road: x_opinionunit
+            for x_road, x_opinionunit in self.opinionunits.items()
             if x_all
-            or (x_factunit.affect > 0 and good)
-            or (x_factunit.affect < 0 and bad)
-            or (x_factunit.love > 0 and in_tribe)
-            or (x_factunit.love < 0 and out_tribe)
+            or (x_opinionunit.affect > 0 and good)
+            or (x_opinionunit.affect < 0 and bad)
+            or (x_opinionunit.love > 0 and in_tribe)
+            or (x_opinionunit.love < 0 and out_tribe)
         }
 
     def get_all_roads(self) -> dict[PersonRoad:int]:
-        x_dict = dict(self.get_factunits(x_all=True).items())
+        x_dict = dict(self.get_opinionunits(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
 
-    def get_1_factunit(
+    def get_1_opinionunit(
         self,
         good: bool = None,
         bad: bool = None,
@@ -212,13 +212,13 @@ class TopicUnit:
             x_any = False
         return next(
             (
-                x_factunit.road
-                for x_factunit in self.factunits.values()
+                x_opinionunit.road
+                for x_opinionunit in self.opinionunits.values()
                 if x_any
-                or (x_factunit.affect > 0 and good)
-                or (x_factunit.affect < 0 and bad)
-                or (x_factunit.love > 0 and in_tribe)
-                or (x_factunit.love < 0 and out_tribe)
+                or (x_opinionunit.affect > 0 and good)
+                or (x_opinionunit.affect < 0 and bad)
+                or (x_opinionunit.love > 0 and in_tribe)
+                or (x_opinionunit.love < 0 and out_tribe)
             ),
             None,
         )
@@ -240,20 +240,20 @@ class TopicUnit:
         bad_affect_sum = 0
         in_tribe_sum = 0
         out_tribe_sum = 0
-        for x_factunit in self.factunits.values():
-            if x_factunit.is_good():
-                good_affect_sum += x_factunit.affect
-            elif x_factunit.is_bad():
-                bad_affect_sum += x_factunit.affect
+        for x_opinionunit in self.opinionunits.values():
+            if x_opinionunit.is_good():
+                good_affect_sum += x_opinionunit.affect
+            elif x_opinionunit.is_bad():
+                bad_affect_sum += x_opinionunit.affect
 
-            if x_factunit.is_in_tribe():
-                in_tribe_sum += x_factunit.love
-            elif x_factunit.is_out_tribe():
-                out_tribe_sum += x_factunit.love
+            if x_opinionunit.is_in_tribe():
+                in_tribe_sum += x_opinionunit.love
+            elif x_opinionunit.is_out_tribe():
+                out_tribe_sum += x_opinionunit.love
 
-        for x_factunit in self.factunits.values():
-            x_factunit.set_topic_affect_ratio(good_affect_sum, bad_affect_sum)
-            x_factunit.set_topic_love_ratio(in_tribe_sum, out_tribe_sum)
+        for x_opinionunit in self.opinionunits.values():
+            x_opinionunit.set_topic_affect_ratio(good_affect_sum, bad_affect_sum)
+            x_opinionunit.set_topic_love_ratio(in_tribe_sum, out_tribe_sum)
 
         self._calc_is_meaningful = self.is_meaningful()
         self._calc_is_tribal = self.is_tribal()
@@ -263,7 +263,7 @@ class TopicUnit:
 def topicunit_shop(
     base: PersonRoad,
     action: bool = None,
-    factunits: dict[PersonRoad:FactUnit] = None,
+    opinionunits: dict[PersonRoad:OpinionUnit] = None,
     delimiter: str = None,
 ):
     if action is None:
@@ -272,7 +272,7 @@ def topicunit_shop(
     return TopicUnit(
         base=base,
         action=action,
-        factunits=get_empty_dict_if_none(factunits),
+        opinionunits=get_empty_dict_if_none(opinionunits),
         delimiter=default_road_delimiter_if_none(delimiter),
         actors=get_empty_dict_if_none(None),
         _calc_is_meaningful=False,
@@ -285,9 +285,9 @@ def create_topicunit(
     base: PersonRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
     x_topicunit = topicunit_shop(base=base)
-    good_factunit = factunit_shop(create_road(base, good, delimiter=delimiter), 1)
-    bad_factunit = factunit_shop(create_road(base, bad, delimiter=delimiter), -1)
-    x_topicunit.set_factunit(good_factunit)
-    x_topicunit.set_factunit(bad_factunit)
+    good_opinionunit = opinionunit_shop(create_road(base, good, delimiter=delimiter), 1)
+    bad_opinionunit = opinionunit_shop(create_road(base, bad, delimiter=delimiter), -1)
+    x_topicunit.set_opinionunit(good_opinionunit)
+    x_topicunit.set_opinionunit(bad_opinionunit)
     if x_topicunit.is_meaningful():
         return x_topicunit

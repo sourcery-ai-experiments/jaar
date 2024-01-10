@@ -546,7 +546,7 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
 
 def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
     sue_agenda = agendaunit_shop("Sue")
-    arsub1 = "descretional_subsection1"
+    arsub1 = "descretional_subsecction1"
     arsub1_idea = ideaunit_shop(arsub1, _begin=0, _close=140)
     as1_road = sue_agenda.make_l1_road(arsub1)
     sue_agenda.add_idea(arsub1_idea, sue_agenda._economy_id)
@@ -557,7 +557,7 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
     )
     sue_agenda.add_idea(time_idea, parent_road=sue_agenda._economy_id)
 
-    arsub2 = "descretional_subsection2"
+    arsub2 = "descretional_subsecction2"
     arsub2_idea = ideaunit_shop(arsub2, _begin=0, _close=20)
     as2_road = sue_agenda.make_l1_road(arsub2)
     sue_agenda.add_idea(arsub2_idea, parent_road=sue_agenda._economy_id)
