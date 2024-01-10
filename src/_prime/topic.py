@@ -20,6 +20,22 @@ class FactUnit:
     road: RoadUnit
     affect: float = None
     love: float = None
+    _topic_affect_ratio: float = None
+    _topic_love_ratio: float = None
+
+    def set_topic_love_ratio(self, sum_in_tribe: float, sum_out_tribe: float):
+        if self.is_in_tribe():
+            self._topic_love_ratio = self.love / sum_in_tribe
+        elif self.is_out_tribe():
+            self._topic_love_ratio = self.love / sum_out_tribe
+        elif self.is_no_tribe():
+            self._topic_love_ratio = 0
+
+    def set_topic_affect_ratio(self, sum_good_affect: float, sum_bad_affect: float):
+        if self.is_good():
+            self._topic_affect_ratio = self.affect / sum_good_affect
+        elif self.is_bad():
+            self._topic_affect_ratio = self.affect / sum_bad_affect
 
     def set_affect(self, x_affect: float):
         if x_affect in {None, 0}:
@@ -44,6 +60,9 @@ class FactUnit:
 
     def is_out_tribe(self):
         return self.love < 0
+
+    def is_no_tribe(self):
+        return self.love == 0
 
 
 def factunit_shop(
