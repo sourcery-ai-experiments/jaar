@@ -997,6 +997,46 @@ FROM groupunit_catalog
     return dict_x
 
 
+def get_calendar_table_create_sqlstr():
+    return """
+CREATE TABLE IF NOT EXISTS calendar (
+  healer VARCHAR(255) NOT NULL
+, time_road VARCHAR(10000) NOT NULL
+, report_date_range_start INT NOT NULL
+, report_date_range_cease INT NOT NULL
+, report_interval_length INT NOT NULL
+, report_interval_intent_task_count INT NOT NULL
+, report_interval_intent_state_count INT NOT NULL
+, time_begin INT NOT NULL
+, time_close INT NOT NULL
+, intent_idea_road VARCHAR(255) NOT NULL
+, intent_weight INT NOT NULL
+, task INT NOT NULL
+, FOREIGN KEY(healer) REFERENCES agendaunit(healer)
+)
+;
+"""
+
+
+def get_calendar_table_insert_sqlstr(select_sqlstr):
+    return f"""
+INSERT INTO calendar (healer_pid
+, time_road
+, report_date_range_start
+, report_date_range_cease
+, report_interval_length
+, report_interval_intent_task_count
+, report_interval_intent_state_count
+, time_begin
+, time_close
+, intent_idea_road
+, intent_weight
+, task)
+{select_sqlstr}
+;
+"""
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
     list_x.append(get_belief_catalog_table_create_sqlstr())
@@ -1006,6 +1046,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())
     list_x.append(get_groupunit_catalog_table_create_sqlstr())
+    list_x.append(get_calendar_table_create_sqlstr())
     return list_x
 
 

@@ -129,6 +129,32 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         partylinks_set_by_economy_road_text: 1,
     }
 
+    time_road_text = "time_road"
+    report_date_range_start_text = "report_date_range_start"
+    report_date_range_cease_text = "report_date_range_cease"
+    report_interval_length_text = "report_interval_length"
+    report_interval_intent_task_count_text = "report_interval_intent_task_count"
+    report_interval_intent_state_count_text = "report_interval_intent_state_count"
+    time_begin_text = "time_begin"
+    time_close_text = "time_close"
+    intent_idea_road_text = "intent_idea_road"
+    intent_weight_text = "intent_weight"
+    task_text = "task"
+    calendar_text = "calendar"
+    calendar_columns = {
+        time_road_text: 1,
+        report_date_range_start_text: 1,
+        report_date_range_cease_text: 1,
+        report_interval_length_text: 1,
+        report_interval_intent_task_count_text: 1,
+        report_interval_intent_state_count_text: 1,
+        time_begin_text: 1,
+        time_close_text: 1,
+        intent_idea_road_text: 1,
+        intent_weight_text: 1,
+        task_text: 1,
+    }
+
     curr_tables = {
         agendaunit_text: agendaunit_columns,
         partyunit_text: partyunit_columns,
@@ -138,6 +164,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         idea_catalog_text: idea_catalog_columns,
         belief_catalog_text: belief_catalog_columns,
         groupunit_catalog_text: groupunit_catalog_columns,
+        calendar_text: calendar_columns,
     }
 
     # for x_table_key, x_table_value in db_tables.items():
@@ -152,7 +179,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     assert db_tables.get(river_circle_text) != None  # 4
     assert db_tables.get(river_block_text) != None  # 3
     assert db_tables.get(river_reach_text) != None  # 8
-    assert len(db_tables) == 8
+    assert db_tables.get(calendar_text) != None  # 9
+    assert len(db_tables) == 9
     assert len(db_tables) == len(curr_tables)
     assert len(db_tables) == len(db_tables_columns)
 

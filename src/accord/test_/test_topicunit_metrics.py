@@ -3,14 +3,7 @@ from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src.accord.topic import (
-    TopicUnit,
-    topicunit_shop,
-    create_topicunit,
-    OpinionUnit,
-    opinionunit_shop,
-)
-from pytest import raises as pytest_raises
+from src.accord.topic import topicunit_shop, opinionunit_shop
 
 
 def test_TopicUnit_is_meaningful_ReturnsCorrectBool():
@@ -253,16 +246,20 @@ def test_TopicUnit_set_metrics_SetsOpinionUnit_ratio_AttrsCorrectly():
     warm_farm_love = 77
     cold_farm_love = 88
     cook_topic.set_opinionunit(
-        opinionunit_shop(warm_proc_road, warm_proc_affect, warm_proc_love), False
+        opinionunit_shop(warm_proc_road, warm_proc_affect, warm_proc_love),
+        set_metrics=False,
     )
     cook_topic.set_opinionunit(
-        opinionunit_shop(cold_proc_road, cold_proc_affect, cold_proc_love), False
+        opinionunit_shop(cold_proc_road, cold_proc_affect, cold_proc_love),
+        set_metrics=False,
     )
     cook_topic.set_opinionunit(
-        opinionunit_shop(warm_farm_road, warm_farm_affect, warm_farm_love), False
+        opinionunit_shop(warm_farm_road, warm_farm_affect, warm_farm_love),
+        set_metrics=False,
     )
     cook_topic.set_opinionunit(
-        opinionunit_shop(cold_farm_road, cold_farm_affect, cold_farm_love), False
+        opinionunit_shop(cold_farm_road, cold_farm_affect, cold_farm_love),
+        set_metrics=False,
     )
     warm_proc_opinionunit = cook_topic.get_opinionunit(warm_proc_road)
     cold_proc_opinionunit = cook_topic.get_opinionunit(cold_proc_road)
