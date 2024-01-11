@@ -148,22 +148,22 @@ def test_DealUnit_get_actor_sectionunits_ReturnsCorrectObjs():
     assert bob_sectionunits.get(eight_sectionunit.uid) == example_cooking_sectionunit
 
 
-# def test_DealUnit_get_actor_sectionunits_ReturnsCorrectActionTopics():
-#     # GIVEN
-#     bob_text = "Bob"
-#     yao_text = "Yao"
-#     farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
-#     assert farm_dealunit.actor_has_topic(bob_text, action_filter=True) == False
-#     assert farm_dealunit.actor_has_topic(yao_text, action_filter=True) == False
+def test_DealUnit_get_actor_sectionunits_ReturnsCorrectActionTopics():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
+    assert farm_dealunit.actor_has_sectionunit(bob_text, action_filter=True) == False
+    assert farm_dealunit.actor_has_sectionunit(yao_text, action_filter=True) == False
 
-#     # WHEN
-#     farm_dealunit.set_sectionunit(get_cooking_sectionunit(), bob_text)
-#     farm_dealunit.set_sectionunit(get_speedboat_action_sectionunit(), yao_text)
-#     farm_dealunit.set_sectionunit(get_climate_sectionunit(), yao_text)
+    # WHEN
+    farm_dealunit.set_sectionunit(get_cooking_sectionunit(), bob_text)
+    farm_dealunit.set_sectionunit(get_speedboat_action_sectionunit(), yao_text)
+    farm_dealunit.set_sectionunit(get_climate_sectionunit(), yao_text)
 
-#     # THEN
-#     assert farm_dealunit.actor_has_topic(bob_text, action_filter=True) == False
-#     assert farm_dealunit.actor_has_topic(yao_text, action_filter=True)
+    # THEN
+    assert farm_dealunit.actor_has_sectionunit(bob_text, action_filter=True) == False
+    assert farm_dealunit.actor_has_sectionunit(yao_text, action_filter=True)
 
 
 def test_DealUnit_set_sectionunit_WithactorSetsCorrectAttrs():
@@ -185,78 +185,41 @@ def test_DealUnit_set_sectionunit_WithactorSetsCorrectAttrs():
     )
 
 
-# def test_DealUnit_actors_has_topics_ReturnsCorrectObjs():
-#     # GIVEN
-#     bob_text = "Bob"
-#     yao_text = "Yao"
-#     farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
-#     farm_dealunit.set_topicunit(get_cooking_topic(), bob_text)
+def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
 
-#     # WHEN / THEN
-#     bob_list = [bob_text]
-#     assert farm_dealunit.actors_has_topics(bob_list)
-#     bob_yao_list = [bob_text, yao_text]
-#     assert farm_dealunit.actors_has_topics(bob_yao_list) == False
+    # WHEN
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
+    # THEN
+    assert farm_dealunit.is_meaningful() == False
 
-#     # WHEN / THEN
-#     farm_dealunit.set_topicunit(get_speedboats_action_topic(), yao_text)
-#     farm_dealunit.set_topicunit(get_climate_topic(), yao_text)
-#     assert farm_dealunit.actors_has_topics(bob_yao_list)
+    # WHEN
+    farm_dealunit.set_topicunit(get_cooking_topic())
+    # THEN
+    assert farm_dealunit.is_meaningful()
 
+    # WHEN
+    farm_dealunit.set_topicunit(get_speedboats_action_topic())
+    farm_dealunit.set_topicunit(get_climate_topic())
 
-# def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
-#     # GIVEN
-#     bob_text = "Bob"
-#     yao_text = "Yao"
+    # THEN
+    assert farm_dealunit.is_meaningful()
 
-#     # WHEN
-#     farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
-#     # THEN
-#     assert farm_dealunit.is_meaningful() == False
+    # WHEN
+    farm_dealunit.set_topicunit(get_gasheater_action_topic())
 
-#     # WHEN
-#     farm_dealunit.set_topicunit(get_cooking_topic(), bob_text)
-#     # THEN
-#     assert farm_dealunit.is_meaningful()
-
-#     # WHEN
-#     farm_dealunit.set_topicunit(get_speedboats_action_topic(), yao_text)
-#     farm_dealunit.set_topicunit(get_climate_topic(), yao_text)
-
-#     # THEN
-#     assert farm_dealunit.is_meaningful()
-
-#     # WHEN
-#     farm_dealunit.set_topicunit(get_gasheater_action_topic(), yao_text)
-
-#     # THEN
-#     assert farm_dealunit.is_meaningful() == False
-
-
-# def test_create_dealunit_ReturnsCorrectObj():
-#     # GIVEN
-#     farm_requestunit = examples_get_farm_requestunit()
-
-#     # WHEN
-#     bob_text = "Bob"
-#     farm_requestunit = create_requestunit(farm_wantunit, requestee_pid=bob_text)
-
-#     # THEN
-#     assert farm_requestunit._wantunit == farm_wantunit
-#     assert farm_requestunit._action_weight == 1
-#     bob_dict = {bob_text: None}
-#     assert farm_requestunit._requestee_pids == bob_dict
-#     bob_group_dict = {bob_text: bob_text}
-#     assert farm_requestunit._requestee_groups == bob_group_dict
-#     assert farm_requestunit._requester_pid == "Luca"
+    # THEN
+    assert farm_dealunit.is_meaningful() == False
 
 
 # def test_RequestUnit_get_str_summary_ReturnsCorrectObj():
 #     # GIVEN
-#     farm_requestunit = examples_get_farm_requestunit()
+#      = examples_get_farm_()
 
 #     # WHEN
-#     generated_farm_str = farm_requestunit.get_str_summary()
+#     generated_farm_str = .get_str_summary()
 
 #     # THEN
 #     bob_text = "Bob"

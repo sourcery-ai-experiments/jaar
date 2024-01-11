@@ -98,51 +98,51 @@ def test_SectionUnit_del_topiclink_CorrectlySetsAttr():
 def test_SectionUnit_set_actor_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
-    cook_topic = sectionunit_shop(cook_road)
-    assert cook_topic.actors == {}
+    cook_sectionunit = sectionunit_shop(cook_road)
+    assert cook_sectionunit.actors == {}
 
     # WHEN
     bob_text = "Bob"
-    cook_topic.set_actor(x_actor=bob_text)
+    cook_sectionunit.set_actor(x_actor=bob_text)
 
     # THEN
-    assert cook_topic.actors != {}
-    assert cook_topic.actors.get(bob_text) != None
-    assert cook_topic.actors.get(bob_text) == bob_text
+    assert cook_sectionunit.actors != {}
+    assert cook_sectionunit.actors.get(bob_text) != None
+    assert cook_sectionunit.actors.get(bob_text) == bob_text
 
 
 def test_SectionUnit_del_actor_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
-    cook_topic = sectionunit_shop(cook_road)
+    cook_sectionunit = sectionunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    cook_topic.set_actor(bob_text)
-    cook_topic.set_actor(yao_text)
-    assert len(cook_topic.actors) == 2
-    assert cook_topic.actors.get(bob_text) != None
-    assert cook_topic.actors.get(yao_text) != None
+    cook_sectionunit.set_actor(bob_text)
+    cook_sectionunit.set_actor(yao_text)
+    assert len(cook_sectionunit.actors) == 2
+    assert cook_sectionunit.actors.get(bob_text) != None
+    assert cook_sectionunit.actors.get(yao_text) != None
 
     # WHEN
-    cook_topic.del_actor(bob_text)
+    cook_sectionunit.del_actor(bob_text)
 
     # THEN
-    assert len(cook_topic.actors) == 1
-    assert cook_topic.actors.get(bob_text) is None
-    assert cook_topic.actors.get(yao_text) != None
+    assert len(cook_sectionunit.actors) == 1
+    assert cook_sectionunit.actors.get(bob_text) is None
+    assert cook_sectionunit.actors.get(yao_text) != None
 
 
 def test_SectionUnit_get_actor_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
-    cook_topic = sectionunit_shop(cook_road)
+    cook_sectionunit = sectionunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    cook_topic.set_actor(bob_text)
-    cook_topic.set_actor(yao_text)
+    cook_sectionunit.set_actor(bob_text)
+    cook_sectionunit.set_actor(yao_text)
 
     # WHEN
-    bob_actor = cook_topic.get_actor(bob_text)
+    bob_actor = cook_sectionunit.get_actor(bob_text)
 
     # THEN
     assert bob_actor != None
@@ -152,19 +152,43 @@ def test_SectionUnit_get_actor_ReturnsCorrectObj_good():
 def test_SectionUnit_actor_exists_ReturnsCorrectObj_good():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
-    cook_topic = sectionunit_shop(cook_road)
+    cook_sectionunit = sectionunit_shop(cook_road)
     bob_text = "Bob"
     yao_text = "Yao"
-    assert cook_topic.actor_exists(bob_text) == False
-    assert cook_topic.actor_exists(yao_text) == False
+    assert cook_sectionunit.actor_exists(bob_text) == False
+    assert cook_sectionunit.actor_exists(yao_text) == False
 
     # WHEN / THEN
-    cook_topic.set_actor(bob_text)
-    cook_topic.set_actor(yao_text)
-    assert cook_topic.actor_exists(bob_text)
-    assert cook_topic.actor_exists(yao_text)
+    cook_sectionunit.set_actor(bob_text)
+    cook_sectionunit.set_actor(yao_text)
+    assert cook_sectionunit.actor_exists(bob_text)
+    assert cook_sectionunit.actor_exists(yao_text)
 
     # WHEN / THEN
-    cook_topic.del_actor(yao_text)
-    assert cook_topic.actor_exists(bob_text)
-    assert cook_topic.actor_exists(yao_text) == False
+    cook_sectionunit.del_actor(yao_text)
+    assert cook_sectionunit.actor_exists(bob_text)
+    assert cook_sectionunit.actor_exists(yao_text) == False
+
+
+def test_SectionUnit_action_exists_ReturnsCorrectBool():
+    # GIVEN
+    cook_road = create_road(root_label(), "cooking")
+    cook_sectionunit = sectionunit_shop(cook_road)
+    assert cook_sectionunit.has_action() == False
+
+    # WHEN
+    baking_road = create_road(cook_road, "baking")
+    cook_sectionunit.set_topiclink(topiclink_shop(baking_road))
+    # THEN
+    assert cook_sectionunit.has_action() == False
+
+    # WHEN
+    clean_road = create_road(cook_road, "clean kitchen")
+    cook_sectionunit.set_topiclink(topiclink_shop(clean_road, action=True))
+    # THEN
+    assert cook_sectionunit.has_action()
+
+    # WHEN
+    cook_sectionunit.del_topiclink(clean_road)
+    # THEN
+    assert cook_sectionunit.has_action() == False

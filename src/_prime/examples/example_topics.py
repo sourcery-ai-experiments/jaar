@@ -125,5 +125,5 @@ def get_speedboat_action_sectionunit() -> SectionUnit:
     speedboat_road = create_road(yao_economyaddress, "speedboats")
     seven_uid = 7
     seven_sectionunit = sectionunit_shop(uid=seven_uid)
-    seven_sectionunit.set_topiclink(topiclink_shop(speedboat_road, True))
+    seven_sectionunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
     return seven_sectionunit
