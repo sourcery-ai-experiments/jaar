@@ -1,9 +1,8 @@
-from src.agenda.agenda import agendaunit_shop
 from src.economy.treasury_sqlstr import (
     get_calendar_table_create_sqlstr,
     get_calendar_table_insert_sqlstr,
+    get_calendar_table_delete_sqlstr,
 )
-from src.tools.sqlite import sqlite_text
 
 
 def test_get_calendar_table_create_sqlstr_ReturnsCorrectStr():
@@ -55,7 +54,8 @@ SELECT
 
     # THEN
     example_sqlstr = f"""
-INSERT INTO calendar (healer_pid
+INSERT INTO calendar (
+  healer
 , time_road
 , report_date_range_start
 , report_date_range_cease
@@ -68,6 +68,22 @@ INSERT INTO calendar (healer_pid
 , intent_weight
 , task)
 {select_example_sqlstr}
+;
+"""
+    assert generated_sqlstr == example_sqlstr
+
+
+def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
+    # GIVEN
+    bob_text = "Bob"
+
+    # WHEN
+    generated_sqlstr = get_calendar_table_delete_sqlstr(bob_text)
+
+    # THEN
+    example_sqlstr = f"""
+DELETE FROM calendar
+WHERE healer = '{bob_text}' 
 ;
 """
     assert generated_sqlstr == example_sqlstr

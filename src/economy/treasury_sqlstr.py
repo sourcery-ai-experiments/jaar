@@ -1037,6 +1037,14 @@ INSERT INTO calendar (healer_pid
 """
 
 
+def get_calendar_table_delete_sqlstr(calendar_healer: str) -> str:
+    return f"""
+DELETE FROM calendar
+WHERE healer = '{calendar_healer}' 
+;
+"""
+
+
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
     list_x.append(get_belief_catalog_table_create_sqlstr())
