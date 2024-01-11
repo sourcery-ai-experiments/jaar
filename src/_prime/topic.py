@@ -104,6 +104,10 @@ class TopicSubRoadUnitException(Exception):
 class TopicUnit:
     base: PersonRoad = None
     opinionunits: dict[PersonRoad:OpinionUnit] = None
+    # None: ignore
+    # True: base idea._active_status reason be True,
+    # False: base idea._active_status reason be False
+    suff_idea_active_status: bool = None  # TODO consider removing this attr
     delimiter: str = None
     _calc_is_meaningful: bool = None
     _calc_is_tribal: bool = None

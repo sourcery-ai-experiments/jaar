@@ -34,13 +34,13 @@ def test_topiclink_shop_CorrectlyReturnsObj():
 def test_TopicLink_set_action_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
-    cook_topic = topiclink_shop(cook_road)
-    assert cook_topic.action == False
+    cook_topiclink = topiclink_shop(cook_road)
+    assert cook_topiclink.action == False
 
     # WHEN / THEN
-    cook_topic.set_action(True)
-    assert cook_topic.action
+    cook_topiclink.set_action(True)
+    assert cook_topiclink.action
 
     # WHEN / THEN
-    cook_topic.set_action(False)
-    assert cook_topic.action == False
+    cook_topiclink.set_action(False)
+    assert cook_topiclink.action == False
