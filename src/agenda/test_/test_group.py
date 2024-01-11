@@ -11,7 +11,10 @@ from src.agenda.group import (
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
 )
-from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
+from src._prime.road import (
+    get_default_economy_root_roadnode as root_label,
+    create_road,
+)
 from src.tools.python import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 

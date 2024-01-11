@@ -1,6 +1,6 @@
 from src._prime.road import create_road, create_economyaddress
-from src._prime.deal import sectionunit_shop, SectionUnit
-from src._prime.topic import (
+from src.accord.accord import sectionunit_shop, SectionUnit
+from src.accord.topic import (
     topicunit_shop,
     opinionunit_shop,
     TopicUnit,

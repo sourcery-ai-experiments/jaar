@@ -7,7 +7,10 @@ from src.agenda.reason_idea import (
     beliefunit_shop as c_beliefunit,
     beliefunits_get_from_dict,
 )
-from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
+from src._prime.road import (
+    get_default_economy_root_roadnode as root_label,
+    create_road,
+)
 from pytest import raises as pytest_raises
 
 

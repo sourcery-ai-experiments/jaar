@@ -3,7 +3,7 @@ from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src._prime.topic import TopicLink, topiclink_shop
+from src.accord.topic import TopicLink, topiclink_shop
 from pytest import raises as pytest_raises
 
 

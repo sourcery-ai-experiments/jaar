@@ -1,7 +1,10 @@
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import ideaunit_shop
-from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
+from src._prime.road import (
+    get_default_economy_root_roadnode as root_label,
+    create_road,
+)
 
 
 def test_lemma_attributes_exist():

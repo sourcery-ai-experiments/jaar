@@ -2,7 +2,7 @@ from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     create_road,
 )
-from src._prime.topic import OpinionUnit, opinionunit_shop
+from src.accord.topic import OpinionUnit, opinionunit_shop
 from pytest import raises as pytest_raises
 
 

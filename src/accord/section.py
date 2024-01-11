@@ -3,10 +3,62 @@ from src._prime.road import (
     PersonRoad,
     PersonID,
 )
-from src._prime.section import SectionID, SectionUnit, sectionunit_shop
-from src._prime.topic import TopicUnit, TopicLink
+from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
+
+
+class SectionID(int):
+    pass
+
+
+@dataclass
+class SectionUnit:
+    uid: SectionID = None
+    actors: dict[PersonID:PersonID] = None
+    _topiclinks: dict[PersonRoad, TopicLink] = None
+
+    def set_topiclink(self, x_topiclink: TopicLink):
+        self._topiclinks[x_topiclink.base] = x_topiclink
+
+    def get_topiclink(self, topiclink_base: PersonRoad) -> TopicLink:
+        return self._topiclinks.get(topiclink_base)
+
+    def topiclink_exists(self, topiclink_base: PersonRoad) -> bool:
+        return self.get_topiclink(topiclink_base) != None
+
+    def del_topiclink(self, topiclink_base: PersonRoad):
+        self._topiclinks.pop(topiclink_base)
+
+    def get_section_id(self) -> SectionID:
+        return f"Section {self.uid:04d}"
+
+    def set_actor(self, x_actor: PersonID):
+        self.actors[x_actor] = x_actor
+
+    def del_actor(self, actor: PersonRoad):
+        self.actors.pop(actor)
+
+    def get_actor(self, x_actor: PersonID) -> PersonID:
+        return self.actors.get(x_actor)
+
+    def actor_exists(self, x_actor: PersonID) -> bool:
+        return self.actors.get(x_actor) != None
+
+    def has_action(self):
+        return any(x_topiclink.action for x_topiclink in self._topiclinks.values())
+
+
+def sectionunit_shop(
+    uid: SectionID,
+    actors: dict[PersonID:PersonID] = None,
+    _topiclinks: dict[PersonRoad, TopicLink] = None,
+):
+    return SectionUnit(
+        uid=uid,
+        _topiclinks=get_empty_dict_if_none(_topiclinks),
+        actors=get_empty_dict_if_none(actors),
+    )
 
 
 class WantSubRoadUnitException(Exception):
@@ -14,7 +66,7 @@ class WantSubRoadUnitException(Exception):
 
 
 @dataclass
-class DealUnit:
+class AccordUnit:
     _author: PersonID = None
     _reader: PersonID = None
     _topicunits: dict[PersonRoad:TopicUnit] = None
@@ -93,8 +145,8 @@ class DealUnit:
         return self.get_actor_sectionunits(actor, action_filter=action_filter) != {}
 
 
-def dealunit_shop(_author: PersonID, _reader: PersonID):
-    return DealUnit(
+def accordunit_shop(_author: PersonID, _reader: PersonID):
+    return AccordUnit(
         _author=_author,
         _reader=_reader,
         _topicunits=get_empty_dict_if_none(None),

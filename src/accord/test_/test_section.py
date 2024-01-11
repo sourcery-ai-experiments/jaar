@@ -2,10 +2,13 @@
 #     get_farm_wantunit as examples_get_farm_wantunit,
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
-from src._prime.road import create_road, get_default_economy_root_roadnode as root_label
-from src._prime.topic import topiclink_shop
-from src._prime.deal import SectionUnit, sectionunit_shop
-from src._prime.examples.example_topics import (
+from src._prime.road import (
+    create_road,
+    get_default_economy_root_roadnode as root_label,
+)
+from src.accord.topic import topiclink_shop
+from src.accord.accord import SectionUnit, sectionunit_shop
+from src.accord.examples.example_topics import (
     get_cooking_topic,
     get_speedboats_action_topic,
     get_climate_topic,
