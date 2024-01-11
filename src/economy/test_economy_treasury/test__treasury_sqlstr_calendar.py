@@ -73,7 +73,7 @@ INSERT INTO calendar (
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
+def test_get_calendar_table_delete_sqlstr_ReturnsCorrectStr():
     # GIVEN
     bob_text = "Bob"
 

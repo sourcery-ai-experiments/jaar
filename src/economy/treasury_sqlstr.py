@@ -1020,7 +1020,8 @@ CREATE TABLE IF NOT EXISTS calendar (
 
 def get_calendar_table_insert_sqlstr(select_sqlstr):
     return f"""
-INSERT INTO calendar (healer_pid
+INSERT INTO calendar (
+  healer
 , time_road
 , report_date_range_start
 , report_date_range_cease
