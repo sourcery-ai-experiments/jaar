@@ -1,3 +1,4 @@
+from src._prime.road import RoadUnit
 from src.agenda.party import PartyPID, partylink_shop, partyunit_shop
 from src.agenda.group import GroupBrand, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (
@@ -653,8 +654,8 @@ class BalanceIntentMetrics:
     intent_no_agenda_i_sum = 0
     intent_yes_agenda_i_sum = 0
 
-    def set_sums(self, intent_list: list[IdeaUnit]):
-        for intent_item in intent_list:
+    def set_sums(self, intent_dict: dict[RoadUnit:IdeaUnit]):
+        for intent_item in intent_dict.values():
             self.sum_agenda_intent_importance += intent_item._agenda_importance
             if intent_item._balancelines == {}:
                 self.intent_no_count += 1
@@ -686,12 +687,12 @@ def test_agenda_intent_credit_debt_IsCorrectlySet():
     assert x_partyintentmetrics.sum_intent_ratio_debt == 0
 
     # WHEN
-    intent_list = x_agenda.get_intent_items()
+    intent_dict = x_agenda.get_intent_dict()
 
     # THEN
-    assert len(intent_list) == 68
+    assert len(intent_dict) == 68
     x_balanceintentmetrics = BalanceIntentMetrics()
-    x_balanceintentmetrics.set_sums(intent_list=intent_list)
+    x_balanceintentmetrics.set_sums(intent_dict=intent_dict)
     # print(f"{sum_agenda_intent_importance=}")
     assert x_balanceintentmetrics.intent_no_count == 20
     assert x_balanceintentmetrics.intent_yes_count == 48

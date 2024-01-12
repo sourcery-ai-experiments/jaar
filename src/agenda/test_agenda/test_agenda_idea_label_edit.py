@@ -28,7 +28,7 @@ def test_idea_edit_idea_label_FailsWhenIdeaDoesNotExist():
     assert str(excinfo.value) == f"Idea old_road='{no_idea_road}' does not exist"
 
 
-def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():
+def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconomyIDisNone():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_healer=tim_text)
@@ -40,7 +40,6 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():
     tim_agenda.add_idea(ideaunit_shop(work_text), parent_road=tim_agenda._economy_id)
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
     assert tim_agenda._healer == tim_text
-    assert tim_agenda._economy_id == tim_agenda._economy_id
     assert tim_agenda._idearoot._label == tim_agenda._economy_id
     work_idea = tim_agenda.get_idea_obj(work_road)
     assert work_idea._parent_road == tim_agenda._economy_id
@@ -64,7 +63,7 @@ def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsNone():
     assert tim_agenda._idearoot._label == tim_agenda._economy_id
 
 
-def test_Agenda_level0_idea_edit_idea_label_RaisesError_economy_id_IsDifferent():
+def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_economy_id_IsDifferent():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_healer=tim_text)
@@ -407,7 +406,8 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
     cook_idea = luca_agenda.get_idea_obj(comma_cook_road)
     comma_text = ","
-    comma_cook_road = create_road(comma_work_road, cook_text, delimiter=comma_text)
+    assert luca_agenda._road_delimiter == comma_text
+    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
     # print(f"{luca_agenda._economy_id=} {luca_agenda._idearoot._label=} {work_road=}")
     # print(f"{cook_idea._parent_road=} {cook_idea._label=}")
     # comma_work_idea = luca_agenda.get_idea_obj(comma_work_road)

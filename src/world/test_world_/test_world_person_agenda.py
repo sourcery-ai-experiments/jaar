@@ -38,7 +38,7 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgen
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)
     assert gen_luca_agenda._economy_id == static_luca_agenda._economy_id
-    assert gen_luca_agenda.get_intent_items() == static_luca_agenda.get_intent_items()
+    assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
 def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(

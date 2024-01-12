@@ -390,12 +390,12 @@ def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
     assert x_agenda._idea_dict.get(clean_road)._active_status == False
 
 
-def test_get_intent_items():
+def test_get_intent_dict():
     # GIVEN
     x_agenda = get_agenda_with_4_levels_and_2reasons()
 
     # WHEN
-    promise_items = x_agenda.get_intent_items()
+    promise_items = x_agenda.get_intent_dict()
 
     # THEN
     assert promise_items != None

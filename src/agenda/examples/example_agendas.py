@@ -399,13 +399,13 @@ def get_assignment_agenda_example1():
 
 
 def get_agenda_assignment_laundry_example1() -> AgendaUnit:
-    amer_text = "Amer"
-    amer_agenda = agendaunit_shop(_healer=amer_text)
+    amos_text = "Amos"
+    amos_agenda = agendaunit_shop(_healer=amos_text)
     cali_text = "Cali"
-    amer_agenda.add_partyunit(amer_text)
-    amer_agenda.add_partyunit(cali_text)
+    amos_agenda.add_partyunit(amos_text)
+    amos_agenda.add_partyunit(cali_text)
 
-    root_road = amer_agenda._economy_id
+    root_road = amos_agenda._economy_id
     casa_text = "casa"
     basket_text = "laundry basket status"
     b_full_text = "full"
@@ -414,37 +414,37 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     b_fine_text = "fine"
     b_half_text = "half full"
     do_laundry_text = "do_laundry"
-    casa_road = amer_agenda.make_road(root_road, casa_text)
-    basket_road = amer_agenda.make_road(casa_road, basket_text)
-    b_full_road = amer_agenda.make_road(basket_road, b_full_text)
-    b_smel_road = amer_agenda.make_road(basket_road, b_smel_text)
-    laundry_task_road = amer_agenda.make_road(casa_road, do_laundry_text)
-    amer_agenda.add_idea(ideaunit_shop(casa_text), root_road)
-    amer_agenda.add_idea(ideaunit_shop(basket_text), casa_road)
-    amer_agenda.add_idea(ideaunit_shop(b_full_text), basket_road)
-    amer_agenda.add_idea(ideaunit_shop(b_smel_text), basket_road)
-    amer_agenda.add_idea(ideaunit_shop(b_bare_text), basket_road)
-    amer_agenda.add_idea(ideaunit_shop(b_fine_text), basket_road)
-    amer_agenda.add_idea(ideaunit_shop(b_half_text), basket_road)
-    amer_agenda.add_idea(ideaunit_shop(do_laundry_text, promise=True), casa_road)
+    casa_road = amos_agenda.make_road(root_road, casa_text)
+    basket_road = amos_agenda.make_road(casa_road, basket_text)
+    b_full_road = amos_agenda.make_road(basket_road, b_full_text)
+    b_smel_road = amos_agenda.make_road(basket_road, b_smel_text)
+    laundry_task_road = amos_agenda.make_road(casa_road, do_laundry_text)
+    amos_agenda.add_idea(ideaunit_shop(casa_text), root_road)
+    amos_agenda.add_idea(ideaunit_shop(basket_text), casa_road)
+    amos_agenda.add_idea(ideaunit_shop(b_full_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_smel_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_bare_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_fine_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_half_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(do_laundry_text, promise=True), casa_road)
 
     # laundry requirement
-    amer_agenda.edit_idea_attr(
+    amos_agenda.edit_idea_attr(
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_full_road
     )
     # laundry requirement
-    amer_agenda.edit_idea_attr(
+    amos_agenda.edit_idea_attr(
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_smel_road
     )
     # assign Cali to task
     cali_assignunit = assigned_unit_shop()
     cali_assignunit.set_suffgroup(cali_text)
-    amer_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    amos_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
-    # print(f"{amer_agenda._economy_id=}")
-    amer_agenda.set_belief(base=basket_road, pick=b_full_road)
+    # print(f"{amos_agenda._economy_id=}")
+    amos_agenda.set_belief(base=basket_road, pick=b_full_road)
 
-    return amer_agenda
+    return amos_agenda
 
 
 # class YR:

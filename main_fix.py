@@ -419,7 +419,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_p_intent_list(self):
         x_list = []
         if self.healer_output_agenda != None:
-            intent_list = self.healer_output_agenda.get_intent_items()
+            intent_list = self.healer_output_agenda.get_intent_dict()
             intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
             x_list.extend(
                 [

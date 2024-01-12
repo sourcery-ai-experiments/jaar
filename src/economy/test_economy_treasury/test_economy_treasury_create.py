@@ -133,8 +133,10 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     report_date_range_start_text = "report_date_range_start"
     report_date_range_cease_text = "report_date_range_cease"
     report_interval_length_text = "report_interval_length"
-    report_interval_intent_task_count_text = "report_interval_intent_task_count"
-    report_interval_intent_state_count_text = "report_interval_intent_state_count"
+    report_interval_intent_task_max_count_text = "report_interval_intent_task_max_count"
+    report_interval_intent_state_max_count_text = (
+        "report_interval_intent_state_max_count"
+    )
     time_begin_text = "time_begin"
     time_close_text = "time_close"
     intent_idea_road_text = "intent_idea_road"
@@ -146,8 +148,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         report_date_range_start_text: 1,
         report_date_range_cease_text: 1,
         report_interval_length_text: 1,
-        report_interval_intent_task_count_text: 1,
-        report_interval_intent_state_count_text: 1,
+        report_interval_intent_task_max_count_text: 1,
+        report_interval_intent_state_max_count_text: 1,
         time_begin_text: 1,
         time_close_text: 1,
         intent_idea_road_text: 1,

@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none, create_road
+from src._prime.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import beliefunit_shop
@@ -418,8 +418,8 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     ccn2_agenda = ccn_dict_of_obj.get(x_agenda2._healer)
     assert ccn2_agenda._idearoot._label == x_agenda2._idearoot._label
     assert ccn2_agenda._idearoot._parent_road == x_agenda2._idearoot._parent_road
-    shave_road = create_road("A", "shave")
-    week_road = create_road("A", "weekdays")
+    shave_road = ccn2_agenda.make_road("A", "shave")
+    week_road = ccn2_agenda.make_road("A", "weekdays")
     assert ccn2_agenda.get_idea_obj(shave_road) == x_agenda2.get_idea_obj(shave_road)
     assert ccn2_agenda.get_idea_obj(week_road) == x_agenda2.get_idea_obj(week_road)
     assert ccn2_agenda._idearoot == x_agenda2._idearoot

@@ -1,4 +1,3 @@
-# from src.agenda.road import create_road
 # from src.agenda.reason_idea import beliefunit_shop
 # from src.world.world import worldunit_shop
 
@@ -24,7 +23,7 @@
 #     luca_person.set_economyunit(texas_text)
 #     texas_economy = luca_person.get_economyunit(texas_text)
 #     kari_text = "kari"
-#     texas_economyaddress = create_road(luca_text, texas_text)
+#     texas_economyaddress = economyunit.build_economy_road(luca_text, texas_text)
 #     assert texas_economy._clerkunits.get(kari_text) is None
 #     assert x_world.personunit_exists(kari_text) == False
 
@@ -136,12 +135,12 @@
 #     assert tim_partyunit != None
 #     assert tim_partyunit.creditor_weight == 1
 #     assert tim_partyunit.debtor_weight == 1
-#     flying_road = create_road(texas_economy.economy_id, flying_text)
-#     no_fly_road = create_road(flying_road, no_fly_text)
-#     yesfly_road = create_road(flying_road, yesfly_text)
-#     weather_road = create_road(texas_economy.economy_id, weather_text)
-#     healthy_road = create_road(weather_road, healthy_text)
-#     boiling_road = create_road(weather_road, boiling_text)
+#     flying_road = economyunit.build_economy_road(texas_economy.economy_id, flying_text)
+#     no_fly_road = economyunit.build_economy_road(flying_road, no_fly_text)
+#     yesfly_road = economyunit.build_economy_road(flying_road, yesfly_text)
+#     weather_road = economyunit.build_economy_road(texas_economy.economy_id, weather_text)
+#     healthy_road = economyunit.build_economy_road(weather_road, healthy_text)
+#     boiling_road = economyunit.build_economy_road(weather_road, boiling_text)
 #     print(f"{xio_contract._idea_dict.keys()=}")
 #     print(f"{flying_road=}")
 #     print(f"{no_fly_road=}")
@@ -203,7 +202,7 @@
 #     assert len(xio_beliefunits) == 1
 #     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
 #     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
-#     assert len(xio_contract.get_intent_items()) == 0
+#     assert len(xio_contract.get_intent_dict()) == 0
 
 #     # check tim contract
 #     tim_contract = texas_economy.get_clerkunit(tim_text).get_contract()
@@ -211,8 +210,8 @@
 #     assert tim_contract.get_party(xio_text).debtor_weight == 7
 #     # check tim public
 #     tim_public = texas_economy.get_public_agenda(tim_text)
-#     assert len(tim_public.get_intent_items()) == 1
-#     assert tim_public.get_intent_items()[0].get_road() == no_fly_road
+#     assert len(tim_public.get_intent_dict()) == 1
+#     assert tim_public.get_intent_dict()[0].get_road() == no_fly_road
 
 
 # def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
@@ -268,12 +267,12 @@
 #     assert len(environmentalist_group._partys) == 1
 #     assert environmentalist_group.get_partylink(tim_text) != None
 
-#     flying_road = create_road(texas_economy.economy_id, flying_text)
-#     no_fly_road = create_road(flying_road, no_fly_text)
-#     yesfly_road = create_road(flying_road, yesfly_text)
-#     weather_road = create_road(texas_economy.economy_id, weather_text)
-#     healthy_road = create_road(weather_road, healthy_text)
-#     boiling_road = create_road(weather_road, boiling_text)
+#     flying_road = economyunit.build_economy_road(texas_economy.economy_id, flying_text)
+#     no_fly_road = economyunit.build_economy_road(flying_road, no_fly_text)
+#     yesfly_road = economyunit.build_economy_road(flying_road, yesfly_text)
+#     weather_road = economyunit.build_economy_road(texas_economy.economy_id, weather_text)
+#     healthy_road = economyunit.build_economy_road(weather_road, healthy_text)
+#     boiling_road = economyunit.build_economy_road(weather_road, boiling_text)
 #     flying_idea = xio_contract.get_idea_obj(flying_road)
 #     no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
 #     yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
@@ -299,7 +298,7 @@
 #     assert len(xio_beliefunits) == 1
 #     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
 #     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
-#     assert len(xio_contract.get_intent_items()) == 0
+#     assert len(xio_contract.get_intent_dict()) == 0
 
 #     # check tim contract
 #     tim_contract = texas_economy.get_clerkunit(tim_text).get_contract()
@@ -307,8 +306,8 @@
 #     assert tim_contract.get_party(xio_text).debtor_weight == 7
 #     # check tim public
 #     tim_public = texas_economy.get_public_agenda(tim_text)
-#     assert len(tim_public.get_intent_items()) == 1
-#     assert tim_public.get_intent_items()[0].get_road() == no_fly_road
+#     assert len(tim_public.get_intent_dict()) == 1
+#     assert tim_public.get_intent_dict()[0].get_road() == no_fly_road
 
 
 # # def test_worldunit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(

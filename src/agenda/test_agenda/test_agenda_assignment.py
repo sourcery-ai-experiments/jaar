@@ -575,5 +575,9 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     # print(f"{laundry_do_idea=}")
 
-    assert len(cali_assignment.get_intent_items()) == 1
-    assert cali_assignment.get_intent_items()[0]._label == laundry_task_road_text
+    assert len(cali_assignment.get_intent_dict()) == 1
+    print(f"{cali_assignment.get_intent_dict().keys()=}")
+    assert (
+        cali_assignment.get_intent_dict().get(laundry_task_road_road)._label
+        == laundry_task_road_text
+    )

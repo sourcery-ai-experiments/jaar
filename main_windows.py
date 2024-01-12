@@ -311,7 +311,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_load(self, x_agenda_json: str):
         self.agenda_x = get_from_json(x_agenda_json=x_agenda_json)
-        self.promise_items = self.agenda_x.get_intent_items()
+        self.promise_items = self.agenda_x.get_intent_dict()
         self.refresh_all()
 
     def get_beliefs_list(self):
@@ -373,7 +373,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def intent_states_load(self):
         self.agenda_x.get_tree_metrics()
-        intent_list = self.agenda_x.get_intent_items()
+        intent_list = self.agenda_x.get_intent_dict()
         intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
         self.intent_states.setSortingEnabled(True)
         self.intent_states.setRowCount(0)

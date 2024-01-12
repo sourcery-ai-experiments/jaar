@@ -48,9 +48,9 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
     old_cali_agenda = x_economy.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
     # print(f"{old_cali_agenda._idearoot._beliefunits.keys()=}")
-    basket_belief = old_cali_agenda._idearoot._beliefunits.get(basket_road)
+    # basket_belief = old_cali_agenda._idearoot._beliefunits.get(basket_road)
     # print(f"Cali: {basket_belief.base=} {basket_belief.pick=}")
-    assert len(old_cali_agenda.get_intent_items()) == 0
+    assert len(old_cali_agenda.get_intent_dict()) == 0
 
     # WHEN
     # set basket status to "full"
@@ -70,11 +70,11 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
     # basket_belief = new_cali_agenda._idearoot._beliefunits.get(basket_road)
     # print(f"{basket_belief.base=} {basket_belief.pick=}")
     # print(f"{len(new_cali_agenda._idearoot._beliefunits.keys())=}")
-    assert len(new_cali_agenda.get_intent_items()) == 1
+    assert len(new_cali_agenda.get_intent_dict()) == 1
     laundry_task_text = "do_laundry"
     casa_road = x_economy.build_economy_road(casa_text)
     laundry_task_road = create_road(casa_road, laundry_task_text)
-    assert new_cali_agenda.get_intent_items()[0].get_road() == laundry_task_road
+    assert laundry_task_road in new_cali_agenda.get_intent_dict().keys()
 
 
 def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
@@ -123,7 +123,7 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
 
     # THEN
     old_cali_output = x_economy.get_public_agenda(cali_text)
-    assert len(old_cali_output.get_intent_items()) == 0
+    assert len(old_cali_output.get_intent_dict()) == 0
     old_cali_beliefs = old_cali_output._idearoot._beliefunits
     # print(f"{old_cali_output._idearoot._beliefunits=}")
     assert old_cali_beliefs.get(basket_road) != None
@@ -158,7 +158,7 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
 
     # THEN final belief changed
     new_cali_output = x_economy.get_public_agenda(cali_text)
-    assert len(new_cali_output.get_intent_items()) == 1
+    assert len(new_cali_output.get_intent_dict()) == 1
     new_cali_beliefs = new_cali_output._idearoot._beliefunits
     # print(f"{new_cali_output._idearoot._beliefunits=}")
     assert new_cali_beliefs.get(basket_road) != None

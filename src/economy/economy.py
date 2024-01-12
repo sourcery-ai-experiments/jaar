@@ -552,6 +552,10 @@ class EconomyUnit:
                 delimiter=self._road_delimiter,
             )
 
+    def insert_intent_into_calendar_tables(self, x_agendaunit: AgendaUnit):
+        x_intent_items = x_agendaunit.get_intent_dict()
+        print(f"{x_intent_items=}")
+
 
 def economyunit_shop(
     economy_id: EconomyID,

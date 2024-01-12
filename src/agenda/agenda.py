@@ -1355,17 +1355,18 @@ class AgendaUnit:
             reason_del_premise_need=reason_premise,
         )
 
-    def get_intent_items(
+    def get_intent_dict(
         self,
         base: RoadUnit = None,
         intent_enterprise: bool = True,
         intent_state: bool = True,
-    ) -> list[IdeaUnit]:
-        return [
-            idea
-            for idea in self.get_idea_list()
-            if idea.is_intent_item(necessary_base=base)
-        ]
+    ) -> dict[RoadUnit:IdeaUnit]:
+        x_dict = {}
+        self.set_agenda_metrics()
+        for x_idea in self._idea_dict.values():
+            if x_idea.is_intent_item(necessary_base=base):
+                x_dict[x_idea.get_road()] = x_idea
+        return x_dict
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
         promise_item = self.get_idea_obj(task_road)

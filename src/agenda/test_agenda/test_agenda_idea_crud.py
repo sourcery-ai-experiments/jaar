@@ -4,7 +4,7 @@ from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src._prime.road import default_road_delimiter_if_none, create_road
+from src._prime.road import default_road_delimiter_if_none
 
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
@@ -109,7 +109,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert new_york_idea._road_delimiter == x_agenda._road_delimiter
     new_york_idea.set_parent_road(parent_road="testing")
     assert x_agenda._idearoot._kids["work"]._kids["new_york"]._parent_road == "testing"
-    assert x_agenda.get_intent_items()
+    assert x_agenda.get_intent_dict()
 
 
 def test_agenda_add_idea_CanAddKidToGrandkidIdea():

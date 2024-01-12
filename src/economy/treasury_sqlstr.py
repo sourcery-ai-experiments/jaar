@@ -1001,12 +1001,12 @@ def get_calendar_table_create_sqlstr():
     return """
 CREATE TABLE IF NOT EXISTS calendar (
   healer VARCHAR(255) NOT NULL
-, time_road VARCHAR(10000) NOT NULL
+, report_time_road VARCHAR(10000) NOT NULL
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
 , report_interval_length INT NOT NULL
-, report_interval_intent_task_count INT NOT NULL
-, report_interval_intent_state_count INT NOT NULL
+, report_interval_intent_task_max_count INT NOT NULL
+, report_interval_intent_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
 , intent_idea_road VARCHAR(255) NOT NULL
@@ -1018,22 +1018,101 @@ CREATE TABLE IF NOT EXISTS calendar (
 """
 
 
-def get_calendar_table_insert_sqlstr(select_sqlstr):
+@dataclass
+class CalendarReportUnit:
+    healer: PersonID = (None,)
+    time_road: RoadUnit = None
+    date_range_start: int = None
+    date_range_cease: int = None
+    interval_length: int = None
+    intent_max_count_task: int = None
+    intent_max_count_state: int = None
+
+
+@dataclass
+class CalendarIntentUnit:
+    calendarreportunit: CalendarReportUnit
+    time_begin: int
+    time_close: int
+    intent_idea_road: RoadUnit
+    intent_weight: float
+    task: bool
+
+
+def get_calendar_table_insert_sqlstr(x_obj: CalendarIntentUnit):
     return f"""
 INSERT INTO calendar (
   healer
-, time_road
+, report_time_road
 , report_date_range_start
 , report_date_range_cease
 , report_interval_length
-, report_interval_intent_task_count
-, report_interval_intent_state_count
+, report_interval_intent_task_max_count
+, report_interval_intent_state_max_count
 , time_begin
 , time_close
 , intent_idea_road
 , intent_weight
 , task)
-{select_sqlstr}
+VALUES (
+  '{x_obj.calendarreportunit.healer}'
+, '{x_obj.calendarreportunit.time_road}'
+, {sqlite_null(x_obj.calendarreportunit.date_range_start)}
+, {sqlite_null(x_obj.calendarreportunit.date_range_cease)}
+, {sqlite_null(x_obj.calendarreportunit.interval_length)}
+, {sqlite_null(x_obj.calendarreportunit.intent_max_count_task)}
+, {sqlite_null(x_obj.calendarreportunit.intent_max_count_state)}
+, {sqlite_null(x_obj.time_begin)}
+, {sqlite_null(x_obj.time_close)}
+, '{x_obj.intent_idea_road}'
+, {sqlite_null(x_obj.intent_weight)}
+, {sqlite_bool(x_obj.task)}
+)
+;
+"""
+
+
+def get_partyunit_table_insert_sqlstr(
+    x_agenda: AgendaUnit, x_partyunit: PartyUnit
+) -> str:
+    """Create table that holds a the output credit metrics."""
+    return f"""
+INSERT INTO partyunit (
+  agenda_healer
+, pid
+, _agenda_credit
+, _agenda_debt
+, _agenda_intent_credit
+, _agenda_intent_debt
+, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_debt
+, _creditor_active
+, _debtor_active
+, _treasury_tax_paid
+, _treasury_tax_diff
+, _treasury_credit_score
+, _treasury_voice_rank
+, _treasury_voice_hx_lowest_rank
+, _title
+)
+VALUES (
+  '{x_agenda._healer}' 
+, '{x_partyunit.pid}'
+, {sqlite_null(x_partyunit._agenda_credit)} 
+, {sqlite_null(x_partyunit._agenda_debt)}
+, {sqlite_null(x_partyunit._agenda_intent_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_debt)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
+, {sqlite_bool(x_partyunit._creditor_active)}
+, {sqlite_bool(x_partyunit._debtor_active)}
+, {sqlite_null(x_partyunit._treasury_tax_paid)}
+, {sqlite_null(x_partyunit._treasury_tax_diff)}
+, {sqlite_null(x_partyunit._treasury_credit_score)}
+, {sqlite_null(x_partyunit._treasury_voice_rank)}
+, {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
+, '{x_partyunit._title}'
+)
 ;
 """
 

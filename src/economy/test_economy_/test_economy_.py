@@ -1,7 +1,7 @@
 from src._prime.road import (
-    create_road,
     get_all_road_nodes,
     default_road_delimiter_if_none,
+    create_road,
 )
 from src.tools.file import delete_dir
 from os import path as os_path
@@ -313,15 +313,15 @@ def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     healer_text = "healer"
     healer_road_with_woot = create_road(x_economy.economy_id, healer_text)
     healer_road_wo_root = healer_text
-    healer_list_wo_root = get_all_road_nodes(healer_road_wo_root)
+    # healer_list_wo_root = get_all_road_nodes(healer_road_wo_root)
     bloomers_text = "bloomers"
     bloomers_road_with_root = create_road(healer_road_with_woot, bloomers_text)
     bloomers_road_wo_root = create_road(healer_road_wo_root, bloomers_text)
-    bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
+    # bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
     roses_text = "roses"
     roses_road_with_root = create_road(bloomers_road_with_root, roses_text)
     roses_road_wo_root = create_road(bloomers_road_wo_root, roses_text)
-    roses_list_wo_root = get_all_road_nodes(roses_road_wo_root)
+    # roses_list_wo_root = get_all_road_nodes(roses_road_wo_root)
 
     # WHEN / THEN
     assert x_economy.economy_id == x_economy.build_economy_road()
