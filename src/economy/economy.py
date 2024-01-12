@@ -50,7 +50,12 @@ from src.economy.treasury_sqlstr import (
     get_groupunit_catalog_dict,
     get_agendatreasuryunits_dict,
     get_agendaunit_update_sqlstr,
+    CalendarReportUnit,
 )
+
+
+class IntentBaseDoesNotExistException(Exception):
+    pass
 
 
 @dataclass
@@ -552,7 +557,14 @@ class EconomyUnit:
                 delimiter=self._road_delimiter,
             )
 
-    def insert_intent_into_calendar_tables(self, x_agendaunit: AgendaUnit):
+    def insert_intent_into_treasury_db(
+        self, x_agendaunit: AgendaUnit, x_calendarreportunit: CalendarReportUnit
+    ):
+        print(f"{x_calendarreportunit.time_road=}")
+        if x_agendaunit.idea_exists(x_calendarreportunit.time_road) == False:
+            raise IntentBaseDoesNotExistException(
+                f"Intent base cannot be '{x_calendarreportunit.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
+            )
         x_intent_items = x_agendaunit.get_intent_dict()
         print(f"{x_intent_items=}")
 

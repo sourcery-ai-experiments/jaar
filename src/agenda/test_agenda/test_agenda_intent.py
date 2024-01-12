@@ -22,17 +22,17 @@ from src.tools.file import open_file
 
 def test_get_intent_dict_ReturnsCorrectObj():
     # GIVEN
-    x_agenda = example_agendas_get_agenda_with_4_levels()
+    bob_agenda = example_agendas_get_agenda_with_4_levels()
 
     # WHEN
-    intent_dict = x_agenda.get_intent_dict()
+    intent_dict = bob_agenda.get_intent_dict()
 
     # THEN
     assert intent_dict
     assert len(intent_dict) == 2
     print(f"{intent_dict.keys()=}")
-    assert x_agenda.make_l1_road("work") in intent_dict.keys()
-    assert x_agenda.make_l1_road("feed cat") in intent_dict.keys()
+    assert bob_agenda.make_l1_road("work") in intent_dict.keys()
+    assert bob_agenda.make_l1_road("feed cat") in intent_dict.keys()
 
 
 def test_agenda_get_intent_dict_ReturnsIntentWithOnlyCorrectItems():
