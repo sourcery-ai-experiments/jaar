@@ -1,5 +1,6 @@
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
+    get_agenda_with_tuesday_cleaning_task,
 )
 from src.economy.economy import economyunit_shop
 from src.economy.examples.economy_env_kit import (
@@ -187,7 +188,7 @@ def test_economy_treasury_insert_intent_into_treasury_db_CorrectlyPopulatesDB():
     x_economy.create_dirs_if_null(in_memory_treasury=True)
     x_economy.refresh_treasury_public_agendas_data()
 
-    amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
+    amos_agenda = get_agenda_with_tuesday_cleaning_task()
 
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
     assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 0

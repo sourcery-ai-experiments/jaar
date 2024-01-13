@@ -372,7 +372,6 @@ def get_assignment_agenda_example1():
     floor_reason = reasonunit_shop(status_road)
     floor_reason.set_premise(premise=status_road)
     neo_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
-
     return neo_agenda
 
 
@@ -383,7 +382,6 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amos_agenda.add_partyunit(amos_text)
     amos_agenda.add_partyunit(cali_text)
 
-    root_road = amos_agenda._economy_id
     casa_text = "casa"
     basket_text = "laundry basket status"
     b_full_text = "full"
@@ -392,12 +390,12 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     b_fine_text = "fine"
     b_half_text = "half full"
     do_laundry_text = "do_laundry"
-    casa_road = amos_agenda.make_road(root_road, casa_text)
+    casa_road = amos_agenda.make_l1_road(casa_text)
     basket_road = amos_agenda.make_road(casa_road, basket_text)
     b_full_road = amos_agenda.make_road(basket_road, b_full_text)
     b_smel_road = amos_agenda.make_road(basket_road, b_smel_text)
     laundry_task_road = amos_agenda.make_road(casa_road, do_laundry_text)
-    amos_agenda.add_idea(ideaunit_shop(casa_text), root_road)
+    amos_agenda.add_idea(ideaunit_shop(casa_text), amos_agenda._economy_id)
     amos_agenda.add_idea(ideaunit_shop(basket_text), casa_road)
     amos_agenda.add_idea(ideaunit_shop(b_full_text), basket_road)
     amos_agenda.add_idea(ideaunit_shop(b_smel_text), basket_road)
@@ -423,6 +421,49 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amos_agenda.set_belief(base=basket_road, pick=b_full_road)
 
     return amos_agenda
+
+
+def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
+    bob_agenda = agendaunit_shop("bob")
+    bob_agenda.set_time_hreg_ideas(7)
+
+    casa_text = "casa"
+    casa_road = bob_agenda.make_l1_road(casa_text)
+    laundry_text = "do_laundry"
+    laundry_road = bob_agenda.make_road(casa_road, laundry_text)
+    bob_agenda.add_idea(ideaunit_shop(casa_text), bob_agenda._economy_id)
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
+    time_road = bob_agenda.make_l1_road("time")
+    jajatime_road = bob_agenda.make_road(time_road, "jajatime")
+    bob_agenda.set_belief(
+        base=jajatime_road, pick=jajatime_road, open=1064131200, nigh=1064136133
+    )
+    bob_agenda.edit_idea_attr(
+        road=laundry_road,
+        reason_base=jajatime_road,
+        reason_premise=jajatime_road,
+        reason_premise_open=3420.0,
+        reason_premise_nigh=3420.0,
+        reason_premise_divisor=10080.0,
+    )
+    print(f"{bob_agenda._idearoot._beliefunits.values()=}")
+    laundry_reasonunit = bob_agenda.get_idea_obj(laundry_road).get_reasonunit(
+        jajatime_road
+    )
+    laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
+    print(f"{laundry_reasonunit.base=} {laundry_premise=}")
+    bob_agenda.set_agenda_metrics()
+    for x_ideaunit in bob_agenda._idea_dict.values():
+        if x_ideaunit._label in [laundry_text]:
+            print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
+            print(f"{x_ideaunit._kids.keys()=}")
+            jaja_beliefheir = x_ideaunit._beliefheirs.get(jajatime_road)
+            print(f"{jaja_beliefheir.open % 10080=}")
+            print(f"{jaja_beliefheir.nigh % 10080=}")
+
+    print(f"{bob_agenda.get_intent_dict().keys()=}")
+
+    return bob_agenda
 
 
 # class YR:

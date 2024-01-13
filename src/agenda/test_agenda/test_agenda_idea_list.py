@@ -522,7 +522,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     mt_reasonunit = reasonunit_shop(week_road, premises=mt_premises)
     mt_reasonheir = reasonheir_shop(week_road, premises=mt_premises, _status=False)
     x_idearoot = x_agenda.get_idea_obj(x_agenda._economy_id)
-    x_idearoot.set_reason_unit(reason=mt_reasonunit)
+    x_idearoot.set_reasonunit(reason=mt_reasonunit)
     # print(f"{x_agenda._reasonunits[week_road].base=}")
     # print(f"{x_agenda._reasonunits[week_road].premises[mon_road].need=}")
     # print(f"{x_agenda._reasonunits[week_road].premises[tue_road].need=}")

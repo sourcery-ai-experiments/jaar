@@ -373,7 +373,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def intent_states_load(self):
         self.agenda_x.get_tree_metrics()
-        intent_list = self.agenda_x.get_intent_dict()
+        intent_list = list(self.agenda_x.get_intent_dict().values())
         intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
         self.intent_states.setSortingEnabled(True)
         self.intent_states.setRowCount(0)

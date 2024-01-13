@@ -383,7 +383,7 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({}, field_text) == {}
 
 
-def test_idea_get_dict_ReturnsCorrectCompleteDict():
+def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
     week_road = create_road(root_label(), week_text)
@@ -505,7 +505,7 @@ def test_idea_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict.get("_on_meld_weight_action") is None
 
 
-def test_idea_get_dict_ReturnsCorrectIncompleteDict():
+def test_IdeaUnit_get_dict_ReturnsCorrectIncompleteDict():
     # GIVEN
     work_idea = ideaunit_shop()
 
@@ -517,7 +517,7 @@ def test_idea_get_dict_ReturnsCorrectIncompleteDict():
     assert work_dict == {"_weight": 1}
 
 
-def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
+def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
     work_idea = ideaunit_shop()
     work_idea._is_expanded = False
@@ -564,7 +564,7 @@ def test_idea_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert work_dict.get("_kids") != None
 
 
-def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
+def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     work_idea = ideaunit_shop()
     assert work_idea._is_expanded
@@ -590,7 +590,7 @@ def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_dict.get("_kids") is None
 
 
-def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
+def test_IdeaUnit_vaild_DenomCorrectInheritsBeginAndClose():
     # GIVEN
     work_text = "work"
     clean_text = "clean"
@@ -611,7 +611,7 @@ def test_idea_vaild_DenomCorrectInheritsBeginAndClose():
     assert work_idea._kids[clean_text] == kid_idea_expected
 
 
-def test_idea_invaild_DenomThrowsError():
+def test_IdeaUnit_invaild_DenomThrowsError():
     # GIVEN
     work_text = "work"
     parent_idea = ideaunit_shop(_label=work_text)
@@ -633,7 +633,22 @@ def test_idea_invaild_DenomThrowsError():
     )
 
 
-def test_idea_get_reasonheir_correctlyReturnsreasonheir_shop():
+def test_IdeaUnit_get_reasonunit_ReturnsCorrectObj():
+    # GIVEN
+    clean_text = "clean"
+    clean_idea = ideaunit_shop(_label=clean_text)
+    tool_text = "tool"
+    clean_idea.set_reasonunit(reasonunit_shop(base=tool_text))
+
+    # WHEN
+    x_reasonunit = clean_idea.get_reasonunit(base=tool_text)
+
+    # THEN
+    assert x_reasonunit != None
+    assert x_reasonunit.base == tool_text
+
+
+def test_IdeaUnit_get_reasonheir_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
@@ -650,7 +665,7 @@ def test_idea_get_reasonheir_correctlyReturnsreasonheir_shop():
     assert reason_heir_z.base == tool_text
 
 
-def test_idea_get_reasonheir_correctlyReturnsNone():
+def test_IdeaUnit_get_reasonheir_CorrectlyReturnsNone():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
@@ -667,7 +682,7 @@ def test_idea_get_reasonheir_correctlyReturnsNone():
     assert reason_heir_test6 is None
 
 
-def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
+def test_IdeaUnit_set_active_status_SetsNullactive_status_hxToNonEmpty():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
@@ -679,7 +694,7 @@ def test_idea_set_active_status_SetsNullactive_status_hxToNonEmpty():
     assert clean_idea._active_status_hx == {3: True}
 
 
-def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
+def test_IdeaUnit_set_active_status_IfFullactive_status_hxResetToTrue():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
@@ -691,7 +706,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
     assert clean_idea._active_status_hx == {0: True}
 
 
-# def test_idea_set_active_status_IfFullactive_status_hxResetToFalse():
+# def test_IdeaUnit_set_active_status_IfFullactive_status_hxResetToFalse():
 #     # GIVEN
 # clean_text = "clean"
 # clean_idea = ideaunit_shop(_label=clean_text)
@@ -710,7 +725,7 @@ def test_idea_set_active_status_IfFullactive_status_hxResetToTrue():
 #     assert clean_idea._active_status_hx == {0: False}
 
 
-def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
+def test_IdeaUnit_record_active_status_hx_CorrectlyRecordsHistorry():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
@@ -771,7 +786,7 @@ def test_idea_record_active_status_hx_CorrectlyRecordsHistorry():
     assert clean_idea._active_status_hx == {0: False}
 
 
-def test_idea_set_assignedunit_empty_if_null():
+def test_IdeaUnit_set_assignedunit_empty_if_null():
     # GIVEN
     run_text = "run"
     run_idea = ideaunit_shop(_label=run_text)
@@ -786,7 +801,7 @@ def test_idea_set_assignedunit_empty_if_null():
     assert run_idea._assignedunit == assigned_unit_shop()
 
 
-def test_idea_set_assignedheir_CorrectlySetsAttr():
+def test_IdeaUnit_set_assignedheir_CorrectlySetsAttr():
     # GIVEN
     swim_text = "swimmers"
     sport_text = "sports"
@@ -808,7 +823,7 @@ def test_idea_set_assignedheir_CorrectlySetsAttr():
     assert sport_idea._assignedheir == swim_assigned_heir
 
 
-def test_idea_get_descendants_ReturnsNoRoadUnits():
+def test_IdeaUnit_get_descendants_ReturnsNoRoadUnits():
     # GIVEN
     nation_text = "nation-state"
     nation_idea = ideaunit_shop(_label=nation_text, _parent_road=root_label())
@@ -820,7 +835,7 @@ def test_idea_get_descendants_ReturnsNoRoadUnits():
     assert nation_descendants == {}
 
 
-def test_idea_get_descendants_Returns3DescendantsRoadUnits():
+def test_IdeaUnit_get_descendants_Returns3DescendantsRoadUnits():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
@@ -851,7 +866,7 @@ def test_idea_get_descendants_Returns3DescendantsRoadUnits():
     assert nation_descendants.get(iowa_road) != None
 
 
-def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
+def test_IdeaUnit_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
@@ -868,7 +883,7 @@ def test_idea_get_descendants_ErrorRaisedIfInfiniteLoop():
     )
 
 
-def test_idea_clear_kids_CorrectlySetsAttr():
+def test_IdeaUnit_clear_kids_CorrectlySetsAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
@@ -884,7 +899,7 @@ def test_idea_clear_kids_CorrectlySetsAttr():
     assert len(nation_idea._kids) == 0
 
 
-def test_idea_get_kid_ReturnsCorrectObj():
+def test_IdeaUnit_get_kid_ReturnsCorrectObj():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
@@ -906,7 +921,7 @@ def test_idea_get_kid_ReturnsCorrectObj():
     assert france_idea._label == france_text
 
 
-def test_idea_del_kid_CorrectChangesAttr():
+def test_IdeaUnit_del_kid_CorrectChangesAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)

@@ -678,7 +678,7 @@ class IdeaUnit:
         if idea_attr.uid != None:
             self._uid = idea_attr.uid
         if idea_attr.reason != None:
-            self.set_reason_unit(reason=idea_attr.reason)
+            self.set_reasonunit(reason=idea_attr.reason)
         if idea_attr.reason_base != None and idea_attr.reason_premise != None:
             self.set_reason_premise(
                 base=idea_attr.reason_base,
@@ -842,9 +842,12 @@ class IdeaUnit:
         except KeyError as e:
             raise (f"Cannot delete balancelink '{groupbrand}'.") from e
 
-    def set_reason_unit(self, reason: ReasonUnit):
+    def set_reasonunit(self, reason: ReasonUnit):
         reason.delimiter = self._road_delimiter
         self._reasonunits[reason.base] = reason
+
+    def get_reasonunit(self, base: RoadUnit) -> ReasonUnit:
+        return self._reasonunits.get(base)
 
     def set_reasonheirs_status(self):
         self.clear_reasonheirs_status()

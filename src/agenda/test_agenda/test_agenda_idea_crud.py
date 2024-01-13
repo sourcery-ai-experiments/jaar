@@ -209,7 +209,7 @@ def test_agenda_add_idea_creates_reasons_ideas():
     cookery_dirty_road = x_agenda.make_road(cookery_room_road, cookery_dirty_text)
     reason_x = reasonunit_shop(base=cookery_room_road)
     reason_x.set_premise(premise=cookery_dirty_road)
-    clean_cookery_idea.set_reason_unit(reason=reason_x)
+    clean_cookery_idea.set_reasonunit(reason=reason_x)
 
     assert x_agenda._idearoot.get_kid(buildings_text) is None
 

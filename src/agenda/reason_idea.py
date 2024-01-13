@@ -453,6 +453,9 @@ class ReasonCore:
             delimiter=self.delimiter,
         )
 
+    def get_premise(self, premise: RoadUnit) -> PremiseUnit:
+        return self.premises.get(premise)
+
     def del_premise(self, premise: RoadUnit):
         try:
             self.premises.pop(premise)

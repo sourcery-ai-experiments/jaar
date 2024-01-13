@@ -351,6 +351,21 @@ def test_ReasonCore_set_premise_CorrectlySetsPremise():
     assert day_reason.premises == premises
 
 
+def test_ReasonCore_get_single_premis_ReturnsCorrectObj():
+    # GIVEN
+    day_road = create_road(root_label(), "day")
+    day_reason = reasoncore_shop(base=day_road)
+    day_reason.set_premise(premise=day_road, open=3, nigh=6)
+    day_reason.set_premise(premise=day_road, open=7, nigh=10)
+    noon_road = create_road(day_road, "noon")
+    day_reason.set_premise(premise=noon_road)
+    assert day_reason.get_premises_count() == 2
+
+    # WHEN / THEN
+    assert day_reason.get_premise(premise=day_road).open == 7
+    assert day_reason.get_premise(premise=noon_road).open is None
+
+
 def test_ReasonCore_del_premise_CorrectlyDeletesPremise():
     # GIVEN
     day_text = "day"

@@ -75,8 +75,10 @@ class Edit_Agenda(qw, Ui_Form):
         if base_x == "":
             base_x = None
 
-        intent_list = self.agenda_x.get_intent_dict(
-            intent_enterprise=True, intent_state=False, base=base_x
+        intent_list = list(
+            self.agenda_x.get_intent_dict(
+                intent_enterprise=True, intent_state=False, base=base_x
+            ).values()
         )
         intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
 

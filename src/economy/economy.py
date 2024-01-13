@@ -566,7 +566,7 @@ class EconomyUnit:
                 f"Intent base cannot be '{x_calendarreportunit.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
             )
         x_intent_items = x_agendaunit.get_intent_dict()
-        print(f"{x_intent_items=}")
+        print(f"{x_intent_items.keys()=}")
 
 
 def economyunit_shop(

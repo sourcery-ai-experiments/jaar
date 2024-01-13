@@ -629,11 +629,11 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
 
     dirty_cookery_reason = reasonunit_shop(cookery_room_road)
     dirty_cookery_reason.set_premise(premise=cookery_dirty_road)
-    clean_cookery_idea.set_reason_unit(reason=dirty_cookery_reason)
+    clean_cookery_idea.set_reasonunit(reason=dirty_cookery_reason)
 
     daytime_reason = reasonunit_shop(daytime_road)
     daytime_reason.set_premise(premise=daytime_road, open=open_8am, nigh=nigh_8am)
-    clean_cookery_idea.set_reason_unit(reason=daytime_reason)
+    clean_cookery_idea.set_reasonunit(reason=daytime_reason)
 
     # anna_text = "anna"
     # anna_partyunit = partyunit_shop(pid=anna_text)
@@ -822,3 +822,57 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
 
     # THEN
     assert len(x_agenda.get_intent_dict()) == 1
+
+
+def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFixActiveStatusSettingError():  # https://github.com/jschalk/jaar/issues/69
+    # GIVEN
+    bob_agenda = agendaunit_shop("bob")
+    bob_agenda.set_time_hreg_ideas(7)
+
+    casa_text = "casa"
+    casa_road = bob_agenda.make_l1_road(casa_text)
+    laundry_text = "do_laundry"
+    laundry_road = bob_agenda.make_road(casa_road, laundry_text)
+    bob_agenda.add_idea(ideaunit_shop(casa_text), bob_agenda._economy_id)
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
+    time_road = bob_agenda.make_l1_road("time")
+    jajatime_road = bob_agenda.make_road(time_road, "jajatime")
+    bob_agenda.edit_idea_attr(
+        road=laundry_road,
+        reason_base=jajatime_road,
+        reason_premise=jajatime_road,
+        reason_premise_open=3420.0,
+        reason_premise_nigh=3420.0,
+        reason_premise_divisor=10080.0,
+    )
+    laundry_reasonunit = bob_agenda.get_idea_obj(laundry_road).get_reasonunit(
+        jajatime_road
+    )
+    laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
+    print(f"{laundry_reasonunit.base=} {laundry_premise=}")
+    bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, nigh=1064135133)
+    for x_ideaunit in bob_agenda._idea_dict.values():
+        if x_ideaunit._label in [laundry_text]:
+            print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
+            print(f"{x_ideaunit._kids.keys()=}")
+            jaja_beliefheir = x_ideaunit._beliefheirs.get(jajatime_road)
+            print(f"{jaja_beliefheir.open % 10080=}")
+            print(f"{jaja_beliefheir.nigh % 10080=}")
+    assert bob_agenda.get_intent_dict() == {}
+
+    # WHEN
+    bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, nigh=1064136133)
+    print(f"{bob_agenda._idearoot._beliefunits.get(jajatime_road)=}")
+    for x_ideaunit in bob_agenda._idea_dict.values():
+        if x_ideaunit._label in [laundry_text]:
+            print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
+            print(f"{x_ideaunit._kids.keys()=}")
+            jaja_beliefheir = x_ideaunit._beliefheirs.get(jajatime_road)
+            print(f"{jaja_beliefheir.open % 10080=}")
+            print(f"{jaja_beliefheir.nigh % 10080=}")
+
+    print(f"{bob_agenda.get_intent_dict().keys()=}")
+
+    # THEN
+    assert bob_agenda.get_intent_dict() == {}
+    assert 1 == 2
