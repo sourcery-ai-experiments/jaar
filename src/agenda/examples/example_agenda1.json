@@ -5781,9 +5781,9 @@
                                 "_weight": 1,
                                 "promise": false
                             },
-                            "live": {
+                            "animate": {
                                 "_is_expanded": true,
-                                "_label": "live",
+                                "_label": "animate",
                                 "_on_meld_weight_action": "default",
                                 
                                 "_reasonunits": {
