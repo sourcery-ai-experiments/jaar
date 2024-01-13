@@ -265,9 +265,17 @@ class PremiseUnit:
             src=self.need, heir=belief_pick, delimiter=self.delimiter
         ) or is_heir_road(src=belief_pick, heir=self.need, delimiter=self.delimiter)
 
-    def set_status(self, beliefheir: BeliefHeir):
-        self._status = self._get_active_status(beliefheir=beliefheir)
-        self._task = self._get_task_status(beliefheir=beliefheir)
+    def set_status(self, x_beliefheir: BeliefHeir):
+        if x_beliefheir != None:
+            print(
+                f"  Premise {self.need} Status: {self._status} Open: {x_beliefheir.open} Nigh: {x_beliefheir.nigh}"
+            )
+        self._status = self._get_active_status(beliefheir=x_beliefheir)
+        if x_beliefheir != None:
+            print(
+                f"  Premise {self.need} Status: {self._status} Open: {x_beliefheir.open} Nigh: {x_beliefheir.nigh}"
+            )
+        self._task = self._get_task_status(beliefheir=x_beliefheir)
 
     def _get_active_status(self, beliefheir: BeliefHeir):
         x_status = None
@@ -549,9 +557,9 @@ class ReasonHeir(ReasonCore):
 
     def _set_premise_status(self, beliefheir: BeliefHeir):
         for premise in self.premises.values():
-            premise.set_status(beliefheir=beliefheir)
+            premise.set_status(x_beliefheir=beliefheir)
 
-    def _get_base_belief(self, beliefs: dict[RoadUnit:BeliefHeir]):
+    def _get_base_belief(self, beliefs: dict[RoadUnit:BeliefHeir]) -> BeliefHeir:
         x_belief = None
         if beliefs is None:
             beliefs = {}
@@ -568,19 +576,24 @@ class ReasonHeir(ReasonCore):
     def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
         self.clear_status()
         belief = self._get_base_belief(beliefs=beliefs)
+        if belief != None:
+            print(
+                f" Before   {belief.base} Status: {self._status} Open: {belief.open} Nigh: {belief.nigh}"
+            )
         self._set_premise_status(beliefheir=belief)
 
         # if a single one is true return true (OR operator)
-        is_single_premise_true = False
+        is_a_single_premise_true = False
         is_single_task_true = False
         for premise in self.premises.values():
             if premise._status == True:
-                is_single_premise_true = True
+                is_a_single_premise_true = True
                 if premise._task == True:
                     is_single_task_true = True
 
+        # reasonheir object status is set by either
         self._status = bool(
-            is_single_premise_true
+            is_a_single_premise_true
             or (
                 self._curr_idea_active_status != None
                 and self._curr_idea_active_status == self.suff_idea_active_status
@@ -589,6 +602,11 @@ class ReasonHeir(ReasonCore):
         self._task = True if is_single_task_true else None
         if self._status and self._task is None:
             self._task = False
+
+        if belief != None:
+            print(
+                f" After    {belief.base} Status: {self._status} Open: {belief.open} Nigh: {belief.nigh}"
+            )
 
 
 def reasonheir_shop(

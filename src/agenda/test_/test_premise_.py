@@ -285,7 +285,7 @@ def test_premise_set_status_CorrectlySetsStatusWhenBeliefIsNull():
     assert premise_2._status is None
 
     # WHEN
-    premise_2.set_status(beliefheir=agenda_belief_2)
+    premise_2.set_status(x_beliefheir=agenda_belief_2)
 
     # GIVEN
     assert premise_2._status == False
@@ -302,7 +302,7 @@ def test_premise_set_status_CorrectlySetsStatusOfSimple():
     assert wed_premise._status is None
 
     # WHEN
-    wed_premise.set_status(beliefheir=agenda_belief)
+    wed_premise.set_status(x_beliefheir=agenda_belief)
 
     # THEN
     assert wed_premise._status == True
@@ -321,7 +321,7 @@ def test_premise_set_status_CorrectlySetsStatus_2():
 
     # WHEN
     wed_belief = beliefheir_shop(base=wkday_road, pick=wed_road)
-    wed_after_premise.set_status(beliefheir=wed_belief)
+    wed_after_premise.set_status(x_beliefheir=wed_belief)
 
     # THEN
     assert wed_after_premise._status == True
@@ -340,7 +340,7 @@ def test_premise_set_status_CorrectlySetsStatus_3():
 
     # WHEN
     noon_belief = beliefheir_shop(base=wkday_road, pick=wed_noon_road)
-    wed_premise.set_status(beliefheir=noon_belief)
+    wed_premise.set_status(x_beliefheir=noon_belief)
 
     # THEN
     assert wed_premise._status == True
@@ -362,7 +362,7 @@ def test_premise_set_status_CorrectlySetsStatus_4():
     assert thu_belief.nigh is None
 
     # WHEN
-    wed_premise.set_status(beliefheir=thu_belief)
+    wed_premise.set_status(x_beliefheir=thu_belief)
 
     # THEN
     assert wed_premise._status == False
@@ -383,7 +383,7 @@ def test_premise_set_status_CorrectlySetsStatus_5():
 
     # WHEN
     wed_rain_belief = beliefheir_shop(base=wkday_road, pick=wed_rain_road)
-    wed_sun_premise.set_status(beliefheir=wed_rain_belief)
+    wed_sun_premise.set_status(x_beliefheir=wed_rain_belief)
 
     # THEN
     assert wed_sun_premise._status == False
@@ -400,7 +400,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeStatusTrue():
 
     # WHEN
     range_0_to_8_belief = beliefheir_shop(hr24_road, hr24_road, open=0, nigh=8)
-    hr24_premise.set_status(beliefheir=range_0_to_8_belief)
+    hr24_premise.set_status(x_beliefheir=range_0_to_8_belief)
 
     # THEN
     assert hr24_premise._status == True
@@ -516,7 +516,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
 
     # WHEN
     range_0_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=0, nigh=5)
-    range_2_to_7_premise.set_status(beliefheir=range_0_to_5_belief)
+    range_2_to_7_premise.set_status(x_beliefheir=range_0_to_5_belief)
 
     # THEN
     assert range_2_to_7_premise._status == True
@@ -532,7 +532,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     assert range_2_to_7_premise._status is None
 
     # WHEN
-    range_2_to_7_premise.set_status(beliefheir=range_0_to_8_belief)
+    range_2_to_7_premise.set_status(x_beliefheir=range_0_to_8_belief)
     # THEN
     assert range_2_to_7_premise._status == True
     assert range_2_to_7_premise._task == True
@@ -540,7 +540,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     # GIVEN
     range_3_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=3, nigh=5)
     # WHEN
-    range_2_to_7_premise.set_status(beliefheir=range_3_to_5_belief)
+    range_2_to_7_premise.set_status(x_beliefheir=range_3_to_5_belief)
     # THEN
     assert range_2_to_7_premise._status
     assert range_2_to_7_premise._task == False
@@ -548,7 +548,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     # GIVEN
     range_8_to_8_belief = beliefheir_shop(hr24_road, hr24_road, open=8, nigh=8)
     # WHEN
-    range_2_to_7_premise.set_status(beliefheir=range_8_to_8_belief)
+    range_2_to_7_premise.set_status(x_beliefheir=range_8_to_8_belief)
     assert range_2_to_7_premise._status == False
     assert range_2_to_7_premise._task == False
 
@@ -564,7 +564,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeStatusFalse():
 
     # WHEN
     agenda_belief = beliefheir_shop(base=hr24_road, pick=hr24_road, open=8, nigh=10)
-    hr24_premise.set_status(beliefheir=agenda_belief)
+    hr24_premise.set_status(x_beliefheir=agenda_belief)
 
     # THEN
     assert hr24_premise._status == False
@@ -581,7 +581,7 @@ def test_premise_set_status_CorrectlySetCEDWeekStatusFalse():
 
     # WHEN
     range_6_to_6_belief = beliefheir_shop(week_road, week_road, open=6, nigh=6)
-    o1_n1_d6_premise.set_status(beliefheir=range_6_to_6_belief)
+    o1_n1_d6_premise.set_status(x_beliefheir=range_6_to_6_belief)
 
     # THEN
     assert o1_n1_d6_premise._status == False
@@ -598,7 +598,7 @@ def test_premise_set_status_CorrectlySetCEDWeekStatusTrue():
     assert week_premise._status is None
 
     # WHEN
-    week_premise.set_status(beliefheir=agenda_belief)
+    week_premise.set_status(x_beliefheir=agenda_belief)
 
     # THEN
     assert week_premise._status == True
