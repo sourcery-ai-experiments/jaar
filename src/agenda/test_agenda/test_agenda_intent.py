@@ -845,41 +845,46 @@ def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFixActiveStatusSet
         reason_premise_nigh=3420.0,
         reason_premise_divisor=10080.0,
     )
+    print("set first belief")
     bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, nigh=1064135133)
+    print("get 1st intent dictionary")
+    bob_intent_dict = bob_agenda.get_intent_dict()
+    print(f"{bob_intent_dict.keys()=}")
+    assert bob_intent_dict == {}
+
     laundry_idea = bob_agenda.get_idea_obj(laundry_road)
     laundry_reasonheir = laundry_idea.get_reasonheir(jajatime_road)
     laundry_premise = laundry_reasonheir.get_premise(jajatime_road)
     laundry_beliefheir = laundry_idea._beliefheirs.get(jajatime_road)
-    print(
-        f"{laundry_idea._active_status=} {laundry_premise.open=} {laundry_beliefheir.open % 10080=}"
-    )
-    print(
-        f"{laundry_idea._active_status=} {laundry_premise.nigh=} {laundry_beliefheir.nigh % 10080=}"
-    )
-    bob_intent_dict = bob_agenda.get_intent_dict()
-    print(f"{bob_intent_dict.keys()=}")
-
+    # print(
+    #     f"{laundry_idea._active_status=} {laundry_premise.open=} {laundry_beliefheir.open % 10080=}"
+    # )
+    # print(
+    #     f"{laundry_idea._active_status=} {laundry_premise.nigh=} {laundry_beliefheir.nigh % 10080=}"
+    # )
     # print(f"{laundry_reasonheir.base=} {laundry_premise=}")
     # for x_ideaunit in bob_agenda._idea_dict.values():
     #     if x_ideaunit._label in [laundry_text]:
     #         print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
     #         print(f"{x_ideaunit._kids.keys()=}")
-    assert bob_intent_dict == {}
 
     # WHEN
+    print("set second belief")
     bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, nigh=1064136133)
+    print("get 2nd intent dictionary")
+    bob_intent_dict = bob_agenda.get_intent_dict()
+    print(f"{bob_intent_dict.keys()=}")
+
     laundry_idea = bob_agenda.get_idea_obj(laundry_road)
     laundry_reasonheir = laundry_idea.get_reasonheir(jajatime_road)
     laundry_premise = laundry_reasonheir.get_premise(jajatime_road)
     laundry_beliefheir = laundry_idea._beliefheirs.get(jajatime_road)
-    print(
-        f"{laundry_idea._active_status=} {laundry_premise.open=} {laundry_beliefheir.open % 10080=}"
-    )
-    print(
-        f"{laundry_idea._active_status=} {laundry_premise.nigh=} {laundry_beliefheir.nigh % 10080=}"
-    )
-    bob_intent_dict = bob_agenda.get_intent_dict()
-    print(f"{bob_intent_dict.keys()=}")
+    # print(
+    #     f"{laundry_idea._active_status=} {laundry_premise.open=} {laundry_beliefheir.open % 10080=}"
+    # )
+    # print(
+    #     f"{laundry_idea._active_status=} {laundry_premise.nigh=} {laundry_beliefheir.nigh % 10080=}"
+    # )
     # for x_ideaunit in bob_agenda._idea_dict.values():
     #     if x_ideaunit._label in [laundry_text]:
     #         print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
