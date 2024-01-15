@@ -399,13 +399,16 @@ def get_fig(pd: float) -> go_figure:
 
 
 def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
-    """Check scenarios where PremiseUnit._active_status should used"""
-    # Case A
+    """Check scenarios PremiseUnit._active_status. Plotly graph can be used
+    to identify problems. Uncomment entire test once to visualize errors with
+    graphical output.
+    """
+    # # Case A
     assert pbsd_shop(0.3, 0.7, 1, 0.1, 1.2).get_active_status()
 
-    # Case B1
+    # # Case B1
     pd = 1  # premise_divisor
-    linel = 0
+    # linel = 0
     # fig = get_fig(pd)
     caseb1_1 = pbsd_shop(0.3, 0.7, pd, 0.5, 0.8)
     caseb1_2 = pbsd_shop(0.3, 0.7, pd, 0.2, 0.5)
@@ -638,9 +641,80 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     assert caseb4_6.get_active_status() == wanted_active
     assert caseb4_6.get_task_status() == wanted_task
 
-    # Bottom divisor line
-    add_trace(fig, 0.0, pd, linel - 0.2, "Divisor Range", None)
+    # # Bottom divisor line
+    # add_trace(fig, 0.0, pd, linel - 0.2, "Divisor Range", None)
 
     # if show_figure:
     #     fig.show()
     #     assert 1 == 2
+
+
+def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_01():
+    # GIVEN / WHEN
+    segr_obj = pbsd_shop(
+        premise_open=1305.0,
+        premise_nigh=1305.0,
+        premise_divisor=1440,
+        belief_open_full=20000,
+        belief_nigh_full=29000,
+    )
+    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(
+        f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
+    )
+    print(
+        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+    )
+    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+
+    # THEN
+    # assert segr_obj._belief_range_len == 9000
+    # assert segr_obj.get_belief_nigh_mod_div() == 200
+    assert segr_obj.get_active_status()
+    assert segr_obj.get_task_status()
+
+
+def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_02():
+    # GIVEN / WHEN
+    segr_obj = pbsd_shop(
+        premise_open=1305.0,
+        premise_nigh=1305.0,
+        premise_divisor=1440,
+        belief_open_full=1300,
+        belief_nigh_full=1400,
+    )
+    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(
+        f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
+    )
+    print(
+        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+    )
+    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+
+    # THEN
+    assert segr_obj.get_active_status()
+    assert segr_obj.get_task_status()
+
+
+def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_03():
+    # GIVEN / WHEN
+    segr_obj = pbsd_shop(
+        premise_open=1305.0,
+        premise_nigh=1305.0,
+        premise_divisor=1440,
+        belief_open_full=1300,
+        belief_nigh_full=1300,
+    )
+    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(
+        f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
+    )
+    print(
+        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+    )
+    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+
+    # THEN
+    assert segr_obj.get_active_status() == False
+    assert segr_obj.get_task_status() == False
