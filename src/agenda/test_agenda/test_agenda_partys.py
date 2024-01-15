@@ -690,25 +690,25 @@ def test_agenda_intent_credit_debt_IsCorrectlySet():
     intent_dict = x_agenda.get_intent_dict()
 
     # THEN
-    assert len(intent_dict) == 68
+    assert len(intent_dict) == 63
     x_balanceintentmetrics = BalanceIntentMetrics()
     x_balanceintentmetrics.set_sums(intent_dict=intent_dict)
     # print(f"{sum_agenda_intent_importance=}")
-    assert x_balanceintentmetrics.intent_no_count == 20
-    assert x_balanceintentmetrics.intent_yes_count == 48
-    assert x_balanceintentmetrics.intent_no_agenda_i_sum == 0.00447826215370075
-    assert x_balanceintentmetrics.intent_yes_agenda_i_sum == 0.0027152834170378025
+    assert x_balanceintentmetrics.intent_no_count == 14
+    assert x_balanceintentmetrics.intent_yes_count == 49
+    assert x_balanceintentmetrics.intent_no_agenda_i_sum == 0.0037472680016539662
+    assert x_balanceintentmetrics.intent_yes_agenda_i_sum == 0.002796504989487445
     assert are_equal(
         x_balanceintentmetrics.intent_no_agenda_i_sum
         + x_balanceintentmetrics.intent_yes_agenda_i_sum,
         x_balanceintentmetrics.sum_agenda_intent_importance,
     )
-    assert x_balanceintentmetrics.sum_agenda_intent_importance == 0.007193545570738553
+    assert x_balanceintentmetrics.sum_agenda_intent_importance == 0.006543772991141412
 
     x_groupintentmetrics = GroupIntentMetrics()
     x_groupintentmetrics.set_sums(x_agenda=x_agenda)
     assert x_groupintentmetrics.partylink_count == 81
-    x_sum = 0.0027152834170378025
+    x_sum = 0.002796504989487445
     assert x_groupintentmetrics.sum_groupunit_credit == x_sum
     assert x_groupintentmetrics.sum_groupunit_debt == x_sum
     assert x_groupintentmetrics.sum_partylink_credit == x_sum

@@ -3,7 +3,7 @@ from src._prime.road import RoadUnit
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.idea import IdeaUnit, ideaunit_shop
-from src.agenda.reason_idea import reasonunit_shop, PremiseStatusFinder
+from src.agenda.reason_idea import reasonunit_shop, pbsd_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assigned_unit_shop
@@ -287,14 +287,16 @@ def test_exammple_AgendaCanFiltersOnBase():
     #     reason_del_premise_base=weekdays,
     #     reason_del_premise_need=weekdays,
     # )
-    assert len(x_agenda.get_intent_dict()) == 68
+    # this list went from 68 to 63 when the method of identifying active_statuses was improved.
+    assert len(x_agenda.get_intent_dict()) == 63
 
     # WHEN
     action_list = x_agenda.get_intent_dict(base=week_road)
 
     # THEN
-    assert len(action_list) != 69
-    assert len(action_list) == 28
+    assert len(action_list) != 63
+    # this list went from 28 to 29 when the method of identifying active_statuses was improved.
+    assert len(action_list) == 29
 
 
 def test_set_intent_task_as_complete_RangeWorksCorrectly():
@@ -730,22 +732,22 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     print(
         f" {premiseunit._status=} , {premiseunit._is_segregate()=} premiseunit passes"
     )
-    segr_obj = PremiseStatusFinder(
-        belief_open=beliefheir_jajatime.open,
-        belief_nigh=beliefheir_jajatime.nigh,
-        premise_open=premiseunit.open,
-        premise_nigh=premiseunit.nigh,
-        premise_divisor=premiseunit.divisor,
-    )
-    print(
-        f"----\n  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-    )
-    print(
-        f"       {segr_obj.belief_open=}         {segr_obj.belief_nigh=} \tdifference:{segr_obj.belief_nigh-segr_obj.belief_open}"
-    )
+    # segr_obj = pbsd_shop(
+    #     premise_open=premiseunit.open,
+    #     premise_nigh=premiseunit.nigh,
+    #     premise_divisor=premiseunit.divisor,
+    #     belief_open_full=beliefheir_jajatime.open,
+    #     belief_nigh_full=beliefheir_jajatime.nigh,
+    # )
+    # print(
+    #     f"----\n  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
+    # )
+    # print(
+    #     f"       {segr_obj.belief_open_full=}         {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+    # )
 
-    print(f"  {segr_obj.premise_open_trans=}  {segr_obj.premise_nigh_trans=}")
-    print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
+    # # print(f"  {segr_obj.premise_open_trans=}  {segr_obj.premise_nigh_trans=}")
+    # print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
     assert get_tasks_count(action_idea_list) == 64
 
 
@@ -895,4 +897,3 @@ def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFixActiveStatusSet
 
     # THEN
     assert bob_intent_dict == {}
-    assert 1 == 2

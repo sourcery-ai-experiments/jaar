@@ -487,7 +487,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
 
     # WHEN / THEN
     range_5_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=5, nigh=5)
-    assert o0_n0_d5_premise._get_task_status(beliefheir=range_5_to_5_belief)
+    assert o0_n0_d5_premise._get_task_status(beliefheir=range_5_to_5_belief) == False
 
 
 def test_premise_set_task_NotNull():

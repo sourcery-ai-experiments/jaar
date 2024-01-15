@@ -135,94 +135,6 @@ def beliefheir_shop(
     return BeliefHeir(base=base, pick=pick, open=open, nigh=nigh)
 
 
-@dataclass
-class PremiseStatusFinder:
-    belief_open: float
-    belief_nigh: float
-    premise_open: float
-    premise_nigh: float
-    premise_divisor: int
-    _active_status: bool = None
-    _task_status: bool = None
-    premise_open_trans: float = None
-    premise_nigh_trans: float = None
-
-    def __post_init__(self):
-        self._active_status = False
-        self._task_status = False
-
-        # create transformed premise_open and premise_nigh that can be compared to beliefs
-        open_multipler = int(self.belief_open / self.premise_divisor)
-        nigh_multipler = int(self.belief_nigh / self.premise_divisor)
-        self.premise_open_trans = (
-            self.premise_divisor * open_multipler
-        ) + self.premise_open
-        self.premise_nigh_trans = (
-            self.premise_divisor * nigh_multipler
-        ) + self.premise_nigh
-
-        # print(
-        #     f"  Open Tran:{self.premise_open_trans} Nigh Tran:{self.premise_nigh_trans=}"
-        # )
-
-        if (
-            self.premise_nigh_trans_in_belief_range()
-            or self.premise_open_trans_equal_belief_open()
-            or self.premise_x_range_inside_belief_range()
-            or self.belief_range_inside_premise_x_range()
-            or self.premise_open_trans_in_belief_range()
-        ):
-            self._active_status = True
-
-            if self.belief_nigh_mod_div_outside_need_range():
-                self._task_status = True
-
-        print(
-            f"Active_status: {self._active_status} Belief {self.belief_open%self.premise_divisor}-{self.belief_nigh%self.premise_divisor} Premise: {self.premise_open}-{self.premise_nigh} /{self.premise_divisor} Trans Range: {open_multipler=} {nigh_multipler=} {self.premise_nigh_trans} {self.premise_open_trans}"
-        )
-
-    def get_belief_open_mod_div(self):
-        return self.belief_open % self.premise_divisor
-
-    def get_belief_nigh_mod_div(self):
-        return self.belief_nigh % self.premise_divisor
-
-    def belief_nigh_mod_div_outside_need_range(self) -> bool:
-        return (
-            self.get_belief_nigh_mod_div() < self.premise_open
-            or self.get_belief_nigh_mod_div() >= self.premise_nigh
-        )
-
-    def premise_nigh_trans_in_belief_range(self) -> bool:
-        return (
-            self.premise_open_trans < self.belief_open
-            and self.premise_nigh_trans >= self.belief_open
-            and self.premise_nigh_trans < self.belief_nigh
-        )
-
-    def premise_open_trans_equal_belief_open(self) -> bool:
-        return self.premise_open_trans == self.belief_open
-
-    def premise_x_range_inside_belief_range(self) -> bool:
-        return (
-            self.premise_open_trans > self.belief_open
-            and self.premise_nigh_trans < self.belief_nigh
-        )
-
-    def belief_range_inside_premise_x_range(self) -> bool:
-        return (
-            self.premise_open_trans <= self.belief_open
-            and self.premise_nigh_trans > self.belief_nigh
-        )
-
-    def premise_open_trans_in_belief_range(self) -> bool:
-        return (
-            self.premise_open_trans > self.belief_open
-            and self.premise_open_trans < self.belief_nigh
-            and self.premise_nigh_trans > self.belief_nigh
-        )
-
-
 class PremiseBeliefSegerateDataException(Exception):
     pass
 
@@ -417,15 +329,7 @@ class PremiseUnit:
         ) or is_heir_road(src=belief_pick, heir=self.need, delimiter=self.delimiter)
 
     def set_status(self, x_beliefheir: BeliefHeir):
-        # if x_beliefheir != None:
-        #     print(
-        #         f"  Premise {self.need} Status: {self._status} Open: {x_beliefheir.open} Nigh: {x_beliefheir.nigh}"
-        #     )
         self._status = self._get_active_status(beliefheir=x_beliefheir)
-        # if x_beliefheir != None:
-        #     print(
-        #         f"  Premise {self.need} Status: {self._status} Open: {x_beliefheir.open} Nigh: {x_beliefheir.nigh}"
-        #     )
         self._task = self._get_task_status(beliefheir=x_beliefheir)
 
     def _get_active_status(self, beliefheir: BeliefHeir):
@@ -459,14 +363,14 @@ class PremiseUnit:
         if self._status and self._is_range():
             x_task = beliefheir.nigh > self.nigh
         elif self._status and self._is_segregate():
-            segr_obj = PremiseStatusFinder(
-                belief_open=beliefheir.open,
-                belief_nigh=beliefheir.nigh,
+            segr_obj = pbsd_shop(
                 premise_open=self.open,
                 premise_nigh=self.nigh,
                 premise_divisor=self.divisor,
+                belief_open_full=beliefheir.open,
+                belief_nigh_full=beliefheir.nigh,
             )
-            x_task = segr_obj._task_status
+            x_task = segr_obj.get_task_status()
         elif self._status in [True, False]:
             x_task = False
 
@@ -482,14 +386,14 @@ class PremiseUnit:
         return x_status
 
     def _get_segregate_status(self, beliefheir: BeliefHeir) -> bool:
-        segr_obj = PremiseStatusFinder(
-            belief_open=beliefheir.open,
-            belief_nigh=beliefheir.nigh,
+        segr_obj = pbsd_shop(
             premise_open=self.open,
             premise_nigh=self.nigh,
             premise_divisor=self.divisor,
+            belief_open_full=beliefheir.open,
+            belief_nigh_full=beliefheir.nigh,
         )
-        return segr_obj._active_status
+        return segr_obj.get_active_status()
 
     def _get_range_status(self, beliefheir: BeliefHeir) -> bool:
         return (
@@ -727,10 +631,6 @@ class ReasonHeir(ReasonCore):
     def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
         self.clear_status()
         belief = self._get_base_belief(beliefs=beliefs)
-        # if belief != None:
-        # print(
-        #     f" Before   {belief.base} Status: {self._status} Open: {belief.open} Nigh: {belief.nigh}"
-        # )
         self._set_premise_status(beliefheir=belief)
 
         # if a single one is true return true (OR operator)
@@ -753,11 +653,6 @@ class ReasonHeir(ReasonCore):
         self._task = True if is_single_task_true else None
         if self._status and self._task is None:
             self._task = False
-
-        # if belief != None:
-        #     print(
-        #         f" After    {belief.base} Status: {self._status} Open: {belief.open} Nigh: {belief.nigh}"
-        #     )
 
 
 def reasonheir_shop(
