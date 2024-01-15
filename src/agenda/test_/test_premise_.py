@@ -1,4 +1,5 @@
 from src.agenda.reason_idea import (
+    PremiseUnit,
     premiseunit_shop,
     beliefheir_shop,
     premiseunit_shop,
@@ -13,7 +14,27 @@ from src._prime.road import (
 from pytest import raises as pytest_raises
 
 
-def test_premise_attributesExist():
+def test_PremiseUnit_Exists():
+    # GIVEN
+    work_text = "work"
+    work_road = create_road(root_label(), work_text)
+    email_text = "check email"
+    email_road = create_road(work_road, email_text)
+
+    # WHEN
+    email_premise = PremiseUnit(need=email_road)
+
+    # THEN
+    assert email_premise.need == email_road
+    assert email_premise.open is None
+    assert email_premise.nigh is None
+    assert email_premise.divisor is None
+    assert email_premise._status is None
+    assert email_premise._task is None
+    assert email_premise.delimiter is None
+
+
+def test_premiseunit_shop_ReturnsCorrectObj():
     # GIVEN
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -27,7 +48,7 @@ def test_premise_attributesExist():
     assert email_premise.need == email_road
 
 
-def test_premise_clear_works():
+def test_PremiseUnit_clear_status_CorrectlySetsAttrs():
     # WHEN
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -46,7 +67,7 @@ def test_premise_clear_works():
     assert work_premise._status is None
 
 
-def test_premise_is_range_CorrectlyIdenitiesRangeStatus():
+def test_PremiseUnit_is_range_CorrectlyIdentifiesRangeStatus():
     # GIVEN
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -67,7 +88,7 @@ def test_premise_is_range_CorrectlyIdenitiesRangeStatus():
     assert work_premise._is_range() == False
 
 
-def test_premise_is_range_CorrectlyIdenitiesSegregateStatus():
+def test_PremiseUnit_is_segregate_CorrectlyIdentifiesSegregateStatus():
     # GIVEN
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -88,42 +109,40 @@ def test_premise_is_range_CorrectlyIdenitiesSegregateStatus():
     assert work_premise._is_segregate() == True
 
 
-def test_premise_is_in_lineage_CorrectlyIdentifiesLineage():
+def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineage():
     # GIVEN
     nation_road = create_road(root_label(), "Nation-States")
     usa_road = create_road(nation_road, "USA")
     texas_road = create_road(usa_road, "Texas")
     idaho_road = create_road(usa_road, "Idaho")
-
-    # WHEN
     texas_belief = beliefheir_shop(base=usa_road, pick=texas_road)
 
-    # THEN
+    # WHEN / THEN
     texas_premise = premiseunit_shop(need=texas_road)
     assert texas_premise.is_in_lineage(belief_pick=texas_belief.pick)
 
+    # WHEN / THEN
     idaho_premise = premiseunit_shop(need=idaho_road)
     assert idaho_premise.is_in_lineage(belief_pick=texas_belief.pick) == False
 
+    # WHEN / THEN
     usa_premise = premiseunit_shop(need=usa_road)
     assert usa_premise.is_in_lineage(belief_pick=texas_belief.pick)
 
     # GIVEN
     sea_road = create_road("earth", "sea")  # "earth,sea"
-    seaside_road = create_road("earth", "seaside")  # "earth,seaside,beach"
-    seaside_beach_road = create_road(seaside_road, "beach")  # "earth,seaside,beach"
-
-    # WHEN
     sea_premise = premiseunit_shop(need=sea_road)
 
     # THEN
     sea_belief = beliefheir_shop(base=sea_road, pick=sea_road)
     assert sea_premise.is_in_lineage(belief_pick=sea_belief.pick)
+    seaside_road = create_road("earth", "seaside")  # "earth,seaside,beach"
+    seaside_beach_road = create_road(seaside_road, "beach")  # "earth,seaside,beach"
     seaside_belief = beliefheir_shop(seaside_beach_road, seaside_beach_road)
     assert sea_premise.is_in_lineage(belief_pick=seaside_belief.pick) == False
 
 
-def test_premise_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter():
+def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter():
     # GIVEN
     slash_text = "/"
     nation_road = create_road(root_label(), "Nation-States", delimiter=slash_text)
@@ -147,13 +166,12 @@ def test_premise_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter
     assert usa_premise.is_in_lineage(belief_pick=texas_belief.pick)
 
     # GIVEN
-    sea_road = create_road("earth", "sea", delimiter=slash_text)  # "earth,sea"
-    seaside_road = create_road(
-        "earth", "seaside", delimiter=slash_text
-    )  # "earth,seaside,beach"
-    seaside_beach_road = create_road(
-        seaside_road, "beach", delimiter=slash_text
-    )  # "earth,seaside,beach"
+    # "earth,sea"
+    # "earth,seaside"
+    # "earth,seaside,beach"
+    sea_road = create_road("earth", "sea", delimiter=slash_text)
+    seaside_road = create_road("earth", "seaside", delimiter=slash_text)
+    seaside_beach_road = create_road(seaside_road, "beach", delimiter=slash_text)
 
     # WHEN
     sea_premise = premiseunit_shop(need=sea_road, delimiter=slash_text)
@@ -165,7 +183,7 @@ def test_premise_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter
     assert sea_premise.is_in_lineage(belief_pick=seaside_belief.pick) == False
 
 
-def test_premise_get_range_segregate_status_ReturnsCorrectStatusBoolForRangePremise():
+def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForRangePremise():
     # GIVEN
     yr_text = "ced_year"
     yr_road = create_road(root_label(), yr_text)
@@ -198,7 +216,7 @@ def test_premise_get_range_segregate_status_ReturnsCorrectStatusBoolForRangePrem
     assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
 
 
-def test_premise_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregatePremise():
+def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregatePremise():
     # GIVEN
     yr_text = "ced_year"
     yr_road = create_road(root_label(), yr_text)
@@ -231,7 +249,7 @@ def test_premise_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregate
     assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
 
 
-def test_premise_is_range_or_segregate_ReturnsCorrectBool():
+def test_PremiseUnitUnit_is_range_or_segregate_ReturnsCorrectBool():
     # GIVE
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -247,7 +265,7 @@ def test_premise_is_range_or_segregate_ReturnsCorrectBool():
     assert wkday_premise._is_range_or_segregate() == True
 
 
-def test_get_premise_status_returnsCorrectpremisestatus():
+def test_PremiseUnitUnit_get_premise_status_ReturnsCorrect_active_status():
     # WHEN assumes belief is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -261,7 +279,7 @@ def test_get_premise_status_returnsCorrectpremisestatus():
     assert wkday_premise._get_active_status(beliefheir=wkday_belief) == True
 
 
-def test_get_premise_status_returnsCorrectRangedpremisestatus():
+def test_PremiseUnitUnit_get_active_status_returnsCorrectRanged_active_status():
     # GIVEN assumes belief is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -274,7 +292,7 @@ def test_get_premise_status_returnsCorrectRangedpremisestatus():
     assert wkday_premise._get_active_status(beliefheir=wkday_belief) == False
 
 
-def test_premise_set_status_CorrectlySetsStatusWhenBeliefIsNull():
+def test_PremiseUnitUnit_set_status_CorrectlySets_status_WhenBeliefUnitIsNull():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -291,7 +309,7 @@ def test_premise_set_status_CorrectlySetsStatusWhenBeliefIsNull():
     assert premise_2._status == False
 
 
-def test_premise_set_status_CorrectlySetsStatusOfSimple():
+def test_PremiseUnitUnit_set_status_CorrectlySetsStatusOfSimple():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -308,7 +326,7 @@ def test_premise_set_status_CorrectlySetsStatusOfSimple():
     assert wed_premise._status == True
 
 
-def test_premise_set_status_CorrectlySetsStatus_2():
+def test_PremiseUnit_set_status_CorrectlySetsStatus_2():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -327,7 +345,7 @@ def test_premise_set_status_CorrectlySetsStatus_2():
     assert wed_after_premise._status == True
 
 
-def test_premise_set_status_CorrectlySetsStatus_3():
+def test_PremiseUnit_set_status_CorrectlySetsStatus_3():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -346,7 +364,7 @@ def test_premise_set_status_CorrectlySetsStatus_3():
     assert wed_premise._status == True
 
 
-def test_premise_set_status_CorrectlySetsStatus_4():
+def test_PremiseUnit_set_status_CorrectlySetsStatus_4():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -368,7 +386,7 @@ def test_premise_set_status_CorrectlySetsStatus_4():
     assert wed_premise._status == False
 
 
-def test_premise_set_status_CorrectlySetsStatus_5():
+def test_PremiseUnit_set_status_CorrectlySetsStatus_5():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -389,7 +407,7 @@ def test_premise_set_status_CorrectlySetsStatus_5():
     assert wed_sun_premise._status == False
 
 
-def test_premise_set_status_CorrectlySetsTimeRangeStatusTrue():
+def test_PremiseUnit_set_status_CorrectlySetsTimeRangeStatusTrue():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -406,7 +424,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeStatusTrue():
     assert hr24_premise._status == True
 
 
-def test_premise_set_task_CorrectlySetsTaskBool_01():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBool_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -418,7 +436,7 @@ def test_premise_set_task_CorrectlySetsTaskBool_01():
     assert no_range_premise._get_task_status(beliefheir=no_range_belief) == False
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolRangeTrue():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeTrue():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -430,7 +448,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolRangeTrue():
     assert range_5_to_31_premise._get_task_status(range_7_to_41_belief) == True
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolRangeFalse():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeFalse():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -442,7 +460,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolRangeFalse():
     assert range_5_to_31_premise._get_task_status(range_7_to_21_belief) == False
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -454,7 +472,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
     assert o0_n0_d5_premise._get_task_status(range_3_to_5_belief) == False
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -466,7 +484,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
     assert o0_n0_d5_premise._get_task_status(range_5_to_7_belief) == False
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -478,7 +496,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
     assert o0_n0_d5_premise._get_task_status(range_5_to_7_belief) == True
 
 
-def test_premise_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
+def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -490,7 +508,7 @@ def test_premise_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
     assert o0_n0_d5_premise._get_task_status(beliefheir=range_5_to_5_belief) == False
 
 
-def test_premise_set_task_NotNull():
+def test_PremiseUnit_set_task_NotNull():
     # GIVEN
     week_text = "weekdays"
     week_road = create_road(root_label(), week_text)
@@ -506,7 +524,7 @@ def test_premise_set_task_NotNull():
     assert wed_premise._get_task_status(beliefheir=beliefheir) == False
 
 
-def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
+def test_PremiseUnit_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -523,7 +541,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
     assert range_2_to_7_premise._task == False
 
 
-def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
+def test_PremiseUnit_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     # GIVEN
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
@@ -553,7 +571,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     assert range_2_to_7_premise._task == False
 
 
-def test_premise_set_status_CorrectlySetsTimeRangeStatusFalse():
+def test_PremiseUnit_set_status_CorrectlySetsTimeRangeStatusFalse():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -570,7 +588,7 @@ def test_premise_set_status_CorrectlySetsTimeRangeStatusFalse():
     assert hr24_premise._status == False
 
 
-def test_premise_set_status_CorrectlySetCEDWeekStatusFalse():
+def test_PremiseUnit_set_status_CorrectlySetCEDWeekStatusFalse():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -587,7 +605,7 @@ def test_premise_set_status_CorrectlySetCEDWeekStatusFalse():
     assert o1_n1_d6_premise._status == False
 
 
-def test_premise_set_status_CorrectlySetCEDWeekStatusTrue():
+def test_PremiseUnit_set_status_CorrectlySetCEDWeekStatusTrue():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -604,7 +622,7 @@ def test_premise_set_status_CorrectlySetCEDWeekStatusTrue():
     assert week_premise._status == True
 
 
-def test_premise_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
+def test_PremiseUnit_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -621,7 +639,7 @@ def test_premise_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
     assert premise_dict == static_dict
 
 
-def test_premise_get_dict_ReturnsCorrectDictWithOpenAndNigh():
+def test_PremiseUnit_get_dict_ReturnsCorrectDictWithOpenAndNigh():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -638,7 +656,7 @@ def test_premise_get_dict_ReturnsCorrectDictWithOpenAndNigh():
     assert premise_dict == static_dict
 
 
-def test_premise_get_dict_ReturnsCorrectDictWithOnlyRoadUnit():
+def test_PremiseUnit_get_dict_ReturnsCorrectDictWithOnlyRoadUnit():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -655,7 +673,7 @@ def test_premise_get_dict_ReturnsCorrectDictWithOnlyRoadUnit():
     assert premise_dict == static_dict
 
 
-def test_premise_get_obj_key():
+def test_PremiseUnit_get_obj_key():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -667,7 +685,7 @@ def test_premise_get_obj_key():
     assert week_premise.get_obj_key() == week_road
 
 
-def test_premise_find_replace_road_works():
+def test_PremiseUnit_find_replace_road_works():
     # GIVEN
     old_root_road = root_label()
     weekday_text = "weekday"
@@ -688,7 +706,7 @@ def test_premise_find_replace_road_works():
     assert sunday_premise.need == new_sunday_road
 
 
-def test_premise_meld_works():
+def test_PremiseUnit_meld_works():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -707,7 +725,7 @@ def test_premise_meld_works():
     assert x_premise2 == x_premise2.meld(y2_premise)
 
 
-def test_premise_meld_raises_NotSameRoadUnitError():
+def test_PremiseUnit_meld_raises_NotSameRoadUnitError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -725,7 +743,7 @@ def test_premise_meld_raises_NotSameRoadUnitError():
     )
 
 
-def test_premise_meld_raises_NotSameOpenError():
+def test_PremiseUnit_meld_raises_NotSameOpenError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -741,7 +759,7 @@ def test_premise_meld_raises_NotSameOpenError():
     )
 
 
-def test_premise_meld_raises_NotSameNighError():
+def test_PremiseUnit_meld_raises_NotSameNighError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -757,7 +775,7 @@ def test_premise_meld_raises_NotSameNighError():
     )
 
 
-def test_premise_meld_raises_NotSameDivisorError():
+def test_PremiseUnit_meld_raises_NotSameDivisorError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -773,7 +791,7 @@ def test_premise_meld_raises_NotSameDivisorError():
     )
 
 
-def test_premises_get_from_dict_CorrectlyReturnsCompleteObj():
+def test_PremiseUnits_get_from_dict_CorrectlyReturnsCompleteObj():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -795,7 +813,7 @@ def test_premises_get_from_dict_CorrectlyReturnsCompleteObj():
     assert weekday_premise == premiseunit_shop(weekday_road, 1, 30, divisor=5)
 
 
-def test_premises_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
+def test_PremiseUnits_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -810,7 +828,7 @@ def test_premises_get_from_dict_CorrectlyBuildsObjFromIncompleteDict():
     assert weekday_premise == premiseunit_shop(weekday_road)
 
 
-def test_PremisesUnit_set_delimiter_SetsAttrsCorrectly():
+def test_PremiseUnitsUnit_set_delimiter_SetsAttrsCorrectly():
     # GIVEN
     week_text = "weekday"
     sun_text = "Sunday"

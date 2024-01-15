@@ -1,122 +1,13 @@
 from src.agenda.reason_idea import (
-    # PremiseStatusFinder,
-    PremiseBeliefSegerateData,
-    pbsd_shop,
+    PremiseStatusFinder,
+    premisestatusfinder_shop,
 )
 from pytest import raises as pytest_raises
 from plotly.graph_objects import Figure as go_figure, Scatter as go_Scatter
 from dataclasses import dataclass
 
 
-# def test_premisestatusfinder_belief_nigh_outside_premise_range_correctlyReturnsValue():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=20000,
-#         belief_nigh=29000,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(
-#         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-#     )
-#     print(
-#         f"  {segr_obj.belief_open=}  {segr_obj.belief_nigh=} \tdifference:{segr_obj.belief_nigh-segr_obj.belief_open}"
-#     )
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     # assert segr_obj._belief_range_len == 9000
-#     assert segr_obj.get_belief_nigh_mod_div() == 200
-#     assert segr_obj._task_status
-
-
-# def test_premisestatusfinder_correctlyReturnsTaskStatusTrueWhenBeliefRangeGreaterTbeliefivisor():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=20000,
-#         belief_nigh=29000,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(
-#         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-#     )
-#     print(
-#         f"  {segr_obj.belief_open=}  {segr_obj.belief_nigh=} \tdifference:{segr_obj.belief_nigh-segr_obj.belief_open}"
-#     )
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     # assert segr_obj._belief_range_len == 9000
-#     assert segr_obj._active_status
-#     assert segr_obj._task_status
-
-
-# def test_premisestatusfinder_correctlyReturnsActiveStatus_Scenario01():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=1300,
-#         belief_nigh=1400,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(
-#         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-#     )
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     assert segr_obj._active_status
-#     assert segr_obj._task_status
-
-
-# def test_premisestatusfinder_correctlyReturnsActiveStatus_Scenario02():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=1300,
-#         belief_nigh=1300,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(
-#         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-#     )
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     assert segr_obj._active_status == False
-#     assert segr_obj._task_status == False
-
-
-# def test_PremiseStatusFinder_Isssue69FindAndFixActiveStatusSettingError():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=1300,
-#         belief_nigh=1300,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(
-#         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
-#     )
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     assert segr_obj._active_status == False
-#     assert segr_obj._task_status == False
-
-
-def test_PremiseBeliefSegerateData_Exists():
+def test_PremiseStatusFinder_Exists():
     # GIVEN
     x_premise_open = 1
     x_premise_nigh = 1
@@ -125,7 +16,7 @@ def test_PremiseBeliefSegerateData_Exists():
     x_belief_nigh_full = 1
 
     # WHEN
-    x_pbsd = PremiseBeliefSegerateData(
+    x_pbsd = PremiseStatusFinder(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
@@ -141,7 +32,7 @@ def test_PremiseBeliefSegerateData_Exists():
     assert x_pbsd.belief_nigh_full == x_belief_nigh_full
 
 
-def test_pbsd_shop_ReturnsCorrectObj():
+def test_premisestatusfinder_shop_ReturnsCorrectObj():
     # GIVEN
     x_premise_open = 1
     x_premise_nigh = 1
@@ -150,7 +41,7 @@ def test_pbsd_shop_ReturnsCorrectObj():
     x_belief_nigh_full = 1
 
     # WHEN
-    x_pbsd = pbsd_shop(
+    x_pbsd = premisestatusfinder_shop(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
@@ -166,9 +57,9 @@ def test_pbsd_shop_ReturnsCorrectObj():
     assert x_pbsd.belief_nigh_full == x_belief_nigh_full
 
 
-def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
+def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
     with pytest_raises(Exception) as excinfo_1:
-        pbsd_shop(
+        premisestatusfinder_shop(
             premise_open=1,
             premise_nigh=None,
             premise_divisor=1,
@@ -180,7 +71,7 @@ def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
     x_belief_open_full = 2
     x_belief_nigh_full = 1
     with pytest_raises(Exception) as excinfo_2:
-        pbsd_shop(
+        premisestatusfinder_shop(
             premise_open=1,
             premise_nigh=1,
             premise_divisor=1,
@@ -194,7 +85,7 @@ def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
 
     x_premise_divisor = -1
     with pytest_raises(Exception) as excinfo_3:
-        pbsd_shop(
+        premisestatusfinder_shop(
             premise_open=1,
             premise_nigh=1,
             premise_divisor=x_premise_divisor,
@@ -209,7 +100,7 @@ def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
     x_premise_divisor = 1
     x_premise_open = -1
     with pytest_raises(Exception) as excinfo_4:
-        pbsd_shop(
+        premisestatusfinder_shop(
             premise_open=x_premise_open,
             premise_nigh=1,
             premise_divisor=x_premise_divisor,
@@ -223,7 +114,7 @@ def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
 
     x_premise_nigh = 2
     with pytest_raises(Exception) as excinfo_5:
-        pbsd_shop(
+        premisestatusfinder_shop(
             premise_open=1,
             premise_nigh=x_premise_nigh,
             premise_divisor=x_premise_divisor,
@@ -236,7 +127,7 @@ def test_PremiseBeliefSegerateData_check_attr_CorrectlyRaisesError():
     )
 
 
-def test_PremiseBeliefSegerateData_AbbrevationMethodsReturnCorrectObjs():
+def test_PremiseStatusFinder_AbbrevationMethodsReturnCorrectObjs():
     # GIVEN
     x_premise_open = 1
     x_premise_nigh = 2
@@ -245,7 +136,7 @@ def test_PremiseBeliefSegerateData_AbbrevationMethodsReturnCorrectObjs():
     x_belief_nigh_full = 5
 
     # WHEN
-    x_pbsd = pbsd_shop(
+    x_pbsd = premisestatusfinder_shop(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
@@ -261,7 +152,7 @@ def test_PremiseBeliefSegerateData_AbbrevationMethodsReturnCorrectObjs():
     assert x_pbsd.pd() == x_premise_divisor
 
 
-# tool for PremiseBeliefSegerateData tests
+# tool for PremiseStatusFinder tests
 def add_trace(
     fig: go_figure,
     x_int: int,
@@ -299,10 +190,10 @@ def add_trace(
     fig.add_annotation(x=-0.1, y=y_int, text=case_text, showarrow=False)
 
 
-# tool for PremiseBeliefSegerateData tests
+# tool for PremiseStatusFinder tests
 def add_traces(
     fig: go_figure,
-    x_pbsd: PremiseBeliefSegerateData,
+    x_pbsd: PremiseStatusFinder,
     y_int: int,
     showlegend: bool = False,
     case_text: str = "",
@@ -352,11 +243,11 @@ def add_traces(
         add_trace(fig, x_pbsd.bo(), x_pbsd.pd(), y_int, belief_text, pink_text, sl)
 
 
-# tool for PremiseBeliefSegerateData tests
+# tool for PremiseStatusFinder tests
 def show_x(
     wanted_active: bool,
     wanted_task_status: bool,
-    x_pbsd: PremiseBeliefSegerateData,
+    x_pbsd: PremiseStatusFinder,
     fig: go_figure,
     trace_y: float,
     case_text: str,
@@ -374,7 +265,7 @@ def show_x(
         fig.show()
 
 
-# tool for PremiseBeliefSegerateData tests
+# tool for PremiseStatusFinder tests
 def get_fig(pd: float) -> go_figure:
     fig = go_figure()
     add_trace(
@@ -398,31 +289,32 @@ def get_fig(pd: float) -> go_figure:
     return fig
 
 
-def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
+def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     """Check scenarios PremiseUnit._active_status. Plotly graph can be used
     to identify problems. Uncomment entire test once to visualize errors with
     graphical output.
     """
     # # Case A
-    assert pbsd_shop(0.3, 0.7, 1, 0.1, 1.2).get_active_status()
+    assert premisestatusfinder_shop(0.3, 0.7, 1, 0.1, 1.2).get_active_status()
 
     # # Case B1
     pd = 1  # premise_divisor
-    # linel = 0
     # fig = get_fig(pd)
-    caseb1_1 = pbsd_shop(0.3, 0.7, pd, 0.5, 0.8)
-    caseb1_2 = pbsd_shop(0.3, 0.7, pd, 0.2, 0.5)
-    caseb1_3 = pbsd_shop(0.3, 0.7, pd, 0.4, 0.6)
-    caseb1_4 = pbsd_shop(0.3, 0.7, pd, 0.2, 0.8)
-    caseb1_5 = pbsd_shop(0.3, 0.7, pd, 0.1, 0.3)
-    caseb1_6 = pbsd_shop(0.3, 0.7, pd, 0.7, 0.8)
-    caseb1_7 = pbsd_shop(0.3, 0.3, pd, 0.3, 0.5)
-    caseb1_8 = pbsd_shop(0.3, 0.3, pd, 0.1, 0.3)
+    caseb1_1 = premisestatusfinder_shop(0.3, 0.7, pd, 0.5, 0.8)
+    caseb1_2 = premisestatusfinder_shop(0.3, 0.7, pd, 0.2, 0.5)
+    caseb1_3 = premisestatusfinder_shop(0.3, 0.7, pd, 0.4, 0.6)
+    caseb1_4 = premisestatusfinder_shop(0.3, 0.7, pd, 0.2, 0.8)
+    caseb1_5 = premisestatusfinder_shop(0.3, 0.7, pd, 0.1, 0.3)
+    caseb1_6 = premisestatusfinder_shop(0.3, 0.7, pd, 0.7, 0.8)
+    caseb1_7 = premisestatusfinder_shop(0.3, 0.3, pd, 0.3, 0.5)
+    caseb1_8 = premisestatusfinder_shop(0.3, 0.3, pd, 0.1, 0.3)
+    caseb1_9 = premisestatusfinder_shop(0.3, 0.3, pd, 0.3, 0.3)
+    caseb1_10 = premisestatusfinder_shop(0.0, 0.0, pd, 0.0, 0.0)
 
-    # linel -= 0.1
+    # linel = -0.1
     wanted_active = True
     wanted_task = True
-    # show_x(wanted_active, wanted_task, caseb1_1, fig, 0, "caseb1_1", True)
+    # show_x(wanted_active, wanted_task, caseb1_1, fig, linel, "caseb1_1", True)
     assert caseb1_1.get_active_status() == wanted_active
     assert caseb1_1.get_task_status() == wanted_task
     # linel -= 0.1
@@ -467,17 +359,31 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     # show_x(wanted_active, wanted_task, caseb1_8, fig, linel, "caseb1_8")
     assert caseb1_8.get_active_status() == wanted_active
     assert caseb1_8.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_9, fig, linel, "caseb1_9")
+    assert caseb1_9.get_active_status() == wanted_active
+    assert caseb1_9.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_10, fig, linel, "caseb1_10")
+    assert caseb1_10.get_active_status() == wanted_active
+    assert caseb1_10.get_task_status() == wanted_task
 
     # # Case B2
-    caseb2_1 = pbsd_shop(0.3, 0.7, pd, 0.8, 1.4)
-    caseb2_2 = pbsd_shop(0.3, 0.7, pd, 0.6, 1.2)
-    caseb2_3 = pbsd_shop(0.3, 0.7, pd, 0.6, 1.4)
-    caseb2_4 = pbsd_shop(0.3, 0.7, pd, 0.9, 1.8)
-    caseb2_5 = pbsd_shop(0.3, 0.7, pd, 0.2, 1.1)
-    caseb2_6 = pbsd_shop(0.3, 0.7, pd, 0.9, 1.1)
-    caseb2_7 = pbsd_shop(0.3, 0.7, pd, 0.7, 1.2)
-    caseb2_8 = pbsd_shop(0.7, 0.7, pd, 0.7, 1.2)
-    caseb2_9 = pbsd_shop(0.3, 0.7, pd, 0.9, 1.3)
+    # linel -= 0.1
+    caseb2_1 = premisestatusfinder_shop(0.3, 0.7, pd, 0.8, 1.4)
+    caseb2_2 = premisestatusfinder_shop(0.3, 0.7, pd, 0.6, 1.2)
+    caseb2_3 = premisestatusfinder_shop(0.3, 0.7, pd, 0.6, 1.4)
+    caseb2_4 = premisestatusfinder_shop(0.3, 0.7, pd, 0.9, 1.8)
+    caseb2_5 = premisestatusfinder_shop(0.3, 0.7, pd, 0.2, 1.1)
+    caseb2_6 = premisestatusfinder_shop(0.3, 0.7, pd, 0.9, 1.1)
+    caseb2_7 = premisestatusfinder_shop(0.3, 0.7, pd, 0.7, 1.2)
+    caseb2_8 = premisestatusfinder_shop(0.7, 0.7, pd, 0.7, 1.2)
+    caseb2_9 = premisestatusfinder_shop(0.3, 0.7, pd, 0.9, 1.3)
+
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
@@ -537,14 +443,14 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
-    caseb3_1 = pbsd_shop(0.7, 0.3, pd, 0.2, 0.5)
-    caseb3_2 = pbsd_shop(0.7, 0.3, pd, 0.5, 0.8)
-    caseb3_3 = pbsd_shop(0.7, 0.3, pd, 0.2, 0.8)
-    caseb3_4 = pbsd_shop(0.7, 0.3, pd, 0.1, 0.2)
-    caseb3_5 = pbsd_shop(0.7, 0.3, pd, 0.8, 0.9)
-    caseb3_6 = pbsd_shop(0.7, 0.3, pd, 0.4, 0.6)
-    caseb3_7 = pbsd_shop(0.7, 0.3, pd, 0.3, 0.5)
-    caseb3_8 = pbsd_shop(0.7, 0.3, pd, 0.7, 0.7)
+    caseb3_1 = premisestatusfinder_shop(0.7, 0.3, pd, 0.2, 0.5)
+    caseb3_2 = premisestatusfinder_shop(0.7, 0.3, pd, 0.5, 0.8)
+    caseb3_3 = premisestatusfinder_shop(0.7, 0.3, pd, 0.2, 0.8)
+    caseb3_4 = premisestatusfinder_shop(0.7, 0.3, pd, 0.1, 0.2)
+    caseb3_5 = premisestatusfinder_shop(0.7, 0.3, pd, 0.8, 0.9)
+    caseb3_6 = premisestatusfinder_shop(0.7, 0.3, pd, 0.4, 0.6)
+    caseb3_7 = premisestatusfinder_shop(0.7, 0.3, pd, 0.3, 0.5)
+    caseb3_8 = premisestatusfinder_shop(0.7, 0.3, pd, 0.7, 0.7)
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
@@ -598,12 +504,12 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
-    caseb4_1 = pbsd_shop(0.7, 0.3, pd, 0.6, 1.2)
-    caseb4_2 = pbsd_shop(0.7, 0.3, pd, 0.8, 1.4)
-    caseb4_3 = pbsd_shop(0.7, 0.3, pd, 0.6, 1.4)
-    caseb4_4 = pbsd_shop(0.7, 0.3, pd, 0.8, 1.2)
-    caseb4_5 = pbsd_shop(0.7, 0.3, pd, 0.2, 1.1)
-    caseb4_6 = pbsd_shop(0.7, 0.3, pd, 0.9, 1.8)
+    caseb4_1 = premisestatusfinder_shop(0.7, 0.3, pd, 0.6, 1.2)
+    caseb4_2 = premisestatusfinder_shop(0.7, 0.3, pd, 0.8, 1.4)
+    caseb4_3 = premisestatusfinder_shop(0.7, 0.3, pd, 0.6, 1.4)
+    caseb4_4 = premisestatusfinder_shop(0.7, 0.3, pd, 0.8, 1.2)
+    caseb4_5 = premisestatusfinder_shop(0.7, 0.3, pd, 0.2, 1.1)
+    caseb4_6 = premisestatusfinder_shop(0.7, 0.3, pd, 0.9, 1.8)
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
@@ -644,6 +550,7 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     # # Bottom divisor line
     # add_trace(fig, 0.0, pd, linel - 0.2, "Divisor Range", None)
 
+    # show_figure = True
     # if show_figure:
     #     fig.show()
     #     assert 1 == 2
@@ -651,7 +558,7 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
 
 def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_01():
     # GIVEN / WHEN
-    segr_obj = pbsd_shop(
+    segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,
@@ -676,7 +583,7 @@ def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExa
 
 def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_02():
     # GIVEN / WHEN
-    segr_obj = pbsd_shop(
+    segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,
@@ -699,7 +606,7 @@ def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExa
 
 def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_03():
     # GIVEN / WHEN
-    segr_obj = pbsd_shop(
+    segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,

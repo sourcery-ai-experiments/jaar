@@ -523,8 +523,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "premisestatus",
-                "PremiseTask",
+                "Premise active_status",
+                "Premise task_status",
             ]
         )
 
@@ -610,8 +610,8 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "premisestatus",
-                "PremiseTask",
+                "Premise active_status",
+                "Premise task_status",
             ]
         )
 

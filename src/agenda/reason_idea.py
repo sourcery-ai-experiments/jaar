@@ -135,12 +135,12 @@ def beliefheir_shop(
     return BeliefHeir(base=base, pick=pick, open=open, nigh=nigh)
 
 
-class PremiseBeliefSegerateDataException(Exception):
+class PremiseStatusFinderException(Exception):
     pass
 
 
 @dataclass
-class PremiseBeliefSegerateData:
+class PremiseStatusFinder:
     premise_open: float  # always within 0 and divisor, can be more than premise_nigh
     premise_nigh: float  # always within 0 and divisor, can be less than premise_open
     premise_divisor: float  # always greater than zero
@@ -155,25 +155,25 @@ class PremiseBeliefSegerateData:
             self.belief_open_full,
             self.belief_nigh_full,
         ):
-            raise PremiseBeliefSegerateDataException("No parameter can be None")
+            raise PremiseStatusFinderException("No parameter can be None")
 
         if self.belief_open_full > self.belief_nigh_full:
-            raise PremiseBeliefSegerateDataException(
+            raise PremiseStatusFinderException(
                 f"{self.belief_open_full=} cannot be greater that {self.belief_nigh_full=}"
             )
 
         if self.premise_divisor <= 0:
-            raise PremiseBeliefSegerateDataException(
+            raise PremiseStatusFinderException(
                 f"{self.premise_divisor=} cannot be less/equal to zero"
             )
 
         if self.premise_open < 0 or self.premise_open > self.premise_divisor:
-            raise PremiseBeliefSegerateDataException(
+            raise PremiseStatusFinderException(
                 f"{self.premise_open=} cannot be less than zero or greater than {self.premise_divisor=}"
             )
 
         if self.premise_nigh < 0 or self.premise_nigh > self.premise_divisor:
-            raise PremiseBeliefSegerateDataException(
+            raise PremiseStatusFinderException(
                 f"{self.premise_nigh=} cannot be less than zero or greater than {self.premise_divisor=}"
             )
 
@@ -264,7 +264,7 @@ def get_collasped_beliefrange_active_status(
     premise_divisor: float,
     belief_nigh_full: float,
 ) -> bool:
-    x_pbsd = pbsd_shop(
+    x_pbsd = premisestatusfinder_shop(
         premise_open=premise_open,
         premise_nigh=premise_nigh,
         premise_divisor=premise_divisor,
@@ -274,18 +274,18 @@ def get_collasped_beliefrange_active_status(
     return x_pbsd.get_active_status()
 
 
-def pbsd_shop(
+def premisestatusfinder_shop(
     premise_open: float,
     premise_nigh: float,
     premise_divisor: float,
     belief_open_full: float,
     belief_nigh_full: float,
 ):
-    x_premisebeliefsegeratedata = PremiseBeliefSegerateData(
+    x_premisestatusfinder = PremiseStatusFinder(
         premise_open, premise_nigh, premise_divisor, belief_open_full, belief_nigh_full
     )
-    x_premisebeliefsegeratedata.check_attr()
-    return x_premisebeliefsegeratedata
+    x_premisestatusfinder.check_attr()
+    return x_premisestatusfinder
 
 
 @dataclass
@@ -363,7 +363,7 @@ class PremiseUnit:
         if self._status and self._is_range():
             x_task = beliefheir.nigh > self.nigh
         elif self._status and self._is_segregate():
-            segr_obj = pbsd_shop(
+            segr_obj = premisestatusfinder_shop(
                 premise_open=self.open,
                 premise_nigh=self.nigh,
                 premise_divisor=self.divisor,
@@ -386,7 +386,7 @@ class PremiseUnit:
         return x_status
 
     def _get_segregate_status(self, beliefheir: BeliefHeir) -> bool:
-        segr_obj = pbsd_shop(
+        segr_obj = premisestatusfinder_shop(
             premise_open=self.open,
             premise_nigh=self.nigh,
             premise_divisor=self.divisor,

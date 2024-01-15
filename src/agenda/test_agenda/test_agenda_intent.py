@@ -3,7 +3,7 @@ from src._prime.road import RoadUnit
 from src.agenda.agenda import agendaunit_shop, get_from_json
 from src.agenda.examples.agenda_env import agenda_env
 from src.agenda.idea import IdeaUnit, ideaunit_shop
-from src.agenda.reason_idea import reasonunit_shop, pbsd_shop
+from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assigned_unit_shop
@@ -732,7 +732,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     print(
         f" {premiseunit._status=} , {premiseunit._is_segregate()=} premiseunit passes"
     )
-    # segr_obj = pbsd_shop(
+    # segr_obj = premisestatusfinder_shop(
     #     premise_open=premiseunit.open,
     #     premise_nigh=premiseunit.nigh,
     #     premise_divisor=premiseunit.divisor,
