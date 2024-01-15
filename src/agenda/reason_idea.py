@@ -283,44 +283,83 @@ class PremiseBeliefSegerateData:
     def get_active_status(self) -> bool:
         if self.belief_nigh_full - self.belief_open_full > self.premise_divisor:
             return True
-        elif self.bo() <= self.bn() and self.po() <= self.pn():
-            if self.bo() >= self.po() and self.bo() < self.pn():
-                return True
-            elif self.bn() > self.po() and self.bn() < self.pn():
-                return True
-            elif self.bo() < self.po() and self.bn() > self.pn():
-                return True
-            elif self.bo() == self.po():
-                return True
+        # Case B1
+        elif get_range_less_than_divisor_active_status(
+            bo=self.bo(), bn=self.bn(), po=self.po(), pn=self.pn()
+        ):
+            return True
 
-        elif self.bo() > self.bn() and self.po() <= self.pn():
-            if self.bn() > self.po():
-                return True
-            if self.bo() < self.pn():
-                return True
-            if self.bo() == self.po():
-                return True
-
-        elif self.bo() <= self.bn() and self.po() > self.pn():
-            if self.bo() < self.pn():
-                return True
-            if self.bn() > self.po():
-                return True
-        elif self.bo() > self.bn() and self.po() > self.pn():
-            if self.bn() <= self.pn():
-                return True
-            if self.bn() > self.pn():
-                return True
-
-        # elif self.bo() > self.pn() and self.bn() > self.pn():
-        #     # print(7)
-        #     return True
-        # elif self.bo() < self.po() and self.bn() < self.po():
-        #     # print(8)
-        #     return True
-
-        # print(6)
         return False
+
+    def get_task_status(self):
+        return bool(
+            (
+                self.get_active_status()
+                and get_collasped_beliefrange_active_status(
+                    self.premise_open,
+                    self.premise_nigh,
+                    self.premise_divisor,
+                    self.belief_nigh_full,
+                )
+                == False
+            )
+        )
+
+
+def get_range_less_than_divisor_active_status(bo, bn, po, pn):
+    # x_bool = False
+    # if bo <= bn and po <= pn:
+    #     if (
+    #         (bo >= po and bo < pn)
+    #         or (bn > po and bn < pn)
+    #         or (bo < po and bn > pn)
+    #         or (bo == po)
+    #     ):
+    #         x_bool = True
+    # elif bo > bn and po <= pn:
+    #     if (bn > po) or (bo < pn) or (bo == po):
+    #         x_bool = True
+    # elif bo <= bn and po > pn:
+    #     if (bo < pn) or (bn > po) or (bo == po):
+    #         x_bool = True
+    # elif bo > bn and po > pn:
+    #     if (bn <= pn) or (bn > pn):
+    #         x_bool = True
+    # return x_bool
+    x_bool = False
+    if bo <= bn and po <= pn:
+        if (
+            (bo >= po and bo < pn)
+            or (bn > po and bn < pn)
+            or (bo < po and bn > pn)
+            or (bo == po)
+        ):
+            x_bool = True
+    elif bo > bn and po <= pn:
+        if (bn > po) or (bo < pn) or (bo == po):
+            x_bool = True
+    elif bo <= bn:
+        if (bo < pn) or (bn > po) or (bo == po):
+            x_bool = True
+    else:
+        x_bool = True
+    return x_bool
+
+
+def get_collasped_beliefrange_active_status(
+    premise_open: float,
+    premise_nigh: float,
+    premise_divisor: float,
+    belief_nigh_full: float,
+) -> bool:
+    x_pbsd = pbsd_shop(
+        premise_open=premise_open,
+        premise_nigh=premise_nigh,
+        premise_divisor=premise_divisor,
+        belief_open_full=belief_nigh_full,
+        belief_nigh_full=belief_nigh_full,
+    )
+    return x_pbsd.get_active_status()
 
 
 def pbsd_shop(

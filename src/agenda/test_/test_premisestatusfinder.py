@@ -96,24 +96,6 @@ def test_premisestatusfinder_correctlyReturnsActiveStatus_Scenario02():
     assert segr_obj._task_status == False
 
 
-# def test_premisestatusfinder_correctlyReturnsActiveStatus_Scenario03():
-#     # GIVEN / WHEN
-#     segr_obj = PremiseStatusFinder(
-#         belief_open=1063998720,
-#         belief_nigh=1064130373,
-#         premise_open=1305.0,
-#         premise_nigh=1305.0,
-#         premise_divisor=1440,
-#     )
-#     print(f"----\n  {segr_obj.belief_open=}  {segr_obj.belief_nigh=}")
-#     print(f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}")
-#     print(f"  {segr_obj._active_status=}  {segr_obj._task_status=}")
-
-#     # THEN
-#     assert segr_obj._active_status
-#     assert segr_obj._task_status
-
-
 def test_PremiseStatusFinder_Isssue69FindAndFixActiveStatusSettingError():
     # GIVEN / WHEN
     segr_obj = PremiseStatusFinder(
@@ -279,6 +261,7 @@ def test_PremiseBeliefSegerateData_AbbrevationMethodsReturnCorrectObjs():
     assert x_pbsd.pd() == x_premise_divisor
 
 
+# tool for PremiseBeliefSegerateData tests
 def add_trace(
     fig: go_figure,
     x_int: int,
@@ -289,15 +272,14 @@ def add_trace(
     showlegend: bool = False,
     case_text: str = "",
     wanted_text: str = "",
+    wanted_status_text: str = "",
     premise_divisor: float = 0,
 ) -> go_figure:
     if x_end is None:
         x_end = x_int
     if x_color is None:
         x_color = "Black"
-    x_marker_size = 10
-    if x_color == "Blue":
-        x_marker_size = 12
+    x_marker_size = 12 if x_color == "Blue" else 10
     fig.add_trace(
         go_Scatter(
             x=[x_int, x_end],
@@ -309,19 +291,15 @@ def add_trace(
         )
     )
     fig.add_annotation(
-        x=premise_divisor + 0.1,
-        y=y_int,
-        text=wanted_text,
-        showarrow=False,
+        x=premise_divisor + 0.15, y=y_int, text=wanted_text, showarrow=False
     )
     fig.add_annotation(
-        x=-0.1,
-        y=y_int,
-        text=case_text,
-        showarrow=False,
+        x=premise_divisor + 0.4, y=y_int, text=wanted_status_text, showarrow=False
     )
+    fig.add_annotation(x=-0.1, y=y_int, text=case_text, showarrow=False)
 
 
+# tool for PremiseBeliefSegerateData tests
 def add_traces(
     fig: go_figure,
     x_pbsd: PremiseBeliefSegerateData,
@@ -329,6 +307,7 @@ def add_traces(
     showlegend: bool = False,
     case_text: str = "",
     wanted_text: str = "",
+    wanted_status_text: str = "",
     premise_divisor: float = 1,
 ) -> go_figure:
     belief_text = "BeliefUnit Remainder range"
@@ -353,6 +332,7 @@ def add_traces(
             sl,
             case_text=case_text,
             wanted_text=wanted_text,
+            wanted_status_text=wanted_status_text,
             premise_divisor=premise_divisor,
         )
     else:
@@ -366,53 +346,67 @@ def add_traces(
             sl,
             case_text=case_text,
             wanted_text=wanted_text,
+            wanted_status_text=wanted_status_text,
             premise_divisor=premise_divisor,
         )
         add_trace(fig, x_pbsd.bo(), x_pbsd.pd(), y_int, belief_text, pink_text, sl)
 
 
+# tool for PremiseBeliefSegerateData tests
 def show_x(
+    wanted_active: bool,
+    wanted_task_status: bool,
     x_pbsd: PremiseBeliefSegerateData,
-    wanted_active_status: bool,
     fig: go_figure,
     trace_y: float,
     case_text: str,
     showlegend: bool = False,
 ) -> bool:
-    wanted_text = "TRUE" if wanted_active_status else "FALSE"
-    add_traces(fig, x_pbsd, trace_y, showlegend, case_text, wanted_text, 1)
-    if x_pbsd.get_active_status() != wanted_active_status:
+    wanted_text = "TRUE" if wanted_active else "FALSE"
+    wanted_status_text = "TRUE" if wanted_task_status else "FALSE"
+    add_traces(
+        fig, x_pbsd, trace_y, showlegend, case_text, wanted_text, wanted_status_text, 1
+    )
+    if (
+        x_pbsd.get_active_status() != wanted_active
+        or x_pbsd.get_task_status() != wanted_task_status
+    ):
         fig.show()
 
-    return wanted_active_status
 
-
-def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
-    """Check scenarios where PremiseUnit._active_status should used"""
+# tool for PremiseBeliefSegerateData tests
+def get_fig(pd: float) -> go_figure:
     fig = go_figure()
-    pd = 1  # premise_divisor
     add_trace(
-        fig,
-        0.0,
-        pd,
-        0.0,
-        "Divisor Range",
-        None,
-        True,
-        "Case",
-        "Expected",
-        pd,
+        fig=fig,
+        x_int=0.0,
+        x_end=pd,
+        y_int=0.0,
+        trace_name="Divisor Range",
+        x_color=None,
+        showlegend=True,
+        case_text="Case",
+        wanted_text="Active Status",
+        wanted_status_text="Task Status",
+        premise_divisor=pd,
     )
     fig_title = "When Belief.range < Premise_divisor: Premise.Active_status Checks."
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
+    fig.add_annotation(x=pd + 0.25, y=0.1, text="Expected", showarrow=False)
+    return fig
 
+
+def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
+    """Check scenarios where PremiseUnit._active_status should used"""
     # Case A
     assert pbsd_shop(0.3, 0.7, 1, 0.1, 1.2).get_active_status()
 
     # Case B1
-    ll = 0
+    pd = 1  # premise_divisor
+    linel = 0
+    # fig = get_fig(pd)
     caseb1_1 = pbsd_shop(0.3, 0.7, pd, 0.5, 0.8)
     caseb1_2 = pbsd_shop(0.3, 0.7, pd, 0.2, 0.5)
     caseb1_3 = pbsd_shop(0.3, 0.7, pd, 0.4, 0.6)
@@ -420,26 +414,58 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     caseb1_5 = pbsd_shop(0.3, 0.7, pd, 0.1, 0.3)
     caseb1_6 = pbsd_shop(0.3, 0.7, pd, 0.7, 0.8)
     caseb1_7 = pbsd_shop(0.3, 0.3, pd, 0.3, 0.5)
+    caseb1_8 = pbsd_shop(0.3, 0.3, pd, 0.1, 0.3)
 
-    ll = -0.1
-    assert caseb1_1.get_active_status() == show_x(
-        caseb1_1, True, fig, ll, "caseb1_1", True
-    )
-    ll -= 0.1
-    assert caseb1_2.get_active_status() == show_x(caseb1_2, True, fig, ll, "caseb1_2")
-    ll -= 0.1
-    assert caseb1_3.get_active_status() == show_x(caseb1_3, True, fig, ll, "caseb1_3")
-    ll -= 0.1
-    assert caseb1_4.get_active_status() == show_x(caseb1_4, True, fig, ll, "caseb1_4")
-    ll -= 0.1
-    assert caseb1_5.get_active_status() == show_x(caseb1_5, False, fig, ll, "caseb1_5")
-    ll -= 0.1
-    assert caseb1_6.get_active_status() == show_x(caseb1_6, False, fig, ll, "caseb1_6")
-    ll -= 0.1
-    assert caseb1_7.get_active_status() == show_x(caseb1_7, True, fig, ll, "caseb1_7")
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb1_1, fig, 0, "caseb1_1", True)
+    assert caseb1_1.get_active_status() == wanted_active
+    assert caseb1_1.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_2, fig, linel, "caseb1_2")
+    assert caseb1_2.get_active_status() == wanted_active
+    assert caseb1_2.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_3, fig, linel, "caseb1_3")
+    assert caseb1_3.get_active_status() == wanted_active
+    assert caseb1_3.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb1_4, fig, linel, "caseb1_4")
+    assert caseb1_4.get_active_status() == wanted_active
+    assert caseb1_4.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_5, fig, linel, "caseb1_5")
+    assert caseb1_5.get_active_status() == wanted_active
+    assert caseb1_5.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_6, fig, linel, "caseb1_6")
+    assert caseb1_6.get_active_status() == wanted_active
+    assert caseb1_6.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb1_7, fig, linel, "caseb1_7")
+    assert caseb1_7.get_active_status() == wanted_active
+    assert caseb1_7.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb1_8, fig, linel, "caseb1_8")
+    assert caseb1_8.get_active_status() == wanted_active
+    assert caseb1_8.get_task_status() == wanted_task
 
-    # Case B2
-    ll -= 0.1
+    # # Case B2
     caseb2_1 = pbsd_shop(0.3, 0.7, pd, 0.8, 1.4)
     caseb2_2 = pbsd_shop(0.3, 0.7, pd, 0.6, 1.2)
     caseb2_3 = pbsd_shop(0.3, 0.7, pd, 0.6, 1.4)
@@ -448,74 +474,173 @@ def test_PremiseBeliefSegerateData_get_active_status_ReturnsCorrectObj():
     caseb2_6 = pbsd_shop(0.3, 0.7, pd, 0.9, 1.1)
     caseb2_7 = pbsd_shop(0.3, 0.7, pd, 0.7, 1.2)
     caseb2_8 = pbsd_shop(0.7, 0.7, pd, 0.7, 1.2)
-    ll -= 0.1
-    assert caseb2_1.get_active_status() == show_x(caseb2_1, True, fig, ll, "caseb2_1")
-    ll -= 0.1
-    assert caseb2_2.get_active_status() == show_x(caseb2_2, True, fig, ll, "caseb2_2")
-    ll -= 0.1
-    assert caseb2_3.get_active_status() == show_x(caseb2_3, True, fig, ll, "caseb2_3")
-    ll -= 0.1
-    assert caseb2_4.get_active_status() == show_x(caseb2_4, True, fig, ll, "caseb2_4")
-    ll -= 0.1
-    assert caseb2_5.get_active_status() == show_x(caseb2_5, True, fig, ll, "caseb2_5")
-    ll -= 0.1
-    assert caseb2_6.get_active_status() == show_x(caseb2_6, False, fig, ll, "caseb2_6")
-    ll -= 0.1
-    assert caseb2_7.get_active_status() == show_x(caseb2_7, False, fig, ll, "caseb2_7")
-    ll -= 0.1
-    assert caseb2_8.get_active_status() == show_x(caseb2_8, True, fig, ll, "caseb2_8")
+    caseb2_9 = pbsd_shop(0.3, 0.7, pd, 0.9, 1.3)
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb2_1, fig, linel, "caseb2_1")
+    assert caseb2_1.get_active_status() == wanted_active
+    assert caseb2_1.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb2_2, fig, linel, "caseb2_2")
+    assert caseb2_2.get_active_status() == wanted_active
+    assert caseb2_2.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb2_3, fig, linel, "caseb2_3")
+    assert caseb2_3.get_active_status() == wanted_active
+    assert caseb2_3.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb2_4, fig, linel, "caseb2_4")
+    assert caseb2_4.get_active_status() == wanted_active
+    assert caseb2_4.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb2_5, fig, linel, "caseb2_5")
+    assert caseb2_5.get_active_status() == wanted_active
+    assert caseb2_5.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb2_6, fig, linel, "caseb2_6")
+    assert caseb2_6.get_active_status() == wanted_active
+    assert caseb2_6.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb2_7, fig, linel, "caseb2_7")
+    assert caseb2_7.get_active_status() == wanted_active
+    assert caseb2_7.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb2_8, fig, linel, "caseb2_8")
+    assert caseb2_8.get_active_status() == wanted_active
+    assert caseb2_8.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb2_9, fig, linel, "caseb2_9")
+    assert caseb2_9.get_active_status() == wanted_active
+    assert caseb2_9.get_task_status() == wanted_task
 
-    # Case B3
-    ll -= 0.1
+    # # Case B3
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
     caseb3_1 = pbsd_shop(0.7, 0.3, pd, 0.2, 0.5)
     caseb3_2 = pbsd_shop(0.7, 0.3, pd, 0.5, 0.8)
     caseb3_3 = pbsd_shop(0.7, 0.3, pd, 0.2, 0.8)
     caseb3_4 = pbsd_shop(0.7, 0.3, pd, 0.1, 0.2)
     caseb3_5 = pbsd_shop(0.7, 0.3, pd, 0.8, 0.9)
-    caseb3_6 = pbsd_shop(0.7, 0.3, pd, 0.4, 0.5)
+    caseb3_6 = pbsd_shop(0.7, 0.3, pd, 0.4, 0.6)
     caseb3_7 = pbsd_shop(0.7, 0.3, pd, 0.3, 0.5)
-    ll -= 0.1
-    assert caseb3_1.get_active_status() == show_x(caseb3_1, True, fig, ll, "caseb3_1")
-    ll -= 0.1
-    assert caseb3_2.get_active_status() == show_x(caseb3_2, True, fig, ll, "caseb3_2")
-    ll -= 0.1
-    assert caseb3_3.get_active_status() == show_x(caseb3_3, True, fig, ll, "caseb3_3")
-    ll -= 0.1
-    assert caseb3_4.get_active_status() == show_x(caseb3_4, True, fig, ll, "caseb3_4")
-    ll -= 0.1
-    assert caseb3_5.get_active_status() == show_x(caseb3_5, True, fig, ll, "caseb3_5")
-    ll -= 0.1
-    assert caseb3_6.get_active_status() == show_x(caseb3_6, False, fig, ll, "caseb3_6")
-    ll -= 0.1
-    assert caseb3_7.get_active_status() == show_x(caseb3_7, False, fig, ll, "caseb3_7")
+    caseb3_8 = pbsd_shop(0.7, 0.3, pd, 0.7, 0.7)
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb3_1, fig, linel, "caseb3_1")
+    assert caseb3_1.get_active_status() == wanted_active
+    assert caseb3_1.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_2, fig, linel, "caseb3_2")
+    assert caseb3_2.get_active_status() == wanted_active
+    assert caseb3_2.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_3, fig, linel, "caseb3_3")
+    assert caseb3_3.get_active_status() == wanted_active
+    assert caseb3_3.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_4, fig, linel, "caseb3_4")
+    assert caseb3_4.get_active_status() == wanted_active
+    assert caseb3_4.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_5, fig, linel, "caseb3_5")
+    assert caseb3_5.get_active_status() == wanted_active
+    assert caseb3_5.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_6, fig, linel, "caseb3_6")
+    assert caseb3_6.get_active_status() == wanted_active
+    assert caseb3_6.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = False
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_7, fig, linel, "caseb3_7")
+    assert caseb3_7.get_active_status() == wanted_active
+    assert caseb3_7.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb3_8, fig, linel, "caseb3_8")
+    assert caseb3_8.get_active_status() == wanted_active
+    assert caseb3_8.get_task_status() == wanted_task
 
-    # Case B4
-    ll -= 0.1
+    # # Case B4
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
     caseb4_1 = pbsd_shop(0.7, 0.3, pd, 0.6, 1.2)
     caseb4_2 = pbsd_shop(0.7, 0.3, pd, 0.8, 1.4)
     caseb4_3 = pbsd_shop(0.7, 0.3, pd, 0.6, 1.4)
     caseb4_4 = pbsd_shop(0.7, 0.3, pd, 0.8, 1.2)
     caseb4_5 = pbsd_shop(0.7, 0.3, pd, 0.2, 1.1)
     caseb4_6 = pbsd_shop(0.7, 0.3, pd, 0.9, 1.8)
-    ll -= 0.1
-    assert caseb4_1.get_active_status() == show_x(caseb4_1, True, fig, ll, "caseb4_1")
-    ll -= 0.1
-    assert caseb4_2.get_active_status() == show_x(caseb4_2, True, fig, ll, "caseb4_2")
-    ll -= 0.1
-    assert caseb4_3.get_active_status() == show_x(caseb4_3, True, fig, ll, "caseb4_3")
-    ll -= 0.1
-    assert caseb4_4.get_active_status() == show_x(caseb4_4, True, fig, ll, "caseb4_4")
-    ll -= 0.1
-    assert caseb4_5.get_active_status() == show_x(caseb4_5, True, fig, ll, "caseb4_5")
-    ll -= 0.1
-    assert caseb4_6.get_active_status() == show_x(caseb4_6, True, fig, ll, "caseb4_6")
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb4_1, fig, linel, "caseb4_1")
+    assert caseb4_1.get_active_status() == wanted_active
+    assert caseb4_1.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb4_2, fig, linel, "caseb4_2")
+    assert caseb4_2.get_active_status() == wanted_active
+    assert caseb4_2.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = True
+    # show_x(wanted_active, wanted_task, caseb4_3, fig, linel, "caseb4_3")
+    assert caseb4_3.get_active_status() == wanted_active
+    assert caseb4_3.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb4_4, fig, linel, "caseb4_4")
+    assert caseb4_4.get_active_status() == wanted_active
+    assert caseb4_4.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb4_5, fig, linel, "caseb4_5")
+    assert caseb4_5.get_active_status() == wanted_active
+    assert caseb4_5.get_task_status() == wanted_task
+    # linel -= 0.1
+    wanted_active = True
+    wanted_task = False
+    # show_x(wanted_active, wanted_task, caseb4_6, fig, linel, "caseb4_6")
+    assert caseb4_6.get_active_status() == wanted_active
+    assert caseb4_6.get_task_status() == wanted_task
 
     # Bottom divisor line
-    ll -= 0.1
-    ll -= 0.1
-    add_trace(fig, 0.0, pd, ll, "Divisor Range", None)
+    add_trace(fig, 0.0, pd, linel - 0.2, "Divisor Range", None)
 
-    false_bool = False
-    if false_bool == False:
-        fig.show()
-        assert 1 == 2
+    # if show_figure:
+    #     fig.show()
+    #     assert 1 == 2
