@@ -1019,19 +1019,32 @@ CREATE TABLE IF NOT EXISTS calendar (
 
 
 @dataclass
-class CalendarReportUnit:
+class CalendarReport:
     healer: PersonID = (None,)
     time_road: RoadUnit = None
     date_range_start: int = None
-    date_range_cease: int = None
+    interval_count: int = None
     interval_length: int = None
     intent_max_count_task: int = None
     intent_max_count_state: int = None
 
+    def get_date_range_length(self) -> int:
+        return self.interval_length * self.interval_count
+
+    def get_date_range_cease(self) -> int:
+        return self.date_range_start + self.get_date_range_length()
+
+    def get_interval_begin(self, interval_num: int) -> int:
+        return self.date_range_start + (self.interval_length * interval_num)
+
+    def get_interval_close(self, interval_num: int) -> int:
+        interval_num += 1
+        return self.date_range_start + (self.interval_length * interval_num)
+
 
 @dataclass
 class CalendarIntentUnit:
-    calendarreportunit: CalendarReportUnit
+    calendarreport: CalendarReport
     time_begin: int
     time_close: int
     intent_idea_road: RoadUnit
@@ -1055,13 +1068,13 @@ INSERT INTO calendar (
 , intent_weight
 , task)
 VALUES (
-  '{x_obj.calendarreportunit.healer}'
-, '{x_obj.calendarreportunit.time_road}'
-, {sqlite_null(x_obj.calendarreportunit.date_range_start)}
-, {sqlite_null(x_obj.calendarreportunit.date_range_cease)}
-, {sqlite_null(x_obj.calendarreportunit.interval_length)}
-, {sqlite_null(x_obj.calendarreportunit.intent_max_count_task)}
-, {sqlite_null(x_obj.calendarreportunit.intent_max_count_state)}
+  '{x_obj.calendarreport.healer}'
+, '{x_obj.calendarreport.time_road}'
+, {sqlite_null(x_obj.calendarreport.date_range_start)}
+, {sqlite_null(x_obj.calendarreport.get_date_range_cease())}
+, {sqlite_null(x_obj.calendarreport.interval_length)}
+, {sqlite_null(x_obj.calendarreport.intent_max_count_task)}
+, {sqlite_null(x_obj.calendarreport.intent_max_count_state)}
 , {sqlite_null(x_obj.time_begin)}
 , {sqlite_null(x_obj.time_close)}
 , '{x_obj.intent_idea_road}'

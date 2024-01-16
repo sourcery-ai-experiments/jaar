@@ -3,7 +3,7 @@ from src.economy.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
     CalendarIntentUnit,
-    CalendarReportUnit,
+    CalendarReport,
 )
 from src.tools.sqlite import sqlite_bool
 
@@ -39,7 +39,7 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
     bob_text = "Bob"
     x_time_road = "A,time,jajatime"
     x_date_range_start = 1000000600
-    x_date_range_cease = 1000000900
+    x_interval_count = 20
     x_interval_length = 15
     x_intent_max_count_task = 11
     x_intent_max_count_state = 7
@@ -48,11 +48,11 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
     x_intent_idea_road = "A,casa,cleaning,clean fridge"
     x_intent_weight = 0.5
     x_task = True
-    x_calendarreportunit = CalendarReportUnit(
+    x_calendarreport = CalendarReport(
         healer=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
-        date_range_cease=x_date_range_cease,
+        interval_count=x_interval_count,
         interval_length=x_interval_length,
         intent_max_count_task=x_intent_max_count_task,
         intent_max_count_state=x_intent_max_count_state,
@@ -60,7 +60,7 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
 
     # WHEN
     bob_calendarintentunit = CalendarIntentUnit(
-        calendarreportunit=x_calendarreportunit,
+        calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
         intent_idea_road=x_intent_idea_road,
@@ -90,7 +90,7 @@ VALUES (
   '{bob_text}'
 , '{x_time_road}'
 , {x_date_range_start}
-, {x_date_range_cease}
+, {x_calendarreport.get_date_range_cease()}
 , {x_interval_length}
 , {x_intent_max_count_task}
 , {x_intent_max_count_state}

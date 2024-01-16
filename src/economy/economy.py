@@ -50,7 +50,9 @@ from src.economy.treasury_sqlstr import (
     get_groupunit_catalog_dict,
     get_agendatreasuryunits_dict,
     get_agendaunit_update_sqlstr,
-    CalendarReportUnit,
+    CalendarReport,
+    CalendarIntentUnit,
+    get_calendar_table_insert_sqlstr,
 )
 
 
@@ -557,16 +559,29 @@ class EconomyUnit:
                 delimiter=self._road_delimiter,
             )
 
-    def insert_intent_into_treasury_db(
-        self, x_agendaunit: AgendaUnit, x_calendarreportunit: CalendarReportUnit
+    def insert_intent_into_treasury(
+        self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
-        print(f"{x_calendarreportunit.time_road=}")
-        if x_agendaunit.idea_exists(x_calendarreportunit.time_road) == False:
+        if x_agendaunit.idea_exists(x_calendarreport.time_road) == False:
             raise IntentBaseDoesNotExistException(
-                f"Intent base cannot be '{x_calendarreportunit.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
+                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
             )
-        x_intent_items = x_agendaunit.get_intent_dict()
-        print(f"{x_intent_items.keys()=}")
+
+        x_intent_items = x_agendaunit.get_intent_dict(base=x_calendarreport.time_road)
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
+            for _ in range(x_calendarreport.interval_count):
+                for intent_item in x_intent_items.values():
+                    x_calendarintentunit = CalendarIntentUnit(
+                        calendarreport=x_calendarreport,
+                        time_begin=x_calendarreport.get_interval_begin(_),
+                        time_close=x_calendarreport.get_interval_close(_),
+                        intent_idea_road=intent_item.get_road(),
+                        intent_weight=intent_item._agenda_importance,
+                        task=intent_item._task,
+                    )
+                    sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
+                    cur.execute(sqlstr)
 
 
 def economyunit_shop(

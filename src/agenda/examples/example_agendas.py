@@ -433,8 +433,7 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     laundry_road = bob_agenda.make_road(casa_road, laundry_text)
     bob_agenda.add_idea(ideaunit_shop(casa_text), bob_agenda._economy_id)
     bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
-    time_road = bob_agenda.make_l1_road("time")
-    jajatime_road = bob_agenda.make_road(time_road, "jajatime")
+    jajatime_road = bob_agenda.make_road(bob_agenda.make_l1_road("time"), "jajatime")
     bob_agenda.set_belief(
         base=jajatime_road, pick=jajatime_road, open=1064131200, nigh=1064136133
     )
@@ -442,26 +441,26 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
         road=laundry_road,
         reason_base=jajatime_road,
         reason_premise=jajatime_road,
-        reason_premise_open=3420.0,
-        reason_premise_nigh=3420.0,
+        reason_premise_open=5760.0,
+        reason_premise_nigh=5760.0,
         reason_premise_divisor=10080.0,
     )
-    print(f"{bob_agenda._idearoot._beliefunits.values()=}")
-    laundry_reasonunit = bob_agenda.get_idea_obj(laundry_road).get_reasonunit(
-        jajatime_road
-    )
-    laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
-    print(f"{laundry_reasonunit.base=} {laundry_premise=}")
-    bob_agenda.set_agenda_metrics()
-    for x_ideaunit in bob_agenda._idea_dict.values():
-        if x_ideaunit._label in [laundry_text]:
-            print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
-            print(f"{x_ideaunit._kids.keys()=}")
-            jaja_beliefheir = x_ideaunit._beliefheirs.get(jajatime_road)
-            print(f"{jaja_beliefheir.open % 10080=}")
-            print(f"{jaja_beliefheir.nigh % 10080=}")
+    # # print(f"{bob_agenda._idearoot._beliefunits.values()=}")
+    # laundry_reasonunit = bob_agenda.get_idea_obj(laundry_road).get_reasonunit(
+    #     jajatime_road
+    # )
+    # laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
+    # # print(f"{laundry_reasonunit.base=} {laundry_premise=}")
+    # bob_agenda.set_agenda_metrics()
+    # for x_ideaunit in bob_agenda._idea_dict.values():
+    #     if x_ideaunit._label in [laundry_text]:
+    # print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
+    # print(f"{x_ideaunit._kids.keys()=}")
+    # jaja_beliefheir = x_ideaunit._beliefheirs.get(jajatime_road)
+    # print(f"{jaja_beliefheir.open % 10080=}")
+    # print(f"{jaja_beliefheir.nigh % 10080=}")
 
-    print(f"{bob_agenda.get_intent_dict().keys()=}")
+    # print(f"{bob_agenda.get_intent_dict().keys()=}")
 
     return bob_agenda
 
