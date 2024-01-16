@@ -53,6 +53,7 @@ from src.economy.treasury_sqlstr import (
     CalendarReport,
     CalendarIntentUnit,
     get_calendar_table_insert_sqlstr,
+    get_calendar_table_delete_sqlstr,
 )
 
 
@@ -567,10 +568,21 @@ class EconomyUnit:
                 f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
             )
 
-        x_intent_items = x_agendaunit.get_intent_dict(base=x_calendarreport.time_road)
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
+
+            del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.healer)
+            cur.execute(del_sqlstr)
             for _ in range(x_calendarreport.interval_count):
+                x_agendaunit.set_belief(
+                    base=x_calendarreport.time_road,
+                    pick=x_calendarreport.time_road,
+                    open=x_calendarreport.get_interval_begin(_),
+                    nigh=x_calendarreport.get_interval_close(_),
+                )
+                x_intent_items = x_agendaunit.get_intent_dict(
+                    base=x_calendarreport.time_road
+                )
                 for intent_item in x_intent_items.values():
                     x_calendarintentunit = CalendarIntentUnit(
                         calendarreport=x_calendarreport,

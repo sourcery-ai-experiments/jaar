@@ -431,18 +431,28 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     casa_road = bob_agenda.make_l1_road(casa_text)
     laundry_text = "do_laundry"
     laundry_road = bob_agenda.make_road(casa_road, laundry_text)
+    chill_text = "chill"
+    chill_road = bob_agenda.make_road(casa_road, chill_text)
     bob_agenda.add_idea(ideaunit_shop(casa_text), bob_agenda._economy_id)
-    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
     jajatime_road = bob_agenda.make_road(bob_agenda.make_l1_road("time"), "jajatime")
-    bob_agenda.set_belief(
-        base=jajatime_road, pick=jajatime_road, open=1064131200, nigh=1064136133
-    )
+    bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, 1064136133)
+
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
     bob_agenda.edit_idea_attr(
         road=laundry_road,
         reason_base=jajatime_road,
         reason_premise=jajatime_road,
         reason_premise_open=5760.0,
         reason_premise_nigh=5760.0,
+        reason_premise_divisor=10080.0,
+    )
+    bob_agenda.add_idea(ideaunit_shop(chill_text, promise=True), casa_road)
+    bob_agenda.edit_idea_attr(
+        road=chill_road,
+        reason_base=jajatime_road,
+        reason_premise=jajatime_road,
+        reason_premise_open=5760.0,
+        reason_premise_nigh=7160.0,
         reason_premise_divisor=10080.0,
     )
     # # print(f"{bob_agenda._idearoot._beliefunits.values()=}")

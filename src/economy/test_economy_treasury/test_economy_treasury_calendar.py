@@ -224,8 +224,8 @@ def test_economy_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury
     bob_agenda = get_agenda_with_tuesday_cleaning_task()
     jajatime_road = bob_agenda.make_road(bob_agenda.make_l1_road("time"), "jajatime")
     print(f"{jajatime_road=}")
-    x_date_range_start = 1000000600
-    x_interval_count = 20
+    x_date_range_start = 1064131200
+    x_interval_count = 5
     x_interval_length = 15
     x_intent_max_count_task = 11
     x_intent_max_count_state = 7
@@ -242,4 +242,20 @@ def test_economy_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury
     x_economy.insert_intent_into_treasury(bob_agenda, x_calendarreport)
 
     # THEN
-    assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 20
+    assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 6
+
+    # GIVEN
+    new_interval_count = 3
+    # WHEN
+    x_calendarreport = CalendarReport(
+        healer=bob_agenda._healer,
+        time_road=jajatime_road,
+        date_range_start=x_date_range_start,
+        interval_count=new_interval_count,
+        interval_length=x_interval_length,
+        intent_max_count_task=x_intent_max_count_task,
+        intent_max_count_state=x_intent_max_count_state,
+    )
+    x_economy.insert_intent_into_treasury(bob_agenda, x_calendarreport)
+    # THEN
+    assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 4
