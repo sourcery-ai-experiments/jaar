@@ -24,8 +24,10 @@ def test_ArrearUnit_exists():
     assert x_arrearunit.actor is None
     assert x_arrearunit._topiclinks is None
     assert x_arrearunit.uid is None
-    assert x_arrearunit.weight is None
-    assert x_arrearunit._relative_accord_weight is None
+    assert x_arrearunit.author_weight is None
+    assert x_arrearunit.reader_weight is None
+    assert x_arrearunit._relative_author_weight is None
+    assert x_arrearunit._relative_reader_weight is None
 
 
 def test_arrearunit_shop_ReturnsCorrectObj():
@@ -39,8 +41,10 @@ def test_arrearunit_shop_ReturnsCorrectObj():
     assert farm_arrearunit.uid == x_uid
     assert farm_arrearunit.actor is None
     assert farm_arrearunit._topiclinks == {}
-    assert farm_arrearunit.weight == 1
-    assert farm_arrearunit._relative_accord_weight == 0
+    assert farm_arrearunit.author_weight == 1
+    assert farm_arrearunit.reader_weight == 1
+    assert farm_arrearunit._relative_author_weight == 0
+    assert farm_arrearunit._relative_reader_weight == 0
 
 
 def test_ArrearUnit_set_topiclink_SetsAttrCorrectly():
@@ -63,21 +67,32 @@ def test_ArrearUnit_edit_attr_SetsAttrCorrectly():
     # GIVEN
     one_text = "1"
     farm_arrearunit = arrearunit_shop(one_text)
-    assert farm_arrearunit.weight == 1
-    assert farm_arrearunit._relative_accord_weight == 0
+    assert farm_arrearunit.author_weight == 1
+    assert farm_arrearunit.reader_weight == 1
+    assert farm_arrearunit._relative_author_weight == 0
+    assert farm_arrearunit._relative_reader_weight == 0
 
     # WHEN
-    new_weight = 7
-    new_relative_accord_weight = 0.66
+    new_author_weight = 7
+    new_reader_weight = 7
+    new_relative_author_weight = 0.66
+    new_relative_reader_weight = 0.43
     farm_arrearunit.edit_attr(
-        weight=new_weight, _relative_accord_weight=new_relative_accord_weight
+        author_weight=new_author_weight,
+        reader_weight=new_reader_weight,
+        _relative_author_weight=new_relative_author_weight,
+        _relative_reader_weight=new_relative_reader_weight,
     )
 
     # THEN
-    assert farm_arrearunit.weight != 1
-    assert farm_arrearunit.weight == new_weight
-    assert farm_arrearunit._relative_accord_weight != 0
-    assert farm_arrearunit._relative_accord_weight == new_relative_accord_weight
+    assert farm_arrearunit.author_weight != 1
+    assert farm_arrearunit.reader_weight != 1
+    assert farm_arrearunit.author_weight == new_author_weight
+    assert farm_arrearunit.reader_weight == new_reader_weight
+    assert farm_arrearunit._relative_author_weight != 0
+    assert farm_arrearunit._relative_reader_weight != 0
+    assert farm_arrearunit._relative_author_weight == new_relative_author_weight
+    assert farm_arrearunit._relative_reader_weight == new_relative_reader_weight
 
 
 def test_ArrearUnit_get_topiclink_ReturnsCorrectObj():

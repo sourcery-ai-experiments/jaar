@@ -18,15 +18,19 @@ def test_AccordUnit_set_arrearunit_SetsAttrCorrectly():
 
     # WHEN
     x_uid = 7
-    x_weight = 3
-    farm_accordunit.set_arrearunit(arrearunit_shop(x_uid, x_weight))
+    x_author_weight = 3
+    x_reader_weight = 9
+    farm_accordunit.set_arrearunit(
+        arrearunit_shop(x_uid, x_author_weight, x_reader_weight)
+    )
 
     # THEN
     assert len(farm_accordunit._arrearunits) == 1
     assert farm_accordunit._arrearunits.get(x_uid) != None
     x_arrearunit = farm_accordunit._arrearunits.get(x_uid)
-    assert x_arrearunit == arrearunit_shop(x_uid, x_weight)
-    assert x_arrearunit.weight == x_weight
+    assert x_arrearunit.author_weight == x_author_weight
+    assert x_arrearunit.reader_weight == x_reader_weight
+    assert x_arrearunit == arrearunit_shop(x_uid, x_author_weight, x_reader_weight)
 
 
 def test_AccordUnit_get_arrearunit_ReturnsCorrectObj():
@@ -108,21 +112,33 @@ def test_AccordUnit_edit_arrearunit_attr_CorrectlySetsAttribute():
     tim_text = "Tim"
     farm_accordunit = accordunit_shop(_author="Bob", _reader=tim_text)
     x_uid = 7
-    x_weight = 3
-    farm_accordunit.set_arrearunit(arrearunit_shop(x_uid, x_weight))
+    x_author_weight = 3
+    x_reader_weight = 3
+    farm_accordunit.set_arrearunit(
+        arrearunit_shop(x_uid, x_author_weight, x_reader_weight)
+    )
 
     x_arrearunit = farm_accordunit._arrearunits.get(x_uid)
-    assert x_arrearunit.weight == x_weight
+    assert x_arrearunit.author_weight == x_author_weight
+    assert x_arrearunit.reader_weight == x_reader_weight
     assert x_arrearunit.actor is None
 
     # WHEN
-    y_weight = 7
-    farm_accordunit.edit_arrearunit_attr(x_uid, weight=y_weight, actor=tim_text)
+    y_author_weight = 7
+    y_reader_weight = 15
+    farm_accordunit.edit_arrearunit_attr(
+        x_uid,
+        author_weight=y_author_weight,
+        reader_weight=y_reader_weight,
+        actor=tim_text,
+    )
 
     # THEN
     x_arrearunit = farm_accordunit._arrearunits.get(x_uid)
-    assert x_arrearunit.weight != x_weight
-    assert x_arrearunit.weight == y_weight
+    assert x_arrearunit.author_weight != x_author_weight
+    assert x_arrearunit.reader_weight != x_reader_weight
+    assert x_arrearunit.author_weight == y_author_weight
+    assert x_arrearunit.reader_weight == y_reader_weight
     assert x_arrearunit.actor != None
     assert x_arrearunit.actor == tim_text
 
@@ -205,18 +221,21 @@ def test_AccordUnit_set_accord_metrics_CorrectlySetsArrear_relative_accord_weigh
     yao_text = "Yao"
     farm_accordunit = accordunit_shop(_author=bob_text, _reader=yao_text)
     s1_arrearunit = farm_accordunit.add_arrearunit()
-    farm_accordunit.edit_arrearunit_attr(s1_arrearunit.uid, weight=4)
     s1_arrearunit.set_actor(bob_text)
-    s1_arrearunit.edit_attr(weight=4)
+    s1_arrearunit.edit_attr(author_weight=4, reader_weight=1)
     s2_arrearunit = farm_accordunit.add_arrearunit()
     s2_arrearunit.set_actor(bob_text)
-    s2_arrearunit.edit_attr(weight=6)
-    assert s1_arrearunit._relative_accord_weight == 0
-    assert s2_arrearunit._relative_accord_weight == 0
+    s2_arrearunit.edit_attr(author_weight=6, reader_weight=3)
+    assert s1_arrearunit._relative_author_weight == 0
+    assert s1_arrearunit._relative_reader_weight == 0
+    assert s2_arrearunit._relative_author_weight == 0
+    assert s2_arrearunit._relative_reader_weight == 0
 
     # WHEN
     farm_accordunit.set_accord_metrics()
 
     # THEN
-    assert s1_arrearunit._relative_accord_weight == 0.4
-    assert s2_arrearunit._relative_accord_weight == 0.6
+    assert s1_arrearunit._relative_author_weight == 0.4
+    assert s1_arrearunit._relative_reader_weight == 0.25
+    assert s2_arrearunit._relative_author_weight == 0.6
+    assert s2_arrearunit._relative_reader_weight == 0.75

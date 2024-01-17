@@ -14,11 +14,13 @@ class ArrearID(int):
 
 @dataclass
 class ArrearUnit:
-    weight: float = None
+    author_weight: float = None
+    reader_weight: float = None
     uid: ArrearID = None
     actor: PersonID = None
     _topiclinks: dict[PersonRoad, TopicLink] = None
-    _relative_accord_weight: float = None
+    _relative_author_weight: float = None
+    _relative_reader_weight: float = None
 
     def set_topiclink(self, x_topiclink: TopicLink):
         self._topiclinks[x_topiclink.base] = x_topiclink
@@ -35,11 +37,21 @@ class ArrearUnit:
     def get_arrear_id(self) -> ArrearID:
         return f"Arrear {self.uid:04d}"
 
-    def edit_attr(self, weight: float = None, _relative_accord_weight: float = None):
-        if weight != None:
-            self.weight = weight
-        if _relative_accord_weight != None:
-            self._relative_accord_weight = _relative_accord_weight
+    def edit_attr(
+        self,
+        author_weight: float = None,
+        reader_weight: float = None,
+        _relative_author_weight: float = None,
+        _relative_reader_weight: float = None,
+    ):
+        if author_weight != None:
+            self.author_weight = author_weight
+        if reader_weight != None:
+            self.reader_weight = reader_weight
+        if _relative_author_weight != None:
+            self._relative_author_weight = _relative_author_weight
+        if _relative_reader_weight != None:
+            self._relative_reader_weight = _relative_reader_weight
 
     def set_actor(self, x_actor: PersonID):
         self.actor = x_actor
@@ -60,17 +72,23 @@ class ArrearUnit:
 
 def arrearunit_shop(
     uid: ArrearID,
-    weight: int = None,
+    author_weight: int = None,
+    reader_weight: int = None,
     actor: PersonID = None,
     _topiclinks: dict[PersonRoad, TopicLink] = None,
 ):
-    if weight is None:
-        weight = 1
-    _relative_accord_weight = 0
+    if author_weight is None:
+        author_weight = 1
+    if reader_weight is None:
+        reader_weight = 1
+    _relative_author_weight = 0
+    _relative_reader_weight = 0
     return ArrearUnit(
         uid=uid,
-        weight=weight,
+        author_weight=author_weight,
+        reader_weight=reader_weight,
         _topiclinks=get_empty_dict_if_none(_topiclinks),
         actor=actor,
-        _relative_accord_weight=0,
+        _relative_author_weight=_relative_author_weight,
+        _relative_reader_weight=_relative_reader_weight,
     )

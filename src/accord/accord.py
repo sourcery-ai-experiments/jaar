@@ -21,17 +21,31 @@ class AccordUnit:
     _arrearunits: dict[ArrearID:ArrearUnit] = None
 
     def set_accord_metrics(self):
-        arrear_sum = sum(x_arrear.weight for x_arrear in self._arrearunits.values())
+        arrear_author_sum = sum(
+            x_arrear.author_weight for x_arrear in self._arrearunits.values()
+        )
+        arrear_reader_sum = sum(
+            x_arrear.reader_weight for x_arrear in self._arrearunits.values()
+        )
 
         for x_arrear in self._arrearunits.values():
-            x_arrear.edit_attr(_relative_accord_weight=x_arrear.weight / arrear_sum)
+            x_arrear.edit_attr(
+                _relative_author_weight=x_arrear.author_weight / arrear_author_sum,
+                _relative_reader_weight=x_arrear.reader_weight / arrear_reader_sum,
+            )
 
     def edit_arrearunit_attr(
-        self, arrear_id: ArrearID, weight: float = None, actor: PersonID = None
+        self,
+        arrear_id: ArrearID,
+        author_weight: float = None,
+        reader_weight: float = None,
+        actor: PersonID = None,
     ):
         x_arrearunit = self.get_arrearunit(arrear_id)
-        if weight != None:
-            x_arrearunit.edit_attr(weight=weight)
+        if author_weight != None:
+            x_arrearunit.edit_attr(author_weight=author_weight)
+        if reader_weight != None:
+            x_arrearunit.edit_attr(reader_weight=reader_weight)
         if actor != None:
             x_arrearunit.set_actor(actor)
 
