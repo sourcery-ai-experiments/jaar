@@ -21,7 +21,7 @@ def test_AccordUnit_exists():
     assert x_accordunit._author is None
     assert x_accordunit._reader is None
     assert x_accordunit._topicunits is None
-    assert x_accordunit._sectionunits is None
+    assert x_accordunit._arrearunits is None
 
 
 def test_accordunit_shop_ReturnsCorrectObj():
@@ -36,4 +36,4 @@ def test_accordunit_shop_ReturnsCorrectObj():
     assert farm_accordunit._author == bob_text
     assert farm_accordunit._reader == tim_text
     assert farm_accordunit._topicunits == {}
-    assert farm_accordunit._sectionunits == {}
+    assert farm_accordunit._arrearunits == {}

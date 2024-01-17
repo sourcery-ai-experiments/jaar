@@ -3,7 +3,7 @@ from src._prime.road import (
     PersonRoad,
     PersonID,
 )
-from src.accord.section import SectionID, SectionUnit, sectionunit_shop
+from src.accord.arrear import ArrearID, ArrearUnit, arrearunit_shop
 from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
@@ -18,47 +18,47 @@ class AccordUnit:
     _author: PersonID = None
     _reader: PersonID = None
     _topicunits: dict[PersonRoad:TopicUnit] = None
-    _sectionunits: dict[SectionID:SectionUnit] = None
+    _arrearunits: dict[ArrearID:ArrearUnit] = None
 
     def set_accord_metrics(self):
-        section_sum = sum(x_section.weight for x_section in self._sectionunits.values())
+        arrear_sum = sum(x_arrear.weight for x_arrear in self._arrearunits.values())
 
-        for x_section in self._sectionunits.values():
-            x_section.edit_attr(_relative_accord_weight=x_section.weight / section_sum)
+        for x_arrear in self._arrearunits.values():
+            x_arrear.edit_attr(_relative_accord_weight=x_arrear.weight / arrear_sum)
 
-    def edit_sectionunit_attr(
-        self, section_id: SectionID, weight: float = None, actor: PersonID = None
+    def edit_arrearunit_attr(
+        self, arrear_id: ArrearID, weight: float = None, actor: PersonID = None
     ):
-        x_sectionunit = self.get_sectionunit(section_id)
+        x_arrearunit = self.get_arrearunit(arrear_id)
         if weight != None:
-            x_sectionunit.edit_attr(weight=weight)
+            x_arrearunit.edit_attr(weight=weight)
         if actor != None:
-            x_sectionunit.set_actor(actor)
+            x_arrearunit.set_actor(actor)
 
-    def set_sectionunit(self, x_sectionunit: SectionUnit, actor: PersonID = None):
-        self._sectionunits[x_sectionunit.uid] = x_sectionunit
+    def set_arrearunit(self, x_arrearunit: ArrearUnit, actor: PersonID = None):
+        self._arrearunits[x_arrearunit.uid] = x_arrearunit
         if actor != None:
-            self.set_actor(actor, x_sectionunit.uid)
+            self.set_actor(actor, x_arrearunit.uid)
 
-    def get_sectionunit(self, x_section_id: SectionID) -> SectionUnit:
-        return self._sectionunits.get(x_section_id)
+    def get_arrearunit(self, x_arrear_id: ArrearID) -> ArrearUnit:
+        return self._arrearunits.get(x_arrear_id)
 
-    def sectionunit_exists(self, x_section_id: SectionID) -> bool:
-        return self.get_sectionunit(x_section_id) != None
+    def arrearunit_exists(self, x_arrear_id: ArrearID) -> bool:
+        return self.get_arrearunit(x_arrear_id) != None
 
-    def del_sectionunit(self, x_section_id: SectionID):
-        self._sectionunits.pop(x_section_id)
+    def del_arrearunit(self, x_arrear_id: ArrearID):
+        self._arrearunits.pop(x_arrear_id)
 
-    def add_sectionunit(self) -> SectionUnit:
-        next_section_int = self._get_max_sectionunit_uid() + 1
-        self.set_sectionunit(sectionunit_shop(uid=next_section_int))
-        return self.get_sectionunit(next_section_int)
+    def add_arrearunit(self) -> ArrearUnit:
+        next_arrear_int = self._get_max_arrearunit_uid() + 1
+        self.set_arrearunit(arrearunit_shop(uid=next_arrear_int))
+        return self.get_arrearunit(next_arrear_int)
 
-    def _get_max_sectionunit_uid(self) -> SectionID:
-        max_sectionunit_uid = 0
-        for x_sectionunit in self._sectionunits.values():
-            max_sectionunit_uid = max(x_sectionunit.uid, max_sectionunit_uid)
-        return max_sectionunit_uid
+    def _get_max_arrearunit_uid(self) -> ArrearID:
+        max_arrearunit_uid = 0
+        for x_arrearunit in self._arrearunits.values():
+            max_arrearunit_uid = max(x_arrearunit.uid, max_arrearunit_uid)
+        return max_arrearunit_uid
 
     def is_meaningful(self) -> bool:
         return next(
@@ -82,30 +82,28 @@ class AccordUnit:
     def del_topicunit(self, personroad: PersonRoad):
         self._topicunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, section_uid: SectionID):
-        if self.sectionunit_exists(section_uid):
-            x_sectionunit = self.get_sectionunit(section_uid)
-            x_sectionunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, arrear_uid: ArrearID):
+        if self.arrearunit_exists(arrear_uid):
+            x_arrearunit = self.get_arrearunit(arrear_uid)
+            x_arrearunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, section_uid: PersonRoad):
-        if self.sectionunit_exists(section_uid):
-            x_sectionunit = self.get_sectionunit(section_uid)
-            x_sectionunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, arrear_uid: PersonRoad):
+        if self.arrearunit_exists(arrear_uid):
+            x_arrearunit = self.get_arrearunit(arrear_uid)
+            x_arrearunit.del_actor(actor)
 
-    def get_actor_sectionunits(
+    def get_actor_arrearunits(
         self, actor: PersonID, action_filter: bool = None
-    ) -> dict[RoadUnit:SectionUnit]:
+    ) -> dict[RoadUnit:ArrearUnit]:
         return {
-            x_base: x_sectionunit
-            for x_base, x_sectionunit in self._sectionunits.items()
-            if x_sectionunit.actor_exists(actor)
-            and (x_sectionunit.has_action() == action_filter or action_filter is None)
+            x_base: x_arrearunit
+            for x_base, x_arrearunit in self._arrearunits.items()
+            if x_arrearunit.actor_exists(actor)
+            and (x_arrearunit.has_action() == action_filter or action_filter is None)
         }
 
-    def actor_has_sectionunit(
-        self, actor: PersonID, action_filter: bool = None
-    ) -> bool:
-        return self.get_actor_sectionunits(actor, action_filter=action_filter) != {}
+    def actor_has_arrearunit(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_arrearunits(actor, action_filter=action_filter) != {}
 
 
 def accordunit_shop(_author: PersonID, _reader: PersonID):
@@ -113,5 +111,5 @@ def accordunit_shop(_author: PersonID, _reader: PersonID):
         _author=_author,
         _reader=_reader,
         _topicunits=get_empty_dict_if_none(None),
-        _sectionunits=get_empty_dict_if_none(None),
+        _arrearunits=get_empty_dict_if_none(None),
     )

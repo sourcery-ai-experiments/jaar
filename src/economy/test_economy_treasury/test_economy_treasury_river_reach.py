@@ -234,10 +234,10 @@ WHERE agenda_healer = '{yao_text}'
 # STEPS TO CALCULATE RIVER_REACH
 # 1. from river_blocks select river_reach_touch:
 #   all river_blocks that share a currency range with any river_circle
-# 2. from river_reach_touch select river_reach_intersecttion:
-#   every row of river_reach_touch with intersecttion of river_circle and river_block
-# 3. from river_reach_intersecttion select river_reach_ordered:
-#   every row of river_reach_intersecttion ordered by src_healer, curr_start, curr_close
+# 2. from river_reach_touch select river_reach_intersection:
+#   every row of river_reach_touch with intersection of river_circle and river_block
+# 3. from river_reach_intersection select river_reach_ordered:
+#   every row of river_reach_intersection ordered by src_healer, curr_start, curr_close
 # 4. from river_reach_ordered select river_reach_stepped:
 #   every row of river_reach_ordered with column identifying sets of src_healer/intersecting curr ranges
 # 5. from river_reach_stepped select river_reach_final:

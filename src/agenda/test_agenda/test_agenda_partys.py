@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersecttion_of_partys
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
 from src.agenda.idea import ideaunit_shop, IdeaUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
@@ -1233,7 +1233,7 @@ def test_agenda_get_partyunits_pid_list_CorrectlyReturnsListOfPartyUnits():
     assert partyunit_list_x[3] == will_text
 
 
-def test_get_intersecttion_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
+def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "bob"
     x_agenda = agendaunit_shop(_healer=bob_text)
@@ -1255,10 +1255,10 @@ def test_get_intersecttion_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys
 
     # WHEN
     print(f"{len(x_agenda._partys)=} {len(y_agenda._partys)=}")
-    intersecttion_x = get_intersecttion_of_partys(x_agenda._partys, y_agenda._partys)
+    intersection_x = get_intersection_of_partys(x_agenda._partys, y_agenda._partys)
 
     # THEN
-    assert intersecttion_x == {bob_text: -1, wil_text: -1, fry_text: -1}
+    assert intersection_x == {bob_text: -1, wil_text: -1, fry_text: -1}
 
 
 def test_agenda_clear_output_agenda_meld_orders_CorrectlyClearsAttrs():
