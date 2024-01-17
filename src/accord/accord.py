@@ -3,7 +3,7 @@ from src._prime.road import (
     PersonRoad,
     PersonID,
 )
-from src.accord.arrear import ArrearID, ArrearUnit, arrearunit_shop
+from src.accord.due import DueID, DueUnit, dueunit_shop
 from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
@@ -18,61 +18,57 @@ class AccordUnit:
     _author: PersonID = None
     _reader: PersonID = None
     _topicunits: dict[PersonRoad:TopicUnit] = None
-    _arrearunits: dict[ArrearID:ArrearUnit] = None
+    _dueunits: dict[DueID:DueUnit] = None
 
     def set_accord_metrics(self):
-        arrear_author_sum = sum(
-            x_arrear.author_weight for x_arrear in self._arrearunits.values()
-        )
-        arrear_reader_sum = sum(
-            x_arrear.reader_weight for x_arrear in self._arrearunits.values()
-        )
+        due_author_sum = sum(x_due.author_weight for x_due in self._dueunits.values())
+        due_reader_sum = sum(x_due.reader_weight for x_due in self._dueunits.values())
 
-        for x_arrear in self._arrearunits.values():
-            x_arrear.edit_attr(
-                _relative_author_weight=x_arrear.author_weight / arrear_author_sum,
-                _relative_reader_weight=x_arrear.reader_weight / arrear_reader_sum,
+        for x_due in self._dueunits.values():
+            x_due.edit_attr(
+                _relative_author_weight=x_due.author_weight / due_author_sum,
+                _relative_reader_weight=x_due.reader_weight / due_reader_sum,
             )
 
-    def edit_arrearunit_attr(
+    def edit_dueunit_attr(
         self,
-        arrear_id: ArrearID,
+        due_id: DueID,
         author_weight: float = None,
         reader_weight: float = None,
         actor: PersonID = None,
     ):
-        x_arrearunit = self.get_arrearunit(arrear_id)
+        x_dueunit = self.get_dueunit(due_id)
         if author_weight != None:
-            x_arrearunit.edit_attr(author_weight=author_weight)
+            x_dueunit.edit_attr(author_weight=author_weight)
         if reader_weight != None:
-            x_arrearunit.edit_attr(reader_weight=reader_weight)
+            x_dueunit.edit_attr(reader_weight=reader_weight)
         if actor != None:
-            x_arrearunit.set_actor(actor)
+            x_dueunit.set_actor(actor)
 
-    def set_arrearunit(self, x_arrearunit: ArrearUnit, actor: PersonID = None):
-        self._arrearunits[x_arrearunit.uid] = x_arrearunit
+    def set_dueunit(self, x_dueunit: DueUnit, actor: PersonID = None):
+        self._dueunits[x_dueunit.uid] = x_dueunit
         if actor != None:
-            self.set_actor(actor, x_arrearunit.uid)
+            self.set_actor(actor, x_dueunit.uid)
 
-    def get_arrearunit(self, x_arrear_id: ArrearID) -> ArrearUnit:
-        return self._arrearunits.get(x_arrear_id)
+    def get_dueunit(self, x_due_id: DueID) -> DueUnit:
+        return self._dueunits.get(x_due_id)
 
-    def arrearunit_exists(self, x_arrear_id: ArrearID) -> bool:
-        return self.get_arrearunit(x_arrear_id) != None
+    def dueunit_exists(self, x_due_id: DueID) -> bool:
+        return self.get_dueunit(x_due_id) != None
 
-    def del_arrearunit(self, x_arrear_id: ArrearID):
-        self._arrearunits.pop(x_arrear_id)
+    def del_dueunit(self, x_due_id: DueID):
+        self._dueunits.pop(x_due_id)
 
-    def add_arrearunit(self) -> ArrearUnit:
-        next_arrear_int = self._get_max_arrearunit_uid() + 1
-        self.set_arrearunit(arrearunit_shop(uid=next_arrear_int))
-        return self.get_arrearunit(next_arrear_int)
+    def add_dueunit(self) -> DueUnit:
+        next_due_int = self._get_max_dueunit_uid() + 1
+        self.set_dueunit(dueunit_shop(uid=next_due_int))
+        return self.get_dueunit(next_due_int)
 
-    def _get_max_arrearunit_uid(self) -> ArrearID:
-        max_arrearunit_uid = 0
-        for x_arrearunit in self._arrearunits.values():
-            max_arrearunit_uid = max(x_arrearunit.uid, max_arrearunit_uid)
-        return max_arrearunit_uid
+    def _get_max_dueunit_uid(self) -> DueID:
+        max_dueunit_uid = 0
+        for x_dueunit in self._dueunits.values():
+            max_dueunit_uid = max(x_dueunit.uid, max_dueunit_uid)
+        return max_dueunit_uid
 
     def is_meaningful(self) -> bool:
         return next(
@@ -96,28 +92,28 @@ class AccordUnit:
     def del_topicunit(self, personroad: PersonRoad):
         self._topicunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, arrear_uid: ArrearID):
-        if self.arrearunit_exists(arrear_uid):
-            x_arrearunit = self.get_arrearunit(arrear_uid)
-            x_arrearunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, due_uid: DueID):
+        if self.dueunit_exists(due_uid):
+            x_dueunit = self.get_dueunit(due_uid)
+            x_dueunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, arrear_uid: PersonRoad):
-        if self.arrearunit_exists(arrear_uid):
-            x_arrearunit = self.get_arrearunit(arrear_uid)
-            x_arrearunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, due_uid: PersonRoad):
+        if self.dueunit_exists(due_uid):
+            x_dueunit = self.get_dueunit(due_uid)
+            x_dueunit.del_actor(actor)
 
-    def get_actor_arrearunits(
+    def get_actor_dueunits(
         self, actor: PersonID, action_filter: bool = None
-    ) -> dict[RoadUnit:ArrearUnit]:
+    ) -> dict[RoadUnit:DueUnit]:
         return {
-            x_base: x_arrearunit
-            for x_base, x_arrearunit in self._arrearunits.items()
-            if x_arrearunit.actor_exists(actor)
-            and (x_arrearunit.has_action() == action_filter or action_filter is None)
+            x_base: x_dueunit
+            for x_base, x_dueunit in self._dueunits.items()
+            if x_dueunit.actor_exists(actor)
+            and (x_dueunit.has_action() == action_filter or action_filter is None)
         }
 
-    def actor_has_arrearunit(self, actor: PersonID, action_filter: bool = None) -> bool:
-        return self.get_actor_arrearunits(actor, action_filter=action_filter) != {}
+    def actor_has_dueunit(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_dueunits(actor, action_filter=action_filter) != {}
 
 
 def accordunit_shop(_author: PersonID, _reader: PersonID):
@@ -125,5 +121,5 @@ def accordunit_shop(_author: PersonID, _reader: PersonID):
         _author=_author,
         _reader=_reader,
         _topicunits=get_empty_dict_if_none(None),
-        _arrearunits=get_empty_dict_if_none(None),
+        _dueunits=get_empty_dict_if_none(None),
     )

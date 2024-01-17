@@ -8,15 +8,15 @@ from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
 
-class ArrearID(int):
+class DueID(int):
     pass
 
 
 @dataclass
-class ArrearUnit:
+class DueUnit:
     author_weight: float = None
     reader_weight: float = None
-    uid: ArrearID = None
+    uid: DueID = None
     actor: PersonID = None
     _topiclinks: dict[PersonRoad, TopicLink] = None
     _relative_author_weight: float = None
@@ -34,8 +34,8 @@ class ArrearUnit:
     def del_topiclink(self, topiclink_base: PersonRoad):
         self._topiclinks.pop(topiclink_base)
 
-    def get_arrear_id(self) -> ArrearID:
-        return f"Arrear {self.uid:04d}"
+    def get_due_id(self) -> DueID:
+        return f"Due {self.uid:04d}"
 
     def edit_attr(
         self,
@@ -70,8 +70,8 @@ class ArrearUnit:
         return any(x_topiclink.action for x_topiclink in self._topiclinks.values())
 
 
-def arrearunit_shop(
-    uid: ArrearID,
+def dueunit_shop(
+    uid: DueID,
     author_weight: int = None,
     reader_weight: int = None,
     actor: PersonID = None,
@@ -83,7 +83,7 @@ def arrearunit_shop(
         reader_weight = 1
     _relative_author_weight = 0
     _relative_reader_weight = 0
-    return ArrearUnit(
+    return DueUnit(
         uid=uid,
         author_weight=author_weight,
         reader_weight=reader_weight,

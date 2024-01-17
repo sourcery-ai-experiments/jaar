@@ -1,5 +1,5 @@
 from src._prime.road import create_road, create_economyaddress
-from src.accord.accord import arrearunit_shop, ArrearUnit
+from src.accord.accord import dueunit_shop, DueUnit
 from src.accord.topic import (
     topicunit_shop,
     opinionunit_shop,
@@ -102,28 +102,28 @@ def get_helen_action_topic() -> TopicUnit:
     return helen_topic
 
 
-def get_cooking_arrearunit() -> ArrearUnit:
+def get_cooking_dueunit() -> DueUnit:
     yao_economyaddress = create_economyaddress("Yao", "Texas")
     cook_road = create_road(yao_economyaddress, "cooking")
     eight_uid = 8
-    eight_arrearunit = arrearunit_shop(uid=eight_uid)
-    eight_arrearunit.set_topiclink(topiclink_shop(cook_road))
-    return eight_arrearunit
+    eight_dueunit = dueunit_shop(uid=eight_uid)
+    eight_dueunit.set_topiclink(topiclink_shop(cook_road))
+    return eight_dueunit
 
 
-def get_climate_arrearunit() -> ArrearUnit:
+def get_climate_dueunit() -> DueUnit:
     yao_economyaddress = create_economyaddress("Yao", "Texas")
     climate_road = create_road(yao_economyaddress, "climate")
     six_uid = 6
-    six_arrearunit = arrearunit_shop(uid=six_uid)
-    six_arrearunit.set_topiclink(topiclink_shop(climate_road))
-    return six_arrearunit
+    six_dueunit = dueunit_shop(uid=six_uid)
+    six_dueunit.set_topiclink(topiclink_shop(climate_road))
+    return six_dueunit
 
 
-def get_speedboat_action_arrearunit() -> ArrearUnit:
+def get_speedboat_action_dueunit() -> DueUnit:
     yao_economyaddress = create_economyaddress("Yao", "Texas")
     speedboat_road = create_road(yao_economyaddress, "speedboats")
     seven_uid = 7
-    seven_arrearunit = arrearunit_shop(uid=seven_uid)
-    seven_arrearunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
-    return seven_arrearunit
+    seven_dueunit = dueunit_shop(uid=seven_uid)
+    seven_dueunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
+    return seven_dueunit
