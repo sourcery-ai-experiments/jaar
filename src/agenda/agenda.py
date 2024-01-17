@@ -841,19 +841,31 @@ class AgendaUnit:
     def set_belief(
         self,
         base: RoadUnit,
-        pick: RoadUnit,
+        pick: RoadUnit = None,
         open: float = None,
         nigh: float = None,
         create_missing_ideas: bool = None,
     ):
+        if pick is None:
+            pick = base
         if create_missing_ideas:
             self._set_ideakid_if_empty(road=base)
             self._set_ideakid_if_empty(road=pick)
 
         self._execute_tree_traverse()
         belief_base_idea = self.get_idea_obj(base)
-        x_beliefunit = beliefunit_shop(base=base, pick=pick, open=open, nigh=nigh)
         x_idearoot = self.get_idea_obj(self._economy_id)
+        x_open = None
+        if nigh != None and open is None:
+            x_open = x_idearoot._beliefunits.get(base).open
+        else:
+            x_open = open
+        x_nigh = None
+        if open != None and nigh is None:
+            x_nigh = x_idearoot._beliefunits.get(base).nigh
+        else:
+            x_nigh = nigh
+        x_beliefunit = beliefunit_shop(base=base, pick=pick, open=x_open, nigh=x_nigh)
 
         if belief_base_idea.is_arithmetic() == False:
             x_idearoot.set_beliefunit(x_beliefunit)

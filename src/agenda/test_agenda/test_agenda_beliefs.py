@@ -11,7 +11,7 @@ from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_agenda_belief_exists():
+def test_AgendaUnit_set_belief_CorrectlyChangesAttr_1():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -22,11 +22,16 @@ def test_agenda_belief_exists():
     assert x_agenda._idearoot._beliefunits != None
     x_agenda._idearoot._beliefunits = {}
     assert not x_agenda._idearoot._beliefunits
+
+    # GIVEN
     x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+
+    # THEN
     assert x_agenda._idearoot._beliefunits == {
         sunday_agenda_belief.base: sunday_agenda_belief
     }
 
+    # GIVEN
     x_agenda._idearoot._beliefunits = {}
     assert not x_agenda._idearoot._beliefunits
     usa_week_road = x_agenda.make_l1_road("nation-state")
@@ -35,23 +40,65 @@ def test_agenda_belief_exists():
 
     x_agenda._idearoot._beliefunits = {}
     assert not x_agenda._idearoot._beliefunits
+
+    # WHEN
     x_agenda.set_belief(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
+
+    # THEN
     assert x_agenda._idearoot._beliefunits != None
     assert x_agenda._idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
 
 
-def test_agenda_belief_create():
+def test_AgendaUnit_set_belief_CorrectlyChangesAttr_2():
+    # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
+
+    # WHEN
     x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+
+    # THEN
     sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
     assert x_agenda._idearoot._beliefunits == {
         sunday_agenda_belief.base: sunday_agenda_belief
     }
 
 
-def test_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBeliefIdeaIsNotRangeRoot():
+def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_pick_IsNone():
+    # GIVEN
+    x_agenda = examples_get_agenda_with_4_levels()
+    weekday_road = x_agenda.make_l1_road("weekdays")
+
+    # WHEN
+    x_agenda.set_belief(base=weekday_road, open=5, nigh=7)
+
+    # THEN
+    sunday_agenda_belief = beliefunit_shop(weekday_road, weekday_road, 5, 7)
+    assert x_agenda._idearoot._beliefunits == {
+        sunday_agenda_belief.base: sunday_agenda_belief
+    }
+
+
+def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_open_IsNone():
+    # GIVEN
+    x_agenda = examples_get_agenda_with_4_levels()
+    weekday_road = x_agenda.make_l1_road("weekdays")
+    x_agenda.set_belief(base=weekday_road, open=5, nigh=7)
+    assert x_agenda._idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
+        weekday_road, weekday_road, 5, 7
+    )
+
+    # WHEN
+    x_agenda.set_belief(base=weekday_road, nigh=10)
+
+    # THEN
+    assert x_agenda._idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
+        weekday_road, weekday_road, 5, 10
+    )
+
+
+def test_AgendaUnit_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBeliefIdeaIsNotRangeRoot():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     time_text = "time"
@@ -77,7 +124,7 @@ def test_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBeliefIdeaIsNo
     )
 
 
-def test_agenda_belief_create():
+def test_AgendaUnit_del_belief_CorrectlyChangesAttr():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -95,7 +142,7 @@ def test_agenda_belief_create():
     assert x_agenda._idearoot._beliefunits == {}
 
 
-def test_agenda_get_idea_list_BeliefHeirsCorrectlyInherited():
+def test_AgendaUnit_get_idea_list_BeliefHeirsCorrectlyInherited():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
@@ -151,7 +198,7 @@ def test_agenda_get_idea_list_BeliefHeirsCorrectlyInherited():
     assert str(type(belief_x1)).find(".reason.BeliefHeir'>")
 
 
-def test_agenda_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop():
+def test_AgendaUnit_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
@@ -189,7 +236,7 @@ def test_agenda_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop():
     assert swim_idea._beliefheirs == after_earthdict
 
 
-def test_agenda_get_idea_list_BeliefHeirCorrectlyDeletesBeliefUnit():
+def test_AgendaUnit_get_idea_list_BeliefHeirCorrectlyDeletesBeliefUnit():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     swim_text = "swim"
@@ -761,7 +808,7 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
     # assert lhu[sue_agenda.make_road(timetech_road,"week,Wednesday")].active == False
 
 
-def test_agenda_set_belief_create_missing_ideas_CreatesBaseAndBelief():
+def test_AgendaUnit_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     trouble_text = ""
@@ -779,7 +826,7 @@ def test_agenda_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     assert sue_agenda.get_idea_obj(climate_road) != None
 
 
-def test_agenda_get_beliefunits_base_and_belief_list_CorrectlyReturnsListOfBeliefUnits():
+def test_AgendaUnit_get_beliefunits_base_and_belief_list_CorrectlyReturnsListOfBeliefUnits():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
 
