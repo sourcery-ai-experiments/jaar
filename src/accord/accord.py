@@ -20,6 +20,21 @@ class AccordUnit:
     _topicunits: dict[PersonRoad:TopicUnit] = None
     _sectionunits: dict[SectionID:SectionUnit] = None
 
+    def set_accord_metrics(self):
+        section_sum = sum(x_section.weight for x_section in self._sectionunits.values())
+
+        for x_section in self._sectionunits.values():
+            x_section.edit_attr(_relative_accord_weight=x_section.weight / section_sum)
+
+    def edit_sectionunit_attr(
+        self, section_id: SectionID, weight: float = None, actor: PersonID = None
+    ):
+        x_sectionunit = self.get_sectionunit(section_id)
+        if weight != None:
+            x_sectionunit.edit_attr(weight=weight)
+        if actor != None:
+            x_sectionunit.set_actor(actor)
+
     def set_sectionunit(self, x_sectionunit: SectionUnit, actor: PersonID = None):
         self._sectionunits[x_sectionunit.uid] = x_sectionunit
         if actor != None:

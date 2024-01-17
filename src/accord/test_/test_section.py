@@ -21,9 +21,11 @@ def test_SectionUnit_exists():
     x_sectionunit = SectionUnit()
 
     # THEN
-    assert x_sectionunit.actors is None
+    assert x_sectionunit.actor is None
     assert x_sectionunit._topiclinks is None
     assert x_sectionunit.uid is None
+    assert x_sectionunit.weight is None
+    assert x_sectionunit._relative_accord_weight is None
 
 
 def test_sectionunit_shop_ReturnsCorrectObj():
@@ -35,8 +37,10 @@ def test_sectionunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert farm_sectionunit.uid == x_uid
-    assert farm_sectionunit.actors == {}
+    assert farm_sectionunit.actor is None
     assert farm_sectionunit._topiclinks == {}
+    assert farm_sectionunit.weight == 1
+    assert farm_sectionunit._relative_accord_weight == 0
 
 
 def test_SectionUnit_set_topiclink_SetsAttrCorrectly():
@@ -53,6 +57,27 @@ def test_SectionUnit_set_topiclink_SetsAttrCorrectly():
     assert len(farm_sectionunit._topiclinks) == 1
     assert farm_sectionunit._topiclinks.get(cook_topiclink.base) != None
     assert farm_sectionunit._topiclinks.get(cook_topiclink.base) == cook_topiclink
+
+
+def test_SectionUnit_edit_attr_SetsAttrCorrectly():
+    # GIVEN
+    one_text = "1"
+    farm_sectionunit = sectionunit_shop(one_text)
+    assert farm_sectionunit.weight == 1
+    assert farm_sectionunit._relative_accord_weight == 0
+
+    # WHEN
+    new_weight = 7
+    new_relative_accord_weight = 0.66
+    farm_sectionunit.edit_attr(
+        weight=new_weight, _relative_accord_weight=new_relative_accord_weight
+    )
+
+    # THEN
+    assert farm_sectionunit.weight != 1
+    assert farm_sectionunit.weight == new_weight
+    assert farm_sectionunit._relative_accord_weight != 0
+    assert farm_sectionunit._relative_accord_weight == new_relative_accord_weight
 
 
 def test_SectionUnit_get_topiclink_ReturnsCorrectObj():
@@ -102,16 +127,23 @@ def test_SectionUnit_set_actor_CorrectlySetsAttr():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
     cook_sectionunit = sectionunit_shop(cook_road)
-    assert cook_sectionunit.actors == {}
+    assert cook_sectionunit.actor is None
 
     # WHEN
     bob_text = "Bob"
     cook_sectionunit.set_actor(x_actor=bob_text)
 
     # THEN
-    assert cook_sectionunit.actors != {}
-    assert cook_sectionunit.actors.get(bob_text) != None
-    assert cook_sectionunit.actors.get(bob_text) == bob_text
+    assert cook_sectionunit.actor != None
+    assert cook_sectionunit.actor == bob_text
+
+    # WHEN
+    tim_text = "Bob"
+    cook_sectionunit.set_actor(x_actor=tim_text)
+
+    # THEN
+    assert cook_sectionunit.actor != None
+    assert cook_sectionunit.actor == tim_text
 
 
 def test_SectionUnit_del_actor_CorrectlySetsAttr():
@@ -121,18 +153,13 @@ def test_SectionUnit_del_actor_CorrectlySetsAttr():
     bob_text = "Bob"
     yao_text = "Yao"
     cook_sectionunit.set_actor(bob_text)
-    cook_sectionunit.set_actor(yao_text)
-    assert len(cook_sectionunit.actors) == 2
-    assert cook_sectionunit.actors.get(bob_text) != None
-    assert cook_sectionunit.actors.get(yao_text) != None
+    assert cook_sectionunit.actor == bob_text
 
     # WHEN
     cook_sectionunit.del_actor(bob_text)
 
     # THEN
-    assert len(cook_sectionunit.actors) == 1
-    assert cook_sectionunit.actors.get(bob_text) is None
-    assert cook_sectionunit.actors.get(yao_text) != None
+    assert cook_sectionunit.actor is None
 
 
 def test_SectionUnit_get_actor_ReturnsCorrectObj_good():
@@ -140,9 +167,7 @@ def test_SectionUnit_get_actor_ReturnsCorrectObj_good():
     cook_road = create_road(root_label(), "cooking")
     cook_sectionunit = sectionunit_shop(cook_road)
     bob_text = "Bob"
-    yao_text = "Yao"
     cook_sectionunit.set_actor(bob_text)
-    cook_sectionunit.set_actor(yao_text)
 
     # WHEN
     bob_actor = cook_sectionunit.get_actor(bob_text)
@@ -159,17 +184,15 @@ def test_SectionUnit_actor_exists_ReturnsCorrectObj_good():
     bob_text = "Bob"
     yao_text = "Yao"
     assert cook_sectionunit.actor_exists(bob_text) == False
-    assert cook_sectionunit.actor_exists(yao_text) == False
 
     # WHEN / THEN
     cook_sectionunit.set_actor(bob_text)
-    cook_sectionunit.set_actor(yao_text)
     assert cook_sectionunit.actor_exists(bob_text)
-    assert cook_sectionunit.actor_exists(yao_text)
+    assert cook_sectionunit.actor_exists(yao_text) == False
 
     # WHEN / THEN
-    cook_sectionunit.del_actor(yao_text)
-    assert cook_sectionunit.actor_exists(bob_text)
+    cook_sectionunit.del_actor(bob_text)
+    assert cook_sectionunit.actor_exists(bob_text) == False
     assert cook_sectionunit.actor_exists(yao_text) == False
 
 

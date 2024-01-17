@@ -17,13 +17,16 @@ def test_AccordUnit_set_sectionunit_SetsAttrCorrectly():
     assert farm_accordunit._sectionunits == {}
 
     # WHEN
-    x_int = 7
-    farm_accordunit.set_sectionunit(sectionunit_shop(x_int))
+    x_uid = 7
+    x_weight = 3
+    farm_accordunit.set_sectionunit(sectionunit_shop(x_uid, x_weight))
 
     # THEN
     assert len(farm_accordunit._sectionunits) == 1
-    assert farm_accordunit._sectionunits.get(x_int) != None
-    assert farm_accordunit._sectionunits.get(x_int) == sectionunit_shop(x_int)
+    assert farm_accordunit._sectionunits.get(x_uid) != None
+    x_sectionunit = farm_accordunit._sectionunits.get(x_uid)
+    assert x_sectionunit == sectionunit_shop(x_uid, x_weight)
+    assert x_sectionunit.weight == x_weight
 
 
 def test_AccordUnit_get_sectionunit_ReturnsCorrectObj():
@@ -100,6 +103,30 @@ def test_AccordUnit_add_sectionunit_SetsAttrCorrectly():
     assert farm_accordunit.get_sectionunit(eight_sectionunit.uid) != None
 
 
+def test_AccordUnit_edit_sectionunit_attr_CorrectlySetsAttribute():
+    # GIVEN
+    tim_text = "Tim"
+    farm_accordunit = accordunit_shop(_author="Bob", _reader=tim_text)
+    x_uid = 7
+    x_weight = 3
+    farm_accordunit.set_sectionunit(sectionunit_shop(x_uid, x_weight))
+
+    x_sectionunit = farm_accordunit._sectionunits.get(x_uid)
+    assert x_sectionunit.weight == x_weight
+    assert x_sectionunit.actor is None
+
+    # WHEN
+    y_weight = 7
+    farm_accordunit.edit_sectionunit_attr(x_uid, weight=y_weight, actor=tim_text)
+
+    # THEN
+    x_sectionunit = farm_accordunit._sectionunits.get(x_uid)
+    assert x_sectionunit.weight != x_weight
+    assert x_sectionunit.weight == y_weight
+    assert x_sectionunit.actor != None
+    assert x_sectionunit.actor == tim_text
+
+
 def test_AccordUnit_set_actor_sectionunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
@@ -170,3 +197,26 @@ def test_AccordUnit_get_actor_sectionunits_ReturnsCorrectActionTopics():
     # THEN
     assert farm_accordunit.actor_has_sectionunit(bob_text, action_filter=True) == False
     assert farm_accordunit.actor_has_sectionunit(yao_text, action_filter=True)
+
+
+def test_AccordUnit_set_accord_metrics_CorrectlySetsSection_relative_accord_weight():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_accordunit = accordunit_shop(_author=bob_text, _reader=yao_text)
+    s1_sectionunit = farm_accordunit.add_sectionunit()
+    farm_accordunit.edit_sectionunit_attr(s1_sectionunit.uid, weight=4)
+    s1_sectionunit.set_actor(bob_text)
+    s1_sectionunit.edit_attr(weight=4)
+    s2_sectionunit = farm_accordunit.add_sectionunit()
+    s2_sectionunit.set_actor(bob_text)
+    s2_sectionunit.edit_attr(weight=6)
+    assert s1_sectionunit._relative_accord_weight == 0
+    assert s2_sectionunit._relative_accord_weight == 0
+
+    # WHEN
+    farm_accordunit.set_accord_metrics()
+
+    # THEN
+    assert s1_sectionunit._relative_accord_weight == 0.4
+    assert s2_sectionunit._relative_accord_weight == 0.6
