@@ -55,17 +55,17 @@ class MainApp(QApplication):
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
-        self.editmain_view.agenda_x = self.main_window.agenda_x
+        self.editmain_view.x_agenda = self.main_window.x_agenda
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
     def edit_intent_show(self):
-        self.edit_intent_view.agenda_x = self.main_window.agenda_x
+        self.edit_intent_view.x_agenda = self.main_window.x_agenda
         self.edit_intent_view.refresh_all()
         self.edit_intent_view.show()
 
     def editbelief_show(self):
-        self.edittime_view.agenda_x = self.main_window.agenda_x
+        self.edittime_view.x_agenda = self.main_window.x_agenda
         self.edittime_view.display_belief_time()
         self.edittime_view.show()
 
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     open_editmain = qtc.pyqtSignal(bool)
     open_edit_intent = qtc.pyqtSignal(bool)
     open_edittime = qtc.pyqtSignal(bool)
-    agenda_x_signal = qtc.pyqtSignal(AgendaUnit)
+    x_agenda_signal = qtc.pyqtSignal(AgendaUnit)
 
     def __init__(self, file_open_path):
         super().__init__()
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.itemClicked.connect(self.intent_task_display)
         # self.belief_update_combo.activated.connect(self.belief_update_heir)
 
-        self.agenda_x_json = None
+        self.x_agenda_json = None
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
@@ -160,7 +160,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label_last_label.setText("")
         else:
             base_x = "A,time,jajatime"
-            self.agenda_x.set_intent_task_complete(
+            self.x_agenda.set_intent_task_complete(
                 task_road=self.current_task_road, base=base_x
             )
         self.label_last_label.setText(self.current_task_road)
@@ -168,22 +168,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_belief_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.agenda_x._economy_id},time,jajatime"
+        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        self.agenda_x.set_belief(
+        self.x_agenda.set_belief(
             base=road_minute,
             pick=road_minute,
-            open=self.agenda_x.get_time_min_from_dt(dt=days5ago_x),
+            open=self.x_agenda.get_time_min_from_dt(dt=days5ago_x),
         )
         self.refresh_all()
 
     def _set_belief_time_open_midnight_attr(self):
-        road_minute = f"{self.agenda_x._economy_id},time,jajatime"
-        open_dt = self.agenda_x.get_time_dt_from_min(
-            self.agenda_x._idearoot._beliefunits[road_minute].open
+        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        open_dt = self.x_agenda.get_time_dt_from_min(
+            self.x_agenda._idearoot._beliefunits[road_minute].open
         )
-        nigh_dt = self.agenda_x.get_time_dt_from_min(
-            self.agenda_x._idearoot._beliefunits[road_minute].nigh
+        nigh_dt = self.x_agenda.get_time_dt_from_min(
+            self.x_agenda._idearoot._beliefunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -194,10 +194,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ) + timedelta(days=1)
         open_minutes = None
         if open_dt < nigh_dt and open_midnight < nigh_dt:
-            open_minutes = self.agenda_x.get_time_min_from_dt(open_midnight)
+            open_minutes = self.x_agenda.get_time_min_from_dt(open_midnight)
         else:
-            open_minutes = self.agenda_x.get_time_min_from_dt(dt=nigh_dt)
-        self.agenda_x.set_belief(
+            open_minutes = self.x_agenda.get_time_min_from_dt(dt=nigh_dt)
+        self.x_agenda.set_belief(
             base=road_minute,
             pick=road_minute,
             open=open_minutes,
@@ -212,36 +212,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_belief_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.agenda_x._economy_id},time,jajatime"
+        # road_minute = f"{self.x_agenda._economy_id},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
-        # self.agenda_x.set_belief(
+        # self.x_agenda.set_belief(
         #     base=road_minute,
         #     pick=road_minute,
-        #     open=self.agenda_x.get_time_min_from_dt(dt=now_x),
+        #     open=self.x_agenda.get_time_min_from_dt(dt=now_x),
         # )
         self.refresh_all()
 
     def set_belief_time_nigh_now(self):
         now_x = datetime.now()
-        road_minute = f"{self.agenda_x._economy_id},time,jajatime"
-        self.agenda_x.set_belief(
-            base=road_minute,
-            pick=road_minute,
-            nigh=self.agenda_x.get_time_min_from_dt(dt=now_x),
+        time_minute = self.x_agenda.make_l1_road("time")
+        jajatime_minute = self.x_agenda.make_road(time_minute, "jajatime")
+        print(f"{self.x_agenda.get_time_min_from_dt(dt=now_x)=}")
+        self.x_agenda.set_belief(
+            base=jajatime_minute,
+            pick=jajatime_minute,
+            nigh=self.x_agenda.get_time_min_from_dt(dt=now_x),
         )
         self.refresh_all()
 
     def emit_agenda(self):
-        self.agenda_x_signal.emit(self.agenda_x)
+        self.x_agenda_signal.emit(self.x_agenda)
 
     def get_file_path(self):
-        x_file_path, _ = QFileDialog.getOpenFilePID()
+        x_file_path, _ = QFileDialog.getOpenFileName()
         if x_file_path:
             self.file_path = x_file_path
             self.open_file()
 
     def save_as_file(self):
-        x_file_path, _ = QFileDialog.getSaveFilePID()
+        x_file_path, _ = QFileDialog.getSaveFileName()
         if x_file_path:
             self.file_path = x_file_path
             self._commit_file_save()
@@ -252,17 +254,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._commit_file_save()
 
     def _get_file_name(self):
-        return f"agenda_{self.agenda_x._healer}.json"
+        return f"agenda_{self.x_agenda._healer}.json"
 
     def _commit_file_save(self):
-        agenda_x_json = self.agenda_x.get_json()
+        x_agenda_json = self.x_agenda.get_json()
         with open(f"{self.file_path}", "w") as f:
-            f.write(agenda_x_json)
+            f.write(x_agenda_json)
         self.current_file_path_l.setText(self.file_path)
         # save_file(
         #     dest_dir=agenda_clerkunit_dir,
-        #     file_name=f"{self.agenda_x._economy_id}.json",
-        #     file_text=agenda_x.get_json(),
+        #     file_name=f"{self.x_agenda._economy_id}.json",
+        #     file_text=x_agenda.get_json(),
         # )
 
     def load_file(self):
@@ -272,25 +274,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_json
 
     def open_file(self):
-        self.agenda_x_json = self.load_file()
-        self.agenda_load(x_agenda_json=self.agenda_x_json)
+        self.x_agenda_json = self.load_file()
+        self.agenda_load(x_agenda_json=self.x_agenda_json)
 
     def agenda_new(self):
-        self.agenda_x = agendaunit_shop(_healer="new")
-        self.agenda_x.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.agenda_x._economy_id},time,jajatime"
-        self.agenda_x.set_belief(
+        self.x_agenda = agendaunit_shop(_healer="new")
+        self.x_agenda.set_time_hreg_ideas(c400_count=7)
+        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        self.x_agenda.set_belief(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.agenda_x._economy_id},time,jajatime"
-        jajatime_open = self.agenda_x.get_time_dt_from_min(
-            self.agenda_x._idearoot._beliefunits[road_minute].open
+        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        jajatime_open = self.x_agenda.get_time_dt_from_min(
+            self.x_agenda._idearoot._beliefunits[road_minute].open
         )
-        jajatime_nigh = self.agenda_x.get_time_dt_from_min(
-            self.agenda_x._idearoot._beliefunits[road_minute].nigh
+        jajatime_nigh = self.x_agenda.get_time_dt_from_min(
+            self.x_agenda._idearoot._beliefunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_curr_l.setText(
@@ -305,31 +307,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.agenda_healer.setText(self.agenda_x._healer)
+        self.agenda_healer.setText(self.x_agenda._healer)
         self.beliefs_table_load()
         self.intent_states_load()
 
     def agenda_load(self, x_agenda_json: str):
-        self.agenda_x = get_from_json(x_agenda_json=x_agenda_json)
-        self.promise_items = self.agenda_x.get_intent_dict()
+        self.x_agenda = get_from_json(x_agenda_json=x_agenda_json)
+        self.promise_items = self.x_agenda.get_intent_dict()
         self.refresh_all()
 
     def get_beliefs_list(self):
-        return self.agenda_x._idearoot._beliefunits.values()
+        return self.x_agenda._idearoot._beliefunits.values()
 
     def beliefs_table_load(self):
         self.beliefs_table.setRowCount(0)
 
         row = 0
         for belief in self.get_beliefs_list():
-            base_text = belief.base.replace(f"{self.agenda_x._healer}", "")
+            base_text = belief.base.replace(f"{self.x_agenda._healer}", "")
             base_text = base_text[1:]
             belief_text = belief.pick.replace(belief.base, "")
             belief_text = belief_text[1:]
             if belief.open is None:
                 belief_text = f"{belief_text}"
             elif base_text == "time,jajatime":
-                belief_text = f"{self.agenda_x.get_jajatime_legible_one_time_event(belief.open)}-{self.agenda_x.get_jajatime_repeating_legible_text(belief.nigh)}"
+                belief_text = f"{self.x_agenda.get_jajatime_legible_one_time_event(belief.open)}-{self.x_agenda.get_jajatime_repeating_legible_text(belief.nigh)}"
             else:
                 belief_text = f"{belief_text} Open-Nigh {belief.open}-{belief.nigh}"
 
@@ -340,8 +342,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.beliefs_table.setItem(row, 5, qtw1(pyqt_func_num2str(belief.nigh)))
             row += 1
 
-        for base, count in self.agenda_x.get_missing_belief_bases().items():
-            base_text = base.replace(f"{self.agenda_x._healer}", "")
+        for base, count in self.x_agenda.get_missing_belief_bases().items():
+            base_text = base.replace(f"{self.x_agenda._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -365,15 +367,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
             raise MainAppException("No table selection for belief update.")
         belief_update_combo_text = self.belief_update_combo.currentText()
-        self.agenda_x._idearoot._beliefunits[
+        self.x_agenda._idearoot._beliefunits[
             base_road
         ].belief = belief_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def intent_states_load(self):
-        self.agenda_x.get_tree_metrics()
-        intent_list = list(self.agenda_x.get_intent_dict().values())
+        self.x_agenda.get_tree_metrics()
+        intent_list = list(self.x_agenda.get_intent_dict().values())
         intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
         self.intent_states.setSortingEnabled(True)
         self.intent_states.setRowCount(0)
@@ -403,16 +405,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(row, 1, qtw1(ax._label))
         x_hregidea = HregTimeIdeaSource(",")
 
-        if ax._reasonunits.get(f"{self.agenda_x._economy_id},time,jajatime") != None:
+        if ax._reasonunits.get(f"{self.x_agenda._economy_id},time,jajatime") != None:
             jajatime_reason = ax._reasonunits.get(
-                f"{self.agenda_x._economy_id},time,jajatime"
+                f"{self.x_agenda._economy_id},time,jajatime"
             )
             premise_x = jajatime_reason.premises.get(
-                f"{self.agenda_x._economy_id},time,jajatime"
+                f"{self.x_agenda._economy_id},time,jajatime"
             )
             if premise_x != None and premise_x.open != 0:
                 tw_open = qtw1(
-                    self.agenda_x.get_jajatime_repeating_legible_text(
+                    self.x_agenda.get_jajatime_repeating_legible_text(
                         open=premise_x.open,
                         nigh=premise_x.nigh,
                         divisor=premise_x.divisor,
@@ -460,14 +462,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_hregidea = HregTimeIdeaSource(",")
         self.label_intent_label_data.setText(intent_item._label)
         if (
-            intent_item._reasonunits.get(f"{self.agenda_x._economy_id},time,jajatime")
+            intent_item._reasonunits.get(f"{self.x_agenda._economy_id},time,jajatime")
             != None
         ):
             jajatime_reason = intent_item._reasonunits.get(
-                f"{self.agenda_x._economy_id},time,jajatime"
+                f"{self.x_agenda._economy_id},time,jajatime"
             )
             premise_x = jajatime_reason.premises.get(
-                f"{self.agenda_x._economy_id},time,jajatime,day"
+                f"{self.x_agenda._economy_id},time,jajatime,day"
             )
             if premise_x != None:
                 self.label_intent_day_data.setText("day_stuff")
@@ -485,10 +487,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, intent_item):
         jajatime_reason = intent_item._reasonunits.get(
-            f"{self.agenda_x._economy_id},time,jajatime"
+            f"{self.x_agenda._economy_id},time,jajatime"
         )
         premise_x = jajatime_reason.premises.get(
-            f"{self.agenda_x._economy_id},time,jajatime,day"
+            f"{self.x_agenda._economy_id},time,jajatime,day"
         )
         if premise_x != None:
             open_x = premise_x.open

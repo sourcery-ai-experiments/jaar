@@ -58,10 +58,10 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.belief_update_button.clicked.connect(self.belief_set_action)
         self.belief_delete_button.clicked.connect(self.belief_del_action)
 
-        self.agenda_x = None
+        self.x_agenda = None
 
     def belief_set_action(self):
-        self.agenda_x.set_belief(
+        self.x_agenda.set_belief(
             base=self.belief_base_update_combo.currentText(),
             pick=self.belief_pick_update_combo.currentText(),
             open=pyqt_func_str2float(self.belief_open.text()),
@@ -70,25 +70,25 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def belief_del_action(self):
-        self.agenda_x.del_belief(base=self.belief_base_update_combo.currentText())
+        self.x_agenda.del_belief(base=self.belief_base_update_combo.currentText())
         self.refresh_all()
 
     def get_beliefs_list(self):
-        return self.agenda_x._idearoot._beliefunits.values()
+        return self.x_agenda._idearoot._beliefunits.values()
 
     def beliefs_table_load(self):
         self.beliefs_table.setRowCount(0)
 
         row = 0
         for belief in self.get_beliefs_list():
-            base_text = belief.base.replace(f"{self.agenda_x._healer}", "")
+            base_text = belief.base.replace(f"{self.x_agenda._healer}", "")
             base_text = base_text[1:]
             belief_text = belief.pick.replace(belief.base, "")
             belief_text = belief_text[1:]
             if belief.open is None:
                 belief_text = f"{belief_text}"
             elif base_text == "time,jajatime":
-                belief_text = f"{self.agenda_x.get_jajatime_legible_one_time_event(belief.open)}-{self.agenda_x.get_jajatime_repeating_legible_text(belief.nigh)}"
+                belief_text = f"{self.x_agenda.get_jajatime_legible_one_time_event(belief.open)}-{self.x_agenda.get_jajatime_repeating_legible_text(belief.nigh)}"
             else:
                 belief_text = f"{belief_text} Open-Nigh {belief.open}-{belief.nigh}"
 
@@ -99,8 +99,8 @@ class EditMainView(qtw.QWidget, Ui_Form):
             self.beliefs_table.setItem(row, 5, qtw1(pyqt_func_num2str(belief.nigh)))
             row += 1
 
-        for base, count in self.agenda_x.get_missing_belief_bases().items():
-            base_text = base.replace(f"{self.agenda_x._healer}", "")
+        for base, count in self.x_agenda.get_missing_belief_bases().items():
+            base_text = base.replace(f"{self.x_agenda._healer}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -128,7 +128,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def belief_table_select(self):
         self.belief_base_update_combo.clear()
         self.belief_base_update_combo.addItems(
-            self.agenda_x.get_idea_tree_ordered_road_list()
+            self.x_agenda.get_idea_tree_ordered_road_list()
         )
         self.belief_base_update_combo.setCurrentText(
             self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text()
@@ -156,7 +156,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def belief_pick_combo_load(self):
         self.belief_pick_update_combo.clear()
         self.belief_pick_update_combo.addItems(
-            self.agenda_x.get_heir_road_list(
+            self.x_agenda.get_heir_road_list(
                 self.belief_base_update_combo.currentText()
             )
         )
@@ -167,14 +167,14 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
             raise EditMainViewException("No table selection for belief update.")
         belief_update_combo_text = self.belief_update_combo.currentText()
-        self.agenda_x._idearoot._beliefunits[
+        self.x_agenda._idearoot._beliefunits[
             base_road
         ].belief = belief_update_combo_text
         self.base_road = None
         self.refresh_all
 
     def refresh_all(self):
-        if self.agenda_x != None:
+        if self.x_agenda != None:
             self.refresh_party_list()
             self.refresh_idea_tree()
             self.beliefs_table_load()
@@ -186,12 +186,12 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.party_list.setColumnWidth(0, 170)
         self.party_list.setColumnWidth(1, 70)
         self.party_list.setHorizontalHeaderLabels(["PID", "LW Force"])
-        partys_list = list(self.agenda_x._partys.values())
+        partys_list = list(self.x_agenda._partys.values())
         partys_list.sort(key=lambda x: x._agenda_credit, reverse=True)
 
         for row, party in enumerate(partys_list, start=1):
             groups_count = 0
-            for group in self.agenda_x._groups.values():
+            for group in self.x_agenda._groups.values():
                 for partylink in group._partys.values():
                     if partylink.pid == party.pid:
                         groups_count += 1
@@ -206,18 +206,18 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.agenda_x = self.agenda_x
+        self.EditIdeaunit.x_agenda = self.x_agenda
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
     def open_edit_party(self):
         self.edit_party = EditParty()
-        self.edit_party.agenda_x = self.agenda_x
+        self.edit_party.x_agenda = self.x_agenda
         self.edit_party.refresh_all()
         self.edit_party.show()
 
     def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.agenda_x._idearoot)
+        tree_root = get_pyqttree(idearoot=self.x_agenda._idearoot)
         self.baseideaunit.clear()
         self.baseideaunit.insertTopLevelItems(0, [tree_root])
 

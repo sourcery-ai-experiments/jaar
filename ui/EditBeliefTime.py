@@ -92,7 +92,7 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         self.prev_year.setCurrentIndex(self.prev_year.findText(str(dt_open.year)))
 
     def listYear(self):
-        return ["2023", "2022", "2021", "2000", "2001", "2005"]
+        return ["2024", "2023", "2022", "2021", "2000", "2001", "2005"]
 
     def listMonth(self):
         return [str(int) for int in range(1, 13)]

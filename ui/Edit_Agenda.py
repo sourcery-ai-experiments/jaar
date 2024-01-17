@@ -30,7 +30,7 @@ class Edit_Agenda(qw, Ui_Form):
         _label = self.intent_table.item(self.intent_table.currentRow(), 0).text()
         # base_x = "A,time,jajatime"
         base_x = self.belief_base_update_combo.currentText()
-        self.agenda_x.set_intent_task_complete(
+        self.x_agenda.set_intent_task_complete(
             task_road=f"{_road},{_label}", base=base_x
         )
         self.refresh_all()
@@ -53,7 +53,7 @@ class Edit_Agenda(qw, Ui_Form):
             temp_x = self.belief_base_update_combo.currentText()
 
         self.belief_base_update_combo.clear()
-        reason_bases = list(self.agenda_x.get_reason_bases())
+        reason_bases = list(self.x_agenda.get_reason_bases())
         reason_bases.sort(key=lambda x: x, reverse=False)
         self.belief_base_update_combo.addItems(reason_bases)
         if self.belief_base_update_init_road is None:
@@ -61,7 +61,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         else:
             self.belief_base_update_init_road = (
-                f"{self.agenda_x._economy_id},time,jajatime"
+                f"{self.x_agenda._economy_id},time,jajatime"
             )
             self.belief_base_update_combo.setCurrentText(
                 self.belief_base_update_init_road
@@ -76,7 +76,7 @@ class Edit_Agenda(qw, Ui_Form):
             base_x = None
 
         intent_list = list(
-            self.agenda_x.get_intent_dict(
+            self.x_agenda.get_intent_dict(
                 intent_enterprise=True, intent_state=False, base=base_x
             ).values()
         )
@@ -115,15 +115,15 @@ class Edit_Agenda(qw, Ui_Form):
             premise_open_x != None
             and premise_nigh_x != None
             and (
-                premise_need_x == f"{self.agenda_x._economy_id},time,jajatime"
-                or premise_need_x[:21] == f"{self.agenda_x._economy_id},time,jajatime"
+                premise_need_x == f"{self.x_agenda._economy_id},time,jajatime"
+                or premise_need_x[:21] == f"{self.x_agenda._economy_id},time,jajatime"
             )
         ):
-            legible_x_text = self.agenda_x.get_jajatime_repeating_legible_text(
+            legible_x_text = self.x_agenda.get_jajatime_repeating_legible_text(
                 open=premise_open_x, nigh=premise_nigh_x, divisor=premise_divisor_x
             )
         elif premise_open_x != None and premise_nigh_x != None:
-            text_x = f"{self.agenda_x._economy_id},time,jajatime"
+            text_x = f"{self.x_agenda._economy_id},time,jajatime"
             legible_x_text = (
                 f"premise {premise_open_x}-{premise_nigh_x} {premise_divisor_x=}"
             )

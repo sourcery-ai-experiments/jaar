@@ -99,7 +99,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reason_base_combo.setCurrentText("A,time,jajatime")
 
     def add_hreg_to_agenda(self):
-        self.agenda_x.set_time_hreg_ideas(c400_count=7)
+        self.x_agenda.set_time_hreg_ideas(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -246,14 +246,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table_load()
         self.idea2group_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
-            self.combo_dim_root.addItems(list(self.agenda_x.get_reason_bases()))
+            self.combo_dim_root.addItems(list(self.x_agenda.get_reason_bases()))
 
     def populate_idea_kid_actions(self):
         self.yo_addin.setText(num2str(self.x_idea._addin))
         self.yo_numor.setText(num2str(self.x_idea._numor))
         self.yo_denom.setText(num2str(self.x_idea._denom))
         self.yo_reest.setChecked(bool_val(self.x_idea._reest))
-        idea_road_list = self.agenda_x.get_idea_tree_ordered_road_list()
+        idea_road_list = self.x_agenda.get_idea_tree_ordered_road_list()
         idea_road_list.append("")
         self.yo_range_source_road.addItems(idea_road_list)
         self.yo_range_source_road.setCurrentText(self.x_idea._range_source_road)
@@ -264,11 +264,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
         idea_label = self.baseideaunit.currentItem().data(2, 10)
         idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
         if idea_parent_road not in ("", None):
-            self.x_idea = self.agenda_x.get_idea_obj(
+            self.x_idea = self.x_agenda.get_idea_obj(
                 road=f"{idea_parent_road},{idea_label}"
             )
         else:
-            self.x_idea = self.agenda_x._idearoot
+            self.x_idea = self.x_agenda._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
@@ -279,26 +279,26 @@ class EditIdeaUnit(qtw0, Ui_Form):
         # create list of all idea roads (road+_label)
         self.reason_base_combo.clear()
         self.reason_base_combo.addItems([""])
-        self.reason_base_combo.addItems(self.agenda_x.get_idea_tree_ordered_road_list())
+        self.reason_base_combo.addItems(self.x_agenda.get_idea_tree_ordered_road_list())
 
     def reason_premise_combo_load(self):
         self.reason_premise_combo.clear()
         self.reason_premise_combo.addItems([""])
         self.reason_premise_combo.addItems(
-            self.agenda_x.get_heir_road_list(self.reason_base_combo.currentText())
+            self.x_agenda.get_heir_road_list(self.reason_base_combo.currentText())
         )
 
     def reason_premise_xxxx_combo_load(self):
         filtered_list = []
         if self.reason_premise_combo.currentText() not in [
-            self.agenda_x._healer,
+            self.x_agenda._healer,
             "",
         ]:
-            premise_idea = self.agenda_x.get_idea_obj(
+            premise_idea = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_combo.currentText()
             )
             if premise_idea._range_source_road != None:
-                filtered_list = self.agenda_x.get_heir_road_list(
+                filtered_list = self.x_agenda.get_heir_road_list(
                     premise_idea._range_source_road
                 )
         self.reason_premise_open_combo.clear()
@@ -317,13 +317,13 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reason_premise_divisor.setText("")
 
         if self.reason_premise_open_combo.currentText() not in [
-            self.agenda_x._healer,
+            self.x_agenda._healer,
             "",
         ]:
             self.reason_premise_open_combo_sel_actions()
 
     def reason_premise_open_combo_sel_actions(self):
-        open_idea_x = self.agenda_x.get_idea_obj(
+        open_idea_x = self.x_agenda.get_idea_obj(
             road=self.reason_premise_open_combo.currentText()
         )
         if open_idea_x._begin != None:
@@ -341,16 +341,16 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.reason_premise_open_combo.currentText() not in [
-            self.agenda_x._healer,
+            self.x_agenda._healer,
             "",
         ]:
-            open_idea_x = self.agenda_x.get_idea_obj(
+            open_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
-            # nigh_idea_x = self.agenda_x.get_idea_obj(
+            # nigh_idea_x = self.x_agenda.get_idea_obj(
             #     road=self.reason_premise_nigh_combo.currentText()
             # )
-            # divisor_idea_x = self.agenda_x.get_idea_obj(
+            # divisor_idea_x = self.x_agenda.get_idea_obj(
             #     road=self.reason_premise_divisor_combo.currentText()
             # )
             # if open_idea_x._begin != None:
@@ -362,12 +362,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_open_combo.currentText()
             not in [
-                self.agenda_x._healer,
+                self.x_agenda._healer,
                 "",
             ]
             and self.reason_premise_open.toPlainText() != ""
         ):
-            open_idea_x = self.agenda_x.get_idea_obj(
+            open_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
             open_int = str2float(self.reason_premise_open.toPlainText())
@@ -382,12 +382,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_nigh_combo.currentText()
             not in [
-                self.agenda_x._healer,
+                self.x_agenda._healer,
                 "",
             ]
             and self.reason_premise_nigh.toPlainText() != ""
         ):
-            nigh_idea_x = self.agenda_x.get_idea_obj(
+            nigh_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
             nigh_int = int(self.reason_premise_nigh.toPlainText())
@@ -402,12 +402,12 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_divisor_combo.currentText()
             not in [
-                self.agenda_x._healer,
+                self.x_agenda._healer,
                 "",
             ]
             and self.reason_premise_divisor.toPlainText() != ""
         ):
-            divisor_idea_x = self.agenda_x.get_idea_obj(
+            divisor_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
             divisor_int = int(self.reason_premise_divisor.toPlainText())
@@ -423,10 +423,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def reason_premise_nigh_combo_select(self):
         self.reason_premise_nigh.setText("")
         if self.reason_premise_nigh_combo.currentText() not in [
-            self.agenda_x._healer,
+            self.x_agenda._healer,
             "",
         ]:
-            nigh_idea_x = self.agenda_x.get_idea_obj(
+            nigh_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
             if nigh_idea_x._close != None:
@@ -435,10 +435,10 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def reason_premise_divisor_combo_select(self):
         self.reason_premise_divisor.setText("")
         if self.reason_premise_divisor_combo.currentText() not in [
-            self.agenda_x._healer,
+            self.x_agenda._healer,
             "",
         ]:
-            divisor_idea_x = self.agenda_x.get_idea_obj(
+            divisor_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
             if divisor_idea_x._denom != None:
@@ -450,14 +450,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for reason in self.x_idea._reasonunits.values():
             reasonheir = self.x_idea._reasonheirs.get(reason.base)
             for premise in reason.premises.values():
-                reason_text = reason.base.replace(f"{self.agenda_x._healer}", "")
+                reason_text = reason.base.replace(f"{self.x_agenda._healer}", "")
                 reason_text = reason_text[1:]
                 premise_text = premise.need.replace(reason.base, "")
                 premise_text = premise_text[1:]
                 premise_open = premise.open
                 premise_nigh = premise.nigh
                 if reason_text == "time,jajatime":
-                    premise_open = self.agenda_x.get_jajatime_repeating_legible_text(
+                    premise_open = self.x_agenda.get_jajatime_repeating_legible_text(
                         open=premise.open,
                         nigh=premise.nigh,
                         divisor=premise.divisor,
@@ -534,7 +534,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for reasonheir in self.x_idea._reasonheirs.values():
             for premise in reasonheir.premises.values():
                 reasonheir_text = reasonheir.base.replace(
-                    f"{self.agenda_x._healer}", ""
+                    f"{self.x_agenda._healer}", ""
                 )
                 reasonheir_text = reasonheir_text[1:]
                 premise_text = premise.need.replace(reasonheir.base, "")
@@ -542,7 +542,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 premise_open = premise.open
                 premise_nigh = premise.nigh
                 if reasonheir_text == "time,jajatime":
-                    premise_open = self.agenda_x.get_jajatime_repeating_legible_text(
+                    premise_open = self.x_agenda.get_jajatime_repeating_legible_text(
                         open=premise.open,
                         nigh=premise.nigh,
                         divisor=premise.divisor,
@@ -695,7 +695,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             divisor_x = str2float(self.reason_premise_divisor.toPlainText())
             idea_label = self.baseideaunit.currentItem().data(2, 10)
             idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
-            self.agenda_x.edit_idea_attr(
+            self.x_agenda.edit_idea_attr(
                 road=f"{idea_parent_road},{idea_label}",
                 reason_base=base_x,
                 reason_premise=premise_x,
@@ -711,7 +711,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
-            self.agenda_x.get_idea_list()
+            self.x_agenda.get_idea_list()
             self.reason_table_load()
 
     def reason_delete(self):
@@ -769,9 +769,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
     def idea2group_insert_combo_load(self):
-        # groupunits_list = list(self.agenda_x._groupunits.values())
+        # groupunits_list = list(self.x_agenda._groupunits.values())
         groupunits_pids_list = []
-        for groupunit in self.agenda_x._groups.values():
+        for groupunit in self.x_agenda._groups.values():
             group_previously_selected = any(
                 groupunit.brand == balancelink.brand
                 for balancelink in self.x_idea._balancelinks.values()
@@ -788,7 +788,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if bd_pid_new == "":
             raise PyQtUIException("bd_pid is empty, idea2bd cannot be updated")
         balancelink_new = BalanceLink(brand=GroupBrand(bd_pid_new), weight=1)
-        self.agenda_x.edit_idea_attr(
+        self.x_agenda.edit_idea_attr(
             road=f"{self.x_idea._parent_road},{self.x_idea._label}",
             balancelink=balancelink_new,
         )
@@ -801,7 +801,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             delete_group_pid = self.idea2group_table.item(
                 self.idea2group_table.currentRow(), 1
             ).text()
-            self.agenda_x.edit_idea_attr(
+            self.x_agenda.edit_idea_attr(
                 road=f"{self.x_idea._parent_road},{self.x_idea._label}",
                 balancelink_del=delete_group_pid,
             )
@@ -809,14 +809,14 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.agenda_x.del_idea_kid(
+        self.x_agenda.del_idea_kid(
             road=f"{self.x_idea._parent_road},{self.x_idea._label}"
         )
         self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
     def idea_edit_nonroad_data(self, idea_road):
-        self.agenda_x.edit_idea_attr(
+        self.x_agenda.edit_idea_attr(
             road=idea_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
@@ -845,7 +845,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         )
 
     def idea_edit_road(self, idea_road):
-        self.agenda_x.edit_idea_label(
+        self.x_agenda.edit_idea_label(
             old_road=idea_road,
             new_label=self.yo_deescription.toPlainText(),
         )
@@ -879,22 +879,22 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         # add done/not_done children
         not_done_text = "not done"
-        self.agenda_x.add_idea(
+        self.x_agenda.add_idea(
             idea_kid=ideaunit_shop(not_done_text),
             parent_road=new_road,
         )
         done_text = "done"
-        self.agenda_x.add_idea(
+        self.x_agenda.add_idea(
             idea_kid=ideaunit_shop(done_text),
             parent_road=new_road,
         )
         # set reason to "not done"
-        self.agenda_x.edit_idea_attr(
+        self.x_agenda.edit_idea_attr(
             road=new_road,
             reason_base=new_road,
             reason_premise=f"{new_road},{not_done_text}",
         )
-        self.agenda_x.set_belief(
+        self.x_agenda.set_belief(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
@@ -937,7 +937,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_parent_road = f"{self.x_idea._label}"
         if self.x_idea._parent_road not in ("", None):
             new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
-        self.agenda_x.add_idea(
+        self.x_agenda.add_idea(
             idea_kid=new_idea,
             parent_road=new_parent_road,
         )
@@ -967,7 +967,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            idearoot=self.agenda_x._idearoot,
+            idearoot=self.x_agenda._idearoot,
             yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
             yo_beliefunit_time_flag=yo_beliefunit_time_flag,
@@ -981,7 +981,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_view_pid=reason_view_base,
             beliefheir_view_flag=beliefheir_view_flag,
             root_percent_flag=root_percent_flag,
-            source_agenda=self.agenda_x,
+            source_agenda=self.x_agenda,
         )
 
         self.baseideaunit.clear()
@@ -1011,7 +1011,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{label_x}")
             # print(f"{_road=}")
 
-            self.agenda_x.edit_idea_attr(road=_road, is_expanded=is_expanded)
+            self.x_agenda.edit_idea_attr(road=_road, is_expanded=is_expanded)
             self.idea_tree_set_is_expanded(item)
 
     def reason_table_select(self):
