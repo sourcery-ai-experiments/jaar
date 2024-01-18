@@ -9,6 +9,7 @@ from src.accord.examples.example_topics import (
     get_speedboat_action_dueunit,
     get_climate_dueunit,
 )
+from pytest import raises as pytest_raises
 
 
 def test_AccordUnit_set_dueunit_SetsAttrCorrectly():
@@ -235,3 +236,23 @@ def test_AccordUnit_set_accord_metrics_CorrectlySetsDue_relative_accord_weight()
     assert s1_dueunit._relative_reader_weight == 0.25
     assert s2_dueunit._relative_author_weight == 0.6
     assert s2_dueunit._relative_reader_weight == 0.75
+
+
+def test_AccordUnit_set_accord_metrics_RaisesErrorWhen_author_weight_IsZero():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_accordunit = accordunit_shop(_author=bob_text, _reader=yao_text)
+    s1_dueunit = farm_accordunit.add_dueunit()
+    s1_dueunit.set_actor(bob_text)
+    s1_dueunit.edit_attr(author_weight=0, reader_weight=1)
+    s2_dueunit = farm_accordunit.add_dueunit()
+    s2_dueunit.set_actor(bob_text)
+    s2_dueunit.edit_attr(author_weight=0, reader_weight=3)
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        farm_accordunit.set_accord_metrics()
+    assert (
+        str(excinfo.value) == "Cannot set accord metrics because due_author_sum == 0."
+    )

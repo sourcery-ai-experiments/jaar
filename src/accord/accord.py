@@ -1,12 +1,12 @@
-from src._prime.road import (
-    RoadUnit,
-    PersonRoad,
-    PersonID,
-)
+from src._prime.road import RoadUnit, PersonRoad, PersonID, EconomyAddress
 from src.accord.due import DueID, DueUnit, dueunit_shop
 from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
+
+
+class AccordMetricsException(Exception):
+    pass
 
 
 class WantSubRoadUnitException(Exception):
@@ -17,12 +17,23 @@ class WantSubRoadUnitException(Exception):
 class AccordUnit:
     _author: PersonID = None
     _reader: PersonID = None
-    _topicunits: dict[PersonRoad:TopicUnit] = None
+    _author_economyaddress: EconomyAddress = None
+    _reader_economyaddress: EconomyAddress = None
+    _topicunits: dict[RoadUnit:TopicUnit] = None
     _dueunits: dict[DueID:DueUnit] = None
 
     def set_accord_metrics(self):
         due_author_sum = sum(x_due.author_weight for x_due in self._dueunits.values())
         due_reader_sum = sum(x_due.reader_weight for x_due in self._dueunits.values())
+
+        if due_author_sum == 0:
+            raise AccordMetricsException(
+                "Cannot set accord metrics because due_author_sum == 0."
+            )
+        if due_reader_sum == 0:
+            raise AccordMetricsException(
+                "Cannot set accord metrics because due_reader_sum == 0."
+            )
 
         for x_due in self._dueunits.values():
             x_due.edit_attr(
@@ -116,10 +127,17 @@ class AccordUnit:
         return self.get_actor_dueunits(actor, action_filter=action_filter) != {}
 
 
-def accordunit_shop(_author: PersonID, _reader: PersonID):
+def accordunit_shop(
+    _author: PersonID,
+    _reader: PersonID,
+    _author_economyaddress: EconomyAddress = None,
+    _reader_economyaddress: EconomyAddress = None,
+):
     return AccordUnit(
         _author=_author,
         _reader=_reader,
+        _author_economyaddress=_author_economyaddress,
+        _reader_economyaddress=_reader_economyaddress,
         _topicunits=get_empty_dict_if_none(None),
         _dueunits=get_empty_dict_if_none(None),
     )

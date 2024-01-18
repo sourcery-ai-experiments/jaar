@@ -127,3 +127,10 @@ def get_speedboat_action_dueunit() -> DueUnit:
     seven_dueunit = dueunit_shop(uid=seven_uid)
     seven_dueunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
     return seven_dueunit
+
+
+def get_no_topiclinks_dueunit() -> DueUnit:
+    seven_uid = 7
+    seven_dueunit = dueunit_shop(uid=seven_uid)
+    seven_dueunit.edit_attr(author_weight=10, reader_weight=0)
+    return seven_dueunit
