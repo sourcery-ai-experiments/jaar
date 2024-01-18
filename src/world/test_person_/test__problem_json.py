@@ -42,7 +42,7 @@ def test_problemunit_get_dict_ReturnsCorrectDict():
     # GIVEN
     knee_text = "knee discomfort"
     knee_weight = 13
-    knee_problemunit = problemunit_shop(genus=knee_text, weight=knee_weight)
+    knee_problemunit = problemunit_shop(problem_id=knee_text, weight=knee_weight)
 
     yao_text = "yao"
     yao_weight = 7
@@ -69,7 +69,7 @@ def test_problemunit_get_dict_ReturnsCorrectDict():
     print(f"{yao_economylinks_dict=}")
     assert len(yao_economylinks_dict) == 1
     assert len(knee_dict.get("_healerlinks")) == 1
-    assert knee_dict.get("genus") == knee_text
+    assert knee_dict.get("problem_id") == knee_text
     diet_economylink_dict = yao_economylinks_dict.get(diet_text)
     assert diet_economylink_dict == {"economy_id": diet_text, "weight": diet_weight}
     assert yao_economylinks_dict == {
@@ -86,7 +86,7 @@ def test_problemunit_get_dict_ReturnsCorrectDict():
         }
     }
     assert knee_dict == {
-        "genus": knee_text,
+        "problem_id": knee_text,
         "weight": knee_weight,
         "_healerlinks": {
             yao_text: {

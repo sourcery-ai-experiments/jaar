@@ -1,4 +1,4 @@
-from src._prime.road import PartyPID
+from src._prime.road import PartyID
 from dataclasses import dataclass
 from src.tools.python import return1ifnone, x_get_dict
 
@@ -17,7 +17,7 @@ class PartyTitle(str):
 
 @dataclass
 class PartyRing:
-    pid: PartyPID
+    pid: PartyID
 
     def get_dict(self):
         return {"pid": self.pid}
@@ -25,7 +25,7 @@ class PartyRing:
 
 @dataclass
 class PartyCore:
-    pid: PartyPID
+    pid: PartyID
 
 
 # class PartyRingsshop:
@@ -45,7 +45,7 @@ def partyrings_get_from_dict(x_dict: dict) -> dict[str:PartyRing]:
     return partyrings
 
 
-def partyrings_get_partyring(pid: PartyPID) -> PartyRing:
+def partyrings_get_partyring(pid: PartyID) -> PartyRing:
     return PartyRing(pid=pid)
 
 
@@ -63,7 +63,7 @@ class PartyUnit(PartyCore):
     _agenda_intent_ratio_debt: float = None
     _creditor_active: bool = None
     _debtor_active: bool = None
-    _partyrings: dict[PartyPID:PartyRing] = None
+    _partyrings: dict[PartyID:PartyRing] = None
     _treasury_tax_paid: float = None
     _treasury_tax_diff: float = None
     _output_agenda_meld_order: int = None
@@ -323,13 +323,13 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
 
 
 def partyunit_shop(
-    pid: PartyPID,
+    pid: PartyID,
     uid: int = None,
     creditor_weight: int = None,
     debtor_weight: int = None,
     _creditor_active: bool = None,
     _debtor_active: bool = None,
-    _partyrings: dict[PartyPID:PartyRing] = None,
+    _partyrings: dict[PartyID:PartyRing] = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
     _agenda_intent_credit: float = None,
@@ -436,7 +436,7 @@ def partylinks_get_from_dict(x_dict: dict) -> dict[str:PartyLink]:
 
 
 def partylink_shop(
-    pid: PartyPID,
+    pid: PartyID,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _agenda_credit: float = None,
@@ -459,7 +459,7 @@ def partylink_shop(
 
 @dataclass
 class PartyUnitExternalMetrics:
-    internal_pid: PartyPID = None
+    internal_pid: PartyID = None
     creditor_active: bool = None
     debtor_active: bool = None
 

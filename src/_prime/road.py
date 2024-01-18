@@ -3,9 +3,10 @@ class InvalidRoadUnitException(Exception):
 
 
 class RoadNode(str):
+    """A string presentation of a tree node. Nodes cannot contain RoadUnit delimiter"""
+
     def is_node(self, delimiter: str = None) -> bool:
         return self.find(default_road_delimiter_if_none(delimiter)) == -1
-        # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
 class PersonID(RoadNode):  # Created to help track the concept
@@ -14,30 +15,36 @@ class PersonID(RoadNode):  # Created to help track the concept
     pass
 
 
-class ProblemGenus(RoadNode):  # Created to help track the concept
+class ProblemID(RoadNode):  # Created to help track the concept
+    """A RoadNode used to identify a PersonUnit's Problem"""
+
     pass
 
 
 class HealerID(PersonID):
+    """A RoadNode used to identify a Problem's Healer"""
+
     pass
 
 
 class EconomyID(RoadNode):  # Created to help track the concept
-    """Must be node thus not include road delimiter"""
+    """A RoadNode used to identify a Healer's Economy"""
 
     pass
 
 
 class AgentID(HealerID):
+    """A RoadNode used to identify a AgendaUnit's agent_id"""
+
     pass
 
 
-class PartyPID(AgentID):  # Created to help track the concept
+class PartyID(AgentID):  # Created to help track the concept
     pass
 
 
 class RoadUnit(str):
-    """A string presentation of a tree path. Nodes are seperated by road delimiter"""
+    """A string presentation of a tree path. RoadNodes are seperated by road delimiter"""
 
     pass
 
@@ -49,7 +56,7 @@ class PersonRoad(RoadUnit):
 
 
 class ProblemRoad(PersonRoad):
-    """A ProblemRoad is a RoadUnit where first RoadNode is a ProblemGenus."""
+    """A ProblemRoad is a RoadUnit where first RoadNode is a ProblemID."""
 
     pass
 

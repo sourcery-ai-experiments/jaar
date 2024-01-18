@@ -1,12 +1,14 @@
 from src._prime.road import (
-    RoadUnit,
+    RoadNode,
     PersonID,
     PersonRoad,
+    ProblemID,
+    ProblemRoad,
     HealerID,
     HealerRoad,
-    ProblemRoad,
-    ProblemGenus,
     EconomyID,
+    AgentID,
+    RoadUnit,
     EconomyAddress,
     create_economyaddress,
     get_economyaddress_from_healerroad,
@@ -25,7 +27,6 @@ from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     create_road_from_nodes,
     create_road,
-    RoadNode,
     get_diff_road,
     create_road,
     is_heir_road,
@@ -37,6 +38,19 @@ from dataclasses import dataclass
 from inspect import getdoc as inspect_getdoc
 
 
+def test_RoadNode_exists():
+    # GIVEN
+    empty_str = ""
+    # WHEN
+    x_road = RoadNode(empty_str)
+    # THEN
+    assert x_road == empty_str
+    assert (
+        inspect_getdoc(x_road)
+        == "A string presentation of a tree node. Nodes cannot contain RoadUnit delimiter"
+    )
+
+
 def test_RoadUnit_exists():
     # GIVEN
     empty_str = ""
@@ -44,6 +58,10 @@ def test_RoadUnit_exists():
     x_road = RoadUnit(empty_str)
     # THEN
     assert x_road == empty_str
+    assert (
+        inspect_getdoc(x_road)
+        == "A string presentation of a tree path. RoadNodes are seperated by road delimiter"
+    )
 
 
 def test_road_is_sub_road_correctlyReturnsBool():
@@ -594,6 +612,57 @@ def test_get_economyroad_from_healerroad_ReturnsCorrectObj():
     assert texas_roses_road == create_road(texas_text, roses_text)
 
 
+def test_ProblemID_exists():
+    # GIVEN
+    empty_str = ""
+    # WHEN
+    x_road = ProblemID(empty_str)
+    # THEN
+    assert x_road == empty_str
+    assert (
+        inspect_getdoc(x_road) == "A RoadNode used to identify a PersonUnit's Problem"
+    )
+
+
+def test_HealerID_exists():
+    # GIVEN
+    bob_text = "Bob"
+    # WHEN
+    bob_healer_id = HealerID(bob_text)
+    # THEN
+    assert bob_healer_id == bob_text
+    assert (
+        inspect_getdoc(bob_healer_id)
+        == "A RoadNode used to identify a Problem's Healer"
+    )
+
+
+def test_EconomyID_exists():
+    # GIVEN
+    bob_text = "Bob"
+    # WHEN
+    bob_economy_id = EconomyID(bob_text)
+    # THEN
+    assert bob_economy_id == bob_text
+    assert (
+        inspect_getdoc(bob_economy_id)
+        == "A RoadNode used to identify a Healer's Economy"
+    )
+
+
+def test_AgentID_exists():
+    # GIVEN
+    bob_text = "Bob"
+    # WHEN
+    bob_agent_id = AgentID(bob_text)
+    # THEN
+    assert bob_agent_id == bob_text
+    assert (
+        inspect_getdoc(bob_agent_id)
+        == "A RoadNode used to identify a AgendaUnit's agent_id"
+    )
+
+
 def test_ProblemRoad_Exists():
     # GIVEN
     bob_road = create_road("problem1", "bob")
@@ -608,13 +677,13 @@ def test_ProblemRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == "A ProblemRoad is a RoadUnit where first RoadNode is a ProblemGenus."
+        == "A ProblemRoad is a RoadUnit where first RoadNode is a ProblemID."
     )
 
 
 def test_PersonRoad_Exists():
     # GIVEN
-    problem1_road = create_road(PersonID("Tim"), ProblemGenus("problem1"))
+    problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
     bob_road = create_road(problem1_road, HealerID("Bob"))
     texas_road = create_road(bob_road, EconomyID("texas"))
     sports_road = create_road(texas_road, "sports")

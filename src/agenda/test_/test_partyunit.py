@@ -1,6 +1,6 @@
 from src.agenda.party import (
     PartyUnit,
-    PartyPID,
+    PartyID,
     partyunit_shop,
     partyunits_get_from_json,
     partyrings_get_from_json,
@@ -507,7 +507,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     # GIVEN
-    cersei_pid = PartyPID("Cersei")
+    cersei_pid = PartyID("Cersei")
     yao_party_rings = {cersei_pid: {"pid": cersei_pid}}
     yao_text = "Yao"
     yao_title = "Teacher Yao"

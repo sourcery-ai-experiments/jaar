@@ -4,7 +4,7 @@ from src.world.problem import problemunit_shop, healerlink_shop
 def test_problemunit_set_relative_weight_SetsCorrectly():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
     assert knee_problemunit._relative_weight is None
 
     # WHEN
@@ -18,7 +18,7 @@ def test_problemunit_set_relative_weight_SetsCorrectly():
 def test_problemunit_set_manager_importance_SetsCorrectly():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
     assert knee_problemunit._manager_importance is None
 
     # WHEN
@@ -32,7 +32,7 @@ def test_problemunit_set_manager_importance_SetsCorrectly():
 def test_problemunit_set_healerlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
     knee_problemunit._manager_importance = 0.25
 
     yao_text = "Yao"

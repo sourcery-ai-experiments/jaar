@@ -45,7 +45,7 @@ from src.agenda.group import (
     GroupUnit,
 )
 from src.agenda.origin import OriginUnit, originunit_get_from_dict
-from src.agenda.party import PartyPID
+from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
 from src.tools.python import get_empty_dict_if_none, return1ifnone
 from src._prime.meld import get_meld_weight, get_on_meld_weight_actions
@@ -614,7 +614,7 @@ class IdeaUnit:
         self,
         other_idea,
         _idearoot: bool = None,
-        party_pid: PartyPID = None,
+        party_id: PartyID = None,
         party_weight: float = None,
     ):
         if _idearoot and self._label != other_idea._label:
@@ -634,11 +634,11 @@ class IdeaUnit:
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_beliefunits(other_idea=other_idea)
         self._meld_attributes_that_will_be_equal(other_idea=other_idea)
-        self._meld_originlinks(party_pid, party_weight)
+        self._meld_originlinks(party_id, party_weight)
 
-    def _meld_originlinks(self, party_pid: PartyPID, party_weight: float):
-        if party_pid != None:
-            self._originunit.set_originlink(pid=party_pid, weight=party_weight)
+    def _meld_originlinks(self, party_id: PartyID, party_weight: float):
+        if party_id != None:
+            self._originunit.set_originlink(pid=party_id, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -858,7 +858,7 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         agenda_groupunits: dict[GroupBrand:GroupUnit] = None,
-        agenda_agent_id: PartyPID = None,
+        agenda_agent_id: PartyID = None,
     ):
         prev_to_now_active_status = deepcopy(self._active_status)
         self._active_status = self._create_active_status(
@@ -884,7 +884,7 @@ class IdeaUnit:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active_status(
-        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyPID
+        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_status_true()

@@ -275,7 +275,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         clerk_cid_x = self.x_clerk.pid
         self.economy_x.update_depotlink(
             clerk_cid=clerk_cid_x,
-            partypid=self.depotlink_pid.text(),
+            party_id=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),

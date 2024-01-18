@@ -1,5 +1,5 @@
 from src.agenda.party import (
-    PartyPID,
+    PartyID,
     partylink_shop,
     partylinks_get_from_json,
 )
@@ -9,7 +9,7 @@ from pytest import raises as pytest_raises
 
 def test_PartyLink_exists():
     # GIVEN
-    bikers_pid = PartyPID("Yao")
+    bikers_pid = PartyID("Yao")
 
     # WHEN
     party_link_x = partylink_shop(pid=bikers_pid)
@@ -44,7 +44,7 @@ def test_PartyLink_exists():
 
 def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
     # GIVEN
-    bikers_pid = PartyPID("Yao")
+    bikers_pid = PartyID("Yao")
     bikers_creditor_weight = 3.0
     partylinks_sum_creditor_weight = 60
     group_agenda_credit = 0.5
@@ -102,7 +102,7 @@ def test_partylink_shop_reset_agenda_credit_debt():
 def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     str_pid = "Yao"
-    biker_pid = PartyPID(str_pid)
+    biker_pid = PartyID(str_pid)
     biker_party_link = partylink_shop(
         pid=biker_pid, creditor_weight=12, debtor_weight=19
     )
@@ -135,7 +135,7 @@ def test_partylink_get_from_JSON_SimpleExampleWorks():
     # THEN
     assert yao_obj_dict != None
 
-    yao_pid = PartyPID(yao_text)
+    yao_pid = PartyID(yao_text)
     yao_partylink = partylink_shop(pid=yao_pid, creditor_weight=12, debtor_weight=19)
     partylinks_dict = {yao_partylink.pid: yao_partylink}
     assert yao_obj_dict == partylinks_dict

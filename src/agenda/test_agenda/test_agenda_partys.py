@@ -1,5 +1,5 @@
 from src._prime.road import RoadUnit
-from src.agenda.party import PartyPID, partylink_shop, partyunit_shop
+from src.agenda.party import PartyID, partylink_shop, partyunit_shop
 from src.agenda.group import GroupBrand, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 def test_agenda_set_partyunit_SetObjCorrectly():
     # GIVEN
-    yahri_party = partyunit_shop(pid=PartyPID("yahri"))
+    yahri_party = partyunit_shop(pid=PartyID("yahri"))
     partys_x = {yahri_party.pid: yahri_party}
     x_agenda2 = agendaunit_shop()
 
@@ -44,9 +44,9 @@ def test_agenda_set_party_correctly_sets_partys_1():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
 
     # THEN
     assert len(x_agenda._partys) == 3
@@ -141,9 +141,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -218,7 +218,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
 
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(selena_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(selena_text)))
     x_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
             brand=GroupBrand(selena_text), creditor_weight=20, debtor_weight=13
@@ -293,9 +293,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -361,7 +361,7 @@ def test_agenda_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
 
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(selena_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(selena_text)))
     x_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
             brand=selena_text, creditor_weight=20, debtor_weight=10
@@ -439,9 +439,9 @@ def test_agenda_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportanc
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
@@ -551,10 +551,10 @@ def test_agenda_get_idea_list_WithAllPartysWeighted():
     carm_text = "carmen"
     patr_text = "patrick"
     x_agenda.set_partyunit(
-        partyunit=partyunit_shop(pid=PartyPID(rico_text), creditor_weight=8)
+        partyunit=partyunit_shop(pid=PartyID(rico_text), creditor_weight=8)
     )
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     rico_partyunit = x_agenda._partys.get(rico_text)
     carm_partyunit = x_agenda._partys.get(carm_text)
     patr_partyunit = x_agenda._partys.get(patr_text)
@@ -811,19 +811,19 @@ def test_agenda_get_party_groupbrands_returnsCorrectData():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
 
     # WHEN / THEN
-    assert x_agenda.get_party_groupbrands(party_pid=carm_text) == [carm_text]
+    assert x_agenda.get_party_groupbrands(party_id=carm_text) == [carm_text]
 
     # WHEN / THEN
     swimmers = "swimmers"
     swim_group = groupunit_shop(brand=swimmers)
     swim_group.set_partylink(partylink_shop(carm_text))
     x_agenda.set_groupunit(swim_group)
-    assert x_agenda.get_party_groupbrands(party_pid=carm_text) == [carm_text, swimmers]
+    assert x_agenda.get_party_groupbrands(party_id=carm_text) == [carm_text, swimmers]
 
 
 def test_agenda_PartyUnit_CorrectlyCreatesNewPID():
@@ -901,7 +901,7 @@ def test_agenda_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
     x_agenda.add_partyunit(pid=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyPID(carm_text): partylink_shop(pid=carm_text)}
+    carmen_party_dict = {PartyID(carm_text): partylink_shop(pid=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(pid=carm_text, creditor_weight=5, debtor_weight=18)
@@ -946,7 +946,7 @@ def test_agenda_PartyUnit_CorrectlyMergesPIDs():
     x_agenda.add_partyunit(pid=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyPID(carm_text): partylink_shop(pid=carm_text)}
+    carmen_party_dict = {PartyID(carm_text): partylink_shop(pid=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(pid=carm_text, creditor_weight=5, debtor_weight=18)
@@ -990,7 +990,7 @@ def test_agenda_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     x_agenda.add_partyunit(pid=patr_text, creditor_weight=17)
 
     swim_text = "swimmers"
-    carmen_party_dict = {PartyPID(carm_text): partylink_shop(pid=carm_text)}
+    carmen_party_dict = {PartyID(carm_text): partylink_shop(pid=carm_text)}
     swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(pid=carm_text, creditor_weight=5, debtor_weight=18)
@@ -1262,9 +1262,9 @@ def test_agenda_clear_output_agenda_meld_orders_CorrectlyClearsAttrs():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     rico_partyunit = x_agenda.get_party(rico_text)
     carm_partyunit = x_agenda.get_party(carm_text)
     patr_partyunit = x_agenda.get_party(patr_text)
@@ -1292,9 +1292,9 @@ def test_agenda_clear_output_agenda_meld_orders_WithNoArgsCorrectlySetOrder():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyPID(patr_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=PartyID(patr_text)))
     rico_partyunit = x_agenda.get_party(rico_text)
     carm_partyunit = x_agenda.get_party(carm_text)
     patr_partyunit = x_agenda.get_party(patr_text)

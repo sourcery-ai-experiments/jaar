@@ -30,7 +30,7 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_update_button.clicked.connect(self.gp_update)
 
         # self.EditParty2bd.x_agenda = self.x_agenda
-        # self.EditParty2bd.selected_party_pid = self.selected_party_pid
+        # self.EditParty2bd.selected_party_id = self.selected_party_id
 
     def gp_insert(self):
         gp_pid = self.gp_new_edit.text()

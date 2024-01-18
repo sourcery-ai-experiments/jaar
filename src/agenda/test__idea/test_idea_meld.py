@@ -626,7 +626,7 @@ def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    yx1.meld(other_idea=yx2, party_pid=sue_text, party_weight=sue_weight)
+    yx1.meld(other_idea=yx2, party_id=sue_text, party_weight=sue_weight)
 
     # THEN
     assert yx1._originunit != None
@@ -644,7 +644,7 @@ def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     tim_idea = ideaunit_shop(tim_text)
     ex_yx1_originunit = originunit_shop()
     ex_yx1_originunit.set_originlink(pid=tim_text, weight=tim_weight)
-    yx1.meld(other_idea=tim_idea, party_pid=tim_text, party_weight=tim_weight)
+    yx1.meld(other_idea=tim_idea, party_id=tim_text, party_weight=tim_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     sue_text = "Sue"
@@ -655,7 +655,7 @@ def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     yx1_copy = deepcopy(yx1)
 
     # WHEN
-    yx1.meld(other_idea=yx1, party_pid=sue_text, party_weight=sue_weight)
+    yx1.meld(other_idea=yx1, party_id=sue_text, party_weight=sue_weight)
     assert yx1._originunit == ex_yx1_originunit
 
     # THEN

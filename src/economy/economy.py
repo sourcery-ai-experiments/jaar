@@ -9,7 +9,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as get_agenda_from_json,
     partylink_shop,
-    PartyPID,
+    PartyID,
     PersonID,
     EconomyID,
 )
@@ -527,13 +527,13 @@ class EconomyUnit:
     def update_depotlink(
         self,
         clerk_cid: clerkCID,
-        partypid: PartyPID,
+        party_id: PartyID,
         depotlink_type: str,
         creditor_weight: str,
         debtor_weight: str,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(_healer=partypid)
+        x_agenda = self.get_public_agenda(_healer=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,

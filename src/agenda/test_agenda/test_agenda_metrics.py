@@ -1,7 +1,7 @@
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
 )
-from src.agenda.party import PartyPID, partyunit_shop
+from src.agenda.party import PartyID, partyunit_shop
 from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 

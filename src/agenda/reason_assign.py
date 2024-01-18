@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.group import GroupUnit, GroupBrand
-from src.agenda.party import PartyPID
+from src.agenda.party import PartyID
 
 
 class InvalidAssignHeirPopulateException(Exception):
@@ -62,7 +62,7 @@ class AssignedHeir:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
     def set_agent_id_assigned(
-        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyPID
+        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyID
     ):
         self._agent_id_assigned = False
         if self._suffgroups == {}:

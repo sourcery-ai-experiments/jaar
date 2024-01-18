@@ -10,7 +10,7 @@ def test_personunit_get_dict_CorrectlyGetsDict():
     xao_personunit.set_economyunit(diet_text)
 
     knee_text = "knee discomfort"
-    xao_personunit.create_problemunit_from_genus(knee_text)
+    xao_personunit.create_problemunit_from_problem_id(knee_text)
 
     # WHEN
     xao_personunit_get_dict = xao_personunit.get_dict()

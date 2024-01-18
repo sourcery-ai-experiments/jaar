@@ -6,7 +6,7 @@ from src._prime.road import default_road_delimiter_if_none, RoadUnit
 from src.agenda.agenda import agendaunit_shop, balancelink_shop
 from src.economy.economy import EconomyUnit, EconomyID
 from src.world.problem import (
-    ProblemGenus,
+    ProblemID,
     problemunit_shop,
     healerlink_shop,
     economylink_shop,
@@ -206,13 +206,13 @@ class WorldUnit:
     def create_person_economy(
         self,
         person_id: PersonID,
-        problem_genus: ProblemGenus,
+        problem_problem_id: ProblemID,
         healer_id: PersonID,
         economy_id: EconomyID,
     ):
         x_healerlink = healerlink_shop(healer_id)
         x_healerlink.set_economylink(economylink_shop(economy_id))
-        x_problemunit = problemunit_shop(problem_genus)
+        x_problemunit = problemunit_shop(problem_problem_id)
         x_problemunit.set_healerlink(x_healerlink)
 
         self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
@@ -228,12 +228,12 @@ class WorldUnit:
             self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
 
     def _set_partyunit(
-        self, x_economyunit: EconomyUnit, person_id: PersonID, party_pid: PersonID
+        self, x_economyunit: EconomyUnit, person_id: PersonID, party_id: PersonID
     ):
         x_economyunit.full_setup_clerkunit(person_id)
         person_clerkunit = x_economyunit.get_clerkunit(person_id)
         person_contract = person_clerkunit.get_contract()
-        person_contract.add_partyunit(party_pid)
+        person_contract.add_partyunit(party_id)
         person_clerkunit.save_contract_agenda(person_contract)
         person_clerkunit.save_refreshed_output_to_public()
 

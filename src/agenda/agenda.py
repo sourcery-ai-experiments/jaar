@@ -57,7 +57,7 @@ from src._prime.road import (
     is_string_in_road,
     PersonID,
     AgentID,
-    PartyPID,
+    PartyID,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.tools.python import x_get_json
@@ -86,7 +86,7 @@ class NewDelimiterException(Exception):
 class AgendaUnit:
     _agent_id: AgentID = None
     _weight: float = None
-    _partys: dict[PartyPID:PartyUnit] = None
+    _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaUnit = None
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
@@ -467,7 +467,7 @@ class AgendaUnit:
 
     def add_to_partyunit_agenda_credit_debt(
         self,
-        partyunit_pid: PartyPID,
+        partyunit_pid: PartyID,
         agenda_credit,
         agenda_debt: float,
         agenda_intent_credit: float,
@@ -495,7 +495,7 @@ class AgendaUnit:
         depotlink_type: str = None,
     ):
         partyunit = partyunit_shop(
-            pid=PartyPID(pid),
+            pid=PartyID(pid),
             uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -512,7 +512,7 @@ class AgendaUnit:
             existing_group = self._groups[partyunit.pid]
         except KeyError:
             partylink = partylink_shop(
-                pid=PartyPID(partyunit.pid), creditor_weight=1, debtor_weight=1
+                pid=PartyID(partyunit.pid), creditor_weight=1, debtor_weight=1
             )
             partylinks = {partylink.pid: partylink}
             group_unit = groupunit_shop(
@@ -564,16 +564,16 @@ class AgendaUnit:
             old_party_groupunit._move_partylink(old_pid, new_pid)
         self.del_partyunit(pid=old_pid)
 
-    def get_party(self, partypid: PartyPID) -> PartyUnit:
-        return self._partys.get(partypid)
+    def get_party(self, party_id: PartyID) -> PartyUnit:
+        return self._partys.get(party_id)
 
-    def get_partyunits_pid_list(self) -> dict[PartyPID]:
-        partypid_list = list(self._partys.keys())
-        partypid_list.append("")
-        partypid_dict = {partypid.lower(): partypid for partypid in partypid_list}
-        partypid_lowercase_ordered_list = sorted(list(partypid_dict))
+    def get_partyunits_pid_list(self) -> dict[PartyID]:
+        party_id_list = list(self._partys.keys())
+        party_id_list.append("")
+        party_id_dict = {party_id.lower(): party_id for party_id in party_id_list}
+        party_id_lowercase_ordered_list = sorted(list(party_id_dict))
         return [
-            partypid_dict[partypid_l] for partypid_l in partypid_lowercase_ordered_list
+            party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
 
     def get_partyunits_uid_max(self) -> int:
@@ -670,7 +670,7 @@ class AgendaUnit:
     def get_groupunit(self, x_groupbrand: GroupBrand) -> GroupUnit:
         return self._groups.get(x_groupbrand)
 
-    def _create_missing_partys(self, partylinks: dict[PartyPID:PartyLink]):
+    def _create_missing_partys(self, partylinks: dict[PartyID:PartyLink]):
         for partylink_x in partylinks.values():
             if self.get_party(partylink_x.pid) is None:
                 self.set_partyunit(
@@ -1514,11 +1514,11 @@ class AgendaUnit:
                 agenda_partyunit_total_debtor_weight=self.get_partyunit_total_debtor_weight(),
             )
 
-    def get_party_groupbrands(self, party_pid: PartyPID) -> list[GroupBrand]:
+    def get_party_groupbrands(self, party_id: PartyID) -> list[GroupBrand]:
         return [
             x_groupunit.brand
             for x_groupunit in self._groups.values()
-            if x_groupunit.has_partylink(party_pid)
+            if x_groupunit.has_partylink(party_id)
         ]
 
     def _reset_partyunit_agenda_credit_debt(self):
@@ -1811,8 +1811,8 @@ class AgendaUnit:
     def get_partys_dict(self) -> dict[str:str]:
         x_dict = {}
         if self._partys != None:
-            for party_pid, party_obj in self._partys.items():
-                x_dict[party_pid] = party_obj.get_dict()
+            for party_id, party_obj in self._partys.items():
+                x_dict[party_id] = party_obj.get_dict()
         return x_dict
 
     def get_groupunits_from_dict(self) -> dict[str:str]:
@@ -1881,14 +1881,14 @@ class AgendaUnit:
 
         self.set_agenda_metrics()
 
-    def get_agenda4party(self, party_pid: PartyPID, beliefs: dict[RoadUnit:BeliefCore]):
+    def get_agenda4party(self, party_id: PartyID, beliefs: dict[RoadUnit:BeliefCore]):
         self.set_agenda_metrics()
-        agenda4party = agendaunit_shop(_agent_id=party_pid)
+        agenda4party = agendaunit_shop(_agent_id=party_id)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
         # get party's partys: partyzone
 
         # get partyzone groups
-        party_groups = self.get_party_groupbrands(party_pid=party_pid)
+        party_groups = self.get_party_groupbrands(party_id=party_id)
 
         # set agenda4party by traversing the idea tree and selecting associated groups
         # set root
@@ -1955,7 +1955,7 @@ class AgendaUnit:
         self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
 
         # meld all other ideas
-        party_pid = other_agenda._agent_id
+        party_id = other_agenda._agent_id
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
@@ -1965,11 +1965,11 @@ class AgendaUnit:
             )
             try:
                 main_idea = self.get_idea_obj(o_road)
-                main_idea.meld(o_idea, False, party_pid, party_weight)
+                main_idea.meld(o_idea, False, party_id, party_weight)
             except Exception:
                 self.add_idea(idea_kid=o_idea, parent_road=o_idea._parent_road)
                 main_idea = self.get_idea_obj(o_road)
-                main_idea._originunit.set_originlink(party_pid, party_weight)
+                main_idea._originunit.set_originlink(party_id, party_weight)
 
     def _meld_partys(self, other_agenda):
         for partyunit in other_agenda._partys.values():
@@ -1994,15 +1994,15 @@ class AgendaUnit:
             else:
                 self._idearoot._beliefunits.get(hx.base).meld(hx)
 
-    def _meld_originlinks(self, party_pid: PartyPID, party_weight: float):
-        if party_pid != None:
-            self._originunit.set_originlink(party_pid, party_weight)
+    def _meld_originlinks(self, party_id: PartyID, party_weight: float):
+        if party_id != None:
+            self._originunit.set_originlink(party_id, party_weight)
 
     def get_assignment(
         self,
         agenda_x,
-        assignor_partys: dict[PartyPID:PartyUnit],
-        assignor_pid: PartyPID,
+        assignor_partys: dict[PartyID:PartyUnit],
+        assignor_pid: PartyID,
     ):
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_pid)
@@ -2039,14 +2039,14 @@ class AgendaUnit:
     def _set_assignment_partys(
         self,
         agenda_x,
-        assignor_partys: dict[PartyPID:PartyUnit],
-        assignor_pid: PartyPID,
+        assignor_partys: dict[PartyID:PartyUnit],
+        assignor_pid: PartyID,
     ):
         if self.get_party(assignor_pid) != None:
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
-            for partypid_x in partys_set:
-                agenda_x.set_partyunit(partyunit=self.get_party(partypid_x))
+            for party_id_x in partys_set:
+                agenda_x.set_partyunit(partyunit=self.get_party(party_id_x))
         return agenda_x
 
     def _set_assignment_groups(self, agenda_x):
@@ -2054,8 +2054,8 @@ class AgendaUnit:
         for group_pid, group_partys in revelant_groups.items():
             if agenda_x._groups.get(group_pid) is None:
                 group_x = groupunit_shop(brand=group_pid)
-                for party_pid in group_partys:
-                    group_x.set_partylink(partylink_shop(pid=party_pid))
+                for party_id in group_partys:
+                    group_x.set_partylink(partylink_shop(pid=party_id))
                 agenda_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
@@ -2299,33 +2299,33 @@ def get_meld_of_agenda_files(
 
 
 def get_intersection_of_partys(
-    partys_x: dict[PartyPID:PartyUnit], partys_y: dict[PartyPID:PartyUnit]
-) -> dict[PartyPID:-1]:
+    partys_x: dict[PartyID:PartyUnit], partys_y: dict[PartyID:PartyUnit]
+) -> dict[PartyID:-1]:
     x_set = set(partys_x)
     y_set = set(partys_y)
     intersection_x = x_set.intersection(y_set)
-    return {partypid_x: -1 for partypid_x in intersection_x}
+    return {party_id_x: -1 for party_id_x in intersection_x}
 
 
 def get_partys_relevant_groups(
-    groups_x: dict[GroupBrand:GroupUnit], partys_x: dict[PartyPID:PartyUnit]
-) -> dict[GroupBrand:{PartyPID: -1}]:
+    groups_x: dict[GroupBrand:GroupUnit], partys_x: dict[PartyID:PartyUnit]
+) -> dict[GroupBrand:{PartyID: -1}]:
     relevant_groups = {}
-    for partypid_x in partys_x:
+    for party_id_x in partys_x:
         for group_x in groups_x.values():
-            if group_x._partys.get(partypid_x) != None:
+            if group_x._partys.get(party_id_x) != None:
                 if relevant_groups.get(group_x.brand) is None:
                     relevant_groups[group_x.brand] = {}
-                relevant_groups.get(group_x.brand)[partypid_x] = -1
+                relevant_groups.get(group_x.brand)[party_id_x] = -1
 
     return relevant_groups
 
 
 def get_party_relevant_groups(
-    groups_x: dict[GroupBrand:GroupUnit], partypid_x: PartyPID
+    groups_x: dict[GroupBrand:GroupUnit], party_id_x: PartyID
 ) -> dict[GroupBrand:-1]:
     return {
         group_x.brand: -1
         for group_x in groups_x.values()
-        if group_x._partys.get(partypid_x) != None
+        if group_x._partys.get(party_id_x) != None
     }

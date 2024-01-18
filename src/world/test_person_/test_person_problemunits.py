@@ -18,9 +18,9 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     bore_text = "bore"
     rain_text = "rain"
 
-    xao_personunit.set_problemunit(problemunit_shop(genus=knee_text, weight=60))
-    xao_personunit.set_problemunit(problemunit_shop(genus=bore_text, weight=35))
-    xao_personunit.set_problemunit(problemunit_shop(genus=rain_text, weight=5))
+    xao_personunit.set_problemunit(problemunit_shop(problem_id=knee_text, weight=60))
+    xao_personunit.set_problemunit(problemunit_shop(problem_id=bore_text, weight=35))
+    xao_personunit.set_problemunit(problemunit_shop(problem_id=rain_text, weight=5))
 
     knee_problemunit = xao_personunit.get_problemunit(knee_text)
     bore_problemunit = xao_personunit.get_problemunit(bore_text)
@@ -51,12 +51,12 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
 
     knee_text = "knee"
-    bore_genus = "bore"
-    rain_genus = "rain"
+    bore_problem_id = "bore"
+    rain_problem_id = "rain"
 
     x_knee_problemunit = problemunit_shop(knee_text, 60)
-    x_bore_problemunit = problemunit_shop(bore_genus, 35)
-    x_rain_problemunit = problemunit_shop(rain_genus, 5)
+    x_bore_problemunit = problemunit_shop(bore_problem_id, 35)
+    x_rain_problemunit = problemunit_shop(rain_problem_id, 5)
 
     tim_text = "Tim"
     sue_text = "Sue"
@@ -89,8 +89,8 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
 
     # THEN
     z_knee_problemunit = xao_personunit.get_problemunit(knee_text)
-    z_bore_problemunit = xao_personunit.get_problemunit(bore_genus)
-    z_rain_problemunit = xao_personunit.get_problemunit(rain_genus)
+    z_bore_problemunit = xao_personunit.get_problemunit(bore_problem_id)
+    z_rain_problemunit = xao_personunit.get_problemunit(rain_problem_id)
     assert z_knee_problemunit._relative_weight == 0.6
     assert z_bore_problemunit._relative_weight == 0.35
     assert z_rain_problemunit._relative_weight == 0.05

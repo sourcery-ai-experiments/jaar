@@ -60,7 +60,7 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgen
     # for x_problemunit in luca_personunit._problems.values():
     #     for x_healerlink in x_problemunit._healerlinks.values():
     #         print(
-    #             f"{x_problemunit.genus=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
+    #             f"{x_problemunit.problem_id=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
     #         )
     # print(f"{texas_world._personunits.keys()=}")
     gen_luca_agenda = texas_world.get_priority_agenda(luca_text)

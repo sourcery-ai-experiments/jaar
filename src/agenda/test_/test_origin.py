@@ -1,5 +1,5 @@
 from src.agenda.origin import OriginLink, originlink_shop, OriginUnit, originunit_shop
-from src.agenda.party import PartyPID
+from src.agenda.party import PartyID
 from pytest import raises as pytest_raises
 
 
@@ -32,7 +32,7 @@ def test_originlink_shop_ReturnsCorrectObj():
 def test_originlink_shop_WeightIsNotReason():
     # GIVEN
     roy_text = "Roy"
-    # roy_pid = PartyPID(roy_text)
+    # roy_pid = PartyID(roy_text)
 
     # WHEN
     originlink_x = originlink_shop(pid=roy_text)

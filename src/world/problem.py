@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._prime.road import EconomyID, PersonID, ProblemGenus
+from src._prime.road import EconomyID, PersonID, ProblemID
 
 
 @dataclass
@@ -88,7 +88,7 @@ def healerlink_shop(
 
 @dataclass
 class ProblemUnit:
-    genus: ProblemGenus
+    problem_id: ProblemID
     weight: float = None
     _healerlinks: dict[PersonID:HealerLink] = None
     _relative_weight: float = None
@@ -132,13 +132,13 @@ class ProblemUnit:
 
     def get_dict(self):
         return {
-            "genus": self.genus,
+            "problem_id": self.problem_id,
             "weight": self.weight,
             "_healerlinks": self.get_healerlinks_dict(),
         }
 
 
-def problemunit_shop(genus: ProblemGenus, weight: float = None) -> ProblemUnit:
+def problemunit_shop(problem_id: ProblemID, weight: float = None) -> ProblemUnit:
     if weight is None:
         weight = 1
-    return ProblemUnit(genus=genus, weight=weight, _healerlinks={})
+    return ProblemUnit(problem_id=problem_id, weight=weight, _healerlinks={})

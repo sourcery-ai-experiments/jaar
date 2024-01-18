@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.party import (
-    PartyPID,
+    PartyID,
     PartyLink,
     partylinks_get_from_dict,
     partylink_shop,
@@ -28,7 +28,7 @@ class GroupUnit(GroupCore):
     uid: int = None
     single_party_id: int = None
     _single_party: bool = None
-    _partys: dict[PartyPID:PartyLink] = None
+    _partys: dict[PartyID:PartyLink] = None
     _agenda_credit: float = None
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
@@ -109,16 +109,16 @@ class GroupUnit(GroupCore):
     def set_partylink(self, partylink: PartyLink):
         self._partys[partylink.pid] = partylink
 
-    def get_partylink(self, party_pid: PartyPID) -> PartyLink:
-        return self._partys.get(party_pid)
+    def get_partylink(self, party_id: PartyID) -> PartyLink:
+        return self._partys.get(party_id)
 
-    def has_partylink(self, partylink_pid: PartyPID) -> bool:
+    def has_partylink(self, partylink_pid: PartyID) -> bool:
         return self.get_partylink(partylink_pid) != None
 
     def del_partylink(self, pid):
         self._partys.pop(pid)
 
-    def _move_partylink(self, to_delete_pid: PartyPID, to_absorb_pid: PartyPID):
+    def _move_partylink(self, to_delete_pid: PartyID, to_absorb_pid: PartyID):
         old_group_partylink = self.get_partylink(to_delete_pid)
         new_partylink_creditor_weight = old_group_partylink.creditor_weight
         new_partylink_debtor_weight = old_group_partylink.debtor_weight
@@ -205,7 +205,7 @@ def groupunit_shop(
     uid: int = None,
     single_party_id: int = None,
     _single_party: bool = None,
-    _partys: dict[PartyPID:PartyLink] = None,
+    _partys: dict[PartyID:PartyLink] = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
     _agenda_intent_credit: float = None,

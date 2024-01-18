@@ -12,10 +12,10 @@ def test_problemunit_exists():
     knee_weight = 13
 
     # WHEN
-    knee_problemunit = ProblemUnit(genus=knee_text, weight=knee_weight)
+    knee_problemunit = ProblemUnit(problem_id=knee_text, weight=knee_weight)
 
     # THEN
-    assert knee_problemunit.genus == knee_text
+    assert knee_problemunit.problem_id == knee_text
     assert knee_problemunit.weight == knee_weight
     assert knee_problemunit._healerlinks is None
     assert knee_problemunit._relative_weight is None
@@ -27,10 +27,10 @@ def test_problemunit_shop_ReturnsNoneProblemUnitWithCorrectAttrs_v1():
     knee_text = "knee"
 
     # WHEN
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
 
     # THEN
-    assert knee_problemunit.genus == knee_text
+    assert knee_problemunit.problem_id == knee_text
     assert knee_problemunit.weight == 1
     assert knee_problemunit._healerlinks == {}
     assert knee_problemunit._relative_weight is None

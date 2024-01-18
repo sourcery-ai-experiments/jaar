@@ -6,7 +6,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
-    PartyPID,
+    PartyID,
 )
 from src.tools.file import (
     single_dir_create_if_null,
@@ -110,7 +110,7 @@ class clerkUnit:
 
     def _set_partyunit_depotlink(
         self,
-        pid: PartyPID,
+        pid: PartyID,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
@@ -129,12 +129,12 @@ class clerkUnit:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
     def del_depot_agenda(self, agenda_healer: str):
-        self._del_depotlink(partypid=agenda_healer)
+        self._del_depotlink(party_id=agenda_healer)
         self.erase_depot_agenda(agenda_healer)
         self.erase_digest_agenda(agenda_healer)
 
-    def _del_depotlink(self, partypid: PartyPID):
-        self._contract.get_party(partypid).del_depotlink_type()
+    def _del_depotlink(self, party_id: PartyID):
+        self._contract.get_party(party_id).del_depotlink_type()
 
     def get_contract(self):
         if self._contract is None:

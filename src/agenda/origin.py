@@ -1,12 +1,12 @@
 from contextlib import suppress as contextlib_suppress
-from src.agenda.party import PartyPID
+from src.agenda.party import PartyID
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
 
 @dataclass
 class OriginLink:
-    pid: PartyPID
+    pid: PartyID
     weight: float
 
     def get_dict(self):
@@ -16,7 +16,7 @@ class OriginLink:
         }
 
 
-def originlink_shop(pid: PartyPID, weight: float = None) -> OriginLink:
+def originlink_shop(pid: PartyID, weight: float = None) -> OriginLink:
     if weight is None:
         weight = 1
     return OriginLink(pid=pid, weight=weight)
@@ -24,12 +24,12 @@ def originlink_shop(pid: PartyPID, weight: float = None) -> OriginLink:
 
 @dataclass
 class OriginUnit:
-    _links: dict[PartyPID:OriginLink] = None
+    _links: dict[PartyID:OriginLink] = None
 
-    def set_originlink(self, pid: PartyPID, weight: float):
+    def set_originlink(self, pid: PartyID, weight: float):
         self._links[pid] = originlink_shop(pid=pid, weight=weight)
 
-    def del_originlink(self, pid: PartyPID):
+    def del_originlink(self, pid: PartyID):
         self._links.pop(pid)
 
     def get_dict(self):
@@ -43,7 +43,7 @@ class OriginUnit:
         return x_dict
 
 
-def originunit_shop(_links: dict[PartyPID:OriginLink] = None) -> OriginUnit:
+def originunit_shop(_links: dict[PartyID:OriginLink] = None) -> OriginUnit:
     return OriginUnit(_links=get_empty_dict_if_none(_links))
 
 

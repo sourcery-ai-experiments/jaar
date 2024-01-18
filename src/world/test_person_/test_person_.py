@@ -157,7 +157,7 @@ def test_personunit_del_economyunit_CorrectlyDeletesEconomyUnit():
     assert after_diet_economy is None
 
 
-def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
+def test_personunit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -165,15 +165,15 @@ def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
 
     # WHEN
     knee_text = "knee discomfort"
-    xao_person_obj.create_problemunit_from_genus(knee_text)
+    xao_person_obj.create_problemunit_from_problem_id(knee_text)
 
     # THEN
     knee_problem = xao_person_obj._problems.get(knee_text)
     assert knee_problem != None
-    assert knee_problem.genus == knee_text
+    assert knee_problem.problem_id == knee_text
 
 
-def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
+def test_personunit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
@@ -187,7 +187,7 @@ def test_personunit_create_problemunit_from_genus_CorrectlyCreatesProblemUnit():
     # THEN
     knee_problem = xao_person_obj._problems.get(knee_text)
     assert knee_problem != None
-    assert knee_problem.genus == knee_text
+    assert knee_problem.problem_id == knee_text
 
 
 def test_personunit_get_problemunit_CorrectlyGetsProblemUnit():
@@ -196,14 +196,14 @@ def test_personunit_get_problemunit_CorrectlyGetsProblemUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
-    xao_person_obj.create_problemunit_from_genus(knee_text)
+    xao_person_obj.create_problemunit_from_problem_id(knee_text)
 
     # WHEN
     knee_problem = xao_person_obj.get_problemunit(knee_text)
 
     # THEN
     assert knee_problem != None
-    assert knee_problem.genus == knee_text
+    assert knee_problem.problem_id == knee_text
 
 
 def test_personunit_del_problemunit_CorrectlyDeletesProblemUnit():
@@ -212,10 +212,10 @@ def test_personunit_del_problemunit_CorrectlyDeletesProblemUnit():
     xao_person_dir = f"/persons/{xao_text}"
     xao_person_obj = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
-    xao_person_obj.create_problemunit_from_genus(knee_text)
+    xao_person_obj.create_problemunit_from_problem_id(knee_text)
     before_knee_problem = xao_person_obj.get_problemunit(knee_text)
     assert before_knee_problem != None
-    assert before_knee_problem.genus == knee_text
+    assert before_knee_problem.problem_id == knee_text
 
     # WHEN
     xao_person_obj.del_problemunit(knee_text)

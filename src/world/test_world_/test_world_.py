@@ -237,7 +237,7 @@ def test_worldunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
     rest_text = "rest"
     x_world.create_person_economy(
         person_id=xao_text,
-        problem_genus=knee_text,
+        problem_problem_id=knee_text,
         healer_id=tim_text,
         economy_id=rest_text,
     )

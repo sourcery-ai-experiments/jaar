@@ -7,7 +7,7 @@ from src._prime.road import (
 )
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, economyunit_shop
-from src.world.problem import ProblemGenus, ProblemUnit, problemunit_shop
+from src.world.problem import ProblemID, ProblemUnit, problemunit_shop
 
 
 class InvalidEconomyException(Exception):
@@ -19,20 +19,22 @@ class PersonUnit:
     pid: PersonID = None
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
-    _problems: dict[ProblemGenus:ProblemUnit] = None
+    _problems: dict[ProblemID:ProblemUnit] = None
     _road_delimiter: str = None
 
-    def create_problemunit_from_genus(self, problem_genus: ProblemGenus):
-        self._problems[problem_genus] = problemunit_shop(genus=problem_genus)
+    def create_problemunit_from_problem_id(self, problem_problem_id: ProblemID):
+        self._problems[problem_problem_id] = problemunit_shop(
+            problem_id=problem_problem_id
+        )
 
     def set_problemunit(self, problemunit: ProblemUnit):
-        self._problems[problemunit.genus] = problemunit
+        self._problems[problemunit.problem_id] = problemunit
 
-    def get_problemunit(self, problem_genus: ProblemGenus) -> ProblemUnit:
-        return self._problems.get(problem_genus)
+    def get_problemunit(self, problem_problem_id: ProblemID) -> ProblemUnit:
+        return self._problems.get(problem_problem_id)
 
-    def del_problemunit(self, problem_genus: ProblemGenus):
-        self._problems.pop(problem_genus)
+    def del_problemunit(self, problem_problem_id: ProblemID):
+        self._problems.pop(problem_problem_id)
 
     def set_problemunits_weight_metrics(self):
         total_problemunits_weight = sum(
@@ -79,7 +81,7 @@ class PersonUnit:
 
     def get_problems_dict(self) -> dict:
         return {
-            problemunit_x.genus: problemunit_x.get_dict()
+            problemunit_x.problem_id: problemunit_x.get_dict()
             for problemunit_x in self._problems.values()
         }
 

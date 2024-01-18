@@ -1,7 +1,7 @@
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
-from src.agenda.party import PartyPID
+from src.agenda.party import PartyID
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balanceline_shop, balancelink_shop
@@ -374,14 +374,14 @@ def test_agenda4party_Exists():
     vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
-    sandy_pid = PartyPID(sandy_text)
+    sandy_pid = PartyID(sandy_text)
     x_agenda.add_partyunit(pid=sandy_pid)
     x_balancelink = balancelink_shop(brand=sandy_pid)
     yrx = x_agenda._idearoot
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(beliefs=None, party_pid=sandy_pid)
+    sandy_agenda4party = x_agenda.get_agenda4party(beliefs=None, party_id=sandy_pid)
 
     # THEN
     assert sandy_agenda4party
@@ -404,7 +404,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
-    billy_pid = PartyPID("billy")
+    billy_pid = PartyID("billy")
     x_agenda.add_partyunit(pid=billy_pid)
     billy_bl = balancelink_shop(brand=billy_pid)
     yrx = x_agenda._idearoot
@@ -413,7 +413,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     nation_text = "nation-state"
     yrx._kids[nation_text].set_balancelink(balancelink=billy_bl)
 
-    sandy_pid = PartyPID(sandy_text)
+    sandy_pid = PartyID(sandy_text)
     x_agenda.add_partyunit(pid=sandy_pid)
     sandy_bl = balancelink_shop(brand=sandy_pid)
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
@@ -533,13 +533,13 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     x_agenda.add_idea(ideaunit_shop("K"), parent_road=f"{x_agenda._economy_id},G,I")
 #     x_agenda.add_idea(ideaunit_shop("M"), parent_road=f"{x_agenda._economy_id},G,H")
 
-#     billy_pid = PartyPID("billy")
+#     billy_pid = PartyID("billy")
 #     x_agenda.add_partyunit(pid=billy_pid)
 #     billy_bl = balancelink_shop(brand=billy_pid)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},G", balancelink=billy_bl)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},G,H,M", balancelink=billy_bl)
 
-#     sandy_pid = PartyPID(sandy_text)
+#     sandy_pid = PartyID(sandy_text)
 #     x_agenda.add_partyunit(pid=sandy_pid)
 #     sandy_bl = balancelink_shop(brand=sandy_pid)
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},A", balancelink=sandy_bl)
@@ -554,7 +554,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     exp_sandy.add_idea(ideaunit_shop("B", _agenda_importance=0.13), parent_road="blahblah")
 
 #     # generated sandy
-#     gen_sandy = x_agenda.get_agenda4party(beliefs=None, party_pid=sandy_pid)
+#     gen_sandy = x_agenda.get_agenda4party(beliefs=None, party_id=sandy_pid)
 
 #     # check generated sandy is correct
 #     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance == 0.07

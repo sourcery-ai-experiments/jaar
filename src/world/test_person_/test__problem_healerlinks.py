@@ -4,7 +4,7 @@ from src.world.problem import problemunit_shop, healerlink_shop
 def test_problemunit_set_healerlink_CorrectlySetsHealerLink():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
 
     # WHEN
     yao_text = "yao"
@@ -21,7 +21,7 @@ def test_problemunit_set_healerlink_CorrectlySetsHealerLink():
 def test_problemunit_get_healerlink_CorrectlyGetsObj():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_id=yao_text)
     knee_problemunit.set_healerlink(yao_healerlink)
@@ -37,7 +37,7 @@ def test_problemunit_get_healerlink_CorrectlyGetsObj():
 def test_problemunit_del_healerlink_CorrectlyDeletesObj():
     # GIVEN
     knee_text = "knee discomfort"
-    knee_problemunit = problemunit_shop(genus=knee_text)
+    knee_problemunit = problemunit_shop(problem_id=knee_text)
     yao_text = "yao"
     yao_healerlink = healerlink_shop(person_id=yao_text)
     knee_problemunit.set_healerlink(yao_healerlink)

@@ -1,4 +1,4 @@
-from src.agenda.party import PartyPID, partylink_shop
+from src.agenda.party import PartyID, partylink_shop
 from src.agenda.group import (
     BalanceLine,
     balanceline_shop,

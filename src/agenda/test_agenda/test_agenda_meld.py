@@ -403,7 +403,7 @@ def test_agenda__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_x_agenda._originunit._links) == 0
 
     # WHEN
-    bob_x_agenda._meld_originlinks(party_pid=sue_text, party_weight=sue_weight)
+    bob_x_agenda._meld_originlinks(party_id=sue_text, party_weight=sue_weight)
 
     # THEN
     assert len(bob_x_agenda._originunit._links) == 1
