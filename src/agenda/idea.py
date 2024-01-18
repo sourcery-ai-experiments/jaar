@@ -858,11 +858,11 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         agenda_groupunits: dict[GroupBrand:GroupUnit] = None,
-        agenda_healer: PartyPID = None,
+        agenda_agent_id: PartyPID = None,
     ):
         prev_to_now_active_status = deepcopy(self._active_status)
         self._active_status = self._create_active_status(
-            agenda_groupunits=agenda_groupunits, agenda_healer=agenda_healer
+            agenda_groupunits=agenda_groupunits, agenda_agent_id=agenda_agent_id
         )
         self._set_idea_task()
         self.record_active_status_hx(
@@ -884,18 +884,18 @@ class IdeaUnit:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active_status(
-        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_healer: PartyPID
+        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyPID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_status_true()
         if (
             x_bool
             and agenda_groupunits != {}
-            and agenda_healer != None
+            and agenda_agent_id != None
             and self._assignedheir._suffgroups != {}
         ):
-            self._assignedheir.set_healer_assigned(agenda_groupunits, agenda_healer)
-            if self._assignedheir._healer_assigned == False:
+            self._assignedheir.set_agent_id_assigned(agenda_groupunits, agenda_agent_id)
+            if self._assignedheir._agent_id_assigned == False:
                 x_bool = False
         return x_bool
 

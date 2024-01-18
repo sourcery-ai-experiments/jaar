@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from json import loads as json_loads
 from datetime import datetime
 from src.agenda.party import (
-    PersonID,
-    PartyPID,
     PartyUnit,
     PartyLink,
     partyunits_get_from_dict,
@@ -57,6 +55,9 @@ from src._prime.road import (
     RoadNode,
     RoadUnit,
     is_string_in_road,
+    PersonID,
+    AgentID,
+    PartyPID,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.tools.python import x_get_json
@@ -83,7 +84,7 @@ class NewDelimiterException(Exception):
 
 @dataclass
 class AgendaUnit:
-    _healer: PersonID = None
+    _agent_id: AgentID = None
     _weight: float = None
     _partys: dict[PartyPID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
@@ -175,7 +176,7 @@ class AgendaUnit:
         self.set_agenda_metrics()
         x_idea = self.get_idea_obj(road)
         new_weight = self._weight * x_idea._agenda_importance
-        x_agenda = agendaunit_shop(_healer=self._idearoot._label, _weight=new_weight)
+        x_agenda = agendaunit_shop(_agent_id=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_obj(road_assc)
@@ -1107,8 +1108,8 @@ class AgendaUnit:
         for kid in d_temp_idea._kids.values():
             self.add_idea(kid, parent_road=parent_road)
 
-    def set_healer(self, new_healer):
-        self._healer = new_healer
+    def set_agent_id(self, new_agent_id):
+        self._agent_id = new_agent_id
 
     def edit_idea_label(
         self,
@@ -1629,7 +1630,7 @@ class AgendaUnit:
         x_idearoot.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
-            agenda_healer=self._healer,
+            agenda_agent_id=self._agent_id,
         )
         x_idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
         x_idearoot.set_balanceheirs_agenda_credit_debt()
@@ -1659,7 +1660,7 @@ class AgendaUnit:
         idea_kid.set_active_status(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
-            agenda_healer=self._healer,
+            agenda_agent_id=self._agent_id,
         )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
         idea_kid.set_agenda_importance(
@@ -1828,7 +1829,7 @@ class AgendaUnit:
             "_groups": self.get_groupunits_from_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
-            "_healer": self._healer,
+            "_agent_id": self._agent_id,
             "_economy_id": self._economy_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_public": self._auto_output_to_public,
@@ -1882,7 +1883,7 @@ class AgendaUnit:
 
     def get_agenda4party(self, party_pid: PartyPID, beliefs: dict[RoadUnit:BeliefCore]):
         self.set_agenda_metrics()
-        agenda4party = agendaunit_shop(_healer=party_pid)
+        agenda4party = agendaunit_shop(_agent_id=party_pid)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
         # get party's partys: partyzone
 
@@ -1947,14 +1948,14 @@ class AgendaUnit:
             other_weight=other_agenda._weight,
             other_on_meld_weight_action="default",
         )
-        self._meld_originlinks(other_agenda._healer, party_weight)
+        self._meld_originlinks(other_agenda._agent_id, party_weight)
 
     def _meld_ideas(self, other_agenda, party_weight: float):
         # meld idearoot
         self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
 
         # meld all other ideas
-        party_pid = other_agenda._healer
+        party_pid = other_agenda._agent_id
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
@@ -2075,7 +2076,7 @@ class AgendaUnit:
 
 
 def agendaunit_shop(
-    _healer: PersonID = None,
+    _agent_id: AgentID = None,
     _economy_id: EconomyID = None,
     _weight: float = None,
     _auto_output_to_public: bool = None,
@@ -2083,15 +2084,15 @@ def agendaunit_shop(
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
-    if _healer is None:
-        _healer = ""
+    if _agent_id is None:
+        _agent_id = ""
     if _auto_output_to_public is None:
         _auto_output_to_public = False
     if _economy_id is None:
         _economy_id = get_default_economy_root_roadnode()
 
     x_agenda = AgendaUnit(
-        _healer=_healer,
+        _agent_id=_agent_id,
         _weight=_weight,
         _auto_output_to_public=_auto_output_to_public,
         _economy_id=_economy_id,
@@ -2116,7 +2117,7 @@ def get_from_json(x_agenda_json: str) -> AgendaUnit:
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
-    x_agenda.set_healer(get_obj_from_agenda_dict(agenda_dict, "_healer"))
+    x_agenda.set_agent_id(get_obj_from_agenda_dict(agenda_dict, "_agent_id"))
     x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
     x_agenda._auto_output_to_public = get_obj_from_agenda_dict(
         agenda_dict, "_auto_output_to_public"
@@ -2233,7 +2234,7 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
     agendaunits = {}
     for agendaunit_dict in x_dict.values():
         x_agenda = get_from_dict(agenda_dict=agendaunit_dict)
-        agendaunits[x_agenda._healer] = x_agenda
+        agendaunits[x_agenda._agent_id] = x_agenda
     return agendaunits
 
 
@@ -2248,8 +2249,8 @@ class MeldeeOrderUnit:
 def get_meldeeorderunit(
     primary_agenda: AgendaUnit, meldee_file_name: str
 ) -> MeldeeOrderUnit:
-    file_src_healer = meldee_file_name.replace(".json", "")
-    primary_meldee_partyunit = primary_agenda.get_party(file_src_healer)
+    file_src_agent_id = meldee_file_name.replace(".json", "")
+    primary_meldee_partyunit = primary_agenda.get_party(file_src_agent_id)
 
     default_voice_rank = 0
     default_voice_hx_lowest_rank = 0
@@ -2266,7 +2267,7 @@ def get_meldeeorderunit(
             primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
 
     return MeldeeOrderUnit(
-        healer=file_src_healer,
+        healer=file_src_agent_id,
         voice_rank=primary_voice_rank_for_meldee,
         voice_hx_lowest_rank=primary_voice_hx_lowest_rank_for_meldee,
         file_name=meldee_file_name,

@@ -72,7 +72,7 @@ def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
     assert os_path.exists(public_file_path) is False
 
     # WHEN
-    tim_agenda = agendaunit_shop(_healer=tim_text)
+    tim_agenda = agendaunit_shop(_agent_id=tim_text)
     tim_agenda.set_economy_id(x_economy_id)
     x_clerk.set_depot_agenda(tim_agenda, "blind_trust")
 
@@ -152,11 +152,11 @@ def test_clerkunit_get_contract_getsMemoryAgendaIfExists(
 
     # WHEN
     ray_text = "Ray"
-    tim_clerk._contract = agendaunit_shop(_healer=ray_text)
+    tim_clerk._contract = agendaunit_shop(_agent_id=ray_text)
     contract_agenda2 = tim_clerk.get_contract()
 
     # THEN
-    assert contract_agenda2._healer == ray_text
+    assert contract_agenda2._agent_id == ray_text
     assert contract_agenda2 != contract_agenda1
 
     # WHEN
@@ -164,7 +164,7 @@ def test_clerkunit_get_contract_getsMemoryAgendaIfExists(
     contract_agenda3 = tim_clerk.get_contract()
 
     # THEN
-    assert contract_agenda3._healer != ray_text
+    assert contract_agenda3._agent_id != ray_text
     assert contract_agenda3 == contract_agenda1
 
 
@@ -212,7 +212,7 @@ def test_clerkunit_set_contract_savesGivenAgendaSet_contract_None(
     contract_uid_text = "this is ._contract uid"
     tim_clerk._contract._idearoot._uid = contract_uid_text
 
-    new_agenda = agendaunit_shop(_healer=tim_text)
+    new_agenda = agendaunit_shop(_agent_id=tim_text)
     new_agenda_uid_text = "this is pulled AgendaUnit uid"
     new_agenda._idearoot._uid = new_agenda_uid_text
 
@@ -250,7 +250,7 @@ def test_clerkunit_set_contract_if_emtpy_DoesNotReplace_contract(
         tim_text, get_temp_clerkunit_dir(), get_temp_economy_id()
     )
     tim_clerk.create_core_dir_and_files()
-    saved_agenda = agendaunit_shop(_healer=tim_text)
+    saved_agenda = agendaunit_shop(_agent_id=tim_text)
     saved_agenda_uid_text = "this is pulled AgendaUnit uid"
     saved_agenda._idearoot._uid = saved_agenda_uid_text
     tim_clerk.set_contract(saved_agenda)

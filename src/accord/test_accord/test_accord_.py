@@ -22,8 +22,6 @@ def test_AccordUnit_exists():
     assert x_accordunit._reader is None
     assert x_accordunit._author_economyaddress is None
     assert x_accordunit._reader_economyaddress is None
-    assert x_accordunit._author_contract_weight is None
-    assert x_accordunit._reader_contract_weight is None
     assert x_accordunit._topicunits is None
     assert x_accordunit._dueunits is None
 
@@ -50,7 +48,5 @@ def test_accordunit_shop_ReturnsCorrectObj():
     assert farm_accordunit._reader == tim_text
     assert farm_accordunit._author_economyaddress == bob_economyaddress
     assert farm_accordunit._reader_economyaddress == tim_economyaddress
-    assert farm_accordunit._author_contract_weight == 1
-    assert farm_accordunit._reader_contract_weight == 1
     assert farm_accordunit._topicunits == {}
     assert farm_accordunit._dueunits == {}

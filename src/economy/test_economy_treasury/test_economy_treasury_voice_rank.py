@@ -47,7 +47,7 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     dom_partyunit = partyunit_shop(pid=dom_text)
     elu_partyunit = partyunit_shop(pid=elu_text)
 
-    yao_agenda = agendaunit_shop(_healer=yao_text)
+    yao_agenda = agendaunit_shop(_agent_id=yao_text)
     ava_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
     bob_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
     cal_partyunit.set_treasurying_data(None, None, None, voice_rank=77)
@@ -99,7 +99,7 @@ def test_economy_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1
     elu_text = "elu"
 
     yao_text = "yao"
-    yao_new_agenda = agendaunit_shop(_healer=yao_text)
+    yao_new_agenda = agendaunit_shop(_agent_id=yao_text)
     yao_new_agenda.set_partyunit(partyunit_shop(ava_text))
     yao_new_agenda.set_partyunit(partyunit_shop(bob_text))
     yao_new_agenda.set_partyunit(partyunit_shop(cal_text))

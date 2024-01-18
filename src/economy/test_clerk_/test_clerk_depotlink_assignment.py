@@ -20,8 +20,8 @@ def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentF
     cali_ux.create_core_dir_and_files()
     print(f"{amos_agenda._idearoot._label=}")
     assert amos_agenda._idearoot._label == get_temp_economy_id()
-    assert amos_agenda._healer == "Amos"
-    print(f"{amos_agenda._healer} {amos_agenda._idearoot._label=}")
+    assert amos_agenda._agent_id == "Amos"
+    print(f"{amos_agenda._agent_id} {amos_agenda._idearoot._label=}")
 
     # WHEN
     cali_ux.set_depot_agenda(x_agenda=amos_agenda, depotlink_type="assignment")

@@ -43,11 +43,11 @@ def test_economy_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cl
     tom_text = "tom"
     ava_text = "ava"
     elu_text = "elu"
-    x_economy.save_public_agenda(agendaunit_shop(_healer=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=ava_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=elu_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=ava_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
     x_economy.refresh_treasury_public_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_economy.get_treasury_conn())
 
@@ -88,11 +88,11 @@ def test_economy_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_text = "tom"
     ava_text = "ava"
     elu_text = "elu"
-    sal_agenda = agendaunit_shop(_healer=sal_text)
-    bob_agenda = agendaunit_shop(_healer=bob_text)
-    tom_agenda = agendaunit_shop(_healer=tom_text)
-    ava_agenda = agendaunit_shop(_healer=ava_text)
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     x_economy.save_public_agenda(sal_agenda)
     x_economy.save_public_agenda(bob_agenda)
     x_economy.save_public_agenda(tom_agenda)

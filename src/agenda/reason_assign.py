@@ -44,7 +44,7 @@ def create_assignedunit(suffgroup: GroupBrand):
 @dataclass
 class AssignedHeir:
     _suffgroups: dict[GroupBrand:GroupBrand]
-    _healer_assigned: bool
+    _agent_id_assigned: bool
 
     def _get_all_partys(
         self,
@@ -61,16 +61,16 @@ class AssignedHeir:
     ) -> dict[GroupBrand:GroupUnit]:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
-    def set_healer_assigned(
-        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_healer: PartyPID
+    def set_agent_id_assigned(
+        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyPID
     ):
-        self._healer_assigned = False
+        self._agent_id_assigned = False
         if self._suffgroups == {}:
-            self._healer_assigned = True
+            self._agent_id_assigned = True
         else:
             all_suff_partys_x = self._get_all_suff_partys(agenda_groups)
-            if all_suff_partys_x.get(agenda_healer) != None:
-                self._healer_assigned = True
+            if all_suff_partys_x.get(agenda_agent_id) != None:
+                self._agent_id_assigned = True
 
     def set_suffgroups(
         self,
@@ -118,14 +118,14 @@ class AssignedHeir:
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupBrand:GroupBrand] = None, _healer_assigned: bool = None
+    _suffgroups: dict[GroupBrand:GroupBrand] = None, _agent_id_assigned: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}
-    if _healer_assigned is None:
-        _healer_assigned = False
+    if _agent_id_assigned is None:
+        _agent_id_assigned = False
 
-    return AssignedHeir(_suffgroups=_suffgroups, _healer_assigned=_healer_assigned)
+    return AssignedHeir(_suffgroups=_suffgroups, _agent_id_assigned=_agent_id_assigned)
 
     # def meld(self, other_reason):
     #     for premise_x in other_reason.premises.values():

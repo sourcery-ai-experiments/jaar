@@ -121,19 +121,18 @@ def test_get_idea_obj_CorrectlyReturnsIdea():
 
 def test_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     # GIVEN
-    healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
-    assert x_agenda._idearoot._descendant_promise_count is None
-    assert x_agenda._idearoot._all_party_credit is None
-    assert x_agenda._idearoot._all_party_debt is None
+    tim_agenda = agendaunit_shop(_agent_id="Tim")
+    assert tim_agenda._idearoot._descendant_promise_count is None
+    assert tim_agenda._idearoot._all_party_credit is None
+    assert tim_agenda._idearoot._all_party_debt is None
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    tim_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._descendant_promise_count == 0
-    assert x_agenda._idearoot._all_party_credit == True
-    assert x_agenda._idearoot._all_party_debt == True
+    assert tim_agenda._idearoot._descendant_promise_count == 0
+    assert tim_agenda._idearoot._all_party_credit == True
+    assert tim_agenda._idearoot._all_party_debt == True
 
 
 def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
@@ -387,7 +386,7 @@ def test_agenda4party_Exists():
     # THEN
     assert sandy_agenda4party
     assert str(type(sandy_agenda4party)).find(".agenda.AgendaUnit'>")
-    assert sandy_agenda4party._healer == sandy_pid
+    assert sandy_agenda4party._agent_id == sandy_pid
 
 
 def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
@@ -479,22 +478,23 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
 
 def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
     # GIVEN
-    healer_text = "Tim"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop("Tim")
 
     # WHEN
     time = "timeline"
-    x_agenda.add_idea(
+    tim_agenda.add_idea(
         ideaunit_shop(_label=time, _begin=0, _close=700),
-        parent_road=x_agenda._economy_id,
+        parent_road=tim_agenda._economy_id,
     )
-    t_road = x_agenda.make_l1_road(time)
+    t_road = tim_agenda.make_l1_road(time)
     week = "weeks"
-    x_agenda.add_idea(ideaunit_shop(_label=week, _denom=7), parent_road=t_road)
+    tim_agenda.add_idea(ideaunit_shop(_label=week, _denom=7), parent_road=t_road)
 
     # THEN
-    assert len(x_agenda.get_idea_tree_ordered_road_list()) == 3
-    assert len(x_agenda.get_idea_tree_ordered_road_list(no_range_descendants=True)) == 2
+    assert len(tim_agenda.get_idea_tree_ordered_road_list()) == 3
+    assert (
+        len(tim_agenda.get_idea_tree_ordered_road_list(no_range_descendants=True)) == 2
+    )
 
 
 def test_agenda_get_heir_road_list_returnsCorrectList():
@@ -519,7 +519,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
-#     x_agenda = agendaunit_shop(_healer=healer_text)
+#     x_agenda = agendaunit_shop(_agent_id="bob")
 #     x_agenda.add_idea(ideaunit_shop("A", _weight=7), parent_road="blahblah")
 #     x_agenda.add_idea(ideaunit_shop("C", _weight=3), parent_road=f"{x_agenda._economy_id},A")
 #     x_agenda.add_idea(ideaunit_shop("E", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
@@ -547,7 +547,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = agendaunit_shop(_healer=healer_text)
+#     exp_sandy = agendaunit_shop(_agent_id=healer_text)
 #     exp_sandy.add_idea(ideaunit_shop("A", _agenda_importance=0.07), parent_road="blahblah")
 #     exp_sandy.add_idea(ideaunit_shop("C", _agenda_importance=0.07), parent_road=f"{x_agenda._economy_id},A")
 #     exp_sandy.add_idea(ideaunit_shop("E", _agenda_importance=0.5), parent_road=f"{x_agenda._economy_id},A,C")

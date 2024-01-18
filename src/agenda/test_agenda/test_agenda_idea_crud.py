@@ -9,7 +9,7 @@ from src._prime.road import default_road_delimiter_if_none
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # GIVEN
-    x_agenda = agendaunit_shop(_healer="prom")
+    x_agenda = agendaunit_shop(_agent_id="prom")
     invalid_rootnode_swim_road = "swimming"
     assert invalid_rootnode_swim_road != x_agenda._economy_id
     work_text = "work"
@@ -27,7 +27,7 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     # GIVEN
-    x_agenda = agendaunit_shop(_healer="prom")
+    x_agenda = agendaunit_shop(_agent_id="prom")
     swim_road = x_agenda.make_l1_road("swimming")
     work_text = "work"
 
@@ -80,7 +80,7 @@ def test_agenda_add_idea_CanAddKidTo_idearoot():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
+    print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_idea_count() == 18
     assert x_agenda.get_level_count(level=1) == 5
@@ -99,7 +99,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    # print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
+    # print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
     # print(x_agenda._idearoot._kids["work"])
     # print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_idea_count() == 18
@@ -127,7 +127,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(x_agenda._healer == new_idea_parent_road[0])=}")
+    print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
     print(x_agenda._idearoot._kids["work"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert x_agenda.get_idea_count() == 18
@@ -508,106 +508,103 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_on_meld_weight_action_AnyIdeaI
 
 
 def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
-    healer_text = "Yao"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    yao_agenda = agendaunit_shop("Yao")
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road="", denom=46)
+        yao_agenda.edit_idea_attr(road="", denom=46)
     assert str(excinfo.value) == "Root Idea cannot have numor denom reest."
 
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = yao_agenda.make_l1_road(work_text)
     work_idea = ideaunit_shop(work_text)
-    x_agenda.add_idea(work_idea, parent_road=x_agenda._economy_id)
+    yao_agenda.add_idea(work_idea, parent_road=yao_agenda._economy_id)
     clean_text = "clean"
     clean_idea = ideaunit_shop(clean_text)
-    clean_road = x_agenda.make_road(work_road, clean_text)
-    x_agenda.add_idea(clean_idea, parent_road=work_road)
+    clean_road = yao_agenda.make_road(work_road, clean_text)
+    yao_agenda.add_idea(clean_idea, parent_road=work_road)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road=clean_road, denom=46)
+        yao_agenda.edit_idea_attr(road=clean_road, denom=46)
     assert (
         str(excinfo.value)
         == f"Idea cannot edit numor=1/denom/reest of '{clean_road}' if parent '{work_road}' or ideaunit._numeric_road does not have begin/close range"
     )
 
     # GIVEN
-    x_agenda.edit_idea_attr(road=work_road, begin=44, close=110)
-    x_agenda.edit_idea_attr(road=clean_road, denom=11)
-    clean_idea = x_agenda.get_idea_obj(road=clean_road)
+    yao_agenda.edit_idea_attr(road=work_road, begin=44, close=110)
+    yao_agenda.edit_idea_attr(road=clean_road, denom=11)
+    clean_idea = yao_agenda.get_idea_obj(road=clean_road)
     assert clean_idea._begin == 4
     assert clean_idea._close == 10
 
 
 def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # GIVEN
-    healer_text = "Yao"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    yao_agenda = agendaunit_shop("Yao")
     work = "work"
-    w_road = x_agenda.make_l1_road(work)
+    w_road = yao_agenda.make_l1_road(work)
     work_idea = ideaunit_shop(work, _begin=8, _close=14)
-    x_agenda.add_idea(work_idea, parent_road=x_agenda._economy_id)
+    yao_agenda.add_idea(work_idea, parent_road=yao_agenda._economy_id)
 
     clean = "clean"
     clean_idea = ideaunit_shop(clean, _denom=1)
-    c_road = x_agenda.make_road(w_road, clean)
-    x_agenda.add_idea(clean_idea, parent_road=w_road)
+    c_road = yao_agenda.make_road(w_road, clean)
+    yao_agenda.add_idea(clean_idea, parent_road=w_road)
 
-    clean_idea = x_agenda.get_idea_obj(road=c_road)
+    clean_idea = yao_agenda.get_idea_obj(road=c_road)
 
     day = "day_range"
     day_idea = ideaunit_shop(day, _begin=44, _close=110)
-    day_road = x_agenda.make_l1_road(day)
-    x_agenda.add_idea(day_idea, parent_road=x_agenda._economy_id)
+    day_road = yao_agenda.make_l1_road(day)
+    yao_agenda.add_idea(day_idea, parent_road=yao_agenda._economy_id)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road=c_road, numeric_road=day_road)
+        yao_agenda.edit_idea_attr(road=c_road, numeric_road=day_road)
     assert (
         str(excinfo.value)
         == "Idea has begin-close range parent, cannot have numeric_road"
     )
 
-    x_agenda.edit_idea_attr(road=w_road, numeric_road=day_road)
+    yao_agenda.edit_idea_attr(road=w_road, numeric_road=day_road)
 
 
 def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # GIVEN
-    healer_text = "Yao"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    yao_agenda = agendaunit_shop("Yao")
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
-    x_agenda.add_idea(ideaunit_shop(work_text), parent_road=x_agenda._economy_id)
+    work_road = yao_agenda.make_l1_road(work_text)
+    yao_agenda.add_idea(ideaunit_shop(work_text), parent_road=yao_agenda._economy_id)
     day_text = "day_range"
     day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
-    day_road = x_agenda.make_l1_road(day_text)
-    x_agenda.add_idea(day_idea, parent_road=x_agenda._economy_id)
+    day_road = yao_agenda.make_l1_road(day_text)
+    yao_agenda.add_idea(day_idea, parent_road=yao_agenda._economy_id)
 
-    work_idea = x_agenda.get_idea_obj(road=work_road)
+    work_idea = yao_agenda.get_idea_obj(road=work_road)
     assert work_idea._begin is None
     assert work_idea._close is None
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road=work_road, denom=11)
+        yao_agenda.edit_idea_attr(road=work_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{x_agenda._economy_id}' or ideaunit._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{work_road}' if parent '{yao_agenda._economy_id}' or ideaunit._numeric_road does not have begin/close range"
     )
 
     # WHEN
-    x_agenda.edit_idea_attr(road=work_road, numeric_road=day_road)
+    yao_agenda.edit_idea_attr(road=work_road, numeric_road=day_road)
 
     # THEN
-    work_idea3 = x_agenda.get_idea_obj(road=work_road)
+    work_idea3 = yao_agenda.get_idea_obj(road=work_road)
     assert work_idea3._addin is None
     assert work_idea3._numor is None
     assert work_idea3._denom is None
     assert work_idea3._reest is None
     assert work_idea3._begin == 44
     assert work_idea3._close == 110
-    x_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
+    yao_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea3._begin == 4
     assert work_idea3._close == 10
     assert work_idea3._numor == 1
@@ -618,35 +615,33 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
 
 def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    noa_agenda = agendaunit_shop("Noa")
     work_text = "work"
-    x_agenda.add_idea(ideaunit_shop(work_text), parent_road=x_agenda._economy_id)
+    noa_agenda.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=x_agenda._economy_id)
+    noa_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda._economy_id)
 
     # WHEN
-    idea_list = list(x_agenda._idearoot._kids.values())
+    idea_list = list(noa_agenda._idearoot._kids.values())
 
     # THEN
     assert idea_list[0]._label == swim_text
 
 
 def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
-    sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideaunit_shop(sports_text), parent_road=x_agenda._economy_id)
+    sports_road = noa_agenda.make_l1_road(sports_text)
+    noa_agenda.add_idea(ideaunit_shop(sports_text), parent_road=noa_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
+    noa_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
 
     # WHEN / THEN
     summer_text = "summer"
     hike_text = "hike"
-    hike_road = x_agenda.make_road(sports_road, hike_text)
+    hike_road = noa_agenda.make_road(sports_road, hike_text)
     with pytest_raises(Exception) as excinfo:
-        x_agenda.add_idea(
+        noa_agenda.add_idea(
             idea_kid=ideaunit_shop(summer_text),
             parent_road=sports_road,
             adoptees=[swim_text, hike_text],
@@ -655,87 +650,85 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
 
 
 def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
-    sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(ideaunit_shop(sports_text), parent_road=x_agenda._economy_id)
+    sports_road = noa_agenda.make_l1_road(sports_text)
+    noa_agenda.add_idea(ideaunit_shop(sports_text), parent_road=noa_agenda._economy_id)
     swim_text = "swim"
-    x_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
+    noa_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sports_road)
     hike_text = "hike"
-    x_agenda.add_idea(ideaunit_shop(hike_text), parent_road=sports_road)
+    noa_agenda.add_idea(ideaunit_shop(hike_text), parent_road=sports_road)
 
-    x_agenda.set_agenda_metrics()
-    sports_swim_road = x_agenda.make_road(sports_road, swim_text)
-    sports_hike_road = x_agenda.make_road(sports_road, hike_text)
-    assert x_agenda._idea_dict.get(sports_swim_road) != None
-    assert x_agenda._idea_dict.get(sports_hike_road) != None
+    noa_agenda.set_agenda_metrics()
+    sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
+    sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
+    assert noa_agenda._idea_dict.get(sports_swim_road) != None
+    assert noa_agenda._idea_dict.get(sports_hike_road) != None
     summer_text = "summer"
-    summer_road = x_agenda.make_road(sports_road, summer_text)
-    summer_swim_road = x_agenda.make_road(summer_road, swim_text)
-    summer_hike_road = x_agenda.make_road(summer_road, hike_text)
-    assert x_agenda._idea_dict.get(summer_swim_road) is None
-    assert x_agenda._idea_dict.get(summer_hike_road) is None
+    summer_road = noa_agenda.make_road(sports_road, summer_text)
+    summer_swim_road = noa_agenda.make_road(summer_road, swim_text)
+    summer_hike_road = noa_agenda.make_road(summer_road, hike_text)
+    assert noa_agenda._idea_dict.get(summer_swim_road) is None
+    assert noa_agenda._idea_dict.get(summer_hike_road) is None
 
     # WHEN / THEN
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
     )
 
     # THEN
-    summer_idea = x_agenda.get_idea_obj(summer_road)
+    summer_idea = noa_agenda.get_idea_obj(summer_road)
     print(f"{summer_idea._kids.keys()=}")
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(summer_swim_road) != None
-    assert x_agenda._idea_dict.get(summer_hike_road) != None
-    assert x_agenda._idea_dict.get(sports_swim_road) is None
-    assert x_agenda._idea_dict.get(sports_hike_road) is None
+    noa_agenda.set_agenda_metrics()
+    assert noa_agenda._idea_dict.get(summer_swim_road) != None
+    assert noa_agenda._idea_dict.get(summer_hike_road) != None
+    assert noa_agenda._idea_dict.get(sports_swim_road) is None
+    assert noa_agenda._idea_dict.get(sports_hike_road) is None
 
 
 def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
-    sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(
-        ideaunit_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
+    sports_road = noa_agenda.make_l1_road(sports_text)
+    noa_agenda.add_idea(
+        ideaunit_shop(sports_text, _weight=2), parent_road=noa_agenda._economy_id
     )
     swim_text = "swim"
     swim_weight = 3
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(swim_text, _weight=swim_weight), parent_road=sports_road
     )
     hike_text = "hike"
     hike_weight = 5
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(hike_text, _weight=hike_weight), parent_road=sports_road
     )
     bball_text = "bball"
     bball_weight = 7
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(bball_text, _weight=bball_weight), parent_road=sports_road
     )
 
-    x_agenda.set_agenda_metrics()
-    sports_swim_road = x_agenda.make_road(sports_road, swim_text)
-    sports_hike_road = x_agenda.make_road(sports_road, hike_text)
-    sports_bball_road = x_agenda.make_road(sports_road, bball_text)
-    assert x_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
-    assert x_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
-    assert x_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
+    noa_agenda.set_agenda_metrics()
+    sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
+    sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
+    sports_bball_road = noa_agenda.make_road(sports_road, bball_text)
+    assert noa_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert noa_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert noa_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
     summer_text = "summer"
-    summer_road = x_agenda.make_road(sports_road, summer_text)
-    summer_swim_road = x_agenda.make_road(summer_road, swim_text)
-    summer_hike_road = x_agenda.make_road(summer_road, hike_text)
-    summer_bball_road = x_agenda.make_road(summer_road, bball_text)
-    assert x_agenda._idea_dict.get(summer_swim_road) is None
-    assert x_agenda._idea_dict.get(summer_hike_road) is None
-    assert x_agenda._idea_dict.get(summer_bball_road) is None
+    summer_road = noa_agenda.make_road(sports_road, summer_text)
+    summer_swim_road = noa_agenda.make_road(summer_road, swim_text)
+    summer_hike_road = noa_agenda.make_road(summer_road, hike_text)
+    summer_bball_road = noa_agenda.make_road(summer_road, bball_text)
+    assert noa_agenda._idea_dict.get(summer_swim_road) is None
+    assert noa_agenda._idea_dict.get(summer_hike_road) is None
+    assert noa_agenda._idea_dict.get(summer_bball_road) is None
 
     # WHEN / THEN
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
@@ -743,77 +736,76 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     )
 
     # THEN
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
-    assert x_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
-    assert x_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
-    assert x_agenda._idea_dict.get(summer_bball_road) is None
-    assert x_agenda._idea_dict.get(sports_swim_road) is None
-    assert x_agenda._idea_dict.get(sports_hike_road) is None
-    assert x_agenda._idea_dict.get(sports_bball_road) != None
+    noa_agenda.set_agenda_metrics()
+    assert noa_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
+    assert noa_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
+    assert noa_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
+    assert noa_agenda._idea_dict.get(summer_bball_road) is None
+    assert noa_agenda._idea_dict.get(sports_swim_road) is None
+    assert noa_agenda._idea_dict.get(sports_hike_road) is None
+    assert noa_agenda._idea_dict.get(sports_bball_road) != None
 
 
 def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
-    sports_road = x_agenda.make_l1_road(sports_text)
-    x_agenda.add_idea(
-        ideaunit_shop(sports_text, _weight=2), parent_road=x_agenda._economy_id
+    sports_road = noa_agenda.make_l1_road(sports_text)
+    noa_agenda.add_idea(
+        ideaunit_shop(sports_text, _weight=2), parent_road=noa_agenda._economy_id
     )
     swim_text = "swim"
     swim_weight = 3
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(swim_text, _weight=swim_weight), parent_road=sports_road
     )
     hike_text = "hike"
     hike_weight = 5
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(hike_text, _weight=hike_weight), parent_road=sports_road
     )
     bball_text = "bball"
     bball_weight = 7
-    x_agenda.add_idea(
+    noa_agenda.add_idea(
         ideaunit_shop(bball_text, _weight=bball_weight), parent_road=sports_road
     )
 
-    x_agenda.set_agenda_metrics()
-    sports_swim_road = x_agenda.make_road(sports_road, swim_text)
-    sports_hike_road = x_agenda.make_road(sports_road, hike_text)
-    sports_bball_road = x_agenda.make_road(sports_road, bball_text)
-    assert x_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
-    assert x_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
-    assert x_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
+    noa_agenda.set_agenda_metrics()
+    sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
+    sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
+    sports_bball_road = noa_agenda.make_road(sports_road, bball_text)
+    assert noa_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert noa_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert noa_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
     summer_text = "summer"
-    summer_road = x_agenda.make_road(sports_road, summer_text)
-    summer_swim_road = x_agenda.make_road(summer_road, swim_text)
-    summer_hike_road = x_agenda.make_road(summer_road, hike_text)
-    summer_bball_road = x_agenda.make_road(summer_road, bball_text)
-    assert x_agenda._idea_dict.get(summer_swim_road) is None
-    assert x_agenda._idea_dict.get(summer_hike_road) is None
-    assert x_agenda._idea_dict.get(summer_bball_road) is None
-    x_agenda.add_idea(
+    summer_road = noa_agenda.make_road(sports_road, summer_text)
+    summer_swim_road = noa_agenda.make_road(summer_road, swim_text)
+    summer_hike_road = noa_agenda.make_road(summer_road, hike_text)
+    summer_bball_road = noa_agenda.make_road(summer_road, bball_text)
+    assert noa_agenda._idea_dict.get(summer_swim_road) is None
+    assert noa_agenda._idea_dict.get(summer_hike_road) is None
+    assert noa_agenda._idea_dict.get(summer_bball_road) is None
+    noa_agenda.add_idea(
         idea_kid=ideaunit_shop(summer_text),
         parent_road=sports_road,
         adoptees=[swim_text, hike_text],
         bundling=True,
     )
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
-    assert x_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
-    assert x_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
-    assert x_agenda._idea_dict.get(summer_bball_road) is None
-    assert x_agenda._idea_dict.get(sports_swim_road) is None
-    assert x_agenda._idea_dict.get(sports_hike_road) is None
-    assert x_agenda._idea_dict.get(sports_bball_road) != None
-    print(f"{x_agenda._idea_dict.keys()=}")
+    noa_agenda.set_agenda_metrics()
+    assert noa_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
+    assert noa_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
+    assert noa_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
+    assert noa_agenda._idea_dict.get(summer_bball_road) is None
+    assert noa_agenda._idea_dict.get(sports_swim_road) is None
+    assert noa_agenda._idea_dict.get(sports_hike_road) is None
+    assert noa_agenda._idea_dict.get(sports_bball_road) != None
+    print(f"{noa_agenda._idea_dict.keys()=}")
 
     # WHEN
-    x_agenda.del_idea_kid(road=summer_road, del_children=False)
+    noa_agenda.del_idea_kid(road=summer_road, del_children=False)
 
     # THEN
-    x_agenda.set_agenda_metrics()
-    print(f"{x_agenda._idea_dict.keys()=}")
-    assert x_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
-    assert x_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
-    assert x_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight
+    noa_agenda.set_agenda_metrics()
+    print(f"{noa_agenda._idea_dict.keys()=}")
+    assert noa_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
+    assert noa_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight
+    assert noa_agenda._idea_dict.get(sports_bball_road)._weight == bball_weight

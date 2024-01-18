@@ -9,7 +9,7 @@ from src.economy.economy import EconomyUnit
 #     yao_clerk = x_economy.get_clerkunit(cid=yao_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
 #     laundry_agenda.set_economy_id(x_economy.economy_id)
-#     print(f"{laundry_agenda._healer=}")
+#     print(f"{laundry_agenda._agent_id=}")
 #     yao_clerk.set_contract(laundry_agenda)
 
 #     casa_text = "casa"

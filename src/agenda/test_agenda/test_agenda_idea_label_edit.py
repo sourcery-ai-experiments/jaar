@@ -31,7 +31,7 @@ def test_idea_edit_idea_label_FailsWhenIdeaDoesNotExist():
 def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconomyIDisNone():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=tim_text)
+    tim_agenda = agendaunit_shop(_agent_id=tim_text)
 
     work_text = "work"
     work_road = tim_agenda.make_l1_road(work_text)
@@ -39,7 +39,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconomyIDisNone(
     swim_road = tim_agenda.make_road(work_road, swim_text)
     tim_agenda.add_idea(ideaunit_shop(work_text), parent_road=tim_agenda._economy_id)
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
-    assert tim_agenda._healer == tim_text
+    assert tim_agenda._agent_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._economy_id
     work_idea = tim_agenda.get_idea_obj(work_road)
     assert work_idea._parent_road == tim_agenda._economy_id
@@ -66,7 +66,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconomyIDisNone(
 def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_economy_id_IsDifferent():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=tim_text)
+    tim_agenda = agendaunit_shop(_agent_id=tim_text)
     work_text = "work"
     work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
@@ -76,7 +76,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_economy_id_IsDiffer
     sun_text = "sun"
     tim_agenda._economy_id = sun_text
     tim_agenda._idearoot._agenda_economy_id = sun_text
-    assert tim_agenda._healer == tim_text
+    assert tim_agenda._agent_id == tim_text
     assert tim_agenda._economy_id == sun_text
     assert tim_agenda._idearoot._agenda_economy_id == sun_text
     assert tim_agenda._idearoot._label == root_label()
@@ -98,14 +98,14 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_economy_id_IsDiffer
 def test_agenda_set_economy_id_CorrectlySetsAttr():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=tim_text)
+    tim_agenda = agendaunit_shop(_agent_id=tim_text)
     work_text = "work"
     old_work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
     old_swim_road = tim_agenda.make_road(old_work_road, swim_text)
     tim_agenda.add_idea(ideaunit_shop(work_text), parent_road=tim_agenda._economy_id)
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=old_work_road)
-    assert tim_agenda._healer == tim_text
+    assert tim_agenda._agent_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._economy_id
     work_idea = tim_agenda.get_idea_obj(old_work_road)
     assert work_idea._parent_road == tim_agenda._economy_id
@@ -132,7 +132,7 @@ def test_agenda_set_economy_id_CorrectlySetsAttr():
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
     healer_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_agent_id=healer_text)
 
     old_healer_text = "healer"
     old_healer_road = tim_agenda.make_l1_road(old_healer_text)
@@ -182,7 +182,7 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 def test_agenda_edit_idea_label_Changes_beliefunits():
     # GIVEN agenda with beliefunits that will be changed
     healer_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=healer_text)
+    tim_agenda = agendaunit_shop(_agent_id=healer_text)
 
     healer_text = "healer"
     healer_road = tim_agenda.make_l1_road(healer_text)
@@ -233,30 +233,26 @@ def test_agenda_edit_idea_label_Changes_beliefunits():
 
 def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
     # GIVEN this should never happen but it's not currently banned
-    healer_text = "Tim"
-    tim_agenda = agendaunit_shop(_healer=healer_text)
-
-    old_healer_text = "healer"
-    old_healer_road = tim_agenda.make_l1_road(old_healer_text)
+    tim_agenda = agendaunit_shop("Tim")
+    old_casa_text = "casa"
+    old_casa_road = tim_agenda.make_l1_road(old_casa_text)
     tim_agenda.add_idea(
-        ideaunit_shop(old_healer_text), parent_road=tim_agenda._economy_id
+        ideaunit_shop(old_casa_text), parent_road=tim_agenda._economy_id
     )
-    tim_agenda.edit_idea_attr(tim_agenda._economy_id, range_source_road=old_healer_road)
-    assert tim_agenda._idearoot._range_source_road == old_healer_road
+    tim_agenda.edit_idea_attr(tim_agenda._economy_id, range_source_road=old_casa_road)
+    assert tim_agenda._idearoot._range_source_road == old_casa_road
 
     # WHEN
-    new_healer_text = "globe"
-    tim_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
+    new_casa_text = "globe"
+    tim_agenda.edit_idea_label(old_road=old_casa_road, new_label=new_casa_text)
 
     # THEN
-    new_healer_road = tim_agenda.make_l1_road(new_healer_text)
-    assert tim_agenda._idearoot._range_source_road == new_healer_road
+    new_casa_road = tim_agenda.make_l1_road(new_casa_text)
+    assert tim_agenda._idearoot._range_source_road == new_casa_road
 
 
 def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
-    healer_text = "Bob"
-    bob_agenda = agendaunit_shop(_healer=healer_text)
-
+    bob_agenda = agendaunit_shop("Bob")
     healer_text = "healer"
     healer_road = bob_agenda.make_l1_road(healer_text)
     old_water_text = "water"
@@ -339,19 +335,19 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
 def test_agenda_set_healer_CorrectlyChangesBoth():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
-    assert sue_agenda._healer == "Sue"
+    assert sue_agenda._agent_id == "Sue"
     assert sue_agenda._idearoot._label == sue_agenda._economy_id
     # mid_label1 = "tim"
     # sue_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
-    # assert sue_agenda._healer == old_label
+    # assert sue_agenda._agent_id == old_label
     # assert sue_agenda._idearoot._label == mid_label1
 
     # WHEN
     bob_text = "bob"
-    sue_agenda.set_healer(new_healer=bob_text)
+    sue_agenda.set_agent_id(new_agent_id=bob_text)
 
     # THEN
-    assert sue_agenda._healer == bob_text
+    assert sue_agenda._agent_id == bob_text
     assert sue_agenda._idearoot._label == sue_agenda._economy_id
 
 

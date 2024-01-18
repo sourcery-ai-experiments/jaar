@@ -22,7 +22,7 @@ def test_economy_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     x_economy.create_dirs_if_null()
     y_agenda = example_healers_get_1node_agenda()
-    y_path = f"{x_economy.get_public_dir()}/{y_agenda._healer}.json"
+    y_path = f"{x_economy.get_public_dir()}/{y_agenda._agent_id}.json"
     assert os_path.exists(y_path) == False
 
     # WHEN
@@ -42,7 +42,7 @@ def test_economy_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     x_economy.save_public_agenda(y_agenda)
 
     # WHEN / THEN
-    assert x_economy.get_public_agenda(healer=y_agenda._healer) == y_agenda
+    assert x_economy.get_public_agenda(healer=y_agenda._agent_id) == y_agenda
 
 
 def test_economy_change_public_agenda_healer_ChangesAgendaPID(
@@ -53,7 +53,7 @@ def test_economy_change_public_agenda_healer_ChangesAgendaPID(
     x_economy = economyunit_shop(x_economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
     old_agenda_healer = "old1"
-    y_agenda = agendaunit_shop(_healer=old_agenda_healer)
+    y_agenda = agendaunit_shop(_agent_id=old_agenda_healer)
     old_y_agenda_path = f"{x_economy.get_public_dir()}/{old_agenda_healer}.json"
     x_economy.save_public_agenda(y_agenda)
     print(f"{old_y_agenda_path=}")
@@ -86,5 +86,5 @@ def test_economy_Sets_idearoot_Label(
     x_economy.save_public_agenda(old_x_agenda)
 
     # THEN
-    new_x_agenda = x_economy.get_public_agenda(old_x_agenda._healer)
+    new_x_agenda = x_economy.get_public_agenda(old_x_agenda._agent_id)
     assert new_x_agenda._idearoot._label == x_economy_id

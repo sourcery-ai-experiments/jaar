@@ -1,4 +1,4 @@
-from src._prime.road import RoadUnit, PersonRoad, PersonID, EconomyAddress
+from src._prime.road import RoadUnit, HealerRoad, PersonID, EconomyAddress
 from src.accord.due import DueID, DueUnit, dueunit_shop
 from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
@@ -94,21 +94,21 @@ class AccordUnit:
     def set_topicunit(self, x_topicunit: TopicUnit):
         self._topicunits[x_topicunit.base] = x_topicunit
 
-    def topicunit_exists(self, topicbase: PersonRoad) -> bool:
+    def topicunit_exists(self, topicbase: HealerRoad) -> bool:
         return self._topicunits.get(topicbase) != None
 
-    def get_topicunit(self, personroad: PersonRoad) -> TopicUnit:
-        return self._topicunits.get(personroad)
+    def get_topicunit(self, healerroad: HealerRoad) -> TopicUnit:
+        return self._topicunits.get(healerroad)
 
-    def del_topicunit(self, personroad: PersonRoad):
-        self._topicunits.pop(personroad)
+    def del_topicunit(self, healerroad: HealerRoad):
+        self._topicunits.pop(healerroad)
 
     def set_actor(self, actor: PersonID, due_uid: DueID):
         if self.dueunit_exists(due_uid):
             x_dueunit = self.get_dueunit(due_uid)
             x_dueunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, due_uid: PersonRoad):
+    def del_actor(self, actor: PersonID, due_uid: HealerRoad):
         if self.dueunit_exists(due_uid):
             x_dueunit = self.get_dueunit(due_uid)
             x_dueunit.del_actor(actor)

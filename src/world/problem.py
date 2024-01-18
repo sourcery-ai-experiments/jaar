@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from src.economy.economy import EconomyID
-from src.agenda.agenda import PersonID
+from src._prime.road import EconomyID, PersonID, ProblemGenus
 
 
 @dataclass
@@ -85,10 +84,6 @@ def healerlink_shop(
     return HealerLink(
         person_id=person_id, weight=weight, in_tribe=in_tribe, _economylinks={}
     )
-
-
-class ProblemGenus(str):  # Created to help track the concept
-    pass
 
 
 @dataclass

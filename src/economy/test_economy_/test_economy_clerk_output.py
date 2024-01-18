@@ -26,7 +26,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
     x_economy.set_healer_depotlink(
-        xia_text, input_agenda._healer, depotlink_type="blind_trust"
+        xia_text, input_agenda._agent_id, depotlink_type="blind_trust"
     )
     x_economy.save_clerkunit_file(clerk_cid=xia_text)
     xia_healer = x_economy.get_clerkunit(cid=xia_text)
@@ -36,7 +36,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     output_agenda = x_economy.get_output_agenda(clerk_cid=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
-    input_agenda.set_healer(new_healer=xia_text)
+    input_agenda.set_agent_id(new_agent_id=xia_text)
     input_agenda._originunit.set_originlink(pid=xia_text, weight=1)
 
     # THEN
@@ -45,7 +45,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     c_road = f"{input_agenda._economy_id},{c_text}"
     d_text = "D"
     d_road = f"{c_road},{d_text}"
-    print(f"{output_agenda._healer=}")
+    print(f"{output_agenda._agent_id=}")
     print(f"{output_agenda._idea_dict.keys()=}")
     output_agenda_d_idea = output_agenda.get_idea_obj(d_road)
     # print(f" {output_agenda_d_idea._weight=} {len(input_agenda._idearoot._kids)=} ")
@@ -102,8 +102,8 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    x_economy.set_healer_depotlink(xia_text, x1_agenda._healer, "blind_trust")
-    x_economy.set_healer_depotlink(xia_text, x2_agenda._healer, "blind_trust")
+    x_economy.set_healer_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
+    x_economy.set_healer_depotlink(xia_text, x2_agenda._agent_id, "blind_trust")
     x_economy.save_clerkunit_file(clerk_cid=xia_text)
     xia_healer = x_economy.get_clerkunit(cid=xia_text)
     print(f"{xia_healer._contract._partys.keys()=}")
@@ -158,9 +158,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ernie_text = "ernie"
     jessi_text = "jessi"
     steve_text = "steve"
-    ernie_agenda = get_agenda_2CleanNodesRandomWeights(_healer=ernie_text)
-    jessi_agenda = get_agenda_2CleanNodesRandomWeights(_healer=jessi_text)
-    old_steve_agenda = get_agenda_2CleanNodesRandomWeights(_healer=steve_text)
+    ernie_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=ernie_text)
+    jessi_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=jessi_text)
+    old_steve_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=steve_text)
     x_economy.save_public_agenda(ernie_agenda)
     x_economy.save_public_agenda(jessi_agenda)
     x_economy.save_public_agenda(old_steve_agenda)
@@ -179,7 +179,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 4
     assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 4
     # assert len(ux_steve.get_remelded_output_agenda().get_idea_list()) == 4
-    new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_healer="steve")
+    new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_agent_id="steve")
     x_economy.save_public_agenda(new_steve_agenda)
     # print(f"{env_dir=} {ux._agendas_public_dir=}")
     # for file_name in dir_files(dir_path=env_dir):

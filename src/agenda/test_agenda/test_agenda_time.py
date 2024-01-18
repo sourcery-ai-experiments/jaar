@@ -4,7 +4,7 @@ from random import randint
 
 
 def test_time_get_time_min_from_dt_WorksCorrectly():
-    kia_agenda = agendaunit_shop(_healer="Kia")
+    kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert kia_agenda.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
@@ -51,7 +51,7 @@ def _check_time_conversion_works_with_random_inputs(x_agenda: AgendaUnit):
 
 
 def test_get_time_dt_from_min_WorksCorrectly():
-    kia_agenda = agendaunit_shop(_healer="Kia")
+    kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_dt_from_min(min=5000000)
     # assert kia_agenda.get_time_dt_from_min(
@@ -104,7 +104,7 @@ def test_get_time_dt_from_min_WorksCorrectly():
 
 def test_get_time_():
     # GIVEN
-    kia_agenda = agendaunit_shop(_healer="Kia")
+    kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
 
     idea_list = kia_agenda.get_idea_list()
@@ -130,7 +130,7 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_exists():
-#     x_agenda = agendaunit_shop(_healer=healer_text)
+#     x_agenda = agendaunit_shop(_agent_id=healer_text)
 #     x_agenda.set_time_hreg_ideas(c400_count=6)
 #     idea_x = x_agenda.get_idea_obj(x_agenda.make_l1_road("hreg")
 #     assert idea_x != None
@@ -307,7 +307,7 @@ def test_get_time_():
 
 def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
-    noa_agenda = agendaunit_shop(_healer="Noa")
+    noa_agenda = agendaunit_shop(_agent_id="Noa")
     noa_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN

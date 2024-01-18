@@ -70,7 +70,7 @@ class clerkUnit:
         self.set_contract_if_empty()
         self.save_agenda_to_depot(x_agenda)
         self._set_depotlink(
-            x_agenda._healer, depotlink_type, creditor_weight, debtor_weight
+            x_agenda._agent_id, depotlink_type, creditor_weight, debtor_weight
         )
         if self.get_contract()._auto_output_to_public:
             self.save_refreshed_output_to_public()
@@ -93,20 +93,20 @@ class clerkUnit:
             x_agenda = self.open_depot_agenda(healer=outer_healer)
             self.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
-            new_x_agenda = agendaunit_shop(_healer=outer_healer)
+            new_x_agenda = agendaunit_shop(_agent_id=outer_healer)
             new_x_agenda.set_economy_id(self._economy_id)
-            self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._healer)
+            self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._agent_id)
 
     def _set_assignment_depotlink(self, outer_healer):
         src_agenda = self.open_depot_agenda(outer_healer)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_healer=self._clerk_cid)
+        empty_agenda = agendaunit_shop(_agent_id=self._clerk_cid)
         empty_agenda.set_economy_id(self._economy_id)
         assign_agenda = src_agenda.get_assignment(
             empty_agenda, self.get_contract()._partys, self._clerk_cid
         )
         assign_agenda.set_agenda_metrics()
-        self.save_agenda_to_digest(assign_agenda, src_agenda._healer)
+        self.save_agenda_to_digest(assign_agenda, src_agenda._agent_id)
 
     def _set_partyunit_depotlink(
         self,
@@ -208,7 +208,7 @@ class clerkUnit:
         self, x_agenda: AgendaUnit, dest_dir: str, file_name: str = None
     ):
         if file_name is None:
-            file_name = f"{x_agenda._healer}.json"
+            file_name = f"{x_agenda._agent_id}.json"
         # if dest_dir == self._agendas_public_dir:
         #     file_name = self._public_file_name
         save_file(
@@ -228,7 +228,7 @@ class clerkUnit:
         if src_agenda_healer != None:
             file_name = f"{src_agenda_healer}.json"
         else:
-            file_name = f"{x_agenda._healer}.json"
+            file_name = f"{x_agenda._agent_id}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_agenda_to_digest(
@@ -239,11 +239,11 @@ class clerkUnit:
         if src_agenda_healer != None:
             file_name = f"{src_agenda_healer}.json"
         else:
-            file_name = f"{x_agenda._healer}.json"
+            file_name = f"{x_agenda._agent_id}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_contract_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_healer(self._clerk_cid)
+        x_agenda.set_agent_id(self._clerk_cid)
         x_agenda.set_road_delimiter(self._road_delimiter)
         self._save_agenda_to_path(
             x_agenda, self._clerkunit_dir, self._contract_file_name
@@ -297,7 +297,7 @@ class clerkUnit:
 
     def _get_empty_contract_agenda(self):
         x_agenda = agendaunit_shop(
-            _healer=self._clerk_cid,
+            _agent_id=self._clerk_cid,
             _weight=0,
             _road_delimiter=self._road_delimiter,
         )

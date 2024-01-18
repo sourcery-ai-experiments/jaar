@@ -19,7 +19,7 @@ def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
     # GIVEN
     bob_healer = "Bob"
     bob_rational = False
-    bob_agenda = agendaunit_shop(_healer=bob_healer)
+    bob_agenda = agendaunit_shop(_agent_id=bob_healer)
     bob_agenda._rational = bob_rational
 
     # WHEN

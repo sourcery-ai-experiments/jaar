@@ -1,4 +1,4 @@
-from src._prime.road import PersonID
+from src._prime.road import PartyPID
 from dataclasses import dataclass
 from src.tools.python import return1ifnone, x_get_dict
 
@@ -8,10 +8,6 @@ class InvalidPartyException(Exception):
 
 
 class InvalidDepotLinkException(Exception):
-    pass
-
-
-class PartyPID(PersonID):  # Created to help track the concept
     pass
 
 

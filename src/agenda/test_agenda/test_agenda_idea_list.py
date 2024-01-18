@@ -117,9 +117,9 @@ def test_agenda_get_idea_list_returns_correct_list():
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
     work_idea = x_agenda.get_idea_obj(work_road)
-    print(f"{x_agenda._healer=} {len(work_idea._reasonunits)=}")
+    print(f"{x_agenda._agent_id=} {len(work_idea._reasonunits)=}")
     # print(f"{work_idea._reasonunits=}")
-    print(f"{x_agenda._healer=} {len(x_agenda._idearoot._beliefunits)=}")
+    print(f"{x_agenda._agent_id=} {len(x_agenda._idearoot._beliefunits)=}")
     # print(f"{x_agenda._idearoot._beliefunits=}")
 
     idea_list = x_agenda.get_idea_list()
@@ -264,7 +264,7 @@ def test_agenda_set_agenda_metrics_CorrectlyClears_agenda_coin():
 def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     # GIVEN
     healer_text = "Yao"
-    x_agenda = agendaunit_shop(_healer=healer_text, _weight=10)
+    x_agenda = agendaunit_shop(_agent_id=healer_text, _weight=10)
 
     auto_text = "auto"
     auto_road = x_agenda.make_l1_road(auto_text)
@@ -424,14 +424,14 @@ def test_exammple_idea_list_HasCorrectData():
     inter_road = x_agenda.make_l1_road(inter_text)
     x_agenda.set_belief(base=inter_road, pick=inter_road)
     assert x_agenda != None
-    # print(f"{x_agenda._healer=}")
+    # print(f"{x_agenda._agent_id=}")
     # print(f"{len(x_agenda._idearoot._kids)=}")
     ulty_text = "Ultimate Frisbee"
     ulty_road = x_agenda.make_l1_road(ulty_text)
 
     # if x_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
     assert x_agenda._idearoot._kids[ulty_text]._reasonunits != None
-    assert x_agenda._healer != None
+    assert x_agenda._agent_id != None
 
     # for belief in x_agenda._idearoot._beliefunits.values():
     #     print(f"{belief=}")

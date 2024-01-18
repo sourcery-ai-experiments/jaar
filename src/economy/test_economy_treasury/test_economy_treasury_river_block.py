@@ -33,7 +33,7 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     bob_text = "bob"
     tim_text = "tim"
     tim_title = "Teacher Tim"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tim_partyunit = partyunit_shop(
         pid=tim_text,
         _agenda_credit=0.9,
@@ -164,7 +164,7 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
 
     bob_text = "bob"
     sal_text = "sal"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     partyunit_sal = partyunit_shop(
         pid=sal_text,
         _agenda_credit=0.9,
@@ -354,7 +354,7 @@ def test_PartyTreasuryUnit_exists():
 def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
     # GIVEN
     bob_text = "bob"
-    x_agenda = agendaunit_shop(_healer=bob_text)
+    x_agenda = agendaunit_shop(_agent_id=bob_text)
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
@@ -415,7 +415,7 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
     tom_text = "tom"
     sal_text = "sal"
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     partyunit_tom = partyunit_shop(
         pid=tom_text,
         _agenda_credit=0.9,

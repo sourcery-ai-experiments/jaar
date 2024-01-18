@@ -291,7 +291,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def reason_premise_xxxx_combo_load(self):
         filtered_list = []
         if self.reason_premise_combo.currentText() not in [
-            self.x_agenda._healer,
+            self.x_agenda._agent_id,
             "",
         ]:
             premise_idea = self.x_agenda.get_idea_obj(
@@ -317,7 +317,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reason_premise_divisor.setText("")
 
         if self.reason_premise_open_combo.currentText() not in [
-            self.x_agenda._healer,
+            self.x_agenda._agent_id,
             "",
         ]:
             self.reason_premise_open_combo_sel_actions()
@@ -341,7 +341,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def numeric_road_combo_select(self):
         if self.reason_premise_open_combo.currentText() not in [
-            self.x_agenda._healer,
+            self.x_agenda._agent_id,
             "",
         ]:
             open_idea_x = self.x_agenda.get_idea_obj(
@@ -362,7 +362,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_open_combo.currentText()
             not in [
-                self.x_agenda._healer,
+                self.x_agenda._agent_id,
                 "",
             ]
             and self.reason_premise_open.toPlainText() != ""
@@ -382,7 +382,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_nigh_combo.currentText()
             not in [
-                self.x_agenda._healer,
+                self.x_agenda._agent_id,
                 "",
             ]
             and self.reason_premise_nigh.toPlainText() != ""
@@ -402,7 +402,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if (
             self.reason_premise_divisor_combo.currentText()
             not in [
-                self.x_agenda._healer,
+                self.x_agenda._agent_id,
                 "",
             ]
             and self.reason_premise_divisor.toPlainText() != ""
@@ -423,7 +423,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def reason_premise_nigh_combo_select(self):
         self.reason_premise_nigh.setText("")
         if self.reason_premise_nigh_combo.currentText() not in [
-            self.x_agenda._healer,
+            self.x_agenda._agent_id,
             "",
         ]:
             nigh_idea_x = self.x_agenda.get_idea_obj(
@@ -435,7 +435,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
     def reason_premise_divisor_combo_select(self):
         self.reason_premise_divisor.setText("")
         if self.reason_premise_divisor_combo.currentText() not in [
-            self.x_agenda._healer,
+            self.x_agenda._agent_id,
             "",
         ]:
             divisor_idea_x = self.x_agenda.get_idea_obj(
@@ -450,7 +450,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for reason in self.x_idea._reasonunits.values():
             reasonheir = self.x_idea._reasonheirs.get(reason.base)
             for premise in reason.premises.values():
-                reason_text = reason.base.replace(f"{self.x_agenda._healer}", "")
+                reason_text = reason.base.replace(f"{self.x_agenda._agent_id}", "")
                 reason_text = reason_text[1:]
                 premise_text = premise.need.replace(reason.base, "")
                 premise_text = premise_text[1:]
@@ -534,7 +534,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         for reasonheir in self.x_idea._reasonheirs.values():
             for premise in reasonheir.premises.values():
                 reasonheir_text = reasonheir.base.replace(
-                    f"{self.x_agenda._healer}", ""
+                    f"{self.x_agenda._agent_id}", ""
                 )
                 reasonheir_text = reasonheir_text[1:]
                 premise_text = premise.need.replace(reasonheir.base, "")

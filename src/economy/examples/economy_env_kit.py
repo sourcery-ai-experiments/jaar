@@ -49,15 +49,15 @@ def env_dir_setup_cleanup():
 
 
 def create_agenda_file_for_economys(economy_dir: str, agenda_healer: str):
-    x_agenda = agendaunit_shop(_healer=agenda_healer)
+    x_agenda = agendaunit_shop(_agent_id=agenda_healer)
     agenda_dir = f"{economy_dir}/agendas"
-    # file_path = f"{agenda_dir}/{x_agenda._healer}.json"
+    # file_path = f"{agenda_dir}/{x_agenda._agent_id}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {x_agenda._healer=}")
+    # print(f"{file_path=} {x_agenda._agent_id=}")
 
     save_file(
         dest_dir=agenda_dir,
-        file_name=f"{x_agenda._healer}.json",
+        file_name=f"{x_agenda._agent_id}.json",
         file_text=x_agenda.get_json(),
     )
 
@@ -95,9 +95,9 @@ def _delete_and_set_ex3():
     # x_economy.set_healer(x_clerk=clerkunit_shop(pid="w2", env_dir=x_economy.get_object_root_dir()))
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    healer_text = example_agenda_v002._healer
+    bob_text = example_agenda_v002._agent_id
     x_economy.set_healer_depotlink(
-        xia_text, agenda_healer=healer_text, depotlink_type="blind_trust"
+        xia_text, agenda_agent_id=bob_text, depotlink_type="blind_trust"
     )
     # w1_obj = x_economy.get_clerkunit(cid=w1_text)
 
@@ -156,58 +156,56 @@ def _delete_and_set_ex5():
     # ethical code steve
     # ethical code Jessica
     # ethical code Francine
-    # ethical code Clay
-    agenda_1 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="ernie")
-    agenda_2 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="steve")
-    agenda_3 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="jessica")
-    agenda_4 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="francine")
-    agenda_5 = example_healers_get_agenda_2CleanNodesRandomWeights(_healer="clay")
+    # ethical code Clayenda
+    ag_1 = example_healers_get_agenda_2CleanNodesRandomWeights("ernie")
+    ag_2 = example_healers_get_agenda_2CleanNodesRandomWeights("steve")
+    ag_3 = example_healers_get_agenda_2CleanNodesRandomWeights("jessica")
+    ag_4 = example_healers_get_agenda_2CleanNodesRandomWeights("francine")
+    ag_5 = example_healers_get_agenda_2CleanNodesRandomWeights("clay")
 
-    x_p.save_public_agenda(agenda_1)
-    x_p.save_public_agenda(agenda_2)
-    x_p.save_public_agenda(agenda_3)
-    x_p.save_public_agenda(agenda_4)
-    x_p.save_public_agenda(agenda_5)
+    x_p.save_public_agenda(ag_1)
+    x_p.save_public_agenda(ag_2)
+    x_p.save_public_agenda(ag_3)
+    x_p.save_public_agenda(ag_4)
+    x_p.save_public_agenda(ag_5)
 
-    x_p.create_new_clerkunit(clerk_cid=agenda_1._healer)
-    x_p.create_new_clerkunit(clerk_cid=agenda_2._healer)
-    x_p.create_new_clerkunit(clerk_cid=agenda_3._healer)
-    x_p.create_new_clerkunit(clerk_cid=agenda_4._healer)
-    x_p.create_new_clerkunit(clerk_cid=agenda_5._healer)
+    x_p.create_new_clerkunit(clerk_cid=ag_1._agent_id)
+    x_p.create_new_clerkunit(clerk_cid=ag_2._agent_id)
+    x_p.create_new_clerkunit(clerk_cid=ag_3._agent_id)
+    x_p.create_new_clerkunit(clerk_cid=ag_4._agent_id)
+    x_p.create_new_clerkunit(clerk_cid=ag_5._agent_id)
 
-    x_p.set_healer_depotlink(agenda_1._healer, agenda_2._healer, "blind_trust", 3, 3.1)
-    x_p.set_healer_depotlink(agenda_1._healer, agenda_3._healer, "blind_trust", 7, 7.1)
-    x_p.set_healer_depotlink(agenda_1._healer, agenda_4._healer, "blind_trust", 4, 4.1)
-    x_p.set_healer_depotlink(agenda_1._healer, agenda_5._healer, "blind_trust", 5, 5.1)
+    x_p.set_healer_depotlink(ag_1._agent_id, ag_2._agent_id, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(ag_1._agent_id, ag_3._agent_id, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(ag_1._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(ag_1._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
 
-    x_p.set_healer_depotlink(agenda_2._healer, agenda_1._healer, "blind_trust", 3, 3.1)
-    x_p.set_healer_depotlink(agenda_2._healer, agenda_3._healer, "blind_trust", 7, 7.1)
-    x_p.set_healer_depotlink(agenda_2._healer, agenda_4._healer, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(ag_2._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(ag_2._agent_id, ag_3._agent_id, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(ag_2._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
     x_agenda = example_healers_get_agenda_3CleanNodesRandomWeights()
-    x_p.set_healer_depotlink(
-        agenda_2._healer, agenda_5._healer, "ignore", 5, 5.1, x_agenda
-    )
+    x_p.set_healer_depotlink(ag_2._agent_id, ag_5._agent_id, "ignore", 5, 5.1, x_agenda)
 
-    x_p.set_healer_depotlink(agenda_3._healer, agenda_1._healer, "blind_trust", 3, 3.1)
-    x_p.set_healer_depotlink(agenda_3._healer, agenda_2._healer, "blind_trust", 7, 7.1)
-    x_p.set_healer_depotlink(agenda_3._healer, agenda_4._healer, "blind_trust", 4, 4.1)
-    x_p.set_healer_depotlink(agenda_3._healer, agenda_5._healer, "blind_trust", 5, 5.1)
+    x_p.set_healer_depotlink(ag_3._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(ag_3._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(ag_3._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(ag_3._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
 
-    x_p.set_healer_depotlink(agenda_4._healer, agenda_1._healer, "blind_trust", 3, 3.1)
-    x_p.set_healer_depotlink(agenda_4._healer, agenda_2._healer, "blind_trust", 7, 7.1)
-    x_p.set_healer_depotlink(agenda_4._healer, agenda_3._healer, "blind_trust", 4, 4.1)
-    x_p.set_healer_depotlink(agenda_4._healer, agenda_5._healer, "blind_trust", 5, 5.1)
+    x_p.set_healer_depotlink(ag_4._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(ag_4._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(ag_4._agent_id, ag_3._agent_id, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(ag_4._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
 
-    x_p.set_healer_depotlink(agenda_5._healer, agenda_1._healer, "blind_trust", 3, 3.1)
-    x_p.set_healer_depotlink(agenda_5._healer, agenda_2._healer, "blind_trust", 7, 7.1)
-    x_p.set_healer_depotlink(agenda_5._healer, agenda_3._healer, "blind_trust", 4, 4.1)
-    x_p.set_healer_depotlink(agenda_5._healer, agenda_4._healer, "blind_trust", 5, 5.1)
+    x_p.set_healer_depotlink(ag_5._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
+    x_p.set_healer_depotlink(ag_5._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
+    x_p.set_healer_depotlink(ag_5._agent_id, ag_3._agent_id, "blind_trust", 4, 4.1)
+    x_p.set_healer_depotlink(ag_5._agent_id, ag_4._agent_id, "blind_trust", 5, 5.1)
 
-    x_p.save_clerkunit_file(clerk_cid=agenda_1._healer)
-    x_p.save_clerkunit_file(clerk_cid=agenda_2._healer)
-    x_p.save_clerkunit_file(clerk_cid=agenda_3._healer)
-    x_p.save_clerkunit_file(clerk_cid=agenda_4._healer)
-    x_p.save_clerkunit_file(clerk_cid=agenda_5._healer)
+    x_p.save_clerkunit_file(clerk_cid=ag_1._agent_id)
+    x_p.save_clerkunit_file(clerk_cid=ag_2._agent_id)
+    x_p.save_clerkunit_file(clerk_cid=ag_3._agent_id)
+    x_p.save_clerkunit_file(clerk_cid=ag_4._agent_id)
+    x_p.save_clerkunit_file(clerk_cid=ag_5._agent_id)
 
 
 def _delete_and_set_ex6(x_economy_id: str = None):
@@ -223,26 +221,26 @@ def _delete_and_set_ex6(x_economy_id: str = None):
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)

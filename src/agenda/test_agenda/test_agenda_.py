@@ -18,7 +18,7 @@ def test_AgendaUnit_exists():
     x_agenda = AgendaUnit()
 
     assert x_agenda
-    assert x_agenda._healer is None
+    assert x_agenda._agent_id is None
     assert x_agenda._economy_id is None
     assert x_agenda._weight is None
     assert x_agenda._max_tree_traverse is None
@@ -33,19 +33,19 @@ def test_AgendaUnit_exists():
 
 def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
-    healer_text = "Noa"
+    noa_text = "Noa"
     iowa_economy_id = "Iowa"
     slash_road_delimiter = "/"
 
     # WHEN
     x_agenda = agendaunit_shop(
-        _healer=healer_text,
+        _agent_id=noa_text,
         _economy_id=iowa_economy_id,
         _road_delimiter=slash_road_delimiter,
     )
 
     assert x_agenda
-    assert x_agenda._healer == healer_text
+    assert x_agenda._agent_id == noa_text
     assert x_agenda._economy_id == iowa_economy_id
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
@@ -63,7 +63,7 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     # GIVE/ WHEN
     x_agenda = agendaunit_shop()
 
-    assert x_agenda._healer == ""
+    assert x_agenda._agent_id == ""
     assert x_agenda._economy_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
 
@@ -107,37 +107,37 @@ def test_agenda_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
 
 def test_agenda_ideaoot_uid_isAlwaysEqualTo1():
     # GIVEN
-    healer_text = "Zia"
+    zia_text = "Zia"
 
     # WHEN
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
 
     # THEN
-    assert x_agenda._idearoot._uid == 1
+    assert zia_agenda._idearoot._uid == 1
 
 
 def test_agenda_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(_healer=healer_text)
-    assert x_agenda._max_tree_traverse == 3
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    assert zia_agenda._max_tree_traverse == 3
 
     # WHEN
-    x_agenda.set_max_tree_traverse(int_x=11)
+    zia_agenda.set_max_tree_traverse(int_x=11)
 
     # THEN
-    assert x_agenda._max_tree_traverse == 11
+    assert zia_agenda._max_tree_traverse == 11
 
 
 def test_agenda_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(_healer=healer_text)
-    assert x_agenda._max_tree_traverse == 3
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    assert zia_agenda._max_tree_traverse == 3
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.set_max_tree_traverse(int_x=1)
+        zia_agenda.set_max_tree_traverse(int_x=1)
     assert (
         str(excinfo.value)
         == "set_max_tree_traverse: input '1' must be number that is 2 or greater"
@@ -184,8 +184,8 @@ def test_agenda_init_CorrectlySetsGiven_auto_output_to_public():
     # GIVEN
 
     # WHEN
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text, _auto_output_to_public=True)
+    noa_text = "Noa"
+    x_agenda = agendaunit_shop(_agent_id=noa_text, _auto_output_to_public=True)
 
     # THEN
     assert x_agenda._auto_output_to_public == True
@@ -194,8 +194,8 @@ def test_agenda_init_CorrectlySetsGiven_auto_output_to_public():
 def test_agenda_set_economy_id_CorrectlySetsAttr():
     # GIVEN
     economy_id_text = "Sun"
-    healer_text = "Noa"
-    x_agenda = agendaunit_shop(_healer=healer_text, _auto_output_to_public=True)
+    noa_text = "Noa"
+    x_agenda = agendaunit_shop(_agent_id=noa_text, _auto_output_to_public=True)
     assert x_agenda._economy_id == root_label()
 
     # WHEN
@@ -208,10 +208,10 @@ def test_agenda_set_economy_id_CorrectlySetsAttr():
 def test_agenda_set_road_delimiter_CorrectlySetsAttr():
     # GIVEN
     economy_id_text = "Sun"
-    healer_text = "Noa"
+    noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
-        _healer=healer_text,
+        _agent_id=noa_text,
         _economy_id=economy_id_text,
         _auto_output_to_public=True,
         _road_delimiter=slash_road_delimiter,
@@ -229,10 +229,10 @@ def test_agenda_set_road_delimiter_CorrectlySetsAttr():
 def test_agendaunit_make_road_ReturnsCorrectObj():
     # GIVEN
     economy_id_text = "Sun"
-    healer_text = "Noa"
+    noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
-        _healer=healer_text,
+        _agent_id=noa_text,
         _economy_id=economy_id_text,
         _auto_output_to_public=True,
         _road_delimiter=slash_road_delimiter,

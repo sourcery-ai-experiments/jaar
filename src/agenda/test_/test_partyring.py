@@ -10,7 +10,7 @@ from src.tools.python import x_is_json, x_get_json
 def test_PartyPID_exists():
     cersei_pid = PartyPID("Cersei")
     assert cersei_pid != None
-    assert str(type(cersei_pid)).find(".party.PartyPID") > 0
+    assert str(type(cersei_pid)).find(".road.PartyPID") > 0
 
 
 def test_PartyTitle_exists():

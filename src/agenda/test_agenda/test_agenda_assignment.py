@@ -14,11 +14,11 @@ from src.agenda.examples.example_agendas import (
 def test_agendaunit_get_assignment_ReturnsAgenda():
     # GIVEN
     jes_text = "jessi"
-    jes1_agenda = agendaunit_shop(_healer=jes_text)
+    jes1_agenda = agendaunit_shop(_agent_id=jes_text)
 
     # WHEN
     bob_text = "bob"
-    agenda_x = agendaunit_shop(_healer=jes_text)
+    agenda_x = agendaunit_shop(_agent_id=jes_text)
     assignor_known_partys_x = {}
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
@@ -43,7 +43,7 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
 
     # WHEN
     bob_text = "bob"
-    y_agenda = agendaunit_shop(_healer=noa_text)
+    y_agenda = agendaunit_shop(_agent_id=noa_text)
     x_agenda = agendaunit_shop()
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
@@ -60,7 +60,7 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
 def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
-    jes_agenda = agendaunit_shop(_healer=jes_text)
+    jes_agenda = agendaunit_shop(_agent_id=jes_text)
     jes_agenda.set_partyunit(partyunit_shop(pid=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
@@ -77,7 +77,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     tx.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
-    empty_agenda = agendaunit_shop(_healer=jes_text)
+    empty_agenda = agendaunit_shop(_agent_id=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
 
     # THEN
@@ -91,7 +91,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
 def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
-    jes_agenda = agendaunit_shop(_healer=jes_text)
+    jes_agenda = agendaunit_shop(_agent_id=jes_text)
     jes_agenda.set_partyunit(partyunit_shop(pid=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
@@ -124,7 +124,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partyunit(partyunit=partyunit_shop(pid=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(pid=noa_text))
 
-    empty_agenda = agendaunit_shop(_healer=jes_text)
+    empty_agenda = agendaunit_shop(_agent_id=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
 
     # THEN
@@ -220,38 +220,37 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
 def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     # GIVEN
-    healer_text = "Neo"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    neo_agenda = agendaunit_shop(_agent_id="Neo")
     casa_text = "casa"
-    casa_road = x_agenda.make_l1_road(casa_text)
+    casa_road = neo_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
-    floor_road = x_agenda.make_road(casa_road, floor_text)
+    floor_road = neo_agenda.make_road(casa_road, floor_text)
     floor_idea = ideaunit_shop(floor_text)
-    x_agenda.add_idea(floor_idea, parent_road=casa_road)
+    neo_agenda.add_idea(floor_idea, parent_road=casa_road)
 
     unim_text = "unimportant"
-    unim_road = x_agenda.make_l1_road(unim_text)
+    unim_road = neo_agenda.make_l1_road(unim_text)
     unim_idea = ideaunit_shop(unim_text)
-    x_agenda.add_idea(unim_idea, parent_road=x_agenda._economy_id)
+    neo_agenda.add_idea(unim_idea, parent_road=neo_agenda._economy_id)
 
     status_text = "cleaniness status"
-    status_road = x_agenda.make_road(casa_road, status_text)
+    status_road = neo_agenda.make_road(casa_road, status_text)
     status_idea = ideaunit_shop(status_text)
-    x_agenda.add_idea(status_idea, parent_road=casa_road)
+    neo_agenda.add_idea(status_idea, parent_road=casa_road)
     floor_reason = reasonunit_shop(base=status_road)
     floor_reason.set_premise(premise=status_road)
-    x_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
+    neo_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    neo_agenda.set_agenda_metrics()
     floor_dict = {floor_road}
-    relevant_roads = x_agenda._get_relevant_roads(floor_dict)
+    relevant_roads = neo_agenda._get_relevant_roads(floor_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        x_agenda._economy_id: -1,
+        neo_agenda._economy_id: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -317,7 +316,7 @@ def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseAndDescendents():
 def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_healer=yao_text)
+    yao_agenda = agendaunit_shop(_agent_id=yao_text)
     work_text = "work"
     work_road = yao_agenda.make_road(yao_agenda._economy_id, work_text)
     yao_agenda.add_idea(ideaunit_shop(work_text), parent_road=yao_agenda._economy_id)
@@ -350,7 +349,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
 def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_healer=yao_text)
+    yao_agenda = agendaunit_shop(_agent_id=yao_text)
     min_range_text = "a_minute_range"
     min_range_road = yao_agenda.make_road(yao_agenda._economy_id, min_range_text)
     min_range_idea = ideaunit_shop(min_range_text, _begin=0, _close=2880)
@@ -387,7 +386,7 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
 def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_healer=yao_text)
+    yao_agenda = agendaunit_shop(_agent_id=yao_text)
     casa_text = "casa"
     casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
     yao_agenda.add_idea(ideaunit_shop(casa_text), parent_road=yao_agenda._economy_id)
@@ -395,7 +394,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
 
     # WHEN
     bob_text = "Bob"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     relevant_roads = {
         yao_agenda._economy_id: "descendant",
         casa_road: "requirementunit_base",
@@ -412,7 +411,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
 def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_healer=yao_text)
+    yao_agenda = agendaunit_shop(_agent_id=yao_text)
 
     casa_text = "casa"
     casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
@@ -431,7 +430,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     print(f"{list(yao_agenda._idearoot._beliefunits.keys())=}")
 
     bob_text = "Bob"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
 
     yao_agenda.set_agenda_metrics()
     bob_agenda.set_agenda_metrics()
@@ -476,7 +475,7 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
 
     # WHEN
     assignment_x = x_agenda.get_assignment(
-        agenda_x=agendaunit_shop(_healer=bob_text),
+        agenda_x=agendaunit_shop(_agent_id=bob_text),
         assignor_partys={bob_text: -1},
         assignor_pid=bob_text,
     )
@@ -508,12 +507,12 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     # WHEN
     cali_text = "Cali"
-    cali_agenda = agendaunit_shop(_healer=cali_text)
+    cali_agenda = agendaunit_shop(_agent_id=cali_text)
     cali_agenda.set_economy_id(economy_id_text)
     print(f"{cali_agenda._economy_id=} {cali_agenda._idea_dict.keys()=}")
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
-        assignor_partys={cali_text: -1, amer_agenda._healer: -1},
+        assignor_partys={cali_text: -1, amer_agenda._agent_id: -1},
         assignor_pid=cali_text,
     )
 

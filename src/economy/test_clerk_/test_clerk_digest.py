@@ -56,7 +56,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     assert contract_agenda._economy_id == economy_id_text
 
     # THEN
-    x_agenda = agendaunit_shop(_healer=tim_text)
+    x_agenda = agendaunit_shop(_agent_id=tim_text)
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda.set_agenda_metrics()
     # x_idearoot = ideaunit_shop(_root=True, _label=gio_text, _parent_road="")
@@ -81,13 +81,13 @@ def test_healer_save_contract_agenda_contractPersonIDMustBeHealer(
     env_dir = get_temp_clerkunit_dir()
     x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_economy_id())
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    assert x_agenda._healer != gio_text
+    assert x_agenda._agent_id != gio_text
 
     # WHEN
     x_clerk.save_contract_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_contract_agenda()._healer == x_clerk._clerk_cid
+    assert x_clerk.open_contract_agenda()._agent_id == x_clerk._clerk_cid
 
 
 def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
@@ -104,7 +104,7 @@ def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_healer(new_healer=gio_text)
+    x_agenda.set_agent_id(new_agent_id=gio_text)
     x_agenda.set_agenda_metrics()
 
     assert contract_agenda._idearoot._kids == x_agenda._idearoot._kids
@@ -112,7 +112,7 @@ def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
     assert contract_agenda._idearoot._beliefunits == {}
     assert contract_agenda._partys == {}
     assert contract_agenda._groups == {}
-    assert contract_agenda._healer == x_clerk._clerk_cid
+    assert contract_agenda._agent_id == x_clerk._clerk_cid
 
 
 def test_healer_erase_contract_agenda_file_DeletesFileCorrectly(
@@ -147,14 +147,14 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     x_clerk = clerkunit_shop(clerk_cid, env_dir, get_temp_economy_id())
     x_clerk.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
-    src_agenda_healer = x_agenda._healer
+    src_agenda_healer = x_agenda._agent_id
     assert count_files(x_clerk._agendas_digest_dir) == 0
 
     # WHEN
     x_clerk.save_agenda_to_digest(x_agenda, src_agenda_healer=src_agenda_healer)
 
     # THEN
-    x_agenda_file_name = f"{x_agenda._healer}.json"
+    x_agenda_file_name = f"{x_agenda._agent_id}.json"
     digest_file_path = f"{x_clerk._agendas_digest_dir}/{x_agenda_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -177,7 +177,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_economy_id())
     sue_agenda.create_core_dir_and_files()
     x_agenda = example_healers_get_2node_agenda()
-    src_agenda_healer = x_agenda._healer
+    src_agenda_healer = x_agenda._agent_id
     assert count_files(sue_agenda._agendas_digest_dir) == 0
     print(f"{x_agenda._economy_id=}")
 
@@ -185,7 +185,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_agenda.set_depot_agenda(x_agenda=x_agenda, depotlink_type="blind_trust")
 
     # THEN
-    x_agenda_file_name = f"{x_agenda._healer}.json"
+    x_agenda_file_name = f"{x_agenda._agent_id}.json"
     digest_file_path = f"{sue_agenda._agendas_digest_dir}/{x_agenda_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -210,15 +210,15 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     x_clerk.create_core_dir_and_files()
     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._healer == clerk_cid_x
+    assert x_agenda_output_before._agent_id == clerk_cid_x
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
-    # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_healer="digested1"))
+    # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_agent_id="digested1"))
 
     # WHEN
     sx_output_after = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    healer_agenda_x = agendaunit_shop(_healer=clerk_cid_x, _weight=0.0)
+    healer_agenda_x = agendaunit_shop(_agent_id=clerk_cid_x, _weight=0.0)
     healer_agenda_x.set_economy_id(get_temp_economy_id())
     healer_agenda_x._idearoot._parent_road = ""
     healer_agenda_x.set_agenda_metrics()
@@ -244,7 +244,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     yao_clerk.create_core_dir_and_files()
     x_agenda_output_before = yao_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._healer == yao_text
+    assert x_agenda_output_before._agent_id == yao_text
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
     input_agenda = example_healers_get_2node_agenda()
     input_agenda.meld(input_agenda)
@@ -274,7 +274,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
-    assert new_output_agenda._healer != input_agenda._healer
+    assert new_output_agenda._agent_id != input_agenda._agent_id
     assert new_output_agenda != input_agenda
 
 
@@ -290,7 +290,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     src1 = "test1"
 #     src1_road = f"{src1}"
-#     s1 = agendaunit_shop(_healer=src1)
+#     s1 = agendaunit_shop(_agent_id=src1)
 
 #     ceci_text = "Ceci"
 #     s1.set_partyunit(partyunit=PartyUnit(pid=ceci_text))
@@ -339,7 +339,7 @@ def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     yao_originunit = originunit_shop()
     yao_originunit.set_originlink(pid=yao_text, weight=contract_origin_weight)
     contract_agenda_x = example_healers_get_7nodeJRoot_agenda()
-    contract_agenda_x.set_healer(yao_text)
+    contract_agenda_x.set_agent_id(yao_text)
 
     assert contract_agenda_x._idearoot._originunit == originunit_shop()
     assert contract_agenda_x._idearoot._originunit != yao_originunit

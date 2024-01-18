@@ -39,16 +39,16 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = agendaunit_shop(_healer=sal_text)
+    sal = agendaunit_shop(_agent_id=sal_text)
     sal.add_partyunit(pid=bob_text, creditor_weight=1)
     sal.add_partyunit(pid=tom_text, creditor_weight=3)
     x_economy.save_public_agenda(sal)
 
-    bob = agendaunit_shop(_healer=bob_text)
+    bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(bob)
 
-    tom = agendaunit_shop(_healer=tom_text)
+    tom = agendaunit_shop(_agent_id=tom_text)
     tom.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(tom)
 
@@ -122,22 +122,22 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     tom_text = "tom"
     ava_text = "ava"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     x_economy.save_public_agenda(ava_agenda)
     x_economy.refresh_treasury_public_agendas_data()
 
@@ -203,26 +203,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=2)
     x_economy.save_public_agenda(elu_agenda)
 
@@ -288,26 +288,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
@@ -377,26 +377,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
@@ -446,26 +446,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
@@ -538,26 +538,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda = agendaunit_shop(_healer=sal_text)
+    sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
@@ -607,26 +607,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     ava_text = "ava"
     elu_text = "elu"
 
-    sal_agenda_src = agendaunit_shop(_healer=sal_text)
+    sal_agenda_src = agendaunit_shop(_agent_id=sal_text)
     sal_agenda_src.add_partyunit(pid=bob_text, creditor_weight=2, debtor_weight=2)
     sal_agenda_src.add_partyunit(pid=tom_text, creditor_weight=2, debtor_weight=1)
     sal_agenda_src.add_partyunit(pid=ava_text, creditor_weight=2, debtor_weight=2)
     x_economy.save_public_agenda(sal_agenda_src)
 
-    bob_agenda = agendaunit_shop(_healer=bob_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(pid=sal_text)
     x_economy.save_public_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_healer=ava_text)
+    ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_healer=elu_text)
+    elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(pid=ava_text, creditor_weight=8)
     elu_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(elu_agenda)

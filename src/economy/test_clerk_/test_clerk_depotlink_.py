@@ -70,33 +70,33 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     cali_ux.create_core_dir_and_files()
     cali_ux.set_contract_if_empty()
     cali_ux.save_agenda_to_depot(amer_agenda)
-    assert cali_ux.get_contract().get_party(amer_agenda._healer) is None
-    amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._healer}.json"
+    assert cali_ux.get_contract().get_party(amer_agenda._agent_id) is None
+    amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._agent_id}.json"
     assert os_path.exists(amer_digest_path) is False
 
     # WHEN
     assignment_text = "assignment"
     print("next set depotlink")
-    cali_ux._set_depotlink(amer_agenda._healer, link_type=assignment_text)
+    cali_ux._set_depotlink(amer_agenda._agent_id, link_type=assignment_text)
     print("after set depotlink")
 
     # THEN
     assert (
-        cali_ux.get_contract().get_party(amer_agenda._healer).depotlink_type
+        cali_ux.get_contract().get_party(amer_agenda._agent_id).depotlink_type
         == assignment_text
     )
     assert os_path.exists(amer_digest_path)
     digest_agenda = agenda_get_from_json(
         open_file(
             dest_dir=cali_ux._agendas_digest_dir,
-            file_name=f"{amer_agenda._healer}.json",
+            file_name=f"{amer_agenda._agent_id}.json",
         )
     )
-    print(f"{digest_agenda._healer=}")
+    print(f"{digest_agenda._agent_id=}")
     print(f"{len(digest_agenda._idea_dict)=}")
     digest_agenda.set_agenda_metrics()
     assert len(digest_agenda._idea_dict) == 9
-    assert digest_agenda._healer == cali_text
+    assert digest_agenda._agent_id == cali_text
 
 
 def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup):
@@ -227,7 +227,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert len(cx1._partys) == 1
 
     # WHEN
-    zia_agenda = agendaunit_shop(_healer=zia_text)
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
     bob_ux.set_ignore_agenda_file(zia_agenda, src_agenda_healer=None)
 
     # THEN
@@ -249,16 +249,16 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 1
 
     ernie_text = "ernie"
-    ernie_agenda = get_cal2nodes(_healer=ernie_text)
+    ernie_agenda = get_cal2nodes(_agent_id=ernie_text)
     steve_text = "steve"
-    old_steve_agenda = get_cal2nodes(_healer=steve_text)
+    old_steve_agenda = get_cal2nodes(_agent_id=steve_text)
     sx.save_public_agenda(ernie_agenda)
     sx.save_public_agenda(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 4
-    new_steve_agenda = get_cal3nodes(_healer=steve_text)
+    new_steve_agenda = get_cal3nodes(_agent_id=steve_text)
     sx.save_public_agenda(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._agendas_public_dir=}")
     # for file_name in dir_files(dir_path=env_dir):

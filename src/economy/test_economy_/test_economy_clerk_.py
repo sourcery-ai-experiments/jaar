@@ -118,8 +118,8 @@ def test_economyunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert bob_gen_clerkunit._contract != None
     assert bob_static_clerkunit._contract != None
     assert bob_gen_clerkunit == bob_static_clerkunit
-    print(f"{   bob_gen_clerkunit._contract._healer=}")
-    print(f"{bob_static_clerkunit._contract._healer=}")
+    print(f"{   bob_gen_clerkunit._contract._agent_id=}")
+    print(f"{bob_static_clerkunit._contract._agent_id=}")
     assert bob_gen_clerkunit._contract == bob_static_clerkunit._contract
     assert os_path.exists(bob_dir)
     assert os_path.exists(bob_file_path)

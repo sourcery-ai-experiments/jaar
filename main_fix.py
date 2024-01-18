@@ -209,7 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_insert(self):
         self.economy_x.save_public_agenda(
-            agenda_x=agendaunit_shop(_healer=self.agenda_healer.text())
+            agenda_x=agendaunit_shop(_agent_id=self.agenda_healer.text())
         )
         self.refresh_economy()
 
@@ -286,7 +286,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def depotlink_delete(self):
         clerk_cid_x = self.x_clerk.pid
         self.economy_x.del_depotlink(
-            clerk_cid=clerk_cid_x, agendaunit_healer=self.depotlink_pid.text()
+            clerk_cid=clerk_cid_x, agendaunit_agent_id=self.depotlink_pid.text()
         )
         self.economy_x.save_clerkunit_file(clerk_cid=clerk_cid_x)
         self.refresh_healer()

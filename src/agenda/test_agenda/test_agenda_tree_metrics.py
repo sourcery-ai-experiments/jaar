@@ -14,7 +14,7 @@ def test_agenda_get_tree_metrics_exists():
     assert tree_metrics != None
 
     # WHEN
-    x_agenda = agendaunit_shop(_healer="Zia")
+    x_agenda = agendaunit_shop(_agent_id="Zia")
     x_agenda_tree_metrics = x_agenda.get_tree_metrics()
 
     # THEN
@@ -69,7 +69,7 @@ def test_agenda_get_tree_set_all_idea_uids_unique():
 def test_agenda_agenda_get_tree_metrics_sets_uids_correctly():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_healer=zia_text)
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
     swim_text = "swim"
     sports_text = "sports"
     zia_agenda.add_idea(ideaunit_shop(swim_text, _uid=None), zia_agenda._economy_id)

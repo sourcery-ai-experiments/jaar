@@ -10,23 +10,23 @@ from src.agenda.examples.example_agendas import agenda_v001
 def test_agenda_meld_BaseScenario():
     # GIVEN
     agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_healer=agenda_text)
-    x_agenda2 = agendaunit_shop(_healer=agenda_text)
+    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
+    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
 
     # WHEN
     x_agenda1.meld(other_agenda=x_agenda2)
 
     # THEN
     assert x_agenda1
-    assert x_agenda1._healer == agenda_text
+    assert x_agenda1._agent_id == agenda_text
 
 
 def test_agenda_meld_WeightDoesNotCombine():
     # GIVEN
     agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_healer=agenda_text)
+    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda1._weight = 3
-    x_agenda2 = agendaunit_shop(_healer=agenda_text)
+    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda2._weight = 5
 
     # WHEN
@@ -42,10 +42,10 @@ def test_agenda_meld_PartyUnits():
     x1_party = partyunit_shop(pid=x1_pid)
 
     agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_healer=agenda_text)
+    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda1.set_partyunit(partyunit=x1_party)
 
-    x_agenda2 = agendaunit_shop(_healer=agenda_text)
+    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda2.set_partyunit(partyunit=x1_party)
     x2_pid = "x2_party"
     x2_party = partyunit_shop(pid=x2_pid)
@@ -67,10 +67,10 @@ def test_agenda_meld_GroupUnits():
     x1_group = groupunit_shop(brand=x1_pid)
 
     agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_healer=agenda_text)
+    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda1.set_groupunit(y_groupunit=x1_group)
 
-    x_agenda2 = agendaunit_shop(_healer=agenda_text)
+    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda2.set_groupunit(y_groupunit=x1_group)
     x2_pid = "x2_group"
     x2_group = groupunit_shop(brand=x2_pid, uid=5)
@@ -92,8 +92,8 @@ def test_agenda_meld_GroupUnits():
 
 def test_agenda_idearoot_meld_idearoot_AttrCorrectlyMelded():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_healer="spirit")
-    x_agenda2 = agendaunit_shop(_healer="spirit")
+    x_agenda1 = agendaunit_shop(_agent_id="spirit")
+    x_agenda2 = agendaunit_shop(_agent_id="spirit")
     x_agenda2._idearoot._uid = 4
     assert x_agenda1._idearoot._uid == 1
     assert x_agenda2._idearoot._uid == 4
@@ -110,7 +110,7 @@ def test_agenda_idearoot_meld_idearoot_AttrCorrectlyMelded():
 def test_agenda_idearoot_meld_Add4IdeasScenario():
     # GIVEN
     spirit_text = "spirit"
-    x_agenda1 = agendaunit_shop(_healer=spirit_text)
+    x_agenda1 = agendaunit_shop(_agent_id=spirit_text)
 
     tech_text = "tech"
     tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
@@ -121,7 +121,7 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
     free_text = "freestyle"
     free_road = x_agenda1.make_road(swim_road, free_text)
 
-    x_agenda2 = agendaunit_shop(_healer=spirit_text)
+    x_agenda2 = agendaunit_shop(_agent_id=spirit_text)
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
@@ -140,7 +140,7 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
 def test_agenda_idearoot_meld_2SameIdeasScenario():
     # GIVEN
     healer_text = "Yoa"
-    x_agenda1 = agendaunit_shop(_healer=healer_text)
+    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
     tech_text = "tech"
     tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
     bowl_text = "bowl"
@@ -149,7 +149,7 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
     x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
-    x_agenda2 = agendaunit_shop(_healer=healer_text)
+    x_agenda2 = agendaunit_shop(_agent_id=healer_text)
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
@@ -164,7 +164,7 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
 
 def test_agenda_beliefunits_meld_BaseScenarioWorks():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_healer="test7")
+    x_agenda1 = agendaunit_shop(_agent_id="test7")
     tech_text = "tech"
     tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
     bowl_text = "bowl"
@@ -174,7 +174,7 @@ def test_agenda_beliefunits_meld_BaseScenarioWorks():
     x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda1.set_belief(base=tech_road, pick=bowl_road)
 
-    x_agenda2 = agendaunit_shop(_healer="test7")
+    x_agenda2 = agendaunit_shop(_agent_id="test7")
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda2.set_belief(base=tech_road, pick=bowl_road)
@@ -192,7 +192,7 @@ def test_agenda_beliefunits_meld_BaseScenarioWorks():
 
 def test_agenda_beliefunits_meld_2BeliefUnitsWorks():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_healer="test7")
+    x_agenda1 = agendaunit_shop(_agent_id="test7")
     tech_text = "tech"
     tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
     bowl_text = "bowl"
@@ -206,7 +206,7 @@ def test_agenda_beliefunits_meld_2BeliefUnitsWorks():
     x_agenda1.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     x_agenda1.set_belief(base=tech_road, pick=bowl_road)
 
-    x_agenda2 = agendaunit_shop(_healer="test7")
+    x_agenda2 = agendaunit_shop(_agent_id="test7")
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
@@ -226,13 +226,13 @@ def test_agenda_beliefunits_meld_2BeliefUnitsWorks():
 
 def test_agenda_beliefunits_meld_IdeasMeldedBeforeBeliefs():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_healer="test7")
+    x_agenda1 = agendaunit_shop(_agent_id="test7")
 
     swim_text = "swim"
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
     free_text = "freestyle"
 
-    x_agenda2 = agendaunit_shop(_healer="test7")
+    x_agenda2 = agendaunit_shop(_agent_id="test7")
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     x_agenda2.set_belief(base=swim_road, pick=swim_road)
 
@@ -253,8 +253,8 @@ def test_agenda_beliefunits_meld_IdeasMeldedBeforeBeliefs():
 def test_agenda_beliefunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     healer_text = "Yoa"
-    x_agenda1 = agendaunit_shop(_healer=healer_text)
-    x_agenda2 = agendaunit_shop(_healer=healer_text)
+    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
+    x_agenda2 = agendaunit_shop(_agent_id=healer_text)
     bob = "bob"
     x_agenda2.set_partyunit(partyunit_shop(pid=bob))
     assert x_agenda2._groups.get(bob) != None
@@ -274,7 +274,7 @@ def test_agenda_beliefunits_meld_GroupsMeldedBefore_Partys():
 
 def test_agenda_beliefunits_meld_BeliefsAttributeCorrectlySet():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_healer="test7")
+    x_agenda1 = agendaunit_shop(_agent_id="test7")
 
     swim_text = "swim"
     swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
@@ -282,7 +282,7 @@ def test_agenda_beliefunits_meld_BeliefsAttributeCorrectlySet():
     free_road = x_agenda1.make_road(x_agenda1._economy_id, free_text)
     x_agenda1.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
 
-    x_agenda2 = agendaunit_shop(_healer="test7")
+    x_agenda2 = agendaunit_shop(_agent_id="test7")
     x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     x_agenda2.set_belief(base=swim_road, pick=free_road, open=23, nigh=27)
 
@@ -301,7 +301,7 @@ def test_agenda_beliefunits_meld_BeliefsAttributeCorrectlySet():
 def test_agenda_meld_worksCorrectlyForLargeExample():
     # GIVEN
     healer_text = "TlME"
-    x_agenda1 = agendaunit_shop(_healer=healer_text)
+    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
     x_agenda1._idearoot._uid = 1
     x_agenda2 = agenda_v001()
 
@@ -331,7 +331,7 @@ def test_agenda_meld_worksCorrectlyForLargeExample():
     assert len(x_agenda1._idearoot._beliefunits) == len(
         x_agenda2._idearoot._beliefunits
     )
-    assert x_agenda1._healer != x_agenda2._healer
+    assert x_agenda1._agent_id != x_agenda2._agent_id
     print(f"{len(x_agenda1._groups.items())=}")
     # for x_agenda1_group_key, x_agenda1_group_obj in x_agenda1._groups.items():
     #     print(f"{x_agenda1_group_key=}")
@@ -399,7 +399,7 @@ def test_agenda__meld_originlinks_CorrectlySetsOriginLinks():
     bob_text = "Bob"
     sue_text = "Sue"
     sue_weight = 4
-    bob_x_agenda = agendaunit_shop(_healer=bob_text)
+    bob_x_agenda = agendaunit_shop(_agent_id=bob_text)
     assert len(bob_x_agenda._originunit._links) == 0
 
     # WHEN
@@ -415,7 +415,7 @@ def test_agenda__meld_originlinks_CorrectlySetsOriginLinks():
 def test_agenda_meld_OriginUnitsCorrectlySet():
     # GIVEN
     bob_text = "Bob"
-    bob_x_agenda = agendaunit_shop(_healer=bob_text)
+    bob_x_agenda = agendaunit_shop(_agent_id=bob_text)
 
     swim_text = "swim"
     swim_road = bob_x_agenda.make_road(bob_x_agenda._economy_id, swim_text)
@@ -427,7 +427,7 @@ def test_agenda_meld_OriginUnitsCorrectlySet():
 
     sue_text = "Sue"
     sue_weight = 4
-    sue_x_agenda = agendaunit_shop(_healer=sue_text)
+    sue_x_agenda = agendaunit_shop(_agent_id=sue_text)
     sue_x_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     sue_x_agenda.set_belief(base=swim_road, pick=free_road, open=23, nigh=27)
     sue_x_agenda.add_idea(ideaunit_shop(back_text), parent_road=swim_road)

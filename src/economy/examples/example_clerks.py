@@ -24,9 +24,9 @@ def get_Jnode2node_agenda() -> AgendaUnit:
 def get_2node_agenda(economy_id: EconomyID = None) -> AgendaUnit:
     if economy_id is None:
         economy_id = get_temp_economy_id()
-    healer_text = "A"
+    a_text = "A"
     b_text = "B"
-    x_agenda = agendaunit_shop(_healer=healer_text)
+    x_agenda = agendaunit_shop(_agent_id=a_text)
     x_agenda.set_economy_id(economy_id)
     idea_b = ideaunit_shop(b_text)
     x_agenda.add_idea(idea_b, parent_road=get_temp_economy_id())
@@ -125,17 +125,19 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_healer_2agenda(env_dir, economy_id) -> clerkUnit:
+def get_clerkunit_2agenda(env_dir, economy_id) -> clerkUnit:
     yao_text = "Xio"
-    yao_healer = clerkunit_shop(yao_text, env_dir, economy_id)
-    yao_healer.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
-    yao_healer.set_depot_agenda(get_Jnode2node_agenda(), depotlink_type="blind_trust")
-    return yao_healer
+    yao_clerkunit = clerkunit_shop(yao_text, env_dir, economy_id)
+    yao_clerkunit.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
+    yao_clerkunit.set_depot_agenda(
+        get_Jnode2node_agenda(), depotlink_type="blind_trust"
+    )
+    return yao_clerkunit
 
 
-def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
-    healer_text = _healer if _healer != None else "ernie"
-    x_agenda = agendaunit_shop(healer_text)
+def get_agenda_2CleanNodesRandomWeights(_agent_id: str = None) -> AgendaUnit:
+    agent_id = _agent_id if _agent_id != None else "ernie"
+    x_agenda = agendaunit_shop(agent_id)
     casa_text = "casa"
     x_agenda.add_idea(ideaunit_shop(casa_text), parent_road=x_agenda._economy_id)
     casa_road = f"{x_agenda._economy_id},{casa_text}"
@@ -149,9 +151,9 @@ def get_agenda_2CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
     return x_agenda
 
 
-def get_agenda_3CleanNodesRandomWeights(_healer: str = None) -> AgendaUnit:
-    healer_text = _healer if _healer != None else "ernie"
-    x_agenda = agendaunit_shop(healer_text)
+def get_agenda_3CleanNodesRandomWeights(_agent_id: str = None) -> AgendaUnit:
+    agent_id = _agent_id if _agent_id != None else "ernie"
+    x_agenda = agendaunit_shop(agent_id)
     casa_text = "casa"
     x_agenda.add_idea(ideaunit_shop(casa_text), parent_road=x_agenda._economy_id)
     casa_road = f"{x_agenda._economy_id},{casa_text}"

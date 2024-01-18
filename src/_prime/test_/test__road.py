@@ -1,12 +1,16 @@
 from src._prime.road import (
     RoadUnit,
     PersonID,
-    EconomyID,
     PersonRoad,
+    HealerID,
+    HealerRoad,
+    ProblemRoad,
+    ProblemGenus,
+    EconomyID,
     EconomyAddress,
     create_economyaddress,
-    get_economyaddress_from_personroad,
-    get_economyroad_from_personroad,
+    get_economyaddress_from_healerroad,
+    get_economyroad_from_healerroad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -30,6 +34,7 @@ from src._prime.road import (
 )
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
+from inspect import getdoc as inspect_getdoc
 
 
 def test_RoadUnit_exists():
@@ -540,20 +545,20 @@ def test_create_economyaddress_ReturnsCorrect():
     assert bob_texas_economyaddress == EconomyAddress(bob_texas_road)
 
 
-def test_PersonRoad_Exists():
+def test_HealerRoad_Exists():
     # GIVEN
     texas_road = create_road("bob", "texas")
     sports_road = create_road(texas_road, "sports")
 
     # WHEN
-    sports_personroad = PersonRoad(sports_road)
+    sports_healerroad = HealerRoad(sports_road)
 
     # THEN
-    assert sports_personroad != None
-    assert sports_personroad == sports_road
+    assert sports_healerroad != None
+    assert sports_healerroad == sports_road
 
 
-def test_get_economyaddress_from_personroad_ReturnsCorrectObj():
+def test_get_economyaddress_from_healerroad_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     bob_person_id = PersonID(bob_text)
@@ -562,10 +567,10 @@ def test_get_economyaddress_from_personroad_ReturnsCorrectObj():
     sports_road = create_road(
         create_economyaddress(bob_person_id, texas_economy_id), "sports"
     )
-    sports_personroad = PersonRoad(sports_road)
+    sports_healerroad = HealerRoad(sports_road)
 
     # WHEN
-    bob_texas_economyaddress = get_economyaddress_from_personroad(sports_personroad)
+    bob_texas_economyaddress = get_economyaddress_from_healerroad(sports_healerroad)
 
     # THEN
     assert bob_texas_economyaddress == create_economyaddress(
@@ -573,7 +578,7 @@ def test_get_economyaddress_from_personroad_ReturnsCorrectObj():
     )
 
 
-def test_get_economyroad_from_personroad_ReturnsCorrectObj():
+def test_get_economyroad_from_healerroad_ReturnsCorrectObj():
     # GIVEN
     bob_text = "bob"
     texas_text = "texas"
@@ -582,8 +587,45 @@ def test_get_economyroad_from_personroad_ReturnsCorrectObj():
     bob_roses_road = create_road(bob_texas_road, roses_text)
 
     # WHEN
-    texas_roses_road = get_economyroad_from_personroad(bob_roses_road)
+    texas_roses_road = get_economyroad_from_healerroad(bob_roses_road)
 
     # THEN
     print(f"{texas_roses_road=}")
     assert texas_roses_road == create_road(texas_text, roses_text)
+
+
+def test_ProblemRoad_Exists():
+    # GIVEN
+    bob_road = create_road("problem1", "bob")
+    texas_road = create_road(bob_road, "texas")
+    sports_road = create_road(texas_road, "sports")
+
+    # WHEN
+    sports_problemroad = ProblemRoad(sports_road)
+
+    # THEN
+    assert sports_problemroad != None
+    assert sports_problemroad == sports_road
+    assert (
+        inspect_getdoc(sports_problemroad)
+        == "A ProblemRoad is a RoadUnit where first RoadNode is a ProblemGenus."
+    )
+
+
+def test_PersonRoad_Exists():
+    # GIVEN
+    problem1_road = create_road(PersonID("Tim"), ProblemGenus("problem1"))
+    bob_road = create_road(problem1_road, HealerID("Bob"))
+    texas_road = create_road(bob_road, EconomyID("texas"))
+    sports_road = create_road(texas_road, "sports")
+
+    # WHEN
+    sports_problemroad = PersonRoad(sports_road)
+
+    # THEN
+    assert sports_problemroad != None
+    assert sports_problemroad == sports_road
+    assert (
+        inspect_getdoc(sports_problemroad)
+        == "A PersonRoad is a RoadUnit where first RoadNode is a PersonID."
+    )

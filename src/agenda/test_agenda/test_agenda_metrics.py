@@ -43,7 +43,7 @@ def test_agenda_3AdvocatesNoideaunit_shop():
     carm_text = "carmen"
     patr_text = "patrick"
 
-    x_agenda = agendaunit_shop(_healer="prom")
+    x_agenda = agendaunit_shop(_agent_id="prom")
     au_rico = partyunit_shop(pid=rico_text, uid=7)
     au_carm = partyunit_shop(pid=carm_text, uid=2)
     au_patr = partyunit_shop(pid=patr_text, uid=13)
@@ -90,7 +90,7 @@ def test_agenda_get_partyunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    x_agenda = agendaunit_shop(_healer="prom")
+    x_agenda = agendaunit_shop(_agent_id="prom")
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=rico_text, uid=4))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=carr_text, uid=13))
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=patr_text, uid=7))
@@ -105,7 +105,7 @@ def test_agenda_get_groupunits_uid_max_WorksCorrectly():
     carr_text = "carmen"
     patr_text = "patrick"
 
-    x_agenda = agendaunit_shop(_healer="prom")
+    x_agenda = agendaunit_shop(_agent_id="prom")
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=rico_text, uid=4))
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=carr_text, uid=12))
     x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=patr_text, uid=7))

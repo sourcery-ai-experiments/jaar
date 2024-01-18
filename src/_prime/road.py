@@ -8,15 +8,31 @@ class RoadNode(str):
         # return is_string_in_road(string=delimiter, road=self.__str__())
 
 
+class PersonID(RoadNode):  # Created to help track the concept
+    """Must be node thus not include road delimiter"""
+
+    pass
+
+
+class ProblemGenus(RoadNode):  # Created to help track the concept
+    pass
+
+
+class HealerID(PersonID):
+    pass
+
+
 class EconomyID(RoadNode):  # Created to help track the concept
     """Must be node thus not include road delimiter"""
 
     pass
 
 
-class PersonID(RoadNode):  # Created to help track the concept
-    """Must be node thus not include road delimiter"""
+class AgentID(HealerID):
+    pass
 
+
+class PartyPID(AgentID):  # Created to help track the concept
     pass
 
 
@@ -27,12 +43,24 @@ class RoadUnit(str):
 
 
 class PersonRoad(RoadUnit):
+    """A PersonRoad is a RoadUnit where first RoadNode is a PersonID."""
+
+    pass
+
+
+class ProblemRoad(PersonRoad):
+    """A ProblemRoad is a RoadUnit where first RoadNode is a ProblemGenus."""
+
+    pass
+
+
+class HealerRoad(ProblemRoad):
     """A RoadUnit that starts with PersonID"""
 
     pass
 
 
-class EconomyRoad(RoadUnit):
+class EconomyRoad(HealerRoad):
     """A RoadUnit that starts with EconomyID"""
 
     pass
@@ -214,13 +242,13 @@ def create_economyaddress(
     return EconomyAddress(create_road(person_id, economy_id, delimiter))
 
 
-def get_economyaddress_from_personroad(x_personroad: PersonRoad, delimiter: str = None):
-    road_nodes = get_all_road_nodes(x_personroad, delimiter=delimiter)
+def get_economyaddress_from_healerroad(x_healerroad: HealerRoad, delimiter: str = None):
+    road_nodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
     return create_road(road_nodes[0], road_nodes[1])
 
 
-def get_economyroad_from_personroad(
-    x_personroad: PersonRoad, delimiter: str = None
+def get_economyroad_from_healerroad(
+    x_healerroad: HealerRoad, delimiter: str = None
 ) -> EconomyRoad:
-    x_roadnodes = get_all_road_nodes(x_personroad, delimiter=delimiter)
+    x_roadnodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
     return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)

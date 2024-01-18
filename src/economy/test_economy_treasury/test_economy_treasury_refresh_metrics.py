@@ -47,7 +47,7 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = agendaunit_shop(_healer=bob_text)
+    bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     x_economy.save_public_agenda(bob)
     x_economy.refresh_treasury_public_agendas_data()
@@ -73,7 +73,7 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = agendaunit_shop(_healer=bob_text)
+    bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     x_economy.save_public_agenda(bob)
     x_economy.refresh_treasury_public_agendas_data()
@@ -101,25 +101,25 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesPartyuni
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = agendaunit_shop(_healer=bob_text)
+    bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_partyunit(pid=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_economy.save_public_agenda(bob)
 
-    sal = agendaunit_shop(_healer=sal_text)
+    sal = agendaunit_shop(_agent_id=sal_text)
     sal.add_partyunit(pid=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(pid=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_economy.save_public_agenda(sal)
 
-    tom = agendaunit_shop(_healer=tom_text)
+    tom = agendaunit_shop(_agent_id=tom_text)
     tom.add_partyunit(pid=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_partyunit(pid=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
     x_economy.save_public_agenda(tom)
 
-    elu = agendaunit_shop(_healer=elu_text)
+    elu = agendaunit_shop(_agent_id=elu_text)
     elu.add_partyunit(pid=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_partyunit(pid=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_partyunit(pid=elu_text, creditor_weight=1, debtor_weight=4)
@@ -151,10 +151,10 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
     sal_text = "sal"
     elu_text = "elu"
 
-    x_economy.save_public_agenda(agendaunit_shop(_healer=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=elu_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 0
@@ -180,10 +180,10 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
     sal_text = "sal"
     elu_text = "elu"
 
-    x_economy.save_public_agenda(agendaunit_shop(_healer=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_healer=elu_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 0
@@ -207,8 +207,8 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulates_groupun
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     bob_agenda.add_partyunit(pid=tom_text)
     tom_agenda.add_partyunit(pid=bob_text)
     tom_agenda.add_partyunit(pid=elu_text)
@@ -332,9 +332,9 @@ def test_economy_refresh_treasury_public_agendas_data_Populates_idea_catalog_tab
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
-    bob_agenda.set_healer(new_healer=bob_text)
-    tim_agenda.set_healer(new_healer=tim_text)
-    sal_agenda.set_healer(new_healer=sal_text)
+    bob_agenda.set_agent_id(new_agent_id=bob_text)
+    tim_agenda.set_agent_id(new_agent_id=tim_text)
+    sal_agenda.set_agent_id(new_agent_id=sal_text)
     x_economy.save_public_agenda(bob_agenda)
     x_economy.save_public_agenda(tim_agenda)
     x_economy.save_public_agenda(sal_agenda)
@@ -365,10 +365,10 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
     elu_agenda = get_6node_agenda()
-    bob_agenda.set_healer(new_healer=bob_text)
-    tim_agenda.set_healer(new_healer=tim_text)
-    sal_agenda.set_healer(new_healer=sal_text)
-    elu_agenda.set_healer(new_healer=elu_text)
+    bob_agenda.set_agent_id(new_agent_id=bob_text)
+    tim_agenda.set_agent_id(new_agent_id=tim_text)
+    sal_agenda.set_agent_id(new_agent_id=sal_text)
+    elu_agenda.set_agent_id(new_agent_id=elu_text)
     x_economy.save_public_agenda(bob_agenda)
     x_economy.save_public_agenda(tim_agenda)
     x_economy.save_public_agenda(sal_agenda)
@@ -431,9 +431,9 @@ def test_refresh_treasury_public_agendas_data_Populates_belief_catalog_table(
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
-    bob_agenda.set_healer(new_healer=bob_text)
-    tim_agenda.set_healer(new_healer=tim_text)
-    sal_agenda.set_healer(new_healer=sal_text)
+    bob_agenda.set_agent_id(new_agent_id=bob_text)
+    tim_agenda.set_agent_id(new_agent_id=tim_text)
+    sal_agenda.set_agent_id(new_agent_id=sal_text)
     c_text = "C"
     c_road = create_road(tim_agenda._economy_id, c_text)
     f_text = "F"
@@ -510,8 +510,8 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_text = "bob"
     tom_text = "tom"
     elu_text = "elu"
-    bob_agenda = agendaunit_shop(_healer=bob_text)
-    tom_agenda = agendaunit_shop(_healer=tom_text)
+    bob_agenda = agendaunit_shop(_agent_id=bob_text)
+    tom_agenda = agendaunit_shop(_agent_id=tom_text)
     bob_agenda.add_partyunit(pid=tom_text)
     tom_agenda.add_partyunit(pid=bob_text)
     tom_agenda.add_partyunit(pid=elu_text)

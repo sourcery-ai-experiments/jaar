@@ -207,7 +207,7 @@ def test_economy_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErro
         x_economy.insert_intent_into_treasury(amos_agenda, x_calendarreport)
     assert (
         str(excinfo.value)
-        == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._healer}'."
+        == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._agent_id}'."
     )
 
 
@@ -231,7 +231,7 @@ def test_economy_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury
     x_intent_max_count_state = 7
     # WHEN
     x_calendarreport = CalendarReport(
-        healer=bob_agenda._healer,
+        healer=bob_agenda._agent_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -248,7 +248,7 @@ def test_economy_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury
     new_interval_count = 3
     # WHEN
     x_calendarreport = CalendarReport(
-        healer=bob_agenda._healer,
+        healer=bob_agenda._agent_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=new_interval_count,

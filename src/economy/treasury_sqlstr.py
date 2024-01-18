@@ -540,7 +540,7 @@ INSERT INTO agendaunit (
 , rational
 )
 VALUES (
-  '{x_agenda._healer}' 
+  '{x_agenda._agent_id}' 
 , NULL
 )
 ;
@@ -580,7 +580,7 @@ def get_agendaunit_update_sqlstr(agenda: AgendaUnit) -> str:
     return f"""
 UPDATE agendaunit
 SET rational = {sqlite_text(agenda._rational)}
-WHERE healer = '{agenda._healer}'
+WHERE healer = '{agenda._agent_id}'
 ;
 """
 
@@ -697,7 +697,7 @@ INSERT INTO partyunit (
 , _title
 )
 VALUES (
-  '{x_agenda._healer}' 
+  '{x_agenda._agent_id}' 
 , '{x_partyunit.pid}'
 , {sqlite_null(x_partyunit._agenda_credit)} 
 , {sqlite_null(x_partyunit._agenda_debt)}
@@ -1109,7 +1109,7 @@ INSERT INTO partyunit (
 , _title
 )
 VALUES (
-  '{x_agenda._healer}' 
+  '{x_agenda._agent_id}' 
 , '{x_partyunit.pid}'
 , {sqlite_null(x_partyunit._agenda_credit)} 
 , {sqlite_null(x_partyunit._agenda_debt)}

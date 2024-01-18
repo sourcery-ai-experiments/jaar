@@ -167,8 +167,8 @@ def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_clerkunit_dir()
 
-    old_healer_text = "bob"
-    jul_clerkunit = clerkunit_shop(old_healer_text, env_dir, get_temp_economy_id())
+    old_bob_text = "bob"
+    jul_clerkunit = clerkunit_shop(old_bob_text, env_dir, get_temp_economy_id())
     x_agenda = example_healers_get_7nodeJRootWithH_agenda()
     jul_clerkunit.set_dirs()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
@@ -177,7 +177,7 @@ def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     print(f"{jul_clerkunit._clerkunit_dir}")
     clerkunits_text = "clerkunits"
     clerkunits_dir = f"{env_dir}/clerkunits"
-    print(f"{clerkunits_dir}/{old_healer_text}")
+    print(f"{clerkunits_dir}/{old_bob_text}")
     contract_file_name = "contract_agenda.json"
     old_contract_file_path = f"{old_clerkunit_dir}/{contract_file_name}"
 
@@ -213,7 +213,7 @@ def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDir(
         bob_text, get_temp_clerkunit_dir(), get_temp_economy_id()
     )
     x_agenda = example_healers_get_6node_agenda()
-    x_agenda.set_healer(new_healer=bob_text)
+    x_agenda.set_agent_id(new_agent_id=bob_text)
     bob_clerkadmin.create_core_dir_and_files(x_agenda)
 
     public_file_path = (

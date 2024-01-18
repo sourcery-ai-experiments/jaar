@@ -2,6 +2,7 @@ from src._prime.road import (
     RoadUnit,
     create_road,
     default_road_delimiter_if_none,
+    AgentID,
 )
 from src.agenda.agenda import (
     AgendaUnit,
@@ -267,7 +268,7 @@ class EconomyUnit:
             cur = treasury_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    agenda_healer=agendaunit_x._healer,
+                    agenda_healer=agendaunit_x._agent_id,
                     groupunit_brand=groupunit_x.brand,
                     partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
                 )
@@ -278,7 +279,7 @@ class EconomyUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(agendaunit_x._healer, idea_x.get_road())
+                idea_catalog_x = IdeaCatalog(agendaunit_x._agent_id, idea_x.get_road())
                 sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
                 cur.execute(sqlstr)
 
@@ -287,7 +288,7 @@ class EconomyUnit:
             cur = treasury_conn.cursor()
             for belief_x in agendaunit_x._idearoot._beliefunits.values():
                 belief_catalog_x = BeliefCatalog(
-                    agenda_healer=agendaunit_x._healer,
+                    agenda_healer=agendaunit_x._agent_id,
                     base=belief_x.base,
                     pick=belief_x.pick,
                 )
@@ -442,7 +443,7 @@ class EconomyUnit:
 
     def change_public_agenda_healer(self, old_healer: str, new_healer: str):
         x_agenda = self.get_public_agenda(healer=old_healer)
-        x_agenda.set_healer(new_healer=new_healer)
+        x_agenda.set_agent_id(new_agent_id=new_healer)
         self.save_public_agenda(x_agenda)
         self.del_public_agenda(x_agenda_healer=old_healer)
 
@@ -453,7 +454,7 @@ class EconomyUnit:
         x_agenda.set_economy_id(economy_id=self.economy_id)
         save_file(
             dest_dir=self.get_public_dir(),
-            file_name=f"{x_agenda._healer}.json",
+            file_name=f"{x_agenda._agent_id}.json",
             file_text=x_agenda.get_json(),
         )
 
@@ -482,20 +483,20 @@ class EconomyUnit:
         )
         if depotlink_type == "ignore" and ignore_agenda != None:
             clerkunit.set_ignore_agenda_file(
-                agendaunit=ignore_agenda, src_agenda_healer=agendaunit._healer
+                agendaunit=ignore_agenda, src_agenda_healer=agendaunit._agent_id
             )
 
     def set_healer_depotlink(
         self,
         clerk_cid: clerkCID,
-        agenda_healer: str,
+        agenda_agent_id: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(healer=agenda_healer)
+        x_agenda = self.get_public_agenda(healer=agenda_agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -514,7 +515,7 @@ class EconomyUnit:
         debtor_weight: float = None,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = agendaunit_shop(_healer=agenda_healer)
+        x_agenda = agendaunit_shop(_agent_id=agenda_healer)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -541,9 +542,9 @@ class EconomyUnit:
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, clerk_cid: clerkCID, agendaunit_healer: str):
+    def del_depotlink(self, clerk_cid: clerkCID, agendaunit_agent_id: AgentID):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_clerkunit.del_depot_agenda(agenda_healer=agendaunit_healer)
+        x_clerkunit.del_depot_agenda(agenda_healer=agendaunit_agent_id)
 
     # Healer output_agenda
     def get_output_agenda(self, clerk_cid: clerkCID) -> AgendaUnit:
@@ -565,7 +566,7 @@ class EconomyUnit:
     ):
         if x_agendaunit.idea_exists(x_calendarreport.time_road) == False:
             raise IntentBaseDoesNotExistException(
-                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._healer}'."
+                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._agent_id}'."
             )
 
         with self.get_treasury_conn() as treasury_conn:
