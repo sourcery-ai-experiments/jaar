@@ -130,7 +130,7 @@ def test_get_time_():
 
 
 # def test_time_hreg_set_exists():
-#     x_agenda = agendaunit_shop(_agent_id=healer_text)
+#     x_agenda = agendaunit_shop(_agent_id=bob_text)
 #     x_agenda.set_time_hreg_ideas(c400_count=6)
 #     idea_x = x_agenda.get_idea_obj(x_agenda.make_l1_road("hreg")
 #     assert idea_x != None

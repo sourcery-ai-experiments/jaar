@@ -138,7 +138,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     # GIVEN
     slash_text = "/"
     assert slash_text != default_road_delimiter_if_none()
-    bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_text)
+    bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_text)
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"

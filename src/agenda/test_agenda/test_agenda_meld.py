@@ -139,8 +139,8 @@ def test_agenda_idearoot_meld_Add4IdeasScenario():
 
 def test_agenda_idearoot_meld_2SameIdeasScenario():
     # GIVEN
-    healer_text = "Yoa"
-    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
+    yao_text = "Yao"
+    x_agenda1 = agendaunit_shop(yao_text)
     tech_text = "tech"
     tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
     bowl_text = "bowl"
@@ -149,7 +149,7 @@ def test_agenda_idearoot_meld_2SameIdeasScenario():
     x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
     x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
-    x_agenda2 = agendaunit_shop(_agent_id=healer_text)
+    x_agenda2 = agendaunit_shop(_agent_id=yao_text)
     x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
     x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
@@ -252,10 +252,10 @@ def test_agenda_beliefunits_meld_IdeasMeldedBeforeBeliefs():
 
 def test_agenda_beliefunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
-    healer_text = "Yoa"
-    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
-    x_agenda2 = agendaunit_shop(_agent_id=healer_text)
-    bob = "bob"
+    yao_text = "Yao"
+    x_agenda1 = agendaunit_shop(_agent_id=yao_text)
+    x_agenda2 = agendaunit_shop(_agent_id=yao_text)
+    bob = "Bob"
     x_agenda2.set_partyunit(partyunit_shop(pid=bob))
     assert x_agenda2._groups.get(bob) != None
     assert x_agenda2._groups.get(bob).uid is None
@@ -300,85 +300,85 @@ def test_agenda_beliefunits_meld_BeliefsAttributeCorrectlySet():
 
 def test_agenda_meld_worksCorrectlyForLargeExample():
     # GIVEN
-    healer_text = "TlME"
-    x_agenda1 = agendaunit_shop(_agent_id=healer_text)
-    x_agenda1._idearoot._uid = 1
-    x_agenda2 = agenda_v001()
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(bob_text)
+    bob_agenda._idearoot._uid = 1
+    yao_agenda = agenda_v001()
 
-    x_agenda2r_bl = x_agenda2._idearoot._balancelines
+    yao_agendar_bl = yao_agenda._idearoot._balancelines
     fam_text = "Family"
 
     print(
-        f"Before {x_agenda2r_bl.get(fam_text)._agenda_credit=} {x_agenda2._idearoot._kids_total_weight=}"
+        f"Before {yao_agendar_bl.get(fam_text)._agenda_credit=} {yao_agenda._idearoot._kids_total_weight=}"
     )
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
-    x_agenda1.get_tree_metrics()
+    bob_agenda.meld(yao_agenda)
+    bob_agenda.get_tree_metrics()
 
     # THEN
     print(
-        f"After    {x_agenda2r_bl.get(fam_text)._agenda_debt=} {x_agenda2._idearoot._kids_total_weight=}"
+        f"After    {yao_agendar_bl.get(fam_text)._agenda_debt=} {yao_agenda._idearoot._kids_total_weight=}"
     )
-    assert x_agenda1._weight == x_agenda2._weight
-    assert x_agenda1._idearoot._kids == x_agenda2._idearoot._kids
-    assert x_agenda1._idearoot._uid == x_agenda2._idearoot._uid
-    assert x_agenda1._idearoot._beliefunits == x_agenda2._idearoot._beliefunits
-    assert x_agenda1._groups == x_agenda2._groups
-    assert x_agenda1._partys == x_agenda2._partys
+    assert bob_agenda._weight == yao_agenda._weight
+    assert bob_agenda._idearoot._kids == yao_agenda._idearoot._kids
+    assert bob_agenda._idearoot._uid == yao_agenda._idearoot._uid
+    assert bob_agenda._idearoot._beliefunits == yao_agenda._idearoot._beliefunits
+    assert bob_agenda._groups == yao_agenda._groups
+    assert bob_agenda._partys == yao_agenda._partys
 
-    assert len(x_agenda1._idearoot._beliefunits) == 2
-    assert len(x_agenda1._idearoot._beliefunits) == len(
-        x_agenda2._idearoot._beliefunits
+    assert len(bob_agenda._idearoot._beliefunits) == 2
+    assert len(bob_agenda._idearoot._beliefunits) == len(
+        yao_agenda._idearoot._beliefunits
     )
-    assert x_agenda1._agent_id != x_agenda2._agent_id
-    print(f"{len(x_agenda1._groups.items())=}")
-    # for x_agenda1_group_key, x_agenda1_group_obj in x_agenda1._groups.items():
-    #     print(f"{x_agenda1_group_key=}")
-    #     assert x_agenda1_group_obj.uid == x_agenda2._groups[x_agenda1_group_key].uid
-    #     assert x_agenda1_group_obj == x_agenda2._groups[x_agenda1_group_key]
-    assert x_agenda1._groups == x_agenda2._groups
-    assert len(x_agenda1.get_idea_list()) == len(x_agenda2.get_idea_list())
+    assert bob_agenda._agent_id != yao_agenda._agent_id
+    print(f"{len(bob_agenda._groups.items())=}")
+    # for bob_agenda_group_key, bob_agenda_group_obj in bob_agenda._groups.items():
+    #     print(f"{bob_agenda_group_key=}")
+    #     assert bob_agenda_group_obj.uid == yao_agenda._groups[bob_agenda_group_key].uid
+    #     assert bob_agenda_group_obj == yao_agenda._groups[bob_agenda_group_key]
+    assert bob_agenda._groups == yao_agenda._groups
+    assert len(bob_agenda.get_idea_list()) == len(yao_agenda.get_idea_list())
 
-    x_agenda1r_bl = x_agenda1._idearoot._balancelines
+    bob_agendar_bl = bob_agenda._idearoot._balancelines
     print(
-        f"Melded   {x_agenda1r_bl.get(fam_text)._agenda_debt=} {x_agenda1._idearoot._kids_total_weight=}"
+        f"Melded   {bob_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
     )
 
-    assert x_agenda1r_bl.get(fam_text) != None
-    # assert x_agenda1r_bl.get(fam_text) == x_agenda2r_bl.get(fam_text)
-    # assert x_agenda1r_bl.get(fam_text).agenda_credit == x_agenda2r_bl.get(fam_text).agenda_credit
+    assert bob_agendar_bl.get(fam_text) != None
+    # assert bob_agendar_bl.get(fam_text) == yao_agendar_bl.get(fam_text)
+    # assert bob_agendar_bl.get(fam_text).agenda_credit == yao_agendar_bl.get(fam_text).agenda_credit
     print(
-        f"{x_agenda1r_bl.get(fam_text)._agenda_credit=} {x_agenda1._idearoot._kids_total_weight=}"
+        f"{bob_agendar_bl.get(fam_text)._agenda_credit=} {bob_agenda._idearoot._kids_total_weight=}"
     )
     print(
-        f"{x_agenda2r_bl.get(fam_text)._agenda_credit=} {x_agenda1._idearoot._kids_total_weight=}"
+        f"{yao_agendar_bl.get(fam_text)._agenda_credit=} {bob_agenda._idearoot._kids_total_weight=}"
     )
     print(
-        f"  {x_agenda1r_bl.get(fam_text)._agenda_debt=} {x_agenda1._idearoot._kids_total_weight=}"
+        f"  {bob_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
     )
     print(
-        f"  {x_agenda2r_bl.get(fam_text)._agenda_debt=} {x_agenda1._idearoot._kids_total_weight=}"
+        f"  {yao_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
     )
     assert (
         abs(
-            x_agenda1r_bl.get(fam_text)._agenda_credit
-            - x_agenda2r_bl.get(fam_text)._agenda_credit
+            bob_agendar_bl.get(fam_text)._agenda_credit
+            - yao_agendar_bl.get(fam_text)._agenda_credit
         )
         < 0.0001
     )
     assert (
         abs(
-            x_agenda1r_bl.get(fam_text)._agenda_debt
-            - x_agenda2r_bl.get(fam_text)._agenda_debt
+            bob_agendar_bl.get(fam_text)._agenda_debt
+            - yao_agendar_bl.get(fam_text)._agenda_debt
         )
         < 0.0001
     )
 
-    # for balanceline in x_agenda1r_bl.values():
+    # for balanceline in bob_agendar_bl.values():
     #     if balanceline.pid != fam_text:
-    #         assert balanceline == x_agenda2r_bl.get(balanceline.pid)
-    assert x_agenda1r_bl == x_agenda2r_bl
+    #         assert balanceline == yao_agendar_bl.get(balanceline.pid)
+    assert bob_agendar_bl == yao_agendar_bl
     # assert x_agenda1._idearoot._balancelines == x_agenda2._idearoot._balancelines
     # assert x_agenda1._idearoot == x_agenda2._idearoot
 

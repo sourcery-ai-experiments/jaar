@@ -27,7 +27,7 @@ def test_partyrings_exists():
 
 def test_partyrings_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    party_id = PartyID("bob")
+    party_id = PartyID("Bob")
     party_ring = PartyRing(pid=party_id)
     print(f"{party_ring}")
 

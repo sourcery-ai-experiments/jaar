@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from src._prime.road import (
     RoadUnit,
     RoadNode,
-    HealerRoad,
+    PersonRoad,
     PersonID,
     is_sub_road,
     default_road_delimiter_if_none,
@@ -66,7 +66,7 @@ class OpinionUnit:
 
 
 def opinionunit_shop(
-    road: HealerRoad, affect: float = None, love: float = None
+    road: PersonRoad, affect: float = None, love: float = None
 ) -> OpinionUnit:
     x_opinionunit = OpinionUnit(road=road)
     x_opinionunit.set_affect(affect)
@@ -76,7 +76,7 @@ def opinionunit_shop(
 
 @dataclass
 class TopicLink:
-    base: HealerRoad = None
+    base: PersonRoad = None
     action: bool = None
     weight: float = None
 
@@ -85,7 +85,7 @@ class TopicLink:
 
 
 def topiclink_shop(
-    base: HealerRoad,
+    base: PersonRoad,
     action: bool = None,
     weight: float = None,
 ) -> TopicLink:
@@ -102,8 +102,8 @@ class TopicSubRoadUnitException(Exception):
 
 @dataclass
 class TopicUnit:
-    base: HealerRoad = None
-    opinionunits: dict[HealerRoad:OpinionUnit] = None
+    base: PersonRoad = None
+    opinionunits: dict[PersonRoad:OpinionUnit] = None
     # None: ignore
     # True: base idea._active_status reason be True,
     # False: base idea._active_status reason be False
@@ -174,10 +174,10 @@ class TopicUnit:
         if set_metrics:
             self.set_metrics()
 
-    def del_opinionunit(self, opinion_road: HealerRoad):
+    def del_opinionunit(self, opinion_road: PersonRoad):
         self.opinionunits.pop(opinion_road)
 
-    def get_opinionunit(self, opinion_road: HealerRoad) -> OpinionUnit:
+    def get_opinionunit(self, opinion_road: PersonRoad) -> OpinionUnit:
         return self.opinionunits.get(opinion_road)
 
     def get_opinionunits(
@@ -187,7 +187,7 @@ class TopicUnit:
         in_tribe: bool = None,
         out_tribe: bool = None,
         x_all: bool = None,
-    ) -> dict[HealerRoad:OpinionUnit]:
+    ) -> dict[PersonRoad:OpinionUnit]:
         if good is None:
             good = False
         if bad is None:
@@ -208,7 +208,7 @@ class TopicUnit:
             or (x_opinionunit.love < 0 and out_tribe)
         }
 
-    def get_all_roads(self) -> dict[HealerRoad:int]:
+    def get_all_roads(self) -> dict[PersonRoad:int]:
         x_dict = dict(self.get_opinionunits(x_all=True).items())
         x_dict[self.base] = 0
         return x_dict
@@ -270,9 +270,9 @@ class TopicUnit:
 
 
 def topicunit_shop(
-    base: HealerRoad,
+    base: PersonRoad,
     action: bool = None,
-    opinionunits: dict[HealerRoad:OpinionUnit] = None,
+    opinionunits: dict[PersonRoad:OpinionUnit] = None,
     delimiter: str = None,
 ):
     if action is None:
@@ -289,7 +289,7 @@ def topicunit_shop(
 
 
 def create_topicunit(
-    base: HealerRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
+    base: PersonRoad, good: RoadNode, bad: RoadNode, delimiter: str = None
 ):
     x_topicunit = topicunit_shop(base=base)
     good_opinionunit = opinionunit_shop(create_road(base, good, delimiter=delimiter), 1)

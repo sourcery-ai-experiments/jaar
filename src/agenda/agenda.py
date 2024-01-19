@@ -2240,7 +2240,7 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
 
 @dataclass
 class MeldeeOrderUnit:
-    healer: PersonID
+    agent_id: AgentID
     voice_rank: int
     voice_hx_lowest_rank: int
     file_name: str
@@ -2267,7 +2267,7 @@ def get_meldeeorderunit(
             primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
 
     return MeldeeOrderUnit(
-        healer=file_src_agent_id,
+        agent_id=file_src_agent_id,
         voice_rank=primary_voice_rank_for_meldee,
         voice_hx_lowest_rank=primary_voice_hx_lowest_rank_for_meldee,
         file_name=meldee_file_name,
@@ -2278,10 +2278,10 @@ def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]
     agenda_voice_ranks = {}
     for meldee_file_name in dir_files(dir_path=meldees_dir):
         meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
-        agenda_voice_ranks[meldee_orderunit.healer] = meldee_orderunit
+        agenda_voice_ranks[meldee_orderunit.agent_id] = meldee_orderunit
     agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
     agendas_voice_rank_ordered_list.sort(
-        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.healer)
+        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.agent_id)
     )
     return [
         x_meldeeorderunit.file_name

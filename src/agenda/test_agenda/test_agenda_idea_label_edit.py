@@ -131,22 +131,20 @@ def test_agenda_set_economy_id_CorrectlySetsAttr():
 
 def test_idea_find_replace_road_Changes_kids_scenario1():
     # GIVEN Idea with kids that will be changed
-    healer_text = "Tim"
-    tim_agenda = agendaunit_shop(_agent_id=healer_text)
+    tim_text = "Tim"
+    tim_agenda = agendaunit_shop(tim_text)
 
-    old_healer_text = "healer"
-    old_healer_road = tim_agenda.make_l1_road(old_healer_text)
+    old_casa_text = "casa"
+    old_casa_road = tim_agenda.make_l1_road(old_casa_text)
     bloomers_text = "bloomers"
-    old_bloomers_road = tim_agenda.make_road(old_healer_road, bloomers_text)
+    old_bloomers_road = tim_agenda.make_road(old_casa_road, bloomers_text)
     roses_text = "roses"
     old_roses_road = tim_agenda.make_road(old_bloomers_road, roses_text)
     red_text = "red"
     old_red_road = tim_agenda.make_road(old_roses_road, red_text)
 
-    tim_agenda.add_idea(
-        ideaunit_shop(old_healer_text), parent_road=tim_agenda._economy_id
-    )
-    tim_agenda.add_idea(ideaunit_shop(bloomers_text), parent_road=old_healer_road)
+    tim_agenda.add_idea(ideaunit_shop(old_casa_text), tim_agenda._economy_id)
+    tim_agenda.add_idea(ideaunit_shop(bloomers_text), parent_road=old_casa_road)
     tim_agenda.add_idea(ideaunit_shop(roses_text), parent_road=old_bloomers_road)
     tim_agenda.add_idea(ideaunit_shop(red_text), parent_road=old_roses_road)
     r_idea_roses = tim_agenda.get_idea_obj(old_roses_road)
@@ -159,19 +157,19 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
     assert r_idea_red._parent_road == old_roses_road
 
     # WHEN
-    new_healer_text = "globe"
-    new_healer_road = tim_agenda.make_l1_road(new_healer_text)
-    tim_agenda.edit_idea_label(old_road=old_healer_road, new_label=new_healer_text)
+    new_casa_text = "globe"
+    new_casa_road = tim_agenda.make_l1_road(new_casa_text)
+    tim_agenda.edit_idea_label(old_road=old_casa_road, new_label=new_casa_text)
 
     # THEN
-    assert tim_agenda._idearoot._kids.get(new_healer_text) != None
-    assert tim_agenda._idearoot._kids.get(old_healer_text) is None
+    assert tim_agenda._idearoot._kids.get(new_casa_text) != None
+    assert tim_agenda._idearoot._kids.get(old_casa_text) is None
 
-    assert r_idea_bloomers._parent_road == new_healer_road
+    assert r_idea_bloomers._parent_road == new_casa_road
     assert r_idea_bloomers._kids.get(roses_text) != None
 
     r_idea_roses = r_idea_bloomers._kids.get(roses_text)
-    new_bloomers_road = tim_agenda.make_road(new_healer_road, bloomers_text)
+    new_bloomers_road = tim_agenda.make_road(new_casa_road, bloomers_text)
     assert r_idea_roses._parent_road == new_bloomers_road
     assert r_idea_roses._kids.get(red_text) != None
     r_idea_red = r_idea_roses._kids.get(red_text)
@@ -181,13 +179,13 @@ def test_idea_find_replace_road_Changes_kids_scenario1():
 
 def test_agenda_edit_idea_label_Changes_beliefunits():
     # GIVEN agenda with beliefunits that will be changed
-    healer_text = "Tim"
-    tim_agenda = agendaunit_shop(_agent_id=healer_text)
+    tim_text = "Tim"
+    tim_agenda = agendaunit_shop(tim_text)
 
-    healer_text = "healer"
-    healer_road = tim_agenda.make_l1_road(healer_text)
+    casa_text = "casa"
+    casa_road = tim_agenda.make_l1_road(casa_text)
     bloomers_text = "bloomers"
-    bloomers_road = tim_agenda.make_road(healer_road, bloomers_text)
+    bloomers_road = tim_agenda.make_road(casa_road, bloomers_text)
     roses_text = "roses"
     roses_road = tim_agenda.make_road(bloomers_road, roses_text)
     old_water_text = "water"
@@ -195,7 +193,7 @@ def test_agenda_edit_idea_label_Changes_beliefunits():
     rain_text = "rain"
     old_rain_road = tim_agenda.make_road(old_water_road, rain_text)
 
-    tim_agenda.add_idea(ideaunit_shop(healer_text), parent_road=tim_agenda._economy_id)
+    tim_agenda.add_idea(ideaunit_shop(casa_text), parent_road=tim_agenda._economy_id)
     tim_agenda.add_idea(ideaunit_shop(roses_text), parent_road=bloomers_road)
     tim_agenda.add_idea(ideaunit_shop(rain_text), parent_road=old_water_road)
     tim_agenda.set_belief(base=old_water_road, pick=old_rain_road)
@@ -253,16 +251,16 @@ def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
 
 def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
     bob_agenda = agendaunit_shop("Bob")
-    healer_text = "healer"
-    healer_road = bob_agenda.make_l1_road(healer_text)
+    casa_text = "casa"
+    casa_road = bob_agenda.make_l1_road(casa_text)
     old_water_text = "water"
-    old_water_road = bob_agenda.make_road(healer_road, old_water_text)
+    old_water_road = bob_agenda.make_road(casa_road, old_water_text)
     rain_text = "rain"
     old_rain_road = bob_agenda.make_road(old_water_road, rain_text)
     mood_text = "mood"
     mood_road = bob_agenda.make_l1_road(mood_text)
-    bob_agenda.add_idea(ideaunit_shop(healer_text), parent_road=bob_agenda._economy_id)
-    bob_agenda.add_idea(ideaunit_shop(old_water_text), parent_road=healer_road)
+    bob_agenda.add_idea(ideaunit_shop(casa_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_idea(ideaunit_shop(old_water_text), parent_road=casa_road)
     bob_agenda.add_idea(ideaunit_shop(rain_text), parent_road=old_water_road)
     bob_agenda.add_idea(ideaunit_shop(mood_text), parent_road=bob_agenda._economy_id)
 
@@ -272,7 +270,7 @@ def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
 
     # WHEN
     new_water_text = "h2o"
-    new_water_road = bob_agenda.make_road(healer_road, new_water_text)
+    new_water_road = bob_agenda.make_road(casa_road, new_water_text)
     new_rain_road = bob_agenda.make_road(new_water_road, rain_text)
     bob_agenda.edit_idea_label(old_road=old_water_road, new_label=new_water_text)
 
@@ -332,7 +330,7 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
     assert len(work_idea._reasonunits) == 2
 
 
-def test_agenda_set_healer_CorrectlyChangesBoth():
+def test_agenda_set_agent_id_CorrectlyChangesBoth():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     assert sue_agenda._agent_id == "Sue"
@@ -343,7 +341,7 @@ def test_agenda_set_healer_CorrectlyChangesBoth():
     # assert sue_agenda._idearoot._label == mid_label1
 
     # WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     sue_agenda.set_agent_id(new_agent_id=bob_text)
 
     # THEN

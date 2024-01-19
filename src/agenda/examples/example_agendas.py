@@ -424,7 +424,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
 
 
 def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
-    bob_agenda = agendaunit_shop("bob")
+    bob_agenda = agendaunit_shop("Bob")
     bob_agenda.set_time_hreg_ideas(7)
 
     casa_text = "casa"

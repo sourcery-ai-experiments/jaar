@@ -44,7 +44,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
 
 def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     assigned_unit_x = assigned_unit_shop()
 
     bob_agenda = agendaunit_shop(bob_text)

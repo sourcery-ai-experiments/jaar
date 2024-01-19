@@ -17,7 +17,7 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     jes1_agenda = agendaunit_shop(_agent_id=jes_text)
 
     # WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     agenda_x = agendaunit_shop(_agent_id=jes_text)
     assignor_known_partys_x = {}
     x_assignment_agenda = jes1_agenda.get_assignment(
@@ -42,7 +42,7 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
     noa_agenda.set_partyunit(partyunit_shop(pid=yao_text))
 
     # WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     y_agenda = agendaunit_shop(_agent_id=noa_text)
     x_agenda = agendaunit_shop()
     x_agenda.set_partyunit(partyunit=partyunit_shop(pid=zia_text))

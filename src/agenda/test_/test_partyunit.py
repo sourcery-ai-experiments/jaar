@@ -12,7 +12,7 @@ from pytest import raises as pytest_raises
 
 def test_PartyUnit_exists():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
 
     # WHEN
     bob_party = PartyUnit(pid=bob_pid)
@@ -55,7 +55,7 @@ def test_partyunit_shop_CorrectlySetsAttributes():
 
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     assert bob_party._output_agenda_meld_order is None
 
@@ -69,7 +69,7 @@ def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     x_output_agenda_meld_order = 5
     bob_party.set_output_agenda_meld_order(x_output_agenda_meld_order)
@@ -84,7 +84,7 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_set_title_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     assert bob_party._output_agenda_meld_order is None
 
@@ -98,7 +98,7 @@ def test_PartyUnit_set_title_CorrectlySetsAttribute():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN
@@ -115,7 +115,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
 
     # WHEN
@@ -132,7 +132,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStarting
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN
@@ -149,7 +149,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStarti
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
     depotlink_type_x = "assignment"
     bob_party.set_depotlink_type(depotlink_type=depotlink_type_x)
@@ -169,7 +169,7 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     unacceptable_type_text = "unacceptable"
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
 
     # WHEN / THEN
@@ -183,7 +183,7 @@ def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
 
 def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     assert bob_party._agenda_credit is None
     assert bob_party._agenda_debt is None
@@ -231,7 +231,7 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
 
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     bob_party._agenda_credit = 0.27
     bob_party._agenda_debt = 0.37
@@ -260,7 +260,7 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(pid=bob_pid)
     bob_party._agenda_credit = 0.4106
     bob_party._agenda_debt = 0.1106
@@ -286,7 +286,7 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(
         pid=bob_pid,
         creditor_weight=15,
@@ -328,7 +328,7 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
@@ -368,7 +368,7 @@ def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
 
 def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
     bob_party = partyunit_shop(
@@ -413,7 +413,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 
 def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "bob"
+    bob_pid = "Bob"
     bob_party = partyunit_shop(
         pid=bob_pid,
         _agenda_intent_ratio_credit=0.355,
@@ -447,7 +447,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     glen_text = "glen"
     glen_ring = PartyRing(pid=glen_text)
     bob_party_rings = {glen_ring.pid: glen_ring}
-    bob_text = "bob"
+    bob_text = "Bob"
     bob_title = "Teacher Bob"
     bob_treasury_tax_paid = 0.55
     bob_treasury_tax_diff = 0.66

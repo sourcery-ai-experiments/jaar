@@ -263,64 +263,63 @@ def test_agenda_set_agenda_metrics_CorrectlyClears_agenda_coin():
 
 def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     # GIVEN
-    healer_text = "Yao"
-    x_agenda = agendaunit_shop(_agent_id=healer_text, _weight=10)
+    yao_agenda = agendaunit_shop("Yao", _weight=10)
 
     auto_text = "auto"
-    auto_road = x_agenda.make_l1_road(auto_text)
+    auto_road = yao_agenda.make_l1_road(auto_text)
     auto_idea = ideaunit_shop(auto_text, _weight=10)
-    x_agenda.add_idea(auto_idea, parent_road=x_agenda._economy_id)
+    yao_agenda.add_idea(auto_idea, parent_road=yao_agenda._economy_id)
 
     barn_text = "barn"
-    barn_road = x_agenda.make_l1_road(barn_text)
+    barn_road = yao_agenda.make_l1_road(barn_text)
     barn_idea = ideaunit_shop(barn_text, _weight=60)
-    x_agenda.add_idea(barn_idea, parent_road=x_agenda._economy_id)
+    yao_agenda.add_idea(barn_idea, parent_road=yao_agenda._economy_id)
     lamb_text = "lambs"
-    lamb_road = x_agenda.make_road(barn_road, lamb_text)
+    lamb_road = yao_agenda.make_road(barn_road, lamb_text)
     lamb_idea = ideaunit_shop(lamb_text, _weight=1)
-    x_agenda.add_idea(lamb_idea, parent_road=barn_road)
+    yao_agenda.add_idea(lamb_idea, parent_road=barn_road)
     duck_text = "ducks"
-    duck_road = x_agenda.make_road(barn_road, duck_text)
+    duck_road = yao_agenda.make_road(barn_road, duck_text)
     duck_idea = ideaunit_shop(duck_text, _weight=2)
-    x_agenda.add_idea(duck_idea, parent_road=barn_road)
+    yao_agenda.add_idea(duck_idea, parent_road=barn_road)
 
     coal_text = "coal"
-    coal_road = x_agenda.make_l1_road(coal_text)
+    coal_road = yao_agenda.make_l1_road(coal_text)
     coal_idea = ideaunit_shop(coal_text, _weight=30)
-    x_agenda.add_idea(coal_idea, parent_road=x_agenda._economy_id)
+    yao_agenda.add_idea(coal_idea, parent_road=yao_agenda._economy_id)
 
-    assert x_agenda._idearoot._agenda_coin_onset is None
-    assert x_agenda._idearoot._agenda_coin_cease is None
-    assert x_agenda.get_idea_obj(auto_road)._agenda_coin_onset is None
-    assert x_agenda.get_idea_obj(auto_road)._agenda_coin_cease is None
-    assert x_agenda.get_idea_obj(barn_road)._agenda_coin_onset is None
-    assert x_agenda.get_idea_obj(barn_road)._agenda_coin_cease is None
-    assert x_agenda.get_idea_obj(coal_road)._agenda_coin_onset is None
-    assert x_agenda.get_idea_obj(coal_road)._agenda_coin_cease is None
-    lamb_before = x_agenda.get_idea_obj(road=lamb_road)
+    assert yao_agenda._idearoot._agenda_coin_onset is None
+    assert yao_agenda._idearoot._agenda_coin_cease is None
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_onset is None
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_cease is None
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_onset is None
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_cease is None
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_onset is None
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_cease is None
+    lamb_before = yao_agenda.get_idea_obj(road=lamb_road)
     assert lamb_before._agenda_coin_onset is None
     assert lamb_before._agenda_coin_cease is None
-    duck_before = x_agenda.get_idea_obj(road=duck_road)
+    duck_before = yao_agenda.get_idea_obj(road=duck_road)
     assert duck_before._agenda_coin_onset is None
     assert duck_before._agenda_coin_cease is None
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    yao_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._agenda_coin_onset == 0.0
-    assert x_agenda._idearoot._agenda_coin_cease == 1.0
-    assert x_agenda.get_idea_obj(auto_road)._agenda_coin_onset == 0.0
-    assert x_agenda.get_idea_obj(auto_road)._agenda_coin_cease == 0.1
-    assert x_agenda.get_idea_obj(barn_road)._agenda_coin_onset == 0.1
-    assert x_agenda.get_idea_obj(barn_road)._agenda_coin_cease == 0.7
-    assert x_agenda.get_idea_obj(coal_road)._agenda_coin_onset == 0.7
-    assert x_agenda.get_idea_obj(coal_road)._agenda_coin_cease == 1.0
+    assert yao_agenda._idearoot._agenda_coin_onset == 0.0
+    assert yao_agenda._idearoot._agenda_coin_cease == 1.0
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_onset == 0.0
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_cease == 0.1
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_onset == 0.1
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_cease == 0.7
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_onset == 0.7
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_cease == 1.0
 
-    duck_after = x_agenda.get_idea_obj(road=duck_road)
+    duck_after = yao_agenda.get_idea_obj(road=duck_road)
     assert duck_after._agenda_coin_onset == 0.1
     assert duck_after._agenda_coin_cease == 0.5
-    lamb_after = x_agenda.get_idea_obj(road=lamb_road)
+    lamb_after = yao_agenda.get_idea_obj(road=lamb_road)
     assert lamb_after._agenda_coin_onset == 0.5
     assert lamb_after._agenda_coin_cease == 0.7
 
@@ -618,7 +617,7 @@ def test_exammple_idea_list_Every6WeeksReason():
     assert premise_divisor == 6
     assert premise_open == 1
     print(
-        "There exists a idea with a reason_base TlME,ced_week that also has lemmet div =6 and open/nigh =1"
+        f"There exists a idea with a reason_base {ced_week_base} that also has lemmet div =6 and open/nigh =1"
     )
     # print(f"{len(idea_list)=}")
     ced_week_open = 6001

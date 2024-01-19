@@ -9,7 +9,7 @@ from src.economy.examples.economy_env_kit import (
 from os import path as os_path
 
 
-def test_economyunit_set_healer_WorksCorrectly(env_dir_setup_cleanup):
+def test_economyunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())

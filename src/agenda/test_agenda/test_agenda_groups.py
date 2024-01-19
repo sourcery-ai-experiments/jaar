@@ -676,7 +676,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
 
 def test_agenda_add_idea_CreatesMissingGroups():
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
     work_road = x_agenda.make_l1_road("work")
     new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
@@ -779,7 +779,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
 def test_agenda_add_idea_DoesNotOverwriteGroups():
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
     work_road = bob_agenda.make_l1_road("work")
     new_idea_parent_road = bob_agenda.make_road(work_road, "cleaning")
@@ -1039,7 +1039,7 @@ def test_agenda_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
 
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     agenda_with_partys = agendaunit_shop(bob_text)
 
     sam_text = "sam"

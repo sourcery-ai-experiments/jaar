@@ -341,24 +341,23 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
 
 def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(healer_text)
+    zia_agenda = agendaunit_shop("Zia")
 
     run_text = "run"
-    run_road = x_agenda.make_l1_road(run_text)
+    run_road = zia_agenda.make_l1_road(run_text)
     time_text = "time"
-    time_road = x_agenda.make_l1_road(time_text)
+    time_road = zia_agenda.make_l1_road(time_text)
     day_text = "day"
-    day_road = x_agenda.make_road(time_road, day_text)
+    day_road = zia_agenda.make_road(time_road, day_text)
 
-    x_agenda.add_idea(
+    zia_agenda.add_idea(
         idea_kid=ideaunit_shop(run_text, promise=True),
-        parent_road=x_agenda._economy_id,
+        parent_road=zia_agenda._economy_id,
     )
-    x_agenda.add_idea(
+    zia_agenda.add_idea(
         idea_kid=ideaunit_shop(day_text, _begin=0, _close=500), parent_road=time_road
     )
-    x_agenda.edit_idea_attr(
+    zia_agenda.edit_idea_attr(
         road=run_road,
         reason_base=day_road,
         reason_premise=day_road,
@@ -367,24 +366,24 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
         reason_premise_divisor=2,
     )
 
-    run_idea = x_agenda.get_idea_obj(run_road)
+    run_idea = zia_agenda.get_idea_obj(run_road)
     # print(f"{run_idea._beliefheirs=}")
-    x_agenda.set_belief(base=day_road, pick=day_road, open=1, nigh=2)
-    assert len(x_agenda.get_intent_dict()) == 1
-    x_agenda.set_belief(base=day_road, pick=day_road, open=2, nigh=2)
-    assert len(x_agenda.get_intent_dict()) == 0
-    x_agenda.set_belief(base=day_road, pick=day_road, open=400, nigh=400)
-    assert len(x_agenda.get_intent_dict()) == 0
-    x_agenda.set_belief(base=day_road, pick=day_road, open=401, nigh=402)
-    assert len(x_agenda.get_intent_dict()) == 1
+    zia_agenda.set_belief(base=day_road, pick=day_road, open=1, nigh=2)
+    assert len(zia_agenda.get_intent_dict()) == 1
+    zia_agenda.set_belief(base=day_road, pick=day_road, open=2, nigh=2)
+    assert len(zia_agenda.get_intent_dict()) == 0
+    zia_agenda.set_belief(base=day_road, pick=day_road, open=400, nigh=400)
+    assert len(zia_agenda.get_intent_dict()) == 0
+    zia_agenda.set_belief(base=day_road, pick=day_road, open=401, nigh=402)
+    assert len(zia_agenda.get_intent_dict()) == 1
     # print(f"{run_idea._beliefheirs=}")
     print(f"{run_idea._beliefunits=}")
 
     # WHEN
-    x_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
+    zia_agenda.set_intent_task_complete(task_road=run_road, base=day_road)
     print(f"{run_idea._beliefunits=}")
     # print(f"{run_idea._beliefheirs=}")
-    assert len(x_agenda.get_intent_dict()) == 0
+    assert len(zia_agenda.get_intent_dict()) == 0
 
 
 def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
@@ -436,55 +435,54 @@ def test_agenda_get_from_json_LoadsActionFromJSONCorrectly():
 
 def test_weekdayAgendaItemsCorrectlyReturned():
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(healer_text)
-    x_agenda.set_time_hreg_ideas(c400_count=7)
+    zia_agenda = agendaunit_shop("Zia")
+    zia_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    x_agenda.add_idea(ideaunit_shop(things_text), parent_road=x_agenda._economy_id)
-    t_road = x_agenda.make_l1_road(things_text)
+    zia_agenda.add_idea(ideaunit_shop(things_text), parent_road=zia_agenda._economy_id)
+    t_road = zia_agenda.make_l1_road(things_text)
     clean = "clean"
     run = "run"
     swim = "swim"
     jog = "jog"
     veg = "veg"
     lift = "life"
-    x_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=t_road)
-    x_agenda.add_idea(ideaunit_shop(run, promise=True), parent_road=t_road)
-    x_agenda.add_idea(ideaunit_shop(swim, promise=True), parent_road=t_road)
-    x_agenda.add_idea(ideaunit_shop(jog, promise=True), parent_road=t_road)
-    x_agenda.add_idea(ideaunit_shop(veg, promise=True), parent_road=t_road)
-    x_agenda.add_idea(ideaunit_shop(lift, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(run, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(swim, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(jog, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(veg, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(lift, promise=True), parent_road=t_road)
     time_text = "time"
-    time_road = x_agenda.make_l1_road(time_text)
+    time_road = zia_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
-    jaja_road = x_agenda.make_road(time_road, jaja_text)
+    jaja_road = zia_agenda.make_road(time_road, jaja_text)
     tech_text = "tech"
-    tech_road = x_agenda.make_road(time_road, tech_text)
-    w_road = x_agenda.make_road(tech_road, "week")
-    mon_road = x_agenda.make_road(w_road, "Monday")
-    tue_road = x_agenda.make_road(w_road, "Tuesday")
-    wed_road = x_agenda.make_road(w_road, "Wednesday")
-    thu_road = x_agenda.make_road(w_road, "Thursday")
-    fri_road = x_agenda.make_road(w_road, "Friday")
-    sat_road = x_agenda.make_road(w_road, "Saturday")
-    sun_road = x_agenda.make_road(w_road, "Sunday")
-    t_road = x_agenda.make_l1_road(things_text)
-    c_road = x_agenda.make_road(t_road, clean)
-    r_road = x_agenda.make_road(t_road, run)
-    s_road = x_agenda.make_road(t_road, swim)
-    j_road = x_agenda.make_road(t_road, jog)
-    v_road = x_agenda.make_road(t_road, veg)
-    l_road = x_agenda.make_road(t_road, lift)
+    tech_road = zia_agenda.make_road(time_road, tech_text)
+    w_road = zia_agenda.make_road(tech_road, "week")
+    mon_road = zia_agenda.make_road(w_road, "Monday")
+    tue_road = zia_agenda.make_road(w_road, "Tuesday")
+    wed_road = zia_agenda.make_road(w_road, "Wednesday")
+    thu_road = zia_agenda.make_road(w_road, "Thursday")
+    fri_road = zia_agenda.make_road(w_road, "Friday")
+    sat_road = zia_agenda.make_road(w_road, "Saturday")
+    sun_road = zia_agenda.make_road(w_road, "Sunday")
+    t_road = zia_agenda.make_l1_road(things_text)
+    c_road = zia_agenda.make_road(t_road, clean)
+    r_road = zia_agenda.make_road(t_road, run)
+    s_road = zia_agenda.make_road(t_road, swim)
+    j_road = zia_agenda.make_road(t_road, jog)
+    v_road = zia_agenda.make_road(t_road, veg)
+    l_road = zia_agenda.make_road(t_road, lift)
 
-    x_agenda.edit_idea_attr(c_road, reason_base=tue_road, reason_premise=tue_road)
-    x_agenda.edit_idea_attr(r_road, reason_base=wed_road, reason_premise=wed_road)
-    x_agenda.edit_idea_attr(s_road, reason_base=thu_road, reason_premise=thu_road)
-    x_agenda.edit_idea_attr(j_road, reason_base=fri_road, reason_premise=fri_road)
-    x_agenda.edit_idea_attr(v_road, reason_base=sat_road, reason_premise=sat_road)
-    x_agenda.edit_idea_attr(l_road, reason_base=sun_road, reason_premise=sun_road)
+    zia_agenda.edit_idea_attr(c_road, reason_base=tue_road, reason_premise=tue_road)
+    zia_agenda.edit_idea_attr(r_road, reason_base=wed_road, reason_premise=wed_road)
+    zia_agenda.edit_idea_attr(s_road, reason_base=thu_road, reason_premise=thu_road)
+    zia_agenda.edit_idea_attr(j_road, reason_base=fri_road, reason_premise=fri_road)
+    zia_agenda.edit_idea_attr(v_road, reason_base=sat_road, reason_premise=sat_road)
+    zia_agenda.edit_idea_attr(l_road, reason_base=sun_road, reason_premise=sun_road)
 
-    c_idea = x_agenda.get_idea_obj(c_road)
+    c_idea = zia_agenda.get_idea_obj(c_road)
     c_reason = c_idea._reasonunits
     # for reason_y in c_reason.values():
     #     for premise_y in reason_y.premises.values():
@@ -492,7 +490,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     #             f"Idea: {c_idea._parent_road},{c_idea._label}  Reason: {reason_y.base} open:{premise_y.open} nigh:{premise_y.nigh} diff:{premise_y.nigh-premise_y.open}"
     #         )
 
-    # for base, count_x in x_agenda.get_reason_bases().items():
+    # for base, count_x in zia_agenda.get_reason_bases().items():
     #     print(f"Reasons: {base=} Count: {count_x}")
 
     mon_dt = datetime(2000, 1, 3)
@@ -502,130 +500,129 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     fri_dt = datetime(2000, 1, 7)
     sat_dt = datetime(2000, 1, 1)
     sun_dt = datetime(2000, 1, 2)
-    mon_min = x_agenda.get_time_min_from_dt(dt=mon_dt)
-    tue_min = x_agenda.get_time_min_from_dt(dt=tue_dt)
-    wed_min = x_agenda.get_time_min_from_dt(dt=wed_dt)
-    thu_min = x_agenda.get_time_min_from_dt(dt=thu_dt)
-    fri_min = x_agenda.get_time_min_from_dt(dt=fri_dt)
-    sat_min = x_agenda.get_time_min_from_dt(dt=sat_dt)
-    sun_min = x_agenda.get_time_min_from_dt(dt=sun_dt)
-    assert x_agenda._idearoot._beliefunits.get(jaja_road) is None
+    mon_min = zia_agenda.get_time_min_from_dt(dt=mon_dt)
+    tue_min = zia_agenda.get_time_min_from_dt(dt=tue_dt)
+    wed_min = zia_agenda.get_time_min_from_dt(dt=wed_dt)
+    thu_min = zia_agenda.get_time_min_from_dt(dt=thu_dt)
+    fri_min = zia_agenda.get_time_min_from_dt(dt=fri_dt)
+    sat_min = zia_agenda.get_time_min_from_dt(dt=sat_dt)
+    sun_min = zia_agenda.get_time_min_from_dt(dt=sun_dt)
+    assert zia_agenda._idearoot._beliefunits.get(jaja_road) is None
 
     # WHEN
     print("\nset belief for Sunday")
-    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
-    # for belief in x_agenda._idearoot._beliefunits.values():
+    zia_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=sun_min)
+    # for belief in zia_agenda._idearoot._beliefunits.values():
     #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    assert len(x_agenda._idearoot._beliefunits) == 7
-    print(x_agenda._idearoot._beliefunits[jaja_road])
-    print(x_agenda._idearoot._beliefunits[sat_road])
-    print(x_agenda._idearoot._beliefunits[sun_road])
-    print(x_agenda._idearoot._beliefunits[tue_road])
-    print(x_agenda._idearoot._beliefunits[wed_road])
-    print(x_agenda._idearoot._beliefunits[thu_road])
-    print(x_agenda._idearoot._beliefunits[fri_road])
-    assert x_agenda._idearoot._beliefunits[sun_road]
-    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
-    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 1440
-    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
+    assert len(zia_agenda._idearoot._beliefunits) == 7
+    print(zia_agenda._idearoot._beliefunits[jaja_road])
+    print(zia_agenda._idearoot._beliefunits[sat_road])
+    print(zia_agenda._idearoot._beliefunits[sun_road])
+    print(zia_agenda._idearoot._beliefunits[tue_road])
+    print(zia_agenda._idearoot._beliefunits[wed_road])
+    print(zia_agenda._idearoot._beliefunits[thu_road])
+    print(zia_agenda._idearoot._beliefunits[fri_road])
+    assert zia_agenda._idearoot._beliefunits[sun_road]
+    assert zia_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert zia_agenda._idearoot._beliefunits[sun_road].nigh == 1440
+    # assert zia_agenda._idearoot._beliefunits[sun_road].active == True
 
-    # assert x_agenda._idearoot._beliefunits[tue_road].active == False
-    # assert x_agenda._idearoot._beliefunits[wed_road].active == False
-    # assert x_agenda._idearoot._beliefunits[thu_road].active == False
-    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
-    # assert x_agenda._idearoot._beliefunits[sat_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[tue_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[wed_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[thu_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[fri_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[sat_road].active == False
 
     # WHEN
     print("\nset belief for Sat through Monday")
-    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
-    # for belief in x_agenda._idearoot._beliefunits.values():
+    zia_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sat_min, nigh=mon_min)
+    # for belief in zia_agenda._idearoot._beliefunits.values():
     #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    assert x_agenda._idearoot._beliefunits[sat_road]
-    # assert x_agenda._idearoot._beliefunits[sat_road].active == True
-    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
-    # assert x_agenda._idearoot._beliefunits[tue_road].active == False
-    # assert x_agenda._idearoot._beliefunits[wed_road].active == False
-    # assert x_agenda._idearoot._beliefunits[thu_road].active == False
-    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
+    assert zia_agenda._idearoot._beliefunits[sat_road]
+    # assert zia_agenda._idearoot._beliefunits[sat_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[tue_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[wed_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[thu_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[fri_road].active == False
 
-    assert x_agenda._idearoot._beliefunits[sat_road].open == 0
-    assert x_agenda._idearoot._beliefunits[sat_road].nigh == 1440
-    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
-    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 2880
+    assert zia_agenda._idearoot._beliefunits[sat_road].open == 0
+    assert zia_agenda._idearoot._beliefunits[sat_road].nigh == 1440
+    assert zia_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert zia_agenda._idearoot._beliefunits[sun_road].nigh == 2880
 
     # WHEN
     print("\nset beliefs for Sunday through Friday")
-    x_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
-    # for belief in x_agenda._idearoot._beliefunits.values():
+    zia_agenda.set_belief(base=jaja_road, pick=jaja_road, open=sun_min, nigh=fri_min)
+    # for belief in zia_agenda._idearoot._beliefunits.values():
     #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
     # THEN
-    # assert x_agenda._idearoot._beliefunits[sat_road].active == False
-    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
-    # assert x_agenda._idearoot._beliefunits[tue_road].active == True
-    # assert x_agenda._idearoot._beliefunits[wed_road].active == True
-    # assert x_agenda._idearoot._beliefunits[thu_road].active == True
-    # assert x_agenda._idearoot._beliefunits[fri_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[sat_road].active == False
+    # assert zia_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[tue_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[wed_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[thu_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[fri_road].active == False
 
-    assert x_agenda._idearoot._beliefunits[sun_road].open == 1440
-    assert x_agenda._idearoot._beliefunits[sun_road].nigh == 2880
+    assert zia_agenda._idearoot._beliefunits[sun_road].open == 1440
+    assert zia_agenda._idearoot._beliefunits[sun_road].nigh == 2880
 
     # WHEN
     print("\nset beliefs for 10 day stretch")
     dayzero_dt = datetime(2010, 1, 3)
     dayten_dt = datetime(2010, 1, 13)
-    dayzero_min = x_agenda.get_time_min_from_dt(dt=dayzero_dt)
-    dayten_min = x_agenda.get_time_min_from_dt(dt=dayten_dt)
-    x_agenda.set_belief(
+    dayzero_min = zia_agenda.get_time_min_from_dt(dt=dayzero_dt)
+    dayten_min = zia_agenda.get_time_min_from_dt(dt=dayten_dt)
+    zia_agenda.set_belief(
         base=jaja_road, pick=jaja_road, open=dayzero_min, nigh=dayten_min
     )
-    # for belief in x_agenda._idearoot._beliefunits.values():
+    # for belief in zia_agenda._idearoot._beliefunits.values():
     #     print(f"{belief.base=} (H: {belief.belief}) {belief.active=} {belief.open=} {belief.nigh=}")
 
-    # assert x_agenda._idearoot._beliefunits[sat_road].active == True
-    # assert x_agenda._idearoot._beliefunits[sun_road].active == True
-    # assert x_agenda._idearoot._beliefunits[tue_road].active == True
-    # assert x_agenda._idearoot._beliefunits[wed_road].active == True
-    # assert x_agenda._idearoot._beliefunits[thu_road].active == True
-    # assert x_agenda._idearoot._beliefunits[fri_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[sat_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[sun_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[tue_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[wed_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[thu_road].active == True
+    # assert zia_agenda._idearoot._beliefunits[fri_road].active == True
 
 
 def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
-    healer_text = "Zia"
-    x_agenda = agendaunit_shop(healer_text)
+    zia_agenda = agendaunit_shop("Zia")
 
-    x_agenda.set_agenda_metrics()
-    assert len(x_agenda._partys) == 0
-    assert len(x_agenda._groups) == 0
-    assert len(x_agenda._idearoot._kids) == 0
+    zia_agenda.set_agenda_metrics()
+    assert len(zia_agenda._partys) == 0
+    assert len(zia_agenda._groups) == 0
+    assert len(zia_agenda._idearoot._kids) == 0
 
     clean_things_text = "cleaning things"
-    clean_things_road = x_agenda.make_l1_road(clean_things_text)
+    clean_things_road = zia_agenda.make_l1_road(clean_things_text)
     clean_cookery_text = "clean cookery"
-    clean_cookery_road = x_agenda.make_road(clean_things_road, clean_cookery_text)
+    clean_cookery_road = zia_agenda.make_road(clean_things_road, clean_cookery_text)
     clean_cookery_idea = ideaunit_shop(
         _label=clean_cookery_text, _parent_road=clean_things_road
     )
     print(f"{clean_cookery_idea.get_road()=}")
     house_text = "house"
-    house_road = x_agenda.make_l1_road(house_text)
+    house_road = zia_agenda.make_l1_road(house_text)
     cookery_room_text = "cookery room"
-    cookery_room_road = x_agenda.make_road(house_road, cookery_room_text)
+    cookery_room_road = zia_agenda.make_road(house_road, cookery_room_text)
     cookery_dirty_text = "dirty"
-    cookery_dirty_road = x_agenda.make_road(cookery_room_road, cookery_dirty_text)
+    cookery_dirty_road = zia_agenda.make_road(cookery_room_road, cookery_dirty_text)
 
     # create gregorian timeline
-    x_agenda.set_time_hreg_ideas(c400_count=7)
-    time_road = x_agenda.make_l1_road("time")
-    jajatime_road = x_agenda.make_road(time_road, "jajatime")
-    daytime_road = x_agenda.make_road(jajatime_road, "day")
+    zia_agenda.set_time_hreg_ideas(c400_count=7)
+    time_road = zia_agenda.make_l1_road("time")
+    jajatime_road = zia_agenda.make_road(time_road, "jajatime")
+    daytime_road = zia_agenda.make_road(jajatime_road, "day")
     open_8am = 480
     nigh_8am = 480
 
@@ -651,35 +648,35 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     balancelink_z = balancelink_shop(brand=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
-    assert len(x_agenda._partys) == 0
-    assert len(x_agenda._groups) == 0
-    assert len(x_agenda._idearoot._kids) == 1
-    assert x_agenda.get_idea_obj(daytime_road)._begin == 0
-    assert x_agenda.get_idea_obj(daytime_road)._close == 1440
+    assert len(zia_agenda._partys) == 0
+    assert len(zia_agenda._groups) == 0
+    assert len(zia_agenda._idearoot._kids) == 1
+    assert zia_agenda.get_idea_obj(daytime_road)._begin == 0
+    assert zia_agenda.get_idea_obj(daytime_road)._close == 1440
     print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
-    x_agenda.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
+    zia_agenda.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
 
     # THEN
-    # for idea_kid in x_agenda._idearoot._kids.keys():
+    # for idea_kid in zia_agenda._idearoot._kids.keys():
     #     print(f"  {idea_kid=}")
 
     print(f"{clean_cookery_idea.get_road()=}")
-    assert x_agenda.get_idea_obj(clean_cookery_road) != None
-    assert x_agenda.get_idea_obj(clean_cookery_road)._label == clean_cookery_text
-    assert x_agenda.get_idea_obj(clean_cookery_road).promise
-    assert len(x_agenda.get_idea_obj(clean_cookery_road)._reasonunits) == 2
-    assert x_agenda.get_idea_obj(clean_things_road) != None
-    assert x_agenda.get_idea_obj(cookery_room_road) != None
-    assert x_agenda.get_idea_obj(cookery_dirty_road) != None
-    assert x_agenda.get_idea_obj(daytime_road)._begin == 0
-    assert x_agenda.get_idea_obj(daytime_road)._close == 1440
-    assert len(x_agenda._groups) == 1
-    assert x_agenda._groups.get(family_text) != None
-    assert x_agenda._groups.get(family_text)._partys in (None, {})
+    assert zia_agenda.get_idea_obj(clean_cookery_road) != None
+    assert zia_agenda.get_idea_obj(clean_cookery_road)._label == clean_cookery_text
+    assert zia_agenda.get_idea_obj(clean_cookery_road).promise
+    assert len(zia_agenda.get_idea_obj(clean_cookery_road)._reasonunits) == 2
+    assert zia_agenda.get_idea_obj(clean_things_road) != None
+    assert zia_agenda.get_idea_obj(cookery_room_road) != None
+    assert zia_agenda.get_idea_obj(cookery_dirty_road) != None
+    assert zia_agenda.get_idea_obj(daytime_road)._begin == 0
+    assert zia_agenda.get_idea_obj(daytime_road)._close == 1440
+    assert len(zia_agenda._groups) == 1
+    assert zia_agenda._groups.get(family_text) != None
+    assert zia_agenda._groups.get(family_text)._partys in (None, {})
 
-    assert len(x_agenda._idearoot._kids) == 3
+    assert len(zia_agenda._idearoot._kids) == 3
 
 
 def get_tasks_count(intent_dict: dict[RoadUnit:IdeaUnit]) -> int:
@@ -688,25 +685,25 @@ def get_tasks_count(intent_dict: dict[RoadUnit:IdeaUnit]) -> int:
 
 def test_Isue116Resolved_correctlySetsTaskAsTrue():
     # GIVEN
-    x_agenda = example_agendas_agenda_v002()
+    bob_agenda = example_agendas_agenda_v002()
 
-    assert len(x_agenda.get_intent_dict()) == 44
-    time_road = x_agenda.make_l1_road("time")
-    jajatime_road = x_agenda.make_road(time_road, "jajatime")
+    assert len(bob_agenda.get_intent_dict()) == 44
+    time_road = bob_agenda.make_l1_road("time")
+    jajatime_road = bob_agenda.make_road(time_road, "jajatime")
 
     # WHEN
-    x_agenda.set_belief(
+    bob_agenda.set_belief(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
-    action_idea_list = x_agenda.get_intent_dict()
+    action_idea_list = bob_agenda.get_intent_dict()
 
     # THEN
     assert len(action_idea_list) == 66
-    db_road = x_agenda.make_l1_road("D&B")
+    db_road = bob_agenda.make_l1_road("D&B")
     night_text = "late_night_go_to_sleep"
-    night_road = x_agenda.make_road(db_road, night_text)
-    night_idea = x_agenda._idea_dict.get(night_road)
-    # for idea_x in x_agenda.get_intent_dict():
+    night_road = bob_agenda.make_road(db_road, night_text)
+    night_idea = bob_agenda._idea_dict.get(night_road)
+    # for idea_x in bob_agenda.get_intent_dict():
     #     # if idea_x._task != True:
     #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
     #     if idea_x._label == night_label:
@@ -716,8 +713,8 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     print(f"\nIdea = '{night_text}' and reason '{jajatime_road}'")
     beliefheir_jajatime = night_idea._beliefheirs.get(jajatime_road)
     print(f"\n{beliefheir_jajatime=}")
-    print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1063998720)}")
-    print(f"      {x_agenda.get_jajatime_repeating_legible_text(open=1064130373)}")
+    print(f"      {bob_agenda.get_jajatime_repeating_legible_text(open=1063998720)}")
+    print(f"      {bob_agenda.get_jajatime_repeating_legible_text(open=1064130373)}")
 
     # for reasonheir in intent_item._reasonheirs.values():
     #     print(f"{reasonheir.base=} {reasonheir._status=} {reasonheir._task=}")
@@ -753,82 +750,82 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
 
 def test_intent_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
-    bob_text = "bob"
-    x_agenda = agendaunit_shop(bob_text)
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(bob_text)
     work_text = "work"
-    work_road = x_agenda.make_road(bob_text, work_text)
-    x_agenda.add_idea(
-        ideaunit_shop(work_text, promise=True), parent_road=x_agenda._economy_id
+    work_road = bob_agenda.make_road(bob_text, work_text)
+    bob_agenda.add_idea(
+        ideaunit_shop(work_text, promise=True), parent_road=bob_agenda._economy_id
     )
-    assert len(x_agenda.get_intent_dict()) == 1
+    assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "sue"
-    x_agenda.add_partyunit(pid=sue_text)
+    bob_agenda.add_partyunit(pid=sue_text)
     assigned_unit_sue = assigned_unit_shop()
     assigned_unit_sue.set_suffgroup(brand=sue_text)
-    assert len(x_agenda.get_intent_dict()) == 1
+    assert len(bob_agenda.get_intent_dict()) == 1
 
     # WHEN
-    x_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_sue)
+    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_sue)
 
     # THEN
-    assert len(x_agenda.get_intent_dict()) == 0
+    assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
-    x_agenda.add_partyunit(pid=bob_text)
+    bob_agenda.add_partyunit(pid=bob_text)
     assigned_unit_bob = assigned_unit_shop()
     assigned_unit_bob.set_suffgroup(brand=bob_text)
 
     # WHEN
-    x_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
+    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
 
     # THEN
-    assert len(x_agenda.get_intent_dict()) == 1
+    assert len(bob_agenda.get_intent_dict()) == 1
 
-    # intent_dict = x_agenda.get_intent_dict()
+    # intent_dict = bob_agenda.get_intent_dict()
     # print(f"{intent_dict[0]._label=}")
 
 
 def test_intent_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
-    bob_text = "bob"
-    x_agenda = agendaunit_shop(bob_text)
-    x_agenda.add_partyunit(pid=bob_text)
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(bob_text)
+    bob_agenda.add_partyunit(pid=bob_text)
     work_text = "work"
-    work_road = x_agenda.make_road(bob_text, work_text)
-    x_agenda.add_idea(
-        ideaunit_shop(work_text, promise=True), parent_road=x_agenda._economy_id
+    work_road = bob_agenda.make_road(bob_text, work_text)
+    bob_agenda.add_idea(
+        ideaunit_shop(work_text, promise=True), parent_road=bob_agenda._economy_id
     )
 
     sue_text = "sue"
-    x_agenda.add_partyunit(pid=sue_text)
+    bob_agenda.add_partyunit(pid=sue_text)
 
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    x_agenda.set_groupunit(y_groupunit=run_group)
+    bob_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
     run_assignedunit.set_suffgroup(brand=run_text)
-    assert len(x_agenda.get_intent_dict()) == 1
+    assert len(bob_agenda.get_intent_dict()) == 1
 
     # WHEN
-    x_agenda.edit_idea_attr(road=work_road, assignedunit=run_assignedunit)
+    bob_agenda.edit_idea_attr(road=work_road, assignedunit=run_assignedunit)
 
     # THEN
-    assert len(x_agenda.get_intent_dict()) == 0
+    assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
     run_group.set_partylink(partylink=partylink_shop(pid=bob_text))
-    x_agenda.set_groupunit(y_groupunit=run_group)
+    bob_agenda.set_groupunit(y_groupunit=run_group)
 
     # THEN
-    assert len(x_agenda.get_intent_dict()) == 1
+    assert len(bob_agenda.get_intent_dict()) == 1
 
 
 def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFixActiveStatusSettingError():  # https://github.com/jschalk/jaar/issues/69
     # GIVEN
-    bob_agenda = agendaunit_shop("bob")
+    bob_agenda = agendaunit_shop("Bob")
     bob_agenda.set_time_hreg_ideas(7)
 
     casa_text = "casa"

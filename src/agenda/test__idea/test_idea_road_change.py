@@ -14,10 +14,10 @@ from pytest import raises as pytest_raises
 
 def test_idea_find_replace_road_Changes_parent_road():
     # GIVEN Idea with _parent_road that will be changed
-    old_healer_text = "healer1"
-    old_healer_road = create_road(root_label(), old_healer_text)
+    old_casa_text = "casa1"
+    old_casa_road = create_road(root_label(), old_casa_text)
     bloomers_text = "bloomers"
-    old_bloomers_road = create_road(old_healer_road, bloomers_text)
+    old_bloomers_road = create_road(old_casa_road, bloomers_text)
     roses_text = "roses"
     old_roses_road = create_road(old_bloomers_road, roses_text)
     idea_x = ideaunit_shop(roses_text, _parent_road=old_bloomers_road)
@@ -25,12 +25,12 @@ def test_idea_find_replace_road_Changes_parent_road():
     assert create_road(idea_x._parent_road, idea_x._label) == old_roses_road
 
     # WHEN
-    new_healer = "healer1"
-    new_healer_road = create_road(root_label(), new_healer)
-    idea_x.find_replace_road(old_road=old_healer_road, new_road=new_healer_road)
+    new_casa = "casa2"
+    new_casa_road = create_road(root_label(), new_casa)
+    idea_x.find_replace_road(old_road=old_casa_road, new_road=new_casa_road)
 
     # THEN
-    new_bloomers_road = create_road(new_healer_road, bloomers_text)
+    new_bloomers_road = create_road(new_casa_road, bloomers_text)
     new_roses_road = create_road(new_bloomers_road, roses_text)
     assert create_road(idea_x._parent_road) == new_bloomers_road
     assert create_road(idea_x._parent_road, idea_x._label) == new_roses_road
@@ -38,10 +38,10 @@ def test_idea_find_replace_road_Changes_parent_road():
 
 def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     # GIVEN Idea with special road and numeric road that will be changed
-    healer_text = "healer1"
-    healer_road = create_road(root_label(), healer_text)
+    casa_text = "casa1"
+    casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
-    bloomers_road = create_road(healer_road, bloomers_text)
+    bloomers_road = create_road(casa_road, bloomers_text)
     roses_text = "roses"
     roses_road = create_road(bloomers_road, roses_text)
     old_water_text = "water"
@@ -78,10 +78,10 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
 
 def test_idea_find_replace_road_Changes_reasonunits():
     # GIVEN Idea with reason that will be changed
-    healer_text = "healer1"
-    healer_road = create_road(root_label(), healer_text)
+    casa_text = "casa1"
+    casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
-    bloomers_road = create_road(healer_road, bloomers_text)
+    bloomers_road = create_road(casa_road, bloomers_text)
     roses_text = "roses"
     roses_road = create_road(bloomers_road, roses_text)
     # reason roads

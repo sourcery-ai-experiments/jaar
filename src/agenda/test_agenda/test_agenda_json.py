@@ -29,7 +29,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     day_hour_text = "day_hour"
     day_hour_road = x_agenda.make_l1_road(day_hour_text)
     day_hour_idea = x_agenda.get_idea_obj(day_hour_road)
-    day_hour_idea._originunit.set_originlink(pid="bob", weight=2)
+    day_hour_idea._originunit.set_originlink(pid="Bob", weight=2)
     x_agenda.set_belief(
         base=day_hour_road,
         pick=day_hour_road,
@@ -74,7 +74,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_obj(month_week_road)
-    print("checking TlME,month_week...range_source_road equal to...")
+    print("checking economy_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_road(
@@ -346,7 +346,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
     # GIVEN
     slash_delimiter = "/"
-    a_bob_agenda = agendaunit_shop("bob", _road_delimiter=slash_delimiter)
+    a_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
     assert a_bob_agenda._road_delimiter != default_road_delimiter_if_none()
 
     # WHEN

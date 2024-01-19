@@ -1,6 +1,6 @@
 from src._prime.road import (
     RoadUnit,
-    HealerRoad,
+    PersonRoad,
     PersonID,
 )
 from src.accord.topic import TopicUnit, TopicLink
@@ -18,20 +18,20 @@ class DueUnit:
     reader_weight: float = None
     uid: DueID = None
     actor: PersonID = None
-    _topiclinks: dict[HealerRoad, TopicLink] = None
+    _topiclinks: dict[PersonRoad, TopicLink] = None
     _relative_author_weight: float = None
     _relative_reader_weight: float = None
 
     def set_topiclink(self, x_topiclink: TopicLink):
         self._topiclinks[x_topiclink.base] = x_topiclink
 
-    def get_topiclink(self, topiclink_base: HealerRoad) -> TopicLink:
+    def get_topiclink(self, topiclink_base: PersonRoad) -> TopicLink:
         return self._topiclinks.get(topiclink_base)
 
-    def topiclink_exists(self, topiclink_base: HealerRoad) -> bool:
+    def topiclink_exists(self, topiclink_base: PersonRoad) -> bool:
         return self.get_topiclink(topiclink_base) != None
 
-    def del_topiclink(self, topiclink_base: HealerRoad):
+    def del_topiclink(self, topiclink_base: PersonRoad):
         self._topiclinks.pop(topiclink_base)
 
     def get_due_id(self) -> DueID:
@@ -56,7 +56,7 @@ class DueUnit:
     def set_actor(self, x_actor: PersonID):
         self.actor = x_actor
 
-    def del_actor(self, actor: HealerRoad):
+    def del_actor(self, actor: PersonRoad):
         if self.actor == actor:
             self.actor = None
 
@@ -75,7 +75,7 @@ def dueunit_shop(
     author_weight: int = None,
     reader_weight: int = None,
     actor: PersonID = None,
-    _topiclinks: dict[HealerRoad, TopicLink] = None,
+    _topiclinks: dict[PersonRoad, TopicLink] = None,
 ):
     if author_weight is None:
         author_weight = 1

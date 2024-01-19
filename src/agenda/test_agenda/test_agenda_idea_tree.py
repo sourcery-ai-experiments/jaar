@@ -519,7 +519,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 
 
 # def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
-#     x_agenda = agendaunit_shop(_agent_id="bob")
+#     x_agenda = agendaunit_shop(_agent_id="Bob")
 #     x_agenda.add_idea(ideaunit_shop("A", _weight=7), parent_road="blahblah")
 #     x_agenda.add_idea(ideaunit_shop("C", _weight=3), parent_road=f"{x_agenda._economy_id},A")
 #     x_agenda.add_idea(ideaunit_shop("E", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
@@ -547,7 +547,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},A,C,E", balancelink=sandy_bl)
 
 #     # expected sandy
-#     exp_sandy = agendaunit_shop(_agent_id=healer_text)
+#     exp_sandy = agendaunit_shop(_agent_id=sandy_text)
 #     exp_sandy.add_idea(ideaunit_shop("A", _agenda_importance=0.07), parent_road="blahblah")
 #     exp_sandy.add_idea(ideaunit_shop("C", _agenda_importance=0.07), parent_road=f"{x_agenda._economy_id},A")
 #     exp_sandy.add_idea(ideaunit_shop("E", _agenda_importance=0.5), parent_road=f"{x_agenda._economy_id},A,C")

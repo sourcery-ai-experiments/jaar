@@ -852,15 +852,15 @@ def test_PremiseUnitsUnit_set_delimiter_SetsAttrsCorrectly():
 
 def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
     # GIVEN
-    healer_road = create_road(root_label(), "healer")
-    old_seasons_road = create_road(healer_road, "seasons")
+    casa_road = create_road(root_label(), "casa")
+    old_seasons_road = create_road(casa_road, "seasons")
     old_premise_x = premiseunit_shop(need=old_seasons_road)
     old_premises_x = {old_premise_x.need: old_premise_x}
 
     assert old_premises_x.get(old_seasons_road) == old_premise_x
 
     # WHEN
-    new_seasons_road = create_road(healer_road, "kookies")
+    new_seasons_road = create_road(casa_road, "kookies")
     new_premises_x = find_replace_road_key_dict(
         dict_x=old_premises_x, old_road=old_seasons_road, new_road=new_seasons_road
     )
@@ -873,10 +873,10 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
 def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeEconomyIDScenario():
     # GIVEN
     old_economy_id = "El Paso"
-    healer_text = "healer"
-    old_healer_road = create_road(old_economy_id, healer_text)
+    casa_text = "casa"
+    old_casa_road = create_road(old_economy_id, casa_text)
     seasons_text = "seasons"
-    old_seasons_road = create_road(old_healer_road, seasons_text)
+    old_seasons_road = create_road(old_casa_road, seasons_text)
     old_premise_x = premiseunit_shop(need=old_seasons_road)
     old_premises_x = {old_premise_x.need: old_premise_x}
 
@@ -884,8 +884,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeEconom
 
     # WHEN
     new_economy_id = "Austin"
-    new_healer_road = create_road(new_economy_id, healer_text)
-    new_seasons_road = create_road(new_healer_road, seasons_text)
+    new_casa_road = create_road(new_economy_id, casa_text)
+    new_seasons_road = create_road(new_casa_road, seasons_text)
 
     new_premises_x = find_replace_road_key_dict(
         dict_x=old_premises_x, old_road=old_seasons_road, new_road=new_seasons_road
