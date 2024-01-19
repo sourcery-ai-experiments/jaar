@@ -1,10 +1,10 @@
 from src.world.problem import economylink_shop, healerlink_shop
 
 
-def test_healerlink_set_economylink_CorrectlySetsObj():
+def test_HealerLink_set_economylink_CorrectlySetsObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
 
     # WHEN
     diet_text = "diet"
@@ -18,10 +18,10 @@ def test_healerlink_set_economylink_CorrectlySetsObj():
     assert diet_economy.economy_id == diet_text
 
 
-def test_healerlink_get_economyunit_CorrectlyGetsObj():
+def test_HealerLink_get_economyunit_CorrectlyGetsObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
     diet_text = "diet"
     diet_economylink = economylink_shop(economy_id=diet_text)
     yao_healerlink.set_economylink(diet_economylink)
@@ -34,10 +34,10 @@ def test_healerlink_get_economyunit_CorrectlyGetsObj():
     assert diet_economy.economy_id == diet_text
 
 
-def test_healerlink_del_economyunit_CorrectlyDeletesObj():
+def test_HealerLink_del_economyunit_CorrectlyDeletesObj():
     # GIVEN
     yao_text = "yao"
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
     diet_text = "diet"
     diet_economylink = economylink_shop(economy_id=diet_text)
     yao_healerlink.set_economylink(diet_economylink)
@@ -46,17 +46,40 @@ def test_healerlink_del_economyunit_CorrectlyDeletesObj():
     assert diet_economy.economy_id == diet_text
 
     # WHEN
-    yao_healerlink.del_economylink(economyeconomy_id=diet_text)
+    yao_healerlink.del_economylink(economy_id=diet_text)
 
     # THEN
     after_diet_economy = yao_healerlink.get_economylink(diet_text)
     assert after_diet_economy is None
 
 
-def test_healerlink_set_economylinks_weight_metrics_SetsCorrectly():
+def test_HealerLink_economylink_exists_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "yao"
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
+    ohio_text = "Ohio"
+    yao_healerlink.set_economylink(economylink_shop(economy_id=ohio_text))
+
+    # WHEN / THEN
+    diet_text = "diet"
+    assert len(yao_healerlink._economylinks) != 0
+    assert yao_healerlink.economylink_exists(diet_text) == False
+
+    # WHEN / THEN
+    yao_healerlink.set_economylink(economylink_shop(economy_id=diet_text))
+    assert len(yao_healerlink._economylinks) != 0
+    assert yao_healerlink.economylink_exists(diet_text)
+
+    # WHEN / THEN
+    yao_healerlink.del_economylink(diet_text)
+    assert len(yao_healerlink._economylinks) != 0
+    assert yao_healerlink.economylink_exists(diet_text) == False
+
+
+def test_HealerLink_set_economylinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
-    yao_hl = healerlink_shop(person_id=yao_text)
+    yao_hl = healerlink_shop(healer_id=yao_text)
     yao_hl._manager_importance = 0.25
     fight_text = "fight"
     flee_text = "flee"

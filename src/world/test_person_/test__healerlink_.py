@@ -1,17 +1,17 @@
 from src.world.problem import HealerLink, healerlink_shop
 
 
-def test_healerlink_exists():
+def test_HealerLink_exists():
     # GIVEN
     yao_text = "yao"
     yao_weight = 3
     yao_in_tribe = True
 
     # WHEN
-    yao_healerlink = HealerLink(person_id=yao_text, weight=3, in_tribe=yao_in_tribe)
+    yao_healerlink = HealerLink(healer_id=yao_text, weight=3, in_tribe=yao_in_tribe)
 
     # THEN
-    assert yao_healerlink.person_id == yao_text
+    assert yao_healerlink.healer_id == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._economylinks is None
@@ -27,11 +27,11 @@ def test_healerlink_shop_ReturnsCorrectObj():
 
     # WHEN
     yao_healerlink = healerlink_shop(
-        person_id=yao_text, weight=yao_weight, in_tribe=yao_in_tribe
+        healer_id=yao_text, weight=yao_weight, in_tribe=yao_in_tribe
     )
 
     # THEN
-    assert yao_healerlink.person_id == yao_text
+    assert yao_healerlink.healer_id == yao_text
     assert yao_healerlink.weight == yao_weight
     assert yao_healerlink.in_tribe == yao_in_tribe
     assert yao_healerlink._economylinks == {}
@@ -39,15 +39,15 @@ def test_healerlink_shop_ReturnsCorrectObj():
     assert yao_healerlink._manager_importance is None
 
 
-def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
+def test_HealerLink_shop_ReturnsCorrectObj_EmptyWeight():
     # GIVEN
     yao_text = "yao"
 
     # WHEN
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
 
     # THEN
-    assert yao_healerlink.person_id == yao_text
+    assert yao_healerlink.healer_id == yao_text
     assert yao_healerlink.weight == 1
     assert yao_healerlink.in_tribe is None
     assert yao_healerlink._economylinks == {}
@@ -55,10 +55,10 @@ def test_healerlink_shop_ReturnsCorrectObj_EmptyWeight():
     assert yao_healerlink._manager_importance is None
 
 
-def test_healerlink_set_relative_weight_SetsCorrectly():
+def test_HealerLink_set_relative_weight_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
     assert yao_healerlink._relative_weight is None
 
     # WHEN
@@ -69,10 +69,10 @@ def test_healerlink_set_relative_weight_SetsCorrectly():
     assert yao_healerlink._relative_weight == x_relative_weight
 
 
-def test_healerlink_set_manager_importance_SetsCorrectly():
+def test_HealerLink_set_manager_importance_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
-    yao_healerlink = healerlink_shop(person_id=yao_text)
+    yao_healerlink = healerlink_shop(healer_id=yao_text)
     assert yao_healerlink._manager_importance is None
 
     # WHEN

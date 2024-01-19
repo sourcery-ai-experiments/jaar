@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._prime.road import EconomyID, PersonID, ProblemID
+from src._prime.road import EconomyID, PersonID, ProblemID, HealerID
 
 
 @dataclass
@@ -27,7 +27,7 @@ def economylink_shop(economy_id: EconomyID, weight: float = None) -> EconomyLink
 
 @dataclass
 class HealerLink:
-    person_id: PersonID
+    healer_id: HealerID
     weight: float
     in_tribe: bool
     _economylinks: dict[EconomyID:EconomyLink] = None
@@ -56,11 +56,14 @@ class HealerLink:
     def set_economylink(self, economylink: EconomyLink):
         self._economylinks[economylink.economy_id] = economylink
 
-    def get_economylink(self, economyeconomy_id: EconomyID) -> EconomyLink:
-        return self._economylinks.get(economyeconomy_id)
+    def economylink_exists(self, economy_id: EconomyID):
+        return self._economylinks.get(economy_id) != None
 
-    def del_economylink(self, economyeconomy_id: EconomyID):
-        self._economylinks.pop(economyeconomy_id)
+    def get_economylink(self, economy_id: EconomyID) -> EconomyLink:
+        return self._economylinks.get(economy_id)
+
+    def del_economylink(self, economy_id: EconomyID):
+        self._economylinks.pop(economy_id)
 
     def get_economylinks_dict(self) -> dict:
         return {
@@ -70,19 +73,19 @@ class HealerLink:
 
     def get_dict(self):
         return {
-            "person_id": self.person_id,
+            "healer_id": self.healer_id,
             "weight": self.weight,
             "_economylinks": self.get_economylinks_dict(),
         }
 
 
 def healerlink_shop(
-    person_id: PersonID, weight: float = None, in_tribe: bool = None
+    healer_id: HealerID, weight: float = None, in_tribe: bool = None
 ) -> HealerLink:
     if weight is None:
         weight = 1
     return HealerLink(
-        person_id=person_id, weight=weight, in_tribe=in_tribe, _economylinks={}
+        healer_id=healer_id, weight=weight, in_tribe=in_tribe, _economylinks={}
     )
 
 
@@ -116,17 +119,23 @@ class ProblemUnit:
         self.set_healerlinks_weight_metrics()
 
     def set_healerlink(self, healerlink: HealerLink):
-        self._healerlinks[healerlink.person_id] = healerlink
+        self._healerlinks[healerlink.healer_id] = healerlink
 
-    def get_healerlink(self, person_id: PersonID) -> HealerLink:
-        return self._healerlinks.get(person_id)
+    def get_healerlink(self, healer_id: HealerID) -> HealerLink:
+        return self._healerlinks.get(healer_id)
 
-    def del_healerlink(self, person_id: PersonID):
-        self._healerlinks.pop(person_id)
+    def del_healerlink(self, healer_id: HealerID):
+        self._healerlinks.pop(healer_id)
+
+    def economylink_exists(self, economy_id: EconomyID):
+        return any(
+            x_healerlink.economylink_exists(economy_id)
+            for x_healerlink in self._healerlinks.values()
+        )
 
     def get_healerlinks_dict(self) -> dict:
         return {
-            healerlink_x.person_id: healerlink_x.get_dict()
+            healerlink_x.healer_id: healerlink_x.get_dict()
             for healerlink_x in self._healerlinks.values()
         }
 

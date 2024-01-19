@@ -7,7 +7,13 @@ from src._prime.road import (
 )
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, economyunit_shop
-from src.world.problem import ProblemID, ProblemUnit, problemunit_shop
+from src.world.problem import (
+    ProblemID,
+    ProblemUnit,
+    problemunit_shop,
+    healerlink_shop,
+    economylink_shop,
+)
 
 
 class InvalidEconomyException(Exception):
@@ -22,19 +28,17 @@ class PersonUnit:
     _problems: dict[ProblemID:ProblemUnit] = None
     _road_delimiter: str = None
 
-    def create_problemunit_from_problem_id(self, problem_problem_id: ProblemID):
-        self._problems[problem_problem_id] = problemunit_shop(
-            problem_id=problem_problem_id
-        )
+    def create_problemunit_from_problem_id(self, x_problem_id: ProblemID):
+        self._problems[x_problem_id] = problemunit_shop(problem_id=x_problem_id)
 
     def set_problemunit(self, problemunit: ProblemUnit):
         self._problems[problemunit.problem_id] = problemunit
 
-    def get_problemunit(self, problem_problem_id: ProblemID) -> ProblemUnit:
-        return self._problems.get(problem_problem_id)
+    def get_problemunit(self, x_problem_id: ProblemID) -> ProblemUnit:
+        return self._problems.get(x_problem_id)
 
-    def del_problemunit(self, problem_problem_id: ProblemID):
-        self._problems.pop(problem_problem_id)
+    def del_problemunit(self, x_problem_id: ProblemID):
+        self._problems.pop(x_problem_id)
 
     def set_problemunits_weight_metrics(self):
         total_problemunits_weight = sum(
@@ -45,7 +49,30 @@ class PersonUnit:
                 x_problemunit.weight / total_problemunits_weight
             )
 
-    def set_economyunit(self, economy_id: EconomyID, replace: bool = False):
+    def economylink_exists(self, economy_id: EconomyID):
+        return any(
+            x_problemunit.economylink_exists(economy_id)
+            for x_problemunit in self._problems.values()
+        )
+
+    def set_economyunit(
+        self,
+        economy_id: EconomyID,
+        replace: bool = False,
+        x_problem_id: ProblemID = None,
+    ):
+        if x_problem_id != None:
+            self.create_problemunit_from_problem_id(x_problem_id)
+            x_problemunit = self.get_problemunit(x_problem_id)
+            x_problemunit.set_healerlink(healerlink_shop(self.pid))
+            xao_healerlink = x_problemunit.get_healerlink(self.pid)
+            xao_healerlink.set_economylink(economylink_shop(economy_id))
+
+        if self.economylink_exists(economy_id) == False:
+            raise InvalidEconomyException(
+                f"Cannot set_economyunit {economy_id} because no justifying problem exists."
+            )
+
         if self.economyunit_exists(economy_id) == False or (
             self.economyunit_exists(economy_id) and replace
         ):

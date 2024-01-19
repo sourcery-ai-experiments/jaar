@@ -292,14 +292,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healer()
 
     def get_agenda_agent_id_list(self):
-        agendas_list = []
-        for file_name in dir_files(self.economy_x.get_public_dir()):
-            # agenda_json = open_file(
-            #     dest_dir=self.economy_x.get_public_dir(), file_name=file_name
-            # )
-            # x_agenda = get_agenda_from_json(x_agenda_json=agenda_json)
-            agendas_list.append([file_name])
-        return agendas_list
+        return [[file_name] for file_name in dir_files(self.economy_x.get_public_dir())]
 
     def get_clerk_cid_list(self):
         healers_healer_list = []

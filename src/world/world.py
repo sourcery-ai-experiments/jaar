@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none, RoadUnit
+from src._prime.road import default_road_delimiter_if_none, RoadUnit, HealerID
 
 # from src.agenda.party import partylink_shop
 # from src.agenda.group import groupunit_shop
@@ -192,7 +192,7 @@ class WorldUnit:
         for x_problemunit in x_personunit._problems.values():
             for x_healerlink in x_problemunit._healerlinks.values():
                 healer_personunit = self.get_personunit_from_memory(
-                    x_healerlink.person_id
+                    x_healerlink.healer_id
                 )
                 for x_economylink in x_healerlink._economylinks.values():
                     x_economyunit = healer_personunit.get_economyunit(
@@ -206,13 +206,13 @@ class WorldUnit:
     def create_person_economy(
         self,
         person_id: PersonID,
-        problem_problem_id: ProblemID,
-        healer_id: PersonID,
+        x_problem_id: ProblemID,
+        healer_id: HealerID,
         economy_id: EconomyID,
     ):
         x_healerlink = healerlink_shop(healer_id)
         x_healerlink.set_economylink(economylink_shop(economy_id))
-        x_problemunit = problemunit_shop(problem_problem_id)
+        x_problemunit = problemunit_shop(x_problem_id)
         x_problemunit.set_healerlink(x_healerlink)
 
         self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
@@ -220,9 +220,9 @@ class WorldUnit:
         x_personunit.set_problemunit(x_problemunit)
 
         self.set_personunit(healer_id, replace_personunit=False, replace_alert=False)
-        x_healerunit = self.get_personunit_from_memory(healer_id)
-        x_healerunit.set_economyunit(economy_id, replace=False)
-        x_economyunit = x_healerunit.get_economyunit(economy_id)
+        healer_personunit = self.get_personunit_from_memory(healer_id)
+        healer_personunit.set_economyunit(economy_id, False, x_problem_id)
+        x_economyunit = healer_personunit.get_economyunit(economy_id)
         x_economyunit.full_setup_clerkunit(healer_id)
         if healer_id != x_personunit.pid:
             self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
