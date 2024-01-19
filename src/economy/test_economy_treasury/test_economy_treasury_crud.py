@@ -58,11 +58,11 @@ def test_economy_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cl
     assert x_agendatreasuryunits.get(tom_text) != None
     assert x_agendatreasuryunits.get(ava_text) != None
     assert x_agendatreasuryunits.get(elu_text) != None
-    assert x_agendatreasuryunits.get(sal_text).healer == sal_text
-    assert x_agendatreasuryunits.get(bob_text).healer == bob_text
-    assert x_agendatreasuryunits.get(tom_text).healer == tom_text
-    assert x_agendatreasuryunits.get(ava_text).healer == ava_text
-    assert x_agendatreasuryunits.get(elu_text).healer == elu_text
+    assert x_agendatreasuryunits.get(sal_text).agent_id == sal_text
+    assert x_agendatreasuryunits.get(bob_text).agent_id == bob_text
+    assert x_agendatreasuryunits.get(tom_text).agent_id == tom_text
+    assert x_agendatreasuryunits.get(ava_text).agent_id == ava_text
+    assert x_agendatreasuryunits.get(elu_text).agent_id == elu_text
     print(f"{x_agendatreasuryunits.get(sal_text)=}")
     print(f"{x_agendatreasuryunits.get(bob_text)=}")
     print(f"{x_agendatreasuryunits.get(tom_text)=}")

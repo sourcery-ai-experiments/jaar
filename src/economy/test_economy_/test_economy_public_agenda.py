@@ -4,8 +4,8 @@ from src.agenda.examples.example_agendas import (
 )
 from src.economy.economy import economyunit_shop
 from src.economy.examples.example_clerks import (
-    get_1node_agenda as example_healers_get_1node_agenda,
-    get_1node_agenda as example_healers_get_7nodeJRootWithH_agenda,
+    get_1node_agenda as example_get_1node_agenda,
+    get_1node_agenda as example_get_7nodeJRootWithH_agenda,
 )
 from src.economy.examples.economy_env_kit import (
     get_temp_env_economy_id,
@@ -21,7 +21,7 @@ def test_economy_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     x_economy.create_dirs_if_null()
-    y_agenda = example_healers_get_1node_agenda()
+    y_agenda = example_get_1node_agenda()
     y_path = f"{x_economy.get_public_dir()}/{y_agenda._agent_id}.json"
     assert os_path.exists(y_path) == False
 
@@ -38,33 +38,33 @@ def test_economy_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    y_agenda = example_healers_get_7nodeJRootWithH_agenda()
+    y_agenda = example_get_7nodeJRootWithH_agenda()
     x_economy.save_public_agenda(y_agenda)
 
     # WHEN / THEN
-    assert x_economy.get_public_agenda(healer=y_agenda._agent_id) == y_agenda
+    assert x_economy.get_public_agenda(agent_id=y_agenda._agent_id) == y_agenda
 
 
-def test_economy_change_public_agenda_healer_ChangesAgendaPID(
+def test_economy_change_public_agent_id_ChangesAgendaPID(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    old_agenda_healer = "old1"
-    y_agenda = agendaunit_shop(_agent_id=old_agenda_healer)
-    old_y_agenda_path = f"{x_economy.get_public_dir()}/{old_agenda_healer}.json"
+    old_agent_id = "old1"
+    y_agenda = agendaunit_shop(_agent_id=old_agent_id)
+    old_y_agenda_path = f"{x_economy.get_public_dir()}/{old_agent_id}.json"
     x_economy.save_public_agenda(y_agenda)
     print(f"{old_y_agenda_path=}")
 
     # WHEN
-    new_agenda_healer = "new1"
-    new_y_agenda_path = f"{x_economy.get_public_dir()}/{new_agenda_healer}.json"
+    new_agent_id = "new1"
+    new_y_agenda_path = f"{x_economy.get_public_dir()}/{new_agent_id}.json"
     assert os_path.exists(new_y_agenda_path) == False
     assert os_path.exists(old_y_agenda_path)
-    x_economy.change_public_agenda_healer(
-        old_healer=old_agenda_healer, new_healer=new_agenda_healer
+    x_economy.change_public_agent_id(
+        old_agent_id=old_agent_id, new_agent_id=new_agent_id
     )
 
     # THEN

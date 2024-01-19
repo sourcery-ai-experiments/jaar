@@ -1,8 +1,8 @@
 from src.tools.file import open_file, save_file
 from src.economy.clerk import clerkUnit, clerkunit_shop
 from src.economy.examples.example_clerks import (
-    get_6node_agenda as example_healers_get_6node_agenda,
-    get_6node_agenda as example_healers_get_7nodeJRootWithH_agenda,
+    get_6node_agenda as example_get_6node_agenda,
+    get_6node_agenda as example_get_7nodeJRootWithH_agenda,
 )
 from src.economy.examples.clerk_env_kit import (
     get_temp_clerkunit_dir,
@@ -115,7 +115,7 @@ def test_clerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(jul_clerkunit._agendas_ignore_dir) is False
 
     # WHEN
-    x_agenda = example_healers_get_7nodeJRootWithH_agenda()
+    x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
 
     # THEN check agendas src directory created
@@ -138,7 +138,7 @@ def test_clerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
     env_dir = get_temp_clerkunit_dir()
     jul_clerkunit = clerkunit_shop(jul_text, env_dir, get_temp_economy_id())
     jul_clerkunit.set_dirs()
-    x_agenda = example_healers_get_7nodeJRootWithH_agenda()
+    x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     assert os_path.exists(jul_clerkunit._contract_file_path)
     # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._contract_file_path))
@@ -169,7 +169,7 @@ def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
 
     old_bob_text = "bob"
     jul_clerkunit = clerkunit_shop(old_bob_text, env_dir, get_temp_economy_id())
-    x_agenda = example_healers_get_7nodeJRootWithH_agenda()
+    x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.set_dirs()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     old_clerkunit_dir = jul_clerkunit._clerkunit_dir
@@ -185,15 +185,15 @@ def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     assert os_path.isdir(old_clerkunit_dir)
     assert os_path.exists(old_contract_file_path)
 
-    new_healer_text = "tim"
-    new_clerkunit_dir = f"{clerkunits_dir}/{new_healer_text}"
+    tim_text = "tim"
+    new_clerkunit_dir = f"{clerkunits_dir}/{tim_text}"
     new_contract_file_path = f"{new_clerkunit_dir}/{contract_file_name}"
     assert os_path.exists(new_clerkunit_dir) == False
     assert os_path.isdir(new_clerkunit_dir) == False
     assert os_path.exists(new_contract_file_path) == False
 
     # WHEN
-    jul_clerkunit.set_clerk_cid(new_cid=new_healer_text)
+    jul_clerkunit.set_clerk_cid(new_cid=tim_text)
 
     # THEN
     assert os_path.exists(old_clerkunit_dir) == False
@@ -212,7 +212,7 @@ def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDir(
     bob_clerkadmin = clerkunit_shop(
         bob_text, get_temp_clerkunit_dir(), get_temp_economy_id()
     )
-    x_agenda = example_healers_get_6node_agenda()
+    x_agenda = example_get_6node_agenda()
     x_agenda.set_agent_id(new_agent_id=bob_text)
     bob_clerkadmin.create_core_dir_and_files(x_agenda)
 

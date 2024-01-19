@@ -3,15 +3,15 @@ from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
     AgentID,
+    HealerID,
+    PartyID,
+    EconomyID,
 )
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as get_agenda_from_json,
     partylink_shop,
-    PartyID,
-    PersonID,
-    EconomyID,
 )
 from src.tools.file import (
     single_dir_create_if_null,
@@ -66,7 +66,7 @@ class IntentBaseDoesNotExistException(Exception):
 class EconomyUnit:
     economy_id: EconomyID
     economys_dir: str
-    _manager_pid: PersonID = None
+    _manager_pid: HealerID = None
     _clerkunits: dict[str:clerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None
@@ -74,23 +74,23 @@ class EconomyUnit:
     def set_road_delimiter(self, new_road_delimiter: str):
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
-    def set_manager_pid(self, person_id: PersonID):
+    def set_manager_pid(self, person_id: HealerID):
         self._manager_pid = person_id
 
     # treasurying
-    def set_voice_ranks(self, healer: PersonID, sort_order: str):
+    def set_voice_ranks(self, agent_id: AgentID, sort_order: str):
         if sort_order == "descretional":
-            x_clerk = self.get_clerkunit(healer)
+            x_clerk = self.get_clerkunit(agent_id)
             x_contract = x_clerk.get_contract()
             for count_x, x_partyunit in enumerate(x_contract._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             x_clerk.set_contract(x_contract)
             x_clerk.save_refreshed_output_to_public()
 
-    def set_agenda_treasury_attrs(self, x_healer: PersonID):
-        healer_agenda = self.get_public_agenda(x_healer)
+    def set_agenda_treasury_attrs(self, x_agent_id: AgentID):
+        x_agenda = self.get_public_agenda(x_agent_id)
 
-        for groupunit_x in healer_agenda._groups.values():
+        for groupunit_x in x_agenda._groups.values():
             if groupunit_x._partylinks_set_by_economy_road != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
@@ -98,24 +98,24 @@ class EconomyUnit:
                     groupunit_x._partylinks_set_by_economy_road,
                 )
                 for idea_catalog in ic.values():
-                    if x_healer != idea_catalog.agenda_healer:
-                        partylink_x = partylink_shop(pid=idea_catalog.agenda_healer)
+                    if x_agent_id != idea_catalog.agent_id:
+                        partylink_x = partylink_shop(pid=idea_catalog.agent_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_public_agenda(healer_agenda)
+        self.save_public_agenda(x_agenda)
         self.refresh_treasury_public_agendas_data()
 
     def set_credit_flow_for_agenda(
-        self, agenda_healer: PersonID, max_blocks_count: int = None
+        self, agent_id: AgentID, max_blocks_count: int = None
     ):
-        self._clear_all_source_river_data(agenda_healer)
+        self._clear_all_source_river_data(agent_id)
         if max_blocks_count is None:
             max_blocks_count = 40
-        self._set_river_blocks(agenda_healer, max_blocks_count)
-        self._set_partytreasuryunits_circles(agenda_healer)
+        self._set_river_blocks(agent_id, max_blocks_count)
+        self._set_partytreasuryunits_circles(agent_id)
 
-    def _set_river_blocks(self, x_agenda_healer: PersonID, max_blocks_count: int):
+    def _set_river_blocks(self, x_agent_id: AgentID, max_blocks_count: int):
         # changes in river_block loop
-        general_circle = [self._get_root_river_ledger_unit(x_agenda_healer)]
+        general_circle = [self._get_root_river_ledger_unit(x_agent_id)]
         blocks_count = 0  # changes in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
             parent_agenda_ledger = general_circle.pop(0)
@@ -137,9 +137,9 @@ class EconomyUnit:
                     curr_close = parent_close
 
                 river_block_x = RiverBlockUnit(
-                    currency_agenda_healer=x_agenda_healer,
-                    src_healer=x_child_ledger.agenda_healer,
-                    dst_healer=x_child_ledger.pid,
+                    currency_agent_id=x_agent_id,
+                    src_agent_id=x_child_ledger.agent_id,
+                    dst_agent_id=x_child_ledger.pid,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     block_num=blocks_count,
@@ -172,21 +172,21 @@ class EconomyUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, agenda_healer: str):
+    def _clear_all_source_river_data(self, agent_id: str):
         with self.get_treasury_conn() as treasury_conn:
-            block_s = get_river_block_table_delete_sqlstr(agenda_healer)
+            block_s = get_river_block_table_delete_sqlstr(agent_id)
             treasury_conn.execute(block_s)
 
-    def _get_root_river_ledger_unit(self, agenda_healer: str) -> RiverLedgerUnit:
+    def _get_root_river_ledger_unit(self, agent_id: str) -> RiverLedgerUnit:
         default_currency_onset = 0.0
         default_currency_cease = 1.0
         default_root_river_tree_level = 0
         default_root_block_num = None  # maybe change to 1?
         default_root_parent_block_num = None
         root_river_block = RiverBlockUnit(
-            currency_agenda_healer=agenda_healer,
-            src_healer=None,
-            dst_healer=agenda_healer,
+            currency_agent_id=agent_id,
+            src_agent_id=None,
+            dst_agent_id=agent_id,
             currency_start=default_currency_onset,
             currency_close=default_currency_cease,
             block_num=default_root_block_num,
@@ -197,36 +197,30 @@ class EconomyUnit:
             source_river_ledger = get_river_ledger_unit(treasury_conn, root_river_block)
         return source_river_ledger
 
-    def _set_partytreasuryunits_circles(self, agenda_healer: str):
+    def _set_partytreasuryunits_circles(self, agent_id: str):
         with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_river_circle_table_insert_sqlstr(agenda_healer))
+            treasury_conn.execute(get_river_circle_table_insert_sqlstr(agent_id))
+            treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(agent_id))
             treasury_conn.execute(
-                get_river_reach_table_final_insert_sqlstr(agenda_healer)
+                get_partyunit_table_update_treasury_tax_paid_sqlstr(agent_id)
             )
             treasury_conn.execute(
-                get_partyunit_table_update_treasury_tax_paid_sqlstr(agenda_healer)
+                get_partyunit_table_update_credit_score_sqlstr(agent_id)
             )
             treasury_conn.execute(
-                get_partyunit_table_update_credit_score_sqlstr(agenda_healer)
-            )
-            treasury_conn.execute(
-                get_partyunit_table_update_treasury_voice_rank_sqlstr(agenda_healer)
+                get_partyunit_table_update_treasury_voice_rank_sqlstr(agent_id)
             )
 
-            sal_partytreasuryunits = get_partytreasuryunit_dict(
-                treasury_conn, agenda_healer
-            )
-            x_agenda = self.get_public_agenda(healer=agenda_healer)
+            sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
+            x_agenda = self.get_public_agenda(agent_id=agent_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
             self.save_public_agenda(x_agenda)
 
-    def get_partytreasuryunits(self, agenda_healer: str) -> dict[str:PartyTreasuryUnit]:
+    def get_partytreasuryunits(self, agent_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
-            partytreasuryunits = get_partytreasuryunit_dict(
-                treasury_conn, agenda_healer
-            )
+            partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
         return partytreasuryunits
 
     def refresh_treasury_public_agendas_data(self, in_memory: bool = None):
@@ -268,7 +262,7 @@ class EconomyUnit:
             cur = treasury_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
-                    agenda_healer=agendaunit_x._agent_id,
+                    agent_id=agendaunit_x._agent_id,
                     groupunit_brand=groupunit_x.brand,
                     partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
                 )
@@ -288,7 +282,7 @@ class EconomyUnit:
             cur = treasury_conn.cursor()
             for belief_x in agendaunit_x._idearoot._beliefunits.values():
                 belief_catalog_x = BeliefCatalog(
-                    agenda_healer=agendaunit_x._agent_id,
+                    agent_id=agendaunit_x._agent_id,
                     base=belief_x.base,
                     pick=belief_x.pick,
                 )
@@ -362,7 +356,7 @@ class EconomyUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, pid: PersonID, _auto_output_to_public: bool = None):
+    def add_clerkunit(self, pid: AgentID, _auto_output_to_public: bool = None):
         x_clerkunit = clerkunit_shop(
             pid=pid,
             env_dir=self.get_object_root_dir(),
@@ -406,9 +400,9 @@ class EconomyUnit:
     def del_clerkunit_dir(self, clerk_cid: clerkCID):
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_cid}")
 
-    def full_setup_clerkunit(self, healer_id: PersonID):
-        self.add_clerkunit(healer_id, _auto_output_to_public=True)
-        requestee_clerkunit = self.get_clerkunit(healer_id)
+    def full_setup_clerkunit(self, agent_id: AgentID):
+        self.add_clerkunit(agent_id, _auto_output_to_public=True)
+        requestee_clerkunit = self.get_clerkunit(agent_id)
         requestee_clerkunit.create_core_dir_and_files()
         requestee_clerkunit.save_refreshed_output_to_public()
 
@@ -420,35 +414,35 @@ class EconomyUnit:
         per_x = self.get_clerkunit(clerk_cid)
         return per_x._agendas_ignore_dir
 
-    def get_public_agenda(self, healer: str) -> AgendaUnit:
+    def get_public_agenda(self, agent_id: str) -> AgendaUnit:
         return get_agenda_from_json(
-            open_file(dest_dir=self.get_public_dir(), file_name=f"{healer}.json")
+            open_file(dest_dir=self.get_public_dir(), file_name=f"{agent_id}.json")
         )
 
     def get_agenda_from_ignores_dir(
-        self, clerk_cid: clerkCID, _healer: str
+        self, clerk_cid: clerkCID, _agent_id: AgentID
     ) -> AgendaUnit:
         return get_agenda_from_json(
             open_file(
                 dest_dir=self.get_ignores_dir(clerk_cid=clerk_cid),
-                file_name=f"{_healer}.json",
+                file_name=f"{_agent_id}.json",
             )
         )
 
     def set_ignore_agenda_file(self, clerk_cid: clerkCID, agenda_obj: AgendaUnit):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
         x_clerkunit.set_ignore_agenda_file(
-            agendaunit=agenda_obj, src_agenda_healer=agenda_obj._healer
+            agendaunit=agenda_obj, src_agent_id=agenda_obj._agent_id
         )
 
-    def change_public_agenda_healer(self, old_healer: str, new_healer: str):
-        x_agenda = self.get_public_agenda(healer=old_healer)
-        x_agenda.set_agent_id(new_agent_id=new_healer)
+    def change_public_agent_id(self, old_agent_id: AgentID, new_agent_id: AgentID):
+        x_agenda = self.get_public_agenda(agent_id=old_agent_id)
+        x_agenda.set_agent_id(new_agent_id=new_agent_id)
         self.save_public_agenda(x_agenda)
-        self.del_public_agenda(x_agenda_healer=old_healer)
+        self.del_public_agenda(x_agent_id=old_agent_id)
 
-    def del_public_agenda(self, x_agenda_healer: str):
-        delete_dir(f"{self.get_public_dir()}/{x_agenda_healer}.json")
+    def del_public_agenda(self, x_agent_id: str):
+        delete_dir(f"{self.get_public_dir()}/{x_agent_id}.json")
 
     def save_public_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_economy_id(economy_id=self.economy_id)
@@ -465,7 +459,7 @@ class EconomyUnit:
     def get_public_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_public_dir()).keys())
 
-    # agendas_dir to healer_agendas_dir management
+    # agendas_dir to agent_id_agendas_dir management
     def _clerkunit_set_depot_agenda(
         self,
         clerkunit: clerkUnit,
@@ -483,10 +477,10 @@ class EconomyUnit:
         )
         if depotlink_type == "ignore" and ignore_agenda != None:
             clerkunit.set_ignore_agenda_file(
-                agendaunit=ignore_agenda, src_agenda_healer=agendaunit._agent_id
+                agendaunit=ignore_agenda, src_agent_id=agendaunit._agent_id
             )
 
-    def set_healer_depotlink(
+    def set_clerk_depotlink(
         self,
         clerk_cid: clerkCID,
         agenda_agent_id: str,
@@ -496,7 +490,7 @@ class EconomyUnit:
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(healer=agenda_agent_id)
+        x_agenda = self.get_public_agenda(agent_id=agenda_agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -509,13 +503,13 @@ class EconomyUnit:
     def create_depotlink_to_generated_agenda(
         self,
         clerk_cid: clerkCID,
-        agenda_healer: str,
+        agent_id: str,
         depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = agendaunit_shop(_agent_id=agenda_healer)
+        x_agenda = agendaunit_shop(_agent_id=agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -533,7 +527,7 @@ class EconomyUnit:
         debtor_weight: str,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(_healer=party_id)
+        x_agenda = self.get_public_agenda(_agent_id=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -544,7 +538,7 @@ class EconomyUnit:
 
     def del_depotlink(self, clerk_cid: clerkCID, agendaunit_agent_id: AgentID):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_clerkunit.del_depot_agenda(agenda_healer=agendaunit_agent_id)
+        x_clerkunit.del_depot_agenda(agent_id=agendaunit_agent_id)
 
     # Healer output_agenda
     def get_output_agenda(self, clerk_cid: clerkCID) -> AgendaUnit:
@@ -572,7 +566,7 @@ class EconomyUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
 
-            del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.healer)
+            del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.agent_id)
             cur.execute(del_sqlstr)
             for _ in range(x_calendarreport.interval_count):
                 x_agendaunit.set_belief(
@@ -600,7 +594,7 @@ class EconomyUnit:
 def economyunit_shop(
     economy_id: EconomyID,
     economys_dir: str,
-    _manager_pid: PersonID = None,
+    _manager_pid: HealerID = None,
     _clerkunits: dict[str:clerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,

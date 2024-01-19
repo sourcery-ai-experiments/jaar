@@ -17,9 +17,9 @@ from src.tools.sqlite import sqlite_text
 
 def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
     # GIVEN
-    bob_healer = "Bob"
+    bob_agent_id = "Bob"
     bob_rational = False
-    bob_agenda = agendaunit_shop(_agent_id=bob_healer)
+    bob_agenda = agendaunit_shop(_agent_id=bob_agent_id)
     bob_agenda._rational = bob_rational
 
     # WHEN
@@ -29,7 +29,7 @@ def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
 UPDATE agendaunit
 SET rational = {sqlite_text(bob_rational)}
-WHERE healer = '{bob_healer}'
+WHERE agent_id = '{bob_agent_id}'
 ;
 """
     assert gen_sqlstr == example_sqlstr
@@ -42,7 +42,7 @@ def test_get_agendaunits_select_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = """
 SELECT 
-  healer
+  agent_id
 , rational
 FROM agendaunit
 ;
@@ -62,14 +62,14 @@ SET _treasury_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
     WHERE block.currency_master='{bob_text}' 
-        AND block.dst_healer=block.currency_master
-        AND block.src_healer = partyunit.pid
+        AND block.dst_agent_id=block.currency_master
+        AND block.src_agent_id = partyunit.pid
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
-    WHERE partyunit.agenda_healer='{bob_text}' 
-        AND partyunit.pid = block.dst_healer
+    WHERE partyunit.agent_id='{bob_text}' 
+        AND partyunit.pid = block.dst_agent_id
 )
 ;
 """
@@ -85,8 +85,8 @@ def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
     SELECT 
     block.currency_master
-    , block.src_healer src
-    , block.dst_healer dst
+    , block.src_agent_id src
+    , block.dst_agent_id dst
     , CASE 
         WHEN block.currency_start < circle.curr_start 
             AND block.currency_close > circle.curr_start
@@ -132,10 +132,10 @@ def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
             AND block.currency_start < circle.curr_close
             AND block.currency_close > circle.curr_close)
     WHERE block.currency_master = '{bob_text}'
-        AND block.src_healer != block.currency_master
+        AND block.src_agent_id != block.currency_master
     ORDER BY 
-    block.src_healer
-    , block.dst_healer
+    block.src_agent_id
+    , block.dst_agent_id
     , block.currency_start
     , block.currency_close
 """
@@ -289,12 +289,12 @@ def test_get_river_reach_table_create_sqlstr_ReturnsCorrectStr():
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS river_reach (
   currency_master VARCHAR(255) NOT NULL
-, src_healer VARCHAR(255) NOT NULL
+, src_agent_id VARCHAR(255) NOT NULL
 , set_num INT NOT NULL
 , reach_curr_start FLOAT NOT NULL
 , reach_curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
-, FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(src_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
@@ -306,7 +306,7 @@ def test_get_river_reach_table_insert_sqlstr_ReturnsCorrectStr():
     select_example_sqlstr = """
 SELECT 
   'Yao' currency_master
-, 'Sue' src_healer
+, 'Sue' src_agent_id
 , 4 set_num
 , 0.78 reach_curr_start
 , 0.89 reach_curr_close
@@ -317,7 +317,7 @@ SELECT
 
     # THEN
     example_sqlstr = f"""
-INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start, reach_curr_close)
+INSERT INTO river_reach (currency_master, src_agent_id, set_num, reach_curr_start, reach_curr_close)
 {select_example_sqlstr}
 ;
 """
@@ -333,11 +333,11 @@ def test_get_river_score_select_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
 SELECT 
   currency_master
-, src_healer
+, src_agent_id
 , SUM(reach_curr_close - reach_curr_start) range_sum
 FROM river_reach
 WHERE currency_master = '{yao_text}'
-GROUP BY currency_master, src_healer
+GROUP BY currency_master, src_agent_id
 ORDER BY range_sum DESC
 ;
 """
@@ -351,7 +351,7 @@ def test_get_partyunit_table_create_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS partyunit (
-  agenda_healer VARCHAR(255) NOT NULL 
+  agent_id VARCHAR(255) NOT NULL 
 , pid VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
@@ -367,9 +367,9 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
-, FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(pid) REFERENCES agendaunit(healer)
-, UNIQUE(agenda_healer, pid)
+, FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(pid) REFERENCES agendaunit(agent_id)
+, UNIQUE(agent_id, pid)
 )
 ;
 """
@@ -387,10 +387,10 @@ UPDATE partyunit
 SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
-    WHERE reach.currency_master = partyunit.agenda_healer
-        AND reach.src_healer = partyunit.pid
+    WHERE reach.currency_master = partyunit.agent_id
+        AND reach.src_agent_id = partyunit.pid
     )
-WHERE partyunit.agenda_healer = '{yao_text}'
+WHERE partyunit.agent_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
@@ -411,11 +411,11 @@ SET _treasury_voice_rank =
         SELECT p2.pid
         , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
-        WHERE p2.agenda_healer = '{yao_text}'
+        WHERE p2.agent_id = '{yao_text}'
     ) p3
-    WHERE p3.pid = partyunit.pid AND partyunit.agenda_healer = '{yao_text}'
+    WHERE p3.pid = partyunit.pid AND partyunit.agent_id = '{yao_text}'
     )
-WHERE partyunit.agenda_healer = '{yao_text}'
+WHERE partyunit.agent_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr

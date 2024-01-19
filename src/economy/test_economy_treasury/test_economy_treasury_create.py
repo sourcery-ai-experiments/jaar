@@ -24,12 +24,12 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     #     row_count += 1
     #     print(f" {table_x=} {row_count}. {table_name=}")
 
-    healer_text = "healer"
+    agent_id_text = "agent_id"
     rational_text = "rational"
     agendaunit_text = "agendaunit"
-    agendaunit_columns = {healer_text: 1, rational_text: 1}
+    agendaunit_columns = {agent_id_text: 1, rational_text: 1}
 
-    agenda_healer_text = "agenda_healer"
+    agent_id_text = "agent_id"
     pid_text = "pid"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
@@ -47,7 +47,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _title_text = "_title"
     partyunit_text = "partyunit"
     partyunit_columns = {
-        agenda_healer_text: 1,
+        agent_id_text: 1,
         pid_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
@@ -66,8 +66,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     }
 
     currency_master_text = "currency_master"
-    src_healer_text = "src_healer"
-    dst_healer_text = "dst_healer"
+    src_agent_id_text = "src_agent_id"
+    dst_agent_id_text = "dst_agent_id"
     currency_start_text = "currency_start"
     currency_close_text = "currency_close"
     block_num_text = "block_num"
@@ -76,8 +76,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     river_block_text = "river_block"
     river_block_columns = {
         currency_master_text: 1,
-        src_healer_text: 1,
-        dst_healer_text: 1,
+        src_agent_id_text: 1,
+        dst_agent_id_text: 1,
         currency_start_text: 1,
         currency_close_text: 1,
         block_num_text: 1,
@@ -91,21 +91,21 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     river_circle_text = "river_circle"
     river_circle_columns = {
         currency_master_text: 1,
-        dst_healer_text: 1,
+        dst_agent_id_text: 1,
         circle_num_text: 1,
         curr_start_text: 1,
         curr_close_text: 1,
     }
 
     currency_master_text
-    src_healer_text
+    src_agent_id_text
     set_num_text = "set_num"
     reach_curr_start_text = "reach_curr_start"
     reach_curr_close_text = "reach_curr_close"
     river_reach_text = "river_reach"
     river_reach_columns = {
         currency_master_text: 1,
-        src_healer_text: 1,
+        src_agent_id_text: 1,
         set_num_text: 1,
         reach_curr_start_text: 1,
         reach_curr_close_text: 1,
@@ -113,18 +113,18 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
 
     idea_road_text = "idea_road"
     idea_catalog_text = "idea_catalog"
-    idea_catalog_columns = {agenda_healer_text: 1, idea_road_text: 1}
+    idea_catalog_columns = {agent_id_text: 1, idea_road_text: 1}
 
     base_text = "base"
     pick_text = "pick"
     belief_catalog_text = "belief_catalog"
-    belief_catalog_columns = {agenda_healer_text: 1, base_text: 1, pick_text: 1}
+    belief_catalog_columns = {agent_id_text: 1, base_text: 1, pick_text: 1}
 
     groupunit_brand_text = "groupunit_brand"
     partylinks_set_by_economy_road_text = "partylinks_set_by_economy_road"
     groupunit_catalog_text = "groupunit_catalog"
     groupunit_catalog_columns = {
-        agenda_healer_text: 1,
+        agent_id_text: 1,
         groupunit_brand_text: 1,
         partylinks_set_by_economy_road_text: 1,
     }

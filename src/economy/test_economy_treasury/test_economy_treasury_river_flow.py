@@ -19,7 +19,7 @@ def get_partyunit_table_treasurying_attr_set_count_sqlstr():
     # SELECT COUNT(*)
     # FROM partyunit
     # WHERE _treasury_tax_paid IS NOT NULL
-    #     AND agenda_healer = {currency_master}
+    #     AND agent_id = {currency_master}
     # """
     return """
 SELECT COUNT(*) 
@@ -69,27 +69,25 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     )
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
     assert (
         get_single_result(x_economy.get_treasury_conn(), river_block_count_sqlstr) == 4
     )
     with x_economy.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(
-            treasury_conn, currency_agenda_healer=sal_text
-        )
+        river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
 
     block_0 = river_blocks.get(0)
     block_1 = river_blocks.get(1)
-    assert block_1.src_healer == sal_text and block_1.dst_healer == tom_text
+    assert block_1.src_agent_id == sal_text and block_1.dst_agent_id == tom_text
     assert block_1.river_tree_level == 1
     assert block_1.currency_start == 0.25
     assert block_1.currency_close == 1
     assert block_1.parent_block_num is None
     block_2 = river_blocks.get(2)
     block_3 = river_blocks.get(3)
-    assert block_3.src_healer == tom_text and block_3.dst_healer == sal_text
+    assert block_3.src_agent_id == tom_text and block_3.dst_agent_id == sal_text
     assert block_3.river_tree_level == 2
     assert block_3.parent_block_num == 1
 
@@ -157,16 +155,14 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     )
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
     assert (
         get_single_result(x_economy.get_treasury_conn(), river_block_count_sqlstr) == 6
     )
     with x_economy.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(
-            treasury_conn, currency_agenda_healer=sal_text
-        )
+        river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -244,14 +240,14 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     )
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
     assert (
         get_single_result(x_economy.get_treasury_conn(), river_block_count_sqlstr) == 40
     )
     # with x_economy.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, currency_agenda_healer=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -330,14 +326,14 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     )
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
     assert (
         get_single_result(x_economy.get_treasury_conn(), river_block_count_sqlstr) == 40
     )
     # with x_economy.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, currency_agenda_healer=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -420,11 +416,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 
     # WHEN
     mbc = 13
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=mbc)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=mbc)
 
     # THEN
     # with x_economy.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, currency_agenda_healer=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -488,16 +484,14 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     )
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
     assert (
         get_single_result(x_economy.get_treasury_conn(), river_block_count_sqlstr) == 40
     )
     with x_economy.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(
-            treasury_conn, currency_agenda_healer=sal_text
-        )
+        river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -565,7 +559,7 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     x_economy.refresh_treasury_public_agendas_data()
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -582,7 +576,7 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
         , river_tree_level
         , lag(river_tree_level) OVER (ORDER BY currency_start, currency_close) AS prev_parent_river_tree_level
         FROM river_block rt1
-        --  WHERE dst_healer = 'sal' and currency_master = dst_healer
+        --  WHERE dst_agent_id = 'sal' and currency_master = dst_agent_id
         ORDER BY rt1.currency_start, rt1.currency_close
     ) x
     WHERE x.prev_diff <> 0
@@ -632,9 +626,9 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     x_economy.save_public_agenda(elu_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()
-    sal_agenda_before = x_economy.get_public_agenda(healer=sal_text)
+    sal_agenda_before = x_economy.get_public_agenda(agent_id=sal_text)
 
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
     assert len(sal_agenda_before._partys) == 3
     print(f"{len(sal_agenda_before._partys)=}")
     bob_party = sal_agenda_before._partys.get(bob_text)
@@ -654,19 +648,19 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert ava_party._treasury_voice_hx_lowest_rank is None
 
     # WHEN
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    sal_partytreasuryunits = x_economy.get_partytreasuryunits(agenda_healer=sal_text)
+    sal_partytreasuryunits = x_economy.get_partytreasuryunits(agent_id=sal_text)
     assert len(sal_partytreasuryunits) == 2
     bob_partytreasury = sal_partytreasuryunits.get(bob_text)
     tom_partytreasury = sal_partytreasuryunits.get(tom_text)
-    assert bob_partytreasury.tax_healer == bob_text
-    assert tom_partytreasury.tax_healer == tom_text
+    assert bob_partytreasury.tax_agent_id == bob_text
+    assert tom_partytreasury.tax_agent_id == tom_text
     assert bob_partytreasury.currency_master == sal_text
     assert tom_partytreasury.currency_master == sal_text
 
-    sal_agenda_after = x_economy.get_public_agenda(healer=sal_text)
+    sal_agenda_after = x_economy.get_public_agenda(agent_id=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)
@@ -681,14 +675,14 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     # for partytreasury_uid, sal_partytreasuryunit in sal_partytreasuryunits.items():
     #     print(f"{partytreasury_uid=} {sal_partytreasuryunit=}")
     #     assert sal_partytreasuryunit.currency_master == sal_text
-    #     assert sal_partytreasuryunit.tax_healer in [bob_text, tom_text, elu_text]
-    #     x_partyunit = sal_agenda_after._partys.get(sal_partytreasuryunit.tax_healer)
+    #     assert sal_partytreasuryunit.tax_agent_id in [bob_text, tom_text, elu_text]
+    #     x_partyunit = sal_agenda_after._partys.get(sal_partytreasuryunit.tax_agent_id)
     #     if x_partyunit != None:
     #         # print(
-    #         #     f"{sal_partytreasuryunit.currency_master=} {sal_partytreasuryunit.tax_healer=} {x_partyunit.pid=} tax_total: {sal_partytreasuryunit.tax_total} Tax Paid: {x_partyunit._treasury_tax_paid}"
+    #         #     f"{sal_partytreasuryunit.currency_master=} {sal_partytreasuryunit.tax_agent_id=} {x_partyunit.pid=} tax_total: {sal_partytreasuryunit.tax_total} Tax Paid: {x_partyunit._treasury_tax_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partytreasuryunit.currency_master=} {sal_partytreasuryunit.tax_healer=} {x_partyunit.pid=} tax_diff:  {sal_partytreasuryunit.tax_diff} Tax Paid: {x_partyunit._treasury_tax_diff}"
+    #         #     f"{sal_partytreasuryunit.currency_master=} {sal_partytreasuryunit.tax_agent_id=} {x_partyunit.pid=} tax_diff:  {sal_partytreasuryunit.tax_diff} Tax Paid: {x_partyunit._treasury_tax_diff}"
     #         # )
     #         assert sal_partytreasuryunit.tax_total == x_partyunit._treasury_tax_paid
     #         assert sal_partytreasuryunit.tax_diff == x_partyunit._treasury_tax_diff

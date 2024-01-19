@@ -278,8 +278,8 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     x_economy.save_public_agenda(tom_agenda)
     x_economy.save_public_agenda(ava_agenda)
 
-    x_economy.set_agenda_treasury_attrs(x_healer=sal_text)
-    e1_sal_agenda = x_economy.get_public_agenda(healer=sal_text)
+    x_economy.set_agenda_treasury_attrs(x_agent_id=sal_text)
+    e1_sal_agenda = x_economy.get_public_agenda(agent_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -288,10 +288,10 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     swim_group_unit.set_attr(_partylinks_set_by_economy_road=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
     x_economy.save_public_agenda(sal_agenda)
-    x_economy.set_agenda_treasury_attrs(x_healer=sal_text)
+    x_economy.set_agenda_treasury_attrs(x_agent_id=sal_text)
 
     # THEN
-    e1_sal_agenda = x_economy.get_public_agenda(healer=sal_text)
+    e1_sal_agenda = x_economy.get_public_agenda(agent_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
@@ -309,7 +309,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # WHEN
     resources_road = create_road(get_temp_env_economy_id(), "resources")
     water_road = create_road(resources_road, "water")
-    water_idea_catalog = IdeaCatalog(agenda_healer=bob_text, idea_road=water_road)
+    water_idea_catalog = IdeaCatalog(agent_id=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_idea_catalog_table_insert_sqlstr(water_idea_catalog)
     with x_economy.get_treasury_conn() as treasury_conn:
         print(water_insert_sqlstr)
@@ -404,7 +404,7 @@ def test_economy_get_belief_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
     # WHEN
     weather_road = create_road(get_temp_env_economy_id(), "weather")
     weather_rain = BeliefCatalog(
-        agenda_healer=bob_text,
+        agent_id=bob_text,
         base=weather_road,
         pick=create_road(weather_road, "rain"),
     )
@@ -488,7 +488,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        agenda_healer=bob_text,
+        agent_id=bob_text,
         groupunit_brand="US Dollar",
         partylinks_set_by_economy_road=create_road(get_temp_env_economy_id(), "USA"),
     )

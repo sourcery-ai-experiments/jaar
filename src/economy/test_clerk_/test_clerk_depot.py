@@ -1,6 +1,4 @@
-from src.economy.examples.example_clerks import (
-    get_clerkunit_2agenda as healer_examples_get_healer_2agenda,
-)
+from src.economy.examples.example_clerks import get_clerkunit_2agenda
 from src.economy.examples.clerk_env_kit import (
     clerk_dir_setup_cleanup,
     get_temp_clerkunit_dir,
@@ -12,7 +10,7 @@ from src.agenda.agenda import agendaunit_shop
 def test_clerkunit_set_depot_agenda_SetsCorrectInfo(clerk_dir_setup_cleanup):
     # GIVEN
     env_dir = get_temp_clerkunit_dir()
-    x_clerk = healer_examples_get_healer_2agenda(env_dir, get_temp_economy_id())
+    x_clerk = get_clerkunit_2agenda(env_dir, get_temp_economy_id())
     assert x_clerk._contract.get_partys_depotlink_count() == 2
     print(f"{x_clerk._contract._partys.keys()=}")
 

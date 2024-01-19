@@ -1,7 +1,8 @@
 # from os import listdir as os_listdir
-from pytest import fixture as pytest_fixture
+from src._prime.road import AgentID
 from src.agenda.agenda import agendaunit_shop
 from src.tools.file import delete_dir, save_file
+from pytest import fixture as pytest_fixture
 
 
 def get_temp_clerkunit_dir() -> str:
@@ -14,19 +15,19 @@ def get_temp_economy_id() -> str:
 
 @pytest_fixture()
 def clerk_dir_setup_cleanup():
-    healer_dir = get_temp_clerkunit_dir()
-    delete_dir(dir=healer_dir)
-    yield healer_dir
-    delete_dir(dir=healer_dir)
+    agent_id_dir = get_temp_clerkunit_dir()
+    delete_dir(dir=agent_id_dir)
+    yield agent_id_dir
+    delete_dir(dir=agent_id_dir)
 
 
-def create_agenda_file(agenda_clerkunit_dir: str, agenda_healer: str):
-    x_agenda = agendaunit_shop(_agent_id=agenda_healer)
-    # file_path = f"{agenda_clerkunit_dir}/{x_agenda._healer}.json"
+def create_agenda_file(agenda_clerkunit_dir: str, agent_id: AgentID):
+    x_agenda = agendaunit_shop(_agent_id=agent_id)
+    # file_path = f"{agenda_clerkunit_dir}/{x_agenda._agent_id}.json"
     # # if not path.exists(file_path):
-    # print(f"{file_path=} {x_agenda._healer=}")
+    # print(f"{file_path=} {x_agenda._agent_id=}")
     # with open(f"{file_path}", "w") as f:
-    #     print(f" saving {x_agenda._healer=} to {file_path=}")
+    #     print(f" saving {x_agenda._agent_id=} to {file_path=}")
     #     f.write(x_agenda.get_json())
     save_file(
         dest_dir=agenda_clerkunit_dir,

@@ -1,12 +1,11 @@
+from src._prime.road import AgentID, PersonID, PartyID
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     get_meld_of_agenda_files,
-    PersonID,
     AgendaUnit,
     agendaunit_shop,
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
-    PartyID,
 )
 from src.tools.file import (
     single_dir_create_if_null,
@@ -77,28 +76,28 @@ class clerkUnit:
 
     def _set_depotlink(
         self,
-        outer_healer: str,
+        outer_agent_id: str,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        self.raise_exception_if_no_file("depot", outer_healer)
+        self.raise_exception_if_no_file("depot", outer_agent_id)
         self._set_partyunit_depotlink(
-            outer_healer, link_type, creditor_weight, debtor_weight
+            outer_agent_id, link_type, creditor_weight, debtor_weight
         )
 
         if link_type == "assignment":
-            self._set_assignment_depotlink(outer_healer)
+            self._set_assignment_depotlink(outer_agent_id)
         elif link_type == "blind_trust":
-            x_agenda = self.open_depot_agenda(healer=outer_healer)
+            x_agenda = self.open_depot_agenda(agent_id=outer_agent_id)
             self.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
-            new_x_agenda = agendaunit_shop(_agent_id=outer_healer)
+            new_x_agenda = agendaunit_shop(_agent_id=outer_agent_id)
             new_x_agenda.set_economy_id(self._economy_id)
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._agent_id)
 
-    def _set_assignment_depotlink(self, outer_healer):
-        src_agenda = self.open_depot_agenda(outer_healer)
+    def _set_assignment_depotlink(self, outer_agent_id):
+        src_agenda = self.open_depot_agenda(outer_agent_id)
         src_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_agent_id=self._clerk_cid)
         empty_agenda.set_economy_id(self._economy_id)
@@ -128,10 +127,10 @@ class clerkUnit:
         else:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
-    def del_depot_agenda(self, agenda_healer: str):
-        self._del_depotlink(party_id=agenda_healer)
-        self.erase_depot_agenda(agenda_healer)
-        self.erase_digest_agenda(agenda_healer)
+    def del_depot_agenda(self, agent_id: AgentID):
+        self._del_depotlink(party_id=agent_id)
+        self.erase_depot_agenda(agent_id)
+        self.erase_digest_agenda(agent_id)
 
     def _del_depotlink(self, party_id: PartyID):
         self._contract.get_party(party_id).del_depotlink_type()
@@ -151,9 +150,9 @@ class clerkUnit:
         # if self._contract is None:
         self.get_contract()
 
-    def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agenda_healer: str):
-        self.save_ignore_agenda(agendaunit, src_agenda_healer)
-        self.save_agenda_to_digest(agendaunit, src_agenda_healer)
+    def set_ignore_agenda_file(self, agendaunit: AgendaUnit, src_agent_id: str):
+        self.save_ignore_agenda(agendaunit, src_agent_id)
+        self.save_agenda_to_digest(agendaunit, src_agent_id)
 
     # housekeeping
     def set_env_dir(
@@ -222,22 +221,20 @@ class clerkUnit:
         dest_dir = self._agendas_public_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
-    def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agenda_healer: str):
+    def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agent_id: str):
         dest_dir = self._agendas_ignore_dir
         file_name = None
-        if src_agenda_healer != None:
-            file_name = f"{src_agenda_healer}.json"
+        if src_agent_id != None:
+            file_name = f"{src_agent_id}.json"
         else:
             file_name = f"{x_agenda._agent_id}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def save_agenda_to_digest(
-        self, x_agenda: AgendaUnit, src_agenda_healer: str = None
-    ):
+    def save_agenda_to_digest(self, x_agenda: AgendaUnit, src_agent_id: str = None):
         dest_dir = self._agendas_digest_dir
         file_name = None
-        if src_agenda_healer != None:
-            file_name = f"{src_agenda_healer}.json"
+        if src_agent_id != None:
+            file_name = f"{src_agent_id}.json"
         else:
             file_name = f"{x_agenda._agent_id}.json"
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
@@ -264,17 +261,17 @@ class clerkUnit:
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def open_public_agenda(self, healer: PersonID) -> str:
-        file_name_x = f"{healer}.json"
+    def open_public_agenda(self, agent_id: PersonID) -> str:
+        file_name_x = f"{agent_id}.json"
         return open_file(self._agendas_public_dir, file_name_x)
 
-    def open_depot_agenda(self, healer: PersonID) -> AgendaUnit:
-        file_name_x = f"{healer}.json"
+    def open_depot_agenda(self, agent_id: PersonID) -> AgendaUnit:
+        file_name_x = f"{agent_id}.json"
         x_agenda_json = open_file(self._agendas_depot_dir, file_name_x)
         return agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
-    def open_ignore_agenda(self, healer: PersonID) -> AgendaUnit:
-        ignore_file_name = f"{healer}.json"
+    def open_ignore_agenda(self, agent_id: PersonID) -> AgendaUnit:
+        ignore_file_name = f"{agent_id}.json"
         agenda_json = open_file(self._agendas_ignore_dir, ignore_file_name)
         agenda_obj = agendaunit_get_from_json(x_agenda_json=agenda_json)
         agenda_obj.set_agenda_metrics()
@@ -305,22 +302,22 @@ class clerkUnit:
         x_agenda.set_economy_id(self._economy_id)
         return x_agenda
 
-    def erase_depot_agenda(self, healer):
-        delete_dir(f"{self._agendas_depot_dir}/{healer}.json")
+    def erase_depot_agenda(self, agent_id):
+        delete_dir(f"{self._agendas_depot_dir}/{agent_id}.json")
 
-    def erase_digest_agenda(self, healer):
-        delete_dir(f"{self._agendas_digest_dir}/{healer}.json")
+    def erase_digest_agenda(self, agent_id):
+        delete_dir(f"{self._agendas_digest_dir}/{agent_id}.json")
 
     def erase_contract_agenda_file(self):
         delete_dir(dir=f"{self._clerkunit_dir}/{self._contract_file_name}")
 
-    def raise_exception_if_no_file(self, dir_type: str, healer: str):
-        x_agenda_file_name = f"{healer}.json"
+    def raise_exception_if_no_file(self, dir_type: str, agent_id: str):
+        x_agenda_file_name = f"{agent_id}.json"
         if dir_type == "depot":
             x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
             raise InvalidclerkException(
-                f"Healer {self._clerk_cid} cannot find agenda {healer} in {x_agenda_file_path}"
+                f"agent_id {self._clerk_cid} cannot find agenda {agent_id} in {x_agenda_file_path}"
             )
 
     def _contract_agenda_exists(self) -> bool:

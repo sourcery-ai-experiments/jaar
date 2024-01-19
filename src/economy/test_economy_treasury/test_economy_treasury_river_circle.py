@@ -36,7 +36,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     x_economy.save_public_agenda(bob_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text)
 
     with x_economy.get_treasury_conn() as treasury_conn:
         assert len(get_river_circle_dict(treasury_conn, sal_text)) > 0
@@ -88,28 +88,25 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     x_economy.save_public_agenda(elu_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()
-    x_economy.set_credit_flow_for_agenda(agenda_healer=sal_text, max_blocks_count=100)
+    x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
     with x_economy.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert (
-            len(get_river_circle_dict(treasury_conn, currency_agenda_healer=sal_text))
-            == 0
+            len(get_river_circle_dict(treasury_conn, currency_agent_id=sal_text)) == 0
         )
 
     # WHEN / THEN
-    mstr_sqlstr = get_river_circle_table_insert_sqlstr(currency_agenda_healer=sal_text)
+    mstr_sqlstr = get_river_circle_table_insert_sqlstr(currency_agent_id=sal_text)
     with x_economy.get_treasury_conn() as treasury_conn:
         print(mstr_sqlstr)
         treasury_conn.execute(mstr_sqlstr)
-        # river_blocks = get_river_block_dict(treasury_conn, currency_agenda_healer=sal_text)
+        # river_blocks = get_river_block_dict(treasury_conn, currency_agent_id=sal_text)
         # for river_block in river_blocks.values():
         #     print(f"{river_block=}")
 
     # THEN
     with x_economy.get_treasury_conn() as treasury_conn:
-        river_circles = get_river_circle_dict(
-            treasury_conn, currency_agenda_healer=sal_text
-        )
+        river_circles = get_river_circle_dict(treasury_conn, currency_agent_id=sal_text)
         # for river_circle in river_circles.values():
         #     print(f"huh {river_circle=}")
 
@@ -119,21 +116,21 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     circle_0 = river_circles[0]
     assert circle_0.currency_master == sal_text
-    assert circle_0.dst_healer == sal_text
+    assert circle_0.dst_agent_id == sal_text
     assert circle_0.circle_num == 0
     assert circle_0.curr_start == 0.04401266686517654
     assert circle_0.curr_close == 0.1
 
     circle_1 = river_circles[1]
     assert circle_1.currency_master == sal_text
-    assert circle_1.dst_healer == sal_text
+    assert circle_1.dst_agent_id == sal_text
     assert circle_1.circle_num == 1
     assert circle_1.curr_start == 0.12316456150798766
     assert circle_1.curr_close == 1.0
 
     # for value in river_circles.values():
     #     assert value.currency_master == sal_text
-    #     assert value.dst_healer == sal_text
+    #     assert value.dst_agent_id == sal_text
     #     assert value.circle_num in [0, 1]
     #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
     #     assert value.curr_close in [0.1, 1.0]

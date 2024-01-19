@@ -5,8 +5,8 @@ from src.agenda.examples.example_agendas import (
 from src.tools.file import open_file, count_files
 from src.economy.clerk import clerkunit_shop
 from src.economy.examples.example_clerks import (
-    get_2node_agenda as example_healers_get_2node_agenda,
-    get_7nodeJRoot_agenda as example_healers_get_7nodeJRoot_agenda,
+    get_2node_agenda as example_get_2node_agenda,
+    get_7nodeJRoot_agenda as example_get_7nodeJRoot_agenda,
 )
 from src.economy.examples.clerk_env_kit import (
     clerk_dir_setup_cleanup,
@@ -17,7 +17,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_healer_save_contract_agenda_CreateStartingAgendaFile(
+# def test_ClerkUnit_save_contract_agenda_CreateStartingAgendaFile(
 #     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -41,7 +41,7 @@ from pytest import raises as pytest_raises
 #     assert open_file(lai_agenda._clerkunit_dir, lai_contract_file_name) != None
 
 
-def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
+def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -73,7 +73,7 @@ def test_healeropen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     assert list(contract_agenda._groups.keys()) == [tim_text]
 
 
-def test_healer_save_contract_agenda_contractPersonIDMustBeHealer(
+def test_ClerkUnit_save_contract_agenda_contractPersonIDMustBeHealer(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -90,7 +90,7 @@ def test_healer_save_contract_agenda_contractPersonIDMustBeHealer(
     assert x_clerk.open_contract_agenda()._agent_id == x_clerk._clerk_cid
 
 
-def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
+def test_ClerkUnit_open_contract_agenda_WhenStartingAgendaFileExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -115,7 +115,7 @@ def test_healer_open_contract_agenda_WhenStartingAgendaFileExists(
     assert contract_agenda._agent_id == x_clerk._clerk_cid
 
 
-def test_healer_erase_contract_agenda_file_DeletesFileCorrectly(
+def test_ClerkUnit_erase_contract_agenda_file_DeletesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -142,16 +142,16 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    clerk_cid = "healer1"
+    clerk_cid = "Yao"
     env_dir = get_temp_clerkunit_dir()
     x_clerk = clerkunit_shop(clerk_cid, env_dir, get_temp_economy_id())
     x_clerk.create_core_dir_and_files()
-    x_agenda = example_healers_get_2node_agenda()
-    src_agenda_healer = x_agenda._agent_id
+    x_agenda = example_get_2node_agenda()
+    src_agent_id = x_agenda._agent_id
     assert count_files(x_clerk._agendas_digest_dir) == 0
 
     # WHEN
-    x_clerk.save_agenda_to_digest(x_agenda, src_agenda_healer=src_agenda_healer)
+    x_clerk.save_agenda_to_digest(x_agenda, src_agent_id=src_agent_id)
 
     # THEN
     x_agenda_file_name = f"{x_agenda._agent_id}.json"
@@ -163,7 +163,7 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     assert count_files(x_clerk._agendas_digest_dir) == 1
     digest_x_agenda_json = open_file(
         dest_dir=x_clerk._agendas_digest_dir,
-        file_name=f"{src_agenda_healer}.json",
+        file_name=f"{src_agent_id}.json",
     )
     assert digest_x_agenda_json == x_agenda.get_json()
 
@@ -176,8 +176,8 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     env_dir = get_temp_clerkunit_dir()
     sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_economy_id())
     sue_agenda.create_core_dir_and_files()
-    x_agenda = example_healers_get_2node_agenda()
-    src_agenda_healer = x_agenda._agent_id
+    x_agenda = example_get_2node_agenda()
+    src_agent_id = x_agenda._agent_id
     assert count_files(sue_agenda._agendas_digest_dir) == 0
     print(f"{x_agenda._economy_id=}")
 
@@ -194,12 +194,12 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     assert count_files(sue_agenda._agendas_digest_dir) == 1
     digest_x_agenda_json = open_file(
         dest_dir=sue_agenda._agendas_digest_dir,
-        file_name=f"{src_agenda_healer}.json",
+        file_name=f"{src_agent_id}.json",
     )
     assert digest_x_agenda_json == x_agenda.get_json()
 
 
-def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
+def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -218,23 +218,19 @@ def test_healer_get_remelded_output_agenda_withEmptyDigestDict(
     sx_output_after = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    healer_agenda_x = agendaunit_shop(_agent_id=clerk_cid_x, _weight=0.0)
-    healer_agenda_x.set_economy_id(get_temp_economy_id())
-    healer_agenda_x._idearoot._parent_road = ""
-    healer_agenda_x.set_agenda_metrics()
+    x_agenda = agendaunit_shop(_agent_id=clerk_cid_x, _weight=0.0)
+    x_agenda.set_economy_id(get_temp_economy_id())
+    x_agenda._idearoot._parent_road = ""
+    x_agenda.set_agenda_metrics()
 
     assert str(type(sx_output_after)).find(".agenda.AgendaUnit'>")
-    assert sx_output_after._weight == healer_agenda_x._weight
-    assert (
-        sx_output_after._idearoot._parent_road == healer_agenda_x._idearoot._parent_road
-    )
-    assert (
-        sx_output_after._idearoot._beliefunits == healer_agenda_x._idearoot._beliefunits
-    )
-    assert sx_output_after._idearoot == healer_agenda_x._idearoot
+    assert sx_output_after._weight == x_agenda._weight
+    assert sx_output_after._idearoot._parent_road == x_agenda._idearoot._parent_road
+    assert sx_output_after._idearoot._beliefunits == x_agenda._idearoot._beliefunits
+    assert sx_output_after._idearoot == x_agenda._idearoot
 
 
-def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
+def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -246,7 +242,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
     assert x_agenda_output_before._agent_id == yao_text
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
-    input_agenda = example_healers_get_2node_agenda()
+    input_agenda = example_get_2node_agenda()
     input_agenda.meld(input_agenda)
     input_idearoot = input_agenda._idearoot
     input_b_idea = input_idearoot.get_kid("B")
@@ -278,7 +274,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
     assert new_output_agenda != input_agenda
 
 
-# def test_healer_set_digested_agenda_with2Groups(clerk_dir_setup_cleanup):
+# def test_ClerkUnit_set_digested_agenda_with2Groups(clerk_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_clerkunit_dir()
 #     x_clerk = clerkunit_shop(pid="test8", env_dir=env_dir)
@@ -310,7 +306,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert s1._beliefs.get(yaya_road).base == yaya_road
 
 #     # WHEN
-#     x_clerk.set_single_digested_agenda(_agenda_healer="test1", digest_agenda_x=s1)
+#     x_clerk.set_single_digested_agenda(_agent_id="test1", digest_agenda_x=s1)
 #     new_output_agenda = x_clerk.get_remelded_output_agenda()
 
 #     # THEN
@@ -329,7 +325,7 @@ def test_healer_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert new_output_agenda != s1
 
 
-def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
+def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -338,7 +334,7 @@ def test_healer_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     contract_origin_weight = 1
     yao_originunit = originunit_shop()
     yao_originunit.set_originlink(pid=yao_text, weight=contract_origin_weight)
-    contract_agenda_x = example_healers_get_7nodeJRoot_agenda()
+    contract_agenda_x = example_get_7nodeJRoot_agenda()
     contract_agenda_x.set_agent_id(yao_text)
 
     assert contract_agenda_x._idearoot._originunit == originunit_shop()

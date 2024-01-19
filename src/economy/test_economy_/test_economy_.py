@@ -310,13 +310,13 @@ def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
-    healer_text = "healer"
-    healer_road_with_woot = create_road(x_economy.economy_id, healer_text)
-    healer_road_wo_root = healer_text
-    # healer_list_wo_root = get_all_road_nodes(healer_road_wo_root)
+    bob_text = "Bob"
+    economy_road_with_woot = create_road(x_economy.economy_id, bob_text)
+    economy_road_wo_root = bob_text
+    # healer_list_wo_root = get_all_road_nodes(economy_road_wo_root)
     bloomers_text = "bloomers"
-    bloomers_road_with_root = create_road(healer_road_with_woot, bloomers_text)
-    bloomers_road_wo_root = create_road(healer_road_wo_root, bloomers_text)
+    bloomers_road_with_root = create_road(economy_road_with_woot, bloomers_text)
+    bloomers_road_wo_root = create_road(economy_road_wo_root, bloomers_text)
     # bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
     roses_text = "roses"
     roses_road_with_root = create_road(bloomers_road_with_root, roses_text)
@@ -325,7 +325,7 @@ def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert x_economy.economy_id == x_economy.build_economy_road()
-    assert healer_road_with_woot == x_economy.build_economy_road(healer_road_wo_root)
+    assert economy_road_with_woot == x_economy.build_economy_road(economy_road_wo_root)
     assert bloomers_road_with_root == x_economy.build_economy_road(
         bloomers_road_wo_root
     )

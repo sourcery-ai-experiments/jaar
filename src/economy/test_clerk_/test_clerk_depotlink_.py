@@ -34,10 +34,10 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     file_path_x = f"{sue_agenda._agendas_depot_dir}/{tim_text}.json"
     print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
-        sue_agenda._set_depotlink(outer_healer=tim_text)
+        sue_agenda._set_depotlink(outer_agent_id=tim_text)
     assert (
         str(excinfo.value)
-        == f"Healer {sue_text} cannot find agenda {tim_text} in {file_path_x}"
+        == f"agent_id {sue_text} cannot find agenda {tim_text} in {file_path_x}"
     )
 
 
@@ -54,7 +54,7 @@ def test_clerkunit_set_depotlink_CorrectlySetscontractPartys(
     assert list(yao_ux._contract._partys.keys()) == [yao_text]
 
     # WHEN
-    yao_ux._set_depotlink(outer_healer=sue_text)
+    yao_ux._set_depotlink(outer_agent_id=sue_text)
 
     # THEN
     assert list(yao_ux._contract._partys.keys()) == [yao_text, sue_text]
@@ -112,7 +112,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup)
     assert bob_agenda._contract.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
-    bob_agenda.del_depot_agenda(agenda_healer=yao_text)
+    bob_agenda.del_depot_agenda(agent_id=yao_text)
 
     # THEN
     assert list(bob_agenda._contract._partys.keys()) == [bob_text, yao_text]
@@ -134,7 +134,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
 
     # WHEN
-    bob_agenda.del_depot_agenda(agenda_healer=lai_text)
+    bob_agenda.del_depot_agenda(agent_id=lai_text)
 
     # THEN
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
@@ -178,7 +178,7 @@ def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_agenda._contract.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
-    bob_agenda.del_depot_agenda(agenda_healer=yao_text)
+    bob_agenda.del_depot_agenda(agent_id=yao_text)
 
     # THEN
     assert list(bob_agenda._contract._partys.keys()) == [bob_text, yao_text]
@@ -201,7 +201,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     assert count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
     # WHEN
-    bob_agenda.del_depot_agenda(agenda_healer=zia_text)
+    bob_agenda.del_depot_agenda(agent_id=zia_text)
 
     # THEN
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
@@ -221,17 +221,17 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     bob_ux.set_contract_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
-    cx1 = bob_ux.open_ignore_agenda(healer=zia_text)
+    cx1 = bob_ux.open_ignore_agenda(agent_id=zia_text)
     assert len(cx1._partys) == 0
     cx1.add_partyunit(pid="tim")
     assert len(cx1._partys) == 1
 
     # WHEN
     zia_agenda = agendaunit_shop(_agent_id=zia_text)
-    bob_ux.set_ignore_agenda_file(zia_agenda, src_agenda_healer=None)
+    bob_ux.set_ignore_agenda_file(zia_agenda, src_agent_id=None)
 
     # THEN
-    cx2 = bob_ux.open_ignore_agenda(healer=zia_text)
+    cx2 = bob_ux.open_ignore_agenda(agent_id=zia_text)
     assert len(cx2._partys) == 0
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 

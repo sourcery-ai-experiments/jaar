@@ -9,11 +9,11 @@ def get_river_score_select_sqlstr(currency_master):
     return f"""
 SELECT 
   currency_master
-, src_healer
+, src_agent_id
 , SUM(reach_curr_close - reach_curr_start) range_sum
 FROM river_reach
 WHERE currency_master = '{currency_master}'
-GROUP BY currency_master, src_healer
+GROUP BY currency_master, src_agent_id
 ORDER BY range_sum DESC
 ;
 """
@@ -26,7 +26,7 @@ def get_river_reach_table_final_insert_sqlstr(currency_master: PersonID) -> str:
 
 def get_river_reach_table_insert_sqlstr(select_query: str) -> str:
     return f"""
-INSERT INTO river_reach (currency_master, src_healer, set_num, reach_curr_start, reach_curr_close)
+INSERT INTO river_reach (currency_master, src_agent_id, set_num, reach_curr_start, reach_curr_close)
 {select_query}
 ;
 """
@@ -36,12 +36,12 @@ def get_river_reach_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_reach (
   currency_master VARCHAR(255) NOT NULL
-, src_healer VARCHAR(255) NOT NULL
+, src_agent_id VARCHAR(255) NOT NULL
 , set_num INT NOT NULL
 , reach_curr_start FLOAT NOT NULL
 , reach_curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
-, FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(src_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
@@ -51,8 +51,8 @@ def get_river_reach_table_touch_select_sqlstr(currency_master: PersonID) -> str:
     return f"""
     SELECT 
     block.currency_master
-    , block.src_healer src
-    , block.dst_healer dst
+    , block.src_agent_id src
+    , block.dst_agent_id dst
     , CASE 
         WHEN block.currency_start < circle.curr_start 
             AND block.currency_close > circle.curr_start
@@ -98,10 +98,10 @@ def get_river_reach_table_touch_select_sqlstr(currency_master: PersonID) -> str:
             AND block.currency_start < circle.curr_close
             AND block.currency_close > circle.curr_close)
     WHERE block.currency_master = '{currency_master}'
-        AND block.src_healer != block.currency_master
+        AND block.src_agent_id != block.currency_master
     ORDER BY 
-    block.src_healer
-    , block.dst_healer
+    block.src_agent_id
+    , block.dst_agent_id
     , block.currency_start
     , block.currency_close
 """
@@ -245,21 +245,21 @@ def get_table_count_sqlstr(table_name: str) -> str:
 
 
 # river_block
-def get_river_block_table_delete_sqlstr(currency_agenda_healer: str) -> str:
+def get_river_block_table_delete_sqlstr(currency_agent_id: str) -> str:
     return f"""
 DELETE FROM river_block
-WHERE currency_master = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agent_id}' 
 ;
 """
 
 
 def get_river_block_table_create_sqlstr() -> str:
-    """Table that stores each block of currency from src_healer to dst_healer.
-    currency_master: every currency starts with a healer as credit source
-        All river blocks with destination currency healer stop. For that currency range
+    """Table that stores each block of currency from src_agent_id to dst_agent_id.
+    currency_master: every currency starts with a agent_id as credit source
+        All river blocks with destination currency agent_id stop. For that currency range
         there is no more block
-    src_healer: healer that is source of credit
-    dst_healer: healer that is destination of credit.
+    src_agent_id: agent_id that is source of credit
+    dst_agent_id: agent_id that is destination of credit.
     currency_start: range of currency influenced start
     currency_close: range of currency influenced close
     block_num: the sequence number of transactions before this one
@@ -271,16 +271,16 @@ def get_river_block_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_block (
   currency_master VARCHAR(255) NOT NULL
-, src_healer VARCHAR(255) NOT NULL
-, dst_healer VARCHAR(255) NOT NULL
+, src_agent_id VARCHAR(255) NOT NULL
+, dst_agent_id VARCHAR(255) NOT NULL
 , currency_start FLOAT NOT NULL
 , currency_close FLOAT NOT NULL
 , block_num INT NOT NULL
 , parent_block_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
-, FOREIGN KEY(src_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(dst_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(src_agent_id) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(dst_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
@@ -288,9 +288,9 @@ CREATE TABLE IF NOT EXISTS river_block (
 
 @dataclass
 class RiverBlockUnit:
-    currency_agenda_healer: str
-    src_healer: str
-    dst_healer: str
+    currency_agent_id: str
+    src_agent_id: str
+    dst_agent_id: str
     currency_start: float
     currency_close: float
     block_num: int
@@ -298,7 +298,7 @@ class RiverBlockUnit:
     river_tree_level: int
 
     def block_returned(self) -> bool:
-        return self.currency_agenda_healer == self.dst_healer
+        return self.currency_agent_id == self.dst_agent_id
 
 
 def get_river_block_table_insert_sqlstr(
@@ -307,8 +307,8 @@ def get_river_block_table_insert_sqlstr(
     return f"""
 INSERT INTO river_block (
   currency_master
-, src_healer
-, dst_healer
+, src_agent_id
+, dst_agent_id
 , currency_start 
 , currency_close
 , block_num
@@ -316,9 +316,9 @@ INSERT INTO river_block (
 , river_tree_level
 )
 VALUES (
-  '{river_block_x.currency_agenda_healer}'
-, '{river_block_x.src_healer}'
-, '{river_block_x.dst_healer}'
+  '{river_block_x.currency_agent_id}'
+, '{river_block_x.src_agent_id}'
+, '{river_block_x.dst_agent_id}'
 , {sqlite_null(river_block_x.currency_start)}
 , {sqlite_null(river_block_x.currency_close)}
 , {river_block_x.block_num}
@@ -330,20 +330,20 @@ VALUES (
 
 
 def get_river_block_dict(
-    db_conn: str, currency_agenda_healer: str
+    db_conn: str, currency_agent_id: str
 ) -> dict[str:RiverBlockUnit]:
     sqlstr = f"""
 SELECT 
   currency_master
-, src_healer
-, dst_healer
+, src_agent_id
+, dst_agent_id
 , currency_start
 , currency_close
 , block_num
 , parent_block_num
 , river_tree_level
 FROM river_block
-WHERE currency_master = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agent_id}' 
 ;
 """
     dict_x = {}
@@ -353,9 +353,9 @@ WHERE currency_master = '{currency_agenda_healer}'
 
     for count_x, row in enumerate(results_x):
         river_block_x = RiverBlockUnit(
-            currency_agenda_healer=row[0],
-            src_healer=row[1],
-            dst_healer=row[2],
+            currency_agent_id=row[0],
+            src_agent_id=row[1],
+            dst_agent_id=row[2],
             currency_start=row[3],
             currency_close=row[4],
             block_num=row[5],
@@ -367,10 +367,10 @@ WHERE currency_master = '{currency_agenda_healer}'
 
 
 # river_circle
-def get_river_circle_table_delete_sqlstr(currency_agenda_healer: str) -> str:
+def get_river_circle_table_delete_sqlstr(currency_agent_id: str) -> str:
     return f"""
 DELETE FROM river_circle
-WHERE currency_master = '{currency_agenda_healer}' 
+WHERE currency_master = '{currency_agent_id}' 
 ;
 """
 
@@ -380,25 +380,25 @@ def get_river_circle_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_circle (
   currency_master VARCHAR(255) NOT NULL
-, dst_healer VARCHAR(255) NOT NULL
+, dst_agent_id VARCHAR(255) NOT NULL
 , circle_num INT NOT NULL
 , curr_start FLOAT NOT NULL
 , curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(healer)
-, FOREIGN KEY(dst_healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(dst_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
 
 
-def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
+def get_river_circle_table_insert_sqlstr(currency_agent_id: str) -> str:
     """Table that stores discontinuous currency ranges that circle back from source (currency_master)
     to final destination (currency_master)
     Columns
-    currency_master: every currency starts with a healer as credit source
-    dst_healer: healer that is destination of credit.
-        All river blocks with destination healer are summed into ranges called circles
-    circle_num: all destination healer circles have a unique number. (sequential 0, 1, 2...)
+    currency_master: every currency starts with a agent_id as credit source
+    dst_agent_id: agent_id that is destination of credit.
+        All river blocks with destination agent_id are summed into ranges called circles
+    circle_num: all destination agent_id circles have a unique number. (sequential 0, 1, 2...)
     currency_start: range of circle start
     currency_close: range of circle close
     JSchalk 24 Oct 2023
@@ -406,14 +406,14 @@ def get_river_circle_table_insert_sqlstr(currency_agenda_healer: str) -> str:
     return f"""
 INSERT INTO river_circle (
   currency_master
-, dst_healer
+, dst_agent_id
 , circle_num
 , curr_start
 , curr_close
 )
 SELECT 
   currency_master
-, dst_healer
+, dst_agent_id
 , currency_circle_num
 , min(currency_start) currency_circle_start
 , max(currency_close) currency_circle_close
@@ -429,10 +429,10 @@ FROM  (
     END AS step
     , *
     FROM  river_block
-    WHERE currency_master = '{currency_agenda_healer}' and dst_healer = currency_master 
+    WHERE currency_master = '{currency_agent_id}' and dst_agent_id = currency_master 
     ) b
 ) c
-GROUP BY currency_master, dst_healer, currency_circle_num
+GROUP BY currency_master, dst_agent_id, currency_circle_num
 ORDER BY currency_circle_start
 ;
 """
@@ -441,24 +441,24 @@ ORDER BY currency_circle_start
 @dataclass
 class RiverCircleUnit:
     currency_master: str
-    dst_healer: str
+    dst_agent_id: str
     circle_num: int
     curr_start: float
     curr_close: float
 
 
 def get_river_circle_dict(
-    db_conn: Connection, currency_agenda_healer: str
+    db_conn: Connection, currency_agent_id: str
 ) -> dict[str:RiverCircleUnit]:
     sqlstr = f"""
 SELECT
   currency_master
-, dst_healer
+, dst_agent_id
 , circle_num
 , curr_start
 , curr_close
 FROM river_circle
-WHERE currency_master = '{currency_agenda_healer}'
+WHERE currency_master = '{currency_agent_id}'
 ;
 """
     dict_x = {}
@@ -467,7 +467,7 @@ WHERE currency_master = '{currency_agenda_healer}'
     for row in results.fetchall():
         river_circle_x = RiverCircleUnit(
             currency_master=row[0],
-            dst_healer=row[1],
+            dst_agent_id=row[1],
             circle_num=row[2],
             curr_start=row[3],
             curr_close=row[4],
@@ -480,7 +480,7 @@ WHERE currency_master = '{currency_agenda_healer}'
 @dataclass
 class PartyTreasuryUnit:
     currency_master: str
-    tax_healer: str
+    tax_agent_id: str
     tax_total: float
     debt: float
     tax_diff: float
@@ -489,17 +489,17 @@ class PartyTreasuryUnit:
 
 
 def get_partytreasuryunit_dict(
-    db_conn: Connection, currency_agenda_healer: str
+    db_conn: Connection, currency_agent_id: str
 ) -> dict[str:PartyTreasuryUnit]:
     sqlstr = f"""
 SELECT
-  agenda_healer currency_master
-, pid tax_healer
+  agent_id currency_master
+, pid tax_agent_id
 , _treasury_tax_paid tax_total
 , _agenda_intent_ratio_debt debt
 , (_agenda_intent_ratio_debt - _treasury_tax_paid) tax_diff
 FROM partyunit
-WHERE currency_master = '{currency_agenda_healer}'
+WHERE currency_master = '{currency_agent_id}'
     AND _treasury_tax_paid IS NOT NULL
 ;
 """
@@ -509,25 +509,25 @@ WHERE currency_master = '{currency_agenda_healer}'
     for row in results.fetchall():
         partytreasuryunit_x = PartyTreasuryUnit(
             currency_master=row[0],
-            tax_healer=row[1],
+            tax_agent_id=row[1],
             tax_total=row[2],
             debt=row[3],
             tax_diff=row[4],
             credit_score=None,
             voice_rank=None,
         )
-        dict_x[partytreasuryunit_x.tax_healer] = partytreasuryunit_x
+        dict_x[partytreasuryunit_x.tax_agent_id] = partytreasuryunit_x
     return dict_x
 
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the pid of every agenda. The healer pip of the one running that agenda's clerk."""
+    """Create table that references the pid of every agenda. The agent_id pip of the one running that agenda's clerk."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
-  healer VARCHAR(255) PRIMARY KEY ASC
+  agent_id VARCHAR(255) PRIMARY KEY ASC
 , rational INT NULL
-, UNIQUE(healer)
+, UNIQUE(agent_id)
 )
 ;
 """
@@ -536,7 +536,7 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
     return f"""
 INSERT INTO agendaunit (
-  healer
+  agent_id
 , rational
 )
 VALUES (
@@ -550,7 +550,7 @@ VALUES (
 def get_agendaunits_select_sqlstr():
     return """
 SELECT 
-  healer
+  agent_id
 , rational
 FROM agendaunit
 ;
@@ -559,7 +559,7 @@ FROM agendaunit
 
 @dataclass
 class AgendaTreasuryUnit:
-    healer: PersonID
+    agent_id: PersonID
     rational: bool
 
 
@@ -570,9 +570,9 @@ def get_agendatreasuryunits_dict(
     dict_x = {}
     for row in results.fetchall():
         x_agendatreasuryunit = AgendaTreasuryUnit(
-            healer=row[0], rational=sqlite_to_python(row[1])
+            agent_id=row[0], rational=sqlite_to_python(row[1])
         )
-        dict_x[x_agendatreasuryunit.healer] = x_agendatreasuryunit
+        dict_x[x_agendatreasuryunit.agent_id] = x_agendatreasuryunit
     return dict_x
 
 
@@ -580,7 +580,7 @@ def get_agendaunit_update_sqlstr(agenda: AgendaUnit) -> str:
     return f"""
 UPDATE agendaunit
 SET rational = {sqlite_text(agenda._rational)}
-WHERE healer = '{agenda._agent_id}'
+WHERE agent_id = '{agenda._agent_id}'
 ;
 """
 
@@ -590,7 +590,7 @@ def get_partyunit_table_create_sqlstr() -> str:
     """Create table that holds the starting river metrics for every agenda's party. All the metrics."""
     return """
 CREATE TABLE IF NOT EXISTS partyunit (
-  agenda_healer VARCHAR(255) NOT NULL 
+  agent_id VARCHAR(255) NOT NULL 
 , pid VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
@@ -606,54 +606,54 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
-, FOREIGN KEY(agenda_healer) REFERENCES agendaunit(healer)
-, FOREIGN KEY(pid) REFERENCES agendaunit(healer)
-, UNIQUE(agenda_healer, pid)
+, FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(pid) REFERENCES agendaunit(agent_id)
+, UNIQUE(agent_id, pid)
 )
 ;
 """
 
 
 def get_partyunit_table_update_treasury_tax_paid_sqlstr(
-    currency_agenda_healer: PersonID,
+    currency_agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE partyunit
 SET _treasury_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
-    WHERE block.currency_master='{currency_agenda_healer}' 
-        AND block.dst_healer=block.currency_master
-        AND block.src_healer = partyunit.pid
+    WHERE block.currency_master='{currency_agent_id}' 
+        AND block.dst_agent_id=block.currency_master
+        AND block.src_agent_id = partyunit.pid
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
-    WHERE partyunit.agenda_healer='{currency_agenda_healer}' 
-        AND partyunit.pid = block.dst_healer
+    WHERE partyunit.agent_id='{currency_agent_id}' 
+        AND partyunit.pid = block.dst_agent_id
 )
 ;
 """
 
 
 def get_partyunit_table_update_credit_score_sqlstr(
-    currency_agenda_healer: PersonID,
+    currency_agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE partyunit
 SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
-    WHERE reach.currency_master = partyunit.agenda_healer
-        AND reach.src_healer = partyunit.pid
+    WHERE reach.currency_master = partyunit.agent_id
+        AND reach.src_agent_id = partyunit.pid
     )
-WHERE partyunit.agenda_healer = '{currency_agenda_healer}'
+WHERE partyunit.agent_id = '{currency_agent_id}'
 ;
 """
 
 
 def get_partyunit_table_update_treasury_voice_rank_sqlstr(
-    agenda_healer: PersonID,
+    agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE partyunit
@@ -664,11 +664,11 @@ SET _treasury_voice_rank =
         SELECT p2.pid
         , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
-        WHERE p2.agenda_healer = '{agenda_healer}'
+        WHERE p2.agent_id = '{agent_id}'
     ) p3
-    WHERE p3.pid = partyunit.pid AND partyunit.agenda_healer = '{agenda_healer}'
+    WHERE p3.pid = partyunit.pid AND partyunit.agent_id = '{agent_id}'
     )
-WHERE partyunit.agenda_healer = '{agenda_healer}'
+WHERE partyunit.agent_id = '{agent_id}'
 ;
 """
 
@@ -679,7 +679,7 @@ def get_partyunit_table_insert_sqlstr(
     """Create table that holds a the output credit metrics."""
     return f"""
 INSERT INTO partyunit (
-  agenda_healer
+  agent_id
 , pid
 , _agenda_credit
 , _agenda_debt
@@ -720,15 +720,15 @@ VALUES (
 
 @dataclass
 class PartyDBUnit(PartyUnit):
-    agenda_healer: str = None
+    agent_id: str = None
 
 
 def get_partyview_dict(
-    db_conn: Connection, payer_healer: PersonID
+    db_conn: Connection, payer_agent_id: PersonID
 ) -> dict[PartyID:PartyDBUnit]:
     sqlstr = f"""
 SELECT 
-  agenda_healer
+  agent_id
 , pid
 , _agenda_credit
 , _agenda_debt
@@ -745,7 +745,7 @@ SELECT
 , _treasury_voice_hx_lowest_rank
 , _title
 FROM partyunit
-WHERE agenda_healer = '{payer_healer}' 
+WHERE agent_id = '{payer_agent_id}' 
 ;
 """
     dict_x = {}
@@ -753,7 +753,7 @@ WHERE agenda_healer = '{payer_healer}'
 
     for row in results.fetchall():
         partyview_x = PartyDBUnit(
-            agenda_healer=row[0],
+            agent_id=row[0],
             pid=row[1],
             _agenda_credit=row[2],
             _agenda_debt=row[3],
@@ -776,7 +776,7 @@ WHERE agenda_healer = '{payer_healer}'
 
 @dataclass
 class RiverLedgerUnit:
-    agenda_healer: str
+    agent_id: str
     currency_onset: float
     currency_cease: float
     _partyviews: dict[str:PartyDBUnit]
@@ -790,9 +790,9 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_block_x: RiverBlockUnit = None
 ) -> RiverLedgerUnit:
-    partyview_x = get_partyview_dict(db_conn, river_block_x.dst_healer)
+    partyview_x = get_partyview_dict(db_conn, river_block_x.dst_agent_id)
     return RiverLedgerUnit(
-        agenda_healer=river_block_x.dst_healer,
+        agent_id=river_block_x.dst_agent_id,
         currency_onset=river_block_x.currency_start,
         currency_cease=river_block_x.currency_close,
         _partyviews=partyview_x,
@@ -803,20 +803,20 @@ def get_river_ledger_unit(
 
 # idea_catalog
 def get_idea_catalog_table_create_sqlstr() -> str:
-    """table that holds every road and its healer"""
+    """table that holds every road and its agent_id"""
     return """
 CREATE TABLE IF NOT EXISTS idea_catalog (
-  agenda_healer VARCHAR(255) NOT NULL
+  agent_id VARCHAR(255) NOT NULL
 , idea_road VARCHAR(1000) NOT NULL
 )
 ;
 """
 
 
-def get_idea_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
+def get_idea_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
 {get_table_count_sqlstr("idea_catalog")} 
-WHERE agenda_healer = '{agenda_healer}'
+WHERE agent_id = '{agent_id}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -828,21 +828,21 @@ WHERE agenda_healer = '{agenda_healer}'
 
 @dataclass
 class IdeaCatalog:
-    agenda_healer: str
+    agent_id: str
     idea_road: str
 
 
 def get_idea_catalog_table_insert_sqlstr(
     idea_catalog: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO idea_catalog (agenda_healer, idea_road) VALUES ('{idea_catalog.agenda_healer}', '{idea_catalog.idea_road}');"""
+    # return f"""INSERT INTO idea_catalog (agent_id, idea_road) VALUES ('{idea_catalog.agent_id}', '{idea_catalog.idea_road}');"""
     return f"""
 INSERT INTO idea_catalog (
-  agenda_healer
+  agent_id
 , idea_road
 )
 VALUES (
-  '{idea_catalog.agenda_healer}'
+  '{idea_catalog.agent_id}'
 , '{create_road_without_root_node(idea_catalog.idea_road)}'
 )
 ;
@@ -857,7 +857,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: RoadUnit = None):
         where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
 SELECT 
-  agenda_healer
+  agent_id
 , idea_road
 FROM idea_catalog
 {where_clause}
@@ -867,8 +867,8 @@ FROM idea_catalog
 
     dict_x = {}
     for row in results.fetchall():
-        idea_catalog_x = IdeaCatalog(agenda_healer=row[0], idea_road=row[1])
-        dict_key = f"{idea_catalog_x.agenda_healer} {idea_catalog_x.idea_road}"
+        idea_catalog_x = IdeaCatalog(agent_id=row[0], idea_road=row[1])
+        dict_key = f"{idea_catalog_x.agent_id} {idea_catalog_x.idea_road}"
         dict_x[dict_key] = idea_catalog_x
     return dict_x
 
@@ -878,7 +878,7 @@ def get_belief_catalog_table_create_sqlstr() -> str:
     """table that holds every belief base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
 CREATE TABLE IF NOT EXISTS belief_catalog (
-  agenda_healer VARCHAR(255) NOT NULL
+  agent_id VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
 )
@@ -886,9 +886,9 @@ CREATE TABLE IF NOT EXISTS belief_catalog (
 """
 
 
-def get_belief_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
+def get_belief_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("belief_catalog")} WHERE agenda_healer = '{agenda_healer}'
+{get_table_count_sqlstr("belief_catalog")} WHERE agent_id = '{agent_id}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -900,7 +900,7 @@ def get_belief_catalog_table_count(db_conn: Connection, agenda_healer: str) -> s
 
 @dataclass
 class BeliefCatalog:
-    agenda_healer: str
+    agent_id: str
     base: str
     pick: str
 
@@ -910,12 +910,12 @@ def get_belief_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
 INSERT INTO belief_catalog (
-  agenda_healer
+  agent_id
 , base
 , pick
 )
 VALUES (
-  '{belief_catalog.agenda_healer}'
+  '{belief_catalog.agent_id}'
 , '{belief_catalog.base}'
 , '{belief_catalog.pick}'
 )
@@ -927,7 +927,7 @@ VALUES (
 def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS groupunit_catalog (
-  agenda_healer VARCHAR(255) NOT NULL
+  agent_id VARCHAR(255) NOT NULL
 , groupunit_brand VARCHAR(1000) NOT NULL
 , partylinks_set_by_economy_road VARCHAR(1000) NULL
 )
@@ -935,9 +935,9 @@ CREATE TABLE IF NOT EXISTS groupunit_catalog (
 """
 
 
-def get_groupunit_catalog_table_count(db_conn: Connection, agenda_healer: str) -> str:
+def get_groupunit_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("groupunit_catalog")} WHERE agenda_healer = '{agenda_healer}'
+{get_table_count_sqlstr("groupunit_catalog")} WHERE agent_id = '{agent_id}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -949,7 +949,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, agenda_healer: str) -
 
 @dataclass
 class GroupUnitCatalog:
-    agenda_healer: str
+    agent_id: str
     groupunit_brand: str
     partylinks_set_by_economy_road: str
 
@@ -959,12 +959,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
 ) -> str:
     return f"""
 INSERT INTO groupunit_catalog (
-  agenda_healer
+  agent_id
 , groupunit_brand
 , partylinks_set_by_economy_road
 )
 VALUES (
-  '{groupunit_catalog.agenda_healer}'
+  '{groupunit_catalog.agent_id}'
 , '{groupunit_catalog.groupunit_brand}'
 , '{groupunit_catalog.partylinks_set_by_economy_road}'
 )
@@ -975,7 +975,7 @@ VALUES (
 def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
     sqlstr = """
 SELECT 
-  agenda_healer
+  agent_id
 , groupunit_brand
 , partylinks_set_by_economy_road
 FROM groupunit_catalog
@@ -986,12 +986,12 @@ FROM groupunit_catalog
     dict_x = {}
     for row in results.fetchall():
         groupunit_catalog_x = GroupUnitCatalog(
-            agenda_healer=row[0],
+            agent_id=row[0],
             groupunit_brand=row[1],
             partylinks_set_by_economy_road=row[2],
         )
         dict_key = (
-            f"{groupunit_catalog_x.agenda_healer} {groupunit_catalog_x.groupunit_brand}"
+            f"{groupunit_catalog_x.agent_id} {groupunit_catalog_x.groupunit_brand}"
         )
         dict_x[dict_key] = groupunit_catalog_x
     return dict_x
@@ -1000,7 +1000,7 @@ FROM groupunit_catalog
 def get_calendar_table_create_sqlstr():
     return """
 CREATE TABLE IF NOT EXISTS calendar (
-  healer VARCHAR(255) NOT NULL
+  agent_id VARCHAR(255) NOT NULL
 , report_time_road VARCHAR(10000) NOT NULL
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
@@ -1012,7 +1012,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(healer) REFERENCES agendaunit(healer)
+, FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
@@ -1020,7 +1020,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 
 @dataclass
 class CalendarReport:
-    healer: PersonID = (None,)
+    agent_id: PersonID = (None,)
     time_road: RoadUnit = None
     date_range_start: int = None
     interval_count: int = None
@@ -1055,7 +1055,7 @@ class CalendarIntentUnit:
 def get_calendar_table_insert_sqlstr(x_obj: CalendarIntentUnit):
     return f"""
 INSERT INTO calendar (
-  healer
+  agent_id
 , report_time_road
 , report_date_range_start
 , report_date_range_cease
@@ -1068,7 +1068,7 @@ INSERT INTO calendar (
 , intent_weight
 , task)
 VALUES (
-  '{x_obj.calendarreport.healer}'
+  '{x_obj.calendarreport.agent_id}'
 , '{x_obj.calendarreport.time_road}'
 , {sqlite_null(x_obj.calendarreport.date_range_start)}
 , {sqlite_null(x_obj.calendarreport.get_date_range_cease())}
@@ -1091,7 +1091,7 @@ def get_partyunit_table_insert_sqlstr(
     """Create table that holds a the output credit metrics."""
     return f"""
 INSERT INTO partyunit (
-  agenda_healer
+  agent_id
 , pid
 , _agenda_credit
 , _agenda_debt
@@ -1130,10 +1130,10 @@ VALUES (
 """
 
 
-def get_calendar_table_delete_sqlstr(calendar_healer: str) -> str:
+def get_calendar_table_delete_sqlstr(calendar_agent_id: str) -> str:
     return f"""
 DELETE FROM calendar
-WHERE healer = '{calendar_healer}' 
+WHERE agent_id = '{calendar_agent_id}' 
 ;
 """
 

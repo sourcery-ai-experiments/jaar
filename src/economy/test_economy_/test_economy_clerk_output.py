@@ -3,7 +3,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.economy.economy import economyunit_shop
 from src.economy.examples.example_clerks import (
-    get_6node_agenda as example_healers_get_6node_agenda,
+    get_6node_agenda as example_get_6node_agenda,
     get_agenda_2CleanNodesRandomWeights,
     get_agenda_3CleanNodesRandomWeights,
 )
@@ -19,13 +19,13 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
 ):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    input_agenda = example_healers_get_6node_agenda()
+    input_agenda = example_get_6node_agenda()
     x_economy.save_public_agenda(input_agenda)
     # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    x_economy.set_healer_depotlink(
+    x_economy.set_clerk_depotlink(
         xia_text, input_agenda._agent_id, depotlink_type="blind_trust"
     )
     x_economy.save_clerkunit_file(clerk_cid=xia_text)
@@ -93,7 +93,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
 ):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x1_agenda = example_healers_get_6node_agenda()
+    x1_agenda = example_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
     x_economy.save_public_agenda(x1_agenda)
@@ -102,8 +102,8 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_economy.save_public_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    x_economy.set_healer_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
-    x_economy.set_healer_depotlink(xia_text, x2_agenda._agent_id, "blind_trust")
+    x_economy.set_clerk_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
+    x_economy.set_clerk_depotlink(xia_text, x2_agenda._agent_id, "blind_trust")
     x_economy.save_clerkunit_file(clerk_cid=xia_text)
     xia_healer = x_economy.get_clerkunit(cid=xia_text)
     print(f"{xia_healer._contract._partys.keys()=}")

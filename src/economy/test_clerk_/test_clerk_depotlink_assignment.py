@@ -9,7 +9,7 @@ from src.economy.examples.clerk_env_kit import (
 )
 
 
-def test_healer_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
+def test_ClerkUnit_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignmentFile(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
