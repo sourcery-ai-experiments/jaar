@@ -32,7 +32,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person._road_delimiter == default_road_delimiter_if_none()
 
 
-def test_PersonUnit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
+def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     # GIVEN
     dallas_text = "dallas"
     dallas_dir = ""
@@ -209,6 +209,43 @@ def test_PersonUnit_economyunit_exists_ReturnsCorrectObj():
 
     # THEN
     assert xao_personunit.economyunit_exists(diet_text)
+
+
+def test_PersonUnit_all_economyunits_linked_to_problem_ReturnsCorrectObj():
+    # GIVEN
+    xao_text = "Xao"
+    xao_person_dir = f"/persons/{xao_text}"
+    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    cooking_text = "cooking"
+    hunger_text = "Hunger"
+    diet_text = "diet"
+    knee_text = "knee"
+    xao_personunit.set_economyunit(diet_text, x_problem_id="self-image")
+    gym_text = "gym"
+    xao_personunit.set_economyunit(gym_text, x_problem_id=knee_text)
+    xao_personunit.set_economyunit(cooking_text, x_problem_id=hunger_text)
+    xao_personunit.del_problemunit(hunger_text)
+    assert xao_personunit.all_economyunits_linked_to_problem() == False
+
+    # WHEN
+    hunger_problemunit = problemunit_shop(hunger_text)
+    hunger_problemunit.set_healerlink(healerlink_shop(xao_text))
+    xao_healerlink = hunger_problemunit.get_healerlink(xao_text)
+    xao_healerlink.set_economylink(economylink_shop(cooking_text))
+    xao_personunit.set_problemunit(hunger_problemunit)
+
+    # THEN
+    assert xao_personunit.all_economyunits_linked_to_problem()
+
+    # WHEN
+    xao_personunit.del_problemunit(knee_text)
+    assert xao_personunit.all_economyunits_linked_to_problem() == False
+
+    # WHEN
+    xao_personunit.del_economyunit(gym_text)
+
+    # THEN
+    assert xao_personunit.all_economyunits_linked_to_problem()
 
 
 def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():

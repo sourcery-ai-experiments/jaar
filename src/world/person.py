@@ -49,10 +49,16 @@ class PersonUnit:
                 x_problemunit.weight / total_problemunits_weight
             )
 
-    def economylink_exists(self, economy_id: EconomyID):
+    def economylink_exists(self, economy_id: EconomyID) -> bool:
         return any(
             x_problemunit.economylink_exists(economy_id)
             for x_problemunit in self._problems.values()
+        )
+
+    def all_economyunits_linked_to_problem(self) -> bool:
+        return all(
+            self.economylink_exists(x_economy_id) != False
+            for x_economy_id in self._economys.keys()
         )
 
     def set_economyunit(
