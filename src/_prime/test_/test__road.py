@@ -8,6 +8,7 @@ from src._prime.road import (
     HealerRoad,
     EconomyID,
     AgentID,
+    PartyID,
     RoadUnit,
     EconomyAddress,
     create_economyaddress,
@@ -663,6 +664,19 @@ def test_AgentID_exists():
     )
 
 
+def test_PartyID_exists():
+    # GIVEN
+    bob_text = "Bob"
+    # WHEN
+    bob_party_id = PartyID(bob_text)
+    # THEN
+    assert bob_party_id == bob_text
+    assert (
+        inspect_getdoc(bob_party_id)
+        == "Every PartyID object is AgentID, must follow AgentID format."
+    )
+
+
 def test_ProblemRoad_Exists():
     # GIVEN
     bob_road = create_road("problem1", "bob")
@@ -677,7 +691,10 @@ def test_ProblemRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == "A ProblemRoad is a RoadUnit where first RoadNode is a ProblemID."
+        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+ProblemID (Must Exist)
+HealerID
+EconomyRoad"""
     )
 
 
@@ -696,5 +713,9 @@ def test_PersonRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == "A PersonRoad is a RoadUnit where first RoadNode is a PersonID."
+        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+PersonID (Must Exist)
+ProblemID
+HealerID
+EconomyRoad"""
     )

@@ -40,6 +40,8 @@ class AgentID(HealerID):
 
 
 class PartyID(AgentID):  # Created to help track the concept
+    """Every PartyID object is AgentID, must follow AgentID format."""
+
     pass
 
 
@@ -50,31 +52,42 @@ class RoadUnit(str):
 
 
 class PersonRoad(RoadUnit):
-    """A PersonRoad is a RoadUnit where first RoadNode is a PersonID."""
+    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+    PersonID (Must Exist)
+    ProblemID
+    HealerID
+    EconomyRoad
+    """
 
     pass
 
 
-class ProblemRoad(PersonRoad):
-    """A ProblemRoad is a RoadUnit where first RoadNode is a ProblemID."""
+class ProblemRoad(RoadUnit):
+    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+    ProblemID (Must Exist)
+    HealerID
+    EconomyRoad
+    """
 
     pass
 
 
-class HealerRoad(ProblemRoad):
-    """A RoadUnit that starts with PersonID"""
+class HealerRoad(RoadUnit):
+    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+    HealerID (Must Exist)
+    EconomyRoad"""
 
     pass
 
 
-class EconomyRoad(HealerRoad):
-    """A RoadUnit that starts with EconomyID"""
+class EconomyRoad(RoadUnit):
+    """RodeUnit nodes seperated by EconomyUnit._road_delimiter."""
 
     pass
 
 
 class EconomyAddress(RoadUnit):
-    """A RoadUnit of only PersonID and EconomyID"""
+    """A RoadUnit of only HealerID and EconomyID"""
 
     pass
 
