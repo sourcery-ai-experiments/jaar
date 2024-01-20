@@ -74,20 +74,32 @@ class ProblemRoad(RoadUnit):
 
 class HealerRoad(RoadUnit):
     """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-    HealerID (Must Exist)
-    EconomyRoad"""
+    PersonID
+    ProblemID
+    HealerID"""
 
     pass
 
 
 class EconomyRoad(RoadUnit):
-    """RodeUnit nodes seperated by EconomyUnit._road_delimiter."""
+    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+    PersonID
+    ProblemID
+    HealerID
+    EconomyID"""
 
     pass
 
 
 class EconomyAddress(RoadUnit):
     """A RoadUnit of only HealerID and EconomyID"""
+
+    pass
+
+
+class AgendaRoad(RoadUnit):
+    """RodeUnit with nodes seperated by Agenda._road_delimiter that
+    starts with EconomyID"""
 
     pass
 
@@ -272,3 +284,17 @@ def get_economyroad_from_healerroad(
 ) -> EconomyRoad:
     x_roadnodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
     return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)
+
+
+def get_single_roadnode(roadunit_type: str, x_roadunit: RoadUnit, roadnode_type: str):
+    x_roadnode = None
+    if roadunit_type == "PersonRoad":
+        if roadnode_type == "EconomyID":
+            x_roadnode = get_all_road_nodes(x_roadunit)[3]
+        elif roadnode_type == "HealerID":
+            x_roadnode = get_all_road_nodes(x_roadunit)[2]
+        elif roadnode_type == "PersonID":
+            x_roadnode = get_all_road_nodes(x_roadunit)[0]
+        elif roadnode_type == "ProblemID":
+            x_roadnode = get_all_road_nodes(x_roadunit)[1]
+    return x_roadnode

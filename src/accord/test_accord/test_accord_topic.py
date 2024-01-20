@@ -15,7 +15,7 @@ from src.accord.examples.example_topics import (
 
 def test_AccordUnit_set_topicunit_SetsAttrCorrectly():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author="Bob", _reader="Tim")
+    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
     assert farm_accordunit._topicunits == {}
 
     # WHEN
@@ -30,7 +30,7 @@ def test_AccordUnit_set_topicunit_SetsAttrCorrectly():
 
 def test_AccordUnit_get_topicunit_ReturnsCorrectObj():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author="Bob", _reader="Tim")
+    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
     cooking_topicunit = get_cooking_topic()
     farm_accordunit.set_topicunit(cooking_topicunit)
 
@@ -40,7 +40,7 @@ def test_AccordUnit_get_topicunit_ReturnsCorrectObj():
 
 def test_AccordUnit_topicunit_exists_ReturnsCorrectObj():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author="Bob", _reader="Tim")
+    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
     cooking_topicunit = get_cooking_topic()
     assert farm_accordunit.topicunit_exists(cooking_topicunit.base) == False
 
@@ -53,7 +53,7 @@ def test_AccordUnit_topicunit_exists_ReturnsCorrectObj():
 
 def test_AccordUnit_del_topicunit_CorrectlySetsAttr():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author="Bob", _reader="Tim")
+    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
     cooking_topicunit = get_cooking_topic()
     farm_accordunit.set_topicunit(cooking_topicunit)
     assert len(farm_accordunit._topicunits) == 1
@@ -71,7 +71,7 @@ def test_AccordUnit_is_meaningful_ReturnsCorrectObjs():
     yao_text = "Yao"
 
     # WHEN
-    farm_accordunit = accordunit_shop(_author=bob_text, _reader=yao_text)
+    farm_accordunit = accordunit_shop(_author_road=bob_text, _reader_road=yao_text)
     # THEN
     assert farm_accordunit.is_meaningful() == False
 

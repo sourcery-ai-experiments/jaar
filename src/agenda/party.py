@@ -16,16 +16,14 @@ class PartyTitle(str):
 
 
 @dataclass
-class PartyRing:
+class PartyCore:
     pid: PartyID
-
-    def get_dict(self):
-        return {"pid": self.pid}
 
 
 @dataclass
-class PartyCore:
-    pid: PartyID
+class PartyRing(PartyCore):
+    def get_dict(self):
+        return {"pid": self.pid}
 
 
 # class PartyRingsshop:
@@ -464,5 +462,13 @@ class PartyUnitExternalMetrics:
     debtor_active: bool = None
 
 
-def get_depotlink_types() -> dict[str:None]:
-    return {"blind_trust": None, "ignore": None, "assignment": None}
+def get_depotlink_types() -> dict[str:str]:
+    return {
+        "blind_trust": "blind_trust",
+        "ignore": "ignore",
+        "assignment": "assignment",
+    }
+
+
+def get_default_depotlink_type() -> str:
+    return get_depotlink_types().get("assignment")

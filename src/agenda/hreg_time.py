@@ -494,8 +494,8 @@ class HregTimeIdeaSource:
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         ce_src = datetime(1, 1, 1, 0, 0, 0, 0)
-        min_time_delta = dt - ce_src
-        return round(min_time_delta.total_seconds() / 60) + 527040
+        min_time_difference = dt - ce_src
+        return round(min_time_difference.total_seconds() / 60) + 527040
 
     def get_24hr(self):
         return [""] + [str(x) for x in range(24)]

@@ -5,6 +5,7 @@ from src.agenda.party import (
     partyunits_get_from_json,
     partyrings_get_from_json,
     PartyRing,
+    get_default_depotlink_type,
 )
 from src.tools.python import x_is_json, x_get_json
 from pytest import raises as pytest_raises
@@ -179,6 +180,11 @@ def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
         str(excinfo.value)
         == f"PartyUnit '{bob_party.pid}' cannot have type '{unacceptable_type_text}'."
     )
+
+
+def test_get_default_depotlink_type_ReturnsCorrectObj():
+    # GIVEN / WHEN
+    assert get_default_depotlink_type() == "assignment"
 
 
 def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():

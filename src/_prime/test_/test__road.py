@@ -11,6 +11,8 @@ from src._prime.road import (
     PartyID,
     RoadUnit,
     EconomyAddress,
+    EconomyRoad,
+    AgendaRoad,
     create_economyaddress,
     get_economyaddress_from_healerroad,
     get_economyroad_from_healerroad,
@@ -33,6 +35,7 @@ from src._prime.road import (
     is_heir_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
+    get_single_roadnode,
 )
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
@@ -518,14 +521,22 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
 
 def test_EconomyRoad_Exists():
     # GIVEN
-    bob_texas_text = "bob,texas"
+    texas_text = "texas"
 
     # WHEN
-    bob_texas_economyaddress = EconomyAddress(bob_texas_text)
+    texas_economyroad = EconomyRoad(texas_text)
 
     # THEN
-    assert bob_texas_economyaddress != None
-    assert bob_texas_economyaddress == bob_texas_text
+    assert texas_economyroad != None
+    assert texas_economyroad == texas_text
+    assert (
+        inspect_getdoc(texas_economyroad)
+        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+PersonID
+ProblemID
+HealerID
+EconomyID"""
+    )
 
 
 def test_EconomyAddress_Exists():
@@ -538,6 +549,10 @@ def test_EconomyAddress_Exists():
     # THEN
     assert bob_texas_economyaddress != None
     assert bob_texas_economyaddress == bob_texas_text
+    assert (
+        inspect_getdoc(bob_texas_economyaddress)
+        == """A RoadUnit of only HealerID and EconomyID"""
+    )
 
 
 def test_create_economyaddress_ReturnsCorrect():
@@ -567,6 +582,13 @@ def test_HealerRoad_Exists():
     # THEN
     assert sports_healerroad != None
     assert sports_healerroad == sports_road
+    assert (
+        inspect_getdoc(sports_healerroad)
+        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+PersonID
+ProblemID
+HealerID"""
+    )
 
 
 def test_get_economyaddress_from_healerroad_ReturnsCorrectObj():
@@ -711,3 +733,43 @@ ProblemID
 HealerID
 EconomyRoad"""
     )
+
+
+def test_AgendaRoad_Exists():
+    # GIVEN
+    texas_road = create_road("Bob", "texas")
+    sports_road = create_road(texas_road, "sports")
+    yao_agendaroad = create_road(texas_road, "Yao")
+
+    # WHEN
+    yao_agendaroad = AgendaRoad(sports_road)
+
+    # THEN
+    assert yao_agendaroad != None
+    assert yao_agendaroad == sports_road
+    assert (
+        inspect_getdoc(yao_agendaroad)
+        == """RodeUnit with nodes seperated by Agenda._road_delimiter that
+starts with EconomyID"""
+    )
+
+
+def test_get_single_roadnode_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    food_text = "food"
+    ohio_text = "Ohio"
+    bob_road = create_road_from_nodes([bob_text, food_text, yao_text, ohio_text])
+
+    # WHEN / THEN
+    person_id_text = "PersonID"
+    problem_id_text = "ProblemID"
+    healer_id_text = "HealerID"
+    economy_id_text = "EconomyID"
+    personroad_text = "PersonRoad"
+
+    assert get_single_roadnode(personroad_text, bob_road, person_id_text) == bob_text
+    assert get_single_roadnode(personroad_text, bob_road, problem_id_text) == food_text
+    assert get_single_roadnode(personroad_text, bob_road, healer_id_text) == yao_text
+    assert get_single_roadnode(personroad_text, bob_road, economy_id_text) == ohio_text

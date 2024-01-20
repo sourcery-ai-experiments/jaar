@@ -1,5 +1,13 @@
-from src._prime.road import RoadUnit, PersonRoad, PersonID, EconomyAddress
+from src._prime.road import (
+    RoadUnit,
+    PersonRoad,
+    PersonID,
+    EconomyRoad,
+    PartyID,
+    get_single_roadnode,
+)
 from src.accord.due import DueID, DueUnit, dueunit_shop
+from src.accord.delta import DeltaUnit
 from src.accord.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
@@ -13,14 +21,65 @@ class WantSubRoadUnitException(Exception):
     pass
 
 
+class get_member_attr_Exception(Exception):
+    pass
+
+
 @dataclass
 class AccordUnit:
-    _author: PersonID = None
-    _reader: PersonID = None
-    _author_economyaddress: EconomyAddress = None
-    _reader_economyaddress: EconomyAddress = None
+    _author_road: EconomyRoad = None
+    _reader_road: EconomyRoad = None
+    _author_deltaunits: dict[PartyID:DeltaUnit] = None
+    _reader_deltaunits: dict[PartyID:DeltaUnit] = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _dueunits: dict[DueID:DueUnit] = None
+
+    def edit_deltaunit_attr(
+        self,
+        x_party_id: PartyID,
+        x_creditor_weight: float = None,
+        x_debtor_weight: float = None,
+        x_depotlink_type: str = None,
+        author: bool = None,
+        reader: bool = None,
+    ):
+        x_deltaunit = self.get_deltaunit(x_party_id, author, reader)
+        if x_creditor_weight != None:
+            x_deltaunit.creditor_weight = x_creditor_weight
+        if x_debtor_weight != None:
+            x_deltaunit.debtor_weight = x_debtor_weight
+        if x_depotlink_type != None:
+            x_deltaunit.depotlink_type = x_depotlink_type
+
+    def set_deltaunit(
+        self, x_delta: DeltaUnit, author: bool = False, reader: bool = False
+    ):
+        if author:
+            self._author_deltaunits[x_delta.party_id] = x_delta
+        if reader:
+            self._reader_deltaunits[x_delta.party_id] = x_delta
+
+    def get_deltaunit(
+        self, x_party_id: PartyID, author: bool = False, reader: bool = False
+    ) -> DeltaUnit:
+        if author:
+            return self._author_deltaunits.get(x_party_id)
+        if reader:
+            return self._reader_deltaunits.get(x_party_id)
+
+    def del_deltaunit(
+        self, x_party_id: PartyID, author: bool = False, reader: bool = False
+    ):
+        if author:
+            return self._author_deltaunits.pop(x_party_id)
+        if reader:
+            return self._reader_deltaunits.pop(x_party_id)
+
+    def deltaunit_exists(self, x_party_id: PartyID) -> bool:
+        return (
+            self._author_deltaunits.get(x_party_id) != None
+            or self._reader_deltaunits.get(x_party_id) != None
+        )
 
     def set_accord_metrics(self):
         due_author_sum = sum(x_due.author_weight for x_due in self._dueunits.values())
@@ -126,18 +185,39 @@ class AccordUnit:
     def actor_has_dueunit(self, actor: PersonID, action_filter: bool = None) -> bool:
         return self.get_actor_dueunits(actor, action_filter=action_filter) != {}
 
+    def get_member_attr(self, member: str, attr: str):
+        if member not in ("reader", "author"):
+            raise get_member_attr_Exception(
+                f"get_member_attr cannot receive '{member}' as member parameter."
+            )
+        if member == "reader":
+            return get_single_roadnode(
+                roadunit_type="PersonRoad",
+                x_roadunit=self._reader_road,
+                roadnode_type=attr,
+            )
+        elif member == "author":
+            print(f"huh {attr}")
+            return get_single_roadnode(
+                roadunit_type="PersonRoad",
+                x_roadunit=self._author_road,
+                roadnode_type=attr,
+            )
+
 
 def accordunit_shop(
-    _author: PersonID,
-    _reader: PersonID,
-    _author_economyaddress: EconomyAddress = None,
-    _reader_economyaddress: EconomyAddress = None,
+    _author_road: EconomyRoad,
+    _reader_road: EconomyRoad,
+    _author_deltaunits: dict[PartyID:DeltaUnit] = None,
+    _reader_deltaunits: dict[PartyID:DeltaUnit] = None,
+    _topicunits: dict[RoadUnit:TopicUnit] = None,
+    _dueunits: dict[DueID:DueUnit] = None,
 ):
     return AccordUnit(
-        _author=_author,
-        _reader=_reader,
-        _author_economyaddress=_author_economyaddress,
-        _reader_economyaddress=_reader_economyaddress,
-        _topicunits=get_empty_dict_if_none(None),
-        _dueunits=get_empty_dict_if_none(None),
+        _author_road=_author_road,
+        _reader_road=_reader_road,
+        _author_deltaunits=get_empty_dict_if_none(_author_deltaunits),
+        _reader_deltaunits=get_empty_dict_if_none(_reader_deltaunits),
+        _topicunits=get_empty_dict_if_none(_topicunits),
+        _dueunits=get_empty_dict_if_none(_dueunits),
     )

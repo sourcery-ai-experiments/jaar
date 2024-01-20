@@ -9,6 +9,10 @@ def return1ifnone(x_obj):
     return 1 if x_obj is None else x_obj
 
 
+def return0ifnone(x_obj):
+    return 0 if x_obj is None else x_obj
+
+
 # class XFunc:
 def x_is_json(json_x: str) -> bool:
     try:
