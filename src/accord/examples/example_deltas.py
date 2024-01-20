@@ -9,3 +9,20 @@
 #     jack_agent_road = create_road(ohio_economy_road, jack_text)
 #     adam_party_road = create_road(jack_agent_road, "Adam")
 #     return adam_party_road
+from src._prime.road import create_road_from_nodes as roadnodes, PersonRoad
+
+
+def get_bob_personroad() -> PersonRoad:
+    bob_text = "Bob"
+    yao_text = "Yao"
+    food_text = "Hunger"
+    ohio_text = "Ohio"
+    return roadnodes([bob_text, food_text, yao_text, ohio_text])
+
+
+def get_sue_personroad() -> PersonRoad:
+    sue_text = "Sue"
+    yao_text = "Yao"
+    food_text = "Hunger"
+    ohio_text = "Ohio"
+    return roadnodes([sue_text, food_text, yao_text, ohio_text])

@@ -5,6 +5,7 @@
 from src._prime.road import create_road
 from src.accord.delta import deltaunit_shop
 from src.accord.accord import accordunit_shop
+from src.accord.examples.example_deltas import get_bob_personroad, get_sue_personroad
 
 # from src.accord.examples.example_deltas import get_adam_party_road
 from pytest import raises as pytest_raises
@@ -12,71 +13,79 @@ from pytest import raises as pytest_raises
 
 def test_AccordUnit_set_deltaunit_SetsAttrCorrectly():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
-    assert farm_accordunit._author_deltaunits == {}
-    assert farm_accordunit._reader_deltaunits == {}
+    bob_text = "Bob"
+    sue_text = "Sue"
+    farm_accordunit = accordunit_shop(get_bob_personroad(), get_sue_personroad())
+    assert farm_accordunit._members_deltaunits == {bob_text: {}, sue_text: {}}
 
     # WHEN
-    # adam_party_road = get_adam_party_road()
     adam_text = "Adam"
     adam_creditor_weight = 3
     adam_debtor_weight = 9
     farm_accordunit.set_deltaunit(
-        deltaunit_shop(
+        member=bob_text,
+        x_delta=deltaunit_shop(
             party_id=adam_text,
             creditor_weight=adam_creditor_weight,
             debtor_weight=adam_debtor_weight,
             depotlink_type=None,
         ),
-        author=True,
-        reader=False,
     )
 
     # THEN
-    assert len(farm_accordunit._author_deltaunits) == 1
-    assert farm_accordunit._author_deltaunits.get(adam_text) != None
-    adam_deltaunit = farm_accordunit._author_deltaunits.get(adam_text)
+    print(f"{farm_accordunit._members_deltaunits.keys()=}")
+    assert len(farm_accordunit._members_deltaunits) == 2
+    assert farm_accordunit._members_deltaunits.get(bob_text) != None
+    assert farm_accordunit._members_deltaunits.get(sue_text) != None
+    bob_deltaunits = farm_accordunit._members_deltaunits.get(bob_text)
+    # sue_deltaunits = farm_accordunit._members_deltaunits.get(sue_text)
+    assert bob_deltaunits != None
+    adam_deltaunit = bob_deltaunits.get(adam_text)
+    assert adam_deltaunit != None
     assert adam_deltaunit.creditor_weight == adam_creditor_weight
     assert adam_deltaunit.debtor_weight == adam_debtor_weight
     assert adam_deltaunit.depotlink_type != None
 
 
 def test_AccordUnit_get_deltaunit_ReturnsCorrectObj():
-    # GIVEN
-    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
+    # GIVEN.
+    bob_text = "Bob"
+    farm_accordunit = accordunit_shop(get_bob_personroad(), get_sue_personroad())
     adam_text = "Adam"
-    farm_accordunit.set_deltaunit(deltaunit_shop(adam_text), author=True)
+    farm_accordunit.set_deltaunit(bob_text, deltaunit_shop(None, adam_text))
 
     # WHEN
-    adam_deltaunit = farm_accordunit.get_deltaunit(adam_text, author=True)
+    adam_deltaunit = farm_accordunit.get_deltaunit(bob_text, adam_text)
 
     # THEN
     assert adam_deltaunit != None
-    assert adam_deltaunit == deltaunit_shop(adam_text)
+    assert adam_deltaunit == deltaunit_shop(bob_text, adam_text)
 
 
 def test_AccordUnit_deltaunit_exists_ReturnsCorrectObj():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
+    bob_text = "Bob"
+    farm_accordunit = accordunit_shop(get_bob_personroad(), get_sue_personroad())
     adam_text = "Adam"
-    assert farm_accordunit.deltaunit_exists(adam_text) == False
+    assert farm_accordunit.deltaunit_exists(x_party_id=adam_text) == False
 
     # WHEN
-    farm_accordunit.set_deltaunit(deltaunit_shop(adam_text), author=True)
+    farm_accordunit.set_deltaunit(bob_text, deltaunit_shop(None, adam_text))
 
     # THEN
-    assert farm_accordunit.deltaunit_exists(adam_text)
+    assert farm_accordunit.deltaunit_exists(x_party_id=adam_text)
 
 
 def test_AccordUnit_del_deltaunit_CorrectlySetsAttr():
     # GIVEN
-    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road="Tim")
+    bob_text = "Bob"
+    farm_accordunit = accordunit_shop(get_bob_personroad(), get_sue_personroad())
     adam_text = "Adam"
-    farm_accordunit.set_deltaunit(deltaunit_shop(adam_text), author=True)
+    farm_accordunit.set_deltaunit(bob_text, deltaunit_shop(None, adam_text))
     assert farm_accordunit.deltaunit_exists(adam_text)
 
     # WHEN
-    farm_accordunit.del_deltaunit(adam_text, author=True)
+    farm_accordunit.del_deltaunit(member=bob_text, x_party_id=adam_text)
 
     # THEN
     assert farm_accordunit.deltaunit_exists(adam_text) == False
@@ -84,40 +93,44 @@ def test_AccordUnit_del_deltaunit_CorrectlySetsAttr():
 
 def test_AccordUnit_edit_deltaunit_attr_CorrectlySetsAttribute():
     # GIVEN
-    tim_text = "Tim"
-    farm_accordunit = accordunit_shop(_author_road="Bob", _reader_road=tim_text)
+    bob_text = "Bob"
+    farm_accordunit = accordunit_shop(get_bob_personroad(), get_sue_personroad())
     adam_text = "Adam"
     adam_creditor_weight = 3
     adam_debtor_weight = 9
     adam_depotlink_type = "ignore"
     farm_accordunit.set_deltaunit(
+        bob_text,
         deltaunit_shop(
-            adam_text, adam_creditor_weight, adam_debtor_weight, adam_depotlink_type
+            None,
+            adam_text,
+            adam_creditor_weight,
+            adam_debtor_weight,
+            adam_depotlink_type,
         ),
-        author=True,
     )
 
-    x_deltaunit = farm_accordunit.get_deltaunit(x_party_id=adam_text, author=True)
-    assert x_deltaunit.creditor_weight == adam_creditor_weight
-    assert x_deltaunit.debtor_weight == adam_debtor_weight
-    assert x_deltaunit.depotlink_type == adam_depotlink_type
+    adam_deltaunit = farm_accordunit.get_deltaunit(bob_text, x_party_id=adam_text)
+    assert adam_deltaunit.creditor_weight == adam_creditor_weight
+    assert adam_deltaunit.debtor_weight == adam_debtor_weight
+    assert adam_deltaunit.depotlink_type == adam_depotlink_type
 
     # WHEN
     y_creditor_weight = 5
     y_debtor_weight = 13
     y_depotlink_type = "assignment"
     farm_accordunit.edit_deltaunit_attr(
+        member=bob_text,
         x_party_id=adam_text,
         x_creditor_weight=y_creditor_weight,
         x_debtor_weight=y_debtor_weight,
         x_depotlink_type=y_depotlink_type,
-        author=True,
     )
 
     # THEN
-    assert x_deltaunit.creditor_weight == y_creditor_weight
-    assert x_deltaunit.debtor_weight == y_debtor_weight
-    assert x_deltaunit.depotlink_type == y_depotlink_type
+    assert adam_deltaunit.creditor_weight == y_creditor_weight
+    assert adam_deltaunit.debtor_weight == y_debtor_weight
+    assert adam_deltaunit.depotlink_type == y_depotlink_type
 
 
 # def test_AccordUnit_set_actor_deltaunit_CorrectlySetsAttr():

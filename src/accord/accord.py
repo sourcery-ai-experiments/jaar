@@ -29,21 +29,19 @@ class get_member_attr_Exception(Exception):
 class AccordUnit:
     _author_road: EconomyRoad = None
     _reader_road: EconomyRoad = None
-    _author_deltaunits: dict[PartyID:DeltaUnit] = None
-    _reader_deltaunits: dict[PartyID:DeltaUnit] = None
+    _members_deltaunits: dict[PersonID : dict[PartyID:DeltaUnit]] = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _dueunits: dict[DueID:DueUnit] = None
 
     def edit_deltaunit_attr(
         self,
+        member: PersonID,
         x_party_id: PartyID,
         x_creditor_weight: float = None,
         x_debtor_weight: float = None,
         x_depotlink_type: str = None,
-        author: bool = None,
-        reader: bool = None,
     ):
-        x_deltaunit = self.get_deltaunit(x_party_id, author, reader)
+        x_deltaunit = self.get_deltaunit(member, x_party_id)
         if x_creditor_weight != None:
             x_deltaunit.creditor_weight = x_creditor_weight
         if x_debtor_weight != None:
@@ -51,34 +49,26 @@ class AccordUnit:
         if x_depotlink_type != None:
             x_deltaunit.depotlink_type = x_depotlink_type
 
-    def set_deltaunit(
-        self, x_delta: DeltaUnit, author: bool = False, reader: bool = False
-    ):
-        if author:
-            self._author_deltaunits[x_delta.party_id] = x_delta
-        if reader:
-            self._reader_deltaunits[x_delta.party_id] = x_delta
+    def set_deltaunit(self, member: PersonID, x_delta: DeltaUnit):
+        x_delta.set_member(member)
+        member_deltaunits = self._get_member_deltaunits(member)
+        member_deltaunits[x_delta.party_id] = x_delta
 
-    def get_deltaunit(
-        self, x_party_id: PartyID, author: bool = False, reader: bool = False
-    ) -> DeltaUnit:
-        if author:
-            return self._author_deltaunits.get(x_party_id)
-        if reader:
-            return self._reader_deltaunits.get(x_party_id)
+    def _get_member_deltaunits(self, member: PersonID) -> dict[PartyID:DeltaUnit]:
+        return self._members_deltaunits.get(member)
 
-    def del_deltaunit(
-        self, x_party_id: PartyID, author: bool = False, reader: bool = False
-    ):
-        if author:
-            return self._author_deltaunits.pop(x_party_id)
-        if reader:
-            return self._reader_deltaunits.pop(x_party_id)
+    def get_deltaunit(self, member: PersonID, x_party_id: PartyID) -> DeltaUnit:
+        member_deltaunits = self._get_member_deltaunits(member)
+        return member_deltaunits.get(x_party_id)
+
+    def del_deltaunit(self, member: PersonID, x_party_id: PartyID):
+        member_deltaunits = self._get_member_deltaunits(member)
+        return member_deltaunits.pop(x_party_id)
 
     def deltaunit_exists(self, x_party_id: PartyID) -> bool:
-        return (
-            self._author_deltaunits.get(x_party_id) != None
-            or self._reader_deltaunits.get(x_party_id) != None
+        return any(
+            x_member_deltaunits.get(x_party_id) != None
+            for x_member_deltaunits in self._members_deltaunits.values()
         )
 
     def set_accord_metrics(self):
@@ -208,16 +198,21 @@ class AccordUnit:
 def accordunit_shop(
     _author_road: EconomyRoad,
     _reader_road: EconomyRoad,
-    _author_deltaunits: dict[PartyID:DeltaUnit] = None,
-    _reader_deltaunits: dict[PartyID:DeltaUnit] = None,
+    _members_deltaunits: dict[PersonID : dict[PartyID:DeltaUnit]] = None,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
     _dueunits: dict[DueID:DueUnit] = None,
 ):
+    author_person_id = get_single_roadnode("PersonRoad", _author_road, "PersonID")
+    reader_person_id = get_single_roadnode("PersonRoad", _reader_road, "PersonID")
+    _members_deltaunits = get_empty_dict_if_none(_members_deltaunits)
+    if _members_deltaunits.get(author_person_id) is None:
+        _members_deltaunits[author_person_id] = {}
+    if _members_deltaunits.get(reader_person_id) is None:
+        _members_deltaunits[reader_person_id] = {}
     return AccordUnit(
         _author_road=_author_road,
         _reader_road=_reader_road,
-        _author_deltaunits=get_empty_dict_if_none(_author_deltaunits),
-        _reader_deltaunits=get_empty_dict_if_none(_reader_deltaunits),
+        _members_deltaunits=_members_deltaunits,
         _topicunits=get_empty_dict_if_none(_topicunits),
         _dueunits=get_empty_dict_if_none(_dueunits),
     )

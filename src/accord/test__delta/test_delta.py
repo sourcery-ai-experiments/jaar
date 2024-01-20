@@ -9,9 +9,11 @@ from src.accord.delta import DeltaUnit, deltaunit_shop
 def test_DeltaUnit_exists():
     # GIVEN
     bob_text = "Bob"
+    yao_text = "Yao"
 
     # WHEN
     x_deltaunit = DeltaUnit(
+        member=yao_text,
         party_id=bob_text,
         creditor_weight=2,
         debtor_weight=3,
@@ -27,6 +29,7 @@ def test_DeltaUnit_exists():
 
 def test_deltaunit_shop_ReturnsCorrectObj():
     # GIVEN
+    bob_text = "Bob"
     yao_text = "Yao"
     # mess_problem_road = create_road(jack_text, "mess")
     # femi_healer_road = create_road(mess_problem_road, "Femi")
@@ -35,29 +38,29 @@ def test_deltaunit_shop_ReturnsCorrectObj():
     # adam_party_road = create_road(jack_agent_road, "Adam")
 
     # WHEN
-    adam_deltaunit = deltaunit_shop(party_id=yao_text)
+    adam_deltaunit = deltaunit_shop(member=bob_text, party_id=yao_text)
 
     # THEN
+    assert adam_deltaunit.member == bob_text
     assert adam_deltaunit.party_id == yao_text
     assert adam_deltaunit.creditor_weight == 0
     assert adam_deltaunit.debtor_weight == 0
     assert adam_deltaunit.depotlink_type == "assignment"
 
 
-# def test_DeltaUnit_set_topiclink_SetsAttrCorrectly():
-#     # GIVEN
-#     one_text = "1"
-#     farm_deltaunit = deltaunit_shop(one_text)
-#     assert farm_deltaunit._topiclinks == {}
+def test_DeltaUnit_set_member_SetsAttrCorrectly():
+    # GIVEN
+    bob_text = "Bob"
+    yao_text = "Yao"
+    farm_deltaunit = deltaunit_shop(bob_text, yao_text)
+    assert farm_deltaunit.member == bob_text
 
-#     # WHEN
-#     cook_topiclink = topiclink_shop(base=create_road(root_label(), "cooking"))
-#     farm_deltaunit.set_topiclink(cook_topiclink)
+    # WHEN
+    sue_text = "Sue"
+    farm_deltaunit.set_member(sue_text)
 
-#     # THEN
-#     assert len(farm_deltaunit._topiclinks) == 1
-#     assert farm_deltaunit._topiclinks.get(cook_topiclink.base) != None
-#     assert farm_deltaunit._topiclinks.get(cook_topiclink.base) == cook_topiclink
+    # THEN
+    assert farm_deltaunit.member == sue_text
 
 
 # def test_DeltaUnit_edit_attr_SetsAttrCorrectly():

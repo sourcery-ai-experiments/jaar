@@ -25,8 +25,7 @@ def test_AccordUnit_exists():
     # THEN
     assert x_accordunit._author_road is None
     assert x_accordunit._reader_road is None
-    assert x_accordunit._author_deltaunits is None
-    assert x_accordunit._reader_deltaunits is None
+    assert x_accordunit._members_deltaunits is None
     assert x_accordunit._topicunits is None
     assert x_accordunit._dueunits is None
 
@@ -45,8 +44,7 @@ def test_accordunit_shop_ReturnsCorrectObj():
     farm_accordunit = accordunit_shop(
         _author_road=bob_road,
         _reader_road=tim_road,
-        _author_deltaunits=None,
-        _reader_deltaunits=None,
+        _members_deltaunits=None,
         _topicunits=None,
         _dueunits=None,
     )
@@ -54,8 +52,7 @@ def test_accordunit_shop_ReturnsCorrectObj():
     # THEN
     assert farm_accordunit._author_road == bob_road
     assert farm_accordunit._reader_road == tim_road
-    assert farm_accordunit._author_deltaunits == {}
-    assert farm_accordunit._reader_deltaunits == {}
+    assert farm_accordunit._members_deltaunits == {bob_text: {}, tim_text: {}}
     assert farm_accordunit._topicunits == {}
     assert farm_accordunit._dueunits == {}
 
@@ -72,14 +69,7 @@ def test_AccordUnit_get_member_attr_CorrectlyRaisesError():
     iowa_text = "Iowa"
     bob_road = roadnodes([bob_text, hunger_text, yao_text, ohio_text, bob_text])
     tim_road = roadnodes([tim_text, cowboy_text, sue_text, iowa_text, tim_text])
-    farm_accordunit = accordunit_shop(
-        _author_road=bob_road,
-        _reader_road=tim_road,
-        _author_deltaunits=None,
-        _reader_deltaunits=None,
-        _topicunits=None,
-        _dueunits=None,
-    )
+    farm_accordunit = accordunit_shop(_author_road=bob_road, _reader_road=tim_road)
 
     # WHEN / THEN
     person_id_text = "PersonID"
@@ -104,14 +94,7 @@ def test_AccordUnit_get_member_attr_ReturnCorrectObjs():
     iowa_text = "Iowa"
     bob_road = roadnodes([bob_text, hunger_text, yao_text, ohio_text, bob_text])
     tim_road = roadnodes([tim_text, cowboy_text, sue_text, iowa_text, tim_text])
-    farm_accordunit = accordunit_shop(
-        _author_road=bob_road,
-        _reader_road=tim_road,
-        _author_deltaunits=None,
-        _reader_deltaunits=None,
-        _topicunits=None,
-        _dueunits=None,
-    )
+    farm_accordunit = accordunit_shop(_author_road=bob_road, _reader_road=tim_road)
 
     # WHEN / THEN
     person_id_text = "PersonID"
