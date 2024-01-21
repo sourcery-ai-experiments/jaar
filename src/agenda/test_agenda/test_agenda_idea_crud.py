@@ -9,14 +9,14 @@ from src._prime.road import default_road_delimiter_if_none
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # GIVEN
-    x_agenda = agendaunit_shop(_agent_id="prom")
+    yue_agenda = agendaunit_shop("Yue")
     invalid_rootnode_swim_road = "swimming"
-    assert invalid_rootnode_swim_road != x_agenda._economy_id
+    assert invalid_rootnode_swim_road != yue_agenda._economy_id
     work_text = "work"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.add_idea(
+        yue_agenda.add_idea(
             ideaunit_shop(work_text), parent_road=invalid_rootnode_swim_road
         )
     assert (
@@ -27,13 +27,13 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     # GIVEN
-    x_agenda = agendaunit_shop(_agent_id="prom")
-    swim_road = x_agenda.make_l1_road("swimming")
+    yue_agenda = agendaunit_shop("Yue")
+    swim_road = yue_agenda.make_l1_road("swimming")
     work_text = "work"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.add_idea(
+        yue_agenda.add_idea(
             ideaunit_shop(work_text),
             parent_road=swim_road,
             create_missing_ancestors=False,
@@ -46,92 +46,94 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
 
 def test_agenda_idea_kid_CanHaveKids():
     # GIVEN / WHEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._weight == 10
-    assert x_agenda._idearoot._kids
-    print(f"{len(x_agenda._idearoot._kids)=} {x_agenda._idearoot._parent_road=}")
-    assert x_agenda.get_level_count(level=0) == 1
-    weekdays_kids = x_agenda._idearoot._kids["weekdays"]._kids
+    assert sue_agenda._weight == 10
+    assert sue_agenda._idearoot._kids
+    print(f"{len(sue_agenda._idearoot._kids)=} {sue_agenda._idearoot._parent_road=}")
+    assert sue_agenda.get_level_count(level=0) == 1
+    weekdays_kids = sue_agenda._idearoot._kids["weekdays"]._kids
     weekdays_len = len(weekdays_kids)
-    print(f"{weekdays_len=} {x_agenda._idearoot._parent_road=}")
+    print(f"{weekdays_len=} {sue_agenda._idearoot._parent_road=}")
     # for idea in weekdays_kids.values():
     #     print(f"{idea._label=}")
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=1) == 4
-    assert x_agenda.get_level_count(level=2) == 10
-    assert x_agenda.get_level_count(level=3) == 2
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=1) == 4
+    assert sue_agenda.get_level_count(level=2) == 10
+    assert sue_agenda.get_level_count(level=3) == 2
 
 
 def test_agenda_add_idea_CanAddKidTo_idearoot():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=1) == 4
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=1) == 4
 
-    new_idea_parent_road = x_agenda._economy_id
+    new_idea_parent_road = sue_agenda._economy_id
 
     # WHEN
-    x_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
-    x_agenda.set_agenda_metrics()
+    sue_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
+    print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_idea_count() == 18
-    assert x_agenda.get_level_count(level=1) == 5
+    assert sue_agenda.get_idea_count() == 18
+    assert sue_agenda.get_level_count(level=1) == 5
 
 
 def test_agenda_add_idea_CanAddKidToKidIdea():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=2) == 10
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=2) == 10
 
     # WHEN
-    new_idea_parent_road = x_agenda.make_l1_road("work")
-    x_agenda.add_idea(ideaunit_shop("new_york"), parent_road=new_idea_parent_road)
-    x_agenda.set_agenda_metrics()
+    new_idea_parent_road = sue_agenda.make_l1_road("work")
+    sue_agenda.add_idea(ideaunit_shop("new_york"), parent_road=new_idea_parent_road)
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    # print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
-    # print(x_agenda._idearoot._kids["work"])
+    # print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
+    # print(sue_agenda._idearoot._kids["work"])
     # print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_idea_count() == 18
-    assert x_agenda.get_level_count(level=2) == 11
-    new_york_idea = x_agenda._idearoot._kids["work"]._kids["new_york"]
-    assert new_york_idea._parent_road == x_agenda.make_l1_road("work")
-    assert new_york_idea._road_delimiter == x_agenda._road_delimiter
+    assert sue_agenda.get_idea_count() == 18
+    assert sue_agenda.get_level_count(level=2) == 11
+    new_york_idea = sue_agenda._idearoot._kids["work"]._kids["new_york"]
+    assert new_york_idea._parent_road == sue_agenda.make_l1_road("work")
+    assert new_york_idea._road_delimiter == sue_agenda._road_delimiter
     new_york_idea.set_parent_road(parent_road="testing")
-    assert x_agenda._idearoot._kids["work"]._kids["new_york"]._parent_road == "testing"
-    assert x_agenda.get_intent_dict()
+    assert (
+        sue_agenda._idearoot._kids["work"]._kids["new_york"]._parent_road == "testing"
+    )
+    assert sue_agenda.get_intent_dict()
 
 
 def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=3) == 2
-    wkday_road = x_agenda.make_l1_road("weekdays")
-    new_idea_parent_road = x_agenda.make_road(wkday_road, "Wednesday")
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=3) == 2
+    wkday_road = sue_agenda.make_l1_road("weekdays")
+    new_idea_parent_road = sue_agenda.make_road(wkday_road, "Wednesday")
 
     # WHEN
-    x_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
-    x_agenda.set_agenda_metrics()
+    sue_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(x_agenda._agent_id == new_idea_parent_road[0])=}")
-    print(x_agenda._idearoot._kids["work"])
+    print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
+    print(sue_agenda._idearoot._kids["work"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda.get_idea_count() == 18
-    assert x_agenda.get_level_count(level=3) == 3
+    assert sue_agenda.get_idea_count() == 18
+    assert sue_agenda.get_level_count(level=3) == 3
 
 
 def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
@@ -166,341 +168,341 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
 
 def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=3) == 2
-    ww2_road = x_agenda.make_l1_road("ww2")
-    battles_road = x_agenda.make_road(ww2_road, "battles")
-    new_idea_parent_road = x_agenda.make_road(battles_road, "coralsea")
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=3) == 2
+    ww2_road = sue_agenda.make_l1_road("ww2")
+    battles_road = sue_agenda.make_road(ww2_road, "battles")
+    new_idea_parent_road = sue_agenda.make_road(battles_road, "coralsea")
     new_idea = ideaunit_shop(_label="USS Saratoga")
 
     # WHEN
-    x_agenda.add_idea(new_idea, parent_road=new_idea_parent_road)
-    x_agenda.set_agenda_metrics()
+    sue_agenda.add_idea(new_idea, parent_road=new_idea_parent_road)
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    print(x_agenda._idearoot._kids["ww2"])
+    print(sue_agenda._idearoot._kids["ww2"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    assert x_agenda._idearoot._kids["ww2"]._label == "ww2"
-    assert x_agenda._idearoot._kids["ww2"]._kids["battles"]._label == "battles"
-    assert x_agenda.get_idea_count() == 21
-    assert x_agenda.get_level_count(level=3) == 3
+    assert sue_agenda._idearoot._kids["ww2"]._label == "ww2"
+    assert sue_agenda._idearoot._kids["ww2"]._kids["battles"]._label == "battles"
+    assert sue_agenda.get_idea_count() == 21
+    assert sue_agenda.get_level_count(level=3) == 3
 
 
 def test_agenda_add_idea_creates_reasons_ideas():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
 
-    assert x_agenda.get_idea_count() == 17
-    assert x_agenda.get_level_count(level=3) == 2
-    work_road = x_agenda.make_l1_road("work")
-    new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
+    assert sue_agenda.get_idea_count() == 17
+    assert sue_agenda.get_level_count(level=3) == 2
+    work_road = sue_agenda.make_l1_road("work")
+    new_idea_parent_road = sue_agenda.make_road(work_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(clean_cookery_text, _weight=40, promise=True)
 
     buildings_text = "buildings"
-    buildings_road = x_agenda.make_l1_road(buildings_text)
+    buildings_road = sue_agenda.make_l1_road(buildings_text)
     cookery_room_text = "cookery"
-    cookery_room_road = x_agenda.make_road(buildings_road, cookery_room_text)
+    cookery_room_road = sue_agenda.make_road(buildings_road, cookery_room_text)
     cookery_dirty_text = "dirty"
-    cookery_dirty_road = x_agenda.make_road(cookery_room_road, cookery_dirty_text)
+    cookery_dirty_road = sue_agenda.make_road(cookery_room_road, cookery_dirty_text)
     reason_x = reasonunit_shop(base=cookery_room_road)
     reason_x.set_premise(premise=cookery_dirty_road)
     clean_cookery_idea.set_reasonunit(reason=reason_x)
 
-    assert x_agenda._idearoot.get_kid(buildings_text) is None
+    assert sue_agenda._idearoot.get_kid(buildings_text) is None
 
     # WHEN
-    x_agenda.add_idea(
+    sue_agenda.add_idea(
         idea_kid=clean_cookery_idea,
         parent_road=new_idea_parent_road,
         create_missing_ideas_groups=True,
     )
-    x_agenda.set_agenda_metrics()
+    sue_agenda.set_agenda_metrics()
 
     # THEN
     print(f"{(len(new_idea_parent_road) == 1)=}")
-    # for idea_kid in x_agenda._idearoot._kids.values():
+    # for idea_kid in sue_agenda._idearoot._kids.values():
     #     print(f"{idea_kid._label=}")
-    assert x_agenda._idearoot.get_kid(buildings_text) != None
-    assert x_agenda.get_idea_obj(road=buildings_road) != None
-    assert x_agenda.get_idea_obj(road=cookery_dirty_road) != None
-    assert x_agenda.get_idea_count() == 22
-    assert x_agenda.get_level_count(level=3) == 4
+    assert sue_agenda._idearoot.get_kid(buildings_text) != None
+    assert sue_agenda.get_idea_obj(road=buildings_road) != None
+    assert sue_agenda.get_idea_obj(road=cookery_dirty_road) != None
+    assert sue_agenda.get_idea_count() == 22
+    assert sue_agenda.get_level_count(level=3) == 4
 
 
 def test_agenda_add_idea_CorrectlySets_agenda_economy_id():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
+    sue_agenda = get_agenda_with_4_levels()
     agenda_economy_id = "Texas"
-    x_agenda.set_economy_id(economy_id=agenda_economy_id)
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._economy_id == agenda_economy_id
+    sue_agenda.set_economy_id(economy_id=agenda_economy_id)
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._economy_id == agenda_economy_id
 
-    work_road = x_agenda.make_l1_road("work")
-    clean_road = x_agenda.make_road(work_road, "cleaning")
+    work_road = sue_agenda.make_l1_road("work")
+    clean_road = sue_agenda.make_road(work_road, "cleaning")
     cookery_text = "cookery ready to use"
-    cookery_road = x_agenda.make_road(clean_road, cookery_text)
+    cookery_road = sue_agenda.make_road(clean_road, cookery_text)
 
     # WHEN
-    x_agenda.add_idea(ideaunit_shop(cookery_text), clean_road)
+    sue_agenda.add_idea(ideaunit_shop(cookery_text), clean_road)
 
     # THEN
-    cookery_idea = x_agenda.get_idea_obj(cookery_road)
+    cookery_idea = sue_agenda.get_idea_obj(cookery_road)
     assert cookery_idea._agenda_economy_id == agenda_economy_id
 
 
 def test_agenda_del_idea_kid_Level0CannotBeDeleted():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    root_road = x_agenda._economy_id
+    sue_agenda = get_agenda_with_4_levels()
+    root_road = sue_agenda._economy_id
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.del_idea_kid(road=root_road)
+        sue_agenda.del_idea_kid(road=root_road)
     assert str(excinfo.value) == "Idearoot cannot be deleted"
 
 
 def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
+    sue_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
-    sun_road = x_agenda.make_road(week_road, sun_text)
-    assert x_agenda.get_idea_obj(road=week_road)
-    assert x_agenda.get_idea_obj(road=sun_road)
+    sun_road = sue_agenda.make_road(week_road, sun_text)
+    assert sue_agenda.get_idea_obj(road=week_road)
+    assert sue_agenda.get_idea_obj(road=sun_road)
 
     # WHEN
-    x_agenda.del_idea_kid(road=week_road)
+    sue_agenda.del_idea_kid(road=week_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_obj(road=week_road)
+        sue_agenda.get_idea_obj(road=week_road)
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{week_road}'"
-    new_sunday_road = x_agenda.make_l1_road("Sunday")
+    new_sunday_road = sue_agenda.make_l1_road("Sunday")
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_obj(road=new_sunday_road)
+        sue_agenda.get_idea_obj(road=new_sunday_road)
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{new_sunday_road}'"
 
 
 def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_agenda.set_agenda_metrics()
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
-    old_sunday_road = x_agenda.make_road(week_road, sun_text)
-    assert x_agenda.get_idea_obj(road=old_sunday_road)
+    old_sunday_road = sue_agenda.make_road(week_road, sun_text)
+    assert sue_agenda.get_idea_obj(road=old_sunday_road)
 
     # WHEN
-    x_agenda.del_idea_kid(road=week_road, del_children=False)
+    sue_agenda.del_idea_kid(road=week_road, del_children=False)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_obj(road=old_sunday_road)
+        sue_agenda.get_idea_obj(road=old_sunday_road)
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{old_sunday_road}'"
-    new_sunday_road = x_agenda.make_l1_road(sun_text)
-    assert x_agenda.get_idea_obj(road=new_sunday_road)
-    new_sunday_idea = x_agenda.get_idea_obj(road=new_sunday_road)
-    assert new_sunday_idea._parent_road == x_agenda._economy_id
+    new_sunday_road = sue_agenda.make_l1_road(sun_text)
+    assert sue_agenda.get_idea_obj(road=new_sunday_road)
+    new_sunday_idea = sue_agenda.get_idea_obj(road=new_sunday_road)
+    assert new_sunday_idea._parent_road == sue_agenda._economy_id
 
 
 def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
+    sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
-    states_road = x_agenda.make_l1_road(states_text)
+    states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
-    usa_road = x_agenda.make_road(states_road, usa_text)
+    usa_road = sue_agenda.make_road(states_road, usa_text)
     texas_text = "Texas"
     oregon_text = "Oregon"
-    usa_texas_road = x_agenda.make_road(usa_road, texas_text)
-    usa_oregon_road = x_agenda.make_road(usa_road, oregon_text)
-    states_texas_road = x_agenda.make_road(states_road, texas_text)
-    states_oregon_road = x_agenda.make_road(states_road, oregon_text)
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(usa_road) != None
-    assert x_agenda._idea_dict.get(usa_texas_road) != None
-    assert x_agenda._idea_dict.get(usa_oregon_road) != None
-    assert x_agenda._idea_dict.get(states_texas_road) is None
-    assert x_agenda._idea_dict.get(states_oregon_road) is None
+    usa_texas_road = sue_agenda.make_road(usa_road, texas_text)
+    usa_oregon_road = sue_agenda.make_road(usa_road, oregon_text)
+    states_texas_road = sue_agenda.make_road(states_road, texas_text)
+    states_oregon_road = sue_agenda.make_road(states_road, oregon_text)
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._idea_dict.get(usa_road) != None
+    assert sue_agenda._idea_dict.get(usa_texas_road) != None
+    assert sue_agenda._idea_dict.get(usa_oregon_road) != None
+    assert sue_agenda._idea_dict.get(states_texas_road) is None
+    assert sue_agenda._idea_dict.get(states_oregon_road) is None
 
     # WHEN
-    x_agenda.del_idea_kid(road=usa_road, del_children=False)
+    sue_agenda.del_idea_kid(road=usa_road, del_children=False)
 
     # THEN
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(states_texas_road) != None
-    assert x_agenda._idea_dict.get(states_oregon_road) != None
-    assert x_agenda._idea_dict.get(usa_texas_road) is None
-    assert x_agenda._idea_dict.get(usa_oregon_road) is None
-    assert x_agenda._idea_dict.get(usa_road) is None
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._idea_dict.get(states_texas_road) != None
+    assert sue_agenda._idea_dict.get(states_oregon_road) != None
+    assert sue_agenda._idea_dict.get(usa_texas_road) is None
+    assert sue_agenda._idea_dict.get(usa_oregon_road) is None
+    assert sue_agenda._idea_dict.get(usa_road) is None
 
 
 def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-    wkday_road = x_agenda.make_l1_road("weekdays")
-    monday_road = x_agenda.make_road(wkday_road, "Monday")
-    assert x_agenda.get_idea_obj(road=monday_road)
+    sue_agenda = get_agenda_with_4_levels()
+    wkday_road = sue_agenda.make_l1_road("weekdays")
+    monday_road = sue_agenda.make_road(wkday_road, "Monday")
+    assert sue_agenda.get_idea_obj(road=monday_road)
 
     # WHEN
-    x_agenda.del_idea_kid(road=monday_road)
+    sue_agenda.del_idea_kid(road=monday_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_obj(road=monday_road)
+        sue_agenda.get_idea_obj(road=monday_road)
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{monday_road}'"
 
 
 def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels()
+    sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
-    states_road = x_agenda.make_l1_road(states_text)
+    states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
-    usa_road = x_agenda.make_road(states_road, usa_text)
+    usa_road = sue_agenda.make_road(states_road, usa_text)
     texas_text = "Texas"
-    usa_texas_road = x_agenda.make_road(usa_road, texas_text)
-    assert x_agenda.get_idea_obj(road=usa_texas_road)
+    usa_texas_road = sue_agenda.make_road(usa_road, texas_text)
+    assert sue_agenda.get_idea_obj(road=usa_texas_road)
 
     # WHEN
-    x_agenda.del_idea_kid(road=usa_texas_road)
+    sue_agenda.del_idea_kid(road=usa_texas_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.get_idea_obj(road=usa_texas_road)
+        sue_agenda.get_idea_obj(road=usa_texas_road)
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{usa_texas_road}'"
 
 
 def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
-    x_agenda = get_agenda_with_4_levels()
+    sue_agenda = get_agenda_with_4_levels()
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = sue_agenda.make_l1_road(work_text)
     print(f"{work_road=}")
-    current_weight = x_agenda._idearoot._kids[work_text]._weight
+    current_weight = sue_agenda._idearoot._kids[work_text]._weight
     assert current_weight == 30
-    x_agenda.edit_idea_attr(road=work_road, weight=23)
-    new_weight = x_agenda._idearoot._kids[work_text]._weight
+    sue_agenda.edit_idea_attr(road=work_road, weight=23)
+    new_weight = sue_agenda._idearoot._kids[work_text]._weight
     assert new_weight == 23
 
     # uid: int = None,
-    x_agenda._idearoot._kids[work_text]._uid = 34
-    uid_curr = x_agenda._idearoot._kids[work_text]._uid
+    sue_agenda._idearoot._kids[work_text]._uid = 34
+    uid_curr = sue_agenda._idearoot._kids[work_text]._uid
     assert uid_curr == 34
-    x_agenda.edit_idea_attr(road=work_road, uid=23)
-    uid_new = x_agenda._idearoot._kids[work_text]._uid
+    sue_agenda.edit_idea_attr(road=work_road, uid=23)
+    uid_new = sue_agenda._idearoot._kids[work_text]._uid
     assert uid_new == 23
 
     # begin: float = None,
     # close: float = None,
-    x_agenda._idearoot._kids[work_text]._begin = 39
-    begin_curr = x_agenda._idearoot._kids[work_text]._begin
+    sue_agenda._idearoot._kids[work_text]._begin = 39
+    begin_curr = sue_agenda._idearoot._kids[work_text]._begin
     assert begin_curr == 39
-    x_agenda._idearoot._kids[work_text]._close = 43
-    close_curr = x_agenda._idearoot._kids[work_text]._close
+    sue_agenda._idearoot._kids[work_text]._close = 43
+    close_curr = sue_agenda._idearoot._kids[work_text]._close
     assert close_curr == 43
-    x_agenda.edit_idea_attr(road=work_road, begin=25, close=29)
-    assert x_agenda._idearoot._kids[work_text]._begin == 25
-    assert x_agenda._idearoot._kids[work_text]._close == 29
+    sue_agenda.edit_idea_attr(road=work_road, begin=25, close=29)
+    assert sue_agenda._idearoot._kids[work_text]._begin == 25
+    assert sue_agenda._idearoot._kids[work_text]._close == 29
 
     # beliefunit: beliefunit_shop = None,
-    # x_agenda._idearoot._kids[work_text]._beliefunits = None
-    assert x_agenda._idearoot._kids[work_text]._beliefunits == {}
-    wkdays_road = x_agenda.make_l1_road("weekdays")
-    belief_road = x_agenda.make_road(wkdays_road, "Sunday")
+    # sue_agenda._idearoot._kids[work_text]._beliefunits = None
+    assert sue_agenda._idearoot._kids[work_text]._beliefunits == {}
+    wkdays_road = sue_agenda.make_l1_road("weekdays")
+    belief_road = sue_agenda.make_road(wkdays_road, "Sunday")
     beliefunit_x = beliefunit_shop(base=belief_road, pick=belief_road)
 
-    work_beliefunits = x_agenda._idearoot._kids[work_text]._beliefunits
+    work_beliefunits = sue_agenda._idearoot._kids[work_text]._beliefunits
     print(f"{work_beliefunits=}")
-    x_agenda.edit_idea_attr(road=work_road, beliefunit=beliefunit_x)
-    work_beliefunits = x_agenda._idearoot._kids[work_text]._beliefunits
+    sue_agenda.edit_idea_attr(road=work_road, beliefunit=beliefunit_x)
+    work_beliefunits = sue_agenda._idearoot._kids[work_text]._beliefunits
     print(f"{work_beliefunits=}")
-    assert x_agenda._idearoot._kids[work_text]._beliefunits == {
+    assert sue_agenda._idearoot._kids[work_text]._beliefunits == {
         beliefunit_x.base: beliefunit_x
     }
 
     # _descendant_promise_count: int = None,
-    x_agenda._idearoot._kids[work_text]._descendant_promise_count = 81
-    _descendant_promise_count_curr = x_agenda._idearoot._kids[
+    sue_agenda._idearoot._kids[work_text]._descendant_promise_count = 81
+    _descendant_promise_count_curr = sue_agenda._idearoot._kids[
         work_text
     ]._descendant_promise_count
     assert _descendant_promise_count_curr == 81
-    x_agenda.edit_idea_attr(road=work_road, descendant_promise_count=67)
-    _descendant_promise_count_new = x_agenda._idearoot._kids[
+    sue_agenda.edit_idea_attr(road=work_road, descendant_promise_count=67)
+    _descendant_promise_count_new = sue_agenda._idearoot._kids[
         work_text
     ]._descendant_promise_count
     assert _descendant_promise_count_new == 67
 
     # _all_party_credit: bool = None,
-    x_agenda._idearoot._kids[work_text]._all_party_credit = 74
-    _all_party_credit_curr = x_agenda._idearoot._kids[work_text]._all_party_credit
+    sue_agenda._idearoot._kids[work_text]._all_party_credit = 74
+    _all_party_credit_curr = sue_agenda._idearoot._kids[work_text]._all_party_credit
     assert _all_party_credit_curr == 74
-    x_agenda.edit_idea_attr(road=work_road, all_party_credit=59)
-    _all_party_credit_new = x_agenda._idearoot._kids[work_text]._all_party_credit
+    sue_agenda.edit_idea_attr(road=work_road, all_party_credit=59)
+    _all_party_credit_new = sue_agenda._idearoot._kids[work_text]._all_party_credit
     assert _all_party_credit_new == 59
 
     # _all_party_debt: bool = None,
-    x_agenda._idearoot._kids[work_text]._all_party_debt = 74
-    _all_party_debt_curr = x_agenda._idearoot._kids[work_text]._all_party_debt
+    sue_agenda._idearoot._kids[work_text]._all_party_debt = 74
+    _all_party_debt_curr = sue_agenda._idearoot._kids[work_text]._all_party_debt
     assert _all_party_debt_curr == 74
-    x_agenda.edit_idea_attr(road=work_road, all_party_debt=59)
-    _all_party_debt_new = x_agenda._idearoot._kids[work_text]._all_party_debt
+    sue_agenda.edit_idea_attr(road=work_road, all_party_debt=59)
+    _all_party_debt_new = sue_agenda._idearoot._kids[work_text]._all_party_debt
     assert _all_party_debt_new == 59
 
     # _balancelink: dict = None,
-    x_agenda._idearoot._kids[work_text]._balancelinks = {
+    sue_agenda._idearoot._kids[work_text]._balancelinks = {
         "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
-    _balancelinks = x_agenda._idearoot._kids[work_text]._balancelinks
+    _balancelinks = sue_agenda._idearoot._kids[work_text]._balancelinks
     assert _balancelinks == {
         "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
     }
-    x_agenda.edit_idea_attr(
+    sue_agenda.edit_idea_attr(
         road=work_road,
         balancelink=balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8),
     )
-    assert x_agenda._idearoot._kids[work_text]._balancelinks == {
+    assert sue_agenda._idearoot._kids[work_text]._balancelinks == {
         "fun": balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,
-    x_agenda._idearoot._kids[work_text]._is_expanded = "what"
-    _is_expanded = x_agenda._idearoot._kids[work_text]._is_expanded
+    sue_agenda._idearoot._kids[work_text]._is_expanded = "what"
+    _is_expanded = sue_agenda._idearoot._kids[work_text]._is_expanded
     assert _is_expanded == "what"
-    x_agenda.edit_idea_attr(road=work_road, is_expanded=True)
-    assert x_agenda._idearoot._kids[work_text]._is_expanded == True
+    sue_agenda.edit_idea_attr(road=work_road, is_expanded=True)
+    assert sue_agenda._idearoot._kids[work_text]._is_expanded == True
 
     # promise: dict = None,
-    x_agenda._idearoot._kids[work_text].promise = "funfun3"
-    action = x_agenda._idearoot._kids[work_text].promise
+    sue_agenda._idearoot._kids[work_text].promise = "funfun3"
+    action = sue_agenda._idearoot._kids[work_text].promise
     assert action == "funfun3"
-    x_agenda.edit_idea_attr(road=work_road, promise=True)
-    assert x_agenda._idearoot._kids[work_text].promise == True
+    sue_agenda.edit_idea_attr(road=work_road, promise=True)
+    assert sue_agenda._idearoot._kids[work_text].promise == True
 
     # _range_source_road: dict = None,
-    x_agenda._idearoot._kids[work_text]._range_source_road = "fun3rol"
-    range_source_road = x_agenda._idearoot._kids[work_text]._range_source_road
+    sue_agenda._idearoot._kids[work_text]._range_source_road = "fun3rol"
+    range_source_road = sue_agenda._idearoot._kids[work_text]._range_source_road
     assert range_source_road == "fun3rol"
-    end_road = x_agenda.make_road(work_road, "end")
-    x_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
-    assert x_agenda._idearoot._kids[work_text]._range_source_road == end_road
+    end_road = sue_agenda.make_road(work_road, "end")
+    sue_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
+    assert sue_agenda._idearoot._kids[work_text]._range_source_road == end_road
 
     print(f"{work_road=} {end_road=}")
 
 
 def test_agenda_edit_idea_attr_agendaIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
-    x_agenda = get_agenda_with_4_levels()
-    work_road = x_agenda.make_l1_road("work")
+    sue_agenda = get_agenda_with_4_levels()
+    work_road = sue_agenda.make_l1_road("work")
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda.edit_idea_attr(road=work_road, on_meld_weight_action="yahoo9")
+        sue_agenda.edit_idea_attr(road=work_road, on_meld_weight_action="yahoo9")
     assert (
         str(excinfo.value)
         == "IdeaUnit unit 'work' cannot have on_meld_weight_action 'yahoo9'."
