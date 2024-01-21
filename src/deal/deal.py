@@ -6,14 +6,14 @@ from src._prime.road import (
     PartyID,
     get_single_roadnode,
 )
-from src.accord.due import DueID, DueUnit, dueunit_shop
-from src.accord.delta import DeltaUnit
-from src.accord.topic import TopicUnit, TopicLink
+from src.deal.due import DueID, DueUnit, dueunit_shop
+from src.deal.partyedit import PartyEditUnit
+from src.deal.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
 
-class AccordMetricsException(Exception):
+class DealMetricsException(Exception):
     pass
 
 
@@ -26,14 +26,14 @@ class get_member_attr_Exception(Exception):
 
 
 @dataclass
-class AccordUnit:
+class DealUnit:
     _author_road: EconomyRoad = None
     _reader_road: EconomyRoad = None
-    _members_deltaunits: dict[PersonID : dict[PartyID:DeltaUnit]] = None
+    _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _dueunits: dict[DueID:DueUnit] = None
 
-    def edit_deltaunit_attr(
+    def edit_partyeditunit_attr(
         self,
         member: PersonID,
         x_party_id: PartyID,
@@ -41,47 +41,49 @@ class AccordUnit:
         x_debtor_weight: float = None,
         x_depotlink_type: str = None,
     ):
-        x_deltaunit = self.get_deltaunit(member, x_party_id)
+        x_partyeditunit = self.get_partyeditunit(member, x_party_id)
         if x_creditor_weight != None:
-            x_deltaunit.creditor_weight = x_creditor_weight
+            x_partyeditunit.creditor_weight = x_creditor_weight
         if x_debtor_weight != None:
-            x_deltaunit.debtor_weight = x_debtor_weight
+            x_partyeditunit.debtor_weight = x_debtor_weight
         if x_depotlink_type != None:
-            x_deltaunit.depotlink_type = x_depotlink_type
+            x_partyeditunit.depotlink_type = x_depotlink_type
 
-    def set_deltaunit(self, member: PersonID, x_delta: DeltaUnit):
-        x_delta.set_member(member)
-        member_deltaunits = self._get_member_deltaunits(member)
-        member_deltaunits[x_delta.party_id] = x_delta
+    def set_partyeditunit(self, member: PersonID, x_partyeditunit: PartyEditUnit):
+        x_partyeditunit.set_member(member)
+        member_partyeditunits = self._get_member_partyeditunits(member)
+        member_partyeditunits[x_partyeditunit.party_id] = x_partyeditunit
 
-    def _get_member_deltaunits(self, member: PersonID) -> dict[PartyID:DeltaUnit]:
-        return self._members_deltaunits.get(member)
+    def _get_member_partyeditunits(
+        self, member: PersonID
+    ) -> dict[PartyID:PartyEditUnit]:
+        return self._members_partyeditunits.get(member)
 
-    def get_deltaunit(self, member: PersonID, x_party_id: PartyID) -> DeltaUnit:
-        member_deltaunits = self._get_member_deltaunits(member)
-        return member_deltaunits.get(x_party_id)
+    def get_partyeditunit(self, member: PersonID, x_party_id: PartyID) -> PartyEditUnit:
+        member_partyeditunits = self._get_member_partyeditunits(member)
+        return member_partyeditunits.get(x_party_id)
 
-    def del_deltaunit(self, member: PersonID, x_party_id: PartyID):
-        member_deltaunits = self._get_member_deltaunits(member)
-        return member_deltaunits.pop(x_party_id)
+    def del_partyeditunit(self, member: PersonID, x_party_id: PartyID):
+        member_partyeditunits = self._get_member_partyeditunits(member)
+        return member_partyeditunits.pop(x_party_id)
 
-    def deltaunit_exists(self, x_party_id: PartyID) -> bool:
+    def partyeditunit_exists(self, x_party_id: PartyID) -> bool:
         return any(
-            x_member_deltaunits.get(x_party_id) != None
-            for x_member_deltaunits in self._members_deltaunits.values()
+            x_member_partyeditunits.get(x_party_id) != None
+            for x_member_partyeditunits in self._members_partyeditunits.values()
         )
 
-    def set_accord_metrics(self):
+    def set_deal_metrics(self):
         due_author_sum = sum(x_due.author_weight for x_due in self._dueunits.values())
         due_reader_sum = sum(x_due.reader_weight for x_due in self._dueunits.values())
 
         if due_author_sum == 0:
-            raise AccordMetricsException(
-                "Cannot set accord metrics because due_author_sum == 0."
+            raise DealMetricsException(
+                "Cannot set deal metrics because due_author_sum == 0."
             )
         if due_reader_sum == 0:
-            raise AccordMetricsException(
-                "Cannot set accord metrics because due_reader_sum == 0."
+            raise DealMetricsException(
+                "Cannot set deal metrics because due_reader_sum == 0."
             )
 
         for x_due in self._dueunits.values():
@@ -195,24 +197,24 @@ class AccordUnit:
             )
 
 
-def accordunit_shop(
+def dealunit_shop(
     _author_road: EconomyRoad,
     _reader_road: EconomyRoad,
-    _members_deltaunits: dict[PersonID : dict[PartyID:DeltaUnit]] = None,
+    _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
     _dueunits: dict[DueID:DueUnit] = None,
 ):
     author_person_id = get_single_roadnode("PersonRoad", _author_road, "PersonID")
     reader_person_id = get_single_roadnode("PersonRoad", _reader_road, "PersonID")
-    _members_deltaunits = get_empty_dict_if_none(_members_deltaunits)
-    if _members_deltaunits.get(author_person_id) is None:
-        _members_deltaunits[author_person_id] = {}
-    if _members_deltaunits.get(reader_person_id) is None:
-        _members_deltaunits[reader_person_id] = {}
-    return AccordUnit(
+    _members_partyeditunits = get_empty_dict_if_none(_members_partyeditunits)
+    if _members_partyeditunits.get(author_person_id) is None:
+        _members_partyeditunits[author_person_id] = {}
+    if _members_partyeditunits.get(reader_person_id) is None:
+        _members_partyeditunits[reader_person_id] = {}
+    return DealUnit(
         _author_road=_author_road,
         _reader_road=_reader_road,
-        _members_deltaunits=_members_deltaunits,
+        _members_partyeditunits=_members_partyeditunits,
         _topicunits=get_empty_dict_if_none(_topicunits),
         _dueunits=get_empty_dict_if_none(_dueunits),
     )

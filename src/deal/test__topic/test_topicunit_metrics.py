@@ -3,7 +3,7 @@ from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src.accord.topic import topicunit_shop, opinionunit_shop
+from src.deal.topic import topicunit_shop, opinionunit_shop
 
 
 def test_TopicUnit_is_meaningful_ReturnsCorrectBool():
