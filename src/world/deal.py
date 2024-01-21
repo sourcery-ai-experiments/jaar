@@ -6,9 +6,9 @@ from src._prime.road import (
     PartyID,
     get_single_roadnode,
 )
-from src.deal.due import DueID, DueUnit, dueunit_shop
-from src.deal.partyedit import PartyEditUnit
-from src.deal.topic import TopicUnit, TopicLink
+from src.world.due import DueID, DueUnit, dueunit_shop
+from src.world.partyedit import PartyEditUnit
+from src.world.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
@@ -37,20 +37,20 @@ class DealUnit:
         self,
         member: PersonID,
         x_party_id: PartyID,
-        x_creditor_weight: float = None,
-        x_debtor_weight: float = None,
+        x_creditor_change: float = None,
+        x_debtor_change: float = None,
         x_depotlink_type: str = None,
     ):
         x_partyeditunit = self.get_partyeditunit(member, x_party_id)
-        if x_creditor_weight != None:
-            x_partyeditunit.creditor_weight = x_creditor_weight
-        if x_debtor_weight != None:
-            x_partyeditunit.debtor_weight = x_debtor_weight
+        if x_creditor_change != None:
+            x_partyeditunit.creditor_change = x_creditor_change
+        if x_debtor_change != None:
+            x_partyeditunit.debtor_change = x_debtor_change
         if x_depotlink_type != None:
             x_partyeditunit.depotlink_type = x_depotlink_type
 
     def set_partyeditunit(self, member: PersonID, x_partyeditunit: PartyEditUnit):
-        x_partyeditunit.set_member(member)
+        x_partyeditunit.set_deal_member(member)
         member_partyeditunits = self._get_member_partyeditunits(member)
         member_partyeditunits[x_partyeditunit.party_id] = x_partyeditunit
 

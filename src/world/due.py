@@ -3,7 +3,7 @@ from src._prime.road import (
     PersonRoad,
     PersonID,
 )
-from src.deal.topic import TopicLink
+from src.world.topic import TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 

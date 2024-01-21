@@ -3,7 +3,7 @@ from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src.deal.topic import TopicUnit, topicunit_shop
+from src.world.topic import TopicUnit, topicunit_shop
 
 
 def test_TopicUnit_exists():

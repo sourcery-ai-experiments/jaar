@@ -3,9 +3,9 @@
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
 from src._prime.road import create_road
-from src.deal.partyedit import partyeditunit_shop
-from src.deal.deal import dealunit_shop
-from src.deal.examples.example_partyeditunits import (
+from src.world.partyedit import partyeditunit_shop
+from src.world.deal import dealunit_shop
+from src.world.examples.example_partyeditunits import (
     get_bob_personroad,
     get_sue_personroad,
 )
@@ -23,14 +23,14 @@ def test_DealUnit_set_partyeditunit_SetsAttrCorrectly():
 
     # WHEN
     adam_text = "Adam"
-    adam_creditor_weight = 3
-    adam_debtor_weight = 9
+    adam_creditor_change = 3
+    adam_debtor_change = 9
     farm_dealunit.set_partyeditunit(
         member=bob_text,
         x_partyeditunit=partyeditunit_shop(
             party_id=adam_text,
-            creditor_weight=adam_creditor_weight,
-            debtor_weight=adam_debtor_weight,
+            creditor_change=adam_creditor_change,
+            debtor_change=adam_debtor_change,
             depotlink_type=None,
         ),
     )
@@ -45,8 +45,8 @@ def test_DealUnit_set_partyeditunit_SetsAttrCorrectly():
     assert bob_partyeditunits != None
     adam_partyeditunit = bob_partyeditunits.get(adam_text)
     assert adam_partyeditunit != None
-    assert adam_partyeditunit.creditor_weight == adam_creditor_weight
-    assert adam_partyeditunit.debtor_weight == adam_debtor_weight
+    assert adam_partyeditunit.creditor_change == adam_creditor_change
+    assert adam_partyeditunit.debtor_change == adam_debtor_change
     assert adam_partyeditunit.depotlink_type != None
 
 
@@ -99,40 +99,40 @@ def test_DealUnit_edit_partyeditunit_attr_CorrectlySetsAttribute():
     bob_text = "Bob"
     farm_dealunit = dealunit_shop(get_bob_personroad(), get_sue_personroad())
     adam_text = "Adam"
-    adam_creditor_weight = 3
-    adam_debtor_weight = 9
+    adam_creditor_change = 3
+    adam_debtor_change = 9
     adam_depotlink_type = "ignore"
     farm_dealunit.set_partyeditunit(
         bob_text,
         partyeditunit_shop(
             None,
             adam_text,
-            adam_creditor_weight,
-            adam_debtor_weight,
+            adam_creditor_change,
+            adam_debtor_change,
             adam_depotlink_type,
         ),
     )
 
     adam_partyeditunit = farm_dealunit.get_partyeditunit(bob_text, x_party_id=adam_text)
-    assert adam_partyeditunit.creditor_weight == adam_creditor_weight
-    assert adam_partyeditunit.debtor_weight == adam_debtor_weight
+    assert adam_partyeditunit.creditor_change == adam_creditor_change
+    assert adam_partyeditunit.debtor_change == adam_debtor_change
     assert adam_partyeditunit.depotlink_type == adam_depotlink_type
 
     # WHEN
-    y_creditor_weight = 5
-    y_debtor_weight = 13
+    y_creditor_change = 5
+    y_debtor_change = 13
     y_depotlink_type = "assignment"
     farm_dealunit.edit_partyeditunit_attr(
         member=bob_text,
         x_party_id=adam_text,
-        x_creditor_weight=y_creditor_weight,
-        x_debtor_weight=y_debtor_weight,
+        x_creditor_change=y_creditor_change,
+        x_debtor_change=y_debtor_change,
         x_depotlink_type=y_depotlink_type,
     )
 
     # THEN
-    assert adam_partyeditunit.creditor_weight == y_creditor_weight
-    assert adam_partyeditunit.debtor_weight == y_debtor_weight
+    assert adam_partyeditunit.creditor_change == y_creditor_change
+    assert adam_partyeditunit.debtor_change == y_debtor_change
     assert adam_partyeditunit.depotlink_type == y_depotlink_type
 
 
@@ -208,43 +208,43 @@ def test_DealUnit_edit_partyeditunit_attr_CorrectlySetsAttribute():
 #     assert farm_dealunit.actor_has_partyeditunit(yao_text, action_filter=True)
 
 
-# def test_DealUnit_set_deal_metrics_CorrectlySetsDue_relative_deal_weight():
+# def test_DealUnit_set_deal_metrics_CorrectlySetsDue_relative_deal_change():
 #     # GIVEN
 #     bob_text = "Bob"
 #     yao_text = "Yao"
 #     farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road=yao_text)
 #     s1_partyeditunit = farm_dealunit.add_partyeditunit()
 #     s1_partyeditunit.set_actor(bob_text)
-#     s1_partyeditunit.edit_attr(author_weight=4, reader_weight=1)
+#     s1_partyeditunit.edit_attr(author_change=4, reader_change=1)
 #     s2_partyeditunit = farm_dealunit.add_partyeditunit()
 #     s2_partyeditunit.set_actor(bob_text)
-#     s2_partyeditunit.edit_attr(author_weight=6, reader_weight=3)
-#     assert s1_partyeditunit._relative_author_weight == 0
-#     assert s1_partyeditunit._relative_reader_weight == 0
-#     assert s2_partyeditunit._relative_author_weight == 0
-#     assert s2_partyeditunit._relative_reader_weight == 0
+#     s2_partyeditunit.edit_attr(author_change=6, reader_change=3)
+#     assert s1_partyeditunit._relative_author_change == 0
+#     assert s1_partyeditunit._relative_reader_change == 0
+#     assert s2_partyeditunit._relative_author_change == 0
+#     assert s2_partyeditunit._relative_reader_change == 0
 
 #     # WHEN
 #     farm_dealunit.set_deal_metrics()
 
 #     # THEN
-#     assert s1_partyeditunit._relative_author_weight == 0.4
-#     assert s1_partyeditunit._relative_reader_weight == 0.25
-#     assert s2_partyeditunit._relative_author_weight == 0.6
-#     assert s2_partyeditunit._relative_reader_weight == 0.75
+#     assert s1_partyeditunit._relative_author_change == 0.4
+#     assert s1_partyeditunit._relative_reader_change == 0.25
+#     assert s2_partyeditunit._relative_author_change == 0.6
+#     assert s2_partyeditunit._relative_reader_change == 0.75
 
 
-# def test_DealUnit_set_deal_metrics_RaisesErrorWhen_author_weight_IsZero():
+# def test_DealUnit_set_deal_metrics_RaisesErrorWhen_author_change_IsZero():
 #     # GIVEN
 #     bob_text = "Bob"
 #     yao_text = "Yao"
 #     farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road=yao_text)
 #     s1_partyeditunit = farm_dealunit.add_partyeditunit()
 #     s1_partyeditunit.set_actor(bob_text)
-#     s1_partyeditunit.edit_attr(author_weight=0, reader_weight=1)
+#     s1_partyeditunit.edit_attr(author_change=0, reader_change=1)
 #     s2_partyeditunit = farm_dealunit.add_partyeditunit()
 #     s2_partyeditunit.set_actor(bob_text)
-#     s2_partyeditunit.edit_attr(author_weight=0, reader_weight=3)
+#     s2_partyeditunit.edit_attr(author_change=0, reader_change=3)
 
 #     # WHEN
 #     with pytest_raises(Exception) as excinfo:

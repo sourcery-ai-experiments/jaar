@@ -6,14 +6,14 @@ from src.tools.python import return0ifnone
 
 @dataclass
 class PartyEditUnit:
-    member: PersonID = None
+    deal_member: PersonID = None
     party_id: PartyID = None
-    creditor_weight: float = None
-    debtor_weight: float = None
+    creditor_change: float = None
+    debtor_change: float = None
     depotlink_type: str = None
 
-    def set_member(self, x_member: PersonID):
-        self.member = x_member
+    def set_deal_member(self, x_deal_member: PersonID):
+        self.deal_member = x_deal_member
 
 
 class partyeditrunit_shop_Exception(Exception):
@@ -21,10 +21,10 @@ class partyeditrunit_shop_Exception(Exception):
 
 
 def partyeditunit_shop(
-    member: PersonID = None,
+    deal_member: PersonID = None,
     party_id: PartyID = None,
-    creditor_weight: float = None,
-    debtor_weight: float = None,
+    creditor_change: float = None,
+    debtor_change: float = None,
     depotlink_type: str = None,
 ) -> PartyEditUnit:
     if party_id is None:
@@ -34,9 +34,9 @@ def partyeditunit_shop(
         depotlink_type = get_default_depotlink_type()
 
     return PartyEditUnit(
-        member=member,
+        deal_member=deal_member,
         party_id=party_id,
-        creditor_weight=return0ifnone(creditor_weight),
-        debtor_weight=return0ifnone(debtor_weight),
+        creditor_change=return0ifnone(creditor_change),
+        debtor_change=return0ifnone(debtor_change),
         depotlink_type=depotlink_type,
     )

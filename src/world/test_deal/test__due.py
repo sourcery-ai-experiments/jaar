@@ -6,9 +6,9 @@ from src._prime.road import (
     create_road,
     get_default_economy_root_roadnode as root_label,
 )
-from src.deal.topic import topiclink_shop
-from src.deal.deal import DueUnit, dueunit_shop
-from src.deal.examples.example_topics import (
+from src.world.topic import topiclink_shop
+from src.world.deal import DueUnit, dueunit_shop
+from src.world.examples.example_topics import (
     get_cooking_topic,
     get_speedboats_action_topic,
     get_climate_topic,

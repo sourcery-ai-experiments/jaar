@@ -1,6 +1,6 @@
 from src._prime.road import create_road, create_economyaddress
-from src.deal.deal import dealunit_shop, DealUnit, dueunit_shop
-from src.deal.examples.example_topics import get_no_topiclinks_dueunit
+from src.world.deal import dealunit_shop, DealUnit, dueunit_shop
+from src.world.examples.example_topics import get_no_topiclinks_dueunit
 
 
 def get_no_topiclinks_dealunit() -> DealUnit:

@@ -3,8 +3,8 @@
 #     get_farm_requestunit as examples_get_farm_requestunit,
 # )
 from src._prime.road import create_road
-from src.deal.deal import dealunit_shop, dueunit_shop
-from src.deal.examples.example_topics import (
+from src.world.deal import dealunit_shop, dueunit_shop
+from src.world.examples.example_topics import (
     get_cooking_dueunit,
     get_speedboat_action_dueunit,
     get_climate_dueunit,
