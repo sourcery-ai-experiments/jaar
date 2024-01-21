@@ -153,7 +153,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id=economy_id, economys_dir=env_dir)
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    # ux = clerkunit_shop(pid=healer1_text, env_dir=env_dir)
+    # ux = clerkunit_shop(agent_id=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"

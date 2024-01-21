@@ -23,7 +23,7 @@ from pytest import raises as pytest_raises
 #     # GIVEN
 #     lai_pid = "Lai"
 #     env_dir = get_temp_clerkunit_dir()
-#     lai_agenda = clerkunit_shop(pid=lai_pid, env_dir=env_dir)
+#     lai_agenda = clerkunit_shop(agent_id=lai_pid, env_dir=env_dir)
 #     lai_contract_file_name = lai_agenda._contract_file_name
 #     with pytest_raises(Exception) as excinfo:
 #         open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
@@ -48,7 +48,9 @@ def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     tim_text = "Tim"
     env_dir = get_temp_clerkunit_dir()
     economy_id_text = get_temp_economy_id()
-    x_clerk = clerkunit_shop(pid=tim_text, env_dir=env_dir, economy_id=economy_id_text)
+    x_clerk = clerkunit_shop(
+        agent_id=tim_text, env_dir=env_dir, economy_id=economy_id_text
+    )
 
     # WHEN
     contract_agenda = x_clerk.open_contract_agenda()
@@ -277,7 +279,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 # def test_ClerkUnit_set_digested_agenda_with2Groups(clerk_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_clerkunit_dir()
-#     x_clerk = clerkunit_shop(pid="test8", env_dir=env_dir)
+#     x_clerk = clerkunit_shop(agent_id="test8", env_dir=env_dir)
 #     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
 #     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
 #     assert x_agenda_output_before._groups == {}
@@ -292,7 +294,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.set_partyunit(partyunit=PartyUnit(pid=ceci_text))
 #     swim_text = "swimmers"
 #     swim_group = BraUnit(pid=swim_text)
-#     swim_group.set_partylink(partylink=partylink_shop(pid=ceci_text))
+#     swim_group.set_partylink(partylink=partylink_shop(party_id=ceci_text))
 #     s1.set_groupunit(y_groupunit=swim_group)
 
 #     yaya_text = "yaya"

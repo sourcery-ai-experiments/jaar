@@ -63,13 +63,13 @@ SET _treasury_tax_paid = (
     FROM river_block block
     WHERE block.currency_master='{bob_text}' 
         AND block.dst_agent_id=block.currency_master
-        AND block.src_agent_id = partyunit.pid
+        AND block.src_agent_id = partyunit.party_id
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
     WHERE partyunit.agent_id='{bob_text}' 
-        AND partyunit.pid = block.dst_agent_id
+        AND partyunit.party_id = block.dst_agent_id
 )
 ;
 """
@@ -352,7 +352,7 @@ def test_get_partyunit_table_create_sqlstr_ReturnsCorrectStr():
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS partyunit (
   agent_id VARCHAR(255) NOT NULL 
-, pid VARCHAR(255) NOT NULL
+, party_id VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
 , _agenda_intent_credit FLOAT
@@ -368,8 +368,8 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
 , FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
-, FOREIGN KEY(pid) REFERENCES agendaunit(agent_id)
-, UNIQUE(agent_id, pid)
+, FOREIGN KEY(party_id) REFERENCES agendaunit(agent_id)
+, UNIQUE(agent_id, party_id)
 )
 ;
 """
@@ -388,7 +388,7 @@ SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agent_id
-        AND reach.src_agent_id = partyunit.pid
+        AND reach.src_agent_id = partyunit.party_id
     )
 WHERE partyunit.agent_id = '{yao_text}'
 ;
@@ -408,12 +408,12 @@ SET _treasury_voice_rank =
     (
     SELECT rn
     FROM (
-        SELECT p2.pid
+        SELECT p2.party_id
         , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agent_id = '{yao_text}'
     ) p3
-    WHERE p3.pid = partyunit.pid AND partyunit.agent_id = '{yao_text}'
+    WHERE p3.party_id = partyunit.party_id AND partyunit.agent_id = '{yao_text}'
     )
 WHERE partyunit.agent_id = '{yao_text}'
 ;

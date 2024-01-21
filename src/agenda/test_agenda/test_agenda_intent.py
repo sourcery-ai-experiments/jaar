@@ -635,11 +635,11 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     clean_cookery_idea.set_reasonunit(reason=daytime_reason)
 
     # anna_text = "anna"
-    # anna_partyunit = partyunit_shop(pid=anna_text)
-    # anna_partylink = partylink_shop(pid=anna_text)
+    # anna_partyunit = partyunit_shop(party_id=anna_text)
+    # anna_partylink = partylink_shop(party_id=anna_text)
     # beto_text = "beto"
-    # beto_partyunit = partyunit_shop(pid=beto_text)
-    # beto_partylink = partylink_shop(pid=beto_text)
+    # beto_partyunit = partyunit_shop(party_id=beto_text)
+    # beto_partylink = partylink_shop(party_id=beto_text)
 
     family_text = "family"
     # groupunit_z = groupunit_shop(brand=family_text)
@@ -760,7 +760,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "sue"
-    bob_agenda.add_partyunit(pid=sue_text)
+    bob_agenda.add_partyunit(party_id=sue_text)
     assigned_unit_sue = assigned_unit_shop()
     assigned_unit_sue.set_suffgroup(brand=sue_text)
     assert len(bob_agenda.get_intent_dict()) == 1
@@ -772,7 +772,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
-    bob_agenda.add_partyunit(pid=bob_text)
+    bob_agenda.add_partyunit(party_id=bob_text)
     assigned_unit_bob = assigned_unit_shop()
     assigned_unit_bob.set_suffgroup(brand=bob_text)
 
@@ -790,7 +790,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_partyunit(pid=bob_text)
+    bob_agenda.add_partyunit(party_id=bob_text)
     work_text = "work"
     work_road = bob_agenda.make_road(bob_text, work_text)
     bob_agenda.add_idea(
@@ -798,11 +798,11 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     )
 
     sue_text = "sue"
-    bob_agenda.add_partyunit(pid=sue_text)
+    bob_agenda.add_partyunit(party_id=sue_text)
 
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
-    run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     bob_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assignedunit = assigned_unit_shop()
@@ -816,7 +816,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
-    run_group.set_partylink(partylink=partylink_shop(pid=bob_text))
+    run_group.set_partylink(partylink=partylink_shop(party_id=bob_text))
     bob_agenda.set_groupunit(y_groupunit=run_group)
 
     # THEN

@@ -17,13 +17,13 @@ class PartyTitle(str):
 
 @dataclass
 class PartyCore:
-    pid: PartyID
+    party_id: PartyID
 
 
 @dataclass
 class PartyRing(PartyCore):
     def get_dict(self):
-        return {"pid": self.pid}
+        return {"party_id": self.party_id}
 
 
 # class PartyRingsshop:
@@ -37,14 +37,14 @@ def partyrings_get_from_dict(x_dict: dict) -> dict[str:PartyRing]:
     if x_dict != None:
         for partyrings_dict in x_dict.values():
             x_partyring = partyrings_get_partyring(
-                pid=partyrings_dict["pid"],
+                party_id=partyrings_dict["party_id"],
             )
-            partyrings[x_partyring.pid] = x_partyring
+            partyrings[x_partyring.party_id] = x_partyring
     return partyrings
 
 
-def partyrings_get_partyring(pid: PartyID) -> PartyRing:
-    return PartyRing(pid=pid)
+def partyrings_get_partyring(party_id: PartyID) -> PartyRing:
+    return PartyRing(party_id=party_id)
 
 
 @dataclass
@@ -87,7 +87,7 @@ class PartyUnit(PartyCore):
     ):
         if depotlink_type not in (list(get_depotlink_types())):
             raise InvalidDepotLinkException(
-                f"PartyUnit '{self.pid}' cannot have type '{depotlink_type}'."
+                f"PartyUnit '{self.party_id}' cannot have type '{depotlink_type}'."
             )
         self.depotlink_type = depotlink_type
         if creditor_weight != None:
@@ -147,7 +147,7 @@ class PartyUnit(PartyCore):
 
     def get_dict(self):
         return {
-            "pid": self.pid,
+            "party_id": self.party_id,
             "uid": self.uid,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
@@ -167,7 +167,7 @@ class PartyUnit(PartyCore):
         x_dict = {}
         if self._partyrings != None:
             for partyring in self._partyrings.values():
-                x_dict[partyring.pid] = partyring.get_dict()
+                x_dict[partyring.party_id] = partyring.get_dict()
         return x_dict
 
     def get_creditor_weight(self):
@@ -237,9 +237,9 @@ class PartyUnit(PartyCore):
             )
 
     def meld(self, other_partyunit):
-        if self.pid != other_partyunit.pid:
+        if self.party_id != other_partyunit.party_id:
             raise InvalidPartyException(
-                f"Meld fail PartyUnit='{self.pid}' not the same as PartyUnit='{other_partyunit.pid}"
+                f"Meld fail PartyUnit='{self.party_id}' not the same as PartyUnit='{other_partyunit.party_id}"
             )
 
         self.creditor_weight += other_partyunit.creditor_weight
@@ -299,7 +299,7 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             _title = None
 
         x_partyunit = partyunit_shop(
-            pid=partyunits_dict["pid"],
+            party_id=partyunits_dict["party_id"],
             uid=partyunits_dict["uid"],
             creditor_weight=partyunits_dict["creditor_weight"],
             debtor_weight=partyunits_dict["debtor_weight"],
@@ -316,12 +316,12 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             voice_rank=_treasury_voice_rank,
         )
         x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
-        partyunits[x_partyunit.pid] = x_partyunit
+        partyunits[x_partyunit.party_id] = x_partyunit
     return partyunits
 
 
 def partyunit_shop(
-    pid: PartyID,
+    party_id: PartyID,
     uid: int = None,
     creditor_weight: int = None,
     debtor_weight: int = None,
@@ -342,7 +342,7 @@ def partyunit_shop(
     final_partyrings = {} if _partyrings is None else _partyrings
 
     x_partyunit = PartyUnit(
-        pid=pid,
+        party_id=party_id,
         uid=uid,
         creditor_weight=return1ifnone(creditor_weight),
         debtor_weight=return1ifnone(debtor_weight),
@@ -376,7 +376,7 @@ class PartyLink(PartyCore):
 
     def get_dict(self):
         return {
-            "pid": self.pid,
+            "party_id": self.party_id,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
         }
@@ -407,9 +407,9 @@ class PartyLink(PartyCore):
         self._agenda_intent_debt = 0
 
     def meld(self, other_partylink):
-        if self.pid != other_partylink.pid:
+        if self.party_id != other_partylink.party_id:
             raise InvalidPartyException(
-                f"Meld fail PartyLink='{self.pid}' not the same as PartyLink='{other_partylink.pid}"
+                f"Meld fail PartyLink='{self.party_id}' not the same as PartyLink='{other_partylink.party_id}"
             )
         self.creditor_weight += other_partylink.creditor_weight
         self.debtor_weight += other_partylink.debtor_weight
@@ -425,16 +425,16 @@ def partylinks_get_from_dict(x_dict: dict) -> dict[str:PartyLink]:
     partylinks = {}
     for partylinks_dict in x_dict.values():
         x_party = partylink_shop(
-            pid=partylinks_dict["pid"],
+            party_id=partylinks_dict["party_id"],
             creditor_weight=partylinks_dict["creditor_weight"],
             debtor_weight=partylinks_dict["debtor_weight"],
         )
-        partylinks[x_party.pid] = x_party
+        partylinks[x_party.party_id] = x_party
     return partylinks
 
 
 def partylink_shop(
-    pid: PartyID,
+    party_id: PartyID,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _agenda_credit: float = None,
@@ -445,7 +445,7 @@ def partylink_shop(
     creditor_weight = return1ifnone(creditor_weight)
     debtor_weight = return1ifnone(debtor_weight)
     return PartyLink(
-        pid=pid,
+        party_id=party_id,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
         _agenda_credit=_agenda_credit,
@@ -457,7 +457,7 @@ def partylink_shop(
 
 @dataclass
 class PartyUnitExternalMetrics:
-    internal_pid: PartyID = None
+    internal_party_id: PartyID = None
     creditor_active: bool = None
     debtor_active: bool = None
 

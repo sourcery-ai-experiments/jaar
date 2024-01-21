@@ -197,7 +197,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def economy_update_pid(self):
         change_economy_id_example_economy(
-            economy_obj=self.economy_x, new_pid=self.economy_id.text()
+            economy_obj=self.economy_x, new_party_id=self.economy_id.text()
         )
         self.economy_id_combo_refresh()
 
@@ -370,7 +370,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(partyunit._agenda_credit)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
-                    partyunit.pid,
+                    partyunit.party_id,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
                 for partyunit in self.healer_output_agenda._partys.values()

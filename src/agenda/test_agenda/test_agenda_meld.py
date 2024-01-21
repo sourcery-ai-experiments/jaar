@@ -39,7 +39,7 @@ def test_agenda_meld_WeightDoesNotCombine():
 def test_agenda_meld_PartyUnits():
     # GIVEN
     x1_pid = "x1_party"
-    x1_party = partyunit_shop(pid=x1_pid)
+    x1_party = partyunit_shop(party_id=x1_pid)
 
     agenda_text = "x_agenda"
     x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
@@ -48,7 +48,7 @@ def test_agenda_meld_PartyUnits():
     x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
     x_agenda2.set_partyunit(partyunit=x1_party)
     x2_pid = "x2_party"
-    x2_party = partyunit_shop(pid=x2_pid)
+    x2_party = partyunit_shop(party_id=x2_pid)
     x_agenda2.set_partyunit(partyunit=x2_party)
     assert len(x_agenda1._partys) == 1
 
@@ -256,7 +256,7 @@ def test_agenda_beliefunits_meld_GroupsMeldedBefore_Partys():
     x_agenda1 = agendaunit_shop(_agent_id=yao_text)
     x_agenda2 = agendaunit_shop(_agent_id=yao_text)
     bob = "Bob"
-    x_agenda2.set_partyunit(partyunit_shop(pid=bob))
+    x_agenda2.set_partyunit(partyunit_shop(party_id=bob))
     assert x_agenda2._groups.get(bob) != None
     assert x_agenda2._groups.get(bob).uid is None
     x_agenda2.set_groupunit(groupunit_shop(brand=bob, uid=13))

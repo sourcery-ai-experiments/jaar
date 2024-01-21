@@ -267,35 +267,35 @@ def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
 
 
 def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
-    kol_agenda = agendaunit_shop(_agent_id="Kol", _weight=10)
+    yue_agenda = agendaunit_shop(_agent_id="Yue", _weight=10)
     shave_text = "shave"
-    shave_road = kol_agenda.make_l1_road(shave_text)
+    shave_road = yue_agenda.make_l1_road(shave_text)
     idea_kid_shave = ideaunit_shop(shave_text, _weight=30, promise=True)
-    kol_agenda.add_idea(idea_kid_shave, kol_agenda._economy_id)
+    yue_agenda.add_idea(idea_kid_shave, yue_agenda._economy_id)
     week_text = "weekdays"
-    week_road = kol_agenda.make_l1_road(week_text)
+    week_road = yue_agenda.make_l1_road(week_text)
     week_idea = ideaunit_shop(week_text, _weight=40)
-    kol_agenda.add_idea(week_idea, kol_agenda._economy_id)
+    yue_agenda.add_idea(week_idea, yue_agenda._economy_id)
 
     sun_text = "Sunday"
-    sun_road = kol_agenda.make_road(week_road, sun_text)
+    sun_road = yue_agenda.make_road(week_road, sun_text)
     church_text = "Church"
-    church_road = kol_agenda.make_road(sun_road, church_text)
+    church_road = yue_agenda.make_road(sun_road, church_text)
     mon_text = "Monday"
-    mon_road = kol_agenda.make_road(week_road, mon_text)
+    mon_road = yue_agenda.make_road(week_road, mon_text)
     idea_grandkidU = ideaunit_shop(sun_text, _weight=20)
     idea_grandkidM = ideaunit_shop(mon_text, _weight=20)
-    kol_agenda.add_idea(idea_grandkidU, week_road)
-    kol_agenda.add_idea(idea_grandkidM, week_road)
+    yue_agenda.add_idea(idea_grandkidU, week_road)
+    yue_agenda.add_idea(idea_grandkidM, week_road)
 
     shave_reason = reasonunit_shop(week_road)
     shave_reason.set_premise(mon_road)
 
-    kol_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
-    kol_agenda.set_belief(base=week_road, pick=sun_road)
+    yue_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
+    yue_agenda.set_belief(base=week_road, pick=sun_road)
     beliefunit_x = beliefunit_shop(base=week_road, pick=church_road)
-    kol_agenda.edit_idea_attr(road=shave_road, beliefunit=beliefunit_x)
-    return kol_agenda
+    yue_agenda.edit_idea_attr(road=shave_road, beliefunit=beliefunit_x)
+    return yue_agenda
 
 
 def get_agenda_base_time_example() -> AgendaUnit:

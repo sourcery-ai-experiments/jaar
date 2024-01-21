@@ -21,6 +21,7 @@ from src.agenda.reason_assign import assigned_unit_shop
 from src.tools.python import x_is_json
 from src.tools.file import save_file, open_file
 from json import loads as json_loads
+from pytest import raises as pytest_raises
 
 
 def test_agenda_get_dict_ReturnsDictObject():
@@ -42,6 +43,10 @@ def test_agenda_get_dict_ReturnsDictObject():
     x_agenda._originunit.set_originlink(yao_text, 1)
     agenda_weight = 23
     x_agenda._weight = agenda_weight
+    x_party_creditor_pool = 91
+    x_party_debtor_pool = 97
+    x_agenda.set_party_creditor_pool(x_party_creditor_pool)
+    x_agenda.set_party_debtor_pool(x_party_debtor_pool)
 
     # WHEN
     agenda_dict = x_agenda.get_dict()
@@ -56,6 +61,8 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
+    assert agenda_dict["_party_creditor_pool"] == x_agenda._party_creditor_pool
+    assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
@@ -167,6 +174,12 @@ def test_export_to_JSON_simple_example_works():
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
     assert agenda_dict["_economy_id"] == x_agenda._economy_id
     assert agenda_dict["_weight"] == x_agenda._weight
+    with pytest_raises(Exception) as excinfo:
+        agenda_dict["_party_creditor_pool"]
+    assert str(excinfo.value) == "'_party_creditor_pool'"
+    with pytest_raises(Exception) as excinfo:
+        agenda_dict["_party_debtor_pool"]
+    assert str(excinfo.value) == "'_party_debtor_pool'"
 
     x_idearoot = x_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -255,83 +268,90 @@ def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
 
 def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     # GIVEN
-    y_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
-    y_agenda.set_max_tree_traverse(23)
+    yue_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
+    yue_agenda.set_max_tree_traverse(23)
     tiger_economy_id = "tiger_econ"
-    y_agenda.set_economy_id(tiger_economy_id)
+    yue_agenda.set_economy_id(tiger_economy_id)
+    yue_party_creditor_pool = 55
+    yue_party_debtor_pool = 66
+    yue_agenda.set_party_creditor_pool(yue_party_creditor_pool)
+    yue_agenda.set_party_debtor_pool(yue_party_debtor_pool)
 
     shave_text = "shave"
-    shave_road = y_agenda.make_road(y_agenda._economy_id, shave_text)
-    shave_idea_y1 = y_agenda.get_idea_obj(shave_road)
+    shave_road = yue_agenda.make_road(yue_agenda._economy_id, shave_text)
+    shave_idea_y1 = yue_agenda.get_idea_obj(shave_road)
     shave_idea_y1._originunit.set_originlink(pid="Sue", weight=4.3)
     # print(f"{shave_road=}")
     # print(f"{shave_idea_x._label=} {shave_idea_x._parent_road=}")
 
     sue_text = "sue"
-    y_agenda.add_partyunit(pid=sue_text)
+    yue_agenda.add_partyunit(party_id=sue_text)
     tim_text = "tim"
-    y_agenda.add_partyunit(pid=tim_text)
+    yue_agenda.add_partyunit(party_id=tim_text)
     run_text = "runners"
     run_group = groupunit_shop(brand=run_text)
-    run_group.set_partylink(partylink=partylink_shop(pid=sue_text))
-    run_group.set_partylink(partylink=partylink_shop(pid=tim_text))
-    y_agenda.set_groupunit(y_groupunit=run_group)
+    run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    run_group.set_partylink(partylink=partylink_shop(party_id=tim_text))
+    yue_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(brand=run_text)
-    y_agenda.edit_idea_attr(road=y_agenda._economy_id, assignedunit=run_assigned_unit)
+    yue_agenda.edit_idea_attr(yue_agenda._economy_id, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(brand=tim_text)
-    y_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
-    y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
-    y_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
-    y_agenda.edit_idea_attr(
-        y_agenda._economy_id, balancelink=balancelink_shop(sue_text)
+    yue_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
+    yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
+    yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
+    yue_agenda.edit_idea_attr(
+        yue_agenda._economy_id, balancelink=balancelink_shop(sue_text)
     )
 
     yao_text = "Yao"
-    y_agenda._originunit.set_originlink(yao_text, 1)
-    y_agenda._auto_output_to_public = True
+    yue_agenda._originunit.set_originlink(yao_text, 1)
+    yue_agenda._auto_output_to_public = True
 
     # WHEN
-    x_json = y_agenda.get_json()
+    x_json = yue_agenda.get_json()
     assert x_is_json(x_json) == True
-    x_agenda = agenda_get_from_json(x_agenda_json=x_json)
+    json_agenda = agenda_get_from_json(x_agenda_json=x_json)
 
     # THEN
-    assert str(type(x_agenda)).find(".agenda.AgendaUnit'>") > 0
-    assert x_agenda._agent_id != None
-    assert x_agenda._agent_id == y_agenda._agent_id
-    assert x_agenda._economy_id == y_agenda._economy_id
-    assert x_agenda._max_tree_traverse == 23
-    assert x_agenda._max_tree_traverse == y_agenda._max_tree_traverse
-    assert x_agenda._auto_output_to_public == y_agenda._auto_output_to_public
-    assert x_agenda._road_delimiter == y_agenda._road_delimiter
-    # assert x_agenda._road_delimiter == slash_road_delimiter
+    assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
+    assert json_agenda._agent_id != None
+    assert json_agenda._agent_id == yue_agenda._agent_id
+    assert json_agenda._economy_id == yue_agenda._economy_id
+    assert json_agenda._max_tree_traverse == 23
+    assert json_agenda._max_tree_traverse == yue_agenda._max_tree_traverse
+    assert json_agenda._auto_output_to_public == yue_agenda._auto_output_to_public
+    assert json_agenda._road_delimiter == yue_agenda._road_delimiter
+    assert json_agenda._party_creditor_pool == yue_agenda._party_creditor_pool
+    assert json_agenda._party_debtor_pool == yue_agenda._party_debtor_pool
+    assert json_agenda._party_creditor_pool == yue_party_creditor_pool
+    assert json_agenda._party_debtor_pool == yue_party_debtor_pool
 
-    idearoot_x = x_agenda._idearoot
-    assert idearoot_x._parent_road == ""
-    assert idearoot_x._parent_road == y_agenda._idearoot._parent_road
-    assert idearoot_x._reasonunits == {}
-    assert idearoot_x._assignedunit == y_agenda._idearoot._assignedunit
-    assert idearoot_x._assignedunit == run_assigned_unit
-    assert len(idearoot_x._beliefunits) == 1
-    assert len(idearoot_x._balancelinks) == 1
+    json_idearoot = json_agenda._idearoot
+    assert json_idearoot._parent_road == ""
+    assert json_idearoot._parent_road == yue_agenda._idearoot._parent_road
+    assert json_idearoot._reasonunits == {}
+    assert json_idearoot._assignedunit == yue_agenda._idearoot._assignedunit
+    assert json_idearoot._assignedunit == run_assigned_unit
+    assert len(json_idearoot._beliefunits) == 1
+    assert len(json_idearoot._balancelinks) == 1
 
-    assert len(x_agenda._idearoot._kids) == 2
+    assert len(json_agenda._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = x_agenda.make_road(y_agenda._economy_id, weekday_text)
-    weekday_idea_x = x_agenda.get_idea_obj(weekday_road)
+    weekday_road = json_agenda.make_road(yue_agenda._economy_id, weekday_text)
+    weekday_idea_x = json_agenda.get_idea_obj(weekday_road)
     assert len(weekday_idea_x._kids) == 2
 
     sunday_text = "Sunday"
-    sunday_road = x_agenda.make_road(weekday_road, sunday_text)
-    sunday_idea_x = x_agenda.get_idea_obj(sunday_road)
+    sunday_road = json_agenda.make_road(weekday_road, sunday_text)
+    sunday_idea_x = json_agenda.get_idea_obj(sunday_road)
     assert sunday_idea_x._weight == 20
 
-    shave_idea_x = x_agenda.get_idea_obj(shave_road)
-    shave_idea_y2 = y_agenda.get_idea_obj(shave_road)
+    shave_idea_x = json_agenda.get_idea_obj(shave_road)
+    shave_idea_y2 = yue_agenda.get_idea_obj(shave_road)
     assert len(shave_idea_x._reasonunits) == 1
     assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
     assert shave_idea_x._assignedunit == tim_assigned_unit
@@ -339,8 +359,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert len(shave_idea_x._balancelinks) == 2
     assert len(shave_idea_x._beliefunits) == 1
 
-    assert len(x_agenda._originunit._links) == 1
-    assert x_agenda._originunit == y_agenda._originunit
+    assert len(json_agenda._originunit._links) == 1
+    assert json_agenda._originunit == yue_agenda._originunit
 
 
 def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():

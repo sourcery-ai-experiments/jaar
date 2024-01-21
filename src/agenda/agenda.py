@@ -97,6 +97,14 @@ class AgendaUnit:
     _economy_id: str = None
     _auto_output_to_public: bool = None
     _road_delimiter: str = None
+    _party_creditor_pool: int = None
+    _party_debtor_pool: int = None
+
+    def set_party_creditor_pool(self, x_party_creditor_pool: int):
+        self._party_creditor_pool = x_party_creditor_pool
+
+    def set_party_debtor_pool(self, x_party_debtor_pool: int):
+        self._party_debtor_pool = x_party_debtor_pool
 
     def make_road(
         self,
@@ -116,7 +124,7 @@ class AgendaUnit:
 
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
-        sort_partys_list.sort(key=lambda x: x.pid.lower(), reverse=False)
+        sort_partys_list.sort(key=lambda x: x.party_id.lower(), reverse=False)
         for count_x, x_partyunit in enumerate(sort_partys_list):
             x_partyunit.set_output_agenda_meld_order(count_x)
 
@@ -159,7 +167,7 @@ class AgendaUnit:
     def set_partyunit_external_metrics(
         self, external_metrics: PartyUnitExternalMetrics
     ):
-        party_x = self.get_party(external_metrics.internal_pid)
+        party_x = self.get_party(external_metrics.internal_party_id)
         party_x._creditor_active = external_metrics.creditor_active
         party_x._debtor_active = external_metrics.debtor_active
         # self.set_partyunit(partyunit=party_x)
@@ -290,7 +298,9 @@ class AgendaUnit:
         for balanceheir_pid in balanceheir_dict:
             groupunit = self.get_groupunit(balanceheir_pid)
             for partylink in groupunit._partys.values():
-                balanceheir_partyunits[partylink.pid] = self.get_party(partylink.pid)
+                balanceheir_partyunits[partylink.party_id] = self.get_party(
+                    partylink.party_id
+                )
 
         # check all agenda._partys are in balanceheir_partyunits
         return len(self._partys) == len(balanceheir_partyunits)
@@ -467,14 +477,14 @@ class AgendaUnit:
 
     def add_to_partyunit_agenda_credit_debt(
         self,
-        partyunit_pid: PartyID,
+        partyunit_party_id: PartyID,
         agenda_credit,
         agenda_debt: float,
         agenda_intent_credit: float,
         agenda_intent_debt: float,
     ):
         for partyunit in self._partys.values():
-            if partyunit.pid == partyunit_pid:
+            if partyunit.party_id == partyunit_party_id:
                 partyunit.add_agenda_credit_debt(
                     agenda_credit=agenda_credit,
                     agenda_debt=agenda_debt,
@@ -482,20 +492,20 @@ class AgendaUnit:
                     agenda_intent_debt=agenda_intent_debt,
                 )
 
-    def del_partyunit(self, pid: str):
-        self._groups.pop(pid)
-        self._partys.pop(pid)
+    def del_partyunit(self, party_id: str):
+        self._groups.pop(party_id)
+        self._partys.pop(party_id)
 
     def add_partyunit(
         self,
-        pid: str,
+        party_id: PartyID,
         uid: int = None,
         creditor_weight: int = None,
         debtor_weight: int = None,
         depotlink_type: str = None,
     ):
         partyunit = partyunit_shop(
-            pid=PartyID(pid),
+            party_id=party_id,
             uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
@@ -504,19 +514,19 @@ class AgendaUnit:
         self.set_partyunit(partyunit=partyunit)
 
     def set_partyunit(self, partyunit: PartyUnit):
-        # future: if party is new check existance of group with party pid
-        self._partys[partyunit.pid] = partyunit
+        # future: if party is new check existance of group with party party_id
+        self._partys[partyunit.party_id] = partyunit
 
         existing_group = None
         try:
-            existing_group = self._groups[partyunit.pid]
+            existing_group = self._groups[partyunit.party_id]
         except KeyError:
             partylink = partylink_shop(
-                pid=PartyID(partyunit.pid), creditor_weight=1, debtor_weight=1
+                party_id=PartyID(partyunit.party_id), creditor_weight=1, debtor_weight=1
             )
-            partylinks = {partylink.pid: partylink}
+            partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                brand=partyunit.pid,
+                brand=partyunit.party_id,
                 _single_party=True,
                 _partys=partylinks,
                 uid=None,
@@ -524,50 +534,52 @@ class AgendaUnit:
             )
             self.set_groupunit(y_groupunit=group_unit)
 
-    def edit_partyunit_pid(
+    def edit_partyunit_party_id(
         self,
-        old_pid: str,
-        new_pid: str,
+        old_party_id: str,
+        new_party_id: str,
         allow_party_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
         # Handle scenarios: some are unacceptable
-        old_pid_creditor_weight = self.get_party(old_pid).creditor_weight
-        new_pid_groupunit = self.get_groupunit(new_pid)
-        new_pid_partyunit = self.get_party(new_pid)
-        if not allow_party_overwite and new_pid_partyunit != None:
+        old_party_id_creditor_weight = self.get_party(old_party_id).creditor_weight
+        new_party_id_groupunit = self.get_groupunit(new_party_id)
+        new_party_id_partyunit = self.get_party(new_party_id)
+        if not allow_party_overwite and new_party_id_partyunit != None:
             raise InvalidAgendaException(
-                f"Party '{old_pid}' change to '{new_pid}' failed since '{new_pid}' exists."
+                f"Party '{old_party_id}' change to '{new_party_id}' failed since '{new_party_id}' exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
-            and new_pid_groupunit != None
-            and new_pid_groupunit._single_party == False
+            and new_party_id_groupunit != None
+            and new_party_id_groupunit._single_party == False
         ):
             raise InvalidAgendaException(
-                f"Party '{old_pid}' change to '{new_pid}' failed since non-single group '{new_pid}' exists."
+                f"Party '{old_party_id}' change to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
             )
         elif (
             allow_nonsingle_group_overwrite
-            and new_pid_groupunit != None
-            and new_pid_groupunit._single_party == False
+            and new_party_id_groupunit != None
+            and new_party_id_groupunit._single_party == False
         ):
-            self.del_groupunit(groupbrand=new_pid)
-        elif self.get_party(new_pid) != None:
-            old_pid_creditor_weight += new_pid_partyunit.creditor_weight
+            self.del_groupunit(groupbrand=new_party_id)
+        elif self.get_party(new_party_id) != None:
+            old_party_id_creditor_weight += new_party_id_partyunit.creditor_weight
 
         # upsert new partyunit
-        self.add_partyunit(pid=new_pid, creditor_weight=old_pid_creditor_weight)
+        self.add_partyunit(
+            party_id=new_party_id, creditor_weight=old_party_id_creditor_weight
+        )
         # change all influenced groupunits partylinks
-        for old_party_groupbrand in self.get_party_groupbrands(old_pid):
+        for old_party_groupbrand in self.get_party_groupbrands(old_party_id):
             old_party_groupunit = self.get_groupunit(old_party_groupbrand)
-            old_party_groupunit._move_partylink(old_pid, new_pid)
-        self.del_partyunit(pid=old_pid)
+            old_party_groupunit._move_partylink(old_party_id, new_party_id)
+        self.del_partyunit(party_id=old_party_id)
 
     def get_party(self, party_id: PartyID) -> PartyUnit:
         return self._partys.get(party_id)
 
-    def get_partyunits_pid_list(self) -> dict[PartyID]:
+    def get_partyunits_party_id_list(self) -> dict[PartyID]:
         party_id_list = list(self._partys.keys())
         party_id_list.append("")
         party_id_dict = {party_id.lower(): party_id for party_id in party_id_list}
@@ -672,10 +684,10 @@ class AgendaUnit:
 
     def _create_missing_partys(self, partylinks: dict[PartyID:PartyLink]):
         for partylink_x in partylinks.values():
-            if self.get_party(partylink_x.pid) is None:
+            if self.get_party(partylink_x.party_id) is None:
                 self.set_partyunit(
                     partyunit=partyunit_shop(
-                        pid=partylink_x.pid,
+                        party_id=partylink_x.party_id,
                         creditor_weight=partylink_x.creditor_weight,
                         debtor_weight=partylink_x.debtor_weight,
                     )
@@ -1491,7 +1503,7 @@ class AgendaUnit:
             group_obj._set_partylink_agenda_credit_debt()
             for partylink in group_obj._partys.values():
                 self.add_to_partyunit_agenda_credit_debt(
-                    partyunit_pid=partylink.pid,
+                    partyunit_party_id=partylink.party_id,
                     agenda_credit=partylink._agenda_credit,
                     agenda_debt=partylink._agenda_debt,
                     agenda_intent_credit=partylink._agenda_intent_credit,
@@ -1824,7 +1836,7 @@ class AgendaUnit:
 
     def get_dict(self) -> dict[str:str]:
         self.set_agenda_metrics()
-        return {
+        x_dict = {
             "_partys": self.get_partys_dict(),
             "_groups": self.get_groupunits_from_dict(),
             "_originunit": self._originunit.get_dict(),
@@ -1836,6 +1848,11 @@ class AgendaUnit:
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
+        if self._party_creditor_pool != None:
+            x_dict["_party_creditor_pool"] = self._party_creditor_pool
+        if self._party_debtor_pool != None:
+            x_dict["_party_debtor_pool"] = self._party_debtor_pool
+        return x_dict
 
     def get_json(self) -> str:
         x_dict = self.get_dict()
@@ -1973,10 +1990,10 @@ class AgendaUnit:
 
     def _meld_partys(self, other_agenda):
         for partyunit in other_agenda._partys.values():
-            if self.get_party(partyunit.pid) is None:
+            if self.get_party(partyunit.party_id) is None:
                 self.set_partyunit(partyunit=partyunit)
             else:
-                self.get_party(partyunit.pid).meld(partyunit)
+                self.get_party(partyunit.party_id).meld(partyunit)
 
     def _meld_groups(self, other_agenda):
         for brx in other_agenda._groups.values():
@@ -2002,12 +2019,14 @@ class AgendaUnit:
         self,
         agenda_x,
         assignor_partys: dict[PartyID:PartyUnit],
-        assignor_pid: PartyID,
+        assignor_party_id: PartyID,
     ):
         self.set_agenda_metrics()
-        self._set_assignment_partys(agenda_x, assignor_partys, assignor_pid)
+        self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
         self._set_assignment_groups(agenda_x)
-        assignor_promises = self._get_assignor_promise_ideas(agenda_x, assignor_pid)
+        assignor_promises = self._get_assignor_promise_ideas(
+            agenda_x, assignor_party_id
+        )
         relevant_roads = self._get_relevant_roads(assignor_promises)
         self._set_assignment_ideas(agenda_x, relevant_roads)
         return agenda_x
@@ -2040,9 +2059,9 @@ class AgendaUnit:
         self,
         agenda_x,
         assignor_partys: dict[PartyID:PartyUnit],
-        assignor_pid: PartyID,
+        assignor_party_id: PartyID,
     ):
-        if self.get_party(assignor_pid) != None:
+        if self.get_party(assignor_party_id) != None:
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
             for party_id_x in partys_set:
@@ -2055,7 +2074,7 @@ class AgendaUnit:
             if agenda_x._groups.get(group_pid) is None:
                 group_x = groupunit_shop(brand=group_pid)
                 for party_id in group_partys:
-                    group_x.set_partylink(partylink_shop(pid=party_id))
+                    group_x.set_partylink(partylink_shop(party_id=party_id))
                 agenda_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
@@ -2128,6 +2147,12 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda.set_economy_id(get_obj_from_agenda_dict(agenda_dict, "_economy_id"))
     x_agenda._road_delimiter = default_road_delimiter_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_road_delimiter")
+    )
+    x_agenda._party_creditor_pool = get_obj_from_agenda_dict(
+        agenda_dict, "_party_creditor_pool"
+    )
+    x_agenda._party_debtor_pool = get_obj_from_agenda_dict(
+        agenda_dict, "_party_debtor_pool"
     )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")

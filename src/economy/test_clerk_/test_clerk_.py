@@ -36,11 +36,11 @@ def test_clerkUnit_exists(clerk_dir_setup_cleanup):
 
 def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     # GIVEN
-    x_pid = "test1"
+    x_agent_id = "test1"
 
     # WHEN
     x_clerk = clerkunit_shop(
-        pid=x_pid,
+        agent_id=x_agent_id,
         env_dir=get_temp_clerkunit_dir(),
         economy_id=get_temp_economy_id(),
     )

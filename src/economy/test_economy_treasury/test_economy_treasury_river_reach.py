@@ -99,7 +99,7 @@ def test_get_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
     partyunit_select_str = f"""
 SELECT 
   agent_id
-, pid
+, party_id
 , _treasury_credit_score
 FROM partyunit
 WHERE agent_id = '{yao_text}'
@@ -183,7 +183,7 @@ def test_get_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutErr
     partyunit_select_str = f"""
 SELECT 
   agent_id
-, pid
+, party_id
 , _treasury_credit_score
 , _treasury_voice_rank
 FROM partyunit

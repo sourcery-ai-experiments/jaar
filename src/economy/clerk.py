@@ -48,9 +48,9 @@ class clerkUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._contract._partys.values():
-            if party_x.pid != self._clerk_cid:
+            if party_x.party_id != self._clerk_cid:
                 party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self.open_public_agenda(party_x.pid)
+                    x_agenda_json=self.open_public_agenda(party_x.party_id)
                 )
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
@@ -109,16 +109,16 @@ class clerkUnit:
 
     def _set_partyunit_depotlink(
         self,
-        pid: PartyID,
+        party_id: PartyID,
         link_type: str = None,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        party_x = self.get_contract().get_party(pid)
+        party_x = self.get_contract().get_party(party_id)
         if party_x is None:
             self.get_contract().set_partyunit(
                 partyunit_shop(
-                    pid=pid,
+                    party_id=party_id,
                     depotlink_type=link_type,
                     creditor_weight=creditor_weight,
                     debtor_weight=debtor_weight,
@@ -298,7 +298,7 @@ class clerkUnit:
             _weight=0,
             _road_delimiter=self._road_delimiter,
         )
-        x_agenda.add_partyunit(pid=self._clerk_cid)
+        x_agenda.add_partyunit(party_id=self._clerk_cid)
         x_agenda.set_economy_id(self._economy_id)
         return x_agenda
 
@@ -338,7 +338,7 @@ class clerkUnit:
 
 
 def clerkunit_shop(
-    pid: str,
+    agent_id: AgentID,
     env_dir: str,
     economy_id: str,
     _auto_output_to_public: bool = None,
@@ -347,7 +347,7 @@ def clerkunit_shop(
     x_clerk = clerkUnit()
     x_clerk.set_env_dir(
         env_dir=env_dir,
-        clerk_cid=pid,
+        clerk_cid=agent_id,
         economy_id=economy_id,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )

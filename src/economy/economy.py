@@ -99,7 +99,7 @@ class EconomyUnit:
                 )
                 for idea_catalog in ic.values():
                     if x_agent_id != idea_catalog.agent_id:
-                        partylink_x = partylink_shop(pid=idea_catalog.agent_id)
+                        partylink_x = partylink_shop(party_id=idea_catalog.agent_id)
                         groupunit_x.set_partylink(partylink_x)
         self.save_public_agenda(x_agenda)
         self.refresh_treasury_public_agendas_data()
@@ -139,7 +139,7 @@ class EconomyUnit:
                 river_block_x = RiverBlockUnit(
                     currency_agent_id=x_agent_id,
                     src_agent_id=x_child_ledger.agent_id,
-                    dst_agent_id=x_child_ledger.pid,
+                    dst_agent_id=x_child_ledger.party_id,
                     currency_start=curr_onset,
                     currency_close=curr_close,
                     block_num=blocks_count,
@@ -356,9 +356,9 @@ class EconomyUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, pid: AgentID, _auto_output_to_public: bool = None):
+    def add_clerkunit(self, agent_id: AgentID, _auto_output_to_public: bool = None):
         x_clerkunit = clerkunit_shop(
-            pid=pid,
+            agent_id=agent_id,
             env_dir=self.get_object_root_dir(),
             economy_id=self.economy_id,
             _auto_output_to_public=_auto_output_to_public,
@@ -617,7 +617,7 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
 ):
     for x_partyunit in x_agenda._partys.values():
         x_partyunit.clear_treasurying_data()
-        partytreasuryunit = partytreasuryunits.get(x_partyunit.pid)
+        partytreasuryunit = partytreasuryunits.get(x_partyunit.party_id)
         if partytreasuryunit != None:
             x_partyunit.set_treasurying_data(
                 tax_paid=partytreasuryunit.tax_total,

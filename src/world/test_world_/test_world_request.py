@@ -61,7 +61,7 @@
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     highway_requestunit = create_requestunit(
-#         wantunit=highway_wantunit, requestee_pid=tim_text, requester_pid=xio_text
+#         wantunit=highway_wantunit, requestee_party_id=tim_text, requester_pid=xio_text
 #     )
 #     assert x_world.get_personunit_from_memory(tim_text) is None
 #     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -119,8 +119,8 @@
 #     fix_weight = 7
 #     highway_requestunit = create_requestunit(
 #         wantunit=highway_wantunit,
-#         requestee_pid=tim_text,
-#         requester_pid=xio_text,
+#         requestee_party_id=tim_text,
+#         requester_party_id=xio_text,
 #         fix_weight=fix_weight,
 #     )
 
@@ -245,7 +245,7 @@
 #     fix_weight = 7
 #     highway_requestunit = create_requestunit(
 #         wantunit=highway_wantunit,
-#         requestee_pid=tim_text,
+#         requestee_party_id=tim_text,
 #         requestee_group=environmentalist_text,
 #         requester_pid=xio_text,
 #         fix_weight=fix_weight,

@@ -103,39 +103,39 @@ class GroupUnit(GroupCore):
         partys_x_dict = {}
         for party in self._partys.values():
             party_dict = party.get_dict()
-            partys_x_dict[party_dict["pid"]] = party_dict
+            partys_x_dict[party_dict["party_id"]] = party_dict
         return partys_x_dict
 
     def set_partylink(self, partylink: PartyLink):
-        self._partys[partylink.pid] = partylink
+        self._partys[partylink.party_id] = partylink
 
     def get_partylink(self, party_id: PartyID) -> PartyLink:
         return self._partys.get(party_id)
 
-    def has_partylink(self, partylink_pid: PartyID) -> bool:
-        return self.get_partylink(partylink_pid) != None
+    def has_partylink(self, partylink_party_id: PartyID) -> bool:
+        return self.get_partylink(partylink_party_id) != None
 
-    def del_partylink(self, pid):
-        self._partys.pop(pid)
+    def del_partylink(self, party_id):
+        self._partys.pop(party_id)
 
-    def _move_partylink(self, to_delete_pid: PartyID, to_absorb_pid: PartyID):
-        old_group_partylink = self.get_partylink(to_delete_pid)
+    def _move_partylink(self, to_delete_party_id: PartyID, to_absorb_party_id: PartyID):
+        old_group_partylink = self.get_partylink(to_delete_party_id)
         new_partylink_creditor_weight = old_group_partylink.creditor_weight
         new_partylink_debtor_weight = old_group_partylink.debtor_weight
 
-        new_partylink = self.get_partylink(to_absorb_pid)
+        new_partylink = self.get_partylink(to_absorb_party_id)
         if new_partylink != None:
             new_partylink_creditor_weight += new_partylink.creditor_weight
             new_partylink_debtor_weight += new_partylink.debtor_weight
 
         self.set_partylink(
             partylink=partylink_shop(
-                pid=to_absorb_pid,
+                party_id=to_absorb_party_id,
                 creditor_weight=new_partylink_creditor_weight,
                 debtor_weight=new_partylink_debtor_weight,
             )
         )
-        self.del_partylink(pid=to_delete_pid)
+        self.del_partylink(party_id=to_delete_party_id)
 
     def meld(self, other_group):
         self._meld_attributes_that_will_be_equal(other_group=other_group)
@@ -143,10 +143,10 @@ class GroupUnit(GroupCore):
 
     def meld_partylinks(self, other_group):
         for oba in other_group._partys.values():
-            if self._partys.get(oba.pid) is None:
-                self._partys[oba.pid] = oba
+            if self._partys.get(oba.party_id) is None:
+                self._partys[oba.party_id] = oba
             else:
-                self._partys[oba.pid].meld(oba)
+                self._partys[oba.party_id].meld(oba)
 
     def _meld_attributes_that_will_be_equal(self, other_group):
         xl = [

@@ -494,7 +494,7 @@ def get_partytreasuryunit_dict(
     sqlstr = f"""
 SELECT
   agent_id currency_master
-, pid tax_agent_id
+, party_id tax_agent_id
 , _treasury_tax_paid tax_total
 , _agenda_intent_ratio_debt debt
 , (_agenda_intent_ratio_debt - _treasury_tax_paid) tax_diff
@@ -591,7 +591,7 @@ def get_partyunit_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS partyunit (
   agent_id VARCHAR(255) NOT NULL 
-, pid VARCHAR(255) NOT NULL
+, party_id VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
 , _agenda_intent_credit FLOAT
@@ -607,8 +607,8 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _treasury_voice_hx_lowest_rank INT
 , _title VARCHAR(255)
 , FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
-, FOREIGN KEY(pid) REFERENCES agendaunit(agent_id)
-, UNIQUE(agent_id, pid)
+, FOREIGN KEY(party_id) REFERENCES agendaunit(agent_id)
+, UNIQUE(agent_id, party_id)
 )
 ;
 """
@@ -624,13 +624,13 @@ SET _treasury_tax_paid = (
     FROM river_block block
     WHERE block.currency_master='{currency_agent_id}' 
         AND block.dst_agent_id=block.currency_master
-        AND block.src_agent_id = partyunit.pid
+        AND block.src_agent_id = partyunit.party_id
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
     WHERE partyunit.agent_id='{currency_agent_id}' 
-        AND partyunit.pid = block.dst_agent_id
+        AND partyunit.party_id = block.dst_agent_id
 )
 ;
 """
@@ -645,7 +645,7 @@ SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
     WHERE reach.currency_master = partyunit.agent_id
-        AND reach.src_agent_id = partyunit.pid
+        AND reach.src_agent_id = partyunit.party_id
     )
 WHERE partyunit.agent_id = '{currency_agent_id}'
 ;
@@ -661,12 +661,12 @@ SET _treasury_voice_rank =
     (
     SELECT rn
     FROM (
-        SELECT p2.pid
+        SELECT p2.party_id
         , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM partyunit p2
         WHERE p2.agent_id = '{agent_id}'
     ) p3
-    WHERE p3.pid = partyunit.pid AND partyunit.agent_id = '{agent_id}'
+    WHERE p3.party_id = partyunit.party_id AND partyunit.agent_id = '{agent_id}'
     )
 WHERE partyunit.agent_id = '{agent_id}'
 ;
@@ -680,7 +680,7 @@ def get_partyunit_table_insert_sqlstr(
     return f"""
 INSERT INTO partyunit (
   agent_id
-, pid
+, party_id
 , _agenda_credit
 , _agenda_debt
 , _agenda_intent_credit
@@ -698,7 +698,7 @@ INSERT INTO partyunit (
 )
 VALUES (
   '{x_agenda._agent_id}' 
-, '{x_partyunit.pid}'
+, '{x_partyunit.party_id}'
 , {sqlite_null(x_partyunit._agenda_credit)} 
 , {sqlite_null(x_partyunit._agenda_debt)}
 , {sqlite_null(x_partyunit._agenda_intent_credit)}
@@ -729,7 +729,7 @@ def get_partyview_dict(
     sqlstr = f"""
 SELECT 
   agent_id
-, pid
+, party_id
 , _agenda_credit
 , _agenda_debt
 , _agenda_intent_credit
@@ -754,7 +754,7 @@ WHERE agent_id = '{payer_agent_id}'
     for row in results.fetchall():
         partyview_x = PartyDBUnit(
             agent_id=row[0],
-            pid=row[1],
+            party_id=row[1],
             _agenda_credit=row[2],
             _agenda_debt=row[3],
             _agenda_intent_credit=row[4],
@@ -770,7 +770,7 @@ WHERE agent_id = '{payer_agent_id}'
             _treasury_voice_hx_lowest_rank=row[14],
             _title=row[15],
         )
-        dict_x[partyview_x.pid] = partyview_x
+        dict_x[partyview_x.party_id] = partyview_x
     return dict_x
 
 
@@ -1092,7 +1092,7 @@ def get_partyunit_table_insert_sqlstr(
     return f"""
 INSERT INTO partyunit (
   agent_id
-, pid
+, party_id
 , _agenda_credit
 , _agenda_debt
 , _agenda_intent_credit
@@ -1110,7 +1110,7 @@ INSERT INTO partyunit (
 )
 VALUES (
   '{x_agenda._agent_id}' 
-, '{x_partyunit.pid}'
+, '{x_partyunit.party_id}'
 , {sqlite_null(x_partyunit._agenda_credit)} 
 , {sqlite_null(x_partyunit._agenda_debt)}
 , {sqlite_null(x_partyunit._agenda_intent_credit)}

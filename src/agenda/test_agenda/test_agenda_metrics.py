@@ -44,9 +44,9 @@ def test_agenda_3AdvocatesNoideaunit_shop():
     patr_text = "patrick"
 
     x_agenda = agendaunit_shop(_agent_id="prom")
-    au_rico = partyunit_shop(pid=rico_text, uid=7)
-    au_carm = partyunit_shop(pid=carm_text, uid=2)
-    au_patr = partyunit_shop(pid=patr_text, uid=13)
+    au_rico = partyunit_shop(party_id=rico_text, uid=7)
+    au_carm = partyunit_shop(party_id=carm_text, uid=2)
+    au_patr = partyunit_shop(party_id=patr_text, uid=13)
     # print(f"{rico=}")
     x_agenda.set_partyunit(partyunit=au_rico)
     x_agenda.set_partyunit(partyunit=au_carm)
@@ -91,9 +91,9 @@ def test_agenda_get_partyunits_uid_max_WorksCorrectly():
     patr_text = "patrick"
 
     x_agenda = agendaunit_shop(_agent_id="prom")
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=rico_text, uid=4))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=carr_text, uid=13))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(pid=patr_text, uid=7))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=rico_text, uid=4))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=carr_text, uid=13))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=patr_text, uid=7))
 
     # WHEN/THEN
     assert x_agenda.get_partyunits_uid_max() == 13

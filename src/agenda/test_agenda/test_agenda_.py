@@ -28,6 +28,8 @@ def test_AgendaUnit_exists():
     assert x_agenda._auto_output_to_public is None
     assert x_agenda._idearoot is None
     assert x_agenda._road_delimiter is None
+    assert x_agenda._party_creditor_pool is None
+    assert x_agenda._party_debtor_pool is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -55,6 +57,8 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._auto_output_to_public == False
     assert x_agenda._idearoot != None
     assert x_agenda._road_delimiter == slash_road_delimiter
+    assert x_agenda._party_creditor_pool is None
+    assert x_agenda._party_debtor_pool is None
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
@@ -142,6 +146,23 @@ def test_agenda_set_max_tree_traverse_CorrectlyRaisesError():
         str(excinfo.value)
         == "set_max_tree_traverse: input '1' must be number that is 2 or greater"
     )
+
+
+def test_agenda_set_party_creditor_pool_CorrectlySetsInt():
+    # GIVEN
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    assert zia_agenda._party_creditor_pool is None
+    assert zia_agenda._party_debtor_pool is None
+
+    # WHEN
+    x_party_creditor_pool = 11
+    x_party_debtor_pool = 13
+    zia_agenda.set_party_creditor_pool(x_party_creditor_pool)
+    zia_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    # THEN
+    assert zia_agenda._party_creditor_pool == x_party_creditor_pool
+    assert zia_agenda._party_debtor_pool == x_party_debtor_pool
 
 
 def test_agenda_set_auto_output_to_public_SetsBoolCorrectlyGivenNoneOrBool():

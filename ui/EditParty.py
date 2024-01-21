@@ -57,7 +57,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
     def party_group_set(self):
         self.groupunit_x.set_partylink(
-            partylink=partylink_shop(pid=self.partyunit_x.pid)
+            partylink=partylink_shop(party_id=self.partyunit_x.pid)
         )
         self.refresh_groups()
 
@@ -72,7 +72,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         group_partylinks = []
         for group in self.x_agenda._groups.values():
             for partylink in group._partys.values():
-                if partylink.pid == party_id and group.brand != partylink.pid:
+                if partylink.party_id == party_id and group.brand != partylink.party_id:
                     groups_count += 1
                     single_group = group.brand
                     group_partylinks.append((group, partylink))
@@ -99,7 +99,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             # groups_count = 0
             # for group in self.x_agenda._groups.values():
             #     for partylink in group._partys.values():
-            #         if partylink.pid == party.pid:
+            #         if partylink.party_id == party.pid:
             #             groups_count += 1
 
             groups_count, single_group, group_partylinks = self.get_party_group_count(
@@ -127,7 +127,8 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
     def party_in_group(self, partyunit, groupunit):
         return any(
-            partylink.pid == partyunit.pid for partylink in groupunit._partys.values()
+            partylink.party_id == partyunit.party_id
+            for partylink in groupunit._partys.values()
         )
 
     def refresh_groups_in_table(self):
@@ -238,7 +239,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_groups_stan_table()
 
     def party_insert(self):
-        self.x_agenda.add_partyunit(pid=self.party_id.text())
+        self.x_agenda.add_partyunit(party_id=self.party_id.text())
         self.refresh_all()
 
     def party_delete(self):
@@ -248,9 +249,9 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_all()
 
     def party_update(self):
-        self.x_agenda.edit_partyunit_pid(
-            old_pid=self.party_table.item(self.party_table.currentRow(), 0).text(),
-            new_pid=self.party_id.text(),
+        self.x_agenda.edit_partyunit_party_id(
+            old_party_id=self.party_table.item(self.party_table.currentRow(), 0).text(),
+            new_party_id=self.party_id.text(),
             allow_party_overwite=True,
             allow_nonsingle_group_overwrite=True,
         )

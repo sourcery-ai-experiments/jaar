@@ -30,7 +30,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     agendaunit_columns = {agent_id_text: 1, rational_text: 1}
 
     agent_id_text = "agent_id"
-    pid_text = "pid"
+    party_id_text = "party_id"
     _agenda_credit_text = "_agenda_credit"
     _agenda_debt_text = "_agenda_debt"
     _agenda_intent_credit_text = "_agenda_intent_credit"
@@ -48,7 +48,7 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     partyunit_text = "partyunit"
     partyunit_columns = {
         agent_id_text: 1,
-        pid_text: 1,
+        party_id_text: 1,
         _agenda_credit_text: 1,
         _agenda_debt_text: 1,
         _agenda_intent_credit_text: 1,

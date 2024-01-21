@@ -103,13 +103,13 @@ def test_economyunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert x_economy.get_clerkunit(cid=bob_text) is None
 
     # WHEN
-    x_economy.add_clerkunit(pid=bob_text)
+    x_economy.add_clerkunit(agent_id=bob_text)
 
     # THEN
     assert x_economy._clerkunits != {}
     print(f"{bob_file_path=}")
     bob_static_clerkunit = clerkunit_shop(
-        pid=bob_text,
+        agent_id=bob_text,
         env_dir=get_temp_env_dir(),
         economy_id=get_temp_env_economy_id(),
     )
@@ -136,5 +136,5 @@ def test_economyunit_clerkunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     assert x_economy.clerkunit_exists(cid=bob_text) == False
 
     # WHEN / THEN
-    x_economy.add_clerkunit(pid=bob_text)
+    x_economy.add_clerkunit(agent_id=bob_text)
     assert x_economy.clerkunit_exists(cid=bob_text)

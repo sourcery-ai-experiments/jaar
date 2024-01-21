@@ -10,7 +10,7 @@ def test_agenda_import_debtor_info_CorrectlyWorks():
     jane_text = "Jane Randolph"
 
     jane_party = x_agenda._partys.get(jane_text)
-    print(f"Before Party {jane_party.pid} {jane_party._debtor_active=} ")
+    print(f"Before Party {jane_party.party_id} {jane_party._debtor_active=} ")
     assert jane_party._debtor_active is None
     assert jane_party._creditor_active is None
 
@@ -25,7 +25,7 @@ def test_agenda_import_debtor_info_CorrectlyWorks():
     jane_debtor_status = True
     jane_creditor_status = True
     jane_metr = PartyUnitExternalMetrics(
-        internal_pid=jane_text,
+        internal_party_id=jane_text,
         debtor_active=jane_debtor_status,
         creditor_active=jane_creditor_status,
     )

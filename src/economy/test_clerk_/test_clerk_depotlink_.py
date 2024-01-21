@@ -223,7 +223,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
     cx1 = bob_ux.open_ignore_agenda(agent_id=zia_text)
     assert len(cx1._partys) == 0
-    cx1.add_partyunit(pid="tim")
+    cx1.add_partyunit(party_id="tim")
     assert len(cx1._partys) == 1
 
     # WHEN

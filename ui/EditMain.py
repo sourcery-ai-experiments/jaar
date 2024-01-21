@@ -193,7 +193,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             groups_count = 0
             for group in self.x_agenda._groups.values():
                 for partylink in group._partys.values():
-                    if partylink.pid == party.pid:
+                    if partylink.party_id == party.pid:
                         groups_count += 1
 
             qt_agenda_credit = qtw.QTableWidgetItem(

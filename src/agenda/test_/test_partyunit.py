@@ -13,16 +13,16 @@ from pytest import raises as pytest_raises
 
 def test_PartyUnit_exists():
     # GIVEN
-    bob_pid = "Bob"
+    bob_party_id = "Bob"
 
     # WHEN
-    bob_party = PartyUnit(pid=bob_pid)
+    bob_party = PartyUnit(party_id=bob_party_id)
 
     # THEN
-    print(f"{bob_pid}")
+    print(f"{bob_party_id}")
     assert bob_party != None
-    assert bob_party.pid != None
-    assert bob_party.pid == bob_pid
+    assert bob_party.party_id != None
+    assert bob_party.party_id == bob_party_id
     assert bob_party._title is None
     assert bob_party.creditor_weight is None
     assert bob_party.debtor_weight is None
@@ -48,7 +48,7 @@ def test_partyunit_shop_CorrectlySetsAttributes():
     teacher_title = "teacher"
 
     # WHEN
-    todd_partyunit = partyunit_shop(pid=todd_text, _title=teacher_title)
+    todd_partyunit = partyunit_shop(party_id=todd_text, _title=teacher_title)
 
     # THEN
     assert todd_partyunit._title == teacher_title
@@ -56,8 +56,8 @@ def test_partyunit_shop_CorrectlySetsAttributes():
 
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     assert bob_party._output_agenda_meld_order is None
 
     # WHEN
@@ -70,8 +70,8 @@ def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     x_output_agenda_meld_order = 5
     bob_party.set_output_agenda_meld_order(x_output_agenda_meld_order)
     assert bob_party._output_agenda_meld_order == x_output_agenda_meld_order
@@ -85,8 +85,8 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_set_title_CorrectlySetsAttribute():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     assert bob_party._output_agenda_meld_order is None
 
     # WHEN
@@ -99,8 +99,8 @@ def test_PartyUnit_set_title_CorrectlySetsAttribute():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -116,8 +116,10 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(
+        party_id=bob_party_id, creditor_weight=45, debtor_weight=56
+    )
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -133,8 +135,8 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStarting
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -150,8 +152,10 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStarti
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid, creditor_weight=45, debtor_weight=56)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(
+        party_id=bob_party_id, creditor_weight=45, debtor_weight=56
+    )
     depotlink_type_x = "assignment"
     bob_party.set_depotlink_type(depotlink_type=depotlink_type_x)
     assert bob_party.depotlink_type == depotlink_type_x
@@ -170,15 +174,15 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     unacceptable_type_text = "unacceptable"
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         bob_party.set_depotlink_type(depotlink_type=unacceptable_type_text)
     assert (
         str(excinfo.value)
-        == f"PartyUnit '{bob_party.pid}' cannot have type '{unacceptable_type_text}'."
+        == f"PartyUnit '{bob_party.party_id}' cannot have type '{unacceptable_type_text}'."
     )
 
 
@@ -189,8 +193,8 @@ def test_get_default_depotlink_type_ReturnsCorrectObj():
 
 def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     assert bob_party._agenda_credit is None
     assert bob_party._agenda_debt is None
     assert bob_party._agenda_intent_credit is None
@@ -237,8 +241,8 @@ def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
 
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     bob_party._agenda_credit = 0.27
     bob_party._agenda_debt = 0.37
     bob_party._agenda_intent_credit = 0.41
@@ -266,8 +270,8 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "Bob"
-    bob_party = partyunit_shop(pid=bob_pid)
+    bob_party_id = "Bob"
+    bob_party = partyunit_shop(party_id=bob_party_id)
     bob_party._agenda_credit = 0.4106
     bob_party._agenda_debt = 0.1106
     bob_party._agenda_intent_credit = 0.41
@@ -292,9 +296,9 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "Bob"
+    bob_party_id = "Bob"
     bob_party = partyunit_shop(
-        pid=bob_pid,
+        party_id=bob_party_id,
         creditor_weight=15,
         debtor_weight=7,
         _agenda_credit=0.4106,
@@ -334,12 +338,12 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
 
 def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "Bob"
+    bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
     bob_party = partyunit_shop(
-        pid=bob_pid,
+        party_id=bob_party_id,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
@@ -374,11 +378,11 @@ def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
 
 def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
-    bob_pid = "Bob"
+    bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
     bob_party = partyunit_shop(
-        pid=bob_pid,
+        party_id=bob_party_id,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
@@ -419,9 +423,9 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 
 def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
     # GIVEN
-    bob_pid = "Bob"
+    bob_party_id = "Bob"
     bob_party = partyunit_shop(
-        pid=bob_pid,
+        party_id=bob_party_id,
         _agenda_intent_ratio_credit=0.355,
         _agenda_intent_ratio_debt=0.066,
     )
@@ -451,15 +455,15 @@ def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     glen_text = "glen"
-    glen_ring = PartyRing(pid=glen_text)
-    bob_party_rings = {glen_ring.pid: glen_ring}
+    glen_ring = PartyRing(party_id=glen_text)
+    bob_party_rings = {glen_ring.party_id: glen_ring}
     bob_text = "Bob"
     bob_title = "Teacher Bob"
     bob_treasury_tax_paid = 0.55
     bob_treasury_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
-        pid=bob_text,
+        party_id=bob_text,
         _partyrings=bob_party_rings,
         _treasury_tax_paid=bob_treasury_tax_paid,
         _treasury_tax_diff=bob_treasury_tax_diff,
@@ -494,13 +498,13 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{x_dict=}")
     assert x_dict != None
     assert x_dict == {
-        "pid": bob_text,
+        "party_id": bob_text,
         "uid": bob_uid,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
         "_creditor_active": bob_creditor_active,
         "_debtor_active": bob_debtor_active,
-        "_partyrings": {"glen": {"pid": "glen"}},
+        "_partyrings": {"glen": {"party_id": "glen"}},
         "_treasury_tax_paid": bob_treasury_tax_paid,
         "_treasury_tax_diff": bob_treasury_tax_diff,
         "_treasury_credit_score": bob_treasury_credit_score,
@@ -513,8 +517,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     # GIVEN
-    cersei_pid = PartyID("Cersei")
-    yao_party_rings = {cersei_pid: {"pid": cersei_pid}}
+    cersei_party_id = PartyID("Cersei")
+    yao_party_rings = {cersei_party_id: {"party_id": cersei_party_id}}
     yao_text = "Yao"
     yao_title = "Teacher Yao"
     yao_uid = 239
@@ -530,7 +534,7 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_treasury_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
-            "pid": yao_text,
+            "party_id": yao_text,
             "uid": yao_uid,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
@@ -556,7 +560,7 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     assert yao_obj_dict[yao_text] != None
     yao_partyunit = yao_obj_dict[yao_text]
 
-    assert yao_partyunit.pid == yao_text
+    assert yao_partyunit.party_id == yao_text
     assert yao_partyunit.uid == yao_uid
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
@@ -577,27 +581,29 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     # assert yao_obj_dict[yao_text]._partyrings == party_rings
 
 
-def test_PartyUnit_meld_RaiseSamePIDException():
+def test_PartyUnit_meld_RaiseSameparty_idException():
     # GIVEN
     todd_text = "Todd"
-    todd_party = partyunit_shop(pid=todd_text)
+    todd_party = partyunit_shop(party_id=todd_text)
     mery_text = "Merry"
-    mery_party = partyunit_shop(pid=mery_text)
+    mery_party = partyunit_shop(party_id=mery_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         todd_party.meld(mery_party)
     assert (
         str(excinfo.value)
-        == f"Meld fail PartyUnit='{todd_party.pid}' not the same as PartyUnit='{mery_party.pid}"
+        == f"Meld fail PartyUnit='{todd_party.party_id}' not the same as PartyUnit='{mery_party.party_id}"
     )
 
 
 def test_PartyUnit_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partyunit_shop(pid=todd_text, creditor_weight=7, debtor_weight=19)
-    todd_party2 = partyunit_shop(pid=todd_text, creditor_weight=5, debtor_weight=3)
+    todd_party1 = partyunit_shop(
+        party_id=todd_text, creditor_weight=7, debtor_weight=19
+    )
+    todd_party2 = partyunit_shop(party_id=todd_text, creditor_weight=5, debtor_weight=3)
     assert todd_party1.creditor_weight == 7
     assert todd_party1.debtor_weight == 19
 
@@ -614,8 +620,8 @@ def test_PartyUnit_meld_CorrectlySetsTitle():
     todd_text = "Todd"
     teacher_title = "teacher"
     professor_title = "professor"
-    todd_party1 = partyunit_shop(pid=todd_text, _title=teacher_title)
-    todd_party2 = partyunit_shop(pid=todd_text, _title=professor_title)
+    todd_party1 = partyunit_shop(party_id=todd_text, _title=teacher_title)
+    todd_party2 = partyunit_shop(party_id=todd_text, _title=professor_title)
     assert todd_party1._title == teacher_title
     assert todd_party2._title == professor_title
 

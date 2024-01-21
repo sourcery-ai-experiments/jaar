@@ -25,14 +25,14 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
-    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
-    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()
@@ -64,27 +64,27 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
-    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
-    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
-    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
-    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
-    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()

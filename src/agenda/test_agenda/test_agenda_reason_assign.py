@@ -50,7 +50,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     bob_agenda = agendaunit_shop(bob_text)
     run_text = "run"
     run_road = bob_agenda.make_road(bob_text, run_text)
-    bob_agenda.add_partyunit(pid=bob_text)
+    bob_agenda.add_partyunit(party_id=bob_text)
     bob_agenda.add_idea(ideaunit_shop(run_text), parent_road=bob_agenda._economy_id)
     bob_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = bob_agenda.get_idea_obj(run_road)
@@ -120,8 +120,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa_agenda1 = agendaunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa_agenda1.add_partyunit(pid=xia_text)
-    noa_agenda1.add_partyunit(pid=zoa_text)
+    noa_agenda1.add_partyunit(party_id=xia_text)
+    noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
     work_road = noa_agenda1.make_road(noa_agenda1._economy_id, work_text)
@@ -139,7 +139,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
 
     # WHEN
     noa_agenda2 = agendaunit_shop(noa_text)
-    noa_agenda2.add_partyunit(pid=xia_text)
+    noa_agenda2.add_partyunit(party_id=xia_text)
     filtered_idea = noa_agenda2._get_filtered_balancelinks_idea(noa_agenda1_swim_idea)
 
     # THEN
@@ -153,8 +153,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa_agenda1 = agendaunit_shop("Noa")
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa_agenda1.add_partyunit(pid=xia_text)
-    noa_agenda1.add_partyunit(pid=zoa_text)
+    noa_agenda1.add_partyunit(party_id=xia_text)
+    noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
     work_road = noa_agenda1.make_road(noa_agenda1._economy_id, work_text)
@@ -172,7 +172,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     noa_agenda2 = agendaunit_shop("Noa")
-    noa_agenda2.add_partyunit(pid=xia_text)
+    noa_agenda2.add_partyunit(party_id=xia_text)
     noa_agenda2.add_idea(
         idea_kid=noa_agenda1_swim_idea,
         parent_road=noa_agenda2._economy_id,

@@ -91,8 +91,8 @@ def _delete_and_set_ex3():
     x_economy.save_public_agenda(example_agenda_v001)
     x_economy.save_public_agenda(example_agenda_v002)
 
-    # x_economy.set_agent_id(x_clerk=clerkunit_shop(pid="w1", env_dir=x_economy.get_object_root_dir()))
-    # x_economy.set_agent_id(x_clerk=clerkunit_shop(pid="w2", env_dir=x_economy.get_object_root_dir()))
+    # x_economy.set_agent_id(x_clerk=clerkunit_shop(agent_id="w1", env_dir=x_economy.get_object_root_dir()))
+    # x_economy.set_agent_id(x_clerk=clerkunit_shop(agent_id="w2", env_dir=x_economy.get_object_root_dir()))
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
     bob_text = example_agenda_v002._agent_id
@@ -222,27 +222,27 @@ def _delete_and_set_ex6(x_economy_id: str = None):
     elu_text = "elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
-    sal_agenda.add_partyunit(pid=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(pid=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
+    sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
+    sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
-    bob_agenda.add_partyunit(pid=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(pid=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
+    bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_economy.save_public_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
-    tom_agenda.add_partyunit(pid=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_economy.save_public_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
-    ava_agenda.add_partyunit(pid=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_economy.save_public_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
-    elu_agenda.add_partyunit(pid=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(pid=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
+    elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_economy.save_public_agenda(elu_agenda)
 
     x_economy.refresh_treasury_public_agendas_data()
