@@ -82,6 +82,10 @@ class NewDelimiterException(Exception):
     pass
 
 
+class PartyunitsCreditorDebtorSumException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _agent_id: AgentID = None
@@ -1397,17 +1401,29 @@ class AgendaUnit:
         promise_item = self.get_idea_obj(task_road)
         promise_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
 
-    def get_partyunit_total_creditor_weight(self) -> float:
+    def is_partyunits_creditor_weight_sum_correct(self) -> bool:
+        return (
+            self._party_creditor_pool is None
+            or self._party_creditor_pool == self.get_partyunits_creditor_weight_sum()
+        )
+
+    def is_partyunits_debtor_weight_sum_correct(self) -> bool:
+        return (
+            self._party_debtor_pool is None
+            or self._party_debtor_pool == self.get_partyunits_debtor_weight_sum()
+        )
+
+    def get_partyunits_creditor_weight_sum(self) -> float:
         return sum(
             partyunit.get_creditor_weight() for partyunit in self._partys.values()
         )
 
-    def get_partyunit_total_debtor_weight(self) -> float:
+    def get_partyunits_debtor_weight_sum(self) -> float:
         return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
 
     def _add_to_partyunits_agenda_credit_debt(self, idea_agenda_importance: float):
-        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
-        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
+        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
             au_agenda_credit = (
@@ -1428,8 +1444,8 @@ class AgendaUnit:
     def _add_to_partyunits_agenda_intent_credit_debt(
         self, idea_agenda_importance: float
     ):
-        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
-        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
+        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
             au_agenda_intent_credit = (
@@ -1448,8 +1464,8 @@ class AgendaUnit:
             )
 
     def _set_partyunits_agenda_intent_importance(self, agenda_intent_importance: float):
-        sum_partyunit_creditor_weight = self.get_partyunit_total_creditor_weight()
-        sum_partyunit_debtor_weight = self.get_partyunit_total_debtor_weight()
+        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
             au_agenda_intent_credit = (
@@ -1522,8 +1538,8 @@ class AgendaUnit:
             x_partyunit.set_agenda_intent_ratio_credit_debt(
                 agenda_intent_ratio_credit_sum=agenda_intent_ratio_credit_sum,
                 agenda_intent_ratio_debt_sum=agenda_intent_ratio_debt_sum,
-                agenda_partyunit_total_creditor_weight=self.get_partyunit_total_creditor_weight(),
-                agenda_partyunit_total_debtor_weight=self.get_partyunit_total_debtor_weight(),
+                agenda_partyunit_total_creditor_weight=self.get_partyunits_creditor_weight_sum(),
+                agenda_partyunit_total_debtor_weight=self.get_partyunits_debtor_weight_sum(),
             )
 
     def get_party_groupbrands(self, party_id: PartyID) -> list[GroupBrand]:
@@ -1774,6 +1790,14 @@ class AgendaUnit:
         self._set_agenda_intent_ratio_credit_debt()
 
     def _pre_tree_traverse_credit_debt_reset(self):
+        if self.is_partyunits_creditor_weight_sum_correct() == False:
+            raise PartyunitsCreditorDebtorSumException(
+                f"is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
+            )
+        if self.is_partyunits_debtor_weight_sum_correct() == False:
+            raise PartyunitsCreditorDebtorSumException(
+                f"is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
+            )
         self._reset_groupunits_agenda_credit_debt()
         self._reset_groupunits_agenda_credit_debt()
         self._reset_partyunit_agenda_credit_debt()

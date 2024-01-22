@@ -43,8 +43,8 @@ def test_agenda_get_dict_ReturnsDictObject():
     x_agenda._originunit.set_originlink(yao_text, 1)
     agenda_weight = 23
     x_agenda._weight = agenda_weight
-    x_party_creditor_pool = 91
-    x_party_debtor_pool = 97
+    x_party_creditor_pool = 22
+    x_party_debtor_pool = 22
     x_agenda.set_party_creditor_pool(x_party_creditor_pool)
     x_agenda.set_party_debtor_pool(x_party_debtor_pool)
 
@@ -272,8 +272,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     yue_agenda.set_max_tree_traverse(23)
     tiger_economy_id = "tiger_econ"
     yue_agenda.set_economy_id(tiger_economy_id)
-    yue_party_creditor_pool = 55
-    yue_party_debtor_pool = 66
+    yue_party_creditor_pool = 2
+    yue_party_debtor_pool = 2
     yue_agenda.set_party_creditor_pool(yue_party_creditor_pool)
     yue_agenda.set_party_debtor_pool(yue_party_debtor_pool)
 

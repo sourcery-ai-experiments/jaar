@@ -15,13 +15,13 @@ def test_AgendaUnit_set_partyunit_SetObjCorrectly():
     # GIVEN
     yahri_party = partyunit_shop(party_id=PartyID("yahri"))
     partys_x = {yahri_party.party_id: yahri_party}
-    x_agenda2 = agendaunit_shop()
+    bob_agenda = agendaunit_shop("Bob")
 
     # WHEN
-    x_agenda2.set_partyunit(partyunit=yahri_party)
+    bob_agenda.set_partyunit(partyunit=yahri_party)
 
     # THEN
-    assert x_agenda2._partys == partys_x
+    assert bob_agenda._partys == partys_x
 
 
 def test_examples_agenda_v001_has_partys():
@@ -604,6 +604,70 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     # assert partyunit_agenda_credit_sum == 1.0
     # assert partyunit_agenda_debt_sum > 0.9999999
     # assert partyunit_agenda_debt_sum < 1.00000001
+
+
+def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_weight_sum_correct_IsFalse():
+    # GIVEN
+    yue_agenda = agendaunit_shop("Yue")
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    rico_creditor_weight = 20
+    carm_creditor_weight = 30
+    patr_creditor_weight = 50
+    yue_agenda.set_partyunit(partyunit_shop(rico_text, None, rico_creditor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(carm_text, None, carm_creditor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(patr_text, None, patr_creditor_weight))
+    assert yue_agenda._party_creditor_pool is None
+    assert yue_agenda.is_partyunits_creditor_weight_sum_correct()
+    assert yue_agenda.set_agenda_metrics() is None
+
+    # WHEN
+    x_int = 13
+    yue_agenda.set_party_creditor_pool(x_int)
+    assert yue_agenda.is_partyunits_creditor_weight_sum_correct() == False
+    with pytest_raises(Exception) as excinfo:
+        yue_agenda.set_agenda_metrics()
+    assert (
+        str(excinfo.value)
+        == f"is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={x_int}. partyunits_creditor_weight_sum={yue_agenda.get_partyunits_creditor_weight_sum()}"
+    )
+
+    # WHEN / THEN
+    yue_agenda.set_party_creditor_pool(yue_agenda.get_partyunits_creditor_weight_sum())
+    assert yue_agenda.set_agenda_metrics() is None
+
+
+def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weight_sum_correct_IsFalse():
+    # GIVEN
+    yue_agenda = agendaunit_shop("Yue")
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    rico_debtor_weight = 15
+    carm_debtor_weight = 25
+    patr_debtor_weight = 40
+    yue_agenda.set_partyunit(partyunit_shop(rico_text, None, None, rico_debtor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(carm_text, None, None, carm_debtor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(patr_text, None, None, patr_debtor_weight))
+    assert yue_agenda._party_debtor_pool is None
+    assert yue_agenda.is_partyunits_debtor_weight_sum_correct()
+    assert yue_agenda.set_agenda_metrics() is None
+
+    # WHEN
+    x_int = 13
+    yue_agenda.set_party_debtor_pool(x_int)
+    assert yue_agenda.is_partyunits_debtor_weight_sum_correct() == False
+    with pytest_raises(Exception) as excinfo:
+        yue_agenda.set_agenda_metrics()
+    assert (
+        str(excinfo.value)
+        == f"is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={x_int}. partyunits_debtor_weight_sum={yue_agenda.get_partyunits_debtor_weight_sum()}"
+    )
+
+    # WHEN / THEN
+    yue_agenda.set_party_debtor_pool(yue_agenda.get_partyunits_debtor_weight_sum())
+    assert yue_agenda.set_agenda_metrics() is None
 
 
 def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUnit):
@@ -1326,3 +1390,51 @@ def test_AgendaUnit_clear_output_agenda_meld_orders_WithNoArgsCorrectlySetOrder(
     assert rico_partyunit._output_agenda_meld_order == 2
     assert carm_partyunit._output_agenda_meld_order == 0
     assert patr_partyunit._output_agenda_meld_order == 1
+
+
+def test_AgendaUnit_is_partyunits_creditor_weight_sum_correct_ReturnsCorrectBool():
+    # GIVEN
+    yue_agenda = agendaunit_shop("Yue")
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    rico_creditor_weight = 20
+    carm_creditor_weight = 30
+    patr_creditor_weight = 50
+    yue_agenda.set_partyunit(partyunit_shop(rico_text, None, rico_creditor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(carm_text, None, carm_creditor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(patr_text, None, patr_creditor_weight))
+
+    # WHEN / THEN
+    assert yue_agenda.is_partyunits_creditor_weight_sum_correct()
+    yue_agenda.set_party_creditor_pool(13)
+    assert yue_agenda.is_partyunits_creditor_weight_sum_correct() == False
+    # WHEN / THEN
+    yue_party_credit_pool = (
+        rico_creditor_weight + carm_creditor_weight + patr_creditor_weight
+    )
+    yue_agenda.set_party_creditor_pool(yue_party_credit_pool)
+    assert yue_agenda.is_partyunits_creditor_weight_sum_correct()
+
+
+def test_AgendaUnit_is_partyunits_debtor_weight_sum_correct_ReturnsCorrectBool():
+    # GIVEN
+    yue_agenda = agendaunit_shop("Yue")
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    rico_debtor_weight = 15
+    carm_debtor_weight = 25
+    patr_debtor_weight = 60
+    yue_agenda.set_partyunit(partyunit_shop(rico_text, None, None, rico_debtor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(carm_text, None, None, carm_debtor_weight))
+    yue_agenda.set_partyunit(partyunit_shop(patr_text, None, None, patr_debtor_weight))
+
+    # WHEN / THEN
+    yue_party_debt_pool = rico_debtor_weight + carm_debtor_weight + patr_debtor_weight
+    assert yue_agenda.is_partyunits_debtor_weight_sum_correct()
+    yue_agenda.set_party_debtor_pool(yue_party_debt_pool + 1)
+    assert yue_agenda.is_partyunits_debtor_weight_sum_correct() == False
+    # WHEN / THEN
+    yue_agenda.set_party_debtor_pool(yue_party_debt_pool)
+    assert yue_agenda.is_partyunits_debtor_weight_sum_correct()

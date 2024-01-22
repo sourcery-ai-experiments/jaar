@@ -448,7 +448,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     )
 
 
-def test_agenda_get_orderd_node_list_WorksCorrectly():
+def test_AgendaUnit_get_orderd_node_list_WorksCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
@@ -476,7 +476,7 @@ def test_agenda_get_orderd_node_list_WorksCorrectly():
     assert y_1st_road_in_ordered_list == x_agenda._economy_id
 
 
-def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
+def test_AgendaUnit_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
     # GIVEN
     tim_agenda = agendaunit_shop("Tim")
 
@@ -497,7 +497,7 @@ def test_agenda_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
     )
 
 
-def test_agenda_get_heir_road_list_returnsCorrectList():
+def test_AgendaUnit_get_heir_road_list_returnsCorrectList():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
@@ -581,7 +581,7 @@ def test_agenda_get_heir_road_list_returnsCorrectList():
 #     assert len(gen_sandy_list) == 5
 
 
-def test_agenda_idea_exists_ReturnsCorrectBool():
+def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
