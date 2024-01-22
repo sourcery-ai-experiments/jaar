@@ -27,7 +27,7 @@ def test_DealUnit_exists():
     assert x_dealunit._reader_road is None
     assert x_dealunit._members_partyeditunits is None
     assert x_dealunit._topicunits is None
-    assert x_dealunit._dueunits is None
+    assert x_dealunit._vowunits is None
 
 
 def test_dealunit_shop_ReturnsCorrectObj():
@@ -46,7 +46,7 @@ def test_dealunit_shop_ReturnsCorrectObj():
         _reader_road=tim_road,
         _members_partyeditunits=None,
         _topicunits=None,
-        _dueunits=None,
+        _vowunits=None,
     )
 
     # THEN
@@ -54,7 +54,7 @@ def test_dealunit_shop_ReturnsCorrectObj():
     assert farm_dealunit._reader_road == tim_road
     assert farm_dealunit._members_partyeditunits == {bob_text: {}, tim_text: {}}
     assert farm_dealunit._topicunits == {}
-    assert farm_dealunit._dueunits == {}
+    assert farm_dealunit._vowunits == {}
 
 
 def test_DealUnit_get_member_attr_CorrectlyRaisesError():

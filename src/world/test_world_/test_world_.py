@@ -12,12 +12,16 @@ from src.world.person import personunit_shop, problemunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_worldunit_exists(worlds_dir_setup_cleanup):
+def test_WorldUnit_exists(worlds_dir_setup_cleanup):
     dallas_text = "dallas"
     x_world = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
     assert x_world.mark == dallas_text
     assert x_world.worlds_dir == get_test_worlds_dir()
     assert x_world._persons_dir is None
+    assert x_world._personunits is None
+    assert x_world._deals_dir is None
+    assert x_world._dealunits is None
+    assert x_world._max_deal_uid is None
     assert x_world._road_delimiter is None
 
 
@@ -31,7 +35,11 @@ def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
     # THEN
     assert x_world.mark == dallas_text
     assert x_world.worlds_dir == get_test_worlds_dir()
+    assert x_world._persons_dir != None
     assert x_world._personunits == {}
+    assert x_world._deals_dir != None
+    assert x_world._dealunits == {}
+    assert x_world._max_deal_uid == 0
     assert x_world._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -49,7 +57,7 @@ def test_worldunit_shop_ReturnsWorldUnitWith_road_delimiter(worlds_dir_setup_cle
     assert x_world._road_delimiter == slash_text
 
 
-def test_worldunit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
+def test_WorldUnit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = WorldUnit(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -61,6 +69,7 @@ def test_worldunit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     # THEN
     assert x_world._world_dir == f"{get_test_worlds_dir()}/{dallas_text}"
     assert x_world._persons_dir == f"{get_test_worlds_dir()}/{dallas_text}/persons"
+    assert x_world._deals_dir == f"{get_test_worlds_dir()}/{dallas_text}/deals"
 
 
 def test_worldunit_shop_SetsWorldsDirs(worlds_dir_setup_cleanup):
@@ -76,7 +85,7 @@ def test_worldunit_shop_SetsWorldsDirs(worlds_dir_setup_cleanup):
     assert x_world._persons_dir == f"{x_world._world_dir}/persons"
 
 
-def test_worldunit__set_person_in_memory_CorrectlySetsPerson(worlds_dir_setup_cleanup):
+def test_WorldUnit__set_person_in_memory_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -95,7 +104,7 @@ def test_worldunit__set_person_in_memory_CorrectlySetsPerson(worlds_dir_setup_cl
     assert x_world._persons_dir == f"{x_world._world_dir}/persons"
 
 
-def test_worldunit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
+def test_WorldUnit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -111,7 +120,7 @@ def test_worldunit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     assert x_world.personunit_exists(luca_text)
 
 
-def test_worldunit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
+def test_WorldUnit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     slash_text = "/"
@@ -132,7 +141,7 @@ def test_worldunit_set_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     assert x_world._personunits[luca_text] == luca_person_obj
 
 
-def test_worldunit_set_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cleanup):
+def test_WorldUnit_set_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -150,7 +159,7 @@ def test_worldunit_set_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cle
     assert str(excinfo.value) == f"set_personunit fail: {luca_text} already exists"
 
 
-def test_worldunit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
+def test_WorldUnit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -168,7 +177,7 @@ def test_worldunit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cl
     assert x_world._personunits.get(luca_text) == luca_person_obj
 
 
-def test_worldunit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
+def test_WorldUnit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
     # GIVEN
     dallas_text = "dallas"
     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
@@ -189,7 +198,7 @@ def test_worldunit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_c
     assert len(x_world._personunits.get(luca_text)._problems) == 0
 
 
-def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson(
+def test_WorldUnit_get_personunit_from_memory_CorrectlyReturnsPerson(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -209,7 +218,7 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsPerson(
     assert luca_gotten_obj == luca_person_obj
 
 
-def test_worldunit_get_personunit_from_memory_CorrectlyReturnsNone(
+def test_WorldUnit_get_personunit_from_memory_CorrectlyReturnsNone(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -224,7 +233,7 @@ def test_worldunit_get_personunit_from_memory_CorrectlyReturnsNone(
     assert luca_gotten_obj is None
 
 
-def test_worldunit_create_person_economy_SetsCorrectObjs_healerlink_economylink_economyunit(
+def test_WorldUnit_create_person_economy_SetsCorrectObjs_healerlink_economylink_economyunit(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN

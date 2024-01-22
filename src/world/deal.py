@@ -6,7 +6,7 @@ from src._prime.road import (
     PartyID,
     get_single_roadnode,
 )
-from src.world.due import DueID, DueUnit, dueunit_shop
+from src.world.vow import VowID, VowUnit, vowunit_shop
 from src.world.partyedit import PartyEditUnit
 from src.world.topic import TopicUnit, TopicLink
 from src.tools.python import get_empty_dict_if_none
@@ -31,7 +31,7 @@ class DealUnit:
     _reader_road: EconomyRoad = None
     _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
-    _dueunits: dict[DueID:DueUnit] = None
+    _vowunits: dict[VowID:VowUnit] = None
 
     def edit_partyeditunit_attr(
         self,
@@ -74,63 +74,63 @@ class DealUnit:
         )
 
     def set_deal_metrics(self):
-        due_author_sum = sum(x_due.author_weight for x_due in self._dueunits.values())
-        due_reader_sum = sum(x_due.reader_weight for x_due in self._dueunits.values())
+        vow_author_sum = sum(x_vow.author_weight for x_vow in self._vowunits.values())
+        vow_reader_sum = sum(x_vow.reader_weight for x_vow in self._vowunits.values())
 
-        if due_author_sum == 0:
+        if vow_author_sum == 0:
             raise DealMetricsException(
-                "Cannot set deal metrics because due_author_sum == 0."
+                "Cannot set deal metrics because vow_author_sum == 0."
             )
-        if due_reader_sum == 0:
+        if vow_reader_sum == 0:
             raise DealMetricsException(
-                "Cannot set deal metrics because due_reader_sum == 0."
+                "Cannot set deal metrics because vow_reader_sum == 0."
             )
 
-        for x_due in self._dueunits.values():
-            x_due.edit_attr(
-                _relative_author_weight=x_due.author_weight / due_author_sum,
-                _relative_reader_weight=x_due.reader_weight / due_reader_sum,
+        for x_vow in self._vowunits.values():
+            x_vow.edit_attr(
+                _relative_author_weight=x_vow.author_weight / vow_author_sum,
+                _relative_reader_weight=x_vow.reader_weight / vow_reader_sum,
             )
 
-    def edit_dueunit_attr(
+    def edit_vowunit_attr(
         self,
-        due_id: DueID,
+        vow_id: VowID,
         author_weight: float = None,
         reader_weight: float = None,
         actor: PersonID = None,
     ):
-        x_dueunit = self.get_dueunit(due_id)
+        x_vowunit = self.get_vowunit(vow_id)
         if author_weight != None:
-            x_dueunit.edit_attr(author_weight=author_weight)
+            x_vowunit.edit_attr(author_weight=author_weight)
         if reader_weight != None:
-            x_dueunit.edit_attr(reader_weight=reader_weight)
+            x_vowunit.edit_attr(reader_weight=reader_weight)
         if actor != None:
-            x_dueunit.set_actor(actor)
+            x_vowunit.set_actor(actor)
 
-    def set_dueunit(self, x_dueunit: DueUnit, actor: PersonID = None):
-        self._dueunits[x_dueunit.uid] = x_dueunit
+    def set_vowunit(self, x_vowunit: VowUnit, actor: PersonID = None):
+        self._vowunits[x_vowunit.uid] = x_vowunit
         if actor != None:
-            self.set_actor(actor, x_dueunit.uid)
+            self.set_actor(actor, x_vowunit.uid)
 
-    def get_dueunit(self, x_due_id: DueID) -> DueUnit:
-        return self._dueunits.get(x_due_id)
+    def get_vowunit(self, x_vow_id: VowID) -> VowUnit:
+        return self._vowunits.get(x_vow_id)
 
-    def dueunit_exists(self, x_due_id: DueID) -> bool:
-        return self.get_dueunit(x_due_id) != None
+    def vowunit_exists(self, x_vow_id: VowID) -> bool:
+        return self.get_vowunit(x_vow_id) != None
 
-    def del_dueunit(self, x_due_id: DueID):
-        self._dueunits.pop(x_due_id)
+    def del_vowunit(self, x_vow_id: VowID):
+        self._vowunits.pop(x_vow_id)
 
-    def add_dueunit(self) -> DueUnit:
-        next_due_int = self._get_max_dueunit_uid() + 1
-        self.set_dueunit(dueunit_shop(uid=next_due_int))
-        return self.get_dueunit(next_due_int)
+    def add_vowunit(self) -> VowUnit:
+        next_vow_int = self._get_max_vowunit_uid() + 1
+        self.set_vowunit(vowunit_shop(uid=next_vow_int))
+        return self.get_vowunit(next_vow_int)
 
-    def _get_max_dueunit_uid(self) -> DueID:
-        max_dueunit_uid = 0
-        for x_dueunit in self._dueunits.values():
-            max_dueunit_uid = max(x_dueunit.uid, max_dueunit_uid)
-        return max_dueunit_uid
+    def _get_max_vowunit_uid(self) -> VowID:
+        max_vowunit_uid = 0
+        for x_vowunit in self._vowunits.values():
+            max_vowunit_uid = max(x_vowunit.uid, max_vowunit_uid)
+        return max_vowunit_uid
 
     def is_meaningful(self) -> bool:
         return next(
@@ -154,28 +154,28 @@ class DealUnit:
     def del_topicunit(self, personroad: PersonRoad):
         self._topicunits.pop(personroad)
 
-    def set_actor(self, actor: PersonID, due_uid: DueID):
-        if self.dueunit_exists(due_uid):
-            x_dueunit = self.get_dueunit(due_uid)
-            x_dueunit.set_actor(actor)
+    def set_actor(self, actor: PersonID, vow_uid: VowID):
+        if self.vowunit_exists(vow_uid):
+            x_vowunit = self.get_vowunit(vow_uid)
+            x_vowunit.set_actor(actor)
 
-    def del_actor(self, actor: PersonID, due_uid: PersonRoad):
-        if self.dueunit_exists(due_uid):
-            x_dueunit = self.get_dueunit(due_uid)
-            x_dueunit.del_actor(actor)
+    def del_actor(self, actor: PersonID, vow_uid: PersonRoad):
+        if self.vowunit_exists(vow_uid):
+            x_vowunit = self.get_vowunit(vow_uid)
+            x_vowunit.del_actor(actor)
 
-    def get_actor_dueunits(
+    def get_actor_vowunits(
         self, actor: PersonID, action_filter: bool = None
-    ) -> dict[RoadUnit:DueUnit]:
+    ) -> dict[RoadUnit:VowUnit]:
         return {
-            x_base: x_dueunit
-            for x_base, x_dueunit in self._dueunits.items()
-            if x_dueunit.actor_exists(actor)
-            and (x_dueunit.has_action() == action_filter or action_filter is None)
+            x_base: x_vowunit
+            for x_base, x_vowunit in self._vowunits.items()
+            if x_vowunit.actor_exists(actor)
+            and (x_vowunit.has_action() == action_filter or action_filter is None)
         }
 
-    def actor_has_dueunit(self, actor: PersonID, action_filter: bool = None) -> bool:
-        return self.get_actor_dueunits(actor, action_filter=action_filter) != {}
+    def actor_has_vowunit(self, actor: PersonID, action_filter: bool = None) -> bool:
+        return self.get_actor_vowunits(actor, action_filter=action_filter) != {}
 
     def get_member_attr(self, member: str, attr: str):
         if member not in ("reader", "author"):
@@ -202,7 +202,7 @@ def dealunit_shop(
     _reader_road: EconomyRoad,
     _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
-    _dueunits: dict[DueID:DueUnit] = None,
+    _vowunits: dict[VowID:VowUnit] = None,
 ):
     author_person_id = get_single_roadnode("PersonRoad", _author_road, "PersonID")
     reader_person_id = get_single_roadnode("PersonRoad", _reader_road, "PersonID")
@@ -216,5 +216,5 @@ def dealunit_shop(
         _reader_road=_reader_road,
         _members_partyeditunits=_members_partyeditunits,
         _topicunits=get_empty_dict_if_none(_topicunits),
-        _dueunits=get_empty_dict_if_none(_dueunits),
+        _vowunits=get_empty_dict_if_none(_vowunits),
     )

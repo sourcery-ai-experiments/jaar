@@ -1,41 +1,70 @@
-# from src.agenda.reason_idea import beliefunit_shop
-# from src.world.world import worldunit_shop
-
-# from src.world.examples.world_env_kit import (
-#     get_temp_world_dir,
-#     get_temp_economy_id,
-#     get_test_worlds_dir,
-#     worlds_dir_setup_cleanup,
-# )
-# from os import path as os_path
-
-
-# def test_worldunit_add_economy_connection_CorrectlyCreatesObj(
-#     worlds_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     dallas_text = "dallas"
-#     x_world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-#     luca_text = "Lucas"
-#     x_world.set_personunit(luca_text)
-#     luca_person = x_world.get_personunit_from_memory(luca_text)
-#     texas_text = "Texas"
-#     luca_person.set_economyunit(texas_text)
-#     texas_economy = luca_person.get_economyunit(texas_text)
-#     kari_text = "kari"
-#     texas_economyaddress = economyunit.build_economy_road(luca_text, texas_text)
-#     assert texas_economy._clerkunits.get(kari_text) is None
-#     assert x_world.personunit_exists(kari_text) == False
-
-#     # WHEN
-#     x_world.add_economy_connection(texas_economyaddress, kari_text)
-
-#     # THEN
-#     assert x_world.personunit_exists(kari_text)
-#     assert texas_economy._clerkunits.get(kari_text) != None
+from src.agenda.reason_idea import beliefunit_shop
+from src.world.world import worldunit_shop
+from src.world.examples.world_env_kit import (
+    get_temp_world_dir,
+    get_temp_economy_id,
+    get_test_worlds_dir,
+    worlds_dir_setup_cleanup,
+)
+from src.world.examples.example_deals import get_no_topiclinks_yao_sue_dealunit
+from os import path as os_path
 
 
-# def test_worldunit_apply_requestunit_CorrectlyCreates_contract_agendas(
+def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
+    # GIVEN
+    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    assert oregon_world._dealunits == {}
+
+    # WHEN
+    yao_sue_dealunit = get_no_topiclinks_yao_sue_dealunit()
+    yao_sue_uid = oregon_world.set_dealunit(x_dealunit=yao_sue_dealunit)
+
+    # THEN
+    assert oregon_world._dealunits != {}
+    assert oregon_world._dealunits == {1: yao_sue_dealunit}
+    assert yao_sue_uid == 1
+
+
+def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+
+    # WHEN
+    yao_sue_dealunit = oregon_world.get_dealunit(yao_sue_uid)
+
+    # THEN
+    assert yao_sue_dealunit == get_no_topiclinks_yao_sue_dealunit()
+
+
+def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    static_yao_sue_uid = 1
+    assert oregon_world.dealunit_exists(static_yao_sue_uid) == False
+
+    # WHEN
+    gen_yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+    assert static_yao_sue_uid == gen_yao_sue_uid
+
+    # THEN
+    assert oregon_world.dealunit_exists(static_yao_sue_uid)
+
+
+def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
+    # GIVEN
+    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+    assert oregon_world.dealunit_exists(yao_sue_uid)
+
+    # WHEN
+    oregon_world.del_dealunit(yao_sue_uid)
+
+    # THEN
+    assert oregon_world.dealunit_exists(yao_sue_uid) == False
+
+
+# def test_WorldUnit_apply_requestunit_CorrectlyCreates_contract_agendas(
 #     worlds_dir_setup_cleanup,
 # ):
 #     # GIVEN requester and requestee contract_agendas does not exist
@@ -87,7 +116,7 @@
 #     assert texas_economy.get_clerkunit(yao_text).get_contract() != None
 
 
-# def test_worldunit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
+# def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
 #     worlds_dir_setup_cleanup,
 # ):
 #     x_world = worldunit_shop("w1", get_test_worlds_dir())
@@ -214,7 +243,7 @@
 #     assert tim_public.get_intent_dict()[0].get_road() == no_fly_road
 
 
-# def test_worldunit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
+# def test_WorldUnit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
 #     x_world = worldunit_shop("w1", get_test_worlds_dir())
 #     yao_text = "Yao"
 #     x_world.set_personunit(yao_text)
@@ -310,7 +339,7 @@
 #     assert tim_public.get_intent_dict()[0].get_road() == no_fly_road
 
 
-# # def test_worldunit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
+# # def test_WorldUnit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
 # #     worlds_dir_setup_cleanup,
 # # ):
 # #     x_world = worldunit_shop("w1", get_test_worlds_dir())

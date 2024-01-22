@@ -7,7 +7,7 @@ from src.world.examples.world_env_kit import (
 from src.world.person import personunit_shop
 
 
-def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
+def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -22,7 +22,7 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgen
     assert luca_agenda == agendaunit_shop(luca_text)
 
 
-def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
+def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -41,7 +41,7 @@ def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgen
     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
-def test_worldunit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
+def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
