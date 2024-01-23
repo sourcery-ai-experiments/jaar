@@ -19,7 +19,7 @@
 
 `jaar` is a python library for listening to the climate of a community. Individual 
 positions are aggregated by a listener into a coherant intent that can include promises 
-of actions and/or promises of being. Listening and acting on it.
+of actions and/or promises of states of existence. Listening and acting on it.
 
 A healer's intent in the community is built by the the weighted intreprtation of
 1. Other healers intents 

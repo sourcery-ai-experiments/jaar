@@ -2021,7 +2021,7 @@
             "casa": {
                 "_is_expanded": false,
                 "_kids": {
-                    "being responsible for kids": {
+                    "responsible for kids": {
                         "_is_expanded": false,
                         "_kids": {
                             "clip fingernails": {
@@ -2171,7 +2171,7 @@
                                 "promise": true
                             }
                         },
-                        "_label": "being responsible for kids",
+                        "_label": "responsible for kids",
                         "_on_meld_weight_action": "default",
                         
                         "_reasonunits": {
@@ -5734,7 +5734,7 @@
             "WaterAir Living": {
                 "_is_expanded": false,
                 "_kids": {
-                    "Being in Williamette watershed": {
+                    "Existance in Williamette watershed": {
                         "_is_expanded": true,
                         "_kids": {
                             "bike around": {
@@ -5743,12 +5743,12 @@
                                 "_on_meld_weight_action": "default",
                                 
                                 "_reasonunits": {
-                                    "A,WaterBeing": {
-                                        "base": "A,WaterBeing",
+                                    "A,WaterExistence": {
+                                        "base": "A,WaterExistence",
                                         "premises": {
-                                            "A,WaterBeing,Williamette WaterShed,East Side of Watershed": {
+                                            "A,WaterExistence,Williamette WaterShed,East Side of Watershed": {
                                                 "divisor": null,
-                                                "need": "A,WaterBeing,Williamette WaterShed,East Side of Watershed",
+                                                "need": "A,WaterExistence,Williamette WaterShed,East Side of Watershed",
                                                 "nigh": null,
                                                 "open": null
                                             }
@@ -5765,12 +5765,12 @@
                                 "_on_meld_weight_action": "default",
                                 
                                 "_reasonunits": {
-                                    "A,WaterBeing": {
-                                        "base": "A,WaterBeing",
+                                    "A,WaterExistence": {
+                                        "base": "A,WaterExistence",
                                         "premises": {
-                                            "A,WaterBeing,Williamette WaterShed,West side of Watershed": {
+                                            "A,WaterExistence,Williamette WaterShed,West side of Watershed": {
                                                 "divisor": null,
-                                                "need": "A,WaterBeing,Williamette WaterShed,West side of Watershed",
+                                                "need": "A,WaterExistence,Williamette WaterShed,West side of Watershed",
                                                 "nigh": null,
                                                 "open": null
                                             }
@@ -5787,12 +5787,12 @@
                                 "_on_meld_weight_action": "default",
                                 
                                 "_reasonunits": {
-                                    "A,WaterBeing": {
-                                        "base": "A,WaterBeing",
+                                    "A,WaterExistence": {
+                                        "base": "A,WaterExistence",
                                         "premises": {
-                                            "A,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment": {
+                                            "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment": {
                                                 "divisor": null,
-                                                "need": "A,WaterBeing,Williamette WaterShed,East Side of Watershed,apartment",
+                                                "need": "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment",
                                                 "nigh": null,
                                                 "open": null
                                             }
@@ -5804,16 +5804,16 @@
                                 "promise": false
                             }
                         },
-                        "_label": "Being in Williamette watershed",
+                        "_label": "Existance in Williamette watershed",
                         "_on_meld_weight_action": "default",
                         
                         "_reasonunits": {
-                            "A,WaterBeing": {
-                                "base": "A,WaterBeing",
+                            "A,WaterExistence": {
+                                "base": "A,WaterExistence",
                                 "premises": {
-                                    "A,WaterBeing,Williamette WaterShed": {
+                                    "A,WaterExistence,Williamette WaterShed": {
                                         "divisor": null,
-                                        "need": "A,WaterBeing,Williamette WaterShed",
+                                        "need": "A,WaterExistence,Williamette WaterShed",
                                         "nigh": null,
                                         "open": null
                                     }
@@ -5832,7 +5832,7 @@
                 "_weight": 1,
                 "promise": false
             },
-            "WaterBeing": {
+            "WaterExistence": {
                 "_is_expanded": true,
                 "_kids": {
                     "Williamette WaterShed": {
@@ -5876,7 +5876,7 @@
                         "promise": false
                     }
                 },
-                "_label": "WaterBeing",
+                "_label": "WaterExistence",
                 "_on_meld_weight_action": "default",
                 
                 "_uid": 256,

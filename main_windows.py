@@ -431,7 +431,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(row, 6, qtw1(""))
 
     def set_intent_states_table_properties(self):
-        self.intent_states.setObjectName("Agenda Being")
+        self.intent_states.setObjectName("Agenda Agent_ID")
         self.intent_states.setColumnWidth(0, 30)
         self.intent_states.setColumnWidth(1, 200)
         self.intent_states.setColumnWidth(2, 120)

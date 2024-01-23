@@ -51,7 +51,7 @@ def test_PremiseUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_
         )
     assert (
         str(excinfo.value)
-        == "remainder_weeks reqquires being at least 1 less than every_x_weeks"
+        == "It is mandatory that remainder_weeks is at least 1 less than every_x_weeks"
     )
 
 
@@ -69,7 +69,7 @@ def test_PremiseUnitHregTime_attributesSet_x_weeksGetsException_remainder_weeks_
             start_minute=0,
             event_minutes=0,
         )
-    assert str(excinfo.value) == "remainder_weeks reqquires being >= 0"
+    assert str(excinfo.value) == "It is mandatory that remainder_weeks >= 0"
 
 
 def test_PremiseUnitHregTime_attributesSet_weekday1():

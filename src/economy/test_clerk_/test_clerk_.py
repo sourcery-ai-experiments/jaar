@@ -183,7 +183,7 @@ def test_clerkunit_set_contract_savescontractAgendaSet_contract_None(
     assert tim_clerk._contract != None
 
     # WHEN
-    uid_text = "Not a real uid"
+    uid_text = "Not a actual uid"
     tim_clerk._contract._idearoot._uid = uid_text
     tim_clerk.set_contract()
 

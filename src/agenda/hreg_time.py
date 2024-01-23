@@ -564,7 +564,7 @@ class PremiseUnitHregTime:
     ):
         if every_x_weeks <= remainder_weeks:
             raise InvalidPremiseUnitException(
-                "remainder_weeks reqquires being at least 1 less than every_x_weeks"
+                "It is mandatory that remainder_weeks is at least 1 less than every_x_weeks"
             )
 
         self._set_every_x_weeks(every_x_weeks)
@@ -587,7 +587,7 @@ class PremiseUnitHregTime:
     ):
         if every_x_days <= remainder_days:
             raise InvalidPremiseUnitException(
-                "remainder_weeks reqquires being at least 1 less than every_x_weeks"
+                "It is mandatory that remainder_weeks is at least 1 less than every_x_weeks"
             )
 
         self._set_every_x_days(every_x_days)
@@ -601,12 +601,16 @@ class PremiseUnitHregTime:
 
     def set_x_remainder_weeks(self, remainder_weeks: int):
         if remainder_weeks < 0:
-            raise InvalidPremiseUnitException("remainder_weeks reqquires being >= 0")
+            raise InvalidPremiseUnitException(
+                "It is mandatory that remainder_weeks >= 0"
+            )
         self._x_week_remainder = remainder_weeks
 
     def set_x_remainder_days(self, remainder_days: int):
         if remainder_days < 0:
-            raise InvalidPremiseUnitException("remainder_weeks reqquires being >= 0")
+            raise InvalidPremiseUnitException(
+                "It is mandatory that remainder_weeks >= 0"
+            )
         self._x_days_remainder = remainder_days
 
     def _set_every_x_days(self, every_x_days: int):

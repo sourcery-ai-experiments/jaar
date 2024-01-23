@@ -103,7 +103,7 @@ def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
 
 #     # THEN
 #     bob_text = "Bob"
-#     real_text = "Real Farmers"
+#     actual_text = "actual Farmers"
 #     yao_text = "Yao"
 #     texas_text = "Texas"
 #     luca_text = "Luca"
@@ -119,6 +119,6 @@ def test_DealUnit_is_meaningful_ReturnsCorrectObjs():
 #  Within the action domain of '{action_text}'
 #  It is good to {positive_text}
 #  It is bad to {negative_text}
-#  ['{bob_text}', '{yao_text}'] are in groups ['{real_text}'] and are asked to be good."""
+#  ['{bob_text}', '{yao_text}'] are in groups ['{actual_text}'] and are asked to be good."""
 
 #     assert generated_farm_str == static_farm_string

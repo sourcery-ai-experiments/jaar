@@ -320,7 +320,7 @@ class IdeaUnit:
         # if a idea is considered a task then a beliefheir.open attribute can be increased to
         # a number <= beliefheir.nigh so the idea no longer is a task. This method finds
         # the minimal beliefheir.open to change idea._task == False. idea_core._beliefheir cannot be straight up manpulated
-        # so idea._beliefunit reqquires being changed.
+        # so it is mandatory that idea._beliefunit is changed.
         # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
         self._beliefunits[base_beliefunit.base] = beliefunit_shop(
             base=base_beliefunit.base,

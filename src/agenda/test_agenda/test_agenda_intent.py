@@ -217,7 +217,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     ced_week_text = "ced_week"
     ced_week_road = x_agenda.make_l1_road(ced_week_text)
     x_agenda.set_belief(base=ced_week_road, pick=ced_week_road)
-    # water_text = "WaterBeing"
+    # water_text = "WaterExistence"
     # water_road = x_agenda.make_road(x_agenda._economy_id,water_text)
     # x_agenda.set_belief(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
