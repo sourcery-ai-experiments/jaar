@@ -6,7 +6,7 @@ from src.agenda.party import (
     partylink_shop,
 )
 from src._prime.meld import get_meld_weight
-from src.tools.python import get_empty_dict_if_none, return1ifnone, x_get_dict
+from src.tools.python import get_empty_dict_if_none, get_1_if_None, x_get_dict
 from src._prime.road import RoadUnit
 
 
@@ -286,8 +286,8 @@ def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, BalanceLink]:
 def balancelink_shop(
     brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
 ) -> BalanceLink:
-    creditor_weight = return1ifnone(creditor_weight)
-    debtor_weight = return1ifnone(debtor_weight)
+    creditor_weight = get_1_if_None(creditor_weight)
+    debtor_weight = get_1_if_None(debtor_weight)
     return BalanceLink(
         brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
@@ -321,8 +321,8 @@ def balanceheir_shop(
     _agenda_credit: float = None,
     _agenda_debt: float = None,
 ) -> BalanceHeir:
-    creditor_weight = return1ifnone(creditor_weight)
-    debtor_weight = return1ifnone(debtor_weight)
+    creditor_weight = get_1_if_None(creditor_weight)
+    debtor_weight = get_1_if_None(debtor_weight)
     return BalanceHeir(
         brand=brand,
         creditor_weight=creditor_weight,

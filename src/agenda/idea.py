@@ -47,7 +47,7 @@ from src.agenda.group import (
 from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
-from src.tools.python import get_empty_dict_if_none, return1ifnone
+from src.tools.python import get_empty_dict_if_none, get_1_if_None
 from src._prime.meld import get_meld_weight, get_on_meld_weight_actions
 from copy import deepcopy
 
@@ -353,7 +353,7 @@ class IdeaUnit:
         parent_agenda_importance: float = None,
         parent_coin_cease: float = None,
     ):
-        parent_agenda_importance = return1ifnone(parent_agenda_importance)
+        parent_agenda_importance = get_1_if_None(parent_agenda_importance)
         self.set_kids_total_weight()
         self._agenda_importance = None
         self._agenda_coin_onset = None

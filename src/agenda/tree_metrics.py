@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import ReasonUnit, RoadUnit
 from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
-from src.tools.python import get_empty_dict_if_none, return0ifnone
+from src.tools.python import get_empty_dict_if_none, get_0_if_None
 
 
 @dataclass
@@ -77,12 +77,12 @@ def treemetrics_shop(
     an_promise_idea_road: RoadUnit = None,
 ) -> TreeMetrics:
     x_treemetrics = TreeMetrics(
-        node_count=return0ifnone(node_count),
+        node_count=get_0_if_None(node_count),
         level_count=get_empty_dict_if_none(level_count),
         reason_bases=get_empty_dict_if_none(reason_bases),
         balancelinks_metrics=get_empty_dict_if_none(balancelinks_metrics),
         uid_dict=get_empty_dict_if_none(uid_dict),
-        uid_max=return0ifnone(uid_max),
+        uid_max=get_0_if_None(uid_max),
     )
     if x_treemetrics.all_idea_uids_are_unique is None:
         x_treemetrics.all_idea_uids_are_unique = True

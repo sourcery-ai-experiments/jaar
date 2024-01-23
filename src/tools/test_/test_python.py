@@ -1,8 +1,8 @@
-from src.tools.python import return1ifnone
+from src.tools.python import get_1_if_None
 
 
-def test_return1ifnone():
+def test_get_1_if_None():
     # GIVEN / WHEN / THEN
-    assert return1ifnone(None) == 1
-    assert return1ifnone(2) == 2
-    assert return1ifnone(-3) == -3
+    assert get_1_if_None(None) == 1
+    assert get_1_if_None(2) == 2
+    assert get_1_if_None(-3) == -3

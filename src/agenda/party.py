@@ -1,6 +1,6 @@
 from src._prime.road import PartyID
 from dataclasses import dataclass
-from src.tools.python import return1ifnone, x_get_dict
+from src.tools.python import get_1_if_None, x_get_dict
 
 
 class InvalidPartyException(Exception):
@@ -171,10 +171,10 @@ class PartyUnit(PartyCore):
         return x_dict
 
     def get_creditor_weight(self):
-        return return1ifnone(self.creditor_weight)
+        return get_1_if_None(self.creditor_weight)
 
     def get_debtor_weight(self):
-        return return1ifnone(self.debtor_weight)
+        return get_1_if_None(self.debtor_weight)
 
     def set_empty_agenda_credit_debt_to_zero(self):
         if self._agenda_credit is None:
@@ -344,8 +344,8 @@ def partyunit_shop(
     x_partyunit = PartyUnit(
         party_id=party_id,
         uid=uid,
-        creditor_weight=return1ifnone(creditor_weight),
-        debtor_weight=return1ifnone(debtor_weight),
+        creditor_weight=get_1_if_None(creditor_weight),
+        debtor_weight=get_1_if_None(debtor_weight),
         _creditor_live=_creditor_live,
         _debtor_live=_debtor_live,
         _agenda_credit=_agenda_credit,
@@ -390,8 +390,8 @@ class PartyLink(PartyCore):
         group_agenda_intent_credit: float,
         group_agenda_intent_debt: float,
     ):
-        group_agenda_credit = return1ifnone(group_agenda_credit)
-        group_agenda_debt = return1ifnone(group_agenda_debt)
+        group_agenda_credit = get_1_if_None(group_agenda_credit)
+        group_agenda_debt = get_1_if_None(group_agenda_debt)
         creditor_ratio = self.creditor_weight / partylinks_creditor_weight_sum
         debtor_ratio = self.debtor_weight / partylinks_debtor_weight_sum
 
@@ -442,8 +442,8 @@ def partylink_shop(
     _agenda_intent_credit: float = None,
     _agenda_intent_debt: float = None,
 ) -> PartyLink:
-    creditor_weight = return1ifnone(creditor_weight)
-    debtor_weight = return1ifnone(debtor_weight)
+    creditor_weight = get_1_if_None(creditor_weight)
+    debtor_weight = get_1_if_None(debtor_weight)
     return PartyLink(
         party_id=party_id,
         creditor_weight=creditor_weight,

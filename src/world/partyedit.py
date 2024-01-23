@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src._prime.road import PartyID, PersonID
 from src.agenda.party import get_default_depotlink_type, PartyUnit
-from src.tools.python import return0ifnone
+from src.tools.python import get_0_if_None
 
 
 @dataclass
@@ -34,7 +34,7 @@ def partyeditunit_shop(
     return PartyEditUnit(
         deal_member=deal_member,
         party_id=party_id,
-        creditor_change=return0ifnone(creditor_change),
-        debtor_change=return0ifnone(debtor_change),
+        creditor_change=get_0_if_None(creditor_change),
+        debtor_change=get_0_if_None(debtor_change),
         depotlink_type=depotlink_type,
     )
