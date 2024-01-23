@@ -27,7 +27,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop,
 )
 from src.agenda.reason_assign import AssignedUnit
-from src.agenda.tree_metrics import TreeMetrics
+from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
 from src.agenda.idea import (
     IdeaUnit,
     ideaunit_shop,
@@ -935,7 +935,7 @@ class AgendaUnit:
         self._idearoot.del_beliefunit(base)
 
     def get_tree_metrics(self) -> TreeMetrics:
-        tree_metrics = TreeMetrics()
+        tree_metrics = treemetrics_shop()
         tree_metrics.evaluate_node(
             level=self._idearoot._level,
             reasons=self._idearoot._reasonunits,

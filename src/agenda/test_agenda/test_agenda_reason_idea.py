@@ -654,7 +654,7 @@ def test_agenda_reasonunits_IdeaUnit_active_InfluencesReasonUnitStatus():
     assert commute_idea._active == True
 
 
-def test_agenda_set_agenda_metrics_InitipartySetsRationalAttrToFalse():
+def test_agenda_set_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._rational == False

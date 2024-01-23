@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import ReasonUnit, RoadUnit
 from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
-from src.tools.python import get_empty_dict_if_none
+from src.tools.python import get_empty_dict_if_none, return0ifnone
 
 
 @dataclass
@@ -14,23 +14,6 @@ class TreeMetrics:
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
     an_promise_idea_road: RoadUnit = None
-
-    def __init__(self):
-        if self.node_count is None:
-            self.node_count = 0
-        if self.level_count is None:
-            self.level_count = {}
-        if self.reason_bases is None:
-            self.reason_bases = {}
-        self.set_balancelinks_metrics_empty_if_null()
-        if self.uid_max is None:
-            self.uid_max = 0
-        self.uid_dict = get_empty_dict_if_none(self.uid_dict)
-        self.all_idea_uids_are_unique = True
-
-    def set_balancelinks_metrics_empty_if_null(self):
-        if self.balancelinks_metrics is None:
-            self.balancelinks_metrics = {}
 
     def evaluate_node(
         self,
@@ -81,3 +64,26 @@ class TreeMetrics:
         else:
             self.uid_dict[uid] += 1
             self.all_idea_uids_are_unique = False
+
+
+def treemetrics_shop(
+    node_count: int = None,
+    level_count: dict[int:int] = None,
+    reason_bases: dict[RoadUnit:int] = None,
+    balancelinks_metrics: dict[GroupBrand:GroupMetrics] = None,
+    uid_max: int = None,
+    uid_dict: dict[int:int] = None,
+    all_idea_uids_are_unique: bool = None,
+    an_promise_idea_road: RoadUnit = None,
+) -> TreeMetrics:
+    x_treemetrics = TreeMetrics(
+        node_count=return0ifnone(node_count),
+        level_count=get_empty_dict_if_none(level_count),
+        reason_bases=get_empty_dict_if_none(reason_bases),
+        balancelinks_metrics=get_empty_dict_if_none(balancelinks_metrics),
+        uid_dict=get_empty_dict_if_none(uid_dict),
+        uid_max=return0ifnone(uid_max),
+    )
+    if x_treemetrics.all_idea_uids_are_unique is None:
+        x_treemetrics.all_idea_uids_are_unique = True
+    return x_treemetrics

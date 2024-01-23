@@ -201,7 +201,7 @@ def test_agenda_set_auto_output_to_public_SetsBoolCorrectlyGivenNoneOrBool():
     assert x_agenda._auto_output_to_public == False
 
 
-def test_agenda_init_CorrectlySetsGiven_auto_output_to_public():
+def test_agendaunit_shop_CorrectlySetsGiven_auto_output_to_public():
     # GIVEN
 
     # WHEN

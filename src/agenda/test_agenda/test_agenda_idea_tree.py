@@ -29,7 +29,7 @@ def test_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     # idea work_text  # , promise=True)
     # idea feed_text  # , promise=True)
 
-    # test root init status:
+    # test root status:
     work_text = "work"
     week_text = "weekdays"
     mon_text = "Monday"
@@ -165,7 +165,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # idea feed_text  # , promise=True)
     # idea "
 
-    # test root init status:
+    # test root status:
     x_idearoot = x_agenda.get_idea_obj(x_agenda._economy_id)
     assert x_idearoot._descendant_promise_count is None
     assert x_idearoot._all_party_credit is None
