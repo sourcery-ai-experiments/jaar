@@ -87,7 +87,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN
-    assert tree_metrics_before.an_promise_idea_road is None
+    assert tree_metrics_before.last_evaluated_promise_idea_road is None
 
 
 def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
@@ -105,4 +105,4 @@ def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
             "Take Fall 2021 training",
         ]
     )
-    assert yao_tree_metrics.an_promise_idea_road == train_road
+    assert yao_tree_metrics.last_evaluated_promise_idea_road == train_road

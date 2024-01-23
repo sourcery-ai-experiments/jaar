@@ -1,8 +1,4 @@
-from src.agenda.examples.example_agendas import agenda_v001, get_agenda_with_4_levels
-from src.agenda.agenda import agendaunit_shop
 from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
-from src.agenda.idea import ideaunit_shop
-from src._prime.road import create_road_from_nodes
 
 
 def test_TreeMetrics_Exists():
@@ -33,3 +29,11 @@ def test_treemetrics_shop_ReturnsCorrectObj():
     assert x_tree_metrics.uid_max == 0
     assert x_tree_metrics.uid_dict == {}
     assert x_tree_metrics.all_idea_uids_are_unique
+
+    # # could create tests for these methods?
+    # def evaluate_node(
+    # def evaluate_action(self, promise: bool, idea_road: RoadUnit):
+    # def evaluate_level(self, level):
+    # def evaluate_reasonunits(self, reasons: dict[RoadUnit:ReasonUnit]):
+    # def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:BalanceLink]):
+    # def evaluate_uid_max(self, uid):

@@ -13,7 +13,7 @@ class TreeMetrics:
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
-    an_promise_idea_road: RoadUnit = None
+    last_evaluated_promise_idea_road: RoadUnit = None
 
     def evaluate_node(
         self,
@@ -33,7 +33,7 @@ class TreeMetrics:
 
     def evaluate_action(self, promise: bool, idea_road: RoadUnit):
         if promise:
-            self.an_promise_idea_road = idea_road
+            self.last_evaluated_promise_idea_road = idea_road
 
     def evaluate_level(self, level):
         if self.level_count.get(level) is None:
@@ -73,8 +73,6 @@ def treemetrics_shop(
     balancelinks_metrics: dict[GroupBrand:GroupMetrics] = None,
     uid_max: int = None,
     uid_dict: dict[int:int] = None,
-    all_idea_uids_are_unique: bool = None,
-    an_promise_idea_road: RoadUnit = None,
 ) -> TreeMetrics:
     x_treemetrics = TreeMetrics(
         node_count=get_0_if_None(node_count),
