@@ -1688,7 +1688,7 @@
     <string>beliefheirs</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="yo_active_status">
+  <widget class="QTextEdit" name="yo_active">
    <property name="geometry">
     <rect>
      <x>930</x>
@@ -1718,7 +1718,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Active Status:</string>
+    <string>active:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="button_view_reasonheirs">
@@ -1835,7 +1835,7 @@
     <string>Reason Base Agenda Status is Sufficient when Promise status is </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="reason_suff_active_status_combo">
+  <widget class="QComboBox" name="reason_suff_active_combo">
    <property name="geometry">
     <rect>
      <x>1420</x>

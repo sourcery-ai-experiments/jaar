@@ -172,8 +172,8 @@ class AgendaUnit:
         self, external_metrics: PartyUnitExternalMetrics
     ):
         party_x = self.get_party(external_metrics.internal_party_id)
-        party_x._creditor_active = external_metrics.creditor_active
-        party_x._debtor_active = external_metrics.debtor_active
+        party_x._creditor_live = external_metrics.creditor_live
+        party_x._debtor_live = external_metrics.debtor_live
         # self.set_partyunit(partyunit=party_x)
 
     def set_max_tree_traverse(self, int_x: int):
@@ -1313,7 +1313,7 @@ class AgendaUnit:
         reason_premise_divisor: int = None,
         reason_del_premise_base: RoadUnit = None,
         reason_del_premise_need: RoadUnit = None,
-        reason_suff_idea_active_status: str = None,
+        reason_suff_idea_active: str = None,
         assignedunit: AssignedUnit = None,
         begin: float = None,
         close: float = None,
@@ -1344,7 +1344,7 @@ class AgendaUnit:
             reason_premise_divisor=reason_premise_divisor,
             reason_del_premise_base=reason_del_premise_base,
             reason_del_premise_need=reason_del_premise_need,
-            reason_suff_idea_active_status=reason_suff_idea_active_status,
+            reason_suff_idea_active=reason_suff_idea_active,
             assignedunit=assignedunit,
             begin=begin,
             close=close,
@@ -1655,7 +1655,7 @@ class AgendaUnit:
         x_idearoot._kids_total_weight = 0
         x_idearoot.set_kids_total_weight()
         x_idearoot.set_sibling_total_weight(1)
-        x_idearoot.set_active_status(
+        x_idearoot.set_active(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
             agenda_agent_id=self._agent_id,
@@ -1685,7 +1685,7 @@ class AgendaUnit:
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._groups)
         idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
         idea_kid.clear_balancelines()
-        idea_kid.set_active_status(
+        idea_kid.set_active(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
             agenda_agent_id=self._agent_id,
@@ -1734,7 +1734,7 @@ class AgendaUnit:
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
             self._execute_tree_traverse()
-            self._check_if_any_idea_active_status_has_changed()
+            self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
 
@@ -1775,13 +1775,13 @@ class AgendaUnit:
                     cache_idea_list.append(idea_kid)
                     coin_onset += idea_kid._agenda_importance
 
-    def _check_if_any_idea_active_status_has_changed(self):
-        any_idea_active_status_changed = False
+    def _check_if_any_idea_active_has_changed(self):
+        any_idea_active_changed = False
         for idea in self._idea_dict.values():
-            if idea._active_status_hx.get(self._tree_traverse_count) != None:
-                any_idea_active_status_changed = True
+            if idea._active_hx.get(self._tree_traverse_count) != None:
+                any_idea_active_changed = True
 
-        if any_idea_active_status_changed == False:
+        if any_idea_active_changed == False:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):

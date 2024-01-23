@@ -191,7 +191,7 @@ class Lemmas:
                 src_nigh=src_nigh,
             )
 
-        active_status = belief_open is not None and belief_nigh is not None
+        active = belief_open is not None and belief_nigh is not None
         return beliefunit_shop(
             base=idea_road,
             pick=idea_road,

@@ -30,8 +30,8 @@ def test_PartyUnit_exists():
     assert bob_party._agenda_debt is None
     assert bob_party._agenda_intent_credit is None
     assert bob_party._agenda_intent_debt is None
-    assert bob_party._creditor_active is None
-    assert bob_party._debtor_active is None
+    assert bob_party._creditor_live is None
+    assert bob_party._debtor_live is None
     assert bob_party._partyrings is None
     assert bob_party._treasury_tax_paid is None
     assert bob_party._treasury_tax_diff is None
@@ -473,10 +473,10 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_uid = 4321
     bob_party.uid = bob_uid
 
-    bob_creditor_active = False
-    bob_debtor_active = True
-    bob_party._creditor_active = bob_creditor_active
-    bob_party._debtor_active = bob_debtor_active
+    bob_creditor_live = False
+    bob_debtor_live = True
+    bob_party._creditor_live = bob_creditor_live
+    bob_party._debtor_live = bob_debtor_live
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
@@ -502,8 +502,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "uid": bob_uid,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
-        "_creditor_active": bob_creditor_active,
-        "_debtor_active": bob_debtor_active,
+        "_creditor_live": bob_creditor_live,
+        "_debtor_live": bob_debtor_live,
         "_partyrings": {"glen": {"party_id": "glen"}},
         "_treasury_tax_paid": bob_treasury_tax_paid,
         "_treasury_tax_diff": bob_treasury_tax_diff,
@@ -524,8 +524,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_uid = 239
     yao_creditor_weight = 13
     yao_debtor_weight = 17
-    yao_creditor_active = False
-    yao_debtor_active = True
+    yao_creditor_live = False
+    yao_debtor_live = True
     yao_treasury_tax_paid = 0.55
     yao_treasury_tax_diff = 0.66
     yao_depotlink_type = "assignment"
@@ -538,8 +538,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
             "uid": yao_uid,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
-            "_creditor_active": yao_creditor_active,
-            "_debtor_active": yao_debtor_active,
+            "_creditor_live": yao_creditor_live,
+            "_debtor_live": yao_debtor_live,
             "_partyrings": yao_party_rings,
             "_treasury_tax_paid": yao_treasury_tax_paid,
             "_treasury_tax_diff": yao_treasury_tax_diff,
@@ -564,8 +564,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     assert yao_partyunit.uid == yao_uid
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
-    assert yao_partyunit._creditor_active == yao_creditor_active
-    assert yao_partyunit._debtor_active == yao_debtor_active
+    assert yao_partyunit._creditor_live == yao_creditor_live
+    assert yao_partyunit._debtor_live == yao_debtor_live
     # assert yao_partyunit._party_rings == yao_party_rings
     assert yao_partyunit._treasury_tax_paid == yao_treasury_tax_paid
     assert yao_partyunit._treasury_tax_diff == yao_treasury_tax_diff

@@ -192,11 +192,11 @@ class PremiseStatusFinder:
     def pd(self) -> float:
         return self.premise_divisor
 
-    def get_active_status(self) -> bool:
+    def get_active(self) -> bool:
         if self.belief_nigh_full - self.belief_open_full > self.premise_divisor:
             return True
         # Case B1
-        elif get_range_less_than_divisor_active_status(
+        elif get_range_less_than_divisor_active(
             bo=self.bo(), bn=self.bn(), po=self.po(), pn=self.pn()
         ):
             return True
@@ -206,8 +206,8 @@ class PremiseStatusFinder:
     def get_task_status(self):
         return bool(
             (
-                self.get_active_status()
-                and get_collasped_beliefrange_active_status(
+                self.get_active()
+                and get_collasped_beliefrange_active(
                     self.premise_open,
                     self.premise_nigh,
                     self.premise_divisor,
@@ -218,7 +218,7 @@ class PremiseStatusFinder:
         )
 
 
-def get_range_less_than_divisor_active_status(bo, bn, po, pn):
+def get_range_less_than_divisor_active(bo, bn, po, pn):
     # x_bool = False
     # if bo <= bn and po <= pn:
     #     if (
@@ -258,7 +258,7 @@ def get_range_less_than_divisor_active_status(bo, bn, po, pn):
     return x_bool
 
 
-def get_collasped_beliefrange_active_status(
+def get_collasped_beliefrange_active(
     premise_open: float,
     premise_nigh: float,
     premise_divisor: float,
@@ -271,7 +271,7 @@ def get_collasped_beliefrange_active_status(
         belief_open_full=belief_nigh_full,
         belief_nigh_full=belief_nigh_full,
     )
-    return x_pbsd.get_active_status()
+    return x_pbsd.get_active()
 
 
 def premisestatusfinder_shop(
@@ -329,10 +329,10 @@ class PremiseUnit:
         ) or is_heir_road(src=belief_pick, heir=self.need, delimiter=self.delimiter)
 
     def set_status(self, x_beliefheir: BeliefHeir):
-        self._status = self._get_active_status(beliefheir=x_beliefheir)
+        self._status = self._get_active(beliefheir=x_beliefheir)
         self._task = self._get_task_status(beliefheir=x_beliefheir)
 
-    def _get_active_status(self, beliefheir: BeliefHeir):
+    def _get_active(self, beliefheir: BeliefHeir):
         x_status = None
         # status might be true if premise is in lineage of belief
         if beliefheir is None:
@@ -393,7 +393,7 @@ class PremiseUnit:
             belief_open_full=beliefheir.open,
             belief_nigh_full=beliefheir.nigh,
         )
-        return segr_obj.get_active_status()
+        return segr_obj.get_active()
 
     def _get_range_status(self, beliefheir: BeliefHeir) -> bool:
         return (
@@ -474,9 +474,9 @@ class ReasonCore:
     base: RoadUnit
     premises: dict[RoadUnit:PremiseUnit]
     # None: ignore,
-    # True: base idea._active_status reason be True,
-    # False: base idea._active_status reason be False
-    suff_idea_active_status: bool = None
+    # True: base idea._active reason be True,
+    # False: base idea._active reason be False
+    suff_idea_active: bool = None
     delimiter: str = None
 
     def set_delimiter(self, new_delimiter: str):
@@ -549,13 +549,13 @@ class ReasonCore:
 def reasoncore_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active_status: bool = None,
+    suff_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonCore(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active_status=suff_idea_active_status,
+        suff_idea_active=suff_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -576,13 +576,13 @@ class ReasonUnit(ReasonCore):
 def reasonunit_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active_status: bool = None,
+    suff_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonUnit(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active_status=suff_idea_active_status,
+        suff_idea_active=suff_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -591,7 +591,7 @@ def reasonunit_shop(
 class ReasonHeir(ReasonCore):
     _status: bool = None
     _task: bool = None
-    _curr_idea_active_status: bool = None
+    _curr_idea_active: bool = None
 
     def inherit_from_reasonheir(self, x_reasonunit: ReasonUnit):
         x_premises = {}
@@ -625,8 +625,8 @@ class ReasonHeir(ReasonCore):
 
         return x_belief
 
-    def set_curr_idea_active_status(self, bool_x: bool):
-        self._curr_idea_active_status = bool_x
+    def set_curr_idea_active(self, bool_x: bool):
+        self._curr_idea_active = bool_x
 
     def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
         self.clear_status()
@@ -646,8 +646,8 @@ class ReasonHeir(ReasonCore):
         self._status = bool(
             is_a_single_premise_true
             or (
-                self._curr_idea_active_status != None
-                and self._curr_idea_active_status == self.suff_idea_active_status
+                self._curr_idea_active != None
+                and self._curr_idea_active == self.suff_idea_active
             )
         )
         self._task = True if is_single_task_true else None
@@ -658,19 +658,19 @@ class ReasonHeir(ReasonCore):
 def reasonheir_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active_status: bool = None,
+    suff_idea_active: bool = None,
     _status: bool = None,
     _task: bool = None,
-    _curr_idea_active_status: bool = None,
+    _curr_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonHeir(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active_status=suff_idea_active_status,
+        suff_idea_active=suff_idea_active,
         _status=_status,
         _task=_task,
-        _curr_idea_active_status=_curr_idea_active_status,
+        _curr_idea_active=_curr_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 

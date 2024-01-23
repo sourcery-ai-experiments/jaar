@@ -1,16 +1,14 @@
 from dataclasses import dataclass
 from src._prime.road import PartyID, PersonID
-from src.agenda.party import get_default_depotlink_type
+from src.agenda.party import get_default_depotlink_type, PartyUnit
 from src.tools.python import return0ifnone
 
 
 @dataclass
-class PartyEditUnit:
+class PartyEditUnit(PartyUnit):
     deal_member: PersonID = None
-    party_id: PartyID = None
     creditor_change: float = None
     debtor_change: float = None
-    depotlink_type: str = None
 
     def set_deal_member(self, x_deal_member: PersonID):
         self.deal_member = x_deal_member

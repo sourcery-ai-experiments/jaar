@@ -18,35 +18,34 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttr_1():
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
     sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
     print(sunday_agenda_belief)
-    x_agenda._idearoot._beliefunits = {sunday_agenda_belief.base: sunday_agenda_belief}
-    assert x_agenda._idearoot._beliefunits != None
-    x_agenda._idearoot._beliefunits = {}
-    assert not x_agenda._idearoot._beliefunits
+    x_idearoot = x_agenda._idearoot
+    x_idearoot._beliefunits = {sunday_agenda_belief.base: sunday_agenda_belief}
+    assert x_idearoot._beliefunits != None
+    x_idearoot._beliefunits = {}
+    assert not x_idearoot._beliefunits
 
     # GIVEN
     x_agenda.set_belief(base=weekday_road, pick=sunday_road)
 
     # THEN
-    assert x_agenda._idearoot._beliefunits == {
-        sunday_agenda_belief.base: sunday_agenda_belief
-    }
+    assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
     # GIVEN
-    x_agenda._idearoot._beliefunits = {}
-    assert not x_agenda._idearoot._beliefunits
+    x_idearoot._beliefunits = {}
+    assert not x_idearoot._beliefunits
     usa_week_road = x_agenda.make_l1_road("nation-state")
     usa_week_unit = beliefunit_shop(usa_week_road, usa_week_road, open=608, nigh=610)
-    x_agenda._idearoot._beliefunits = {usa_week_unit.base: usa_week_unit}
+    x_idearoot._beliefunits = {usa_week_unit.base: usa_week_unit}
 
-    x_agenda._idearoot._beliefunits = {}
-    assert not x_agenda._idearoot._beliefunits
+    x_idearoot._beliefunits = {}
+    assert not x_idearoot._beliefunits
 
     # WHEN
     x_agenda.set_belief(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
 
     # THEN
-    assert x_agenda._idearoot._beliefunits != None
-    assert x_agenda._idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
+    assert x_idearoot._beliefunits != None
+    assert x_idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
 
 
 def test_AgendaUnit_set_belief_CorrectlyChangesAttr_2():
@@ -60,9 +59,8 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttr_2():
 
     # THEN
     sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
-    assert x_agenda._idearoot._beliefunits == {
-        sunday_agenda_belief.base: sunday_agenda_belief
-    }
+    x_idearoot = x_agenda._idearoot
+    assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
 def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_pick_IsNone():
@@ -75,9 +73,8 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_pick_IsNone():
 
     # THEN
     sunday_agenda_belief = beliefunit_shop(weekday_road, weekday_road, 5, 7)
-    assert x_agenda._idearoot._beliefunits == {
-        sunday_agenda_belief.base: sunday_agenda_belief
-    }
+    x_idearoot = x_agenda._idearoot
+    assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
 def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_open_IsNone():
@@ -85,7 +82,8 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_open_IsNone():
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
     x_agenda.set_belief(base=weekday_road, open=5, nigh=7)
-    assert x_agenda._idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
+    x_idearoot = x_agenda._idearoot
+    assert x_idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
         weekday_road, weekday_road, 5, 7
     )
 
@@ -93,7 +91,7 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_open_IsNone():
     x_agenda.set_belief(base=weekday_road, nigh=10)
 
     # THEN
-    assert x_agenda._idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
+    assert x_idearoot._beliefunits.get(weekday_road) == beliefunit_shop(
         weekday_road, weekday_road, 5, 10
     )
 
@@ -131,15 +129,14 @@ def test_AgendaUnit_del_belief_CorrectlyChangesAttr():
     sunday_road = x_agenda.make_road(weekday_road, "Sunday")
     x_agenda.set_belief(base=weekday_road, pick=sunday_road)
     sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
-    assert x_agenda._idearoot._beliefunits == {
-        sunday_agenda_belief.base: sunday_agenda_belief
-    }
+    x_idearoot = x_agenda._idearoot
+    assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
     # WHEN
     x_agenda.del_belief(base=weekday_road)
 
     # THEN
-    assert x_agenda._idearoot._beliefunits == {}
+    assert x_idearoot._beliefunits == {}
 
 
 def test_AgendaUnit_get_idea_list_BeliefHeirsCorrectlyInherited():
@@ -404,13 +401,6 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario1():
     age5th_lemma = lemma_dict[sue_agenda.make_road(time_road, age5th_text)]
     age6th_lemma = lemma_dict[sue_agenda.make_road(time_road, age6th_text)]
     age7th_lemma = lemma_dict[sue_agenda.make_road(time_road, age7th_text)]
-    # assert age1st_lemma.active == False
-    # assert age2nd_lemma.active == False
-    # assert age3rd_lemma.active == True
-    # assert age4th_lemma.active == False
-    # assert age5th_lemma.active == False
-    # assert age6th_lemma.active == False
-    # assert age7th_lemma.active == False
     assert age1st_lemma.open is None
     assert age2nd_lemma.open is None
     assert age3rd_lemma.open == 45
@@ -470,13 +460,6 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario2():
     age5th_lemma = lemma_dict[sue_agenda.make_road(time_road, age5th_text)]
     age6th_lemma = lemma_dict[sue_agenda.make_road(time_road, age6th_text)]
     age7th_lemma = lemma_dict[sue_agenda.make_road(time_road, age7th_text)]
-    # assert age1st_lemma.active == False
-    # assert age2nd_lemma.active == True
-    # assert age3rd_lemma.active == True
-    # assert age4th_lemma.active == True
-    # assert age5th_lemma.active == False
-    # assert age6th_lemma.active == False
-    # assert age7th_lemma.active == False
     assert age1st_lemma.open is None
     assert age2nd_lemma.open == 35
     assert age3rd_lemma.open == 40
@@ -565,14 +548,6 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
     a3e2nd_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e2nd_text)]
     a3e3rd_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e3rd_text)]
     a3e4th_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e4th_text)]
-    # assert a2e1st_lemma.active == False
-    # assert a2e2nd_lemma.active == False
-    # assert a2e3rd_lemma.active == True
-    # assert a2e4th_lemma.active == True
-    # assert a3e1st_lemma.active == True
-    # assert a3e2nd_lemma.active == True
-    # assert a3e3rd_lemma.active == False
-    # assert a3e4th_lemma.active == False
     assert a2e1st_lemma.open is None
     assert a2e2nd_lemma.open is None
     assert a2e3rd_lemma.open == 35
@@ -624,9 +599,6 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
     a1_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st)]
     as1_lemma = lemma_dict[as1_road]
     as2_lemma = lemma_dict[as2_road]
-    # assert a1_lemma.active == False
-    # assert as1_lemma.active == True
-    # assert as2_lemma.active == False
     assert a1_lemma.open is None
     assert as1_lemma.open == 35
     assert as2_lemma.open is None
@@ -753,14 +725,6 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario7():
     print(lhu[sue_agenda.make_road(techweek_road, "Tuesday")])
     print(lhu[sue_agenda.make_road(techweek_road, "Wednesday")])
 
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Thursday")].active == True
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Friday")].active == True
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Saturday")].active == True
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Sunday")].active == True
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Monday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Tuesday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Wednesday")].active == False
-
 
 def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
     # GIVEN
@@ -798,14 +762,6 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
     print(lhu[sue_agenda.make_road(techweek_road, "Monday")])
     print(lhu[sue_agenda.make_road(techweek_road, "Tuesday")])
     print(lhu[sue_agenda.make_road(techweek_road, "Wednesday")])
-
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Thursday")].active == True
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Friday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Saturday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Sunday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Monday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Tuesday")].active == False
-    # assert lhu[sue_agenda.make_road(timetech_road,"week,Wednesday")].active == False
 
 
 def test_AgendaUnit_set_belief_create_missing_ideas_CreatesBaseAndBelief():

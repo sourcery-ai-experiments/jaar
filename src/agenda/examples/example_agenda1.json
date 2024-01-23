@@ -6122,176 +6122,176 @@
     "_max_tree_traverse": 2,
     "_partys": {
         "A a ron Jones": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "A a ron Jones",
             "uid": 21
         },
         "America": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "America",
             "uid": 1
         },
         "Anna": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Anna",
             "uid": 2
         },
         "Benjamin Stoddert": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Benjamin Stoddert",
             "uid": 14
         },
         "Bob302": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Bob302",
             "uid": 6
         },
         "Charles Lee": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Charles Lee",
             "uid": 13
         },
         "Ernesto Chavez": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Ernesto Chavez",
             "uid": 10
         },
         "Jacque Chirac": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jacque Chirac",
             "uid": 20
         },
         "Jane Randolph": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jane Randolph",
             "uid": 17
         },
         "Maria Reynolds": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Maria Reynolds",
             "uid": 7
         },
         "Martha Wayles": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Martha Wayles",
             "uid": 15
         },
         "Mikayla": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Mikayla",
             "uid": 12
         },
         "Norberto": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Norberto",
             "uid": 22
         },
         "Perrison": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Perrison",
             "uid": 9
         },
         "Philipa": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Philipa",
             "uid": 5
         },
         "Prashant": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Prashant",
             "uid": 8
         },
         "Renee Elise Goldsberry": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Renee Elise Goldsberry",
             "uid": 4
         },
         "Sam zamora": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Sam zamora",
             "uid": 16
         },
         "Shadwell Harris": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Shadwell Harris",
             "uid": 18
         },
         "Thomas OSU": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Thomas OSU",
             "uid": 11
         },
         "Travis Fox": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Travis Fox",
             "uid": 3
         },
         "WIlliam Wallace": {
-            "_creditor_active": null,
-            "_debtor_active": null,
+            "_creditor_live": null,
+            "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "WIlliam Wallace",

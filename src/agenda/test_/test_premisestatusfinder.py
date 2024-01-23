@@ -259,7 +259,7 @@ def show_x(
         fig, x_pbsd, trace_y, showlegend, case_text, wanted_text, wanted_status_text, 1
     )
     if (
-        x_pbsd.get_active_status() != wanted_active
+        x_pbsd.get_active() != wanted_active
         or x_pbsd.get_task_status() != wanted_task_status
     ):
         fig.show()
@@ -277,11 +277,11 @@ def get_fig(pd: float) -> go_figure:
         x_color=None,
         showlegend=True,
         case_text="Case",
-        wanted_text="Active Status",
+        wanted_text="active",
         wanted_status_text="Task Status",
         premise_divisor=pd,
     )
-    fig_title = "When Belief.range < Premise_divisor: Premise.Active_status Checks."
+    fig_title = "When Belief.range < Premise_divisor: Premise.active Checks."
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -289,13 +289,13 @@ def get_fig(pd: float) -> go_figure:
     return fig
 
 
-def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
-    """Check scenarios PremiseUnit._active_status. Plotly graph can be used
+def test_PremiseStatusFinder_get_active_ReturnsCorrectObj():
+    """Check scenarios PremiseUnit._active. Plotly graph can be used
     to identify problems. Uncomment entire test once to visualize errors with
     graphical output.
     """
     # # Case A
-    assert premisestatusfinder_shop(0.3, 0.7, 1, 0.1, 1.2).get_active_status()
+    assert premisestatusfinder_shop(0.3, 0.7, 1, 0.1, 1.2).get_active()
 
     # # Case B1
     pd = 1  # premise_divisor
@@ -315,61 +315,61 @@ def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb1_1, fig, linel, "caseb1_1", True)
-    assert caseb1_1.get_active_status() == wanted_active
+    assert caseb1_1.get_active() == wanted_active
     assert caseb1_1.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_2, fig, linel, "caseb1_2")
-    assert caseb1_2.get_active_status() == wanted_active
+    assert caseb1_2.get_active() == wanted_active
     assert caseb1_2.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_3, fig, linel, "caseb1_3")
-    assert caseb1_3.get_active_status() == wanted_active
+    assert caseb1_3.get_active() == wanted_active
     assert caseb1_3.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb1_4, fig, linel, "caseb1_4")
-    assert caseb1_4.get_active_status() == wanted_active
+    assert caseb1_4.get_active() == wanted_active
     assert caseb1_4.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_5, fig, linel, "caseb1_5")
-    assert caseb1_5.get_active_status() == wanted_active
+    assert caseb1_5.get_active() == wanted_active
     assert caseb1_5.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_6, fig, linel, "caseb1_6")
-    assert caseb1_6.get_active_status() == wanted_active
+    assert caseb1_6.get_active() == wanted_active
     assert caseb1_6.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb1_7, fig, linel, "caseb1_7")
-    assert caseb1_7.get_active_status() == wanted_active
+    assert caseb1_7.get_active() == wanted_active
     assert caseb1_7.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_8, fig, linel, "caseb1_8")
-    assert caseb1_8.get_active_status() == wanted_active
+    assert caseb1_8.get_active() == wanted_active
     assert caseb1_8.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_9, fig, linel, "caseb1_9")
-    assert caseb1_9.get_active_status() == wanted_active
+    assert caseb1_9.get_active() == wanted_active
     assert caseb1_9.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb1_10, fig, linel, "caseb1_10")
-    assert caseb1_10.get_active_status() == wanted_active
+    assert caseb1_10.get_active() == wanted_active
     assert caseb1_10.get_task_status() == wanted_task
 
     # # Case B2
@@ -388,55 +388,55 @@ def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb2_1, fig, linel, "caseb2_1")
-    assert caseb2_1.get_active_status() == wanted_active
+    assert caseb2_1.get_active() == wanted_active
     assert caseb2_1.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb2_2, fig, linel, "caseb2_2")
-    assert caseb2_2.get_active_status() == wanted_active
+    assert caseb2_2.get_active() == wanted_active
     assert caseb2_2.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb2_3, fig, linel, "caseb2_3")
-    assert caseb2_3.get_active_status() == wanted_active
+    assert caseb2_3.get_active() == wanted_active
     assert caseb2_3.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb2_4, fig, linel, "caseb2_4")
-    assert caseb2_4.get_active_status() == wanted_active
+    assert caseb2_4.get_active() == wanted_active
     assert caseb2_4.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb2_5, fig, linel, "caseb2_5")
-    assert caseb2_5.get_active_status() == wanted_active
+    assert caseb2_5.get_active() == wanted_active
     assert caseb2_5.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb2_6, fig, linel, "caseb2_6")
-    assert caseb2_6.get_active_status() == wanted_active
+    assert caseb2_6.get_active() == wanted_active
     assert caseb2_6.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb2_7, fig, linel, "caseb2_7")
-    assert caseb2_7.get_active_status() == wanted_active
+    assert caseb2_7.get_active() == wanted_active
     assert caseb2_7.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb2_8, fig, linel, "caseb2_8")
-    assert caseb2_8.get_active_status() == wanted_active
+    assert caseb2_8.get_active() == wanted_active
     assert caseb2_8.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb2_9, fig, linel, "caseb2_9")
-    assert caseb2_9.get_active_status() == wanted_active
+    assert caseb2_9.get_active() == wanted_active
     assert caseb2_9.get_task_status() == wanted_task
 
     # # Case B3
@@ -455,49 +455,49 @@ def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb3_1, fig, linel, "caseb3_1")
-    assert caseb3_1.get_active_status() == wanted_active
+    assert caseb3_1.get_active() == wanted_active
     assert caseb3_1.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_2, fig, linel, "caseb3_2")
-    assert caseb3_2.get_active_status() == wanted_active
+    assert caseb3_2.get_active() == wanted_active
     assert caseb3_2.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_3, fig, linel, "caseb3_3")
-    assert caseb3_3.get_active_status() == wanted_active
+    assert caseb3_3.get_active() == wanted_active
     assert caseb3_3.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_4, fig, linel, "caseb3_4")
-    assert caseb3_4.get_active_status() == wanted_active
+    assert caseb3_4.get_active() == wanted_active
     assert caseb3_4.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_5, fig, linel, "caseb3_5")
-    assert caseb3_5.get_active_status() == wanted_active
+    assert caseb3_5.get_active() == wanted_active
     assert caseb3_5.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_6, fig, linel, "caseb3_6")
-    assert caseb3_6.get_active_status() == wanted_active
+    assert caseb3_6.get_active() == wanted_active
     assert caseb3_6.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = False
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_7, fig, linel, "caseb3_7")
-    assert caseb3_7.get_active_status() == wanted_active
+    assert caseb3_7.get_active() == wanted_active
     assert caseb3_7.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb3_8, fig, linel, "caseb3_8")
-    assert caseb3_8.get_active_status() == wanted_active
+    assert caseb3_8.get_active() == wanted_active
     assert caseb3_8.get_task_status() == wanted_task
 
     # # Case B4
@@ -514,37 +514,37 @@ def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb4_1, fig, linel, "caseb4_1")
-    assert caseb4_1.get_active_status() == wanted_active
+    assert caseb4_1.get_active() == wanted_active
     assert caseb4_1.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb4_2, fig, linel, "caseb4_2")
-    assert caseb4_2.get_active_status() == wanted_active
+    assert caseb4_2.get_active() == wanted_active
     assert caseb4_2.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = True
     # show_x(wanted_active, wanted_task, caseb4_3, fig, linel, "caseb4_3")
-    assert caseb4_3.get_active_status() == wanted_active
+    assert caseb4_3.get_active() == wanted_active
     assert caseb4_3.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb4_4, fig, linel, "caseb4_4")
-    assert caseb4_4.get_active_status() == wanted_active
+    assert caseb4_4.get_active() == wanted_active
     assert caseb4_4.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb4_5, fig, linel, "caseb4_5")
-    assert caseb4_5.get_active_status() == wanted_active
+    assert caseb4_5.get_active() == wanted_active
     assert caseb4_5.get_task_status() == wanted_task
     # linel -= 0.1
     wanted_active = True
     wanted_task = False
     # show_x(wanted_active, wanted_task, caseb4_6, fig, linel, "caseb4_6")
-    assert caseb4_6.get_active_status() == wanted_active
+    assert caseb4_6.get_active() == wanted_active
     assert caseb4_6.get_task_status() == wanted_task
 
     # # Bottom divisor line
@@ -556,7 +556,7 @@ def test_PremiseStatusFinder_get_active_status_ReturnsCorrectObj():
     #     assert 1 == 2
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_01():
+def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_01():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
@@ -572,16 +572,16 @@ def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExa
     print(
         f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
     )
-    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+    print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
     # THEN
     # assert segr_obj._belief_range_len == 9000
     # assert segr_obj.get_belief_nigh_mod_div() == 200
-    assert segr_obj.get_active_status()
+    assert segr_obj.get_active()
     assert segr_obj.get_task_status()
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_02():
+def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_02():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
@@ -597,14 +597,14 @@ def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExa
     print(
         f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
     )
-    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+    print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
     # THEN
-    assert segr_obj.get_active_status()
+    assert segr_obj.get_active()
     assert segr_obj.get_task_status()
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExample_03():
+def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_03():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
@@ -620,8 +620,8 @@ def test_premisebeliefstatusdata_CorrectlyCalculatesActiveStatusAndTaskStatusExa
     print(
         f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
     )
-    print(f"  {segr_obj.get_active_status()=}  {segr_obj.get_task_status()=}")
+    print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
     # THEN
-    assert segr_obj.get_active_status() == False
+    assert segr_obj.get_active() == False
     assert segr_obj.get_task_status() == False

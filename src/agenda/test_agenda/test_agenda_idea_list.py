@@ -2,7 +2,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_with7amCleanTableReason,
     agenda_v001,
-    from_list_get_active_status,
+    from_list_get_active,
 )
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import (
@@ -53,7 +53,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
     #     print(f"{work_road=} {idea.get_road()=}")
     work_text = "work"
     work_road = x_agenda.make_l1_road(work_text)
-    assert x_agenda._idea_dict.get(work_road)._active_status == False
+    assert x_agenda._idea_dict.get(work_road)._active == False
 
 
 def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefChanges():
@@ -73,7 +73,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     idea_list = x_agenda.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active_status == False
+    assert x_agenda._idea_dict.get(work_road)._active == False
 
     # WHEN
     states_text = "nation-state"
@@ -86,7 +86,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     idea_list = x_agenda.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active_status
+    assert x_agenda._idea_dict.get(work_road)._active
 
     # WHEN
     france_text = "France"
@@ -97,7 +97,7 @@ def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     idea_list = x_agenda.get_idea_list()
     assert idea_list
     assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active_status == False
+    assert x_agenda._idea_dict.get(work_road)._active == False
 
 
 def test_agenda_get_idea_list_returns_correct_list():
@@ -145,14 +145,14 @@ def test_agenda_get_idea_list_returns_correct_list():
         premises={wed.need: wed},
         _status=True,
         _task=False,
-        _curr_idea_active_status=True,
+        _curr_idea_active=True,
     )
     sta_lh = reasonheir_shop(
         base=state_road,
         premises={usa.need: usa},
         _status=True,
         _task=False,
-        _curr_idea_active_status=True,
+        _curr_idea_active=True,
     )
 
     x1_reasonunits = {
@@ -175,7 +175,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     assert work_idea._weight == 30
     assert work_idea._label == work_text
     assert work_idea._level == 1
-    assert work_idea._active_status
+    assert work_idea._active
     assert work_idea.promise
     # print(f"{work_idea._reasonheirs=}")
     curr_reasonheir_state = work_idea._reasonheirs[state_road]
@@ -203,7 +203,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     # print("iterate through every idea...")
     # for curr_idea in idea_list:
     #     if str(type(curr_idea)).find(".idea.IdeaUnit'>") > 0:
-    #         assert curr_idea._active_status != None
+    #         assert curr_idea._active != None
 
     #     # print("")
     #     # print(f"{curr_idea._label=}")
@@ -351,7 +351,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
     house_road = x_agenda.make_l1_road(house_text)
     clean_text = "clean table"
     clean_road = x_agenda.make_road(house_road, clean_text)
-    assert x_agenda._idea_dict.get(clean_road)._active_status == False
+    assert x_agenda._idea_dict.get(clean_road)._active == False
 
     # set beliefs as midnight to 8am
     time_text = "timetech"
@@ -370,7 +370,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
 
     # THEN
     x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(clean_road)._active_status
+    assert x_agenda._idea_dict.get(clean_road)._active
 
     # WHEN
     # set beliefs as 8am to 10am
@@ -382,11 +382,11 @@ def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
     )
     print(x_agenda._idearoot._beliefunits[day24hr_road])
     print(x_agenda._idearoot._kids[house_text]._kids[clean_text]._reasonunits)
-    # x_agenda._idearoot._kids["housework"]._kids[clean_text]._active_status = None
+    # x_agenda._idearoot._kids["housework"]._kids[clean_text]._active = None
 
     # THEN
     x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(clean_road)._active_status == False
+    assert x_agenda._idea_dict.get(clean_road)._active == False
 
 
 def test_get_intent_dict():
@@ -452,8 +452,8 @@ def test_exammple_idea_list_HasCorrectData():
     #     if idea._label == laundry_text:
     #         for reason in idea._reasonunits.values():
     #             print(f"{idea._label=} {reason.base=}")  # {reason.premises=}")
-    # assert idea._active_status == False
-    assert x_agenda._idea_dict.get(laundry_road)._active_status == False
+    # assert idea._active == False
+    assert x_agenda._idea_dict.get(laundry_road)._active == False
 
     # WHEN
     week_text = "weekdays"
@@ -465,7 +465,7 @@ def test_exammple_idea_list_HasCorrectData():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idea_dict.get(laundry_road)._active_status == False
+    assert x_agenda._idea_dict.get(laundry_road)._active == False
 
 
 def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
@@ -550,7 +550,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     casa_road = x_agenda.make_l1_road(casa_text)
     bird_text = "say hi to birds"
     bird_road = x_agenda.make_road(casa_road, bird_text)
-    assert from_list_get_active_status(road=bird_road, idea_list=idea_list) == False
+    assert from_list_get_active(road=bird_road, idea_list=idea_list) == False
 
     # x_agenda.set_belief(base=week_road, pick=mon_road)
     # idea_list = x_agenda.get_idea_list()
@@ -560,15 +560,15 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     # print(f"{len(casa_idea._reasonheirs)=}")
     # print(f"{len(twee_idea._reasonheirs)=}")
 
-    # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
+    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
 
     # x_agenda.set_belief(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Tuesday")
     # idea_list = x_agenda.get_idea_list()
-    # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == True
+    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
 
     # x_agenda.set_belief(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Wednesday")
     # idea_list = x_agenda.get_idea_list()
-    # assert YR.get_active_status(road=bird_idea, idea_list=idea_list) == False
+    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == False
 
 
 def test_exammple_idea_list_Every6WeeksReason():
@@ -607,7 +607,7 @@ def test_exammple_idea_list_Every6WeeksReason():
     premise_open = ced_week_premise.open
     premise_nigh = ced_week_premise.nigh
     # print(f"{idea._reasonunits=}")
-    assert clean_sheet_idea._active_status == False
+    assert clean_sheet_idea._active == False
 
     # for idea in idea_list:
     #     # print(f"{idea._parent_road=}")
@@ -680,11 +680,11 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # for idea in idea_list:
     #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
     #         first_idea_kid_count += 1
-    #         if idea._active_status is None:
+    #         if idea._active is None:
     #             first_idea_kid_none_count += 1
-    #         elif idea._active_status:
+    #         elif idea._active:
     #             first_idea_kid_true_count += 1
-    #         elif idea._active_status == False:
+    #         elif idea._active == False:
     #             first_idea_kid_false_count += 1
 
     # print(f"{first_idea_kid_count=}")
@@ -696,11 +696,11 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # for idea in idea_list_without_idearoot:
     #     idea_kid_count += 1
     #     print(f"{idea._label=} {idea_kid_count=}")
-    #     assert idea._active_status != None
-    #     assert idea._active_status in (True, False)
+    #     assert idea._active != None
+    #     assert idea._active in (True, False)
     # assert idea_kid_count == len(idea_list_without_idearoot)
 
-    assert len(idea_list) == sum(idea._active_status != None for idea in idea_list)
+    assert len(idea_list) == sum(idea._active != None for idea in idea_list)
 
 
 def test_exammple_idea_list_EveryOtherMonthWorks():
@@ -736,7 +736,7 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     clean_road = x_agenda.make_road(casa_road, clean_text)
     mat_label = "deep clean play mat"
     mat_road = x_agenda.make_road(clean_road, mat_label)
-    assert from_list_get_active_status(road=mat_road, idea_list=idea_list) == False
+    assert from_list_get_active(road=mat_road, idea_list=idea_list) == False
 
     year_month_base = x_agenda.make_l1_road("year_month")
     print(f"{year_month_base=}, {year_month_base=}")
@@ -750,5 +750,5 @@ def test_exammple_idea_list_EveryOtherMonthWorks():
     idea_list = x_agenda.get_idea_list()
     print(f"{len(idea_list)=}")
     print(f"{len(x_agenda._idearoot._beliefunits)=}")
-    # from_list_get_active_status(road=mat_road, idea_list=idea_list)
-    assert from_list_get_active_status(road=mat_road, idea_list=idea_list)
+    # from_list_get_active(road=mat_road, idea_list=idea_list)
+    assert from_list_get_active(road=mat_road, idea_list=idea_list)

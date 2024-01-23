@@ -14,7 +14,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.reason_premise_divisor is None
     assert new_obj.reason_del_premise_base is None
     assert new_obj.reason_del_premise_need is None
-    assert new_obj.reason_suff_idea_active_status is None
+    assert new_obj.reason_suff_idea_active is None
     assert new_obj.assignedunit is None
     assert new_obj.begin is None
     assert new_obj.close is None

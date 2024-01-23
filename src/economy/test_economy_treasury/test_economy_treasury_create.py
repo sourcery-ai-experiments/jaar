@@ -37,8 +37,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _agenda_intent_debt_text = "_agenda_intent_debt"
     _agenda_intent_ratio_credit_text = "_agenda_intent_ratio_credit"
     _agenda_intent_ratio_debt_text = "_agenda_intent_ratio_debt"
-    _creditor_active_text = "_creditor_active"
-    _debtor_active_text = "_debtor_active"
+    _creditor_live_text = "_creditor_live"
+    _debtor_live_text = "_debtor_live"
     _treasury_credit_score_text = "_treasury_credit_score"
     _treasury_voice_rank_text = "_treasury_voice_rank"
     _treasury_voice_hx_lowest_rank_text = "_treasury_voice_hx_lowest_rank"
@@ -55,8 +55,8 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _agenda_intent_debt_text: 1,
         _agenda_intent_ratio_credit_text: 1,
         _agenda_intent_ratio_debt_text: 1,
-        _creditor_active_text: 1,
-        _debtor_active_text: 1,
+        _creditor_live_text: 1,
+        _debtor_live_text: 1,
         _treasury_tax_paid_text: 1,
         _treasury_tax_diff_text: 1,
         _treasury_credit_score_text: 1,

@@ -42,8 +42,8 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _agenda_intent_debt=0.6,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.4,
-        _creditor_active=True,
-        _debtor_active=False,
+        _creditor_live=True,
+        _debtor_live=False,
         _title=tim_title,
     )
     tim_tax_paid = 0.5151
@@ -82,8 +82,8 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert tim_ledger._agenda_intent_debt == 0.6
     assert tim_ledger._agenda_intent_ratio_credit == 0.5
     assert tim_ledger._agenda_intent_ratio_debt == 0.4
-    assert tim_ledger._creditor_active
-    assert tim_ledger._debtor_active == False
+    assert tim_ledger._creditor_live
+    assert tim_ledger._debtor_live == False
     assert tim_ledger._treasury_tax_paid == tim_tax_paid
     assert tim_ledger._treasury_credit_score == tim_credit_score
     assert tim_ledger._treasury_voice_rank == tim_voice_rank
@@ -173,8 +173,8 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _agenda_intent_debt=0.6,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.4,
-        _creditor_active=True,
-        _debtor_active=False,
+        _creditor_live=True,
+        _debtor_live=False,
     )
     insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_sal)
 
@@ -187,8 +187,8 @@ def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cle
         _agenda_intent_debt=0.066,
         _agenda_intent_ratio_credit=0.051,
         _agenda_intent_ratio_debt=0.049,
-        _creditor_active=True,
-        _debtor_active=False,
+        _creditor_live=True,
+        _debtor_live=False,
     )
     insert_sqlstr_tim = get_partyunit_table_insert_sqlstr(bob_agenda, partyunit_tim)
 
@@ -279,8 +279,8 @@ def test_RiverLedgerUnit_Exists():
         _agenda_intent_debt=0.15,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.12,
-        _creditor_active=True,
-        _debtor_active=True,
+        _creditor_live=True,
+        _debtor_live=True,
     )
     x2_partydbunit = PartyDBUnit(
         agent_id=bob_text,
@@ -291,8 +291,8 @@ def test_RiverLedgerUnit_Exists():
         _agenda_intent_debt=0.0715,
         _agenda_intent_ratio_credit=0.00995,
         _agenda_intent_ratio_debt=0.00012,
-        _creditor_active=True,
-        _debtor_active=True,
+        _creditor_live=True,
+        _debtor_live=True,
     )
     x_partyview_dict = {
         x1_partydbunit.party_id: x1_partydbunit,
@@ -422,8 +422,8 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
         _agenda_intent_debt=0.6,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.411,
-        _creditor_active=True,
-        _debtor_active=False,
+        _creditor_live=True,
+        _debtor_live=False,
     )
     insert_sqlstr_tom = get_partyunit_table_insert_sqlstr(
         x_agenda=bob_agenda, x_partyunit=partyunit_tom
@@ -436,8 +436,8 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
         _agenda_intent_debt=0.6,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.455,
-        _creditor_active=True,
-        _debtor_active=False,
+        _creditor_live=True,
+        _debtor_live=False,
     )
     insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(
         x_agenda=bob_agenda, x_partyunit=partyunit_sal

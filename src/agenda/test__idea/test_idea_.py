@@ -43,7 +43,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._on_meld_weight_action is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
-    assert x_ideaunit._active_status_hx is None
+    assert x_ideaunit._active_hx is None
     assert x_ideaunit._agenda_importance is None
     assert x_ideaunit._agenda_coin_onset is None
     assert x_ideaunit._agenda_coin_cease is None
@@ -59,7 +59,7 @@ def test_IdeaUnit_exists():
 
 def test_ideaunit_shop_ReturnsCorrectObj():
     x_ideaunit = ideaunit_shop()
-    print(f"{x_ideaunit._active_status=}")
+    print(f"{x_ideaunit._active=}")
     assert x_ideaunit
     assert x_ideaunit._kids == {}
     assert x_ideaunit._weight >= 1
@@ -86,7 +86,7 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._on_meld_weight_action == "default"
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
-    assert x_ideaunit._active_status_hx == {}
+    assert x_ideaunit._active_hx == {}
     assert x_ideaunit._agenda_importance is None
     assert x_ideaunit._agenda_coin_onset is None
     assert x_ideaunit._agenda_coin_cease is None
@@ -454,7 +454,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _level=1,
         _reasonunits=x1_reasonunits,
         _reasonheirs=x1_reasonheirs,
-        _active_status=True,
+        _active=True,
         _range_source_road="test123",
         promise=True,
     )
@@ -682,31 +682,31 @@ def test_IdeaUnit_get_reasonheir_CorrectlyReturnsNone():
     assert reason_heir_test6 is None
 
 
-def test_IdeaUnit_set_active_status_SetsNullactive_status_hxToNonEmpty():
+def test_IdeaUnit_set_active_SetsNullactive_hxToNonEmpty():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    assert clean_idea._active_status_hx == {}
+    assert clean_idea._active_hx == {}
 
     # WHEN
-    clean_idea.set_active_status(tree_traverse_count=3)
+    clean_idea.set_active(tree_traverse_count=3)
     # THEN
-    assert clean_idea._active_status_hx == {3: True}
+    assert clean_idea._active_hx == {3: True}
 
 
-def test_IdeaUnit_set_active_status_IfFullactive_status_hxResetToTrue():
+def test_IdeaUnit_set_active_IfFullactive_hxResetToTrue():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    clean_idea._active_status_hx = {0: True, 4: False}
-    assert clean_idea._active_status_hx != {0: True}
+    clean_idea._active_hx = {0: True, 4: False}
+    assert clean_idea._active_hx != {0: True}
     # WHEN
-    clean_idea.set_active_status(tree_traverse_count=0)
+    clean_idea.set_active(tree_traverse_count=0)
     # THEN
-    assert clean_idea._active_status_hx == {0: True}
+    assert clean_idea._active_hx == {0: True}
 
 
-# def test_IdeaUnit_set_active_status_IfFullactive_status_hxResetToFalse():
+# def test_IdeaUnit_set_active_IfFullactive_hxResetToFalse():
 #     # GIVEN
 # clean_text = "clean"
 # clean_idea = ideaunit_shop(_label=clean_text)
@@ -717,73 +717,73 @@ def test_IdeaUnit_set_active_status_IfFullactive_status_hxResetToTrue():
 #         nigh=None,
 #         divisor=None,
 #     )
-#     clean_idea._active_status_hx = {0: True, 4: False}
-#     assert clean_idea._active_status_hx != {0: False}
+#     clean_idea._active_hx = {0: True, 4: False}
+#     assert clean_idea._active_hx != {0: False}
 #     # WHEN
-#     clean_idea.set_active_status(tree_traverse_count=0)
+#     clean_idea.set_active(tree_traverse_count=0)
 #     # THEN
-#     assert clean_idea._active_status_hx == {0: False}
+#     assert clean_idea._active_hx == {0: False}
 
 
-def test_IdeaUnit_record_active_status_hx_CorrectlyRecordsHistorry():
+def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    assert clean_idea._active_status_hx == {}
+    assert clean_idea._active_hx == {}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=0,
-        prev_active_status=None,
-        curr_active_status=True,
+        prev_active=None,
+        curr_active=True,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: True}
+    assert clean_idea._active_hx == {0: True}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=1,
-        prev_active_status=True,
-        curr_active_status=True,
+        prev_active=True,
+        curr_active=True,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: True}
+    assert clean_idea._active_hx == {0: True}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=2,
-        prev_active_status=True,
-        curr_active_status=False,
+        prev_active=True,
+        curr_active=False,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: True, 2: False}
+    assert clean_idea._active_hx == {0: True, 2: False}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=3,
-        prev_active_status=False,
-        curr_active_status=False,
+        prev_active=False,
+        curr_active=False,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: True, 2: False}
+    assert clean_idea._active_hx == {0: True, 2: False}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=4,
-        prev_active_status=False,
-        curr_active_status=True,
+        prev_active=False,
+        curr_active=True,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: True, 2: False, 4: True}
+    assert clean_idea._active_hx == {0: True, 2: False, 4: True}
 
     # WHEN
-    clean_idea.record_active_status_hx(
+    clean_idea.record_active_hx(
         tree_traverse_count=0,
-        prev_active_status=False,
-        curr_active_status=False,
+        prev_active=False,
+        curr_active=False,
     )
     # THEN
-    assert clean_idea._active_status_hx == {0: False}
+    assert clean_idea._active_hx == {0: False}
 
 
 def test_IdeaUnit_set_assignedunit_empty_if_null():

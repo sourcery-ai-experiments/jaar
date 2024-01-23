@@ -2,7 +2,7 @@ from pytest import raises as pytest_raises
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_irrational_example as example_agendas_get_agenda_irrational_example,
-    from_list_get_active_status,
+    from_list_get_active,
 )
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import (
@@ -155,7 +155,7 @@ def test_agenda_reasonheirs_AreCorrectlyInherited_v1():
         base=week_road,
         premises=premises,
         _status=False,
-        _curr_idea_active_status=True,
+        _curr_idea_active=True,
     )
     print(f"{work_wk_build_reasonunit.base=}")
     x_agenda.edit_idea_attr(road=work_road, reason=work_wk_build_reasonunit)
@@ -171,7 +171,7 @@ def test_agenda_reasonheirs_AreCorrectlyInherited_v1():
 
     idea_list = x_agenda.get_idea_list()
 
-    from_list_get_active_status(road=work_road, idea_list=idea_list)
+    from_list_get_active(road=work_road, idea_list=idea_list)
 
     work_wk_cal_reasonheir = work_idea._reasonheirs[week_road]
     print(f"{len(work_wk_cal_reasonheir.premises)=}")
@@ -211,7 +211,7 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
         base=week_road,
         premises=premises_x,
         _status=False,
-        _curr_idea_active_status=True,
+        _curr_idea_active=True,
     )
     a4_agenda.edit_idea_attr(road=work_road, reason=work_wk_build_reasonunit)
 
@@ -238,26 +238,26 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     assert rla_week_reasonheir.base == work_wk_built_reasonheir.base
     assert rla_week_reasonheir.premises == work_wk_built_reasonheir.premises
     assert (
-        rla_week_reasonheir.suff_idea_active_status
-        == work_wk_built_reasonheir.suff_idea_active_status
+        rla_week_reasonheir.suff_idea_active
+        == work_wk_built_reasonheir.suff_idea_active
     )
     assert rla_week_reasonheir._status == work_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == work_wk_built_reasonheir._task
-    assert rla_week_reasonheir._curr_idea_active_status
-    assert rla_week_reasonheir._curr_idea_active_status != work_wk_built_reasonheir
+    assert rla_week_reasonheir._curr_idea_active
+    assert rla_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
     assert cost_week_reasonheir.base == work_wk_built_reasonheir.base
     assert cost_week_reasonheir.premises == work_wk_built_reasonheir.premises
     assert (
-        cost_week_reasonheir.suff_idea_active_status
-        == work_wk_built_reasonheir.suff_idea_active_status
+        cost_week_reasonheir.suff_idea_active
+        == work_wk_built_reasonheir.suff_idea_active
     )
     assert cost_week_reasonheir._status == work_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == work_wk_built_reasonheir._task
-    assert cost_week_reasonheir._curr_idea_active_status
-    assert cost_week_reasonheir._curr_idea_active_status != work_wk_built_reasonheir
+    assert cost_week_reasonheir._curr_idea_active
+    assert cost_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
 
 def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
@@ -278,7 +278,7 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
         base=week_road,
         premises=premises,
         _status=False,
-        _curr_idea_active_status=True,
+        _curr_idea_active=True,
     )
     a4_agenda.edit_idea_attr(road=work_road, reason=work_wk_build_reasonunit)
     rla_text = "hp"
@@ -311,26 +311,26 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     assert rla_week_reasonheir.base == work_wk_built_reasonheir.base
     assert rla_week_reasonheir.premises == work_wk_built_reasonheir.premises
     assert (
-        rla_week_reasonheir.suff_idea_active_status
-        == work_wk_built_reasonheir.suff_idea_active_status
+        rla_week_reasonheir.suff_idea_active
+        == work_wk_built_reasonheir.suff_idea_active
     )
     assert rla_week_reasonheir._status == work_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == work_wk_built_reasonheir._task
-    assert rla_week_reasonheir._curr_idea_active_status
-    assert rla_week_reasonheir._curr_idea_active_status != work_wk_built_reasonheir
+    assert rla_week_reasonheir._curr_idea_active
+    assert rla_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
     assert cost_week_reasonheir.base == work_wk_built_reasonheir.base
     assert cost_week_reasonheir.premises == work_wk_built_reasonheir.premises
     assert (
-        cost_week_reasonheir.suff_idea_active_status
-        == work_wk_built_reasonheir.suff_idea_active_status
+        cost_week_reasonheir.suff_idea_active
+        == work_wk_built_reasonheir.suff_idea_active
     )
     assert cost_week_reasonheir._status == work_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == work_wk_built_reasonheir._task
-    assert cost_week_reasonheir._curr_idea_active_status
-    assert cost_week_reasonheir._curr_idea_active_status != work_wk_built_reasonheir
+    assert cost_week_reasonheir._curr_idea_active
+    assert cost_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
 
 def test_agenda_reasonunits_set_UnCoupledMethod():
@@ -532,8 +532,8 @@ def test_agenda_reasonunits_del_reason_premise_UncoupledMethod2():
     assert str(excinfo.value) == f"No ReasonUnit at '{weekdays_road}'"
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIdeaIfInvaildThrowsError():
-    # _suff_idea_active_status: str = None
+def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIfInvaildThrowsError():
+    # _suff_idea_active: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
@@ -553,7 +553,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=work_road,
-        reason_suff_idea_active_status=True,
+        reason_suff_idea_active=True,
     )
 
     # THEN
@@ -561,13 +561,13 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
     reasonunit_work = commute_idea._reasonunits.get(work_road)
     assert reasonunit_work.base == work_road
     assert len(reasonunit_work.premises) == 0
-    assert reasonunit_work.suff_idea_active_status == True
+    assert reasonunit_work.suff_idea_active == True
 
     # WHEN
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=work_road,
-        reason_suff_idea_active_status=False,
+        reason_suff_idea_active=False,
     )
 
     # THEN
@@ -575,13 +575,13 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
     reasonunit_work = commute_idea._reasonunits.get(work_road)
     assert reasonunit_work.base == work_road
     assert len(reasonunit_work.premises) == 0
-    assert reasonunit_work.suff_idea_active_status == False
+    assert reasonunit_work.suff_idea_active == False
 
     # WHEN
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=work_road,
-        reason_suff_idea_active_status="Set to Ignore",
+        reason_suff_idea_active="Set to Ignore",
     )
 
     # THEN
@@ -589,10 +589,10 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_status_AnyIde
     reasonunit_work = commute_idea._reasonunits.get(work_road)
     assert reasonunit_work.base == work_road
     assert len(reasonunit_work.premises) == 0
-    assert reasonunit_work.suff_idea_active_status is None
+    assert reasonunit_work.suff_idea_active is None
 
 
-def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
+def test_agenda_reasonunits_IdeaUnit_active_InfluencesReasonUnitStatus():
     # GIVEN an Agenda with 5 ideas, 1 Belief:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
@@ -609,7 +609,7 @@ def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
 
     # 4. idea(...,work) with
     # 4.1 ReasonUnit: base=weekdays_road, need=thu_road
-    # 4.2 .active_status = False
+    # 4.2 .active = False
     x_agenda.edit_idea_attr(
         road=work_road,
         reason_base=weekdays_road,
@@ -617,11 +617,11 @@ def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
     )
     x_agenda.get_idea_list()  # set tree metrics
     work_idea = x_agenda.get_idea_obj(work_road)
-    assert work_idea._active_status == False
+    assert work_idea._active == False
 
     # 5. idea(...,commute to work) with
-    # 5.1. ReasonUnit: idea(base=...,work) has .suff_idea_active_status = True
-    # 5.2. idea(...,work).active_status = False
+    # 5.1. ReasonUnit: idea(base=...,work) has .suff_idea_active = True
+    # 5.2. idea(...,work).active = False
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
     x_agenda.add_idea(
@@ -630,28 +630,28 @@ def test_agenda_reasonunits_IdeaUnitActiveStatusInfluencesReasonUnitStatus():
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=work_road,
-        reason_suff_idea_active_status=True,
+        reason_suff_idea_active=True,
     )
     commute_idea = x_agenda.get_idea_obj(commute_road)
     x_agenda.get_idea_list()
-    assert commute_idea._active_status == False
+    assert commute_idea._active == False
 
     # Belief: base: (...,weekdays) pick: (...,weekdays,wednesday)
     x_agenda.set_belief(base=weekdays_road, pick=wed_road)
     x_agenda.set_agenda_metrics()
 
-    assert work_idea._active_status == False
-    assert commute_idea._active_status == False
+    assert work_idea._active == False
+    assert commute_idea._active == False
 
     # WHEN
     print("before changing belief")
     x_agenda.set_belief(base=weekdays_road, pick=thu_road)
     print("after changing belief")
     x_agenda.get_idea_list()
-    assert work_idea._active_status == True
+    assert work_idea._active == True
 
     # THEN
-    assert commute_idea._active_status == True
+    assert commute_idea._active == True
 
 
 def test_agenda_set_agenda_metrics_InitipartySetsRationalAttrToFalse():

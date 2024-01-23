@@ -139,7 +139,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_numeric_road.setHidden(setHiddenBool)
         self.yo_close.setHidden(setHiddenBool)
         self.yo_task_status.setHidden(setHiddenBool)
-        self.yo_active_status.setHidden(setHiddenBool)
+        self.yo_active.setHidden(setHiddenBool)
         self.hreg_open_hr.setHidden(setHiddenBool)
         self.hreg_open_min.setHidden(setHiddenBool)
         self.hreg_length_hr.setHidden(setHiddenBool)
@@ -238,7 +238,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_close.setText(num2str(self.x_idea._close))
         self.yo_action_cb.setChecked(self.x_idea.promise)
         self.yo_task_status.setText(str(self.x_idea._task))
-        self.yo_active_status.setText(str(self.x_idea._active_status))
+        self.yo_active.setText(str(self.x_idea._active))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
         self.reason_table_load()
         self.reasonheir_table_load()
@@ -523,7 +523,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "Premise active_status",
+                "Premise active",
                 "Premise task_status",
             ]
         )
@@ -610,7 +610,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 "Divisor",
                 "LimTask",
                 "LimStatus",
-                "Premise active_status",
+                "Premise active",
                 "Premise task_status",
             ]
         )

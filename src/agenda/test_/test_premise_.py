@@ -265,7 +265,7 @@ def test_PremiseUnitUnit_is_range_or_segregate_ReturnsCorrectBool():
     assert wkday_premise._is_range_or_segregate() == True
 
 
-def test_PremiseUnitUnit_get_premise_status_ReturnsCorrect_active_status():
+def test_PremiseUnitUnit_get_premise_status_ReturnsCorrect_active():
     # WHEN assumes belief is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -273,13 +273,13 @@ def test_PremiseUnitUnit_get_premise_status_ReturnsCorrect_active_status():
 
     # WHEN / THEN
     wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road)
-    assert wkday_premise._get_active_status(beliefheir=wkday_belief) == True
+    assert wkday_premise._get_active(beliefheir=wkday_belief) == True
     # if belief has range but premise does not reqquire range, belief's range does not matter
     wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
-    assert wkday_premise._get_active_status(beliefheir=wkday_belief) == True
+    assert wkday_premise._get_active(beliefheir=wkday_belief) == True
 
 
-def test_PremiseUnitUnit_get_active_status_returnsCorrectRanged_active_status():
+def test_PremiseUnitUnit_get_active_returnsCorrectRanged_active():
     # GIVEN assumes belief is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -287,9 +287,9 @@ def test_PremiseUnitUnit_get_active_status_returnsCorrectRanged_active_status():
 
     # WHEN / THEN
     wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road)
-    assert wkday_premise._get_active_status(beliefheir=wkday_belief) == False
+    assert wkday_premise._get_active(beliefheir=wkday_belief) == False
     wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
-    assert wkday_premise._get_active_status(beliefheir=wkday_belief) == False
+    assert wkday_premise._get_active(beliefheir=wkday_belief) == False
 
 
 def test_PremiseUnitUnit_set_status_CorrectlySets_status_WhenBeliefUnitIsNull():

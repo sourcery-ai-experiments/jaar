@@ -309,10 +309,10 @@ def get_agenda_irrational_example() -> AgendaUnit:
     # this agenda has no conclusive intent because 2 promise ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
-    # Step 0: if chicken._active_status == True, egg._active_status is set to False
-    # Step 1: if egg._active_status == False, chicken._active_status is set to False
-    # Step 2: if chicken._active_status == False, egg._active_status is set to True
-    # Step 3: if egg._active_status == True, chicken._active_status is set to True
+    # Step 0: if chicken._active == True, egg._active is set to False
+    # Step 1: if egg._active == False, chicken._active is set to False
+    # Step 2: if chicken._active == False, egg._active is set to True
+    # Step 3: if egg._active == True, chicken._active is set to True
     # Step 4: back to step 0.
     # after hatter_agenda.set_agenda_metrics these should be true:
     # 1. hatter_agenda._irrational == True
@@ -334,7 +334,7 @@ def get_agenda_irrational_example() -> AgendaUnit:
         road=egg_road,
         promise=True,
         reason_base=chicken_road,
-        reason_suff_idea_active_status=True,
+        reason_suff_idea_active=True,
     )
 
     # set chick promise is True when egg first is False
@@ -342,7 +342,7 @@ def get_agenda_irrational_example() -> AgendaUnit:
         road=chicken_road,
         promise=True,
         reason_base=egg_road,
-        reason_suff_idea_active_status=False,
+        reason_suff_idea_active=False,
     )
 
     return hatter_agenda
@@ -476,10 +476,10 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
 
 
 # class YR:
-def from_list_get_active_status(
+def from_list_get_active(
     road: RoadUnit, idea_list: list, asse_bool: bool = None
 ) -> bool:
-    active_status = None
+    active = None
     temp_idea = None
 
     active_true_count = 0
@@ -488,27 +488,27 @@ def from_list_get_active_status(
         if idea.get_road() == road:
             temp_idea = idea
             print(
-                f"searched for IdeaUnit {temp_idea.get_road()} found {temp_idea._active_status=}"
+                f"searched for IdeaUnit {temp_idea.get_road()} found {temp_idea._active=}"
             )
 
-        if idea._active_status:
+        if idea._active:
             active_true_count += 1
-        elif idea._active_status == False:
+        elif idea._active == False:
             active_false_count += 1
 
-    active_status = temp_idea._active_status
+    active = temp_idea._active
     print(
-        f"Set Active_status: {idea._label=} {active_status} {active_true_count=} {active_false_count=}"
+        f"Set active: {idea._label=} {active} {active_true_count=} {active_false_count=}"
     )
 
     if asse_bool in {True, False}:
-        if active_status != asse_bool:
+        if active != asse_bool:
             yr_explanation(temp_idea)
 
-        assert active_status == asse_bool
+        assert active == asse_bool
     else:
         yr_explanation(temp_idea)
-    return active_status
+    return active
 
 
 def yr_print_idea_base_info(idea, filter: bool):
@@ -532,7 +532,7 @@ def yr_explanation(idea):
     str3 = f" {str(type(idea))}"
     str4 = " "
     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-        str3 = f" Beliefs:{yr_x(idea._beliefheirs)} Status: {idea._active_status}"
+        str3 = f" Beliefs:{yr_x(idea._beliefheirs)} Status: {idea._active}"
 
         print(f"\n{str1}{str2}{str3}")
         hh_wo_matched_reason = []

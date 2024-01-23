@@ -72,7 +72,7 @@ class IdeaAttrFilter:
     reason_premise_divisor: int = None
     reason_del_premise_base: RoadUnit = None
     reason_del_premise_need: RoadUnit = None
-    reason_suff_idea_active_status: str = None
+    reason_suff_idea_active: str = None
     assignedunit: AssignedUnit = None
     begin: float = None
     close: float = None
@@ -154,7 +154,7 @@ def ideaattrfilter_shop(
     reason_premise_divisor: int = None,
     reason_del_premise_base: RoadUnit = None,
     reason_del_premise_need: RoadUnit = None,
-    reason_suff_idea_active_status: str = None,
+    reason_suff_idea_active: str = None,
     assignedunit: AssignedUnit = None,
     begin: float = None,
     close: float = None,
@@ -185,7 +185,7 @@ def ideaattrfilter_shop(
         reason_premise_divisor=reason_premise_divisor,
         reason_del_premise_base=reason_del_premise_base,
         reason_del_premise_need=reason_del_premise_need,
-        reason_suff_idea_active_status=reason_suff_idea_active_status,
+        reason_suff_idea_active=reason_suff_idea_active,
         assignedunit=assignedunit,
         begin=begin,
         close=close,
@@ -246,21 +246,21 @@ class IdeaUnit:
     _agenda_coin_onset: float = None
     _agenda_coin_cease: float = None
     _task: bool = None
-    _active_status: bool = None
+    _active: bool = None
     _ancestor_promise_count: int = None
     _descendant_promise_count: int = None
     _all_party_credit: bool = None
     _all_party_debt: bool = None
     _is_expanded: bool = None
     _sibling_total_weight: int = None
-    _active_status_hx: dict[int:bool] = None
+    _active_hx: dict[int:bool] = None
     _road_delimiter: str = None
 
     def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
         return (
             self.promise
-            and self._active_status
+            and self._active
             and self.base_reasonunit_exists(necessary_base)
         )
 
@@ -269,16 +269,16 @@ class IdeaUnit:
             reason.base == necessary_base for reason in self._reasonunits.values()
         )
 
-    def record_active_status_hx(
+    def record_active_hx(
         self,
         tree_traverse_count: int,
-        prev_active_status: bool,
-        curr_active_status: bool,
+        prev_active: bool,
+        curr_active: bool,
     ):
         if tree_traverse_count == 0:
-            self._active_status_hx = {0: curr_active_status}
-        elif prev_active_status != curr_active_status:
-            self._active_status_hx[tree_traverse_count] = curr_active_status
+            self._active_hx = {0: curr_active}
+        elif prev_active != curr_active:
+            self._active_hx[tree_traverse_count] = curr_active
 
     def set_beliefheirs(self, beliefs: dict[RoadUnit:BeliefCore]):
         beliefs = get_empty_dict_if_none(x_dict=beliefs)
@@ -687,13 +687,10 @@ class IdeaUnit:
                 nigh=idea_attr.reason_premise_nigh,
                 divisor=idea_attr.reason_premise_divisor,
             )
-        if (
-            idea_attr.reason_base != None
-            and idea_attr.reason_suff_idea_active_status != None
-        ):
-            self.set_reason_suff_idea_active_status(
+        if idea_attr.reason_base != None and idea_attr.reason_suff_idea_active != None:
+            self.set_reason_suff_idea_active(
                 base=idea_attr.reason_base,
-                suff_idea_active_status=idea_attr.reason_suff_idea_active_status,
+                suff_idea_active=idea_attr.reason_suff_idea_active,
             )
         if idea_attr.assignedunit != None:
             self._assignedunit = idea_attr.assignedunit
@@ -760,16 +757,14 @@ class IdeaUnit:
             if len(self._reasonunits[base].premises) == 0:
                 self.del_reasonunit_base(base=base)
 
-    def set_reason_suff_idea_active_status(
-        self, base: RoadUnit, suff_idea_active_status: str
-    ):
+    def set_reason_suff_idea_active(self, base: RoadUnit, suff_idea_active: str):
         x_reasonunit = self._get_or_create_reasonunit(base=base)
-        if suff_idea_active_status == False:
-            x_reasonunit.suff_idea_active_status = False
-        elif suff_idea_active_status == "Set to Ignore":
-            x_reasonunit.suff_idea_active_status = None
-        elif suff_idea_active_status:
-            x_reasonunit.suff_idea_active_status = True
+        if suff_idea_active == False:
+            x_reasonunit.suff_idea_active = False
+        elif suff_idea_active == "Set to Ignore":
+            x_reasonunit.suff_idea_active = None
+        elif suff_idea_active:
+            x_reasonunit.suff_idea_active = True
 
     def _get_or_create_reasonunit(self, base: RoadUnit) -> ReasonUnit:
         x_reasonunit = None
@@ -854,28 +849,28 @@ class IdeaUnit:
         for x_reasonheir in self._reasonheirs.values():
             x_reasonheir.set_status(beliefs=self._beliefheirs)
 
-    def set_active_status(
+    def set_active(
         self,
         tree_traverse_count: int,
         agenda_groupunits: dict[GroupBrand:GroupUnit] = None,
         agenda_agent_id: PartyID = None,
     ):
-        prev_to_now_active_status = deepcopy(self._active_status)
-        self._active_status = self._create_active_status(
+        prev_to_now_active = deepcopy(self._active)
+        self._active = self._create_active(
             agenda_groupunits=agenda_groupunits, agenda_agent_id=agenda_agent_id
         )
         self._set_idea_task()
-        self.record_active_status_hx(
+        self.record_active_hx(
             tree_traverse_count=tree_traverse_count,
-            prev_active_status=prev_to_now_active_status,
-            curr_active_status=self._active_status,
+            prev_active=prev_to_now_active,
+            curr_active=self._active,
         )
 
     def _set_idea_task(self):
         self._task = False
         if (
             self.promise
-            and self._active_status
+            and self._active
             and (self._reasonheirs == {} or self._is_any_reasonheir_task_true())
         ):
             self._task = True
@@ -883,11 +878,11 @@ class IdeaUnit:
     def _is_any_reasonheir_task_true(self) -> bool:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
-    def _create_active_status(
+    def _create_active(
         self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyID
     ) -> bool:
         self.set_reasonheirs_status()
-        x_bool = self._are_all_reasonheir_active_status_true()
+        x_bool = self._are_all_reasonheir_active_true()
         if (
             x_bool
             and agenda_groupunits != {}
@@ -899,7 +894,7 @@ class IdeaUnit:
                 x_bool = False
         return x_bool
 
-    def _are_all_reasonheir_active_status_true(self) -> bool:
+    def _are_all_reasonheir_active_true(self) -> bool:
         return all(
             x_reasonheir._status != False for x_reasonheir in self._reasonheirs.values()
         )
@@ -926,16 +921,14 @@ class IdeaUnit:
         for old_reasonheir in coalesced_reasons.values():
             new_reasonheir = reasonheir_shop(
                 base=old_reasonheir.base,
-                suff_idea_active_status=old_reasonheir.suff_idea_active_status,
+                suff_idea_active=old_reasonheir.suff_idea_active,
             )
             new_reasonheir.inherit_from_reasonheir(old_reasonheir)
 
             # if agenda_idea_dict != None:
             base_idea = agenda_idea_dict.get(old_reasonheir.base)
             if base_idea != None:
-                new_reasonheir.set_curr_idea_active_status(
-                    bool_x=base_idea._active_status
-                )
+                new_reasonheir.set_curr_idea_active(bool_x=base_idea._active)
 
             self._reasonheirs[new_reasonheir.base] = new_reasonheir
 
@@ -1095,14 +1088,14 @@ def ideaunit_shop(
     _agenda_coin_onset: float = None,
     _agenda_coin_cease: float = None,
     _task: bool = None,
-    _active_status: bool = None,
+    _active: bool = None,
     _ancestor_promise_count: int = None,
     _descendant_promise_count: int = None,
     _all_party_credit: bool = None,
     _all_party_debt: bool = None,
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
-    _active_status_hx: dict[int:bool] = None,
+    _active_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
 ) -> IdeaUnit:
     if promise is None:
@@ -1151,14 +1144,14 @@ def ideaunit_shop(
         _agenda_coin_onset=_agenda_coin_onset,
         _agenda_coin_cease=_agenda_coin_cease,
         _task=_task,
-        _active_status=_active_status,
+        _active=_active,
         _ancestor_promise_count=_ancestor_promise_count,
         _descendant_promise_count=_descendant_promise_count,
         _all_party_credit=_all_party_credit,
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
-        _active_status_hx=get_empty_dict_if_none(_active_status_hx),
+        _active_hx=get_empty_dict_if_none(_active_hx),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     if x_ideakid._root:
