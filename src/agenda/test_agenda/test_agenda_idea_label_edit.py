@@ -143,7 +143,7 @@ def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
     red_text = "red"
     old_red_road = tim_agenda.make_road(old_roses_road, red_text)
 
-    tim_agenda.add_idea(ideaunit_shop(old_casa_text), tim_agenda._economy_id)
+    tim_agenda.add_l1_idea(ideaunit_shop(old_casa_text))
     tim_agenda.add_idea(ideaunit_shop(bloomers_text), parent_road=old_casa_road)
     tim_agenda.add_idea(ideaunit_shop(roses_text), parent_road=old_bloomers_road)
     tim_agenda.add_idea(ideaunit_shop(red_text), parent_road=old_roses_road)

@@ -139,7 +139,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = tom_agenda.make_l1_road(morn_text)
-    tom_agenda.add_idea(ideaunit_shop(morn_text), tom_agenda._economy_id)
+    tom_agenda.add_l1_idea(ideaunit_shop(morn_text))
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
     tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -283,7 +283,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     yue_agenda.set_party_debtor_pool(yue_party_debtor_pool)
 
     shave_text = "shave"
-    shave_road = yue_agenda.make_road(yue_agenda._economy_id, shave_text)
+    shave_road = yue_agenda.make_l1_road(shave_text)
     shave_idea_y1 = yue_agenda.get_idea_obj(shave_road)
     shave_idea_y1._originunit.set_originlink(pid="Sue", weight=4.3)
     # print(f"{shave_road=}")
@@ -350,7 +350,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert len(json_agenda._idearoot._kids) == 2
 
     weekday_text = "weekdays"
-    weekday_road = json_agenda.make_road(yue_agenda._economy_id, weekday_text)
+    weekday_road = json_agenda.make_l1_road(weekday_text)
     weekday_idea_x = json_agenda.get_idea_obj(weekday_road)
     assert len(weekday_idea_x._kids) == 2
 

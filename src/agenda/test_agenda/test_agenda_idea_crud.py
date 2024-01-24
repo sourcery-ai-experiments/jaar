@@ -161,8 +161,8 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     work_road = bob_agenda.make_l1_road(work_text)
     week_road = bob_agenda.make_l1_road(week_text)
     wed_road = bob_agenda.make_road(week_road, wed_text)
-    bob_agenda.add_idea(ideaunit_shop(work_text), bob_agenda._economy_id)
-    bob_agenda.add_idea(ideaunit_shop(week_text), bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(work_text))
+    bob_agenda.add_l1_idea(ideaunit_shop(week_text))
     bob_agenda.add_idea(ideaunit_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     assert len(bob_agenda._idearoot._kids) == 2
@@ -534,7 +534,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
     work_text = "work"
     work_road = yao_agenda.make_l1_road(work_text)
     work_idea = ideaunit_shop(work_text)
-    yao_agenda.add_idea(work_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(work_idea)
     clean_text = "clean"
     clean_idea = ideaunit_shop(clean_text)
     clean_road = yao_agenda.make_road(work_road, clean_text)

@@ -482,10 +482,7 @@ def test_AgendaUnit_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
 
     # WHEN
     time = "timeline"
-    tim_agenda.add_idea(
-        ideaunit_shop(_label=time, _begin=0, _close=700),
-        parent_road=tim_agenda._economy_id,
-    )
+    tim_agenda.add_l1_idea(ideaunit_shop(_label=time, _begin=0, _close=700))
     t_road = tim_agenda.make_l1_road(time)
     week = "weeks"
     tim_agenda.add_idea(ideaunit_shop(_label=week, _denom=7), parent_road=t_road)

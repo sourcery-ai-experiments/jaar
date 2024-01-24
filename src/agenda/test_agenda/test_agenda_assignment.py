@@ -318,13 +318,13 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
     work_text = "work"
-    work_road = yao_agenda.make_road(yao_agenda._economy_id, work_text)
-    yao_agenda.add_idea(ideaunit_shop(work_text), parent_road=yao_agenda._economy_id)
+    work_road = yao_agenda.make_l1_road(work_text)
+    yao_agenda.add_l1_idea(ideaunit_shop(work_text))
     work_idea = yao_agenda.get_idea_obj(work_road)
     day_text = "day_range"
-    day_road = yao_agenda.make_road(yao_agenda._economy_id, day_text)
+    day_road = yao_agenda.make_l1_road(day_text)
     day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
-    yao_agenda.add_idea(day_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(day_idea)
     yao_agenda.edit_idea_attr(road=work_road, denom=11, numeric_road=day_road)
     assert work_idea._begin == 4
     print(f"{work_idea._label=} {work_idea._begin=} {work_idea._close=}")
@@ -389,7 +389,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
     casa_text = "casa"
     casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
-    yao_agenda.add_idea(ideaunit_shop(casa_text), parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
     yao_agenda.set_agenda_metrics()
 
     # WHEN
