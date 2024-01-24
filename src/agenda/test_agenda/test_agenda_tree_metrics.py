@@ -66,8 +66,8 @@ def test_AgendaUnit_set_all_idea_uids_unique_SetsUIDsCorrectly():
     zia_agenda = agendaunit_shop(_agent_id=zia_text)
     swim_text = "swim"
     sports_text = "sports"
-    zia_agenda.add_idea(ideaunit_shop(swim_text, _uid=None), zia_agenda._economy_id)
-    zia_agenda.add_idea(ideaunit_shop(sports_text, _uid=2), zia_agenda._economy_id)
+    zia_agenda.add_l1_idea(ideaunit_shop(swim_text, _uid=None))
+    zia_agenda.add_l1_idea(ideaunit_shop(sports_text, _uid=2))
     swim_road = zia_agenda.make_l1_road(swim_text)
     assert zia_agenda.get_idea_obj(swim_road)._uid is None
 
@@ -83,7 +83,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     nia_text = "Nia"
     nia_agenda = agendaunit_shop(nia_text, _weight=10)
     weekdays = "weekdays"
-    nia_agenda.add_idea(ideaunit_shop(weekdays, _weight=40), nia_agenda._economy_id)
+    nia_agenda.add_l1_idea(ideaunit_shop(weekdays, _weight=40))
     tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN

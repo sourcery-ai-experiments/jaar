@@ -68,11 +68,11 @@ def test_agenda_edit_idea_attr_reason_base_CorrectlySets_delimiter():
     work_text = "work"
     week_text = "week"
     wed_text = "Wednesday"
-    work_road = bob_agenda.make_road(bob_agenda._economy_id, work_text)
-    week_road = bob_agenda.make_road(bob_agenda._economy_id, week_text)
+    work_road = bob_agenda.make_l1_road(work_text)
+    week_road = bob_agenda.make_l1_road(week_text)
     wed_road = bob_agenda.make_road(week_road, wed_text)
-    bob_agenda.add_idea(ideaunit_shop(work_text), bob_agenda._economy_id)
-    bob_agenda.add_idea(ideaunit_shop(week_text), bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(work_text))
+    bob_agenda.add_l1_idea(ideaunit_shop(week_text))
     bob_agenda.add_idea(ideaunit_shop(wed_text), week_road)
     print(f"{bob_agenda._idearoot._kids.keys()=}")
     wed_idea = bob_agenda.get_idea_obj(wed_road)
@@ -195,9 +195,9 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = a4_agenda.make_road(a4_agenda._economy_id, work_text)
+    work_road = a4_agenda.make_l1_road(work_text)
     week_text = "weekdays"
-    week_road = a4_agenda.make_road(a4_agenda._economy_id, week_text)
+    week_road = a4_agenda.make_l1_road(week_text)
     wed_text = "Wednesday"
     wed_road = a4_agenda.make_road(week_road, wed_text)
 
@@ -263,9 +263,9 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
 def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
-    work_road = a4_agenda.make_road(a4_agenda._economy_id, work_text)
+    work_road = a4_agenda.make_l1_road(work_text)
     week_label = "weekdays"
-    week_road = a4_agenda.make_road(a4_agenda._economy_id, week_label)
+    week_road = a4_agenda.make_l1_road(week_label)
     wed_text = "Wednesday"
     wed_road = a4_agenda.make_road(week_road, wed_text)
 
@@ -416,10 +416,7 @@ def test_agenda_reasonunits_set_premiseIdeaWithDenomSetsPremiseDivision():
     time_road = x_agenda.make_l1_road(time_text)
     week_text = "week"
     week_road = x_agenda.make_road(time_road, week_text)
-    x_agenda.add_idea(
-        idea_kid=ideaunit_shop(time_text, _begin=100, _close=2000),
-        parent_road=x_agenda._economy_id,
-    )
+    x_agenda.add_l1_idea(ideaunit_shop(time_text, _begin=100, _close=2000))
     x_agenda.add_idea(ideaunit_shop(week_text, _denom=7), parent_road=time_road)
 
     # WHEN
@@ -450,12 +447,9 @@ def test_agenda_reasonunits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh():
     rus_war = "rus_war"
     rus_war_road = x_agenda.make_road(time_road, rus_war)
     x_agenda.add_idea(
-        idea_kid=ideaunit_shop(time, _begin=100, _close=2000),
-        parent_road=x_agenda._economy_id,
+        ideaunit_shop(time, _begin=100, _close=2000), x_agenda._economy_id
     )
-    x_agenda.add_idea(
-        idea_kid=ideaunit_shop(rus_war, _begin=22, _close=34), parent_road=time_road
-    )
+    x_agenda.add_idea(ideaunit_shop(rus_war, _begin=22, _close=34), time_road)
 
     # WHEN
     x_agenda.edit_idea_attr(
@@ -542,9 +536,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIfInva
 
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(
-        idea_kid=ideaunit_shop(commute_text), parent_road=x_agenda._economy_id
-    )
+    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._economy_id)
     x_agenda.get_idea_list()  # set tree metrics
     commute_idea = x_agenda.get_idea_obj(commute_road)
     assert len(commute_idea._reasonunits) == 0
@@ -624,9 +616,7 @@ def test_agenda_reasonunits_IdeaUnit_active_InfluencesReasonUnitStatus():
     # 5.2. idea(...,work).active = False
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(
-        idea_kid=ideaunit_shop(commute_text), parent_road=x_agenda._economy_id
-    )
+    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._economy_id)
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=work_road,

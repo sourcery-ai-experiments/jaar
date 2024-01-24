@@ -133,7 +133,7 @@ def test_get_intent_does_not_return_promise_items_outside_range():
     zia_agenda.set_time_hreg_ideas(c400_count=7)
     clean_text = "clean"
     clean_road = zia_agenda.make_l1_road(clean_text)
-    zia_agenda.add_idea(ideaunit_shop(clean_text, promise=True), zia_agenda._economy_id)
+    zia_agenda.add_l1_idea(ideaunit_shop(clean_text, promise=True))
     time_road = zia_agenda.make_l1_road("time")
     jajatime_road = zia_agenda.make_road(time_road, "jajatime")
     jajaday = zia_agenda.make_road(jajatime_road, "day")
@@ -202,7 +202,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     aaron_text = "Aaron Donald things effected by him"
     aaron_road = x_agenda.make_l1_road(aaron_text)
     # internet_text = "Internet"
-    # internet_road = x_agenda.make_road(x_agenda._economy_id,internet_text)
+    # internet_road = x_agenda.make_l1_road(internet_text)
     year_month_text = "year_month"
     year_month_road = x_agenda.make_l1_road(year_month_text)
     x_agenda.set_belief(base=month_week_road, pick=month_week_road)
@@ -212,16 +212,16 @@ def test_exammple_AgendaHasCorrectAttributes():
     # x_agenda.set_belief(base=internet_road, pick=internet_road)
     x_agenda.set_belief(base=year_month_road, pick=year_month_road)
     # season_text = "Seasons"
-    # season_road = x_agenda.make_road(x_agenda._economy_id,season_text)
+    # season_road = x_agenda.make_l1_road(season_text)
     # x_agenda.set_belief(base=season_road, pick=season_road)
     ced_week_text = "ced_week"
     ced_week_road = x_agenda.make_l1_road(ced_week_text)
     x_agenda.set_belief(base=ced_week_road, pick=ced_week_road)
     # water_text = "WaterExistence"
-    # water_road = x_agenda.make_road(x_agenda._economy_id,water_text)
+    # water_road = x_agenda.make_l1_road(water_text)
     # x_agenda.set_belief(base=water_road, pick=water_road)
     # movie_text = "No Movie playing"
-    # movie_road = x_agenda.make_road(x_agenda._economy_id,movie_text)
+    # movie_road = x_agenda.make_l1_road(movie_text)
     # x_agenda.set_belief(base=movie_road, pick=movie_text)
 
     # WHEN
@@ -282,11 +282,6 @@ def test_exammple_AgendaCanFiltersOnBase():
     #         if reason.base == weekdays:
     #             print(f"         {weekdays}")
 
-    # x_agenda.edit_idea_attr(
-    #     road="{x_agenda._economy_id},premises,cleaning,laundry wednesday",
-    #     reason_del_premise_base=weekdays,
-    #     reason_del_premise_need=weekdays,
-    # )
     # this list went from 68 to 63 when the method of identifying activees was improved.
     assert len(x_agenda.get_intent_dict()) == 63
 
@@ -309,7 +304,7 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     day_text = "day"
     day_road = zia_agenda.make_road(time_road, day_text)
 
-    zia_agenda.add_idea(ideaunit_shop(run_text, promise=True), zia_agenda._economy_id)
+    zia_agenda.add_l1_idea(ideaunit_shop(run_text, promise=True))
     zia_agenda.add_idea(ideaunit_shop(day_text, _begin=0, _close=500), time_road)
     zia_agenda.edit_idea_attr(
         road=run_road,
@@ -350,13 +345,8 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
     day_text = "day"
     day_road = zia_agenda.make_road(time_road, day_text)
 
-    zia_agenda.add_idea(
-        idea_kid=ideaunit_shop(run_text, promise=True),
-        parent_road=zia_agenda._economy_id,
-    )
-    zia_agenda.add_idea(
-        idea_kid=ideaunit_shop(day_text, _begin=0, _close=500), parent_road=time_road
-    )
+    zia_agenda.add_l1_idea(ideaunit_shop(run_text, promise=True))
+    zia_agenda.add_idea(ideaunit_shop(day_text, _begin=0, _close=500), time_road)
     zia_agenda.edit_idea_attr(
         road=run_road,
         reason_base=day_road,
@@ -439,7 +429,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     zia_agenda.set_time_hreg_ideas(c400_count=7)
 
     things_text = "things to do"
-    zia_agenda.add_idea(ideaunit_shop(things_text), parent_road=zia_agenda._economy_id)
+    zia_agenda.add_l1_idea(ideaunit_shop(things_text))
     t_road = zia_agenda.make_l1_road(things_text)
     clean = "clean"
     run = "run"
@@ -724,9 +714,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     bob_agenda = agendaunit_shop(bob_text)
     work_text = "work"
     work_road = bob_agenda.make_road(bob_text, work_text)
-    bob_agenda.add_idea(
-        ideaunit_shop(work_text, promise=True), parent_road=bob_agenda._economy_id
-    )
+    bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
     assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "sue"
@@ -763,9 +751,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     bob_agenda.add_partyunit(party_id=bob_text)
     work_text = "work"
     work_road = bob_agenda.make_road(bob_text, work_text)
-    bob_agenda.add_idea(
-        ideaunit_shop(work_text, promise=True), parent_road=bob_agenda._economy_id
-    )
+    bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
 
     sue_text = "sue"
     bob_agenda.add_partyunit(party_id=sue_text)
@@ -802,7 +788,7 @@ def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFix_active_Setting
     casa_road = bob_agenda.make_l1_road(casa_text)
     laundry_text = "do_laundry"
     laundry_road = bob_agenda.make_road(casa_road, laundry_text)
-    bob_agenda.add_idea(ideaunit_shop(casa_text), bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(casa_text))
     bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
     time_road = bob_agenda.make_l1_road("time")
     jajatime_road = bob_agenda.make_road(time_road, "jajatime")

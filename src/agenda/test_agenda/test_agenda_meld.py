@@ -227,16 +227,16 @@ def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     bob1_agenda = agendaunit_shop(bob_text)
 
     tech_text = "tech"
-    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
+    tech_road = bob1_agenda.make_l1_road(tech_text)
     bowl_text = "bowl"
     bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
+    swim_road = bob1_agenda.make_l1_road(swim_text)
     free_text = "freestyle"
     free_road = bob1_agenda.make_road(swim_road, free_text)
 
     bob2_agenda = agendaunit_shop(bob_text)
-    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     assert len(bob1_agenda.get_idea_list()) == 1
@@ -265,15 +265,15 @@ def test_AgendaUnit_idearoot_meld_2SameIdeasScenario():
     yao_text = "Yao"
     yao1_agenda = agendaunit_shop(yao_text)
     tech_text = "tech"
-    tech_road = yao1_agenda.make_road(yao1_agenda._economy_id, tech_text)
+    tech_road = yao1_agenda.make_l1_road(tech_text)
     bowl_text = "bowl"
     bowl_road = yao1_agenda.make_road(tech_road, bowl_text)
 
-    yao1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=yao1_agenda._economy_id)
+    yao1_agenda.add_l1_idea(ideaunit_shop(tech_text))
     yao1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
     yao2_agenda = agendaunit_shop(yao_text)
-    yao2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=yao2_agenda._economy_id)
+    yao2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     yao2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     assert yao1_agenda.get_idea_obj(bowl_road)._weight == 1
     assert len(yao1_agenda.get_idea_list()) == 3
@@ -291,16 +291,16 @@ def test_AgendaUnit_beliefunits_meld_BaseScenarioWorks():
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
     tech_text = "tech"
-    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
+    tech_road = bob1_agenda.make_l1_road(tech_text)
     bowl_text = "bowl"
     bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
 
-    bob1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob1_agenda._economy_id)
+    bob1_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob1_agenda.set_belief(base=tech_road, pick=bowl_road)
 
     bob2_agenda = agendaunit_shop(bob_text)
-    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob2_agenda.set_belief(base=tech_road, pick=bowl_road)
     bob1_idearoot = bob1_agenda._idearoot
@@ -323,20 +323,20 @@ def test_AgendaUnit_beliefunits_meld_2BeliefUnitsWorks():
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
     tech_text = "tech"
-    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
+    tech_road = bob1_agenda.make_l1_road(tech_text)
     bowl_text = "bowl"
     bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
+    swim_road = bob1_agenda.make_l1_road(swim_text)
     free_text = "freestyle"
 
-    bob1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob1_agenda._economy_id)
+    bob1_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob1_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     bob1_agenda.set_belief(base=tech_road, pick=bowl_road)
 
     bob2_agenda = agendaunit_shop(bob_text)
-    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     bob2_agenda.set_belief(base=tech_road, pick=bowl_road)
@@ -362,7 +362,7 @@ def test_AgendaUnit_beliefunits_meld_IdeasMeldedBeforeBeliefs():
     bob1_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
+    swim_road = bob1_agenda.make_l1_road(swim_text)
     free_text = "freestyle"
 
     bob2_agenda = agendaunit_shop(bob_text)
@@ -413,9 +413,9 @@ def test_AgendaUnit_beliefunits_meld_BeliefsAttributeCorrectlySet():
     bob1_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
+    swim_road = bob1_agenda.make_l1_road(swim_text)
     free_text = "freestyle"
-    free_road = bob1_agenda.make_road(bob1_agenda._economy_id, free_text)
+    free_road = bob1_agenda.make_l1_road(free_text)
     bob1_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
 
     bob2_agenda = agendaunit_shop(bob_text)
@@ -522,7 +522,7 @@ def test_AgendaUnit_meld_OriginUnitsCorrectlySet():
     bob_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = bob_agenda.make_road(bob_agenda._economy_id, swim_text)
+    swim_road = bob_agenda.make_l1_road(swim_text)
     free_text = "freestyle"
     free_road = bob_agenda.make_road(swim_road, free_text)
     back_text = "backstroke"

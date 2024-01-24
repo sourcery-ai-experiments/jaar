@@ -518,69 +518,6 @@ def test_AgendaUnit_get_heir_road_list_returnsCorrectList():
     assert heir_nodes_road_list[4] == x_agenda.make_road(weekdays, sun_text)
 
 
-# def test_agenda4party_hasCorrectLevel1StructureWithGrouplessAncestors_2():
-#     x_agenda = agendaunit_shop(_agent_id="Bob")
-#     x_agenda.add_idea(ideaunit_shop("A", _weight=7), parent_road="blahblah")
-#     x_agenda.add_idea(ideaunit_shop("C", _weight=3), parent_road=f"{x_agenda._economy_id},A")
-#     x_agenda.add_idea(ideaunit_shop("E", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
-#     x_agenda.add_idea(ideaunit_shop("D", _weight=7), parent_road=f"{x_agenda._economy_id},A,C")
-#     x_agenda.add_idea(ideaunit_shop("B", _weight=13), parent_road="blahblah")
-#     x_agenda.add_idea(ideaunit_shop("F", _weight=23), parent_road="blahblah")
-#     x_agenda.add_idea(ideaunit_shop("G", _weight=57), parent_road="blahblah")
-#     x_agenda.add_idea(ideaunit_shop("I"), parent_road=f"{x_agenda._economy_id},G")
-#     x_agenda.add_idea(ideaunit_shop("H"), parent_road=f"{x_agenda._economy_id},G")
-#     x_agenda.add_idea(ideaunit_shop("J"), parent_road=f"{x_agenda._economy_id},G,I")
-#     x_agenda.add_idea(ideaunit_shop("K"), parent_road=f"{x_agenda._economy_id},G,I")
-#     x_agenda.add_idea(ideaunit_shop("M"), parent_road=f"{x_agenda._economy_id},G,H")
-
-#     billy_pid = PartyID("billy")
-#     x_agenda.add_partyunit(party_id=billy_pid)
-#     billy_bl = balancelink_shop(brand=billy_pid)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},G", balancelink=billy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},G,H,M", balancelink=billy_bl)
-
-#     sandy_pid = PartyID(sandy_text)
-#     x_agenda.add_partyunit(party_id=sandy_pid)
-#     sandy_bl = balancelink_shop(brand=sandy_pid)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},A", balancelink=sandy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},B", balancelink=sandy_bl)
-#     x_agenda.edit_idea_attr(road=f"{x_agenda._economy_id},A,C,E", balancelink=sandy_bl)
-
-#     # expected sandy
-#     exp_sandy = agendaunit_shop(_agent_id=sandy_text)
-#     exp_sandy.add_idea(ideaunit_shop("A", _agenda_importance=0.07), parent_road="blahblah")
-#     exp_sandy.add_idea(ideaunit_shop("C", _agenda_importance=0.07), parent_road=f"{x_agenda._economy_id},A")
-#     exp_sandy.add_idea(ideaunit_shop("E", _agenda_importance=0.5), parent_road=f"{x_agenda._economy_id},A,C")
-#     exp_sandy.add_idea(ideaunit_shop("B", _agenda_importance=0.13), parent_road="blahblah")
-
-#     # generated sandy
-#     gen_sandy = x_agenda.get_agenda4party(beliefs=None, party_id=sandy_pid)
-
-#     # check generated sandy is correct
-#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance == 0.07
-#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance == 0.5
-#     assert gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance == 0.13
-#     assert (
-#         gen_sandy.get_idea_obj(f"{x_agenda._economy_id},A")._agenda_importance
-#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A")._agenda_importance
-#     )
-#     assert (
-#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance
-#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C")._agenda_importance
-#     )
-#     assert (
-#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
-#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},A,C,E")._agenda_importance
-#     )
-#     assert (
-#         gen_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance
-#         == exp_sandy.get_idea_obj(road=f"{x_agenda._economy_id},B")._agenda_importance
-#     )
-#     gen_sandy_list = gen_sandy.get_idea_list()
-#     assert len(gen_sandy_list) == 5
-
-
 def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()

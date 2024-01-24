@@ -351,14 +351,14 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
     min_range_text = "a_minute_range"
-    min_range_road = yao_agenda.make_road(yao_agenda._economy_id, min_range_text)
+    min_range_road = yao_agenda.make_l1_road(min_range_text)
     min_range_idea = ideaunit_shop(min_range_text, _begin=0, _close=2880)
-    yao_agenda.add_idea(min_range_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(min_range_idea)
 
     day_len_text = "day_length"
-    day_len_road = yao_agenda.make_road(yao_agenda._economy_id, day_len_text)
+    day_len_road = yao_agenda.make_l1_road(day_len_text)
     day_len_idea = ideaunit_shop(day_len_text, _begin=0, _close=1440)
-    yao_agenda.add_idea(day_len_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(day_len_idea)
 
     min_days_text = "days in minute_range"
     min_days_road = yao_agenda.make_road(min_range_road, min_days_text)
@@ -414,8 +414,8 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
 
     casa_text = "casa"
-    casa_road = yao_agenda.make_road(yao_agenda._economy_id, casa_text)
-    yao_agenda.add_idea(ideaunit_shop(casa_text), parent_road=yao_agenda._economy_id)
+    casa_road = yao_agenda.make_l1_road(casa_text)
+    yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
 
     basket_text = "laundry basket status"
     basket_road = yao_agenda.make_road(casa_road, basket_text)
@@ -499,7 +499,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     amer_agenda.set_economy_id(economy_id_text)
     print(f"{amer_agenda._economy_id=} {amer_agenda._idea_dict.keys()=}")
     casa_text = "casa"
-    casa_road = amer_agenda.make_road(amer_agenda._economy_id, casa_text)
+    casa_road = amer_agenda.make_l1_road(casa_text)
     laundry_task_road_text = "do_laundry"
     laundry_task_road_road = amer_agenda.make_road(casa_road, laundry_task_road_text)
     do_laundery_idea = amer_agenda.get_idea_obj(laundry_task_road_road)

@@ -295,7 +295,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     # GIVEN
     yue_agenda = agendaunit_shop("Yue")
     swim_text = "swim"
-    yue_agenda.add_idea(ideaunit_shop(swim_text), parent_road=yue_agenda._economy_id)
+    yue_agenda.add_l1_idea(ideaunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -440,7 +440,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
     # GIVEN
     yue_agenda = agendaunit_shop("Yue")
     swim_text = "swim"
-    yue_agenda.add_idea(ideaunit_shop(swim_text), parent_road=yue_agenda._economy_id)
+    yue_agenda.add_l1_idea(ideaunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -456,9 +456,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    yue_agenda.add_idea(
-        idea_kid=ideaunit_shop(hunt_text, _weight=3), parent_road=yue_agenda._economy_id
-    )
+    yue_agenda.add_l1_idea(ideaunit_shop(hunt_text, _weight=3))
 
     # WHEN
     yue_agenda.set_agenda_metrics()
@@ -551,7 +549,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
 def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     # GIVEN
     yue_agenda = agendaunit_shop("Yue")
-    yue_agenda.add_idea(ideaunit_shop("swim"), parent_road=yue_agenda._economy_id)
+    yue_agenda.add_l1_idea(ideaunit_shop("swim"))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"

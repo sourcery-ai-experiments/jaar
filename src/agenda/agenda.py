@@ -1015,6 +1015,23 @@ class AgendaUnit:
 
         return missing_bases
 
+    def add_l1_idea(
+        self,
+        idea_kid: IdeaUnit,
+        create_missing_ideas_groups: bool = None,
+        adoptees: list[str] = None,
+        bundling: bool = True,
+        create_missing_ancestors: bool = True,
+    ):
+        self.add_idea(
+            idea_kid=idea_kid,
+            parent_road=self._economy_id,
+            create_missing_ideas_groups=create_missing_ideas_groups,
+            adoptees=adoptees,
+            bundling=bundling,
+            create_missing_ancestors=create_missing_ancestors,
+        )
+
     def add_idea(
         self,
         idea_kid: IdeaUnit,

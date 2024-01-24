@@ -7,9 +7,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
     mia_agenda = agendaunit_shop("Mia", _weight=10)
 
     l1 = "level1"
-    mia_agenda.add_idea(
-        ideaunit_shop(l1, _weight=30), parent_road=mia_agenda._economy_id
-    )
+    mia_agenda.add_l1_idea(ideaunit_shop(l1, _weight=30))
     l1_road = mia_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"
@@ -42,9 +40,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     bob_agenda = agendaunit_shop(_agent_id="Bob", _weight=10)
 
     l1 = "level1"
-    bob_agenda.add_idea(
-        ideaunit_shop(l1, _weight=30), parent_road=bob_agenda._economy_id
-    )
+    bob_agenda.add_l1_idea(ideaunit_shop(l1, _weight=30))
     l1_road = bob_agenda.make_l1_road(l1)
 
     rx1 = "range_root_example"

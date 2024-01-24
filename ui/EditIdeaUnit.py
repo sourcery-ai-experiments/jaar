@@ -879,15 +879,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
         # add done/not_done children
         not_done_text = "not done"
-        self.x_agenda.add_idea(
-            idea_kid=ideaunit_shop(not_done_text),
-            parent_road=new_road,
-        )
+        self.x_agenda.add_idea(ideaunit_shop(not_done_text), new_road)
         done_text = "done"
-        self.x_agenda.add_idea(
-            idea_kid=ideaunit_shop(done_text),
-            parent_road=new_road,
-        )
+        self.x_agenda.add_idea(ideaunit_shop(done_text), new_road)
         # set reason to "not done"
         self.x_agenda.edit_idea_attr(
             road=new_road,
@@ -937,10 +931,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         new_parent_road = f"{self.x_idea._label}"
         if self.x_idea._parent_road not in ("", None):
             new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
-        self.x_agenda.add_idea(
-            idea_kid=new_idea,
-            parent_road=new_parent_road,
-        )
+        self.x_agenda.add_idea(new_idea, new_parent_road)
         self.refresh_tree()
 
     def refresh_tree(self, disable_is_expanded: bool = False):

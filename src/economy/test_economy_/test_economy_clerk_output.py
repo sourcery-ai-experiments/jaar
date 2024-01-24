@@ -42,7 +42,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # THEN
     a_text = "A"
     c_text = "C"
-    c_road = f"{input_agenda._economy_id},{c_text}"
+    c_road = input_agenda.make_l1_road(c_text)
     d_text = "D"
     d_road = f"{c_road},{d_text}"
     print(f"{output_agenda._agent_id=}")

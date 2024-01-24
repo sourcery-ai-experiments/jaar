@@ -101,7 +101,7 @@ def test_AgendaUnit_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBel
     bob_agenda = agendaunit_shop("Bob")
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
-    bob_agenda.add_idea(time_idea, bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(time_idea)
     time_road = bob_agenda.make_l1_road(time_text)
     a1st = "age1st"
     a1st_road = bob_agenda.make_road(time_road, a1st)
@@ -144,7 +144,7 @@ def test_AgendaUnit_get_idea_list_BeliefHeirsCorrectlyInherited():
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
     swim_road = bob_agenda.make_l1_road(swim_text)
-    bob_agenda.add_idea(ideaunit_shop(swim_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(swim_text))
     fast_text = "fast"
     slow_text = "slow"
     fast_road = bob_agenda.make_road(swim_road, fast_text)
@@ -154,7 +154,7 @@ def test_AgendaUnit_get_idea_list_BeliefHeirsCorrectlyInherited():
 
     earth_text = "earth"
     earth_road = bob_agenda.make_l1_road(earth_text)
-    bob_agenda.add_idea(ideaunit_shop(earth_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(earth_text))
 
     swim_idea = bob_agenda.get_idea_obj(swim_road)
     fast_idea = bob_agenda.get_idea_obj(fast_road)
@@ -200,7 +200,7 @@ def test_AgendaUnit_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop()
     bob_agenda = agendaunit_shop("Bob")
     swim_text = "swim"
     swim_road = bob_agenda.make_l1_road(swim_text)
-    bob_agenda.add_idea(ideaunit_shop(swim_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(swim_text))
     swim_idea = bob_agenda.get_idea_obj(swim_road)
 
     fast_text = "fast"
@@ -210,7 +210,7 @@ def test_AgendaUnit_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop()
 
     earth_text = "earth"
     earth_road = bob_agenda.make_l1_road(earth_text)
-    bob_agenda.add_idea(ideaunit_shop(earth_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(earth_text))
 
     assert swim_idea._beliefheirs == {}
 
@@ -238,14 +238,14 @@ def test_AgendaUnit_get_idea_list_BeliefHeirCorrectlyDeletesBeliefUnit():
     sue_agenda = agendaunit_shop("Sue")
     swim_text = "swim"
     swim_road = sue_agenda.make_l1_road(swim_text)
-    sue_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(ideaunit_shop(swim_text))
     fast_text = "fast"
     slow_text = "slow"
     sue_agenda.add_idea(ideaunit_shop(fast_text), parent_road=swim_road)
     sue_agenda.add_idea(ideaunit_shop(slow_text), parent_road=swim_road)
     earth_text = "earth"
     earth_road = sue_agenda.make_l1_road(earth_text)
-    sue_agenda.add_idea(ideaunit_shop(earth_text), parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(ideaunit_shop(earth_text))
 
     swim_idea = sue_agenda.get_idea_obj(swim_road)
 
@@ -272,11 +272,11 @@ def test_get_ranged_beliefs():
     sue_agenda = agendaunit_shop("Sue")
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
-    sue_agenda.add_idea(time_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(time_idea)
 
     clean_text = "clean"
     clean_idea = ideaunit_shop(clean_text, promise=True)
-    sue_agenda.add_idea(clean_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(clean_idea)
     c_road = sue_agenda.make_l1_road(clean_text)
     time_road = sue_agenda.make_l1_road(time_text)
     # sue_agenda.edit_idea_attr(road=c_road, reason_base=time_road, reason_premise=time_road, reason_premise_open=5, reason_premise_nigh=10)
@@ -291,7 +291,7 @@ def test_get_ranged_beliefs():
     # WHEN one ranged belief added
     place_text = "place_x"
     place_idea = ideaunit_shop(place_text, _begin=600, _close=800)
-    sue_agenda.add_idea(place_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(place_idea)
     place_road = sue_agenda.make_l1_road(place_text)
     sue_agenda.set_belief(base=place_road, pick=place_road, open=5, nigh=10)
     print(f"When one ranged belief added {sue_agenda._idearoot._beliefunits=}")
@@ -302,7 +302,7 @@ def test_get_ranged_beliefs():
 
     # WHEN one non-ranged_belief added
     mood = "mood_x"
-    sue_agenda.add_idea(ideaunit_shop(mood), parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(ideaunit_shop(mood))
     m_road = sue_agenda.make_l1_road(mood)
     sue_agenda.set_belief(base=m_road, pick=m_road)
     print(f"When one non-ranged_belief added {sue_agenda._idearoot._beliefunits=}")
@@ -316,13 +316,10 @@ def test_get_roots_ranged_beliefs():
     # GIVEN a two ranged beliefs where one is "range-root" get_root_ranged_beliefs returns one "range-root" belief
     sue_agenda = agendaunit_shop("Sue")
     time_text = "time"
-    sue_agenda.add_idea(
-        idea_kid=ideaunit_shop(time_text, _begin=0, _close=140),
-        parent_road=sue_agenda._economy_id,
-    )
+    sue_agenda.add_l1_idea(ideaunit_shop(time_text, _begin=0, _close=140))
     time_road = sue_agenda.make_l1_road(time_text)
     mood_x = "mood_x"
-    sue_agenda.add_idea(ideaunit_shop(mood_x), parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(ideaunit_shop(mood_x))
     m_x_road = sue_agenda.make_l1_road(mood_x)
     happy = "happy"
     sad = "Sad"
@@ -341,10 +338,7 @@ def test_get_roots_ranged_beliefs():
 
     # a belief who's idea range is defined by numeric_root is not "rangeroot"
     mirrow_x = "mirrow_x"
-    sue_agenda.add_idea(
-        idea_kid=ideaunit_shop(mirrow_x, _numeric_road=time_text),
-        parent_road=sue_agenda._economy_id,
-    )
+    sue_agenda.add_l1_idea(ideaunit_shop(mirrow_x, _numeric_road=time_text))
     m_x_road = sue_agenda.make_l1_road(mirrow_x)
     sue_agenda.set_belief(base=m_x_road, pick=time_road, open=5, nigh=10)
     assert len(sue_agenda._idearoot._beliefunits) == 3
@@ -358,13 +352,10 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario1():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=sue_agenda._economy_id)
+    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
 
     time_text = "time"
-    sue_agenda.add_idea(
-        idea_kid=ideaunit_shop(time_text, _begin=0, _close=140),
-        parent_road=sue_agenda._economy_id,
-    )
+    sue_agenda.add_l1_idea(ideaunit_shop(time_text, _begin=0, _close=140))
     time_road = sue_agenda.make_l1_road(time_text)
     age1st_text = "age1st"
     age2nd_text = "age2nd"
@@ -421,12 +412,12 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario2():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=sue_agenda._economy_id)
+    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
 
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
     time_road = sue_agenda.make_l1_road(time_text)
-    sue_agenda.add_idea(time_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(time_idea)
     age1st_text = "age1st"
     age2nd_text = "age2nd"
     age3rd_text = "age3rd"
@@ -480,12 +471,12 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=sue_agenda._economy_id)
+    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
 
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
     time_road = sue_agenda.make_l1_road(time_text)
-    sue_agenda.add_idea(time_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(time_idea)
     age1st_text = "age1st"
     age2nd_text = "age2nd"
     age3rd_text = "age3rd"
@@ -571,18 +562,18 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
     arsub1 = "descretional_subsecction1"
     arsub1_idea = ideaunit_shop(arsub1, _begin=0, _close=140)
     as1_road = sue_agenda.make_l1_road(arsub1)
-    sue_agenda.add_idea(arsub1_idea, sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(arsub1_idea)
     # range-root idea has range_source_road
     time_text = "time"
     time_idea = ideaunit_shop(
         time_text, _begin=0, _close=140, _range_source_road=as1_road
     )
-    sue_agenda.add_idea(time_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(time_idea)
 
     arsub2 = "descretional_subsecction2"
     arsub2_idea = ideaunit_shop(arsub2, _begin=0, _close=20)
     as2_road = sue_agenda.make_l1_road(arsub2)
-    sue_agenda.add_idea(arsub2_idea, parent_road=sue_agenda._economy_id)
+    sue_agenda.add_l1_idea(arsub2_idea)
 
     # non-range-root child idea has range_source_road
     time_road = sue_agenda.make_l1_road(time_text)

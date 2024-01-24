@@ -9,7 +9,7 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     xio_agenda = agendaunit_shop("Xio")
     run_text = "run"
     run_road = xio_agenda.make_l1_road(run_text)
-    xio_agenda.add_idea(ideaunit_shop(run_text), parent_road=xio_agenda._economy_id)
+    xio_agenda.add_l1_idea(ideaunit_shop(run_text))
     run_idea = xio_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_shop()
 
@@ -51,7 +51,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     run_text = "run"
     run_road = bob_agenda.make_road(bob_text, run_text)
     bob_agenda.add_partyunit(party_id=bob_text)
-    bob_agenda.add_idea(ideaunit_shop(run_text), parent_road=bob_agenda._economy_id)
+    bob_agenda.add_l1_idea(ideaunit_shop(run_text))
     bob_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
     run_idea = bob_agenda.get_idea_obj(run_road)
     assert run_idea._assignedunit == assigned_unit_x
@@ -91,7 +91,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assigned_unit_x.set_suffgroup(brand=swimmers_text)
 
     noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swimmers_text))
-    noa_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda._economy_id)
+    noa_agenda.add_l1_idea(ideaunit_shop(swim_text))
     noa_agenda.add_idea(ideaunit_shop(morn_text), parent_road=swim_road)
     noa_agenda.add_idea(ideaunit_shop(four_text), parent_road=morn_road)
     noa_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
@@ -173,11 +173,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # WHEN
     noa_agenda2 = agendaunit_shop("Noa")
     noa_agenda2.add_partyunit(party_id=xia_text)
-    noa_agenda2.add_idea(
-        idea_kid=noa_agenda1_swim_idea,
-        parent_road=noa_agenda2._economy_id,
-        create_missing_ideas_groups=False,
-    )
+    noa_agenda2.add_l1_idea(noa_agenda1_swim_idea, create_missing_ideas_groups=False)
 
     # THEN
     noa_agenda2_swim_idea = noa_agenda2.get_idea_obj(swim_road)

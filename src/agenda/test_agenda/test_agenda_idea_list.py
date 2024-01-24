@@ -268,12 +268,12 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     auto_text = "auto"
     auto_road = yao_agenda.make_l1_road(auto_text)
     auto_idea = ideaunit_shop(auto_text, _weight=10)
-    yao_agenda.add_idea(auto_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(auto_idea)
 
     barn_text = "barn"
     barn_road = yao_agenda.make_l1_road(barn_text)
     barn_idea = ideaunit_shop(barn_text, _weight=60)
-    yao_agenda.add_idea(barn_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(barn_idea)
     lamb_text = "lambs"
     lamb_road = yao_agenda.make_road(barn_road, lamb_text)
     lamb_idea = ideaunit_shop(lamb_text, _weight=1)
@@ -286,7 +286,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
     coal_text = "coal"
     coal_road = yao_agenda.make_l1_road(coal_text)
     coal_idea = ideaunit_shop(coal_text, _weight=30)
-    yao_agenda.add_idea(coal_idea, parent_road=yao_agenda._economy_id)
+    yao_agenda.add_l1_idea(coal_idea)
 
     assert yao_agenda._idearoot._agenda_coin_onset is None
     assert yao_agenda._idearoot._agenda_coin_cease is None
