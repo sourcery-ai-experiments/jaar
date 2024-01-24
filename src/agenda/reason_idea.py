@@ -22,7 +22,7 @@ class BeliefCore:
     open: float = None
     nigh: float = None
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         x_dict = {
             "base": self.base,
             "pick": self.pick,
@@ -301,7 +301,7 @@ class PremiseUnit:
     def get_obj_key(self):
         return self.need
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         x_dict = {"need": self.need}
         if self.open != None:
             x_dict["open"] = self.open
@@ -562,7 +562,7 @@ def reasoncore_shop(
 
 @dataclass
 class ReasonUnit(ReasonCore):
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         premises_dict = {
             premise_road: premise.get_dict()
             for premise_road, premise in self.premises.items()

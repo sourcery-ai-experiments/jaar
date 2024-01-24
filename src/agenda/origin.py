@@ -9,7 +9,7 @@ class OriginLink:
     pid: PartyID
     weight: float
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "pid": self.pid,
             "weight": self.weight,
@@ -32,7 +32,7 @@ class OriginUnit:
     def del_originlink(self, pid: PartyID):
         self._links.pop(pid)
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {"_links": self.get_originlinks_dict()}
 
     def get_originlinks_dict(self):

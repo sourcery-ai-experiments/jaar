@@ -15,7 +15,7 @@ class EconomyLink:
     def set_manager_importance(self, person_importance: float):
         self._manager_importance = person_importance
 
-    def get_dict(self) -> dict:
+    def get_dict(self) -> dict[str:str]:
         return {"economy_id": self.economy_id, "weight": self.weight}
 
 
@@ -71,7 +71,7 @@ class HealerLink:
             for economylink_x in self._economylinks.values()
         }
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "healer_id": self.healer_id,
             "weight": self.weight,
@@ -139,7 +139,7 @@ class ProblemUnit:
             for healerlink_x in self._healerlinks.values()
         }
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "problem_id": self.problem_id,
             "weight": self.weight,

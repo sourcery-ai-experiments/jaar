@@ -985,7 +985,7 @@ class IdeaUnit:
             x_bool = False
         return x_bool
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         x_dict = {"_weight": self._weight}
 
         if self._label != None:

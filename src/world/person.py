@@ -118,7 +118,7 @@ class PersonUnit:
             for problemunit_x in self._problems.values()
         }
 
-    def get_dict(self) -> dict:
+    def get_dict(self) -> dict[str:str]:
         return {
             "pid": self.pid,
             "_economys": self.get_economys_dict(),

@@ -22,7 +22,7 @@ class PartyCore:
 
 @dataclass
 class PartyRing(PartyCore):
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {"party_id": self.party_id}
 
 
@@ -145,7 +145,7 @@ class PartyUnit(PartyCore):
         ):
             self._treasury_voice_hx_lowest_rank = self._treasury_voice_rank
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "party_id": self.party_id,
             "uid": self.uid,
@@ -374,7 +374,7 @@ class PartyLink(PartyCore):
     _agenda_intent_credit: float = None
     _agenda_intent_debt: float = None
 
-    def get_dict(self):
+    def get_dict(self) -> dict[str:str]:
         return {
             "party_id": self.party_id,
             "creditor_weight": self.creditor_weight,
