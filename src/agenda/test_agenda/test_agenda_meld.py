@@ -7,330 +7,360 @@ from pytest import raises as pytest_raises
 from src.agenda.examples.example_agendas import agenda_v001
 
 
-def test_agenda_meld_BaseScenario():
+def test_AgendaUnit_meld_BaseScenario():
     # GIVEN
-    agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob2_agenda = agendaunit_shop(bob_text)
+    assert bob1_agenda
+    assert bob1_agenda._agent_id == bob_text
 
     # WHEN
-    x_agenda1.meld(other_agenda=x_agenda2)
+    bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
-    assert x_agenda1
-    assert x_agenda1._agent_id == agenda_text
+    assert bob1_agenda
+    assert bob1_agenda._agent_id == bob_text
 
 
-def test_agenda_meld_WeightDoesNotCombine():
+def test_AgendaUnit_meld_WeightDoesNotCombine():
     # GIVEN
-    agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda1._weight = 3
-    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda2._weight = 5
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob1_agenda._weight = 3
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda._weight = 5
+    assert bob1_agenda._weight == 3
 
     # WHEN
-    x_agenda1.meld(other_agenda=x_agenda2)
+    bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
-    assert x_agenda1._weight == 3
+    assert bob1_agenda._weight == 3
 
 
-def test_agenda_meld_PartyUnits():
+def test_AgendaUnit_meld_PartyUnits():
     # GIVEN
     x1_pid = "x1_party"
     x1_party = partyunit_shop(party_id=x1_pid)
 
-    agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda1.set_partyunit(partyunit=x1_party)
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob1_agenda.set_partyunit(partyunit=x1_party)
 
-    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda2.set_partyunit(partyunit=x1_party)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.set_partyunit(partyunit=x1_party)
     x2_pid = "x2_party"
     x2_party = partyunit_shop(party_id=x2_pid)
-    x_agenda2.set_partyunit(partyunit=x2_party)
-    assert len(x_agenda1._partys) == 1
+    bob2_agenda.set_partyunit(partyunit=x2_party)
+    assert len(bob1_agenda._partys) == 1
+    assert bob1_agenda._partys.get(x1_pid) != None
+    assert bob1_agenda._partys.get(x2_pid) is None
 
     # WHEN
-    x_agenda1.meld(other_agenda=x_agenda2)
+    bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
-    assert len(x_agenda1._partys) == 2
-    assert x_agenda1._partys.get(x1_pid) != None
-    assert x_agenda1._partys.get(x2_pid) != None
+    assert len(bob1_agenda._partys) == 2
+    assert bob1_agenda._partys.get(x1_pid) != None
+    assert bob1_agenda._partys.get(x2_pid) != None
 
 
-def test_agenda_meld_GroupUnits():
+def test_AgendaUnit_meld_GroupUnits():
     # GIVEN
     x1_pid = "x1_group"
     x1_group = groupunit_shop(brand=x1_pid)
 
-    agenda_text = "x_agenda"
-    x_agenda1 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda1.set_groupunit(y_groupunit=x1_group)
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob1_agenda.set_groupunit(y_groupunit=x1_group)
 
-    x_agenda2 = agendaunit_shop(_agent_id=agenda_text)
-    x_agenda2.set_groupunit(y_groupunit=x1_group)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.set_groupunit(y_groupunit=x1_group)
     x2_pid = "x2_group"
     x2_group = groupunit_shop(brand=x2_pid, uid=5)
-    x_agenda2.set_groupunit(y_groupunit=x2_group)
-    assert len(x_agenda1._groups) == 1
+    bob2_agenda.set_groupunit(y_groupunit=x2_group)
+    assert len(bob1_agenda._groups) == 1
+    assert bob1_agenda.get_groupunit(x1_pid) != None
+    assert bob1_agenda.get_groupunit(x2_pid) is None
 
     # WHEN
-    x_agenda1.meld(other_agenda=x_agenda2)
+    bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
-    # for group_pid in x_agenda1._groups.values():
-    #     print(f"x_agenda1 {group_pid.pid=}")
+    # for group_pid in bob1_agenda._groups.values():
+    #     print(f"bob1_agenda {group_pid.pid=}")
 
-    assert len(x_agenda1._groups) == 2
-    assert x_agenda1._groups.get(x1_pid) != None
-    assert x_agenda1._groups.get(x2_pid) != None
-    # assert x_agenda1._groups.get(x2_pid).uid == 5
+    assert len(bob1_agenda._groups) == 2
+    assert bob1_agenda.get_groupunit(x1_pid) != None
+    assert bob1_agenda.get_groupunit(x2_pid) != None
+    # assert x_agenda1.get_groupunit(x2_pid).uid == 5
 
 
-def test_agenda_idearoot_meld_idearoot_AttrCorrectlyMelded():
+def test_AgendaUnit_idearoot_meld_idearoot_AttrCorrectlyMelded():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_agent_id="spirit")
-    x_agenda2 = agendaunit_shop(_agent_id="spirit")
-    x_agenda2._idearoot._uid = 4
-    assert x_agenda1._idearoot._uid == 1
-    assert x_agenda2._idearoot._uid == 4
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda._idearoot._uid = 4
+    assert bob1_agenda._idearoot._uid == 1
+    assert bob2_agenda._idearoot._uid == 4
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        x_agenda1.meld(x_agenda2)
+        bob1_agenda.meld(bob2_agenda)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={x_agenda1._economy_id} _uid:1 with {x_agenda2._economy_id} _uid:4"
+        == f"Meld fail idea={bob1_agenda._economy_id} _uid:1 with {bob2_agenda._economy_id} _uid:4"
     )
 
 
-def test_agenda_idearoot_meld_Add4IdeasScenario():
+def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     # GIVEN
-    spirit_text = "spirit"
-    x_agenda1 = agendaunit_shop(_agent_id=spirit_text)
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
 
     tech_text = "tech"
-    tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
+    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
     bowl_text = "bowl"
-    bowl_road = x_agenda1.make_road(tech_road, bowl_text)
+    bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
+    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
     free_text = "freestyle"
-    free_road = x_agenda1.make_road(swim_road, free_text)
+    free_road = bob1_agenda.make_road(swim_road, free_text)
 
-    x_agenda2 = agendaunit_shop(_agent_id=spirit_text)
-    x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    assert len(bob1_agenda.get_idea_list()) == 1
+    assert bob1_agenda.idea_exists(tech_road) == False
+    assert bob1_agenda.idea_exists(bowl_road) == False
+    assert bob1_agenda.idea_exists(swim_road) == False
+    assert bob1_agenda.idea_exists(free_road) == False
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
+    bob1_agenda.meld(bob2_agenda)
 
     # THEN
-    assert len(x_agenda1.get_idea_list()) == 5
-    assert x_agenda1.get_idea_obj(tech_road)._label == tech_text
-    assert x_agenda1.get_idea_obj(bowl_road)._label == bowl_text
-    assert x_agenda1.get_idea_obj(swim_road)._label == swim_text
-    assert x_agenda1.get_idea_obj(free_road)._label == free_text
+    assert len(bob1_agenda.get_idea_list()) == 5
+    assert bob1_agenda.idea_exists(tech_road)
+    assert bob1_agenda.idea_exists(bowl_road)
+    assert bob1_agenda.idea_exists(swim_road)
+    assert bob1_agenda.idea_exists(free_road)
+    assert bob1_agenda.get_idea_obj(tech_road)._label == tech_text
+    assert bob1_agenda.get_idea_obj(bowl_road)._label == bowl_text
+    assert bob1_agenda.get_idea_obj(swim_road)._label == swim_text
+    assert bob1_agenda.get_idea_obj(free_road)._label == free_text
 
 
-def test_agenda_idearoot_meld_2SameIdeasScenario():
+def test_AgendaUnit_idearoot_meld_2SameIdeasScenario():
     # GIVEN
     yao_text = "Yao"
-    x_agenda1 = agendaunit_shop(yao_text)
+    yao1_agenda = agendaunit_shop(yao_text)
     tech_text = "tech"
-    tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
+    tech_road = yao1_agenda.make_road(yao1_agenda._economy_id, tech_text)
     bowl_text = "bowl"
-    bowl_road = x_agenda1.make_road(tech_road, bowl_text)
+    bowl_road = yao1_agenda.make_road(tech_road, bowl_text)
 
-    x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    yao1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=yao1_agenda._economy_id)
+    yao1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
 
-    x_agenda2 = agendaunit_shop(_agent_id=yao_text)
-    x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-
-    assert x_agenda1.get_idea_obj(bowl_road)._weight == 1
-    # WHEN
-    x_agenda1.meld(x_agenda2)
-
-    # THEN
-    assert x_agenda1.get_idea_obj(bowl_road)._weight == 1
-    assert len(x_agenda1.get_idea_list()) == 3
-
-
-def test_agenda_beliefunits_meld_BaseScenarioWorks():
-    # GIVEN
-    x_agenda1 = agendaunit_shop(_agent_id="test7")
-    tech_text = "tech"
-    tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
-    bowl_text = "bowl"
-    bowl_road = x_agenda1.make_road(tech_road, bowl_text)
-
-    x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda1.set_belief(base=tech_road, pick=bowl_road)
-
-    x_agenda2 = agendaunit_shop(_agent_id="test7")
-    x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.set_belief(base=tech_road, pick=bowl_road)
+    yao2_agenda = agendaunit_shop(yao_text)
+    yao2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=yao2_agenda._economy_id)
+    yao2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    assert yao1_agenda.get_idea_obj(bowl_road)._weight == 1
+    assert len(yao1_agenda.get_idea_list()) == 3
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
+    yao1_agenda.meld(yao2_agenda)
 
     # THEN
-    assert len(x_agenda1._idearoot._beliefunits) == 1
-    assert len(x_agenda1._idearoot._beliefunits) == len(
-        x_agenda2._idearoot._beliefunits
-    )
-    assert x_agenda1._idearoot._beliefunits == x_agenda2._idearoot._beliefunits
+    assert yao1_agenda.get_idea_obj(bowl_road)._weight == 1
+    assert len(yao1_agenda.get_idea_list()) == 3
 
 
-def test_agenda_beliefunits_meld_2BeliefUnitsWorks():
+def test_AgendaUnit_beliefunits_meld_BaseScenarioWorks():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_agent_id="test7")
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
     tech_text = "tech"
-    tech_road = x_agenda1.make_road(x_agenda1._economy_id, tech_text)
+    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
     bowl_text = "bowl"
-    bowl_road = x_agenda1.make_road(tech_road, bowl_text)
+    bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
+
+    bob1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob1_agenda._economy_id)
+    bob1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    bob1_agenda.set_belief(base=tech_road, pick=bowl_road)
+
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    bob2_agenda.set_belief(base=tech_road, pick=bowl_road)
+    bob1_idearoot = bob1_agenda._idearoot
+    bob2_idearoot = bob2_agenda._idearoot
+    assert len(bob1_idearoot._beliefunits) == 1
+    assert len(bob1_idearoot._beliefunits) == len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits == bob2_idearoot._beliefunits
+
+    # WHEN
+    bob1_agenda.meld(bob2_agenda)
+
+    # THEN
+    assert len(bob1_idearoot._beliefunits) == 1
+    assert len(bob1_idearoot._beliefunits) == len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits == bob2_idearoot._beliefunits
+
+
+def test_AgendaUnit_beliefunits_meld_2BeliefUnitsWorks():
+    # GIVEN
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    tech_text = "tech"
+    tech_road = bob1_agenda.make_road(bob1_agenda._economy_id, tech_text)
+    bowl_text = "bowl"
+    bowl_road = bob1_agenda.make_road(tech_road, bowl_text)
     swim_text = "swim"
-    swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
+    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
     free_text = "freestyle"
 
-    x_agenda1.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda1._economy_id)
-    x_agenda1.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda1.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda1.set_belief(base=tech_road, pick=bowl_road)
+    bob1_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob1_agenda._economy_id)
+    bob1_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    bob1_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    bob1_agenda.set_belief(base=tech_road, pick=bowl_road)
 
-    x_agenda2 = agendaunit_shop(_agent_id="test7")
-    x_agenda2.add_idea(ideaunit_shop(tech_text), parent_road=x_agenda2._economy_id)
-    x_agenda2.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
-    x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_belief(base=tech_road, pick=bowl_road)
-    x_agenda2.set_belief(base=swim_road, pick=swim_road)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.add_idea(ideaunit_shop(tech_text), parent_road=bob2_agenda._economy_id)
+    bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
+    bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    bob2_agenda.set_belief(base=tech_road, pick=bowl_road)
+    bob2_agenda.set_belief(base=swim_road, pick=swim_road)
+    bob1_idearoot = bob1_agenda._idearoot
+    bob2_idearoot = bob2_agenda._idearoot
+    assert len(bob1_idearoot._beliefunits) == 1
+    assert len(bob1_idearoot._beliefunits) != len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits != bob2_idearoot._beliefunits
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
+    bob1_agenda.meld(bob2_agenda)
 
     # THEN
-    assert len(x_agenda1._idearoot._beliefunits) == 2
-    assert len(x_agenda1._idearoot._beliefunits) == len(
-        x_agenda2._idearoot._beliefunits
-    )
-    assert x_agenda1._idearoot._beliefunits == x_agenda2._idearoot._beliefunits
+    assert len(bob1_idearoot._beliefunits) == 2
+    assert len(bob1_idearoot._beliefunits) == len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits == bob2_idearoot._beliefunits
 
 
-def test_agenda_beliefunits_meld_IdeasMeldedBeforeBeliefs():
+def test_AgendaUnit_beliefunits_meld_IdeasMeldedBeforeBeliefs():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_agent_id="test7")
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
+    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
     free_text = "freestyle"
 
-    x_agenda2 = agendaunit_shop(_agent_id="test7")
-    x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_belief(base=swim_road, pick=swim_road)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    bob2_agenda.set_belief(base=swim_road, pick=swim_road)
+    bob1_idearoot = bob1_agenda._idearoot
+    bob2_idearoot = bob2_agenda._idearoot
+    assert len(bob1_idearoot._beliefunits) == 0
+    assert bob1_agenda.idea_exists(swim_road) == False
+    assert len(bob1_idearoot._beliefunits) != len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits != bob2_agenda._idearoot._beliefunits
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
+    bob1_agenda.meld(bob2_agenda)
 
     # THEN
-    print()
-    assert len(x_agenda1._idearoot._beliefunits) == 1
-    assert x_agenda1.get_idea_obj(swim_road)._label == swim_text
-    assert x_agenda1._idearoot._kids[swim_text]._label == swim_text
-    assert len(x_agenda1._idearoot._beliefunits) == len(
-        x_agenda2._idearoot._beliefunits
-    )
-    assert x_agenda1._idearoot._beliefunits == x_agenda2._idearoot._beliefunits
+    assert len(bob1_idearoot._beliefunits) == 1
+    assert bob1_agenda.get_idea_obj(swim_road)._label == swim_text
+    assert len(bob1_idearoot._beliefunits) == len(bob2_idearoot._beliefunits)
+    assert bob1_idearoot._beliefunits == bob2_agenda._idearoot._beliefunits
 
 
-def test_agenda_beliefunits_meld_GroupsMeldedBefore_Partys():
+def test_AgendaUnit_beliefunits_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     yao_text = "Yao"
-    x_agenda1 = agendaunit_shop(_agent_id=yao_text)
-    x_agenda2 = agendaunit_shop(_agent_id=yao_text)
+    yao1_agenda = agendaunit_shop(yao_text)
+    yao2_agenda = agendaunit_shop(yao_text)
     bob = "Bob"
-    x_agenda2.set_partyunit(partyunit_shop(party_id=bob))
-    assert x_agenda2._groups.get(bob) != None
-    assert x_agenda2._groups.get(bob).uid is None
-    x_agenda2.set_groupunit(groupunit_shop(brand=bob, uid=13))
-    assert x_agenda2._groups.get(bob).uid == 13
+    yao2_agenda.set_partyunit(partyunit_shop(party_id=bob))
+    assert yao2_agenda.get_groupunit(bob) != None
+    assert yao2_agenda.get_groupunit(bob).uid is None
+    yao2_agenda.set_groupunit(groupunit_shop(brand=bob, uid=13))
+    assert yao2_agenda.get_groupunit(bob).uid == 13
 
     # WHEN/THEN
-    assert x_agenda1.meld(x_agenda2) is None  # No error raised
+    assert yao1_agenda.meld(yao2_agenda) is None  # No error raised
     # with pytest_raises(Exception) as excinfo:
-    #     x_agenda1.meld(x_agenda2)
+    #     yao1_agenda.meld(yao2_agenda)
     # assert (
     #     str(excinfo.value)
     #     == f"Meld fail GroupUnit bob .uid='None' not the same as .uid='13"
     # )
 
 
-def test_agenda_beliefunits_meld_BeliefsAttributeCorrectlySet():
+def test_AgendaUnit_beliefunits_meld_BeliefsAttributeCorrectlySet():
     # GIVEN
-    x_agenda1 = agendaunit_shop(_agent_id="test7")
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = x_agenda1.make_road(x_agenda1._economy_id, swim_text)
+    swim_road = bob1_agenda.make_road(bob1_agenda._economy_id, swim_text)
     free_text = "freestyle"
-    free_road = x_agenda1.make_road(x_agenda1._economy_id, free_text)
-    x_agenda1.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    free_road = bob1_agenda.make_road(bob1_agenda._economy_id, free_text)
+    bob1_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
 
-    x_agenda2 = agendaunit_shop(_agent_id="test7")
-    x_agenda2.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    x_agenda2.set_belief(base=swim_road, pick=free_road, open=23, nigh=27)
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    bob2_agenda.set_belief(base=swim_road, pick=free_road, open=23, nigh=27)
+    bob1_idearoot = bob1_agenda._idearoot
+    assert len(bob1_idearoot._beliefunits) == 0
 
     # WHEN
-    x_agenda1.meld(x_agenda2)
+    bob1_agenda.meld(bob2_agenda)
 
     # THEN
-    print()
-    assert len(x_agenda1._idearoot._beliefunits) == 1
-    assert x_agenda1._idearoot._beliefunits[swim_road].base == swim_road
-    assert x_agenda1._idearoot._beliefunits[swim_road].pick == free_road
-    assert x_agenda1._idearoot._beliefunits[swim_road].open == 23
-    assert x_agenda1._idearoot._beliefunits[swim_road].nigh == 27
+    assert len(bob1_idearoot._beliefunits) == 1
+    assert bob1_idearoot._beliefunits[swim_road].base == swim_road
+    assert bob1_idearoot._beliefunits[swim_road].pick == free_road
+    assert bob1_idearoot._beliefunits[swim_road].open == 23
+    assert bob1_idearoot._beliefunits[swim_road].nigh == 27
 
 
-def test_agenda_meld_worksCorrectlyForLargeExample():
+def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda._idearoot._uid = 1
+    bob_idearoot = bob_agenda._idearoot
+    bob_idearoot._uid = 1
     yao_agenda = agenda_v001()
 
-    yao_agendar_bl = yao_agenda._idearoot._balancelines
-    fam_text = "Family"
+    yao_idearoot = yao_agenda._idearoot
+    yao_agendar_bl = yao_idearoot._balancelines
+    family_text = "Family"
+    yao_family_bl = yao_agendar_bl.get(family_text)
 
-    print(
-        f"Before {yao_agendar_bl.get(fam_text)._agenda_credit=} {yao_agenda._idearoot._kids_total_weight=}"
-    )
+    print(f"Before {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")
+    print(f"Before   {yao_family_bl._agenda_debt=} {yao_idearoot._kids_total_weight=}")
 
     # WHEN
     bob_agenda.meld(yao_agenda)
     bob_agenda.get_tree_metrics()
 
     # THEN
-    print(
-        f"After    {yao_agendar_bl.get(fam_text)._agenda_debt=} {yao_agenda._idearoot._kids_total_weight=}"
-    )
+    print(f"After  {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")
+    print(f"After    {yao_family_bl._agenda_debt=} {yao_idearoot._kids_total_weight=}")
     assert bob_agenda._weight == yao_agenda._weight
-    assert bob_agenda._idearoot._kids == yao_agenda._idearoot._kids
-    assert bob_agenda._idearoot._uid == yao_agenda._idearoot._uid
-    assert bob_agenda._idearoot._beliefunits == yao_agenda._idearoot._beliefunits
+    assert bob_idearoot._kids == yao_idearoot._kids
+    assert bob_idearoot._uid == yao_idearoot._uid
+    assert bob_idearoot._beliefunits == yao_idearoot._beliefunits
     assert bob_agenda._groups == yao_agenda._groups
     assert bob_agenda._partys == yao_agenda._partys
 
-    assert len(bob_agenda._idearoot._beliefunits) == 2
-    assert len(bob_agenda._idearoot._beliefunits) == len(
-        yao_agenda._idearoot._beliefunits
-    )
+    assert len(bob_idearoot._beliefunits) == 2
+    assert len(bob_idearoot._beliefunits) == len(yao_idearoot._beliefunits)
     assert bob_agenda._agent_id != yao_agenda._agent_id
     print(f"{len(bob_agenda._groups.items())=}")
     # for bob_agenda_group_key, bob_agenda_group_obj in bob_agenda._groups.items():
@@ -340,47 +370,26 @@ def test_agenda_meld_worksCorrectlyForLargeExample():
     assert bob_agenda._groups == yao_agenda._groups
     assert len(bob_agenda.get_idea_list()) == len(yao_agenda.get_idea_list())
 
-    bob_agendar_bl = bob_agenda._idearoot._balancelines
-    print(
-        f"Melded   {bob_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
-    )
+    bob_agendar_bl = bob_idearoot._balancelines
+    bob_family_bl = bob_agendar_bl.get(family_text)
+    print("Melded")
 
-    assert bob_agendar_bl.get(fam_text) != None
-    # assert bob_agendar_bl.get(fam_text) == yao_agendar_bl.get(fam_text)
-    # assert bob_agendar_bl.get(fam_text).agenda_credit == yao_agendar_bl.get(fam_text).agenda_credit
-    print(
-        f"{bob_agendar_bl.get(fam_text)._agenda_credit=} {bob_agenda._idearoot._kids_total_weight=}"
-    )
-    print(
-        f"{yao_agendar_bl.get(fam_text)._agenda_credit=} {bob_agenda._idearoot._kids_total_weight=}"
-    )
-    print(
-        f"  {bob_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
-    )
-    print(
-        f"  {yao_agendar_bl.get(fam_text)._agenda_debt=} {bob_agenda._idearoot._kids_total_weight=}"
-    )
-    assert (
-        abs(
-            bob_agendar_bl.get(fam_text)._agenda_credit
-            - yao_agendar_bl.get(fam_text)._agenda_credit
-        )
-        < 0.0001
-    )
-    assert (
-        abs(
-            bob_agendar_bl.get(fam_text)._agenda_debt
-            - yao_agendar_bl.get(fam_text)._agenda_debt
-        )
-        < 0.0001
-    )
+    assert bob_family_bl != None
+    # assert bob_family_bl == yao_family_bl
+    # assert bob_family_bl.agenda_credit == yao_family_bl .agenda_credit
+    print(f"{bob_family_bl._agenda_credit=} {bob_idearoot._kids_total_weight=}")
+    print(f"{yao_family_bl._agenda_credit=} {bob_idearoot._kids_total_weight=}")
+    print(f"  {bob_family_bl._agenda_debt=} {bob_idearoot._kids_total_weight=}")
+    print(f"  {yao_family_bl._agenda_debt=} {bob_idearoot._kids_total_weight=}")
+    assert abs(bob_family_bl._agenda_credit - yao_family_bl._agenda_credit) < 0.0001
+    assert abs(bob_family_bl._agenda_debt - yao_family_bl._agenda_debt) < 0.0001
 
     # for balanceline in bob_agendar_bl.values():
     #     if balanceline.pid != fam_text:
     #         assert balanceline == yao_agendar_bl.get(balanceline.pid)
     assert bob_agendar_bl == yao_agendar_bl
-    # assert x_agenda1._idearoot._balancelines == x_agenda2._idearoot._balancelines
-    # assert x_agenda1._idearoot == x_agenda2._idearoot
+    # assert x_agenda1._idearoot._balancelines == bob2_agenda._idearoot._balancelines
+    # assert x_agenda1._idearoot == bob2_agenda._idearoot
 
 
 def test_get_on_meld_weight_actions_HasCorrectItems():
@@ -394,55 +403,55 @@ def test_get_on_meld_weight_actions_HasCorrectItems():
     }
 
 
-def test_agenda__meld_originlinks_CorrectlySetsOriginLinks():
+def test_AgendaUnit__meld_originlinks_CorrectlySetsOriginLinks():
     # GIVEN
     bob_text = "Bob"
     sue_text = "Sue"
     sue_weight = 4
-    bob_x_agenda = agendaunit_shop(_agent_id=bob_text)
-    assert len(bob_x_agenda._originunit._links) == 0
+    bob_agenda = agendaunit_shop(bob_text)
+    assert len(bob_agenda._originunit._links) == 0
 
     # WHEN
-    bob_x_agenda._meld_originlinks(party_id=sue_text, party_weight=sue_weight)
+    bob_agenda._meld_originlinks(party_id=sue_text, party_weight=sue_weight)
 
     # THEN
-    assert len(bob_x_agenda._originunit._links) == 1
+    assert len(bob_agenda._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
     bob_sue_originunit.set_originlink(pid=sue_text, weight=sue_weight)
-    assert bob_x_agenda._originunit == bob_sue_originunit
+    assert bob_agenda._originunit == bob_sue_originunit
 
 
-def test_agenda_meld_OriginUnitsCorrectlySet():
+def test_AgendaUnit_meld_OriginUnitsCorrectlySet():
     # GIVEN
     bob_text = "Bob"
-    bob_x_agenda = agendaunit_shop(_agent_id=bob_text)
+    bob_agenda = agendaunit_shop(bob_text)
 
     swim_text = "swim"
-    swim_road = bob_x_agenda.make_road(bob_x_agenda._economy_id, swim_text)
+    swim_road = bob_agenda.make_road(bob_agenda._economy_id, swim_text)
     free_text = "freestyle"
-    free_road = bob_x_agenda.make_road(swim_road, free_text)
+    free_road = bob_agenda.make_road(swim_road, free_text)
     back_text = "backstroke"
-    back_road = bob_x_agenda.make_road(swim_road, back_text)
-    bob_x_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
+    back_road = bob_agenda.make_road(swim_road, back_text)
+    bob_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
 
     sue_text = "Sue"
     sue_weight = 4
-    sue_x_agenda = agendaunit_shop(_agent_id=sue_text)
+    sue_x_agenda = agendaunit_shop(sue_text)
     sue_x_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     sue_x_agenda.set_belief(base=swim_road, pick=free_road, open=23, nigh=27)
     sue_x_agenda.add_idea(ideaunit_shop(back_text), parent_road=swim_road)
-    assert len(bob_x_agenda._originunit._links) == 0
+    assert len(bob_agenda._originunit._links) == 0
 
     # WHEN
-    bob_x_agenda.meld(sue_x_agenda, party_weight=sue_weight)
+    bob_agenda.meld(sue_x_agenda, party_weight=sue_weight)
 
     # THEN
     sue_originunit = originunit_shop()
     sue_originunit.set_originlink(pid=sue_text, weight=sue_weight)
-    assert len(bob_x_agenda._originunit._links) == 1
-    assert bob_x_agenda._originunit == sue_originunit
-    bob_free_idea = bob_x_agenda.get_idea_obj(free_road)
-    bob_back_idea = bob_x_agenda.get_idea_obj(back_road)
+    assert len(bob_agenda._originunit._links) == 1
+    assert bob_agenda._originunit == sue_originunit
+    bob_free_idea = bob_agenda.get_idea_obj(free_road)
+    bob_back_idea = bob_agenda.get_idea_obj(back_road)
     print(f"{bob_free_idea._originunit=}")
     print(f"{bob_back_idea._originunit=}")
     assert bob_free_idea._originunit != None
