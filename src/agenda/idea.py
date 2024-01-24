@@ -48,7 +48,7 @@ from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
 from src.tools.python import get_empty_dict_if_none, get_1_if_None
-from src._prime.meld import get_meld_weight, get_meld_strategys
+from src._prime.meld import get_meld_weight, validate_meld_strategy
 from copy import deepcopy
 
 
@@ -742,8 +742,7 @@ class IdeaUnit:
         if idea_attr.promise != None:
             self.promise = idea_attr.promise
         if idea_attr.meld_strategy != None:
-            self._check_get_meld_strategys(idea_attr.meld_strategy)
-            self._meld_strategy = idea_attr.meld_strategy
+            self._meld_strategy = validate_meld_strategy(idea_attr.meld_strategy)
         if idea_attr.beliefunit != None:
             self.set_beliefunit(idea_attr.beliefunit)
 
@@ -752,12 +751,6 @@ class IdeaUnit:
             premise=idea_attr.reason_del_premise_need,
         )
         self._set_addin_to_zero_if_any_transformations_exist()
-
-    def _check_get_meld_strategys(self, meld_strategy: str):
-        if meld_strategy not in (list(get_meld_strategys())):
-            raise InvalidIdeaException(
-                f"IdeaUnit unit '{self._label}' cannot have meld_strategy '{meld_strategy}'."
-            )
 
     def _set_addin_to_zero_if_any_transformations_exist(self):
         if (

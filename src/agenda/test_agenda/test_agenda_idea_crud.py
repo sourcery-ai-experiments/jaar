@@ -501,10 +501,12 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_meld_strategy_AnyIdeaIfInvaild
     work_road = sue_agenda.make_l1_road("work")
 
     # WHEN / THEN
+    ineligible_meld_strategy = "yahoo9"
     with pytest_raises(Exception) as excinfo:
-        sue_agenda.edit_idea_attr(road=work_road, meld_strategy="yahoo9")
+        sue_agenda.edit_idea_attr(work_road, meld_strategy=ineligible_meld_strategy)
     assert (
-        str(excinfo.value) == "IdeaUnit unit 'work' cannot have meld_strategy 'yahoo9'."
+        str(excinfo.value)
+        == f"'{ineligible_meld_strategy}' is ineligible meld_strategy."
     )
 
 

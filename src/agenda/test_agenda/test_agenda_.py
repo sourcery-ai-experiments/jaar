@@ -30,22 +30,24 @@ def test_AgendaUnit_exists():
     assert x_agenda._road_delimiter is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
+    assert x_agenda._meld_strategy is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
-def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
+def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     noa_text = "Noa"
     iowa_economy_id = "Iowa"
     slash_road_delimiter = "/"
+    override_meld_strategy = "override"
 
     # WHEN
     x_agenda = agendaunit_shop(
         _agent_id=noa_text,
         _economy_id=iowa_economy_id,
         _road_delimiter=slash_road_delimiter,
+        _meld_strategy=override_meld_strategy,
     )
-
     assert x_agenda
     assert x_agenda._agent_id == noa_text
     assert x_agenda._economy_id == iowa_economy_id
@@ -59,11 +61,22 @@ def test_agendaunit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
+    assert x_agenda._meld_strategy == override_meld_strategy
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
 
-def test_agendaunit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
+def test_AgendaUnit_shop_ReturnsCorrect_meld_strategy():
+    # GIVEN
+    noa_text = "Noa"
+    iowa_economy_id = "Iowa"
+    # WHEN
+    x_agenda = agendaunit_shop(noa_text, iowa_economy_id)
+    # THEN
+    assert x_agenda._meld_strategy == "default"
+
+
+def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     # GIVE/ WHEN
     x_agenda = agendaunit_shop()
 
@@ -201,7 +214,7 @@ def test_agenda_set_auto_output_to_public_SetsBoolCorrectlyGivenNoneOrBool():
     assert x_agenda._auto_output_to_public == False
 
 
-def test_agendaunit_shop_CorrectlySetsGiven_auto_output_to_public():
+def test_AgendaUnit_shop_CorrectlySetsGiven_auto_output_to_public():
     # GIVEN
 
     # WHEN
@@ -247,7 +260,7 @@ def test_agenda_set_road_delimiter_CorrectlySetsAttr():
     assert x_agenda._road_delimiter == at_node_delimiter
 
 
-def test_agendaunit_make_road_ReturnsCorrectObj():
+def test_AgendaUnit_make_road_ReturnsCorrectObj():
     # GIVEN
     economy_id_text = "Sun"
     noa_text = "Noa"
@@ -266,3 +279,28 @@ def test_agendaunit_make_road_ReturnsCorrectObj():
 
     # THEN
     assert v1_work_road == v2_work_road
+
+
+def test_AgendaUnit_set_meld_strategy_CorrectlySetsAttr():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    override_text = "override"
+    assert noa_agenda._meld_strategy != override_text
+
+    # WHEN
+    noa_agenda.set_meld_strategy(override_text)
+
+    # THEN
+    assert noa_agenda._meld_strategy == override_text
+
+
+def test_AgendaUnit_set_meld_strategy_RaisesErrorWithIneligible_meld_strategy():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    bad_override_text = "oVerride"
+    assert noa_agenda._meld_strategy != bad_override_text
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        noa_agenda.set_meld_strategy(bad_override_text)
+    assert str(excinfo.value) == f"'{bad_override_text}' is ineligible meld_strategy."

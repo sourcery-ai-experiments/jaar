@@ -1,4 +1,4 @@
-from src.agenda.idea import ideaunit_shop, get_meld_strategys
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import (
     agendaunit_shop,
     get_gap_agendaunit,
@@ -496,17 +496,6 @@ def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
     assert bob_agendar_bl == yao_agendar_bl
     # assert x_agenda1._idearoot._balancelines == bob2_agenda._idearoot._balancelines
     # assert x_agenda1._idearoot == bob2_agenda._idearoot
-
-
-def test_get_meld_strategys_HasCorrectItems():
-    assert len(get_meld_strategys()) == 5
-    assert get_meld_strategys() == {
-        "accept": None,
-        "default": None,
-        "match": None,
-        "override": None,
-        "sum": None,
-    }
 
 
 def test_AgendaUnit__meld_originlinks_CorrectlySetsOriginLinks():

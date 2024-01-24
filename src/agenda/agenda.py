@@ -61,7 +61,12 @@ from src._prime.road import (
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.tools.python import x_get_json
-from src._prime.meld import get_meld_weight
+from src._prime.meld import (
+    get_meld_weight,
+    MeldStrategy,
+    get_meld_default,
+    validate_meld_strategy,
+)
 from copy import deepcopy as copy_deepcopy
 from src.tools.file import dir_files, open_file
 
@@ -103,6 +108,7 @@ class AgendaUnit:
     _road_delimiter: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
+    _meld_strategy: MeldStrategy = None
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
@@ -1331,7 +1337,7 @@ class AgendaUnit:
         balancelink: BalanceLink = None,
         balancelink_del: GroupBrand = None,
         is_expanded: bool = None,
-        meld_strategy: str = None,
+        meld_strategy: MeldStrategy = None,
     ):
         x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
@@ -1876,6 +1882,8 @@ class AgendaUnit:
             x_dict["_party_creditor_pool"] = self._party_creditor_pool
         if self._party_debtor_pool != None:
             x_dict["_party_debtor_pool"] = self._party_debtor_pool
+        if self._meld_strategy != get_meld_default():
+            x_dict["_meld_strategy"] = self._meld_strategy
         return x_dict
 
     def get_json(self) -> str:
@@ -1977,6 +1985,9 @@ class AgendaUnit:
         x_list = self.get_idea_list()
         x_list.pop(0)
         return x_list
+
+    def set_meld_strategy(self, x_meld_strategy: MeldStrategy):
+        self._meld_strategy = validate_meld_strategy(x_meld_strategy)
 
     def meld(self, other_agenda, party_weight: float = None):
         self._meld_groups(other_agenda)
@@ -2124,6 +2135,7 @@ def agendaunit_shop(
     _weight: float = None,
     _auto_output_to_public: bool = None,
     _road_delimiter: str = None,
+    _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
     if _weight is None:
         _weight = 1
@@ -2133,6 +2145,8 @@ def agendaunit_shop(
         _auto_output_to_public = False
     if _economy_id is None:
         _economy_id = get_default_economy_root_roadnode()
+    if _meld_strategy is None:
+        _meld_strategy = get_meld_default()
 
     x_agenda = AgendaUnit(
         _agent_id=_agent_id,
@@ -2143,6 +2157,7 @@ def agendaunit_shop(
         _groups={},
         _idea_dict={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _meld_strategy=validate_meld_strategy(_meld_strategy),
     )
     x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_economy_id=x_agenda._economy_id
@@ -2178,6 +2193,12 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._party_debtor_pool = get_obj_from_agenda_dict(
         agenda_dict, "_party_debtor_pool"
     )
+    if get_obj_from_agenda_dict(agenda_dict, "_meld_strategy") is None:
+        x_agenda._meld_strategy = get_meld_default()
+    else:
+        x_agenda._meld_strategy = get_obj_from_agenda_dict(
+            agenda_dict, "_meld_strategy"
+        )
     x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
     x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")

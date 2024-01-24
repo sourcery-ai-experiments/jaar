@@ -47,6 +47,8 @@ def test_agenda_get_dict_ReturnsDictObject():
     x_party_debtor_pool = 22
     x_agenda.set_party_creditor_pool(x_party_creditor_pool)
     x_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    override_text = "override"
+    x_agenda.set_meld_strategy(override_text)
 
     # WHEN
     agenda_dict = x_agenda.get_dict()
@@ -63,6 +65,8 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
     assert agenda_dict["_party_creditor_pool"] == x_agenda._party_creditor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
+    assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
+    assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
 
@@ -135,9 +139,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = tom_agenda.make_l1_road(morn_text)
-    tom_agenda.add_idea(
-        idea_kid=ideaunit_shop(morn_text), parent_road=tom_agenda._economy_id
-    )
+    tom_agenda.add_idea(ideaunit_shop(morn_text), tom_agenda._economy_id)
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=run_text)
     tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
@@ -160,6 +162,8 @@ def test_export_to_JSON_simple_example_works():
     x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_economy_id = "tiger_econ"
     x_agenda.set_economy_id(tiger_economy_id)
+    override_text = "override"
+    x_agenda.set_meld_strategy(override_text)
 
     # WHEN
     x_json = x_agenda.get_json()
@@ -174,6 +178,7 @@ def test_export_to_JSON_simple_example_works():
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
     assert agenda_dict["_economy_id"] == x_agenda._economy_id
     assert agenda_dict["_weight"] == x_agenda._weight
+    assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_party_creditor_pool"]
     assert str(excinfo.value) == "'_party_creditor_pool'"
@@ -309,6 +314,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     yao_text = "Yao"
     yue_agenda._originunit.set_originlink(yao_text, 1)
     yue_agenda._auto_output_to_public = True
+    override_text = "override"
+    yue_agenda.set_meld_strategy(override_text)
 
     # WHEN
     x_json = yue_agenda.get_json()
@@ -328,6 +335,8 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert json_agenda._party_debtor_pool == yue_agenda._party_debtor_pool
     assert json_agenda._party_creditor_pool == yue_party_creditor_pool
     assert json_agenda._party_debtor_pool == yue_party_debtor_pool
+    assert json_agenda._meld_strategy == yue_agenda._meld_strategy
+    assert json_agenda._meld_strategy == override_text
 
     json_idearoot = json_agenda._idearoot
     assert json_idearoot._parent_road == ""
