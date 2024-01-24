@@ -12,7 +12,7 @@ from src._prime.road import (
 from pytest import raises as pytest_raises
 
 
-def test_idea_find_replace_road_Changes_parent_road():
+def test_IdeaUnit_find_replace_road_CorrectlyChanges_parent_road():
     # GIVEN Idea with _parent_road that will be changed
     old_casa_text = "casa1"
     old_casa_road = create_road(root_label(), old_casa_text)
@@ -36,7 +36,7 @@ def test_idea_find_replace_road_Changes_parent_road():
     assert create_road(idea_x._parent_road, idea_x._label) == new_roses_road
 
 
-def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
+def test_IdeaUnit_find_replace_road_CorrectlyChanges_range_source_road_numeric_road():
     # GIVEN Idea with special road and numeric road that will be changed
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
@@ -76,7 +76,7 @@ def test_idea_find_replace_road_Changes_range_source_road_numeric_road():
     assert idea_x._numeric_road == new_snow_road
 
 
-def test_idea_find_replace_road_Changes_reasonunits():
+def test_IdeaUnit_find_replace_road_CorrectlyChanges_reasonunits():
     # GIVEN Idea with reason that will be changed
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
@@ -130,7 +130,7 @@ def test_idea_find_replace_road_Changes_reasonunits():
     assert premise_obj.need == new_rain_road
 
 
-def test_idea_find_replace_road_Changes_beliefunits():
+def test_IdeaUnit_find_replace_road_CorrectlyChanges_beliefunits():
     # GIVEN Idea with beliefunit that will be changed
     roses_text = "roses"
     old_water_text = "water"
@@ -167,7 +167,7 @@ def test_idea_find_replace_road_Changes_beliefunits():
     assert beliefunit_obj.pick == new_rain_road
 
 
-def test_idea_get_obj_key_returnsCorrectInfo():
+def test_IdeaUnit_get_obj_key_ReturnsCorrectInfo():
     # GIVEN
     red_text = "red"
 
@@ -178,7 +178,7 @@ def test_idea_get_obj_key_returnsCorrectInfo():
     assert red_idea.get_obj_key() == red_text
 
 
-def test_idea_set_road_delimiter_CorrectlyChangesReasonRoadUnits():
+def test_IdeaUnit_set_road_delimiter_CorrectlyChangesReasonRoadUnits():
     # GIVEN
     casa_text = "casa"
     casa_idea = ideaunit_shop(casa_text)

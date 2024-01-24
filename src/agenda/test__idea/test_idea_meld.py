@@ -6,10 +6,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop as c_beliefunit,
     RoadUnit,
 )
-from src._prime.road import (
-    get_default_economy_root_roadnode as root_label,
-    create_road,
-)
+from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy
@@ -78,7 +75,7 @@ def custom_set_idea_attr(
     idea._set_idea_attr(idea_attr=idea_attr)
 
 
-def test_idea_reason_meld_BaseScenarioWorks():
+def test_IdeaUnit_meld_BaseScenarioWorks_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -86,34 +83,34 @@ def test_idea_reason_meld_BaseScenarioWorks():
     run_road = create_road(ball_road, run_text)
     reason_base_x1 = run_road
 
-    _label_text = "spirit"
-    yx1 = ideaunit_shop(_label_text)
+    _label_text = "clean"
+    x1_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx1,
+        idea=x1_idea,
         reason_base=reason_base_x1,
         reason_premise=reason_base_x1,
     )
 
-    yx2 = ideaunit_shop(_label_text)
+    x2_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx2,
+        idea=x2_idea,
         reason_base=reason_base_x1,
         reason_premise=reason_base_x1,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
     lu_x = reasonunit_shop(base=reason_base_x1)
     lu_x.set_premise(premise=reason_base_x1)
     reasonunits_x = {lu_x.base: lu_x}
-    assert yx1._reasonunits == reasonunits_x
-    print(f"{yx1._on_meld_weight_action=}")
-    assert yx1._weight == 1
+    assert x1_idea._reasonunits == reasonunits_x
+    print(f"{x1_idea._on_meld_weight_action=}")
+    assert x1_idea._weight == 1
 
 
-def test_idea_reason_meld_TwoReasonsScenarioWorks():
+def test_IdeaUnit_meld_TwoReasonsScenarioWorks_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -124,31 +121,31 @@ def test_idea_reason_meld_TwoReasonsScenarioWorks():
     reason_base_x1 = run_road
     reason_base_x2 = swim_road
 
-    _label_text = "spirit"
-    yx1 = ideaunit_shop(_label_text)
+    _label_text = "clean"
+    x1_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx1,
+        idea=x1_idea,
         reason_base=reason_base_x1,
         reason_premise=reason_base_x1,
     )
 
-    yx2 = ideaunit_shop(_label_text)
+    x2_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx2,
+        idea=x2_idea,
         reason_base=reason_base_x2,
         reason_premise=reason_base_x2,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    assert len(yx1._reasonunits) == 2
-    assert yx1._reasonunits[reason_base_x1] != None
-    assert yx1._reasonunits[reason_base_x2] != None
+    assert len(x1_idea._reasonunits) == 2
+    assert x1_idea._reasonunits[reason_base_x1] != None
+    assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_idea_reason_meld_TwoReasonsMeldScenarioWorks():
+def test_IdeaUnit_meld_TwoReasonsMeldScenarioWorks_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -159,120 +156,120 @@ def test_idea_reason_meld_TwoReasonsMeldScenarioWorks():
     reason_base_x1 = run_road
     reason_base_x2 = swim_road
 
-    _label_text = "spirit"
-    yx1 = ideaunit_shop(_label_text)
+    _label_text = "clean"
+    x1_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx1,
+        idea=x1_idea,
         reason_base=reason_base_x1,
         reason_premise=reason_base_x1,
     )
     custom_set_idea_attr(
-        idea=yx1,
+        idea=x1_idea,
         reason_base=reason_base_x2,
         reason_premise=reason_base_x2,
     )
 
-    yx2 = ideaunit_shop(_label_text)
+    x2_idea = ideaunit_shop(_label_text)
     custom_set_idea_attr(
-        idea=yx2,
+        idea=x2_idea,
         reason_base=reason_base_x2,
         reason_premise=reason_base_x2,
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
     # lu_x = reasonunit_shop(base=reason_base_x1)
     # lu_x.set_premise(premise=reason_base_x1)
     # lu_x.set_premise(premise=reason_base_x2)
     # reasonunits_x = {lu_x.base: lu_x}
-    assert len(yx1._reasonunits) == 2
-    assert yx1._reasonunits[reason_base_x1] != None
-    assert yx1._reasonunits[reason_base_x2] != None
+    assert len(x1_idea._reasonunits) == 2
+    assert x1_idea._reasonunits[reason_base_x1] != None
+    assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_idea_balancelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_default():
+def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_on_meld_weight_actionEquals_default():
     # GIVEN
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
     default_text = "default"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action=default_text)
+    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=default_text)
     custom_set_idea_attr(
-        idea=yx1, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
     )
-    yx2 = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action=default_text)
+    x2_idea = ideaunit_shop("Rocking")
+    custom_set_idea_attr(idea=x2_idea, on_meld_weight_action=default_text)
     custom_set_idea_attr(
-        idea=yx2, balancelink=balancelink_shop(brand=br1, creditor_weight=3)
+        idea=x2_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=3)
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
     bl_x = balancelink_shop(brand=br1, creditor_weight=2)
-    assert yx1._balancelinks[br1] == bl_x
+    assert x1_idea._balancelinks[br1] == bl_x
 
 
-def test_idea_balancelink_meld_BaseScenarioWorks_on_meld_weight_actionEquals_sum():
+def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_on_meld_weight_actionEquals_sum():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
 
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx1,
+        idea=x1_idea,
         balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
     )
-    yx2 = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=yx2, on_meld_weight_action=sum_text)
+    x2_idea = ideaunit_shop("Rocking")
+    custom_set_idea_attr(idea=x2_idea, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx2,
+        idea=x2_idea,
         balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
     lu_x = balancelink_shop(brand=br1, creditor_weight=4, debtor_weight=6)
-    assert yx1._balancelinks[br1] == lu_x
+    assert x1_idea._balancelinks[br1] == lu_x
 
 
-def test_idea_balancelink_meld_TwoGroupsScenarioWorks():
+def test_IdeaUnit_meld_TwoGroupsScenarioWorks_balancelink():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
 
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx1, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
-    yx2 = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=yx1, on_meld_weight_action=sum_text)
+    x2_idea = ideaunit_shop("Rocking")
+    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
     custom_set_idea_attr(
-        idea=yx2, balancelink=balancelink_shop(brand=br2, creditor_weight=2)
+        idea=x2_idea, balancelink=balancelink_shop(brand=br2, creditor_weight=2)
     )
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
     lu_x1 = balancelink_shop(brand=br1, creditor_weight=2)
     lu_x2 = balancelink_shop(brand=br2, creditor_weight=2)
-    assert yx1._balancelinks[br1] == lu_x1
-    assert yx1._balancelinks[br2] == lu_x2
+    assert x1_idea._balancelinks[br1] == lu_x1
+    assert x1_idea._balancelinks[br2] == lu_x2
 
 
-def test_idea_beliefunits_meld_BaseScenarioWorks():
+def test_IdeaUnit_meld_BaseScenarioWorks_beliefunits():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -280,23 +277,23 @@ def test_idea_beliefunits_meld_BaseScenarioWorks():
     bowl_road = create_road(tech_road, bowl_text)
     casa_text = "casa"
     hc_1 = c_beliefunit(base=tech_road, pick=bowl_road)
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_beliefunit(beliefunit=hc_1)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    x1_idea.set_beliefunit(beliefunit=hc_1)
 
     hc_2 = c_beliefunit(base=tech_road, pick=bowl_road)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_beliefunit(beliefunit=hc_2)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
+    x2_idea.set_beliefunit(beliefunit=hc_2)
 
     # WHEN
-    yx1.meld(yx2)
+    x1_idea.meld(x2_idea)
 
     # THEN
-    assert len(yx1._beliefunits) == 1
-    assert len(yx1._beliefunits) == len(yx2._beliefunits)
-    assert yx1._beliefunits == yx2._beliefunits
+    assert len(x1_idea._beliefunits) == 1
+    assert len(x1_idea._beliefunits) == len(x2_idea._beliefunits)
+    assert x1_idea._beliefunits == x2_idea._beliefunits
 
 
-def test_idea_beliefunits_meld_2BeliefUnitsWorks():
+def test_IdeaUnit_meld_2BeliefUnitsWorks_beliefunits():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -307,23 +304,23 @@ def test_idea_beliefunits_meld_2BeliefUnitsWorks():
     casa_text = "casa"
 
     hc_1 = c_beliefunit(base=tech_road, pick=bowl_road)
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    yx1.set_beliefunit(beliefunit=hc_1)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    x1_idea.set_beliefunit(beliefunit=hc_1)
 
     hc_2 = c_beliefunit(base=plate_road, pick=plate_road)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    yx2.set_beliefunit(beliefunit=hc_2)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
+    x2_idea.set_beliefunit(beliefunit=hc_2)
 
     # WHEN
-    yx1.meld(other_idea=yx2)
+    x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    assert len(yx1._beliefunits) == 2
-    assert len(yx1._beliefunits) == len(yx2._beliefunits) + 1
-    assert yx1._beliefunits != yx2._beliefunits
+    assert len(x1_idea._beliefunits) == 2
+    assert len(x1_idea._beliefunits) == len(x2_idea._beliefunits) + 1
+    assert x1_idea._beliefunits != x2_idea._beliefunits
 
 
-def test_idea_attributes_meld_CorrectlyMeldsIdeas():
+def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_on_meld_weight_actionEquals_default():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -332,16 +329,16 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
     plate_text = "plate"
     plate_road = create_road(tech_road, plate_text)
 
-    uid_x = "uid1xx"
-    all_party_credit_x = "am_cx"
-    all_party_debt_x = "am_dx"
+    x_uid = "uid1xx"
+    x_all_party_credit = "am_cx"
+    x_all_party_debt = "am_dx"
 
-    label1_text = "spirit"
+    label1_text = "clean"
     texas_text = "texas"
-    yx1 = ideaunit_shop(label1_text, _agenda_economy_id=texas_text)
+    x1_idea = ideaunit_shop(label1_text, _agenda_economy_id=texas_text)
     custom_set_idea_attr(
-        idea=yx1,
-        uid=uid_x,
+        idea=x1_idea,
+        uid=x_uid,
         weight=7,
         begin=1,
         close=2,
@@ -352,16 +349,16 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_party_credit=all_party_credit_x,
-        all_party_debt=all_party_debt_x,
+        all_party_credit=x_all_party_credit,
+        all_party_debt=x_all_party_debt,
         is_expanded=True,
     )
 
-    label2_text = "fun"
-    yx2 = ideaunit_shop(label2_text, _agenda_economy_id=texas_text)
+    label2_text = "cook"
+    x2_idea = ideaunit_shop(label2_text, _agenda_economy_id=texas_text)
     custom_set_idea_attr(
-        idea=yx2,
-        uid=uid_x,
+        idea=x2_idea,
+        uid=x_uid,
         weight=7,
         begin=1,
         close=2,
@@ -372,298 +369,375 @@ def test_idea_attributes_meld_CorrectlyMeldsIdeas():
         range_source_road=plate_road,
         numeric_road=bowl_road,
         promise=True,
-        all_party_credit=all_party_credit_x,
-        all_party_debt=all_party_debt_x,
+        all_party_credit=x_all_party_credit,
+        all_party_debt=x_all_party_debt,
         is_expanded=True,
     )
 
     # WHEN
-    yx1.meld(yx2)
+    x1_idea.meld(x2_idea)
 
     # THEN
-    assert yx1._uid == uid_x
-    assert yx1._weight == 7
-    assert yx1._begin == 1
-    assert yx1._close == 2
-    assert yx1._addin == 3
-    assert yx1._denom == 4
-    assert yx1._numor == 5
-    assert yx1._reest == 6
-    assert yx1._range_source_road == plate_road
-    assert yx1._numeric_road == bowl_road
-    assert yx1.promise == True
-    assert yx1._all_party_credit == all_party_credit_x
-    assert yx1._all_party_debt == all_party_debt_x
-    assert yx1._is_expanded == True
-    assert yx1._agenda_economy_id == texas_text
+    assert x1_idea._uid == x_uid
+    assert x1_idea._weight == 7
+    assert x1_idea._begin == 1
+    assert x1_idea._close == 2
+    assert x1_idea._addin == 3
+    assert x1_idea._denom == 4
+    assert x1_idea._numor == 5
+    assert x1_idea._reest == 6
+    assert x1_idea._range_source_road == plate_road
+    assert x1_idea._numeric_road == bowl_road
+    assert x1_idea.promise == True
+    assert x1_idea._all_party_credit == x_all_party_credit
+    assert x1_idea._all_party_debt == x_all_party_debt
+    assert x1_idea._is_expanded == True
+    assert x1_idea._agenda_economy_id == texas_text
 
 
-def test_idea_attributes_meld_FailRaisesError_uid():
-    x_pid = "_uid"
+# def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_on_meld_weight_actionEquals_override():
+#     # GIVEN
+#     tech_text = "tech"
+#     tech_road = create_road(root_label(), tech_text)
+#     bowl_text = "bowl"
+#     bowl_road = create_road(tech_road, bowl_text)
+#     plate_text = "plate"
+#     plate_road = create_road(tech_road, plate_text)
+
+#     x_uid = "uid1xx"
+#     x_all_party_credit = "am_cx"
+#     x_all_party_debt = "am_dx"
+
+#     label1_text = "clean"
+#     texas_text = "texas"
+#     x1_idea = ideaunit_shop(label1_text, _agenda_economy_id=texas_text)
+#     custom_set_idea_attr(
+#         idea=x1_idea,
+#         uid=x_uid,
+#         weight=7,
+#         begin=1,
+#         close=2,
+#         addin=3,
+#         denom=4,
+#         numor=5,
+#         reest=6,
+#         range_source_road=plate_road,
+#         numeric_road=bowl_road,
+#         promise=True,
+#         all_party_credit=x_all_party_credit,
+#         all_party_debt=x_all_party_debt,
+#         is_expanded=True,
+#     )
+
+#     label2_text = "cook"
+#     x2_idea = ideaunit_shop(label2_text, _agenda_economy_id=texas_text)
+#     override_text = "override"
+#     custom_set_idea_attr(
+#         idea=x2_idea,
+#         uid=x_uid,
+#         weight=77,
+#         begin=11,
+#         close=22,
+#         addin=33,
+#         denom=44,
+#         numor=55,
+#         reest=66,
+#         range_source_road=plate_road,
+#         numeric_road=bowl_road,
+#         promise=True,
+#         all_party_credit=x_all_party_credit,
+#         all_party_debt=x_all_party_debt,
+#         is_expanded=True,
+#         on_meld_weight_action=override_text,
+#     )
+
+#     # WHEN
+#     x1_idea.meld(x2_idea)
+
+#     # THEN
+#     assert x1_idea._uid == x_uid
+#     assert x1_idea._weight == 77
+#     assert x1_idea._begin == 11
+#     assert x1_idea._close == 22
+#     assert x1_idea._addin == 33
+#     assert x1_idea._denom == 44
+#     assert x1_idea._numor == 55
+#     assert x1_idea._reest == 66
+#     assert x1_idea._range_source_road == plate_road
+#     assert x1_idea._numeric_road == bowl_road
+#     assert x1_idea.promise == True
+#     assert x1_idea._all_party_credit == x_all_party_credit
+#     assert x1_idea._all_party_debt == x_all_party_debt
+#     assert x1_idea._is_expanded == True
+#     assert x1_idea._agenda_economy_id == texas_text
+
+
+def test_IdeaUnit_meld_FailRaisesError_uid():
+    x_attr = "_uid"
     x_val = "test_uid1"
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, uid=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, uid=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
-    error_message = f"Meld fail idea={yx1.get_road()} {x_pid}:{x_val} with {yx2.get_road()} {x_pid}:None"
+    error_message = f"Meld fail idea={x1_idea.get_road()} {x_attr}:{x_val} with {x2_idea.get_road()} {x_attr}:None"
 
-    huh_text = f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+    huh_text = f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     print(f"{error_message=}")
 
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     print(f"{str(excinfo.value)=}")
     assert str(excinfo.value) == error_message
     assert str(excinfo.value) == huh_text
 
-    # == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+    # == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
 
 
-def test_idea_attributes_meld_FailRaisesError_begin():
-    x_pid = "_begin"
+def test_IdeaUnit_meld_FailRaisesError_begin():
+    x_attr = "_begin"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, begin=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, begin=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_close():
-    x_pid = "_close"
+def test_IdeaUnit_meld_FailRaisesError_close():
+    x_attr = "_close"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, close=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, close=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_addin():
-    x_pid = "_addin"
+def test_IdeaUnit_meld_FailRaisesError_addin():
+    x_attr = "_addin"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, addin=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    print(f"{yx2._addin=}")
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, addin=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
+    print(f"{x2_idea._addin=}")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_denom():
-    x_pid = "_denom"
+def test_IdeaUnit_meld_FailRaisesError_denom():
+    x_attr = "_denom"
     x_val = 15
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, denom=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, denom=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_numor():
-    x_pid = "_numor"
+def test_IdeaUnit_meld_FailRaisesError_numor():
+    x_attr = "_numor"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, numor=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, numor=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_reest():
-    x_pid = "_reest"
+def test_IdeaUnit_meld_FailRaisesError_reest():
+    x_attr = "_reest"
     x_val = 77
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, reest=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, reest=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_range_source_road():
-    x_pid = "_range_source_road"
+def test_IdeaUnit_meld_FailRaisesError_range_source_road():
+    x_attr = "_range_source_road"
     x_val = "test_range_source_road1"
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, range_source_road=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, range_source_road=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_numeric_road():
-    x_pid = "_numeric_road"
+def test_IdeaUnit_meld_FailRaisesError_numeric_road():
+    x_attr = "_numeric_road"
     x_val = "test_numeric_road1"
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, numeric_road=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, numeric_road=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
     )
 
 
-def test_idea_attributes_meld_FailRaisesError_action():
-    x_pid = "promise"
+def test_IdeaUnit_meld_FailRaisesError_action():
+    x_attr = "promise"
     x_val = True
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, promise=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, promise=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road, yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road, yx2._label)} {x_pid}:False"
+        == f"Meld fail idea={create_road(x1_idea._parent_road, x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road, x2_idea._label)} {x_attr}:False"
     )
 
 
-# def test_idea_attributes_meld_FailRaisesError_all_party_credit():
-# def test_idea_attributes_meld_FailRaisesError_all_party_debt():
-#     x_pid = "_all_party_credit"
-#     x_pid = "_all_party_debt"
+# def test_IdeaUnit_meld_FailRaisesError_all_party_credit():
+# def test_IdeaUnit_meld_FailRaisesError_all_party_debt():
+#     x_attr = "_all_party_credit"
+#     x_attr = "_all_party_debt"
 #     x_val = "test_all_party_credit1"
 #     x_val = "test_all_party_debt1"
-#     yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-#     custom_set_idea_attr(idea=yx1, all_party_credit=x_val)
-#     custom_set_idea_attr(idea=yx1, all_party_debt=x_val)
-#     yx2 = ideaunit_shop("fun", _parent_road=casa_text)
+#     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+#     custom_set_idea_attr(idea=x1_idea, all_party_credit=x_val)
+#     custom_set_idea_attr(idea=x1_idea, all_party_debt=x_val)
+#     x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
 #     # WHEN/THEN
 #     with pytest_raises(Exception) as excinfo:
-#         yx1.meld(yx2)
+#         x1_idea.meld(x2_idea)
 #     assert (
 #         str(excinfo.value)
-#         == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:None"
+#         == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:None"
 #     )
 
 
-def test_idea_attributes_meld_FailRaisesError_is_expanded():
-    x_pid = "_is_expanded"
+def test_IdeaUnit_meld_FailRaisesError_is_expanded():
+    x_attr = "_is_expanded"
     x_val = False
     outside_val = True
     casa_text = "casa"
-    yx1 = ideaunit_shop("spirit", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx1, is_expanded=x_val)
-    yx2 = ideaunit_shop("fun", _parent_road=casa_text)
-    custom_set_idea_attr(idea=yx2, is_expanded=outside_val)
+    x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x1_idea, is_expanded=x_val)
+    x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
+    custom_set_idea_attr(idea=x2_idea, is_expanded=outside_val)
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yx1.meld(yx2)
+        x1_idea.meld(x2_idea)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={create_road(yx1._parent_road,yx1._label)} {x_pid}:{x_val} with {create_road(yx2._parent_road,yx2._label)} {x_pid}:True"
+        == f"Meld fail idea={create_road(x1_idea._parent_road,x1_idea._label)} {x_attr}:{x_val} with {create_road(x2_idea._parent_road,x2_idea._label)} {x_attr}:True"
     )
 
 
-def test_idea_meld_CorrectlyCreatesOriginUnitWithOriginLink():
+def test_IdeaUnit_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # GIVEN
-    label1_text = "spirit"
-    yx1 = ideaunit_shop(label1_text)
+    label1_text = "clean"
+    x1_idea = ideaunit_shop(label1_text)
 
-    label2_text = "fun"
-    yx2 = ideaunit_shop(label2_text)
-    assert yx1._originunit == originunit_shop()
+    label2_text = "cook"
+    x2_idea = ideaunit_shop(label2_text)
+    assert x1_idea._originunit == originunit_shop()
 
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    yx1.meld(other_idea=yx2, party_id=sue_text, party_weight=sue_weight)
+    x1_idea.meld(other_idea=x2_idea, party_id=sue_text, party_weight=sue_weight)
 
     # THEN
-    assert yx1._originunit != None
+    assert x1_idea._originunit != None
     sue_originunit = originunit_shop()
     sue_originunit.set_originlink(pid=sue_text, weight=sue_weight)
-    assert yx1._originunit == sue_originunit
+    assert x1_idea._originunit == sue_originunit
 
 
-def test_idea_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
+def test_IdeaUnit_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink():
     # GIVEN
-    label1_text = "spirit"
-    yx1 = ideaunit_shop(label1_text)
+    label1_text = "clean"
+    x1_idea = ideaunit_shop(label1_text)
     tim_text = "Tim"
     tim_weight = 7
     tim_idea = ideaunit_shop(tim_text)
-    ex_yx1_originunit = originunit_shop()
-    ex_yx1_originunit.set_originlink(pid=tim_text, weight=tim_weight)
-    yx1.meld(other_idea=tim_idea, party_id=tim_text, party_weight=tim_weight)
-    assert yx1._originunit == ex_yx1_originunit
+    ex_x1_idea_originunit = originunit_shop()
+    ex_x1_idea_originunit.set_originlink(pid=tim_text, weight=tim_weight)
+    x1_idea.meld(other_idea=tim_idea, party_id=tim_text, party_weight=tim_weight)
+    assert x1_idea._originunit == ex_x1_idea_originunit
 
     sue_text = "Sue"
     sue_weight = 5
-    ex_yx1_originunit.set_originlink(pid=sue_text, weight=sue_weight)
-    assert yx1._originunit != ex_yx1_originunit
+    ex_x1_idea_originunit.set_originlink(pid=sue_text, weight=sue_weight)
+    assert x1_idea._originunit != ex_x1_idea_originunit
 
-    yx1_copy = deepcopy(yx1)
+    x1_idea_copy = deepcopy(x1_idea)
 
     # WHEN
-    yx1.meld(other_idea=yx1, party_id=sue_text, party_weight=sue_weight)
-    assert yx1._originunit == ex_yx1_originunit
+    x1_idea.meld(other_idea=x1_idea, party_id=sue_text, party_weight=sue_weight)
+    assert x1_idea._originunit == ex_x1_idea_originunit
 
     # THEN
-    assert yx1._originunit != yx1_copy._originunit
+    assert x1_idea._originunit != x1_idea_copy._originunit
 
-    yx1_originunit_link_sue = yx1._originunit._links.get(sue_text)
-    yx1_originunit_link_tim = yx1._originunit._links.get(tim_text)
-    assert yx1_originunit_link_sue != None
-    assert yx1_originunit_link_sue != yx1_copy._originunit._links.get(sue_text)
-    assert yx1_originunit_link_tim == yx1_copy._originunit._links.get(tim_text)
-    # assert yx1 == yx1_copy #Uncomment to see differences
+    x1_idea_originunit_link_sue = x1_idea._originunit._links.get(sue_text)
+    x1_idea_originunit_link_tim = x1_idea._originunit._links.get(tim_text)
+    assert x1_idea_originunit_link_sue != None
+    assert x1_idea_originunit_link_sue != x1_idea_copy._originunit._links.get(sue_text)
+    assert x1_idea_originunit_link_tim == x1_idea_copy._originunit._links.get(tim_text)
+    # assert x1_idea == x1_idea_copy #Uncomment to see differences

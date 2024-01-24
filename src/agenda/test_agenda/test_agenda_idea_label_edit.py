@@ -11,7 +11,7 @@ from src._prime.road import (
 )
 
 
-def test_idea_edit_idea_label_FailsWhenIdeaDoesNotExist():
+def test_AgendaUnit_edit_idea_label_FailsWhenIdeaDoesNotExist():
     # GIVEN
     tim_agenda = agendaunit_shop("Tim")
 
@@ -129,7 +129,7 @@ def test_agenda_set_economy_id_CorrectlySetsAttr():
     assert swim_idea._parent_road == new_work_road
 
 
-def test_idea_find_replace_road_Changes_kids_scenario1():
+def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
     # GIVEN Idea with kids that will be changed
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(tim_text)

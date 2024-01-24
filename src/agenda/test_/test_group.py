@@ -398,7 +398,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     )
 
 
-def test_idea_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
+def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     todd_text = "Todd"
     todd_group = groupunit_shop(brand=todd_text)

@@ -2,7 +2,7 @@ from src.agenda.idea import IdeaAttrFilter
 from pytest import raises as pytest_raise
 
 
-def test_idea_attr_holder_exists():
+def test_IdeaAttrFilter_Exists():
     new_obj = IdeaAttrFilter()
     assert new_obj.weight is None
     assert new_obj.uid is None
@@ -35,7 +35,7 @@ def test_idea_attr_holder_exists():
     assert new_obj.on_meld_weight_action is None
 
 
-def test_idea_attr_holder_CorrectlyCalculatesPremiseRanges():
+def test_IdeaAttrFilter_CorrectlyCalculatesPremiseRanges():
     # GIVEN
     idea_attr = IdeaAttrFilter(reason_premise="some_road")
     assert idea_attr.reason_premise_open is None
