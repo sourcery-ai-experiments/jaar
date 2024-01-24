@@ -745,8 +745,8 @@ class AgendaUnit:
                 old_balancelink.brand = new_brand
                 x_idea._balancelinks.get(new_brand).meld(
                     other_balancelink=old_balancelink,
-                    other_on_meld_weight_action="sum",
-                    src_on_meld_weight_action="sum",
+                    other_meld_strategy="sum",
+                    src_meld_strategy="sum",
                 )
 
                 x_idea.del_balancelink(groupbrand=old_brand)
@@ -1331,7 +1331,7 @@ class AgendaUnit:
         balancelink: BalanceLink = None,
         balancelink_del: GroupBrand = None,
         is_expanded: bool = None,
-        on_meld_weight_action: str = None,
+        meld_strategy: str = None,
     ):
         x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
@@ -1362,7 +1362,7 @@ class AgendaUnit:
             is_expanded=is_expanded,
             promise=promise,
             beliefunit=beliefunit,
-            on_meld_weight_action=on_meld_weight_action,
+            meld_strategy=meld_strategy,
         )
         if x_ideaattrfilter.has_numeric_attrs():
             self._set_ideaattrfilter_begin_close(x_ideaattrfilter, road)
@@ -1985,9 +1985,9 @@ class AgendaUnit:
         self._meld_beliefs(other_agenda)
         self._weight = get_meld_weight(
             src_weight=self._weight,
-            src_on_meld_weight_action="default",
+            src_meld_strategy="default",
             other_weight=other_agenda._weight,
-            other_on_meld_weight_action="default",
+            other_meld_strategy="default",
         )
         self._meld_originlinks(other_agenda._agent_id, party_weight)
 

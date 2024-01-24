@@ -32,7 +32,7 @@ def test_IdeaAttrFilter_Exists():
     assert new_obj.balancelink is None
     assert new_obj.balancelink_del is None
     assert new_obj.is_expanded is None
-    assert new_obj.on_meld_weight_action is None
+    assert new_obj.meld_strategy is None
 
 
 def test_IdeaAttrFilter_CorrectlyCalculatesPremiseRanges():

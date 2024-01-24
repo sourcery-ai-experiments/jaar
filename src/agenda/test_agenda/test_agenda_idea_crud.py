@@ -496,16 +496,15 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     print(f"{work_road=} {end_road=}")
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEdit_on_meld_weight_action_AnyIdeaIfInvaildThrowsError():
+def test_agenda_edit_idea_attr_agendaIsAbleToEdit_meld_strategy_AnyIdeaIfInvaildThrowsError():
     sue_agenda = get_agenda_with_4_levels()
     work_road = sue_agenda.make_l1_road("work")
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_agenda.edit_idea_attr(road=work_road, on_meld_weight_action="yahoo9")
+        sue_agenda.edit_idea_attr(road=work_road, meld_strategy="yahoo9")
     assert (
-        str(excinfo.value)
-        == "IdeaUnit unit 'work' cannot have on_meld_weight_action 'yahoo9'."
+        str(excinfo.value) == "IdeaUnit unit 'work' cannot have meld_strategy 'yahoo9'."
     )
 
 

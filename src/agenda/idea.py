@@ -48,7 +48,7 @@ from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
 from src.tools.python import get_empty_dict_if_none, get_1_if_None
-from src._prime.meld import get_meld_weight, get_on_meld_weight_actions
+from src._prime.meld import get_meld_weight, get_meld_strategys
 from copy import deepcopy
 
 
@@ -90,7 +90,7 @@ class IdeaAttrFilter:
     balancelink: BalanceLink = None
     balancelink_del: GroupBrand = None
     is_expanded: bool = None
-    on_meld_weight_action: str = None
+    meld_strategy: str = None
 
     def get_premise_need(self):
         return self.reason_premise
@@ -172,7 +172,7 @@ def ideaattrfilter_shop(
     balancelink: BalanceLink = None,
     balancelink_del: GroupBrand = None,
     is_expanded: bool = None,
-    on_meld_weight_action: str = None,
+    meld_strategy: str = None,
 ) -> IdeaAttrFilter:
     x_ideaattrfilter = IdeaAttrFilter(
         weight=weight,
@@ -203,7 +203,7 @@ def ideaattrfilter_shop(
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
-        on_meld_weight_action=on_meld_weight_action,
+        meld_strategy=meld_strategy,
     )
     if x_ideaattrfilter.has_ratio_attrs():
         x_ideaattrfilter.set_ratio_attr_defaults_if_none()
@@ -236,7 +236,7 @@ class IdeaUnit:
     _numeric_road: RoadUnit = None
     promise: bool = None
     _originunit: OriginUnit = None
-    _on_meld_weight_action: str = None
+    _meld_strategy: str = None
     _root: bool = None
     _agenda_economy_id: EconomyID = None
     # Calculated fields
@@ -597,8 +597,8 @@ class IdeaUnit:
             if self._balancelinks.get(bl.brand) != None:
                 self._balancelinks.get(bl.brand).meld(
                     other_balancelink=bl,
-                    other_on_meld_weight_action=other_idea._on_meld_weight_action,
-                    src_on_meld_weight_action=self._on_meld_weight_action,
+                    other_meld_strategy=other_idea._meld_strategy,
+                    src_meld_strategy=self._meld_strategy,
                 )
             else:
                 self._balancelinks[bl.brand] = bl
@@ -626,14 +626,18 @@ class IdeaUnit:
         else:
             self._weight = get_meld_weight(
                 src_weight=self._weight,
-                src_on_meld_weight_action=self._on_meld_weight_action,
+                src_meld_strategy=self._meld_strategy,
                 other_weight=other_idea._weight,
-                other_on_meld_weight_action=other_idea._on_meld_weight_action,
+                other_meld_strategy=other_idea._meld_strategy,
             )
         self._meld_reasonunits(other_idea=other_idea)
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_beliefunits(other_idea=other_idea)
-        self._meld_attributes_that_will_be_equal(other_idea=other_idea)
+        print(f"{other_idea._meld_strategy=}")
+        if other_idea._meld_strategy != "override":
+            self._meld_attributes_that_must_be_equal(other_idea=other_idea)
+        else:
+            self._meld_attributes_overide(other_idea=other_idea)
         self._meld_originlinks(party_id, party_weight)
 
     def _meld_originlinks(self, party_id: PartyID, party_weight: float):
@@ -647,7 +651,20 @@ class IdeaUnit:
     def get_originunit_dict(self) -> dict[str:str]:
         return self._originunit.get_dict()
 
-    def _meld_attributes_that_will_be_equal(self, other_idea):
+    def _meld_attributes_overide(self, other_idea):
+        self._uid = other_idea._uid
+        self._begin = other_idea._begin
+        self._close = other_idea._close
+        self._addin = other_idea._addin
+        self._denom = other_idea._denom
+        self._numor = other_idea._numor
+        self._reest = other_idea._reest
+        self._range_source_road = other_idea._range_source_road
+        self._numeric_road = other_idea._numeric_road
+        self.promise = other_idea.promise
+        self._is_expanded = other_idea._is_expanded
+
+    def _meld_attributes_that_must_be_equal(self, other_idea):
         to_be_equal_attributes = [
             ("_uid", self._uid, other_idea._uid),
             ("_begin", self._begin, other_idea._begin),
@@ -724,9 +741,9 @@ class IdeaUnit:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
             self.promise = idea_attr.promise
-        if idea_attr.on_meld_weight_action != None:
-            self._check_get_on_meld_weight_actions(idea_attr.on_meld_weight_action)
-            self._on_meld_weight_action = idea_attr.on_meld_weight_action
+        if idea_attr.meld_strategy != None:
+            self._check_get_meld_strategys(idea_attr.meld_strategy)
+            self._meld_strategy = idea_attr.meld_strategy
         if idea_attr.beliefunit != None:
             self.set_beliefunit(idea_attr.beliefunit)
 
@@ -736,10 +753,10 @@ class IdeaUnit:
         )
         self._set_addin_to_zero_if_any_transformations_exist()
 
-    def _check_get_on_meld_weight_actions(self, on_meld_weight_action: str):
-        if on_meld_weight_action not in (list(get_on_meld_weight_actions())):
+    def _check_get_meld_strategys(self, meld_strategy: str):
+        if meld_strategy not in (list(get_meld_strategys())):
             raise InvalidIdeaException(
-                f"IdeaUnit unit '{self._label}' cannot have on_meld_weight_action '{on_meld_weight_action}'."
+                f"IdeaUnit unit '{self._label}' cannot have meld_strategy '{meld_strategy}'."
             )
 
     def _set_addin_to_zero_if_any_transformations_exist(self):
@@ -1007,8 +1024,8 @@ class IdeaUnit:
             x_dict["_beliefunits"] = self.get_beliefunits_dict()
         if self._is_expanded == False:
             x_dict["_is_expanded"] = self._is_expanded
-        if self._on_meld_weight_action != "default":
-            x_dict["_on_meld_weight_action"] = self._on_meld_weight_action
+        if self._meld_strategy != "default":
+            x_dict["_meld_strategy"] = self._meld_strategy
 
         return x_dict
 
@@ -1078,7 +1095,7 @@ def ideaunit_shop(
     _numeric_road: RoadUnit = None,
     promise: bool = None,
     _originunit: OriginUnit = None,
-    _on_meld_weight_action: str = None,
+    _meld_strategy: str = None,
     _root: bool = None,
     _agenda_economy_id: EconomyID = None,
     # Calculated fields
@@ -1100,8 +1117,8 @@ def ideaunit_shop(
 ) -> IdeaUnit:
     if promise is None:
         promise = False
-    if _on_meld_weight_action is None:
-        _on_meld_weight_action = "default"
+    if _meld_strategy is None:
+        _meld_strategy = "default"
     if _kids_total_weight is None:
         _kids_total_weight = 0
     if _root is None:
@@ -1134,7 +1151,7 @@ def ideaunit_shop(
         _numeric_road=_numeric_road,
         promise=promise,
         _originunit=_originunit,
-        _on_meld_weight_action=_on_meld_weight_action,
+        _meld_strategy=_meld_strategy,
         _root=_root,
         _agenda_economy_id=_agenda_economy_id,
         # Calculated fields
@@ -1204,7 +1221,7 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     elif dict_key in {"_is_expanded"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else True
-    # elif dict_key == "_on_meld_weight_action":
+    # elif dict_key == "_meld_strategy":
     #     return x_dict[dict_key] if x_dict.get(dict_key) != None else "default"
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None

@@ -40,7 +40,7 @@ def custom_set_idea_attr(
     balancelink_del: GroupBrand = None,
     is_expanded: bool = None,
     promise: bool = None,
-    on_meld_weight_action: str = None,
+    meld_strategy: str = None,
 ):
     idea_attr = IdeaAttrFilter(
         weight=weight,
@@ -69,7 +69,7 @@ def custom_set_idea_attr(
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
         promise=promise,
-        on_meld_weight_action=on_meld_weight_action,
+        meld_strategy=meld_strategy,
     )
 
     idea._set_idea_attr(idea_attr=idea_attr)
@@ -106,7 +106,7 @@ def test_IdeaUnit_meld_BaseScenarioWorks_reasonunits():
     lu_x.set_premise(premise=reason_base_x1)
     reasonunits_x = {lu_x.base: lu_x}
     assert x1_idea._reasonunits == reasonunits_x
-    print(f"{x1_idea._on_meld_weight_action=}")
+    print(f"{x1_idea._meld_strategy=}")
     assert x1_idea._weight == 1
 
 
@@ -189,18 +189,18 @@ def test_IdeaUnit_meld_TwoReasonsMeldScenarioWorks_reasonunits():
     assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_on_meld_weight_actionEquals_default():
+def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_default():
     # GIVEN
     casa_text = "casa"
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
     default_text = "default"
-    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=default_text)
+    custom_set_idea_attr(idea=x1_idea, meld_strategy=default_text)
     custom_set_idea_attr(
         idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
     )
     x2_idea = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=x2_idea, on_meld_weight_action=default_text)
+    custom_set_idea_attr(idea=x2_idea, meld_strategy=default_text)
     custom_set_idea_attr(
         idea=x2_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=3)
     )
@@ -213,20 +213,20 @@ def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_on_meld_weight_actionEq
     assert x1_idea._balancelinks[br1] == bl_x
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_on_meld_weight_actionEquals_sum():
+def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_sum():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
 
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
-    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x1_idea,
         balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
     )
     x2_idea = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=x2_idea, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x2_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x2_idea,
         balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
@@ -247,14 +247,14 @@ def test_IdeaUnit_meld_TwoGroupsScenarioWorks_balancelink():
 
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
     br1 = "Running"
-    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
     x2_idea = ideaunit_shop("Rocking")
-    custom_set_idea_attr(idea=x1_idea, on_meld_weight_action=sum_text)
+    custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x2_idea, balancelink=balancelink_shop(brand=br2, creditor_weight=2)
     )
@@ -320,7 +320,7 @@ def test_IdeaUnit_meld_2BeliefUnitsWorks_beliefunits():
     assert x1_idea._beliefunits != x2_idea._beliefunits
 
 
-def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_on_meld_weight_actionEquals_default():
+def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_default():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -395,81 +395,79 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_on_meld_weight_actionEq
     assert x1_idea._agenda_economy_id == texas_text
 
 
-# def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_on_meld_weight_actionEquals_override():
-#     # GIVEN
-#     tech_text = "tech"
-#     tech_road = create_road(root_label(), tech_text)
-#     bowl_text = "bowl"
-#     bowl_road = create_road(tech_road, bowl_text)
-#     plate_text = "plate"
-#     plate_road = create_road(tech_road, plate_text)
+def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_override():
+    # GIVEN
+    tech_road = create_road(root_label(), "tech")
+    bowl_road = create_road(tech_road, "bowl")
+    plate_road = create_road(tech_road, "plate")
 
-#     x_uid = "uid1xx"
-#     x_all_party_credit = "am_cx"
-#     x_all_party_debt = "am_dx"
+    x_uid = "uid1xx"
+    x_all_party_credit = "am_cx"
+    x_all_party_debt = "am_dx"
 
-#     label1_text = "clean"
-#     texas_text = "texas"
-#     x1_idea = ideaunit_shop(label1_text, _agenda_economy_id=texas_text)
-#     custom_set_idea_attr(
-#         idea=x1_idea,
-#         uid=x_uid,
-#         weight=7,
-#         begin=1,
-#         close=2,
-#         addin=3,
-#         denom=4,
-#         numor=5,
-#         reest=6,
-#         range_source_road=plate_road,
-#         numeric_road=bowl_road,
-#         promise=True,
-#         all_party_credit=x_all_party_credit,
-#         all_party_debt=x_all_party_debt,
-#         is_expanded=True,
-#     )
+    label1_text = "clean"
+    texas_text = "texas"
+    x1_idea = ideaunit_shop(label1_text, _agenda_economy_id=texas_text)
+    custom_set_idea_attr(
+        idea=x1_idea,
+        uid=x_uid,
+        weight=7,
+        begin=1,
+        close=2,
+        addin=3,
+        denom=4,
+        numor=5,
+        reest=6,
+        range_source_road=plate_road,
+        numeric_road=bowl_road,
+        promise=True,
+        all_party_credit=x_all_party_credit,
+        all_party_debt=x_all_party_debt,
+        is_expanded=True,
+    )
 
-#     label2_text = "cook"
-#     x2_idea = ideaunit_shop(label2_text, _agenda_economy_id=texas_text)
-#     override_text = "override"
-#     custom_set_idea_attr(
-#         idea=x2_idea,
-#         uid=x_uid,
-#         weight=77,
-#         begin=11,
-#         close=22,
-#         addin=33,
-#         denom=44,
-#         numor=55,
-#         reest=66,
-#         range_source_road=plate_road,
-#         numeric_road=bowl_road,
-#         promise=True,
-#         all_party_credit=x_all_party_credit,
-#         all_party_debt=x_all_party_debt,
-#         is_expanded=True,
-#         on_meld_weight_action=override_text,
-#     )
+    label2_text = "cook"
+    x2_idea = ideaunit_shop(label2_text, _agenda_economy_id=texas_text)
+    x2_uid = "uid2xx"
+    override_text = "override"
+    custom_set_idea_attr(
+        idea=x2_idea,
+        uid=x2_uid,
+        weight=77,
+        begin=11,
+        close=22,
+        addin=33,
+        denom=44,
+        numor=55,
+        reest=66,
+        range_source_road=plate_road,
+        numeric_road=bowl_road,
+        promise=True,
+        all_party_credit=x_all_party_credit,
+        all_party_debt=x_all_party_debt,
+        is_expanded=True,
+        meld_strategy=override_text,
+    )
 
-#     # WHEN
-#     x1_idea.meld(x2_idea)
+    # WHEN
+    x1_idea.meld(x2_idea)
 
-#     # THEN
-#     assert x1_idea._uid == x_uid
-#     assert x1_idea._weight == 77
-#     assert x1_idea._begin == 11
-#     assert x1_idea._close == 22
-#     assert x1_idea._addin == 33
-#     assert x1_idea._denom == 44
-#     assert x1_idea._numor == 55
-#     assert x1_idea._reest == 66
-#     assert x1_idea._range_source_road == plate_road
-#     assert x1_idea._numeric_road == bowl_road
-#     assert x1_idea.promise == True
-#     assert x1_idea._all_party_credit == x_all_party_credit
-#     assert x1_idea._all_party_debt == x_all_party_debt
-#     assert x1_idea._is_expanded == True
-#     assert x1_idea._agenda_economy_id == texas_text
+    # THEN
+    assert x1_idea._uid == x2_uid
+    assert x1_idea._weight == 77
+    assert x1_idea._begin == 11
+    assert x1_idea._close == 22
+    assert x1_idea._addin == 33
+    assert x1_idea._denom == 44
+    assert x1_idea._numor == 55
+    assert x1_idea._reest == 66
+    assert x1_idea._range_source_road == plate_road
+    assert x1_idea._numeric_road == bowl_road
+    assert x1_idea.promise == True
+    assert x1_idea._all_party_credit == x_all_party_credit
+    assert x1_idea._all_party_debt == x_all_party_debt
+    assert x1_idea._is_expanded == True
+    assert x1_idea._agenda_economy_id == texas_text
 
 
 def test_IdeaUnit_meld_FailRaisesError_uid():

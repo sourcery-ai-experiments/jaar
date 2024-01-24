@@ -40,7 +40,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._is_expanded is None
     assert x_ideaunit._beliefheirs is None
     assert x_ideaunit._beliefunits is None
-    assert x_ideaunit._on_meld_weight_action is None
+    assert x_ideaunit._meld_strategy is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
     assert x_ideaunit._active_hx is None
@@ -83,7 +83,7 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._is_expanded == True
     assert x_ideaunit._beliefheirs == {}
     assert x_ideaunit._beliefunits == {}
-    assert x_ideaunit._on_meld_weight_action == "default"
+    assert x_ideaunit._meld_strategy == "default"
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
     assert x_ideaunit._active_hx == {}
@@ -501,8 +501,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert work_idea._is_expanded
     assert work_dict.get("_is_expanded") is None
     assert len(work_dict["_beliefunits"]) == len(work_idea.get_beliefunits_dict())
-    assert work_idea._on_meld_weight_action == "default"
-    assert work_dict.get("_on_meld_weight_action") is None
+    assert work_idea._meld_strategy == "default"
+    assert work_dict.get("_meld_strategy") is None
 
 
 def test_IdeaUnit_get_dict_ReturnsCorrectIncompleteDict():
@@ -523,7 +523,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     work_idea._is_expanded = False
     work_idea.promise = True
     ignore_text = "ignore"
-    work_idea._on_meld_weight_action = ignore_text
+    work_idea._meld_strategy = ignore_text
 
     a_text = "a"
     a_road = create_road(root_label(), a_text)
@@ -543,7 +543,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
 
     assert not work_idea._is_expanded
     assert work_idea.promise
-    assert work_idea._on_meld_weight_action != "default"
+    assert work_idea._meld_strategy != "default"
     assert work_idea._beliefunits != None
     assert work_idea._balancelinks != None
     assert work_idea._assignedunit != None
@@ -556,7 +556,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # THEN
     assert work_dict.get("_is_expanded") == False
     assert work_dict.get("promise")
-    assert work_dict.get("_on_meld_weight_action") == ignore_text
+    assert work_dict.get("_meld_strategy") == ignore_text
     assert work_dict.get("_beliefunits") != None
     assert work_dict.get("_balancelinks") != None
     assert work_dict.get("_assignedunit") != None
@@ -569,7 +569,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     work_idea = ideaunit_shop()
     assert work_idea._is_expanded
     assert work_idea.promise == False
-    assert work_idea._on_meld_weight_action == "default"
+    assert work_idea._meld_strategy == "default"
     assert work_idea._beliefunits == {}
     assert work_idea._balancelinks == {}
     assert work_idea._assignedunit == assigned_unit_shop()
@@ -582,7 +582,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # THEN
     assert work_dict.get("_is_expanded") is None
     assert work_dict.get("promise") is None
-    assert work_dict.get("_on_meld_weight_action") is None
+    assert work_dict.get("_meld_strategy") is None
     assert work_dict.get("_beliefunits") is None
     assert work_dict.get("_balancelinks") is None
     assert work_dict.get("_assignedunit") is None

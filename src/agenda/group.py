@@ -138,7 +138,7 @@ class GroupUnit(GroupCore):
         self.del_partylink(party_id=to_delete_party_id)
 
     def meld(self, other_group):
-        self._meld_attributes_that_will_be_equal(other_group=other_group)
+        self._meld_attributes_that_must_be_equal(other_group=other_group)
         self.meld_partylinks(other_group=other_group)
 
     def meld_partylinks(self, other_group):
@@ -148,7 +148,7 @@ class GroupUnit(GroupCore):
             else:
                 self._partys[oba.party_id].meld(oba)
 
-    def _meld_attributes_that_will_be_equal(self, other_group):
+    def _meld_attributes_that_must_be_equal(self, other_group):
         xl = [
             ("brand", self.brand, other_group.brand),
             ("uid", self.uid, other_group.uid),
@@ -248,20 +248,20 @@ class BalanceLink(GroupCore):
     def meld(
         self,
         other_balancelink,
-        other_on_meld_weight_action: str,
-        src_on_meld_weight_action: str,
+        other_meld_strategy: str,
+        src_meld_strategy: str,
     ):
         self.creditor_weight = get_meld_weight(
             src_weight=self.creditor_weight,
-            src_on_meld_weight_action=src_on_meld_weight_action,
+            src_meld_strategy=src_meld_strategy,
             other_weight=other_balancelink.creditor_weight,
-            other_on_meld_weight_action=other_on_meld_weight_action,
+            other_meld_strategy=other_meld_strategy,
         )
         self.debtor_weight = get_meld_weight(
             src_weight=self.debtor_weight,
-            src_on_meld_weight_action=src_on_meld_weight_action,
+            src_meld_strategy=src_meld_strategy,
             other_weight=other_balancelink.debtor_weight,
-            other_on_meld_weight_action=other_on_meld_weight_action,
+            other_meld_strategy=other_meld_strategy,
         )
 
 

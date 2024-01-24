@@ -1,18 +1,20 @@
 def get_meld_weight(
     src_weight: float,
-    src_on_meld_weight_action: str,
+    src_meld_strategy: str,
     other_weight: float,
-    other_on_meld_weight_action: float,
+    other_meld_strategy: float,
 ) -> float:
-    if (
-        src_on_meld_weight_action != "default"
-        or other_on_meld_weight_action == "ignore"
-    ):
-        src_weight += other_weight
-    return src_weight
+    output_float = 0
+    if src_meld_strategy == "default" and other_meld_strategy == "override":
+        output_float = other_weight
+    elif src_meld_strategy != "default" or other_meld_strategy == "ignore":
+        output_float = src_weight + other_weight
+    else:
+        output_float = src_weight
+    return output_float
 
 
-def get_on_meld_weight_actions() -> dict[str:None]:
+def get_meld_strategys() -> dict[str:None]:
     """
     match: melder and meldee will have equal weight or error thrown
     sum: melder and meldee sum weights

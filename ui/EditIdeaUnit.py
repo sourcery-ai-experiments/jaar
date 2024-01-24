@@ -930,7 +930,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             balancelink=None,
             balancelink_del=None,
             is_expanded=None,
-            on_meld_weight_action=None,
+            meld_strategy=None,
         )
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
         take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
