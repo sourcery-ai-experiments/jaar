@@ -1546,7 +1546,7 @@ class AgendaUnit:
         return [
             x_groupunit.brand
             for x_groupunit in self._groups.values()
-            if x_groupunit.has_partylink(party_id)
+            if x_groupunit.partylink_exists(party_id)
         ]
 
     def _reset_partyunit_agenda_credit_debt(self):
@@ -2378,3 +2378,46 @@ def get_party_relevant_groups(
         for group_x in groups_x.values()
         if group_x._partys.get(party_id_x) != None
     }
+
+
+def get_gap_agendaunit(melder: AgendaUnit, melded: AgendaUnit) -> AgendaUnit:
+    gap_agendaunit = agendaunit_shop()
+    gap_agendaunit.set_economy_id(melder._economy_id)
+    gap_agendaunit.set_agent_id(melder._agent_id)
+    gap_agendaunit._weight = 1
+    set_gap_partyunits(gap_agendaunit, melder, melded)
+    set_gap_groupunits(gap_agendaunit, melder, melded)
+    # set_gap_idearoot(gap_agendaunit, melder, melded)
+    # set_gap_beliefunit(gap_agendaunit, melder, melded)
+    # do not find gap in originunit
+    # A gap_agendaunit is differnce between two an x_AgendaUnit and it's subset_AgendaUnit
+    # gap is defined as subset_AgendaUnit.meld(gap_AgendaUnit) = x_AgendaUnit
+    return gap_agendaunit
+
+
+def set_gap_partyunits(
+    gap_agendaunit: AgendaUnit, melder: AgendaUnit, melded: AgendaUnit
+) -> dict[PartyID:PartyUnit]:
+    for x_party_id, x_partyunit in melded._partys.items():
+        if melder.get_party(x_party_id) is None:
+            gap_agendaunit.set_partyunit(x_partyunit)
+
+
+def set_gap_groupunits(
+    gap_agendaunit: AgendaUnit, melder: AgendaUnit, melded: AgendaUnit
+) -> dict[PartyID:PartyUnit]:
+    for melded_brand, melded_groupunit in melded._groups.items():
+        if melded_groupunit._single_party == False:
+            if melder.get_groupunit(melded_brand) is None:
+                gap_agendaunit.set_groupunit(melded_groupunit)
+            else:
+                melder_groupunit = melder.get_groupunit(melded_brand)
+                for (
+                    melded_party_id,
+                    melded_partylink,
+                ) in melded_groupunit._partys.items():
+                    if melder_groupunit.partylink_exists(melded_party_id) == False:
+                        if gap_agendaunit.get_groupunit(melded_brand) is None:
+                            gap_agendaunit.set_groupunit(groupunit_shop(melded_brand))
+                        x_groupunit = gap_agendaunit.get_groupunit(melded_brand)
+                        x_groupunit.set_partylink(melded_partylink)

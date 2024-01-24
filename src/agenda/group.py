@@ -112,7 +112,7 @@ class GroupUnit(GroupCore):
     def get_partylink(self, party_id: PartyID) -> PartyLink:
         return self._partys.get(party_id)
 
-    def has_partylink(self, partylink_party_id: PartyID) -> bool:
+    def partylink_exists(self, partylink_party_id: PartyID) -> bool:
         return self.get_partylink(partylink_party_id) != None
 
     def del_partylink(self, party_id):
