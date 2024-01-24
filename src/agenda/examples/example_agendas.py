@@ -60,7 +60,7 @@ def agenda_v002() -> AgendaUnit:
 
 def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_agent_id="Sue", _weight=10)
-    # print(f"{sue_agenda._auto_output_to_public=}")
+    # print(f"{sue_agenda._auto_output_to_forum=}")
 
     work = "work"
     idea_kid_work = ideaunit_shop(work, _weight=30, promise=True)

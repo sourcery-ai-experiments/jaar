@@ -35,7 +35,7 @@ from src.economy.examples.example_clerks import (
 from src.tools.sqlite import get_single_result
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -49,19 +49,19 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
 
     bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_economy.save_public_agenda(bob)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(bob)
+    x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasuryFile(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -75,19 +75,19 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyDeletesOldTreasur
 
     bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_economy.save_public_agenda(bob)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(bob)
+    x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesPartyunitTable01(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -105,31 +105,31 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesPartyuni
     bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     bob.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     bob.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_public_agenda(bob)
+    x_economy.save_forum_agenda(bob)
 
     sal = agendaunit_shop(_agent_id=sal_text)
     sal.add_partyunit(party_id=bob_text, creditor_weight=1, debtor_weight=4)
     sal.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     sal.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_public_agenda(sal)
+    x_economy.save_forum_agenda(sal)
 
     tom = agendaunit_shop(_agent_id=tom_text)
     tom.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     tom.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     tom.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_public_agenda(tom)
+    x_economy.save_forum_agenda(tom)
 
     elu = agendaunit_shop(_agent_id=elu_text)
     elu.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     elu.add_partyunit(party_id=tom_text, creditor_weight=1, debtor_weight=4)
     elu.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_public_agenda(elu)
+    x_economy.save_forum_agenda(elu)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert (
@@ -137,7 +137,7 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesPartyuni
     )
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -151,22 +151,22 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
     sal_text = "sal"
     elu_text = "elu"
 
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -180,22 +180,22 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulatesAgendaTa
     sal_text = "sal"
     elu_text = "elu"
 
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert get_single_result(x_economy.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulates_groupunit_catalog(
+def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulates_groupunit_catalog(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -212,14 +212,14 @@ def test_economy_refresh_treasury_public_agendas_data_CorrectlyPopulates_groupun
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result(x_economy.get_treasury_conn(), sqlstr) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert get_single_result(x_economy.get_treasury_conn(), sqlstr) == 3
@@ -273,13 +273,13 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
 
-    x_economy.save_public_agenda(sal_agenda)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tom_agenda)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     x_economy.set_agenda_treasury_attrs(x_agent_id=sal_text)
-    e1_sal_agenda = x_economy.get_public_agenda(agent_id=sal_text)
+    e1_sal_agenda = x_economy.get_forum_agenda(agent_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -287,11 +287,11 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     sal_swim_road = create_road(sal_sports_road, swim_text)
     swim_group_unit.set_attr(_partylinks_set_by_economy_road=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
     x_economy.set_agenda_treasury_attrs(x_agent_id=sal_text)
 
     # THEN
-    e1_sal_agenda = x_economy.get_public_agenda(agent_id=sal_text)
+    e1_sal_agenda = x_economy.get_forum_agenda(agent_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
@@ -300,7 +300,7 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     with x_economy.get_treasury_conn() as treasury_conn:
@@ -319,12 +319,12 @@ def test_economy_get_idea_catalog_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert get_idea_catalog_table_count(treasury_conn, bob_text) == 1
 
 
-def test_economy_refresh_treasury_public_agendas_data_Populates_idea_catalog_table(
+def test_economy_refresh_treasury_forum_agendas_data_Populates_idea_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -335,15 +335,15 @@ def test_economy_refresh_treasury_public_agendas_data_Populates_idea_catalog_tab
     bob_agenda.set_agent_id(new_agent_id=bob_text)
     tim_agenda.set_agent_id(new_agent_id=tim_text)
     sal_agenda.set_agent_id(new_agent_id=sal_text)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tim_agenda)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tim_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     with x_economy.get_treasury_conn() as treasury_conn:
         assert get_idea_catalog_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     with x_economy.get_treasury_conn() as treasury_conn:
@@ -355,7 +355,7 @@ def test_economy_refresh_treasury_public_agendas_data_Populates_idea_catalog_tab
 def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -369,11 +369,11 @@ def test_economy_get_idea_catalog_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     tim_agenda.set_agent_id(new_agent_id=tim_text)
     sal_agenda.set_agent_id(new_agent_id=sal_text)
     elu_agenda.set_agent_id(new_agent_id=elu_text)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tim_agenda)
-    x_economy.save_public_agenda(sal_agenda)
-    x_economy.save_public_agenda(elu_agenda)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tim_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
+    x_economy.refresh_treasury_forum_agendas_data()
     i_count_sqlstr = get_table_count_sqlstr("idea_catalog")
     with x_economy.get_treasury_conn() as treasury_conn:
         print(f"{i_count_sqlstr=}")
@@ -395,7 +395,7 @@ def test_economy_get_belief_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     with x_economy.get_treasury_conn() as treasury_conn:
@@ -417,12 +417,12 @@ def test_economy_get_belief_catalog_table_insert_sqlstr_CorrectlyPopulatesTable0
     assert get_belief_catalog_table_count(treasury_conn, bob_text) == 1
 
 
-def test_refresh_treasury_public_agendas_data_Populates_belief_catalog_table(
+def test_refresh_treasury_forum_agendas_data_Populates_belief_catalog_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # TODO create 3 agendas with varying numbers of beliefs
     bob_text = "bob"
@@ -453,9 +453,9 @@ def test_refresh_treasury_public_agendas_data_Populates_belief_catalog_table(
     cookery_road = create_road(casa_road, cookery_text)
     sal_agenda.set_belief(base=cookery_road, pick=cookery_road)
 
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tim_agenda)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tim_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     with x_economy.get_treasury_conn() as treasury_conn:
         assert get_belief_catalog_table_count(treasury_conn, bob_text) == 0
@@ -463,7 +463,7 @@ def test_refresh_treasury_public_agendas_data_Populates_belief_catalog_table(
         assert get_belief_catalog_table_count(treasury_conn, sal_text) == 0
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     print(f"{get_belief_catalog_table_count(treasury_conn, bob_text)=}")
@@ -480,7 +480,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     with x_economy.get_treasury_conn() as treasury_conn:
@@ -515,9 +515,9 @@ def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tom_agenda)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
+    x_economy.refresh_treasury_forum_agendas_data()
     sqlstr = get_table_count_sqlstr("groupunit_catalog")
     assert get_single_result(x_economy.get_treasury_conn(), sqlstr) == 3
 

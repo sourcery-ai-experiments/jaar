@@ -331,12 +331,12 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.save_ignore_button.setFont(font)
         self.save_ignore_button.setObjectName("save_ignore_button")
-        self.set_public_agenda_button = QtWidgets.QPushButton(self.centralwidget)
-        self.set_public_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
+        self.set_forum_agenda_button = QtWidgets.QPushButton(self.centralwidget)
+        self.set_forum_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.set_public_agenda_button.setFont(font)
-        self.set_public_agenda_button.setObjectName("set_public_agenda_button")
+        self.set_forum_agenda_button.setFont(font)
+        self.set_forum_agenda_button.setObjectName("set_forum_agenda_button")
         self.reload_all_src_agendas_button = QtWidgets.QPushButton(self.centralwidget)
         self.reload_all_src_agendas_button.setGeometry(QtCore.QRect(190, 620, 141, 21))
         font = QtGui.QFont()
@@ -345,17 +345,17 @@ class Ui_MainWindow(object):
         self.reload_all_src_agendas_button.setObjectName(
             "reload_all_src_agendas_button"
         )
-        self.set_public_and_reload_srcs_button = QtWidgets.QPushButton(
+        self.set_forum_and_reload_srcs_button = QtWidgets.QPushButton(
             self.centralwidget
         )
-        self.set_public_and_reload_srcs_button.setGeometry(
+        self.set_forum_and_reload_srcs_button.setGeometry(
             QtCore.QRect(190, 660, 141, 21)
         )
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.set_public_and_reload_srcs_button.setFont(font)
-        self.set_public_and_reload_srcs_button.setObjectName(
-            "set_public_and_reload_srcs_button"
+        self.set_forum_and_reload_srcs_button.setFont(font)
+        self.set_forum_and_reload_srcs_button.setObjectName(
+            "set_forum_and_reload_srcs_button"
         )
         self.contract_open_button = QtWidgets.QPushButton(self.centralwidget)
         self.contract_open_button.setGeometry(QtCore.QRect(530, 50, 51, 21))
@@ -457,14 +457,14 @@ class Ui_MainWindow(object):
         self.show_ignores_button.setText(_translate("MainWindow", "ignore"))
         self.open_ignore_button.setText(_translate("MainWindow", "o"))
         self.save_ignore_button.setText(_translate("MainWindow", "s"))
-        self.set_public_agenda_button.setText(
-            _translate("MainWindow", "output_agenda to public_dir")
+        self.set_forum_agenda_button.setText(
+            _translate("MainWindow", "output_agenda to forum_dir")
         )
         self.reload_all_src_agendas_button.setText(
             _translate("MainWindow", "refresh_all_src_agendas")
         )
-        self.set_public_and_reload_srcs_button.setText(
-            _translate("MainWindow", "dest2public and refresh")
+        self.set_forum_and_reload_srcs_button.setText(
+            _translate("MainWindow", "dest2forum and refresh")
         )
         self.contract_open_button.setText(_translate("MainWindow", "contract"))
         self.contract_save_button.setText(_translate("MainWindow", "save"))

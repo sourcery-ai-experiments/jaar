@@ -38,8 +38,8 @@ class clerkUnit:
     _contract_file_path: str = None
     _agenda_output_file_name: str = None
     _agenda_output_file_path: str = None
-    _public_file_name: str = None
-    _agendas_public_dir: str = None
+    _forum_file_name: str = None
+    _agendas_forum_dir: str = None
     _agendas_depot_dir: str = None
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
@@ -50,7 +50,7 @@ class clerkUnit:
         for party_x in self._contract._partys.values():
             if party_x.party_id != self._clerk_cid:
                 party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self.open_public_agenda(party_x.party_id)
+                    x_agenda_json=self.open_forum_agenda(party_x.party_id)
                 )
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
@@ -71,8 +71,8 @@ class clerkUnit:
         self._set_depotlink(
             x_agenda._agent_id, depotlink_type, creditor_weight, debtor_weight
         )
-        if self.get_contract()._auto_output_to_public:
-            self.save_refreshed_output_to_public()
+        if self.get_contract()._auto_output_to_forum:
+            self.save_refreshed_output_to_forum()
 
     def _set_depotlink(
         self,
@@ -178,8 +178,8 @@ class clerkUnit:
         self._agenda_output_file_path = (
             f"{self._clerkunit_dir}/{self._agenda_output_file_name}"
         )
-        self._public_file_name = f"{self._clerk_cid}.json"
-        self._agendas_public_dir = f"{self._env_dir}/{agendas_str}"
+        self._forum_file_name = f"{self._clerk_cid}.json"
+        self._agendas_forum_dir = f"{self._env_dir}/{agendas_str}"
         self._agendas_depot_dir = f"{self._clerkunit_dir}/{agendas_str}"
         self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
@@ -193,7 +193,7 @@ class clerkUnit:
 
     def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
         single_dir_create_if_null(x_path=self._clerkunit_dir)
-        single_dir_create_if_null(x_path=self._agendas_public_dir)
+        single_dir_create_if_null(x_path=self._agendas_forum_dir)
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
         single_dir_create_if_null(x_path=self._agendas_digest_dir)
         single_dir_create_if_null(x_path=self._agendas_ignore_dir)
@@ -208,8 +208,8 @@ class clerkUnit:
     ):
         if file_name is None:
             file_name = f"{x_agenda._agent_id}.json"
-        # if dest_dir == self._agendas_public_dir:
-        #     file_name = self._public_file_name
+        # if dest_dir == self._agendas_forum_dir:
+        #     file_name = self._forum_file_name
         save_file(
             dest_dir=dest_dir,
             file_name=file_name,
@@ -217,8 +217,8 @@ class clerkUnit:
             replace=True,
         )
 
-    def save_agenda_to_public(self, x_agenda: AgendaUnit):
-        dest_dir = self._agendas_public_dir
+    def save_agenda_to_forum(self, x_agenda: AgendaUnit):
+        dest_dir = self._agendas_forum_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
     def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agent_id: str):
@@ -261,9 +261,9 @@ class clerkUnit:
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def open_public_agenda(self, agent_id: PersonID) -> str:
+    def open_forum_agenda(self, agent_id: PersonID) -> str:
         file_name_x = f"{agent_id}.json"
-        return open_file(self._agendas_public_dir, file_name_x)
+        return open_file(self._agendas_forum_dir, file_name_x)
 
     def open_depot_agenda(self, agent_id: PersonID) -> AgendaUnit:
         file_name_x = f"{agent_id}.json"
@@ -333,15 +333,15 @@ class clerkUnit:
         self.save_output_agenda()
         return self.open_output_agenda()
 
-    def save_refreshed_output_to_public(self):
-        self.save_agenda_to_public(self.get_remelded_output_agenda())
+    def save_refreshed_output_to_forum(self):
+        self.save_agenda_to_forum(self.get_remelded_output_agenda())
 
 
 def clerkunit_shop(
     agent_id: AgentID,
     env_dir: str,
     economy_id: str,
-    _auto_output_to_public: bool = None,
+    _auto_output_to_forum: bool = None,
     _road_delimiter: str = None,
 ) -> clerkUnit:
     x_clerk = clerkUnit()
@@ -353,7 +353,7 @@ def clerkunit_shop(
     )
     x_clerk.set_dirs()
     x_clerk.get_contract()
-    x_clerk._contract._set_auto_output_to_public(_auto_output_to_public)
+    x_clerk._contract._set_auto_output_to_forum(_auto_output_to_forum)
     # x_clerk.save_contract_agenda(x_clerk.get_contract())
     x_clerk.get_contract()
     return x_clerk

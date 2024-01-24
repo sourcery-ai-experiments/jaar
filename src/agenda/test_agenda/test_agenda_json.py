@@ -61,7 +61,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
-    assert agenda_dict["_auto_output_to_public"] == x_agenda._auto_output_to_public
+    assert agenda_dict["_auto_output_to_forum"] == x_agenda._auto_output_to_forum
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
     assert agenda_dict["_party_creditor_pool"] == x_agenda._party_creditor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
@@ -313,7 +313,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     yao_text = "Yao"
     yue_agenda._originunit.set_originlink(yao_text, 1)
-    yue_agenda._auto_output_to_public = True
+    yue_agenda._auto_output_to_forum = True
     override_text = "override"
     yue_agenda.set_meld_strategy(override_text)
 
@@ -329,7 +329,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert json_agenda._economy_id == yue_agenda._economy_id
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == yue_agenda._max_tree_traverse
-    assert json_agenda._auto_output_to_public == yue_agenda._auto_output_to_public
+    assert json_agenda._auto_output_to_forum == yue_agenda._auto_output_to_forum
     assert json_agenda._road_delimiter == yue_agenda._road_delimiter
     assert json_agenda._party_creditor_pool == yue_agenda._party_creditor_pool
     assert json_agenda._party_debtor_pool == yue_agenda._party_debtor_pool

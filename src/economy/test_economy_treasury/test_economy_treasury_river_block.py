@@ -28,7 +28,7 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     tim_text = "tim"
@@ -160,7 +160,7 @@ def test_RiverBlockUnit_block_returned_WorksCorrectly():
 def test_get_river_ledger_unit_CorrectlyReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"

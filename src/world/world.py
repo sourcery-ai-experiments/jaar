@@ -124,9 +124,9 @@ class WorldUnit:
                     x_economyunit = healer_personunit.get_economyunit(
                         x_economylink.economy_id
                     )
-                    public_agenda = x_economyunit.get_public_agenda(person_id)
-                    public_agenda.set_economy_id(x_agenda._economy_id)
-                    x_agenda.meld(public_agenda)
+                    forum_agenda = x_economyunit.get_forum_agenda(person_id)
+                    forum_agenda.set_economy_id(x_agenda._economy_id)
+                    x_agenda.meld(forum_agenda)
         return x_agenda
 
     def create_person_economy(
@@ -161,7 +161,7 @@ class WorldUnit:
         person_contract = person_clerkunit.get_contract()
         person_contract.add_partyunit(party_id)
         person_clerkunit.save_contract_agenda(person_contract)
-        person_clerkunit.save_refreshed_output_to_public()
+        person_clerkunit.save_refreshed_output_to_forum()
 
 
 def worldunit_shop(

@@ -129,7 +129,7 @@ def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(clerkunits_dir)
     assert os_path.exists(treasury_file_path)
     assert x_economy.get_object_root_dir() == economy_dir
-    assert x_economy.get_public_dir() == agendas_dir
+    assert x_economy.get_forum_dir() == agendas_dir
     assert x_economy.get_clerkunits_dir() == clerkunits_dir
     assert x_economy.get_treasury_db_path() == treasury_file_path
 
@@ -167,7 +167,7 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_public_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_agendas_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir) is False
@@ -175,7 +175,7 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
     assert os_path.exists(new_clerkunits_dir) is False
-    assert x_economy.get_public_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_agendas_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
@@ -190,7 +190,7 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_economy_file_path) is False
     assert os_path.exists(old_agendas_dir) is False
     assert os_path.exists(old_clerkunits_dir) is False
-    assert x_economy.get_public_dir() != old_agendas_dir
+    assert x_economy.get_forum_dir() != old_agendas_dir
     assert x_economy.get_clerkunits_dir() != old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
@@ -198,7 +198,7 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_agendas_dir)
     assert os_path.exists(new_clerkunits_dir)
-    assert x_economy.get_public_dir() == new_agendas_dir
+    assert x_economy.get_forum_dir() == new_agendas_dir
     assert x_economy.get_clerkunits_dir() == new_clerkunits_dir
     assert x_economy.economy_id == new_x_economy_id
 
@@ -226,7 +226,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_public_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_agendas_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     new_x_economy_id = "ex_env1"
@@ -241,7 +241,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_economy_file_path) is False
     assert os_path.exists(new_agendas_dir) is False
     assert os_path.exists(new_clerkunits_dir) is False
-    assert x_economy.get_public_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_agendas_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
@@ -256,7 +256,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_file_path)
     assert os_path.exists(old_agendas_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_public_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_agendas_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
@@ -264,7 +264,7 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(new_economy_file_path)
     assert os_path.exists(new_agendas_dir)
     assert os_path.exists(new_clerkunits_dir)
-    assert x_economy.get_public_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_agendas_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 

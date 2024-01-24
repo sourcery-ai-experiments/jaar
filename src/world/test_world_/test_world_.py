@@ -264,5 +264,5 @@ def test_WorldUnit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
 
     tim_personunit = x_world.get_personunit_from_memory(tim_text)
     rest_economyunit = tim_personunit.get_economyunit(rest_text)
-    assert rest_economyunit.get_public_agenda(xao_text) != None
-    assert rest_economyunit.get_public_agenda(tim_text) != None
+    assert rest_economyunit.get_forum_agenda(xao_text) != None
+    assert rest_economyunit.get_forum_agenda(tim_text) != None

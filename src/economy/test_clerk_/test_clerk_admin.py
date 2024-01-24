@@ -30,8 +30,8 @@ def test_clerkUnit_exists():
     assert bob_clerkadmin._contract_file_path is None
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
-    assert bob_clerkadmin._public_file_name is None
-    assert bob_clerkadmin._agendas_public_dir is None
+    assert bob_clerkadmin._forum_file_name is None
+    assert bob_clerkadmin._agendas_forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
     assert bob_clerkadmin._agendas_ignore_dir is None
     assert bob_clerkadmin._agendas_digest_dir is None
@@ -45,8 +45,8 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     assert bob_clerkadmin._clerkunit_dir is None
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
-    assert bob_clerkadmin._public_file_name is None
-    assert bob_clerkadmin._agendas_public_dir is None
+    assert bob_clerkadmin._forum_file_name is None
+    assert bob_clerkadmin._agendas_forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
     assert bob_clerkadmin._agendas_ignore_dir is None
     assert bob_clerkadmin._agendas_digest_dir is None
@@ -59,8 +59,8 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     assert bob_clerkadmin._clerkunit_dir != None
     assert bob_clerkadmin._agenda_output_file_name != None
     assert bob_clerkadmin._agenda_output_file_path != None
-    assert bob_clerkadmin._public_file_name != None
-    assert bob_clerkadmin._agendas_public_dir != None
+    assert bob_clerkadmin._forum_file_name != None
+    assert bob_clerkadmin._agendas_forum_dir != None
     assert bob_clerkadmin._agendas_depot_dir != None
     assert bob_clerkadmin._agendas_ignore_dir != None
     assert bob_clerkadmin._agendas_digest_dir != None
@@ -70,7 +70,7 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     healers_drectory_folder = "clerkunits"
     x_clerkunits_dir = f"{env_dir}/{healers_drectory_folder}"
     x_clerkunit_dir = f"{x_clerkunits_dir}/{bob_text}"
-    x_public_file_name = f"{bob_text}.json"
+    x_forum_file_name = f"{bob_text}.json"
     x_contract_file_name = "contract_agenda.json"
     x_contract_file_path = f"{x_clerkunit_dir}/{x_contract_file_name}"
     x_agenda_output_file_name = "output_agenda.json"
@@ -79,7 +79,7 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     x_agendas_depot_dir = f"{x_clerkunit_dir}/{agendas_str}"
     x_agendas_ignore_dir = f"{x_clerkunit_dir}/ignores"
     x_agendas_digest_dir = f"{x_clerkunit_dir}/digests"
-    x_agendas_public_dir = f"{env_dir}/{agendas_str}"
+    x_agendas_forum_dir = f"{env_dir}/{agendas_str}"
     assert bob_clerkadmin._clerkunits_dir == x_clerkunits_dir
     assert bob_clerkadmin._clerkunit_dir == x_clerkunit_dir
     assert bob_clerkadmin._contract_file_name == x_contract_file_name
@@ -89,8 +89,8 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     assert bob_clerkadmin._agendas_depot_dir == x_agendas_depot_dir
     assert bob_clerkadmin._agendas_ignore_dir == x_agendas_ignore_dir
     assert bob_clerkadmin._agendas_digest_dir == x_agendas_digest_dir
-    assert bob_clerkadmin._public_file_name == x_public_file_name
-    assert bob_clerkadmin._agendas_public_dir == x_agendas_public_dir
+    assert bob_clerkadmin._forum_file_name == x_forum_file_name
+    assert bob_clerkadmin._agendas_forum_dir == x_agendas_forum_dir
 
 
 def test_clerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
@@ -204,7 +204,7 @@ def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     assert os_path.exists(new_contract_file_path)
 
 
-def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDir(
+def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -216,14 +216,14 @@ def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDir(
     x_agenda.set_agent_id(new_agent_id=bob_text)
     bob_clerkadmin.create_core_dir_and_files(x_agenda)
 
-    public_file_path = (
-        f"{bob_clerkadmin._agendas_public_dir}/{bob_clerkadmin._public_file_name}"
+    forum_file_path = (
+        f"{bob_clerkadmin._agendas_forum_dir}/{bob_clerkadmin._forum_file_name}"
     )
-    print(f"{public_file_path=}")
-    assert os_path.exists(public_file_path) is False
+    print(f"{forum_file_path=}")
+    assert os_path.exists(forum_file_path) is False
 
     # WHEN
-    bob_clerkadmin.save_agenda_to_public(x_agenda)
+    bob_clerkadmin.save_agenda_to_forum(x_agenda)
 
     # THEN
-    assert os_path.exists(public_file_path)
+    assert os_path.exists(forum_file_path)

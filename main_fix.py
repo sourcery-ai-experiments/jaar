@@ -75,9 +75,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
         self.reload_all_src_agendas_button.clicked.connect(self.reload_all_src_agendas)
-        self.set_public_agenda_button.clicked.connect(self.save_output_agenda_to_public)
-        self.set_public_and_reload_srcs_button.clicked.connect(
-            self.set_public_and_reload_srcs
+        self.set_forum_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
+        self.set_forum_and_reload_srcs_button.clicked.connect(
+            self.set_forum_and_reload_srcs
         )
         self.ignores_table.itemClicked.connect(self.ignores_table_select)
         self.open_ignore_button.clicked.connect(self.open_editmain)
@@ -115,13 +115,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.economy_x != None:
             self.economy_x.reload_all_clerkunits_src_agendaunits()
 
-    def set_public_and_reload_srcs(self):
-        self.save_output_agenda_to_public()
+    def set_forum_and_reload_srcs(self):
+        self.save_output_agenda_to_forum()
         self.reload_all_src_agendas()
 
-    def save_output_agenda_to_public(self):
+    def save_output_agenda_to_forum(self):
         if self.x_clerk != None:
-            self.x_clerk.save_output_agenda_to_public()
+            self.x_clerk.save_output_agenda_to_forum()
         self.refresh_economy()
 
     def economy_load_from_file(self):
@@ -171,7 +171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_agenda_agent_id = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.economy_x.get_public_agenda(
+        # self.ignore_agenda_x = self.economy_x.get_forum_agenda(
         self.ignore_agenda_x = self.economy_x.get_agenda_from_ignores_dir(
             clerk_cid=self.x_clerk.pid, _healer=ignore_agenda_agent_id
         )
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def agenda_insert(self):
-        self.economy_x.save_public_agenda(
+        self.economy_x.save_forum_agenda(
             agenda_x=agendaunit_shop(_agent_id=self.agenda_agent_id.text())
         )
         self.refresh_economy()
@@ -219,13 +219,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_agent_id.text()
         if currently_selected != typed_in:
-            self.economy_x.change_public_agent_id(
+            self.economy_x.change_forum_agent_id(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_economy()
 
     def agenda_delete(self):
-        self.economy_x.del_public_agenda(
+        self.economy_x.del_forum_agenda(
             agenda_x_label=self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
@@ -259,7 +259,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         if self.x_clerk != None:
             agenda_json = open_file(
-                dest_dir=self.x_clerk._agendas_public_dir,
+                dest_dir=self.x_clerk._agendas_forum_dir,
                 file_name=f"{agenda_agent_id}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
@@ -292,7 +292,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healer()
 
     def get_agenda_agent_id_list(self):
-        return [[file_name] for file_name in dir_files(self.economy_x.get_public_dir())]
+        return [[file_name] for file_name in dir_files(self.economy_x.get_forum_dir())]
 
     def get_clerk_cid_list(self):
         healers_healer_list = []
@@ -565,7 +565,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_economy(self):
         self.refresh_x(
             self.agendas_table,
-            ["Economy Public Agendas"],
+            ["Economy Forum Agendas"],
             self.get_agenda_agent_id_list(),
         )
         self.refresh_healers()

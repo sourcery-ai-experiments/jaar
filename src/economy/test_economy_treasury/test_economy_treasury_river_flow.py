@@ -42,17 +42,17 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     sal = agendaunit_shop(_agent_id=sal_text)
     sal.add_partyunit(party_id=bob_text, creditor_weight=1)
     sal.add_partyunit(party_id=tom_text, creditor_weight=3)
-    x_economy.save_public_agenda(sal)
+    x_economy.save_forum_agenda(sal)
 
     bob = agendaunit_shop(_agent_id=bob_text)
     bob.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob)
+    x_economy.save_forum_agenda(bob)
 
     tom = agendaunit_shop(_agent_id=tom_text)
     tom.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(tom)
+    x_economy.save_forum_agenda(tom)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 4
 
@@ -124,20 +124,20 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
-    x_economy.save_public_agenda(ava_agenda)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(ava_agenda)
+    x_economy.refresh_treasury_forum_agendas_data()
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 6
@@ -203,26 +203,26 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=2)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 8
@@ -288,27 +288,27 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
@@ -377,27 +377,27 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
@@ -446,27 +446,27 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
@@ -536,27 +536,27 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyBuildsASingleContinuousRang
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # WHEN
     x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
@@ -605,28 +605,28 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     sal_agenda_src.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
     sal_agenda_src.add_partyunit(party_id=tom_text, creditor_weight=2, debtor_weight=1)
     sal_agenda_src.add_partyunit(party_id=ava_text, creditor_weight=2, debtor_weight=2)
-    x_economy.save_public_agenda(sal_agenda_src)
+    x_economy.save_forum_agenda(sal_agenda_src)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=8)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
-    sal_agenda_before = x_economy.get_public_agenda(agent_id=sal_text)
+    x_economy.refresh_treasury_forum_agendas_data()
+    sal_agenda_before = x_economy.get_forum_agenda(agent_id=sal_text)
 
     x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
     assert len(sal_agenda_before._partys) == 3
@@ -660,7 +660,7 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert bob_partytreasury.currency_master == sal_text
     assert tom_partytreasury.currency_master == sal_text
 
-    sal_agenda_after = x_economy.get_public_agenda(agent_id=sal_text)
+    sal_agenda_after = x_economy.get_forum_agenda(agent_id=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)

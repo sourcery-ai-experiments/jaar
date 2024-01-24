@@ -126,12 +126,12 @@ def test_economy_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1
     x_economy.set_voice_ranks(yao_text, sort_order=descretional_text)
 
     # THEN
-    yao_public_agenda = x_economy.get_public_agenda(yao_text)
-    ava_partyunit = yao_public_agenda.get_party(ava_text)
-    bob_partyunit = yao_public_agenda.get_party(bob_text)
-    cal_partyunit = yao_public_agenda.get_party(cal_text)
-    dom_partyunit = yao_public_agenda.get_party(dom_text)
-    elu_partyunit = yao_public_agenda.get_party(elu_text)
+    yao_forum_agenda = x_economy.get_forum_agenda(yao_text)
+    ava_partyunit = yao_forum_agenda.get_party(ava_text)
+    bob_partyunit = yao_forum_agenda.get_party(bob_text)
+    cal_partyunit = yao_forum_agenda.get_party(cal_text)
+    dom_partyunit = yao_forum_agenda.get_party(dom_text)
+    elu_partyunit = yao_forum_agenda.get_party(elu_text)
     assert ava_partyunit._treasury_voice_rank != None
     assert bob_partyunit._treasury_voice_rank != None
     assert cal_partyunit._treasury_voice_rank != None

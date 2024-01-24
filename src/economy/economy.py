@@ -85,10 +85,10 @@ class EconomyUnit:
             for count_x, x_partyunit in enumerate(x_contract._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             x_clerk.set_contract(x_contract)
-            x_clerk.save_refreshed_output_to_public()
+            x_clerk.save_refreshed_output_to_forum()
 
     def set_agenda_treasury_attrs(self, x_agent_id: AgentID):
-        x_agenda = self.get_public_agenda(x_agent_id)
+        x_agenda = self.get_forum_agenda(x_agent_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._partylinks_set_by_economy_road != None:
@@ -101,8 +101,8 @@ class EconomyUnit:
                     if x_agent_id != idea_catalog.agent_id:
                         partylink_x = partylink_shop(party_id=idea_catalog.agent_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_public_agenda(x_agenda)
-        self.refresh_treasury_public_agendas_data()
+        self.save_forum_agenda(x_agenda)
+        self.refresh_treasury_forum_agendas_data()
 
     def set_credit_flow_for_agenda(
         self, agent_id: AgentID, max_blocks_count: int = None
@@ -212,26 +212,26 @@ class EconomyUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
-            x_agenda = self.get_public_agenda(agent_id=agent_id)
+            x_agenda = self.get_forum_agenda(agent_id=agent_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_public_agenda(x_agenda)
+            self.save_forum_agenda(x_agenda)
 
     def get_partytreasuryunits(self, agent_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
             partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
         return partytreasuryunits
 
-    def refresh_treasury_public_agendas_data(self, in_memory: bool = None):
+    def refresh_treasury_forum_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
         self._create_treasury_db(in_memory=in_memory, overwrite=True)
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.get_public_dir_file_names_list():
-            agenda_json = open_file(self.get_public_dir(), file_name)
+        for file_name in self.get_forum_dir_file_names_list():
+            agenda_json = open_file(self.get_forum_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
@@ -335,7 +335,7 @@ class EconomyUnit:
 
     def create_dirs_if_null(self, in_memory_treasury: bool = None):
         economy_dir = self.get_object_root_dir()
-        agendas_dir = self.get_public_dir()
+        agendas_dir = self.get_forum_dir()
         clerkunits_dir = self.get_clerkunits_dir()
         single_dir_create_if_null(x_path=economy_dir)
         single_dir_create_if_null(x_path=agendas_dir)
@@ -356,12 +356,12 @@ class EconomyUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, agent_id: AgentID, _auto_output_to_public: bool = None):
+    def add_clerkunit(self, agent_id: AgentID, _auto_output_to_forum: bool = None):
         x_clerkunit = clerkunit_shop(
             agent_id=agent_id,
             env_dir=self.get_object_root_dir(),
             economy_id=self.economy_id,
-            _auto_output_to_public=_auto_output_to_public,
+            _auto_output_to_forum=_auto_output_to_forum,
         )
         self.set_clerkunit(clerkunit=x_clerkunit)
 
@@ -401,22 +401,22 @@ class EconomyUnit:
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_cid}")
 
     def full_setup_clerkunit(self, agent_id: AgentID):
-        self.add_clerkunit(agent_id, _auto_output_to_public=True)
+        self.add_clerkunit(agent_id, _auto_output_to_forum=True)
         requestee_clerkunit = self.get_clerkunit(agent_id)
         requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_output_to_public()
+        requestee_clerkunit.save_refreshed_output_to_forum()
 
-    # public dir management
-    def get_public_dir(self):
+    # forum dir management
+    def get_forum_dir(self):
         return f"{self.get_object_root_dir()}/agendas"
 
     def get_ignores_dir(self, clerk_cid: clerkCID):
         per_x = self.get_clerkunit(clerk_cid)
         return per_x._agendas_ignore_dir
 
-    def get_public_agenda(self, agent_id: str) -> AgendaUnit:
+    def get_forum_agenda(self, agent_id: str) -> AgendaUnit:
         return get_agenda_from_json(
-            open_file(dest_dir=self.get_public_dir(), file_name=f"{agent_id}.json")
+            open_file(dest_dir=self.get_forum_dir(), file_name=f"{agent_id}.json")
         )
 
     def get_agenda_from_ignores_dir(
@@ -435,19 +435,19 @@ class EconomyUnit:
             agendaunit=agenda_obj, src_agent_id=agenda_obj._agent_id
         )
 
-    def change_public_agent_id(self, old_agent_id: AgentID, new_agent_id: AgentID):
-        x_agenda = self.get_public_agenda(agent_id=old_agent_id)
+    def change_forum_agent_id(self, old_agent_id: AgentID, new_agent_id: AgentID):
+        x_agenda = self.get_forum_agenda(agent_id=old_agent_id)
         x_agenda.set_agent_id(new_agent_id=new_agent_id)
-        self.save_public_agenda(x_agenda)
-        self.del_public_agenda(x_agent_id=old_agent_id)
+        self.save_forum_agenda(x_agenda)
+        self.del_forum_agenda(x_agent_id=old_agent_id)
 
-    def del_public_agenda(self, x_agent_id: str):
-        delete_dir(f"{self.get_public_dir()}/{x_agent_id}.json")
+    def del_forum_agenda(self, x_agent_id: str):
+        delete_dir(f"{self.get_forum_dir()}/{x_agent_id}.json")
 
-    def save_public_agenda(self, x_agenda: AgendaUnit):
+    def save_forum_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_economy_id(economy_id=self.economy_id)
         save_file(
-            dest_dir=self.get_public_dir(),
+            dest_dir=self.get_forum_dir(),
             file_name=f"{x_agenda._agent_id}.json",
             file_text=x_agenda.get_json(),
         )
@@ -456,8 +456,8 @@ class EconomyUnit:
         for x_clerkunit in self._clerkunits.values():
             x_clerkunit.refresh_depot_agendas()
 
-    def get_public_dir_file_names_list(self):
-        return list(dir_files(dir_path=self.get_public_dir()).keys())
+    def get_forum_dir_file_names_list(self):
+        return list(dir_files(dir_path=self.get_forum_dir()).keys())
 
     # agendas_dir to agent_id_agendas_dir management
     def _clerkunit_set_depot_agenda(
@@ -490,7 +490,7 @@ class EconomyUnit:
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(agent_id=agenda_agent_id)
+        x_agenda = self.get_forum_agenda(agent_id=agenda_agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -527,7 +527,7 @@ class EconomyUnit:
         debtor_weight: str,
     ):
         x_clerkunit = self.get_clerkunit(cid=clerk_cid)
-        x_agenda = self.get_public_agenda(_agent_id=party_id)
+        x_agenda = self.get_forum_agenda(_agent_id=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,

@@ -41,7 +41,7 @@ def test_economy_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_clea
     assert os_path.exists(x_economy.get_treasury_db_path()) == False
 
 
-def test_economy_refresh_treasury_public_agendas_data_CanConnectToTreasuryInMemory(
+def test_economy_refresh_treasury_forum_agendas_data_CanConnectToTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create economy
@@ -50,7 +50,7 @@ def test_economy_refresh_treasury_public_agendas_data_CanConnectToTreasuryInMemo
     assert os_path.exists(x_economy.get_treasury_db_path()) == False
 
     # WHEN
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # THEN
     assert os_path.exists(x_economy.get_treasury_db_path()) == False

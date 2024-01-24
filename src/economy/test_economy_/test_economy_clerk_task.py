@@ -35,10 +35,10 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
         base=basket_road, pick=b_bare_road
     )
     amer_clerk.set_contract(contract_x)
-    # save belief change to public
-    amer_clerk.save_refreshed_output_to_public()
-    # print(f"{x_economy.get_public_agenda(amer_text)._idearoot._beliefunits.keys()=}")
-    amer_output = x_economy.get_public_agenda(amer_text)
+    # save belief change to forum
+    amer_clerk.save_refreshed_output_to_forum()
+    # print(f"{x_economy.get_forum_agenda(amer_text)._idearoot._beliefunits.keys()=}")
+    amer_output = x_economy.get_forum_agenda(amer_text)
 
     # create assignment for Cali
     cali_text = "Cali"
@@ -56,13 +56,13 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
     # set basket status to "full"
     amer_clerk.get_contract().set_belief(base=basket_road, pick=b_full_road)
     amer_clerk.set_contract()
-    amer_clerk.save_refreshed_output_to_public()
+    amer_clerk.save_refreshed_output_to_forum()
 
     cali_clerk.refresh_depot_agendas()
     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-    # new_public_amer = x_economy.get_public_agenda(amer_text)
-    # a_basket_belief = new_public_amer._idearoot._beliefunits.get(basket_road)
+    # new_forum_amer = x_economy.get_forum_agenda(amer_text)
+    # a_basket_belief = new_forum_amer._idearoot._beliefunits.get(basket_road)
     # print(f"Amer after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
     # THEN
@@ -101,16 +101,16 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     b_bare_text = "bare"
     b_bare_road = create_road(basket_road, b_bare_text)
 
-    # amer public laundry belief as "full"
+    # amer forum laundry belief as "full"
     amer_contract_x = amer_clerk.get_contract().set_belief(basket_road, b_full_road)
     beto_contract_x = beto_clerk.get_contract().set_belief(basket_road, b_bare_road)
 
     amer_clerk.set_contract(amer_contract_x)
     beto_clerk.set_contract(beto_contract_x)
-    amer_clerk.save_refreshed_output_to_public()
-    beto_clerk.save_refreshed_output_to_public()
-    amer_output = x_economy.get_public_agenda(amer_text)
-    beto_output = x_economy.get_public_agenda(beto_text)
+    amer_clerk.save_refreshed_output_to_forum()
+    beto_clerk.save_refreshed_output_to_forum()
+    amer_output = x_economy.get_forum_agenda(amer_text)
+    beto_output = x_economy.get_forum_agenda(beto_text)
 
     cali_text = "Cali"
     x_economy.create_new_clerkunit(cali_text)
@@ -119,10 +119,10 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     cali_kichen.set_depot_agenda(amer_output, "assignment")
 
     # WHEN
-    cali_kichen.save_refreshed_output_to_public()
+    cali_kichen.save_refreshed_output_to_forum()
 
     # THEN
-    old_cali_output = x_economy.get_public_agenda(cali_text)
+    old_cali_output = x_economy.get_forum_agenda(cali_text)
     assert len(old_cali_output.get_intent_dict()) == 0
     old_cali_beliefs = old_cali_output._idearoot._beliefunits
     # print(f"{old_cali_output._idearoot._beliefunits=}")
@@ -154,10 +154,10 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # print(f"{new_cali_amer_party._treasury_voice_rank=} ")
     # print(f"{new_cali_beto_party._treasury_voice_rank=} ")
 
-    cali_kichen.save_refreshed_output_to_public()
+    cali_kichen.save_refreshed_output_to_forum()
 
     # THEN final belief changed
-    new_cali_output = x_economy.get_public_agenda(cali_text)
+    new_cali_output = x_economy.get_forum_agenda(cali_text)
     assert len(new_cali_output.get_intent_dict()) == 1
     new_cali_beliefs = new_cali_output._idearoot._beliefunits
     # print(f"{new_cali_output._idearoot._beliefunits=}")

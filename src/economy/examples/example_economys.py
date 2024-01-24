@@ -25,10 +25,10 @@ from src.economy.economy import EconomyUnit
 #     # set basket status to "bare"
 #     contract_x = yao_clerk.get_contract().set_belief(base=basket_road, pick=b_bare_road)
 #     yao_clerk.set_contract(contract_x)
-#     # save belief change to public
-#     yao_clerk.save_refreshed_output_to_public()
-#     # print(f"{x_economy.get_public_agenda(yao_text)._idearoot._beliefunits.keys()=}")
-#     yao_output = x_economy.get_public_agenda(yao_text)
+#     # save belief change to forum
+#     yao_clerk.save_refreshed_output_to_forum()
+#     # print(f"{x_economy.get_forum_agenda(yao_text)._idearoot._beliefunits.keys()=}")
+#     yao_output = x_economy.get_forum_agenda(yao_text)
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
@@ -46,13 +46,13 @@ from src.economy.economy import EconomyUnit
 #     # set basket status to "full"
 #     yao_clerk.get_contract().set_belief(base=basket_road, pick=b_full_road)
 #     yao_clerk.set_contract()
-#     yao_clerk.save_refreshed_output_to_public()
+#     yao_clerk.save_refreshed_output_to_forum()
 
 #     cali_clerk.refresh_depot_agendas()
 #     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-#     # new_public_yao = x_economy.get_public_agenda(yao_text)
-#     # a_basket_belief = new_public_yao._idearoot._beliefunits.get(basket_road)
+#     # new_forum_yao = x_economy.get_forum_agenda(yao_text)
+#     # a_basket_belief = new_forum_yao._idearoot._beliefunits.get(basket_road)
 #     # print(f"Yao after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
 #     # THEN

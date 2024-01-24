@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_agenda_button">
+   <widget class="QPushButton" name="set_forum_agenda_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -833,7 +833,7 @@
      </font>
     </property>
     <property name="text">
-     <string>output_agenda to public_dir</string>
+     <string>output_agenda to forum_dir</string>
     </property>
    </widget>
    <widget class="QPushButton" name="reload_all_src_agendas_button">
@@ -854,7 +854,7 @@
      <string>refresh_all_src_agendas</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_public_and_reload_srcs_button">
+   <widget class="QPushButton" name="set_forum_and_reload_srcs_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -869,7 +869,7 @@
      </font>
     </property>
     <property name="text">
-     <string>dest2public and refresh</string>
+     <string>dest2forum and refresh</string>
     </property>
    </widget>
    <widget class="QPushButton" name="contract_open_button">

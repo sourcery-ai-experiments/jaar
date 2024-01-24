@@ -82,14 +82,14 @@ def _delete_and_set_ex3():
     )
     delete_dir(x_economy.get_object_root_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.save_public_agenda(example_get_1node_agenda())
-    x_economy.save_public_agenda(
+    x_economy.save_forum_agenda(example_get_1node_agenda())
+    x_economy.save_forum_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     )
     example_agenda_v001 = example_agendas_agenda_v001()
     example_agenda_v002 = example_agendas_agenda_v002()
-    x_economy.save_public_agenda(example_agenda_v001)
-    x_economy.save_public_agenda(example_agenda_v002)
+    x_economy.save_forum_agenda(example_agenda_v001)
+    x_economy.save_forum_agenda(example_agenda_v002)
 
     # x_economy.set_agent_id(x_clerk=clerkunit_shop(agent_id="w1", env_dir=x_economy.get_object_root_dir()))
     # x_economy.set_agent_id(x_clerk=clerkunit_shop(agent_id="w2", env_dir=x_economy.get_object_root_dir()))
@@ -138,10 +138,10 @@ def _delete_and_set_ex4():
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     delete_dir(x_economy.get_object_root_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.save_public_agenda(example_get_7nodeJRootWithH_agenda())
-    x_economy.save_public_agenda(example_agendas_get_agenda_with7amCleanTableReason())
-    x_economy.save_public_agenda(example_agendas_get_agenda_base_time_example())
-    x_economy.save_public_agenda(
+    x_economy.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
+    x_economy.save_forum_agenda(example_agendas_get_agenda_with7amCleanTableReason())
+    x_economy.save_forum_agenda(example_agendas_get_agenda_base_time_example())
+    x_economy.save_forum_agenda(
         example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     )
 
@@ -163,11 +163,11 @@ def _delete_and_set_ex5():
     ag_4 = example_get_agenda_2CleanNodesRandomWeights("francine")
     ag_5 = example_get_agenda_2CleanNodesRandomWeights("clay")
 
-    x_p.save_public_agenda(ag_1)
-    x_p.save_public_agenda(ag_2)
-    x_p.save_public_agenda(ag_3)
-    x_p.save_public_agenda(ag_4)
-    x_p.save_public_agenda(ag_5)
+    x_p.save_forum_agenda(ag_1)
+    x_p.save_forum_agenda(ag_2)
+    x_p.save_forum_agenda(ag_3)
+    x_p.save_forum_agenda(ag_4)
+    x_p.save_forum_agenda(ag_5)
 
     x_p.create_new_clerkunit(clerk_cid=ag_1._agent_id)
     x_p.create_new_clerkunit(clerk_cid=ag_2._agent_id)
@@ -225,27 +225,27 @@ def _delete_and_set_ex6(x_economy_id: str = None):
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(sal_agenda)
+    x_economy.save_forum_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_economy.save_public_agenda(bob_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_economy.save_public_agenda(tom_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_economy.save_public_agenda(ava_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_public_agenda(elu_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
 
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     x_economy.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
 
     return x_economy

@@ -20,9 +20,9 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     input_agenda = example_get_6node_agenda()
-    x_economy.save_public_agenda(input_agenda)
-    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
-    # x_economy.save_public_agenda(ex_cxs_agenda_v001())
+    x_economy.save_forum_agenda(input_agenda)
+    # x_economy.save_forum_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
+    # x_economy.save_forum_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
     x_economy.set_clerk_depotlink(
@@ -96,10 +96,10 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     x1_agenda = example_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
-    x_economy.save_public_agenda(x1_agenda)
-    x_economy.save_public_agenda(x2_agenda)
-    # x_economy.save_public_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
-    # x_economy.save_public_agenda(ex_cxs_agenda_v001())
+    x_economy.save_forum_agenda(x1_agenda)
+    x_economy.save_forum_agenda(x2_agenda)
+    # x_economy.save_forum_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
+    # x_economy.save_forum_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_economy.create_new_clerkunit(clerk_cid=xia_text)
     x_economy.set_clerk_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
@@ -145,7 +145,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     assert output_agenda._idearoot != x2_agenda._idearoot
 
 
-def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
+def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -161,9 +161,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ernie_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=ernie_text)
     jessi_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=jessi_text)
     old_steve_agenda = get_agenda_2CleanNodesRandomWeights(_agent_id=steve_text)
-    x_economy.save_public_agenda(ernie_agenda)
-    x_economy.save_public_agenda(jessi_agenda)
-    x_economy.save_public_agenda(old_steve_agenda)
+    x_economy.save_forum_agenda(ernie_agenda)
+    x_economy.save_forum_agenda(jessi_agenda)
+    x_economy.save_forum_agenda(old_steve_agenda)
     x_economy.create_new_clerkunit(clerk_cid=ernie_text)
     x_economy.create_new_clerkunit(clerk_cid=jessi_text)
     # x_economy.create_new_clerkunit(clerk_cid=steve_text)
@@ -180,13 +180,13 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 4
     # assert len(ux_steve.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_agent_id="steve")
-    x_economy.save_public_agenda(new_steve_agenda)
-    # print(f"{env_dir=} {ux._agendas_public_dir=}")
+    x_economy.save_forum_agenda(new_steve_agenda)
+    # print(f"{env_dir=} {ux._agendas_forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
-    #     print(f"{ux._agendas_public_dir=} {file_name=}")
+    #     print(f"{ux._agendas_forum_dir=} {file_name=}")
 
-    # for file_name in dir_files(dir_path=ux._agendas_public_dir):
-    #     print(f"{ux._agendas_public_dir=} {file_name=}")
+    # for file_name in dir_files(dir_path=ux._agendas_forum_dir):
+    #     print(f"{ux._agendas_forum_dir=} {file_name=}")
 
     # WHEN
     x_economy.reload_all_clerkunits_src_agendaunits()

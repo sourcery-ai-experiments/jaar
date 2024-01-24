@@ -130,7 +130,7 @@ def test_economy_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
     assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
@@ -190,7 +190,7 @@ def test_economy_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErro
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
 
@@ -216,7 +216,7 @@ def test_economy_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury
     # A agenda that has 1 intent item
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
     assert get_single_result(x_economy.get_treasury_conn(), calendar_count_sqlstr) == 0
 

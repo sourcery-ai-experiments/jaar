@@ -94,17 +94,17 @@ class PartyunitsCreditorDebtorSumException(Exception):
 @dataclass
 class AgendaUnit:
     _agent_id: AgentID = None
+    _economy_id: EconomyID = None
+    _auto_output_to_forum: bool = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaUnit = None
-    _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _max_tree_traverse: int = None
-    _tree_traverse_count: int = None
-    _rational: bool = None
-    _originunit: OriginUnit = None
-    _economy_id: str = None
-    _auto_output_to_public: bool = None
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # Calculated field
+    _tree_traverse_count: int = None  # Calculated field
+    _rational: bool = None  # Calculated field
+    _originunit: OriginUnit = None  # Calculated field
     _road_delimiter: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
@@ -1891,7 +1891,7 @@ class AgendaUnit:
             "_agent_id": self._agent_id,
             "_economy_id": self._economy_id,
             "_max_tree_traverse": self._max_tree_traverse,
-            "_auto_output_to_public": self._auto_output_to_public,
+            "_auto_output_to_forum": self._auto_output_to_forum,
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
@@ -2139,18 +2139,18 @@ class AgendaUnit:
             if (x_idea.assignor_in(assignor_groups) and x_idea.promise)
         }
 
-    def _set_auto_output_to_public(self, bool_x: bool):
-        if bool_x is None and self._auto_output_to_public is None:
-            self._auto_output_to_public = False
-        elif bool_x is not None or not self._auto_output_to_public:
-            self._auto_output_to_public = bool_x is not None and bool_x
+    def _set_auto_output_to_forum(self, bool_x: bool):
+        if bool_x is None and self._auto_output_to_forum is None:
+            self._auto_output_to_forum = False
+        elif bool_x is not None or not self._auto_output_to_forum:
+            self._auto_output_to_forum = bool_x is not None and bool_x
 
 
 def agendaunit_shop(
     _agent_id: AgentID = None,
     _economy_id: EconomyID = None,
     _weight: float = None,
-    _auto_output_to_public: bool = None,
+    _auto_output_to_forum: bool = None,
     _road_delimiter: str = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
@@ -2158,8 +2158,8 @@ def agendaunit_shop(
         _weight = 1
     if _agent_id is None:
         _agent_id = ""
-    if _auto_output_to_public is None:
-        _auto_output_to_public = False
+    if _auto_output_to_forum is None:
+        _auto_output_to_forum = False
     if _economy_id is None:
         _economy_id = get_default_economy_root_roadnode()
     if _meld_strategy is None:
@@ -2168,7 +2168,7 @@ def agendaunit_shop(
     x_agenda = AgendaUnit(
         _agent_id=_agent_id,
         _weight=_weight,
-        _auto_output_to_public=_auto_output_to_public,
+        _auto_output_to_forum=_auto_output_to_forum,
         _economy_id=_economy_id,
         _partys={},
         _groups={},
@@ -2194,8 +2194,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
     x_agenda.set_agent_id(get_obj_from_agenda_dict(agenda_dict, "_agent_id"))
     x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
-    x_agenda._auto_output_to_public = get_obj_from_agenda_dict(
-        agenda_dict, "_auto_output_to_public"
+    x_agenda._auto_output_to_forum = get_obj_from_agenda_dict(
+        agenda_dict, "_auto_output_to_forum"
     )
     x_agenda.set_max_tree_traverse(
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
@@ -2311,7 +2311,7 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key == "_max_tree_traverse":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
-    elif dict_key == "_auto_output_to_public":
+    elif dict_key == "_auto_output_to_forum":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None

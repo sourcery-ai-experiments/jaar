@@ -26,8 +26,8 @@ def test_clerkUnit_exists(clerk_dir_setup_cleanup):
     assert x_clerk._contract_file_path is None
     assert x_clerk._agenda_output_file_name is None
     assert x_clerk._agenda_output_file_path is None
-    assert x_clerk._public_file_name is None
-    assert x_clerk._agendas_public_dir is None
+    assert x_clerk._forum_file_name is None
+    assert x_clerk._agendas_forum_dir is None
     assert x_clerk._agendas_depot_dir is None
     assert x_clerk._agendas_ignore_dir is None
     assert x_clerk._agendas_digest_dir is None
@@ -54,22 +54,22 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     assert x_clerk._contract._economy_id == get_temp_economy_id()
 
 
-def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
+def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_clerkunit_dir()
     x_economy_id = get_temp_economy_id()
     tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_clerkunit_dir()}/agendas/{public_file_name}"
-    print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/agendas/{public_file_name}"
+    forum_file_name = f"{tim_text}.json"
+    forum_file_path = f"{get_temp_clerkunit_dir()}/agendas/{forum_file_name}"
+    print(f"{forum_file_path=}")
+    # forum_file_path = f"src/economy/examples/ex_env/agendas/{forum_file_name}"
     x_clerk = clerkunit_shop(
-        tim_text, env_dir, x_economy_id, _auto_output_to_public=True
+        tim_text, env_dir, x_economy_id, _auto_output_to_forum=True
     )
     x_clerk.create_core_dir_and_files()
-    assert os_path.exists(public_file_path) is False
+    assert os_path.exists(forum_file_path) is False
 
     # WHEN
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
@@ -77,29 +77,29 @@ def test_clerkunit_auto_output_to_public_SavesAgendaToPublicDirWhenTrue(
     x_clerk.set_depot_agenda(tim_agenda, "blind_trust")
 
     # THEN
-    assert os_path.exists(public_file_path)
+    assert os_path.exists(forum_file_path)
 
 
-def test_clerkunit_auto_output_to_public_DoesNotSaveAgendaToPublicDirWhenFalse(
+def test_clerkunit_auto_output_to_forum_DoesNotSaveAgendaToForumDirWhenFalse(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_temp_clerkunit_dir()
     x_economy_id = get_temp_economy_id()
     tim_text = "Tim"
-    public_file_name = f"{tim_text}.json"
-    public_file_path = f"{get_temp_clerkunit_dir()}/agendas/{public_file_name}"
-    print(f"{public_file_path=}")
-    # public_file_path = f"src/economy/examples/ex_env/agendas/{public_file_name}"
+    forum_file_name = f"{tim_text}.json"
+    forum_file_path = f"{get_temp_clerkunit_dir()}/agendas/{forum_file_name}"
+    print(f"{forum_file_path=}")
+    # forum_file_path = f"src/economy/examples/ex_env/agendas/{forum_file_name}"
     x_clerk = clerkunit_shop(tim_text, env_dir, x_economy_id, False)
     x_clerk.create_core_dir_and_files()
-    assert os_path.exists(public_file_path) is False
+    assert os_path.exists(forum_file_path) is False
 
     # WHEN
     x_clerk.set_depot_agenda(agendaunit_shop(tim_text), depotlink_type="blind_trust")
 
     # THEN
-    assert os_path.exists(public_file_path) is False
+    assert os_path.exists(forum_file_path) is False
 
 
 def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(

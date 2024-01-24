@@ -236,7 +236,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
 
-def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
+def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -252,20 +252,20 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllPublicAgendas(
     ernie_agenda = get_cal2nodes(_agent_id=ernie_text)
     steve_text = "steve"
     old_steve_agenda = get_cal2nodes(_agent_id=steve_text)
-    sx.save_public_agenda(ernie_agenda)
-    sx.save_public_agenda(old_steve_agenda)
+    sx.save_forum_agenda(ernie_agenda)
+    sx.save_forum_agenda(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_cal3nodes(_agent_id=steve_text)
-    sx.save_public_agenda(new_steve_agenda)
-    print(f"{env_dir=} {yao_agenda._agendas_public_dir=}")
+    sx.save_forum_agenda(new_steve_agenda)
+    print(f"{env_dir=} {yao_agenda._agendas_forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
-    #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
+    #     print(f"{bob_agenda._agendas_forum_dir=} {file_name=}")
 
-    # for file_name in dir_files(dir_path=bob_agenda._agendas_public_dir):
-    #     print(f"{bob_agenda._agendas_public_dir=} {file_name=}")
+    # for file_name in dir_files(dir_path=bob_agenda._agendas_forum_dir):
+    #     print(f"{bob_agenda._agendas_forum_dir=} {file_name=}")
 
     # WHEN
     yao_agenda.refresh_depot_agendas()

@@ -20,7 +20,7 @@ def test_economy_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_c
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
 
     # WHEN
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_economy.get_treasury_conn())
@@ -34,7 +34,7 @@ def test_economy_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cl
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_economy.get_treasury_conn())) == 0
 
     # WHEN
@@ -43,12 +43,12 @@ def test_economy_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cl
     tom_text = "tom"
     ava_text = "ava"
     elu_text = "elu"
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=sal_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=bob_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=tom_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=ava_text))
-    x_economy.save_public_agenda(agendaunit_shop(_agent_id=elu_text))
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=sal_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=ava_text))
+    x_economy.save_forum_agenda(agendaunit_shop(_agent_id=elu_text))
+    x_economy.refresh_treasury_forum_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_economy.get_treasury_conn())
 
     # THEN
@@ -82,7 +82,7 @@ def test_economy_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(economy_id, get_test_economys_dir())
     x_economy.create_dirs_if_null(in_memory_treasury=True)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.refresh_treasury_forum_agendas_data()
     sal_text = "sal"
     bob_text = "bob"
     tom_text = "tom"
@@ -93,12 +93,12 @@ def test_economy_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     ava_agenda = agendaunit_shop(_agent_id=ava_text)
     elu_agenda = agendaunit_shop(_agent_id=elu_text)
-    x_economy.save_public_agenda(sal_agenda)
-    x_economy.save_public_agenda(bob_agenda)
-    x_economy.save_public_agenda(tom_agenda)
-    x_economy.save_public_agenda(ava_agenda)
-    x_economy.save_public_agenda(elu_agenda)
-    x_economy.refresh_treasury_public_agendas_data()
+    x_economy.save_forum_agenda(sal_agenda)
+    x_economy.save_forum_agenda(bob_agenda)
+    x_economy.save_forum_agenda(tom_agenda)
+    x_economy.save_forum_agenda(ava_agenda)
+    x_economy.save_forum_agenda(elu_agenda)
+    x_economy.refresh_treasury_forum_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_economy.get_treasury_conn())
     assert x_agendatreasuryunits.get(sal_text).rational is None
     assert x_agendatreasuryunits.get(bob_text).rational is None
