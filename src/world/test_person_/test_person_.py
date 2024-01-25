@@ -17,6 +17,33 @@ def test_PersonUnit_exists():
     assert x_person._road_delimiter is None
 
 
+def test_PersonUnit_set_person_id_CorrectlySetsAttr():
+    # GIVEN / WHEN
+    x_person = PersonUnit()
+    assert x_person.person_id is None
+
+    # GIVEN
+    xao_text = "Xao"
+    x_person.set_person_id(xao_text)
+
+    # THEN
+    assert x_person.person_id == xao_text
+
+
+def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    bob_text = f"Bob{slash_text}Sue"
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        personunit_shop(person_id=bob_text, _road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
+    )
+
+
 def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     # GIVEN
     dallas_text = "dallas"
@@ -26,7 +53,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
 
     # THEN
     assert x_person.person_id == dallas_text
-    assert x_person.person_dir == ""
+    assert x_person.person_dir == f"/persons/{dallas_text}"
     assert x_person._economys == {}
     assert x_person._problems == {}
     assert x_person._road_delimiter == default_road_delimiter_if_none()

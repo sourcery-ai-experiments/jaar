@@ -4,6 +4,7 @@ from src._prime.road import (
     PersonID,
     EconomyAddress,
     create_economyaddress,
+    validate_roadnode,
 )
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -27,6 +28,13 @@ class PersonUnit:
     _economys: dict[EconomyID:EconomyUnit] = None
     _problems: dict[ProblemID:ProblemUnit] = None
     _road_delimiter: str = None
+
+    def set_person_id(self, x_person_id: PersonID):
+        self.person_id = validate_roadnode(
+            x_person_id, x_delimiter=self._road_delimiter
+        )
+        if self.person_dir is None:
+            self.person_dir = f"/persons/{self.person_id}"
 
     def create_problemunit_from_problem_id(self, x_problem_id: ProblemID):
         self._problems[x_problem_id] = problemunit_shop(problem_id=x_problem_id)
@@ -129,17 +137,11 @@ class PersonUnit:
 def personunit_shop(
     person_id: PersonID, person_dir: str = None, _road_delimiter: str = None
 ) -> PersonUnit:
-    if person_dir is None:
-        person_dir = ""
-    return PersonUnit(
-        person_id=person_id,
+    x_personunit = PersonUnit(
         person_dir=person_dir,
         _economys={},
         _problems={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-
-
-#     world_x = WorldUnit(mark=mark, worlds_dir=worlds_dir)
-#     world_x._set_world_dirs()
-#     return world_x
+    x_personunit.set_person_id(person_id)
+    return x_personunit
