@@ -101,7 +101,7 @@
 
 # def test_get_gap_agendaunit_GroupUnits_WhereGroupUnitIsMissing():
 #     # GIVEN
-#     run_text = "runners"
+#     run_text = ",runners"
 #     run_groupunit = groupunit_shop(brand=run_text)
 
 #     bob_text = "Bob"
@@ -132,7 +132,7 @@
 #     sue_text = "Sue"
 #     bob1_agenda.set_partyunit(partyunit_shop(sue_text))
 
-#     run_text = "runners"
+#     run_text = ",runners"
 #     bob1_agenda.set_groupunit(groupunit_shop(run_text))
 #     bob1_agenda.get_groupunit(run_text).set_partylink(partylink_shop(sue_text))
 #     bob1_before = copy_deepcopy(bob1_agenda)

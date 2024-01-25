@@ -161,7 +161,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
 
-    swim_text = "swim"
+    swim_text = ",swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
@@ -253,7 +253,7 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
 
-    swim_text = "swim"
+    swim_text = ",swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
@@ -284,7 +284,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
 
-    swim_text = "swim"
+    swim_text = ",swim"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
@@ -325,7 +325,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirEmpty():
 def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirIsNone():
     # GIVEN
     kent_text = "kent"
-    swim_text = "swim"
+    swim_text = ",swim"
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=kent_text)
     assigned_unit_x.set_suffgroup(brand=swim_text)
@@ -343,7 +343,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirIsNon
 def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirEmpty():
     # GIVEN
     kent_text = "kent"
-    swim_text = "swim"
+    swim_text = ",swim"
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(brand=kent_text)
     assigned_unit_x.set_suffgroup(brand=swim_text)
@@ -362,7 +362,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirEmpty
 def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty():
     # GIVEN
     kent_text = "kent"
-    swim_text = "swim"
+    swim_text = ",swim"
     assigned_unit_swim = assigned_unit_shop()
     assigned_unit_swim.set_suffgroup(brand=kent_text)
     assigned_unit_swim.set_suffgroup(brand=swim_text)
@@ -390,7 +390,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty
 def test_AssignedHeir_set_suffgroup_AssignedUnitEqualParentAssignedHeir_NonEmpty():
     # GIVEN
     kent_text = "kent"
-    swim_text = "swim"
+    swim_text = ",swim"
     assigned_unit_swim = assigned_unit_shop()
     assigned_unit_swim.set_suffgroup(brand=kent_text)
     assigned_unit_swim.set_suffgroup(brand=swim_text)
@@ -424,13 +424,13 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     x_agenda.add_partyunit(party_id=bob_text)
     x_agenda.add_partyunit(party_id=tom_text)
 
-    swim2_text = "swim2"
+    swim2_text = ",swim2"
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim2_group)
 
-    swim3_text = "swim3"
+    swim3_text = ",swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
@@ -471,13 +471,13 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     x_agenda.add_partyunit(party_id=bob_text)
     x_agenda.add_partyunit(party_id=tom_text)
 
-    swim2_text = "swim2"
+    swim2_text = ",swim2"
     swim2_group = groupunit_shop(brand=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim2_group)
 
-    swim3_text = "swim3"
+    swim3_text = ",swim3"
     swim3_group = groupunit_shop(brand=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
@@ -510,10 +510,10 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
 
 def test_AssignedUnit_get_suffgroup_ReturnsCorrectObj():
     # GIVEN
-    climb_text = "climbers"
-    walk_text = "walkers"
-    swim_text = "swimmers"
-    run_text = "runners"
+    climb_text = ",climbers"
+    walk_text = ",walkers"
+    swim_text = ",swimmers"
+    run_text = ",runners"
 
     x_assigned_unit = assigned_unit_shop()
     x_assigned_unit.set_suffgroup(climb_text)
@@ -528,8 +528,8 @@ def test_AssignedUnit_get_suffgroup_ReturnsCorrectObj():
 
 def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     # GIVEN
-    swim_text = "swim"
-    hike_text = "hike"
+    swim_text = ",swim"
+    hike_text = ",hike"
     swim_dict = {swim_text: -1}
     hike_dict = {hike_text: -1}
     assignedunit_x = assigned_unit_shop()
@@ -539,9 +539,9 @@ def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     assignedheir_x.set_suffgroups(
         parent_assignheir=None, assignunit=assignedunit_x, agenda_groups=None
     )
-    hunt_text = "hunt"
+    hunt_text = ",hunt"
     hunt_dict = {hunt_text: -1}
-    play_text = "play"
+    play_text = ",play"
     play_dict = {play_text: -1}
     assert assignedheir_x._suffgroups.get(swim_text) != None
     assert assignedheir_x._suffgroups.get(hike_text) != None
@@ -560,16 +560,16 @@ def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
 
 def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsEmpty():
     # GIVEN
-    hike_text = "hike"
+    hike_text = ",hike"
     hike_dict = {hike_text: -1}
     assignedunit_x = assigned_unit_shop()
     assignedheir_x = assigned_heir_shop()
     assignedheir_x.set_suffgroups(
         parent_assignheir=None, assignunit=assignedunit_x, agenda_groups=None
     )
-    hunt_text = "hunt"
+    hunt_text = ",hunt"
     hunt_dict = {hunt_text: -1}
-    play_text = "play"
+    play_text = ",play"
     play_dict = {play_text: -1}
     assert assignedheir_x._suffgroups == {}
     hunt_hike_dict = {hunt_text: -1, hike_text: -1}

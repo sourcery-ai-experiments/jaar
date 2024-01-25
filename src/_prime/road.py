@@ -306,12 +306,22 @@ class ValidateRoadNodeException(Exception):
     pass
 
 
-def validate_roadnode(x_roadnode: RoadNode, x_delimiter: str):
+def is_roadnode(x_roadnode: RoadNode, x_delimiter: str):
     if str(type(x_roadnode)) == "<class 'str'>":
         x_roadnode = RoadNode(x_roadnode)
+        return x_roadnode.is_node(delimiter=x_delimiter)
 
-    if x_roadnode.is_node(delimiter=x_delimiter) == False:
+
+def validate_roadnode(
+    x_roadnode: RoadNode, x_delimiter: str, not_roadnode_required: bool = False
+):
+    if is_roadnode(x_roadnode, x_delimiter) and not_roadnode_required:
+        raise ValidateRoadNodeException(
+            f"'{x_roadnode}' needs to not be a RoadNode. Must contain delimiter: '{x_delimiter}'"
+        )
+    elif is_roadnode(x_roadnode, x_delimiter) == False and not not_roadnode_required:
         raise ValidateRoadNodeException(
             f"'{x_roadnode}' needs to be a RoadNode. Cannot contain delimiter: '{x_delimiter}'"
         )
+
     return x_roadnode

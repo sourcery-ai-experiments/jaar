@@ -39,18 +39,18 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     tom_text = "tom"
     sal_text = "sal"
 
-    sal = agendaunit_shop(_agent_id=sal_text)
-    sal.add_partyunit(party_id=bob_text, creditor_weight=1)
-    sal.add_partyunit(party_id=tom_text, creditor_weight=3)
-    x_economy.save_forum_agenda(sal)
+    sal_agentunit = agendaunit_shop(_agent_id=sal_text)
+    sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1)
+    sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3)
+    x_economy.save_forum_agenda(sal_agentunit)
 
-    bob = agendaunit_shop(_agent_id=bob_text)
-    bob.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_forum_agenda(bob)
+    bob_agentunit = agendaunit_shop(_agent_id=bob_text)
+    bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
+    x_economy.save_forum_agenda(bob_agentunit)
 
-    tom = agendaunit_shop(_agent_id=tom_text)
-    tom.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_economy.save_forum_agenda(tom)
+    tom_agentunit = agendaunit_shop(_agent_id=tom_text)
+    tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
+    x_economy.save_forum_agenda(tom_agentunit)
 
     x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")

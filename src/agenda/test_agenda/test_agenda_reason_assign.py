@@ -80,14 +80,14 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
 def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
-    swim_text = "swiming"
+    swim_text = "swimming"
     swim_road = noa_agenda.make_l1_road(swim_text)
     morn_text = "morning"
     morn_road = noa_agenda.make_road(swim_road, morn_text)
     four_text = "fourth"
     four_road = noa_agenda.make_road(morn_road, four_text)
     assigned_unit_x = assigned_unit_shop()
-    swimmers_text = "swimmers"
+    swimmers_text = ",swimmers"
     assigned_unit_x.set_suffgroup(brand=swimmers_text)
 
     noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swimmers_text))

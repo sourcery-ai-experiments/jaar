@@ -47,9 +47,9 @@ def test_economy_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasury
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = agendaunit_shop(_agent_id=bob_text)
-    bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_economy.save_forum_agenda(bob)
+    bob_agentunit = agendaunit_shop(_agent_id=bob_text)
+    bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
+    x_economy.save_forum_agenda(bob_agentunit)
     x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
@@ -73,9 +73,9 @@ def test_economy_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasury
     bob_text = "bob"
     tom_text = "tom"
 
-    bob = agendaunit_shop(_agent_id=bob_text)
-    bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_economy.save_forum_agenda(bob)
+    bob_agentunit = agendaunit_shop(_agent_id=bob_text)
+    bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
+    x_economy.save_forum_agenda(bob_agentunit)
     x_economy.refresh_treasury_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 1
@@ -101,29 +101,29 @@ def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulatesPartyunit
     sal_text = "sal"
     elu_text = "elu"
 
-    bob = agendaunit_shop(_agent_id=bob_text)
-    bob.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    bob.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
-    bob.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_forum_agenda(bob)
+    bob_agentunit = agendaunit_shop(_agent_id=bob_text)
+    bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
+    bob_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
+    x_economy.save_forum_agenda(bob_agentunit)
 
-    sal = agendaunit_shop(_agent_id=sal_text)
-    sal.add_partyunit(party_id=bob_text, creditor_weight=1, debtor_weight=4)
-    sal.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    sal.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_forum_agenda(sal)
+    sal_agentunit = agendaunit_shop(_agent_id=sal_text)
+    sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1, debtor_weight=4)
+    sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
+    sal_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
+    x_economy.save_forum_agenda(sal_agentunit)
 
-    tom = agendaunit_shop(_agent_id=tom_text)
-    tom.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
-    tom.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
-    tom.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_forum_agenda(tom)
+    tom_agentunit = agendaunit_shop(_agent_id=tom_text)
+    tom_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
+    tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
+    tom_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
+    x_economy.save_forum_agenda(tom_agentunit)
 
-    elu = agendaunit_shop(_agent_id=elu_text)
-    elu.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
-    elu.add_partyunit(party_id=tom_text, creditor_weight=1, debtor_weight=4)
-    elu.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_economy.save_forum_agenda(elu)
+    elu_agentunit = agendaunit_shop(_agent_id=elu_text)
+    elu_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
+    elu_agentunit.add_partyunit(party_id=tom_text, creditor_weight=1, debtor_weight=4)
+    elu_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
+    x_economy.save_forum_agenda(elu_agentunit)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 0
@@ -267,7 +267,7 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
 
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
 
-    swim_group_text = "swimming expert"
+    swim_group_text = ",swimming expert"
     swim_group_unit = groupunit_shop(brand=swim_group_text)
     bob_link = partylink_shop(party_id=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)

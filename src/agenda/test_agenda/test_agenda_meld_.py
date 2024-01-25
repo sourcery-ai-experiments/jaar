@@ -68,7 +68,7 @@ def test_AgendaUnit_meld_PartyUnits():
 
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     # GIVEN
-    run_text = "runners"
+    run_text = ",runners"
     run_groupunit = groupunit_shop(brand=run_text)
 
     bob_text = "Bob"
@@ -77,7 +77,7 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
 
     bob2_agenda = agendaunit_shop(bob_text)
     bob2_agenda.set_groupunit(run_groupunit)
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     swim_groupunit = groupunit_shop(brand=swim_text)
     bob2_agenda.set_groupunit(swim_groupunit)
     assert len(bob1_agenda._groups) == 1
@@ -104,7 +104,7 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitMembershipIsDifferent():
     sue_text = "Sue"
     bob1_agenda.set_partyunit(partyunit_shop(sue_text))
 
-    run_text = "runners"
+    run_text = ",runners"
     bob1_agenda.set_groupunit(groupunit_shop(run_text))
     bob1_agenda.get_groupunit(run_text).set_partylink(partylink_shop(sue_text))
 
@@ -313,10 +313,10 @@ def test_AgendaUnit_beliefunits_meld_GroupsMeldedBefore_Partys():
     yao_text = "Yao"
     yao1_agenda = agendaunit_shop(yao_text)
     yao2_agenda = agendaunit_shop(yao_text)
-    bob = "Bob"
-    yao2_agenda.set_partyunit(partyunit_shop(party_id=bob))
-    assert yao2_agenda.get_groupunit(bob) != None
-    yao2_agenda.set_groupunit(groupunit_shop(brand=bob))
+    bob_text = "Bob"
+    yao2_agenda.set_partyunit(partyunit_shop(bob_text))
+    assert yao2_agenda.get_groupunit(bob_text) != None
+    yao2_agenda.set_groupunit(groupunit_shop(bob_text, _single_party=True))
 
     # WHEN/THEN
     assert yao1_agenda.meld(yao2_agenda) is None  # No error raised
@@ -360,7 +360,7 @@ def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
 
     yao_idearoot = yao_agenda._idearoot
     yao_agendar_bl = yao_idearoot._balancelines
-    family_text = "Family"
+    family_text = ",Family"
     yao_family_bl = yao_agendar_bl.get(family_text)
 
     print(f"Before {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")

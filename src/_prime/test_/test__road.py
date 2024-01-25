@@ -790,3 +790,23 @@ def test_validate_roadnode_RaisesErrorWhenNotRoadNode():
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{comma_text}'"
     )
+
+
+def test_validate_roadnode_RaisesErrorWhenRoadNode():
+    # GIVEN
+    slash_text = "/"
+    bob_text = f"Bob{slash_text}Tom"
+    assert bob_text == validate_roadnode(
+        bob_text, x_delimiter=slash_text, not_roadnode_required=True
+    )
+
+    # WHEN
+    comma_text = ","
+    with pytest_raises(Exception) as excinfo:
+        bob_text == validate_roadnode(
+            bob_text, x_delimiter=comma_text, not_roadnode_required=True
+        )
+    assert (
+        str(excinfo.value)
+        == f"'{bob_text}' needs to not be a RoadNode. Must contain delimiter: '{comma_text}'"
+    )

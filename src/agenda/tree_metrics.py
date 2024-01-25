@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import ReasonUnit, RoadUnit
-from src.agenda.group import BalanceLink, GroupBrand, GroupMetrics
+from src.agenda.group import BalanceLink, GroupBrand
 from src.tools.python import get_empty_dict_if_none, get_0_if_None
 
 
@@ -9,7 +9,7 @@ class TreeMetrics:
     node_count: int = None
     level_count: dict[int:int] = None
     reason_bases: dict[RoadUnit:int] = None
-    balancelinks_metrics: dict[GroupBrand:GroupMetrics] = None
+    balancelinks_metrics: dict[GroupBrand:BalanceLink] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
@@ -70,7 +70,7 @@ def treemetrics_shop(
     node_count: int = None,
     level_count: dict[int:int] = None,
     reason_bases: dict[RoadUnit:int] = None,
-    balancelinks_metrics: dict[GroupBrand:GroupMetrics] = None,
+    balancelinks_metrics: dict[GroupBrand:BalanceLink] = None,
     uid_max: int = None,
     uid_dict: dict[int:int] = None,
 ) -> TreeMetrics:

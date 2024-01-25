@@ -12,7 +12,12 @@ from src.tools.python import (
     x_get_dict,
     get_0_if_None,
 )
-from src._prime.road import RoadUnit
+from src._prime.road import (
+    RoadUnit,
+    default_road_delimiter_if_none,
+    validate_roadnode,
+    is_roadnode,
+)
 
 
 class InvalidGroupException(Exception):
@@ -25,7 +30,7 @@ class GroupBrand(str):  # Created to help track the concept
 
 @dataclass
 class GroupCore:
-    brand: GroupBrand
+    brand: GroupBrand = None
 
 
 @dataclass
@@ -37,10 +42,16 @@ class GroupUnit(GroupCore):
     _agenda_intent_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _agenda_intent_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _partylinks_set_by_economy_road: RoadUnit = None
+    _road_delimiter: str = None
 
     def set_brand(self, brand: GroupBrand = None):
         if brand != None:
-            self.brand = brand
+            if self._single_party:
+                self.brand = validate_roadnode(brand, self._road_delimiter)
+            else:
+                self.brand = validate_roadnode(
+                    brand, self._road_delimiter, not_roadnode_required=True
+                )
 
     def set_attr(self, _partylinks_set_by_economy_road: RoadUnit):
         if _partylinks_set_by_economy_road != None:
@@ -191,6 +202,7 @@ def groupunit_shop(
     _agenda_intent_credit: float = None,
     _agenda_intent_debt: float = None,
     _partylinks_set_by_economy_road: RoadUnit = None,
+    _road_delimiter: str = None,
 ) -> GroupUnit:
     if _single_party and _partylinks_set_by_economy_road != None:
         raise InvalidGroupException(
@@ -199,8 +211,7 @@ def groupunit_shop(
 
     if _single_party is None:
         _single_party = False
-    return GroupUnit(
-        brand=brand,
+    x_groupunit = GroupUnit(
         _single_party=_single_party,
         _partys=get_empty_dict_if_none(_partys),
         _agenda_credit=get_0_if_None(_agenda_credit),
@@ -208,7 +219,10 @@ def groupunit_shop(
         _agenda_intent_credit=get_0_if_None(_agenda_intent_credit),
         _agenda_intent_debt=get_0_if_None(_agenda_intent_debt),
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
+    x_groupunit.set_brand(brand=brand)
+    return x_groupunit
 
 
 @dataclass
@@ -312,8 +326,8 @@ def balanceheir_shop(
 
 @dataclass
 class BalanceLine(GroupCore):
-    _agenda_credit: float
-    _agenda_debt: float
+    _agenda_credit: float = None
+    _agenda_debt: float = None
 
     def add_agenda_credit_debt(self, agenda_credit: float, agenda_debt: float):
         self.set_agenda_credit_debt_zero_if_null()
@@ -325,10 +339,6 @@ class BalanceLine(GroupCore):
             self._agenda_credit = 0
         if self._agenda_debt is None:
             self._agenda_debt = 0
-
-
-class GroupMetrics:
-    pass
 
 
 def balanceline_shop(brand: GroupBrand, _agenda_credit: float, _agenda_debt: float):

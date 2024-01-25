@@ -99,18 +99,18 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
     jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
     jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_agenda._groups.get(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
-    hike_text = "hikers"
+    hike_text = ",hikers"
     jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
     hike_group = jes_agenda._groups.get(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
-    hunt_text = "hunters"
+    hunt_text = ",hunters"
     jes_agenda.set_groupunit(groupunit_shop(brand=hunt_text))
     hike_group = jes_agenda._groups.get(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))

@@ -10,10 +10,10 @@
                     "party_id": "A a ron Jones"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "A a ron Jones"
         },
-        "ACME DevOps": {
+        ",ACME DevOps": {
             "_partys": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
@@ -67,9 +67,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME DevOps"
+            "brand": ",ACME DevOps"
         },
-        "ACME General": {
+        ",ACME General": {
             "_partys": {
                 "Benjamin Stoddert": {
                     "creditor_weight": 1,
@@ -93,7 +93,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME General"
+            "brand": ",ACME General"
         },
         "America": {
             "_partys": {
@@ -103,7 +103,7 @@
                     "party_id": "America"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "America"
         },
         "Anna": {
@@ -114,7 +114,7 @@
                     "party_id": "Anna"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Anna"
         },
         "Benjamin Stoddert": {
@@ -125,7 +125,7 @@
                     "party_id": "Benjamin Stoddert"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Benjamin Stoddert"
         },
         "Bob302": {
@@ -136,7 +136,7 @@
                     "party_id": "Bob302"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Bob302"
         },
         "Charles Lee": {
@@ -147,10 +147,10 @@
                     "party_id": "Charles Lee"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Charles Lee"
         },
-        "Climate Change": {
+        ",Climate Change": {
             "_partys": {
                 "Philipa": {
                     "creditor_weight": 1,
@@ -169,7 +169,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Climate Change"
+            "brand": ",Climate Change"
         },
         "Ernesto Chavez": {
             "_partys": {
@@ -179,10 +179,10 @@
                     "party_id": "Ernesto Chavez"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Ernesto Chavez"
         },
-        "Everyone": {
+        ",Everyone": {
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -296,9 +296,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "Everyone"
+            "brand": ",Everyone"
         },
-        "Family": {
+        ",Family": {
             "_partys": {
                 "America": {
                     "creditor_weight": 6.45,
@@ -317,9 +317,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "Family"
+            "brand": ",Family"
         },
-        "Friends": {
+        ",Friends": {
             "_partys": {
                 "America": {
                     "creditor_weight": 6.1,
@@ -338,9 +338,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "Friends"
+            "brand": ",Friends"
         },
-        "hurt by us dollar": {
+        ",hurt by us dollar": {
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -349,7 +349,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "hurt by us dollar"
+            "brand": ",hurt by us dollar"
         },
         "Jacque Chirac": {
             "_partys": {
@@ -359,7 +359,7 @@
                     "party_id": "Jacque Chirac"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Jacque Chirac"
         },
         "Jane Randolph": {
@@ -370,10 +370,10 @@
                     "party_id": "Jane Randolph"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Jane Randolph"
         },
-        "likes US DOLLAR": {
+        ",likes US DOLLAR": {
             "_partys": {
                 "Bob302": {
                     "creditor_weight": 1,
@@ -397,7 +397,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "likes US DOLLAR"
+            "brand": ",likes US DOLLAR"
         },
         "Maria Reynolds": {
             "_partys": {
@@ -407,7 +407,7 @@
                     "party_id": "Maria Reynolds"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Maria Reynolds"
         },
         "Martha Wayles": {
@@ -418,7 +418,7 @@
                     "party_id": "Martha Wayles"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Martha Wayles"
         },
         "Mikayla": {
@@ -429,7 +429,7 @@
                     "party_id": "Mikayla"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Mikayla"
         },
         "Norberto": {
@@ -440,10 +440,10 @@
                     "party_id": "Norberto"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Norberto"
         },
-        "OceanVista Apt": {
+        ",OceanVista Apt": {
             "_partys": {
                 "A a ron Jones": {
                     "creditor_weight": 1,
@@ -462,9 +462,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "OceanVista Apt"
+            "brand": ",OceanVista Apt"
         },
-        "People who identify by UTEP": {
+        ",People who identify by UTEP": {
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -473,7 +473,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "People who identify by UTEP"
+            "brand": ",People who identify by UTEP"
         },
         "Perrison": {
             "_partys": {
@@ -483,7 +483,7 @@
                     "party_id": "Perrison"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Perrison"
         },
         "Philipa": {
@@ -494,10 +494,10 @@
                     "party_id": "Philipa"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Philipa"
         },
-        "Philosophy": {
+        ",Philosophy": {
             "_partys": {
                 "Ernesto Chavez": {
                     "creditor_weight": 6.5,
@@ -521,7 +521,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Philosophy"
+            "brand": ",Philosophy"
         },
         "Prashant": {
             "_partys": {
@@ -531,7 +531,7 @@
                     "party_id": "Prashant"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Prashant"
         },
         "Renee Elise Goldsberry": {
@@ -542,7 +542,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
@@ -553,7 +553,7 @@
                     "party_id": "Sam zamora"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Sam zamora"
         },
         "Shadwell Harris": {
@@ -564,10 +564,10 @@
                     "party_id": "Shadwell Harris"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Shadwell Harris"
         },
-        "SHOW ME2": {
+        ",SHOW ME2": {
             "_partys": {
                 "Renee Elise Goldsberry": {
                     "creditor_weight": 1,
@@ -576,7 +576,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "SHOW ME2"
+            "brand": ",SHOW ME2"
         },
         "Thomas OSU": {
             "_partys": {
@@ -586,7 +586,7 @@
                     "party_id": "Thomas OSU"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Thomas OSU"
         },
         "Travis Fox": {
@@ -597,7 +597,7 @@
                     "party_id": "Travis Fox"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "Travis Fox"
         },
         "WIlliam Wallace": {
@@ -608,7 +608,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "_single_party": false,
+            "_single_party": true,
             "brand": "WIlliam Wallace"
         }
     },
@@ -1841,8 +1841,8 @@
                         "_kids": {
                             "check cat water": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -1890,8 +1890,8 @@
                             },
                             "clean baby seats": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -1918,8 +1918,8 @@
                             },
                             "clean bathroom": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -1946,8 +1946,8 @@
                             },
                             "clean cat poo": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -1975,8 +1975,8 @@
                             },
                             "clean humidifiers": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2031,8 +2031,8 @@
                             },
                             "clean table": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2059,8 +2059,8 @@
                             },
                             "deep clean play mat": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2087,8 +2087,8 @@
                             },
                             "empty roomba": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2115,8 +2115,8 @@
                             },
                             "empty roomba Friday": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2178,8 +2178,8 @@
                             },
                             "laundry monday": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2347,8 +2347,8 @@
                             },
                             "prepare_bed clean bedroom": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2375,8 +2375,8 @@
                             },
                             "roomba bedroom": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2403,8 +2403,8 @@
                             },
                             "roomba bedroom Friday": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2431,8 +2431,8 @@
                             },
                             "roomba living area": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2459,8 +2459,8 @@
                             },
                             "roomba living area thur": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2487,8 +2487,8 @@
                             },
                             "roomba maintenance": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2515,8 +2515,8 @@
                             },
                             "wipe down play mat2": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2565,8 +2565,8 @@
                         "_kids": {
                             "be reponsible for rent": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2593,8 +2593,8 @@
                             },
                             "be responsible for expenses card": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2649,8 +2649,8 @@
                             },
                             "set aside a little bucks for fun the week": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -2684,8 +2684,8 @@
                     },
                     "Housing": {
                         "_balancelinks": {
-                            "OceanVista Apt": {
-                                "brand": "OceanVista Apt",
+                            ",OceanVista Apt": {
+                                "brand": ",OceanVista Apt",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1
                             }
@@ -2921,8 +2921,8 @@
                             },
                             "get rid of toy buy new toy": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3000,8 +3000,8 @@
                     },
                     "say hi to birds": {
                         "_balancelinks": {
-                            "Family": {
-                                "brand": "Family",
+                            ",Family": {
+                                "brand": ",Family",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1
                             }
@@ -3031,8 +3031,8 @@
                         "_kids": {
                             "5 push-ups": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3059,8 +3059,8 @@
                             },
                             "check protein for week is adequate": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3087,8 +3087,8 @@
                             },
                             "clip body nails": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3115,8 +3115,8 @@
                             },
                             "cook veggies every morning": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3143,8 +3143,8 @@
                             },
                             "morning multivitamin": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3192,8 +3192,8 @@
                             },
                             "noce hair removal": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3220,8 +3220,8 @@
                             },
                             "pull ear hair": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3248,8 +3248,8 @@
                             },
                             "shampoo hair": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3276,8 +3276,8 @@
                             },
                             "straight back for 45 secs": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3389,8 +3389,8 @@
                             },
                             "trim beard": {
                                 "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
+                                    ",Family": {
+                                        "brand": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
@@ -3420,8 +3420,8 @@
                                 "_kids": {
                                     "bike or something": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3448,8 +3448,8 @@
                                     },
                                     "chest and arms (mon)": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3515,8 +3515,8 @@
                                     },
                                     "core lower back": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3543,8 +3543,8 @@
                                     },
                                     "rest": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3571,8 +3571,8 @@
                                     },
                                     "shoulders and upper back": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3619,8 +3619,8 @@
                                     },
                                     "squats hamstrings and calves": {
                                         "_balancelinks": {
-                                            "Family": {
-                                                "brand": "Family",
+                                            ",Family": {
+                                                "brand": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             }
@@ -3674,13 +3674,13 @@
                         "creditor_weight": 1.0,
                         "debtor_weight": 1
                     },
-                    "Climate Change": {
-                        "brand": "Climate Change",
+                    ",Climate Change": {
+                        "brand": ",Climate Change",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1
                     },
-                    "Family": {
-                        "brand": "Family",
+                    ",Family": {
+                        "brand": ",Family",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1
                     }
@@ -3745,8 +3745,8 @@
                     },
                     "develop D&B software": {
                         "_balancelinks": {
-                            "hurt by us dollar": {
-                                "brand": "hurt by us dollar",
+                            ",hurt by us dollar": {
+                                "brand": ",hurt by us dollar",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1
                             }
@@ -3806,16 +3806,16 @@
                     "donate to action committees": {
                         "_is_expanded": true,
                         "_kids": {
-                            "donate to influential people that are pro climate change": {
+                            "donate to influential people that are pro-Climate Change": {
                                 "_balancelinks": {
-                                    "Climate Change": {
-                                        "brand": "Climate Change",
+                                    ",Climate Change": {
+                                        "brand": ",Climate Change",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
                                 },
                                 "_is_expanded": true,
-                                "_label": "donate to influential people that are pro climate change",
+                                "_label": "donate to influential people that are pro-Climate Change",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
@@ -3990,8 +3990,8 @@
                                     },
                                     "call Aaron and discuss methodology": {
                                         "_balancelinks": {
-                                            "Climate Change": {
-                                                "brand": "Climate Change",
+                                            ",Climate Change": {
+                                                "brand": ",Climate Change",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1
                                             },
@@ -4072,16 +4072,16 @@
                     "write letters to reps": {
                         "_is_expanded": true,
                         "_kids": {
-                            "write letters about climate change to congressman": {
+                            "write letters about Climate Change to congressman": {
                                 "_balancelinks": {
-                                    "Climate Change": {
-                                        "brand": "Climate Change",
+                                    ",Climate Change": {
+                                        "brand": ",Climate Change",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1
                                     }
                                 },
                                 "_is_expanded": true,
-                                "_label": "write letters about climate change to congressman",
+                                "_label": "write letters about Climate Change to congressman",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {

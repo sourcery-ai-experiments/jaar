@@ -14,6 +14,8 @@ from src.agenda.group import (
 from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     create_road,
+    validate_roadnode,
+    default_road_delimiter_if_none,
 )
 from src.tools.python import x_is_json, x_get_json
 from pytest import raises as pytest_raises
@@ -27,7 +29,7 @@ def test_GroupBrand_exists():
 
 def test_GroupUnit_exists():
     # GIVEN
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     # WHEN
     swim_groupunit = GroupUnit(brand=swim_text)
     # THEN
@@ -40,17 +42,18 @@ def test_GroupUnit_exists():
     assert swim_groupunit._agenda_intent_credit is None
     assert swim_groupunit._agenda_intent_debt is None
     assert swim_groupunit._partylinks_set_by_economy_road is None
+    assert swim_groupunit._road_delimiter is None
 
 
 def test_groupunit_shop_ReturnsCorrectObj():
     # GIVEN
-    swimmers = "swimmers"
+    swim_text = ",swimmers"
     nation_road = create_road(root_label(), "nation-states")
     usa_road = create_road(nation_road, "USA")
 
     # WHEN
-    swimmers_group = groupunit_shop(
-        brand=swimmers,
+    swim_groupunit = groupunit_shop(
+        brand=swim_text,
         _agenda_credit=0.33,
         _agenda_debt=0.44,
         _agenda_intent_credit=0.66,
@@ -59,25 +62,67 @@ def test_groupunit_shop_ReturnsCorrectObj():
     )
 
     # THEN
-    print(f"{swimmers}")
-    assert swimmers_group != None
-    assert swimmers_group.brand != None
-    assert swimmers_group.brand == swimmers
-    assert swimmers_group._agenda_credit != None
-    assert swimmers_group._agenda_debt != None
-    assert swimmers_group._agenda_intent_credit != None
-    assert swimmers_group._agenda_intent_debt != None
-    assert swimmers_group._partylinks_set_by_economy_road == usa_road
+    print(f"{swim_text}")
+    assert swim_groupunit != None
+    assert swim_groupunit.brand != None
+    assert swim_groupunit.brand == swim_text
+    assert swim_groupunit._agenda_credit != None
+    assert swim_groupunit._agenda_debt != None
+    assert swim_groupunit._agenda_intent_credit != None
+    assert swim_groupunit._agenda_intent_debt != None
+    assert swim_groupunit._partylinks_set_by_economy_road == usa_road
+    assert swim_groupunit._road_delimiter == default_road_delimiter_if_none()
+
+
+def test_groupunit_shop_ReturnsCorrectObj_road_delimiter():
+    # GIVEN
+    swim_text = "/swimmers"
+    slash_text = "/"
+
+    # WHEN
+    swim_groupunit = groupunit_shop(brand=swim_text, _road_delimiter=slash_text)
+
+    # THEN
+    assert swim_groupunit._road_delimiter == slash_text
+
+
+def test_GroupUnit_set_brand_RaisesErrorIfParameterContains_road_delimiter_And_single_party_True():
+    # GIVEN
+    slash_text = "/"
+    bob_text = f"Bob{slash_text}Texas"
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        groupunit_shop(bob_text, _single_party=True, _road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
+    )
+
+
+def test_GroupUnit_set_brand_RaisesErrorIfParameterDoesNotContain_road_delimiter_single_party_False():
+    # GIVEN
+    comma_text = ","
+    texas_text = f"Texas{comma_text}Arkansas"
+
+    # WHEN / THEN
+    slash_text = "/"
+    with pytest_raises(Exception) as excinfo:
+        groupunit_shop(brand=texas_text, _road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{texas_text}' needs to not be a RoadNode. Must contain delimiter: '{slash_text}'"
+    )
 
 
 def test_GroupUnit_set_brand_WorksCorrectly():
     # GIVEN
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     swim_group = groupunit_shop(brand=swim_text)
     assert swim_group.brand == swim_text
 
     # WHEN
-    water_text = "water people"
+    water_text = ",water people"
     swim_group.set_brand(brand=water_text)
 
     # THEN
@@ -86,7 +131,7 @@ def test_GroupUnit_set_brand_WorksCorrectly():
 
 def test_GroupUnit_set_attr_WorksCorrectly():
     # GIVEN
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     swim_group = groupunit_shop(brand=swim_text)
     assert swim_group._partylinks_set_by_economy_road is None
 
@@ -101,14 +146,14 @@ def test_GroupUnit_set_attr_WorksCorrectly():
 
 def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_economy_road():
     # GIVEN
-    swimmers = "swimmers"
+    swim_text = ",swimmers"
     nation_road = create_road(root_label(), "nation-states")
     usa_road = create_road(nation_road, "USA")
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         swimmers_group = groupunit_shop(
-            brand=swimmers,
+            brand=swim_text,
             _single_party=True,
             _partylinks_set_by_economy_road=usa_road,
         )
@@ -125,7 +170,7 @@ def test_GroupUnit_set_partylink_worksCorrectly():
     todd_party = partylink_shop(party_id=todd_text, creditor_weight=13, debtor_weight=7)
     mery_party = partylink_shop(party_id=mery_text, creditor_weight=23, debtor_weight=5)
 
-    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group = groupunit_shop(brand=",swimmers", _partys={})
 
     # WHEN
     swimmers_group.set_partylink(todd_party)
@@ -140,7 +185,7 @@ def test_GroupUnit_get_partylink_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group = groupunit_shop(brand=",swimmers", _partys={})
     swimmers_group.set_partylink(partylink_shop(todd_text, 13, 7))
     swimmers_group.set_partylink(partylink_shop(mery_text, 23, 5))
 
@@ -154,7 +199,7 @@ def test_GroupUnit_partylink_exists_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group = groupunit_shop(brand=",swimmers", _partys={})
     swimmers_group.set_partylink(partylink_shop(todd_text, 13, 7))
     swimmers_group.set_partylink(partylink_shop(mery_text, 23, 5))
 
@@ -171,7 +216,7 @@ def test_GroupUnit_del_partylink_worksCorrectly():
     todd_party = partylink_shop(party_id=todd_text)
     mery_party = partylink_shop(party_id=mery_text)
     swimmers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group = groupunit_shop(brand=",swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
     assert len(swimmers_group._partys) == 2
@@ -192,7 +237,7 @@ def test_GroupUnit_clear_partylinks_worksCorrectly():
     todd_party = partylink_shop(party_id=todd_text)
     mery_party = partylink_shop(party_id=mery_text)
     swimmers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    swimmers_group = groupunit_shop(brand="swimmers", _partys={})
+    swimmers_group = groupunit_shop(brand=",swimmers", _partys={})
     swimmers_group.set_partylink(todd_party)
     swimmers_group.set_partylink(mery_party)
     assert len(swimmers_group._partys) == 2
@@ -211,6 +256,7 @@ def test_GroupUnit_reset_agenda_importance_WorkCorrectly():
     maria_brand = "maria"
     maria_group = groupunit_shop(
         brand=maria_brand,
+        _single_party=True,
         _agenda_credit=0.33,
         _agenda_debt=0.44,
         _agenda_intent_credit=0.13,
@@ -251,7 +297,7 @@ def test_GroupUnit_reset_agenda_importance_reset_partylinks():
         _agenda_intent_debt=0.57,
     )
     bikers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    bikers_brand = "bikers"
+    bikers_brand = ",bikers"
     bikers_group = groupunit_shop(
         brand=bikers_brand,
         _partys={},
@@ -293,19 +339,19 @@ def test_GroupUnit_partylink_meld_BaseScenarioWorks():
     # GIVEN
     todd_party = partylink_shop(party_id="Todd")
     merry_party = partylink_shop(party_id="Merry")
-    x1_brand = "bikers"
-    x1_group = groupunit_shop(brand=x1_brand, _partys={})
-    x1_group.set_partylink(partylink=todd_party)
-    x1_group.set_partylink(partylink=merry_party)
+    bikers_brand = ",bikers"
+    bikers_group = groupunit_shop(brand=bikers_brand, _partys={})
+    bikers_group.set_partylink(partylink=todd_party)
+    bikers_group.set_partylink(partylink=merry_party)
 
-    x2_group = groupunit_shop(brand=x1_brand, _partys={})
+    x2_group = groupunit_shop(brand=bikers_brand, _partys={})
 
     # WHEN
-    x1_group.meld(other_group=x2_group)
-    print(f"{x1_group.brand=} {x2_group.brand=}")
+    bikers_group.meld(other_group=x2_group)
+    print(f"{bikers_group.brand=} {x2_group.brand=}")
 
     # THEN
-    assert len(x1_group._partys) == 2
+    assert len(bikers_group._partys) == 2
 
 
 def test_GroupUnit_partylink_meld_GainScenarioWorks():
@@ -314,27 +360,27 @@ def test_GroupUnit_partylink_meld_GainScenarioWorks():
     mery_text = "Merry"
     todd_party = partylink_shop(party_id=todd_text, creditor_weight=13, debtor_weight=7)
     mery_party = partylink_shop(party_id=mery_text, creditor_weight=23, debtor_weight=5)
-    x1_brand = "bikers"
-    x1_group = groupunit_shop(brand=x1_brand, _partys={})
+    bikers_brand = ",bikers"
+    bikers_group = groupunit_shop(brand=bikers_brand, _partys={})
 
-    x2_group = groupunit_shop(brand=x1_brand, _partys={})
+    x2_group = groupunit_shop(brand=bikers_brand, _partys={})
     x2_group.set_partylink(partylink=todd_party)
     x2_group.set_partylink(partylink=mery_party)
 
     # WHEN
-    x1_group.meld(other_group=x2_group)
+    bikers_group.meld(other_group=x2_group)
 
     # THEN
-    assert len(x1_group._partys) == 2
-    assert x1_group._partys.get(todd_text) != None
+    assert len(bikers_group._partys) == 2
+    assert bikers_group._partys.get(todd_text) != None
 
 
 def test_GroupUnit_meld_RaiseSameparty_idException():
     # GIVEN
     todd_text = "Todd"
-    todd_group = groupunit_shop(brand=todd_text)
+    todd_group = groupunit_shop(brand=todd_text, _single_party=True)
     mery_text = "Merry"
-    mery_group = groupunit_shop(brand=mery_text)
+    mery_group = groupunit_shop(brand=mery_text, _single_party=True)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -375,34 +421,34 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
 
 def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
-    todd_text = "Todd"
-    todd_group = groupunit_shop(brand=todd_text)
-    assert todd_group._single_party is False
-    assert todd_group._partys == {}
-    assert todd_group._partylinks_set_by_economy_road is None
+    swim_text = ",Swimmers"
+    swim_group = groupunit_shop(brand=swim_text)
+    assert swim_group._single_party is False
+    assert swim_group._partys == {}
+    assert swim_group._partylinks_set_by_economy_road is None
 
     # WHEN
-    todd_dict = todd_group.get_dict()
+    swim_dict = swim_group.get_dict()
 
     # THEN
-    assert todd_dict.get("_single_party") is None
-    assert todd_dict.get("_partys") is None
-    assert todd_dict.get("_partylinks_set_by_economy_road") is None
+    assert swim_dict.get("_single_party") is None
+    assert swim_dict.get("_partys") is None
+    assert swim_dict.get("_partylinks_set_by_economy_road") is None
 
 
 def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    swimmers = "swimmers"
+    swim_text = ",swimmers"
 
     # WHEN
-    swimmers_group = groupunit_shop(brand=swimmers)
-    print(f"{swimmers}")
+    swimmers_group = groupunit_shop(brand=swim_text)
+    print(f"{swim_text}")
 
     # THEN
     ee_dict = swimmers_group.get_dict()
     assert ee_dict != None
     # assert ee_dict == {"brand": swimmers}
-    assert ee_dict == {"brand": swimmers}
+    assert ee_dict == {"brand": swim_text}
 
     # GIVEN
     sue_text = "Marie"
@@ -418,7 +464,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         }
     }
 
-    teacher_text = "teachers"
+    teacher_text = ",teachers"
     swim_road = "swim"
     teachers_group = groupunit_shop(
         brand=teacher_text,
@@ -446,7 +492,7 @@ def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
     )
     partylinks_dict = {marie_partylink.party_id: marie_partylink}
 
-    teacher_text = "teachers"
+    teacher_text = ",teachers"
     swim_road = "swim"
     teacher_group = groupunit_shop(
         brand=teacher_text,
@@ -456,7 +502,7 @@ def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
     teacher_dict = teacher_group.get_dict()
     _partylinks_set_by_economy_road_text = "_partylinks_set_by_economy_road"
     print(f"{teacher_dict.get(_partylinks_set_by_economy_road_text)=}")
-    groups_dict = {"teachers": teacher_dict}
+    groups_dict = {teacher_text: teacher_dict}
 
     teachers_json = x_get_json(dict_x=groups_dict)
     print(f"{teachers_json.find(_partylinks_set_by_economy_road_text)=}")

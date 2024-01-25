@@ -601,7 +601,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # beto_partyunit = partyunit_shop(party_id=beto_text)
     # beto_partylink = partylink_shop(party_id=beto_text)
 
-    family_text = "family"
+    family_text = ",family"
     # groupunit_z = groupunit_shop(brand=family_text)
     # groupunit_z.set_partylink(partylink=anna_partylink)
     # groupunit_z.set_partylink(partylink=beto_partylink)
@@ -756,7 +756,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     sue_text = "sue"
     bob_agenda.add_partyunit(party_id=sue_text)
 
-    run_text = "runners"
+    run_text = ",runners"
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     bob_agenda.set_groupunit(y_groupunit=run_group)

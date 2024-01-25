@@ -134,7 +134,7 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
 def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
-    run_text = "run"
+    run_text = ",run"
     tom_agenda.set_groupunit(y_groupunit=groupunit_shop(run_text))
 
     morn_text = "morning"
@@ -293,7 +293,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     yue_agenda.add_partyunit(party_id=sue_text)
     tim_text = "tim"
     yue_agenda.add_partyunit(party_id=tim_text)
-    run_text = "runners"
+    run_text = ",runners"
     run_group = groupunit_shop(brand=run_text)
     run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     run_group.set_partylink(partylink=partylink_shop(party_id=tim_text))

@@ -13,7 +13,6 @@ from src.agenda.group import (
     BalanceLink,
     GroupBrand,
     GroupUnit,
-    GroupMetrics,
     get_from_dict as groupunits_get_from_dict,
     groupunit_shop,
     balancelink_shop,
@@ -429,7 +428,6 @@ class AgendaUnit:
                 str_x = f"every {num_with_letter_ending} day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
         else:
             str_x = "unknown"
-
         return str_x
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
@@ -452,7 +450,7 @@ class AgendaUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_partys_metrics(self) -> dict[GroupBrand:GroupMetrics]:
+    def get_partys_metrics(self) -> dict[GroupBrand:BalanceLink]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 

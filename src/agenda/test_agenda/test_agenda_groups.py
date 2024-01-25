@@ -15,7 +15,7 @@ from pytest import raises as pytest_raises
 def test_agenda_groups_get_groupunit_ReturnsCorrectObj():
     # GIVEN
     x_agenda = agendaunit_shop()
-    swim_text = "swim"
+    swim_text = ",swimmers"
     # x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
     swim_groups = {swim_text: groupunit_shop(brand=swim_text)}
     x_agenda._groups = swim_groups
@@ -29,7 +29,7 @@ def test_agenda_groups_get_groupunit_ReturnsCorrectObj():
 
 def test_agenda_groups_set_groupunit_worksCorrectly():
     # GIVEN
-    swim_text = "swim"
+    swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
 
     # WHEN
@@ -48,7 +48,7 @@ def test_agenda_groups_set_groupunit_worksCorrectly():
 
 def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
     # GIVEN
-    swim_text = "swim"
+    swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
     swim1_group = groupunit_shop(swim_text)
     bob_text = "Bob"
@@ -73,7 +73,7 @@ def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
 
 def test_agenda_groups_set_groupunit_CorrectlySets_partylinks():
     # GIVEN
-    swim_text = "swim"
+    swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
     swim1_group = groupunit_shop(swim_text)
     bob_text = "Bob"
@@ -114,7 +114,7 @@ def test_example_has_groups():
     assert x_agenda._groups != None
     assert len(x_agenda._groups) == 34
     everyone_partys_len = None
-    everyone_group = x_agenda.get_groupunit("Everyone")
+    everyone_group = x_agenda.get_groupunit(",Everyone")
     everyone_partys_len = len(everyone_group._partys)
     assert everyone_partys_len == 22
 
@@ -492,7 +492,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
-    swim_text = "swim"
+    swim_text = ",swimmers"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=rico_text))
     agenda.set_groupunit(swim_group)
@@ -503,7 +503,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     assert len(agenda.get_groupunit(swim_text)._partys) == 1
 
     # WHEN
-    jog_text = "jog"
+    jog_text = ",jog"
     agenda.edit_groupunit_brand(
         old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
     )
@@ -522,9 +522,9 @@ def test_agenda_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
-    swim_text = "swim"
+    swim_text = ",swimmers"
     agenda.set_groupunit(groupunit_shop(brand=swim_text))
-    jog_text = "jog"
+    jog_text = ",jog"
     agenda.set_groupunit(groupunit_shop(brand=jog_text))
 
     # WHEN
@@ -545,13 +545,13 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
-    swim_text = "swim"
+    swim_text = ",swimmers"
     swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(
         partylink=partylink_shop(party_id=rico_text, creditor_weight=5, debtor_weight=3)
     )
     agenda.set_groupunit(swim_group)
-    jog_text = "jog"
+    jog_text = ",jog"
     jog_group = groupunit_shop(brand=jog_text)
     jog_group.set_partylink(
         partylink=partylink_shop(
@@ -585,7 +585,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
-    swim_text = "swim"
+    swim_text = ",swimmers"
     swim_groupunit = groupunit_shop(brand=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
     outdoor_text = "outdoors"
@@ -604,7 +604,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
 
     # WHEN
-    jog_text = "jog"
+    jog_text = ",jog"
     x_agenda.edit_groupunit_brand(
         old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
     )
@@ -621,11 +621,11 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
-    swim_text = "swim"
+    swim_text = ",swimmers"
     swim_groupunit = groupunit_shop(brand=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
 
-    jog_text = "jog"
+    jog_text = ",jog"
     jog_groupunit = groupunit_shop(brand=jog_text)
     x_agenda.set_groupunit(jog_groupunit)
 
@@ -674,7 +674,7 @@ def test_agenda_add_idea_CreatesMissingGroups():
         _weight=40, _label=clean_cookery_text, promise=True
     )
 
-    family_text = "family"
+    family_text = ",family"
     balancelink_z = balancelink_shop(brand=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
     assert len(x_agenda._groups) == 0
@@ -765,7 +765,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
         _weight=40, _label=clean_cookery_text, promise=True
     )
 
-    family_text = "family"
+    family_text = ",family"
     balancelink_z = balancelink_shop(brand=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
@@ -802,7 +802,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
 def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
-    family_text = "family"
+    family_text = ",family"
     anna_text = "anna"
     beto_text = "beto"
     groupunit_z = groupunit_shop(brand=family_text)
@@ -840,7 +840,7 @@ def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
 def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
-    family_text = "family"
+    family_text = ",family"
     anna_text = "anna"
     beto_text = "beto"
     bob_agenda.set_partyunit(
@@ -883,11 +883,11 @@ def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
 def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
-    swim_text = "swim"
-    wiggle_text = "wiggle"
-    fly_text = "fly"
+    swim_text = ",swimmers"
+    run_text = ",runners"
+    fly_text = ",flyers"
     bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=wiggle_text))
+    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text))
     bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
     assert len(bob_agenda._groups) == 3
 
@@ -897,8 +897,8 @@ def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # THEN
     assert groupunit_list_x[0] == ""
     assert groupunit_list_x[1] == fly_text
-    assert groupunit_list_x[2] == swim_text
-    assert groupunit_list_x[3] == wiggle_text
+    assert groupunit_list_x[2] == run_text
+    assert groupunit_list_x[3] == swim_text
     assert len(groupunit_list_x) == 4
 
 
@@ -979,18 +979,18 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
     jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
 
-    swim_text = "swimmers"
+    swim_text = ",swimmers"
     jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
     swim_group = jes_agenda.get_groupunit(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
-    hike_text = "hikers"
+    hike_text = ",hikers"
     jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
     hike_group = jes_agenda.get_groupunit(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
-    hunt_text = "hunters"
+    hunt_text = ",hunters"
     jes_agenda.set_groupunit(groupunit_shop(brand=hunt_text))
     hike_group = jes_agenda.get_groupunit(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))
