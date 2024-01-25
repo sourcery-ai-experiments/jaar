@@ -1,4 +1,5 @@
 {
+    "_agent_id": "Yao",
     "_economy_id": "A",
     "_groups": {
         "A a ron Jones": {
@@ -11,9 +12,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "A a ron Jones",
-            "single_party_id": 21,
-            "uid": 32
+            "brand": "A a ron Jones"
         },
         "ACME DevOps": {
             "_partylinks_set_by_economy_road": null,
@@ -70,9 +69,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME DevOps",
-            "single_party_id": null,
-            "uid": 12
+            "brand": "ACME DevOps"
         },
         "ACME General": {
             "_partylinks_set_by_economy_road": null,
@@ -99,9 +96,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME General",
-            "single_party_id": null,
-            "uid": 29
+            "brand": "ACME General"
         },
         "America": {
             "_partylinks_set_by_economy_road": null,
@@ -113,9 +108,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "America",
-            "single_party_id": 1,
-            "uid": 1
+            "brand": "America"
         },
         "Anna": {
             "_partylinks_set_by_economy_road": null,
@@ -127,9 +120,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Anna",
-            "single_party_id": 2,
-            "uid": 2
+            "brand": "Anna"
         },
         "Benjamin Stoddert": {
             "_partylinks_set_by_economy_road": null,
@@ -141,9 +132,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Benjamin Stoddert",
-            "single_party_id": 14,
-            "uid": 23
+            "brand": "Benjamin Stoddert"
         },
         "Bob302": {
             "_partylinks_set_by_economy_road": null,
@@ -155,9 +144,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Bob302",
-            "single_party_id": 6,
-            "uid": 6
+            "brand": "Bob302"
         },
         "Charles Lee": {
             "_partylinks_set_by_economy_road": null,
@@ -169,9 +156,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Charles Lee",
-            "single_party_id": 13,
-            "uid": 22
+            "brand": "Charles Lee"
         },
         "Climate Change": {
             "_partylinks_set_by_economy_road": null,
@@ -193,9 +178,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Climate Change",
-            "single_party_id": null,
-            "uid": 20
+            "brand": "Climate Change"
         },
         "Ernesto Chavez": {
             "_partylinks_set_by_economy_road": null,
@@ -207,9 +190,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Ernesto Chavez",
-            "single_party_id": 10,
-            "uid": 10
+            "brand": "Ernesto Chavez"
         },
         "Everyone": {
             "_partylinks_set_by_economy_road": null,
@@ -326,9 +307,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Everyone",
-            "single_party_id": null,
-            "uid": 15
+            "brand": "Everyone"
         },
         "Family": {
             "_partylinks_set_by_economy_road": null,
@@ -350,9 +329,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Family",
-            "single_party_id": null,
-            "uid": 13
+            "brand": "Family"
         },
         "Friends": {
             "_partylinks_set_by_economy_road": null,
@@ -374,9 +351,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Friends",
-            "single_party_id": null,
-            "uid": 14
+            "brand": "Friends"
         },
         "hurt by us dollar": {
             "_partylinks_set_by_economy_road": null,
@@ -388,9 +363,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "hurt by us dollar",
-            "single_party_id": null,
-            "uid": 30
+            "brand": "hurt by us dollar"
         },
         "Jacque Chirac": {
             "_partylinks_set_by_economy_road": null,
@@ -402,9 +375,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Jacque Chirac",
-            "single_party_id": 20,
-            "uid": 31
+            "brand": "Jacque Chirac"
         },
         "Jane Randolph": {
             "_partylinks_set_by_economy_road": null,
@@ -416,9 +387,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Jane Randolph",
-            "single_party_id": 17,
-            "uid": 26
+            "brand": "Jane Randolph"
         },
         "likes US DOLLAR": {
             "_partylinks_set_by_economy_road": null,
@@ -445,9 +414,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "likes US DOLLAR",
-            "single_party_id": null,
-            "uid": 16
+            "brand": "likes US DOLLAR"
         },
         "Maria Reynolds": {
             "_partylinks_set_by_economy_road": null,
@@ -459,9 +426,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Maria Reynolds",
-            "single_party_id": 7,
-            "uid": 7
+            "brand": "Maria Reynolds"
         },
         "Martha Wayles": {
             "_partylinks_set_by_economy_road": null,
@@ -473,9 +438,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Martha Wayles",
-            "single_party_id": 15,
-            "uid": 24
+            "brand": "Martha Wayles"
         },
         "Mikayla": {
             "_partylinks_set_by_economy_road": null,
@@ -487,9 +450,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Mikayla",
-            "single_party_id": 12,
-            "uid": 21
+            "brand": "Mikayla"
         },
         "Norberto": {
             "_partylinks_set_by_economy_road": null,
@@ -501,9 +462,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Norberto",
-            "single_party_id": 22,
-            "uid": 33
+            "brand": "Norberto"
         },
         "OceanVista Apt": {
             "_partylinks_set_by_economy_road": null,
@@ -525,9 +484,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "OceanVista Apt",
-            "single_party_id": null,
-            "uid": 34
+            "brand": "OceanVista Apt"
         },
         "People who identify by UTEP": {
             "_partylinks_set_by_economy_road": null,
@@ -539,9 +496,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "People who identify by UTEP",
-            "single_party_id": null,
-            "uid": 18
+            "brand": "People who identify by UTEP"
         },
         "Perrison": {
             "_partylinks_set_by_economy_road": null,
@@ -553,9 +508,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Perrison",
-            "single_party_id": 9,
-            "uid": 9
+            "brand": "Perrison"
         },
         "Philipa": {
             "_partylinks_set_by_economy_road": null,
@@ -567,9 +520,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Philipa",
-            "single_party_id": 5,
-            "uid": 5
+            "brand": "Philipa"
         },
         "Philosophy": {
             "_partylinks_set_by_economy_road": null,
@@ -596,9 +547,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Philosophy",
-            "single_party_id": null,
-            "uid": 11
+            "brand": "Philosophy"
         },
         "Prashant": {
             "_partylinks_set_by_economy_road": null,
@@ -610,9 +559,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Prashant",
-            "single_party_id": 8,
-            "uid": 8
+            "brand": "Prashant"
         },
         "Renee Elise Goldsberry": {
             "_partylinks_set_by_economy_road": null,
@@ -624,9 +571,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Renee Elise Goldsberry",
-            "single_party_id": 4,
-            "uid": 4
+            "brand": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
             "_partylinks_set_by_economy_road": null,
@@ -638,9 +583,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Sam zamora",
-            "single_party_id": 16,
-            "uid": 25
+            "brand": "Sam zamora"
         },
         "Shadwell Harris": {
             "_partylinks_set_by_economy_road": null,
@@ -652,9 +595,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Shadwell Harris",
-            "single_party_id": 18,
-            "uid": 27
+            "brand": "Shadwell Harris"
         },
         "SHOW ME2": {
             "_partylinks_set_by_economy_road": null,
@@ -666,9 +607,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "SHOW ME2",
-            "single_party_id": null,
-            "uid": 17
+            "brand": "SHOW ME2"
         },
         "Thomas OSU": {
             "_partylinks_set_by_economy_road": null,
@@ -680,9 +619,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Thomas OSU",
-            "single_party_id": 11,
-            "uid": 19
+            "brand": "Thomas OSU"
         },
         "Travis Fox": {
             "_partylinks_set_by_economy_road": null,
@@ -694,9 +631,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Travis Fox",
-            "single_party_id": 3,
-            "uid": 3
+            "brand": "Travis Fox"
         },
         "WIlliam Wallace": {
             "_partylinks_set_by_economy_road": null,
@@ -708,12 +643,9 @@
                 }
             },
             "_single_party": false,
-            "brand": "WIlliam Wallace",
-            "single_party_id": 19,
-            "uid": 28
+            "brand": "WIlliam Wallace"
         }
     },
-    "_agent_id": "Yao",
     "_idearoot": {
         "_beliefunits": {
             "A,day_hour": {
@@ -738,7 +670,6 @@
                         "_is_expanded": true,
                         "_label": "interesting",
                         "_meld_strategy": "default",
-                        
                         "_uid": 262,
                         "_weight": 1,
                         "promise": false
@@ -747,7 +678,6 @@
                         "_is_expanded": true,
                         "_label": "not interesting",
                         "_meld_strategy": "default",
-                        
                         "_uid": 263,
                         "_weight": 1,
                         "promise": false
@@ -755,7 +685,6 @@
                 },
                 "_label": "Aaron Donald things effected by him",
                 "_meld_strategy": "default",
-                
                 "_uid": 261,
                 "_weight": 1,
                 "promise": false
@@ -770,7 +699,6 @@
                                 "_is_expanded": false,
                                 "_label": "Employee Beliefbook.",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -806,7 +734,6 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -838,7 +765,6 @@
                                 },
                                 "_label": "Know Abuse Prevention and Reporting guildlines",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 106,
                                 "_weight": 1,
                                 "promise": false
@@ -850,7 +776,6 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -882,7 +807,6 @@
                                 },
                                 "_label": "Know Discrimination Harassment Bully guildlines",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 107,
                                 "_weight": 1,
                                 "promise": false
@@ -894,7 +818,6 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -926,7 +849,6 @@
                                 },
                                 "_label": "PC1025 Identifying and Supporting houseless Youth",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 109,
                                 "_weight": 1,
                                 "promise": false
@@ -938,7 +860,6 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 122,
                                         "_weight": 1,
                                         "promise": false
@@ -946,7 +867,6 @@
                                 },
                                 "_label": "PC1026 Rick Management and Hazard Communication",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 112,
                                 "_weight": 1,
                                 "promise": false
@@ -958,7 +878,6 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -990,7 +909,6 @@
                                 },
                                 "_label": "PC1027 Adult Sexual Misconduct: Staff to Student/ IX",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 108,
                                 "_weight": 1,
                                 "promise": false
@@ -1002,7 +920,6 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1034,7 +951,6 @@
                                 },
                                 "_label": "PC1029 Information Security Awareness Training",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 111,
                                 "_weight": 1,
                                 "promise": false
@@ -1046,7 +962,6 @@
                                         "_is_expanded": false,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1078,7 +993,6 @@
                                 },
                                 "_label": "PRM1003 ACME OSHA COVID-19 Rick Reduction Training",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 110,
                                 "_weight": 1,
                                 "promise": false
@@ -1090,7 +1004,6 @@
                                         "_is_expanded": true,
                                         "_label": "Take Fall 2021 training",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1122,7 +1035,6 @@
                                 },
                                 "_label": "PRM1005 ACME Staff  and Safety",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 105,
                                 "_weight": 1,
                                 "promise": false
@@ -1130,7 +1042,6 @@
                         },
                         "_label": "ACME Employee Responsiblities",
                         "_meld_strategy": "default",
-                        
                         "_uid": 102,
                         "_weight": 1,
                         "promise": false
@@ -1148,7 +1059,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "check emails",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1173,7 +1083,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM2",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 171,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1182,7 +1091,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM3",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 172,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1191,7 +1099,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM5",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 173,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1200,7 +1107,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM7",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 170,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1208,7 +1114,6 @@
                                                 },
                                                 "_label": "check mechanisms",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1229,7 +1134,6 @@
                                         },
                                         "_label": "check ETLs work correctly",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1251,7 +1155,6 @@
                                         "_is_expanded": true,
                                         "_label": "dress to slightly impress",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1273,7 +1176,6 @@
                                         "_is_expanded": false,
                                         "_label": "go to work",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1294,7 +1196,6 @@
                                 },
                                 "_label": "IT DEPT off-hours responsiblities",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -1319,7 +1220,6 @@
                                         "_is_expanded": true,
                                         "_label": "Add work items to Azure DevOps",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1341,7 +1241,6 @@
                                         "_is_expanded": true,
                                         "_label": "consider management perspective",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1366,7 +1265,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "Datawarehouse Learning",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1391,7 +1289,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM2",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 176,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1400,7 +1297,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "MECHANISM7",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 175,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1409,7 +1305,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "WPRD",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 177,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1418,7 +1313,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "WPRDD",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 174,
                                                         "_weight": 1,
                                                         "promise": false
@@ -1426,7 +1320,6 @@
                                                 },
                                                 "_label": "dev metric tracking script \"TIMOTHY\"",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1448,7 +1341,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "go to daily stand-up ",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1469,7 +1361,6 @@
                                         },
                                         "_label": "Datawarehouse",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 135,
                                         "_weight": 1,
                                         "promise": false
@@ -1478,7 +1369,6 @@
                                         "_is_expanded": true,
                                         "_label": "IT DEPT general",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1500,7 +1390,6 @@
                                         "_is_expanded": true,
                                         "_label": "Keep track of Chatroom conversations",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1525,7 +1414,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "check for access",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,day_minute": {
                                                         "base": "A,day_minute",
@@ -1546,7 +1434,6 @@
                                         },
                                         "_label": "Synergy",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -1567,7 +1454,6 @@
                                 },
                                 "_label": "IT DEPT regular hours responsiblities",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -1588,7 +1474,6 @@
                         },
                         "_label": "IT DEPT",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -1609,7 +1494,6 @@
                 },
                 "_label": "ACME",
                 "_meld_strategy": "default",
-                
                 "_uid": 100,
                 "_weight": 1,
                 "promise": false
@@ -1633,7 +1517,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "apartment",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1655,7 +1538,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "be reponsible for rent",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1680,7 +1562,6 @@
                                                                 "_is_expanded": true,
                                                                 "_label": "maybe watch a video",
                                                                 "_meld_strategy": "default",
-                                                                
                                                                 "_reasonunits": {
                                                                     "A,Internet": {
                                                                         "base": "A,Internet",
@@ -1701,7 +1582,6 @@
                                                         },
                                                         "_label": "go for parent_road",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1723,7 +1603,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "gym time",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Moods": {
                                                                 "base": "A,Moods",
@@ -1744,7 +1623,6 @@
                                                 },
                                                 "_label": "apartment building",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,Nation-States": {
                                                         "base": "A,Nation-States",
@@ -1769,7 +1647,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "browsing",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1791,7 +1668,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "picnic",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Seasons": {
                                                                 "base": "A,Seasons",
@@ -1813,7 +1689,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "street soccer",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1835,7 +1710,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "swimming",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_reasonunits": {
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
@@ -1856,7 +1730,6 @@
                                                 },
                                                 "_label": "PSU Sports",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_reasonunits": {
                                                     "A,Nation-States": {
                                                         "base": "A,Nation-States",
@@ -1877,7 +1750,6 @@
                                         },
                                         "_label": "downtown",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,Nation-States": {
                                                 "base": "A,Nation-States",
@@ -1898,7 +1770,6 @@
                                 },
                                 "_label": "portland sovereignty",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Nation-States": {
                                         "base": "A,Nation-States",
@@ -1920,7 +1791,6 @@
                                 "_is_expanded": true,
                                 "_label": "texas sovereignty",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Nation-States": {
                                         "base": "A,Nation-States",
@@ -1941,7 +1811,6 @@
                         },
                         "_label": "American sovereignty",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -1963,7 +1832,6 @@
                         "_is_expanded": true,
                         "_label": "French sovereignty",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -1984,7 +1852,6 @@
                 },
                 "_label": "Asset management",
                 "_meld_strategy": "default",
-                
                 "_uid": 199,
                 "_weight": 1,
                 "promise": false
@@ -1996,7 +1863,6 @@
                         "_is_expanded": true,
                         "_label": "Aint me Babe",
                         "_meld_strategy": "default",
-                        
                         "_uid": 270,
                         "_weight": 1,
                         "promise": false
@@ -2005,7 +1871,6 @@
                         "_is_expanded": true,
                         "_label": "tangled up in blue",
                         "_meld_strategy": "default",
-                        
                         "_uid": 271,
                         "_weight": 1,
                         "promise": false
@@ -2013,7 +1878,6 @@
                 },
                 "_label": "Bob Dylan Root",
                 "_meld_strategy": "default",
-                
                 "_uid": 269,
                 "_weight": 1,
                 "promise": false
@@ -2021,176 +1885,6 @@
             "casa": {
                 "_is_expanded": false,
                 "_kids": {
-                    "responsible for kids": {
-                        "_is_expanded": false,
-                        "_kids": {
-                            "clip fingernails": {
-                                "_balancelinks": {
-                                    "America": {
-                                        "brand": "America",
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1.0
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "clip fingernails",
-                                "_meld_strategy": "default",
-                                
-                                "_reasonunits": {
-                                    "A,ced_week": {
-                                        "base": "A,ced_week",
-                                        "premises": {
-                                            "A,ced_week": {
-                                                "divisor": 2,
-                                                "need": "A,ced_week",
-                                                "nigh": 1,
-                                                "open": 1
-                                            }
-                                        }
-                                    },
-                                    "A,day_minute": {
-                                        "base": "A,day_minute",
-                                        "premises": {
-                                            "A,day_minute": {
-                                                "divisor": null,
-                                                "need": "A,day_minute",
-                                                "nigh": 241,
-                                                "open": 240
-                                            }
-                                        }
-                                    },
-                                    "A,Nation-States": {
-                                        "base": "A,Nation-States",
-                                        "premises": {
-                                            "A,Nation-States,USA,Portland OR": {
-                                                "divisor": null,
-                                                "need": "A,Nation-States,USA,Portland OR",
-                                                "nigh": null,
-                                                "open": null
-                                            }
-                                        }
-                                    },
-                                    "A,weekdays": {
-                                        "base": "A,weekdays",
-                                        "premises": {
-                                            "A,weekdays,Friday": {
-                                                "divisor": null,
-                                                "need": "A,weekdays,Friday",
-                                                "nigh": null,
-                                                "open": null
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 23,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "get rid of toy buy new toy": {
-                                "_balancelinks": {
-                                    "Family": {
-                                        "brand": "Family",
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1.0
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "get rid of toy buy new toy",
-                                "_meld_strategy": "default",
-                                
-                                "_reasonunits": {
-                                    "A,day_minute": {
-                                        "base": "A,day_minute",
-                                        "premises": {
-                                            "A,day_minute": {
-                                                "divisor": null,
-                                                "need": "A,day_minute",
-                                                "nigh": 541,
-                                                "open": 540
-                                            }
-                                        }
-                                    },
-                                    "A,Nation-States": {
-                                        "base": "A,Nation-States",
-                                        "premises": {
-                                            "A,Nation-States,USA,Portland OR": {
-                                                "divisor": null,
-                                                "need": "A,Nation-States,USA,Portland OR",
-                                                "nigh": null,
-                                                "open": null
-                                            }
-                                        }
-                                    },
-                                    "A,year_month": {
-                                        "base": "A,year_month",
-                                        "premises": {
-                                            "A,year_month": {
-                                                "divisor": 2,
-                                                "need": "A,year_month",
-                                                "nigh": 0,
-                                                "open": 0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 43,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "pciking them up": {
-                                "_is_expanded": true,
-                                "_label": "pciking them up",
-                                "_meld_strategy": "default",
-                                
-                                "_reasonunits": {
-                                    "A,day_minute": {
-                                        "base": "A,day_minute",
-                                        "premises": {
-                                            "A,day_minute": {
-                                                "divisor": null,
-                                                "need": "A,day_minute",
-                                                "nigh": 1005,
-                                                "open": 1005
-                                            }
-                                        }
-                                    },
-                                    "A,Nation-States": {
-                                        "base": "A,Nation-States",
-                                        "premises": {
-                                            "A,Nation-States,USA,Portland OR": {
-                                                "divisor": null,
-                                                "need": "A,Nation-States,USA,Portland OR",
-                                                "nigh": null,
-                                                "open": null
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 145,
-                                "_weight": 1,
-                                "promise": true
-                            }
-                        },
-                        "_label": "responsible for kids",
-                        "_meld_strategy": "default",
-                        
-                        "_reasonunits": {
-                            "A,Nation-States": {
-                                "base": "A,Nation-States",
-                                "premises": {
-                                    "A,Nation-States,USA,Portland OR": {
-                                        "divisor": null,
-                                        "need": "A,Nation-States,USA,Portland OR",
-                                        "nigh": null,
-                                        "open": null
-                                    }
-                                }
-                            }
-                        },
-                        "_uid": 144,
-                        "_weight": 1,
-                        "promise": false
-                    },
                     "call high school friend": {
                         "_balancelinks": {
                             "Perrison": {
@@ -2202,7 +1896,6 @@
                         "_is_expanded": true,
                         "_label": "call high school friend",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -2235,7 +1928,6 @@
                         "_is_expanded": true,
                         "_label": "check up on old family friends",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -2267,7 +1959,6 @@
                                 "_is_expanded": true,
                                 "_label": "check cat water",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2311,7 +2002,6 @@
                                 "_is_expanded": true,
                                 "_label": "check humidifer levels",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2351,7 +2041,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean baby seats",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2402,7 +2091,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean bathroom",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2442,7 +2130,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean cat poo",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2493,7 +2180,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean humidifiers",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2544,7 +2230,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean sheets couch blankets",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,ced_week": {
                                         "base": "A,ced_week",
@@ -2606,7 +2291,6 @@
                                 "_is_expanded": true,
                                 "_label": "clean table",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2657,7 +2341,6 @@
                                 "_is_expanded": true,
                                 "_label": "deep clean play mat",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2719,7 +2402,6 @@
                                 "_is_expanded": true,
                                 "_label": "empty roomba",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2770,7 +2452,6 @@
                                 "_is_expanded": true,
                                 "_label": "empty roomba Friday",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2821,7 +2502,6 @@
                                 "_is_expanded": true,
                                 "_label": "laundry monday",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2872,7 +2552,6 @@
                                 "_is_expanded": true,
                                 "_label": "laundry saturday",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2923,7 +2602,6 @@
                                 "_is_expanded": true,
                                 "_label": "laundry wednesday",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -2967,7 +2645,6 @@
                                 "_is_expanded": true,
                                 "_label": "morning cookery clean-up",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3007,7 +2684,6 @@
                                 "_is_expanded": true,
                                 "_label": "prepare_bed clean bedroom",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3047,7 +2723,6 @@
                                 "_is_expanded": true,
                                 "_label": "roomba bedroom",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3098,7 +2773,6 @@
                                 "_is_expanded": true,
                                 "_label": "roomba bedroom Friday",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3149,7 +2823,6 @@
                                 "_is_expanded": true,
                                 "_label": "roomba living area",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3200,7 +2873,6 @@
                                 "_is_expanded": true,
                                 "_label": "roomba living area thur",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3251,7 +2923,6 @@
                                 "_is_expanded": true,
                                 "_label": "roomba maintenance",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3302,7 +2973,6 @@
                                 "_is_expanded": true,
                                 "_label": "wipe down play mat2",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3345,7 +3015,6 @@
                         },
                         "_label": "cleaning",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Nation-States": {
                                 "base": "A,Nation-States",
@@ -3377,7 +3046,6 @@
                                 "_is_expanded": true,
                                 "_label": "be reponsible for rent",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3417,7 +3085,6 @@
                                 "_is_expanded": true,
                                 "_label": "be responsible for expenses card",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3457,7 +3124,6 @@
                                 "_is_expanded": true,
                                 "_label": "be responsible for utilities",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3497,7 +3163,6 @@
                                 "_is_expanded": true,
                                 "_label": "set resturant bucks for the week",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3529,7 +3194,6 @@
                         },
                         "_label": "Financial Ops",
                         "_meld_strategy": "default",
-                        
                         "_uid": 148,
                         "_weight": 1,
                         "promise": false
@@ -3551,7 +3215,6 @@
                                         "_is_expanded": true,
                                         "_label": "bathroom #2",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 196,
                                         "_weight": 1,
                                         "promise": false
@@ -3563,7 +3226,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "big bathroom",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 195,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3572,7 +3234,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "closet",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 194,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3580,7 +3241,6 @@
                                         },
                                         "_label": "bedroom #1",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 191,
                                         "_weight": 1,
                                         "promise": false
@@ -3602,7 +3262,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "heater maintenance",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 198,
                                                         "_weight": 1,
                                                         "promise": false
@@ -3610,7 +3269,6 @@
                                                 },
                                                 "_label": "bed area",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 197,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3619,7 +3277,6 @@
                                                 "_is_expanded": true,
                                                 "_label": "closet",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 193,
                                                 "_weight": 1,
                                                 "promise": false
@@ -3627,7 +3284,6 @@
                                         },
                                         "_label": "bedroom #2",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 192,
                                         "_weight": 1,
                                         "promise": false
@@ -3636,7 +3292,6 @@
                                         "_is_expanded": true,
                                         "_label": "cookery",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 189,
                                         "_weight": 1,
                                         "promise": false
@@ -3645,7 +3300,6 @@
                                         "_is_expanded": true,
                                         "_label": "dining area",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 190,
                                         "_weight": 1,
                                         "promise": false
@@ -3654,7 +3308,6 @@
                                         "_is_expanded": true,
                                         "_label": "hallway",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 188,
                                         "_weight": 1,
                                         "promise": false
@@ -3663,7 +3316,6 @@
                                         "_is_expanded": true,
                                         "_label": "maintenance",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 187,
                                         "_weight": 1,
                                         "promise": false
@@ -3671,7 +3323,6 @@
                                 },
                                 "_label": "Apartment",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 181,
                                 "_weight": 1,
                                 "promise": false
@@ -3680,7 +3331,6 @@
                                 "_is_expanded": true,
                                 "_label": "Bike Garage",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 185,
                                 "_weight": 1,
                                 "promise": false
@@ -3689,7 +3339,6 @@
                                 "_is_expanded": true,
                                 "_label": "Bike Gym",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 184,
                                 "_weight": 1,
                                 "promise": false
@@ -3698,7 +3347,6 @@
                                 "_is_expanded": true,
                                 "_label": "Playing in hallways",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 186,
                                 "_weight": 1,
                                 "promise": false
@@ -3707,7 +3355,6 @@
                                 "_is_expanded": true,
                                 "_label": "Pool",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 182,
                                 "_weight": 1,
                                 "promise": false
@@ -3716,7 +3363,6 @@
                                 "_is_expanded": true,
                                 "_label": "Weight Lifting Gym",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 183,
                                 "_weight": 1,
                                 "promise": false
@@ -3724,7 +3370,6 @@
                         },
                         "_label": "Housing",
                         "_meld_strategy": "default",
-                        
                         "_uid": 180,
                         "_weight": 1,
                         "promise": false
@@ -3733,7 +3378,6 @@
                         "_is_expanded": false,
                         "_label": "keep up with friends",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Internet": {
                                 "base": "A,Internet",
@@ -3751,6 +3395,172 @@
                         "_weight": 1,
                         "promise": false
                     },
+                    "responsible for kids": {
+                        "_is_expanded": false,
+                        "_kids": {
+                            "clip fingernails": {
+                                "_balancelinks": {
+                                    "America": {
+                                        "brand": "America",
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1.0
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "clip fingernails",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,ced_week": {
+                                        "base": "A,ced_week",
+                                        "premises": {
+                                            "A,ced_week": {
+                                                "divisor": 2,
+                                                "need": "A,ced_week",
+                                                "nigh": 1,
+                                                "open": 1
+                                            }
+                                        }
+                                    },
+                                    "A,day_minute": {
+                                        "base": "A,day_minute",
+                                        "premises": {
+                                            "A,day_minute": {
+                                                "divisor": null,
+                                                "need": "A,day_minute",
+                                                "nigh": 241,
+                                                "open": 240
+                                            }
+                                        }
+                                    },
+                                    "A,Nation-States": {
+                                        "base": "A,Nation-States",
+                                        "premises": {
+                                            "A,Nation-States,USA,Portland OR": {
+                                                "divisor": null,
+                                                "need": "A,Nation-States,USA,Portland OR",
+                                                "nigh": null,
+                                                "open": null
+                                            }
+                                        }
+                                    },
+                                    "A,weekdays": {
+                                        "base": "A,weekdays",
+                                        "premises": {
+                                            "A,weekdays,Friday": {
+                                                "divisor": null,
+                                                "need": "A,weekdays,Friday",
+                                                "nigh": null,
+                                                "open": null
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 23,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "get rid of toy buy new toy": {
+                                "_balancelinks": {
+                                    "Family": {
+                                        "brand": "Family",
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1.0
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "get rid of toy buy new toy",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,day_minute": {
+                                        "base": "A,day_minute",
+                                        "premises": {
+                                            "A,day_minute": {
+                                                "divisor": null,
+                                                "need": "A,day_minute",
+                                                "nigh": 541,
+                                                "open": 540
+                                            }
+                                        }
+                                    },
+                                    "A,Nation-States": {
+                                        "base": "A,Nation-States",
+                                        "premises": {
+                                            "A,Nation-States,USA,Portland OR": {
+                                                "divisor": null,
+                                                "need": "A,Nation-States,USA,Portland OR",
+                                                "nigh": null,
+                                                "open": null
+                                            }
+                                        }
+                                    },
+                                    "A,year_month": {
+                                        "base": "A,year_month",
+                                        "premises": {
+                                            "A,year_month": {
+                                                "divisor": 2,
+                                                "need": "A,year_month",
+                                                "nigh": 0,
+                                                "open": 0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 43,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "pciking them up": {
+                                "_is_expanded": true,
+                                "_label": "pciking them up",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,day_minute": {
+                                        "base": "A,day_minute",
+                                        "premises": {
+                                            "A,day_minute": {
+                                                "divisor": null,
+                                                "need": "A,day_minute",
+                                                "nigh": 1005,
+                                                "open": 1005
+                                            }
+                                        }
+                                    },
+                                    "A,Nation-States": {
+                                        "base": "A,Nation-States",
+                                        "premises": {
+                                            "A,Nation-States,USA,Portland OR": {
+                                                "divisor": null,
+                                                "need": "A,Nation-States,USA,Portland OR",
+                                                "nigh": null,
+                                                "open": null
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 145,
+                                "_weight": 1,
+                                "promise": true
+                            }
+                        },
+                        "_label": "responsible for kids",
+                        "_meld_strategy": "default",
+                        "_reasonunits": {
+                            "A,Nation-States": {
+                                "base": "A,Nation-States",
+                                "premises": {
+                                    "A,Nation-States,USA,Portland OR": {
+                                        "divisor": null,
+                                        "need": "A,Nation-States,USA,Portland OR",
+                                        "nigh": null,
+                                        "open": null
+                                    }
+                                }
+                            }
+                        },
+                        "_uid": 144,
+                        "_weight": 1,
+                        "promise": false
+                    },
                     "say hi to birds": {
                         "_balancelinks": {
                             "Family": {
@@ -3762,7 +3572,6 @@
                         "_is_expanded": true,
                         "_label": "say hi to birds",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -3805,7 +3614,6 @@
                                 "_is_expanded": true,
                                 "_label": "5 push-ups",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3834,7 +3642,6 @@
                                 "_is_expanded": true,
                                 "_label": "check protein for week is adequate",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3863,7 +3670,6 @@
                                 "_is_expanded": true,
                                 "_label": "clip nails",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3903,7 +3709,6 @@
                                 "_is_expanded": true,
                                 "_label": "cook veggies every morning",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3935,7 +3740,6 @@
                                         "_is_expanded": true,
                                         "_label": "I do not feel like I have to exercise",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -3956,7 +3760,6 @@
                                 },
                                 "_label": "daily exercise 20min",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -3985,7 +3788,6 @@
                                 "_is_expanded": true,
                                 "_label": "morning multivitamin",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4007,7 +3809,6 @@
                                 "_is_expanded": true,
                                 "_label": "night multivitamin",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4036,7 +3837,6 @@
                                 "_is_expanded": true,
                                 "_label": "noce hair removal",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4076,7 +3876,6 @@
                                 "_is_expanded": true,
                                 "_label": "pull ear hair",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4116,7 +3915,6 @@
                                 "_is_expanded": true,
                                 "_label": "shampoo hair",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4156,7 +3954,6 @@
                                 "_is_expanded": true,
                                 "_label": "straight back for 45 secs",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4185,7 +3982,6 @@
                                 "_is_expanded": true,
                                 "_label": "trim beard",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,day_minute": {
                                         "base": "A,day_minute",
@@ -4228,7 +4024,6 @@
                                         "_is_expanded": true,
                                         "_label": "bike or something",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4271,7 +4066,6 @@
                                                 "_is_expanded": false,
                                                 "_label": "bi and triceps exercises",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 130,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4280,7 +4074,6 @@
                                                 "_is_expanded": false,
                                                 "_label": "chest  exercises",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 129,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4288,7 +4081,6 @@
                                         },
                                         "_label": "chest and arms (mon)",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4321,7 +4113,6 @@
                                         "_is_expanded": true,
                                         "_label": "core and squats",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4361,7 +4152,6 @@
                                         "_is_expanded": true,
                                         "_label": "core lower back",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4401,7 +4191,6 @@
                                         "_is_expanded": false,
                                         "_label": "rest",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,weekdays": {
                                                 "base": "A,weekdays",
@@ -4433,7 +4222,6 @@
                                                 "_is_expanded": false,
                                                 "_label": "shoulder exercises",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 131,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4442,7 +4230,6 @@
                                                 "_is_expanded": false,
                                                 "_label": "upper back exercises",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 132,
                                                 "_weight": 1,
                                                 "promise": false
@@ -4450,7 +4237,6 @@
                                         },
                                         "_label": "shoulders and upper back",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4490,7 +4276,6 @@
                                         "_is_expanded": true,
                                         "_label": "squats hamstrings and calves",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,day_minute": {
                                                 "base": "A,day_minute",
@@ -4522,7 +4307,6 @@
                                 },
                                 "_label": "weight training",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 81,
                                 "_weight": 1,
                                 "promise": false
@@ -4530,7 +4314,6 @@
                         },
                         "_label": "workout",
                         "_meld_strategy": "default",
-                        
                         "_uid": 147,
                         "_weight": 1,
                         "promise": false
@@ -4538,7 +4321,6 @@
                 },
                 "_label": "casa",
                 "_meld_strategy": "default",
-                
                 "_uid": 2,
                 "_weight": 1,
                 "promise": false
@@ -4549,7 +4331,6 @@
                 "_is_expanded": true,
                 "_label": "ced_day",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4560,7 +4341,6 @@
                 "_is_expanded": true,
                 "_label": "ced_week",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4571,7 +4351,6 @@
                 "_is_expanded": true,
                 "_label": "ced_year",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -4617,7 +4396,6 @@
                                 "_is_expanded": true,
                                 "_label": "Ask Charles monthly what I can do",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4638,7 +4416,6 @@
                         },
                         "_label": "charles friends would like housing support",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4670,7 +4447,6 @@
                                 "_is_expanded": true,
                                 "_label": "test program",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4713,7 +4489,6 @@
                         },
                         "_label": "develop D&B software",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4745,7 +4520,6 @@
                                 "_is_expanded": true,
                                 "_label": "donate to influential people that are pro climate change",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4799,7 +4573,6 @@
                         },
                         "_label": "donate to action committees",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4821,7 +4594,6 @@
                         "_is_expanded": true,
                         "_label": "late_night_go_to_sleep",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -4863,7 +4635,6 @@
                                         "_is_expanded": true,
                                         "_label": "be available for phone call",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,Aaron Donald things effected by him": {
                                                 "base": "A,Aaron Donald things effected by him",
@@ -4908,7 +4679,6 @@
                                         "_is_expanded": true,
                                         "_label": "call David and discuss methodology",
                                         "_meld_strategy": "default",
-                                        
                                         "_reasonunits": {
                                             "A,Aaron Donald things effected by him": {
                                                 "base": "A,Aaron Donald things effected by him",
@@ -4951,7 +4721,6 @@
                                 },
                                 "_label": "listening to David",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -4972,7 +4741,6 @@
                         },
                         "_label": "listening",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -5004,7 +4772,6 @@
                                 "_is_expanded": true,
                                 "_label": "write letters about climate change to congressman",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -5036,7 +4803,6 @@
                         },
                         "_label": "write letters to reps",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
@@ -5057,7 +4823,6 @@
                 },
                 "_label": "D&B",
                 "_meld_strategy": "default",
-                
                 "_reasonunits": {
                     "A,Aaron Donald things effected by him": {
                         "base": "A,Aaron Donald things effected by him",
@@ -5081,14 +4846,12 @@
                 "_is_expanded": true,
                 "_label": "day_hour",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
             },
             "day_minute": {
                 "_begin": 0,
-                "_close": 1439,
                 "_beliefunits": {
                     "A,day_minute": {
                         "base": "A,day_minute",
@@ -5097,10 +4860,10 @@
                         "pick": "A,day_minute"
                     }
                 },
+                "_close": 1439,
                 "_is_expanded": true,
                 "_label": "day_minute",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5112,7 +4875,6 @@
                         "_is_expanded": false,
                         "_label": "Submit hours on website",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,day_minute": {
                                 "base": "A,day_minute",
@@ -5144,7 +4906,6 @@
                 },
                 "_label": "Freelancing",
                 "_meld_strategy": "default",
-                
                 "_reasonunits": {
                     "A,day_minute": {
                         "base": "A,day_minute",
@@ -5172,7 +4933,6 @@
                                 "_is_expanded": true,
                                 "_label": "PSU Ultimate",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 254,
                                 "_weight": 1,
                                 "promise": false
@@ -5180,7 +4940,6 @@
                         },
                         "_label": "AOL AIM",
                         "_meld_strategy": "default",
-                        
                         "_uid": 253,
                         "_weight": 1,
                         "promise": false
@@ -5189,7 +4948,6 @@
                         "_is_expanded": true,
                         "_label": "Facebook",
                         "_meld_strategy": "default",
-                        
                         "_uid": 251,
                         "_weight": 1,
                         "promise": false
@@ -5198,7 +4956,6 @@
                         "_is_expanded": true,
                         "_label": "Github",
                         "_meld_strategy": "default",
-                        
                         "_uid": 252,
                         "_weight": 1,
                         "promise": false
@@ -5207,7 +4964,6 @@
                         "_is_expanded": true,
                         "_label": "Youtube",
                         "_meld_strategy": "default",
-                        
                         "_uid": 255,
                         "_weight": 1,
                         "promise": false
@@ -5215,7 +4971,6 @@
                 },
                 "_label": "Internet",
                 "_meld_strategy": "default",
-                
                 "_uid": 250,
                 "_weight": 1,
                 "promise": false
@@ -5226,7 +4981,6 @@
                 "_is_expanded": true,
                 "_label": "month_day",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5242,7 +4996,6 @@
                         "_is_expanded": true,
                         "_label": "1st week",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5253,7 +5006,6 @@
                         "_is_expanded": true,
                         "_label": "2nd week",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5264,7 +5016,6 @@
                         "_is_expanded": true,
                         "_label": "3rd week",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5275,7 +5026,6 @@
                         "_is_expanded": true,
                         "_label": "4th week",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5286,7 +5036,6 @@
                         "_is_expanded": true,
                         "_label": "5th week",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5294,7 +5043,6 @@
                 },
                 "_label": "month_week",
                 "_meld_strategy": "default",
-                
                 "_range_source_road": "A,ced_week",
                 "_uid": null,
                 "_weight": 40,
@@ -5307,7 +5055,6 @@
                         "_is_expanded": true,
                         "_label": "Bllod Meridan by Cormac",
                         "_meld_strategy": "default",
-                        
                         "_uid": 265,
                         "_weight": 1,
                         "promise": false
@@ -5319,7 +5066,6 @@
                                 "_is_expanded": true,
                                 "_label": "Happy - angerish",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 267,
                                 "_weight": 1,
                                 "promise": false
@@ -5327,7 +5073,6 @@
                         },
                         "_label": "Happy",
                         "_meld_strategy": "default",
-                        
                         "_uid": 266,
                         "_weight": 1,
                         "promise": false
@@ -5336,7 +5081,6 @@
                         "_is_expanded": true,
                         "_label": "hungry",
                         "_meld_strategy": "default",
-                        
                         "_uid": 268,
                         "_weight": 1,
                         "promise": false
@@ -5344,7 +5088,6 @@
                 },
                 "_label": "Moods",
                 "_meld_strategy": "default",
-                
                 "_uid": 264,
                 "_weight": 1,
                 "promise": false
@@ -5356,7 +5099,6 @@
                         "_is_expanded": true,
                         "_label": "France2",
                         "_meld_strategy": "default",
-                        
                         "_uid": 235,
                         "_weight": 1,
                         "promise": false
@@ -5377,7 +5119,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "library",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 244,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5386,7 +5127,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Park Squares",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 241,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5395,7 +5135,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Pool",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 242,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5404,7 +5143,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Stott Field",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 243,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5412,7 +5150,6 @@
                                                 },
                                                 "_label": "PSU",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 240,
                                                 "_weight": 1,
                                                 "promise": false
@@ -5424,7 +5161,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "10th floor garden",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 246,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5433,7 +5169,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Apt X4XX",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 247,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5442,7 +5177,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Gym",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 248,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5451,7 +5185,6 @@
                                                         "_is_expanded": true,
                                                         "_label": "Office",
                                                         "_meld_strategy": "default",
-                                                        
                                                         "_uid": 249,
                                                         "_weight": 1,
                                                         "promise": false
@@ -5459,7 +5192,6 @@
                                                 },
                                                 "_label": "Southpark Apt",
                                                 "_meld_strategy": "default",
-                                                
                                                 "_uid": 245,
                                                 "_weight": 1,
                                                 "promise": false
@@ -5467,7 +5199,6 @@
                                         },
                                         "_label": "Downtown",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 239,
                                         "_weight": 1,
                                         "promise": false
@@ -5475,7 +5206,6 @@
                                 },
                                 "_label": "Portland OR",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 237,
                                 "_weight": 1,
                                 "promise": false
@@ -5484,7 +5214,6 @@
                                 "_is_expanded": true,
                                 "_label": "Texas",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 238,
                                 "_weight": 1,
                                 "promise": false
@@ -5492,7 +5221,6 @@
                         },
                         "_label": "USA",
                         "_meld_strategy": "default",
-                        
                         "_uid": 236,
                         "_weight": 1,
                         "promise": false
@@ -5500,7 +5228,6 @@
                 },
                 "_label": "Nation-States",
                 "_meld_strategy": "default",
-                
                 "_uid": 234,
                 "_weight": 1,
                 "promise": false
@@ -5512,7 +5239,6 @@
                         "_is_expanded": true,
                         "_label": "Big Lewbowski",
                         "_meld_strategy": "default",
-                        
                         "_uid": 273,
                         "_weight": 1,
                         "promise": false
@@ -5521,7 +5247,6 @@
                         "_is_expanded": true,
                         "_label": "Star Wars Episode IV",
                         "_meld_strategy": "default",
-                        
                         "_uid": 274,
                         "_weight": 1,
                         "promise": false
@@ -5529,7 +5254,6 @@
                 },
                 "_label": "No Movie playing",
                 "_meld_strategy": "default",
-                
                 "_uid": 272,
                 "_weight": 1,
                 "promise": false
@@ -5539,9 +5263,8 @@
                 "_close": 5,
                 "_is_expanded": true,
                 "_label": "numeric_road_test",
-                "_numeric_road": "A,month_week",
                 "_meld_strategy": "default",
-                
+                "_numeric_road": "A,month_week",
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5553,7 +5276,6 @@
                         "_is_expanded": true,
                         "_label": "Summer",
                         "_meld_strategy": "default",
-                        
                         "_uid": 276,
                         "_weight": 1,
                         "promise": false
@@ -5561,7 +5283,6 @@
                 },
                 "_label": "Seasons",
                 "_meld_strategy": "default",
-                
                 "_uid": 275,
                 "_weight": 1,
                 "promise": false
@@ -5573,7 +5294,6 @@
                         "_is_expanded": true,
                         "_label": "Not tired",
                         "_meld_strategy": "default",
-                        
                         "_uid": 278,
                         "_weight": 1,
                         "promise": false
@@ -5582,7 +5302,6 @@
                         "_is_expanded": true,
                         "_label": "Tired",
                         "_meld_strategy": "default",
-                        
                         "_uid": 279,
                         "_weight": 1,
                         "promise": false
@@ -5590,7 +5309,6 @@
                 },
                 "_label": "Tired Status",
                 "_meld_strategy": "default",
-                
                 "_uid": 277,
                 "_weight": 1,
                 "promise": false
@@ -5602,7 +5320,6 @@
                         "_is_expanded": true,
                         "_label": "check on community",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -5624,7 +5341,6 @@
                         "_is_expanded": true,
                         "_label": "contemplate the disc",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,No Movie playing": {
                                 "base": "A,No Movie playing",
@@ -5649,7 +5365,6 @@
                                 "_is_expanded": true,
                                 "_label": "check PSU mini",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,Moods": {
                                         "base": "A,Moods",
@@ -5670,7 +5385,6 @@
                         },
                         "_label": "playing ultimate",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,Moods": {
                                 "base": "A,Moods",
@@ -5692,7 +5406,6 @@
                         "_is_expanded": true,
                         "_label": "relaxing",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,No Movie playing": {
                                 "base": "A,No Movie playing",
@@ -5713,7 +5426,6 @@
                 },
                 "_label": "Ultimate Frisbee",
                 "_meld_strategy": "default",
-                
                 "_reasonunits": {
                     "A,Moods": {
                         "base": "A,Moods",
@@ -5737,11 +5449,31 @@
                     "Existance in Williamette watershed": {
                         "_is_expanded": true,
                         "_kids": {
+                            "animate": {
+                                "_is_expanded": true,
+                                "_label": "animate",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,WaterExistence": {
+                                        "base": "A,WaterExistence",
+                                        "premises": {
+                                            "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment": {
+                                                "divisor": null,
+                                                "need": "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment",
+                                                "nigh": null,
+                                                "open": null
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 228,
+                                "_weight": 1,
+                                "promise": false
+                            },
                             "bike around": {
                                 "_is_expanded": true,
                                 "_label": "bike around",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,WaterExistence": {
                                         "base": "A,WaterExistence",
@@ -5763,7 +5495,6 @@
                                 "_is_expanded": true,
                                 "_label": "Go climbing at east Circuit",
                                 "_meld_strategy": "default",
-                                
                                 "_reasonunits": {
                                     "A,WaterExistence": {
                                         "base": "A,WaterExistence",
@@ -5780,33 +5511,10 @@
                                 "_uid": 226,
                                 "_weight": 1,
                                 "promise": false
-                            },
-                            "animate": {
-                                "_is_expanded": true,
-                                "_label": "animate",
-                                "_meld_strategy": "default",
-                                
-                                "_reasonunits": {
-                                    "A,WaterExistence": {
-                                        "base": "A,WaterExistence",
-                                        "premises": {
-                                            "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment": {
-                                                "divisor": null,
-                                                "need": "A,WaterExistence,Williamette WaterShed,East Side of Watershed,apartment",
-                                                "nigh": null,
-                                                "open": null
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 228,
-                                "_weight": 1,
-                                "promise": false
                             }
                         },
                         "_label": "Existance in Williamette watershed",
                         "_meld_strategy": "default",
-                        
                         "_reasonunits": {
                             "A,WaterExistence": {
                                 "base": "A,WaterExistence",
@@ -5827,7 +5535,6 @@
                 },
                 "_label": "WaterAir Living",
                 "_meld_strategy": "default",
-                
                 "_uid": 223,
                 "_weight": 1,
                 "promise": false
@@ -5845,7 +5552,6 @@
                                         "_is_expanded": true,
                                         "_label": "apartment",
                                         "_meld_strategy": "default",
-                                        
                                         "_uid": 260,
                                         "_weight": 1,
                                         "promise": false
@@ -5853,7 +5559,6 @@
                                 },
                                 "_label": "East Side of Watershed",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 258,
                                 "_weight": 1,
                                 "promise": false
@@ -5862,7 +5567,6 @@
                                 "_is_expanded": true,
                                 "_label": "West side of Watershed",
                                 "_meld_strategy": "default",
-                                
                                 "_uid": 259,
                                 "_weight": 1,
                                 "promise": false
@@ -5870,7 +5574,6 @@
                         },
                         "_label": "Williamette WaterShed",
                         "_meld_strategy": "default",
-                        
                         "_uid": 257,
                         "_weight": 1,
                         "promise": false
@@ -5878,7 +5581,6 @@
                 },
                 "_label": "WaterExistence",
                 "_meld_strategy": "default",
-                
                 "_uid": 256,
                 "_weight": 1,
                 "promise": false
@@ -5890,7 +5592,6 @@
                         "_is_expanded": true,
                         "_label": "Friday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5899,7 +5600,6 @@
                         "_is_expanded": true,
                         "_label": "Monday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5908,7 +5608,6 @@
                         "_is_expanded": true,
                         "_label": "Saturday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 50,
                         "promise": false
@@ -5917,7 +5616,6 @@
                         "_is_expanded": true,
                         "_label": "Sunday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5926,7 +5624,6 @@
                         "_is_expanded": true,
                         "_label": "Thursday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 30,
                         "promise": false
@@ -5935,7 +5632,6 @@
                         "_is_expanded": true,
                         "_label": "Tuesday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5944,7 +5640,6 @@
                         "_is_expanded": true,
                         "_label": "Wednesday",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 20,
                         "promise": false
@@ -5952,7 +5647,6 @@
                 },
                 "_label": "weekdays",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -5968,7 +5662,6 @@
                         "_is_expanded": true,
                         "_label": "April",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5979,7 +5672,6 @@
                         "_is_expanded": true,
                         "_label": "August",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -5990,7 +5682,6 @@
                         "_is_expanded": true,
                         "_label": "December",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6001,7 +5692,6 @@
                         "_is_expanded": true,
                         "_label": "February",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6012,7 +5702,6 @@
                         "_is_expanded": true,
                         "_label": "January",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6023,7 +5712,6 @@
                         "_is_expanded": true,
                         "_label": "July",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6034,7 +5722,6 @@
                         "_is_expanded": true,
                         "_label": "June",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6045,7 +5732,6 @@
                         "_is_expanded": true,
                         "_label": "March",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6056,7 +5742,6 @@
                         "_is_expanded": true,
                         "_label": "May",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6067,7 +5752,6 @@
                         "_is_expanded": true,
                         "_label": "November",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6078,7 +5762,6 @@
                         "_is_expanded": true,
                         "_label": "October",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6089,7 +5772,6 @@
                         "_is_expanded": true,
                         "_label": "September",
                         "_meld_strategy": "default",
-                        
                         "_uid": null,
                         "_weight": 40,
                         "promise": false
@@ -6097,7 +5779,6 @@
                 },
                 "_label": "year_month",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
@@ -6108,14 +5789,12 @@
                 "_is_expanded": true,
                 "_label": "year_week",
                 "_meld_strategy": "default",
-                
                 "_uid": null,
                 "_weight": 40,
                 "promise": false
             }
         },
         "_meld_strategy": "default",
-        
         "_uid": 1,
         "_weight": 1
     },

@@ -50,8 +50,7 @@ def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
     # GIVEN
     swim_text = "swim"
     x_agenda = agendaunit_shop()
-    swim1_uid = 1
-    swim1_group = groupunit_shop(swim_text, uid=swim1_uid)
+    swim1_group = groupunit_shop(swim_text)
     bob_text = "Bob"
     swim1_group.set_partylink(partylink_shop(bob_text))
     x_agenda.set_groupunit(swim1_group)
@@ -59,19 +58,16 @@ def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
 
     # WHEN
     yao_text = "Yao"
-    swim2_uid = 2
-    swim2_group = groupunit_shop(swim_text, uid=swim2_uid)
+    swim2_group = groupunit_shop(swim_text)
     swim2_group.set_partylink(partylink_shop(bob_text))
     swim2_group.set_partylink(partylink_shop(yao_text))
     x_agenda.set_groupunit(swim2_group, replace=False)
 
     # THEN
-    assert x_agenda.get_groupunit(swim_text).uid == swim1_uid
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 1
 
     # WHEN / THEN
     x_agenda.set_groupunit(swim2_group, replace=True)
-    assert x_agenda.get_groupunit(swim_text).uid == swim2_uid
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
@@ -79,24 +75,20 @@ def test_agenda_groups_set_groupunit_CorrectlySets_partylinks():
     # GIVEN
     swim_text = "swim"
     x_agenda = agendaunit_shop()
-    swim1_uid = 1
-    swim1_group = groupunit_shop(swim_text, uid=swim1_uid)
+    swim1_group = groupunit_shop(swim_text)
     bob_text = "Bob"
     swim1_group.set_partylink(partylink_shop(bob_text))
     x_agenda.set_groupunit(swim1_group)
-    assert x_agenda.get_groupunit(swim_text).uid == swim1_uid
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 1
 
     # WHEN
     yao_text = "Yao"
-    swim2_uid = 2
-    swim2_group = groupunit_shop(swim_text, uid=swim2_uid)
+    swim2_group = groupunit_shop(swim_text)
     swim2_group.set_partylink(partylink_shop(bob_text))
     swim2_group.set_partylink(partylink_shop(yao_text))
     x_agenda.set_groupunit(swim2_group, add_partylinks=True)
 
     # THEN
-    assert x_agenda.get_groupunit(swim_text).uid == swim1_uid
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
@@ -501,13 +493,12 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = "swim"
-    swim_group = groupunit_shop(brand=swim_text, uid=13)
+    swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=rico_text))
     agenda.set_groupunit(swim_group)
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
     assert agenda.get_groupunit(swim_text) != None
-    assert agenda.get_groupunit(swim_text).uid == 13
     assert agenda.get_groupunit(swim_text)._single_party == False
     assert len(agenda.get_groupunit(swim_text)._partys) == 1
 
@@ -519,7 +510,6 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
 
     # THEN
     assert agenda.get_groupunit(jog_text) != None
-    assert agenda.get_groupunit(jog_text).uid == 13
     assert agenda.get_groupunit(swim_text) is None
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
@@ -533,9 +523,9 @@ def test_agenda_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = "swim"
-    agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=13))
+    agenda.set_groupunit(groupunit_shop(brand=swim_text))
     jog_text = "jog"
-    agenda.set_groupunit(groupunit_shop(brand=jog_text, uid=13))
+    agenda.set_groupunit(groupunit_shop(brand=jog_text))
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
@@ -556,13 +546,13 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = "swim"
-    swim_group = groupunit_shop(brand=swim_text, uid=13)
+    swim_group = groupunit_shop(brand=swim_text)
     swim_group.set_partylink(
         partylink=partylink_shop(party_id=rico_text, creditor_weight=5, debtor_weight=3)
     )
     agenda.set_groupunit(swim_group)
     jog_text = "jog"
-    jog_group = groupunit_shop(brand=jog_text, uid=13)
+    jog_group = groupunit_shop(brand=jog_text)
     jog_group.set_partylink(
         partylink=partylink_shop(
             party_id=rico_text, creditor_weight=7, debtor_weight=10
@@ -571,7 +561,6 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     agenda.set_groupunit(jog_group)
     print(f"{agenda.get_groupunit(jog_text)._partys.get(rico_text)=}")
     assert agenda.get_groupunit(jog_text) != None
-    assert agenda.get_groupunit(jog_text).uid == 13
 
     # WHEN
     agenda.edit_groupunit_brand(
@@ -597,7 +586,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
     swim_text = "swim"
-    swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
+    swim_groupunit = groupunit_shop(brand=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
     outdoor_text = "outdoors"
     outdoor_road = x_agenda.make_road(x_agenda._agent_id, outdoor_text)
@@ -633,11 +622,11 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
     swim_text = "swim"
-    swim_groupunit = groupunit_shop(brand=swim_text, uid=13)
+    swim_groupunit = groupunit_shop(brand=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
 
     jog_text = "jog"
-    jog_groupunit = groupunit_shop(brand=jog_text, uid=13)
+    jog_groupunit = groupunit_shop(brand=jog_text)
     x_agenda.set_groupunit(jog_groupunit)
 
     outdoor_text = "outdoors"
@@ -911,122 +900,6 @@ def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     assert groupunit_list_x[2] == swim_text
     assert groupunit_list_x[3] == wiggle_text
     assert len(groupunit_list_x) == 4
-
-
-def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsEmptyGroupUIDs():
-    # GIVEN
-    bob_agenda = agendaunit_shop("Bob")
-    swim_text = "swim"
-    run_text = "run"
-    fly_text = "fly"
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert bob_agenda._groups[swim_text].uid is None
-    assert bob_agenda._groups[run_text].uid is None
-    assert bob_agenda._groups[fly_text].uid is None
-
-    # WHEN
-    bob_agenda.set_all_groupunits_uids_unique()
-
-    # THEN
-    assert bob_agenda._groups[swim_text].uid != None
-    assert bob_agenda._groups[run_text].uid != None
-    assert bob_agenda._groups[fly_text].uid != None
-
-
-def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
-    # GIVEN
-    bob_agenda = agendaunit_shop("Bob")
-    swim_text = "swim"
-    run_text = "run"
-    fly_text = "fly"
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text, uid=3))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert bob_agenda._groups[swim_text].uid == 3
-    assert bob_agenda._groups[run_text].uid == 3
-    assert bob_agenda._groups[fly_text].uid is None
-
-    # WHEN
-    bob_agenda.set_all_groupunits_uids_unique()
-
-    # THEN
-    print(f"{bob_agenda._groups[swim_text].uid=}")
-    print(f"{bob_agenda._groups[run_text].uid=}")
-    assert bob_agenda._groups[swim_text].uid != bob_agenda._groups[run_text].uid
-    assert bob_agenda._groups[run_text].uid != 3
-    assert bob_agenda._groups[run_text].uid != 3
-    assert bob_agenda._groups[fly_text].uid != None
-
-
-def test_agenda_set_all_groupunits_uids_unique_CorrectlySetsChangesSameGroupUIDs():
-    # GIVEN
-    noa_text = "Noa"
-    noa_agenda = agendaunit_shop(noa_text)
-    swim_text = "swim"
-    run_text = "run"
-    fly_text = "fly"
-    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text, uid=3))
-    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text, uid=3))
-    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert noa_agenda._groups[swim_text].uid == 3
-    assert noa_agenda._groups[run_text].uid == 3
-    assert noa_agenda._groups[fly_text].uid is None
-
-    # WHEN
-    noa_agenda.set_all_groupunits_uids_unique()
-
-    # THEN
-    print(f"{noa_agenda._groups[swim_text].uid=}")
-    print(f"{noa_agenda._groups[run_text].uid=}")
-    assert noa_agenda._groups[swim_text].uid != noa_agenda._groups[run_text].uid
-    assert noa_agenda._groups[run_text].uid != 3
-    assert noa_agenda._groups[run_text].uid != 3
-    assert noa_agenda._groups[fly_text].uid != None
-
-
-def test_agenda_all_groupunits_uids_are_unique_ReturnsCorrectBoolean():
-    # GIVEN
-    noa_agenda = agendaunit_shop("Noa")
-    swim_text = "swim"
-    run_text = "run"
-    fly_text = "fly"
-    climb_text = "climb"
-    noa_agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=3))
-    noa_agenda.set_groupunit(groupunit_shop(brand=run_text, uid=3))
-    noa_agenda.set_groupunit(groupunit_shop(brand=fly_text))
-    assert noa_agenda._groups[swim_text].uid == 3
-    assert noa_agenda._groups[run_text].uid == 3
-    assert noa_agenda._groups[fly_text].uid is None
-
-    # WHEN1 / THEN
-    assert noa_agenda.all_groupunits_uids_are_unique() == False
-
-    # WHEN2
-    noa_agenda.set_groupunit(groupunit_shop(brand=swim_text, uid=4))
-    # THEN
-    assert noa_agenda.all_groupunits_uids_are_unique() == False
-
-    # WHEN3
-    noa_agenda.del_groupunit(groupbrand=fly_text)
-    # THEN
-    assert noa_agenda.all_groupunits_uids_are_unique()
-
-    # WHEN
-    noa_agenda.set_groupunit(groupunit_shop(brand=fly_text, uid=5))
-    # THEN
-    assert noa_agenda.all_groupunits_uids_are_unique()
-
-    # WHEN
-    noa_agenda.set_groupunit(groupunit_shop(brand=fly_text, uid=5))
-    # THEN
-    assert noa_agenda.all_groupunits_uids_are_unique()
-
-    # WHEN
-    noa_agenda.set_groupunit(groupunit_shop(brand=climb_text, uid=13))
-    # THEN
-    assert noa_agenda.all_groupunits_uids_are_unique()
 
 
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():

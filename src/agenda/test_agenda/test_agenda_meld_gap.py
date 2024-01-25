@@ -112,7 +112,7 @@
 #     bob2_agenda = agendaunit_shop(bob_text)
 #     bob2_agenda.set_groupunit(run_groupunit)
 #     swim_text = "swimmers"
-#     swim_groupunit = groupunit_shop(brand=swim_text, uid=5)
+#     swim_groupunit = groupunit_shop(brand=swim_text)
 #     bob2_agenda.set_groupunit(swim_groupunit)
 #     bob1_agenda.meld(other_agenda=bob2_agenda)
 

@@ -30,8 +30,6 @@ class GroupCore:
 
 @dataclass
 class GroupUnit(GroupCore):
-    uid: int = None
-    single_party_id: int = None  # set by AgendaUnit.set_partyunit()
     _single_party: bool = None  # set by AgendaUnit.set_partyunit()
     _partys: dict[PartyID:PartyLink] = None
     _agenda_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
@@ -50,10 +48,6 @@ class GroupUnit(GroupCore):
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {"brand": self.brand}
-        if self.uid != None:
-            x_dict["uid"] = self.uid
-        if self.single_party_id != None:
-            x_dict["single_party_id"] = self.single_party_id
         if self._single_party:
             x_dict["_single_party"] = self._single_party
         if self._partys not in [{}, None]:
@@ -144,10 +138,7 @@ class GroupUnit(GroupCore):
                 self._partys[oba.party_id].meld(oba)
 
     def _meld_attributes_that_must_be_equal(self, other_group):
-        xl = [
-            ("brand", self.brand, other_group.brand),
-            ("uid", self.uid, other_group.uid),
-        ]
+        xl = [("brand", self.brand, other_group.brand)]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
@@ -172,11 +163,7 @@ def get_from_dict(x_dict: dict) -> dict[GroupBrand:GroupUnit]:
     for groupunit_dict in x_dict.values():
         x_group = groupunit_shop(
             brand=groupunit_dict["brand"],
-            uid=get_obj_from_groupunit_dict(groupunit_dict, "uid"),
             _single_party=get_obj_from_groupunit_dict(groupunit_dict, "_single_party"),
-            single_party_id=get_obj_from_groupunit_dict(
-                groupunit_dict, "single_party_id"
-            ),
             _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
             _partylinks_set_by_economy_road=get_obj_from_groupunit_dict(
                 groupunit_dict, "_partylinks_set_by_economy_road"
@@ -197,8 +184,6 @@ def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
 
 def groupunit_shop(
     brand: GroupBrand,
-    uid: int = None,
-    single_party_id: int = None,
     _single_party: bool = None,
     _partys: dict[PartyID:PartyLink] = None,
     _agenda_credit: float = None,
@@ -216,8 +201,6 @@ def groupunit_shop(
         _single_party = False
     return GroupUnit(
         brand=brand,
-        uid=uid,
-        single_party_id=single_party_id,
         _single_party=_single_party,
         _partys=get_empty_dict_if_none(_partys),
         _agenda_credit=get_0_if_None(_agenda_credit),

@@ -11,9 +11,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "A a ron Jones",
-            "single_party_id": 21,
-            "uid": 32
+            "brand": "A a ron Jones"
         },
         "ACME DevOps": {
             "_partys": {
@@ -69,9 +67,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME DevOps",
-            "single_party_id": null,
-            "uid": 12
+            "brand": "ACME DevOps"
         },
         "ACME General": {
             "_partys": {
@@ -97,9 +93,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "ACME General",
-            "single_party_id": null,
-            "uid": 29
+            "brand": "ACME General"
         },
         "America": {
             "_partys": {
@@ -110,9 +104,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "America",
-            "single_party_id": 1,
-            "uid": 1
+            "brand": "America"
         },
         "Anna": {
             "_partys": {
@@ -123,9 +115,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Anna",
-            "single_party_id": 2,
-            "uid": 2
+            "brand": "Anna"
         },
         "Benjamin Stoddert": {
             "_partys": {
@@ -136,9 +126,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Benjamin Stoddert",
-            "single_party_id": 14,
-            "uid": 23
+            "brand": "Benjamin Stoddert"
         },
         "Bob302": {
             "_partys": {
@@ -149,9 +137,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Bob302",
-            "single_party_id": 6,
-            "uid": 6
+            "brand": "Bob302"
         },
         "Charles Lee": {
             "_partys": {
@@ -162,9 +148,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Charles Lee",
-            "single_party_id": 13,
-            "uid": 22
+            "brand": "Charles Lee"
         },
         "Climate Change": {
             "_partys": {
@@ -185,9 +169,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Climate Change",
-            "single_party_id": null,
-            "uid": 20
+            "brand": "Climate Change"
         },
         "Ernesto Chavez": {
             "_partys": {
@@ -198,9 +180,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Ernesto Chavez",
-            "single_party_id": 10,
-            "uid": 10
+            "brand": "Ernesto Chavez"
         },
         "Everyone": {
             "_partys": {
@@ -316,9 +296,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Everyone",
-            "single_party_id": null,
-            "uid": 15
+            "brand": "Everyone"
         },
         "Family": {
             "_partys": {
@@ -339,9 +317,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Family",
-            "single_party_id": null,
-            "uid": 13
+            "brand": "Family"
         },
         "Friends": {
             "_partys": {
@@ -362,9 +338,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Friends",
-            "single_party_id": null,
-            "uid": 14
+            "brand": "Friends"
         },
         "hurt by us dollar": {
             "_partys": {
@@ -375,9 +349,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "hurt by us dollar",
-            "single_party_id": null,
-            "uid": 30
+            "brand": "hurt by us dollar"
         },
         "Jacque Chirac": {
             "_partys": {
@@ -388,9 +360,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Jacque Chirac",
-            "single_party_id": 20,
-            "uid": 31
+            "brand": "Jacque Chirac"
         },
         "Jane Randolph": {
             "_partys": {
@@ -401,9 +371,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Jane Randolph",
-            "single_party_id": 17,
-            "uid": 26
+            "brand": "Jane Randolph"
         },
         "likes US DOLLAR": {
             "_partys": {
@@ -429,9 +397,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "likes US DOLLAR",
-            "single_party_id": null,
-            "uid": 16
+            "brand": "likes US DOLLAR"
         },
         "Maria Reynolds": {
             "_partys": {
@@ -442,9 +408,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Maria Reynolds",
-            "single_party_id": 7,
-            "uid": 7
+            "brand": "Maria Reynolds"
         },
         "Martha Wayles": {
             "_partys": {
@@ -455,9 +419,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Martha Wayles",
-            "single_party_id": 15,
-            "uid": 24
+            "brand": "Martha Wayles"
         },
         "Mikayla": {
             "_partys": {
@@ -468,9 +430,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Mikayla",
-            "single_party_id": 12,
-            "uid": 21
+            "brand": "Mikayla"
         },
         "Norberto": {
             "_partys": {
@@ -481,9 +441,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Norberto",
-            "single_party_id": 22,
-            "uid": 33
+            "brand": "Norberto"
         },
         "OceanVista Apt": {
             "_partys": {
@@ -504,9 +462,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "OceanVista Apt",
-            "single_party_id": null,
-            "uid": 34
+            "brand": "OceanVista Apt"
         },
         "People who identify by UTEP": {
             "_partys": {
@@ -517,9 +473,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "People who identify by UTEP",
-            "single_party_id": null,
-            "uid": 18
+            "brand": "People who identify by UTEP"
         },
         "Perrison": {
             "_partys": {
@@ -530,9 +484,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Perrison",
-            "single_party_id": 9,
-            "uid": 9
+            "brand": "Perrison"
         },
         "Philipa": {
             "_partys": {
@@ -543,9 +495,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Philipa",
-            "single_party_id": 5,
-            "uid": 5
+            "brand": "Philipa"
         },
         "Philosophy": {
             "_partys": {
@@ -571,9 +521,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Philosophy",
-            "single_party_id": null,
-            "uid": 11
+            "brand": "Philosophy"
         },
         "Prashant": {
             "_partys": {
@@ -584,9 +532,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Prashant",
-            "single_party_id": 8,
-            "uid": 8
+            "brand": "Prashant"
         },
         "Renee Elise Goldsberry": {
             "_partys": {
@@ -597,9 +543,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Renee Elise Goldsberry",
-            "single_party_id": 4,
-            "uid": 4
+            "brand": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
             "_partys": {
@@ -610,9 +554,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Sam zamora",
-            "single_party_id": 16,
-            "uid": 25
+            "brand": "Sam zamora"
         },
         "Shadwell Harris": {
             "_partys": {
@@ -623,9 +565,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Shadwell Harris",
-            "single_party_id": 18,
-            "uid": 27
+            "brand": "Shadwell Harris"
         },
         "SHOW ME2": {
             "_partys": {
@@ -636,9 +576,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "SHOW ME2",
-            "single_party_id": null,
-            "uid": 17
+            "brand": "SHOW ME2"
         },
         "Thomas OSU": {
             "_partys": {
@@ -649,9 +587,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Thomas OSU",
-            "single_party_id": 11,
-            "uid": 19
+            "brand": "Thomas OSU"
         },
         "Travis Fox": {
             "_partys": {
@@ -662,9 +598,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "Travis Fox",
-            "single_party_id": 3,
-            "uid": 3
+            "brand": "Travis Fox"
         },
         "WIlliam Wallace": {
             "_partys": {
@@ -675,9 +609,7 @@
                 }
             },
             "_single_party": false,
-            "brand": "WIlliam Wallace",
-            "single_party_id": 19,
-            "uid": 28
+            "brand": "WIlliam Wallace"
         }
     },
     "_idearoot": {

@@ -33,8 +33,6 @@ def test_GroupUnit_exists():
     # THEN
     assert swim_groupunit != None
     assert swim_groupunit.brand == swim_text
-    assert swim_groupunit.uid is None
-    assert swim_groupunit.single_party_id is None
     assert swim_groupunit._single_party is None
     assert swim_groupunit._partys is None
     assert swim_groupunit._agenda_credit is None
@@ -347,37 +345,16 @@ def test_GroupUnit_meld_RaiseSameparty_idException():
     )
 
 
-def test_GroupUnit_meld_RaiseSameUIDException():
-    # GIVEN
-    todd_text = "Todd"
-    todd3_group = groupunit_shop(brand=todd_text, uid=3)
-    todd5_group = groupunit_shop(brand=todd_text, uid=5)
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        todd3_group.meld(todd5_group)
-    assert (
-        str(excinfo.value)
-        == f"Meld fail GroupUnit {todd3_group.brand} .uid='{todd3_group.uid}' not the same as .uid='{todd5_group.uid}"
-    )
-
-
 def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     # GIVEN
     todd_text = "Todd"
-    todd_uid = 33
-    todd_party_id = 55
-    todd_group = groupunit_shop(
-        brand=todd_text, uid=todd_uid, single_party_id=todd_party_id, _single_party=True
-    )
+    todd_group = groupunit_shop(brand=todd_text, _single_party=True)
     sue_text = "Sue"
     todd_group.set_partylink(partylink_shop(party_id=sue_text))
     x_partylinks_set_by_economy_road = 44
     todd_group.set_attr(x_partylinks_set_by_economy_road)
 
     assert todd_group.brand == todd_text
-    assert todd_group.uid == todd_uid
-    assert todd_group.single_party_id == todd_party_id
     assert todd_group._single_party
     assert len(todd_group._partys) == 1
     assert (
@@ -389,8 +366,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
 
     # THEN
     assert todd_dict["brand"] == todd_text
-    assert todd_dict["uid"] == todd_uid
-    assert todd_dict["single_party_id"] == todd_party_id
     assert todd_dict["_single_party"]
     assert len(todd_dict["_partys"]) == 1
     assert (
@@ -402,8 +377,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     todd_text = "Todd"
     todd_group = groupunit_shop(brand=todd_text)
-    assert todd_group.uid is None
-    assert todd_group.single_party_id is None
     assert todd_group._single_party is False
     assert todd_group._partys == {}
     assert todd_group._partylinks_set_by_economy_road is None
@@ -412,8 +385,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     todd_dict = todd_group.get_dict()
 
     # THEN
-    assert todd_dict.get("uid") is None
-    assert todd_dict.get("single_party_id") is None
     assert todd_dict.get("_single_party") is None
     assert todd_dict.get("_partys") is None
     assert todd_dict.get("_partylinks_set_by_economy_road") is None
@@ -430,7 +401,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # THEN
     ee_dict = swimmers_group.get_dict()
     assert ee_dict != None
-    # assert ee_dict == {"brand": swimmers, "uid": 2}
+    # assert ee_dict == {"brand": swimmers}
     assert ee_dict == {"brand": swimmers}
 
     # GIVEN
@@ -448,11 +419,9 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
     teacher_text = "teachers"
-    teacher_uid = 55
     swim_road = "swim"
     teachers_group = groupunit_shop(
         brand=teacher_text,
-        uid=teacher_uid,
         _partys=partylinks_dict,
         _partylinks_set_by_economy_road=swim_road,
     )
@@ -464,7 +433,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{marie_json_dict=}")
     assert teachers_dict == {
         "brand": teacher_text,
-        "uid": teacher_uid,
         "_partys": marie_json_dict,
         "_partylinks_set_by_economy_road": swim_road,
     }

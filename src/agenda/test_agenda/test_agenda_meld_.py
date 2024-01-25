@@ -78,7 +78,7 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     bob2_agenda = agendaunit_shop(bob_text)
     bob2_agenda.set_groupunit(run_groupunit)
     swim_text = "swimmers"
-    swim_groupunit = groupunit_shop(brand=swim_text, uid=5)
+    swim_groupunit = groupunit_shop(brand=swim_text)
     bob2_agenda.set_groupunit(swim_groupunit)
     assert len(bob1_agenda._groups) == 1
     assert bob1_agenda.get_groupunit(run_text) != None
@@ -94,7 +94,6 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     assert len(bob1_agenda._groups) == 2
     assert bob1_agenda.get_groupunit(run_text) != None
     assert bob1_agenda.get_groupunit(swim_text) != None
-    # assert x_agenda1.get_groupunit(swim_text).uid == 5
 
 
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitMembershipIsDifferent():
@@ -317,18 +316,10 @@ def test_AgendaUnit_beliefunits_meld_GroupsMeldedBefore_Partys():
     bob = "Bob"
     yao2_agenda.set_partyunit(partyunit_shop(party_id=bob))
     assert yao2_agenda.get_groupunit(bob) != None
-    assert yao2_agenda.get_groupunit(bob).uid is None
-    yao2_agenda.set_groupunit(groupunit_shop(brand=bob, uid=13))
-    assert yao2_agenda.get_groupunit(bob).uid == 13
+    yao2_agenda.set_groupunit(groupunit_shop(brand=bob))
 
     # WHEN/THEN
     assert yao1_agenda.meld(yao2_agenda) is None  # No error raised
-    # with pytest_raises(Exception) as excinfo:
-    #     yao1_agenda.meld(yao2_agenda)
-    # assert (
-    #     str(excinfo.value)
-    #     == f"Meld fail GroupUnit bob .uid='None' not the same as .uid='13"
-    # )
 
 
 def test_AgendaUnit_beliefunits_meld_BeliefsAttributeCorrectlySet():

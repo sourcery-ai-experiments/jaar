@@ -535,11 +535,7 @@ class AgendaUnit:
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                brand=partyunit.party_id,
-                _single_party=True,
-                _partys=partylinks,
-                uid=None,
-                single_party_id=None,
+                partyunit.party_id, _single_party=True, _partys=partylinks
             )
             self.set_groupunit(y_groupunit=group_unit)
 
@@ -631,37 +627,6 @@ class AgendaUnit:
     def get_partys_depotlink_count(self) -> int:
         return sum(party_x.depotlink_type != None for party_x in self._partys.values())
 
-    def get_groupunits_uid_max(self) -> int:
-        uid_max = 1
-        for groupunit_x in self._groups.values():
-            if groupunit_x.uid != None and groupunit_x.uid > uid_max:
-                uid_max = groupunit_x.uid
-        return uid_max
-
-    def get_groupunits_uid_dict(self) -> dict[int:int]:
-        uid_dict = {}
-        for groupunit_x in self._groups.values():
-            if uid_dict.get(groupunit_x.uid) is None:
-                uid_dict[groupunit_x.uid] = 1
-            else:
-                uid_dict[groupunit_x.uid] += 1
-        return uid_dict
-
-    def set_all_groupunits_uids_unique(self) -> int:
-        uid_max = self.get_groupunits_uid_max()
-        uid_dict = self.get_groupunits_uid_dict()
-        for groupunit_x in self._groups.values():
-            if uid_dict.get(groupunit_x.uid) > 0:
-                new_uid_max = uid_max + 1
-                groupunit_x.uid = new_uid_max
-                uid_max = groupunit_x.uid
-
-    def all_groupunits_uids_are_unique(self):
-        uid_dict = self.get_groupunits_uid_dict()
-        return not any(
-            uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
-        )
-
     def set_groupunit(
         self,
         y_groupunit: GroupUnit,
@@ -720,11 +685,7 @@ class AgendaUnit:
         elif self.get_groupunit(new_brand) is None:
             old_groupunit = self.get_groupunit(old_brand)
             groupunit_x = groupunit_shop(
-                brand=new_brand,
-                uid=old_groupunit.uid,
-                _partys=old_groupunit._partys,
-                single_party_id=old_groupunit.single_party_id,
-                _single_party=old_groupunit._single_party,
+                new_brand, old_groupunit._single_party, old_groupunit._partys
             )
             self.set_groupunit(y_groupunit=groupunit_x)
             self.del_groupunit(groupbrand=old_brand)

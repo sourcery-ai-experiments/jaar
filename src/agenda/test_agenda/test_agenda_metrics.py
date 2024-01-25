@@ -97,18 +97,3 @@ def test_agenda_get_partyunits_uid_max_WorksCorrectly():
 
     # WHEN/THEN
     assert yue_agenda.get_partyunits_uid_max() == 13
-
-
-def test_agenda_get_groupunits_uid_max_WorksCorrectly():
-    # GIVEN
-    rico_text = "rico"
-    carr_text = "carmen"
-    patr_text = "patrick"
-
-    yue_agenda = agendaunit_shop("Yue")
-    yue_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=rico_text, uid=4))
-    yue_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=carr_text, uid=12))
-    yue_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=patr_text, uid=7))
-
-    # WHEN/THEN
-    assert yue_agenda.get_groupunits_uid_max() == 12
