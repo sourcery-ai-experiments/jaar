@@ -605,7 +605,6 @@ CREATE TABLE IF NOT EXISTS partyunit (
 , _treasury_credit_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
-, _title VARCHAR(255)
 , FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(party_id) REFERENCES agendaunit(agent_id)
 , UNIQUE(agent_id, party_id)
@@ -694,7 +693,6 @@ INSERT INTO partyunit (
 , _treasury_credit_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-, _title
 )
 VALUES (
   '{x_agenda._agent_id}' 
@@ -712,7 +710,6 @@ VALUES (
 , {sqlite_null(x_partyunit._treasury_credit_score)}
 , {sqlite_null(x_partyunit._treasury_voice_rank)}
 , {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
-, '{x_partyunit._title}'
 )
 ;
 """
@@ -743,7 +740,6 @@ SELECT
 , _treasury_credit_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-, _title
 FROM partyunit
 WHERE agent_id = '{payer_agent_id}' 
 ;
@@ -768,7 +764,6 @@ WHERE agent_id = '{payer_agent_id}'
             _treasury_credit_score=row[12],
             _treasury_voice_rank=row[13],
             _treasury_voice_hx_lowest_rank=row[14],
-            _title=row[15],
         )
         dict_x[partyview_x.party_id] = partyview_x
     return dict_x
@@ -1106,7 +1101,6 @@ INSERT INTO partyunit (
 , _treasury_credit_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-, _title
 )
 VALUES (
   '{x_agenda._agent_id}' 
@@ -1124,7 +1118,6 @@ VALUES (
 , {sqlite_null(x_partyunit._treasury_credit_score)}
 , {sqlite_null(x_partyunit._treasury_voice_rank)}
 , {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
-, '{x_partyunit._title}'
 )
 ;
 """

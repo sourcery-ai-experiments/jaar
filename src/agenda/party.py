@@ -11,40 +11,9 @@ class InvalidDepotLinkException(Exception):
     pass
 
 
-class PartyTitle(str):
-    pass
-
-
 @dataclass
 class PartyCore:
     party_id: PartyID
-
-
-@dataclass
-class PartyRing(PartyCore):
-    def get_dict(self) -> dict[str:str]:
-        return {"party_id": self.party_id}
-
-
-# class PartyRingsshop:
-def partyrings_get_from_json(partyrings_json: str) -> dict[str:PartyRing]:
-    partyrings_dict = x_get_dict(json_x=partyrings_json)
-    return partyrings_get_from_dict(x_dict=partyrings_dict)
-
-
-def partyrings_get_from_dict(x_dict: dict) -> dict[str:PartyRing]:
-    partyrings = {}
-    if x_dict != None:
-        for partyrings_dict in x_dict.values():
-            x_partyring = partyrings_get_partyring(
-                party_id=partyrings_dict["party_id"],
-            )
-            partyrings[x_partyring.party_id] = x_partyring
-    return partyrings
-
-
-def partyrings_get_partyring(party_id: PartyID) -> PartyRing:
-    return PartyRing(party_id=party_id)
 
 
 @dataclass
@@ -61,17 +30,12 @@ class PartyUnit(PartyCore):
     _agenda_intent_ratio_debt: float = None
     _creditor_live: bool = None
     _debtor_live: bool = None
-    _partyrings: dict[PartyID:PartyRing] = None
     _treasury_tax_paid: float = None
     _treasury_tax_diff: float = None
     _output_agenda_meld_order: int = None
     _treasury_credit_score: float = None
     _treasury_voice_rank: int = None
     _treasury_voice_hx_lowest_rank: int = None
-    _title: PartyTitle = None
-
-    def set_title(self, title: PartyTitle):
-        self._title = title
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -142,22 +106,13 @@ class PartyUnit(PartyCore):
             "debtor_weight": self.debtor_weight,
             "_creditor_live": self._creditor_live,
             "_debtor_live": self._debtor_live,
-            "_partyrings": self.get_partyrings_dict(),
             "_treasury_tax_paid": self._treasury_tax_paid,
             "_treasury_tax_diff": self._treasury_tax_diff,
             "_treasury_credit_score": self._treasury_credit_score,
             "_treasury_voice_rank": self._treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
             "depotlink_type": self.depotlink_type,
-            "_title": self._title,
         }
-
-    def get_partyrings_dict(self):
-        x_dict = {}
-        if self._partyrings != None:
-            for partyring in self._partyrings.values():
-                x_dict[partyring.party_id] = partyring.get_dict()
-        return x_dict
 
     def get_creditor_weight(self):
         return get_1_if_None(self.creditor_weight)
@@ -218,7 +173,6 @@ class PartyUnit(PartyCore):
 
         self.creditor_weight += other_partyunit.creditor_weight
         self.debtor_weight += other_partyunit.debtor_weight
-        self._title = other_partyunit._title
 
 
 # class PartyUnitsshop:
@@ -230,11 +184,6 @@ def partyunits_get_from_json(partyunits_json: str) -> dict[str:PartyUnit]:
 def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
     partyunits = {}
     for partyunits_dict in x_dict.values():
-        try:
-            partyrings = partyunits_dict["_partyrings"]
-        except KeyError:
-            partyrings = {}
-
         try:
             _treasury_tax_paid = partyunits_dict["_treasury_tax_paid"]
         except KeyError:
@@ -267,11 +216,6 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
         except KeyError:
             depotlink_type = None
 
-        try:
-            _title = partyunits_dict["_title"]
-        except KeyError:
-            _title = None
-
         x_partyunit = partyunit_shop(
             party_id=partyunits_dict["party_id"],
             uid=partyunits_dict["uid"],
@@ -279,9 +223,7 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             debtor_weight=partyunits_dict["debtor_weight"],
             _creditor_live=partyunits_dict["_creditor_live"],
             _debtor_live=partyunits_dict["_debtor_live"],
-            _partyrings=partyrings_get_from_dict(x_dict=partyrings),
             depotlink_type=depotlink_type,
-            _title=_title,
         )
         x_partyunit.set_treasurying_data(
             tax_paid=_treasury_tax_paid,
@@ -301,7 +243,6 @@ def partyunit_shop(
     debtor_weight: int = None,
     _creditor_live: bool = None,
     _debtor_live: bool = None,
-    _partyrings: dict[PartyID:PartyRing] = None,
     _agenda_credit: float = None,
     _agenda_debt: float = None,
     _agenda_intent_credit: float = None,
@@ -311,10 +252,7 @@ def partyunit_shop(
     _treasury_tax_paid: float = None,
     _treasury_tax_diff: float = None,
     depotlink_type: str = None,
-    _title: PartyTitle = None,
 ) -> PartyUnit:
-    final_partyrings = {} if _partyrings is None else _partyrings
-
     x_partyunit = PartyUnit(
         party_id=party_id,
         uid=uid,
@@ -328,14 +266,11 @@ def partyunit_shop(
         _agenda_intent_debt=get_0_if_None(_agenda_intent_debt),
         _agenda_intent_ratio_credit=get_0_if_None(_agenda_intent_ratio_credit),
         _agenda_intent_ratio_debt=get_0_if_None(_agenda_intent_ratio_debt),
-        _partyrings=final_partyrings,
         _treasury_tax_paid=_treasury_tax_paid,
         _treasury_tax_diff=_treasury_tax_diff,
     )
     if depotlink_type != None:
         x_partyunit.set_depotlink_type(depotlink_type=depotlink_type)
-    if _title != None:
-        x_partyunit.set_title(_title)
     return x_partyunit
 
 

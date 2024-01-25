@@ -44,7 +44,6 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     _treasury_voice_hx_lowest_rank_text = "_treasury_voice_hx_lowest_rank"
     _treasury_tax_paid_text = "_treasury_tax_paid"
     _treasury_tax_diff_text = "_treasury_tax_diff"
-    _title_text = "_title"
     partyunit_text = "partyunit"
     partyunit_columns = {
         agent_id_text: 1,
@@ -62,7 +61,6 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
         _treasury_credit_score_text: 1,
         _treasury_voice_rank_text: 1,
         _treasury_voice_hx_lowest_rank_text: 1,
-        _title_text: 1,
     }
 
     currency_master_text = "currency_master"

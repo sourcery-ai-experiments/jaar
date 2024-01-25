@@ -32,7 +32,6 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "bob"
     tim_text = "tim"
-    tim_title = "Teacher Tim"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tim_partyunit = partyunit_shop(
         party_id=tim_text,
@@ -44,7 +43,6 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
         _agenda_intent_ratio_debt=0.4,
         _creditor_live=True,
         _debtor_live=False,
-        _title=tim_title,
     )
     tim_tax_paid = 0.5151
     tim_credit_score = 0.5252
@@ -55,7 +53,6 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert tim_partyunit._treasury_tax_paid == tim_tax_paid
     assert tim_partyunit._treasury_credit_score == tim_credit_score
     assert tim_partyunit._treasury_voice_rank == tim_voice_rank
-    assert tim_partyunit._title == tim_title
 
     insert_sqlstr = get_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
     print(insert_sqlstr)
@@ -87,7 +84,6 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert tim_ledger._treasury_tax_paid == tim_tax_paid
     assert tim_ledger._treasury_credit_score == tim_credit_score
     assert tim_ledger._treasury_voice_rank == tim_voice_rank
-    assert tim_ledger._title == tim_title
 
 
 def test_RiverBlockUnit_exists():

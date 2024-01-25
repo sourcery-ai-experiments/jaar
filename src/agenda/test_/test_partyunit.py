@@ -3,8 +3,6 @@ from src.agenda.party import (
     PartyID,
     partyunit_shop,
     partyunits_get_from_json,
-    partyrings_get_from_json,
-    PartyRing,
     get_default_depotlink_type,
 )
 from src.tools.python import x_is_json, x_get_json
@@ -23,7 +21,6 @@ def test_PartyUnit_exists():
     assert bob_party != None
     assert bob_party.party_id != None
     assert bob_party.party_id == bob_party_id
-    assert bob_party._title is None
     assert bob_party.creditor_weight is None
     assert bob_party.debtor_weight is None
     assert bob_party._agenda_credit is None
@@ -32,7 +29,6 @@ def test_PartyUnit_exists():
     assert bob_party._agenda_intent_debt is None
     assert bob_party._creditor_live is None
     assert bob_party._debtor_live is None
-    assert bob_party._partyrings is None
     assert bob_party._treasury_tax_paid is None
     assert bob_party._treasury_tax_diff is None
     assert bob_party._treasury_credit_score is None
@@ -45,13 +41,11 @@ def test_PartyUnit_exists():
 def test_partyunit_shop_CorrectlySetsAttributes():
     # WHEN
     todd_text = "Todd"
-    teacher_title = "teacher"
 
     # WHEN
-    todd_partyunit = partyunit_shop(party_id=todd_text, _title=teacher_title)
+    todd_partyunit = partyunit_shop(party_id=todd_text)
 
     # THEN
-    assert todd_partyunit._title == teacher_title
     assert todd_partyunit._agenda_credit == 0
     assert todd_partyunit._agenda_debt == 0
     assert todd_partyunit._agenda_intent_credit == 0
@@ -87,20 +81,6 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
 
     # THEN
     assert bob_party._output_agenda_meld_order is None
-
-
-def test_PartyUnit_set_title_CorrectlySetsAttribute():
-    # GIVEN
-    bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
-    assert bob_party._output_agenda_meld_order is None
-
-    # WHEN
-    x_title = "Assistant Bob"
-    bob_party.set_title(x_title)
-
-    # THEN
-    assert bob_party._title == x_title
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
@@ -413,20 +393,15 @@ def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     glen_text = "glen"
-    glen_ring = PartyRing(party_id=glen_text)
-    bob_party_rings = {glen_ring.party_id: glen_ring}
     bob_text = "Bob"
-    bob_title = "Teacher Bob"
     bob_treasury_tax_paid = 0.55
     bob_treasury_tax_diff = 0.66
     depotlink_type = "assignment"
     bob_party = partyunit_shop(
         party_id=bob_text,
-        _partyrings=bob_party_rings,
         _treasury_tax_paid=bob_treasury_tax_paid,
         _treasury_tax_diff=bob_treasury_tax_diff,
         depotlink_type=depotlink_type,
-        _title=bob_title,
     )
     bob_uid = 4321
     bob_party.uid = bob_uid
@@ -462,23 +437,19 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "debtor_weight": bob_debtor_weight,
         "_creditor_live": bob_creditor_live,
         "_debtor_live": bob_debtor_live,
-        "_partyrings": {"glen": {"party_id": "glen"}},
         "_treasury_tax_paid": bob_treasury_tax_paid,
         "_treasury_tax_diff": bob_treasury_tax_diff,
         "_treasury_credit_score": bob_treasury_credit_score,
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
         "depotlink_type": depotlink_type,
-        "_title": bob_title,
     }
 
 
 def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     # GIVEN
     cersei_party_id = PartyID("Cersei")
-    yao_party_rings = {cersei_party_id: {"party_id": cersei_party_id}}
     yao_text = "Yao"
-    yao_title = "Teacher Yao"
     yao_uid = 239
     yao_creditor_weight = 13
     yao_debtor_weight = 17
@@ -498,14 +469,12 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
             "debtor_weight": yao_debtor_weight,
             "_creditor_live": yao_creditor_live,
             "_debtor_live": yao_debtor_live,
-            "_partyrings": yao_party_rings,
             "_treasury_tax_paid": yao_treasury_tax_paid,
             "_treasury_tax_diff": yao_treasury_tax_diff,
             "_treasury_credit_score": yao_treasury_credit_score,
             "_treasury_voice_rank": yao_treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": yao_treasury_voice_hx_lowest_rank,
             "depotlink_type": yao_depotlink_type,
-            "_title": yao_title,
         }
     }
     yao_json_text = x_get_json(dict_x=yao_json_dict)
@@ -524,7 +493,6 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     assert yao_partyunit.debtor_weight == yao_debtor_weight
     assert yao_partyunit._creditor_live == yao_creditor_live
     assert yao_partyunit._debtor_live == yao_debtor_live
-    # assert yao_partyunit._party_rings == yao_party_rings
     assert yao_partyunit._treasury_tax_paid == yao_treasury_tax_paid
     assert yao_partyunit._treasury_tax_diff == yao_treasury_tax_diff
     assert yao_partyunit._treasury_credit_score == yao_treasury_credit_score
@@ -534,9 +502,6 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
         == yao_treasury_voice_hx_lowest_rank
     )
     assert yao_partyunit.depotlink_type == yao_depotlink_type
-    assert yao_partyunit._title == yao_title
-
-    # assert yao_obj_dict[yao_text]._partyrings == party_rings
 
 
 def test_PartyUnit_meld_RaiseSameparty_idException():
@@ -571,20 +536,3 @@ def test_PartyUnit_meld_CorrectlySumsWeights():
     # THEN
     assert todd_party1.creditor_weight == 12
     assert todd_party1.debtor_weight == 22
-
-
-def test_PartyUnit_meld_CorrectlySetsTitle():
-    # GIVEN
-    todd_text = "Todd"
-    teacher_title = "teacher"
-    professor_title = "professor"
-    todd_party1 = partyunit_shop(party_id=todd_text, _title=teacher_title)
-    todd_party2 = partyunit_shop(party_id=todd_text, _title=professor_title)
-    assert todd_party1._title == teacher_title
-    assert todd_party2._title == professor_title
-
-    # WHEN
-    todd_party1.meld(todd_party2)
-
-    # THEN
-    assert todd_party1._title == professor_title
