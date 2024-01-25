@@ -112,22 +112,22 @@ class WorldUnit:
         if x_economy.clerkunit_exists(clerk_person_id) == False:
             x_economy.add_clerkunit(clerk_person_id)
 
-    def get_priority_agenda(self, person_id: PersonID):
+    def get_world_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_agenda = agendaunit_shop(person_id)
-        for x_problemunit in x_personunit._problems.values():
-            for x_healerlink in x_problemunit._healerlinks.values():
+        world_agenda = agendaunit_shop(person_id)
+        for person_problemunit in x_personunit._problems.values():
+            for person_healerlink in person_problemunit._healerlinks.values():
                 healer_personunit = self.get_personunit_from_memory(
-                    x_healerlink.healer_id
+                    person_healerlink.healer_id
                 )
-                for x_economylink in x_healerlink._economylinks.values():
+                for x_economylink in person_healerlink._economylinks.values():
                     x_economyunit = healer_personunit.get_economyunit(
                         x_economylink.economy_id
                     )
                     forum_agenda = x_economyunit.get_forum_agenda(person_id)
-                    forum_agenda.set_economy_id(x_agenda._economy_id)
-                    x_agenda.meld(forum_agenda)
-        return x_agenda
+                    forum_agenda.set_economy_id(world_agenda._economy_id)
+                    world_agenda.meld(forum_agenda)
+        return world_agenda
 
     def create_person_economy(
         self,

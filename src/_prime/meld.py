@@ -12,14 +12,12 @@ def get_meld_weight(
     other_weight: float,
     other_meld_strategy: MeldStrategy,
 ) -> float:
-    output_float = 0
     if src_meld_strategy == "default" and other_meld_strategy == "override":
-        output_float = other_weight
+        return other_weight
     elif src_meld_strategy != "default" or other_meld_strategy == "ignore":
-        output_float = src_weight + other_weight
+        return src_weight + other_weight
     else:
-        output_float = src_weight
-    return output_float
+        return src_weight
 
 
 def get_meld_strategys() -> dict[MeldStrategy:None]:

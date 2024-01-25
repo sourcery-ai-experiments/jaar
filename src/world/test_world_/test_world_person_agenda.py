@@ -7,7 +7,7 @@ from src.world.examples.world_env_kit import (
 from src.world.person import personunit_shop
 
 
-def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
+def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -16,13 +16,13 @@ def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgen
     texas_world._set_person_in_memory(personunit_shop(pid=luca_text))
 
     # WHEN
-    luca_agenda = texas_world.get_priority_agenda(luca_text)
+    luca_agenda = texas_world.get_world_agenda(luca_text)
 
     # THEN
     assert luca_agenda == agendaunit_shop(luca_text)
 
 
-def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
+def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -33,7 +33,7 @@ def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgen
     texas_world.create_person_economy(luca_text, water_text, luca_text, dallas_text)
 
     # WHEN
-    gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
+    gen_luca_agenda = texas_world.get_world_agenda(luca_text)
 
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)
@@ -41,7 +41,7 @@ def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgen
     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
-def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
+def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -63,7 +63,7 @@ def test_WorldUnit_get_priority_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgen
     #             f"{x_problemunit.problem_id=} {x_healerlink.person_id=} {x_healerlink._economylinks.keys()=}"
     #         )
     # print(f"{texas_world._personunits.keys()=}")
-    gen_luca_agenda = texas_world.get_priority_agenda(luca_text)
+    gen_luca_agenda = texas_world.get_world_agenda(luca_text)
 
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)

@@ -633,7 +633,6 @@ class IdeaUnit:
         self._meld_reasonunits(other_idea=other_idea)
         self._meld_balancelinks(other_idea=other_idea)
         self._meld_beliefunits(other_idea=other_idea)
-        print(f"{other_idea._meld_strategy=}")
         if other_idea._meld_strategy != "override":
             self._meld_attributes_that_must_be_equal(other_idea=other_idea)
         else:

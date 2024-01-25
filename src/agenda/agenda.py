@@ -93,22 +93,22 @@ class PartyunitsCreditorDebtorSumException(Exception):
 
 @dataclass
 class AgendaUnit:
-    _agent_id: AgentID = None
     _economy_id: EconomyID = None
-    _auto_output_to_forum: bool = None
+    _agent_id: AgentID = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupBrand:GroupUnit] = None
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
-    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # Calculated field
-    _tree_traverse_count: int = None  # Calculated field
-    _rational: bool = None  # Calculated field
-    _originunit: OriginUnit = None  # Calculated field
     _road_delimiter: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
+    _auto_output_to_forum: bool = None
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # Calculated field
+    _tree_traverse_count: int = None  # Calculated field
+    _rational: bool = None  # Calculated field
+    _originunit: OriginUnit = None  # Calculated field
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
