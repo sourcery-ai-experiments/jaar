@@ -103,12 +103,12 @@ class AgendaUnit:
     _road_delimiter: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
-    _meld_strategy: MeldStrategy = None
     _auto_output_to_forum: bool = None
-    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # Calculated field
-    _tree_traverse_count: int = None  # Calculated field
-    _rational: bool = None  # Calculated field
-    _originunit: OriginUnit = None  # Calculated field
+    _meld_strategy: MeldStrategy = None
+    _originunit: OriginUnit = None  # created by ClerkUnit process
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
+    _tree_traverse_count: int = None  # set_agenda_metrics Calculated field
+    _rational: bool = None  # set_agenda_metrics Calculated field
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
@@ -465,7 +465,6 @@ class AgendaUnit:
     ):
         for group in self._groups.values():
             if group.brand == groupbrand:
-                group.set_empty_agenda_credit_debt_to_zero()
                 group._agenda_credit += balanceheir_agenda_credit
                 group._agenda_debt += balanceheir_agenda_debt
 
@@ -481,7 +480,6 @@ class AgendaUnit:
                 and balanceline_agenda_credit != None
                 and balanceline_agenda_debt != None
             ):
-                group.set_empty_agenda_credit_debt_to_zero()
                 group._agenda_intent_credit += balanceline_agenda_credit
                 group._agenda_intent_debt += balanceline_agenda_debt
 
@@ -1882,7 +1880,6 @@ class AgendaUnit:
         return x_dict
 
     def get_dict(self) -> dict[str:str]:
-        self.set_agenda_metrics()
         x_dict = {
             "_partys": self.get_partys_dict(),
             "_groups": self.get_groupunits_from_dict(),

@@ -454,7 +454,9 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     print(f"{x_agenda2._idea_dict.keys()=}")
     assert ccn2_agenda._idea_dict == x_agenda2._idea_dict
     assert ccn2_agenda == x_agenda2
-    assert ccn_dict_of_obj.get(x_agenda3._agent_id) == x_agenda3
+    ccn_agenda3 = ccn_dict_of_obj.get(x_agenda3._agent_id)
+    x_agenda3.set_agenda_metrics()
+    assert ccn_agenda3 == x_agenda3
 
 
 def test_agenda_jsonExportCorrectyExportsWeights():

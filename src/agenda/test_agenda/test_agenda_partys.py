@@ -313,12 +313,12 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     carm_partyunit = yue_agenda._partys.get(carm_text)
     patr_partyunit = yue_agenda._partys.get(patr_text)
 
-    assert rico_partyunit._agenda_credit is None
-    assert rico_partyunit._agenda_debt is None
-    assert carm_partyunit._agenda_credit is None
-    assert carm_partyunit._agenda_debt is None
-    assert patr_partyunit._agenda_credit is None
-    assert patr_partyunit._agenda_debt is None
+    assert rico_partyunit._agenda_credit == 0
+    assert rico_partyunit._agenda_debt == 0
+    assert carm_partyunit._agenda_credit == 0
+    assert carm_partyunit._agenda_debt == 0
+    assert patr_partyunit._agenda_credit == 0
+    assert patr_partyunit._agenda_debt == 0
 
     # WHEN
     yue_agenda.set_agenda_metrics()
@@ -561,12 +561,12 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     rico_partyunit = yue_agenda._partys.get(rico_text)
     carm_partyunit = yue_agenda._partys.get(carm_text)
     patr_partyunit = yue_agenda._partys.get(patr_text)
-    assert rico_partyunit._agenda_credit is None
-    assert rico_partyunit._agenda_debt is None
-    assert carm_partyunit._agenda_credit is None
-    assert carm_partyunit._agenda_debt is None
-    assert patr_partyunit._agenda_credit is None
-    assert patr_partyunit._agenda_debt is None
+    assert rico_partyunit._agenda_credit == 0
+    assert rico_partyunit._agenda_debt == 0
+    assert carm_partyunit._agenda_credit == 0
+    assert carm_partyunit._agenda_debt == 0
+    assert patr_partyunit._agenda_credit == 0
+    assert patr_partyunit._agenda_debt == 0
 
     # WHEN
     yue_agenda.set_agenda_metrics()

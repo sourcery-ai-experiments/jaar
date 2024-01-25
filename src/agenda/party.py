@@ -1,6 +1,6 @@
 from src._prime.road import PartyID
 from dataclasses import dataclass
-from src.tools.python import get_1_if_None, x_get_dict
+from src.tools.python import get_1_if_None, x_get_dict, get_0_if_None
 
 
 class InvalidPartyException(Exception):
@@ -116,17 +116,6 @@ class PartyUnit(PartyCore):
         self._treasury_credit_score = credit_score
         self.set_treasury_voice_rank(voice_rank)
 
-        # if tax_diff is None or self._agenda_intent_ratio_credit is None:
-        #     self._treasury_tax_diff = tax_diff
-        # elif (
-        #     round(self._treasury_tax_paid - self._agenda_intent_ratio_credit, 15) == tax_diff
-        # ):
-        #     self._treasury_tax_diff = tax_diff
-        # else:
-        #     raise Exception(
-        #         f"PartyUnit.set_treasurying_data fail: tax_paid={tax_paid} + tax_diff={tax_diff} not equal to _agenda_intent_ratio_credit={self._agenda_intent_ratio_credit}"
-        #     )
-
     def set_treasury_voice_rank(self, voice_rank: int):
         self._treasury_voice_rank = voice_rank
         self._set_treasury_voice_hx_lowest_rank()
@@ -176,20 +165,6 @@ class PartyUnit(PartyCore):
     def get_debtor_weight(self):
         return get_1_if_None(self.debtor_weight)
 
-    def set_empty_agenda_credit_debt_to_zero(self):
-        if self._agenda_credit is None:
-            self._agenda_credit = 0
-        if self._agenda_debt is None:
-            self._agenda_debt = 0
-        if self._agenda_intent_credit is None:
-            self._agenda_intent_credit = 0
-        if self._agenda_intent_debt is None:
-            self._agenda_intent_debt = 0
-        if self._agenda_intent_ratio_credit is None:
-            self._agenda_intent_ratio_credit = 0
-        if self._agenda_intent_ratio_debt is None:
-            self._agenda_intent_ratio_debt = 0
-
     def reset_agenda_credit_debt(self):
         self._agenda_credit = 0
         self._agenda_debt = 0
@@ -205,7 +180,6 @@ class PartyUnit(PartyCore):
         agenda_intent_credit: float,
         agenda_intent_debt,
     ):
-        self.set_empty_agenda_credit_debt_to_zero()
         self._agenda_credit += agenda_credit
         self._agenda_debt += agenda_debt
         self._agenda_intent_credit += agenda_intent_credit
@@ -348,12 +322,12 @@ def partyunit_shop(
         debtor_weight=get_1_if_None(debtor_weight),
         _creditor_live=_creditor_live,
         _debtor_live=_debtor_live,
-        _agenda_credit=_agenda_credit,
-        _agenda_debt=_agenda_debt,
-        _agenda_intent_credit=_agenda_intent_credit,
-        _agenda_intent_debt=_agenda_intent_debt,
-        _agenda_intent_ratio_credit=_agenda_intent_ratio_credit,
-        _agenda_intent_ratio_debt=_agenda_intent_ratio_debt,
+        _agenda_credit=get_0_if_None(_agenda_credit),
+        _agenda_debt=get_0_if_None(_agenda_debt),
+        _agenda_intent_credit=get_0_if_None(_agenda_intent_credit),
+        _agenda_intent_debt=get_0_if_None(_agenda_intent_debt),
+        _agenda_intent_ratio_credit=get_0_if_None(_agenda_intent_ratio_credit),
+        _agenda_intent_ratio_debt=get_0_if_None(_agenda_intent_ratio_debt),
         _partyrings=final_partyrings,
         _treasury_tax_paid=_treasury_tax_paid,
         _treasury_tax_diff=_treasury_tax_diff,

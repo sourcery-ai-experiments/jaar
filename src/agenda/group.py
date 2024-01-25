@@ -6,7 +6,12 @@ from src.agenda.party import (
     partylink_shop,
 )
 from src._prime.meld import get_meld_weight
-from src.tools.python import get_empty_dict_if_none, get_1_if_None, x_get_dict
+from src.tools.python import (
+    get_empty_dict_if_none,
+    get_1_if_None,
+    x_get_dict,
+    get_0_if_None,
+)
 from src._prime.road import RoadUnit
 
 
@@ -29,10 +34,10 @@ class GroupUnit(GroupCore):
     single_party_id: int = None
     _single_party: bool = None
     _partys: dict[PartyID:PartyLink] = None
-    _agenda_credit: float = None
-    _agenda_debt: float = None
-    _agenda_intent_credit: float = None
-    _agenda_intent_debt: float = None
+    _agenda_credit: float = None  # calculated by set_agenda_metrics
+    _agenda_debt: float = None  # calculated by set_agenda_metrics
+    _agenda_intent_credit: float = None  # calculated by set_agenda_metrics
+    _agenda_intent_debt: float = None  # calculated by set_agenda_metrics
     _partylinks_set_by_economy_road: RoadUnit = None
 
     def set_brand(self, brand: GroupBrand = None):
@@ -59,16 +64,6 @@ class GroupUnit(GroupCore):
             ] = self._partylinks_set_by_economy_road
 
         return x_dict
-
-    def set_empty_agenda_credit_debt_to_zero(self):
-        if self._agenda_credit is None:
-            self._agenda_credit = 0
-        if self._agenda_debt is None:
-            self._agenda_debt = 0
-        if self._agenda_intent_credit is None:
-            self._agenda_intent_credit = 0
-        if self._agenda_intent_debt is None:
-            self._agenda_intent_debt = 0
 
     def reset_agenda_credit_debt(self):
         self._agenda_credit = 0
@@ -225,10 +220,10 @@ def groupunit_shop(
         single_party_id=single_party_id,
         _single_party=_single_party,
         _partys=get_empty_dict_if_none(_partys),
-        _agenda_credit=_agenda_credit,
-        _agenda_debt=_agenda_debt,
-        _agenda_intent_credit=_agenda_intent_credit,
-        _agenda_intent_debt=_agenda_intent_debt,
+        _agenda_credit=get_0_if_None(_agenda_credit),
+        _agenda_debt=get_0_if_None(_agenda_debt),
+        _agenda_intent_credit=get_0_if_None(_agenda_intent_credit),
+        _agenda_intent_debt=get_0_if_None(_agenda_intent_debt),
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
     )
 

@@ -52,6 +52,12 @@ def test_partyunit_shop_CorrectlySetsAttributes():
 
     # THEN
     assert todd_partyunit._title == teacher_title
+    assert todd_partyunit._agenda_credit == 0
+    assert todd_partyunit._agenda_debt == 0
+    assert todd_partyunit._agenda_intent_credit == 0
+    assert todd_partyunit._agenda_intent_debt == 0
+    assert todd_partyunit._agenda_intent_ratio_credit == 0
+    assert todd_partyunit._agenda_intent_ratio_debt == 0
 
 
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
@@ -189,54 +195,6 @@ def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
 def test_get_default_depotlink_type_ReturnsCorrectObj():
     # GIVEN / WHEN
     assert get_default_depotlink_type() == "assignment"
-
-
-def test_PartyUnit_set_empty_agenda_credit_debt_to_zero_CorrectlySetsZero():
-    # GIVEN
-    bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
-    assert bob_party._agenda_credit is None
-    assert bob_party._agenda_debt is None
-    assert bob_party._agenda_intent_credit is None
-    assert bob_party._agenda_intent_debt is None
-    assert bob_party._agenda_intent_ratio_credit is None
-    assert bob_party._agenda_intent_ratio_debt is None
-
-    # WHEN
-    bob_party.set_empty_agenda_credit_debt_to_zero()
-
-    # THEN
-    assert bob_party._agenda_credit == 0
-    assert bob_party._agenda_debt == 0
-    assert bob_party._agenda_intent_credit == 0
-    assert bob_party._agenda_intent_debt == 0
-    assert bob_party._agenda_intent_ratio_credit == 0
-    assert bob_party._agenda_intent_ratio_debt == 0
-
-    # GIVEN
-    bob_party._agenda_credit = 0.27
-    bob_party._agenda_debt = 0.37
-    bob_party._agenda_intent_credit = 0.41
-    bob_party._agenda_intent_debt = 0.51
-    bob_party._agenda_intent_ratio_credit = 0.23
-    bob_party._agenda_intent_ratio_debt = 0.87
-    assert bob_party._agenda_credit == 0.27
-    assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_intent_credit == 0.41
-    assert bob_party._agenda_intent_debt == 0.51
-    assert bob_party._agenda_intent_ratio_credit == 0.23
-    assert bob_party._agenda_intent_ratio_debt == 0.87
-
-    # WHEN
-    bob_party.set_empty_agenda_credit_debt_to_zero()
-
-    # THEN
-    assert bob_party._agenda_credit == 0.27
-    assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_intent_credit == 0.41
-    assert bob_party._agenda_intent_debt == 0.51
-    assert bob_party._agenda_intent_ratio_credit == 0.23
-    assert bob_party._agenda_intent_ratio_debt == 0.87
 
 
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
