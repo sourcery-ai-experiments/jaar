@@ -1,11 +1,9 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.economy.economy import economyunit_shop, get_river_ledger_unit
 from src.economy.examples.economy_env_kit import (
     get_temp_env_economy_id,
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.economy.examples.economy_env_kit import _delete_and_set_ex6
 from src.tools.sqlite import get_single_result
 from src.economy.treasury_sqlstr import (
     get_table_count_sqlstr,

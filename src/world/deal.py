@@ -8,7 +8,7 @@ from src._prime.road import (
 )
 from src.world.vow import VowID, VowUnit, vowunit_shop
 from src.world.partyedit import PartyEditUnit
-from src.world.topic import TopicUnit, TopicLink
+from src.world.topic import TopicUnit
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
 

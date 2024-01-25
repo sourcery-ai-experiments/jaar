@@ -13,10 +13,6 @@ from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
     env_dir_setup_cleanup,
 )
-from src.economy.treasury_sqlstr import (
-    get_agendaunits_select_sqlstr,
-    get_agendatreasuryunits_dict,
-)
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):

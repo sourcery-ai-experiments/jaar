@@ -12,12 +12,7 @@ from src.tools.python import (
     x_get_dict,
     get_0_if_None,
 )
-from src._prime.road import (
-    RoadUnit,
-    default_road_delimiter_if_none,
-    validate_roadnode,
-    is_roadnode,
-)
+from src._prime.road import RoadUnit, default_road_delimiter_if_none, validate_roadnode
 
 
 class InvalidGroupException(Exception):

@@ -4,7 +4,6 @@ from src._prime.road import (
     default_road_delimiter_if_none,
 )
 from src.world.topic import TopicLink, topiclink_shop
-from pytest import raises as pytest_raises
 
 
 def test_TopicLink_exists():

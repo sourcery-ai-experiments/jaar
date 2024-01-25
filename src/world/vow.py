@@ -1,8 +1,4 @@
-from src._prime.road import (
-    RoadUnit,
-    PersonRoad,
-    PersonID,
-)
+from src._prime.road import PersonRoad, PersonID
 from src.world.topic import TopicLink
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass

@@ -1,8 +1,4 @@
-from src._prime.road import (
-    get_default_economy_root_roadnode as root_label,
-    create_road,
-    default_road_delimiter_if_none,
-)
+from src._prime.road import get_default_economy_root_roadnode as root_label, create_road
 from src.world.topic import topicunit_shop, opinionunit_shop
 
 

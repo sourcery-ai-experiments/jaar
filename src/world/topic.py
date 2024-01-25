@@ -3,7 +3,6 @@ from src._prime.road import (
     RoadUnit,
     RoadNode,
     PersonRoad,
-    PersonID,
     is_sub_road,
     default_road_delimiter_if_none,
     create_road,

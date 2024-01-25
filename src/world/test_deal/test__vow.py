@@ -1,19 +1,6 @@
-# from src.world.examples.examples import (
-#     get_farm_wantunit as examples_get_farm_wantunit,
-#     get_farm_requestunit as examples_get_farm_requestunit,
-# )
-from src._prime.road import (
-    create_road,
-    get_default_economy_root_roadnode as root_label,
-)
+from src._prime.road import create_road, get_default_economy_root_roadnode as root_label
 from src.world.topic import topiclink_shop
 from src.world.deal import VowUnit, vowunit_shop
-from src.world.examples.example_topics import (
-    get_cooking_topic,
-    get_speedboats_action_topic,
-    get_climate_topic,
-    get_gasheater_action_topic,
-)
 
 
 def test_VowUnit_exists():
