@@ -6,6 +6,7 @@ from src._prime.road import (
     HealerID,
     PartyID,
     EconomyID,
+    validate_roadnode,
 )
 from src.agenda.agenda import (
     AgendaUnit,
@@ -21,7 +22,7 @@ from src.tools.file import (
     dir_files,
 )
 from src.tools.python import get_empty_dict_if_none
-from src.economy.clerk import clerkUnit, clerkunit_shop, clerkCID
+from src.economy.clerk import ClerkUnit, clerkunit_shop, clerkCID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.economy.treasury_sqlstr import (
@@ -64,10 +65,10 @@ class IntentBaseDoesNotExistException(Exception):
 
 @dataclass
 class EconomyUnit:
-    economy_id: EconomyID
-    economys_dir: str
+    economy_id: EconomyID = None
+    economys_dir: str = None
     _manager_person_id: HealerID = None
-    _clerkunits: dict[str:clerkUnit] = None
+    _clerkunits: dict[str:ClerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None
 
@@ -317,7 +318,8 @@ class EconomyUnit:
         delete_dir(dir=self.get_treasury_db_path())
 
     def set_economy_id(self, economy_id: str):
-        self.economy_id = economy_id
+        print(f"{economy_id=} {self._road_delimiter=}")
+        self.economy_id = validate_roadnode(economy_id, self._road_delimiter)
 
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/treasury.db"
@@ -343,7 +345,7 @@ class EconomyUnit:
         self._create_main_file_if_null(x_dir=economy_dir)
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
-    # clerkUnit management
+    # ClerkUnit management
     def get_clerkunits_dir(self):
         return f"{self.get_object_root_dir()}/clerkunits"
 
@@ -375,10 +377,10 @@ class EconomyUnit:
         x_clerkunit.create_core_dir_and_files()
         self._clerkunits[x_clerkunit._clerk_cid] = x_clerkunit
 
-    def get_clerkunit(self, cid: clerkCID) -> clerkUnit:
+    def get_clerkunit(self, cid: clerkCID) -> ClerkUnit:
         return self._clerkunits.get(cid)
 
-    def set_clerkunit(self, clerkunit: clerkUnit):
+    def set_clerkunit(self, clerkunit: ClerkUnit):
         self._clerkunits[clerkunit._clerk_cid] = clerkunit
         self.save_clerkunit_file(clerk_cid=clerkunit._clerk_cid)
 
@@ -462,7 +464,7 @@ class EconomyUnit:
     # agendas_dir to agent_id_agendas_dir management
     def _clerkunit_set_depot_agenda(
         self,
-        clerkunit: clerkUnit,
+        clerkunit: ClerkUnit,
         agendaunit: AgendaUnit,
         depotlink_type: str,
         creditor_weight: float = None,
@@ -593,20 +595,22 @@ class EconomyUnit:
 
 def economyunit_shop(
     economy_id: EconomyID,
-    economys_dir: str,
+    economys_dir: str = None,
     _manager_person_id: HealerID = None,
-    _clerkunits: dict[str:clerkUnit] = None,
+    _clerkunits: dict[AgentID:ClerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,
 ) -> EconomyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
+    if economys_dir is None:
+        economys_dir = f"/economys/{economy_id}"
     economy_x = EconomyUnit(
-        economy_id=economy_id,
         economys_dir=economys_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
     economy_x.set_road_delimiter(_road_delimiter)
+    economy_x.set_economy_id(economy_id=economy_id)
     economy_x.set_manager_person_id(_manager_person_id)
     economy_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
     return economy_x

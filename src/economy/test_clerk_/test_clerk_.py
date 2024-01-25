@@ -1,7 +1,7 @@
 from src._prime.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop
 from src.tools.file import delete_dir
-from src.economy.clerk import clerkunit_shop, clerkUnit
+from src.economy.clerk import clerkunit_shop, ClerkUnit
 from src.economy.examples.clerk_env_kit import (
     clerk_dir_setup_cleanup,
     get_temp_clerkunit_dir,
@@ -10,9 +10,9 @@ from src.economy.examples.clerk_env_kit import (
 from os import path as os_path
 
 
-def test_clerkUnit_exists(clerk_dir_setup_cleanup):
+def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
     # GIVEN / WHEN
-    x_clerk = clerkUnit()
+    x_clerk = ClerkUnit()
 
     # GIVEN
     assert x_clerk != None
@@ -107,7 +107,7 @@ def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
 ):
     # GIVEN
     slash_text = "/"
-    tim_clerk = clerkUnit(
+    tim_clerk = ClerkUnit(
         _clerk_cid="Tim",
         _env_dir=get_temp_clerkunit_dir(),
         _economy_id=get_temp_economy_id(),

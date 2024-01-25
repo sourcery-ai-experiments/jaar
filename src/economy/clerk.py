@@ -28,7 +28,7 @@ class clerkCID(PersonID):
 
 
 @dataclass
-class clerkUnit:
+class ClerkUnit:
     _clerk_cid: clerkCID = None
     _env_dir: str = None
     _economy_id: str = None
@@ -343,8 +343,8 @@ def clerkunit_shop(
     economy_id: str,
     _auto_output_to_forum: bool = None,
     _road_delimiter: str = None,
-) -> clerkUnit:
-    x_clerk = clerkUnit()
+) -> ClerkUnit:
+    x_clerk = ClerkUnit()
     x_clerk.set_env_dir(
         env_dir=env_dir,
         clerk_cid=agent_id,

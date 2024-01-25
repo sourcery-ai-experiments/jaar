@@ -65,9 +65,9 @@ base attributes vs reason attributess
 <!-- TODO: Add explanations -->
 EconomyUnit objects
 
-EconomyUnit clerkUnit objects
+EconomyUnit ClerkUnit objects
 
-EconomyUnit clerkUnit Agenda objects
+EconomyUnit ClerkUnit Agenda objects
 
 EconomyUnit Treasury objects
 

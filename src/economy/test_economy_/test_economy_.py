@@ -30,6 +30,33 @@ def test_EconomyUnit_exists():
     assert x_economy._road_delimiter is None
 
 
+def test_EconomyUnit_set_economy_id_CorrectlySetsAttr():
+    # GIVEN
+    x_economyunit = EconomyUnit()
+    assert x_economyunit.economy_id is None
+
+    # WHEN
+    texas_text = "texas"
+    x_economyunit.set_economy_id(texas_text)
+
+    # THEN
+    assert x_economyunit.economy_id == texas_text
+
+
+def test_EconomyUnit_set_economy_id_RaisesErrorIfParameterContains_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    texas_text = f"Texas{slash_text}Arkansas"
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        economyunit_shop(economy_id=texas_text, _road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{texas_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
+    )
+
+
 def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()

@@ -1,6 +1,6 @@
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, EconomyID
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
-from src.economy.clerk import clerkunit_shop, clerkUnit
+from src.economy.clerk import clerkunit_shop, ClerkUnit
 from src.economy.examples.clerk_env_kit import get_temp_economy_id
 
 from random import randrange
@@ -125,7 +125,7 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_clerkunit_2agenda(env_dir, economy_id) -> clerkUnit:
+def get_clerkunit_2agenda(env_dir, economy_id) -> ClerkUnit:
     yao_text = "Xio"
     yao_clerkunit = clerkunit_shop(yao_text, env_dir, economy_id)
     yao_clerkunit.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")

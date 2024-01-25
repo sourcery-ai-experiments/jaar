@@ -1,5 +1,13 @@
 from dataclasses import dataclass
-from src._prime.road import EconomyID, PersonID, ProblemID, HealerID
+from src._prime.road import (
+    EconomyID,
+    PersonID,
+    ProblemID,
+    HealerID,
+    default_road_delimiter_if_none,
+    validate_roadnode,
+)
+from src.tools.python import get_1_if_None, get_empty_dict_if_none
 
 
 @dataclass
@@ -91,11 +99,15 @@ def healerlink_shop(
 
 @dataclass
 class ProblemUnit:
-    problem_id: ProblemID
+    problem_id: ProblemID = None
     weight: float = None
     _healerlinks: dict[PersonID:HealerLink] = None
     _relative_weight: float = None
     _manager_importance: float = None
+    _road_delimiter: str = None
+
+    def set_problem_id(self, x_problem_id: ProblemID):
+        self.problem_id = validate_roadnode(x_problem_id, self._road_delimiter)
 
     def set_healerlinks_weight_metrics(self):
         total_healerlinks_weight = sum(
@@ -147,7 +159,13 @@ class ProblemUnit:
         }
 
 
-def problemunit_shop(problem_id: ProblemID, weight: float = None) -> ProblemUnit:
-    if weight is None:
-        weight = 1
-    return ProblemUnit(problem_id=problem_id, weight=weight, _healerlinks={})
+def problemunit_shop(
+    problem_id: ProblemID, weight: float = None, _road_delimiter: str = None
+) -> ProblemUnit:
+    x_problemunit = ProblemUnit(
+        weight=get_1_if_None(weight),
+        _healerlinks=get_empty_dict_if_none(None),
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+    )
+    x_problemunit.set_problem_id(problem_id)
+    return x_problemunit

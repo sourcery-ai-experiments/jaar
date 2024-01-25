@@ -1,5 +1,5 @@
 from src.tools.file import open_file, save_file
-from src.economy.clerk import clerkUnit, clerkunit_shop
+from src.economy.clerk import ClerkUnit, clerkunit_shop
 from src.economy.examples.example_clerks import (
     get_6node_agenda as example_get_6node_agenda,
     get_6node_agenda as example_get_7nodeJRootWithH_agenda,
@@ -12,13 +12,13 @@ from src.economy.examples.clerk_env_kit import (
 from os import path as os_path
 
 
-def test_clerkUnit_exists():
+def test_ClerkUnit_exists():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_clerkunit_dir()
 
     # WHEN
-    bob_clerkadmin = clerkUnit(bob_text, env_dir, get_temp_economy_id())
+    bob_clerkadmin = ClerkUnit(bob_text, env_dir, get_temp_economy_id())
 
     # THEN
     assert bob_clerkadmin._clerk_cid != None
@@ -37,11 +37,11 @@ def test_clerkUnit_exists():
     assert bob_clerkadmin._agendas_digest_dir is None
 
 
-def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
+def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_clerkunit_dir()
-    bob_clerkadmin = clerkUnit(bob_text, env_dir, get_temp_economy_id())
+    bob_clerkadmin = ClerkUnit(bob_text, env_dir, get_temp_economy_id())
     assert bob_clerkadmin._clerkunit_dir is None
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
@@ -93,13 +93,13 @@ def test_clerkUnit_set_dir_CorrectSetsclerkUnitAttribute():
     assert bob_clerkadmin._agendas_forum_dir == x_agendas_forum_dir
 
 
-def test_clerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
+def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN create healer
     jul_text = "julian"
     env_dir = get_temp_clerkunit_dir()
-    jul_clerkunit = clerkUnit(
+    jul_clerkunit = ClerkUnit(
         _clerk_cid=jul_text,
         _env_dir=env_dir,
         _economy_id=get_temp_economy_id(),
@@ -130,7 +130,7 @@ def test_clerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path.exists(jul_clerkunit._agendas_ignore_dir)
 
 
-def test_clerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
+def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN create healer
@@ -163,7 +163,7 @@ def test_clerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
     )
 
 
-def test_clerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_clerkunit_dir()
 
