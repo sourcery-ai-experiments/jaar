@@ -286,15 +286,32 @@ def get_economyroad_from_healerroad(
     return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)
 
 
-def get_single_roadnode(roadunit_type: str, x_roadunit: RoadUnit, roadnode_type: str):
+def get_single_roadnode(
+    roadunit_type: str, x_roadunit: RoadUnit, roadnode_type: str, delimiter: str = None
+):
     x_roadnode = None
     if roadunit_type == "PersonRoad":
         if roadnode_type == "EconomyID":
-            x_roadnode = get_all_road_nodes(x_roadunit)[3]
+            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[3]
         elif roadnode_type == "HealerID":
-            x_roadnode = get_all_road_nodes(x_roadunit)[2]
+            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[2]
         elif roadnode_type == "PersonID":
-            x_roadnode = get_all_road_nodes(x_roadunit)[0]
+            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[0]
         elif roadnode_type == "ProblemID":
-            x_roadnode = get_all_road_nodes(x_roadunit)[1]
+            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[1]
+    return x_roadnode
+
+
+class ValidateRoadNodeException(Exception):
+    pass
+
+
+def validate_roadnode(x_roadnode: RoadNode, x_delimiter: str):
+    if str(type(x_roadnode)) == "<class 'str'>":
+        x_roadnode = RoadNode(x_roadnode)
+
+    if x_roadnode.is_node(delimiter=x_delimiter) == False:
+        raise ValidateRoadNodeException(
+            f"'{x_roadnode}' needs to be a RoadNode. Cannot contain delimiter: '{x_delimiter}'"
+        )
     return x_roadnode

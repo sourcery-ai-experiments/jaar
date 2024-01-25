@@ -1093,7 +1093,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
     assert len(swim_group._partys) == 1
 
 
-def test_AgendaUnit_PartyUnit_raiseErrorNewPIDGroupUnitPreviouslyExists():
+def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
     # GIVEN
     yue_agenda = agendaunit_shop("Yue")
     rico_text = "rico"
@@ -1124,7 +1124,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPIDGroupUnitPreviouslyExists():
     )
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyOverwriteNewPIDGroupUnit():
+def test_AgendaUnit_PartyUnit_CorrectlyOverwriteNewPersonIDGroupUnit():
     # GIVEN
     yue_agenda = agendaunit_shop("Yue")
     rico_text = "rico"

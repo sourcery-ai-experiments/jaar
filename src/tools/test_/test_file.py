@@ -33,12 +33,12 @@ def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
 def test_dir_files_removesFileExtension(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x1_pid = "x1"
-    x2_pid = "x2"
+    x1_name = "x1"
+    x2_name = "x2"
     x1_file_ext = "txt"
     x2_file_ext = "json"
-    x1_file_name = f"{x1_pid}.{x1_file_ext}"
-    x2_file_name = f"{x2_pid}.{x2_file_ext}"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
     x1_file_text = "trying this"
     x2_file_text = "look there"
     save_file(dest_dir=env_dir, file_name=x1_file_name, file_text=x1_file_text)
@@ -48,28 +48,28 @@ def test_dir_files_removesFileExtension(env_dir_setup_cleanup):
     files_dict = dir_files(dir_path=env_dir, remove_extensions=True)
 
     # THEN
-    assert files_dict.get(x1_pid) == x1_file_text
-    assert files_dict.get(x2_pid) == x2_file_text
+    assert files_dict.get(x1_name) == x1_file_text
+    assert files_dict.get(x2_name) == x2_file_text
 
 
 def test_dir_files_returnsSubDirs(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x1_pid = "x1"
-    x2_pid = "x2"
+    x1_name = "x1"
+    x2_name = "x2"
     x1_file_ext = "txt"
     x2_file_ext = "json"
-    x1_file_name = f"{x1_pid}.{x1_file_ext}"
-    x2_file_name = f"{x2_pid}.{x2_file_ext}"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
     x1_file_text = "trying this"
     x2_file_text = "look there"
     save_file(
-        dest_dir=f"{env_dir}/{x1_pid}",
+        dest_dir=f"{env_dir}/{x1_name}",
         file_name=x1_file_name,
         file_text=x1_file_text,
     )
     save_file(
-        dest_dir=f"{env_dir}/{x2_pid}",
+        dest_dir=f"{env_dir}/{x2_name}",
         file_name=x2_file_name,
         file_text=x2_file_text,
     )
@@ -78,24 +78,24 @@ def test_dir_files_returnsSubDirs(env_dir_setup_cleanup):
     files_dict = dir_files(dir_path=env_dir, remove_extensions=True, include_dirs=True)
 
     # THEN
-    assert files_dict.get(x1_pid) == True
-    assert files_dict.get(x2_pid) == True
+    assert files_dict.get(x1_name) == True
+    assert files_dict.get(x2_name) == True
 
 
 def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x1_pid = "x1"
+    x1_name = "x1"
     x1_file_ext = "txt"
-    x1_file_name = f"{x1_pid}.{x1_file_ext}"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
     x1_file_text = "trying this"
     save_file(dest_dir=env_dir, file_name=x1_file_name, file_text=x1_file_text)
-    x2_pid = "x2"
+    x2_name = "x2"
     x2_file_ext = "json"
-    x2_file_name = f"{x2_pid}.{x2_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
     x2_file_text = "look there"
     save_file(
-        dest_dir=f"{env_dir}/{x2_pid}",
+        dest_dir=f"{env_dir}/{x2_name}",
         file_name=x2_file_name,
         file_text=x2_file_text,
     )
@@ -108,21 +108,21 @@ def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     with pytest_raises(Exception) as excinfo:
         files_dict[x1_file_name]
     assert str(excinfo.value) == "'x1.txt'"
-    assert files_dict.get(x2_pid) == True
+    assert files_dict.get(x2_name) == True
     assert len(files_dict) == 1
 
 
-def test_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFilePID(
+def test_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x1_pid = "x1"
-    x2_pid = "x2"
+    x1_name = "x1"
+    x2_name = "x2"
     x1_file_ext = "txt"
     x2_file_ext = "json"
-    x1_file_name = f"{x1_pid}.{x1_file_ext}"
-    x2_file_name = f"{x2_pid}.{x2_file_ext}"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
     x1_file_text = "trying this"
     x2_file_text = "look there"
     print(f"{env_dir=} {x1_file_name=}")
@@ -139,12 +139,12 @@ def test_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
 ):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x1_pid = "x1"
-    x2_pid = "x2"
+    x1_name = "x1"
+    x2_name = "x2"
     x1_file_ext = "txt"
     x2_file_ext = "json"
-    x1_file_name = f"{x1_pid}.{x1_file_ext}"
-    x2_file_name = f"{x2_pid}.{x2_file_ext}"
+    x1_file_name = f"{x1_name}.{x1_file_ext}"
+    x2_file_name = f"{x2_name}.{x2_file_ext}"
     x1_file_text = "trying this"
     x2_file_text = "look there"
     x1_file_path = f"{env_dir}/{x1_file_name}"
@@ -163,12 +163,12 @@ def test_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
 def test_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x_old_pid = "x_old"
-    # x_new_pid = "x_new"
+    x_old_name = "x_old"
+    # x_new_name = "x_new"
     x_old_file_ext = "txt"
     # x_new_file_ext = "json"
-    x_old_file_name = f"{x_old_pid}.{x_old_file_ext}"
-    # x_new_file_name = f"{x_new_pid}.{x_new_file_ext}"
+    x_old_file_name = f"{x_old_name}.{x_old_file_ext}"
+    # x_new_file_name = f"{x_new_name}.{x_new_file_ext}"
     x_old_file_text = "trying this"
     x_new_file_text = "look there"
     print(f"{env_dir=} {x_old_file_name=}")
@@ -190,12 +190,12 @@ def test_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
 def test_save_file_DoesNotreplaceFile(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
-    x_old_pid = "x_old"
-    # x_new_pid = "x_new"
+    x_old_name = "x_old"
+    # x_new_name = "x_new"
     x_old_file_ext = "txt"
     # x_new_file_ext = "json"
-    x_old_file_name = f"{x_old_pid}.{x_old_file_ext}"
-    # x_new_file_name = f"{x_new_pid}.{x_new_file_ext}"
+    x_old_file_name = f"{x_old_name}.{x_old_file_ext}"
+    # x_new_file_name = f"{x_new_name}.{x_new_file_ext}"
     x_old_file_text = "trying this"
     x_new_file_text = "look there"
     print(f"{env_dir=} {x_old_file_name=}")

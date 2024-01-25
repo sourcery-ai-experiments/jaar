@@ -21,9 +21,9 @@ from pytest import raises as pytest_raises
 #     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     lai_pid = "Lai"
+#     lai_person_id = "Lai"
 #     env_dir = get_temp_clerkunit_dir()
-#     lai_agenda = clerkunit_shop(agent_id=lai_pid, env_dir=env_dir)
+#     lai_agenda = clerkunit_shop(agent_id=lai_person_id, env_dir=env_dir)
 #     lai_contract_file_name = lai_agenda._contract_file_name
 #     with pytest_raises(Exception) as excinfo:
 #         open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
@@ -291,9 +291,9 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1 = agendaunit_shop(_agent_id=src1)
 
 #     ceci_text = "Ceci"
-#     s1.set_partyunit(partyunit=PartyUnit(pid=ceci_text))
+#     s1.set_partyunit(partyunit=PartyUnit(person_id=ceci_text))
 #     swim_text = "swimmers"
-#     swim_group = BraUnit(pid=swim_text)
+#     swim_group = BraUnit(person_id=swim_text)
 #     swim_group.set_partylink(partylink=partylink_shop(party_id=ceci_text))
 #     s1.set_groupunit(y_groupunit=swim_group)
 
@@ -302,8 +302,8 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.add_idea(ideaunit_shop(yaya_text), parent_road=src1_road)
 #     s1.set_belief(base=yaya_road, belief=yaya_road)
 
-#     assert s1._groups.get(swim_text).pid == swim_text
-#     assert s1._partys.get(ceci_text).pid == ceci_text
+#     assert s1._groups.get(swim_text).person_id == swim_text
+#     assert s1._partys.get(ceci_text).person_id == ceci_text
 #     assert s1._idearoot._label == src1
 #     assert s1._beliefs.get(yaya_road).base == yaya_road
 
@@ -335,7 +335,7 @@ def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     yao_text = "Yao"
     contract_origin_weight = 1
     yao_originunit = originunit_shop()
-    yao_originunit.set_originlink(pid=yao_text, weight=contract_origin_weight)
+    yao_originunit.set_originlink(person_id=yao_text, weight=contract_origin_weight)
     contract_agenda_x = example_get_7nodeJRoot_agenda()
     contract_agenda_x.set_agent_id(yao_text)
 
@@ -364,5 +364,5 @@ def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     assert output_agenda_x._originunit == yao_originunit
 
     output_originlink = output_agenda_x._originunit._links.get(yao_text)
-    assert output_originlink.pid == yao_text
+    assert output_originlink.person_id == yao_text
     assert output_originlink.weight == contract_origin_weight

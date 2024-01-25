@@ -495,7 +495,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPID():
+def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -527,7 +527,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPID():
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
 
 
-def test_agenda_edit_Groupunit_brand_raiseErrorNewPIDPreviouslyExists():
+def test_agenda_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -550,7 +550,7 @@ def test_agenda_edit_Groupunit_brand_raiseErrorNewPIDPreviouslyExists():
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyMeldPIDs():
+def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"

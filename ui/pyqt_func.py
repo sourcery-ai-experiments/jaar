@@ -22,7 +22,7 @@ class PYQTTreeHolder:
     reasonheir_count_flag: str
     reason_count_flag: str
     reason_view_flag: str
-    reason_view_pid: str
+    reason_view_person_id: str
     beliefheir_view_flag: str
     root_percent_flag: str
     source_agenda: str
@@ -43,7 +43,7 @@ def get_pyqttree(
     reasonheir_count_flag: bool = None,
     reason_count_flag: bool = None,
     reason_view_flag: bool = None,
-    reason_view_pid: bool = None,
+    reason_view_person_id: bool = None,
     beliefheir_view_flag: bool = None,
     source_agenda: AgendaUnit = None,
 ) -> QTreeWidgetItem:
@@ -61,7 +61,7 @@ def get_pyqttree(
         reasonheir_count_flag=reasonheir_count_flag,
         reason_count_flag=reason_count_flag,
         reason_view_flag=reason_view_flag,
-        reason_view_pid=reason_view_pid,
+        reason_view_person_id=reason_view_person_id,
         beliefheir_view_flag=beliefheir_view_flag,
         root_percent_flag=root_percent_flag,
         source_agenda=source_agenda,
@@ -109,7 +109,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             reasonheir_count_flag=pth.reasonheir_count_flag,
             reason_count_flag=pth.reason_count_flag,
             reason_view_flag=pth.reason_view_flag,
-            reason_view_pid=pth.reason_view_pid,
+            reason_view_person_id=pth.reason_view_person_id,
             beliefheir_view_flag=pth.beliefheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
             source_agenda=pth.source_agenda,
@@ -179,7 +179,7 @@ def _get_treenode_l_reason_count(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _get_treenode_l_reason_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    reasonheir = pth.ideaunit._reasonheirs.get(pth.reason_view_pid)
+    reasonheir = pth.ideaunit._reasonheirs.get(pth.reason_view_person_id)
     if reasonheir != None:
         # treenode_l += f"{get_terminus_node(reasonheir.base)}"
         grabed_premise = None
@@ -192,7 +192,7 @@ def _get_treenode_l_reason_view(treenode_l, pth: PYQTTreeHolder) -> str:
 
 
 def _get_treenode_l_beliefheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    beliefheir = pth.ideaunit._beliefheirs.get(pth.reason_view_pid)
+    beliefheir = pth.ideaunit._beliefheirs.get(pth.reason_view_person_id)
     if beliefheir != None:
         time_road = f"{pth.source_agenda._idearoot._label},time,jajatime"
         if (

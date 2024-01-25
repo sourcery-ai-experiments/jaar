@@ -26,7 +26,7 @@ def test_EconomyUnit_exists():
     # THEN
     assert x_economy.economy_id == x_economy_id
     assert x_economy.economys_dir == get_test_economys_dir()
-    assert x_economy._manager_pid is None
+    assert x_economy._manager_person_id is None
     assert x_economy._road_delimiter is None
 
 
@@ -39,7 +39,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
 
     # WHEN
     x_economy = economyunit_shop(
-        x_economy_id, get_test_economys_dir(), _manager_pid=sue_text
+        x_economy_id, get_test_economys_dir(), _manager_person_id=sue_text
     )
 
     # THEN
@@ -47,7 +47,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy.economy_id == x_economy_id
     assert os_path.exists(economy_dir)
     assert x_economy._treasury_db != None
-    assert x_economy._manager_pid == sue_text
+    assert x_economy._manager_person_id == sue_text
     assert x_economy._clerkunits == {}
     assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
@@ -60,7 +60,7 @@ def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
     economy_dir = f"src/economy/examples/economys/{x_economy_id}"
     sue_text = "Sue"
     x_economy = economyunit_shop(
-        x_economy_id, get_test_economys_dir(), _manager_pid=sue_text
+        x_economy_id, get_test_economys_dir(), _manager_person_id=sue_text
     )
     assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
@@ -83,7 +83,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     x_economy = economyunit_shop(
         x_economy_id,
         economys_dir=get_test_economys_dir(),
-        _manager_pid=sue_text,
+        _manager_person_id=sue_text,
     )
 
     # THEN
@@ -91,7 +91,7 @@ def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
     assert x_economy.economy_id == x_economy_id
     assert os_path.exists(economy_dir)
     assert x_economy._treasury_db != None
-    assert x_economy._manager_pid == sue_text
+    assert x_economy._manager_person_id == sue_text
     assert x_economy._clerkunits == {}
     assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
@@ -291,19 +291,19 @@ def test_copy_evaluation_economy_CorrectlyRaisesError(env_dir_setup_cleanup):
     )
 
 
-def test_economyunit_set_manager_pid_CorrectsSetsData(env_dir_setup_cleanup):
+def test_economyunit_set_manager_person_id_CorrectsSetsData(env_dir_setup_cleanup):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
     assert x_economy.economy_id == x_economy_id
-    assert x_economy._manager_pid is None
+    assert x_economy._manager_person_id is None
 
     # WHEN
     zuo_text = "Zuo"
-    x_economy.set_manager_pid(zuo_text)
+    x_economy.set_manager_person_id(zuo_text)
 
     # THEN
-    assert x_economy._manager_pid == zuo_text
+    assert x_economy._manager_person_id == zuo_text
 
 
 def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):

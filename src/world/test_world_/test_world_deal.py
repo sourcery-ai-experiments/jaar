@@ -90,7 +90,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     highway_requestunit = create_requestunit(
-#         wantunit=highway_wantunit, requestee_party_id=tim_text, requester_pid=xio_text
+#         wantunit=highway_wantunit, requestee_party_id=tim_text, requester_person_id=xio_text
 #     )
 #     assert x_world.get_personunit_from_memory(tim_text) is None
 #     assert x_world.get_personunit_from_memory(xio_text) is None
@@ -276,7 +276,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #         wantunit=highway_wantunit,
 #         requestee_party_id=tim_text,
 #         requestee_group=environmentalist_text,
-#         requester_pid=xio_text,
+#         requester_person_id=xio_text,
 #         fix_weight=fix_weight,
 #     )
 

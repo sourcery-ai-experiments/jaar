@@ -2,7 +2,6 @@ from src.agenda.reason_idea import (
     BeliefUnit,
     beliefunit_shop,
     beliefheir_shop,
-    RoadUnit,
     BeliefCore,
     beliefunit_shop as c_beliefunit,
     beliefunits_get_from_dict,

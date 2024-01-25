@@ -522,7 +522,7 @@ WHERE currency_master = '{currency_agent_id}'
 
 # agenda
 def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the pid of every agenda. The agent_id pip of the one running that agenda's clerk."""
+    """Create table that references the person_id of every agenda. The agent_id pip of the one running that agenda's clerk."""
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   agent_id VARCHAR(255) PRIMARY KEY ASC

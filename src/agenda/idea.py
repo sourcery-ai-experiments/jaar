@@ -641,7 +641,7 @@ class IdeaUnit:
 
     def _meld_originlinks(self, party_id: PartyID, party_weight: float):
         if party_id != None:
-            self._originunit.set_originlink(pid=party_id, weight=party_weight)
+            self._originunit.set_originlink(person_id=party_id, weight=party_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -959,8 +959,8 @@ class IdeaUnit:
 
     def get_balancelinks_dict(self):
         return {
-            group_pid: balancelink.get_dict()
-            for group_pid, balancelink in self._balancelinks.items()
+            group_person_id: balancelink.get_dict()
+            for group_person_id, balancelink in self._balancelinks.items()
         }
 
     def is_kidless(self):

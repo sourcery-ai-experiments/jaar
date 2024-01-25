@@ -45,7 +45,7 @@ def test_economy_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     assert x_economy.get_forum_agenda(agent_id=y_agenda._agent_id) == y_agenda
 
 
-def test_economy_change_forum_agent_id_ChangesAgendaPID(
+def test_economy_change_forum_agent_id_ChangesAgendaPersonID(
     env_dir_setup_cleanup,
 ):
     # GIVEN

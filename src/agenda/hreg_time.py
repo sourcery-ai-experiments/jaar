@@ -6,7 +6,7 @@ from datetime import datetime
 # created to help make code readable. Holds some IdeaUnit attributes
 @dataclass
 class YB:
-    n: str = None  # pid
+    n: str = None
     weight: int = 1
     b: float = None  # begin
     c: float = None  # close  # where
@@ -456,13 +456,13 @@ class HregTimeIdeaSource:
 
     def get_jajatime_legible_from_dt(self, dt: datetime) -> str:
         weekday_text = dt.strftime("%A")
-        monthpid_text = dt.strftime("%B")
+        monthdescription_text = dt.strftime("%B")
         monthday_text = self.get_number_with_letter_ending(int(dt.strftime("%d")))
         year_text = dt.strftime("%Y")
         hour_int = int(dt.strftime("%H"))
         min_int = int(dt.strftime("%M"))
         min1440 = (hour_int * 60) + min_int
-        return f"{weekday_text[:3]} {monthpid_text[:3]} {monthday_text}, {year_text} at {self.convert1440toReadableTime(min1440)}"
+        return f"{weekday_text[:3]} {monthdescription_text[:3]} {monthday_text}, {year_text} at {self.convert1440toReadableTime(min1440)}"
 
     def convert1440toHHMM(self, min1440: int):
         x_open_minutes = (

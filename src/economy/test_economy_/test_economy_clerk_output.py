@@ -37,7 +37,7 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_agent_id(new_agent_id=xia_text)
-    input_agenda._originunit.set_originlink(pid=xia_text, weight=1)
+    input_agenda._originunit.set_originlink(person_id=xia_text, weight=1)
 
     # THEN
     a_text = "A"

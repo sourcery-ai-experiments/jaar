@@ -159,11 +159,11 @@ def test_IdeaUnit_balancelinks_exist():
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_pid = GroupBrand("swimmers")
+    swimmer_brand = GroupBrand("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balancelink_shop(
-        brand=swimmer_pid,
+        brand=swimmer_brand,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
@@ -176,9 +176,6 @@ def test_IdeaUnit_balancelinks_exist():
 
     # THEN
     assert sport_idea._balancelinks == group_links
-    # assert group_link_x.weight == 1.0
-    # group_link_x = balancelink_shop(brand=bikers_pid, weight=bikers_weight)
-    # assert group_link_x.weight == 3.0
 
 
 def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
@@ -193,11 +190,11 @@ def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues
     )
 
     swimmer_text = "swimmers"
-    swimmer_pid = GroupBrand(swimmer_text)
+    swimmer_brand = GroupBrand(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balanceheir_shop(
-        brand=swimmer_pid,
+        brand=swimmer_brand,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
@@ -415,15 +412,17 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
             base=states_road, premises={usa_premise.need: usa_premise}, _status=False
         ),
     }
-    biker_pid = GroupBrand("bikers")
+    biker_brand = GroupBrand("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
-    biker_link = balancelink_shop(biker_pid, biker_creditor_weight, biker_debtor_weight)
-    flyer_pid = GroupBrand("flyers")
+    biker_link = balancelink_shop(
+        biker_brand, biker_creditor_weight, biker_debtor_weight
+    )
+    flyer_brand = GroupBrand("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
     flyer_link = balancelink_shop(
-        brand=flyer_pid,
+        brand=flyer_brand,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
@@ -441,7 +440,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_balancelinks = {biker_pid: biker_get_dict, flyer_pid: flyer_get_dict}
+    x1_balancelinks = {biker_brand: biker_get_dict, flyer_brand: flyer_get_dict}
 
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -460,8 +459,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     work_idea.set_beliefunit(beliefunit=beliefunit_x)
-    work_idea._originunit.set_originlink(pid="Ray", weight=None)
-    work_idea._originunit.set_originlink(pid="Lei", weight=4)
+    work_idea._originunit.set_originlink(person_id="Ray", weight=None)
+    work_idea._originunit.set_originlink(person_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13

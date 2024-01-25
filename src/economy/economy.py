@@ -66,7 +66,7 @@ class IntentBaseDoesNotExistException(Exception):
 class EconomyUnit:
     economy_id: EconomyID
     economys_dir: str
-    _manager_pid: HealerID = None
+    _manager_person_id: HealerID = None
     _clerkunits: dict[str:clerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None
@@ -74,8 +74,8 @@ class EconomyUnit:
     def set_road_delimiter(self, new_road_delimiter: str):
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
-    def set_manager_pid(self, person_id: HealerID):
-        self._manager_pid = person_id
+    def set_manager_person_id(self, person_id: HealerID):
+        self._manager_person_id = person_id
 
     # treasurying
     def set_voice_ranks(self, agent_id: AgentID, sort_order: str):
@@ -594,7 +594,7 @@ class EconomyUnit:
 def economyunit_shop(
     economy_id: EconomyID,
     economys_dir: str,
-    _manager_pid: HealerID = None,
+    _manager_person_id: HealerID = None,
     _clerkunits: dict[str:clerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,
@@ -607,7 +607,7 @@ def economyunit_shop(
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
     economy_x.set_road_delimiter(_road_delimiter)
-    economy_x.set_manager_pid(_manager_pid)
+    economy_x.set_manager_person_id(_manager_person_id)
     economy_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
     return economy_x
 

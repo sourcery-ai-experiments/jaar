@@ -10,7 +10,7 @@ def test_PersonUnit_exists():
     x_person = PersonUnit()
 
     # THEN
-    assert x_person.pid is None
+    assert x_person.person_id is None
     assert x_person.person_dir is None
     assert x_person._economys is None
     assert x_person._problems is None
@@ -22,10 +22,10 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     dallas_text = "dallas"
 
     # WHEN
-    x_person = personunit_shop(pid=dallas_text)
+    x_person = personunit_shop(person_id=dallas_text)
 
     # THEN
-    assert x_person.pid == dallas_text
+    assert x_person.person_id == dallas_text
     assert x_person.person_dir == ""
     assert x_person._economys == {}
     assert x_person._problems == {}
@@ -40,11 +40,11 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
 
     # WHEN
     x_person = personunit_shop(
-        pid=dallas_text, person_dir=dallas_dir, _road_delimiter=slash_text
+        person_id=dallas_text, person_dir=dallas_dir, _road_delimiter=slash_text
     )
 
     # THEN
-    assert x_person.pid == dallas_text
+    assert x_person.person_id == dallas_text
     assert x_person.person_dir == dallas_dir
     assert x_person._road_delimiter == slash_text
 
@@ -53,7 +53,7 @@ def test_PersonUnit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUn
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
 
     # WHEN
     knee_text = "knee discomfort"
@@ -69,7 +69,7 @@ def test_PersonUnit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUn
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
 
     # WHEN
     knee_text = "knee discomfort"
@@ -86,7 +86,7 @@ def test_PersonUnit_get_problemunit_CorrectlyGetsProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_personunit.create_problemunit_from_problem_id(knee_text)
 
@@ -102,7 +102,7 @@ def test_PersonUnit_economylink_exists_ReturnsCorrectObj():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_personunit.create_problemunit_from_problem_id(knee_text)
     texas_text = "Texas"
@@ -125,7 +125,7 @@ def test_PersonUnit_del_problemunit_CorrectlyDeletesProblemUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_personunit.create_problemunit_from_problem_id(knee_text)
     before_knee_problem = xao_personunit.get_problemunit(knee_text)
@@ -144,7 +144,7 @@ def test_PersonUnit_set_economyunit_RaisesErrorIfNoAssociatedProblemExists():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
 
     # WHEN/THEN
     diet_text = "diet"
@@ -160,7 +160,7 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     knee_text = "knee discomfort"
     xao_personunit.create_problemunit_from_problem_id(knee_text)
     diet_text = "diet"
@@ -184,7 +184,7 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyLink():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     assert xao_personunit.economylink_exists(diet_text) == False
 
@@ -200,7 +200,7 @@ def test_PersonUnit_economyunit_exists_ReturnsCorrectObj():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     assert xao_personunit.economyunit_exists(diet_text) == False
 
@@ -215,7 +215,7 @@ def test_PersonUnit_all_economyunits_linked_to_problem_ReturnsCorrectObj():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     cooking_text = "cooking"
     hunger_text = "Hunger"
     diet_text = "diet"
@@ -252,7 +252,7 @@ def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
 
@@ -269,7 +269,7 @@ def test_PersonUnit_get_economyaddress_ReturnsCorrectObj():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
 
@@ -285,7 +285,7 @@ def test_PersonUnit_get_economyaddress_RaisesException():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
 
@@ -303,7 +303,7 @@ def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
     diet_text = "diet"
     xao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
     before_diet_economy = xao_personunit.get_economyunit(diet_text)

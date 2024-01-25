@@ -12,7 +12,7 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
 
     knee_text = "knee discomfort"
     bore_text = "bore"
@@ -48,7 +48,7 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     # GIVEN
     xao_text = "Xao"
     xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
-    xao_personunit = personunit_shop(pid=xao_text, person_dir=xao_person_dir)
+    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
 
     knee_text = "knee"
     bore_problem_id = "bore"

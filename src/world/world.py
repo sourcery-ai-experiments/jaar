@@ -67,7 +67,7 @@ class WorldUnit:
         return self._personunits.get(person_id) != None
 
     def _set_person_in_memory(self, personunit: PersonUnit):
-        self._personunits[personunit.pid] = personunit
+        self._personunits[personunit.person_id] = personunit
 
     def set_personunit(
         self,
@@ -80,11 +80,14 @@ class WorldUnit:
             self._get_person_dir(person_id),
             _road_delimiter=self._road_delimiter,
         )
-        if self.personunit_exists(x_personunit.pid) == False and not replace_personunit:
+        if (
+            self.personunit_exists(x_personunit.person_id) == False
+            and not replace_personunit
+        ):
             self._set_person_in_memory(x_personunit)
         elif replace_alert:
             raise PersonExistsException(
-                f"set_personunit fail: {x_personunit.pid} already exists"
+                f"set_personunit fail: {x_personunit.person_id} already exists"
             )
 
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
@@ -92,13 +95,13 @@ class WorldUnit:
 
     def add_economy_connection(
         self,
-        treasurer_pid: PersonID,
+        treasurer_person_id: PersonID,
         economy_id: EconomyID,
         clerk_person_id: PersonID,
     ):
-        if self.personunit_exists(treasurer_pid) == False:
-            self.set_personunit(treasurer_pid)
-        x_personunit = self.get_personunit_from_memory(treasurer_pid)
+        if self.personunit_exists(treasurer_person_id) == False:
+            self.set_personunit(treasurer_person_id)
+        x_personunit = self.get_personunit_from_memory(treasurer_person_id)
 
         if x_personunit.economyunit_exists(economy_id) == False:
             x_personunit.set_economyunit(economy_id)
@@ -107,8 +110,8 @@ class WorldUnit:
         if self.personunit_exists(clerk_person_id) == False:
             self.set_personunit(clerk_person_id)
 
-        if x_economy.clerkunit_exists(treasurer_pid) == False:
-            x_economy.add_clerkunit(treasurer_pid)
+        if x_economy.clerkunit_exists(treasurer_person_id) == False:
+            x_economy.add_clerkunit(treasurer_person_id)
         if x_economy.clerkunit_exists(clerk_person_id) == False:
             x_economy.add_clerkunit(clerk_person_id)
 
@@ -150,8 +153,8 @@ class WorldUnit:
         healer_personunit.set_economyunit(economy_id, False, x_problem_id)
         x_economyunit = healer_personunit.get_economyunit(economy_id)
         x_economyunit.full_setup_clerkunit(healer_id)
-        if healer_id != x_personunit.pid:
-            self._set_partyunit(x_economyunit, x_personunit.pid, healer_id)
+        if healer_id != x_personunit.person_id:
+            self._set_partyunit(x_economyunit, x_personunit.person_id, healer_id)
 
     def _set_partyunit(
         self, x_economyunit: EconomyUnit, person_id: PersonID, party_id: PersonID

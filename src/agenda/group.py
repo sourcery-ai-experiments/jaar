@@ -31,13 +31,17 @@ class GroupCore:
 @dataclass
 class GroupUnit(GroupCore):
     uid: int = None
-    single_party_id: int = None
-    _single_party: bool = None
+    single_party_id: int = (
+        None  # set by AgendaUnit.set_partyunit() during partyunit insert
+    )
+    _single_party: bool = (
+        None  # set by AgendaUnit.set_partyunit() during partyunit insert
+    )
     _partys: dict[PartyID:PartyLink] = None
-    _agenda_credit: float = None  # calculated by set_agenda_metrics
-    _agenda_debt: float = None  # calculated by set_agenda_metrics
-    _agenda_intent_credit: float = None  # calculated by set_agenda_metrics
-    _agenda_intent_debt: float = None  # calculated by set_agenda_metrics
+    _agenda_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
+    _agenda_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
+    _agenda_intent_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
+    _agenda_intent_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _partylinks_set_by_economy_road: RoadUnit = None
 
     def set_brand(self, brand: GroupBrand = None):

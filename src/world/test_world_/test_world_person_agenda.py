@@ -13,7 +13,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas
     # GIVEN
     texas_world = worldunit_shop(mark="texas", worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
-    texas_world._set_person_in_memory(personunit_shop(pid=luca_text))
+    texas_world._set_person_in_memory(personunit_shop(person_id=luca_text))
 
     # WHEN
     luca_agenda = texas_world.get_world_agenda(luca_text)

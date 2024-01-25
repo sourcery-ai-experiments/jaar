@@ -305,8 +305,8 @@ class AgendaUnit:
 
         # get dict of all partylinks that are in all balanceheirs
         balanceheir_partyunits = {}
-        for balanceheir_pid in balanceheir_dict:
-            groupunit = self.get_groupunit(balanceheir_pid)
+        for balanceheir_person_id in balanceheir_dict:
+            groupunit = self.get_groupunit(balanceheir_person_id)
             for partylink in groupunit._partys.values():
                 balanceheir_partyunits[partylink.party_id] = self.get_party(
                     partylink.party_id
@@ -414,7 +414,6 @@ class AgendaUnit:
         str_x = "test3"
         if divisor is None:
             str_x = self.get_jajatime_legible_one_time_event(jajatime_min=open)
-            # str_x = f"Weekday, monthpid monthday year"
         elif divisor != None and divisor % 10080 == 0:
             str_x = self._get_jajatime_week_legible_text(open, divisor)
         elif divisor != None and divisor % 1440 == 0:
@@ -1084,21 +1083,21 @@ class AgendaUnit:
 
     def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
-            _balancelink_pid
-            for _balancelink_pid in x_idea._balancelinks.keys()
-            if self.get_groupunit(_balancelink_pid) is None
+            _balancelink_person_id
+            for _balancelink_person_id in x_idea._balancelinks.keys()
+            if self.get_groupunit(_balancelink_person_id) is None
         ]
-        for _balancelink_pid in _balancelinks_to_delete:
-            x_idea._balancelinks.pop(_balancelink_pid)
+        for _balancelink_person_id in _balancelinks_to_delete:
+            x_idea._balancelinks.pop(_balancelink_person_id)
 
         if x_idea._assignedunit != None:
             _suffgroups_to_delete = [
-                _suffgroup_pid
-                for _suffgroup_pid in x_idea._assignedunit._suffgroups.keys()
-                if self.get_groupunit(_suffgroup_pid) is None
+                _suffgroup_brand
+                for _suffgroup_brand in x_idea._assignedunit._suffgroups.keys()
+                if self.get_groupunit(_suffgroup_brand) is None
             ]
-            for _suffgroup_pid in _suffgroups_to_delete:
-                x_idea._assignedunit.del_suffgroup(_suffgroup_pid)
+            for _suffgroup_brand in _suffgroups_to_delete:
+                x_idea._assignedunit.del_suffgroup(_suffgroup_brand)
 
         return x_idea
 
@@ -1875,8 +1874,8 @@ class AgendaUnit:
     def get_groupunits_from_dict(self) -> dict[str:str]:
         x_dict = {}
         if self._groups != None:
-            for group_pid, group_obj in self._groups.items():
-                x_dict[group_pid] = group_obj.get_dict()
+            for group_brand, group_obj in self._groups.items():
+                x_dict[group_brand] = group_obj.get_dict()
         return x_dict
 
     def get_dict(self) -> dict[str:str]:
@@ -2119,17 +2118,19 @@ class AgendaUnit:
 
     def _set_assignment_groups(self, agenda_x):
         revelant_groups = get_partys_relevant_groups(self._groups, agenda_x._partys)
-        for group_pid, group_partys in revelant_groups.items():
-            if agenda_x._groups.get(group_pid) is None:
-                group_x = groupunit_shop(brand=group_pid)
+        for group_brand, group_partys in revelant_groups.items():
+            if agenda_x._groups.get(group_brand) is None:
+                group_x = groupunit_shop(brand=group_brand)
                 for party_id in group_partys:
                     group_x.set_partylink(partylink_shop(party_id=party_id))
                 agenda_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
-        self, agenda_x, assignor_pid: GroupBrand
+        self, agenda_x, assignor_person_id: GroupBrand
     ) -> dict[RoadUnit:int]:
-        assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_pid)
+        assignor_groups = get_party_relevant_groups(
+            agenda_x._groups, assignor_person_id
+        )
         return {
             idea_road: -1
             for idea_road, x_idea in self._idea_dict.items()

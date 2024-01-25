@@ -36,6 +36,7 @@ from src._prime.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
     get_single_roadnode,
+    validate_roadnode,
 )
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
@@ -773,3 +774,19 @@ def test_get_single_roadnode_ReturnsCorrectObj():
     assert get_single_roadnode(personroad_text, bob_road, problem_id_text) == food_text
     assert get_single_roadnode(personroad_text, bob_road, healer_id_text) == yao_text
     assert get_single_roadnode(personroad_text, bob_road, economy_id_text) == ohio_text
+
+
+def test_validate_roadnode_RaisesErrorWhenNotRoadNode():
+    # GIVEN
+    bob_text = "Bob, Tom"
+    slash_text = "/"
+    assert bob_text == validate_roadnode(bob_text, x_delimiter=slash_text)
+
+    # WHEN
+    comma_text = ","
+    with pytest_raises(Exception) as excinfo:
+        bob_text == validate_roadnode(bob_text, x_delimiter=comma_text)
+    assert (
+        str(excinfo.value)
+        == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{comma_text}'"
+    )

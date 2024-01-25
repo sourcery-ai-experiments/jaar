@@ -22,7 +22,7 @@ class InvalidEconomyException(Exception):
 
 @dataclass
 class PersonUnit:
-    pid: PersonID = None
+    person_id: PersonID = None
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
     _problems: dict[ProblemID:ProblemUnit] = None
@@ -70,8 +70,8 @@ class PersonUnit:
         if x_problem_id != None:
             self.create_problemunit_from_problem_id(x_problem_id)
             x_problemunit = self.get_problemunit(x_problem_id)
-            x_problemunit.set_healerlink(healerlink_shop(self.pid))
-            xao_healerlink = x_problemunit.get_healerlink(self.pid)
+            x_problemunit.set_healerlink(healerlink_shop(self.person_id))
+            xao_healerlink = x_problemunit.get_healerlink(self.person_id)
             xao_healerlink.set_economylink(economylink_shop(economy_id))
 
         if self.economylink_exists(economy_id) == False:
@@ -86,17 +86,17 @@ class PersonUnit:
             self._economys[economy_id] = economyunit_shop(
                 economy_id=economy_id,
                 economys_dir=economys_dir,
-                _manager_pid=self.pid,
+                _manager_person_id=self.person_id,
                 _road_delimiter=self._road_delimiter,
             )
 
     def get_economyaddress(self, economy_id: EconomyID) -> EconomyAddress:
         if self.economyunit_exists(economy_id) == False:
             raise InvalidEconomyException(
-                f"Cannot get economyaddress for {self.pid} because economy {economy_id} does not exist"
+                f"Cannot get economyaddress for {self.person_id} because economy {economy_id} does not exist"
             )
 
-        return create_economyaddress(self.pid, economy_id, self._road_delimiter)
+        return create_economyaddress(self.person_id, economy_id, self._road_delimiter)
 
     def economyunit_exists(self, economy_id: EconomyID):
         return self._economys.get(economy_id) != None
@@ -120,19 +120,19 @@ class PersonUnit:
 
     def get_dict(self) -> dict[str:str]:
         return {
-            "pid": self.pid,
+            "person_id": self.person_id,
             "_economys": self.get_economys_dict(),
             "_problems": self.get_problems_dict(),
         }
 
 
 def personunit_shop(
-    pid: PersonID, person_dir: str = None, _road_delimiter: str = None
+    person_id: PersonID, person_dir: str = None, _road_delimiter: str = None
 ) -> PersonUnit:
     if person_dir is None:
         person_dir = ""
     return PersonUnit(
-        pid=pid,
+        person_id=person_id,
         person_dir=person_dir,
         _economys={},
         _problems={},
