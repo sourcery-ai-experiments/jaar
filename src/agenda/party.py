@@ -1,4 +1,4 @@
-from src._prime.road import PartyID
+from src._prime.road import PartyID, default_road_delimiter_if_none, validate_roadnode
 from dataclasses import dataclass
 from src.tools.python import get_1_if_None, x_get_dict, get_0_if_None
 
@@ -13,7 +13,11 @@ class InvalidDepotLinkException(Exception):
 
 @dataclass
 class PartyCore:
-    party_id: PartyID
+    party_id: PartyID = None
+    _road_delimiter: str = None
+
+    def set_party_id(self, x_party_id: PartyID):
+        self.party_id = validate_roadnode(x_party_id, self._road_delimiter)
 
 
 @dataclass
@@ -252,9 +256,9 @@ def partyunit_shop(
     _treasury_tax_paid: float = None,
     _treasury_tax_diff: float = None,
     depotlink_type: str = None,
+    _road_delimiter: str = None,
 ) -> PartyUnit:
     x_partyunit = PartyUnit(
-        party_id=party_id,
         uid=uid,
         creditor_weight=get_1_if_None(creditor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
@@ -268,7 +272,9 @@ def partyunit_shop(
         _agenda_intent_ratio_debt=get_0_if_None(_agenda_intent_ratio_debt),
         _treasury_tax_paid=_treasury_tax_paid,
         _treasury_tax_diff=_treasury_tax_diff,
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
+    x_partyunit.set_party_id(x_party_id=party_id)
     if depotlink_type != None:
         x_partyunit.set_depotlink_type(depotlink_type=depotlink_type)
     return x_partyunit

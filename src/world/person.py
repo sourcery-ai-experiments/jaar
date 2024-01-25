@@ -30,9 +30,7 @@ class PersonUnit:
     _road_delimiter: str = None
 
     def set_person_id(self, x_person_id: PersonID):
-        self.person_id = validate_roadnode(
-            x_person_id, x_delimiter=self._road_delimiter
-        )
+        self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
         if self.person_dir is None:
             self.person_dir = f"/persons/{self.person_id}"
 

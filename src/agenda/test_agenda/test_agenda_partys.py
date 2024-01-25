@@ -9,19 +9,26 @@ from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_p
 from src.agenda.idea import ideaunit_shop, IdeaUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
+from copy import deepcopy as copy_deepcopy
 
 
 def test_AgendaUnit_set_partyunit_SetObjCorrectly():
     # GIVEN
-    yahri_party = partyunit_shop(party_id=PartyID("yahri"))
-    partys_x = {yahri_party.party_id: yahri_party}
-    bob_agenda = agendaunit_shop("Bob")
+    yao_text = "Yao"
+    yao_partyunit = partyunit_shop(party_id=yao_text)
+    deepcopy_yao_partyunit = copy_deepcopy(yao_partyunit)
+    slash_text = "/"
+    bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_text)
 
     # WHEN
-    bob_agenda.set_partyunit(partyunit=yahri_party)
+    bob_agenda.set_partyunit(partyunit=yao_partyunit)
 
     # THEN
-    assert bob_agenda._partys == partys_x
+    assert bob_agenda._partys.get(yao_text)._road_delimiter == slash_text
+    x_partys = {yao_partyunit.party_id: deepcopy_yao_partyunit}
+    assert bob_agenda._partys != x_partys
+    deepcopy_yao_partyunit._road_delimiter = bob_agenda._road_delimiter
+    assert bob_agenda._partys == x_partys
 
 
 def test_examples_agenda_v001_has_partys():

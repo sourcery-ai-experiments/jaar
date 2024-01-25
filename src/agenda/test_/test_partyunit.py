@@ -1,3 +1,4 @@
+from src._prime.road import validate_roadnode, default_road_delimiter_if_none
 from src.agenda.party import (
     PartyUnit,
     PartyID,
@@ -14,28 +15,55 @@ def test_PartyUnit_exists():
     bob_party_id = "Bob"
 
     # WHEN
-    bob_party = PartyUnit(party_id=bob_party_id)
+    bob_partyunit = PartyUnit(party_id=bob_party_id)
 
     # THEN
     print(f"{bob_party_id}")
-    assert bob_party != None
-    assert bob_party.party_id != None
-    assert bob_party.party_id == bob_party_id
-    assert bob_party.creditor_weight is None
-    assert bob_party.debtor_weight is None
-    assert bob_party._agenda_credit is None
-    assert bob_party._agenda_debt is None
-    assert bob_party._agenda_intent_credit is None
-    assert bob_party._agenda_intent_debt is None
-    assert bob_party._creditor_live is None
-    assert bob_party._debtor_live is None
-    assert bob_party._treasury_tax_paid is None
-    assert bob_party._treasury_tax_diff is None
-    assert bob_party._treasury_credit_score is None
-    assert bob_party._treasury_voice_rank is None
-    assert bob_party._treasury_voice_hx_lowest_rank is None
-    assert bob_party.depotlink_type is None
-    assert bob_party._output_agenda_meld_order is None
+    assert bob_partyunit != None
+    assert bob_partyunit.party_id != None
+    assert bob_partyunit.party_id == bob_party_id
+    assert bob_partyunit.creditor_weight is None
+    assert bob_partyunit.debtor_weight is None
+    assert bob_partyunit.depotlink_type is None
+    assert bob_partyunit._agenda_credit is None
+    assert bob_partyunit._agenda_debt is None
+    assert bob_partyunit._agenda_intent_credit is None
+    assert bob_partyunit._agenda_intent_debt is None
+    assert bob_partyunit._creditor_live is None
+    assert bob_partyunit._debtor_live is None
+    assert bob_partyunit._treasury_tax_paid is None
+    assert bob_partyunit._treasury_tax_diff is None
+    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_voice_rank is None
+    assert bob_partyunit._treasury_voice_hx_lowest_rank is None
+    assert bob_partyunit._output_agenda_meld_order is None
+    assert bob_partyunit._road_delimiter is None
+
+
+def test_PartyUnit_set_party_id_CorrectlySetsAttr():
+    # GIVEN
+    x_partyunit = PartyUnit()
+
+    # WHEN
+    bob_party_id = "Bob"
+    x_partyunit.set_party_id(bob_party_id)
+
+    # THEN
+    assert x_partyunit.party_id == bob_party_id
+
+
+def test_PartyUnit_set_party_id_RaisesErrorIfParameterContains_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    texas_text = f"Texas{slash_text}Arkansas"
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        partyunit_shop(party_id=texas_text, _road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{texas_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
+    )
 
 
 def test_partyunit_shop_CorrectlySetsAttributes():
@@ -52,123 +80,136 @@ def test_partyunit_shop_CorrectlySetsAttributes():
     assert todd_partyunit._agenda_intent_debt == 0
     assert todd_partyunit._agenda_intent_ratio_credit == 0
     assert todd_partyunit._agenda_intent_ratio_debt == 0
+    assert todd_partyunit._road_delimiter == default_road_delimiter_if_none()
+
+
+def test_partyunit_shop_CorrectlySetsAttributes_road_delimiter():
+    # WHEN
+    todd_text = "Todd"
+    slash_text = "/"
+
+    # WHEN
+    todd_partyunit = partyunit_shop(party_id=todd_text, _road_delimiter=slash_text)
+
+    # THEN
+    assert todd_partyunit._road_delimiter == slash_text
 
 
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
-    assert bob_party._output_agenda_meld_order is None
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    assert bob_partyunit._output_agenda_meld_order is None
 
     # WHEN
     x_output_agenda_meld_order = 5
-    bob_party.set_output_agenda_meld_order(x_output_agenda_meld_order)
+    bob_partyunit.set_output_agenda_meld_order(x_output_agenda_meld_order)
 
     # THEN
-    assert bob_party._output_agenda_meld_order == x_output_agenda_meld_order
+    assert bob_partyunit._output_agenda_meld_order == x_output_agenda_meld_order
 
 
 def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
     x_output_agenda_meld_order = 5
-    bob_party.set_output_agenda_meld_order(x_output_agenda_meld_order)
-    assert bob_party._output_agenda_meld_order == x_output_agenda_meld_order
+    bob_partyunit.set_output_agenda_meld_order(x_output_agenda_meld_order)
+    assert bob_partyunit._output_agenda_meld_order == x_output_agenda_meld_order
 
     # WHEN
-    bob_party.clear_output_agenda_meld_order()
+    bob_partyunit.clear_output_agenda_meld_order()
 
     # THEN
-    assert bob_party._output_agenda_meld_order is None
+    assert bob_partyunit._output_agenda_meld_order is None
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
 
     # WHEN
     depotlink_type_x = "assignment"
-    bob_party.set_depotlink_type(
+    bob_partyunit.set_depotlink_type(
         depotlink_type=depotlink_type_x, creditor_weight=23, debtor_weight=34
     )
 
     # THEN
-    assert bob_party.depotlink_type == depotlink_type_x
-    assert bob_party.creditor_weight == 23
-    assert bob_party.debtor_weight == 34
+    assert bob_partyunit.depotlink_type == depotlink_type_x
+    assert bob_partyunit.creditor_weight == 23
+    assert bob_partyunit.debtor_weight == 34
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id, creditor_weight=45, debtor_weight=56
     )
 
     # WHEN
     depotlink_type_x = "assignment"
-    bob_party.set_depotlink_type(
+    bob_partyunit.set_depotlink_type(
         depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
     )
 
     # THEN
-    assert bob_party.depotlink_type == depotlink_type_x
-    assert bob_party.creditor_weight == 45
-    assert bob_party.debtor_weight == 56
+    assert bob_partyunit.depotlink_type == depotlink_type_x
+    assert bob_partyunit.creditor_weight == 45
+    assert bob_partyunit.debtor_weight == 56
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
 
     # WHEN
     depotlink_type_x = "assignment"
-    bob_party.set_depotlink_type(
+    bob_partyunit.set_depotlink_type(
         depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
     )
 
     # THEN
-    assert bob_party.depotlink_type == depotlink_type_x
-    assert bob_party.creditor_weight == 1
-    assert bob_party.debtor_weight == 1
+    assert bob_partyunit.depotlink_type == depotlink_type_x
+    assert bob_partyunit.creditor_weight == 1
+    assert bob_partyunit.debtor_weight == 1
 
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id, creditor_weight=45, debtor_weight=56
     )
     depotlink_type_x = "assignment"
-    bob_party.set_depotlink_type(depotlink_type=depotlink_type_x)
-    assert bob_party.depotlink_type == depotlink_type_x
-    assert bob_party.creditor_weight == 45
-    assert bob_party.debtor_weight == 56
+    bob_partyunit.set_depotlink_type(depotlink_type=depotlink_type_x)
+    assert bob_partyunit.depotlink_type == depotlink_type_x
+    assert bob_partyunit.creditor_weight == 45
+    assert bob_partyunit.debtor_weight == 56
 
     # WHEN
-    bob_party.del_depotlink_type()
+    bob_partyunit.del_depotlink_type()
 
     # THEN
-    assert bob_party.depotlink_type is None
-    assert bob_party.creditor_weight == 45
-    assert bob_party.debtor_weight == 56
+    assert bob_partyunit.depotlink_type is None
+    assert bob_partyunit.creditor_weight == 45
+    assert bob_partyunit.debtor_weight == 56
 
 
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     unacceptable_type_text = "unacceptable"
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        bob_party.set_depotlink_type(depotlink_type=unacceptable_type_text)
+        bob_partyunit.set_depotlink_type(depotlink_type=unacceptable_type_text)
     assert (
         str(excinfo.value)
-        == f"PartyUnit '{bob_party.party_id}' cannot have type '{unacceptable_type_text}'."
+        == f"PartyUnit '{bob_partyunit.party_id}' cannot have type '{unacceptable_type_text}'."
     )
 
 
@@ -180,45 +221,45 @@ def test_get_default_depotlink_type_ReturnsCorrectObj():
 def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
-    bob_party._agenda_credit = 0.27
-    bob_party._agenda_debt = 0.37
-    bob_party._agenda_intent_credit = 0.41
-    bob_party._agenda_intent_debt = 0.51
-    bob_party._agenda_intent_ratio_credit = 0.433
-    bob_party._agenda_intent_ratio_debt = 0.533
-    assert bob_party._agenda_credit == 0.27
-    assert bob_party._agenda_debt == 0.37
-    assert bob_party._agenda_intent_credit == 0.41
-    assert bob_party._agenda_intent_debt == 0.51
-    assert bob_party._agenda_intent_ratio_credit == 0.433
-    assert bob_party._agenda_intent_ratio_debt == 0.533
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit._agenda_credit = 0.27
+    bob_partyunit._agenda_debt = 0.37
+    bob_partyunit._agenda_intent_credit = 0.41
+    bob_partyunit._agenda_intent_debt = 0.51
+    bob_partyunit._agenda_intent_ratio_credit = 0.433
+    bob_partyunit._agenda_intent_ratio_debt = 0.533
+    assert bob_partyunit._agenda_credit == 0.27
+    assert bob_partyunit._agenda_debt == 0.37
+    assert bob_partyunit._agenda_intent_credit == 0.41
+    assert bob_partyunit._agenda_intent_debt == 0.51
+    assert bob_partyunit._agenda_intent_ratio_credit == 0.433
+    assert bob_partyunit._agenda_intent_ratio_debt == 0.533
 
     # WHEN
-    bob_party.reset_agenda_credit_debt()
+    bob_partyunit.reset_agenda_credit_debt()
 
     # THEN
-    assert bob_party._agenda_credit == 0
-    assert bob_party._agenda_debt == 0
-    assert bob_party._agenda_intent_credit == 0
-    assert bob_party._agenda_intent_debt == 0
-    assert bob_party._agenda_intent_ratio_credit == 0
-    assert bob_party._agenda_intent_ratio_debt == 0
+    assert bob_partyunit._agenda_credit == 0
+    assert bob_partyunit._agenda_debt == 0
+    assert bob_partyunit._agenda_intent_credit == 0
+    assert bob_partyunit._agenda_intent_debt == 0
+    assert bob_partyunit._agenda_intent_ratio_credit == 0
+    assert bob_partyunit._agenda_intent_ratio_debt == 0
 
 
 def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(party_id=bob_party_id)
-    bob_party._agenda_credit = 0.4106
-    bob_party._agenda_debt = 0.1106
-    bob_party._agenda_intent_credit = 0.41
-    bob_party._agenda_intent_debt = 0.51
-    assert bob_party._agenda_intent_credit == 0.41
-    assert bob_party._agenda_intent_debt == 0.51
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit._agenda_credit = 0.4106
+    bob_partyunit._agenda_debt = 0.1106
+    bob_partyunit._agenda_intent_credit = 0.41
+    bob_partyunit._agenda_intent_debt = 0.51
+    assert bob_partyunit._agenda_intent_credit == 0.41
+    assert bob_partyunit._agenda_intent_debt == 0.51
 
     # WHEN
-    bob_party.add_agenda_credit_debt(
+    bob_partyunit.add_agenda_credit_debt(
         agenda_credit=0.33,
         agenda_debt=0.055,
         agenda_intent_credit=0.3,
@@ -226,16 +267,16 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     )
 
     # THEN
-    assert bob_party._agenda_credit == 0.7406
-    assert bob_party._agenda_debt == 0.1656
-    assert bob_party._agenda_intent_credit == 0.71
-    assert bob_party._agenda_intent_debt == 0.56
+    assert bob_partyunit._agenda_credit == 0.7406
+    assert bob_partyunit._agenda_debt == 0.1656
+    assert bob_partyunit._agenda_intent_credit == 0.71
+    assert bob_partyunit._agenda_intent_debt == 0.56
 
 
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id,
         creditor_weight=15,
         debtor_weight=7,
@@ -246,11 +287,11 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
         _agenda_intent_ratio_credit=0,
         _agenda_intent_ratio_debt=0,
     )
-    assert bob_party._agenda_intent_ratio_credit == 0
-    assert bob_party._agenda_intent_ratio_debt == 0
+    assert bob_partyunit._agenda_intent_ratio_credit == 0
+    assert bob_partyunit._agenda_intent_ratio_debt == 0
 
     # WHEN
-    bob_party.set_agenda_intent_ratio_credit_debt(
+    bob_partyunit.set_agenda_intent_ratio_credit_debt(
         agenda_intent_ratio_credit_sum=0.2,
         agenda_intent_ratio_debt_sum=0.5,
         agenda_partyunit_total_creditor_weight=20,
@@ -258,11 +299,11 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     )
 
     # THEN
-    assert bob_party._agenda_intent_ratio_credit == 0.205
-    assert bob_party._agenda_intent_ratio_debt == 0.102
+    assert bob_partyunit._agenda_intent_ratio_credit == 0.205
+    assert bob_partyunit._agenda_intent_ratio_debt == 0.102
 
     # WHEN
-    bob_party.set_agenda_intent_ratio_credit_debt(
+    bob_partyunit.set_agenda_intent_ratio_credit_debt(
         agenda_intent_ratio_credit_sum=0,
         agenda_intent_ratio_debt_sum=0,
         agenda_partyunit_total_creditor_weight=20,
@@ -270,8 +311,8 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     )
 
     # THEN
-    assert bob_party._agenda_intent_ratio_credit == 0.75
-    assert bob_party._agenda_intent_ratio_debt == 0.5
+    assert bob_partyunit._agenda_intent_ratio_credit == 0.75
+    assert bob_partyunit._agenda_intent_ratio_debt == 0.5
 
 
 def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
@@ -280,38 +321,38 @@ def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
     )
-    assert bob_party._agenda_intent_ratio_credit == 0.077
-    assert bob_party._agenda_intent_ratio_debt == 0.066
-    assert bob_party._treasury_tax_paid is None
-    assert bob_party._treasury_tax_diff is None
-    assert bob_party._treasury_credit_score is None
-    assert bob_party._treasury_voice_rank is None
-    assert bob_party._treasury_voice_hx_lowest_rank is None
+    assert bob_partyunit._agenda_intent_ratio_credit == 0.077
+    assert bob_partyunit._agenda_intent_ratio_debt == 0.066
+    assert bob_partyunit._treasury_tax_paid is None
+    assert bob_partyunit._treasury_tax_diff is None
+    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_voice_rank is None
+    assert bob_partyunit._treasury_voice_hx_lowest_rank is None
 
     # WHEN
     x_tax_paid = 0.2
     x_tax_diff = 0.123
     x_treasury_credit_score = 900
     x_treasury_voice_rank = 45
-    bob_party.set_treasurying_data(
+    bob_partyunit.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
         credit_score=x_treasury_credit_score,
         voice_rank=x_treasury_voice_rank,
     )
     # THEN
-    assert bob_party._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
-    assert bob_party._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
-    assert bob_party._treasury_tax_paid == x_tax_paid
-    assert bob_party._treasury_tax_diff == x_tax_diff
-    assert bob_party._treasury_credit_score == x_treasury_credit_score
-    assert bob_party._treasury_voice_rank == x_treasury_voice_rank
-    assert bob_party._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
+    assert bob_partyunit._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
+    assert bob_partyunit._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
+    assert bob_partyunit._treasury_tax_paid == x_tax_paid
+    assert bob_partyunit._treasury_tax_diff == x_tax_diff
+    assert bob_partyunit._treasury_credit_score == x_treasury_credit_score
+    assert bob_partyunit._treasury_voice_rank == x_treasury_voice_rank
+    assert bob_partyunit._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
 
 
 def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
@@ -319,7 +360,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
     bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id,
         _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
         _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
@@ -328,66 +369,66 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
     x_tax_diff = 0.123
     x_treasury_credit_score = 900
     old_x_treasury_voice_rank = 45
-    bob_party.set_treasurying_data(
+    bob_partyunit.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
         credit_score=x_treasury_credit_score,
         voice_rank=old_x_treasury_voice_rank,
     )
-    assert bob_party._treasury_voice_hx_lowest_rank == old_x_treasury_voice_rank
+    assert bob_partyunit._treasury_voice_hx_lowest_rank == old_x_treasury_voice_rank
 
     # WHEN
     new_x_treasury_voice_rank = 33
-    bob_party.set_treasurying_data(
+    bob_partyunit.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
         credit_score=x_treasury_credit_score,
         voice_rank=new_x_treasury_voice_rank,
     )
     # THEN
-    assert bob_party._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
+    assert bob_partyunit._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
 
     # WHEN
     not_lower_x_treasury_voice_rank = 60
-    bob_party.set_treasurying_data(
+    bob_partyunit.set_treasurying_data(
         tax_paid=x_tax_paid,
         tax_diff=x_tax_diff,
         credit_score=x_treasury_credit_score,
         voice_rank=not_lower_x_treasury_voice_rank,
     )
     # THEN
-    assert bob_party._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
+    assert bob_partyunit._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
 
 
 def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_party_id,
         _agenda_intent_ratio_credit=0.355,
         _agenda_intent_ratio_debt=0.066,
     )
     x_treasury_credit_score = 900
     x_treasury_voice_rank = 45
-    bob_party.set_treasurying_data(
+    bob_partyunit.set_treasurying_data(
         tax_paid=0.399,
         tax_diff=0.044,
         credit_score=x_treasury_credit_score,
         voice_rank=x_treasury_voice_rank,
     )
-    assert bob_party._treasury_tax_paid == 0.399
-    assert bob_party._treasury_tax_diff == 0.044
-    assert bob_party._treasury_credit_score == x_treasury_credit_score
-    assert bob_party._treasury_voice_rank == x_treasury_voice_rank
+    assert bob_partyunit._treasury_tax_paid == 0.399
+    assert bob_partyunit._treasury_tax_diff == 0.044
+    assert bob_partyunit._treasury_credit_score == x_treasury_credit_score
+    assert bob_partyunit._treasury_voice_rank == x_treasury_voice_rank
 
     # WHEN
-    bob_party.clear_treasurying_data()
+    bob_partyunit.clear_treasurying_data()
 
     # THEN
-    assert bob_party._treasury_tax_paid is None
-    assert bob_party._treasury_tax_diff is None
-    assert bob_party._treasury_credit_score is None
-    assert bob_party._treasury_voice_rank is None
+    assert bob_partyunit._treasury_tax_paid is None
+    assert bob_partyunit._treasury_tax_diff is None
+    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_voice_rank is None
 
 
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -397,35 +438,35 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_treasury_tax_paid = 0.55
     bob_treasury_tax_diff = 0.66
     depotlink_type = "assignment"
-    bob_party = partyunit_shop(
+    bob_partyunit = partyunit_shop(
         party_id=bob_text,
         _treasury_tax_paid=bob_treasury_tax_paid,
         _treasury_tax_diff=bob_treasury_tax_diff,
         depotlink_type=depotlink_type,
     )
     bob_uid = 4321
-    bob_party.uid = bob_uid
+    bob_partyunit.uid = bob_uid
 
     bob_creditor_live = False
     bob_debtor_live = True
-    bob_party._creditor_live = bob_creditor_live
-    bob_party._debtor_live = bob_debtor_live
+    bob_partyunit._creditor_live = bob_creditor_live
+    bob_partyunit._debtor_live = bob_debtor_live
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
-    bob_party.creditor_weight = bob_creditor_weight
-    bob_party.debtor_weight = bob_debtor_weight
+    bob_partyunit.creditor_weight = bob_creditor_weight
+    bob_partyunit.debtor_weight = bob_debtor_weight
 
     bob_treasury_credit_score = 7000
     bob_treasury_voice_rank = 898
     bob_treasury_voice_hx_lowest_rank = 740
-    bob_party._treasury_credit_score = bob_treasury_credit_score
-    bob_party._treasury_voice_rank = bob_treasury_voice_rank
-    bob_party._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
+    bob_partyunit._treasury_credit_score = bob_treasury_credit_score
+    bob_partyunit._treasury_voice_rank = bob_treasury_voice_rank
+    bob_partyunit._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
     print(f"{bob_text}")
 
     # WHEN
-    x_dict = bob_party.get_dict()
+    x_dict = bob_partyunit.get_dict()
 
     # THEN
     print(f"{x_dict=}")

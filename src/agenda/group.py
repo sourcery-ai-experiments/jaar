@@ -31,12 +31,8 @@ class GroupCore:
 @dataclass
 class GroupUnit(GroupCore):
     uid: int = None
-    single_party_id: int = (
-        None  # set by AgendaUnit.set_partyunit() during partyunit insert
-    )
-    _single_party: bool = (
-        None  # set by AgendaUnit.set_partyunit() during partyunit insert
-    )
+    single_party_id: int = None  # set by AgendaUnit.set_partyunit()
+    _single_party: bool = None  # set by AgendaUnit.set_partyunit()
     _partys: dict[PartyID:PartyLink] = None
     _agenda_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _agenda_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
