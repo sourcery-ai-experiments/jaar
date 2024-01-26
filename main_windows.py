@@ -1,6 +1,6 @@
 # # command to for converting ui form to python file: pyuic5 ui\MainWindow.ui -o ui\MainWindow.py
 import contextlib
-from datetime import datetime, timepartyedit
+from datetime import datetime, timedelta
 from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView
 from ui.EditBeliefTime import EditBeliefTime
@@ -167,7 +167,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def set_belief_time_open_5daysago(self):
-        days5ago_x = datetime.now() - timepartyedit(days=5)
+        days5ago_x = datetime.now() - timedelta(days=5)
         road_minute = f"{self.x_agenda._economy_id},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.x_agenda.set_belief(
@@ -191,7 +191,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             day=open_dt.day,
             hour=0,
             minute=0,
-        ) + timepartyedit(days=1)
+        ) + timedelta(days=1)
         open_minutes = None
         if open_dt < nigh_dt and open_midnight < nigh_dt:
             open_minutes = self.x_agenda.get_time_min_from_dt(open_midnight)

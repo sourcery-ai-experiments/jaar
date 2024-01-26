@@ -7,7 +7,6 @@ from src._prime.road import (
     get_single_roadnode,
 )
 from src.world.vow import VowID, VowUnit, vowunit_shop
-from src.world.partyedit import PartyEditUnit
 from src.world.topic import TopicUnit
 from src.tools.python import get_empty_dict_if_none
 from dataclasses import dataclass
@@ -29,49 +28,8 @@ class get_member_attr_Exception(Exception):
 class DealUnit:
     _author_road: EconomyRoad = None
     _reader_road: EconomyRoad = None
-    _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _vowunits: dict[VowID:VowUnit] = None
-
-    def edit_partyeditunit_attr(
-        self,
-        member: PersonID,
-        x_party_id: PartyID,
-        x_creditor_change: float = None,
-        x_debtor_change: float = None,
-        x_depotlink_type: str = None,
-    ):
-        x_partyeditunit = self.get_partyeditunit(member, x_party_id)
-        if x_creditor_change != None:
-            x_partyeditunit.creditor_change = x_creditor_change
-        if x_debtor_change != None:
-            x_partyeditunit.debtor_change = x_debtor_change
-        if x_depotlink_type != None:
-            x_partyeditunit.depotlink_type = x_depotlink_type
-
-    def set_partyeditunit(self, member: PersonID, x_partyeditunit: PartyEditUnit):
-        x_partyeditunit.set_deal_member(member)
-        member_partyeditunits = self._get_member_partyeditunits(member)
-        member_partyeditunits[x_partyeditunit.party_id] = x_partyeditunit
-
-    def _get_member_partyeditunits(
-        self, member: PersonID
-    ) -> dict[PartyID:PartyEditUnit]:
-        return self._members_partyeditunits.get(member)
-
-    def get_partyeditunit(self, member: PersonID, x_party_id: PartyID) -> PartyEditUnit:
-        member_partyeditunits = self._get_member_partyeditunits(member)
-        return member_partyeditunits.get(x_party_id)
-
-    def del_partyeditunit(self, member: PersonID, x_party_id: PartyID):
-        member_partyeditunits = self._get_member_partyeditunits(member)
-        return member_partyeditunits.pop(x_party_id)
-
-    def partyeditunit_exists(self, x_party_id: PartyID) -> bool:
-        return any(
-            x_member_partyeditunits.get(x_party_id) != None
-            for x_member_partyeditunits in self._members_partyeditunits.values()
-        )
 
     def set_deal_metrics(self):
         vow_author_sum = sum(x_vow.author_weight for x_vow in self._vowunits.values())
@@ -200,21 +158,12 @@ class DealUnit:
 def dealunit_shop(
     _author_road: EconomyRoad,
     _reader_road: EconomyRoad,
-    _members_partyeditunits: dict[PersonID : dict[PartyID:PartyEditUnit]] = None,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
     _vowunits: dict[VowID:VowUnit] = None,
 ):
-    author_person_id = get_single_roadnode("PersonRoad", _author_road, "PersonID")
-    reader_person_id = get_single_roadnode("PersonRoad", _reader_road, "PersonID")
-    _members_partyeditunits = get_empty_dict_if_none(_members_partyeditunits)
-    if _members_partyeditunits.get(author_person_id) is None:
-        _members_partyeditunits[author_person_id] = {}
-    if _members_partyeditunits.get(reader_person_id) is None:
-        _members_partyeditunits[reader_person_id] = {}
     return DealUnit(
         _author_road=_author_road,
         _reader_road=_reader_road,
-        _members_partyeditunits=_members_partyeditunits,
         _topicunits=get_empty_dict_if_none(_topicunits),
         _vowunits=get_empty_dict_if_none(_vowunits),
     )
