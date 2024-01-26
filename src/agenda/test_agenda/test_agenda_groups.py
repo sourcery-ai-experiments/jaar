@@ -12,7 +12,7 @@ from src.agenda.agenda import (
 from pytest import raises as pytest_raises
 
 
-def test_agenda_groups_get_groupunit_ReturnsCorrectObj():
+def test_AgendaUnit_groups_get_groupunit_ReturnsCorrectObj():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = ",swimmers"
@@ -27,7 +27,7 @@ def test_agenda_groups_get_groupunit_ReturnsCorrectObj():
     assert swim_groupunit == groupunit_shop(brand=swim_text)
 
 
-def test_agenda_groups_set_groupunit_worksCorrectly():
+def test_AgendaUnit_groups_set_groupunit_worksCorrectly():
     # GIVEN
     swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
@@ -46,7 +46,7 @@ def test_agenda_groups_set_groupunit_worksCorrectly():
     assert x_agenda._groups == swim_groups
 
 
-def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
+def test_AgendaUnit_groups_set_groupunit_CorrectlyReplacesGroup():
     # GIVEN
     swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
@@ -71,7 +71,7 @@ def test_agenda_groups_set_groupunit_CorrectlyReplacesGroup():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
-def test_agenda_groups_set_groupunit_CorrectlySets_partylinks():
+def test_AgendaUnit_groups_set_groupunit_CorrectlySets_partylinks():
     # GIVEN
     swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
@@ -92,7 +92,7 @@ def test_agenda_groups_set_groupunit_CorrectlySets_partylinks():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
-def test_agenda_groups_del_groupunit_worksCorrectly():
+def test_AgendaUnit_groups_del_groupunit_worksCorrectly():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = "swimmers"
@@ -106,7 +106,7 @@ def test_agenda_groups_del_groupunit_worksCorrectly():
     assert x_agenda._groups == {}
 
 
-def test_example_has_groups():
+def test_examples_agenda_v001_HasGroups():
     # GIVEN / WHEN
     x_agenda = examples_agenda_v001()
 
@@ -135,7 +135,7 @@ def test_example_has_groups():
     # assert db_balancelink_len == 3
 
 
-def test_agenda_set_balancelink_correctly_sets_balancelinks():
+def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -182,7 +182,7 @@ def test_agenda_set_balancelink_correctly_sets_balancelinks():
     assert len(x_agenda._idearoot._kids["swim"]._balanceheirs) == 3
 
 
-def test_agenda_set_balancelink_correctly_deletes_balancelinks():
+def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -231,7 +231,7 @@ def test_agenda_set_balancelink_correctly_deletes_balancelinks():
     assert len(x_agenda._idearoot._kids[swim_text]._balanceheirs) == 2
 
 
-def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
+def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -289,7 +289,7 @@ def test_agenda_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImp
     # assert agenda_debt_sum == 1
 
 
-def test_agenda_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportance():
+def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -365,7 +365,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImportan
     )
 
 
-def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportance():
+def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -414,7 +414,7 @@ def test_agenda_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImportan
     )
 
 
-def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGroupEmptyAncestors():
+def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGroupEmptyAncestors():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -487,7 +487,7 @@ def test_agenda_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwithGrou
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
+def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -517,7 +517,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
 
 
-def test_agenda_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
+def test_AgendaUnit_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -540,7 +540,7 @@ def test_agenda_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
     )
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
+def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -580,7 +580,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
+def test_AgendaUnit_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -616,7 +616,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
 
 
-def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
+def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -663,7 +663,7 @@ def test_agenda_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalan
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 13
 
 
-def test_agenda_add_idea_CreatesMissingGroups():
+def test_AgendaUnit_add_idea_CreatesMissingGroups():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
@@ -754,7 +754,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     assert list(x_agenda_swim_idea._balancelinks.keys()) == [xia_text]
 
 
-def test_agenda_add_idea_DoesNotOverwriteGroups():
+def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
@@ -799,7 +799,7 @@ def test_agenda_add_idea_DoesNotOverwriteGroups():
     assert len(bob_agenda.get_groupunit(family_text)._partys) == 2
 
 
-def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
+def test_AgendaUnit_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
@@ -837,7 +837,7 @@ def test_agenda_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
     assert bob_agenda._partys.get(beto_text).debtor_weight == 11
 
 
-def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
+def test_AgendaUnit_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
@@ -880,7 +880,7 @@ def test_agenda_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     assert bob_agenda._partys.get(beto_text).debtor_weight == 71
 
 
-def test_agenda_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
+def test_AgendaUnit_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = ",swimmers"

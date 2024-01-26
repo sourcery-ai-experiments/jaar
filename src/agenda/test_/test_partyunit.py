@@ -444,9 +444,6 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         _treasury_tax_diff=bob_treasury_tax_diff,
         depotlink_type=depotlink_type,
     )
-    bob_uid = 4321
-    bob_partyunit.uid = bob_uid
-
     bob_creditor_live = False
     bob_debtor_live = True
     bob_partyunit._creditor_live = bob_creditor_live
@@ -473,7 +470,6 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert x_dict != None
     assert x_dict == {
         "party_id": bob_text,
-        "uid": bob_uid,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
         "_creditor_live": bob_creditor_live,
@@ -489,9 +485,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
 def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     # GIVEN
-    cersei_party_id = PartyID("Cersei")
     yao_text = "Yao"
-    yao_uid = 239
     yao_creditor_weight = 13
     yao_debtor_weight = 17
     yao_creditor_live = False
@@ -505,7 +499,6 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_json_dict = {
         yao_text: {
             "party_id": yao_text,
-            "uid": yao_uid,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
             "_creditor_live": yao_creditor_live,
@@ -529,7 +522,6 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_partyunit = yao_obj_dict[yao_text]
 
     assert yao_partyunit.party_id == yao_text
-    assert yao_partyunit.uid == yao_uid
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
     assert yao_partyunit._creditor_live == yao_creditor_live

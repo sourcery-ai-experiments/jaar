@@ -22,7 +22,6 @@ class PartyCore:
 
 @dataclass
 class PartyUnit(PartyCore):
-    uid: int = None
     creditor_weight: int = None
     debtor_weight: int = None
     depotlink_type: str = None
@@ -105,7 +104,6 @@ class PartyUnit(PartyCore):
     def get_dict(self) -> dict[str:str]:
         return {
             "party_id": self.party_id,
-            "uid": self.uid,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
             "_creditor_live": self._creditor_live,
@@ -222,7 +220,6 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
 
         x_partyunit = partyunit_shop(
             party_id=partyunits_dict["party_id"],
-            uid=partyunits_dict["uid"],
             creditor_weight=partyunits_dict["creditor_weight"],
             debtor_weight=partyunits_dict["debtor_weight"],
             _creditor_live=partyunits_dict["_creditor_live"],
@@ -242,7 +239,6 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
 
 def partyunit_shop(
     party_id: PartyID,
-    uid: int = None,
     creditor_weight: int = None,
     debtor_weight: int = None,
     _creditor_live: bool = None,
@@ -259,7 +255,6 @@ def partyunit_shop(
     _road_delimiter: str = None,
 ) -> PartyUnit:
     x_partyunit = PartyUnit(
-        uid=uid,
         creditor_weight=get_1_if_None(creditor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
         _creditor_live=_creditor_live,

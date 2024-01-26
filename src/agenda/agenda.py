@@ -504,14 +504,12 @@ class AgendaUnit:
     def add_partyunit(
         self,
         party_id: PartyID,
-        uid: int = None,
         creditor_weight: int = None,
         debtor_weight: int = None,
         depotlink_type: str = None,
     ):
         partyunit = partyunit_shop(
             party_id=party_id,
-            uid=uid,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
             depotlink_type=depotlink_type,
@@ -591,36 +589,6 @@ class AgendaUnit:
             party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
 
-    def get_partyunits_uid_max(self) -> int:
-        uid_max = 1
-        for x_partyunit in self._partys.values():
-            if x_partyunit.uid != None and x_partyunit.uid > uid_max:
-                uid_max = x_partyunit.uid
-        return uid_max
-
-    def get_partyunits_uid_dict(self) -> dict[int:int]:
-        uid_dict = {}
-        for x_partyunit in self._partys.values():
-            if uid_dict.get(x_partyunit.uid) is None:
-                uid_dict[x_partyunit.uid] = 1
-            else:
-                uid_dict[x_partyunit.uid] += 1
-        return uid_dict
-
-    def set_all_partyunits_uids_unique(self) -> int:
-        uid_max = self.get_partyunits_uid_max()
-        uid_dict = self.get_partyunits_uid_dict()
-        for x_partyunit in self._partys.values():
-            if uid_dict.get(x_partyunit.uid) > 0:
-                new_uid_max = uid_max + 1
-                x_partyunit.uid = new_uid_max
-                uid_max = x_partyunit.uid
-
-    def all_partyunits_uids_are_unique(self) -> bool:
-        uid_dict = self.get_partyunits_uid_dict()
-        return not any(
-            uid_count > 1 or uid is None for uid, uid_count in uid_dict.items()
-        )
 
     def get_partys_depotlink_count(self) -> int:
         return sum(party_x.depotlink_type != None for party_x in self._partys.values())

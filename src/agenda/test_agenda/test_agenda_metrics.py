@@ -6,7 +6,7 @@ from src.agenda.group import GroupBrand, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
+def test_AgendaUnit_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
     yao_agenda = example_agendas_agenda_v001()
     yao_agenda_metrics = yao_agenda.get_tree_metrics()
 
@@ -18,7 +18,7 @@ def test_agenda_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
     assert len(reason_bases_x) > 0
 
 
-def test_agenda_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
+def test_AgendaUnit_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
     yao_agenda = example_agendas_agenda_v001()
     missing_bases = yao_agenda.get_missing_belief_bases()
     assert missing_bases != None
@@ -37,16 +37,16 @@ def test_agenda_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
     assert len(missing_bases) == 11
 
 
-def test_agenda_3AdvocatesNoideaunit_shop():
+def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     # GIVEN
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
 
     yue_agenda = agendaunit_shop("Yue")
-    au_rico = partyunit_shop(party_id=rico_text, uid=7)
-    au_carm = partyunit_shop(party_id=carm_text, uid=2)
-    au_patr = partyunit_shop(party_id=patr_text, uid=13)
+    au_rico = partyunit_shop(party_id=rico_text)
+    au_carm = partyunit_shop(party_id=carm_text)
+    au_patr = partyunit_shop(party_id=patr_text)
     # print(f"{rico=}")
     yue_agenda.set_partyunit(partyunit=au_rico)
     yue_agenda.set_partyunit(partyunit=au_carm)
@@ -82,18 +82,3 @@ def test_agenda_3AdvocatesNoideaunit_shop():
     assert groupunit_rico._single_party == True
     assert groupunit_carm._single_party == True
     assert groupunit_patr._single_party == True
-
-
-def test_agenda_get_partyunits_uid_max_WorksCorrectly():
-    # GIVEN
-    rico_text = "rico"
-    carr_text = "carmen"
-    patr_text = "patrick"
-
-    yue_agenda = agendaunit_shop("Yue")
-    yue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=rico_text, uid=4))
-    yue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=carr_text, uid=13))
-    yue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=patr_text, uid=7))
-
-    # WHEN/THEN
-    assert yue_agenda.get_partyunits_uid_max() == 13
