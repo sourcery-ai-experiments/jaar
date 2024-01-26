@@ -58,7 +58,7 @@ def test_AgendaUnit_set_party_CorrectlySetsPartys_v1():
     # THEN
     assert len(yao_agenda._partys) == 3
     assert len(yao_agenda._groups) == 3
-    assert yao_agenda._groups["rico"]._single_party == True
+    assert yao_agenda._groups["rico"]._party_mirrow == True
 
     # WHEN
     rico_group = rico_text
@@ -92,7 +92,7 @@ def test_AgendaUnit_set_party_CorrectlySetsPartys_v2():
     # THEN
     assert len(yao_agenda._partys) == 3
     assert len(yao_agenda._groups) == 3
-    assert yao_agenda.get_groupunit(rico_text)._single_party == True
+    assert yao_agenda.get_groupunit(rico_text)._party_mirrow == True
     assert yao_agenda._partys.get(patr_text).creditor_weight == 17
     assert yao_agenda._partys.get(carm_text).debtor_weight == 5
     assert yao_agenda._partys.get(patr_text).depotlink_type == assign_text
@@ -908,7 +908,7 @@ def test_AgendaUnit_edit_partyunit_party_id_CorrectlyChangesPartyUnit_party_id()
     assert yao_agenda._partys.get(rico_text).creditor_weight == 13
     assert len(yao_agenda._groups) == 3
     assert yao_agenda.get_groupunit(rico_text) != None
-    assert yao_agenda.get_groupunit(rico_text)._single_party == True
+    assert yao_agenda.get_groupunit(rico_text)._party_mirrow == True
 
     # WHEN
     beto_text = "beta"
@@ -927,7 +927,7 @@ def test_AgendaUnit_edit_partyunit_party_id_CorrectlyChangesPartyUnit_party_id()
     assert len(yao_agenda._groups) == 3
     assert yao_agenda.get_groupunit(rico_text) is None
     assert yao_agenda.get_groupunit(beto_text) != None
-    assert yao_agenda.get_groupunit(beto_text)._single_party == True
+    assert yao_agenda.get_groupunit(beto_text)._party_mirrow == True
 
 
 def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
@@ -943,7 +943,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
     assert yao_agenda._partys.get(rico_text).creditor_weight == 13
     assert len(yao_agenda._groups) == 3
     assert yao_agenda.get_groupunit(rico_text) != None
-    assert yao_agenda.get_groupunit(rico_text)._single_party == True
+    assert yao_agenda.get_groupunit(rico_text)._party_mirrow == True
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -1106,7 +1106,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
     yao_agenda.set_groupunit(y_groupunit=carmen_group)
     assert len(yao_agenda._groups) == 3
     assert yao_agenda._partys.get(carmen_text) is None
-    assert yao_agenda.get_groupunit(carmen_text)._single_party == False
+    assert yao_agenda.get_groupunit(carmen_text)._party_mirrow == False
     assert len(yao_agenda.get_groupunit(carmen_text)._partys) == 2
 
     # WHEN / THEN
@@ -1142,7 +1142,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
 #     assert len(yao_agenda._groups) == 3
 #     assert yao_agenda._partys.get(rico_text) != None
 #     assert yao_agenda._partys.get(carmen_text) is None
-#     assert yao_agenda.get_groupunit(carmen_text)._single_party == False
+#     assert yao_agenda.get_groupunit(carmen_text)._party_mirrow == False
 #     assert len(yao_agenda.get_groupunit(carmen_text)._partys) == 2
 #     assert (
 #         yao_agenda.get_groupunit(carmen_text)._partys.get(anna_text).creditor_weight
@@ -1164,7 +1164,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
 #     assert len(yao_agenda._groups) == 2
 #     assert yao_agenda._partys.get(rico_text) is None
 #     assert yao_agenda._partys.get(carmen_text) != None
-#     assert yao_agenda.get_groupunit(carmen_text)._single_party == True
+#     assert yao_agenda.get_groupunit(carmen_text)._party_mirrow == True
 #     assert len(yao_agenda.get_groupunit(carmen_text)._partys) == 1
 #     assert yao_agenda.get_groupunit(carmen_text)._partys.get(rico_text) is None
 #     assert (

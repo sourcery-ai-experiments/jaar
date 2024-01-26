@@ -55,7 +55,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",ACME DevOps"
         },
         ",ACME General": {
@@ -81,7 +81,7 @@
                     "party_id": "Sam zamora"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",ACME General"
         },
         ",Climate Change": {
@@ -102,7 +102,7 @@
                     "party_id": "Thomas OSU"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",Climate Change"
         },
         ",Everyone": {
@@ -218,7 +218,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",Everyone"
         },
         ",Family": {
@@ -239,7 +239,7 @@
                     "party_id": "Travis Fox"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",Family"
         },
         ",Friends": {
@@ -260,7 +260,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",Friends"
         },
         ",hurt by us dollar": {
@@ -271,7 +271,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",hurt by us dollar"
         },
         ",likes US DOLLAR": {
@@ -297,7 +297,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",likes US DOLLAR"
         },
         ",OceanVista Apt": {
@@ -318,7 +318,7 @@
                     "party_id": "Norberto"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",OceanVista Apt"
         },
         ",People who identify by UTEP": {
@@ -329,7 +329,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",People who identify by UTEP"
         },
         ",Philosophy": {
@@ -355,7 +355,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",Philosophy"
         },
         ",SHOW ME2": {
@@ -366,7 +366,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": false,
+            "_party_mirrow": false,
             "brand": ",SHOW ME2"
         },
         "A a ron Jones": {
@@ -377,7 +377,7 @@
                     "party_id": "A a ron Jones"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "A a ron Jones"
         },
         "America": {
@@ -388,7 +388,7 @@
                     "party_id": "America"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "America"
         },
         "Anna": {
@@ -399,7 +399,7 @@
                     "party_id": "Anna"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Anna"
         },
         "Benjamin Stoddert": {
@@ -410,7 +410,7 @@
                     "party_id": "Benjamin Stoddert"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Benjamin Stoddert"
         },
         "Bob302": {
@@ -421,7 +421,7 @@
                     "party_id": "Bob302"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Bob302"
         },
         "Charles Lee": {
@@ -432,7 +432,7 @@
                     "party_id": "Charles Lee"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Charles Lee"
         },
         "Ernesto Chavez": {
@@ -443,7 +443,7 @@
                     "party_id": "Ernesto Chavez"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Ernesto Chavez"
         },
         "Jacque Chirac": {
@@ -454,7 +454,7 @@
                     "party_id": "Jacque Chirac"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Jacque Chirac"
         },
         "Jane Randolph": {
@@ -465,7 +465,7 @@
                     "party_id": "Jane Randolph"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Jane Randolph"
         },
         "Maria Reynolds": {
@@ -476,7 +476,7 @@
                     "party_id": "Maria Reynolds"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Maria Reynolds"
         },
         "Martha Wayles": {
@@ -487,7 +487,7 @@
                     "party_id": "Martha Wayles"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Martha Wayles"
         },
         "Mikayla": {
@@ -498,7 +498,7 @@
                     "party_id": "Mikayla"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Mikayla"
         },
         "Norberto": {
@@ -509,7 +509,7 @@
                     "party_id": "Norberto"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Norberto"
         },
         "Perrison": {
@@ -520,7 +520,7 @@
                     "party_id": "Perrison"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Perrison"
         },
         "Philipa": {
@@ -531,7 +531,7 @@
                     "party_id": "Philipa"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Philipa"
         },
         "Prashant": {
@@ -542,7 +542,7 @@
                     "party_id": "Prashant"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Prashant"
         },
         "Renee Elise Goldsberry": {
@@ -553,7 +553,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
@@ -564,7 +564,7 @@
                     "party_id": "Sam zamora"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Sam zamora"
         },
         "Shadwell Harris": {
@@ -575,7 +575,7 @@
                     "party_id": "Shadwell Harris"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Shadwell Harris"
         },
         "Thomas OSU": {
@@ -586,7 +586,7 @@
                     "party_id": "Thomas OSU"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Thomas OSU"
         },
         "Travis Fox": {
@@ -597,7 +597,7 @@
                     "party_id": "Travis Fox"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "Travis Fox"
         },
         "WIlliam Wallace": {
@@ -608,7 +608,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "_single_party": true,
+            "_party_mirrow": true,
             "brand": "WIlliam Wallace"
         }
     },

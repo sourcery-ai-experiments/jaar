@@ -295,9 +295,9 @@ class AgendaUnit:
         non_single_groupunits = {
             groupunit.brand: groupunit
             for groupunit in self._groups.values()
-            if groupunit._single_party != True
+            if groupunit._party_mirrow != True
         }
-        # check all non_single_party_groupunits are in balanceheirs
+        # check all non_party_mirrow_groupunits are in balanceheirs
         for non_single_group in non_single_groupunits.values():
             if balanceheir_dict.get(non_single_group.brand) is None:
                 return False
@@ -531,7 +531,7 @@ class AgendaUnit:
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                partyunit.party_id, _single_party=True, _partys=partylinks
+                partyunit.party_id, _party_mirrow=True, _partys=partylinks
             )
             self.set_groupunit(y_groupunit=group_unit)
 
@@ -553,7 +553,7 @@ class AgendaUnit:
         elif (
             not allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._single_party == False
+            and new_party_id_groupunit._party_mirrow == False
         ):
             raise InvalidAgendaException(
                 f"Party '{old_party_id}' change to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
@@ -561,7 +561,7 @@ class AgendaUnit:
         elif (
             allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._single_party == False
+            and new_party_id_groupunit._party_mirrow == False
         ):
             self.del_groupunit(groupbrand=new_party_id)
         elif self.get_party(new_party_id) != None:
@@ -650,7 +650,7 @@ class AgendaUnit:
         elif self.get_groupunit(new_brand) is None:
             old_groupunit = self.get_groupunit(old_brand)
             groupunit_x = groupunit_shop(
-                new_brand, old_groupunit._single_party, old_groupunit._partys
+                new_brand, old_groupunit._party_mirrow, old_groupunit._partys
             )
             self.set_groupunit(y_groupunit=groupunit_x)
             self.del_groupunit(groupbrand=old_brand)
@@ -2371,7 +2371,7 @@ def set_gap_groupunits(
     gap_agendaunit: AgendaUnit, melder: AgendaUnit, melded: AgendaUnit
 ) -> dict[PartyID:PartyUnit]:
     for melded_brand, melded_groupunit in melded._groups.items():
-        if melded_groupunit._single_party == False:
+        if melded_groupunit._party_mirrow == False:
             if melder.get_groupunit(melded_brand) is None:
                 gap_agendaunit.set_groupunit(melded_groupunit)
             else:

@@ -30,7 +30,7 @@ class GroupCore:
 
 @dataclass
 class GroupUnit(GroupCore):
-    _single_party: bool = None  # set by AgendaUnit.set_partyunit()
+    _party_mirrow: bool = None  # set by AgendaUnit.set_partyunit()
     _partys: dict[PartyID:PartyLink] = None
     _agenda_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _agenda_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
@@ -41,7 +41,7 @@ class GroupUnit(GroupCore):
 
     def set_brand(self, brand: GroupBrand = None):
         if brand != None:
-            if self._single_party:
+            if self._party_mirrow:
                 self.brand = validate_roadnode(brand, self._road_delimiter)
             else:
                 self.brand = validate_roadnode(
@@ -54,8 +54,8 @@ class GroupUnit(GroupCore):
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {"brand": self.brand}
-        if self._single_party:
-            x_dict["_single_party"] = self._single_party
+        if self._party_mirrow:
+            x_dict["_party_mirrow"] = self._party_mirrow
         if self._partys not in [{}, None]:
             x_dict["_partys"] = self.get_partys_dict()
         if self._partylinks_set_by_economy_road != None:
@@ -171,7 +171,7 @@ def get_from_dict(x_dict: dict) -> dict[GroupBrand:GroupUnit]:
     for groupunit_dict in x_dict.values():
         x_group = groupunit_shop(
             brand=groupunit_dict["brand"],
-            _single_party=get_obj_from_groupunit_dict(groupunit_dict, "_single_party"),
+            _party_mirrow=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirrow"),
             _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
             _partylinks_set_by_economy_road=get_obj_from_groupunit_dict(
                 groupunit_dict, "_partylinks_set_by_economy_road"
@@ -184,7 +184,7 @@ def get_from_dict(x_dict: dict) -> dict[GroupBrand:GroupUnit]:
 def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
     if dict_key == "_partys":
         return partylinks_get_from_dict(x_dict[dict_key])
-    elif dict_key in {"_single_party"}:
+    elif dict_key in {"_party_mirrow"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None
@@ -192,20 +192,20 @@ def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
 
 def groupunit_shop(
     brand: GroupBrand,
-    _single_party: bool = None,
+    _party_mirrow: bool = None,
     _partys: dict[PartyID:PartyLink] = None,
     _partylinks_set_by_economy_road: RoadUnit = None,
     _road_delimiter: str = None,
 ) -> GroupUnit:
-    if _single_party and _partylinks_set_by_economy_road != None:
+    if _party_mirrow and _partylinks_set_by_economy_road != None:
         raise InvalidGroupException(
             f"_partylinks_set_by_economy_road cannot be '{_partylinks_set_by_economy_road}' for a single_party GroupUnit. It must have no value."
         )
 
-    if _single_party is None:
-        _single_party = False
+    if _party_mirrow is None:
+        _party_mirrow = False
     x_groupunit = GroupUnit(
-        _single_party=_single_party,
+        _party_mirrow=_party_mirrow,
         _partys=get_empty_dict_if_none(_partys),
         _agenda_credit=get_0_if_None(),
         _agenda_debt=get_0_if_None(),
