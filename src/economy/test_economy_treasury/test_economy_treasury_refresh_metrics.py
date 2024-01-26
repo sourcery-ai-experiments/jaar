@@ -267,7 +267,7 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
 
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
 
-    swim_group_text = ",swimming expert"
+    swim_group_text = ",swimming experts"
     swim_group_unit = groupunit_shop(brand=swim_group_text)
     bob_link = partylink_shop(party_id=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)

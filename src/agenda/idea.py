@@ -213,10 +213,12 @@ def ideaattrfilter_shop(
 @dataclass
 class IdeaUnit:
     _label: RoadNode = None
-    _uid: int = None  # Calculated field?
-    _parent_road: RoadUnit = None
-    _kids: dict = None
     _weight: int = None
+    _parent_road: RoadUnit = None
+    _root: bool = None
+    _kids: dict = None
+    _agenda_economy_id: EconomyID = None
+    _uid: int = None  # Calculated field?
     _balancelinks: dict[GroupBrand:BalanceLink] = None
     _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
     _balancelines: dict[GroupBrand:BalanceLine] = None  # Calculated field
@@ -237,8 +239,6 @@ class IdeaUnit:
     promise: bool = None
     _originunit: OriginUnit = None
     _meld_strategy: str = None
-    _root: bool = None
-    _agenda_economy_id: EconomyID = None
     # Calculated fields
     _level: int = None
     _kids_total_weight: int = None

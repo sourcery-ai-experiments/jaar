@@ -192,10 +192,6 @@ def groupunit_shop(
     brand: GroupBrand,
     _single_party: bool = None,
     _partys: dict[PartyID:PartyLink] = None,
-    _agenda_credit: float = None,
-    _agenda_debt: float = None,
-    _agenda_intent_credit: float = None,
-    _agenda_intent_debt: float = None,
     _partylinks_set_by_economy_road: RoadUnit = None,
     _road_delimiter: str = None,
 ) -> GroupUnit:
@@ -209,10 +205,10 @@ def groupunit_shop(
     x_groupunit = GroupUnit(
         _single_party=_single_party,
         _partys=get_empty_dict_if_none(_partys),
-        _agenda_credit=get_0_if_None(_agenda_credit),
-        _agenda_debt=get_0_if_None(_agenda_debt),
-        _agenda_intent_credit=get_0_if_None(_agenda_intent_credit),
-        _agenda_intent_debt=get_0_if_None(_agenda_intent_debt),
+        _agenda_credit=get_0_if_None(),
+        _agenda_debt=get_0_if_None(),
+        _agenda_intent_credit=get_0_if_None(),
+        _agenda_intent_debt=get_0_if_None(),
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )

@@ -2,17 +2,6 @@
     "_agent_id": "Bob",
     "_economy_id": "A",
     "_groups": {
-        "A a ron Jones": {
-            "_partys": {
-                "A a ron Jones": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "A a ron Jones"
-                }
-            },
-            "_single_party": true,
-            "brand": "A a ron Jones"
-        },
         ",ACME DevOps": {
             "_partys": {
                 "Benjamin Stoddert": {
@@ -95,61 +84,6 @@
             "_single_party": false,
             "brand": ",ACME General"
         },
-        "America": {
-            "_partys": {
-                "America": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "America"
-                }
-            },
-            "_single_party": true,
-            "brand": "America"
-        },
-        "Anna": {
-            "_partys": {
-                "Anna": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Anna"
-                }
-            },
-            "_single_party": true,
-            "brand": "Anna"
-        },
-        "Benjamin Stoddert": {
-            "_partys": {
-                "Benjamin Stoddert": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Benjamin Stoddert"
-                }
-            },
-            "_single_party": true,
-            "brand": "Benjamin Stoddert"
-        },
-        "Bob302": {
-            "_partys": {
-                "Bob302": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Bob302"
-                }
-            },
-            "_single_party": true,
-            "brand": "Bob302"
-        },
-        "Charles Lee": {
-            "_partys": {
-                "Charles Lee": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Charles Lee"
-                }
-            },
-            "_single_party": true,
-            "brand": "Charles Lee"
-        },
         ",Climate Change": {
             "_partys": {
                 "Philipa": {
@@ -170,17 +104,6 @@
             },
             "_single_party": false,
             "brand": ",Climate Change"
-        },
-        "Ernesto Chavez": {
-            "_partys": {
-                "Ernesto Chavez": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Ernesto Chavez"
-                }
-            },
-            "_single_party": true,
-            "brand": "Ernesto Chavez"
         },
         ",Everyone": {
             "_partys": {
@@ -351,28 +274,6 @@
             "_single_party": false,
             "brand": ",hurt by us dollar"
         },
-        "Jacque Chirac": {
-            "_partys": {
-                "Jacque Chirac": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Jacque Chirac"
-                }
-            },
-            "_single_party": true,
-            "brand": "Jacque Chirac"
-        },
-        "Jane Randolph": {
-            "_partys": {
-                "Jane Randolph": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Jane Randolph"
-                }
-            },
-            "_single_party": true,
-            "brand": "Jane Randolph"
-        },
         ",likes US DOLLAR": {
             "_partys": {
                 "Bob302": {
@@ -398,6 +299,174 @@
             },
             "_single_party": false,
             "brand": ",likes US DOLLAR"
+        },
+        ",OceanVista Apt": {
+            "_partys": {
+                "A a ron Jones": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "A a ron Jones"
+                },
+                "Jacque Chirac": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Jacque Chirac"
+                },
+                "Norberto": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Norberto"
+                }
+            },
+            "_single_party": false,
+            "brand": ",OceanVista Apt"
+        },
+        ",People who identify by UTEP": {
+            "_partys": {
+                "Renee Elise Goldsberry": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Renee Elise Goldsberry"
+                }
+            },
+            "_single_party": false,
+            "brand": ",People who identify by UTEP"
+        },
+        ",Philosophy": {
+            "_partys": {
+                "Ernesto Chavez": {
+                    "creditor_weight": 6.5,
+                    "debtor_weight": 1,
+                    "party_id": "Ernesto Chavez"
+                },
+                "Mikayla": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Mikayla"
+                },
+                "Philipa": {
+                    "creditor_weight": 52,
+                    "debtor_weight": 1,
+                    "party_id": "Philipa"
+                },
+                "Renee Elise Goldsberry": {
+                    "creditor_weight": 3,
+                    "debtor_weight": 1,
+                    "party_id": "Renee Elise Goldsberry"
+                }
+            },
+            "_single_party": false,
+            "brand": ",Philosophy"
+        },
+        ",SHOW ME2": {
+            "_partys": {
+                "Renee Elise Goldsberry": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Renee Elise Goldsberry"
+                }
+            },
+            "_single_party": false,
+            "brand": ",SHOW ME2"
+        },
+        "A a ron Jones": {
+            "_partys": {
+                "A a ron Jones": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "A a ron Jones"
+                }
+            },
+            "_single_party": true,
+            "brand": "A a ron Jones"
+        },
+        "America": {
+            "_partys": {
+                "America": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "America"
+                }
+            },
+            "_single_party": true,
+            "brand": "America"
+        },
+        "Anna": {
+            "_partys": {
+                "Anna": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Anna"
+                }
+            },
+            "_single_party": true,
+            "brand": "Anna"
+        },
+        "Benjamin Stoddert": {
+            "_partys": {
+                "Benjamin Stoddert": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Benjamin Stoddert"
+                }
+            },
+            "_single_party": true,
+            "brand": "Benjamin Stoddert"
+        },
+        "Bob302": {
+            "_partys": {
+                "Bob302": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Bob302"
+                }
+            },
+            "_single_party": true,
+            "brand": "Bob302"
+        },
+        "Charles Lee": {
+            "_partys": {
+                "Charles Lee": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Charles Lee"
+                }
+            },
+            "_single_party": true,
+            "brand": "Charles Lee"
+        },
+        "Ernesto Chavez": {
+            "_partys": {
+                "Ernesto Chavez": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Ernesto Chavez"
+                }
+            },
+            "_single_party": true,
+            "brand": "Ernesto Chavez"
+        },
+        "Jacque Chirac": {
+            "_partys": {
+                "Jacque Chirac": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Jacque Chirac"
+                }
+            },
+            "_single_party": true,
+            "brand": "Jacque Chirac"
+        },
+        "Jane Randolph": {
+            "_partys": {
+                "Jane Randolph": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Jane Randolph"
+                }
+            },
+            "_single_party": true,
+            "brand": "Jane Randolph"
         },
         "Maria Reynolds": {
             "_partys": {
@@ -443,38 +512,6 @@
             "_single_party": true,
             "brand": "Norberto"
         },
-        ",OceanVista Apt": {
-            "_partys": {
-                "A a ron Jones": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "A a ron Jones"
-                },
-                "Jacque Chirac": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Jacque Chirac"
-                },
-                "Norberto": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Norberto"
-                }
-            },
-            "_single_party": false,
-            "brand": ",OceanVista Apt"
-        },
-        ",People who identify by UTEP": {
-            "_partys": {
-                "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Renee Elise Goldsberry"
-                }
-            },
-            "_single_party": false,
-            "brand": ",People who identify by UTEP"
-        },
         "Perrison": {
             "_partys": {
                 "Perrison": {
@@ -496,32 +533,6 @@
             },
             "_single_party": true,
             "brand": "Philipa"
-        },
-        ",Philosophy": {
-            "_partys": {
-                "Ernesto Chavez": {
-                    "creditor_weight": 6.5,
-                    "debtor_weight": 1,
-                    "party_id": "Ernesto Chavez"
-                },
-                "Mikayla": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Mikayla"
-                },
-                "Philipa": {
-                    "creditor_weight": 52,
-                    "debtor_weight": 1,
-                    "party_id": "Philipa"
-                },
-                "Renee Elise Goldsberry": {
-                    "creditor_weight": 3,
-                    "debtor_weight": 1,
-                    "party_id": "Renee Elise Goldsberry"
-                }
-            },
-            "_single_party": false,
-            "brand": ",Philosophy"
         },
         "Prashant": {
             "_partys": {
@@ -566,17 +577,6 @@
             },
             "_single_party": true,
             "brand": "Shadwell Harris"
-        },
-        ",SHOW ME2": {
-            "_partys": {
-                "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Renee Elise Goldsberry"
-                }
-            },
-            "_single_party": false,
-            "brand": ",SHOW ME2"
         },
         "Thomas OSU": {
             "_partys": {
@@ -3669,11 +3669,6 @@
             },
             "D&B": {
                 "_balancelinks": {
-                    "America": {
-                        "brand": "America",
-                        "creditor_weight": 1.0,
-                        "debtor_weight": 1
-                    },
                     ",Climate Change": {
                         "brand": ",Climate Change",
                         "creditor_weight": 1.0,
@@ -3681,6 +3676,11 @@
                     },
                     ",Family": {
                         "brand": ",Family",
+                        "creditor_weight": 1.0,
+                        "debtor_weight": 1
+                    },
+                    "America": {
+                        "brand": "America",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1
                     }
@@ -6859,176 +6859,154 @@
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "A a ron Jones",
-            "uid": 21
+            "party_id": "A a ron Jones"
         },
         "America": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "America",
-            "uid": 1
+            "party_id": "America"
         },
         "Anna": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Anna",
-            "uid": 2
+            "party_id": "Anna"
         },
         "Benjamin Stoddert": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Benjamin Stoddert",
-            "uid": 14
+            "party_id": "Benjamin Stoddert"
         },
         "Bob302": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Bob302",
-            "uid": 6
+            "party_id": "Bob302"
         },
         "Charles Lee": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Charles Lee",
-            "uid": 13
+            "party_id": "Charles Lee"
         },
         "Ernesto Chavez": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Ernesto Chavez",
-            "uid": 10
+            "party_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Jacque Chirac",
-            "uid": 20
+            "party_id": "Jacque Chirac"
         },
         "Jane Randolph": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Jane Randolph",
-            "uid": 17
+            "party_id": "Jane Randolph"
         },
         "Maria Reynolds": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Maria Reynolds",
-            "uid": 7
+            "party_id": "Maria Reynolds"
         },
         "Martha Wayles": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Martha Wayles",
-            "uid": 15
+            "party_id": "Martha Wayles"
         },
         "Mikayla": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Mikayla",
-            "uid": 12
+            "party_id": "Mikayla"
         },
         "Norberto": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Norberto",
-            "uid": 22
+            "party_id": "Norberto"
         },
         "Perrison": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Perrison",
-            "uid": 9
+            "party_id": "Perrison"
         },
         "Philipa": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Philipa",
-            "uid": 5
+            "party_id": "Philipa"
         },
         "Prashant": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Prashant",
-            "uid": 8
+            "party_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Renee Elise Goldsberry",
-            "uid": 4
+            "party_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Sam zamora",
-            "uid": 16
+            "party_id": "Sam zamora"
         },
         "Shadwell Harris": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Shadwell Harris",
-            "uid": 18
+            "party_id": "Shadwell Harris"
         },
         "Thomas OSU": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Thomas OSU",
-            "uid": 11
+            "party_id": "Thomas OSU"
         },
         "Travis Fox": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "Travis Fox",
-            "uid": 3
+            "party_id": "Travis Fox"
         },
         "WIlliam Wallace": {
             "_creditor_live": null,
             "_debtor_live": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
-            "party_id": "WIlliam Wallace",
-            "uid": 19
+            "party_id": "WIlliam Wallace"
         }
     },
     "_weight": 1

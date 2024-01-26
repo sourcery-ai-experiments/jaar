@@ -313,11 +313,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(f"{cl_dir=} {cl_filename=}")
                 agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
-                depotlink_row = [
-                    cl_val._healer,
-                    "",
-                    "",
-                ]
+                depotlink_row = [cl_val._healer, "", ""]
                 depotlinks_list.append(depotlink_row)
         return depotlinks_list
 
