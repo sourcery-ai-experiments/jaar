@@ -337,9 +337,9 @@ def test_get_roots_ranged_beliefs():
     assert sue_agenda._get_rangeroot_beliefunits()[0].base == time_road
 
     # a belief who's idea range is defined by numeric_root is not "rangeroot"
-    mirrow_x = "mirrow_x"
-    sue_agenda.add_l1_idea(ideaunit_shop(mirrow_x, _numeric_road=time_text))
-    m_x_road = sue_agenda.make_l1_road(mirrow_x)
+    mirror_x = "mirror_x"
+    sue_agenda.add_l1_idea(ideaunit_shop(mirror_x, _numeric_road=time_text))
+    m_x_road = sue_agenda.make_l1_road(mirror_x)
     sue_agenda.set_belief(base=m_x_road, pick=time_road, open=5, nigh=10)
     assert len(sue_agenda._idearoot._beliefunits) == 3
 

@@ -68,7 +68,9 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
-    assert len(agenda_dict["_groups"]) == len(x_agenda._groups)
+    assert len(agenda_dict["_partys"]) != 12
+    assert len(agenda_dict["_groups"]) == 12
+    assert len(agenda_dict["_groups"]) != len(x_agenda._groups)
 
     x_idearoot = x_agenda._idearoot
     idearoot_dict = agenda_dict["_idearoot"]
@@ -287,7 +289,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     shave_idea_y1 = yue_agenda.get_idea_obj(shave_road)
     shave_idea_y1._originunit.set_originlink(person_id="Sue", weight=4.3)
     # print(f"{shave_road=}")
-    # print(f"{shave_idea_x._label=} {shave_idea_x._parent_road=}")
+    # print(f"{json_shave_idea._label=} {json_shave_idea._parent_road=}")
 
     sue_text = "sue"
     yue_agenda.add_partyunit(party_id=sue_text)
@@ -337,6 +339,9 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert json_agenda._party_debtor_pool == yue_party_debtor_pool
     assert json_agenda._meld_strategy == yue_agenda._meld_strategy
     assert json_agenda._meld_strategy == override_text
+    print(f"{json_agenda._groups.keys()=}")
+    print(f"{yue_agenda._groups.keys()=}")
+    assert json_agenda._groups == yue_agenda._groups
 
     json_idearoot = json_agenda._idearoot
     assert json_idearoot._parent_road == ""
@@ -356,17 +361,17 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
 
     sunday_text = "Sunday"
     sunday_road = json_agenda.make_road(weekday_road, sunday_text)
-    sunday_idea_x = json_agenda.get_idea_obj(sunday_road)
-    assert sunday_idea_x._weight == 20
+    sunday_idea = json_agenda.get_idea_obj(sunday_road)
+    assert sunday_idea._weight == 20
 
-    shave_idea_x = json_agenda.get_idea_obj(shave_road)
-    shave_idea_y2 = yue_agenda.get_idea_obj(shave_road)
-    assert len(shave_idea_x._reasonunits) == 1
-    assert shave_idea_x._assignedunit == shave_idea_y2._assignedunit
-    assert shave_idea_x._assignedunit == tim_assigned_unit
-    assert shave_idea_x._originunit == shave_idea_y2._originunit
-    assert len(shave_idea_x._balancelinks) == 2
-    assert len(shave_idea_x._beliefunits) == 1
+    json_shave_idea = json_agenda.get_idea_obj(shave_road)
+    yue_shave_idea = yue_agenda.get_idea_obj(shave_road)
+    assert len(json_shave_idea._reasonunits) == 1
+    assert json_shave_idea._assignedunit == yue_shave_idea._assignedunit
+    assert json_shave_idea._assignedunit == tim_assigned_unit
+    assert json_shave_idea._originunit == yue_shave_idea._originunit
+    assert len(json_shave_idea._balancelinks) == 2
+    assert len(json_shave_idea._beliefunits) == 1
 
     assert len(json_agenda._originunit._links) == 1
     assert json_agenda._originunit == yue_agenda._originunit

@@ -27,7 +27,7 @@ def test_AgendaUnit_groups_get_groupunit_ReturnsCorrectObj():
     assert swim_groupunit == groupunit_shop(brand=swim_text)
 
 
-def test_AgendaUnit_groups_set_groupunit_worksCorrectly():
+def test_AgendaUnit_groups_set_groupunit_CorrectlySetAttr():
     # GIVEN
     swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
@@ -71,7 +71,7 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlyReplacesGroup():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
-# def test_AgendaUnit_groups_set_groupunit_RaisesErrorWhen_party_mirrowSubmitted():
+# def test_AgendaUnit_groups_set_groupunit_RaisesErrorWhen_party_mirrorSubmitted():
 #     # GIVEN
 #     yao_agenda = agendaunit_shop("Yao")
 #     bob_text = "Bob"
@@ -83,7 +83,7 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlyReplacesGroup():
 #         yao_agenda.set_groupunit(bob_groupunit)
 #     assert (
 #         str(excinfo.value)
-#         == f"AgendaUnit.set_groupunit('{bob_text}') fails because group is _party_mirrow."
+#         == f"AgendaUnit.set_groupunit('{bob_text}') fails because group is _party_mirror."
 #     )
 
 
@@ -515,7 +515,7 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
     assert agenda.get_groupunit(swim_text) != None
-    assert agenda.get_groupunit(swim_text)._party_mirrow == False
+    assert agenda.get_groupunit(swim_text)._party_mirror == False
     assert len(agenda.get_groupunit(swim_text)._partys) == 1
 
     # WHEN
@@ -529,7 +529,7 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     assert agenda.get_groupunit(swim_text) is None
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
-    assert agenda.get_groupunit(jog_text)._party_mirrow == False
+    assert agenda.get_groupunit(jog_text)._party_mirror == False
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
 
 
@@ -590,7 +590,7 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(swim_text) is None
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
-    assert agenda.get_groupunit(jog_text)._party_mirrow == False
+    assert agenda.get_groupunit(jog_text)._party_mirror == False
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).creditor_weight == 12
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
@@ -815,7 +815,7 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     assert len(bob_agenda.get_groupunit(family_text)._partys) == 2
 
 
-def test_AgendaUnit_set_groupunits_create_missing_partys_DoesCreateMissingPartys():
+def test_AgendaUnit_set_groupunit_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
@@ -853,7 +853,7 @@ def test_AgendaUnit_set_groupunits_create_missing_partys_DoesCreateMissingPartys
     assert bob_agenda._partys.get(beto_text).debtor_weight == 11
 
 
-def test_AgendaUnit_set_groupunits_create_missing_partys_DoesNotReplacePartys():
+def test_AgendaUnit_set_groupunit_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
@@ -896,26 +896,28 @@ def test_AgendaUnit_set_groupunits_create_missing_partys_DoesNotReplacePartys():
     assert bob_agenda._partys.get(beto_text).debtor_weight == 71
 
 
-def test_AgendaUnit_get_groupunits_dict_CorrectlyReturnsDictOfGroups():
+def test_AgendaUnit_get_groupunits_dict_ReturnsCorrectObj():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     swim_text = ",swimmers"
     run_text = ",runners"
     fly_text = ",flyers"
+    yao_text = "Yao"
+    bob_agenda.set_partyunit(partyunit_shop(yao_text))
     bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
     bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text))
     bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
-    assert len(bob_agenda._groups) == 3
+    assert len(bob_agenda._groups) == 4
 
     # WHEN
-    groupunit_list_x = bob_agenda.get_groupunits_brand_list()
+    x_groupunits_dict = bob_agenda.get_groupunits_dict()
 
     # THEN
-    assert groupunit_list_x[0] == ""
-    assert groupunit_list_x[1] == fly_text
-    assert groupunit_list_x[2] == run_text
-    assert groupunit_list_x[3] == swim_text
-    assert len(groupunit_list_x) == 4
+    assert x_groupunits_dict.get(fly_text) != None
+    assert x_groupunits_dict.get(run_text) != None
+    assert x_groupunits_dict.get(swim_text) != None
+    assert x_groupunits_dict.get(yao_text) is None
+    assert len(x_groupunits_dict) == 3
 
 
 def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():

@@ -316,7 +316,7 @@ def test_AgendaUnit_meld_GroupsMeldedBefore_Partys():
     bob_text = "Bob"
     yao2_agenda.set_partyunit(partyunit_shop(bob_text))
     assert yao2_agenda.get_groupunit(bob_text) != None
-    yao2_agenda.set_groupunit(groupunit_shop(bob_text, _party_mirrow=True))
+    yao2_agenda.set_groupunit(groupunit_shop(bob_text, _party_mirror=True))
 
     # WHEN/THEN
     assert yao1_agenda.meld(yao2_agenda) is None  # No error raised

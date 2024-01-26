@@ -295,9 +295,9 @@ class AgendaUnit:
         non_single_groupunits = {
             groupunit.brand: groupunit
             for groupunit in self._groups.values()
-            if groupunit._party_mirrow != True
+            if groupunit._party_mirror != True
         }
-        # check all non_party_mirrow_groupunits are in balanceheirs
+        # check all non_party_mirror_groupunits are in balanceheirs
         for non_single_group in non_single_groupunits.values():
             if balanceheir_dict.get(non_single_group.brand) is None:
                 return False
@@ -531,7 +531,7 @@ class AgendaUnit:
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                partyunit.party_id, _party_mirrow=True, _partys=partylinks
+                partyunit.party_id, _party_mirror=True, _partys=partylinks
             )
             self.set_groupunit(y_groupunit=group_unit)
 
@@ -553,7 +553,7 @@ class AgendaUnit:
         elif (
             not allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._party_mirrow == False
+            and new_party_id_groupunit._party_mirror == False
         ):
             raise InvalidAgendaException(
                 f"Party '{old_party_id}' change to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
@@ -561,7 +561,7 @@ class AgendaUnit:
         elif (
             allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._party_mirrow == False
+            and new_party_id_groupunit._party_mirror == False
         ):
             self.del_groupunit(groupbrand=new_party_id)
         elif self.get_party(new_party_id) != None:
@@ -650,7 +650,7 @@ class AgendaUnit:
         elif self.get_groupunit(new_brand) is None:
             old_groupunit = self.get_groupunit(old_brand)
             groupunit_x = groupunit_shop(
-                new_brand, old_groupunit._party_mirrow, old_groupunit._partys
+                new_brand, old_groupunit._party_mirror, old_groupunit._partys
             )
             self.set_groupunit(y_groupunit=groupunit_x)
             self.del_groupunit(groupbrand=old_brand)
@@ -693,17 +693,6 @@ class AgendaUnit:
                 )
                 x_idea.set_balancelink(balancelink=new_balancelink)
                 x_idea.del_balancelink(groupbrand=old_brand)
-
-    def get_groupunits_brand_list(self) -> list[GroupBrand]:
-        groupbrand_list = list(self._groups.keys())
-        groupbrand_list.append("")
-        groupbrand_dict = {
-            groupbrand.lower(): groupbrand for groupbrand in groupbrand_list
-        }
-        groupbrand_lowercase_ordered_list = sorted(list(groupbrand_dict))
-        return [
-            groupbrand_dict[group_l] for group_l in groupbrand_lowercase_ordered_list
-        ]
 
     def set_time_beliefs(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -1799,17 +1788,17 @@ class AgendaUnit:
                 x_dict[party_id] = party_obj.get_dict()
         return x_dict
 
-    def get_groupunits_from_dict(self) -> dict[str:str]:
-        x_dict = {}
-        if self._groups != None:
-            for group_brand, group_obj in self._groups.items():
-                x_dict[group_brand] = group_obj.get_dict()
-        return x_dict
+    def get_groupunits_dict(self) -> dict[str:str]:
+        return {
+            group_brand: group_obj.get_dict()
+            for group_brand, group_obj in self._groups.items()
+            if group_obj._party_mirror == False
+        }
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {
             "_partys": self.get_partys_dict(),
-            "_groups": self.get_groupunits_from_dict(),
+            "_groups": self.get_groupunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_agent_id": self._agent_id,
@@ -2142,8 +2131,10 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         x_agenda._meld_strategy = get_obj_from_agenda_dict(
             agenda_dict, "_meld_strategy"
         )
-    x_agenda._partys = get_obj_from_agenda_dict(agenda_dict, "_partys")
-    x_agenda._groups = get_obj_from_agenda_dict(agenda_dict, "_groups")
+    for x_partyunit in get_obj_from_agenda_dict(agenda_dict, "_partys").values():
+        x_agenda.set_partyunit(x_partyunit)
+    for x_groupunit in get_obj_from_agenda_dict(agenda_dict, "_groups").values():
+        x_agenda.set_groupunit(x_groupunit)
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
     set_idearoot_from_agenda_dict(x_agenda, agenda_dict)
@@ -2371,7 +2362,7 @@ def set_gap_groupunits(
     gap_agendaunit: AgendaUnit, melder: AgendaUnit, melded: AgendaUnit
 ) -> dict[PartyID:PartyUnit]:
     for melded_brand, melded_groupunit in melded._groups.items():
-        if melded_groupunit._party_mirrow == False:
+        if melded_groupunit._party_mirror == False:
             if melder.get_groupunit(melded_brand) is None:
                 gap_agendaunit.set_groupunit(melded_groupunit)
             else:

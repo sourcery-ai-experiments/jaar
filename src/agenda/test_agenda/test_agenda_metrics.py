@@ -79,6 +79,6 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     groupunit_rico = all_groups[rico_text]
     groupunit_carm = all_groups[carm_text]
     groupunit_patr = all_groups[patr_text]
-    assert groupunit_rico._party_mirrow == True
-    assert groupunit_carm._party_mirrow == True
-    assert groupunit_patr._party_mirrow == True
+    assert groupunit_rico._party_mirror == True
+    assert groupunit_carm._party_mirror == True
+    assert groupunit_patr._party_mirror == True
