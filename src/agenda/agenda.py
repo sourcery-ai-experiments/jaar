@@ -537,8 +537,8 @@ class AgendaUnit:
 
     def edit_partyunit_party_id(
         self,
-        old_party_id: str,
-        new_party_id: str,
+        old_party_id: PartyID,
+        new_party_id: PartyID,
         allow_party_overwite: bool,
         allow_nonsingle_group_overwrite: bool,
     ):
@@ -574,7 +574,7 @@ class AgendaUnit:
         # change all influenced groupunits partylinks
         for old_party_groupbrand in self.get_party_groupbrands(old_party_id):
             old_party_groupunit = self.get_groupunit(old_party_groupbrand)
-            old_party_groupunit._move_partylink(old_party_id, new_party_id)
+            old_party_groupunit._shift_partylink(old_party_id, new_party_id)
         self.del_partyunit(party_id=old_party_id)
 
     def get_party(self, party_id: PartyID) -> PartyUnit:
@@ -588,7 +588,6 @@ class AgendaUnit:
         return [
             party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
-
 
     def get_partys_depotlink_count(self) -> int:
         return sum(party_x.depotlink_type != None for party_x in self._partys.values())
@@ -1062,12 +1061,12 @@ class AgendaUnit:
         parent_road = get_parent_road_from_road(road)
         if self.idea_exists(road):
             if not del_children:
-                self._move_idea_kids(x_road=road)
+                self._shift_idea_kids(x_road=road)
             parent_idea = self.get_idea_obj(parent_road)
             parent_idea.del_kid(get_terminus_node(road, self._road_delimiter))
         self.set_agenda_metrics()
 
-    def _move_idea_kids(self, x_road: RoadUnit):
+    def _shift_idea_kids(self, x_road: RoadUnit):
         parent_road = get_parent_road_from_road(x_road)
         d_temp_idea = self.get_idea_obj(x_road)
         for kid in d_temp_idea._kids.values():

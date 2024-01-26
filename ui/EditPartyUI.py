@@ -197,7 +197,7 @@ class Ui_Form(object):
         self.group_insert_button.setText(_translate("Form", "Add Group"))
         self.party_group_set_button.setText(_translate("Form", "add group to party"))
         self.party_group_del_button.setText(
-            _translate("Form", "remove group from party")
+            _translate("Form", "Abolish Group from party")
         )
         item = self.groups_stan_table.horizontalHeaderItem(0)
         item.setText(_translate("Form", "1"))

@@ -139,7 +139,7 @@ def test_GroupUnit_set_attr_WorksCorrectly():
     assert swim_group._partylinks_set_by_economy_road == water_road
 
 
-def test_groupunit_shop_WhenSinglePartyCorrectlyRemoves_partylinks_set_by_economy_road():
+def test_groupunit_shop_WhenSinglePartyCorrectlyDeletes_partylinks_set_by_economy_road():
     # GIVEN
     swim_text = ",swimmers"
     nation_road = create_road(root_label(), "nation-states")

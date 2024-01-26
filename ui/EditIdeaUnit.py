@@ -727,7 +727,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
 
     def idea2group_table_select(self):
         self.idea2group_delete_button.setText(
-            f"""Remove {self.idea2group_table.item(self.idea2group_table.currentRow(), 1).text()}"""
+            f"""Delete {self.idea2group_table.item(self.idea2group_table.currentRow(), 1).text()}"""
         )
 
     def idea2group_table_load(self):

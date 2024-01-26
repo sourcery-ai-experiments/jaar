@@ -21,7 +21,7 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_party_yes.clicked.connect(self.gp_party_yes_clicked)
         self.gp_party_no.clicked.connect(self.gp_party_no_clicked)
 
-        self.gp_remove_button.clicked.connect(self.party2group_remove)
+        self.gp_party2group_delete_button.clicked.connect(self.party2group_delete)
         self.gp_add_button.clicked.connect(self.party2group_add)
         self.update_weight_button.clicked.connect(self.party2group_update)
 
@@ -65,7 +65,7 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         #     Party2OG.party2group_update(party_id=party_id, gp_id=gp_id, weight=weight)
         #     self.refreshAll()
 
-    def party2group_remove(self):
+    def party2group_delete(self):
         currentRowInt = self.gp_party_yes.currentRow()
         # if self.gp_party_yes.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)

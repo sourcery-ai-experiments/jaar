@@ -353,7 +353,7 @@ class EconomyUnit:
         return list(
             dir_files(
                 dir_path=self.get_clerkunits_dir(),
-                remove_extensions=False,
+                delete_extensions=False,
                 include_dirs=True,
             ).keys()
         )

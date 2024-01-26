@@ -1,7 +1,7 @@
 from os import (
     path as os_path,
     makedirs as os_makedirs,
-    remove as os_remove,
+    unlink as os_unlink,
     scandir as os_scandir,
     listdir as os_listdir,
     rename as os_rename,
@@ -19,7 +19,7 @@ def delete_dir(dir: str):
         if os_path.isdir(dir):
             shutil_rmtree(path=dir)
         elif os_path.isfile(dir):
-            os_remove(path=dir)
+            os_unlink(path=dir)
 
 
 class InvalidFileCopyException(Exception):
@@ -79,7 +79,7 @@ def count_files(dir_path: str) -> int:
 
 
 def dir_files(
-    dir_path: str, remove_extensions: bool = None, include_dirs=None, include_files=None
+    dir_path: str, delete_extensions: bool = None, include_dirs=None, include_files=None
 ) -> dict[str:str]:
     if include_dirs is None:
         include_dirs = True
@@ -99,7 +99,7 @@ def dir_files(
             # print(f" {os_path.isdir(file_path)=}")
             file_text = open_file(dest_dir=dir_path, file_name=file_name)
             dict_key = (
-                os_path.splitext(file_name)[0] if remove_extensions else file_name
+                os_path.splitext(file_name)[0] if delete_extensions else file_name
             )
             dict_x[dict_key] = file_text
 

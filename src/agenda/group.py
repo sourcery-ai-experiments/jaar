@@ -113,7 +113,9 @@ class GroupUnit(GroupCore):
     def del_partylink(self, party_id):
         self._partys.pop(party_id)
 
-    def _move_partylink(self, to_delete_party_id: PartyID, to_absorb_party_id: PartyID):
+    def _shift_partylink(
+        self, to_delete_party_id: PartyID, to_absorb_party_id: PartyID
+    ):
         old_group_partylink = self.get_partylink(to_delete_party_id)
         new_partylink_creditor_weight = old_group_partylink.creditor_weight
         new_partylink_debtor_weight = old_group_partylink.debtor_weight

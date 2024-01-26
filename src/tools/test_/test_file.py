@@ -30,7 +30,7 @@ def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
     assert files_dict.get(x2_file_name) == x2_file_text
 
 
-def test_dir_files_removesFileExtension(env_dir_setup_cleanup):
+def test_dir_files_delete_extensions_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
     x1_name = "x1"
@@ -45,7 +45,7 @@ def test_dir_files_removesFileExtension(env_dir_setup_cleanup):
     save_file(dest_dir=env_dir, file_name=x2_file_name, file_text=x2_file_text)
 
     # WHEN
-    files_dict = dir_files(dir_path=env_dir, remove_extensions=True)
+    files_dict = dir_files(dir_path=env_dir, delete_extensions=True)
 
     # THEN
     assert files_dict.get(x1_name) == x1_file_text
@@ -75,7 +75,7 @@ def test_dir_files_returnsSubDirs(env_dir_setup_cleanup):
     )
 
     # WHEN
-    files_dict = dir_files(dir_path=env_dir, remove_extensions=True, include_dirs=True)
+    files_dict = dir_files(dir_path=env_dir, delete_extensions=True, include_dirs=True)
 
     # THEN
     assert files_dict.get(x1_name) == True

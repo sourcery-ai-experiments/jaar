@@ -322,7 +322,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_clerk != None:
             digest_file_list = dir_files(
                 dir_path=self.x_clerk._agendas_digest_dir,
-                remove_extensions=True,
+                delete_extensions=True,
                 include_dirs=False,
                 include_files=True,
             )
@@ -334,7 +334,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_clerk != None:
             digest_file_list = dir_files(
                 dir_path=self.x_clerk._agendas_ignore_dir,
-                remove_extensions=True,
+                delete_extensions=True,
                 include_dirs=False,
                 include_files=True,
             )

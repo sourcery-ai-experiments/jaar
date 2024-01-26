@@ -70,8 +70,7 @@ class Lemmas:
         idea_close,
         src_open,
         src_nigh,
-    ) -> (float, float):  # sourcery skip: remove-redundant-if
-        # TODO the sourcery notifications surely comes from a mistake in the code AND the tests. Correct both
+    ) -> (float, float):
         belief_open = None
         belief_nigh = None
         if src_open <= idea_begin and src_nigh >= idea_close:
@@ -86,14 +85,29 @@ class Lemmas:
             # if parent range begins inside idea range and ends outside idea range
             belief_open = src_open
             belief_nigh = idea_close
-        elif (
-            # if parent range begins outside idea range and ends inside idea range
-            src_open <= idea_begin
-            and src_nigh > idea_begin
-            and src_nigh < idea_close
-        ):
+        elif src_open <= idea_begin and src_nigh > idea_begin:
             belief_open = idea_begin
             belief_nigh = src_nigh
+        # if src_open <= idea_begin and src_nigh >= idea_close:
+        #     # if parent range contains all idea range
+        #     belief_open = idea_begin
+        #     belief_nigh = idea_close
+        # elif src_open >= idea_begin and src_nigh < idea_close:
+        #     # if parent range exists inside idea range
+        #     belief_open = src_open
+        #     belief_nigh = src_nigh
+        # elif src_open >= idea_begin and src_open < idea_close and src_nigh > idea_close:
+        #     # if parent range begins inside idea range and ends outside idea range
+        #     belief_open = src_open
+        #     belief_nigh = idea_close
+        # elif (
+        #     # if parent range begins outside idea range and ends inside idea range
+        #     src_open <= idea_begin
+        #     and src_nigh > idea_begin
+        #     and src_nigh < idea_close
+        # ):
+        #     belief_open = idea_begin
+        #     belief_nigh = src_nigh
 
         return belief_open, belief_nigh
 

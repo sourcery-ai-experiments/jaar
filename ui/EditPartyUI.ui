@@ -353,7 +353,7 @@
     </font>
    </property>
    <property name="text">
-    <string>remove group from party</string>
+    <string>Abolish Group from party</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="groups_stan_table">

@@ -197,7 +197,7 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     house_road = sue_agenda.make_l1_road(house_text)
     clean_text = "clean table"
     clean_road = sue_agenda.make_road(house_road, clean_text)
-    dish_text = "remove dishs"
+    dish_text = "take dishs out"
     soap_text = "get soap"
     soap_road = sue_agenda.make_road(clean_road, soap_text)
     grab_text = "grab soap"
