@@ -71,6 +71,22 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlyReplacesGroup():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
+# def test_AgendaUnit_groups_set_groupunit_RaisesErrorWhen_party_mirrowSubmitted():
+#     # GIVEN
+#     yao_agenda = agendaunit_shop("Yao")
+#     bob_text = "Bob"
+#     yao_agenda.set_partyunit(partyunit_shop(bob_text))
+#     bob_groupunit = yao_agenda.get_groupunit(bob_text)
+
+#     # WHEN
+#     with pytest_raises(Exception) as excinfo:
+#         yao_agenda.set_groupunit(bob_groupunit)
+#     assert (
+#         str(excinfo.value)
+#         == f"AgendaUnit.set_groupunit('{bob_text}') fails because group is _party_mirrow."
+#     )
+
+
 def test_AgendaUnit_groups_set_groupunit_CorrectlySets_partylinks():
     # GIVEN
     swim_text = ",swimmers"

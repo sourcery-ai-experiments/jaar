@@ -276,17 +276,13 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id,
-        creditor_weight=15,
-        debtor_weight=7,
-        _agenda_credit=0.4106,
-        _agenda_debt=0.1106,
-        _agenda_intent_credit=0.041,
-        _agenda_intent_debt=0.051,
-        _agenda_intent_ratio_credit=0,
-        _agenda_intent_ratio_debt=0,
-    )
+    bob_partyunit = partyunit_shop(bob_party_id, creditor_weight=15, debtor_weight=7)
+    bob_partyunit._agenda_credit = 0.4106
+    bob_partyunit._agenda_debt = 0.1106
+    bob_partyunit._agenda_intent_credit = 0.041
+    bob_partyunit._agenda_intent_debt = 0.051
+    bob_partyunit._agenda_intent_ratio_credit = 0
+    bob_partyunit._agenda_intent_ratio_debt = 0
     assert bob_partyunit._agenda_intent_ratio_credit == 0
     assert bob_partyunit._agenda_intent_ratio_debt == 0
 
@@ -321,11 +317,9 @@ def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id,
-        _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
-        _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
-    )
+    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     assert bob_partyunit._agenda_intent_ratio_credit == 0.077
     assert bob_partyunit._agenda_intent_ratio_debt == 0.066
     assert bob_partyunit._treasury_tax_paid is None
@@ -360,11 +354,9 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
     bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id,
-        _agenda_intent_ratio_credit=x_agenda_intent_ratio_credit,
-        _agenda_intent_ratio_debt=x_agenda_intent_ratio_debt,
-    )
+    bob_partyunit = partyunit_shop(bob_party_id)
+    bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     x_tax_paid = 0.2
     x_tax_diff = 0.123
     x_treasury_credit_score = 900
@@ -403,11 +395,9 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
     # GIVEN
     bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id,
-        _agenda_intent_ratio_credit=0.355,
-        _agenda_intent_ratio_debt=0.066,
-    )
+    bob_partyunit = partyunit_shop(bob_party_id)
+    bob_partyunit._agenda_intent_ratio_credit = 0.355
+    bob_partyunit._agenda_intent_ratio_debt = 0.066
     x_treasury_credit_score = 900
     x_treasury_voice_rank = 45
     bob_partyunit.set_treasurying_data(
@@ -433,17 +423,13 @@ def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
 
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    glen_text = "glen"
     bob_text = "Bob"
     bob_treasury_tax_paid = 0.55
     bob_treasury_tax_diff = 0.66
     depotlink_type = "assignment"
-    bob_partyunit = partyunit_shop(
-        party_id=bob_text,
-        _treasury_tax_paid=bob_treasury_tax_paid,
-        _treasury_tax_diff=bob_treasury_tax_diff,
-        depotlink_type=depotlink_type,
-    )
+    bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
+    bob_partyunit._treasury_tax_paid = bob_treasury_tax_paid
+    bob_partyunit._treasury_tax_diff = bob_treasury_tax_diff
     bob_creditor_live = False
     bob_debtor_live = True
     bob_partyunit._creditor_live = bob_creditor_live

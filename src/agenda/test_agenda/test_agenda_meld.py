@@ -308,7 +308,7 @@ def test_AgendaUnit_beliefunits_meld_IdeasMeldedBeforeBeliefs():
     assert bob1_idearoot._beliefunits == bob2_agenda._idearoot._beliefunits
 
 
-def test_AgendaUnit_beliefunits_meld_GroupsMeldedBefore_Partys():
+def test_AgendaUnit_meld_GroupsMeldedBefore_Partys():
     # GIVEN
     yao_text = "Yao"
     yao1_agenda = agendaunit_shop(yao_text)
