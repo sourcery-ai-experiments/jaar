@@ -268,7 +268,7 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
 
     swim_group_text = ",swimming experts"
-    swim_group_unit = groupunit_shop(brand=swim_group_text)
+    swim_group_unit = groupunit_shop(group_id=swim_group_text)
     bob_link = partylink_shop(party_id=bob_text)
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
@@ -489,7 +489,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     # WHEN
     bob_group_x = GroupUnitCatalog(
         agent_id=bob_text,
-        groupunit_brand="US Dollar",
+        groupunit_group_id="US Dollar",
         partylinks_set_by_economy_road=create_road(get_temp_env_economy_id(), "USA"),
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)

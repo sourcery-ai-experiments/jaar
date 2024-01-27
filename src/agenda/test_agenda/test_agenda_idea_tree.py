@@ -211,7 +211,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
     x_agenda.add_partyunit(party_id=sandy_text)
-    x_balancelink = balancelink_shop(brand=sandy_text)
+    x_balancelink = balancelink_shop(group_id=sandy_text)
 
     x_agenda._idearoot._kids[work_text]._kids[email_text].set_balancelink(
         balancelink=x_balancelink
@@ -279,7 +279,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     sandy_text = "sandy"
     week_text = "weekdays"
     nation_text = "nation-state"
-    sandy_balancelink = balancelink_shop(brand=sandy_text)
+    sandy_balancelink = balancelink_shop(group_id=sandy_text)
     x_agenda.add_partyunit(party_id=sandy_text)
     x_agenda._idearoot.set_balancelink(balancelink=sandy_balancelink)
     # idea tree has balancelines
@@ -290,7 +290,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
 
     # THEN
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) != None
-    assert x_agenda._idearoot._balanceheirs.get(sandy_text).brand == sandy_text
+    assert x_agenda._idearoot._balanceheirs.get(sandy_text).group_id == sandy_text
     assert x_agenda._idearoot._balancelines != {}
     root_idea = x_agenda.get_idea_obj(road=x_agenda._idearoot._label)
     sandy_balanceline = x_agenda._idearoot._balancelines.get(sandy_text)
@@ -323,11 +323,11 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     assert round(sandy_balanceline._agenda_credit, 15) == 1
     assert round(sandy_balanceline._agenda_debt, 15) == 1
     x_balanceline = balanceline_shop(
-        brand=sandy_text,
+        group_id=sandy_text,
         _agenda_credit=0.9999999999999998,
         _agenda_debt=0.9999999999999998,
     )
-    assert x_agenda._idearoot._balancelines == {x_balanceline.brand: x_balanceline}
+    assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}
 
 
 def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
@@ -338,7 +338,7 @@ def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
     sandy_text = "sandy"
     assert x_agenda._idearoot._balancelines == {}
     x_agenda.add_partyunit(party_id=sandy_text)
-    x_balancelink = balancelink_shop(brand=sandy_text)
+    x_balancelink = balancelink_shop(group_id=sandy_text)
     work_text = "work"
     email_text = "email"
     x_agenda._idearoot._kids[work_text].set_balancelink(balancelink=x_balancelink)
@@ -350,14 +350,14 @@ def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
     # THEN
     assert x_agenda._idearoot._balancelines != {}
     x_balanceline = balanceline_shop(
-        brand=sandy_text,
+        group_id=sandy_text,
         _agenda_credit=0.23076923076923078,
         _agenda_debt=0.23076923076923078,
     )
-    assert x_agenda._idearoot._balancelines == {x_balanceline.brand: x_balanceline}
+    assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}
     assert x_agenda._idearoot._kids[work_text]._balancelines != {}
     assert x_agenda._idearoot._kids[work_text]._balancelines == {
-        x_balanceline.brand: x_balanceline
+        x_balanceline.group_id: x_balanceline
     }
 
 
@@ -376,7 +376,7 @@ def test_agenda4party_Exists():
 
     sandy_person_id = PartyID(sandy_text)
     x_agenda.add_partyunit(party_id=sandy_person_id)
-    x_balancelink = balancelink_shop(brand=sandy_person_id)
+    x_balancelink = balancelink_shop(group_id=sandy_person_id)
     yrx = x_agenda._idearoot
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
@@ -408,7 +408,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
 
     billy_person_id = PartyID("billy")
     x_agenda.add_partyunit(party_id=billy_person_id)
-    billy_bl = balancelink_shop(brand=billy_person_id)
+    billy_bl = balancelink_shop(group_id=billy_person_id)
     yrx = x_agenda._idearoot
     yrx._kids[week_text].set_balancelink(balancelink=billy_bl)
     yrx._kids[feed_text].set_balancelink(balancelink=billy_bl)
@@ -417,7 +417,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
 
     sandy_person_id = PartyID(sandy_text)
     x_agenda.add_partyunit(party_id=sandy_person_id)
-    sandy_bl = balancelink_shop(brand=sandy_person_id)
+    sandy_bl = balancelink_shop(group_id=sandy_person_id)
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
 
     # WHEN

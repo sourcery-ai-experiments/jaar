@@ -1,6 +1,6 @@
 from src._prime.road import RoadUnit
 from src.agenda.party import PartyID, partylink_shop, partyunit_shop
-from src.agenda.group import GroupBrand, groupunit_shop, balancelink_shop
+from src.agenda.group import GroupID, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
@@ -182,9 +182,9 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = balancelink_shop(group_id=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(group_id=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(group_id=patr_text, creditor_weight=10, debtor_weight=5)
     yao_agenda._idearoot.set_balancelink(balancelink=bl_rico)
     yao_agenda._idearoot.set_balancelink(balancelink=bl_carm)
     yao_agenda._idearoot.set_balancelink(balancelink=bl_patr)
@@ -211,7 +211,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
 
     # for balancelink in yao_agenda._balanceheirs.values():
     #     print(
-    #         f"{yao_agenda._agenda_importance=} {balancelink.brand=} {balancelink._agenda_credit=} {balancelink._agenda_debt=}"
+    #         f"{yao_agenda._agenda_importance=} {balancelink.group_id=} {balancelink._agenda_credit=} {balancelink._agenda_debt=}"
     #     )
 
     assert rico_partylink._agenda_credit == 0.5
@@ -224,7 +224,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     # partylink_agenda_credit_sum = 0.0
     # partylink_agenda_debt_sum = 0.0
     # for group in yao_agenda._groups.values():
-    #     # print(f"{group.brand=} {group._partys=}")
+    #     # print(f"{group.group_id=} {group._partys=}")
 
     #     for partylink in group._partys.values():
     #         assert partylink._agenda_credit != None
@@ -232,7 +232,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     #         assert partylink._agenda_debt != None
     #         assert partylink._agenda_debt in [0.8, 0.1]
     #         # print(
-    #         #     f"{group.brand=} {partylink._agenda_importance=} {group._agenda_importance=}"
+    #         #     f"{group.group_id=} {partylink._agenda_importance=} {group._agenda_importance=}"
     #         # )
     #         partylink_agenda_credit_sum += partylink._agenda_credit
     #         partylink_agenda_debt_sum += partylink._agenda_debt
@@ -259,7 +259,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
     yao_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
-            brand=GroupBrand(selena_text), creditor_weight=20, debtor_weight=13
+            group_id=GroupID(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
     yao_agenda.set_agenda_metrics()
@@ -281,7 +281,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     # partylink_agenda_debt_sum = 0.0
 
     # for group in yao_agenda._groups.values():
-    #     # print(f"{group.brand=} {group._partys=}")
+    #     # print(f"{group.group_id=} {group._partys=}")
 
     #     for partylink in group._partys.values():
     #         assert partylink._agenda_credit != None
@@ -289,7 +289,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     #         assert partylink._agenda_debt != None
     #         assert partylink._agenda_debt not in [0.8, 0.1]
     #         # print(
-    #         #     f"{group.brand=} {partylink._agenda_importance=} {group._agenda_importance=}"
+    #         #     f"{group.group_id=} {partylink._agenda_importance=} {group._agenda_importance=}"
     #         # )
     #         partylink_agenda_credit_sum += partylink._agenda_credit
     #         partylink_agenda_debt_sum += partylink._agenda_debt
@@ -333,9 +333,9 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = balancelink_shop(group_id=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(group_id=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(group_id=patr_text, creditor_weight=10, debtor_weight=5)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
@@ -384,7 +384,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.brand=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
+    #     #     f"{group.group_id=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_credit=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_credit_sum=}")
@@ -401,7 +401,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
     yao_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
-            brand=selena_text, creditor_weight=20, debtor_weight=10
+            group_id=selena_text, creditor_weight=20, debtor_weight=10
         )
     )
     yao_agenda.set_agenda_metrics()
@@ -454,7 +454,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.brand=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
+    #     #     f"{group.group_id=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_credit=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_credit_sum=}")
@@ -478,9 +478,9 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(brand=patr_text, creditor_weight=10, debtor_weight=5)
+    bl_rico = balancelink_shop(group_id=rico_text, creditor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(group_id=carm_text, creditor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(group_id=patr_text, creditor_weight=10, debtor_weight=5)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
     yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
@@ -523,9 +523,9 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
     #     assert groupunit._agenda_debt != None
     #     assert groupunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.brand=} {groupunit._agenda_creditor=} {group._agenda_creditor=}"
+    #     #     f"{group.group_id=} {groupunit._agenda_creditor=} {group._agenda_creditor=}"
     #     # )
-    #     print(f"{groupunit.brand=} {groupunit._agenda_credit=} {groupunit._agenda_debt=} ")
+    #     print(f"{groupunit.group_id=} {groupunit._agenda_credit=} {groupunit._agenda_debt=} ")
     #     # print(f"{groupunit_agenda_credit_sum=}")
     #     # print(f"{groupunit_agenda_debt_sum=}")
     #     groupunit_agenda_credit_sum += groupunit._agenda_credit
@@ -565,7 +565,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImpor
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.brand=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
+    #     #     f"{group.group_id=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_credit=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_credit_sum=}")
@@ -623,7 +623,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{group.brand=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
+    #     #     f"{group.group_id=} {partyunit._agenda_creditor=} {group._agenda_creditor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_credit=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_credit_sum=}")
@@ -704,7 +704,7 @@ def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUn
     for groupunit_x in x_agenda._groups.values():
         groupunit_x.reset_agenda_credit_debt()
         # for partylink_x in groupunit_x._partys.values():
-        #     print(f"{groupunit_x.brand=} {partylink_x.creditor_weight=}  {partylink_x._agenda_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.} ")
+        #     print(f"{groupunit_x.group_id=} {partylink_x.creditor_weight=}  {partylink_x._agenda_credit:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.} ")
 
     # DELETE agenda_intent_debt and agenda_intent_credit
     for x_partyunit in x_agenda._partys.values():
@@ -903,7 +903,7 @@ def test_AgendaUnit_intent_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     assert noa_agenda_patr_party._agenda_intent_ratio_debt == 0.5
 
 
-def test_AgendaUnit_get_party_groupbrands_ReturnsCorrectObj():
+def test_AgendaUnit_get_party_group_ids_ReturnsCorrectObj():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -914,14 +914,14 @@ def test_AgendaUnit_get_party_groupbrands_ReturnsCorrectObj():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
 
     # WHEN / THEN
-    assert yao_agenda.get_party_groupbrands(carm_text) == [carm_text]
+    assert yao_agenda.get_party_group_ids(carm_text) == [carm_text]
 
     # WHEN / THEN
     swimmers = ",swimmers"
-    swim_group = groupunit_shop(brand=swimmers)
+    swim_group = groupunit_shop(group_id=swimmers)
     swim_group.set_partylink(partylink_shop(carm_text))
     yao_agenda.set_groupunit(swim_group)
-    assert yao_agenda.get_party_groupbrands(carm_text) == [carm_text, swimmers]
+    assert yao_agenda.get_party_group_ids(carm_text) == [carm_text, swimmers]
 
 
 def test_AgendaUnit_edit_partyunit_party_id_CorrectlyChangesPartyUnit_party_id():
@@ -999,7 +999,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(group_id=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink_shop(carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -1043,7 +1043,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesparty_ids():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(group_id=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -1086,7 +1086,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesGroupUnitPartyLinks():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_group = groupunit_shop(brand=swim_text, _partys=carmen_party_dict)
+    swim_group = groupunit_shop(group_id=swim_text, _partys=carmen_party_dict)
     swim_group.set_partylink(
         partylink=partylink_shop(carm_text, creditor_weight=5, debtor_weight=18)
     )
@@ -1128,7 +1128,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
     anna_text = "anna"
     yao_agenda.add_partyunit(anna_text, creditor_weight=17)
     carmen_text = ",carmen"
-    carmen_group = groupunit_shop(brand=carmen_text)
+    carmen_group = groupunit_shop(group_id=carmen_text)
     carmen_group.set_partylink(partylink=partylink_shop(rico_text))
     carmen_group.set_partylink(partylink=partylink_shop(anna_text))
     yao_agenda.set_groupunit(y_groupunit=carmen_group)
@@ -1159,7 +1159,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
 #     anna_text = "anna"
 #     yao_agenda.add_partyunit(anna_text, creditor_weight=17)
 #     carmen_text = ",carmen"
-#     carmen_group = groupunit_shop(brand=carmen_text)
+#     carmen_group = groupunit_shop(group_id=carmen_text)
 #     carmen_group.set_partylink(
 #         partylink=partylink_shop(rico_text, creditor_weight=3)
 #     )
@@ -1211,7 +1211,7 @@ def test_AgendaUnit_get_partyunits_party_id_list_CorrectlyReturnsListOfPartyUnit
     noa_agenda.set_partyunit(partyunit=partyunit_shop(will_text))
     noa_agenda.set_partyunit(partyunit=partyunit_shop(fry_text))
     fun_text = ",fun people"
-    fun_group = groupunit_shop(brand=fun_text)
+    fun_group = groupunit_shop(group_id=fun_text)
     fun_group.set_partylink(partylink=partylink_shop(will_text))
     noa_agenda.set_groupunit(y_groupunit=fun_group)
     assert len(noa_agenda._groups) == 4

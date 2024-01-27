@@ -46,14 +46,14 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             self.groups_in_table.currentRow(), 0
         ).text()
         self.groupunit_x = self.x_agenda._groups.get(group_pid)
-        self.group_pid.setText(self.groupunit_x.brand)
+        self.group_pid.setText(self.groupunit_x.group_id)
 
     def groups_out_select(self):
         group_pid = self.groups_out_table.item(
             self.groups_out_table.currentRow(), 0
         ).text()
         self.groupunit_x = self.x_agenda._groups.get(group_pid)
-        self.group_pid.setText(self.groupunit_x.brand)
+        self.group_pid.setText(self.groupunit_x.group_id)
 
     def party_group_set(self):
         self.groupunit_x.set_partylink(
@@ -72,9 +72,12 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         group_partylinks = []
         for group in self.x_agenda._groups.values():
             for partylink in group._partys.values():
-                if partylink.party_id == party_id and group.brand != partylink.party_id:
+                if (
+                    partylink.party_id == party_id
+                    and group.group_id != partylink.party_id
+                ):
                     groups_count += 1
-                    single_group = group.brand
+                    single_group = group.group_id
                     group_partylinks.append((group, partylink))
 
         return groups_count, single_group, group_partylinks
@@ -147,10 +150,10 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             if (
                 self.partyunit_x != None
                 and self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
-                and self.partyunit_x.pid != groupunit.brand
+                and self.partyunit_x.pid != groupunit.group_id
             )
         ]
-        groups_in_list.sort(key=lambda x: x.brand, reverse=False)
+        groups_in_list.sort(key=lambda x: x.group_id, reverse=False)
 
         self.groups_in_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_in_list)})", "Group", "Group Count"]
@@ -159,7 +162,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         for row, groupunit_x in enumerate(groups_in_list, start=1):
             self.groups_in_table.setRowCount(row)
             self.groups_in_table.setItem(
-                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.brand)
+                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.group_id)
             )
 
     def refresh_groups_out_table(self):
@@ -177,7 +180,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             for groupunit in self.x_agenda._groups.values()
             if (
                 self.partyunit_x != None
-                and groupunit._partys.get(groupunit.brand) is None
+                and groupunit._partys.get(groupunit.group_id) is None
                 and (
                     self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
                     == False
@@ -185,7 +188,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             )
             or self.partyunit_x is None
         ]
-        groups_out_list.sort(key=lambda x: x.brand, reverse=False)
+        groups_out_list.sort(key=lambda x: x.group_id, reverse=False)
         self.groups_out_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_out_list)})", "Group", "Group Count"]
         )
@@ -193,7 +196,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         for row, groupunit_x in enumerate(groups_out_list, start=1):
             self.groups_out_table.setRowCount(row)
             self.groups_out_table.setItem(
-                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.brand)
+                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.group_id)
             )
 
     def refresh_groups_stan_table(self):
@@ -211,11 +214,11 @@ class EditParty(qtw.QTableWidget, Ui_Form):
             for groupunit in self.x_agenda._groups.values()
             if self.partyunit_x != None
             and (
-                groupunit._partys.get(groupunit.brand) != None
-                and self.partyunit_x.pid == groupunit.brand
+                groupunit._partys.get(groupunit.group_id) != None
+                and self.partyunit_x.pid == groupunit.group_id
             )
         ]
-        groups_stand_list.sort(key=lambda x: x.brand, reverse=False)
+        groups_stand_list.sort(key=lambda x: x.group_id, reverse=False)
         self.groups_stan_table.setHorizontalHeaderLabels(
             [f"Groups ({len(groups_stand_list)})", "Group", "Group Count"]
         )
@@ -223,7 +226,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         for row, groupunit_x in enumerate(groups_stand_list, start=1):
             self.groups_stan_table.setRowCount(row)
             self.groups_stan_table.setItem(
-                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.brand)
+                row - 1, 0, qtw.QTableWidgetItem(groupunit_x.group_id)
             )
 
     def refresh_all(self):
@@ -259,22 +262,22 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_all()
 
     def group_insert(self):
-        bu = groupunit_shop(brand=self.group_pid.text())
+        bu = groupunit_shop(group_id=self.group_pid.text())
         self.x_agenda.set_groupunit(y_groupunit=bu)
         self.refresh_groups()
 
     def group_delete(self):
-        self.x_agenda.del_groupunit(groupbrand=self.group_pid.text())
+        self.x_agenda.del_groupunit(group_id=self.group_pid.text())
         self.group_pid.setText("")
         self.refresh_groups()
 
     def group_update(self):
         if self.group_pid != None:
-            self.x_agenda.edit_groupunit_brand(
-                old_brand=self.groups_in_table.item(
+            self.x_agenda.edit_groupunit_group_id(
+                old_group_id=self.groups_in_table.item(
                     self.groups_in_table.currentRow(), 0
                 ).text(),
-                new_brand=self.group_pid.text(),
+                new_group_id=self.group_pid.text(),
                 allow_group_overwite=True,
             )
             self.group_pid.setText("")

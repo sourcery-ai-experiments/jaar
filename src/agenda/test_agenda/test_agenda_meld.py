@@ -69,7 +69,7 @@ def test_AgendaUnit_meld_PartyUnits():
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     # GIVEN
     run_text = ",runners"
-    run_groupunit = groupunit_shop(brand=run_text)
+    run_groupunit = groupunit_shop(group_id=run_text)
 
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
@@ -78,7 +78,7 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     bob2_agenda = agendaunit_shop(bob_text)
     bob2_agenda.set_groupunit(run_groupunit)
     swim_text = ",swimmers"
-    swim_groupunit = groupunit_shop(brand=swim_text)
+    swim_groupunit = groupunit_shop(group_id=swim_text)
     bob2_agenda.set_groupunit(swim_groupunit)
     assert len(bob1_agenda._groups) == 1
     assert bob1_agenda.get_groupunit(run_text) != None

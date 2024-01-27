@@ -1,4 +1,4 @@
-from src.agenda.group import GroupBrand, balancelink_shop, groupunit_shop
+from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.examples.example_agendas import (
@@ -16,15 +16,15 @@ def test_AgendaUnit_groups_get_groupunit_ReturnsCorrectObj():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = ",swimmers"
-    # x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    swim_groups = {swim_text: groupunit_shop(brand=swim_text)}
+    # x_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=swim_text))
+    swim_groups = {swim_text: groupunit_shop(group_id=swim_text)}
     x_agenda._groups = swim_groups
 
     # WHEN
     swim_groupunit = x_agenda.get_groupunit(swim_text)
 
     # THEN
-    assert swim_groupunit == groupunit_shop(brand=swim_text)
+    assert swim_groupunit == groupunit_shop(group_id=swim_text)
 
 
 def test_AgendaUnit_groups_set_groupunit_CorrectlySetAttr():
@@ -33,11 +33,11 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlySetAttr():
     x_agenda = agendaunit_shop()
 
     # WHEN
-    x_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
+    x_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=swim_text))
 
     # THEN
     assert len(x_agenda._groups) == 1
-    swim_groups = {swim_text: groupunit_shop(brand=swim_text)}
+    swim_groups = {swim_text: groupunit_shop(group_id=swim_text)}
     assert len(x_agenda._groups) == len(swim_groups)
     assert x_agenda.get_groupunit(swim_text) != None
     swim_groupunit = x_agenda.get_groupunit(swim_text)
@@ -112,12 +112,12 @@ def test_AgendaUnit_groups_del_groupunit_worksCorrectly():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = "swimmers"
-    swim_group = groupunit_shop(brand=GroupBrand(swim_text))
+    swim_group = groupunit_shop(group_id=GroupID(swim_text))
     x_agenda.set_groupunit(y_groupunit=swim_group)
     assert x_agenda.get_groupunit(swim_text) != None
 
     # WHEN
-    x_agenda.del_groupunit(groupbrand=swim_text)
+    x_agenda.del_groupunit(group_id=swim_text)
     assert x_agenda.get_groupunit(swim_text) is None
     assert x_agenda._groups == {}
 
@@ -166,9 +166,9 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     assert len(x_agenda._groups) == 3
     swim_text = "swim"
     x_agenda.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
-    balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
-    balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
+    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
+    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
+    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
     swim_road = x_agenda.make_road(prom_text, swim_text)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
@@ -213,9 +213,9 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     swim_road = x_agenda.make_road(prom_text, swim_text)
 
     x_agenda.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
-    balancelink_carm = balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
-    balancelink_patr = balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
+    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
+    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
+    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
 
     swim_idea = x_agenda.get_idea_obj(swim_road)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
@@ -256,9 +256,13 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
-    blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
-    blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
-    blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
+    blink_rico = balancelink_shop(
+        group_id=rico_text, creditor_weight=20, debtor_weight=6
+    )
+    blink_carm = balancelink_shop(
+        group_id=carm_text, creditor_weight=10, debtor_weight=1
+    )
+    blink_patr = balancelink_shop(group_id=patr_text, creditor_weight=10)
     x_agenda._idearoot.set_balancelink(balancelink=blink_rico)
     x_agenda._idearoot.set_balancelink(balancelink=blink_carm)
     x_agenda._idearoot.set_balancelink(balancelink=blink_patr)
@@ -316,9 +320,13 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
-    blink_rico = balancelink_shop(brand=rico_text, creditor_weight=20, debtor_weight=6)
-    blink_carm = balancelink_shop(brand=carm_text, creditor_weight=10, debtor_weight=1)
-    blink_patr = balancelink_shop(brand=patr_text, creditor_weight=10)
+    blink_rico = balancelink_shop(
+        group_id=rico_text, creditor_weight=20, debtor_weight=6
+    )
+    blink_carm = balancelink_shop(
+        group_id=carm_text, creditor_weight=10, debtor_weight=1
+    )
+    blink_patr = balancelink_shop(group_id=patr_text, creditor_weight=10)
     x_agenda._idearoot.set_balancelink(balancelink=blink_rico)
     x_agenda._idearoot.set_balancelink(balancelink=blink_carm)
     x_agenda._idearoot.set_balancelink(balancelink=blink_patr)
@@ -350,7 +358,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
 
     # WHEN
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(sele_text)))
-    bl_sele = balancelink_shop(brand=sele_text, creditor_weight=37)
+    bl_sele = balancelink_shop(group_id=sele_text, creditor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._groups) == 4
     x_agenda.set_agenda_metrics()
@@ -395,12 +403,12 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImpo
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
     rico_balancelink = balancelink_shop(
-        brand=rico_text, creditor_weight=20, debtor_weight=6
+        group_id=rico_text, creditor_weight=20, debtor_weight=6
     )
     carm_balancelink = balancelink_shop(
-        brand=carm_text, creditor_weight=10, debtor_weight=1
+        group_id=carm_text, creditor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(brand=patr_text, creditor_weight=10)
+    parm_balancelink = balancelink_shop(group_id=patr_text, creditor_weight=10)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
@@ -444,12 +452,12 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
     rico_balancelink = balancelink_shop(
-        brand=rico_text, creditor_weight=20, debtor_weight=6
+        group_id=rico_text, creditor_weight=20, debtor_weight=6
     )
     carm_balancelink = balancelink_shop(
-        brand=carm_text, creditor_weight=10, debtor_weight=1
+        group_id=carm_text, creditor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(brand=patr_text, creditor_weight=10)
+    parm_balancelink = balancelink_shop(group_id=patr_text, creditor_weight=10)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
@@ -503,13 +511,13 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     )
 
 
-def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyCreatesNewPersonID():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = ",swimmers"
-    swim_group = groupunit_shop(brand=swim_text)
+    swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=rico_text))
     agenda.set_groupunit(swim_group)
     assert len(agenda._partys) == 1
@@ -520,8 +528,8 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
 
     # WHEN
     jog_text = ",jog"
-    agenda.edit_groupunit_brand(
-        old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
+    agenda.edit_groupunit_group_id(
+        old_group_id=swim_text, new_group_id=jog_text, allow_group_overwite=False
     )
 
     # THEN
@@ -533,21 +541,21 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyCreatesNewPersonID():
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
 
 
-def test_AgendaUnit_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists():
+def test_AgendaUnit_edit_Groupunit_group_id_raiseErrorNewPersonIDPreviouslyExists():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = ",swimmers"
-    agenda.set_groupunit(groupunit_shop(brand=swim_text))
+    agenda.set_groupunit(groupunit_shop(group_id=swim_text))
     jog_text = ",jog"
-    agenda.set_groupunit(groupunit_shop(brand=jog_text))
+    agenda.set_groupunit(groupunit_shop(group_id=jog_text))
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        agenda.edit_groupunit_brand(
-            old_brand=swim_text,
-            new_brand=jog_text,
+        agenda.edit_groupunit_group_id(
+            old_group_id=swim_text,
+            new_group_id=jog_text,
             allow_group_overwite=False,
         )
     assert (
@@ -556,19 +564,19 @@ def test_AgendaUnit_edit_Groupunit_brand_raiseErrorNewPersonIDPreviouslyExists()
     )
 
 
-def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldPersonIDs():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
     agenda.add_partyunit(party_id=rico_text)
     swim_text = ",swimmers"
-    swim_group = groupunit_shop(brand=swim_text)
+    swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(
         partylink=partylink_shop(party_id=rico_text, creditor_weight=5, debtor_weight=3)
     )
     agenda.set_groupunit(swim_group)
     jog_text = ",jog"
-    jog_group = groupunit_shop(brand=jog_text)
+    jog_group = groupunit_shop(group_id=jog_text)
     jog_group.set_partylink(
         partylink=partylink_shop(
             party_id=rico_text, creditor_weight=7, debtor_weight=10
@@ -579,9 +587,9 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(jog_text) != None
 
     # WHEN
-    agenda.edit_groupunit_brand(
-        old_brand=swim_text,
-        new_brand=jog_text,
+    agenda.edit_groupunit_group_id(
+        old_group_id=swim_text,
+        new_group_id=jog_text,
         allow_group_overwite=True,
     )
 
@@ -596,13 +604,13 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_AgendaUnit_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyChangesBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
     swim_text = ",swimmers"
-    swim_groupunit = groupunit_shop(brand=swim_text)
+    swim_groupunit = groupunit_shop(group_id=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
     outdoor_text = "outdoors"
     outdoor_road = x_agenda.make_road(x_agenda._agent_id, outdoor_text)
@@ -612,7 +620,7 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
-        brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
+        group_id=swim_groupunit.group_id, creditor_weight=5, debtor_weight=3
     )
     camping_idea.set_balancelink(swim_balancelink)
     assert camping_idea._balancelinks.get(swim_text) != None
@@ -621,8 +629,8 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
 
     # WHEN
     jog_text = ",jog"
-    x_agenda.edit_groupunit_brand(
-        old_brand=swim_text, new_brand=jog_text, allow_group_overwite=False
+    x_agenda.edit_groupunit_group_id(
+        old_group_id=swim_text, new_group_id=jog_text, allow_group_overwite=False
     )
 
     # THEN
@@ -632,17 +640,17 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyChangesBalanceLinks():
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
 
 
-def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
     x_agenda.add_partyunit(party_id=rico_text)
     swim_text = ",swimmers"
-    swim_groupunit = groupunit_shop(brand=swim_text)
+    swim_groupunit = groupunit_shop(group_id=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
 
     jog_text = ",jog"
-    jog_groupunit = groupunit_shop(brand=jog_text)
+    jog_groupunit = groupunit_shop(group_id=jog_text)
     x_agenda.set_groupunit(jog_groupunit)
 
     outdoor_text = "outdoors"
@@ -653,11 +661,11 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksB
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
-        brand=swim_groupunit.brand, creditor_weight=5, debtor_weight=3
+        group_id=swim_groupunit.group_id, creditor_weight=5, debtor_weight=3
     )
     camping_idea.set_balancelink(swim_balancelink)
     jog_balancelink = balancelink_shop(
-        brand=jog_groupunit.brand, creditor_weight=7, debtor_weight=10
+        group_id=jog_groupunit.group_id, creditor_weight=7, debtor_weight=10
     )
     camping_idea.set_balancelink(jog_balancelink)
     assert camping_idea._balancelinks.get(swim_text) != None
@@ -668,8 +676,8 @@ def test_AgendaUnit_edit_groupunit_brand_CorrectlyMeldsBalanceLinesBalanceLinksB
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 10
 
     # WHEN
-    x_agenda.edit_groupunit_brand(
-        old_brand=swim_text, new_brand=jog_text, allow_group_overwite=True
+    x_agenda.edit_groupunit_group_id(
+        old_group_id=swim_text, new_group_id=jog_text, allow_group_overwite=True
     )
 
     # THEN
@@ -691,7 +699,7 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     )
 
     family_text = ",family"
-    balancelink_z = balancelink_shop(brand=family_text)
+    balancelink_z = balancelink_shop(group_id=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
     assert len(x_agenda._groups) == 0
     assert x_agenda.get_groupunit(family_text) is None
@@ -751,10 +759,10 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda.add_l1_idea(ideaunit_shop(work_text))
     x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
     x1_agenda.edit_idea_attr(
-        road=swim_road, balancelink=balancelink_shop(brand=xia_text)
+        road=swim_road, balancelink=balancelink_shop(group_id=xia_text)
     )
     x1_agenda.edit_idea_attr(
-        road=swim_road, balancelink=balancelink_shop(brand=zoa_text)
+        road=swim_road, balancelink=balancelink_shop(group_id=zoa_text)
     )
     x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
     assert len(x1_agenda_swim_idea._balancelinks) == 2
@@ -782,10 +790,10 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     )
 
     family_text = ",family"
-    balancelink_z = balancelink_shop(brand=family_text)
+    balancelink_z = balancelink_shop(group_id=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
-    groupunit_z = groupunit_shop(brand=family_text)
+    groupunit_z = groupunit_shop(group_id=family_text)
     groupunit_z.set_partylink(partylink=partylink_shop(party_id="ann1"))
     groupunit_z.set_partylink(partylink=partylink_shop(party_id="bet1"))
     bob_agenda.set_groupunit(y_groupunit=groupunit_z)
@@ -806,7 +814,7 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
 
     # assert len(bob_agenda._groups) == 1
     # assert len(bob_agenda.get_groupunit(family_text)._partys) == 0
-    # groupunit_z = groupunit_shop(brand=family_text)
+    # groupunit_z = groupunit_shop(group_id=family_text)
     # groupunit_z.set_partylink(partylink=partylink_shop(party_id="ann2"))
     # groupunit_z.set_partylink(partylink=partylink_shop(party_id="bet2"))
     # bob_agenda.set_groupunit(y_groupunit=groupunit_z)
@@ -821,7 +829,7 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesCreateMissingPartys(
     family_text = ",family"
     anna_text = "anna"
     beto_text = "beto"
-    groupunit_z = groupunit_shop(brand=family_text)
+    groupunit_z = groupunit_shop(group_id=family_text)
     groupunit_z.set_partylink(
         partylink=partylink_shop(party_id=anna_text, creditor_weight=3, debtor_weight=7)
     )
@@ -865,7 +873,7 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesNotReplacePartys():
     bob_agenda.set_partyunit(
         partyunit_shop(party_id=beto_text, creditor_weight=46, debtor_weight=71)
     )
-    groupunit_z = groupunit_shop(brand=family_text)
+    groupunit_z = groupunit_shop(group_id=family_text)
     groupunit_z.set_partylink(
         partylink=partylink_shop(party_id=anna_text, creditor_weight=3, debtor_weight=7)
     )
@@ -904,9 +912,9 @@ def test_AgendaUnit_get_groupunits_dict_ReturnsCorrectObj():
     fly_text = ",flyers"
     yao_text = "Yao"
     bob_agenda.set_partyunit(partyunit_shop(yao_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swim_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=run_text))
-    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=fly_text))
+    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=swim_text))
+    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=run_text))
+    bob_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=fly_text))
     assert len(bob_agenda._groups) == 4
 
     # WHEN
@@ -973,7 +981,7 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
 
     hike_text = "hikers"
-    jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
+    jes_agenda.set_groupunit(groupunit_shop(group_id=hike_text))
     hike_group = jes_agenda.get_groupunit(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
 
@@ -998,18 +1006,18 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
 
     swim_text = ",swimmers"
-    jes_agenda.set_groupunit(groupunit_shop(brand=swim_text))
+    jes_agenda.set_groupunit(groupunit_shop(group_id=swim_text))
     swim_group = jes_agenda.get_groupunit(swim_text)
     swim_group.set_partylink(partylink_shop(bob_text))
 
     hike_text = ",hikers"
-    jes_agenda.set_groupunit(groupunit_shop(brand=hike_text))
+    jes_agenda.set_groupunit(groupunit_shop(group_id=hike_text))
     hike_group = jes_agenda.get_groupunit(hike_text)
     hike_group.set_partylink(partylink_shop(bob_text))
     hike_group.set_partylink(partylink_shop(noa_text))
 
     hunt_text = ",hunters"
-    jes_agenda.set_groupunit(groupunit_shop(brand=hunt_text))
+    jes_agenda.set_groupunit(groupunit_shop(group_id=hunt_text))
     hike_group = jes_agenda.get_groupunit(hunt_text)
     hike_group.set_partylink(partylink_shop(noa_text))
     hike_group.set_partylink(partylink_shop(eli_text))

@@ -121,7 +121,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
 
 #     attribute_name = "groupunit"
 #     x_stirunit = stirunit_shop(attribute_name, stir_delete())
-#     x_stirunit.add_locator("brand", carm_text)
+#     x_stirunit.add_locator("group_id", carm_text)
 #     sue_moveunit.set_stirunit(x_stirunit)
 
 #     # WHEN

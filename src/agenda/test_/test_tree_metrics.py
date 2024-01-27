@@ -35,5 +35,5 @@ def test_treemetrics_shop_ReturnsCorrectObj():
     # def evaluate_action(self, promise: bool, idea_road: RoadUnit):
     # def evaluate_level(self, level):
     # def evaluate_reasonunits(self, reasons: dict[RoadUnit:ReasonUnit]):
-    # def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:BalanceLink]):
+    # def evaluate_balancelinks(self, balancelinks: dict[GroupID:BalanceLink]):
     # def evaluate_uid_max(self, uid):

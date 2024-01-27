@@ -10,7 +10,7 @@ from src.agenda.party import (
 )
 from src.agenda.group import (
     BalanceLink,
-    GroupBrand,
+    GroupID,
     GroupUnit,
     get_from_dict as groupunits_get_from_dict,
     groupunit_shop,
@@ -95,7 +95,7 @@ class AgendaUnit:
     _agent_id: AgentID = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
-    _groups: dict[GroupBrand:GroupUnit] = None
+    _groups: dict[GroupID:GroupUnit] = None
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
     _road_delimiter: str = None
@@ -289,16 +289,16 @@ class AgendaUnit:
         # get dict of all idea balanceheirs
         balanceheir_list = idea_kid._balanceheirs.keys()
         balanceheir_dict = {
-            balanceheir_brand: 1 for balanceheir_brand in balanceheir_list
+            balanceheir_group_id: 1 for balanceheir_group_id in balanceheir_list
         }
         non_single_groupunits = {
-            groupunit.brand: groupunit
+            groupunit.group_id: groupunit
             for groupunit in self._groups.values()
             if groupunit._party_mirror != True
         }
         # check all non_party_mirror_groupunits are in balanceheirs
         for non_single_group in non_single_groupunits.values():
-            if balanceheir_dict.get(non_single_group.brand) is None:
+            if balanceheir_dict.get(non_single_group.group_id) is None:
                 return False
 
         # get dict of all partylinks that are in all balanceheirs
@@ -449,30 +449,30 @@ class AgendaUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_partys_metrics(self) -> dict[GroupBrand:BalanceLink]:
+    def get_partys_metrics(self) -> dict[GroupID:BalanceLink]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
     def add_to_group_agenda_credit_debt(
         self,
-        groupbrand: GroupBrand,
+        group_id: GroupID,
         balanceheir_agenda_credit: float,
         balanceheir_agenda_debt: float,
     ):
         for group in self._groups.values():
-            if group.brand == groupbrand:
+            if group.group_id == group_id:
                 group._agenda_credit += balanceheir_agenda_credit
                 group._agenda_debt += balanceheir_agenda_debt
 
     def add_to_group_agenda_intent_credit_debt(
         self,
-        groupbrand: GroupBrand,
+        group_id: GroupID,
         balanceline_agenda_credit: float,
         balanceline_agenda_debt: float,
     ):
         for group in self._groups.values():
             if (
-                group.brand == groupbrand
+                group.group_id == group_id
                 and balanceline_agenda_credit != None
                 and balanceline_agenda_debt != None
             ):
@@ -562,7 +562,7 @@ class AgendaUnit:
             and new_party_id_groupunit != None
             and new_party_id_groupunit._party_mirror == False
         ):
-            self.del_groupunit(groupbrand=new_party_id)
+            self.del_groupunit(group_id=new_party_id)
         elif self.get_party(new_party_id) != None:
             old_party_id_creditor_weight += new_party_id_partyunit.creditor_weight
 
@@ -571,8 +571,8 @@ class AgendaUnit:
             party_id=new_party_id, creditor_weight=old_party_id_creditor_weight
         )
         # change all influenced groupunits partylinks
-        for old_party_groupbrand in self.get_party_groupbrands(old_party_id):
-            old_party_groupunit = self.get_groupunit(old_party_groupbrand)
+        for old_party_group_id in self.get_party_group_ids(old_party_id):
+            old_party_groupunit = self.get_groupunit(old_party_group_id)
             old_party_groupunit._shift_partylink(old_party_id, new_party_id)
         self.del_partyunit(party_id=old_party_id)
 
@@ -603,22 +603,22 @@ class AgendaUnit:
         if add_partylinks is None:
             add_partylinks = False
         if (
-            self.get_groupunit(y_groupunit.brand) is None
+            self.get_groupunit(y_groupunit.group_id) is None
             or replace
             and not add_partylinks
         ):
-            self._groups[y_groupunit.brand] = y_groupunit
+            self._groups[y_groupunit.group_id] = y_groupunit
 
         if add_partylinks:
-            x_groupunit = self.get_groupunit(y_groupunit.brand)
+            x_groupunit = self.get_groupunit(y_groupunit.group_id)
             for x_partylink in y_groupunit._partys.values():
                 x_groupunit.set_partylink(x_partylink)
 
         if create_missing_partys:
             self._create_missing_partys(partylinks=y_groupunit._partys)
 
-    def get_groupunit(self, x_groupbrand: GroupBrand) -> GroupUnit:
-        return self._groups.get(x_groupbrand)
+    def get_groupunit(self, x_group_id: GroupID) -> GroupUnit:
+        return self._groups.get(x_group_id)
 
     def _create_missing_partys(self, partylinks: dict[PartyID:PartyLink]):
         for partylink_x in partylinks.values():
@@ -631,67 +631,67 @@ class AgendaUnit:
                     )
                 )
 
-    def del_groupunit(self, groupbrand: GroupBrand):
-        self._groups.pop(groupbrand)
+    def del_groupunit(self, group_id: GroupID):
+        self._groups.pop(group_id)
 
-    def edit_groupunit_brand(
-        self, old_brand: GroupBrand, new_brand: GroupBrand, allow_group_overwite: bool
+    def edit_groupunit_group_id(
+        self, old_group_id: GroupID, new_group_id: GroupID, allow_group_overwite: bool
     ):
-        if not allow_group_overwite and self.get_groupunit(new_brand) != None:
+        if not allow_group_overwite and self.get_groupunit(new_group_id) != None:
             raise InvalidAgendaException(
-                f"Group '{old_brand}' change to '{new_brand}' failed since '{new_brand}' exists."
+                f"Group '{old_group_id}' change to '{new_group_id}' failed since '{new_group_id}' exists."
             )
-        elif self.get_groupunit(new_brand) != None:
-            old_groupunit = self.get_groupunit(old_brand)
-            old_groupunit.set_brand(brand=new_brand)
-            self.get_groupunit(new_brand).meld(other_group=old_groupunit)
-            self.del_groupunit(groupbrand=old_brand)
-        elif self.get_groupunit(new_brand) is None:
-            old_groupunit = self.get_groupunit(old_brand)
+        elif self.get_groupunit(new_group_id) != None:
+            old_groupunit = self.get_groupunit(old_group_id)
+            old_groupunit.set_group_id(group_id=new_group_id)
+            self.get_groupunit(new_group_id).meld(other_group=old_groupunit)
+            self.del_groupunit(group_id=old_group_id)
+        elif self.get_groupunit(new_group_id) is None:
+            old_groupunit = self.get_groupunit(old_group_id)
             groupunit_x = groupunit_shop(
-                new_brand, old_groupunit._party_mirror, old_groupunit._partys
+                new_group_id, old_groupunit._party_mirror, old_groupunit._partys
             )
             self.set_groupunit(y_groupunit=groupunit_x)
-            self.del_groupunit(groupbrand=old_brand)
+            self.del_groupunit(group_id=old_group_id)
 
-        self._edit_balancelinks_brand(
-            old_brand=old_brand,
-            new_brand=new_brand,
+        self._edit_balancelinks_group_id(
+            old_group_id=old_group_id,
+            new_group_id=new_group_id,
             allow_group_overwite=allow_group_overwite,
         )
 
-    def _edit_balancelinks_brand(
+    def _edit_balancelinks_group_id(
         self,
-        old_brand: GroupBrand,
-        new_brand: GroupBrand,
+        old_group_id: GroupID,
+        new_group_id: GroupID,
         allow_group_overwite: bool,
     ):
         for x_idea in self.get_idea_list():
             if (
-                x_idea._balancelinks.get(new_brand) != None
-                and x_idea._balancelinks.get(old_brand) != None
+                x_idea._balancelinks.get(new_group_id) != None
+                and x_idea._balancelinks.get(old_group_id) != None
             ):
-                old_balancelink = x_idea._balancelinks.get(old_brand)
-                old_balancelink.brand = new_brand
-                x_idea._balancelinks.get(new_brand).meld(
+                old_balancelink = x_idea._balancelinks.get(old_group_id)
+                old_balancelink.group_id = new_group_id
+                x_idea._balancelinks.get(new_group_id).meld(
                     other_balancelink=old_balancelink,
                     other_meld_strategy="sum",
                     src_meld_strategy="sum",
                 )
 
-                x_idea.del_balancelink(groupbrand=old_brand)
+                x_idea.del_balancelink(group_id=old_group_id)
             elif (
-                x_idea._balancelinks.get(new_brand) is None
-                and x_idea._balancelinks.get(old_brand) != None
+                x_idea._balancelinks.get(new_group_id) is None
+                and x_idea._balancelinks.get(old_group_id) != None
             ):
-                old_balancelink = x_idea._balancelinks.get(old_brand)
+                old_balancelink = x_idea._balancelinks.get(old_group_id)
                 new_balancelink = balancelink_shop(
-                    brand=new_brand,
+                    group_id=new_group_id,
                     creditor_weight=old_balancelink.creditor_weight,
                     debtor_weight=old_balancelink.debtor_weight,
                 )
                 x_idea.set_balancelink(balancelink=new_balancelink)
-                x_idea.del_balancelink(groupbrand=old_brand)
+                x_idea.del_balancelink(group_id=old_group_id)
 
     def set_time_beliefs(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -1008,19 +1008,21 @@ class AgendaUnit:
 
         if x_idea._assignedunit != None:
             _suffgroups_to_delete = [
-                _suffgroup_brand
-                for _suffgroup_brand in x_idea._assignedunit._suffgroups.keys()
-                if self.get_groupunit(_suffgroup_brand) is None
+                _suffgroup_group_id
+                for _suffgroup_group_id in x_idea._assignedunit._suffgroups.keys()
+                if self.get_groupunit(_suffgroup_group_id) is None
             ]
-            for _suffgroup_brand in _suffgroups_to_delete:
-                x_idea._assignedunit.del_suffgroup(_suffgroup_brand)
+            for _suffgroup_group_id in _suffgroups_to_delete:
+                x_idea._assignedunit.del_suffgroup(_suffgroup_group_id)
 
         return x_idea
 
-    def _create_missing_groups_partys(self, balancelinks: dict[GroupBrand:BalanceLink]):
+    def _create_missing_groups_partys(self, balancelinks: dict[GroupID:BalanceLink]):
         for balancelink_x in balancelinks.values():
-            if self.get_groupunit(balancelink_x.brand) is None:
-                groupunit_x = groupunit_shop(brand=balancelink_x.brand, _partys={})
+            if self.get_groupunit(balancelink_x.group_id) is None:
+                groupunit_x = groupunit_shop(
+                    group_id=balancelink_x.group_id, _partys={}
+                )
                 self.set_groupunit(y_groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
@@ -1265,7 +1267,7 @@ class AgendaUnit:
         all_party_credit: bool = None,
         all_party_debt: bool = None,
         balancelink: BalanceLink = None,
-        balancelink_del: GroupBrand = None,
+        balancelink_del: GroupID = None,
         is_expanded: bool = None,
         meld_strategy: MeldStrategy = None,
     ):
@@ -1422,11 +1424,11 @@ class AgendaUnit:
             balancelink_obj.reset_agenda_credit_debt()
 
     def _set_groupunits_agenda_importance(
-        self, balanceheirs: dict[GroupBrand:BalanceLink]
+        self, balanceheirs: dict[GroupID:BalanceLink]
     ):
         for balancelink_obj in balanceheirs.values():
             self.add_to_group_agenda_credit_debt(
-                groupbrand=balancelink_obj.brand,
+                group_id=balancelink_obj.group_id,
                 balanceheir_agenda_credit=balancelink_obj._agenda_credit,
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
@@ -1445,7 +1447,7 @@ class AgendaUnit:
                 else:
                     for x_balanceline in idea._balancelines.values():
                         self.add_to_group_agenda_intent_credit_debt(
-                            groupbrand=x_balanceline.brand,
+                            group_id=x_balanceline.group_id,
                             balanceline_agenda_credit=x_balanceline._agenda_credit,
                             balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
@@ -1478,9 +1480,9 @@ class AgendaUnit:
                 agenda_partyunit_total_debtor_weight=self.get_partyunits_debtor_weight_sum(),
             )
 
-    def get_party_groupbrands(self, party_id: PartyID) -> list[GroupBrand]:
+    def get_party_group_ids(self, party_id: PartyID) -> list[GroupID]:
         return [
-            x_groupunit.brand
+            x_groupunit.group_id
             for x_groupunit in self._groups.values()
             if x_groupunit.partylink_exists(party_id)
         ]
@@ -1789,8 +1791,8 @@ class AgendaUnit:
 
     def get_groupunits_dict(self) -> dict[str:str]:
         return {
-            group_brand: group_obj.get_dict()
-            for group_brand, group_obj in self._groups.items()
+            group_group_id: group_obj.get_dict()
+            for group_group_id, group_obj in self._groups.items()
             if group_obj._party_mirror == False
         }
 
@@ -1866,7 +1868,7 @@ class AgendaUnit:
         # get party's partys: partyzone
 
         # get partyzone groups
-        party_groups = self.get_party_groupbrands(party_id=party_id)
+        party_groups = self.get_party_group_ids(party_id=party_id)
 
         # set agenda4party by traversing the idea tree and selecting associated groups
         # set root
@@ -1874,7 +1876,7 @@ class AgendaUnit:
         agenda4party._idearoot.clear_kids()
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                group_ancestor.brand in party_groups
+                group_ancestor.group_id in party_groups
                 for group_ancestor in ykx._balancelines.values()
             )
 
@@ -1961,10 +1963,10 @@ class AgendaUnit:
 
     def _meld_groups(self, other_agenda):
         for brx in other_agenda._groups.values():
-            if self.get_groupunit(brx.brand) is None:
+            if self.get_groupunit(brx.group_id) is None:
                 self.set_groupunit(y_groupunit=brx)
             else:
-                self.get_groupunit(brx.brand).meld(brx)
+                self.get_groupunit(brx.group_id).meld(brx)
 
     def _meld_beliefs(self, other_agenda):
         for hx in other_agenda._idearoot._beliefunits.values():
@@ -2034,15 +2036,15 @@ class AgendaUnit:
 
     def _set_assignment_groups(self, agenda_x):
         revelant_groups = get_partys_relevant_groups(self._groups, agenda_x._partys)
-        for group_brand, group_partys in revelant_groups.items():
-            if agenda_x._groups.get(group_brand) is None:
-                group_x = groupunit_shop(brand=group_brand)
+        for group_group_id, group_partys in revelant_groups.items():
+            if agenda_x._groups.get(group_group_id) is None:
+                group_x = groupunit_shop(group_id=group_group_id)
                 for party_id in group_partys:
                     group_x.set_partylink(partylink_shop(party_id=party_id))
                 agenda_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
-        self, agenda_x, assignor_person_id: GroupBrand
+        self, agenda_x, assignor_person_id: GroupID
     ) -> dict[RoadUnit:int]:
         assignor_groups = get_party_relevant_groups(
             agenda_x._groups, assignor_person_id
@@ -2311,24 +2313,24 @@ def get_intersection_of_partys(
 
 
 def get_partys_relevant_groups(
-    groups_x: dict[GroupBrand:GroupUnit], partys_x: dict[PartyID:PartyUnit]
-) -> dict[GroupBrand:{PartyID: -1}]:
+    groups_x: dict[GroupID:GroupUnit], partys_x: dict[PartyID:PartyUnit]
+) -> dict[GroupID:{PartyID: -1}]:
     relevant_groups = {}
     for party_id_x in partys_x:
         for group_x in groups_x.values():
             if group_x._partys.get(party_id_x) != None:
-                if relevant_groups.get(group_x.brand) is None:
-                    relevant_groups[group_x.brand] = {}
-                relevant_groups.get(group_x.brand)[party_id_x] = -1
+                if relevant_groups.get(group_x.group_id) is None:
+                    relevant_groups[group_x.group_id] = {}
+                relevant_groups.get(group_x.group_id)[party_id_x] = -1
 
     return relevant_groups
 
 
 def get_party_relevant_groups(
-    groups_x: dict[GroupBrand:GroupUnit], party_id_x: PartyID
-) -> dict[GroupBrand:-1]:
+    groups_x: dict[GroupID:GroupUnit], party_id_x: PartyID
+) -> dict[GroupID:-1]:
     return {
-        group_x.brand: -1
+        group_x.group_id: -1
         for group_x in groups_x.values()
         if group_x._partys.get(party_id_x) != None
     }
@@ -2360,18 +2362,20 @@ def set_gap_partyunits(
 def set_gap_groupunits(
     gap_agendaunit: AgendaUnit, melder: AgendaUnit, melded: AgendaUnit
 ) -> dict[PartyID:PartyUnit]:
-    for melded_brand, melded_groupunit in melded._groups.items():
+    for melded_group_id, melded_groupunit in melded._groups.items():
         if melded_groupunit._party_mirror == False:
-            if melder.get_groupunit(melded_brand) is None:
+            if melder.get_groupunit(melded_group_id) is None:
                 gap_agendaunit.set_groupunit(melded_groupunit)
             else:
-                melder_groupunit = melder.get_groupunit(melded_brand)
+                melder_groupunit = melder.get_groupunit(melded_group_id)
                 for (
                     melded_party_id,
                     melded_partylink,
                 ) in melded_groupunit._partys.items():
                     if melder_groupunit.partylink_exists(melded_party_id) == False:
-                        if gap_agendaunit.get_groupunit(melded_brand) is None:
-                            gap_agendaunit.set_groupunit(groupunit_shop(melded_brand))
-                        x_groupunit = gap_agendaunit.get_groupunit(melded_brand)
+                        if gap_agendaunit.get_groupunit(melded_group_id) is None:
+                            gap_agendaunit.set_groupunit(
+                                groupunit_shop(melded_group_id)
+                            )
+                        x_groupunit = gap_agendaunit.get_groupunit(melded_group_id)
                         x_groupunit.set_partylink(melded_partylink)

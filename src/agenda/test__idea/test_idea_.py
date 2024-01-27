@@ -1,5 +1,5 @@
 from src.agenda.idea import IdeaUnit, ideaunit_shop, get_obj_from_idea_dict
-from src.agenda.group import GroupBrand, balancelink_shop, balanceheir_shop
+from src.agenda.group import GroupID, balancelink_shop, balanceheir_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
     reasonheir_shop,
@@ -154,21 +154,21 @@ def test_IdeaUnit_balancelinks_exist():
     biker_creditor_weight = 12
     biker_debtor_weight = 15
     biker_link = balancelink_shop(
-        brand=GroupBrand("bikers2"),
+        group_id=GroupID("bikers2"),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
-    swimmer_brand = GroupBrand("swimmers")
+    swimmer_group_id = GroupID("swimmers")
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balancelink_shop(
-        brand=swimmer_brand,
+        group_id=swimmer_group_id,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
+    group_links = {swimmer_link.group_id: swimmer_link, biker_link.group_id: biker_link}
 
     # WHEN
     sport_text = "sport"
@@ -184,22 +184,22 @@ def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues
     biker_debtor_weight = 15
     biker_text = "bikers2"
     biker_link = balanceheir_shop(
-        brand=GroupBrand(biker_text),
+        group_id=GroupID(biker_text),
         creditor_weight=biker_creditor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
     swimmer_text = "swimmers"
-    swimmer_brand = GroupBrand(swimmer_text)
+    swimmer_group_id = GroupID(swimmer_text)
     swimmer_creditor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balanceheir_shop(
-        brand=swimmer_brand,
+        group_id=swimmer_group_id,
         creditor_weight=swimmer_creditor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
-    group_links = {swimmer_link.brand: swimmer_link, biker_link.brand: biker_link}
+    group_links = {swimmer_link.group_id: swimmer_link, biker_link.group_id: biker_link}
 
     # WHEN
     sport_text = "sport"
@@ -412,35 +412,35 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
             base=states_road, premises={usa_premise.need: usa_premise}, _status=False
         ),
     }
-    biker_brand = GroupBrand("bikers")
+    biker_group_id = GroupID("bikers")
     biker_creditor_weight = 3.0
     biker_debtor_weight = 7.0
     biker_link = balancelink_shop(
-        biker_brand, biker_creditor_weight, biker_debtor_weight
+        biker_group_id, biker_creditor_weight, biker_debtor_weight
     )
-    flyer_brand = GroupBrand("flyers")
+    flyer_group_id = GroupID("flyers")
     flyer_creditor_weight = 6.0
     flyer_debtor_weight = 9.0
     flyer_link = balancelink_shop(
-        brand=flyer_brand,
+        group_id=flyer_group_id,
         creditor_weight=flyer_creditor_weight,
         debtor_weight=flyer_debtor_weight,
     )
     biker_and_flyer_balancelinks = {
-        biker_link.brand: biker_link,
-        flyer_link.brand: flyer_link,
+        biker_link.group_id: biker_link,
+        flyer_link.group_id: flyer_link,
     }
     biker_get_dict = {
-        "brand": biker_link.brand,
+        "group_id": biker_link.group_id,
         "creditor_weight": biker_link.creditor_weight,
         "debtor_weight": biker_link.debtor_weight,
     }
     flyer_get_dict = {
-        "brand": flyer_link.brand,
+        "group_id": flyer_link.group_id,
         "creditor_weight": flyer_link.creditor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_balancelinks = {biker_brand: biker_get_dict, flyer_brand: flyer_get_dict}
+    x1_balancelinks = {biker_group_id: biker_get_dict, flyer_group_id: flyer_get_dict}
 
     work_text = "work"
     work_road = create_road(root_label(), work_text)
@@ -532,7 +532,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     work_idea.set_balancelink(balancelink_shop(yao_text))
 
     x_assignedunit = work_idea._assignedunit
-    x_assignedunit.set_suffgroup(brand=yao_text)
+    x_assignedunit.set_suffgroup(group_id=yao_text)
 
     x_originunit = work_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
@@ -805,7 +805,7 @@ def test_IdeaUnit_set_assignedheir_CorrectlySetsAttr():
     swim_text = "swimmers"
     sport_text = "sports"
     sport_idea = ideaunit_shop(_label=sport_text)
-    sport_idea._assignedunit.set_suffgroup(brand=swim_text)
+    sport_idea._assignedunit.set_suffgroup(group_id=swim_text)
     assert sport_idea._assignedheir is None
 
     # WHEN
@@ -814,7 +814,7 @@ def test_IdeaUnit_set_assignedheir_CorrectlySetsAttr():
     # THEN
     assert sport_idea._assignedheir != None
     swim_assigned_unit = assigned_unit_shop()
-    swim_assigned_unit.set_suffgroup(brand=swim_text)
+    swim_assigned_unit.set_suffgroup(group_id=swim_text)
     swim_assigned_heir = assigned_heir_shop()
     swim_assigned_heir.set_suffgroups(
         assignunit=swim_assigned_unit, parent_assignheir=None, agenda_groups=None

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.agenda.group import GroupUnit, GroupBrand
+from src.agenda.group import GroupUnit, GroupID
 from src.agenda.party import PartyID
 
 
@@ -9,33 +9,33 @@ class InvalidAssignHeirPopulateException(Exception):
 
 @dataclass
 class AssignedUnit:
-    _suffgroups: dict[GroupBrand:GroupBrand]
+    _suffgroups: dict[GroupID:GroupID]
 
     def get_dict(self) -> dict[str:str]:
         _suffgroups = {
-            x_groupbrand: x_groupbrand  # premise.get_dict()
-            for x_groupbrand, _suffgroup in self._suffgroups.items()
+            x_group_id: x_group_id  # premise.get_dict()
+            for x_group_id, _suffgroup in self._suffgroups.items()
         }
         return {"_suffgroups": _suffgroups}
 
-    def set_suffgroup(self, brand: GroupBrand):
-        self._suffgroups[brand] = -1
+    def set_suffgroup(self, group_id: GroupID):
+        self._suffgroups[group_id] = -1
 
-    def del_suffgroup(self, brand: GroupBrand):
-        self._suffgroups.pop(brand)
+    def del_suffgroup(self, group_id: GroupID):
+        self._suffgroups.pop(group_id)
 
-    def get_suffgroup(self, brand: GroupBrand) -> GroupBrand:
-        return self._suffgroups.get(brand)
+    def get_suffgroup(self, group_id: GroupID) -> GroupID:
+        return self._suffgroups.get(group_id)
 
 
-def assigned_unit_shop(_suffgroups: dict[GroupBrand:GroupBrand] = None) -> AssignedUnit:
+def assigned_unit_shop(_suffgroups: dict[GroupID:GroupID] = None) -> AssignedUnit:
     if _suffgroups is None:
         _suffgroups = {}
 
     return AssignedUnit(_suffgroups=_suffgroups)
 
 
-def create_assignedunit(suffgroup: GroupBrand):
+def create_assignedunit(suffgroup: GroupID):
     x_assignedunit = assigned_unit_shop()
     x_assignedunit.set_suffgroup(suffgroup)
     return x_assignedunit
@@ -43,26 +43,26 @@ def create_assignedunit(suffgroup: GroupBrand):
 
 @dataclass
 class AssignedHeir:
-    _suffgroups: dict[GroupBrand:GroupBrand]
+    _suffgroups: dict[GroupID:GroupID]
     _agent_id_assigned: bool
 
     def _get_all_partys(
         self,
-        agenda_groups: dict[GroupBrand:GroupUnit],
-        groupbrand_dict: dict[GroupBrand:],
-    ) -> dict[GroupBrand:GroupUnit]:
+        agenda_groups: dict[GroupID:GroupUnit],
+        group_id_dict: dict[GroupID:],
+    ) -> dict[GroupID:GroupUnit]:
         dict_x = {}
-        for groupbrand_x in groupbrand_dict:
-            dict_x |= agenda_groups.get(groupbrand_x)._partys
+        for group_id_x in group_id_dict:
+            dict_x |= agenda_groups.get(group_id_x)._partys
         return dict_x
 
     def _get_all_suff_partys(
-        self, agenda_groups: dict[GroupBrand:GroupUnit]
-    ) -> dict[GroupBrand:GroupUnit]:
+        self, agenda_groups: dict[GroupID:GroupUnit]
+    ) -> dict[GroupID:GroupUnit]:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
     def set_agent_id_assigned(
-        self, agenda_groups: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyID
+        self, agenda_groups: dict[GroupID:GroupUnit], agenda_agent_id: PartyID
     ):
         self._agent_id_assigned = False
         if self._suffgroups == {}:
@@ -76,7 +76,7 @@ class AssignedHeir:
         self,
         parent_assignheir,
         assignunit: AssignedUnit,
-        agenda_groups: dict[GroupBrand:GroupUnit],
+        agenda_groups: dict[GroupID:GroupUnit],
     ):
         dict_x = {}
         if parent_assignheir is None or parent_assignheir._suffgroups == {}:
@@ -91,12 +91,12 @@ class AssignedHeir:
             # get all_partys of parent assignedheir groups
             all_parent_assignedheir_partys = self._get_all_partys(
                 agenda_groups=agenda_groups,
-                groupbrand_dict=parent_assignheir._suffgroups,
+                group_id_dict=parent_assignheir._suffgroups,
             )
             # get all_partys of assignedunit groups
             all_assignedunit_partys = self._get_all_partys(
                 agenda_groups=agenda_groups,
-                groupbrand_dict=assignunit._suffgroups,
+                group_id_dict=assignunit._suffgroups,
             )
             if not set(all_assignedunit_partys).issubset(
                 set(all_parent_assignedheir_partys)
@@ -111,14 +111,14 @@ class AssignedHeir:
                 dict_x[suffgroup] = -1
         self._suffgroups = dict_x
 
-    def group_in(self, groupbrands: dict[GroupBrand:-1]):
+    def group_in(self, group_ids: dict[GroupID:-1]):
         return self._suffgroups == {} or any(
-            self._suffgroups.get(gn_x) != None for gn_x in groupbrands
+            self._suffgroups.get(gn_x) != None for gn_x in group_ids
         )
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupBrand:GroupBrand] = None, _agent_id_assigned: bool = None
+    _suffgroups: dict[GroupID:GroupID] = None, _agent_id_assigned: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}
@@ -141,7 +141,7 @@ def assigned_heir_shop(
 
 def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
     assigned_unit_x = assigned_unit_shop()
-    for suffgroup_brand in assignedunit_dict.get("_suffgroups"):
-        assigned_unit_x.set_suffgroup(brand=suffgroup_brand)
+    for suffgroup_group_id in assignedunit_dict.get("_suffgroups"):
+        assigned_unit_x.set_suffgroup(group_id=suffgroup_group_id)
 
     return assigned_unit_x

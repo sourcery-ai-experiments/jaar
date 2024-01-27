@@ -471,18 +471,20 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # _balancelink: dict = None,
     sue_agenda._idearoot._kids[work_text]._balancelinks = {
-        "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
+        "fun": balancelink_shop(group_id="fun", creditor_weight=1, debtor_weight=7)
     }
     _balancelinks = sue_agenda._idearoot._kids[work_text]._balancelinks
     assert _balancelinks == {
-        "fun": balancelink_shop(brand="fun", creditor_weight=1, debtor_weight=7)
+        "fun": balancelink_shop(group_id="fun", creditor_weight=1, debtor_weight=7)
     }
     sue_agenda.edit_idea_attr(
         road=work_road,
-        balancelink=balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8),
+        balancelink=balancelink_shop(
+            group_id="fun", creditor_weight=4, debtor_weight=8
+        ),
     )
     assert sue_agenda._idearoot._kids[work_text]._balancelinks == {
-        "fun": balancelink_shop(brand="fun", creditor_weight=4, debtor_weight=8)
+        "fun": balancelink_shop(group_id="fun", creditor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,

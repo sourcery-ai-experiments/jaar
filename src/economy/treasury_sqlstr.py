@@ -923,7 +923,7 @@ def get_groupunit_catalog_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS groupunit_catalog (
   agent_id VARCHAR(255) NOT NULL
-, groupunit_brand VARCHAR(1000) NOT NULL
+, groupunit_group_id VARCHAR(1000) NOT NULL
 , partylinks_set_by_economy_road VARCHAR(1000) NULL
 )
 ;
@@ -945,7 +945,7 @@ def get_groupunit_catalog_table_count(db_conn: Connection, agent_id: str) -> str
 @dataclass
 class GroupUnitCatalog:
     agent_id: str
-    groupunit_brand: str
+    groupunit_group_id: str
     partylinks_set_by_economy_road: str
 
 
@@ -955,12 +955,12 @@ def get_groupunit_catalog_table_insert_sqlstr(
     return f"""
 INSERT INTO groupunit_catalog (
   agent_id
-, groupunit_brand
+, groupunit_group_id
 , partylinks_set_by_economy_road
 )
 VALUES (
   '{groupunit_catalog.agent_id}'
-, '{groupunit_catalog.groupunit_brand}'
+, '{groupunit_catalog.groupunit_group_id}'
 , '{groupunit_catalog.partylinks_set_by_economy_road}'
 )
 ;
@@ -971,7 +971,7 @@ def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog
     sqlstr = """
 SELECT 
   agent_id
-, groupunit_brand
+, groupunit_group_id
 , partylinks_set_by_economy_road
 FROM groupunit_catalog
 ;
@@ -982,11 +982,11 @@ FROM groupunit_catalog
     for row in results.fetchall():
         groupunit_catalog_x = GroupUnitCatalog(
             agent_id=row[0],
-            groupunit_brand=row[1],
+            groupunit_group_id=row[1],
             partylinks_set_by_economy_road=row[2],
         )
         dict_key = (
-            f"{groupunit_catalog_x.agent_id} {groupunit_catalog_x.groupunit_brand}"
+            f"{groupunit_catalog_x.agent_id} {groupunit_catalog_x.groupunit_group_id}"
         )
         dict_x[dict_key] = groupunit_catalog_x
     return dict_x

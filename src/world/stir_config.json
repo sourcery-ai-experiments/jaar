@@ -49,7 +49,7 @@
         "DELETE": {},
         "INSERT": {},
         "locator": {
-            "brand": "GroupBrand"
+            "group_id": "GroupID"
         },
         "UPDATE": {}
     },
@@ -59,7 +59,7 @@
         },
         "INSERT": {},
         "locator": {
-            "brand": "GroupBrand",
+            "group_id": "GroupID",
             "party_id": "PartyID"
         },
         "UPDATE": {}

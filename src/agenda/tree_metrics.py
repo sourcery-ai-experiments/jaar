@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import ReasonUnit, RoadUnit
-from src.agenda.group import BalanceLink, GroupBrand
+from src.agenda.group import BalanceLink, GroupID
 from src.tools.python import get_empty_dict_if_none, get_0_if_None
 
 
@@ -9,7 +9,7 @@ class TreeMetrics:
     node_count: int = None
     level_count: dict[int:int] = None
     reason_bases: dict[RoadUnit:int] = None
-    balancelinks_metrics: dict[GroupBrand:BalanceLink] = None
+    balancelinks_metrics: dict[GroupID:BalanceLink] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
@@ -19,7 +19,7 @@ class TreeMetrics:
         self,
         level: int,
         reasons: dict[RoadUnit:ReasonUnit],
-        balancelinks: dict[GroupBrand:BalanceLink],
+        balancelinks: dict[GroupID:BalanceLink],
         uid: int,
         promise: bool,
         idea_road: RoadUnit,
@@ -50,10 +50,10 @@ class TreeMetrics:
             else:
                 self.reason_bases[reason.base] = self.reason_bases[reason.base] + 1
 
-    def evaluate_balancelinks(self, balancelinks: dict[GroupBrand:BalanceLink]):
+    def evaluate_balancelinks(self, balancelinks: dict[GroupID:BalanceLink]):
         if balancelinks != None:
             for balancelink in balancelinks.values():
-                self.balancelinks_metrics[balancelink.brand] = balancelink
+                self.balancelinks_metrics[balancelink.group_id] = balancelink
 
     def evaluate_uid_max(self, uid):
         if uid != None and self.uid_max < uid:
@@ -70,7 +70,7 @@ def treemetrics_shop(
     node_count: int = None,
     level_count: dict[int:int] = None,
     reason_bases: dict[RoadUnit:int] = None,
-    balancelinks_metrics: dict[GroupBrand:BalanceLink] = None,
+    balancelinks_metrics: dict[GroupID:BalanceLink] = None,
     uid_max: int = None,
     uid_dict: dict[int:int] = None,
 ) -> TreeMetrics:

@@ -5,7 +5,7 @@ from src.agenda.reason_assign import (
     assigned_heir_shop,
     create_assignedunit,
 )
-from src.agenda.group import GroupBrand, groupunit_shop
+from src.agenda.group import GroupID, groupunit_shop
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
@@ -46,10 +46,10 @@ def test_assigned_unit_shop_ifEmptyReturnsCorrectWithCorrectAttributes():
 
 def test_create_assignedunit_ReturnsCorrectObj():
     # GIVEN
-    swim_groupbrand = GroupBrand("swimmers")
+    swim_group_id = GroupID("swimmers")
 
     # WHEN
-    swim_assignedunit = create_assignedunit(swim_groupbrand)
+    swim_assignedunit = create_assignedunit(swim_group_id)
 
     # THEN
     assert swim_assignedunit
@@ -58,8 +58,8 @@ def test_create_assignedunit_ReturnsCorrectObj():
 
 def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
     # GIVEN
-    bob_groupbrand = GroupBrand("Bob")
-    _suffgroups_x = {bob_groupbrand: bob_groupbrand}
+    bob_group_id = GroupID("Bob")
+    _suffgroups_x = {bob_group_id: bob_group_id}
     assigned_x = assigned_unit_shop(_suffgroups=_suffgroups_x)
 
     # WHEN
@@ -67,7 +67,7 @@ def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingleSuffGroup():
 
     # THEN
     assert obj_dict != None
-    example_dict = {"_suffgroups": {bob_groupbrand: bob_groupbrand}}
+    example_dict = {"_suffgroups": {bob_group_id: bob_group_id}}
     print(f"{example_dict=}")
     assert obj_dict == example_dict
 
@@ -79,7 +79,7 @@ def test_AssignedUnit_set_suffgroup_CorrectlySets_suffgroups_v1():
 
     # WHEN
     jim_text = "jim"
-    assigned_unit_x.set_suffgroup(brand=jim_text)
+    assigned_unit_x.set_suffgroup(group_id=jim_text)
 
     # THEN
     assert len(assigned_unit_x._suffgroups) == 1
@@ -90,12 +90,12 @@ def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
     assigned_unit_x = assigned_unit_shop(_suffgroups={})
     jim_text = "jim"
     sue_text = "sue"
-    assigned_unit_x.set_suffgroup(brand=jim_text)
-    assigned_unit_x.set_suffgroup(brand=sue_text)
+    assigned_unit_x.set_suffgroup(group_id=jim_text)
+    assigned_unit_x.set_suffgroup(group_id=sue_text)
     assert len(assigned_unit_x._suffgroups) == 2
 
     # WHEN
-    assigned_unit_x.del_suffgroup(brand=sue_text)
+    assigned_unit_x.del_suffgroup(group_id=sue_text)
 
     # THEN
     assert len(assigned_unit_x._suffgroups) == 1
@@ -162,7 +162,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     x_agenda.add_partyunit(party_id=bob_text)
 
     swim_text = ",swim"
-    swim_group = groupunit_shop(brand=swim_text)
+    swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim_group)
@@ -254,7 +254,7 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     x_agenda.add_partyunit(party_id=bob_text)
 
     swim_text = ",swim"
-    swim_group = groupunit_shop(brand=swim_text)
+    swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim_group)
@@ -285,7 +285,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     x_agenda.add_partyunit(party_id=bob_text)
 
     swim_text = ",swim"
-    swim_group = groupunit_shop(brand=swim_text)
+    swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim_group)
@@ -327,8 +327,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirIsNon
     kent_text = "kent"
     swim_text = ",swim"
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(brand=kent_text)
-    assigned_unit_x.set_suffgroup(brand=swim_text)
+    assigned_unit_x.set_suffgroup(group_id=kent_text)
+    assigned_unit_x.set_suffgroup(group_id=swim_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -345,8 +345,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitNotEmpty_ParentAssignedHeirEmpty
     kent_text = "kent"
     swim_text = ",swim"
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(brand=kent_text)
-    assigned_unit_x.set_suffgroup(brand=swim_text)
+    assigned_unit_x.set_suffgroup(group_id=kent_text)
+    assigned_unit_x.set_suffgroup(group_id=swim_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -364,8 +364,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirNotEmpty
     kent_text = "kent"
     swim_text = ",swim"
     assigned_unit_swim = assigned_unit_shop()
-    assigned_unit_swim.set_suffgroup(brand=kent_text)
-    assigned_unit_swim.set_suffgroup(brand=swim_text)
+    assigned_unit_swim.set_suffgroup(group_id=kent_text)
+    assigned_unit_swim.set_suffgroup(group_id=swim_text)
     empty_assigned_heir = assigned_heir_shop()
 
     parent_assigned_heir = assigned_heir_shop()
@@ -392,8 +392,8 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEqualParentAssignedHeir_NonEmpty
     kent_text = "kent"
     swim_text = ",swim"
     assigned_unit_swim = assigned_unit_shop()
-    assigned_unit_swim.set_suffgroup(brand=kent_text)
-    assigned_unit_swim.set_suffgroup(brand=swim_text)
+    assigned_unit_swim.set_suffgroup(group_id=kent_text)
+    assigned_unit_swim.set_suffgroup(group_id=swim_text)
     empty_assigned_heir = assigned_heir_shop()
 
     parent_assigned_heir = assigned_heir_shop()
@@ -425,27 +425,27 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     x_agenda.add_partyunit(party_id=tom_text)
 
     swim2_text = ",swim2"
-    swim2_group = groupunit_shop(brand=swim2_text)
+    swim2_group = groupunit_shop(group_id=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim2_group)
 
     swim3_text = ",swim3"
-    swim3_group = groupunit_shop(brand=swim3_text)
+    swim3_group = groupunit_shop(group_id=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=tom_text))
     x_agenda.set_groupunit(y_groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
-    parent_assigned_unit.set_suffgroup(brand=swim3_text)
+    parent_assigned_unit.set_suffgroup(group_id=swim3_text)
     parent_assigned_heir = assigned_heir_shop()
     parent_assigned_heir.set_suffgroups(
         parent_assignheir=None, assignunit=parent_assigned_unit, agenda_groups=None
     )
 
     assigned_unit_swim2 = assigned_unit_shop()
-    assigned_unit_swim2.set_suffgroup(brand=swim2_text)
+    assigned_unit_swim2.set_suffgroup(group_id=swim2_text)
 
     # WHEN
     assigned_heir_x = assigned_heir_shop()
@@ -472,27 +472,27 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     x_agenda.add_partyunit(party_id=tom_text)
 
     swim2_text = ",swim2"
-    swim2_group = groupunit_shop(brand=swim2_text)
+    swim2_group = groupunit_shop(group_id=swim2_text)
     swim2_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim2_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     x_agenda.set_groupunit(y_groupunit=swim2_group)
 
     swim3_text = ",swim3"
-    swim3_group = groupunit_shop(brand=swim3_text)
+    swim3_group = groupunit_shop(group_id=swim3_text)
     swim3_group.set_partylink(partylink=partylink_shop(party_id=jim_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     swim3_group.set_partylink(partylink=partylink_shop(party_id=tom_text))
     x_agenda.set_groupunit(y_groupunit=swim3_group)
 
     parent_assigned_unit = assigned_unit_shop()
-    parent_assigned_unit.set_suffgroup(brand=swim2_text)
+    parent_assigned_unit.set_suffgroup(group_id=swim2_text)
     parent_assigned_heir = assigned_heir_shop()
     parent_assigned_heir.set_suffgroups(
         parent_assignheir=None, assignunit=parent_assigned_unit, agenda_groups=None
     )
 
     assigned_unit_swim3 = assigned_unit_shop()
-    assigned_unit_swim3.set_suffgroup(brand=swim3_text)
+    assigned_unit_swim3.set_suffgroup(group_id=swim3_text)
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
@@ -533,8 +533,8 @@ def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     swim_dict = {swim_text: -1}
     hike_dict = {hike_text: -1}
     assignedunit_x = assigned_unit_shop()
-    assignedunit_x.set_suffgroup(brand=swim_text)
-    assignedunit_x.set_suffgroup(brand=hike_text)
+    assignedunit_x.set_suffgroup(group_id=swim_text)
+    assignedunit_x.set_suffgroup(group_id=hike_text)
     assignedheir_x = assigned_heir_shop()
     assignedheir_x.set_suffgroups(
         parent_assignheir=None, assignunit=assignedunit_x, agenda_groups=None

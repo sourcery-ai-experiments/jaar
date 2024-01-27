@@ -38,7 +38,7 @@ from src.agenda.group import (
     BalanceHeir,
     BalanceLink,
     balancelinks_get_from_dict,
-    GroupBrand,
+    GroupID,
     BalanceLine,
     balanceline_shop,
     balanceheir_shop,
@@ -88,7 +88,7 @@ class IdeaAttrFilter:
     all_party_credit: bool = None
     all_party_debt: bool = None
     balancelink: BalanceLink = None
-    balancelink_del: GroupBrand = None
+    balancelink_del: GroupID = None
     is_expanded: bool = None
     meld_strategy: str = None
 
@@ -170,7 +170,7 @@ def ideaattrfilter_shop(
     all_party_credit: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
-    balancelink_del: GroupBrand = None,
+    balancelink_del: GroupID = None,
     is_expanded: bool = None,
     meld_strategy: str = None,
 ) -> IdeaAttrFilter:
@@ -219,9 +219,9 @@ class IdeaUnit:
     _kids: dict = None
     _agenda_economy_id: EconomyID = None
     _uid: int = None  # Calculated field?
-    _balancelinks: dict[GroupBrand:BalanceLink] = None
-    _balanceheirs: dict[GroupBrand:BalanceHeir] = None  # Calculated field
-    _balancelines: dict[GroupBrand:BalanceLine] = None  # Calculated field
+    _balancelinks: dict[GroupID:BalanceLink] = None
+    _balanceheirs: dict[GroupID:BalanceHeir] = None  # Calculated field
+    _balancelines: dict[GroupID:BalanceLine] = None  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
@@ -437,7 +437,7 @@ class IdeaUnit:
         self._parent_road = parent_road
 
     def inherit_balanceheirs(
-        self, parent_balanceheirs: dict[GroupBrand:BalanceHeir] = None
+        self, parent_balanceheirs: dict[GroupID:BalanceHeir] = None
     ):
         if parent_balanceheirs is None:
             parent_balanceheirs = {}
@@ -445,44 +445,44 @@ class IdeaUnit:
         self._balanceheirs = {}
         for ib in parent_balanceheirs.values():
             balanceheir = balanceheir_shop(
-                brand=ib.brand,
+                group_id=ib.group_id,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._balanceheirs[balanceheir.brand] = balanceheir
+            self._balanceheirs[balanceheir.group_id] = balanceheir
 
         for ib in self._balancelinks.values():
             balanceheir = balanceheir_shop(
-                brand=ib.brand,
+                group_id=ib.group_id,
                 creditor_weight=ib.creditor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._balanceheirs[balanceheir.brand] = balanceheir
+            self._balanceheirs[balanceheir.group_id] = balanceheir
 
     def set_kidless_balancelines(self):
         # get balancelines from self
         for bh in self._balanceheirs.values():
             x_balanceline = balanceline_shop(
-                brand=bh.brand,
+                group_id=bh.group_id,
                 _agenda_credit=bh._agenda_credit,
                 _agenda_debt=bh._agenda_debt,
             )
-            self._balancelines[x_balanceline.brand] = x_balanceline
+            self._balancelines[x_balanceline.group_id] = x_balanceline
 
-    def set_balancelines(self, child_balancelines: dict[GroupBrand:BalanceLine] = None):
+    def set_balancelines(self, child_balancelines: dict[GroupID:BalanceLine] = None):
         if child_balancelines is None:
             child_balancelines = {}
 
         # get balancelines from child
         for bl in child_balancelines.values():
-            if self._balancelines.get(bl.brand) is None:
-                self._balancelines[bl.brand] = balanceline_shop(
-                    brand=bl.brand,
+            if self._balancelines.get(bl.group_id) is None:
+                self._balancelines[bl.group_id] = balanceline_shop(
+                    group_id=bl.group_id,
                     _agenda_credit=0,
                     _agenda_debt=0,
                 )
 
-            self._balancelines[bl.brand].add_agenda_credit_debt(
+            self._balancelines[bl.group_id].add_agenda_credit_debt(
                 agenda_credit=bl._agenda_credit, agenda_debt=bl._agenda_debt
             )
 
@@ -594,14 +594,14 @@ class IdeaUnit:
 
     def _meld_balancelinks(self, other_idea):
         for bl in other_idea._balancelinks.values():
-            if self._balancelinks.get(bl.brand) != None:
-                self._balancelinks.get(bl.brand).meld(
+            if self._balancelinks.get(bl.group_id) != None:
+                self._balancelinks.get(bl.group_id).meld(
                     other_balancelink=bl,
                     other_meld_strategy=other_idea._meld_strategy,
                     src_meld_strategy=self._meld_strategy,
                 )
             else:
-                self._balancelinks[bl.brand] = bl
+                self._balancelinks[bl.group_id] = bl
 
     def _meld_beliefunits(self, other_idea):
         for hc in other_idea._beliefunits.values():
@@ -735,7 +735,7 @@ class IdeaUnit:
         if idea_attr.balancelink != None:
             self.set_balancelink(balancelink=idea_attr.balancelink)
         if idea_attr.balancelink_del != None:
-            self.del_balancelink(groupbrand=idea_attr.balancelink_del)
+            self.del_balancelink(group_id=idea_attr.balancelink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.promise != None:
@@ -838,13 +838,13 @@ class IdeaUnit:
         self._kids = {}
 
     def set_balancelink(self, balancelink: BalanceLink):
-        self._balancelinks[balancelink.brand] = balancelink
+        self._balancelinks[balancelink.group_id] = balancelink
 
-    def del_balancelink(self, groupbrand: GroupBrand):
+    def del_balancelink(self, group_id: GroupID):
         try:
-            self._balancelinks.pop(groupbrand)
+            self._balancelinks.pop(group_id)
         except KeyError as e:
-            raise (f"Cannot delete balancelink '{groupbrand}'.") from e
+            raise (f"Cannot delete balancelink '{group_id}'.") from e
 
     def set_reasonunit(self, reason: ReasonUnit):
         reason.delimiter = self._road_delimiter
@@ -861,7 +861,7 @@ class IdeaUnit:
     def set_active(
         self,
         tree_traverse_count: int,
-        agenda_groupunits: dict[GroupBrand:GroupUnit] = None,
+        agenda_groupunits: dict[GroupID:GroupUnit] = None,
         agenda_agent_id: PartyID = None,
     ):
         prev_to_now_active = deepcopy(self._active)
@@ -888,7 +888,7 @@ class IdeaUnit:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active(
-        self, agenda_groupunits: dict[GroupBrand:GroupUnit], agenda_agent_id: PartyID
+        self, agenda_groupunits: dict[GroupID:GroupUnit], agenda_agent_id: PartyID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_true()
@@ -1046,7 +1046,7 @@ class IdeaUnit:
     def set_assignedheir(
         self,
         parent_assignheir: AssignedHeir,
-        agenda_groups: dict[GroupBrand:GroupUnit],
+        agenda_groups: dict[GroupID:GroupUnit],
     ):
         self._assignedheir = assigned_heir_shop()
         self._assignedheir.set_suffgroups(
@@ -1058,8 +1058,8 @@ class IdeaUnit:
     def get_assignedunit_dict(self):
         return self._assignedunit.get_dict()
 
-    def assignor_in(self, groupbrands: dict[GroupBrand:-1]):
-        return self._assignedheir.group_in(groupbrands)
+    def assignor_in(self, group_ids: dict[GroupID:-1]):
+        return self._assignedheir.group_in(group_ids)
 
 
 def ideaunit_shop(
@@ -1068,9 +1068,9 @@ def ideaunit_shop(
     _parent_road: RoadUnit = None,
     _kids: dict = None,
     _weight: int = 1,
-    _balancelinks: dict[GroupBrand:BalanceLink] = None,
-    _balanceheirs: dict[GroupBrand:BalanceHeir] = None,  # Calculated field
-    _balancelines: dict[GroupBrand:BalanceLink] = None,  # Calculated field
+    _balancelinks: dict[GroupID:BalanceLink] = None,
+    _balanceheirs: dict[GroupID:BalanceHeir] = None,  # Calculated field
+    _balancelines: dict[GroupID:BalanceLink] = None,  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None,
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,

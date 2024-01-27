@@ -264,7 +264,7 @@ class EconomyUnit:
             for groupunit_x in agendaunit_x._groups.values():
                 groupunit_catalog_x = GroupUnitCatalog(
                     agent_id=agendaunit_x._agent_id,
-                    groupunit_brand=groupunit_x.brand,
+                    groupunit_group_id=groupunit_x.group_id,
                     partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)

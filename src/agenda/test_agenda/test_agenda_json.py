@@ -120,7 +120,7 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     run_text = "runners"
     tom_agenda = agendaunit_shop("Tom")
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(brand=run_text)
+    assigned_unit_x.set_suffgroup(group_id=run_text)
     tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tom_agenda._economy_id)
 
     # WHEN
@@ -142,7 +142,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     morn_road = tom_agenda.make_l1_road(morn_text)
     tom_agenda.add_l1_idea(ideaunit_shop(morn_text))
     assigned_unit_x = assigned_unit_shop()
-    assigned_unit_x.set_suffgroup(brand=run_text)
+    assigned_unit_x.set_suffgroup(group_id=run_text)
     tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=morn_road)
 
     # WHEN
@@ -295,16 +295,16 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     tim_text = "tim"
     yue_agenda.add_partyunit(party_id=tim_text)
     run_text = ",runners"
-    run_group = groupunit_shop(brand=run_text)
+    run_group = groupunit_shop(group_id=run_text)
     run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     run_group.set_partylink(partylink=partylink_shop(party_id=tim_text))
     yue_agenda.set_groupunit(y_groupunit=run_group)
 
     run_assigned_unit = assigned_unit_shop()
-    run_assigned_unit.set_suffgroup(brand=run_text)
+    run_assigned_unit.set_suffgroup(group_id=run_text)
     yue_agenda.edit_idea_attr(yue_agenda._economy_id, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
-    tim_assigned_unit.set_suffgroup(brand=tim_text)
+    tim_assigned_unit.set_suffgroup(group_id=tim_text)
     yue_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))

@@ -5,7 +5,7 @@ from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src.agenda.hreg_time import PremiseUnitHregTime
-from src.agenda.group import BalanceLink, GroupBrand
+from src.agenda.group import BalanceLink, GroupID
 from src.agenda.reason_idea import RoadUnit
 from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
 from ui.pyqt_func import (
@@ -746,20 +746,20 @@ class EditIdeaUnit(qtw0, Ui_Form):
         # print(f"{self.x_idea._balancelinks=}")
         # print(f"{self.x_idea._balanceheirs=}")
         balancelinks_list = list(self.x_idea._balancelinks.values())
-        balancelinks_list.sort(key=lambda x: x.brand, reverse=False)
+        balancelinks_list.sort(key=lambda x: x.group_id, reverse=False)
         balanceheirs_list = list(self.x_idea._balanceheirs.values())
-        balanceheirs_list.sort(key=lambda x: x.brand, reverse=False)
+        balanceheirs_list.sort(key=lambda x: x.group_id, reverse=False)
         # print(f"{balancelinks_list=}")
         # print(f"{balanceheirs_list=}")
 
         for row, balanceheir in enumerate(balanceheirs_list, start=1):
             self.idea2group_table.setRowCount(row)
-            x_text = f"  Heir: {balanceheir.brand}"
+            x_text = f"  Heir: {balanceheir.group_id}"
             for balancelink in balancelinks_list:
-                if balancelink.brand == balanceheir.brand:
-                    x_text = f"{balanceheir.brand}"
+                if balancelink.group_id == balanceheir.group_id:
+                    x_text = f"{balanceheir.group_id}"
             self.idea2group_table.setItem(row - 1, 0, qtw1(x_text))
-            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.brand))
+            self.idea2group_table.setItem(row - 1, 1, qtw1(balanceheir.group_id))
             self.idea2group_table.setItem(
                 row - 1,
                 2,
@@ -773,11 +773,11 @@ class EditIdeaUnit(qtw0, Ui_Form):
         groupunits_pids_list = []
         for groupunit in self.x_agenda._groups.values():
             group_previously_selected = any(
-                groupunit.brand == balancelink.brand
+                groupunit.group_id == balancelink.group_id
                 for balancelink in self.x_idea._balancelinks.values()
             )
             if not group_previously_selected:
-                groupunits_pids_list.append(groupunit.brand)
+                groupunits_pids_list.append(groupunit.group_id)
         groupunits_pids_list.sort(key=lambda x: x.lower(), reverse=False)
 
         self.idea2group_insert_combo.clear()
@@ -787,7 +787,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         bd_pid_new = self.idea2group_insert_combo.currentText()
         if bd_pid_new == "":
             raise PyQtUIException("bd_pid is empty, idea2bd cannot be updated")
-        balancelink_new = BalanceLink(brand=GroupBrand(bd_pid_new), weight=1)
+        balancelink_new = BalanceLink(group_id=GroupID(bd_pid_new), weight=1)
         self.x_agenda.edit_idea_attr(
             road=f"{self.x_idea._parent_road},{self.x_idea._label}",
             balancelink=balancelink_new,

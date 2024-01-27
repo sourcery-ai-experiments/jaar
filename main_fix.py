@@ -379,7 +379,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(groupunit._agenda_debt)}/{agenda_importance_diplay(groupunit._agenda_credit)}",
-                    groupunit.brand,
+                    groupunit.group_id,
                     len(groupunit._partys),
                 ]
                 for groupunit in self.healer_output_agenda._groups.values()

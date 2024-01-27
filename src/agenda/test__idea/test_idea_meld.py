@@ -1,5 +1,5 @@
 from src.agenda.idea import ideaunit_shop, IdeaAttrFilter, IdeaUnit, EconomyID
-from src.agenda.group import BalanceLink, GroupBrand, balancelink_shop
+from src.agenda.group import BalanceLink, GroupID, balancelink_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
     ReasonUnit,
@@ -37,7 +37,7 @@ def custom_set_idea_attr(
     all_party_credit: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
-    balancelink_del: GroupBrand = None,
+    balancelink_del: GroupID = None,
     is_expanded: bool = None,
     promise: bool = None,
     meld_strategy: str = None,
@@ -197,19 +197,19 @@ def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_def
     default_text = "default"
     custom_set_idea_attr(idea=x1_idea, meld_strategy=default_text)
     custom_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=2)
     )
     x2_idea = ideaunit_shop("Rocking")
     custom_set_idea_attr(idea=x2_idea, meld_strategy=default_text)
     custom_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=3)
+        idea=x2_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=3)
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    bl_x = balancelink_shop(brand=br1, creditor_weight=2)
+    bl_x = balancelink_shop(group_id=br1, creditor_weight=2)
     assert x1_idea._balancelinks[br1] == bl_x
 
 
@@ -223,20 +223,20 @@ def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_sum
     custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x1_idea,
-        balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
+        balancelink=balancelink_shop(group_id=br1, creditor_weight=2, debtor_weight=3),
     )
     x2_idea = ideaunit_shop("Rocking")
     custom_set_idea_attr(idea=x2_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
         idea=x2_idea,
-        balancelink=balancelink_shop(brand=br1, creditor_weight=2, debtor_weight=3),
+        balancelink=balancelink_shop(group_id=br1, creditor_weight=2, debtor_weight=3),
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    lu_x = balancelink_shop(brand=br1, creditor_weight=4, debtor_weight=6)
+    lu_x = balancelink_shop(group_id=br1, creditor_weight=4, debtor_weight=6)
     assert x1_idea._balancelinks[br1] == lu_x
 
 
@@ -249,22 +249,22 @@ def test_IdeaUnit_meld_TwoGroupsScenarioWorks_balancelink():
     br1 = "Running"
     custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(brand=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=2)
     )
 
     br2 = "Bears"
     x2_idea = ideaunit_shop("Rocking")
     custom_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     custom_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(brand=br2, creditor_weight=2)
+        idea=x2_idea, balancelink=balancelink_shop(group_id=br2, creditor_weight=2)
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    lu_x1 = balancelink_shop(brand=br1, creditor_weight=2)
-    lu_x2 = balancelink_shop(brand=br2, creditor_weight=2)
+    lu_x1 = balancelink_shop(group_id=br1, creditor_weight=2)
+    lu_x2 = balancelink_shop(group_id=br2, creditor_weight=2)
     assert x1_idea._balancelinks[br1] == lu_x1
     assert x1_idea._balancelinks[br2] == lu_x2
 

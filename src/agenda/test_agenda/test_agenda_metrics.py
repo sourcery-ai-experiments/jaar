@@ -2,7 +2,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
 )
 from src.agenda.party import partyunit_shop
-from src.agenda.group import GroupBrand, balancelink_shop
+from src.agenda.group import GroupID, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
 
 
@@ -52,13 +52,13 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     yue_agenda.set_partyunit(partyunit=au_carm)
     yue_agenda.set_partyunit(partyunit=au_patr)
     yue_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand(rico_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
     )
     yue_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand(carm_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
     )
     yue_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(brand=GroupBrand(patr_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
     )
 
     # WHEN
@@ -69,12 +69,12 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     balancelink_rico = partys_metrics[rico_text]
     balancelink_carm = partys_metrics[carm_text]
     balancelink_patr = partys_metrics[patr_text]
-    assert balancelink_rico.brand != None
-    assert balancelink_carm.brand != None
-    assert balancelink_patr.brand != None
-    assert balancelink_rico.brand == rico_text
-    assert balancelink_carm.brand == carm_text
-    assert balancelink_patr.brand == patr_text
+    assert balancelink_rico.group_id != None
+    assert balancelink_carm.group_id != None
+    assert balancelink_patr.group_id != None
+    assert balancelink_rico.group_id == rico_text
+    assert balancelink_carm.group_id == carm_text
+    assert balancelink_patr.group_id == patr_text
     all_groups = yue_agenda._groups
     groupunit_rico = all_groups[rico_text]
     groupunit_carm = all_groups[carm_text]

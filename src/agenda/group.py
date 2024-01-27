@@ -19,13 +19,13 @@ class InvalidGroupException(Exception):
     pass
 
 
-class GroupBrand(str):  # Created to help track the concept
+class GroupID(str):  # Created to help track the concept
     pass
 
 
 @dataclass
 class GroupCore:
-    brand: GroupBrand = None
+    group_id: GroupID = None
 
 
 @dataclass
@@ -39,13 +39,13 @@ class GroupUnit(GroupCore):
     _partylinks_set_by_economy_road: RoadUnit = None
     _road_delimiter: str = None
 
-    def set_brand(self, brand: GroupBrand = None):
-        if brand != None:
+    def set_group_id(self, group_id: GroupID = None):
+        if group_id != None:
             if self._party_mirror:
-                self.brand = validate_roadnode(brand, self._road_delimiter)
+                self.group_id = validate_roadnode(group_id, self._road_delimiter)
             else:
-                self.brand = validate_roadnode(
-                    brand, self._road_delimiter, not_roadnode_required=True
+                self.group_id = validate_roadnode(
+                    group_id, self._road_delimiter, not_roadnode_required=True
                 )
 
     def set_attr(self, _partylinks_set_by_economy_road: RoadUnit):
@@ -53,7 +53,7 @@ class GroupUnit(GroupCore):
             self._partylinks_set_by_economy_road = _partylinks_set_by_economy_road
 
     def get_dict(self) -> dict[str:str]:
-        x_dict = {"brand": self.brand}
+        x_dict = {"group_id": self.group_id}
         if self._party_mirror:
             x_dict["_party_mirror"] = self._party_mirror
         if self._partys not in [{}, None]:
@@ -146,38 +146,38 @@ class GroupUnit(GroupCore):
                 self._partys[oba.party_id].meld(oba)
 
     def _meld_attributes_that_must_be_equal(self, other_group):
-        xl = [("brand", self.brand, other_group.brand)]
+        xl = [("group_id", self.group_id, other_group.group_id)]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidGroupException(
-                    f"Meld fail GroupUnit {self.brand} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
+                    f"Meld fail GroupUnit {self.group_id} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
                 )
 
-        # if self.brand != other_group.brand:
+        # if self.group_id != other_group.group_id:
         #     raise InvalidGroupException(
         #             f"Meld fail idea={self._parent_road},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._parent_road},{other_idea._label} {attrs[0]}:{attrs[2]}"
         #     )
 
 
 # class GroupUnitsshop:
-def get_from_json(groupunits_json: str) -> dict[GroupBrand:GroupUnit]:
+def get_from_json(groupunits_json: str) -> dict[GroupID:GroupUnit]:
     groupunits_dict = x_get_dict(json_x=groupunits_json)
     return get_from_dict(x_dict=groupunits_dict)
 
 
-def get_from_dict(x_dict: dict) -> dict[GroupBrand:GroupUnit]:
+def get_from_dict(x_dict: dict) -> dict[GroupID:GroupUnit]:
     groupunits = {}
     for groupunit_dict in x_dict.values():
         x_group = groupunit_shop(
-            brand=groupunit_dict["brand"],
+            group_id=groupunit_dict["group_id"],
             _party_mirror=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirror"),
             _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
             _partylinks_set_by_economy_road=get_obj_from_groupunit_dict(
                 groupunit_dict, "_partylinks_set_by_economy_road"
             ),
         )
-        groupunits[x_group.brand] = x_group
+        groupunits[x_group.group_id] = x_group
     return groupunits
 
 
@@ -191,7 +191,7 @@ def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
 
 
 def groupunit_shop(
-    brand: GroupBrand,
+    group_id: GroupID,
     _party_mirror: bool = None,
     _partys: dict[PartyID:PartyLink] = None,
     _partylinks_set_by_economy_road: RoadUnit = None,
@@ -214,7 +214,7 @@ def groupunit_shop(
         _partylinks_set_by_economy_road=_partylinks_set_by_economy_road,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-    x_groupunit.set_brand(brand=brand)
+    x_groupunit.set_group_id(group_id=group_id)
     return x_groupunit
 
 
@@ -225,7 +225,7 @@ class BalanceLink(GroupCore):
 
     def get_dict(self) -> dict[str:str]:
         return {
-            "brand": self.brand,
+            "group_id": self.group_id,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
         }
@@ -251,30 +251,30 @@ class BalanceLink(GroupCore):
 
 
 # class BalanceLinksshop:
-def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupBrand, BalanceLink]:
+def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupID, BalanceLink]:
     balancelinks_dict = x_get_dict(json_x=balancelinks_json)
     return balancelinks_get_from_dict(x_dict=balancelinks_dict)
 
 
-def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupBrand, BalanceLink]:
+def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupID, BalanceLink]:
     balancelinks = {}
     for balancelinks_dict in x_dict.values():
         x_group = balancelink_shop(
-            brand=balancelinks_dict["brand"],
+            group_id=balancelinks_dict["group_id"],
             creditor_weight=balancelinks_dict["creditor_weight"],
             debtor_weight=balancelinks_dict["debtor_weight"],
         )
-        balancelinks[x_group.brand] = x_group
+        balancelinks[x_group.group_id] = x_group
     return balancelinks
 
 
 def balancelink_shop(
-    brand: GroupBrand, creditor_weight: float = None, debtor_weight: float = None
+    group_id: GroupID, creditor_weight: float = None, debtor_weight: float = None
 ) -> BalanceLink:
     creditor_weight = get_1_if_None(creditor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
     return BalanceLink(
-        brand=brand, creditor_weight=creditor_weight, debtor_weight=debtor_weight
+        group_id=group_id, creditor_weight=creditor_weight, debtor_weight=debtor_weight
     )
 
 
@@ -300,7 +300,7 @@ class BalanceHeir(GroupCore):
 
 
 def balanceheir_shop(
-    brand: GroupBrand,
+    group_id: GroupID,
     creditor_weight: float = None,
     debtor_weight: float = None,
     _agenda_credit: float = None,
@@ -309,7 +309,7 @@ def balanceheir_shop(
     creditor_weight = get_1_if_None(creditor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
     return BalanceHeir(
-        brand=brand,
+        group_id=group_id,
         creditor_weight=creditor_weight,
         debtor_weight=debtor_weight,
         _agenda_credit=_agenda_credit,
@@ -334,7 +334,7 @@ class BalanceLine(GroupCore):
             self._agenda_debt = 0
 
 
-def balanceline_shop(brand: GroupBrand, _agenda_credit: float, _agenda_debt: float):
+def balanceline_shop(group_id: GroupID, _agenda_credit: float, _agenda_debt: float):
     return BalanceLine(
-        brand=brand, _agenda_credit=_agenda_credit, _agenda_debt=_agenda_debt
+        group_id=group_id, _agenda_credit=_agenda_credit, _agenda_debt=_agenda_debt
     )

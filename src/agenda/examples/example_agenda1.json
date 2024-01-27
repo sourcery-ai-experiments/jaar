@@ -56,7 +56,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",ACME DevOps"
+            "group_id": ",ACME DevOps"
         },
         ",ACME General": {
             "_partys": {
@@ -82,7 +82,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",ACME General"
+            "group_id": ",ACME General"
         },
         ",Climate Change": {
             "_partys": {
@@ -103,7 +103,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",Climate Change"
+            "group_id": ",Climate Change"
         },
         ",Everyone": {
             "_partys": {
@@ -219,7 +219,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",Everyone"
+            "group_id": ",Everyone"
         },
         ",Family": {
             "_partys": {
@@ -240,7 +240,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",Family"
+            "group_id": ",Family"
         },
         ",Friends": {
             "_partys": {
@@ -261,7 +261,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",Friends"
+            "group_id": ",Friends"
         },
         ",hurt by us dollar": {
             "_partys": {
@@ -272,7 +272,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",hurt by us dollar"
+            "group_id": ",hurt by us dollar"
         },
         ",likes US DOLLAR": {
             "_partys": {
@@ -298,7 +298,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",likes US DOLLAR"
+            "group_id": ",likes US DOLLAR"
         },
         ",OceanVista Apt": {
             "_partys": {
@@ -319,7 +319,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",OceanVista Apt"
+            "group_id": ",OceanVista Apt"
         },
         ",People who identify by UTEP": {
             "_partys": {
@@ -330,7 +330,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",People who identify by UTEP"
+            "group_id": ",People who identify by UTEP"
         },
         ",Philosophy": {
             "_partys": {
@@ -356,7 +356,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",Philosophy"
+            "group_id": ",Philosophy"
         },
         ",SHOW ME2": {
             "_partys": {
@@ -367,7 +367,7 @@
                 }
             },
             "_party_mirror": false,
-            "brand": ",SHOW ME2"
+            "group_id": ",SHOW ME2"
         }
     },
     "_idearoot": {
@@ -1612,7 +1612,7 @@
                     "call high school friend": {
                         "_balancelinks": {
                             "Perrison": {
-                                "brand": "Perrison",
+                                "group_id": "Perrison",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1.0
                             }
@@ -1675,7 +1675,7 @@
                             "check cat water": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -1757,7 +1757,7 @@
                             "clean baby seats": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -1807,7 +1807,7 @@
                             "clean bathroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -1846,7 +1846,7 @@
                             "clean cat poo": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -1896,7 +1896,7 @@
                             "clean humidifiers": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -1946,7 +1946,7 @@
                             "clean sheets couch blankets": {
                                 "_balancelinks": {
                                     "Perrison": {
-                                        "brand": "Perrison",
+                                        "group_id": "Perrison",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2007,7 +2007,7 @@
                             "clean table": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2057,7 +2057,7 @@
                             "deep clean play mat": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2118,7 +2118,7 @@
                             "empty roomba": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2168,7 +2168,7 @@
                             "empty roomba Friday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2218,7 +2218,7 @@
                             "laundry monday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2268,7 +2268,7 @@
                             "laundry saturday": {
                                 "_balancelinks": {
                                     "Travis Fox": {
-                                        "brand": "Travis Fox",
+                                        "group_id": "Travis Fox",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2318,7 +2318,7 @@
                             "laundry wednesday": {
                                 "_balancelinks": {
                                     "America": {
-                                        "brand": "America",
+                                        "group_id": "America",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2400,7 +2400,7 @@
                             "prepare_bed clean bedroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2439,7 +2439,7 @@
                             "roomba bedroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2489,7 +2489,7 @@
                             "roomba bedroom Friday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2539,7 +2539,7 @@
                             "roomba living area": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2589,7 +2589,7 @@
                             "roomba living area thur": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2639,7 +2639,7 @@
                             "roomba maintenance": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2689,7 +2689,7 @@
                             "wipe down play mat2": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2762,7 +2762,7 @@
                             "be reponsible for rent": {
                                 "_balancelinks": {
                                     "Perrison": {
-                                        "brand": "Perrison",
+                                        "group_id": "Perrison",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2801,7 +2801,7 @@
                             "be responsible for expenses card": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2840,7 +2840,7 @@
                             "be responsible for utilities": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2879,7 +2879,7 @@
                             "set resturant bucks for the week": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -2925,7 +2925,7 @@
                     "Housing": {
                         "_balancelinks": {
                             ",OceanVista Apt": {
-                                "brand": ",OceanVista Apt",
+                                "group_id": ",OceanVista Apt",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1.0
                             }
@@ -2978,7 +2978,7 @@
                                                     "heater maintenance": {
                                                         "_balancelinks": {
                                                             "Norberto": {
-                                                                "brand": "Norberto",
+                                                                "group_id": "Norberto",
                                                                 "creditor_weight": 1.0,
                                                                 "debtor_weight": 1.0
                                                             }
@@ -3125,7 +3125,7 @@
                             "clip fingernails": {
                                 "_balancelinks": {
                                     "America": {
-                                        "brand": "America",
+                                        "group_id": "America",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3186,7 +3186,7 @@
                             "get rid of toy buy new toy": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3288,7 +3288,7 @@
                     "say hi to birds": {
                         "_balancelinks": {
                             ",Family": {
-                                "brand": ",Family",
+                                "group_id": ",Family",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1.0
                             }
@@ -3330,7 +3330,7 @@
                             "5 push-ups": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3358,7 +3358,7 @@
                             "check protein for week is adequate": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3386,7 +3386,7 @@
                             "clip nails": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3425,7 +3425,7 @@
                             "cook veggies every morning": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3453,7 +3453,7 @@
                             "daily exercise 20min": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3504,7 +3504,7 @@
                             "morning multivitamin": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3553,7 +3553,7 @@
                             "noce hair removal": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3592,7 +3592,7 @@
                             "pull ear hair": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3631,7 +3631,7 @@
                             "shampoo hair": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3670,7 +3670,7 @@
                             "straight back for 45 secs": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3698,7 +3698,7 @@
                             "trim beard": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "brand": ",Family",
+                                        "group_id": ",Family",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -3740,7 +3740,7 @@
                                     "bike or something": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -3779,7 +3779,7 @@
                                     "chest and arms (mon)": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -3868,7 +3868,7 @@
                                     "core lower back": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -3907,7 +3907,7 @@
                                     "rest": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -3935,7 +3935,7 @@
                                     "shoulders and upper back": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -3992,7 +3992,7 @@
                                     "squats hamstrings and calves": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "brand": ",Family",
+                                                "group_id": ",Family",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -4082,17 +4082,17 @@
             "D&B": {
                 "_balancelinks": {
                     ",Climate Change": {
-                        "brand": ",Climate Change",
+                        "group_id": ",Climate Change",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1.0
                     },
                     ",Family": {
-                        "brand": ",Family",
+                        "group_id": ",Family",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1.0
                     },
                     "America": {
-                        "brand": "America",
+                        "group_id": "America",
                         "creditor_weight": 1.0,
                         "debtor_weight": 1.0
                     }
@@ -4102,7 +4102,7 @@
                     "charles friends would like housing support": {
                         "_balancelinks": {
                             "Renee Elise Goldsberry": {
-                                "brand": "Renee Elise Goldsberry",
+                                "group_id": "Renee Elise Goldsberry",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1.0
                             }
@@ -4112,7 +4112,7 @@
                             "Ask Charles monthly what I can do": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
-                                        "brand": "Renee Elise Goldsberry",
+                                        "group_id": "Renee Elise Goldsberry",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -4160,7 +4160,7 @@
                     "develop D&B software": {
                         "_balancelinks": {
                             ",hurt by us dollar": {
-                                "brand": ",hurt by us dollar",
+                                "group_id": ",hurt by us dollar",
                                 "creditor_weight": 1.0,
                                 "debtor_weight": 1.0
                             }
@@ -4236,7 +4236,7 @@
                             "donate to influential people that are pro-Climate Change": {
                                 "_balancelinks": {
                                     ",Climate Change": {
-                                        "brand": ",Climate Change",
+                                        "group_id": ",Climate Change",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -4341,7 +4341,7 @@
                             "listening to David": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
-                                        "brand": "Renee Elise Goldsberry",
+                                        "group_id": "Renee Elise Goldsberry",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }
@@ -4351,7 +4351,7 @@
                                     "be available for phone call": {
                                         "_balancelinks": {
                                             "Renee Elise Goldsberry": {
-                                                "brand": "Renee Elise Goldsberry",
+                                                "group_id": "Renee Elise Goldsberry",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -4390,12 +4390,12 @@
                                     "call David and discuss methodology": {
                                         "_balancelinks": {
                                             ",Climate Change": {
-                                                "brand": ",Climate Change",
+                                                "group_id": ",Climate Change",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             },
                                             "Renee Elise Goldsberry": {
-                                                "brand": "Renee Elise Goldsberry",
+                                                "group_id": "Renee Elise Goldsberry",
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0
                                             }
@@ -4488,7 +4488,7 @@
                             "write letters about Climate Change to congressman": {
                                 "_balancelinks": {
                                     ",Climate Change": {
-                                        "brand": ",Climate Change",
+                                        "group_id": ",Climate Change",
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0
                                     }

@@ -88,9 +88,9 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     four_road = noa_agenda.make_road(morn_road, four_text)
     assigned_unit_x = assigned_unit_shop()
     swimmers_text = ",swimmers"
-    assigned_unit_x.set_suffgroup(brand=swimmers_text)
+    assigned_unit_x.set_suffgroup(group_id=swimmers_text)
 
-    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(brand=swimmers_text))
+    noa_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=swimmers_text))
     noa_agenda.add_l1_idea(ideaunit_shop(swim_text))
     noa_agenda.add_idea(ideaunit_shop(morn_text), parent_road=swim_road)
     noa_agenda.add_idea(ideaunit_shop(four_text), parent_road=morn_road)
@@ -130,8 +130,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._economy_id)
     noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._economy_id)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(brand=xia_text)
-    swim_assignedunit.set_suffgroup(brand=zoa_text)
+    swim_assignedunit.set_suffgroup(group_id=xia_text)
+    swim_assignedunit.set_suffgroup(group_id=zoa_text)
     noa_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     noa_agenda1_swim_idea = noa_agenda1.get_idea_obj(swim_road)
     noa_agenda1_swim_suffgroups = noa_agenda1_swim_idea._assignedunit._suffgroups
@@ -163,8 +163,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._economy_id)
     noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._economy_id)
     swim_assignedunit = assigned_unit_shop()
-    swim_assignedunit.set_suffgroup(brand=xia_text)
-    swim_assignedunit.set_suffgroup(brand=zoa_text)
+    swim_assignedunit.set_suffgroup(group_id=xia_text)
+    swim_assignedunit.set_suffgroup(group_id=zoa_text)
     noa_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
     noa_agenda1_swim_idea = noa_agenda1.get_idea_obj(swim_road)
     noa_agenda1_swim_suffgroups = noa_agenda1_swim_idea._assignedunit._suffgroups
