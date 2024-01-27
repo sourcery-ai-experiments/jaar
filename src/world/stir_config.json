@@ -36,6 +36,10 @@
     },
     "AgendaUnit._weight": {
         "UPDATE": {
+            "AgendaUnit.method": {
+                "arg1": "AgendaUnit._weight",
+                "method_name": "set_max_tree_traverse"
+            },
             "required_args": {
                 "AgendaUnit._weight": "int"
             }
@@ -74,9 +78,9 @@
         },
         "INSERT": {
             "required_args": {
-                "party_id": "str",
                 "creditor_weight": "float",
-                "debtor_weight": "float"
+                "debtor_weight": "float",
+                "party_id": "str"
             }
         },
         "locator": {

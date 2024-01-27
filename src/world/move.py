@@ -39,6 +39,12 @@ class StirUnit:
     required_args: dict[str:str] = None
     optional_args: dict[str:str] = None
 
+    def add_locator(self, x_key: str, x_value: any):
+        self.locator[x_key] = x_value
+
+    def get_locator(self, x_key: str) -> any:
+        return self.locator.get(x_key)
+
     def is_locator_valid(self) -> bool:
         attribute_dict = get_stir_config_dict().get(self.attribute_name)
         locator_dict = get_empty_dict_if_none(attribute_dict.get("locator"))
@@ -61,8 +67,8 @@ class StirUnit:
     def is_valid(self) -> bool:
         return self.is_locator_valid() and self.is_args_valid()
 
-    def get_value(self, arg: str) -> any:
-        return self.required_args.get(arg)
+    def get_value(self, arg_key: str) -> any:
+        return self.required_args.get(arg_key)
 
 
 def stirunit_shop(
@@ -91,33 +97,39 @@ class MoveUnit:
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
-        agenda_weight_text = "AgendaUnit._weight"
-        agenda_max_tree_traverse = "_max_tree_traverse"
-        agenda_party_creditor_pool = "_party_creditor_pool"
-        agenda_party_debtor_pool = "_party_debtor_pool"
-        agenda_meld_strategy = "_meld_strategy"
+        agendaunit_simple_attrs = {
+            "AgendaUnit._weight",
+            "_max_tree_traverse",
+            "_party_creditor_pool",
+            "_party_debtor_pool",
+            "_meld_strategy",
+        }
 
-        x_stirunit = self.update_stirs.get(agenda_weight_text)
-        if x_stirunit != None:
-            after_agenda._weight = x_stirunit.get_value(agenda_weight_text)
-        x_stirunit = self.update_stirs.get(agenda_max_tree_traverse)
-        if x_stirunit != None:
-            after_agenda.set_max_tree_traverse(
-                x_stirunit.get_value(agenda_max_tree_traverse)
-            )
-        x_stirunit = self.update_stirs.get(agenda_party_creditor_pool)
-        if x_stirunit != None:
-            after_agenda.set_party_creditor_pool(
-                x_stirunit.get_value(agenda_party_creditor_pool)
-            )
-        x_stirunit = self.update_stirs.get(agenda_party_debtor_pool)
-        if x_stirunit != None:
-            after_agenda.set_party_debtor_pool(
-                x_stirunit.get_value(agenda_party_debtor_pool)
-            )
-        x_stirunit = self.update_stirs.get(agenda_meld_strategy)
-        if x_stirunit != None:
-            after_agenda.set_meld_strategy(x_stirunit.get_value(agenda_meld_strategy))
+        for x_stir in self.delete_stirs.values():
+            if x_stir.attribute_name == "partyunit":
+                party_id = x_stir.get_locator("party_id")
+                after_agenda.del_partyunit(party_id)
+
+        for simple_attr in agendaunit_simple_attrs:
+            x_stir = self.get_stir(stir_update(), simple_attr)
+            if x_stir != None:
+                if simple_attr == "AgendaUnit._weight":
+                    after_agenda._weight = x_stir.get_value(simple_attr)
+                elif simple_attr == "_max_tree_traverse":
+                    after_agenda.set_max_tree_traverse(x_stir.get_value(simple_attr))
+                elif simple_attr == "_party_creditor_pool":
+                    after_agenda.set_party_creditor_pool(x_stir.get_value(simple_attr))
+                elif simple_attr == "_party_debtor_pool":
+                    after_agenda.set_party_debtor_pool(x_stir.get_value(simple_attr))
+                elif simple_attr == "_meld_strategy":
+                    after_agenda.set_meld_strategy(x_stir.get_value(simple_attr))
+
+        # for x_stir in self.update_stirs.values():
+        #     if x_stir.attribute_name == "partyunit":
+        #         #first get current partyunit
+        #         #update current partyunit
+        #         # save current partyunit?
+
         return after_agenda
 
     def set_stirunit(self, x_stirunit: StirUnit):
@@ -145,6 +157,14 @@ class MoveUnit:
             optional_args=optional_args,
         )
         self.set_stirunit(x_stirunit)
+
+    def get_stir(self, crud_command: str, attribute_name: str) -> StirUnit:
+        if crud_command == stir_update():
+            return self.update_stirs.get(attribute_name)
+        elif crud_command == stir_delete():
+            return self.delete_stirs.get(attribute_name)
+        elif crud_command == stir_insert():
+            return self.insert_stirs.get(attribute_name)
 
 
 def moveunit_shop(

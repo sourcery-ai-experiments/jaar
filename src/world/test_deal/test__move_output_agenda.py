@@ -1,7 +1,14 @@
 from src._prime.road import get_single_roadnode
 from src._prime.meld import get_meld_default
 from src.agenda.agenda import agendaunit_shop
-from src.world.move import MoveUnit, moveunit_shop, stir_update, stirunit_shop
+from src.world.move import (
+    MoveUnit,
+    moveunit_shop,
+    stir_update,
+    stir_delete,
+    stir_insert,
+    stirunit_shop,
+)
 from src.world.examples.example_deals import get_sue_personroad
 
 
@@ -21,7 +28,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_SimplestScenario():
     assert after_sue_agendaunit == before_sue_agendaunit
 
 
-def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_weight():
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_moveunit = moveunit_shop(sue_road)
@@ -71,3 +78,57 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_weight():
     assert after_sue_agendaunit._party_creditor_pool == new3_value
     assert after_sue_agendaunit._party_debtor_pool == new4_value
     assert after_sue_agendaunit._meld_strategy == new5_value
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    before_sue_agendaunit.add_partyunit(carm_text)
+
+    attribute_name = "partyunit"
+    x_stirunit = stirunit_shop(attribute_name, stir_delete())
+    x_stirunit.add_locator("party_id", carm_text)
+    sue_moveunit.set_stirunit(x_stirunit)
+
+    # WHEN
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    print(f"{sue_moveunit.update_stirs=}")
+    assert after_sue_agendaunit != before_sue_agendaunit
+    assert after_sue_agendaunit.get_party(rico_text) != None
+    assert after_sue_agendaunit.get_party(carm_text) is None
+
+
+# def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_group():
+#     # GIVEN
+#     sue_road = get_sue_personroad()
+#     sue_moveunit = moveunit_shop(sue_road)
+#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+
+#     before_sue_agendaunit = agendaunit_shop(sue_text)
+#     rico_text = "Rico"
+#     carm_text = "Carmen"
+#     before_sue_agendaunit.add_partyunit(rico_text)
+#     before_sue_agendaunit.add_partyunit(carm_text)
+
+#     attribute_name = "groupunit"
+#     x_stirunit = stirunit_shop(attribute_name, stir_delete())
+#     x_stirunit.add_locator("brand", carm_text)
+#     sue_moveunit.set_stirunit(x_stirunit)
+
+#     # WHEN
+#     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+#     # THEN
+#     print(f"{sue_moveunit.update_stirs=}")
+#     assert after_sue_agendaunit != before_sue_agendaunit
+#     assert after_sue_agendaunit.get_party(rico_text) != None
+#     assert after_sue_agendaunit.get_party(carm_text) is None

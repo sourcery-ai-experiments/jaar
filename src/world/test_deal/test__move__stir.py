@@ -90,6 +90,33 @@ def test_StirUnit_add_required_arg_CorrectlySetsAttr():
     assert partyunit_stirunit.required_args == {party_id_text: bob_party_id}
 
 
+def test_StirUnit_add_locator_CorrectlySetsAttr():
+    # GIVEN
+    bob_party_id = "Bob"
+    partyunit_text = "partyunit"
+    partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
+    assert partyunit_stirunit.locator == {}
+
+    # WHEN
+    party_id_text = "party_id"
+    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_party_id)
+
+    # THEN
+    assert partyunit_stirunit.locator == {party_id_text: bob_party_id}
+
+
+def test_StirUnit_get_locator_ReturnsCorrectObj():
+    # GIVEN
+    bob_party_id = "Bob"
+    partyunit_text = "partyunit"
+    partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
+    party_id_text = "party_id"
+    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_party_id)
+
+    # WHEN / THEN
+    assert partyunit_stirunit.get_locator(party_id_text) == bob_party_id
+
+
 def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_party_id = "Bob"
     bob_creditor_weight = 55
@@ -196,7 +223,6 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
 
 def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
     # GIVEN
-    crud_text = "crud"
     sue_road = get_sue_personroad()
     sue_moveunit = moveunit_shop(sue_road)
     assert sue_moveunit.update_stirs == {}
@@ -214,6 +240,23 @@ def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
     assert len(sue_moveunit.update_stirs) == 1
     x_stirunit = sue_moveunit.update_stirs.get(attribute_name)
     assert x_stirunit == agenda_weight_stirunit
+
+
+def test_MoveUnit_get_stir_ReturnsCorrectObj():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_moveunit = moveunit_shop(sue_road)
+    w_value = 55
+    w_name = "AgendaUnit._weight"
+    w_stirunit = stirunit_shop(w_name, stir_update())
+    w_stirunit.add_required_arg(x_key=w_name, x_value=w_value)
+    sue_moveunit.set_stirunit(w_stirunit)
+
+    # WHEN
+    gen_stirunit = sue_moveunit.get_stir(stir_update(), attribute_name=w_name)
+
+    # THEN
+    assert gen_stirunit == w_stirunit
 
 
 def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
