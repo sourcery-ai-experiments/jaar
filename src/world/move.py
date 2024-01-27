@@ -25,7 +25,7 @@ def stir_delete() -> str:
 
 
 def get_stir_config_file_name() -> str:
-    return "stir_config.json"
+    return "stir_categorys.json"
 
 
 def get_stir_config_dict() -> dict:
@@ -103,22 +103,45 @@ class StirUnit:
     def add_required_arg(self, x_key: str, x_value: any):
         self.required_args[x_key] = x_value
 
+    def set_optional_arg(self, x_key: str, x_value: any):
+        self.optional_args[x_key] = x_value
+
+    def _get_category_dict(self):
+        return get_stir_config_dict().get(self.category)
+
     def _get_required_args_dict(self) -> dict:
-        category_dict = get_stir_config_dict().get(self.category)
-        crud_dict = category_dict.get(self.crud_text)
+        crud_dict = self._get_category_dict().get(self.crud_text)
         return crud_dict.get("required_args")
 
-    def is_args_valid(self) -> bool:
+    def _get_optional_args_dict(self) -> dict:
+        crud_dict = self._get_category_dict().get(self.crud_text)
+        return crud_dict.get("optional_args")
+
+    def is_required_args_valid(self) -> bool:
         if self.crud_text not in {stir_delete(), stir_insert(), stir_update()}:
             return False
         required_args_dict = get_empty_dict_if_none(self._get_required_args_dict())
         return required_args_dict.keys() == self.required_args.keys()
 
+    def is_optional_args_valid(self) -> bool:
+        if self.crud_text not in {stir_delete(), stir_insert(), stir_update()}:
+            return False
+
+        optional_args_dict = get_empty_dict_if_none(self._get_optional_args_dict())
+        return set(self.optional_args.keys()).issubset(set(optional_args_dict.keys()))
+
     def is_valid(self) -> bool:
-        return self.is_locator_valid() and self.is_args_valid()
+        return (
+            self.is_locator_valid()
+            and self.is_required_args_valid()
+            and self.is_optional_args_valid()
+        )
 
     def get_value(self, arg_key: str) -> any:
-        return self.required_args.get(arg_key)
+        required_value = self.required_args.get(arg_key)
+        if required_value is None:
+            return self.optional_args.get(arg_key)
+        return required_value
 
 
 def stirunit_shop(

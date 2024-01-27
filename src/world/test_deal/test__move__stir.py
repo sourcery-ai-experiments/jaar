@@ -79,7 +79,7 @@ def test_get_stir_config_dict_EveryCrudOperationHasMoveOrderGroup():
         get_stir_config_dict(), stratification_text
     )
     mog = stratification_text
-    # Simple script for editing stir_config.json
+    # Simple script for editing stir_categorys.json
     # set_mog("partyunit", stir_insert(), mog, 0)
     # set_mog("partyunit", stir_update(), mog, 1)
     # set_mog("partyunit", stir_delete(), mog, 2)
@@ -164,15 +164,16 @@ def test_StirUnit_exists():
 
 def test_stirunit_shop_ReturnsCorrectObj():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_locator_dict = {"party_id": bob_party_id}
+    bob_text = "Bob"
+    bob_locator_dict = {"party_id": bob_text}
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_party_id, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
     cw_text = "_creditor_weight"
     dw_text = "_debtor_weight"
-    bob_partyunit_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
-    bob_partyunit_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
+    bob_required_dict = {"party_id": "huh"}
+    bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
+    bob_optional_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
     partyunit_text = "partyunit"
 
     # WHEN
@@ -180,8 +181,8 @@ def test_stirunit_shop_ReturnsCorrectObj():
         category=partyunit_text,
         crud_text=stir_insert(),
         locator=bob_locator_dict,
-        required_args=bob_partyunit_dict,
-        optional_args=None,
+        required_args=bob_required_dict,
+        optional_args=bob_optional_dict,
     )
 
     # THEN
@@ -189,57 +190,97 @@ def test_stirunit_shop_ReturnsCorrectObj():
     assert x_stirunit.category == partyunit_text
     assert x_stirunit.crud_text == stir_insert()
     assert x_stirunit.locator == bob_locator_dict
-    assert x_stirunit.required_args == bob_partyunit_dict
-    assert x_stirunit.optional_args == {}
+    assert x_stirunit.required_args == bob_required_dict
+    assert x_stirunit.optional_args == bob_optional_dict
 
 
 def test_StirUnit_add_required_arg_CorrectlySetsAttr():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     partyunit_text = "partyunit"
     partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
     assert partyunit_stirunit.required_args == {}
 
     # WHEN
     party_id_text = "party_id"
-    partyunit_stirunit.add_required_arg(x_key=party_id_text, x_value=bob_party_id)
+    partyunit_stirunit.add_required_arg(x_key=party_id_text, x_value=bob_text)
 
     # THEN
-    assert partyunit_stirunit.required_args == {party_id_text: bob_party_id}
+    assert partyunit_stirunit.required_args == {party_id_text: bob_text}
+
+
+def test_StirUnit_set_optional_arg_CorrectlySetsAttr():
+    # GIVEN
+    bob_text = "Bob"
+    partyunit_text = "partyunit"
+    partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
+    assert partyunit_stirunit.optional_args == {}
+
+    # WHEN
+    party_id_text = "party_id"
+    partyunit_stirunit.set_optional_arg(x_key=party_id_text, x_value=bob_text)
+
+    # THEN
+    assert partyunit_stirunit.optional_args == {party_id_text: bob_text}
 
 
 def test_StirUnit_add_locator_CorrectlySetsAttr():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     partyunit_text = "partyunit"
     partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
     assert partyunit_stirunit.locator == {}
 
     # WHEN
     party_id_text = "party_id"
-    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_party_id)
+    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_text)
 
     # THEN
-    assert partyunit_stirunit.locator == {party_id_text: bob_party_id}
+    assert partyunit_stirunit.locator == {party_id_text: bob_text}
 
 
 def test_StirUnit_get_locator_ReturnsCorrectObj():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     partyunit_text = "partyunit"
     partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
     party_id_text = "party_id"
-    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_party_id)
+    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_text)
 
     # WHEN / THEN
-    assert partyunit_stirunit.get_locator(party_id_text) == bob_party_id
+    assert partyunit_stirunit.get_locator(party_id_text) == bob_text
+
+
+def test_StirUnit_is_optional_args_valid_ReturnsCorrectBoolean():
+    # WHEN
+    partyunit_text = "partyunit"
+    bob_insert_stirunit = stirunit_shop(partyunit_text, crud_text=stir_insert())
+    assert bob_insert_stirunit.is_optional_args_valid()
+
+    # WHEN
+    bob_insert_stirunit.set_optional_arg("creditor_weight", 55)
+    # THEN
+    assert len(bob_insert_stirunit.optional_args) == 1
+    assert bob_insert_stirunit.is_optional_args_valid()
+
+    # WHEN
+    bob_insert_stirunit.set_optional_arg("debtor_weight", 66)
+    # THEN
+    assert len(bob_insert_stirunit.optional_args) == 2
+    assert bob_insert_stirunit.is_optional_args_valid()
+
+    # WHEN
+    bob_insert_stirunit.set_optional_arg("x_x_x", 77)
+    # THEN
+    assert len(bob_insert_stirunit.optional_args) == 3
+    assert bob_insert_stirunit.is_optional_args_valid() == False
 
 
 def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_party_id, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
     partyunit_text = "partyunit"
 
     # WHEN
@@ -247,30 +288,49 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid() == False
-    assert bob_insert_stirunit.is_args_valid() == False
+    assert bob_insert_stirunit.is_required_args_valid() == False
+    assert bob_insert_stirunit.is_optional_args_valid()
     assert bob_insert_stirunit.is_valid() == False
 
     # WHEN
     party_id_text = "party_id"
-    bob_locator_dict = {party_id_text: bob_party_id}
-    bob_insert_stirunit.locator = bob_locator_dict
+    bob_insert_stirunit.add_locator(party_id_text, bob_text)
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
-    assert bob_insert_stirunit.is_args_valid() == False
+    assert bob_insert_stirunit.is_required_args_valid() == False
+    assert bob_insert_stirunit.is_optional_args_valid()
     assert bob_insert_stirunit.is_valid() == False
 
     # WHEN
-    cw_text = "creditor_weight"
-    dw_text = "debtor_weight"
-    bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
-    bob_partyunit_dict[cw_text] = bob_partyunit.get_dict().get(cw_text)
-    bob_partyunit_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
-    bob_insert_stirunit.required_args = bob_partyunit_dict
+    bob_insert_stirunit.set_optional_arg("x_x_x", 12)
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
-    assert bob_insert_stirunit.is_args_valid()
+    assert bob_insert_stirunit.is_required_args_valid() == False
+    assert bob_insert_stirunit.is_optional_args_valid() == False
+    assert bob_insert_stirunit.is_valid() == False
+
+    # WHEN
+    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+
+    # THEN
+    assert bob_insert_stirunit.is_locator_valid()
+    assert bob_insert_stirunit.is_required_args_valid()
+    assert bob_insert_stirunit.is_optional_args_valid() == False
+    assert bob_insert_stirunit.is_valid() == False
+
+    # WHEN
+    bob_insert_stirunit.optional_args = {}
+    cw_text = "creditor_weight"
+    dw_text = "debtor_weight"
+    bob_insert_stirunit.set_optional_arg(cw_text, bob_partyunit.get_dict().get(cw_text))
+    bob_insert_stirunit.set_optional_arg(dw_text, bob_partyunit.get_dict().get(dw_text))
+
+    # THEN
+    assert bob_insert_stirunit.is_locator_valid()
+    assert bob_insert_stirunit.is_required_args_valid()
+    assert bob_insert_stirunit.is_optional_args_valid()
     assert bob_insert_stirunit.is_valid()
 
     # WHEN
@@ -278,7 +338,7 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
-    assert bob_insert_stirunit.is_args_valid() == False
+    assert bob_insert_stirunit.is_required_args_valid() == False
     assert bob_insert_stirunit.is_valid() == False
 
     # WHEN
@@ -286,29 +346,29 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
-    assert bob_insert_stirunit.is_args_valid()
+    assert bob_insert_stirunit.is_required_args_valid()
     assert bob_insert_stirunit.is_valid()
 
 
 def test_StirUnit_get_value_ReturnsObj():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_party_id, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
     partyunit_text = "partyunit"
     bob_insert_stirunit = stirunit_shop(partyunit_text, stir_insert())
-    bob_locator_dict = {"party_id": bob_party_id}
+    bob_locator_dict = {"party_id": bob_text}
     bob_insert_stirunit.locator = bob_locator_dict
     party_id_text = "party_id"
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"
     print(f"{bob_partyunit.get_dict()=}")
-    bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
-    bob_partyunit_dict[cw_text] = bob_partyunit.get_dict().get(cw_text)
-    bob_partyunit_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
-    print(f"{bob_partyunit_dict=}")
-    bob_insert_stirunit.required_args = bob_partyunit_dict
+    # bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
+    # print(f"{bob_partyunit_dict=}")
+    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+    bob_insert_stirunit.set_optional_arg(cw_text, bob_partyunit.get_dict().get(cw_text))
+    bob_insert_stirunit.set_optional_arg(dw_text, bob_partyunit.get_dict().get(dw_text))
     assert bob_insert_stirunit.is_valid()
 
     # WHEN / THEN
@@ -317,7 +377,7 @@ def test_StirUnit_get_value_ReturnsObj():
 
 
 def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     partyunit_text = "partyunit"
     delete_text = stir_delete()
 
@@ -326,16 +386,16 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
 
     # THEN
     assert bob_delete_stirunit.is_locator_valid() == False
-    assert bob_delete_stirunit.is_args_valid()
+    assert bob_delete_stirunit.is_required_args_valid()
     assert bob_delete_stirunit.is_valid() == False
 
     # WHEN
-    bob_locator_dict = {"party_id": bob_party_id}
+    bob_locator_dict = {"party_id": bob_text}
     bob_delete_stirunit.locator = bob_locator_dict
 
     # THEN
     assert bob_delete_stirunit.is_locator_valid()
-    assert bob_delete_stirunit.is_args_valid()
+    assert bob_delete_stirunit.is_required_args_valid()
     assert bob_delete_stirunit.is_valid()
 
 
@@ -364,18 +424,18 @@ def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
 
 def test_StirUnit_set_stratification_SetCorrectAttr():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     partyunit_text = "partyunit"
     bob_insert_stirunit = stirunit_shop(partyunit_text, stir_insert())
     party_id_text = "party_id"
-    bob_insert_stirunit.add_locator(party_id_text, bob_party_id)
+    bob_insert_stirunit.add_locator(party_id_text, bob_text)
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"
-    bob_insert_stirunit.add_required_arg(party_id_text, bob_party_id)
-    bob_insert_stirunit.add_required_arg(cw_text, bob_creditor_weight)
-    bob_insert_stirunit.add_required_arg(dw_text, bob_debtor_weight)
+    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+    bob_insert_stirunit.set_optional_arg(cw_text, bob_creditor_weight)
+    bob_insert_stirunit.set_optional_arg(dw_text, bob_debtor_weight)
     assert bob_insert_stirunit.is_valid()
 
     # WHEN / THEN
@@ -426,12 +486,12 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
 
     # WHEN
     party_id_text = "party_id"
-    bob_party_id = "Bob"
-    bob_locator_dict = {party_id_text: bob_party_id}
+    bob_text = "Bob"
+    bob_locator_dict = {party_id_text: bob_text}
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     bob_partyunit = partyunit_shop(
-        bob_party_id,
+        bob_text,
         bob_creditor_weight,
         bob_debtor_weight,
         depotlink_type="assignment",
@@ -441,8 +501,8 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
     dw_text = "debtor_weight"
     print(f"{bob_partyunit.get_dict()=}")
     bob_required_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
-    bob_required_dict[cw_text] = bob_partyunit.get_dict().get(cw_text)
-    bob_required_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
+    bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
+    bob_optional_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
     print(f"{bob_required_dict=}")
     partyunit_text = "partyunit"
     sue_moveunit.add_stirunit(
@@ -450,6 +510,7 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
         crud_text=stir_insert(),
         locator=bob_locator_dict,
         required_args=bob_required_dict,
+        optional_args=bob_optional_dict,
     )
     # THEN
     assert len(sue_moveunit.insert_stirs) == 1
