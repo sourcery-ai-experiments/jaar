@@ -13,7 +13,11 @@ def get_0_if_None(x_obj=None):
     return 0 if x_obj is None else x_obj
 
 
-# class XFunc:
+def add_dict_if_missing(x_dict: dict, x_key: any):
+    if x_dict.get(x_key) is None:
+        x_dict[x_key] = {}
+
+
 def x_is_json(json_x: str) -> bool:
     try:
         x_get_dict(json_x)

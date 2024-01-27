@@ -473,9 +473,6 @@ def premises_get_from_dict(x_dict: dict) -> dict[str:PremiseUnit]:
 class ReasonCore:
     base: RoadUnit
     premises: dict[RoadUnit:PremiseUnit]
-    # None: ignore,
-    # True: base idea._active reason be True,
-    # False: base idea._active reason be False
     suff_idea_active: bool = None
     delimiter: str = None
 

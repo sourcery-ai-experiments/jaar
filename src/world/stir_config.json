@@ -1,6 +1,7 @@
 {
     "_auto_output_to_forum": {
         "UPDATE": {
+            "stratification": 27,
             "required_args": {
                 "_auto_output_to_forum": "bool"
             }
@@ -8,6 +9,7 @@
     },
     "_max_tree_traverse": {
         "UPDATE": {
+            "stratification": 27,
             "required_args": {
                 "_max_tree_traverse": "int"
             }
@@ -15,6 +17,7 @@
     },
     "_meld_strategy": {
         "UPDATE": {
+            "stratification": 27,
             "required_args": {
                 "_meld_strategy": "str"
             }
@@ -22,6 +25,7 @@
     },
     "_party_creditor_pool": {
         "UPDATE": {
+            "stratification": 27,
             "required_args": {
                 "_party_creditor_pool": "int"
             }
@@ -29,54 +33,130 @@
     },
     "_party_debtor_pool": {
         "UPDATE": {
+            "stratification": 27,
             "required_args": {
                 "_party_debtor_pool": "int"
             }
         }
     },
-    "AgendaUnit._weight": {
+    "AgendaUnit_weight": {
         "UPDATE": {
             "AgendaUnit.method": {
-                "arg1": "AgendaUnit._weight",
+                "arg1": "AgendaUnit_weight",
                 "method_name": "set_max_tree_traverse"
             },
+            "stratification": 27,
             "required_args": {
-                "AgendaUnit._weight": "int"
+                "AgendaUnit_weight": "int"
             }
         }
     },
     "groupunit": {
-        "DELETE": {},
-        "INSERT": {},
+        "DELETE": {
+            "stratification": 8
+        },
+        "INSERT": {
+            "stratification": 6
+        },
         "locator": {
             "group_id": "GroupID"
         },
-        "UPDATE": {}
+        "UPDATE": {
+            "stratification": 7
+        }
     },
     "groupunit_partylink": {
         "DELETE": {
+            "stratification": 5,
             "required_args": {}
         },
-        "INSERT": {},
+        "INSERT": {
+            "stratification": 3
+        },
         "locator": {
             "group_id": "GroupID",
             "party_id": "PartyID"
         },
-        "UPDATE": {}
+        "UPDATE": {
+            "stratification": 4
+        }
     },
     "idea": {
-        "DELETE": {},
-        "INSERT": {},
+        "DELETE": {
+            "stratification": 15
+        },
+        "INSERT": {
+            "stratification": 9
+        },
         "locator": {
             "road": "RoadUnit"
         },
-        "UPDATE": {}
+        "UPDATE": {
+            "stratification": 21
+        }
+    },
+    "idea_suffgroup": {
+        "DELETE": {
+            "stratification": 19
+        },
+        "INSERT": {
+            "stratification": 13
+        },
+        "UPDATE": {
+            "stratification": 25
+        }
+    },
+    "idea_balancelink": {
+        "DELETE": {
+            "stratification": 16
+        },
+        "INSERT": {
+            "stratification": 10
+        },
+        "UPDATE": {
+            "stratification": 22
+        }
+    },
+    "idea_beliefunit": {
+        "DELETE": {
+            "stratification": 20
+        },
+        "INSERT": {
+            "stratification": 14
+        },
+        "UPDATE": {
+            "stratification": 26
+        }
+    },
+    "idea_reasonunit": {
+        "DELETE": {
+            "stratification": 18
+        },
+        "INSERT": {
+            "stratification": 12
+        },
+        "UPDATE": {
+            "stratification": 24
+        }
+    },
+    "idea_reasonunit_premiseunit": {
+        "DELETE": {
+            "stratification": 17
+        },
+        "INSERT": {
+            "stratification": 11
+        },
+        "UPDATE": {
+            "stratification": 23
+        }
     },
     "partyunit": {
         "DELETE": {
+            "stratification": 2,
             "required_args": {}
         },
         "INSERT": {
+            "stratification": 0,
             "required_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float",
@@ -87,6 +167,7 @@
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "stratification": 1,
             "optional_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float"

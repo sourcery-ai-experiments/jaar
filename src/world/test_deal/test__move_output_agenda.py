@@ -9,7 +9,10 @@ from src.world.move import (
     stir_insert,
     stirunit_shop,
 )
-from src.world.examples.example_deals import get_sue_personroad
+from src.world.examples.example_deals import (
+    get_sue_personroad,
+    get_sue_moveunit_example1,
+)
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_SimplestScenario():
@@ -38,33 +41,33 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
 
     new1_value = 55
-    attribute_name = "AgendaUnit._weight"
-    x_stirunit = stirunit_shop(attribute_name, stir_update())
-    x_stirunit.add_required_arg(attribute_name, new1_value)
+    category = "AgendaUnit_weight"
+    x_stirunit = stirunit_shop(category, stir_update())
+    x_stirunit.add_required_arg(category, new1_value)
     sue_moveunit.set_stirunit(x_stirunit)
 
     new2_value = 66
-    attribute_name = "_max_tree_traverse"
-    x_stirunit = stirunit_shop(attribute_name, stir_update())
-    x_stirunit.add_required_arg(attribute_name, new2_value)
+    category = "_max_tree_traverse"
+    x_stirunit = stirunit_shop(category, stir_update())
+    x_stirunit.add_required_arg(category, new2_value)
     sue_moveunit.set_stirunit(x_stirunit)
 
     new3_value = 77
-    attribute_name = "_party_creditor_pool"
-    x_stirunit = stirunit_shop(attribute_name, stir_update())
-    x_stirunit.add_required_arg(attribute_name, new3_value)
+    category = "_party_creditor_pool"
+    x_stirunit = stirunit_shop(category, stir_update())
+    x_stirunit.add_required_arg(category, new3_value)
     sue_moveunit.set_stirunit(x_stirunit)
 
     new4_value = 88
-    attribute_name = "_party_debtor_pool"
-    x_stirunit = stirunit_shop(attribute_name, stir_update())
-    x_stirunit.add_required_arg(attribute_name, new4_value)
+    category = "_party_debtor_pool"
+    x_stirunit = stirunit_shop(category, stir_update())
+    x_stirunit.add_required_arg(category, new4_value)
     sue_moveunit.set_stirunit(x_stirunit)
 
     new5_value = "override"
-    attribute_name = "_meld_strategy"
-    x_stirunit = stirunit_shop(attribute_name, stir_update())
-    x_stirunit.add_required_arg(attribute_name, new5_value)
+    category = "_meld_strategy"
+    x_stirunit = stirunit_shop(category, stir_update())
+    x_stirunit.add_required_arg(category, new5_value)
     sue_moveunit.set_stirunit(x_stirunit)
 
     # WHEN
@@ -92,8 +95,8 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     before_sue_agendaunit.add_partyunit(rico_text)
     before_sue_agendaunit.add_partyunit(carm_text)
 
-    attribute_name = "partyunit"
-    x_stirunit = stirunit_shop(attribute_name, stir_delete())
+    category = "partyunit"
+    x_stirunit = stirunit_shop(category, stir_delete())
     x_stirunit.add_locator("party_id", carm_text)
     sue_moveunit.set_stirunit(x_stirunit)
 
@@ -119,8 +122,8 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
 #     before_sue_agendaunit.add_partyunit(rico_text)
 #     before_sue_agendaunit.add_partyunit(carm_text)
 
-#     attribute_name = "groupunit"
-#     x_stirunit = stirunit_shop(attribute_name, stir_delete())
+#     category = "groupunit"
+#     x_stirunit = stirunit_shop(category, stir_delete())
 #     x_stirunit.add_locator("group_id", carm_text)
 #     sue_moveunit.set_stirunit(x_stirunit)
 
@@ -132,3 +135,25 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
 #     assert after_sue_agendaunit != before_sue_agendaunit
 #     assert after_sue_agendaunit.get_party(rico_text) != None
 #     assert after_sue_agendaunit.get_party(carm_text) is None
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitMixedAttrs():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    before_sue_agendaunit.add_partyunit(carm_text)
+
+    sue_moveunit = get_sue_moveunit_example1()
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+    assert after_sue_agendaunit._weight == 55
+    assert after_sue_agendaunit._max_tree_traverse == 66
+    assert after_sue_agendaunit._party_creditor_pool == 77
+    assert after_sue_agendaunit._party_debtor_pool == 88
+    assert after_sue_agendaunit._meld_strategy == "override"
+    assert after_sue_agendaunit.get_party(rico_text) != None
+    assert after_sue_agendaunit.get_party(carm_text) is None
