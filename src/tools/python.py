@@ -16,7 +16,7 @@ def get_0_if_None(x_obj=None):
 # class XFunc:
 def x_is_json(json_x: str) -> bool:
     try:
-        json_loads(json_x)
+        x_get_dict(json_x)
     except ValueError as e:
         return False
     return True
@@ -26,5 +26,5 @@ def x_get_json(dict_x: dict) -> str:
     return json_dumps(obj=dict_x)
 
 
-def x_get_dict(json_x: str) -> dict:
+def x_get_dict(json_x: str) -> dict[str:]:
     return json_loads(json_x)

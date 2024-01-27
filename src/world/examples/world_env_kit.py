@@ -26,3 +26,7 @@ def create_example_worlds_list():
     return dir_files(
         dir_path=get_test_worlds_dir(), include_dirs=True, include_files=False
     )
+
+
+def get_src_world_dir():
+    return "src/world/"

@@ -18,9 +18,8 @@ from src.agenda.examples.agenda_env import (
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assigned_unit_shop
-from src.tools.python import x_is_json
+from src.tools.python import x_is_json, x_get_dict
 from src.tools.file import save_file, open_file
-from json import loads as json_loads
 from pytest import raises as pytest_raises
 
 
@@ -175,7 +174,7 @@ def test_export_to_JSON_simple_example_works():
 
     assert x_json != None
     assert True == x_is_json(x_json)
-    agenda_dict = json_loads(x_json)
+    agenda_dict = x_get_dict(x_json)
 
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
     assert agenda_dict["_economy_id"] == x_agenda._economy_id
@@ -217,7 +216,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     x_agenda._originunit.set_originlink(yao_text, 1)
 
     # WHEN
-    agenda_dict = json_loads(x_agenda.get_json())
+    agenda_dict = x_get_dict(json_x=x_agenda.get_json())
 
     # THEN
     _kids = "_kids"

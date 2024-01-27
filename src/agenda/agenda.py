@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from json import loads as json_loads
 from datetime import datetime
 from src.agenda.party import (
     PartyUnit,
@@ -59,7 +58,7 @@ from src._prime.road import (
     PartyID,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
-from src.tools.python import x_get_json
+from src.tools.python import x_get_json, x_get_dict
 from src._prime.meld import (
     get_meld_weight,
     MeldStrategy,
@@ -2102,7 +2101,7 @@ def agendaunit_shop(
 
 
 def get_from_json(x_agenda_json: str) -> AgendaUnit:
-    return get_from_dict(agenda_dict=json_loads(x_agenda_json))
+    return get_from_dict(x_get_dict(x_agenda_json))
 
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:

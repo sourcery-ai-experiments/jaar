@@ -1,0 +1,92 @@
+{
+    "_auto_output_to_forum": {
+        "UPDATE": {
+            "required_args": {
+                "_auto_output_to_forum": "bool"
+            }
+        }
+    },
+    "_max_tree_traverse": {
+        "UPDATE": {
+            "required_args": {
+                "_max_tree_traverse": "int"
+            }
+        }
+    },
+    "_meld_strategy": {
+        "UPDATE": {
+            "required_args": {
+                "_meld_strategy": "str"
+            }
+        }
+    },
+    "_party_creditor_pool": {
+        "UPDATE": {
+            "required_args": {
+                "_party_creditor_pool": "int"
+            }
+        }
+    },
+    "_party_debtor_pool": {
+        "UPDATE": {
+            "required_args": {
+                "_party_debtor_pool": "int"
+            }
+        }
+    },
+    "AgendaUnit._weight": {
+        "UPDATE": {
+            "required_args": {
+                "AgendaUnit._weight": "int"
+            }
+        }
+    },
+    "groupunit": {
+        "DELETE": {},
+        "INSERT": {},
+        "locator": {
+            "brand": "GroupBrand"
+        },
+        "UPDATE": {}
+    },
+    "groupunit_partylink": {
+        "DELETE": {
+            "required_args": {}
+        },
+        "INSERT": {},
+        "locator": {
+            "brand": "GroupBrand",
+            "party_id": "PartyID"
+        },
+        "UPDATE": {}
+    },
+    "idea": {
+        "DELETE": {},
+        "INSERT": {},
+        "locator": {
+            "road": "RoadUnit"
+        },
+        "UPDATE": {}
+    },
+    "partyunit": {
+        "DELETE": {
+            "required_args": {}
+        },
+        "INSERT": {
+            "required_args": {
+                "party_id": "str",
+                "creditor_weight": "float",
+                "debtor_weight": "float"
+            }
+        },
+        "locator": {
+            "party_id": "PartyID"
+        },
+        "UPDATE": {
+            "optional_args": {
+                "creditor_weight": "float",
+                "debtor_weight": "float"
+            }
+        }
+    }
+}
