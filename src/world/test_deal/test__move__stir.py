@@ -194,7 +194,7 @@ def test_stirunit_shop_ReturnsCorrectObj():
     assert x_stirunit.optional_args == bob_optional_dict
 
 
-def test_StirUnit_add_required_arg_CorrectlySetsAttr():
+def test_StirUnit_set_required_arg_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     partyunit_text = "partyunit"
@@ -203,7 +203,7 @@ def test_StirUnit_add_required_arg_CorrectlySetsAttr():
 
     # WHEN
     party_id_text = "party_id"
-    partyunit_stirunit.add_required_arg(x_key=party_id_text, x_value=bob_text)
+    partyunit_stirunit.set_required_arg(x_key=party_id_text, x_value=bob_text)
 
     # THEN
     assert partyunit_stirunit.required_args == {party_id_text: bob_text}
@@ -224,7 +224,7 @@ def test_StirUnit_set_optional_arg_CorrectlySetsAttr():
     assert partyunit_stirunit.optional_args == {party_id_text: bob_text}
 
 
-def test_StirUnit_add_locator_CorrectlySetsAttr():
+def test_StirUnit_set_locator_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     partyunit_text = "partyunit"
@@ -233,7 +233,7 @@ def test_StirUnit_add_locator_CorrectlySetsAttr():
 
     # WHEN
     party_id_text = "party_id"
-    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_text)
+    partyunit_stirunit.set_locator(x_key=party_id_text, x_value=bob_text)
 
     # THEN
     assert partyunit_stirunit.locator == {party_id_text: bob_text}
@@ -245,7 +245,7 @@ def test_StirUnit_get_locator_ReturnsCorrectObj():
     partyunit_text = "partyunit"
     partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
     party_id_text = "party_id"
-    partyunit_stirunit.add_locator(x_key=party_id_text, x_value=bob_text)
+    partyunit_stirunit.set_locator(x_key=party_id_text, x_value=bob_text)
 
     # WHEN / THEN
     assert partyunit_stirunit.get_locator(party_id_text) == bob_text
@@ -294,7 +294,7 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # WHEN
     party_id_text = "party_id"
-    bob_insert_stirunit.add_locator(party_id_text, bob_text)
+    bob_insert_stirunit.set_locator(party_id_text, bob_text)
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
@@ -312,7 +312,7 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     assert bob_insert_stirunit.is_valid() == False
 
     # WHEN
-    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+    bob_insert_stirunit.set_required_arg(party_id_text, bob_text)
 
     # THEN
     assert bob_insert_stirunit.is_locator_valid()
@@ -366,7 +366,7 @@ def test_StirUnit_get_value_ReturnsObj():
     print(f"{bob_partyunit.get_dict()=}")
     # bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
     # print(f"{bob_partyunit_dict=}")
-    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+    bob_insert_stirunit.set_required_arg(party_id_text, bob_text)
     bob_insert_stirunit.set_optional_arg(cw_text, bob_partyunit.get_dict().get(cw_text))
     bob_insert_stirunit.set_optional_arg(dw_text, bob_partyunit.get_dict().get(dw_text))
     assert bob_insert_stirunit.is_valid()
@@ -430,10 +430,10 @@ def test_StirUnit_set_stratification_SetCorrectAttr():
     partyunit_text = "partyunit"
     bob_insert_stirunit = stirunit_shop(partyunit_text, stir_insert())
     party_id_text = "party_id"
-    bob_insert_stirunit.add_locator(party_id_text, bob_text)
+    bob_insert_stirunit.set_locator(party_id_text, bob_text)
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"
-    bob_insert_stirunit.add_required_arg(party_id_text, bob_text)
+    bob_insert_stirunit.set_required_arg(party_id_text, bob_text)
     bob_insert_stirunit.set_optional_arg(cw_text, bob_creditor_weight)
     bob_insert_stirunit.set_optional_arg(dw_text, bob_debtor_weight)
     assert bob_insert_stirunit.is_valid()
@@ -450,7 +450,7 @@ def test_MoveUnit_get_stir_ReturnsCorrectObj():
     w_value = 55
     w_name = "AgendaUnit_weight"
     w_stirunit = stirunit_shop(w_name, stir_update())
-    w_stirunit.add_required_arg(x_key=w_name, x_value=w_value)
+    w_stirunit.set_required_arg(x_key=w_name, x_value=w_value)
     sue_moveunit.set_stirunit(w_stirunit)
 
     # WHEN

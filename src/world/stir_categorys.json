@@ -53,7 +53,10 @@
     },
     "groupunit": {
         "DELETE": {
-            "stratification": 8
+            "stratification": 8,
+            "required_args": {
+                "group_id": "GroupID"
+            }
         },
         "INSERT": {
             "stratification": 6

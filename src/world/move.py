@@ -89,7 +89,7 @@ class StirUnit:
             stratification_text="stratification",
         )
 
-    def add_locator(self, x_key: str, x_value: any):
+    def set_locator(self, x_key: str, x_value: any):
         self.locator[x_key] = x_value
 
     def get_locator(self, x_key: str) -> any:
@@ -100,7 +100,7 @@ class StirUnit:
         locator_dict = get_empty_dict_if_none(category_dict.get("locator"))
         return locator_dict.keys() == self.locator.keys()
 
-    def add_required_arg(self, x_key: str, x_value: any):
+    def set_required_arg(self, x_key: str, x_value: any):
         self.required_args[x_key] = x_value
 
     def set_optional_arg(self, x_key: str, x_value: any):
@@ -168,6 +168,13 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
     elif x_stirunit.category == "partyunit" and x_stirunit.crud_text == stir_update():
         pass
     elif x_stirunit.category == "partyunit" and x_stirunit.crud_text == stir_insert():
+        pass
+    if x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_delete():
+        group_id = x_stirunit.get_locator("group_id")
+        x_agenda.del_groupunit(group_id)
+    elif x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_update():
+        pass
+    elif x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_insert():
         pass
 
     elif x_stirunit.category == "AgendaUnit_weight":
