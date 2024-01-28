@@ -181,10 +181,11 @@
         "INSERT": {
             "optional_args": {
                 "creditor_weight": "float",
-                "debtor_weight": "float"
+                "debtor_weight": "float",
+                "depotlink_type": "str"
             },
             "required_args": {
-                "party_id": "str"
+                "party_id": "PartyID"
             },
             "stir_order": 0
         },

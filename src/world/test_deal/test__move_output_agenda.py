@@ -114,6 +114,41 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     assert after_sue_agendaunit.get_party(carm_text) is None
 
 
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    assert before_sue_agendaunit.get_party(rico_text) != None
+    assert before_sue_agendaunit.get_party(carm_text) is None
+
+    # WHEN
+    category = "partyunit"
+    x_stirunit = stirunit_shop(category, stir_insert())
+    x_stirunit.set_locator("party_id", carm_text)
+    x_stirunit.set_required_arg("party_id", carm_text)
+    x_creditor_weight = 55
+    x_debtor_weight = 66
+    x_stirunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    x_stirunit.set_optional_arg("debtor_weight", x_debtor_weight)
+    sue_moveunit.set_stirunit(x_stirunit)
+    print(f"{sue_moveunit.insert_stirs.keys()=}")
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    rico_partyunit = after_sue_agendaunit.get_party(rico_text)
+    carm_partyunit = after_sue_agendaunit.get_party(carm_text)
+    assert rico_partyunit != None
+    assert carm_partyunit != None
+    assert carm_partyunit.creditor_weight == x_creditor_weight
+    assert carm_partyunit.debtor_weight == x_debtor_weight
+
+
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit_partylink():
     # GIVEN
     sue_road = get_sue_personroad()
