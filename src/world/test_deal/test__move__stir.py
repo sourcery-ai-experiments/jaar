@@ -251,6 +251,37 @@ def test_StirUnit_get_locator_ReturnsCorrectObj():
     assert partyunit_stirunit.get_locator(party_id_text) == bob_text
 
 
+def test_StirUnit_get_locator_key_ReturnsCorrectObj_single_parameter():
+    # GIVEN
+    bob_text = "Bob"
+    partyunit_text = "partyunit"
+    partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
+    party_id_text = "party_id"
+    partyunit_stirunit.set_locator(x_key=party_id_text, x_value=bob_text)
+
+    # WHEN / THEN
+    assert partyunit_stirunit.get_locator_key() == f"{partyunit_text} {bob_text}"
+
+
+def test_StirUnit_get_locator_key_ReturnsCorrectObj_double_parameter():
+    # GIVEN
+    bob_text = "Bob"
+    groupunit_partylink_text = "groupunit_partylink"
+    gupl_stirunit = stirunit_shop(groupunit_partylink_text)
+    party_id_text = "party_id"
+    tom_text = "Tom"
+    gupl_stirunit.set_locator(party_id_text, bob_text)
+    group_id_text = "group_id"
+    run_text = "Runners"
+    gupl_stirunit.set_locator(group_id_text, run_text)
+
+    # WHEN / THEN
+    assert (
+        gupl_stirunit.get_locator_key()
+        == f"{groupunit_partylink_text} {run_text} {bob_text}"
+    )
+
+
 def test_StirUnit_is_optional_args_valid_ReturnsCorrectBoolean():
     # WHEN
     partyunit_text = "partyunit"
@@ -454,7 +485,7 @@ def test_MoveUnit_get_stir_ReturnsCorrectObj():
     sue_moveunit.set_stirunit(w_stirunit)
 
     # WHEN
-    gen_stirunit = sue_moveunit.get_stir(stir_update(), category=w_name)
+    gen_stirunit = sue_moveunit.get_stir(stir_update(), locator_key=w_name)
 
     # THEN
     assert gen_stirunit == w_stirunit
@@ -514,7 +545,8 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
     )
     # THEN
     assert len(sue_moveunit.insert_stirs) == 1
-    assert sue_moveunit.insert_stirs.get(partyunit_text) != None
+    bob_locator_key = f"{partyunit_text} {bob_text}"
+    assert sue_moveunit.insert_stirs.get(bob_locator_key) != None
 
     # Delete RecordLocator="party_id"
     # Update RecordLocator="party_id", "creditor_weight", "debtor_weight"

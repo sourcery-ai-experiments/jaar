@@ -70,7 +70,10 @@
     },
     "groupunit_partylink": {
         "DELETE": {
-            "required_args": {},
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            },
             "stratification": 5
         },
         "INSERT": {

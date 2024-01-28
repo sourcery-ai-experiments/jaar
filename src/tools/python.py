@@ -13,9 +13,13 @@ def get_0_if_None(x_obj=None):
     return 0 if x_obj is None else x_obj
 
 
-def add_dict_if_missing(x_dict: dict, x_key: any):
-    if x_dict.get(x_key) is None:
-        x_dict[x_key] = {}
+def add_dict_if_missing(x_dict: dict, x_key1: any, x_key2: any = None):
+    if x_dict.get(x_key1) is None:
+        x_dict[x_key1] = {}
+    if x_key2 != None:
+        key1_dict = x_dict.get(x_key1)
+        if key1_dict.get(x_key2) is None:
+            key1_dict[x_key2] = {}
 
 
 def x_is_json(json_x: str) -> bool:

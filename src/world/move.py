@@ -95,6 +95,12 @@ class StirUnit:
     def get_locator(self, x_key: str) -> any:
         return self.locator.get(x_key)
 
+    def get_locator_key(self) -> str:
+        x_text = f"{self.category}"
+        for locator_key in sorted(self.locator.keys()):
+            x_text = f"{x_text} {self.locator.get(locator_key)}"
+        return x_text.lstrip().rstrip()
+
     def is_locator_valid(self) -> bool:
         category_dict = get_stir_config_dict().get(self.category)
         locator_dict = get_empty_dict_if_none(category_dict.get("locator"))
@@ -162,31 +168,40 @@ def stirunit_shop(
 
 
 def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
-    if x_stirunit.category == "partyunit" and x_stirunit.crud_text == stir_delete():
-        party_id = x_stirunit.get_locator("party_id")
+    xs = x_stirunit
+    if xs.category == "partyunit" and xs.crud_text == stir_delete():
+        party_id = xs.get_locator("party_id")
         x_agenda.del_partyunit(party_id)
-    elif x_stirunit.category == "partyunit" and x_stirunit.crud_text == stir_update():
+    elif xs.category == "partyunit" and xs.crud_text == stir_update():
         pass
-    elif x_stirunit.category == "partyunit" and x_stirunit.crud_text == stir_insert():
+    elif xs.category == "partyunit" and xs.crud_text == stir_insert():
         pass
-    if x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_delete():
-        group_id = x_stirunit.get_locator("group_id")
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_delete():
+        group_id = xs.get_locator("group_id")
+        party_id = xs.get_locator("party_id")
+        print(f"{group_id=} {party_id=}")
+        x_agenda.get_groupunit(group_id).del_partylink(party_id)
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_insert():
+        pass
+    elif xs.category == "groupunit" and xs.crud_text == stir_delete():
+        group_id = xs.get_locator("group_id")
         x_agenda.del_groupunit(group_id)
-    elif x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_update():
+    elif xs.category == "groupunit" and xs.crud_text == stir_update():
         pass
-    elif x_stirunit.category == "groupunit" and x_stirunit.crud_text == stir_insert():
+    elif xs.category == "groupunit" and xs.crud_text == stir_insert():
         pass
-
-    elif x_stirunit.category == "AgendaUnit_weight":
-        x_agenda._weight = x_stirunit.get_value(x_stirunit.category)
-    elif x_stirunit.category == "_max_tree_traverse":
-        x_agenda.set_max_tree_traverse(x_stirunit.get_value(x_stirunit.category))
-    elif x_stirunit.category == "_party_creditor_pool":
-        x_agenda.set_party_creditor_pool(x_stirunit.get_value(x_stirunit.category))
-    elif x_stirunit.category == "_party_debtor_pool":
-        x_agenda.set_party_debtor_pool(x_stirunit.get_value(x_stirunit.category))
-    elif x_stirunit.category == "_meld_strategy":
-        x_agenda.set_meld_strategy(x_stirunit.get_value(x_stirunit.category))
+    elif xs.category == "AgendaUnit_weight":
+        x_agenda._weight = xs.get_value(xs.category)
+    elif xs.category == "_max_tree_traverse":
+        x_agenda.set_max_tree_traverse(xs.get_value(xs.category))
+    elif xs.category == "_party_creditor_pool":
+        x_agenda.set_party_creditor_pool(xs.get_value(xs.category))
+    elif xs.category == "_party_debtor_pool":
+        x_agenda.set_party_debtor_pool(xs.get_value(xs.category))
+    elif xs.category == "_meld_strategy":
+        x_agenda.set_meld_strategy(xs.get_value(xs.category))
 
 
 @dataclass
@@ -199,14 +214,14 @@ class MoveUnit:
     def get_stratification_stirunit_dict(self) -> dict[int:StirUnit]:
         x_dict = {}
         for xs in self.delete_stirs.values():
-            add_dict_if_missing(x_dict, x_key=xs.stratification)
-            x_dict[xs.stratification][xs.category] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stratification)
+            x_dict[xs.stratification][xs.get_locator_key()] = xs
         for xs in self.insert_stirs.values():
-            add_dict_if_missing(x_dict, x_key=xs.stratification)
-            x_dict[xs.stratification][xs.category] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stratification)
+            x_dict[xs.stratification][xs.get_locator_key()] = xs
         for xs in self.update_stirs.values():
-            add_dict_if_missing(x_dict, x_key=xs.stratification)
-            x_dict[xs.stratification][xs.category] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stratification)
+            x_dict[xs.stratification][xs.get_locator_key()] = xs
         return x_dict
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
@@ -223,11 +238,11 @@ class MoveUnit:
         if x_stirunit.is_valid():
             x_stirunit.set_stratification()
             if x_stirunit.crud_text == stir_update():
-                self.update_stirs[x_stirunit.category] = x_stirunit
+                self.update_stirs[x_stirunit.get_locator_key()] = x_stirunit
             elif x_stirunit.crud_text == stir_insert():
-                self.insert_stirs[x_stirunit.category] = x_stirunit
+                self.insert_stirs[x_stirunit.get_locator_key()] = x_stirunit
             elif x_stirunit.crud_text == stir_delete():
-                self.delete_stirs[x_stirunit.category] = x_stirunit
+                self.delete_stirs[x_stirunit.get_locator_key()] = x_stirunit
 
     def add_stirunit(
         self,
@@ -246,13 +261,13 @@ class MoveUnit:
         )
         self.set_stirunit(x_stirunit)
 
-    def get_stir(self, crud_text: str, category: str) -> StirUnit:
+    def get_stir(self, crud_text: str, locator_key: str) -> StirUnit:
         if crud_text == stir_update():
-            return self.update_stirs.get(category)
+            return self.update_stirs.get(locator_key)
         elif crud_text == stir_delete():
-            return self.delete_stirs.get(category)
+            return self.delete_stirs.get(locator_key)
         elif crud_text == stir_insert():
-            return self.insert_stirs.get(category)
+            return self.insert_stirs.get(locator_key)
 
 
 def moveunit_shop(

@@ -112,31 +112,52 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     assert after_sue_agendaunit.get_party(carm_text) is None
 
 
-# def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_group():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_moveunit = moveunit_shop(sue_road)
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit_partylink():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    dizz_text = "Dizzy"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    before_sue_agendaunit.add_partyunit(carm_text)
+    before_sue_agendaunit.add_partyunit(dizz_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    run_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_text = ",flyers"
+    fly_groupunit = groupunit_shop(fly_text)
+    fly_groupunit.set_partylink(partylink_shop(rico_text))
+    fly_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_groupunit.set_partylink(partylink_shop(dizz_text))
+    before_sue_agendaunit.set_groupunit(run_groupunit)
+    before_sue_agendaunit.set_groupunit(fly_groupunit)
+    assert len(before_sue_agendaunit.get_groupunit(run_text)._partys) == 2
+    assert len(before_sue_agendaunit.get_groupunit(fly_text)._partys) == 3
 
-#     before_sue_agendaunit = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     carm_text = "Carmen"
-#     before_sue_agendaunit.add_partyunit(rico_text)
-#     before_sue_agendaunit.add_partyunit(carm_text)
+    # WHEN
+    rico_stirunit = stirunit_shop("groupunit_partylink", stir_delete())
+    rico_stirunit.set_locator("group_id", run_text)
+    rico_stirunit.set_locator("party_id", rico_text)
+    rico_stirunit.set_required_arg("group_id", run_text)
+    rico_stirunit.set_required_arg("party_id", rico_text)
+    # print(f"{rico_stirunit=}")
+    carm_stirunit = stirunit_shop("groupunit_partylink", stir_delete())
+    carm_stirunit.set_locator("group_id", fly_text)
+    carm_stirunit.set_locator("party_id", carm_text)
+    carm_stirunit.set_required_arg("group_id", fly_text)
+    carm_stirunit.set_required_arg("party_id", carm_text)
+    # print(f"{carm_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(rico_stirunit)
+    sue_moveunit.set_stirunit(carm_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
 
-#     category = "groupunit"
-#     x_stirunit = stirunit_shop(category, stir_delete())
-#     x_stirunit.set_locator("group_id", carm_text)
-#     sue_moveunit.set_stirunit(x_stirunit)
-
-#     # WHEN
-#     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
-
-#     # THEN
-#     print(f"{sue_moveunit.update_stirs=}")
-#     assert after_sue_agendaunit != before_sue_agendaunit
-#     assert after_sue_agendaunit.get_party(rico_text) != None
-#     assert after_sue_agendaunit.get_party(carm_text) is None
+    # THEN
+    assert len(after_sue_agendaunit.get_groupunit(fly_text)._partys) == 2
+    assert len(after_sue_agendaunit.get_groupunit(run_text)._partys) == 1
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
