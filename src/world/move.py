@@ -199,6 +199,14 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         pass
     elif xs.category == "idea" and xs.crud_text == stir_insert():
         pass
+    elif xs.category == "idea_balancelink" and xs.crud_text == stir_delete():
+        idea_road = xs.get_locator("road")
+        group_id = xs.get_value("group_id")
+        x_agenda.edit_idea_attr(idea_road, balancelink_del=group_id)
+    elif xs.category == "idea_balancelink" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "idea_balancelink" and xs.crud_text == stir_insert():
+        pass
 
     elif xs.category == "AgendaUnit_weight":
         x_agenda._weight = xs.get_value(xs.category)

@@ -112,10 +112,18 @@
     },
     "idea_balancelink": {
         "DELETE": {
+            "required_args": {
+                "group_id": "GroupID",
+                "road": "RoadUnit"
+            },
             "stir_order": 16
         },
         "INSERT": {
             "stir_order": 10
+        },
+        "locator": {
+            "group_id": "GroupID",
+            "road": "RoadUnit"
         },
         "UPDATE": {
             "stir_order": 22

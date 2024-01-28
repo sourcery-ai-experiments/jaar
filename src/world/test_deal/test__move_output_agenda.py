@@ -1,5 +1,6 @@
 from src._prime.road import get_single_roadnode
 from src._prime.meld import get_meld_default
+from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
@@ -215,6 +216,59 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit(
     # THEN
     assert after_sue_agendaunit.idea_exists(ball_road)
     assert after_sue_agendaunit.idea_exists(disc_road) == False
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    dizz_text = "Dizzy"
+    before_sue_au.add_partyunit(rico_text)
+    before_sue_au.add_partyunit(carm_text)
+    before_sue_au.add_partyunit(dizz_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    run_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_text = ",flyers"
+    fly_groupunit = groupunit_shop(fly_text)
+    fly_groupunit.set_partylink(partylink_shop(rico_text))
+    fly_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_groupunit.set_partylink(partylink_shop(dizz_text))
+    before_sue_au.set_groupunit(run_groupunit)
+    before_sue_au.set_groupunit(fly_groupunit)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    disc_text = "Ultimate Disc"
+    disc_road = before_sue_au.make_road(sports_road, disc_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    before_sue_au.add_idea(ideaunit_shop(disc_text), sports_road)
+    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
+    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(fly_text))
+    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(run_text))
+    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(fly_text))
+    assert len(before_sue_au.get_idea_obj(ball_road)._balancelinks) == 2
+    assert len(before_sue_au.get_idea_obj(disc_road)._balancelinks) == 2
+
+    # WHEN
+    delete_disc_stirunit = stirunit_shop("idea_balancelink", stir_delete())
+    delete_disc_stirunit.set_locator("road", disc_road)
+    delete_disc_stirunit.set_locator("group_id", fly_text)
+    delete_disc_stirunit.set_required_arg("road", disc_road)
+    delete_disc_stirunit.set_required_arg("group_id", fly_text)
+    print(f"{delete_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(delete_disc_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    assert len(after_sue_agendaunit.get_idea_obj(ball_road)._balancelinks) == 2
+    assert len(after_sue_agendaunit.get_idea_obj(disc_road)._balancelinks) == 1
 
 
 def test_MoveUnit_get_sue_moveunit_example1_ContainsStirUnits():
