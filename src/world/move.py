@@ -1,5 +1,6 @@
 from src._prime.road import PersonRoad
 from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.group import groupunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.world.examples.world_env_kit import get_src_world_dir
 from src.tools.python import (
@@ -146,6 +147,7 @@ class StirUnit:
 
     def get_value(self, arg_key: str) -> any:
         required_value = self.required_args.get(arg_key)
+        print(f"{required_value} {self.required_args=} {arg_key=}")
         if required_value is None:
             return self.optional_args.get(arg_key)
         return required_value
@@ -213,9 +215,23 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         group_id = xs.get_locator("group_id")
         x_agenda.del_groupunit(group_id)
     elif xs.category == "groupunit" and xs.crud_text == stir_update():
-        pass
+        if xs.get_value("_partylinks_set_by_economy_road") != None:
+            x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
+            x_groupunit._partylinks_set_by_economy_road = xs.get_value(
+                "_partylinks_set_by_economy_road"
+            )
     elif xs.category == "groupunit" and xs.crud_text == stir_insert():
-        pass
+        x_agenda.set_groupunit(
+            groupunit_shop(
+                group_id=xs.get_locator("group_id"),
+                _partylinks_set_by_economy_road=xs.get_locator(
+                    "_partylinks_set_by_economy_road"
+                ),
+            ),
+            create_missing_partys=False,
+            replace=False,
+            add_partylinks=False,
+        )
     elif xs.category == "idea" and xs.crud_text == stir_delete():
         idea_road = xs.get_locator("road")
         del_children = xs.get_value("del_children")

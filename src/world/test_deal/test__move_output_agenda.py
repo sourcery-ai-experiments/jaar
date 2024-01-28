@@ -16,6 +16,7 @@ from src.world.move import (
 from src.world.examples.example_deals import (
     get_sue_personroad,
     get_sue_moveunit_example1,
+    get_yao_example_roadunit as yao_roadunit,
 )
 
 
@@ -299,6 +300,87 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit
     after_run_rico_partylink = after_run_groupunit.get_partylink(rico_text)
     assert after_run_rico_partylink.creditor_weight == new_rico_run_creditor_weight
     assert after_run_rico_partylink.debtor_weight == new_rico_run_debtor_weight
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    run_text = ",runners"
+    fly_text = ",flyers"
+    before_sue_agendaunit.set_groupunit(groupunit_shop(fly_text))
+    before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
+    assert before_sue_agendaunit.get_groupunit(run_text) != None
+    assert before_sue_agendaunit.get_groupunit(fly_text) != None
+
+    # WHEN
+    x_stirunit = stirunit_shop("groupunit", stir_delete())
+    print(f"{x_stirunit=}")
+    x_stirunit.set_locator("group_id", run_text)
+    x_stirunit.set_required_arg("group_id", run_text)
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(x_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert after_sue_agendaunit.get_groupunit(run_text) is None
+    assert after_sue_agendaunit.get_groupunit(fly_text) != None
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    run_text = ",runners"
+    before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
+    fly_text = ",flyers"
+    assert before_sue_agendaunit.get_groupunit(run_text) != None
+    assert before_sue_agendaunit.get_groupunit(fly_text) is None
+
+    # WHEN
+    x_stirunit = stirunit_shop("groupunit", stir_insert())
+    x_stirunit.set_locator("group_id", fly_text)
+    x_stirunit.set_required_arg("group_id", fly_text)
+    x_stirunit.set_optional_arg("_partylinks_set_by_economy_road", yao_roadunit())
+    print(f"{x_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(x_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert after_sue_agendaunit.get_groupunit(run_text) != None
+    assert after_sue_agendaunit.get_groupunit(fly_text) != None
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    run_text = ",runners"
+    before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
+    assert (
+        before_sue_agendaunit.get_groupunit(run_text)._partylinks_set_by_economy_road
+        is None
+    )
+
+    # WHEN
+    x_stirunit = stirunit_shop("groupunit", stir_update())
+    x_stirunit.set_locator("group_id", run_text)
+    x_stirunit.set_required_arg("group_id", run_text)
+    x_stirunit.set_optional_arg("_partylinks_set_by_economy_road", yao_roadunit())
+    print(f"{x_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(x_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert (
+        after_sue_agendaunit.get_groupunit(run_text)._partylinks_set_by_economy_road
+        == yao_roadunit()
+    )
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():

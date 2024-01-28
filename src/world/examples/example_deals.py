@@ -38,6 +38,15 @@ def get_yao_personroad() -> PersonRoad:
     return roadnodes([yao_text, food_text, yao_text, ohio_text])
 
 
+def get_yao_example_roadunit() -> PersonRoad:
+    yao_text = "Yao"
+    food_text = "Hunger"
+    ohio_text = "Ohio"
+    sports_text = "sports"
+    run_text = "running"
+    return roadnodes([yao_text, food_text, yao_text, ohio_text, sports_text, run_text])
+
+
 def get_no_topiclinks_yao_sue_dealunit() -> DealUnit:
     yao_sue_dealunit = dealunit_shop(get_yao_personroad(), get_sue_personroad())
     yao_sue_dealunit.set_vowunit(vowunit_shop(1, author_weight=12, reader_weight=7))
