@@ -4,7 +4,7 @@
             "required_args": {
                 "_auto_output_to_forum": "bool"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "_max_tree_traverse": {
@@ -12,7 +12,7 @@
             "required_args": {
                 "_max_tree_traverse": "int"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "_meld_strategy": {
@@ -20,7 +20,7 @@
             "required_args": {
                 "_meld_strategy": "str"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "_party_creditor_pool": {
@@ -28,7 +28,7 @@
             "required_args": {
                 "_party_creditor_pool": "int"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "_party_debtor_pool": {
@@ -36,7 +36,7 @@
             "required_args": {
                 "_party_debtor_pool": "int"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "AgendaUnit_weight": {
@@ -48,24 +48,24 @@
             "required_args": {
                 "AgendaUnit_weight": "int"
             },
-            "stratification": 27
+            "stir_order": 27
         }
     },
     "groupunit": {
         "DELETE": {
-            "stratification": 8,
             "required_args": {
                 "group_id": "GroupID"
-            }
+            },
+            "stir_order": 8
         },
         "INSERT": {
-            "stratification": 6
+            "stir_order": 6
         },
         "locator": {
             "group_id": "GroupID"
         },
         "UPDATE": {
-            "stratification": 7
+            "stir_order": 7
         }
     },
     "groupunit_partylink": {
@@ -74,92 +74,101 @@
                 "group_id": "GroupID",
                 "party_id": "PartyID"
             },
-            "stratification": 5
+            "stir_order": 5
         },
         "INSERT": {
-            "stratification": 3
+            "stir_order": 3
         },
         "locator": {
             "group_id": "GroupID",
             "party_id": "PartyID"
         },
         "UPDATE": {
-            "stratification": 4
+            "stir_order": 4
         }
     },
     "idea": {
         "DELETE": {
-            "stratification": 15
+            "optional_args": {
+                "del_children": "bool"
+            },
+            "required_args": {
+                "road": "RoadUnit"
+            },
+            "stir_order": 15
         },
         "INSERT": {
-            "stratification": 9
+            "required_args": {
+                "road": "RoadUnit"
+            },
+            "stir_order": 9
         },
         "locator": {
             "road": "RoadUnit"
         },
         "UPDATE": {
-            "stratification": 21
+            "stir_order": 21
         }
     },
     "idea_balancelink": {
         "DELETE": {
-            "stratification": 16
+            "stir_order": 16
         },
         "INSERT": {
-            "stratification": 10
+            "stir_order": 10
         },
         "UPDATE": {
-            "stratification": 22
+            "stir_order": 22
         }
     },
     "idea_beliefunit": {
         "DELETE": {
-            "stratification": 20
+            "stir_order": 20
         },
         "INSERT": {
-            "stratification": 14
+            "stir_order": 14
         },
         "UPDATE": {
-            "stratification": 26
+            "stir_order": 26
         }
     },
     "idea_reasonunit": {
         "DELETE": {
-            "stratification": 18
+            "stir_order": 18
         },
         "INSERT": {
-            "stratification": 12
+            "stir_order": 12
         },
         "UPDATE": {
-            "stratification": 24
+            "stir_order": 24
         }
     },
     "idea_reasonunit_premiseunit": {
         "DELETE": {
-            "stratification": 17
+            "stir_order": 17
         },
         "INSERT": {
-            "stratification": 11
+            "stir_order": 11
         },
         "UPDATE": {
-            "stratification": 23
+            "stir_order": 23
         }
     },
     "idea_suffgroup": {
         "DELETE": {
-            "stratification": 19
+            "stir_order": 19
         },
         "INSERT": {
-            "stratification": 13
+            "stir_order": 13
         },
         "UPDATE": {
-            "stratification": 25
+            "stir_order": 25
         }
     },
     "partyunit": {
         "DELETE": {
             "required_args": {},
-            "stratification": 2
+            "stir_order": 2
         },
         "INSERT": {
             "optional_args": {
@@ -169,7 +178,7 @@
             "required_args": {
                 "party_id": "str"
             },
-            "stratification": 0
+            "stir_order": 0
         },
         "locator": {
             "party_id": "PartyID"
@@ -179,7 +188,7 @@
                 "creditor_weight": "float",
                 "debtor_weight": "float"
             },
-            "stratification": 1
+            "stir_order": 1
         }
     }
 }

@@ -51,25 +51,25 @@ def is_category_ref(category_text: str) -> bool:
 def get_mog(
     category: str,
     crud_text: str,
-    stratification_text: str,
-    expected_stratification: int = None,
+    stir_order_text: str,
+    expected_stir_order: int = None,
 ) -> int:
     stir_config_dict = get_stir_config_dict()
     category_dict = stir_config_dict.get(category)
     crud_dict = category_dict.get(crud_text)
-    return crud_dict.get(stratification_text)
+    return crud_dict.get(stir_order_text)
 
 
 def set_mog(
     category: str,
     crud_text: str,
-    stratification_text: str,
-    stratification_int: int,
+    stir_order_text: str,
+    stir_order_int: int,
 ) -> int:
     stir_config_dict = get_stir_config_dict()
     category_dict = stir_config_dict.get(category)
     crud_dict = category_dict.get(crud_text)
-    crud_dict[stratification_text] = stratification_int
+    crud_dict[stir_order_text] = stir_order_int
     save_stir_config_file(stir_config_dict)
 
 
@@ -80,13 +80,13 @@ class StirUnit:
     locator: dict[str:str] = None
     required_args: dict[str:str] = None
     optional_args: dict[str:str] = None
-    stratification: int = None
+    stir_order: int = None
 
-    def set_stratification(self):
-        self.stratification = get_mog(
+    def set_stir_order(self):
+        self.stir_order = get_mog(
             category=self.category,
             crud_text=self.crud_text,
-            stratification_text="stratification",
+            stir_order_text="stir_order",
         )
 
     def set_locator(self, x_key: str, x_value: any):
@@ -179,7 +179,6 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_delete():
         group_id = xs.get_locator("group_id")
         party_id = xs.get_locator("party_id")
-        print(f"{group_id=} {party_id=}")
         x_agenda.get_groupunit(group_id).del_partylink(party_id)
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
         pass
@@ -192,6 +191,15 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         pass
     elif xs.category == "groupunit" and xs.crud_text == stir_insert():
         pass
+    elif xs.category == "idea" and xs.crud_text == stir_delete():
+        idea_road = xs.get_locator("road")
+        del_children = xs.get_value("del_children")
+        x_agenda.del_idea_kid(idea_road, del_children=del_children)
+    elif xs.category == "idea" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "idea" and xs.crud_text == stir_insert():
+        pass
+
     elif xs.category == "AgendaUnit_weight":
         x_agenda._weight = xs.get_value(xs.category)
     elif xs.category == "_max_tree_traverse":
@@ -211,32 +219,32 @@ class MoveUnit:
     insert_stirs: dict[str:StirUnit] = None
     update_stirs: dict[str:StirUnit] = None
 
-    def get_stratification_stirunit_dict(self) -> dict[int:StirUnit]:
+    def get_stir_order_stirunit_dict(self) -> dict[int:StirUnit]:
         x_dict = {}
         for xs in self.delete_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stratification)
-            x_dict[xs.stratification][xs.get_locator_key()] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
+            x_dict[xs.stir_order][xs.get_locator_key()] = xs
         for xs in self.insert_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stratification)
-            x_dict[xs.stratification][xs.get_locator_key()] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
+            x_dict[xs.stir_order][xs.get_locator_key()] = xs
         for xs in self.update_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stratification)
-            x_dict[xs.stratification][xs.get_locator_key()] = xs
+            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
+            x_dict[xs.stir_order][xs.get_locator_key()] = xs
         return x_dict
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
-        stirunits = self.get_stratification_stirunit_dict()
+        stirunits = self.get_stir_order_stirunit_dict()
 
-        for stratification in sorted(stirunits.keys()):
-            stra_stirunits = stirunits.get(stratification)
+        for stir_order in sorted(stirunits.keys()):
+            stra_stirunits = stirunits.get(stir_order)
             for x_stir in stra_stirunits.values():
                 change_agenda_with_stirunit(after_agenda, x_stirunit=x_stir)
         return after_agenda
 
     def set_stirunit(self, x_stirunit: StirUnit):
         if x_stirunit.is_valid():
-            x_stirunit.set_stratification()
+            x_stirunit.set_stir_order()
             if x_stirunit.crud_text == stir_update():
                 self.update_stirs[x_stirunit.get_locator_key()] = x_stirunit
             elif x_stirunit.crud_text == stir_insert():

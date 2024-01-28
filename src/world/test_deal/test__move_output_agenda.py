@@ -1,6 +1,7 @@
 from src._prime.road import get_single_roadnode
 from src._prime.meld import get_meld_default
 from src.agenda.party import partylink_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.world.move import (
@@ -184,6 +185,36 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit
     # THEN
     assert after_sue_agendaunit.get_groupunit(run_text) is None
     assert after_sue_agendaunit.get_groupunit(fly_text) != None
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    disc_text = "Ultimate Disc"
+    disc_road = before_sue_agendaunit.make_road(sports_road, disc_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    before_sue_agendaunit.add_idea(ideaunit_shop(disc_text), sports_road)
+    assert before_sue_agendaunit.idea_exists(ball_road)
+    assert before_sue_agendaunit.idea_exists(disc_road)
+
+    # WHEN
+    delete_disc_stirunit = stirunit_shop("idea", stir_delete())
+    delete_disc_stirunit.set_locator("road", disc_road)
+    delete_disc_stirunit.set_required_arg("road", disc_road)
+    print(f"{delete_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(delete_disc_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert after_sue_agendaunit.idea_exists(ball_road)
+    assert after_sue_agendaunit.idea_exists(disc_road) == False
 
 
 def test_MoveUnit_get_sue_moveunit_example1_ContainsStirUnits():

@@ -42,29 +42,29 @@ def test_category_ref_ReturnsCorrectObj():
     assert is_category_ref("idearoot") == False
 
 
-def every_crud_text_has_stratification(stir_config_dict, stratification_text):
+def every_crud_text_has_stir_order(stir_config_dict, stir_order_text):
     for category, category_dict in stir_config_dict.items():
         if category_dict.get(stir_insert()) != None:
             category_insert = category_dict.get(stir_insert())
-            if category_insert.get(stratification_text) is None:
+            if category_insert.get(stir_order_text) is None:
                 print(
-                    f"{category} {stir_insert()} {category_insert.get(stratification_text)=}"
+                    f"{category} {stir_insert()} {category_insert.get(stir_order_text)=}"
                 )
                 return False
 
         if category_dict.get(stir_update()) != None:
             category_update = category_dict.get(stir_update())
-            if category_update.get(stratification_text) is None:
+            if category_update.get(stir_order_text) is None:
                 print(
-                    f"{category} {stir_update()} {category_update.get(stratification_text)=}"
+                    f"{category} {stir_update()} {category_update.get(stir_order_text)=}"
                 )
                 return False
 
         if category_dict.get(stir_delete()) != None:
             category_delete = category_dict.get(stir_delete())
-            if category_delete.get(stratification_text) is None:
+            if category_delete.get(stir_order_text) is None:
                 print(
-                    f"{category} {stir_delete()} {category_delete.get(stratification_text)=}"
+                    f"{category} {stir_delete()} {category_delete.get(stir_order_text)=}"
                 )
                 return False
     return True
@@ -72,13 +72,11 @@ def every_crud_text_has_stratification(stir_config_dict, stratification_text):
 
 def test_get_stir_config_dict_EveryCrudOperationHasMoveOrderGroup():
     # GIVEN
-    stratification_text = "stratification"
+    stir_order_text = "stir_order"
 
     # WHEN / THEN
-    assert every_crud_text_has_stratification(
-        get_stir_config_dict(), stratification_text
-    )
-    mog = stratification_text
+    assert every_crud_text_has_stir_order(get_stir_config_dict(), stir_order_text)
+    mog = stir_order_text
     # Simple script for editing stir_categorys.json
     # set_mog("partyunit", stir_insert(), mog, 0)
     # set_mog("partyunit", stir_update(), mog, 1)
@@ -159,7 +157,7 @@ def test_StirUnit_exists():
     x_stirunit.locator is None
     x_stirunit.required_args is None
     x_stirunit.optional_args is None
-    x_stirunit.stratification is None
+    x_stirunit.stir_order is None
 
 
 def test_stirunit_shop_ReturnsCorrectObj():
@@ -441,7 +439,7 @@ def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
         category, stir_update(), required_args=required_args
     )
     assert sue_moveunit.update_stirs == {}
-    assert agenda_weight_stirunit.stratification is None
+    assert agenda_weight_stirunit.stir_order is None
 
     # WHEN
     sue_moveunit.set_stirunit(agenda_weight_stirunit)
@@ -450,10 +448,10 @@ def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
     assert len(sue_moveunit.update_stirs) == 1
     x_stirunit = sue_moveunit.update_stirs.get(category)
     assert x_stirunit == agenda_weight_stirunit
-    assert agenda_weight_stirunit.stratification != None
+    assert agenda_weight_stirunit.stir_order != None
 
 
-def test_StirUnit_set_stratification_SetCorrectAttr():
+def test_StirUnit_set_stir_order_SetCorrectAttr():
     # GIVEN
     bob_text = "Bob"
     bob_creditor_weight = 55
@@ -548,9 +546,6 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
     bob_locator_key = f"{partyunit_text} {bob_text}"
     assert sue_moveunit.insert_stirs.get(bob_locator_key) != None
 
-    # Delete RecordLocator="party_id"
-    # Update RecordLocator="party_id", "creditor_weight", "debtor_weight"
-
 
 def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     # GIVEN
@@ -608,7 +603,7 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     assert x_stirunit == sue_moveunit.update_stirs.get(x_attribute)
 
 
-def test_MoveUnit_get_stratification_stirunit_dict_ReturnsCorrectObj():
+def test_MoveUnit_get_stir_order_stirunit_dict_ReturnsCorrectObj():
     # GIVEN
     sue_moveunit = get_sue_moveunit_example1()
     assert len(sue_moveunit.update_stirs) == 5
@@ -616,10 +611,10 @@ def test_MoveUnit_get_stratification_stirunit_dict_ReturnsCorrectObj():
     assert len(sue_moveunit.insert_stirs) == 0
 
     # WHEN
-    sue_stratification_dict = sue_moveunit.get_stratification_stirunit_dict()
+    sue_stir_order_dict = sue_moveunit.get_stir_order_stirunit_dict()
 
     # THEN
-    assert len(sue_stratification_dict) == 2
-    print(f"{sue_stratification_dict=}")
-    assert len(sue_stratification_dict[2]) == 1
-    assert len(sue_stratification_dict[27]) == 5
+    assert len(sue_stir_order_dict) == 2
+    print(f"{sue_stir_order_dict=}")
+    assert len(sue_stir_order_dict[2]) == 1
+    assert len(sue_stir_order_dict[27]) == 5
