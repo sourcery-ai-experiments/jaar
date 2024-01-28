@@ -89,6 +89,10 @@ class PartyunitsCreditorDebtorSumException(Exception):
     pass
 
 
+class PartyMissingException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _economy_id: EconomyID = None
@@ -575,6 +579,24 @@ class AgendaUnit:
             old_party_groupunit = self.get_groupunit(old_party_group_id)
             old_party_groupunit._shift_partylink(old_party_id, new_party_id)
         self.del_partyunit(party_id=old_party_id)
+
+    def edit_partyunit(
+        self,
+        party_id: PartyID,
+        creditor_weight: int = None,
+        debtor_weight: int = None,
+        depotlink_type: str = None,
+    ):
+        if self._partys.get(party_id) is None:
+            raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
+        x_partyunit = self.get_party(party_id)
+        if creditor_weight != None:
+            x_partyunit.creditor_weight = creditor_weight
+        if debtor_weight != None:
+            x_partyunit.debtor_weight = debtor_weight
+        if depotlink_type != None:
+            x_partyunit.set_depotlink_type(depotlink_type)
+        self.set_partyunit(x_partyunit)
 
     def get_party(self, party_id: PartyID) -> PartyUnit:
         return self._partys.get(party_id)

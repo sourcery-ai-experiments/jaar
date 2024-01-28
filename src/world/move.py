@@ -174,7 +174,12 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         party_id = xs.get_locator("party_id")
         x_agenda.del_partyunit(party_id)
     elif xs.category == "partyunit" and xs.crud_text == stir_update():
-        pass
+        x_agenda.edit_partyunit(
+            party_id=xs.get_value("party_id"),
+            creditor_weight=xs.get_value("creditor_weight"),
+            debtor_weight=xs.get_value("debtor_weight"),
+            depotlink_type=xs.get_value("depotlink_type"),
+        )
     elif xs.category == "partyunit" and xs.crud_text == stir_insert():
         x_agenda.set_partyunit(
             partyunit_shop(

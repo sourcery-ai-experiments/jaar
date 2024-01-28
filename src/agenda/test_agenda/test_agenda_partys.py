@@ -126,6 +126,54 @@ def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_GroupUnit():
     assert rico_partylink.debtor_weight == 1
 
 
+def test_AgendaUnit_edit_party_RaiseExceptionWhenPartyDoesNotExist():
+    # GIVEN
+    yao_agenda = agendaunit_shop("Yao")
+    rico_text = "rico"
+    rico_creditor_weight = 55
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        yao_agenda.edit_partyunit(rico_text, creditor_weight=rico_creditor_weight)
+    assert str(excinfo.value) == f"PartyUnit '{rico_text}' does not exist."
+
+
+def test_AgendaUnit_edit_party_CorrectlyUpdatesObj():
+    # GIVEN
+    yao_agenda = agendaunit_shop("Yao")
+    rico_text = "rico"
+    old_rico_creditor_weight = 55
+    old_rico_debtor_weight = 66
+    rico_depotlink_type = "assignment"
+    yao_agenda.set_partyunit(
+        partyunit_shop(
+            rico_text,
+            old_rico_creditor_weight,
+            old_rico_debtor_weight,
+            depotlink_type=rico_depotlink_type,
+        )
+    )
+    rico_partyunit = yao_agenda.get_party(rico_text)
+    assert rico_partyunit.creditor_weight == old_rico_creditor_weight
+    assert rico_partyunit.debtor_weight == old_rico_debtor_weight
+    assert rico_partyunit.depotlink_type == rico_depotlink_type
+
+    # WHEN
+    new_rico_creditor_weight = 22
+    new_rico_debtor_weight = 33
+    yao_agenda.edit_partyunit(
+        party_id=rico_text,
+        creditor_weight=new_rico_creditor_weight,
+        debtor_weight=new_rico_debtor_weight,
+        depotlink_type=None,
+    )
+
+    # THEN
+    assert rico_partyunit.creditor_weight == new_rico_creditor_weight
+    assert rico_partyunit.debtor_weight == new_rico_debtor_weight
+    assert rico_partyunit.depotlink_type == rico_depotlink_type
+
+
 def test_AgendaUnit_get_party_ReturnsCorrectObj():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")

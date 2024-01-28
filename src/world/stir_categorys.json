@@ -195,7 +195,11 @@
         "UPDATE": {
             "optional_args": {
                 "creditor_weight": "float",
-                "debtor_weight": "float"
+                "debtor_weight": "float",
+                "depotlink_type": "float"
+            },
+            "required_args": {
+                "party_id": "PartyID"
             },
             "stir_order": 1
         }
