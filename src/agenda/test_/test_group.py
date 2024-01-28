@@ -158,7 +158,7 @@ def test_groupunit_shop_WhenSinglePartyCorrectlyDeletes_partylinks_set_by_econom
     )
 
 
-def test_GroupUnit_set_partylink_worksCorrectly():
+def test_GroupUnit_set_partylink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -176,7 +176,7 @@ def test_GroupUnit_set_partylink_worksCorrectly():
     assert swimmers_group._partys == swimmers_partys
 
 
-def test_GroupUnit_get_partylink_worksCorrectly():
+def test_GroupUnit_get_partylink_ReturnsCorrectObj():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -188,6 +188,28 @@ def test_GroupUnit_get_partylink_worksCorrectly():
     assert swimmers_group.get_partylink(todd_text) != None
     assert swimmers_group.get_partylink(mery_text) != None
     assert swimmers_group.get_partylink("todd") is None
+
+
+def test_GroupUnit_edit_partylink_CorrectlySetsAttr():
+    # GIVEN
+    todd_text = "Todd"
+    old_todd_creditor_weight = 13
+    todd_debtor_weight = 7
+    swimmers_group = groupunit_shop(group_id=",swimmers")
+    swimmers_group.set_partylink(
+        partylink_shop(todd_text, old_todd_creditor_weight, todd_debtor_weight)
+    )
+    todd_partylink = swimmers_group.get_partylink(todd_text)
+    assert todd_partylink.creditor_weight == old_todd_creditor_weight
+
+    # WHEN
+    new_todd_creditor_weight = 17
+    swimmers_group.edit_partylink(
+        party_id=todd_text, creditor_weight=new_todd_creditor_weight
+    )
+
+    # THEN
+    assert todd_partylink.creditor_weight == new_todd_creditor_weight
 
 
 def test_GroupUnit_partylink_exists_worksCorrectly():

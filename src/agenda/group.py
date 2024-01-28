@@ -104,6 +104,15 @@ class GroupUnit(GroupCore):
     def set_partylink(self, partylink: PartyLink):
         self._partys[partylink.party_id] = partylink
 
+    def edit_partylink(
+        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
+    ):
+        x_partylink = self.get_partylink(party_id)
+        if creditor_weight != None:
+            x_partylink.creditor_weight = creditor_weight
+        if debtor_weight != None:
+            x_partylink.debtor_weight = debtor_weight
+
     def get_partylink(self, party_id: PartyID) -> PartyLink:
         return self._partys.get(party_id)
 

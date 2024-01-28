@@ -1,5 +1,5 @@
 from src._prime.road import PersonRoad
-from src.agenda.party import partyunit_shop
+from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.world.examples.world_env_kit import get_src_world_dir
 from src.tools.python import (
@@ -194,16 +194,21 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         party_id = xs.get_locator("party_id")
         x_agenda.get_groupunit(group_id).del_partylink(party_id)
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
-        x_agenda.set_partyunit(
-            partyunit_shop(
-                party_id=xs.get_value("party_id"),
-                creditor_weight=xs.get_value("creditor_weight"),
-                debtor_weight=xs.get_value("debtor_weight"),
-                depotlink_type=xs.get_value("depotlink_type"),
-            )
+        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
+        x_groupunit.edit_partylink(
+            party_id=xs.get_value("party_id"),
+            creditor_weight=xs.get_value("creditor_weight"),
+            debtor_weight=xs.get_value("debtor_weight"),
         )
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_insert():
-        pass
+        x_groupunit = x_agenda.get_groupunit(xs.get_locator("group_id"))
+        x_groupunit.set_partylink(
+            partylink_shop(
+                party_id=xs.get_locator("party_id"),
+                creditor_weight=xs.get_value("creditor_weight"),
+                debtor_weight=xs.get_value("debtor_weight"),
+            )
+        )
     elif xs.category == "groupunit" and xs.crud_text == stir_delete():
         group_id = xs.get_locator("group_id")
         x_agenda.del_groupunit(group_id)

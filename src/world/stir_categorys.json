@@ -77,6 +77,14 @@
             "stir_order": 5
         },
         "INSERT": {
+            "optional_args": {
+                "creditor_weight": "int",
+                "debtor_weight": "int"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            },
             "stir_order": 3
         },
         "locator": {
@@ -84,6 +92,14 @@
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "optional_args": {
+                "creditor_weight": "int",
+                "debtor_weight": "int"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            },
             "stir_order": 4
         }
     },
