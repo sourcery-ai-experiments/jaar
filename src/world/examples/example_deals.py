@@ -1,9 +1,4 @@
-from src._prime.road import (
-    create_road,
-    create_economyaddress,
-    PersonRoad,
-    create_road_from_nodes as roadnodes,
-)
+from src._prime.road import PersonRoad, create_road_from_nodes as roadnodes
 from src.world.move import (
     MoveUnit,
     stirunit_shop,
@@ -12,7 +7,6 @@ from src.world.move import (
     stir_delete,
 )
 from src.world.deal import dealunit_shop, DealUnit, vowunit_shop
-from src.world.examples.example_topics import get_no_topiclinks_vowunit
 
 
 def get_bob_personroad() -> PersonRoad:

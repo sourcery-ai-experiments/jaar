@@ -614,6 +614,6 @@ def test_MoveUnit_get_stir_order_stirunit_dict_ReturnsCorrectObj():
 
     # THEN
     assert len(sue_stir_order_dict) == 2
-    print(f"{sue_stir_order_dict=}")
+    print(f"{sue_stir_order_dict.keys()=}")
     assert len(sue_stir_order_dict[2]) == 1
     assert len(sue_stir_order_dict[27]) == 5

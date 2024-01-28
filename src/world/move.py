@@ -1,14 +1,9 @@
 from src._prime.road import PersonRoad
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop
-from src.agenda.agenda import AgendaUnit, agendaunit_shop
+from src.agenda.agenda import AgendaUnit
 from src.world.examples.world_env_kit import get_src_world_dir
-from src.tools.python import (
-    get_empty_dict_if_none,
-    x_get_json,
-    x_get_dict,
-    add_dict_if_missing,
-)
+from src.tools.python import get_empty_dict_if_none, x_get_json, x_get_dict
 from src.tools.file import open_file, save_file
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -172,45 +167,16 @@ def stirunit_shop(
 
 def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
     xs = x_stirunit
-    if xs.category == "partyunit" and xs.crud_text == stir_delete():
-        party_id = xs.get_locator("party_id")
-        x_agenda.del_partyunit(party_id)
-    elif xs.category == "partyunit" and xs.crud_text == stir_update():
-        x_agenda.edit_partyunit(
-            party_id=xs.get_value("party_id"),
-            creditor_weight=xs.get_value("creditor_weight"),
-            debtor_weight=xs.get_value("debtor_weight"),
-            depotlink_type=xs.get_value("depotlink_type"),
-        )
-    elif xs.category == "partyunit" and xs.crud_text == stir_insert():
-        x_agenda.set_partyunit(
-            partyunit_shop(
-                party_id=xs.get_value("party_id"),
-                creditor_weight=xs.get_value("creditor_weight"),
-                debtor_weight=xs.get_value("debtor_weight"),
-                depotlink_type=xs.get_value("depotlink_type"),
-            )
-        )
-    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_delete():
-        group_id = xs.get_locator("group_id")
-        party_id = xs.get_locator("party_id")
-        x_agenda.get_groupunit(group_id).del_partylink(party_id)
-    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
-        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-        x_groupunit.edit_partylink(
-            party_id=xs.get_value("party_id"),
-            creditor_weight=xs.get_value("creditor_weight"),
-            debtor_weight=xs.get_value("debtor_weight"),
-        )
-    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_insert():
-        x_groupunit = x_agenda.get_groupunit(xs.get_locator("group_id"))
-        x_groupunit.set_partylink(
-            partylink_shop(
-                party_id=xs.get_locator("party_id"),
-                creditor_weight=xs.get_value("creditor_weight"),
-                debtor_weight=xs.get_value("debtor_weight"),
-            )
-        )
+    if xs.category == "_max_tree_traverse":
+        x_agenda.set_max_tree_traverse(xs.get_value(xs.category))
+    elif xs.category == "_party_creditor_pool":
+        x_agenda.set_party_creditor_pool(xs.get_value(xs.category))
+    elif xs.category == "_party_debtor_pool":
+        x_agenda.set_party_debtor_pool(xs.get_value(xs.category))
+    elif xs.category == "_meld_strategy":
+        x_agenda.set_meld_strategy(xs.get_value(xs.category))
+    elif xs.category == "AgendaUnit_weight":
+        x_agenda._weight = xs.get_value(xs.category)
     elif xs.category == "groupunit" and xs.crud_text == stir_delete():
         group_id = xs.get_locator("group_id")
         x_agenda.del_groupunit(group_id)
@@ -232,6 +198,26 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             replace=False,
             add_partylinks=False,
         )
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_delete():
+        group_id = xs.get_locator("group_id")
+        party_id = xs.get_locator("party_id")
+        x_agenda.get_groupunit(group_id).del_partylink(party_id)
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
+        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
+        x_groupunit.edit_partylink(
+            party_id=xs.get_value("party_id"),
+            creditor_weight=xs.get_value("creditor_weight"),
+            debtor_weight=xs.get_value("debtor_weight"),
+        )
+    elif xs.category == "groupunit_partylink" and xs.crud_text == stir_insert():
+        x_groupunit = x_agenda.get_groupunit(xs.get_locator("group_id"))
+        x_groupunit.set_partylink(
+            partylink_shop(
+                party_id=xs.get_locator("party_id"),
+                creditor_weight=xs.get_value("creditor_weight"),
+                debtor_weight=xs.get_value("debtor_weight"),
+            )
+        )
     elif xs.category == "idea" and xs.crud_text == stir_delete():
         idea_road = xs.get_locator("road")
         del_children = xs.get_value("del_children")
@@ -248,17 +234,47 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         pass
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_insert():
         pass
-
-    elif xs.category == "AgendaUnit_weight":
-        x_agenda._weight = xs.get_value(xs.category)
-    elif xs.category == "_max_tree_traverse":
-        x_agenda.set_max_tree_traverse(xs.get_value(xs.category))
-    elif xs.category == "_party_creditor_pool":
-        x_agenda.set_party_creditor_pool(xs.get_value(xs.category))
-    elif xs.category == "_party_debtor_pool":
-        x_agenda.set_party_debtor_pool(xs.get_value(xs.category))
-    elif xs.category == "_meld_strategy":
-        x_agenda.set_meld_strategy(xs.get_value(xs.category))
+    elif xs.category == "idea_beliefunit" and xs.crud_text == stir_delete():
+        pass
+    elif xs.category == "idea_beliefunit" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "idea_beliefunit" and xs.crud_text == stir_insert():
+        pass
+    elif xs.category == "idea_reasonunit" and xs.crud_text == stir_delete():
+        pass
+    elif xs.category == "idea_reasonunit" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "idea_reasonunit" and xs.crud_text == stir_insert():
+        pass
+    elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_delete():
+        pass
+    elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_update():
+        pass
+    elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_insert():
+        pass
+    elif xs.category == "idea_suffgroup" and xs.crud_text == stir_delete():
+        pass
+    elif xs.category == "idea_suffgroup" and xs.crud_text == stir_insert():
+        pass
+    elif xs.category == "partyunit" and xs.crud_text == stir_delete():
+        party_id = xs.get_locator("party_id")
+        x_agenda.del_partyunit(party_id)
+    elif xs.category == "partyunit" and xs.crud_text == stir_update():
+        x_agenda.edit_partyunit(
+            party_id=xs.get_value("party_id"),
+            creditor_weight=xs.get_value("creditor_weight"),
+            debtor_weight=xs.get_value("debtor_weight"),
+            depotlink_type=xs.get_value("depotlink_type"),
+        )
+    elif xs.category == "partyunit" and xs.crud_text == stir_insert():
+        x_agenda.set_partyunit(
+            partyunit_shop(
+                party_id=xs.get_value("party_id"),
+                creditor_weight=xs.get_value("creditor_weight"),
+                debtor_weight=xs.get_value("debtor_weight"),
+                depotlink_type=xs.get_value("depotlink_type"),
+            )
+        )
 
 
 @dataclass
@@ -271,24 +287,30 @@ class MoveUnit:
     def get_stir_order_stirunit_dict(self) -> dict[int:StirUnit]:
         x_dict = {}
         for xs in self.delete_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
-            x_dict[xs.stir_order][xs.get_locator_key()] = xs
+            if x_dict.get(xs.stir_order) is None:
+                x_dict[xs.stir_order] = []
+            stir_order_list = x_dict.get(xs.stir_order)
+            stir_order_list.append(xs)
         for xs in self.insert_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
-            x_dict[xs.stir_order][xs.get_locator_key()] = xs
+            if x_dict.get(xs.stir_order) is None:
+                x_dict[xs.stir_order] = []
+            stir_order_list = x_dict.get(xs.stir_order)
+            stir_order_list.append(xs)
         for xs in self.update_stirs.values():
-            add_dict_if_missing(x_dict, x_key1=xs.stir_order)
-            x_dict[xs.stir_order][xs.get_locator_key()] = xs
+            if x_dict.get(xs.stir_order) is None:
+                x_dict[xs.stir_order] = []
+            stir_order_list = x_dict.get(xs.stir_order)
+            stir_order_list.append(xs)
         return x_dict
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
-        stirunits = self.get_stir_order_stirunit_dict()
+        stirunits_by_order = self.get_stir_order_stirunit_dict()
 
-        for stir_order in sorted(stirunits.keys()):
-            stra_stirunits = stirunits.get(stir_order)
-            for x_stir in stra_stirunits.values():
-                change_agenda_with_stirunit(after_agenda, x_stirunit=x_stir)
+        for x_stir_order_int in sorted(stirunits_by_order.keys()):
+            stirunits_list = stirunits_by_order.get(x_stir_order_int)
+            for x_stirunit in stirunits_list:
+                change_agenda_with_stirunit(after_agenda, x_stirunit)
         return after_agenda
 
     def set_stirunit(self, x_stirunit: StirUnit):
