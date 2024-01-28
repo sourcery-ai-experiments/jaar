@@ -137,7 +137,6 @@ def test_get_stir_config_dict_EveryCrudOperationHasMoveOrderGroup():
     assert 22 == get_mog("idea_balancelink", stir_update(), mog, 22)
     assert 23 == get_mog("idea_reasonunit_premiseunit", stir_update(), mog, 23)
     assert 24 == get_mog("idea_reasonunit", stir_update(), mog, 24)
-    assert 25 == get_mog("idea_suffgroup", stir_update(), mog, 25)
     assert 26 == get_mog("idea_beliefunit", stir_update(), mog, 26)
     assert 27 == get_mog("AgendaUnit_weight", stir_update(), mog, 27)
     assert 27 == get_mog("_max_tree_traverse", stir_update(), mog, 27)

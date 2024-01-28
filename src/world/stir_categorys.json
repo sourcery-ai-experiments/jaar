@@ -59,12 +59,24 @@
             "stir_order": 8
         },
         "INSERT": {
+            "optional_args": {
+                "_partylinks_set_by_economy_road": "RoadUnit"
+            },
+            "required_args": {
+                "group_id": "GroupID"
+            },
             "stir_order": 6
         },
         "locator": {
             "group_id": "GroupID"
         },
         "UPDATE": {
+            "optional_args": {
+                "_partylinks_set_by_economy_road": "RoadUnit"
+            },
+            "required_args": {
+                "group_id": "GroupID"
+            },
             "stir_order": 7
         }
     },
@@ -114,8 +126,23 @@
             "stir_order": 15
         },
         "INSERT": {
+            "optional_args": {
+                "_addin": "float",
+                "_begin": "float",
+                "_close": "float",
+                "_denom": "int",
+                "_meld_strategy": "str",
+                "_numeric_road": "RoadUnit",
+                "_numor": "int",
+                "_originunit": "OriginUnit",
+                "_range_source_road": "RoadUnit",
+                "_reest": "bool",
+                "_weight": "int",
+                "promise": "bool"
+            },
             "required_args": {
-                "road": "RoadUnit"
+                "label": "RoadUnit",
+                "parent_road": "RoadUnit"
             },
             "stir_order": 9
         },
@@ -123,11 +150,33 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "optional_args": {
+                "_addin": "float",
+                "_begin": "float",
+                "_close": "float",
+                "_denom": "int",
+                "_meld_strategy": "str",
+                "_numeric_road": "RoadUnit",
+                "_numor": "int",
+                "_originunit": "OriginUnit",
+                "_range_source_road": "RoadUnit",
+                "_reest": "bool",
+                "_weight": "int",
+                "promise": "bool"
+            },
+            "required_args": {
+                "label": "RoadUnit",
+                "parent_road": "RoadUnit"
+            },
             "stir_order": 21
         }
     },
     "idea_balancelink": {
         "DELETE": {
+            "optional_args": {
+                "group_id": "creditor_weight",
+                "road": "debtor_weight"
+            },
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
@@ -135,6 +184,14 @@
             "stir_order": 16
         },
         "INSERT": {
+            "optional_args": {
+                "group_id": "creditor_weight",
+                "road": "debtor_weight"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "road": "RoadUnit"
+            },
             "stir_order": 10
         },
         "locator": {
@@ -142,51 +199,142 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "optional_args": {
+                "group_id": "creditor_weight",
+                "road": "debtor_weight"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "road": "RoadUnit"
+            },
             "stir_order": 22
         }
     },
     "idea_beliefunit": {
         "DELETE": {
+            "required_args": {
+                "base": "RoadUnit"
+            },
             "stir_order": 20
         },
         "INSERT": {
+            "optional_args": {
+                "open": "float",
+                "pick": "RoadUnit"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "nigh": "float"
+            },
             "stir_order": 14
         },
+        "locator": {
+            "base": "RoadUnit"
+        },
         "UPDATE": {
+            "optional_args": {
+                "open": "float",
+                "pick": "RoadUnit"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "nigh": "float"
+            },
             "stir_order": 26
         }
     },
     "idea_reasonunit": {
         "DELETE": {
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit"
+            },
             "stir_order": 18
         },
         "INSERT": {
+            "optional_args": {
+                "suff_idea_active": "RoadUnit"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit"
+            },
             "stir_order": 12
         },
+        "locator": {
+            "base": "RoadUnit",
+            "idea_road": "RoadUnit"
+        },
         "UPDATE": {
+            "optional_args": {
+                "suff_idea_active": "RoadUnit"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit"
+            },
             "stir_order": 24
         }
     },
     "idea_reasonunit_premiseunit": {
         "DELETE": {
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit",
+                "need": "RoadUnit"
+            },
             "stir_order": 17
         },
         "INSERT": {
+            "optional_args": {
+                "divisor": "int",
+                "nigh": "float",
+                "open": "float"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit",
+                "need": "RoadUnit"
+            },
             "stir_order": 11
         },
+        "locator": {
+            "base": "RoadUnit",
+            "idea_road": "RoadUnit",
+            "need": "RoadUnit"
+        },
         "UPDATE": {
+            "optional_args": {
+                "divisor": "int",
+                "nigh": "float",
+                "open": "float"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "idea_road": "RoadUnit",
+                "need": "RoadUnit"
+            },
             "stir_order": 23
         }
     },
     "idea_suffgroup": {
         "DELETE": {
+            "required_args": {
+                "idea_road": "RoadUnit",
+                "group_id": "GroupID"
+            },
             "stir_order": 19
         },
         "INSERT": {
+            "required_args": {
+                "idea_road": "RoadUnit",
+                "group_id": "GroupID"
+            },
             "stir_order": 13
         },
-        "UPDATE": {
-            "stir_order": 25
+        "locator": {
+            "idea_road": "RoadUnit",
+            "group_id": "RoadUnit"
         }
     },
     "partyunit": {

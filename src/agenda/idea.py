@@ -226,8 +226,8 @@ class IdeaUnit:
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
     _assignedheir: AssignedHeir = None  # Calculated field
-    _beliefunits: dict[BeliefUnit] = None
-    _beliefheirs: dict[BeliefHeir] = None  # Calculated field
+    _beliefunits: dict[RoadUnit:BeliefUnit] = None
+    _beliefheirs: dict[RoadUnit:BeliefHeir] = None  # Calculated field
     _begin: float = None
     _close: float = None
     _addin: float = None
