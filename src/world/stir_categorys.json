@@ -150,6 +150,7 @@
         },
         "UPDATE": {
             "optional_args": {
+                "label": "RoadUnit",
                 "_addin": "float",
                 "_begin": "float",
                 "_close": "float",
@@ -163,8 +164,7 @@
                 "promise": "bool"
             },
             "required_args": {
-                "label": "RoadUnit",
-                "parent_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 21
         }

@@ -486,6 +486,54 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit(
     assert after_sue_agendaunit.idea_exists(disc_road)
 
 
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit_SimpleAttributes():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    assert before_sue_agendaunit.get_idea_obj(ball_road)._begin is None
+    assert before_sue_agendaunit.get_idea_obj(ball_road)._close is None
+    assert before_sue_agendaunit.get_idea_obj(ball_road)._meld_strategy == "default"
+    assert before_sue_agendaunit.get_idea_obj(ball_road).promise == False
+
+    # WHEN
+    # x_addin = 140
+    x_begin = 1000
+    x_close = 1700
+    # x_denom = 17
+    x_meld_strategy = "override"
+    # x_numor = 10
+    x_promise = True
+    insert_disc_stirunit = stirunit_shop("idea", stir_update())
+    insert_disc_stirunit.set_locator("road", ball_road)
+    insert_disc_stirunit.set_required_arg("road", ball_road)
+    # insert_disc_stirunit.set_optional_arg("_addin", x_addin)
+    insert_disc_stirunit.set_optional_arg("_begin", x_begin)
+    insert_disc_stirunit.set_optional_arg("_close", x_close)
+    # insert_disc_stirunit.set_optional_arg("_denom", x_denom)
+    insert_disc_stirunit.set_optional_arg("_meld_strategy", x_meld_strategy)
+    # insert_disc_stirunit.set_optional_arg("_numor", x_numor)
+    insert_disc_stirunit.set_optional_arg("promise", x_promise)
+
+    print(f"{insert_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(insert_disc_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert after_sue_agendaunit.get_idea_obj(ball_road)._begin == x_begin
+    assert after_sue_agendaunit.get_idea_obj(ball_road)._close == x_close
+    assert (
+        after_sue_agendaunit.get_idea_obj(ball_road)._meld_strategy == x_meld_strategy
+    )
+    assert after_sue_agendaunit.get_idea_obj(ball_road).promise
+
+
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():
     # GIVEN
     sue_road = get_sue_personroad()

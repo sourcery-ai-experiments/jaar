@@ -224,7 +224,20 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         del_children = xs.get_value("del_children")
         x_agenda.del_idea_kid(idea_road, del_children=del_children)
     elif xs.category == "idea" and xs.crud_text == stir_update():
-        pass
+        x_agenda.edit_idea_attr(
+            road=xs.get_value("road"),
+            addin=xs.get_value("_addin"),
+            begin=xs.get_value("_begin"),
+            close=xs.get_value("_close"),
+            denom=xs.get_value("_denom"),
+            meld_strategy=xs.get_value("_meld_strategy"),
+            numeric_road=xs.get_value("_numeric_road"),
+            numor=xs.get_value("_numor"),
+            range_source_road=xs.get_value("_range_source_road"),
+            reest=xs.get_value("_reest"),
+            weight=xs.get_value("_weight"),
+            promise=xs.get_value("promise"),
+        )
     elif xs.category == "idea" and xs.crud_text == stir_insert():
         x_agenda.add_idea(
             idea_kid=ideaunit_shop(
