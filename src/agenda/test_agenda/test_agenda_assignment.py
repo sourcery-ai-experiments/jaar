@@ -382,8 +382,8 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
 
 
 # def test_agenda__get_relevant_roads_numeric_road_range_source_road_ReturnEntireRangeTree():
-#
 def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
+    # TODO figure out if this test is necessary
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
@@ -397,7 +397,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     relevant_roads = {
         yao_agenda._economy_id: "descendant",
-        casa_road: "requirementunit_base",
+        casa_road: "An ex",
     }
     yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
 
@@ -440,7 +440,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     # WHEN
     relevant_roads = {
         yao_agenda._economy_id: "descendant",
-        casa_road: "requirementunit_base",
+        casa_road: "not the casa_road",
         basket_road: "assigned",
     }
     yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
