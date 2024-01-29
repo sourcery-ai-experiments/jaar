@@ -147,7 +147,6 @@ class DealUnit:
                 roadnode_type=attr,
             )
         elif member == "author":
-            print(f"huh {attr}")
             return get_single_roadnode(
                 roadunit_type="PersonRoad",
                 x_roadunit=self._author_road,

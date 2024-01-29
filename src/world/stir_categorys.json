@@ -150,7 +150,6 @@
         },
         "UPDATE": {
             "optional_args": {
-                "label": "RoadUnit",
                 "_addin": "float",
                 "_begin": "float",
                 "_close": "float",
@@ -161,6 +160,7 @@
                 "_range_source_road": "RoadUnit",
                 "_reest": "bool",
                 "_weight": "int",
+                "label": "RoadUnit",
                 "promise": "bool"
             },
             "required_args": {
@@ -183,8 +183,8 @@
         },
         "INSERT": {
             "optional_args": {
-                "group_id": "creditor_weight",
-                "road": "debtor_weight"
+                "creditor_weight": "creditor_weight",
+                "debtor_weight": "debtor_weight"
             },
             "required_args": {
                 "group_id": "GroupID",
@@ -198,8 +198,8 @@
         },
         "UPDATE": {
             "optional_args": {
-                "group_id": "creditor_weight",
-                "road": "debtor_weight"
+                "creditor_weight": "creditor_weight",
+                "debtor_weight": "debtor_weight"
             },
             "required_args": {
                 "group_id": "GroupID",
@@ -211,32 +211,36 @@
     "idea_beliefunit": {
         "DELETE": {
             "required_args": {
-                "base": "RoadUnit"
+                "base": "RoadUnit",
+                "road": "RoadUnit"
             },
             "stir_order": 20
         },
         "INSERT": {
             "optional_args": {
-                "open": "float",
-                "pick": "RoadUnit"
+                "nigh": "float",
+                "open": "float"
             },
             "required_args": {
                 "base": "RoadUnit",
-                "nigh": "float"
+                "pick": "RoadUnit",
+                "road": "RoadUnit"
             },
             "stir_order": 14
         },
         "locator": {
-            "base": "RoadUnit"
+            "base": "RoadUnit",
+            "road": "RoadUnit"
         },
         "UPDATE": {
             "optional_args": {
+                "nigh": "float",
                 "open": "float",
                 "pick": "RoadUnit"
             },
             "required_args": {
                 "base": "RoadUnit",
-                "nigh": "float"
+                "road": "RoadUnit"
             },
             "stir_order": 26
         }

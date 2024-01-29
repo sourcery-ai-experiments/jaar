@@ -143,6 +143,6 @@ class Ui_Form(object):
         item = self.party2partyTrue.horizontalHeaderItem(5)
         item.setText(_translate("Form", "relative_weight"))
         item = self.party2partyTrue.horizontalHeaderItem(6)
-        item.setText(_translate("Form", "huh_pid_for_target"))
+        item.setText(_translate("Form", "party_id_for_target"))
         self.edit_group_button.setText(_translate("Form", "Edit Group Partyship"))
         self.label_2.setText(_translate("Form", "party_id ="))

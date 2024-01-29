@@ -2,6 +2,7 @@ from src._prime.road import get_single_roadnode
 from src._prime.meld import get_meld_default
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
+from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
@@ -585,6 +586,229 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_bala
     # THEN
     assert len(after_sue_agendaunit.get_idea_obj(ball_road)._balancelinks) == 2
     assert len(after_sue_agendaunit.get_idea_obj(disc_road)._balancelinks) == 1
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_balancelink():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    before_sue_au.add_partyunit(rico_text)
+    before_sue_au.add_partyunit(carm_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    before_sue_au.set_groupunit(run_groupunit)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
+    run_balancelink = before_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
+    assert run_balancelink.creditor_weight == 1
+    assert run_balancelink.debtor_weight == 1
+
+    # WHEN
+    x_creditor_weight = 55
+    x_debtor_weight = 66
+    update_disc_stirunit = stirunit_shop("idea_balancelink", stir_update())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("group_id", run_text)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("group_id", run_text)
+    update_disc_stirunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    update_disc_stirunit.set_optional_arg("debtor_weight", x_debtor_weight)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    run_balancelink = after_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
+    print(f"{run_balancelink.creditor_weight=}")
+    assert run_balancelink.creditor_weight == x_creditor_weight
+    assert run_balancelink.debtor_weight == x_debtor_weight
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_balancelink():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    before_sue_au.add_partyunit(rico_text)
+    before_sue_au.add_partyunit(carm_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    before_sue_au.set_groupunit(run_groupunit)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    assert before_ball_idea._balancelinks.get(run_text) is None
+
+    # WHEN
+    x_creditor_weight = 55
+    x_debtor_weight = 66
+    update_disc_stirunit = stirunit_shop("idea_balancelink", stir_insert())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("group_id", run_text)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("group_id", run_text)
+    update_disc_stirunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    update_disc_stirunit.set_optional_arg("debtor_weight", x_debtor_weight)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    assert after_ball_idea._balancelinks.get(run_text) != None
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_beliefunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_au.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = before_sue_au.make_road(knee_road, broken_text)
+    before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    assert before_ball_idea._beliefunits == {}
+
+    # WHEN
+    broken_open = 55
+    broken_nigh = 66
+    update_disc_stirunit = stirunit_shop("idea_beliefunit", stir_insert())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("base", knee_road)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("base", knee_road)
+    update_disc_stirunit.set_required_arg("pick", broken_road)
+    update_disc_stirunit.set_optional_arg("open", broken_open)
+    update_disc_stirunit.set_optional_arg("nigh", broken_nigh)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    assert after_ball_idea._beliefunits != {}
+    assert after_ball_idea._beliefunits.get(knee_road) != None
+    assert after_ball_idea._beliefunits.get(knee_road).base == knee_road
+    assert after_ball_idea._beliefunits.get(knee_road).pick == broken_road
+    assert after_ball_idea._beliefunits.get(knee_road).open == broken_open
+    assert after_ball_idea._beliefunits.get(knee_road).nigh == broken_nigh
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_beliefunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_au.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = before_sue_au.make_road(knee_road, broken_text)
+    before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
+    before_sue_au.edit_idea_attr(
+        road=ball_road, beliefunit=beliefunit_shop(base=knee_road, pick=broken_road)
+    )
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    assert before_ball_idea._beliefunits != {}
+    assert before_ball_idea._beliefunits.get(knee_road) != None
+
+    # WHEN
+    update_disc_stirunit = stirunit_shop("idea_beliefunit", stir_delete())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("base", knee_road)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("base", knee_road)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    assert after_ball_idea._beliefunits == {}
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_beliefunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_au.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = before_sue_au.make_road(knee_road, broken_text)
+    medical_text = "get medical attention"
+    medical_road = before_sue_au.make_road(knee_road, medical_text)
+    before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
+    before_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
+    before_knee_beliefunit = beliefunit_shop(knee_road, broken_road)
+    before_sue_au.edit_idea_attr(ball_road, beliefunit=before_knee_beliefunit)
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    assert before_ball_idea._beliefunits != {}
+    assert before_ball_idea._beliefunits.get(knee_road) != None
+    assert before_ball_idea._beliefunits.get(knee_road).pick == broken_road
+    assert before_ball_idea._beliefunits.get(knee_road).open is None
+    assert before_ball_idea._beliefunits.get(knee_road).nigh is None
+
+    # WHEN
+    medical_open = 45
+    medical_nigh = 77
+    update_disc_stirunit = stirunit_shop("idea_beliefunit", stir_update())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("base", knee_road)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("base", knee_road)
+    update_disc_stirunit.set_optional_arg("pick", medical_road)
+    update_disc_stirunit.set_optional_arg("open", medical_open)
+    update_disc_stirunit.set_optional_arg("nigh", medical_nigh)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    assert after_ball_idea._beliefunits != {}
+    assert after_ball_idea._beliefunits.get(knee_road) != None
+    assert after_ball_idea._beliefunits.get(knee_road).pick == medical_road
+    assert after_ball_idea._beliefunits.get(knee_road).open == medical_open
+    assert after_ball_idea._beliefunits.get(knee_road).nigh == medical_nigh
 
 
 def test_MoveUnit_get_sue_moveunit_example1_ContainsStirUnits():

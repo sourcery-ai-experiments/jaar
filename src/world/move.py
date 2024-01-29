@@ -1,6 +1,7 @@
 from src._prime.road import PersonRoad
+from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
-from src.agenda.group import groupunit_shop
+from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
 from src.world.examples.world_env_kit import get_src_world_dir
@@ -167,6 +168,7 @@ def stirunit_shop(
 
 
 def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
+    # sourcery skip: extract-method
     xs = x_stirunit
     if xs.category == "_max_tree_traverse":
         x_agenda.set_max_tree_traverse(xs.get_value(xs.category))
@@ -260,15 +262,48 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         group_id = xs.get_value("group_id")
         x_agenda.edit_idea_attr(idea_road, balancelink_del=group_id)
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_update():
-        pass
+        x_idea = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_balancelink = x_idea._balancelinks.get(xs.get_value("group_id"))
+        x_creditor_weight = xs.get_value("creditor_weight")
+        if (
+            x_creditor_weight != None
+            and x_balancelink.creditor_weight != x_creditor_weight
+        ):
+            x_balancelink.creditor_weight = x_creditor_weight
+        x_debtor_weight = xs.get_value("debtor_weight")
+        if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
+            x_balancelink.debtor_weight = x_debtor_weight
+        x_agenda.edit_idea_attr(xs.get_value("road"), balancelink=x_balancelink)
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_insert():
-        pass
+        x_balancelink = balancelink_shop(
+            group_id=xs.get_value("group_id"),
+            creditor_weight=xs.get_value("creditor_weight"),
+            debtor_weight=xs.get_value("debtor_weight"),
+        )
+        x_agenda.edit_idea_attr(xs.get_value("road"), balancelink=x_balancelink)
     elif xs.category == "idea_beliefunit" and xs.crud_text == stir_delete():
-        pass
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_ideaunit.del_beliefunit(xs.get_value("base"))
     elif xs.category == "idea_beliefunit" and xs.crud_text == stir_update():
-        pass
+        print("huh")
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_beliefunit = x_ideaunit._beliefunits.get(xs.get_value("base"))
+        x_beliefunit.set_attr(
+            pick=xs.get_value("pick"),
+            open=xs.get_value("open"),
+            nigh=xs.get_value("nigh"),
+        )
+        # x_ideaunit.set_beliefunit(x_beliefunit)
     elif xs.category == "idea_beliefunit" and xs.crud_text == stir_insert():
-        pass
+        x_agenda.edit_idea_attr(
+            road=xs.get_value("road"),
+            beliefunit=beliefunit_shop(
+                base=xs.get_value("base"),
+                pick=xs.get_value("pick"),
+                open=xs.get_value("open"),
+                nigh=xs.get_value("nigh"),
+            ),
+        )
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_delete():
         pass
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_update():
