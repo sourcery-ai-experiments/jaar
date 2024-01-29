@@ -985,9 +985,9 @@
                                     "Datawarehouse": {
                                         "_is_expanded": true,
                                         "_kids": {
-                                            "Datawarehouse Learning": {
+                                            "Datawarehouse Expertise acquisition": {
                                                 "_is_expanded": true,
-                                                "_label": "Datawarehouse Learning",
+                                                "_label": "Datawarehouse Expertise acquisition",
                                                 "_meld_strategy": "default",
                                                 "_reasonunits": {
                                                     "A,day_minute": {

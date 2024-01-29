@@ -184,11 +184,10 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         group_id = xs.get_locator("group_id")
         x_agenda.del_groupunit(group_id)
     elif xs.category == "groupunit" and xs.crud_text == stir_update():
-        if xs.get_value("_partylinks_set_by_economy_road") != None:
-            x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-            x_groupunit._partylinks_set_by_economy_road = xs.get_value(
-                "_partylinks_set_by_economy_road"
-            )
+        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
+        x_groupunit._partylinks_set_by_economy_road = xs.get_value(
+            "_partylinks_set_by_economy_road"
+        )
     elif xs.category == "groupunit" and xs.crud_text == stir_insert():
         x_agenda.set_groupunit(
             groupunit_shop(
@@ -202,9 +201,9 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             add_partylinks=False,
         )
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_delete():
-        group_id = xs.get_locator("group_id")
-        party_id = xs.get_locator("party_id")
-        x_agenda.get_groupunit(group_id).del_partylink(party_id)
+        x_agenda.get_groupunit(xs.get_locator("group_id")).del_partylink(
+            xs.get_locator("party_id")
+        )
     elif xs.category == "groupunit_partylink" and xs.crud_text == stir_update():
         x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
         x_groupunit.edit_partylink(
@@ -222,9 +221,9 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             )
         )
     elif xs.category == "idea" and xs.crud_text == stir_delete():
-        idea_road = xs.get_locator("road")
-        del_children = xs.get_value("del_children")
-        x_agenda.del_idea_kid(idea_road, del_children=del_children)
+        x_agenda.del_idea_kid(
+            road=xs.get_locator("road"), del_children=xs.get_value("del_children")
+        )
     elif xs.category == "idea" and xs.crud_text == stir_update():
         x_agenda.edit_idea_attr(
             road=xs.get_value("road"),
@@ -258,9 +257,9 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             create_missing_ancestors=False,
         )
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_delete():
-        idea_road = xs.get_locator("road")
-        group_id = xs.get_value("group_id")
-        x_agenda.edit_idea_attr(idea_road, balancelink_del=group_id)
+        x_agenda.edit_idea_attr(
+            road=xs.get_locator("road"), balancelink_del=xs.get_value("group_id")
+        )
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_update():
         x_idea = x_agenda.get_idea_obj(xs.get_value("road"))
         x_balancelink = x_idea._balancelinks.get(xs.get_value("group_id"))
@@ -347,11 +346,9 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         x_ideaunit._assignedunit.del_suffgroup(group_id=xs.get_value("group_id"))
     elif xs.category == "idea_suffgroup" and xs.crud_text == stir_insert():
         x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        print(f"{x_ideaunit._assignedunit._suffgroups=}")
         x_ideaunit._assignedunit.set_suffgroup(group_id=xs.get_value("group_id"))
     elif xs.category == "partyunit" and xs.crud_text == stir_delete():
-        party_id = xs.get_locator("party_id")
-        x_agenda.del_partyunit(party_id)
+        x_agenda.del_partyunit(xs.get_locator("party_id"))
     elif xs.category == "partyunit" and xs.crud_text == stir_update():
         x_agenda.edit_partyunit(
             party_id=xs.get_value("party_id"),
