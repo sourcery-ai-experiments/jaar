@@ -400,7 +400,7 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
 #     assert x_is_json(json_x=x_agenda1_json)
 
 #     file_name = "example_agenda1.json"
-#     file_dir = agenda_env()
+#     file_dir = get_agenda_examples_dir()
 #     print("File may fail since example_agenda1.json is created by a later test")
 #     x_agenda3_json = open_file(dest_dir=file_dir, file_name=file_name)
 #     # print(x_agenda3_json[299000:299155])

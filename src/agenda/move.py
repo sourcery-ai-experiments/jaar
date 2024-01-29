@@ -4,7 +4,7 @@ from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
-from src.world.examples.world_env_kit import get_src_world_dir
+from src.agenda.examples.agenda_env import get_src_agenda_dir
 from src.tools.python import (
     get_empty_dict_if_none,
     x_get_json,
@@ -31,16 +31,16 @@ def stir_delete() -> str:
 
 
 def get_stir_config_file_name() -> str:
-    return "stir_categorys.json"
+    return "move_categorys.json"
 
 
 def get_stir_config_dict() -> dict:
-    return x_get_dict(open_file(get_src_world_dir(), get_stir_config_file_name()))
+    return x_get_dict(open_file(get_src_agenda_dir(), get_stir_config_file_name()))
 
 
 def save_stir_config_file(stir_config_dict):
     save_file(
-        dest_dir=get_src_world_dir(),
+        dest_dir=get_src_agenda_dir(),
         file_name=get_stir_config_file_name(),
         file_text=x_get_json(stir_config_dict),
     )

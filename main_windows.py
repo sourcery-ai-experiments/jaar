@@ -6,7 +6,7 @@ from ui.EditMain import EditMainView
 from ui.EditBeliefTime import EditBeliefTime
 from ui.Edit_Agenda import Edit_Agenda
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
-from src.agenda.examples.agenda_env import agenda_env
+from src.agenda.examples.agenda_env import get_agenda_examples_dir
 from src.agenda.hreg_time import HregTimeIdeaSource
 from ui.pyqt_func import (
     agenda_importance_diplay as pyqt_func_agenda_importance_diplay,
@@ -127,7 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # if "delete me this is for dev only":
         self.file_path = None
         if file_open_path is None:
-            self.file_path = f"{agenda_env()}/example_agenda2.json"
+            self.file_path = f"{get_agenda_examples_dir()}/example_agenda2.json"
         else:
             self.file_path = file_open_path
         self.open_file()
@@ -250,7 +250,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{agenda_env()}/{self._get_file_name()}"
+            self.file_path = f"{get_agenda_examples_dir()}/{self._get_file_name()}"
         self._commit_file_save()
 
     def _get_file_name(self):

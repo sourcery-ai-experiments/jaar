@@ -1,7 +1,7 @@
 from datetime import datetime
 from src._prime.road import RoadUnit
 from src.agenda.agenda import agendaunit_shop, get_from_json
-from src.agenda.examples.agenda_env import agenda_env
+from src.agenda.examples.agenda_env import get_agenda_examples_dir
 from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
@@ -378,7 +378,7 @@ def test_set_intent_task_as_complete_DivisionWorksCorrectly():
 
 def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
     # GIVEN
-    file_dir = agenda_env()
+    file_dir = get_agenda_examples_dir()
     file_name = "example_agenda1.json"
     x_agenda_json = open_file(dest_dir=file_dir, file_name=file_name)
 

@@ -2,12 +2,16 @@ from src.tools.file import delete_dir
 from pytest import fixture as pytest_fixture
 
 
-def agenda_env():
-    return "src/agenda/examples"
+def get_src_agenda_dir() -> str:
+    return "src/agenda"
+
+
+def get_agenda_examples_dir():
+    return f"{get_src_agenda_dir()}/examples"
 
 
 def get_agenda_temp_env_dir():
-    return "src/agenda/examples/temp"
+    return f"{get_agenda_examples_dir()}/temp"
 
 
 @pytest_fixture()

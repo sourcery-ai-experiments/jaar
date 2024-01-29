@@ -6,15 +6,14 @@ from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.world.move import (
-    MoveUnit,
+from src.agenda.move import (
     moveunit_shop,
     stir_update,
     stir_delete,
     stir_insert,
     stirunit_shop,
 )
-from src.world.examples.example_deals import (
+from src.agenda.examples.example_moves import (
     get_sue_personroad,
     get_sue_moveunit_example1,
     get_yao_example_roadunit as yao_roadunit,
