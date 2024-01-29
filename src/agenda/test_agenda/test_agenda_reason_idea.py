@@ -13,7 +13,7 @@ from src.agenda.reason_idea import (
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_agenda_reasonunits_create():
+def test_AgendaUnit_ReasonUnits_create():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -39,7 +39,7 @@ def test_agenda_reasonunits_create():
     assert work_idea._reasonunits[weekday_road] == work_wk_reason
 
 
-def test_agenda_edit_idea_attr_reasonunit_CorrectlySets_delimiter():
+def test_AgendaUnit_edit_idea_attr_reasonunit_CorrectlySets_delimiter():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = x_agenda.make_l1_road("work")
@@ -61,7 +61,7 @@ def test_agenda_edit_idea_attr_reasonunit_CorrectlySets_delimiter():
     assert week_reasonunit.delimiter == x_agenda._road_delimiter
 
 
-def test_agenda_edit_idea_attr_reason_base_CorrectlySets_delimiter():
+def test_AgendaUnit_edit_idea_attr_reason_base_CorrectlySets_delimiter():
     # GIVEN
     slash_text = "/"
     bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_text)
@@ -92,7 +92,7 @@ def test_agenda_edit_idea_attr_reason_base_CorrectlySets_delimiter():
     assert week_reasonunit.delimiter == bob_agenda._road_delimiter
 
 
-def test_agenda_set_reasonunits_status():
+def test_AgendaUnit_set_reasonunits_status():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -134,7 +134,7 @@ def test_intent_returned_WhenNoReasonsExist():
     assert x_agenda.get_idea_obj(cat_road)._task == True
 
 
-def test_agenda_reasonheirs_AreCorrectlyInherited_v1():
+def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     print(f"{x_agenda._economy_id=}")
@@ -191,7 +191,7 @@ def test_agenda_reasonheirs_AreCorrectlyInherited_v1():
     assert work_wk_cal_reasonheir == work_wk_built_reasonheir
 
 
-def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
+def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     # GIVEN
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -260,7 +260,7 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     assert cost_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
 
-def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
+def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     a4_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
     work_road = a4_agenda.make_l1_road(work_text)
@@ -333,7 +333,7 @@ def test_agenda_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     assert cost_week_reasonheir._curr_idea_active != work_wk_built_reasonheir
 
 
-def test_agenda_reasonunits_set_UnCoupledMethod():
+def test_AgendaUnit_ReasonUnits_set_UnCoupledMethod():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -407,7 +407,7 @@ def test_agenda_reasonunits_set_UnCoupledMethod():
     assert len(work_idea1._reasonunits[week_road].premises) == 2
 
 
-def test_agenda_reasonunits_set_premiseIdeaWithDenomSetsPremiseDivision():
+def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithDenomSetsPremiseDivision():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -437,7 +437,7 @@ def test_agenda_reasonunits_set_premiseIdeaWithDenomSetsPremiseDivision():
     assert work_idea1._reasonunits[time_road].premises[week_road].nigh == 5
 
 
-def test_agenda_reasonunits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh():
+def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work = "work"
@@ -469,7 +469,7 @@ def test_agenda_reasonunits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh():
     assert work_idea1._reasonunits[time_road].premises[rus_war_road].nigh == 34
 
 
-def test_agenda_reasonunits_del_reason_premise_UncoupledMethod1():
+def test_AgendaUnit_ReasonUnits_edit_idea_attr_CorrectlyDeletes_ReasonUnits_And_PremiseUnits():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = x_agenda.make_l1_road("work")
@@ -489,20 +489,20 @@ def test_agenda_reasonunits_del_reason_premise_UncoupledMethod1():
     assert len(work_idea1._reasonunits[weekday_road].premises) == 2
 
     # WHEN
-    x_agenda.del_idea_reason_premise(
+    x_agenda.edit_idea_attr(
         road=work_road,
-        reason_base=weekday_road,
-        reason_premise=thu_road,
+        reason_del_premise_base=weekday_road,
+        reason_del_premise_need=thu_road,
     )
 
     # THEN
     assert len(work_idea1._reasonunits[weekday_road].premises) == 1
 
     # WHEN
-    x_agenda.del_idea_reason_premise(
+    x_agenda.edit_idea_attr(
         road=work_road,
-        reason_base=weekday_road,
-        reason_premise=wed_road,
+        reason_del_premise_base=weekday_road,
+        reason_del_premise_need=wed_road,
     )
 
     # THEN
@@ -512,7 +512,7 @@ def test_agenda_reasonunits_del_reason_premise_UncoupledMethod1():
     assert work_idea1._reasonunits == {}
 
 
-def test_agenda_reasonunits_del_reason_premise_UncoupledMethod2():
+def test_AgendaUnit_ReasonUnits_del_reason_premise_UncoupledMethod2():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_road = x_agenda.make_l1_road("work")
@@ -526,7 +526,7 @@ def test_agenda_reasonunits_del_reason_premise_UncoupledMethod2():
     assert str(excinfo.value) == f"No ReasonUnit at '{weekdays_road}'"
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIfInvaildThrowsError():
+def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIfInvaildThrowsError():
     # _suff_idea_active: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
@@ -584,7 +584,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIfInva
     assert reasonunit_work.suff_idea_active is None
 
 
-def test_agenda_reasonunits_IdeaUnit_active_InfluencesReasonUnitStatus():
+def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     # GIVEN an Agenda with 5 ideas, 1 Belief:
     # 1. idea(...,weekdays) exists
     # 2. idea(...,weekdays,wednesday) exists
@@ -644,7 +644,7 @@ def test_agenda_reasonunits_IdeaUnit_active_InfluencesReasonUnitStatus():
     assert commute_idea._active == True
 
 
-def test_agenda_set_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
+def test_AgendaUnit_set_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._rational == False
@@ -661,7 +661,7 @@ def test_agenda_set_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse
     assert not x_agenda._rational
 
 
-def test_agenda_tree_traverses_StopWhenNoChangeInStatusIsDetected():
+def test_AgendaUnit_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._max_tree_traverse != 2
@@ -675,7 +675,7 @@ def test_agenda_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     assert x_agenda._tree_traverse_count == 2
 
 
-def test_agenda_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalAgendas():
+def test_AgendaUnit_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalAgendas():
     # GIVEN irrational agenda
     x_agenda = example_agendas_get_agenda_irrational_example()
     x_agenda.set_agenda_metrics()

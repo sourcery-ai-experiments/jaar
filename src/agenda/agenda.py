@@ -1335,15 +1335,6 @@ class AgendaUnit:
         if balancelink_del != None or balancelink != None:
             self.set_agenda_metrics()
 
-    def del_idea_reason_premise(
-        self, road: RoadUnit, reason_base: RoadUnit, reason_premise: RoadUnit
-    ):
-        self.edit_idea_attr(
-            road=road,
-            reason_del_premise_base=reason_base,
-            reason_del_premise_need=reason_premise,
-        )
-
     def get_intent_dict(
         self,
         base: RoadUnit = None,

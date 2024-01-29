@@ -304,11 +304,20 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             ),
         )
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_delete():
-        pass
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_ideaunit.del_reasonunit_base(xs.get_value("base"))
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_update():
-        print(";huh")
+        x_agenda.edit_idea_attr(
+            road=xs.get_value("road"),
+            reason_base=xs.get_value("base"),
+            reason_suff_idea_active=xs.get_value("suff_idea_active"),
+        )
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_insert():
-        pass
+        x_agenda.edit_idea_attr(
+            road=xs.get_value("road"),
+            reason_base=xs.get_value("base"),
+            reason_suff_idea_active=xs.get_value("suff_idea_active"),
+        )
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_delete():
         x_agenda.edit_idea_attr(
             road=xs.get_value("road"),
@@ -316,13 +325,13 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             reason_del_premise_need=xs.get_value("need"),
         )
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_update():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit.set_reason_premise(
-            base=xs.get_value("base"),
-            premise=xs.get_value("need"),
-            open=xs.get_value("open"),
-            nigh=xs.get_value("nigh"),
-            divisor=xs.get_value("divisor"),
+        x_agenda.edit_idea_attr(
+            road=xs.get_value("road"),
+            reason_base=xs.get_value("base"),
+            reason_premise=xs.get_value("need"),
+            reason_premise_open=xs.get_value("open"),
+            reason_premise_nigh=xs.get_value("nigh"),
+            reason_premise_divisor=xs.get_value("divisor"),
         )
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_insert():
         x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
@@ -334,9 +343,12 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
             divisor=xs.get_value("divisor"),
         )
     elif xs.category == "idea_suffgroup" and xs.crud_text == stir_delete():
-        pass
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_ideaunit._assignedunit.del_suffgroup(group_id=xs.get_value("group_id"))
     elif xs.category == "idea_suffgroup" and xs.crud_text == stir_insert():
-        pass
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        print(f"{x_ideaunit._assignedunit._suffgroups=}")
+        x_ideaunit._assignedunit.set_suffgroup(group_id=xs.get_value("group_id"))
     elif xs.category == "partyunit" and xs.crud_text == stir_delete():
         party_id = xs.get_locator("party_id")
         x_agenda.del_partyunit(party_id)

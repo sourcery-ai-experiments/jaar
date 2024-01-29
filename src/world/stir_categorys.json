@@ -249,31 +249,31 @@
         "DELETE": {
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 18
         },
         "INSERT": {
             "optional_args": {
-                "suff_idea_active": "RoadUnit"
+                "suff_idea_active": "bool"
             },
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 12
         },
         "locator": {
             "base": "RoadUnit",
-            "idea_road": "RoadUnit"
+            "road": "RoadUnit"
         },
         "UPDATE": {
             "optional_args": {
-                "suff_idea_active": "RoadUnit"
+                "suff_idea_active": "bool"
             },
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 24
         }
@@ -323,20 +323,20 @@
         "DELETE": {
             "required_args": {
                 "group_id": "GroupID",
-                "idea_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 19
         },
         "INSERT": {
             "required_args": {
                 "group_id": "GroupID",
-                "idea_road": "RoadUnit"
+                "road": "RoadUnit"
             },
             "stir_order": 13
         },
         "locator": {
             "group_id": "RoadUnit",
-            "idea_road": "RoadUnit"
+            "road": "RoadUnit"
         }
     },
     "partyunit": {
