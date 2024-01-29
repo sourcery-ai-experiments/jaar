@@ -4,7 +4,7 @@
             "required_args": {
                 "_auto_output_to_forum": "bool"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "_max_tree_traverse": {
@@ -12,7 +12,7 @@
             "required_args": {
                 "_max_tree_traverse": "int"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "_meld_strategy": {
@@ -20,7 +20,7 @@
             "required_args": {
                 "_meld_strategy": "str"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "_party_creditor_pool": {
@@ -28,7 +28,7 @@
             "required_args": {
                 "_party_creditor_pool": "int"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "_party_debtor_pool": {
@@ -36,7 +36,7 @@
             "required_args": {
                 "_party_debtor_pool": "int"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "AgendaUnit_weight": {
@@ -48,7 +48,7 @@
             "required_args": {
                 "AgendaUnit_weight": "int"
             },
-            "stir_order": 27
+            "stir_order": 26
         }
     },
     "groupunit": {
@@ -56,7 +56,7 @@
             "required_args": {
                 "group_id": "GroupID"
             },
-            "stir_order": 8
+            "stir_order": 25
         },
         "INSERT": {
             "optional_args": {
@@ -65,7 +65,7 @@
             "required_args": {
                 "group_id": "GroupID"
             },
-            "stir_order": 6
+            "stir_order": 2
         },
         "locator": {
             "group_id": "GroupID"
@@ -77,7 +77,7 @@
             "required_args": {
                 "group_id": "GroupID"
             },
-            "stir_order": 7
+            "stir_order": 10
         }
     },
     "groupunit_partylink": {
@@ -86,7 +86,7 @@
                 "group_id": "GroupID",
                 "party_id": "PartyID"
             },
-            "stir_order": 5
+            "stir_order": 23
         },
         "INSERT": {
             "optional_args": {
@@ -97,7 +97,7 @@
                 "group_id": "GroupID",
                 "party_id": "PartyID"
             },
-            "stir_order": 3
+            "stir_order": 1
         },
         "locator": {
             "group_id": "GroupID",
@@ -112,7 +112,7 @@
                 "group_id": "GroupID",
                 "party_id": "PartyID"
             },
-            "stir_order": 4
+            "stir_order": 11
         }
     },
     "idea": {
@@ -123,7 +123,7 @@
             "required_args": {
                 "road": "RoadUnit"
             },
-            "stir_order": 15
+            "stir_order": 22
         },
         "INSERT": {
             "optional_args": {
@@ -143,7 +143,7 @@
                 "label": "RoadUnit",
                 "parent_road": "RoadUnit"
             },
-            "stir_order": 9
+            "stir_order": 3
         },
         "locator": {
             "road": "RoadUnit"
@@ -166,7 +166,7 @@
             "required_args": {
                 "road": "RoadUnit"
             },
-            "stir_order": 21
+            "stir_order": 12
         }
     },
     "idea_balancelink": {
@@ -179,7 +179,7 @@
                 "group_id": "GroupID",
                 "road": "RoadUnit"
             },
-            "stir_order": 16
+            "stir_order": 21
         },
         "INSERT": {
             "optional_args": {
@@ -190,7 +190,7 @@
                 "group_id": "GroupID",
                 "road": "RoadUnit"
             },
-            "stir_order": 10
+            "stir_order": 4
         },
         "locator": {
             "group_id": "GroupID",
@@ -205,7 +205,7 @@
                 "group_id": "GroupID",
                 "road": "RoadUnit"
             },
-            "stir_order": 22
+            "stir_order": 13
         }
     },
     "idea_beliefunit": {
@@ -214,7 +214,7 @@
                 "base": "RoadUnit",
                 "road": "RoadUnit"
             },
-            "stir_order": 20
+            "stir_order": 19
         },
         "INSERT": {
             "optional_args": {
@@ -226,7 +226,7 @@
                 "pick": "RoadUnit",
                 "road": "RoadUnit"
             },
-            "stir_order": 14
+            "stir_order": 6
         },
         "locator": {
             "base": "RoadUnit",
@@ -242,7 +242,7 @@
                 "base": "RoadUnit",
                 "road": "RoadUnit"
             },
-            "stir_order": 26
+            "stir_order": 14
         }
     },
     "idea_reasonunit": {
@@ -261,7 +261,7 @@
                 "base": "RoadUnit",
                 "road": "RoadUnit"
             },
-            "stir_order": 12
+            "stir_order": 7
         },
         "locator": {
             "base": "RoadUnit",
@@ -275,15 +275,15 @@
                 "base": "RoadUnit",
                 "road": "RoadUnit"
             },
-            "stir_order": 24
+            "stir_order": 16
         }
     },
     "idea_reasonunit_premiseunit": {
         "DELETE": {
             "required_args": {
                 "base": "RoadUnit",
-                "road": "RoadUnit",
-                "need": "RoadUnit"
+                "need": "RoadUnit",
+                "road": "RoadUnit"
             },
             "stir_order": 17
         },
@@ -295,15 +295,15 @@
             },
             "required_args": {
                 "base": "RoadUnit",
-                "road": "RoadUnit",
-                "need": "RoadUnit"
+                "need": "RoadUnit",
+                "road": "RoadUnit"
             },
-            "stir_order": 11
+            "stir_order": 8
         },
         "locator": {
             "base": "RoadUnit",
-            "road": "RoadUnit",
-            "need": "RoadUnit"
+            "need": "RoadUnit",
+            "road": "RoadUnit"
         },
         "UPDATE": {
             "optional_args": {
@@ -313,10 +313,10 @@
             },
             "required_args": {
                 "base": "RoadUnit",
-                "road": "RoadUnit",
-                "need": "RoadUnit"
+                "need": "RoadUnit",
+                "road": "RoadUnit"
             },
-            "stir_order": 23
+            "stir_order": 15
         }
     },
     "idea_suffgroup": {
@@ -325,14 +325,14 @@
                 "group_id": "GroupID",
                 "road": "RoadUnit"
             },
-            "stir_order": 19
+            "stir_order": 20
         },
         "INSERT": {
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
             },
-            "stir_order": 13
+            "stir_order": 5
         },
         "locator": {
             "group_id": "RoadUnit",
@@ -342,7 +342,7 @@
     "partyunit": {
         "DELETE": {
             "required_args": {},
-            "stir_order": 2
+            "stir_order": 24
         },
         "INSERT": {
             "optional_args": {
@@ -367,7 +367,7 @@
             "required_args": {
                 "party_id": "PartyID"
             },
-            "stir_order": 1
+            "stir_order": 9
         }
     }
 }
