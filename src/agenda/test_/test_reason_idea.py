@@ -5,6 +5,7 @@ from src.agenda.reason_idea import (
     reasonunit_shop,
     beliefheir_shop,
     premiseunit_shop,
+    reasons_get_from_dict,
 )
 from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
@@ -256,6 +257,26 @@ def test_ReasonUnit_get_dict_ReturnsCorrectDictWithSinglethu_premiseequireds():
     assert wkday_reason_dict == static_wkday_reason_dict
 
 
+def test_ReasonUnit_get_dict_ReturnsCorrectDictWith_suff_idea_active():
+    # GIVEN
+    wkday_text = "weekday"
+    wkday_road = create_road(root_label(), wkday_text)
+    wkday_suff_idea_active = True
+    wkday_reason = reasonunit_shop(wkday_road, suff_idea_active=wkday_suff_idea_active)
+
+    # WHEN
+    wkday_reason_dict = wkday_reason.get_dict()
+
+    # THEN
+    assert wkday_reason_dict != None
+    static_wkday_reason_dict = {
+        "base": wkday_road,
+        "suff_idea_active": wkday_suff_idea_active,
+    }
+    print(wkday_reason_dict)
+    assert wkday_reason_dict == static_wkday_reason_dict
+
+
 def test_ReasonUnit_get_dict_ReturnsCorrectDictWithTwoPremisesReasons():
     # GIVEN
     wkday_text = "weekday"
@@ -280,6 +301,32 @@ def test_ReasonUnit_get_dict_ReturnsCorrectDictWithTwoPremisesReasons():
     }
     print(wkday_reason_dict)
     assert wkday_reason_dict == static_wkday_reason_dict
+
+
+def test_reasons_get_from_dict_ReturnsCorrectObj():
+    # GIVEN
+    wkday_text = "weekday"
+    wkday_road = create_road(root_label(), wkday_text)
+    wkday_suff_idea_active = False
+    wkday_reasonunit = reasonunit_shop(
+        wkday_road, suff_idea_active=wkday_suff_idea_active
+    )
+    x_wkday_reasonunits_dict = {wkday_reasonunit.base: wkday_reasonunit.get_dict()}
+    assert x_wkday_reasonunits_dict != None
+    static_wkday_reason_dict = {
+        wkday_road: {
+            "base": wkday_road,
+            "suff_idea_active": wkday_suff_idea_active,
+        }
+    }
+    assert x_wkday_reasonunits_dict == static_wkday_reason_dict
+
+    # WHEN
+    reasonunits_dict = reasons_get_from_dict(x_wkday_reasonunits_dict)
+
+    # THEN
+    assert len(reasonunits_dict) == 1
+    assert reasonunits_dict.get(wkday_reasonunit.base) == wkday_reasonunit
 
 
 def test_ReasonHeir_correctSetsActionState():

@@ -564,10 +564,12 @@ class ReasonUnit(ReasonCore):
             premise_road: premise.get_dict()
             for premise_road, premise in self.premises.items()
         }
-        return {
-            "base": self.base,
-            "premises": premises_dict,
-        }
+        x_dict = {"base": self.base}
+        if premises_dict != {}:
+            x_dict["premises"] = premises_dict
+        if self.suff_idea_active != None:
+            x_dict["suff_idea_active"] = self.suff_idea_active
+        return x_dict
 
 
 def reasonunit_shop(
@@ -673,12 +675,15 @@ def reasonheir_shop(
 
 
 # class Reasonsshop:
-def reasons_get_from_dict(reasons_dict: dict) -> dict[ReasonUnit]:
-    reasons = {}
+def reasons_get_from_dict(reasons_dict: dict) -> dict[RoadUnit:ReasonUnit]:
+    x_dict = {}
     for reason_dict in reasons_dict.values():
-        x_reason = reasonunit_shop(
-            base=reason_dict["base"],
-            premises=premises_get_from_dict(x_dict=reason_dict["premises"]),
-        )
-        reasons[x_reason.base] = x_reason
-    return reasons
+        x_reasonunit = reasonunit_shop(base=reason_dict["base"])
+        if reason_dict.get("premises") != None:
+            x_reasonunit.premises = premises_get_from_dict(
+                x_dict=reason_dict["premises"]
+            )
+        if reason_dict.get("suff_idea_active") != None:
+            x_reasonunit.suff_idea_active = reason_dict.get("suff_idea_active")
+        x_dict[x_reasonunit.base] = x_reasonunit
+    return x_dict
