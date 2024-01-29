@@ -1,5 +1,5 @@
 from src._prime.road import PersonRoad, create_road_from_nodes as roadnodes
-from src.agenda.examples.example_moves import get_sue_personroad
+from src.agenda.examples.example_learns import get_sue_personroad
 from src.world.deal import dealunit_shop, DealUnit, vowunit_shop
 
 
