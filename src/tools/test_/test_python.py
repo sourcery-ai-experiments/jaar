@@ -3,6 +3,7 @@ from src.tools.python import (
     add_dict_if_missing,
     place_obj_in_dict,
     get_all_childless_objs,
+    get_nested_value,
 )
 
 
@@ -85,3 +86,5 @@ def test_get_all_childless_objs_ReturnsCorrectDict():
 
     # THEN
     assert childless_objs == {sports_text: [fun_obj, mount_obj, day_obj, night_obj]}
+    assert get_nested_value(y_dict, day_list) == day_obj
+    assert get_nested_value(y_dict, mount_list) == mount_obj

@@ -79,7 +79,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
-    print(f"{sue_moveunit.update_stirs=}")
+    print(f"{sue_moveunit.stirunits.keys()=}")
     assert after_sue_agendaunit._weight == new1_value
     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
     assert after_sue_agendaunit._max_tree_traverse == new2_value
@@ -109,7 +109,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
-    print(f"{sue_moveunit.update_stirs=}")
+    print(f"{sue_moveunit.stirunits=}")
     assert after_sue_agendaunit != before_sue_agendaunit
     assert after_sue_agendaunit.get_party(rico_text) != None
     assert after_sue_agendaunit.get_party(carm_text) is None
@@ -138,7 +138,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     x_stirunit.set_optional_arg("creditor_weight", x_creditor_weight)
     x_stirunit.set_optional_arg("debtor_weight", x_debtor_weight)
     sue_moveunit.set_stirunit(x_stirunit)
-    print(f"{sue_moveunit.insert_stirs.keys()=}")
+    print(f"{sue_moveunit.stirunits.keys()=}")
     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
@@ -169,7 +169,7 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
     rico_creditor_weight = 55
     x_stirunit.set_optional_arg("creditor_weight", rico_creditor_weight)
     sue_moveunit.set_stirunit(x_stirunit)
-    print(f"{sue_moveunit.insert_stirs.keys()=}")
+    print(f"{sue_moveunit.stirunits.keys()=}")
     after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
@@ -437,6 +437,53 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit(
     # THEN
     assert after_sue_agendaunit.idea_exists(ball_road)
     assert after_sue_agendaunit.idea_exists(disc_road) == False
+
+
+def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    disc_text = "Ultimate Disc"
+    disc_road = before_sue_agendaunit.make_road(sports_road, disc_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    assert before_sue_agendaunit.idea_exists(ball_road)
+    assert before_sue_agendaunit.idea_exists(disc_road) == False
+
+    # WHEN
+    # x_addin = 140
+    # x_begin = 1000
+    # x_close = 1700
+    # x_denom = 17
+    x_meld_strategy = "override"
+    x_numeric_road = None
+    # x_numor = 10
+    x_promise = True
+    insert_disc_stirunit = stirunit_shop("idea", stir_insert())
+    insert_disc_stirunit.set_locator("road", disc_road)
+    insert_disc_stirunit.set_required_arg("label", disc_text)
+    insert_disc_stirunit.set_required_arg("parent_road", sports_road)
+    # insert_disc_stirunit.set_optional_arg("_addin", x_addin)
+    # insert_disc_stirunit.set_optional_arg("_begin", x_begin)
+    # insert_disc_stirunit.set_optional_arg("_close", x_close)
+    # insert_disc_stirunit.set_optional_arg("_denom", x_denom)
+    insert_disc_stirunit.set_optional_arg("_meld_strategy", x_meld_strategy)
+    insert_disc_stirunit.set_optional_arg("_numeric_road", x_numeric_road)
+    # insert_disc_stirunit.set_optional_arg("_numor", x_numor)
+    insert_disc_stirunit.set_optional_arg("promise", x_promise)
+
+    print(f"{insert_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(insert_disc_stirunit)
+    after_sue_agendaunit = sue_moveunit.get_after_agenda(before_sue_agendaunit)
+
+    # THEN
+    assert after_sue_agendaunit.idea_exists(ball_road)
+    assert after_sue_agendaunit.idea_exists(disc_road)
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():

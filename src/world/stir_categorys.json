@@ -134,7 +134,6 @@
                 "_meld_strategy": "str",
                 "_numeric_road": "RoadUnit",
                 "_numor": "int",
-                "_originunit": "OriginUnit",
                 "_range_source_road": "RoadUnit",
                 "_reest": "bool",
                 "_weight": "int",
@@ -158,7 +157,6 @@
                 "_meld_strategy": "str",
                 "_numeric_road": "RoadUnit",
                 "_numor": "int",
-                "_originunit": "OriginUnit",
                 "_range_source_road": "RoadUnit",
                 "_reest": "bool",
                 "_weight": "int",
@@ -320,21 +318,21 @@
     "idea_suffgroup": {
         "DELETE": {
             "required_args": {
-                "idea_road": "RoadUnit",
-                "group_id": "GroupID"
+                "group_id": "GroupID",
+                "idea_road": "RoadUnit"
             },
             "stir_order": 19
         },
         "INSERT": {
             "required_args": {
-                "idea_road": "RoadUnit",
-                "group_id": "GroupID"
+                "group_id": "GroupID",
+                "idea_road": "RoadUnit"
             },
             "stir_order": 13
         },
         "locator": {
-            "idea_road": "RoadUnit",
-            "group_id": "RoadUnit"
+            "group_id": "RoadUnit",
+            "idea_road": "RoadUnit"
         }
     },
     "partyunit": {

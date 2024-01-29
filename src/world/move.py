@@ -1,9 +1,17 @@
 from src._prime.road import PersonRoad
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
 from src.world.examples.world_env_kit import get_src_world_dir
-from src.tools.python import get_empty_dict_if_none, x_get_json, x_get_dict
+from src.tools.python import (
+    get_empty_dict_if_none,
+    x_get_json,
+    x_get_dict,
+    place_obj_in_dict,
+    get_nested_value,
+    get_all_childless_objs,
+)
 from src.tools.file import open_file, save_file
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -92,12 +100,6 @@ class StirUnit:
     def get_locator(self, x_key: str) -> any:
         return self.locator.get(x_key)
 
-    def get_locator_key(self) -> str:
-        x_text = f"{self.category}"
-        for locator_key in sorted(self.locator.keys()):
-            x_text = f"{x_text} {self.locator.get(locator_key)}"
-        return x_text.lstrip().rstrip()
-
     def is_locator_valid(self) -> bool:
         category_dict = get_stir_config_dict().get(self.category)
         locator_dict = get_empty_dict_if_none(category_dict.get("locator"))
@@ -142,7 +144,6 @@ class StirUnit:
 
     def get_value(self, arg_key: str) -> any:
         required_value = self.required_args.get(arg_key)
-        print(f"{required_value} {self.required_args=} {arg_key=}")
         if required_value is None:
             return self.optional_args.get(arg_key)
         return required_value
@@ -225,7 +226,22 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
     elif xs.category == "idea" and xs.crud_text == stir_update():
         pass
     elif xs.category == "idea" and xs.crud_text == stir_insert():
-        pass
+        x_agenda.add_idea(
+            idea_kid=ideaunit_shop(
+                _label=xs.get_value("label"),
+                _addin=xs.get_value("_addin"),
+                _begin=xs.get_value("_begin"),
+                _close=xs.get_value("_close"),
+                _denom=xs.get_value("_denom"),
+                _meld_strategy=xs.get_value("_meld_strategy"),
+                _numeric_road=xs.get_value("_numeric_road"),
+                _numor=xs.get_value("_numor"),
+                promise=xs.get_value("promise"),
+            ),
+            parent_road=xs.get_value("parent_road"),
+            create_missing_ideas_groups=False,
+            create_missing_ancestors=False,
+        )
     elif xs.category == "idea_balancelink" and xs.crud_text == stir_delete():
         idea_road = xs.get_locator("road")
         group_id = xs.get_value("group_id")
@@ -280,28 +296,10 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
 @dataclass
 class MoveUnit:
     agenda_road: PersonRoad = None
-    delete_stirs: dict[str:StirUnit] = None
-    insert_stirs: dict[str:StirUnit] = None
-    update_stirs: dict[str:StirUnit] = None
+    stirunits: dict[str : dict[str:any]] = None
 
     def get_stir_order_stirunit_dict(self) -> dict[int:StirUnit]:
-        x_dict = {}
-        for xs in self.delete_stirs.values():
-            if x_dict.get(xs.stir_order) is None:
-                x_dict[xs.stir_order] = []
-            stir_order_list = x_dict.get(xs.stir_order)
-            stir_order_list.append(xs)
-        for xs in self.insert_stirs.values():
-            if x_dict.get(xs.stir_order) is None:
-                x_dict[xs.stir_order] = []
-            stir_order_list = x_dict.get(xs.stir_order)
-            stir_order_list.append(xs)
-        for xs in self.update_stirs.values():
-            if x_dict.get(xs.stir_order) is None:
-                x_dict[xs.stir_order] = []
-            stir_order_list = x_dict.get(xs.stir_order)
-            stir_order_list.append(xs)
-        return x_dict
+        return get_all_childless_objs(self.stirunits)
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
@@ -316,12 +314,12 @@ class MoveUnit:
     def set_stirunit(self, x_stirunit: StirUnit):
         if x_stirunit.is_valid():
             x_stirunit.set_stir_order()
-            if x_stirunit.crud_text == stir_update():
-                self.update_stirs[x_stirunit.get_locator_key()] = x_stirunit
-            elif x_stirunit.crud_text == stir_insert():
-                self.insert_stirs[x_stirunit.get_locator_key()] = x_stirunit
-            elif x_stirunit.crud_text == stir_delete():
-                self.delete_stirs[x_stirunit.get_locator_key()] = x_stirunit
+            x_keylist = [
+                x_stirunit.crud_text,
+                x_stirunit.category,
+                *list(x_stirunit.locator.values()),
+            ]
+            place_obj_in_dict(self.stirunits, x_keylist, x_stirunit)
 
     def add_stirunit(
         self,
@@ -340,24 +338,17 @@ class MoveUnit:
         )
         self.set_stirunit(x_stirunit)
 
-    def get_stir(self, crud_text: str, locator_key: str) -> StirUnit:
-        if crud_text == stir_update():
-            return self.update_stirs.get(locator_key)
-        elif crud_text == stir_delete():
-            return self.delete_stirs.get(locator_key)
-        elif crud_text == stir_insert():
-            return self.insert_stirs.get(locator_key)
+    def get_stirunit(
+        self, crud_text: str, category: str, locator_values: list[str]
+    ) -> StirUnit:
+        x_keylist = [crud_text, category, *locator_values]
+        return get_nested_value(self.stirunits, x_keylist)
 
 
 def moveunit_shop(
     agenda_road: PersonRoad,
-    delete_stirs: dict[str:str] = None,
-    insert_stirs: dict[str:str] = None,
-    update_stirs: dict[str:str] = None,
+    stirunits: dict[str:str] = None,
 ):
     return MoveUnit(
-        agenda_road=agenda_road,
-        delete_stirs=get_empty_dict_if_none(delete_stirs),
-        insert_stirs=get_empty_dict_if_none(insert_stirs),
-        update_stirs=get_empty_dict_if_none(update_stirs),
+        agenda_road=agenda_road, stirunits=get_empty_dict_if_none(stirunits)
     )

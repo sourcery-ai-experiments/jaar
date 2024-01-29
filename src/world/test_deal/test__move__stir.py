@@ -16,6 +16,7 @@ from src.world.examples.example_deals import (
     get_sue_personroad,
     get_sue_moveunit_example1,
 )
+from src.tools.python import get_all_childless_objs
 
 
 def test_category_ref_ReturnsCorrectObj():
@@ -248,35 +249,35 @@ def test_StirUnit_get_locator_ReturnsCorrectObj():
     assert partyunit_stirunit.get_locator(party_id_text) == bob_text
 
 
-def test_StirUnit_get_locator_key_ReturnsCorrectObj_single_parameter():
-    # GIVEN
-    bob_text = "Bob"
-    partyunit_text = "partyunit"
-    partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
-    party_id_text = "party_id"
-    partyunit_stirunit.set_locator(x_key=party_id_text, x_value=bob_text)
+# def test_StirUnit_get_locator_key_ReturnsCorrectObj_single_parameter():
+#     # GIVEN
+#     bob_text = "Bob"
+#     partyunit_text = "partyunit"
+#     partyunit_stirunit = stirunit_shop(partyunit_text, stir_insert())
+#     party_id_text = "party_id"
+#     partyunit_stirunit.set_locator(x_key=party_id_text, x_value=bob_text)
 
-    # WHEN / THEN
-    assert partyunit_stirunit.get_locator_key() == f"{partyunit_text} {bob_text}"
+#     # WHEN / THEN
+#     assert partyunit_stirunit.get_locator_key() == f"{partyunit_text} {bob_text}"
 
 
-def test_StirUnit_get_locator_key_ReturnsCorrectObj_double_parameter():
-    # GIVEN
-    bob_text = "Bob"
-    groupunit_partylink_text = "groupunit_partylink"
-    gupl_stirunit = stirunit_shop(groupunit_partylink_text)
-    party_id_text = "party_id"
-    tom_text = "Tom"
-    gupl_stirunit.set_locator(party_id_text, bob_text)
-    group_id_text = "group_id"
-    run_text = "Runners"
-    gupl_stirunit.set_locator(group_id_text, run_text)
+# def test_StirUnit_get_locator_key_ReturnsCorrectObj_double_parameter():
+#     # GIVEN
+#     bob_text = "Bob"
+#     groupunit_partylink_text = "groupunit_partylink"
+#     gupl_stirunit = stirunit_shop(groupunit_partylink_text)
+#     party_id_text = "party_id"
+#     tom_text = "Tom"
+#     gupl_stirunit.set_locator(party_id_text, bob_text)
+#     group_id_text = "group_id"
+#     run_text = "Runners"
+#     gupl_stirunit.set_locator(group_id_text, run_text)
 
-    # WHEN / THEN
-    assert (
-        gupl_stirunit.get_locator_key()
-        == f"{groupunit_partylink_text} {run_text} {bob_text}"
-    )
+#     # WHEN / THEN
+#     assert (
+#         gupl_stirunit.get_locator_key()
+#         == f"{groupunit_partylink_text} {run_text} {bob_text}"
+#     )
 
 
 def test_StirUnit_is_optional_args_valid_ReturnsCorrectBoolean():
@@ -427,29 +428,6 @@ def test_StirUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
     assert bob_delete_stirunit.is_valid()
 
 
-def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
-    # GIVEN
-    sue_road = get_sue_personroad()
-    sue_moveunit = moveunit_shop(sue_road)
-    attribute_value = 55
-    category = "AgendaUnit_weight"
-    required_args = {category: attribute_value}
-    agenda_weight_stirunit = stirunit_shop(
-        category, stir_update(), required_args=required_args
-    )
-    assert sue_moveunit.update_stirs == {}
-    assert agenda_weight_stirunit.stir_order is None
-
-    # WHEN
-    sue_moveunit.set_stirunit(agenda_weight_stirunit)
-
-    # THEN
-    assert len(sue_moveunit.update_stirs) == 1
-    x_stirunit = sue_moveunit.update_stirs.get(category)
-    assert x_stirunit == agenda_weight_stirunit
-    assert agenda_weight_stirunit.stir_order != None
-
-
 def test_StirUnit_set_stir_order_SetCorrectAttr():
     # GIVEN
     bob_text = "Bob"
@@ -471,46 +449,80 @@ def test_StirUnit_set_stir_order_SetCorrectAttr():
     assert bob_insert_stirunit.get_value(dw_text) == bob_debtor_weight
 
 
+def test_MoveUnit_set_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_moveunit = moveunit_shop(sue_road)
+    attribute_value = 55
+    category = "AgendaUnit_weight"
+    required_args = {category: attribute_value}
+    agenda_weight_stirunit = stirunit_shop(
+        category, stir_update(), required_args=required_args
+    )
+    assert sue_moveunit.stirunits == {}
+    assert agenda_weight_stirunit.stir_order is None
+
+    # WHEN
+    sue_moveunit.set_stirunit(agenda_weight_stirunit)
+
+    # THEN
+    assert len(sue_moveunit.stirunits) == 1
+    x_update_dict = sue_moveunit.stirunits.get(stir_update())
+    # print(f"{x_update_dict=}")
+    x_category_stirunit = x_update_dict.get(category)
+    print(f"{x_category_stirunit=}")
+    assert x_category_stirunit == agenda_weight_stirunit
+    assert agenda_weight_stirunit.stir_order != None
+
+
 def test_MoveUnit_get_stir_ReturnsCorrectObj():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_moveunit = moveunit_shop(sue_road)
-    w_value = 55
-    w_name = "AgendaUnit_weight"
-    w_stirunit = stirunit_shop(w_name, stir_update())
-    w_stirunit.set_required_arg(x_key=w_name, x_value=w_value)
-    sue_moveunit.set_stirunit(w_stirunit)
+    AgendaUnit_weight_value = 55
+    AgendaUnit_weight_text = "AgendaUnit_weight"
+    AgendaUnit_weight_stirunit = stirunit_shop(AgendaUnit_weight_text, stir_update())
+    AgendaUnit_weight_stirunit.set_required_arg(
+        x_key=AgendaUnit_weight_text, x_value=AgendaUnit_weight_value
+    )
+    sue_moveunit.set_stirunit(AgendaUnit_weight_stirunit)
 
     # WHEN
-    gen_stirunit = sue_moveunit.get_stir(stir_update(), locator_key=w_name)
+    gen_stirunit = sue_moveunit.get_stirunit(
+        stir_update(), category=AgendaUnit_weight_text, locator_values=[]
+    )
 
     # THEN
-    assert gen_stirunit == w_stirunit
+    assert gen_stirunit == AgendaUnit_weight_stirunit
 
 
 def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnitSimpleAttrs():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_moveunit = moveunit_shop(sue_road)
-    assert sue_moveunit.update_stirs == {}
+    assert sue_moveunit.stirunits == {}
 
     # WHEN
-    attribute_value = 55
-    category = "AgendaUnit_weight"
-    required_args = {category: attribute_value}
-    sue_moveunit.add_stirunit(category, stir_update(), None, required_args)
+    AgendaUnit_weight_value = 55
+    AgendaUnit_weight_text = "AgendaUnit_weight"
+    required_args = {AgendaUnit_weight_text: AgendaUnit_weight_value}
+    sue_moveunit.add_stirunit(
+        AgendaUnit_weight_text, stir_update(), None, required_args
+    )
 
     # THEN
-    assert len(sue_moveunit.update_stirs) == 1
-    x_stirunit = sue_moveunit.update_stirs.get(category)
+    assert len(sue_moveunit.stirunits) == 1
+    x_update_dict = sue_moveunit.stirunits.get(stir_update())
+    x_stirunit = x_update_dict.get(AgendaUnit_weight_text)
     assert x_stirunit != None
+    assert x_stirunit.category == AgendaUnit_weight_text
 
 
 def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_moveunit = moveunit_shop(sue_road)
-    assert sue_moveunit.insert_stirs == {}
+    assert sue_moveunit.stirunits == {}
 
     # WHEN
     party_id_text = "party_id"
@@ -541,15 +553,18 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_partyunits():
         optional_args=bob_optional_dict,
     )
     # THEN
-    assert len(sue_moveunit.insert_stirs) == 1
+    assert len(sue_moveunit.stirunits) == 1
     bob_locator_key = f"{partyunit_text} {bob_text}"
-    assert sue_moveunit.insert_stirs.get(bob_locator_key) != None
+    assert (
+        sue_moveunit.stirunits.get(stir_insert()).get(partyunit_text).get(bob_text)
+        != None
+    )
 
 
 def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     # GIVEN
     sue_moveunit = moveunit_shop(get_sue_personroad())
-    assert sue_moveunit.update_stirs == {}
+    assert sue_moveunit.stirunits == {}
 
     # WHEN
     weight_value = 55
@@ -558,8 +573,8 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     weight_stirunit = stirunit_shop(weight_name, stir_update(), None, required_args)
     sue_moveunit.set_stirunit(weight_stirunit)
     # THEN
-    assert len(sue_moveunit.update_stirs) == 1
-    assert weight_stirunit == sue_moveunit.update_stirs.get(weight_name)
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 1
+    assert weight_stirunit == sue_moveunit.stirunits.get(stir_update()).get(weight_name)
 
     # WHEN
     new2_value = 66
@@ -568,8 +583,11 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     x_stirunit = stirunit_shop(x_attribute, stir_update(), None, required_args)
     sue_moveunit.set_stirunit(x_stirunit)
     # THEN
-    assert len(sue_moveunit.update_stirs) == 2
-    assert x_stirunit == sue_moveunit.update_stirs.get(x_attribute)
+    print(f"{sue_moveunit.stirunits.keys()=}")
+    print(f"{sue_moveunit.stirunits.get(stir_update()).keys()=}")
+    # print(f"{get_all_childless_objs(sue_moveunit.stirunits).get(stir_update())=}")
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 2
+    assert x_stirunit == sue_moveunit.stirunits.get(stir_update()).get(x_attribute)
 
     # WHEN
     new3_value = 77
@@ -578,8 +596,8 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     x_stirunit = stirunit_shop(x_attribute, stir_update(), None, required_args)
     sue_moveunit.set_stirunit(x_stirunit)
     # THEN
-    assert len(sue_moveunit.update_stirs) == 3
-    assert x_stirunit == sue_moveunit.update_stirs.get(x_attribute)
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 3
+    assert x_stirunit == sue_moveunit.stirunits.get(stir_update()).get(x_attribute)
 
     # WHEN
     new4_value = 88
@@ -588,8 +606,8 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     x_stirunit = stirunit_shop(x_attribute, stir_update(), None, required_args)
     sue_moveunit.set_stirunit(x_stirunit)
     # THEN
-    assert len(sue_moveunit.update_stirs) == 4
-    assert x_stirunit == sue_moveunit.update_stirs.get(x_attribute)
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 4
+    assert x_stirunit == sue_moveunit.stirunits.get(stir_update()).get(x_attribute)
 
     # WHEN
     new5_value = "override"
@@ -598,16 +616,16 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     x_stirunit = stirunit_shop(x_attribute, stir_update(), None, required_args)
     sue_moveunit.set_stirunit(x_stirunit)
     # THEN
-    assert len(sue_moveunit.update_stirs) == 5
-    assert x_stirunit == sue_moveunit.update_stirs.get(x_attribute)
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 5
+    assert x_stirunit == sue_moveunit.stirunits.get(stir_update()).get(x_attribute)
 
 
 def test_MoveUnit_get_stir_order_stirunit_dict_ReturnsCorrectObj():
     # GIVEN
     sue_moveunit = get_sue_moveunit_example1()
-    assert len(sue_moveunit.update_stirs) == 5
-    assert len(sue_moveunit.delete_stirs) == 1
-    assert len(sue_moveunit.insert_stirs) == 0
+    assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 5
+    assert sue_moveunit.stirunits.get(stir_insert()) is None
+    assert len(sue_moveunit.stirunits.get(stir_delete()).keys()) == 1
 
     # WHEN
     sue_stir_order_dict = sue_moveunit.get_stir_order_stirunit_dict()
@@ -615,5 +633,6 @@ def test_MoveUnit_get_stir_order_stirunit_dict_ReturnsCorrectObj():
     # THEN
     assert len(sue_stir_order_dict) == 2
     print(f"{sue_stir_order_dict.keys()=}")
-    assert len(sue_stir_order_dict[2]) == 1
-    assert len(sue_stir_order_dict[27]) == 5
+    print(f"{sue_stir_order_dict.get(stir_update())=}")
+    assert len(sue_stir_order_dict.get(stir_update())) == 5
+    assert len(sue_stir_order_dict.get(stir_delete())) == 1

@@ -1,4 +1,5 @@
 from json import loads as json_loads, dumps as json_dumps
+from copy import deepcopy as copy_deepcopy
 
 
 def get_empty_dict_if_none(x_dict: dict) -> dict:
@@ -21,6 +22,7 @@ def add_dict_if_missing(x_dict: dict, x_keylist: list[any]):
 
 
 def place_obj_in_dict(x_dict: dict, x_keylist: list[any], x_obj: any):
+    x_keylist = copy_deepcopy(x_keylist)
     last_key = x_keylist.pop(-1)
     add_dict_if_missing(x_dict, x_keylist=x_keylist)
     last_dict = x_dict
@@ -35,6 +37,14 @@ def x_is_json(json_x: str) -> bool:
     except ValueError as e:
         return False
     return True
+
+
+def get_nested_value(x_dict: dict, x_keylist: list) -> any:
+    last_key = x_keylist.pop(-1)
+    temp_dict = x_dict
+    for x_key in x_keylist:
+        temp_dict = temp_dict.get(x_key)
+    return temp_dict[last_key]
 
 
 def get_all_childless_objs(x_dict: dict) -> dict[str : list[any]]:
@@ -59,8 +69,6 @@ def get_all_childless_objs(x_dict: dict) -> dict[str : list[any]]:
             else:
                 x_list = output_dict[x1_key]
                 x_list.append(level1_dict[x2_key])
-
-                print(f"huh {str(type(level1_dict.get(x2_key)))=}")
 
     return output_dict
 

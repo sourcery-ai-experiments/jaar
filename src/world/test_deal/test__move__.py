@@ -11,9 +11,7 @@ def test_MoveUnit_exists():
 
     # THEN
     assert x_moveunit.agenda_road is None
-    assert x_moveunit.insert_stirs is None
-    assert x_moveunit.delete_stirs is None
-    assert x_moveunit.update_stirs is None
+    assert x_moveunit.stirunits is None
 
 
 def test_moveunit_shop_ReturnsCorrectObj():
@@ -25,6 +23,4 @@ def test_moveunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert sue_moveunit.agenda_road == sue_road
-    assert sue_moveunit.insert_stirs == {}
-    assert sue_moveunit.delete_stirs == {}
-    assert sue_moveunit.update_stirs == {}
+    assert sue_moveunit.stirunits == {}
