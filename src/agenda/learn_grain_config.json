@@ -1,42 +1,42 @@
 {
     "_auto_output_to_forum": {
         "UPDATE": {
+            "grain_order": 26,
             "required_args": {
                 "_auto_output_to_forum": "bool"
-            },
-            "grain_order": 26
+            }
         }
     },
     "_max_tree_traverse": {
         "UPDATE": {
+            "grain_order": 26,
             "required_args": {
                 "_max_tree_traverse": "int"
-            },
-            "grain_order": 26
+            }
         }
     },
     "_meld_strategy": {
         "UPDATE": {
+            "grain_order": 26,
             "required_args": {
                 "_meld_strategy": "str"
-            },
-            "grain_order": 26
+            }
         }
     },
     "_party_creditor_pool": {
         "UPDATE": {
+            "grain_order": 26,
             "required_args": {
                 "_party_creditor_pool": "int"
-            },
-            "grain_order": 26
+            }
         }
     },
     "_party_debtor_pool": {
         "UPDATE": {
+            "grain_order": 26,
             "required_args": {
                 "_party_debtor_pool": "int"
-            },
-            "grain_order": 26
+            }
         }
     },
     "AgendaUnit_weight": {
@@ -45,50 +45,51 @@
                 "arg1": "AgendaUnit_weight",
                 "method_name": "set_max_tree_traverse"
             },
+            "grain_order": 26,
             "required_args": {
                 "AgendaUnit_weight": "int"
-            },
-            "grain_order": 26
+            }
         }
     },
     "groupunit": {
         "DELETE": {
+            "grain_order": 25,
             "required_args": {
                 "group_id": "GroupID"
-            },
-            "grain_order": 25
+            }
         },
         "INSERT": {
+            "grain_order": 2,
             "optional_args": {
                 "_partylinks_set_by_economy_road": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"
-            },
-            "grain_order": 2
+            }
         },
         "locator": {
             "group_id": "GroupID"
         },
         "UPDATE": {
+            "grain_order": 10,
             "optional_args": {
                 "_partylinks_set_by_economy_road": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"
-            },
-            "grain_order": 10
+            }
         }
     },
     "groupunit_partylink": {
         "DELETE": {
+            "grain_order": 23,
             "required_args": {
                 "group_id": "GroupID",
                 "party_id": "PartyID"
-            },
-            "grain_order": 23
+            }
         },
         "INSERT": {
+            "grain_order": 1,
             "optional_args": {
                 "creditor_weight": "int",
                 "debtor_weight": "int"
@@ -96,14 +97,14 @@
             "required_args": {
                 "group_id": "GroupID",
                 "party_id": "PartyID"
-            },
-            "grain_order": 1
+            }
         },
         "locator": {
             "group_id": "GroupID",
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "grain_order": 11,
             "optional_args": {
                 "creditor_weight": "int",
                 "debtor_weight": "int"
@@ -111,21 +112,21 @@
             "required_args": {
                 "group_id": "GroupID",
                 "party_id": "PartyID"
-            },
-            "grain_order": 11
+            }
         }
     },
     "idea": {
         "DELETE": {
+            "grain_order": 22,
             "optional_args": {
                 "del_children": "bool"
             },
             "required_args": {
                 "road": "RoadUnit"
-            },
-            "grain_order": 22
+            }
         },
         "INSERT": {
+            "grain_order": 3,
             "optional_args": {
                 "_addin": "float",
                 "_begin": "float",
@@ -142,13 +143,13 @@
             "required_args": {
                 "label": "RoadUnit",
                 "parent_road": "RoadUnit"
-            },
-            "grain_order": 3
+            }
         },
         "locator": {
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "grain_order": 12,
             "optional_args": {
                 "_addin": "float",
                 "_begin": "float",
@@ -165,12 +166,12 @@
             },
             "required_args": {
                 "road": "RoadUnit"
-            },
-            "grain_order": 12
+            }
         }
     },
     "idea_balancelink": {
         "DELETE": {
+            "grain_order": 21,
             "optional_args": {
                 "group_id": "creditor_weight",
                 "road": "debtor_weight"
@@ -178,10 +179,10 @@
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
-            },
-            "grain_order": 21
+            }
         },
         "INSERT": {
+            "grain_order": 4,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
                 "debtor_weight": "debtor_weight"
@@ -189,14 +190,14 @@
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
-            },
-            "grain_order": 4
+            }
         },
         "locator": {
             "group_id": "GroupID",
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "grain_order": 13,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
                 "debtor_weight": "debtor_weight"
@@ -204,19 +205,19 @@
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
-            },
-            "grain_order": 13
+            }
         }
     },
     "idea_beliefunit": {
         "DELETE": {
+            "grain_order": 19,
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 19
+            }
         },
         "INSERT": {
+            "grain_order": 6,
             "optional_args": {
                 "nigh": "float",
                 "open": "float"
@@ -225,14 +226,14 @@
                 "base": "RoadUnit",
                 "pick": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 6
+            }
         },
         "locator": {
             "base": "RoadUnit",
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "grain_order": 14,
             "optional_args": {
                 "nigh": "float",
                 "open": "float",
@@ -241,53 +242,53 @@
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 14
+            }
         }
     },
     "idea_reasonunit": {
         "DELETE": {
+            "grain_order": 18,
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 18
+            }
         },
         "INSERT": {
+            "grain_order": 7,
             "optional_args": {
                 "suff_idea_active": "bool"
             },
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 7
+            }
         },
         "locator": {
             "base": "RoadUnit",
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "grain_order": 16,
             "optional_args": {
                 "suff_idea_active": "bool"
             },
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 16
+            }
         }
     },
     "idea_reasonunit_premiseunit": {
         "DELETE": {
+            "grain_order": 17,
             "required_args": {
                 "base": "RoadUnit",
                 "need": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 17
+            }
         },
         "INSERT": {
+            "grain_order": 8,
             "optional_args": {
                 "divisor": "int",
                 "nigh": "float",
@@ -297,8 +298,7 @@
                 "base": "RoadUnit",
                 "need": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 8
+            }
         },
         "locator": {
             "base": "RoadUnit",
@@ -306,6 +306,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "grain_order": 15,
             "optional_args": {
                 "divisor": "int",
                 "nigh": "float",
@@ -315,24 +316,23 @@
                 "base": "RoadUnit",
                 "need": "RoadUnit",
                 "road": "RoadUnit"
-            },
-            "grain_order": 15
+            }
         }
     },
     "idea_suffgroup": {
         "DELETE": {
+            "grain_order": 20,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
-            },
-            "grain_order": 20
+            }
         },
         "INSERT": {
+            "grain_order": 5,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
-            },
-            "grain_order": 5
+            }
         },
         "locator": {
             "group_id": "RoadUnit",
@@ -341,10 +341,11 @@
     },
     "partyunit": {
         "DELETE": {
-            "required_args": {},
-            "grain_order": 24
+            "grain_order": 24,
+            "required_args": {}
         },
         "INSERT": {
+            "grain_order": 0,
             "optional_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float",
@@ -352,13 +353,13 @@
             },
             "required_args": {
                 "party_id": "PartyID"
-            },
-            "grain_order": 0
+            }
         },
         "locator": {
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "grain_order": 9,
             "optional_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float",
@@ -366,8 +367,7 @@
             },
             "required_args": {
                 "party_id": "PartyID"
-            },
-            "grain_order": 9
+            }
         }
     }
 }
