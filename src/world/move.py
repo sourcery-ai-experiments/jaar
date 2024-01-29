@@ -285,7 +285,6 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
         x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
         x_ideaunit.del_beliefunit(xs.get_value("base"))
     elif xs.category == "idea_beliefunit" and xs.crud_text == stir_update():
-        print("huh")
         x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
         x_beliefunit = x_ideaunit._beliefunits.get(xs.get_value("base"))
         x_beliefunit.set_attr(
@@ -307,13 +306,21 @@ def change_agenda_with_stirunit(x_agenda: AgendaUnit, x_stirunit: StirUnit):
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_delete():
         pass
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_update():
-        pass
+        print(";huh")
     elif xs.category == "idea_reasonunit" and xs.crud_text == stir_insert():
         pass
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_delete():
         pass
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_update():
-        pass
+        print("huh")
+        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
+        x_ideaunit.set_reason_premise(
+            base=xs.get_value("base"),
+            premise=xs.get_value("need"),
+            open=xs.get_value("open"),
+            nigh=xs.get_value("nigh"),
+            divisor=xs.get_value("divisor"),
+        )
     elif xs.category == "idea_reasonunit_premiseunit" and xs.crud_text == stir_insert():
         pass
     elif xs.category == "idea_suffgroup" and xs.crud_text == stir_delete():
@@ -352,6 +359,7 @@ class MoveUnit:
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
         stirunits_by_order = self.get_stir_order_stirunit_dict()
+        print(f"{stirunits_by_order=}")
 
         for x_stir_order_int in sorted(stirunits_by_order.keys()):
             stirunits_list = stirunits_by_order.get(x_stir_order_int)

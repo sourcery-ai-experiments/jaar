@@ -282,7 +282,7 @@
         "DELETE": {
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit",
+                "road": "RoadUnit",
                 "need": "RoadUnit"
             },
             "stir_order": 17
@@ -295,14 +295,14 @@
             },
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit",
+                "road": "RoadUnit",
                 "need": "RoadUnit"
             },
             "stir_order": 11
         },
         "locator": {
             "base": "RoadUnit",
-            "idea_road": "RoadUnit",
+            "road": "RoadUnit",
             "need": "RoadUnit"
         },
         "UPDATE": {
@@ -313,7 +313,7 @@
             },
             "required_args": {
                 "base": "RoadUnit",
-                "idea_road": "RoadUnit",
+                "road": "RoadUnit",
                 "need": "RoadUnit"
             },
             "stir_order": 23

@@ -60,6 +60,15 @@ def get_all_childless_objs(x_dict: dict) -> dict[str : list[any]]:
                         for x4_key in level3_dict.keys():
                             if str(type(level3_dict.get(x4_key))) == "<class 'dict'>":
                                 level4_dict = level3_dict[x4_key]
+                                for x5_key in level4_dict.keys():
+                                    if (
+                                        str(type(level4_dict.get(x5_key)))
+                                        == "<class 'dict'>"
+                                    ):
+                                        level5_dict = level4_dict[x5_key]
+                                    else:
+                                        x_list = output_dict[x1_key]
+                                        x_list.append(level4_dict[x5_key])
                             else:
                                 x_list = output_dict[x1_key]
                                 x_list.append(level3_dict[x4_key])
