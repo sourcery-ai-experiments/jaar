@@ -2,7 +2,7 @@ from src.tools.python import (
     get_1_if_None,
     add_dict_if_missing,
     place_obj_in_dict,
-    get_all_childless_objs,
+    get_all_nondictionary_objs,
     get_nested_value,
 )
 
@@ -43,7 +43,7 @@ def test_place_obj_in_dict_CorrectAddsDict():
     assert y_dict == {y_key1: {y_key2: {y_key3: fly_text}}}
 
 
-def test_get_all_childless_objs_ReturnsCorrectDict():
+def test_get_all_nondictionary_objs_ReturnsCorrectDict():
     # GIVEN
     y_dict = {}
     sports_text = "sports"
@@ -82,7 +82,7 @@ def test_get_all_childless_objs_ReturnsCorrectDict():
     }
 
     # WHEN
-    childless_objs = get_all_childless_objs(y_dict)
+    childless_objs = get_all_nondictionary_objs(y_dict)
 
     # THEN
     assert childless_objs == {sports_text: [fun_obj, mount_obj, day_obj, night_obj]}

@@ -871,11 +871,109 @@ def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reas
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit_premiseunit():
-    assert 1 == 2
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_au.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = before_sue_au.make_road(knee_road, broken_text)
+    medical_text = "get medical attention"
+    medical_road = before_sue_au.make_road(knee_road, medical_text)
+    before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
+    before_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
+    before_sue_au.edit_idea_attr(
+        ball_road, reason_base=knee_road, reason_premise=broken_road
+    )
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    before_knee_reasonunit = before_ball_idea.get_reasonunit(knee_road)
+    assert before_knee_reasonunit.get_premise(broken_road) != None
+    assert before_knee_reasonunit.get_premise(medical_road) is None
+
+    # WHEN
+    medical_open = 45
+    medical_nigh = 77
+    medical_divisor = 3
+    update_disc_stirunit = stirunit_shop("idea_reasonunit_premiseunit", stir_insert())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("base", knee_road)
+    update_disc_stirunit.set_locator("need", medical_road)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("base", knee_road)
+    update_disc_stirunit.set_required_arg("need", medical_road)
+    update_disc_stirunit.set_optional_arg("open", medical_open)
+    update_disc_stirunit.set_optional_arg("nigh", medical_nigh)
+    update_disc_stirunit.set_optional_arg("divisor", medical_divisor)
+    # print(f"{update_disc_stirunit=}")
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
+    after_medical_premiseunit = after_knee_reasonunit.get_premise(medical_road)
+    assert after_medical_premiseunit != None
+    assert after_medical_premiseunit.need == medical_road
+    assert after_medical_premiseunit.open == medical_open
+    assert after_medical_premiseunit.nigh == medical_nigh
+    assert after_medical_premiseunit.divisor == medical_divisor
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit_premiseunit():
-    assert 1 == 2
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_au = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_au.make_road(sports_road, ball_text)
+    before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_au.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = before_sue_au.make_road(knee_road, broken_text)
+    medical_text = "get medical attention"
+    medical_road = before_sue_au.make_road(knee_road, medical_text)
+    before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
+    before_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
+    before_sue_au.edit_idea_attr(
+        ball_road, reason_base=knee_road, reason_premise=broken_road
+    )
+    before_sue_au.edit_idea_attr(
+        ball_road, reason_base=knee_road, reason_premise=medical_road
+    )
+    before_ball_idea = before_sue_au.get_idea_obj(ball_road)
+    before_knee_reasonunit = before_ball_idea.get_reasonunit(knee_road)
+    assert before_knee_reasonunit.get_premise(broken_road) != None
+    assert before_knee_reasonunit.get_premise(medical_road) != None
+
+    # WHEN
+    update_disc_stirunit = stirunit_shop("idea_reasonunit_premiseunit", stir_delete())
+    update_disc_stirunit.set_locator("road", ball_road)
+    update_disc_stirunit.set_locator("base", knee_road)
+    update_disc_stirunit.set_locator("need", medical_road)
+    update_disc_stirunit.set_required_arg("road", ball_road)
+    update_disc_stirunit.set_required_arg("base", knee_road)
+    update_disc_stirunit.set_required_arg("need", medical_road)
+    sue_moveunit = moveunit_shop(sue_road)
+    sue_moveunit.set_stirunit(update_disc_stirunit)
+    after_sue_au = sue_moveunit.get_after_agenda(before_sue_au)
+
+    # THEN
+    after_ball_idea = after_sue_au.get_idea_obj(ball_road)
+    after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
+    assert after_knee_reasonunit.get_premise(broken_road) != None
+    assert after_knee_reasonunit.get_premise(medical_road) is None
 
 
 def test_MoveUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit():

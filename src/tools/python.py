@@ -47,7 +47,8 @@ def get_nested_value(x_dict: dict, x_keylist: list) -> any:
     return temp_dict[last_key]
 
 
-def get_all_childless_objs(x_dict: dict) -> dict[str : list[any]]:
+def get_all_nondictionary_objs(x_dict: dict) -> dict[str : list[any]]:
+    # TODO convert this to recursive function
     output_dict = {}
     for x1_key, level1_dict in x_dict.items():
         output_dict[x1_key] = []

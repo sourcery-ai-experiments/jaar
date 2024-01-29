@@ -16,7 +16,7 @@ from src.world.examples.example_deals import (
     get_sue_personroad,
     get_sue_moveunit_example1,
 )
-from src.tools.python import get_all_childless_objs
+from src.tools.python import get_all_nondictionary_objs
 
 
 def test_category_ref_ReturnsCorrectObj():
@@ -585,7 +585,7 @@ def test_MoveUnit_add_stirunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     # THEN
     print(f"{sue_moveunit.stirunits.keys()=}")
     print(f"{sue_moveunit.stirunits.get(stir_update()).keys()=}")
-    # print(f"{get_all_childless_objs(sue_moveunit.stirunits).get(stir_update())=}")
+    # print(f"{get_all_nondictionary_objs(sue_moveunit.stirunits).get(stir_update())=}")
     assert len(sue_moveunit.stirunits.get(stir_update()).keys()) == 2
     assert x_stirunit == sue_moveunit.stirunits.get(stir_update()).get(x_attribute)
 
