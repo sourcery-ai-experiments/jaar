@@ -577,49 +577,51 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_delet
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_balancelink():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_au = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     carm_text = "Carmen"
-#     old_sue_au.add_partyunit(rico_text)
-#     old_sue_au.add_partyunit(carm_text)
-#     run_text = ",runners"
-#     run_groupunit = groupunit_shop(run_text)
-#     run_groupunit.set_partylink(partylink_shop(rico_text))
-#     old_sue_au.set_groupunit(run_groupunit)
-#     sports_text = "sports"
-#     sports_road = old_sue_au.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = old_sue_au.make_road(sports_road, ball_text)
-#     old_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     old_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-#     run_balancelink = old_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-#     assert run_balancelink.creditor_weight == 1
-#     assert run_balancelink.debtor_weight == 1
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_update():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_au = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    old_sue_au.add_partyunit(rico_text)
+    old_sue_au.add_partyunit(carm_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    old_sue_au.set_groupunit(run_groupunit)
+    sports_text = "sports"
+    sports_road = old_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = old_sue_au.make_road(sports_road, ball_text)
+    old_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    old_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
+    run_balancelink = old_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
 
-#     # WHEN
-#     x_creditor_weight = 55
-#     x_debtor_weight = 66
-#     update_disc_grainunit = grainunit_shop("idea_balancelink", grain_update())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("group_id", run_text)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("group_id", run_text)
-#     update_disc_grainunit.set_optional_arg("creditor_weight", x_creditor_weight)
-#     update_disc_grainunit.set_optional_arg("debtor_weight", x_debtor_weight)
-#     # print(f"{update_disc_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     new_sue_au = sue_learnunit.get_new_agenda(old_sue_au)
+    new_sue_agendaunit = copy_deepcopy(old_sue_au)
+    new_creditor_weight = 55
+    new_debtor_weight = 66
+    new_sue_agendaunit.edit_idea_attr(
+        ball_road,
+        balancelink=balancelink_shop(
+            group_id=run_text,
+            creditor_weight=new_creditor_weight,
+            debtor_weight=new_debtor_weight,
+        ),
+    )
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_au, new_sue_agendaunit)
 
-#     # THEN
-#     run_balancelink = new_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-#     print(f"{run_balancelink.creditor_weight=}")
-#     assert run_balancelink.creditor_weight == x_creditor_weight
-#     assert run_balancelink.debtor_weight == x_debtor_weight
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+
+    x_keylist = [grain_update(), "idea_balancelink", ball_road, run_text]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_locator("group_id") == run_text
+    assert ball_grainunit.get_value("creditor_weight") == new_creditor_weight
+    assert ball_grainunit.get_value("debtor_weight") == new_debtor_weight
+    assert get_grainunit_total_count(sue_learnunit) == 1
 
 
 # def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_balancelink():
