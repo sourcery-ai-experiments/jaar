@@ -420,12 +420,19 @@ def test_GrainUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
 
     # THEN
     assert bob_delete_grainunit.is_locator_valid() == False
-    assert bob_delete_grainunit.is_required_args_valid()
+    assert bob_delete_grainunit.is_required_args_valid() == False
     assert bob_delete_grainunit.is_valid() == False
 
     # WHEN
-    bob_locator_dict = {"party_id": bob_text}
-    bob_delete_grainunit.locator = bob_locator_dict
+    bob_delete_grainunit.set_locator("party_id", bob_text)
+
+    # THEN
+    assert bob_delete_grainunit.is_locator_valid()
+    assert bob_delete_grainunit.is_required_args_valid() == False
+    assert bob_delete_grainunit.is_valid() == False
+
+    # WHEN
+    bob_delete_grainunit.set_required_arg("party_id", bob_text)
 
     # THEN
     assert bob_delete_grainunit.is_locator_valid()

@@ -57,5 +57,6 @@ def get_sue_learnunit_example1() -> LearnUnit:
     carm_text = "Carmen"
     x_grainunit = grainunit_shop(category, grain_delete())
     x_grainunit.set_locator("party_id", carm_text)
+    x_grainunit.set_required_arg("party_id", carm_text)
     sue_learnunit.set_grainunit(x_grainunit)
     return sue_learnunit

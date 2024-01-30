@@ -1,6 +1,6 @@
 from src._prime.road import PersonRoad
 from src.agenda.reason_idea import beliefunit_shop
-from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.party import partyunit_shop, partylink_shop, PartyUnit
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
@@ -373,6 +373,10 @@ def change_agenda_with_grainunit(x_agenda: AgendaUnit, x_grainunit: GrainUnit):
         )
 
 
+class InvalidGrainUnitException(Exception):
+    pass
+
+
 @dataclass
 class LearnUnit:
     agenda_road: PersonRoad = None
@@ -392,14 +396,21 @@ class LearnUnit:
         return after_agenda
 
     def set_grainunit(self, x_grainunit: GrainUnit):
-        if x_grainunit.is_valid():
-            x_grainunit.set_grain_order()
-            x_keylist = [
-                x_grainunit.crud_text,
-                x_grainunit.category,
-                *list(x_grainunit.locator.values()),
-            ]
-            place_obj_in_dict(self.grainunits, x_keylist, x_grainunit)
+        if x_grainunit.is_valid() == False:
+            raise InvalidGrainUnitException(
+                f"""'{x_grainunit.category}' {x_grainunit.crud_text} GrainUnit is invalid
+{x_grainunit.is_locator_valid()=}
+{x_grainunit.is_required_args_valid()=}
+{x_grainunit.is_optional_args_valid()=}"""
+            )
+
+        x_grainunit.set_grain_order()
+        x_keylist = [
+            x_grainunit.crud_text,
+            x_grainunit.category,
+            *list(x_grainunit.locator.values()),
+        ]
+        place_obj_in_dict(self.grainunits, x_keylist, x_grainunit)
 
     def add_grainunit(
         self,
@@ -432,3 +443,210 @@ def learnunit_shop(
     return LearnUnit(
         agenda_road=agenda_road, grainunits=get_empty_dict_if_none(grainunits)
     )
+
+
+def create_learnunit(
+    before_agenda: AgendaUnit, after_agenda: AgendaUnit, agenda_road: PersonRoad = None
+) -> LearnUnit:
+    x_learnunit = learnunit_shop(agenda_road=agenda_road)
+
+    # Given before_agenda, after_agenda
+    # Go to every element of before_agenda, check if it exists in after_agenda
+    # If the element is missing in after_agenda: create delete grainunit
+    # If the element is changed in after_agenda: create update grainunit (optional args in config)
+    # Go to every element in after_agenda, check if it exists in before_agenda
+    # If the element does not exist, create insert grainunit
+
+    # Use python's ability to compare custom class objects. Don't start at a smallest detail.
+    # Given before_agenda, after_agenda
+
+    add_grainunits_partyunit_insert(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_partyunit_delete(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_partyunit_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_AgendaUnit_weight_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_max_tree_traverse_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_party_creditor_pool_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_party_debtor_pool_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_auto_output_to_forum_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_meld_strategy_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_groupunit_partylink(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_groupunit(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_reasonunit_premiseunit(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_reasonunit(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_beliefunit(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_suffgroup(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_balancelink(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea(x_learnunit, before_agenda, after_agenda)
+
+    # create deepcopy of before_agenda, call it learning_agenda
+    # if learning_agenda != after_agenda: check something if different find grainunits.
+    #   Apply grainunits to learning_agenda
+    # if learning_agenda != after_agenda again: check something else if different
+    # all the way down the line for all 15 elements
+
+    # check "AgendaUnit_weight" unequal => build_update_grain
+    # check "_max_tree_traverse" unequal => build_update_grain
+    # check "_party_creditor_pool" unequal => build_update_grain
+    # check "_party_debtor_pool" unequal => build_update_grain
+    # check "_auto_output_to_forum" unequal => build_update_grain
+    # check "_meld_strategy" unequal => build_update_grain
+    # check "partyunit" unequal => build_party_grains
+    # check "groupunit_partylink" => build_groupunit_partylink_grains
+    # check "groupunit" => build_groupunit_grains
+    # check "idea_reasonunit_premiseunit" => build_idea_reasonunit_premiseunit_grains
+    # check "idea_reasonunit" => build_idea_reasonunit_grains
+    # check "idea_beliefunit" => build_idea_beliefunit_grains
+    # check "idea_suffgroup" => build_idea_suffgroup_grains
+    # check "idea_balancelink" => build_idea_balancelink_grains
+    # check "idea" => build_idea_grains
+
+    return x_learnunit
+
+
+def add_grainunits_AgendaUnit_weight_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_max_tree_traverse_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_party_creditor_pool_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_party_debtor_pool_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_auto_output_to_forum_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_meld_strategy_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_groupunit_partylink(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_groupunit(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea_reasonunit_premiseunit(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea_reasonunit(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea_beliefunit(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea_suffgroup(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea_balancelink(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_idea(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    pass
+
+
+def add_grainunits_partyunit_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    if before_agenda._partys != after_agenda._partys:
+        for after_partyunit in after_agenda._partys.values():
+            before_partyunit = before_agenda.get_party(after_partyunit.party_id)
+            if before_partyunit not in [None, after_partyunit]:
+                add_partyunit_update_grainunit(
+                    x_learnunit, before_partyunit, after_partyunit
+                )
+
+
+def add_partyunit_update_grainunit(
+    x_learnunit: LearnUnit, before_partyunit: PartyUnit, after_partyunit: PartyUnit
+):
+    x_grainunit = grainunit_shop("partyunit", grain_update())
+    x_grainunit.set_locator("party_id", after_partyunit.party_id)
+    x_grainunit.set_required_arg("party_id", after_partyunit.party_id)
+    if before_partyunit.creditor_weight != after_partyunit.creditor_weight:
+        x_grainunit.set_optional_arg("creditor_weight", after_partyunit.creditor_weight)
+    if before_partyunit.debtor_weight != after_partyunit.debtor_weight:
+        x_grainunit.set_optional_arg("debtor_weight", after_partyunit.debtor_weight)
+    if before_partyunit.depotlink_type != after_partyunit.depotlink_type:
+        x_grainunit.set_optional_arg("depotlink_type", after_partyunit.depotlink_type)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_partyunit_delete(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    if before_agenda._partys != after_agenda._partys:
+        for before_partyunit in before_agenda._partys.values():
+            if after_agenda.get_party(before_partyunit.party_id) is None:
+                add_partyunit_delete_grainunit(x_learnunit, before_partyunit)
+
+
+def add_partyunit_delete_grainunit(x_learnunit: LearnUnit, x_partyunit: PartyUnit):
+    x_grainunit = grainunit_shop("partyunit", grain_delete())
+    x_grainunit.set_locator("party_id", x_partyunit.party_id)
+    x_grainunit.set_required_arg("party_id", x_partyunit.party_id)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_partyunit_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    if before_agenda._partys != after_agenda._partys:
+        for after_partyunit in after_agenda._partys.values():
+            if before_agenda.get_party(after_partyunit.party_id) is None:
+                add_partyunit_insert_grainunit(x_learnunit, after_partyunit)
+
+
+def add_partyunit_insert_grainunit(x_learnunit: LearnUnit, x_partyunit: PartyUnit):
+    x_grainunit = grainunit_shop("partyunit", grain_insert())
+    x_grainunit.set_locator("party_id", x_partyunit.party_id)
+    x_grainunit.set_required_arg("party_id", x_partyunit.party_id)
+    if x_partyunit.creditor_weight != None:
+        x_grainunit.set_optional_arg("creditor_weight", x_partyunit.creditor_weight)
+    if x_partyunit.debtor_weight != None:
+        x_grainunit.set_optional_arg("debtor_weight", x_partyunit.debtor_weight)
+    if x_partyunit.depotlink_type != None:
+        x_grainunit.set_optional_arg("depotlink_type", x_partyunit.depotlink_type)
+    x_learnunit.set_grainunit(x_grainunit)

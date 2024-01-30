@@ -11,6 +11,7 @@ from src.agenda.examples.example_learns import (
     get_sue_personroad,
     get_sue_learnunit_example1,
 )
+from pytest import raises as pytest_raises
 
 
 def test_LearnUnit_exists():
@@ -58,6 +59,25 @@ def test_LearnUnit_set_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
     print(f"{x_category_grainunit=}")
     assert x_category_grainunit == agenda_weight_grainunit
     assert agenda_weight_grainunit.grain_order != None
+
+
+def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_learnunit = learnunit_shop(sue_road)
+    x_category = "AgendaUnit_weight"
+    agenda_weight_grainunit = grainunit_shop(x_category, grain_update())
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        sue_learnunit.set_grainunit(agenda_weight_grainunit)
+    assert (
+        str(excinfo.value)
+        == f"""'{x_category}' UPDATE GrainUnit is invalid
+x_grainunit.is_locator_valid()=True
+x_grainunit.is_required_args_valid()=False
+x_grainunit.is_optional_args_valid()=True"""
+    )
 
 
 def test_LearnUnit_get_grain_ReturnsCorrectObj():

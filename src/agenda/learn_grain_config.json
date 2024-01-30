@@ -342,7 +342,7 @@
     "partyunit": {
         "DELETE": {
             "grain_order": 24,
-            "required_args": {}
+            "required_args": {"party_id": "PartyID"}
         },
         "INSERT": {
             "grain_order": 0,

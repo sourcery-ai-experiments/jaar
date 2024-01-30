@@ -506,7 +506,7 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
     comma_delimiter_cooker_road = f"{cooker_text}{comma_delimiter}{cleaner_text}"
     assert comma_delimiter == ","
 
-    # WHEN
+    # WHEN / THEN
     slash_delimiter = "/"
     with pytest_raises(Exception) as excinfo:
         comma_delimiter_cooker_road = replace_road_delimiter(
