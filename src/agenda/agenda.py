@@ -1010,7 +1010,7 @@ class AgendaUnit:
                 self.edit_idea_attr(
                     road=new_adoptee_parent_road, weight=adoptee_idea._weight
                 )
-                self.del_idea_kid(adoptee_road)
+                self.del_idea_obj(adoptee_road)
 
             if bundling:
                 self.edit_idea_attr(road=kid_road, weight=weight_sum)
@@ -1067,7 +1067,7 @@ class AgendaUnit:
                 parent_road=get_parent_road_from_road(road),
             )
 
-    def del_idea_kid(self, road: RoadUnit, del_children: bool = True):
+    def del_idea_obj(self, road: RoadUnit, del_children: bool = True):
         if road == self._idearoot.get_road():
             raise InvalidAgendaException("Idearoot cannot be deleted")
         parent_road = get_parent_road_from_road(road)

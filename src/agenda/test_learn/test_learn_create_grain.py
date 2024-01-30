@@ -7,6 +7,7 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.learn import (
+    LearnUnit,
     create_learnunit,
     grain_insert,
     grain_update,
@@ -20,8 +21,43 @@ from src.agenda.examples.example_learns import (
     get_yao_example_roadunit as yao_roadunit,
 )
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
-from src.tools.python import get_nested_value
+from src.tools.python import get_nested_value, get_empty_list_if_None
 from copy import deepcopy as copy_deepcopy
+
+
+def print_grainunit_keys(x_learnunit: LearnUnit):
+    for x_grainunit in get_delete_grainunit_list(x_learnunit):
+        print(f"DELETE {x_grainunit.category} {x_grainunit.locator.values()}")
+    for x_grainunit in get_update_grainunit_list(x_learnunit):
+        print(f"UPDATE {x_grainunit.category} {x_grainunit.locator.values()}")
+    for x_grainunit in get_insert_grainunit_list(x_learnunit):
+        print(f"INSERT {x_grainunit.category} {x_grainunit.locator.values()}")
+
+
+def get_delete_grainunit_list(x_learnunit: LearnUnit) -> list:
+    return get_empty_list_if_None(
+        x_learnunit.get_grain_order_grainunit_dict().get(grain_delete())
+    )
+
+
+def get_insert_grainunit_list(x_learnunit: LearnUnit):
+    return get_empty_list_if_None(
+        x_learnunit.get_grain_order_grainunit_dict().get(grain_insert())
+    )
+
+
+def get_update_grainunit_list(x_learnunit: LearnUnit):
+    return get_empty_list_if_None(
+        x_learnunit.get_grain_order_grainunit_dict().get(grain_update())
+    )
+
+
+def get_grainunit_total_count(x_learnunit: LearnUnit) -> int:
+    return (
+        len(get_delete_grainunit_list(x_learnunit))
+        + len(get_insert_grainunit_list(x_learnunit))
+        + len(get_update_grainunit_list(x_learnunit))
+    )
 
 
 def test_create_learnunit_ReturnsCorrectObj_EmptyLearnUnit():
@@ -67,6 +103,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
     assert rico_grainunit.get_value("debtor_weight") == rico_debtor_weight
     assert rico_grainunit.get_value("depotlink_type") == rico_depotlink_type
 
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 1
+
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
     # GIVEN
@@ -86,6 +125,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
         sue_learnunit.grainunits, [grain_delete(), "partyunit", rico_text]
     )
     assert rico_grainunit.get_value("party_id") == rico_text
+
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 2
 
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
@@ -117,6 +159,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
     assert rico_grainunit.get_value("debtor_weight") == rico_debtor_weight
     assert rico_grainunit.get_value("depotlink_type") == rico_depotlink_type
 
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 1
+
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_update():
     # GIVEN
@@ -126,14 +171,14 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_upda
     new_sue_agenda = copy_deepcopy(old_sue_agenda)
     x_agendaUnit_weight = 55
     x_max_tree_traverse = 66
-    x_party_creditor_pool = 77
-    x_party_debtor_pool = 88
+    # x_party_creditor_pool = 77
+    # x_party_debtor_pool = 88
     x_auto_output_to_forum = True
     x_meld_strategy = "override"
     new_sue_agenda._weight = x_agendaUnit_weight
     new_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
-    new_sue_agenda.set_party_creditor_pool(x_party_creditor_pool)
-    new_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    # new_sue_agenda.set_party_creditor_pool(x_party_creditor_pool)
+    # new_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
     new_sue_agenda._set_auto_output_to_forum(x_auto_output_to_forum)
     new_sue_agenda.set_meld_strategy(x_meld_strategy)
 
@@ -150,13 +195,13 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_upda
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_max_tree_traverse") == x_max_tree_traverse
 
-    x_keylist = [grain_update(), "_party_creditor_pool"]
-    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
-    assert rico_grainunit.get_value("_party_creditor_pool") == x_party_creditor_pool
+    # x_keylist = [grain_update(), "_party_creditor_pool"]
+    # rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    # assert rico_grainunit.get_value("_party_creditor_pool") == x_party_creditor_pool
 
-    x_keylist = [grain_update(), "_party_debtor_pool"]
-    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
-    assert rico_grainunit.get_value("_party_debtor_pool") == x_party_debtor_pool
+    # x_keylist = [grain_update(), "_party_debtor_pool"]
+    # rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    # assert rico_grainunit.get_value("_party_debtor_pool") == x_party_debtor_pool
 
     x_keylist = [grain_update(), "_auto_output_to_forum"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
@@ -165,6 +210,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_upda
     x_keylist = [grain_update(), "_meld_strategy"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_meld_strategy") == x_meld_strategy
+
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 4
 
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_insert():
@@ -205,6 +253,13 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_insert
     assert rico_grainunit.get_value("party_id") == rico_text
     assert rico_grainunit.get_value("creditor_weight") == rico_creditor_weight
     assert rico_grainunit.get_value("debtor_weight") == rico_debtor_weight
+
+    print_grainunit_keys(sue_learnunit)
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert len(get_delete_grainunit_list(sue_learnunit)) == 0
+    assert len(get_insert_grainunit_list(sue_learnunit)) == 5
+    assert len(get_delete_grainunit_list(sue_learnunit)) == 0
+    assert get_grainunit_total_count(sue_learnunit) == 5
 
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_update():
@@ -254,6 +309,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_update
     assert rico_grainunit.get_value("creditor_weight") == new_rico_creditor_weight
     assert rico_grainunit.get_value("debtor_weight") == new_rico_debtor_weight
 
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 2
+
 
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_delete():
     # GIVEN
@@ -299,219 +357,171 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_delete
     assert rico_grainunit.get_value("group_id") == fly_text
     assert rico_grainunit.get_value("party_id") == dizz_text
 
-
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit_partylink():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     carm_text = "Carmen"
-#     dizz_text = "Dizzy"
-#     old_sue_agendaunit.add_partyunit(rico_text)
-#     old_sue_agendaunit.add_partyunit(carm_text)
-#     old_sue_agendaunit.add_partyunit(dizz_text)
-#     run_text = ",runners"
-#     run_groupunit = groupunit_shop(run_text)
-#     run_groupunit.set_partylink(partylink_shop(carm_text))
-#     old_sue_agendaunit.set_groupunit(run_groupunit)
-#     assert len(old_sue_agendaunit.get_groupunit(run_text)._partys) == 1
-
-#     # WHEN
-#     rico_grainunit = grainunit_shop("groupunit_partylink", grain_insert())
-#     rico_grainunit.set_locator("group_id", run_text)
-#     rico_grainunit.set_locator("party_id", rico_text)
-#     rico_grainunit.set_required_arg("group_id", run_text)
-#     rico_grainunit.set_required_arg("party_id", rico_text)
-#     rico_run_creditor_weight = 17
-#     rico_grainunit.set_optional_arg("creditor_weight", rico_run_creditor_weight)
-#     print(f"{rico_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(rico_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
-
-#     # THEN
-#     assert len(new_sue_agendaunit.get_groupunit(run_text)._partys) == 2
-#     new_run_groupunit = new_sue_agendaunit.get_groupunit(run_text)
-#     new_run_rico_partylink = new_run_groupunit.get_partylink(rico_text)
-#     assert new_run_rico_partylink != None
-#     assert new_run_rico_partylink.creditor_weight == rico_run_creditor_weight
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    print_grainunit_keys(sue_learnunit)
+    assert len(get_delete_grainunit_list(sue_learnunit)) == 4
+    assert len(get_insert_grainunit_list(sue_learnunit)) == 0
+    assert len(get_update_grainunit_list(sue_learnunit)) == 0
+    assert get_grainunit_total_count(sue_learnunit) == 4
 
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit_partylink():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     old_sue_agendaunit.add_partyunit(rico_text)
-#     run_text = ",runners"
-#     run_groupunit = groupunit_shop(run_text)
-#     old_rico_run_creditor_weight = 3
-#     run_groupunit.set_partylink(partylink_shop(rico_text, old_rico_run_creditor_weight))
-#     old_sue_agendaunit.set_groupunit(run_groupunit)
-#     old_run_groupunit = old_sue_agendaunit.get_groupunit(run_text)
-#     old_run_rico_partylink = old_run_groupunit.get_partylink(rico_text)
-#     assert old_run_rico_partylink.creditor_weight == old_rico_run_creditor_weight
-#     assert old_run_rico_partylink.debtor_weight == 1
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_delete():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = old_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = old_sue_agendaunit.make_road(sports_road, ball_text)
+    old_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    street_text = "street ball"
+    street_road = old_sue_agendaunit.make_road(ball_road, street_text)
+    old_sue_agendaunit.add_idea(ideaunit_shop(street_text), ball_road)
+    disc_text = "Ultimate Disc"
+    disc_road = old_sue_agendaunit.make_road(sports_road, disc_text)
+    music_text = "music"
+    old_sue_agendaunit.add_l1_idea(ideaunit_shop(music_text))
+    old_sue_agendaunit.add_idea(ideaunit_shop(disc_text), sports_road)
+    new_sue_agendaunit = copy_deepcopy(old_sue_agendaunit)
+    new_sue_agendaunit.del_idea_obj(ball_road)
 
-#     # WHEN
-#     rico_grainunit = grainunit_shop("groupunit_partylink", grain_update())
-#     rico_grainunit.set_locator("group_id", run_text)
-#     rico_grainunit.set_locator("party_id", rico_text)
-#     rico_grainunit.set_required_arg("group_id", run_text)
-#     rico_grainunit.set_required_arg("party_id", rico_text)
-#     new_rico_run_creditor_weight = 7
-#     new_rico_run_debtor_weight = 11
-#     rico_grainunit.set_optional_arg("creditor_weight", new_rico_run_creditor_weight)
-#     rico_grainunit.set_optional_arg("debtor_weight", new_rico_run_debtor_weight)
-#     print(f"{rico_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(rico_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_agendaunit, new_sue_agendaunit)
 
-#     # THEN
-#     new_run_groupunit = new_sue_agendaunit.get_groupunit(run_text)
-#     new_run_rico_partylink = new_run_groupunit.get_partylink(rico_text)
-#     assert new_run_rico_partylink.creditor_weight == new_rico_run_creditor_weight
-#     assert new_run_rico_partylink.debtor_weight == new_rico_run_debtor_weight
+    # THEN
+    x_keylist = [grain_delete(), "idea", street_road]
+    street_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert street_grainunit.get_locator("road") == street_road
+    assert street_grainunit.get_value("road") == street_road
 
+    x_keylist = [grain_delete(), "idea", ball_road]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_value("road") == ball_road
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     run_text = ",runners"
-#     fly_text = ",flyers"
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(fly_text))
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-#     assert old_sue_agendaunit.get_groupunit(run_text) != None
-#     assert old_sue_agendaunit.get_groupunit(fly_text) != None
-
-#     # WHEN
-#     x_grainunit = grainunit_shop("groupunit", grain_delete())
-#     print(f"{x_grainunit=}")
-#     x_grainunit.set_locator("group_id", run_text)
-#     x_grainunit.set_required_arg("group_id", run_text)
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(x_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
-
-#     # THEN
-#     assert new_sue_agendaunit.get_groupunit(run_text) is None
-#     assert new_sue_agendaunit.get_groupunit(fly_text) != None
+    print(f"{get_grainunit_total_count(sue_learnunit)=}")
+    assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     run_text = ",runners"
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-#     fly_text = ",flyers"
-#     assert old_sue_agendaunit.get_groupunit(run_text) != None
-#     assert old_sue_agendaunit.get_groupunit(fly_text) is None
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_insert():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = old_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = old_sue_agendaunit.make_road(sports_road, ball_text)
+    old_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    street_text = "street ball"
+    street_road = old_sue_agendaunit.make_road(ball_road, street_text)
+    old_sue_agendaunit.add_idea(ideaunit_shop(street_text), ball_road)
 
-#     # WHEN
-#     x_grainunit = grainunit_shop("groupunit", grain_insert())
-#     x_grainunit.set_locator("group_id", fly_text)
-#     x_grainunit.set_required_arg("group_id", fly_text)
-#     x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
-#     print(f"{x_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(x_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
+    new_sue_agendaunit = copy_deepcopy(old_sue_agendaunit)
+    disc_text = "Ultimate Disc"
+    disc_road = new_sue_agendaunit.make_road(sports_road, disc_text)
+    new_sue_agendaunit.add_idea(ideaunit_shop(disc_text), sports_road)
+    music_text = "music"
+    music_begin = 34
+    music_close = 78
+    music_meld_strategy = "override"
+    music_weight = 55
+    music_promise = True
+    music_road = new_sue_agendaunit.make_l1_road(music_text)
+    new_sue_agendaunit.add_l1_idea(
+        ideaunit_shop(
+            music_text,
+            _begin=music_begin,
+            _close=music_close,
+            _meld_strategy=music_meld_strategy,
+            _weight=music_weight,
+            promise=music_promise,
+        )
+    )
 
-#     # THEN
-#     assert new_sue_agendaunit.get_groupunit(run_text) != None
-#     assert new_sue_agendaunit.get_groupunit(fly_text) != None
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_agendaunit, new_sue_agendaunit)
 
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     run_text = ",runners"
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-#     assert (
-#         old_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks
-#         is None
-#     )
+    x_keylist = [grain_insert(), "idea", disc_road]
+    street_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert street_grainunit.get_locator("road") == disc_road
+    assert street_grainunit.get_value("label") == disc_text
+    assert street_grainunit.get_value("parent_road") == sports_road
 
-#     # WHEN
-#     x_grainunit = grainunit_shop("groupunit", grain_update())
-#     x_grainunit.set_locator("group_id", run_text)
-#     x_grainunit.set_required_arg("group_id", run_text)
-#     x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
-#     print(f"{x_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(x_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
+    x_keylist = [grain_insert(), "idea", music_road]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == music_road
+    assert ball_grainunit.get_value("label") == music_text
+    assert ball_grainunit.get_value("parent_road") == new_sue_agendaunit._economy_id
+    assert ball_grainunit.get_value("_begin") == music_begin
+    assert ball_grainunit.get_value("_close") == music_close
+    assert ball_grainunit.get_value("_meld_strategy") == music_meld_strategy
+    assert ball_grainunit.get_value("_weight") == music_weight
+    assert ball_grainunit.get_value("promise") == music_promise
 
-#     # THEN
-#     assert (
-#         new_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks
-#         == yao_roadunit()
-#     )
-
-
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     run_text = ",runners"
-#     fly_text = ",flyers"
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(fly_text))
-#     old_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-#     assert old_sue_agendaunit.get_groupunit(run_text) != None
-#     assert old_sue_agendaunit.get_groupunit(fly_text) != None
-
-#     # WHEN
-#     x_grainunit = grainunit_shop("groupunit", grain_delete())
-#     print(f"{x_grainunit=}")
-#     x_grainunit.set_locator("group_id", run_text)
-#     x_grainunit.set_required_arg("group_id", run_text)
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(x_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
-
-#     # THEN
-#     assert new_sue_agendaunit.get_groupunit(run_text) is None
-#     assert new_sue_agendaunit.get_groupunit(fly_text) != None
+    assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_agendaunit = agendaunit_shop(sue_text)
-#     sports_text = "sports"
-#     sports_road = old_sue_agendaunit.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = old_sue_agendaunit.make_road(sports_road, ball_text)
-#     disc_text = "Ultimate Disc"
-#     disc_road = old_sue_agendaunit.make_road(sports_road, disc_text)
-#     old_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
-#     old_sue_agendaunit.add_idea(ideaunit_shop(disc_text), sports_road)
-#     assert old_sue_agendaunit.idea_exists(ball_road)
-#     assert old_sue_agendaunit.idea_exists(disc_road)
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_update():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = old_sue_agendaunit.make_l1_road(sports_text)
+    music_text = "music"
+    old_music_begin = 34
+    old_music_close = 78
+    old_music_meld_strategy = "override"
+    old_music_weight = 55
+    old_music_promise = True
+    music_road = old_sue_agendaunit.make_l1_road(music_text)
+    old_sue_agendaunit.add_l1_idea(
+        ideaunit_shop(
+            music_text,
+            _begin=old_music_begin,
+            _close=old_music_close,
+            _meld_strategy=old_music_meld_strategy,
+            _weight=old_music_weight,
+            promise=old_music_promise,
+        )
+    )
 
-#     # WHEN
-#     delete_disc_grainunit = grainunit_shop("idea", grain_delete())
-#     delete_disc_grainunit.set_locator("road", disc_road)
-#     delete_disc_grainunit.set_required_arg("road", disc_road)
-#     print(f"{delete_disc_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(delete_disc_grainunit)
-#     new_sue_agendaunit = sue_learnunit.get_new_agenda(old_sue_agendaunit)
+    new_sue_agendaunit = copy_deepcopy(old_sue_agendaunit)
+    new_music_begin = 99
+    new_music_close = 111
+    new_music_meld_strategy = "default"
+    new_music_weight = 22
+    new_music_promise = False
+    new_sue_agendaunit.edit_idea_attr(
+        music_road,
+        begin=new_music_begin,
+        close=new_music_close,
+        meld_strategy=new_music_meld_strategy,
+        weight=new_music_weight,
+        promise=new_music_promise,
+    )
 
-#     # THEN
-#     assert new_sue_agendaunit.idea_exists(ball_road)
-#     assert new_sue_agendaunit.idea_exists(disc_road) == False
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_agendaunit, new_sue_agendaunit)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+
+    x_keylist = [grain_update(), "idea", music_road]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == music_road
+    assert ball_grainunit.get_value("_begin") == new_music_begin
+    assert ball_grainunit.get_value("_close") == new_music_close
+    assert ball_grainunit.get_value("_meld_strategy") == new_music_meld_strategy
+    assert ball_grainunit.get_value("_weight") == new_music_weight
+    assert ball_grainunit.get_value("promise") == new_music_promise
+
+    assert get_grainunit_total_count(sue_learnunit) == 1
 
 
 # def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():

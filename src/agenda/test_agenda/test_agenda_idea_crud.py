@@ -269,18 +269,18 @@ def test_agenda_add_idea_CorrectlySets_agenda_economy_id():
     assert cookery_idea._agenda_economy_id == agenda_economy_id
 
 
-def test_agenda_del_idea_kid_Level0CannotBeDeleted():
+def test_agenda_del_idea_obj_Level0CannotBeDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     root_road = sue_agenda._economy_id
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_agenda.del_idea_kid(road=root_road)
+        sue_agenda.del_idea_obj(road=root_road)
     assert str(excinfo.value) == "Idearoot cannot be deleted"
 
 
-def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
+def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
@@ -291,7 +291,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     assert sue_agenda.get_idea_obj(road=sun_road)
 
     # WHEN
-    sue_agenda.del_idea_kid(road=week_road)
+    sue_agenda.del_idea_obj(road=week_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
@@ -303,7 +303,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenDeleted():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{new_sunday_road}'"
 
 
-def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
+def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -314,7 +314,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     assert sue_agenda.get_idea_obj(road=old_sunday_road)
 
     # WHEN
-    sue_agenda.del_idea_kid(road=week_road, del_children=False)
+    sue_agenda.del_idea_obj(road=week_road, del_children=False)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
@@ -326,7 +326,7 @@ def test_agenda_del_idea_kid_Level1CanBeDeleted_ChildrenInherited():
     assert new_sunday_idea._parent_road == sue_agenda._economy_id
 
 
-def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
+def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
@@ -347,7 +347,7 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     assert sue_agenda._idea_dict.get(states_oregon_road) is None
 
     # WHEN
-    sue_agenda.del_idea_kid(road=usa_road, del_children=False)
+    sue_agenda.del_idea_obj(road=usa_road, del_children=False)
 
     # THEN
     sue_agenda.set_agenda_metrics()
@@ -358,7 +358,7 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenInherited():
     assert sue_agenda._idea_dict.get(usa_road) is None
 
 
-def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
+def test_agenda_del_idea_obj_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     wkday_road = sue_agenda.make_l1_road("weekdays")
@@ -366,7 +366,7 @@ def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     assert sue_agenda.get_idea_obj(road=monday_road)
 
     # WHEN
-    sue_agenda.del_idea_kid(road=monday_road)
+    sue_agenda.del_idea_obj(road=monday_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
@@ -374,7 +374,7 @@ def test_agenda_del_idea_kid_Level2CanBeDeleted_ChildrenDeleted():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{monday_road}'"
 
 
-def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
+def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
@@ -386,7 +386,7 @@ def test_agenda_del_idea_kid_LevelNCanBeDeleted_ChildrenDeleted():
     assert sue_agenda.get_idea_obj(road=usa_texas_road)
 
     # WHEN
-    sue_agenda.del_idea_kid(road=usa_texas_road)
+    sue_agenda.del_idea_obj(road=usa_texas_road)
 
     # THEN
     with pytest_raises(Exception) as excinfo:
@@ -757,7 +757,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     assert noa_agenda._idea_dict.get(sports_bball_road) != None
 
 
-def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
+def test_agenda_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState():
     noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
     sports_road = noa_agenda.make_l1_road(sports_text)
@@ -810,7 +810,7 @@ def test_agenda_del_idea_kid_DeletingBundledIdeaReturnsIdeasToOriginalState():
     print(f"{noa_agenda._idea_dict.keys()=}")
 
     # WHEN
-    noa_agenda.del_idea_kid(road=summer_road, del_children=False)
+    noa_agenda.del_idea_obj(road=summer_road, del_children=False)
 
     # THEN
     noa_agenda.set_agenda_metrics()

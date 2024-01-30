@@ -14,6 +14,10 @@ def get_0_if_None(x_obj=None):
     return 0 if x_obj is None else x_obj
 
 
+def get_empty_list_if_None(x_obj=None):
+    return [] if x_obj is None else x_obj
+
+
 def add_dict_if_missing(x_dict: dict, x_keylist: list[any]):
     for x_key in x_keylist:
         if x_dict.get(x_key) is None:

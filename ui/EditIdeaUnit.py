@@ -809,7 +809,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table_load()
 
     def idea_delete(self):
-        self.x_agenda.del_idea_kid(
+        self.x_agenda.del_idea_obj(
             road=f"{self.x_idea._parent_road},{self.x_idea._label}"
         )
         self.baseideaunit.clear()
