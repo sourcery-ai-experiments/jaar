@@ -41,10 +41,6 @@
     },
     "AgendaUnit_weight": {
         "UPDATE": {
-            "AgendaUnit.method": {
-                "arg1": "AgendaUnit_weight",
-                "method_name": "set_max_tree_traverse"
-            },
             "grain_order": 26,
             "required_args": {
                 "AgendaUnit_weight": "int"

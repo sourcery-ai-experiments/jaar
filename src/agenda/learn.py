@@ -463,20 +463,32 @@ def create_learnunit(
     add_grainunits_partyunit_insert(x_learnunit, before_agenda, after_agenda)
     add_grainunits_partyunit_delete(x_learnunit, before_agenda, after_agenda)
     add_grainunits_partyunit_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_AgendaUnit_weight_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_max_tree_traverse_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_party_creditor_pool_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_party_debtor_pool_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_auto_output_to_forum_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_meld_strategy_update(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_groupunit_partylink(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_groupunit(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea_reasonunit_premiseunit(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea_reasonunit(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea_beliefunit(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea_suffgroup(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea_balancelink(x_learnunit, before_agenda, after_agenda)
-    add_grainunits_idea(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_AgendaUnit_simple_attrs_update(
+        x_learnunit, before_agenda, after_agenda
+    )
+    # add_grainunits_groupunit_partylink_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_groupunit_partylink_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_groupunit_partylink_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_groupunit_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_groupunit_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_groupunit_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_premiseunit_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_premiseunit_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_premiseunit_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_reasonunit_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_beliefunit_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_beliefunit_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_beliefunit_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_suffgroup_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_suffgroup_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_balancelink_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_balancelink_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_balancelink_update(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_insert(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_delete(x_learnunit, before_agenda, after_agenda)
+    # add_grainunits_idea_update(x_learnunit, before_agenda, after_agenda)
 
     # create deepcopy of before_agenda, call it learning_agenda
     # if learning_agenda != after_agenda: check something if different find grainunits.
@@ -484,59 +496,44 @@ def create_learnunit(
     # if learning_agenda != after_agenda again: check something else if different
     # all the way down the line for all 15 elements
 
-    # check "AgendaUnit_weight" unequal => build_update_grain
-    # check "_max_tree_traverse" unequal => build_update_grain
-    # check "_party_creditor_pool" unequal => build_update_grain
-    # check "_party_debtor_pool" unequal => build_update_grain
-    # check "_auto_output_to_forum" unequal => build_update_grain
-    # check "_meld_strategy" unequal => build_update_grain
-    # check "partyunit" unequal => build_party_grains
-    # check "groupunit_partylink" => build_groupunit_partylink_grains
-    # check "groupunit" => build_groupunit_grains
-    # check "idea_reasonunit_premiseunit" => build_idea_reasonunit_premiseunit_grains
-    # check "idea_reasonunit" => build_idea_reasonunit_grains
-    # check "idea_beliefunit" => build_idea_beliefunit_grains
-    # check "idea_suffgroup" => build_idea_suffgroup_grains
-    # check "idea_balancelink" => build_idea_balancelink_grains
-    # check "idea" => build_idea_grains
-
     return x_learnunit
 
 
-def add_grainunits_AgendaUnit_weight_update(
+def add_grainunits_AgendaUnit_simple_attrs_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
-    pass
-
-
-def add_grainunits_max_tree_traverse_update(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    pass
-
-
-def add_grainunits_party_creditor_pool_update(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    pass
-
-
-def add_grainunits_party_debtor_pool_update(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    pass
-
-
-def add_grainunits_auto_output_to_forum_update(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    pass
-
-
-def add_grainunits_meld_strategy_update(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    pass
+    if before_agenda._weight != after_agenda._weight:
+        x_grainunit = grainunit_shop("AgendaUnit_weight", grain_update())
+        x_grainunit.set_required_arg("AgendaUnit_weight", after_agenda._weight)
+        x_learnunit.set_grainunit(x_grainunit)
+    if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
+        x_grainunit = grainunit_shop("_max_tree_traverse", grain_update())
+        x_grainunit.set_required_arg(
+            "_max_tree_traverse", after_agenda._max_tree_traverse
+        )
+        x_learnunit.set_grainunit(x_grainunit)
+    if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
+        x_grainunit = grainunit_shop("_party_creditor_pool", grain_update())
+        x_grainunit.set_required_arg(
+            "_party_creditor_pool", after_agenda._party_creditor_pool
+        )
+        x_learnunit.set_grainunit(x_grainunit)
+    if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
+        x_grainunit = grainunit_shop("_party_debtor_pool", grain_update())
+        x_grainunit.set_required_arg(
+            "_party_debtor_pool", after_agenda._party_debtor_pool
+        )
+        x_learnunit.set_grainunit(x_grainunit)
+    if before_agenda._auto_output_to_forum != after_agenda._auto_output_to_forum:
+        x_grainunit = grainunit_shop("_auto_output_to_forum", grain_update())
+        x_grainunit.set_required_arg(
+            "_auto_output_to_forum", after_agenda._auto_output_to_forum
+        )
+        x_learnunit.set_grainunit(x_grainunit)
+    if before_agenda._meld_strategy != after_agenda._meld_strategy:
+        x_grainunit = grainunit_shop("_meld_strategy", grain_update())
+        x_grainunit.set_required_arg("_meld_strategy", after_agenda._meld_strategy)
+        x_learnunit.set_grainunit(x_grainunit)
 
 
 def add_grainunits_groupunit_partylink(

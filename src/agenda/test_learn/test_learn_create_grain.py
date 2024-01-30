@@ -40,7 +40,8 @@ def test_create_learnunit_ReturnsCorrectObj_EmptyLearnUnit():
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
     # GIVEN
     sue_road = get_sue_personroad()
-    before_sue_agenda = agendaunit_shop("Sue")
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     rico_text = "Rico"
     rico_creditor_weight = 33
@@ -70,7 +71,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
     # GIVEN
     sue_road = get_sue_personroad()
-    before_sue_agenda = agendaunit_shop("Sue")
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
 
     rico_text = "Rico"
@@ -89,7 +91,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
     # GIVEN
     sue_road = get_sue_personroad()
-    before_sue_agenda = agendaunit_shop("Sue")
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     rico_text = "Rico"
     before_sue_agenda.add_partyunit(rico_text)
@@ -115,110 +118,53 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
     assert rico_grainunit.get_value("depotlink_type") == rico_depotlink_type
 
 
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_update():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agenda = agendaunit_shop(sue_text)
+    after_sue_agenda = copy_deepcopy(before_sue_agenda)
+    x_agendaUnit_weight = 55
+    x_max_tree_traverse = 66
+    x_party_creditor_pool = 77
+    x_party_debtor_pool = 88
+    x_auto_output_to_forum = True
+    x_meld_strategy = "override"
+    after_sue_agenda._weight = x_agendaUnit_weight
+    after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
+    after_sue_agenda.set_party_creditor_pool(x_party_creditor_pool)
+    after_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    after_sue_agenda._set_auto_output_to_forum(x_auto_output_to_forum)
+    after_sue_agenda.set_meld_strategy(x_meld_strategy)
 
-#     before_sue_agendaunit = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     before_sue_agendaunit.add_partyunit(rico_text)
-#     assert before_sue_agendaunit.get_party(rico_text).creditor_weight == 1
+    # WHEN
+    sue_learnunit = create_learnunit(before_sue_agenda, after_sue_agenda, sue_road)
 
-#     # WHEN
-#     category = "partyunit"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_locator("party_id", rico_text)
-#     x_grainunit.set_required_arg("party_id", rico_text)
-#     rico_creditor_weight = 55
-#     x_grainunit.set_optional_arg("creditor_weight", rico_creditor_weight)
-#     sue_learnunit.set_grainunit(x_grainunit)
-#     print(f"{sue_learnunit.grainunits.keys()=}")
-#     after_sue_agendaunit = sue_learnunit.get_after_agenda(before_sue_agendaunit)
+    # THEN
+    sue_grainunits = sue_learnunit.grainunits
+    x_keylist = [grain_update(), "AgendaUnit_weight"]
+    rico_grainunit = get_nested_value(sue_grainunits, x_keylist)
+    assert rico_grainunit.get_value("AgendaUnit_weight") == x_agendaUnit_weight
 
-#     # THEN
-#     rico_party = after_sue_agendaunit.get_party(rico_text)
-#     assert rico_party.creditor_weight == rico_creditor_weight
+    x_keylist = [grain_update(), "_max_tree_traverse"]
+    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert rico_grainunit.get_value("_max_tree_traverse") == x_max_tree_traverse
 
+    x_keylist = [grain_update(), "_party_creditor_pool"]
+    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert rico_grainunit.get_value("_party_creditor_pool") == x_party_creditor_pool
 
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    x_keylist = [grain_update(), "_party_debtor_pool"]
+    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert rico_grainunit.get_value("_party_debtor_pool") == x_party_debtor_pool
 
-#     sue_weight = 44
-#     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
+    x_keylist = [grain_update(), "_auto_output_to_forum"]
+    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert rico_grainunit.get_value("_auto_output_to_forum") == x_auto_output_to_forum
 
-#     new1_value = 55
-#     category = "AgendaUnit_weight"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_required_arg(category, new1_value)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     new2_value = 66
-#     category = "_max_tree_traverse"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_required_arg(category, new2_value)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     new3_value = 77
-#     category = "_party_creditor_pool"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_required_arg(category, new3_value)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     new4_value = 88
-#     category = "_party_debtor_pool"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_required_arg(category, new4_value)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     new5_value = "override"
-#     category = "_meld_strategy"
-#     x_grainunit = grainunit_shop(category, grain_update())
-#     x_grainunit.set_required_arg(category, new5_value)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     # WHEN
-#     after_sue_agendaunit = sue_learnunit.get_after_agenda(before_sue_agendaunit)
-
-#     # THEN
-#     print(f"{sue_learnunit.grainunits.keys()=}")
-#     assert after_sue_agendaunit._weight == new1_value
-#     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
-#     assert after_sue_agendaunit._max_tree_traverse == new2_value
-#     assert after_sue_agendaunit._party_creditor_pool == new3_value
-#     assert after_sue_agendaunit._party_debtor_pool == new4_value
-#     assert after_sue_agendaunit._meld_strategy == new5_value
-
-
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-
-#     before_sue_agendaunit = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     carm_text = "Carmen"
-#     before_sue_agendaunit.add_partyunit(rico_text)
-#     before_sue_agendaunit.add_partyunit(carm_text)
-
-#     category = "partyunit"
-#     x_grainunit = grainunit_shop(category, grain_delete())
-#     x_grainunit.set_locator("party_id", carm_text)
-#     sue_learnunit.set_grainunit(x_grainunit)
-
-#     # WHEN
-#     after_sue_agendaunit = sue_learnunit.get_after_agenda(before_sue_agendaunit)
-
-#     # THEN
-#     print(f"{sue_learnunit.grainunits=}")
-#     assert after_sue_agendaunit != before_sue_agendaunit
-#     assert after_sue_agendaunit.get_party(rico_text) != None
-#     assert after_sue_agendaunit.get_party(carm_text) is None
+    x_keylist = [grain_update(), "_meld_strategy"]
+    rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert rico_grainunit.get_value("_meld_strategy") == x_meld_strategy
 
 
 # def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit_partylink():
