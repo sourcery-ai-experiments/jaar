@@ -484,7 +484,7 @@ def create_learnunit(
     # add_grainunits_idea_beliefunit_update(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_suffgroup_insert(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_suffgroup_delete(x_learnunit, before_agenda, after_agenda)
-    # add_grainunits_idea_balancelink_insert(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_balancelink_insert(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_balancelink_delete(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_balancelink_update(x_learnunit, before_agenda, after_agenda)
     before_agenda.set_agenda_metrics()
@@ -734,6 +734,40 @@ def add_grainunits_idea_suffgroup(
     pass
 
 
+def add_grainunits_idea_balancelink_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    after_idea_list = list(after_agenda._idea_dict.values())
+    for after_ideaunit in after_idea_list:
+        before_ideaunit = before_agenda.get_idea_obj(after_ideaunit.get_road())
+        if (
+            before_ideaunit is None
+            or before_ideaunit.get_balancelinks_dict()
+            != after_ideaunit.get_balancelinks_dict()
+        ):
+            for after_balancelink in after_ideaunit._balancelinks.values():
+                if (
+                    before_ideaunit._balancelinks.get(after_balancelink.group_id)
+                    is None
+                ):
+                    add_grainunit_idea_balancelink_insert(
+                        x_learnunit, after_ideaunit.get_road(), after_balancelink
+                    )
+
+
+def add_grainunit_idea_balancelink_insert(
+    x_learnunit: LearnUnit, idea_road: RoadUnit, after_balancelink: BalanceLink
+):
+    x_grainunit = grainunit_shop("idea_balancelink", grain_insert())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("group_id", after_balancelink.group_id)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("group_id", after_balancelink.group_id)
+    x_grainunit.set_optional_arg("creditor_weight", after_balancelink.creditor_weight)
+    x_grainunit.set_optional_arg("debtor_weight", after_balancelink.debtor_weight)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
 def add_grainunits_idea_balancelink_delete(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -746,7 +780,6 @@ def add_grainunits_idea_balancelink_delete(
             != before_ideaunit.get_balancelinks_dict()
         ):
             for before_group_id in before_ideaunit._balancelinks.keys():
-                print(f"{before_group_id=}")
                 if after_ideaunit._balancelinks.get(before_group_id) is None:
                     add_grainunit_idea_balancelink_delete(
                         x_learnunit, before_ideaunit.get_road(), before_group_id
@@ -872,7 +905,6 @@ def add_grainunits_idea_insert(
     after_idea_list.sort(reverse=True)
     for x_idea_road in after_idea_list:
         if before_agenda.idea_exists(x_idea_road) == False:
-            print(f"{x_idea_road=}")
             after_ideaunit = after_agenda.get_idea_obj(x_idea_road)
             add_grainunit_idea_insert(x_learnunit, after_ideaunit)
 

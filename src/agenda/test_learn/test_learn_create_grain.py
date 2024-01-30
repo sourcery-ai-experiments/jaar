@@ -577,6 +577,69 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_delet
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_insert():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_au = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    carm_text = "Carmen"
+    dizz_text = "Dizzy"
+    old_sue_au.add_partyunit(rico_text)
+    old_sue_au.add_partyunit(carm_text)
+    old_sue_au.add_partyunit(dizz_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(rico_text))
+    run_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_text = ",flyers"
+    fly_groupunit = groupunit_shop(fly_text)
+    fly_groupunit.set_partylink(partylink_shop(rico_text))
+    fly_groupunit.set_partylink(partylink_shop(carm_text))
+    fly_groupunit.set_partylink(partylink_shop(dizz_text))
+    old_sue_au.set_groupunit(run_groupunit)
+    old_sue_au.set_groupunit(fly_groupunit)
+    sports_text = "sports"
+    sports_road = old_sue_au.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = old_sue_au.make_road(sports_road, ball_text)
+    disc_text = "Ultimate Disc"
+    disc_road = old_sue_au.make_road(sports_road, disc_text)
+    old_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
+    old_sue_au.add_idea(ideaunit_shop(disc_text), sports_road)
+    old_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
+    old_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(fly_text))
+    new_sue_au = copy_deepcopy(old_sue_au)
+    new_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(fly_text))
+    new_run_creditor_weight = 44
+    new_run_debtor_weight = 66
+    new_sue_au.edit_idea_attr(
+        disc_road,
+        balancelink=balancelink_shop(
+            run_text,
+            creditor_weight=new_run_creditor_weight,
+            debtor_weight=new_run_debtor_weight,
+        ),
+    )
+
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_au, new_sue_au)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+
+    x_keylist = [grain_insert(), "idea_balancelink", disc_road, run_text]
+    run_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert run_grainunit.get_locator("road") == disc_road
+    assert run_grainunit.get_locator("group_id") == run_text
+    assert run_grainunit.get_locator("road") == disc_road
+    assert run_grainunit.get_locator("group_id") == run_text
+    assert run_grainunit.get_value("creditor_weight") == new_run_creditor_weight
+    assert run_grainunit.get_value("debtor_weight") == new_run_debtor_weight
+
+    assert get_grainunit_total_count(sue_learnunit) == 2
+
+
 def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_update():
     # GIVEN
     sue_road = get_sue_personroad()
