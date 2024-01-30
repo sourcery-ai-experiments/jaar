@@ -1353,16 +1353,14 @@ class AgendaUnit:
         promise_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
 
     def is_partyunits_creditor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_partyunits_creditor_weight_sum()
         return (
-            self._party_creditor_pool is None
-            or self._party_creditor_pool == self.get_partyunits_creditor_weight_sum()
+            x_sum in (0, self._party_creditor_pool) or self._party_creditor_pool is None
         )
 
     def is_partyunits_debtor_weight_sum_correct(self) -> bool:
-        return (
-            self._party_debtor_pool is None
-            or self._party_debtor_pool == self.get_partyunits_debtor_weight_sum()
-        )
+        x_sum = self.get_partyunits_debtor_weight_sum()
+        return self._party_debtor_pool is None or x_sum in (self._party_debtor_pool, 0)
 
     def get_partyunits_creditor_weight_sum(self) -> float:
         return sum(

@@ -715,6 +715,22 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_we
     assert yao_agenda.set_agenda_metrics() is None
 
 
+def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_creditor_poolWhenPartySumIsZero():
+    # GIVEN
+    yao_agenda = agendaunit_shop("Yao")
+    assert yao_agenda._party_creditor_pool is None
+    assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
+    assert yao_agenda.set_agenda_metrics() is None
+
+    # WHEN
+    x_int = 13
+    yao_agenda.set_party_creditor_pool(x_int)
+
+    # THEN
+    assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
+    yao_agenda.set_agenda_metrics()
+
+
 def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weight_sum_correct_IsFalse():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
@@ -745,6 +761,22 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weig
     # WHEN / THEN
     yao_agenda.set_party_debtor_pool(yao_agenda.get_partyunits_debtor_weight_sum())
     assert yao_agenda.set_agenda_metrics() is None
+
+
+def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_debtor_poolWhenPartySumIsZero():
+    # GIVEN
+    yao_agenda = agendaunit_shop("Yao")
+    assert yao_agenda._party_creditor_pool is None
+    assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
+    assert yao_agenda.set_agenda_metrics() is None
+
+    # WHEN
+    x_int = 13
+    yao_agenda.set_party_debtor_pool(x_int)
+
+    # THEN
+    assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
+    yao_agenda.set_agenda_metrics()
 
 
 def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUnit):
