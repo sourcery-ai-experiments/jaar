@@ -119,12 +119,12 @@ def test_economy_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_clea
     belief_catalog_columns = {agent_id_text: 1, base_text: 1, pick_text: 1}
 
     groupunit_group_id_text = "groupunit_group_id"
-    partylinks_set_by_economy_road_text = "partylinks_set_by_economy_road"
+    treasury_partylinks_text = "treasury_partylinks"
     groupunit_catalog_text = "groupunit_catalog"
     groupunit_catalog_columns = {
         agent_id_text: 1,
         groupunit_group_id_text: 1,
-        partylinks_set_by_economy_road_text: 1,
+        treasury_partylinks_text: 1,
     }
 
     time_road_text = "time_road"

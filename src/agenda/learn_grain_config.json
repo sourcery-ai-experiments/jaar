@@ -57,7 +57,7 @@
         "INSERT": {
             "grain_order": 2,
             "optional_args": {
-                "_partylinks_set_by_economy_road": "RoadUnit"
+                "_treasury_partylinks": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"
@@ -69,7 +69,7 @@
         "UPDATE": {
             "grain_order": 10,
             "optional_args": {
-                "_partylinks_set_by_economy_road": "RoadUnit"
+                "_treasury_partylinks": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"

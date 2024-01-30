@@ -92,11 +92,11 @@ class EconomyUnit:
         x_agenda = self.get_forum_agenda(x_agent_id)
 
         for groupunit_x in x_agenda._groups.values():
-            if groupunit_x._partylinks_set_by_economy_road != None:
+            if groupunit_x._treasury_partylinks != None:
                 groupunit_x.clear_partylinks()
                 ic = get_idea_catalog_dict(
                     self.get_treasury_conn(),
-                    groupunit_x._partylinks_set_by_economy_road,
+                    groupunit_x._treasury_partylinks,
                 )
                 for idea_catalog in ic.values():
                     if x_agent_id != idea_catalog.agent_id:
@@ -265,7 +265,7 @@ class EconomyUnit:
                 groupunit_catalog_x = GroupUnitCatalog(
                     agent_id=agendaunit_x._agent_id,
                     groupunit_group_id=groupunit_x.group_id,
-                    partylinks_set_by_economy_road=groupunit_x._partylinks_set_by_economy_road,
+                    treasury_partylinks=groupunit_x._treasury_partylinks,
                 )
                 sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
                 cur.execute(sqlstr)

@@ -238,9 +238,9 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     # two others have idea create_road(root_label()},sports,swimming"
     # run set_treasury_metrics
     # assert
-    # _partylinks_set_by_economy_road
+    # _treasury_partylinks
     # assert group "swimming expert" has 1 party
-    # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  create_road(root_label()}sports,swimmer"
+    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
     # run set_treasury_metrics
     # assert group "swimming expert" has 2 different party
     x_economy_id = x_economy.economy_id
@@ -283,9 +283,9 @@ def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Pa
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _partylinks_set_by_economy_road ==  create_road(root_label()},sports,swimmer"
+    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()},sports,swimmer"
     sal_swim_road = create_road(sal_sports_road, swim_text)
-    swim_group_unit.set_attr(_partylinks_set_by_economy_road=sal_swim_road)
+    swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
     x_economy.save_forum_agenda(sal_agenda)
     x_economy.set_agenda_treasury_attrs(x_agent_id=sal_text)
@@ -490,7 +490,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         agent_id=bob_text,
         groupunit_group_id="US Dollar",
-        partylinks_set_by_economy_road=create_road(get_temp_env_economy_id(), "USA"),
+        treasury_partylinks=create_road(get_temp_env_economy_id(), "USA"),
     )
     bob_group_sqlstr = get_groupunit_catalog_table_insert_sqlstr(bob_group_x)
     with x_economy.get_treasury_conn() as treasury_conn:
