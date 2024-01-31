@@ -381,6 +381,61 @@ def change_agenda_with_grainunit(x_agenda: AgendaUnit, x_grainunit: GrainUnit):
         )
 
 
+def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
+    if category == "AgendaUnit_weight":
+        return x_obj._weight != y_obj._weight
+    elif category == "_auto_output_to_forum":
+        return x_obj._auto_output_to_forum != y_obj._auto_output_to_forum
+    elif category == "_max_tree_traverse":
+        return x_obj._max_tree_traverse != y_obj._max_tree_traverse
+    elif category == "_meld_strategy":
+        return x_obj._meld_strategy != y_obj._meld_strategy
+    elif category == "_party_creditor_pool":
+        return x_obj._party_creditor_pool != y_obj._party_creditor_pool
+    elif category == "_party_debtor_pool":
+        return x_obj._party_debtor_pool != y_obj._party_debtor_pool
+    elif category == "groupunit":
+        return x_obj._treasury_partylinks != y_obj._treasury_partylinks
+    elif category in {"groupunit_partylink", "idea_balancelink"}:
+        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
+            x_obj.debtor_weight != y_obj.debtor_weight
+        )
+    elif category == "idea":
+        return (
+            x_obj._addin != y_obj._addin
+            or x_obj._begin != y_obj._begin
+            or x_obj._close != y_obj._close
+            or x_obj._denom != y_obj._denom
+            or x_obj._meld_strategy != y_obj._meld_strategy
+            or x_obj._numeric_road != y_obj._numeric_road
+            or x_obj._numor != y_obj._numor
+            or x_obj._range_source_road != y_obj._range_source_road
+            or x_obj._reest != y_obj._reest
+            or x_obj._weight != y_obj._weight
+            or x_obj.promise != y_obj.promise
+        )
+    elif category == "idea_beliefunit":
+        return (
+            (x_obj.pick != y_obj.pick)
+            or (x_obj.open != y_obj.open)
+            or (x_obj.nigh != y_obj.nigh)
+        )
+    elif category == "idea_reasonunit":
+        return x_obj.suff_idea_active != y_obj.suff_idea_active
+    elif category == "idea_reasonunit_premiseunit":
+        return (
+            x_obj.open != y_obj.open
+            or x_obj.nigh != y_obj.nigh
+            or x_obj.divisor != y_obj.divisor
+        )
+    elif category == "partyunit":
+        return (
+            (x_obj.creditor_weight != y_obj.creditor_weight)
+            or (x_obj.debtor_weight != y_obj.debtor_weight)
+            or (x_obj.depotlink_type != y_obj.depotlink_type)
+        )
+
+
 class InvalidGrainUnitException(Exception):
     pass
 
@@ -1259,62 +1314,3 @@ def learnunit_shop(
     return LearnUnit(
         agenda_road=agenda_road, grainunits=get_empty_dict_if_none(grainunits)
     )
-
-
-def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
-    if category == "partyunit":
-        return (
-            (x_obj.creditor_weight != y_obj.creditor_weight)
-            or (x_obj.debtor_weight != y_obj.debtor_weight)
-            or (x_obj.depotlink_type != y_obj.depotlink_type)
-        )
-    elif category == "groupunit":
-        return x_obj._treasury_partylinks != y_obj._treasury_partylinks
-    elif category == "groupunit_partylink":
-        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
-            x_obj.debtor_weight != y_obj.debtor_weight
-        )
-    elif category == "AgendaUnit_weight":
-        return x_obj._weight != y_obj._weight
-    elif category == "_max_tree_traverse":
-        return x_obj._max_tree_traverse != y_obj._max_tree_traverse
-    elif category == "_party_creditor_pool":
-        return x_obj._party_creditor_pool != y_obj._party_creditor_pool
-    elif category == "_party_debtor_pool":
-        return x_obj._party_debtor_pool != y_obj._party_debtor_pool
-    elif category == "_auto_output_to_forum":
-        return x_obj._auto_output_to_forum != y_obj._auto_output_to_forum
-    elif category == "_meld_strategy":
-        return x_obj._meld_strategy != y_obj._meld_strategy
-    elif category == "idea":
-        return (
-            x_obj._addin != y_obj._addin
-            or x_obj._begin != y_obj._begin
-            or x_obj._close != y_obj._close
-            or x_obj._denom != y_obj._denom
-            or x_obj._meld_strategy != y_obj._meld_strategy
-            or x_obj._numeric_road != y_obj._numeric_road
-            or x_obj._numor != y_obj._numor
-            or x_obj._range_source_road != y_obj._range_source_road
-            or x_obj._reest != y_obj._reest
-            or x_obj._weight != y_obj._weight
-            or x_obj.promise != y_obj.promise
-        )
-    elif category == "idea_beliefunit":
-        return (
-            (x_obj.pick != y_obj.pick)
-            or (x_obj.open != y_obj.open)
-            or (x_obj.nigh != y_obj.nigh)
-        )
-    elif category == "idea_balancelink":
-        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
-            x_obj.debtor_weight != y_obj.debtor_weight
-        )
-    elif category == "idea_reasonunit":
-        return x_obj.suff_idea_active != y_obj.suff_idea_active
-    elif category == "idea_reasonunit_premiseunit":
-        return (
-            x_obj.open != y_obj.open
-            or x_obj.nigh != y_obj.nigh
-            or x_obj.divisor != y_obj.divisor
-        )
