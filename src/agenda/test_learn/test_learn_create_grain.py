@@ -1,5 +1,4 @@
 from src._prime.road import get_single_roadnode
-from src._prime.meld import get_meld_default
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
@@ -12,14 +11,8 @@ from src.agenda.learn import (
     grain_insert,
     grain_update,
     grain_delete,
-    learnunit_shop,
-    grainunit_shop,
 )
-from src.agenda.examples.example_learns import (
-    get_sue_personroad,
-    get_sue_learnunit_example1,
-    get_yao_example_roadunit as yao_roadunit,
-)
+from src.agenda.examples.example_learns import get_sue_personroad
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.tools.python import get_nested_value, get_empty_list_if_None
 from copy import deepcopy as copy_deepcopy
@@ -112,6 +105,9 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
     before_sue_agenda = agendaunit_shop(sue_text)
+    before_sue_agenda.add_partyunit("Yao")
+    before_sue_agenda.add_partyunit("Zia")
+
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
 
     rico_text = "Rico"
