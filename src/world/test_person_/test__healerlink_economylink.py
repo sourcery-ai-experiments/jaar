@@ -12,7 +12,7 @@ def test_HealerLink_set_economylink_CorrectlySetsObj():
     yao_healerlink.set_economylink(diet_economylink)
 
     # THEN
-    # diet_economy = xao_problem.get_economy()
+    # diet_economy = yao_problem.get_economy()
     diet_economy = yao_healerlink._economylinks.get(diet_text)
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text

@@ -236,31 +236,31 @@ def test_WorldUnit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
 ):
     # GIVEN
     x_world = worldunit_shop(mark="Oregon", worlds_dir=get_test_worlds_dir())
-    xao_text = "Xao"
+    yao_text = "Yao"
 
     # WHEN
     knee_text = "knee"
     tim_text = "Tim"
     rest_text = "rest"
     x_world.create_person_economy(
-        person_id=xao_text,
+        person_id=yao_text,
         x_problem_id=knee_text,
         healer_id=tim_text,
         economy_id=rest_text,
     )
 
     # THEN
-    xao_personunit = x_world.get_personunit_from_memory(xao_text)
+    yao_personunit = x_world.get_personunit_from_memory(yao_text)
     tim_healerlink = healerlink_shop(tim_text)
     tim_healerlink.set_economylink(economylink_shop(rest_text))
     static_knee_problemunit = problemunit_shop(knee_text)
     static_knee_problemunit.set_healerlink(tim_healerlink)
-    gen_knee_problemunit = xao_personunit.get_problemunit(knee_text)
+    gen_knee_problemunit = yao_personunit.get_problemunit(knee_text)
     assert gen_knee_problemunit._healerlinks == static_knee_problemunit._healerlinks
     assert gen_knee_problemunit == static_knee_problemunit
-    assert xao_personunit.get_economyunit(rest_text) is None
+    assert yao_personunit.get_economyunit(rest_text) is None
 
     tim_personunit = x_world.get_personunit_from_memory(tim_text)
     rest_economyunit = tim_personunit.get_economyunit(rest_text)
-    assert rest_economyunit.get_forum_agenda(xao_text) != None
+    assert rest_economyunit.get_forum_agenda(yao_text) != None
     assert rest_economyunit.get_forum_agenda(tim_text) != None

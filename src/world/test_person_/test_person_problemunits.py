@@ -10,28 +10,28 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
-    xao_text = "Xao"
-    xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
-    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
+    yao_text = "Yao"
+    yao_person_dir = f"{get_temp_world_dir()}/persons/{yao_text}"
+    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
 
     knee_text = "knee discomfort"
     bore_text = "bore"
     rain_text = "rain"
 
-    xao_personunit.set_problemunit(problemunit_shop(problem_id=knee_text, weight=60))
-    xao_personunit.set_problemunit(problemunit_shop(problem_id=bore_text, weight=35))
-    xao_personunit.set_problemunit(problemunit_shop(problem_id=rain_text, weight=5))
+    yao_personunit.set_problemunit(problemunit_shop(problem_id=knee_text, weight=60))
+    yao_personunit.set_problemunit(problemunit_shop(problem_id=bore_text, weight=35))
+    yao_personunit.set_problemunit(problemunit_shop(problem_id=rain_text, weight=5))
 
-    knee_problemunit = xao_personunit.get_problemunit(knee_text)
-    bore_problemunit = xao_personunit.get_problemunit(bore_text)
-    rain_problemunit = xao_personunit.get_problemunit(rain_text)
+    knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    bore_problemunit = yao_personunit.get_problemunit(bore_text)
+    rain_problemunit = yao_personunit.get_problemunit(rain_text)
 
     assert knee_problemunit._relative_weight is None
     assert bore_problemunit._relative_weight is None
     assert rain_problemunit._relative_weight is None
 
     # WHEN
-    xao_personunit.set_problemunits_weight_metrics()
+    yao_personunit.set_problemunits_weight_metrics()
 
     # THEN
     assert knee_problemunit._relative_weight == 0.6
@@ -46,9 +46,9 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
-    xao_text = "Xao"
-    xao_person_dir = f"{get_temp_world_dir()}/persons/{xao_text}"
-    xao_personunit = personunit_shop(person_id=xao_text, person_dir=xao_person_dir)
+    yao_text = "Yao"
+    yao_person_dir = f"{get_temp_world_dir()}/persons/{yao_text}"
+    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
 
     knee_text = "knee"
     bore_problem_id = "bore"
@@ -80,17 +80,17 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     x_bore_problemunit.set_healerlink(bore_tim_healerlink)
     x_rain_problemunit.set_healerlink(rain_ray_healerlink)
 
-    xao_personunit.set_problemunit(x_knee_problemunit)
-    xao_personunit.set_problemunit(x_bore_problemunit)
-    xao_personunit.set_problemunit(x_rain_problemunit)
+    yao_personunit.set_problemunit(x_knee_problemunit)
+    yao_personunit.set_problemunit(x_bore_problemunit)
+    yao_personunit.set_problemunit(x_rain_problemunit)
 
     # WHEN
-    xao_personunit.set_problemunits_weight_metrics()
+    yao_personunit.set_problemunits_weight_metrics()
 
     # THEN
-    z_knee_problemunit = xao_personunit.get_problemunit(knee_text)
-    z_bore_problemunit = xao_personunit.get_problemunit(bore_problem_id)
-    z_rain_problemunit = xao_personunit.get_problemunit(rain_problem_id)
+    z_knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    z_bore_problemunit = yao_personunit.get_problemunit(bore_problem_id)
+    z_rain_problemunit = yao_personunit.get_problemunit(rain_problem_id)
     assert z_knee_problemunit._relative_weight == 0.6
     assert z_bore_problemunit._relative_weight == 0.35
     assert z_rain_problemunit._relative_weight == 0.05

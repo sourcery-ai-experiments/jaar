@@ -5,6 +5,7 @@ from src._prime.road import (
     EconomyAddress,
     create_economyaddress,
     validate_roadnode,
+    PersonRoad,
 )
 from dataclasses import dataclass
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -28,6 +29,11 @@ class PersonUnit:
     _economys: dict[EconomyID:EconomyUnit] = None
     _problems: dict[ProblemID:ProblemUnit] = None
     _road_delimiter: str = None
+    _primary_contract_road: PersonRoad = None
+
+    def is_primary_contract_road_valid(self) -> bool:
+        if self._primary_contract_road != None:
+            return True
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
@@ -77,8 +83,8 @@ class PersonUnit:
             self.create_problemunit_from_problem_id(x_problem_id)
             x_problemunit = self.get_problemunit(x_problem_id)
             x_problemunit.set_healerlink(healerlink_shop(self.person_id))
-            xao_healerlink = x_problemunit.get_healerlink(self.person_id)
-            xao_healerlink.set_economylink(economylink_shop(economy_id))
+            x_healerlink = x_problemunit.get_healerlink(self.person_id)
+            x_healerlink.set_economylink(economylink_shop(economy_id))
 
         if self.economylink_exists(economy_id) == False:
             raise InvalidEconomyException(
@@ -133,13 +139,17 @@ class PersonUnit:
 
 
 def personunit_shop(
-    person_id: PersonID, person_dir: str = None, _road_delimiter: str = None
+    person_id: PersonID,
+    person_dir: str = None,
+    _road_delimiter: str = None,
+    _primary_contract_road: PersonRoad = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
         person_dir=person_dir,
         _economys={},
         _problems={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _primary_contract_road=_primary_contract_road,
     )
     x_personunit.set_person_id(person_id)
     return x_personunit

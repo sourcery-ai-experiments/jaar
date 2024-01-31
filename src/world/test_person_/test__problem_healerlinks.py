@@ -12,7 +12,7 @@ def test_ProblemUnit_set_healerlink_CorrectlySetsHealerLink():
     knee_problemunit.set_healerlink(yao_healerlink)
 
     # THEN
-    # yao_healerlink = xao_problem.get_person()
+    # yao_healerlink = yao_problem.get_person()
     yao_healerlink = knee_problemunit._healerlinks.get(yao_text)
     assert yao_healerlink != None
     assert yao_healerlink.healer_id == yao_text
