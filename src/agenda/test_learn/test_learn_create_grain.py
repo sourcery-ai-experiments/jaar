@@ -1156,173 +1156,70 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_delete
     assert ball_grainunit.get_locator("base") == medical_road
     assert get_grainunit_total_count(sue_learnunit) == 1
 
-    # # WHEN
-    # medical_suff_idea_active = True
-    # update_disc_grainunit = grainunit_shop("idea_reasonunit", grain_insert())
-    # update_disc_grainunit.set_locator("road", ball_road)
-    # update_disc_grainunit.set_locator("base", knee_road)
-    # update_disc_grainunit.set_required_arg("road", ball_road)
-    # update_disc_grainunit.set_required_arg("base", knee_road)
-    # update_disc_grainunit.set_optional_arg("suff_idea_active", medical_suff_idea_active)
-    # # print(f"{update_disc_grainunit=}")
-    # sue_learnunit = learnunit_shop(sue_road)
-    # sue_learnunit.set_grainunit(update_disc_grainunit)
-    # after_sue_au = sue_learnunit.get_after_agenda(before_sue_agendaunit)
 
-    # # THEN
-    # after_ball_idea = after_sue_au.get_idea_obj(ball_road)
-    # after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
-    # assert after_knee_reasonunit != None
-    # assert after_knee_reasonunit.get_premise(medical_road) is None
-    # assert after_knee_reasonunit.suff_idea_active == medical_suff_idea_active
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_insert():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+
+    after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+    after_ball_ideaunit = after_sue_agendaunit.get_idea_obj(ball_road)
+    after_ball_ideaunit._assignedunit.set_suffgroup(rico_text)
+
+    # WHEN
+    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+    x_keylist = [
+        grain_insert(),
+        "idea_suffgroup",
+        ball_road,
+        rico_text,
+    ]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_locator("group_id") == rico_text
+    assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit():
+# def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_delete():
 #     # GIVEN
 #     sue_road = get_sue_personroad()
 #     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     before_sue_au = agendaunit_shop(sue_text)
-#     sports_text = "sports"
-#     sports_road = before_sue_au.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = before_sue_au.make_road(sports_road, ball_text)
-#     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     knee_text = "knee"
-#     knee_road = before_sue_au.make_l1_road(knee_text)
-#     medical_text = "get medical attention"
-#     medical_road = before_sue_au.make_road(knee_road, medical_text)
-#     before_medical_suff_idea_active = False
-#     before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
-#     before_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
-#     before_sue_au.edit_idea_attr(
-#         road=ball_road,
-#         reason_base=knee_road,
-#         reason_suff_idea_active=before_medical_suff_idea_active,
-#     )
-#     before_ball_idea = before_sue_au.get_idea_obj(ball_road)
-#     before_ball_reasonunit = before_ball_idea.get_reasonunit(knee_road)
-#     assert before_ball_reasonunit != None
-#     assert before_ball_reasonunit.suff_idea_active == before_medical_suff_idea_active
-
-#     # WHEN
-#     after_medical_suff_idea_active = True
-#     update_disc_grainunit = grainunit_shop("idea_reasonunit", grain_update())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("base", knee_road)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("base", knee_road)
-#     update_disc_grainunit.set_optional_arg(
-#         "suff_idea_active", after_medical_suff_idea_active
-#     )
-#     # print(f"{update_disc_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     after_sue_au = sue_learnunit.get_after_agenda(before_sue_au)
-
-#     # THEN
-#     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
-#     after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
-#     assert after_knee_reasonunit != None
-#     assert after_knee_reasonunit.get_premise(medical_road) is None
-#     assert after_knee_reasonunit.suff_idea_active == after_medical_suff_idea_active
-
-
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     before_sue_au = agendaunit_shop(sue_text)
-#     sports_text = "sports"
-#     sports_road = before_sue_au.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = before_sue_au.make_road(sports_road, ball_text)
-#     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     knee_text = "knee"
-#     knee_road = before_sue_au.make_l1_road(knee_text)
-#     medical_suff_idea_active = False
-#     before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
-#     before_sue_au.edit_idea_attr(
-#         road=ball_road,
-#         reason_base=knee_road,
-#         reason_suff_idea_active=medical_suff_idea_active,
-#     )
-#     before_ball_idea = before_sue_au.get_idea_obj(ball_road)
-#     assert before_ball_idea.get_reasonunit(knee_road) != None
-
-#     # WHEN
-#     update_disc_grainunit = grainunit_shop("idea_reasonunit", grain_delete())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("base", knee_road)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("base", knee_road)
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     after_sue_au = sue_learnunit.get_after_agenda(before_sue_au)
-
-#     # THEN
-#     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
-#     assert after_ball_idea.get_reasonunit(knee_road) is None
-
-
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suffgroup():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     before_sue_au = agendaunit_shop(sue_text)
+#     before_sue_agendaunit = agendaunit_shop(sue_text)
 #     rico_text = "Rico"
-#     before_sue_au.add_partyunit(rico_text)
+#     before_sue_agendaunit.add_partyunit(rico_text)
 #     sports_text = "sports"
-#     sports_road = before_sue_au.make_l1_road(sports_text)
+#     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
 #     ball_text = "basketball"
-#     ball_road = before_sue_au.make_road(sports_road, ball_text)
-#     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     before_ball_ideaunit = before_sue_au.get_idea_obj(ball_road)
-#     assert before_ball_ideaunit._assignedunit._suffgroups == {}
+#     ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+#     before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+
+#     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+#     after_ball_ideaunit = after_sue_agendaunit.get_idea_obj(ball_road)
+#     after_ball_ideaunit._assignedunit.set_suffgroup(rico_text)
 
 #     # WHEN
-#     update_disc_grainunit = grainunit_shop("idea_suffgroup", grain_insert())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("group_id", rico_text)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("group_id", rico_text)
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     after_sue_au = sue_learnunit.get_after_agenda(before_sue_au)
+#     sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
 
 #     # THEN
-#     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
-#     assert after_ball_ideaunit._assignedunit._suffgroups != {}
-#     assert after_ball_ideaunit._assignedunit.get_suffgroup(rico_text) != None
-
-
-# def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suffgroup():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     before_sue_au = agendaunit_shop(sue_text)
-#     rico_text = "Rico"
-#     before_sue_au.add_partyunit(rico_text)
-#     sports_text = "sports"
-#     sports_road = before_sue_au.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = before_sue_au.make_road(sports_road, ball_text)
-#     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     before_ball_ideaunit = before_sue_au.get_idea_obj(ball_road)
-#     before_ball_ideaunit._assignedunit.set_suffgroup(rico_text)
-#     assert before_ball_ideaunit._assignedunit._suffgroups != {}
-#     assert before_ball_ideaunit._assignedunit.get_suffgroup(rico_text) != None
-
-#     # WHEN
-#     update_disc_grainunit = grainunit_shop("idea_suffgroup", grain_delete())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("group_id", rico_text)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("group_id", rico_text)
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     print(f"{before_sue_au.get_idea_obj(ball_road)._assignedunit=}")
-#     after_sue_au = sue_learnunit.get_after_agenda(before_sue_au)
-
-#     # THEN
-#     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
-#     assert after_ball_ideaunit._assignedunit._suffgroups == {}
+#     print(f"{print_grainunit_keys(sue_learnunit)=}")
+#     x_keylist = [
+#         grain_delete(),
+#         "idea_suffgroup",
+#         ball_road,
+#         rico_text,
+#     ]
+#     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+#     assert ball_grainunit.get_locator("road") == ball_road
+#     assert ball_grainunit.get_locator("group_id") == rico_text
+#     assert get_grainunit_total_count(sue_learnunit) == 1
