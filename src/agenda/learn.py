@@ -453,6 +453,10 @@ def create_learnunit(
     before_agenda = copy_deepcopy(before_agenda)
     x_learnunit = learnunit_shop(agenda_road=agenda_road)
 
+    # TODO refactor and clean up.
+    # TODO check if idea attrs like partylinks, suffgroups insert works if idea didn't exist in before
+    # TODO create learnunit from empty_agenda and V001 example. Check if learnunit builds V001 back.
+    # issue when this function was created: https://github.com/jschalk/jaar/issues/80
     # Given before_agenda, after_agenda
     # Go to every element of before_agenda, check if it exists in after_agenda
     # If the element is missing in after_agenda: create delete grainunit
