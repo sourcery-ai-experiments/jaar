@@ -759,6 +759,48 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert
     old_sue_agendaunit.add_idea(ideaunit_shop(broken_text), knee_road)
 
     new_sue_agendaunit = copy_deepcopy(old_sue_agendaunit)
+    new_broken_open = 55
+    new_broken_nigh = 66
+    new_sue_agendaunit.edit_idea_attr(
+        road=ball_road,
+        beliefunit=beliefunit_shop(
+            base=knee_road, pick=broken_road, open=new_broken_open, nigh=new_broken_nigh
+        ),
+    )
+
+    # WHEN
+    sue_learnunit = create_learnunit(old_sue_agendaunit, new_sue_agendaunit)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+    x_keylist = [grain_insert(), "idea_beliefunit", ball_road, knee_road]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_locator("base") == knee_road
+    assert ball_grainunit.get_value("pick") == broken_road
+    assert ball_grainunit.get_value("open") == new_broken_open
+    assert ball_grainunit.get_value("nigh") == new_broken_nigh
+    assert get_grainunit_total_count(sue_learnunit) == 1
+
+
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_delete():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    old_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = old_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = old_sue_agendaunit.make_road(sports_road, ball_text)
+    old_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = old_sue_agendaunit.make_l1_road(knee_text)
+    broken_text = "broke cartilage"
+    broken_road = old_sue_agendaunit.make_road(knee_road, broken_text)
+    old_sue_agendaunit.add_l1_idea(ideaunit_shop(knee_text))
+    old_sue_agendaunit.add_idea(ideaunit_shop(broken_text), knee_road)
+
+    new_sue_agendaunit = copy_deepcopy(old_sue_agendaunit)
     old_broken_open = 55
     old_broken_nigh = 66
     old_sue_agendaunit.edit_idea_attr(
@@ -773,13 +815,12 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
-    x_keylist = [grain_insert(), "idea_beliefunit", ball_road, knee_road]
+    x_keylist = [grain_delete(), "idea_beliefunit", ball_road, knee_road]
     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert ball_grainunit.get_locator("road") == ball_road
     assert ball_grainunit.get_locator("base") == knee_road
-    assert ball_grainunit.get_value("pick") == broken_road
-    assert ball_grainunit.get_value("open") == old_broken_open
-    assert ball_grainunit.get_value("nigh") == old_broken_nigh
+    assert ball_grainunit.get_value("road") == ball_road
+    assert ball_grainunit.get_value("base") == knee_road
     assert get_grainunit_total_count(sue_learnunit) == 1
 
     # # WHEN
@@ -818,59 +859,6 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert
     # assert new_ball_idea._beliefunits.get(knee_road).pick == broken_road
     # assert new_ball_idea._beliefunits.get(knee_road).open == broken_open
     # assert new_ball_idea._beliefunits.get(knee_road).nigh == broken_nigh
-
-
-# def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_beliefunit():
-#     # GIVEN
-#     sue_road = get_sue_personroad()
-#     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
-#     old_sue_au = agendaunit_shop(sue_text)
-#     sports_text = "sports"
-#     sports_road = old_sue_au.make_l1_road(sports_text)
-#     ball_text = "basketball"
-#     ball_road = old_sue_au.make_road(sports_road, ball_text)
-#     old_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-#     knee_text = "knee"
-#     knee_road = old_sue_au.make_l1_road(knee_text)
-#     broken_text = "broke cartilage"
-#     broken_road = old_sue_au.make_road(knee_road, broken_text)
-#     medical_text = "get medical attention"
-#     medical_road = old_sue_au.make_road(knee_road, medical_text)
-#     old_sue_au.add_l1_idea(ideaunit_shop(knee_text))
-#     old_sue_au.add_idea(ideaunit_shop(broken_text), knee_road)
-#     old_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
-#     old_knee_beliefunit = beliefunit_shop(knee_road, broken_road)
-#     old_sue_au.edit_idea_attr(ball_road, beliefunit=old_knee_beliefunit)
-#     old_ball_idea = old_sue_au.get_idea_obj(ball_road)
-#     assert old_ball_idea._beliefunits != {}
-#     assert old_ball_idea._beliefunits.get(knee_road) != None
-#     assert old_ball_idea._beliefunits.get(knee_road).pick == broken_road
-#     assert old_ball_idea._beliefunits.get(knee_road).open is None
-#     assert old_ball_idea._beliefunits.get(knee_road).nigh is None
-
-#     # WHEN
-#     medical_open = 45
-#     medical_nigh = 77
-#     update_disc_grainunit = grainunit_shop("idea_beliefunit", grain_update())
-#     update_disc_grainunit.set_locator("road", ball_road)
-#     update_disc_grainunit.set_locator("base", knee_road)
-#     update_disc_grainunit.set_required_arg("road", ball_road)
-#     update_disc_grainunit.set_required_arg("base", knee_road)
-#     update_disc_grainunit.set_optional_arg("pick", medical_road)
-#     update_disc_grainunit.set_optional_arg("open", medical_open)
-#     update_disc_grainunit.set_optional_arg("nigh", medical_nigh)
-#     # print(f"{update_disc_grainunit=}")
-#     sue_learnunit = learnunit_shop(sue_road)
-#     sue_learnunit.set_grainunit(update_disc_grainunit)
-#     new_sue_au = sue_learnunit.get_new_agenda(old_sue_au)
-
-#     # THEN
-#     new_ball_idea = new_sue_au.get_idea_obj(ball_road)
-#     assert new_ball_idea._beliefunits != {}
-#     assert new_ball_idea._beliefunits.get(knee_road) != None
-#     assert new_ball_idea._beliefunits.get(knee_road).pick == medical_road
-#     assert new_ball_idea._beliefunits.get(knee_road).open == medical_open
-#     assert new_ball_idea._beliefunits.get(knee_road).nigh == medical_nigh
 
 
 # def test_LearnUnit_get_new_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit_premiseunit():
