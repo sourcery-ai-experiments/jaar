@@ -479,7 +479,9 @@ def create_learnunit(
     add_grainunits_idea_reasonunit_premiseunit_insert(
         x_learnunit, before_agenda, after_agenda
     )
-    # add_grainunits_idea_reasonunit_premiseunit_delete(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_reasonunit_premiseunit_delete(
+        x_learnunit, before_agenda, after_agenda
+    )
     # add_grainunits_idea_reasonunit_premiseunit_update(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_reasonunit_insert(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_reasonunit_delete(x_learnunit, before_agenda, after_agenda)
@@ -759,6 +761,44 @@ def add_grainunit_idea_reasonunit_premiseunit_insert(
     x_learnunit.set_grainunit(x_grainunit)
 
 
+def add_grainunits_idea_reasonunit_premiseunit_delete(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    for before_ideaunit in before_agenda._idea_dict.values():
+        if after_agenda.idea_exists(before_ideaunit.get_road()):
+            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
+            for before_reasonunit in before_ideaunit._reasonunits.values():
+                after_reasonunit = after_ideaunit.get_reasonunit(before_reasonunit.base)
+                if after_reasonunit != None:
+                    for before_premiseunit in before_reasonunit.premises.values():
+                        after_premiseunit = after_reasonunit.get_premise(
+                            before_premiseunit.need
+                        )
+                        if after_premiseunit is None:
+                            add_grainunit_idea_reasonunit_premiseunit_delete(
+                                x_learnunit,
+                                before_ideaunit.get_road(),
+                                before_reasonunit.base,
+                                before_premiseunit,
+                            )
+
+
+def add_grainunit_idea_reasonunit_premiseunit_delete(
+    x_learnunit: LearnUnit,
+    idea_road: RoadUnit,
+    reason_base: RoadUnit,
+    before_premiseunit: PremiseUnit,
+):
+    x_grainunit = grainunit_shop("idea_reasonunit_premiseunit", grain_delete())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("base", reason_base)
+    x_grainunit.set_locator("need", before_premiseunit.need)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("base", reason_base)
+    x_grainunit.set_required_arg("need", before_premiseunit.need)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
 def add_grainunits_idea_reasonunit(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -948,7 +988,6 @@ def add_grainunits_idea_beliefunit_insert(
                 != after_ideaunit.get_beliefunits_dict()
             ):
                 for after_base in after_ideaunit._beliefunits.keys():
-                    print("huh")
                     if before_ideaunit._beliefunits.get(after_base) is None:
                         add_grainunit_idea_beliefunit_insert(
                             x_learnunit=x_learnunit,
