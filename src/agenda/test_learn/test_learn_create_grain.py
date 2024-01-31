@@ -948,6 +948,75 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     assert ball_grainunit.get_locator("need") == broken_road
     assert get_grainunit_total_count(sue_learnunit) == 1
 
+
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premiseunit_update():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_agendaunit.make_l1_road(knee_text)
+    before_sue_agendaunit.add_l1_idea(ideaunit_shop(knee_text))
+    broken_text = "broke cartilage"
+    broken_road = before_sue_agendaunit.make_road(knee_road, broken_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(broken_text), knee_road)
+    bend_text = "bend"
+    bend_road = before_sue_agendaunit.make_road(knee_road, bend_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(bend_text), knee_road)
+    before_sue_agendaunit.edit_idea_attr(
+        ball_road, reason_base=knee_road, reason_premise=bend_road
+    )
+    before_broken_open = 111
+    before_broken_nigh = 777
+    before_broken_divisor = 13
+    before_sue_agendaunit.edit_idea_attr(
+        ball_road,
+        reason_base=knee_road,
+        reason_premise=broken_road,
+        reason_premise_open=before_broken_open,
+        reason_premise_nigh=before_broken_nigh,
+        reason_premise_divisor=before_broken_divisor,
+    )
+
+    after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+    after_broken_open = 333
+    after_broken_nigh = 555
+    after_broken_divisor = 78
+    after_sue_agendaunit.edit_idea_attr(
+        ball_road,
+        reason_base=knee_road,
+        reason_premise=broken_road,
+        reason_premise_open=after_broken_open,
+        reason_premise_nigh=after_broken_nigh,
+        reason_premise_divisor=after_broken_divisor,
+    )
+
+    # WHEN
+    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+    x_keylist = [
+        grain_update(),
+        "idea_reasonunit_premiseunit",
+        ball_road,
+        knee_road,
+        broken_road,
+    ]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_locator("base") == knee_road
+    assert ball_grainunit.get_locator("need") == broken_road
+    assert ball_grainunit.get_value("open") == after_broken_open
+    assert ball_grainunit.get_value("nigh") == after_broken_nigh
+    assert ball_grainunit.get_value("divisor") == after_broken_divisor
+    assert get_grainunit_total_count(sue_learnunit) == 1
+
     # update_disc_grainunit = grainunit_shop(
     #     "idea_reasonunit_premiseunit", grain_update()
     # )
