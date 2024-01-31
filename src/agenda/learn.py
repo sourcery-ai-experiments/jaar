@@ -546,6 +546,39 @@ def add_grainunits_AgendaUnit_simple_update(
         x_learnunit.set_grainunit(x_grainunit)
 
 
+def add_grainunits_groupunit_partylink_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    if before_agenda.get_groupunits_dict() != after_agenda.get_groupunits_dict():
+        for after_groupunit in after_agenda._groups.values():
+            for after_partylink in after_groupunit._partys.values():
+                before_group = before_agenda.get_groupunit(after_groupunit.group_id)
+                if (
+                    before_group is None
+                    or before_group.get_partylink(after_partylink.party_id) is None
+                ) and after_groupunit._party_mirror == False:
+                    add_grainunit_groupunit_partylink_insert(
+                        x_learnunit, after_groupunit, after_partylink
+                    )
+
+
+def add_grainunit_groupunit_partylink_insert(
+    x_learnunit: LearnUnit, after_groupunit: GroupUnit, after_partylink: PartyLink
+):
+    after_grainunit = grainunit_shop("groupunit_partylink", grain_insert())
+    after_grainunit.set_locator("group_id", after_groupunit.group_id)
+    after_grainunit.set_locator("party_id", after_partylink.party_id)
+    after_grainunit.set_required_arg("group_id", after_groupunit.group_id)
+    after_grainunit.set_required_arg("party_id", after_partylink.party_id)
+    if after_partylink.creditor_weight != None:
+        after_grainunit.set_optional_arg(
+            "creditor_weight", after_partylink.creditor_weight
+        )
+    if after_partylink.debtor_weight != None:
+        after_grainunit.set_optional_arg("debtor_weight", after_partylink.debtor_weight)
+    x_learnunit.set_grainunit(after_grainunit)
+
+
 def add_grainunits_groupunit_partylink_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -607,39 +640,6 @@ def add_grainunit_groupunit_partylink_delete(
     after_grainunit.set_locator("party_id", before_partylink.party_id)
     after_grainunit.set_required_arg("group_id", before_groupunit.group_id)
     after_grainunit.set_required_arg("party_id", before_partylink.party_id)
-    x_learnunit.set_grainunit(after_grainunit)
-
-
-def add_grainunits_groupunit_partylink_insert(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    if before_agenda.get_groupunits_dict() != after_agenda.get_groupunits_dict():
-        for after_groupunit in after_agenda._groups.values():
-            for after_partylink in after_groupunit._partys.values():
-                before_group = before_agenda.get_groupunit(after_groupunit.group_id)
-                if (
-                    before_group is None
-                    or before_group.get_partylink(after_partylink.party_id) is None
-                ) and after_groupunit._party_mirror == False:
-                    add_grainunit_groupunit_partylink_insert(
-                        x_learnunit, after_groupunit, after_partylink
-                    )
-
-
-def add_grainunit_groupunit_partylink_insert(
-    x_learnunit: LearnUnit, after_groupunit: GroupUnit, after_partylink: PartyLink
-):
-    after_grainunit = grainunit_shop("groupunit_partylink", grain_insert())
-    after_grainunit.set_locator("group_id", after_groupunit.group_id)
-    after_grainunit.set_locator("party_id", after_partylink.party_id)
-    after_grainunit.set_required_arg("group_id", after_groupunit.group_id)
-    after_grainunit.set_required_arg("party_id", after_partylink.party_id)
-    if after_partylink.creditor_weight != None:
-        after_grainunit.set_optional_arg(
-            "creditor_weight", after_partylink.creditor_weight
-        )
-    if after_partylink.debtor_weight != None:
-        after_grainunit.set_optional_arg("debtor_weight", after_partylink.debtor_weight)
     x_learnunit.set_grainunit(after_grainunit)
 
 
@@ -888,38 +888,6 @@ def add_grainunit_idea_reasonunit_insert(
     x_learnunit.set_grainunit(x_grainunit)
 
 
-def add_grainunits_idea_reasonunit_delete(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    before_idea_list = list(before_agenda._idea_dict.values())
-    for before_ideaunit in before_idea_list:
-        if after_agenda.idea_exists(before_ideaunit.get_road()):
-            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
-            if (
-                after_ideaunit != None
-                and after_ideaunit.get_reasonunits_dict()
-                != before_ideaunit.get_reasonunits_dict()
-            ):
-                for before_base in before_ideaunit._reasonunits.keys():
-                    if after_ideaunit._reasonunits.get(before_base) is None:
-                        add_grainunit_idea_reasonunit_delete(
-                            x_learnunit=x_learnunit,
-                            idea_road=before_ideaunit.get_road(),
-                            before_reasonunit_base=before_base,
-                        )
-
-
-def add_grainunit_idea_reasonunit_delete(
-    x_learnunit: LearnUnit, idea_road: RoadUnit, before_reasonunit_base: RoadUnit
-):
-    x_grainunit = grainunit_shop("idea_reasonunit", grain_delete())
-    x_grainunit.set_locator("road", idea_road)
-    x_grainunit.set_locator("base", before_reasonunit_base)
-    x_grainunit.set_required_arg("road", idea_road)
-    x_grainunit.set_required_arg("base", before_reasonunit_base)
-    x_learnunit.set_grainunit(x_grainunit)
-
-
 def add_grainunits_idea_reasonunit_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -965,6 +933,38 @@ def add_grainunit_idea_reasonunit_update(
         x_grainunit.set_optional_arg(
             "suff_idea_active", after_reasonunit.suff_idea_active
         )
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_idea_reasonunit_delete(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    before_idea_list = list(before_agenda._idea_dict.values())
+    for before_ideaunit in before_idea_list:
+        if after_agenda.idea_exists(before_ideaunit.get_road()):
+            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
+            if (
+                after_ideaunit != None
+                and after_ideaunit.get_reasonunits_dict()
+                != before_ideaunit.get_reasonunits_dict()
+            ):
+                for before_base in before_ideaunit._reasonunits.keys():
+                    if after_ideaunit._reasonunits.get(before_base) is None:
+                        add_grainunit_idea_reasonunit_delete(
+                            x_learnunit=x_learnunit,
+                            idea_road=before_ideaunit.get_road(),
+                            before_reasonunit_base=before_base,
+                        )
+
+
+def add_grainunit_idea_reasonunit_delete(
+    x_learnunit: LearnUnit, idea_road: RoadUnit, before_reasonunit_base: RoadUnit
+):
+    x_grainunit = grainunit_shop("idea_reasonunit", grain_delete())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("base", before_reasonunit_base)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("base", before_reasonunit_base)
     x_learnunit.set_grainunit(x_grainunit)
 
 
@@ -1067,36 +1067,6 @@ def add_grainunit_idea_balancelink_insert(
     x_learnunit.set_grainunit(x_grainunit)
 
 
-def add_grainunits_idea_balancelink_delete(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    before_idea_list = list(before_agenda._idea_dict.values())
-    for before_ideaunit in before_idea_list:
-        if after_agenda.idea_exists(before_ideaunit.get_road()):
-            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
-            if (
-                after_ideaunit != None
-                and after_ideaunit.get_balancelinks_dict()
-                != before_ideaunit.get_balancelinks_dict()
-            ):
-                for before_group_id in before_ideaunit._balancelinks.keys():
-                    if after_ideaunit._balancelinks.get(before_group_id) is None:
-                        add_grainunit_idea_balancelink_delete(
-                            x_learnunit, before_ideaunit.get_road(), before_group_id
-                        )
-
-
-def add_grainunit_idea_balancelink_delete(
-    x_learnunit: LearnUnit, before_idea_road: RoadUnit, before_group_id: GroupID
-):
-    x_grainunit = grainunit_shop("idea_balancelink", grain_delete())
-    x_grainunit.set_locator("road", before_idea_road)
-    x_grainunit.set_locator("group_id", before_group_id)
-    x_grainunit.set_required_arg("road", before_idea_road)
-    x_grainunit.set_required_arg("group_id", before_group_id)
-    x_learnunit.set_grainunit(x_grainunit)
-
-
 def add_grainunits_idea_balancelink_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -1149,6 +1119,76 @@ def add_grainunit_idea_balancelink_update(
     x_learnunit.set_grainunit(x_grainunit)
 
 
+def add_grainunits_idea_balancelink_delete(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    before_idea_list = list(before_agenda._idea_dict.values())
+    for before_ideaunit in before_idea_list:
+        if after_agenda.idea_exists(before_ideaunit.get_road()):
+            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
+            if (
+                after_ideaunit != None
+                and after_ideaunit.get_balancelinks_dict()
+                != before_ideaunit.get_balancelinks_dict()
+            ):
+                for before_group_id in before_ideaunit._balancelinks.keys():
+                    if after_ideaunit._balancelinks.get(before_group_id) is None:
+                        add_grainunit_idea_balancelink_delete(
+                            x_learnunit, before_ideaunit.get_road(), before_group_id
+                        )
+
+
+def add_grainunit_idea_balancelink_delete(
+    x_learnunit: LearnUnit, before_idea_road: RoadUnit, before_group_id: GroupID
+):
+    x_grainunit = grainunit_shop("idea_balancelink", grain_delete())
+    x_grainunit.set_locator("road", before_idea_road)
+    x_grainunit.set_locator("group_id", before_group_id)
+    x_grainunit.set_required_arg("road", before_idea_road)
+    x_grainunit.set_required_arg("group_id", before_group_id)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_idea_beliefunit_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    after_idea_list = list(after_agenda._idea_dict.values())
+    for after_ideaunit in after_idea_list:
+        if before_agenda.idea_exists(after_ideaunit.get_road()):
+            before_ideaunit = before_agenda.get_idea_obj(after_ideaunit.get_road())
+            if (
+                before_ideaunit != None
+                and before_ideaunit.get_beliefunits_dict()
+                != after_ideaunit.get_beliefunits_dict()
+            ):
+                for after_base in after_ideaunit._beliefunits.keys():
+                    if before_ideaunit._beliefunits.get(after_base) is None:
+                        add_grainunit_idea_beliefunit_insert(
+                            x_learnunit=x_learnunit,
+                            idea_road=after_ideaunit.get_road(),
+                            after_beliefunit=after_ideaunit._beliefunits.get(
+                                after_base
+                            ),
+                        )
+
+
+def add_grainunit_idea_beliefunit_insert(
+    x_learnunit: LearnUnit, idea_road: RoadUnit, after_beliefunit: BeliefUnit
+):
+    x_grainunit = grainunit_shop("idea_beliefunit", grain_insert())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("base", after_beliefunit.base)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("base", after_beliefunit.base)
+    if after_beliefunit.pick != None:
+        x_grainunit.set_optional_arg("pick", after_beliefunit.pick)
+    if after_beliefunit.open != None:
+        x_grainunit.set_optional_arg("open", after_beliefunit.open)
+    if after_beliefunit.nigh != None:
+        x_grainunit.set_optional_arg("nigh", after_beliefunit.nigh)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
 def add_grainunits_idea_beliefunit_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -1196,46 +1236,6 @@ def add_grainunit_idea_beliefunit_update(
     x_learnunit.set_grainunit(x_grainunit)
 
 
-def add_grainunits_idea_beliefunit_insert(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    after_idea_list = list(after_agenda._idea_dict.values())
-    for after_ideaunit in after_idea_list:
-        if before_agenda.idea_exists(after_ideaunit.get_road()):
-            before_ideaunit = before_agenda.get_idea_obj(after_ideaunit.get_road())
-            if (
-                before_ideaunit != None
-                and before_ideaunit.get_beliefunits_dict()
-                != after_ideaunit.get_beliefunits_dict()
-            ):
-                for after_base in after_ideaunit._beliefunits.keys():
-                    if before_ideaunit._beliefunits.get(after_base) is None:
-                        add_grainunit_idea_beliefunit_insert(
-                            x_learnunit=x_learnunit,
-                            idea_road=after_ideaunit.get_road(),
-                            after_beliefunit=after_ideaunit._beliefunits.get(
-                                after_base
-                            ),
-                        )
-
-
-def add_grainunit_idea_beliefunit_insert(
-    x_learnunit: LearnUnit, idea_road: RoadUnit, after_beliefunit: BeliefUnit
-):
-    x_grainunit = grainunit_shop("idea_beliefunit", grain_insert())
-    x_grainunit.set_locator("road", idea_road)
-    x_grainunit.set_locator("base", after_beliefunit.base)
-    x_grainunit.set_required_arg("road", idea_road)
-    x_grainunit.set_required_arg("base", after_beliefunit.base)
-    if after_beliefunit.pick != None:
-        x_grainunit.set_optional_arg("pick", after_beliefunit.pick)
-    if after_beliefunit.open != None:
-        x_grainunit.set_optional_arg("open", after_beliefunit.open)
-    if after_beliefunit.nigh != None:
-        x_grainunit.set_optional_arg("nigh", after_beliefunit.nigh)
-    x_learnunit.set_grainunit(x_grainunit)
-
-
 def add_grainunits_idea_beliefunit_delete(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -1267,6 +1267,38 @@ def add_grainunit_idea_beliefunit_delete(
     x_grainunit.set_locator("base", before_beliefunit.base)
     x_grainunit.set_required_arg("road", idea_road)
     x_grainunit.set_required_arg("base", before_beliefunit.base)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_idea_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    after_idea_list = list(after_agenda._idea_dict.keys())
+    after_idea_list.sort(reverse=True)
+    for x_idea_road in after_idea_list:
+        if before_agenda.idea_exists(x_idea_road) == False:
+            after_ideaunit = after_agenda.get_idea_obj(x_idea_road)
+            add_grainunit_idea_insert(x_learnunit, after_ideaunit)
+
+
+def add_grainunit_idea_insert(x_learnunit, after_ideaunit: IdeaUnit):
+    x_grainunit = grainunit_shop("idea", grain_insert())
+    x_grainunit.set_locator("road", after_ideaunit.get_road())
+    x_grainunit.set_required_arg("label", after_ideaunit._label)
+    x_grainunit.set_required_arg("parent_road", after_ideaunit._parent_road)
+    x_grainunit.set_optional_arg("_addin", after_ideaunit._addin)
+    x_grainunit.set_optional_arg("_begin", after_ideaunit._begin)
+    x_grainunit.set_optional_arg("_close", after_ideaunit._close)
+    x_grainunit.set_optional_arg("_denom", after_ideaunit._denom)
+    x_grainunit.set_optional_arg("_meld_strategy", after_ideaunit._meld_strategy)
+    x_grainunit.set_optional_arg("_numeric_road", after_ideaunit._numeric_road)
+    x_grainunit.set_optional_arg("_numor", after_ideaunit._numor)
+    x_grainunit.set_optional_arg(
+        "_range_source_road", after_ideaunit._range_source_road
+    )
+    x_grainunit.set_optional_arg("_reest", after_ideaunit._reest)
+    x_grainunit.set_optional_arg("_weight", after_ideaunit._weight)
+    x_grainunit.set_optional_arg("promise", after_ideaunit.promise)
     x_learnunit.set_grainunit(x_grainunit)
 
 
@@ -1325,38 +1357,6 @@ def add_grainunit_idea_update(x_learnunit, before_ideaunit, after_ideaunit):
     x_learnunit.set_grainunit(x_grainunit)
 
 
-def add_grainunits_idea_insert(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    after_idea_list = list(after_agenda._idea_dict.keys())
-    after_idea_list.sort(reverse=True)
-    for x_idea_road in after_idea_list:
-        if before_agenda.idea_exists(x_idea_road) == False:
-            after_ideaunit = after_agenda.get_idea_obj(x_idea_road)
-            add_grainunit_idea_insert(x_learnunit, after_ideaunit)
-
-
-def add_grainunit_idea_insert(x_learnunit, after_ideaunit: IdeaUnit):
-    x_grainunit = grainunit_shop("idea", grain_insert())
-    x_grainunit.set_locator("road", after_ideaunit.get_road())
-    x_grainunit.set_required_arg("label", after_ideaunit._label)
-    x_grainunit.set_required_arg("parent_road", after_ideaunit._parent_road)
-    x_grainunit.set_optional_arg("_addin", after_ideaunit._addin)
-    x_grainunit.set_optional_arg("_begin", after_ideaunit._begin)
-    x_grainunit.set_optional_arg("_close", after_ideaunit._close)
-    x_grainunit.set_optional_arg("_denom", after_ideaunit._denom)
-    x_grainunit.set_optional_arg("_meld_strategy", after_ideaunit._meld_strategy)
-    x_grainunit.set_optional_arg("_numeric_road", after_ideaunit._numeric_road)
-    x_grainunit.set_optional_arg("_numor", after_ideaunit._numor)
-    x_grainunit.set_optional_arg(
-        "_range_source_road", after_ideaunit._range_source_road
-    )
-    x_grainunit.set_optional_arg("_reest", after_ideaunit._reest)
-    x_grainunit.set_optional_arg("_weight", after_ideaunit._weight)
-    x_grainunit.set_optional_arg("promise", after_ideaunit.promise)
-    x_learnunit.set_grainunit(x_grainunit)
-
-
 def add_grainunits_idea_delete(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
@@ -1371,6 +1371,28 @@ def add_grainunit_idea_delete(x_learnunit, before_idea_road: RoadUnit):
     x_grainunit = grainunit_shop("idea", grain_delete())
     x_grainunit.set_locator("road", before_idea_road)
     x_grainunit.set_required_arg("road", before_idea_road)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_partyunit_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    if before_agenda.get_partys_dict() != after_agenda.get_partys_dict():
+        for after_partyunit in after_agenda._partys.values():
+            if before_agenda.get_party(after_partyunit.party_id) is None:
+                add_grainunit_partyunit_insert(x_learnunit, after_partyunit)
+
+
+def add_grainunit_partyunit_insert(x_learnunit: LearnUnit, x_partyunit: PartyUnit):
+    x_grainunit = grainunit_shop("partyunit", grain_insert())
+    x_grainunit.set_locator("party_id", x_partyunit.party_id)
+    x_grainunit.set_required_arg("party_id", x_partyunit.party_id)
+    if x_partyunit.creditor_weight != None:
+        x_grainunit.set_optional_arg("creditor_weight", x_partyunit.creditor_weight)
+    if x_partyunit.debtor_weight != None:
+        x_grainunit.set_optional_arg("debtor_weight", x_partyunit.debtor_weight)
+    if x_partyunit.depotlink_type != None:
+        x_grainunit.set_optional_arg("depotlink_type", x_partyunit.depotlink_type)
     x_learnunit.set_grainunit(x_grainunit)
 
 
@@ -1414,26 +1436,4 @@ def add_grainunit_partyunit_delete(x_learnunit: LearnUnit, x_partyunit: PartyUni
     x_grainunit = grainunit_shop("partyunit", grain_delete())
     x_grainunit.set_locator("party_id", x_partyunit.party_id)
     x_grainunit.set_required_arg("party_id", x_partyunit.party_id)
-    x_learnunit.set_grainunit(x_grainunit)
-
-
-def add_grainunits_partyunit_insert(
-    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-):
-    if before_agenda.get_partys_dict() != after_agenda.get_partys_dict():
-        for after_partyunit in after_agenda._partys.values():
-            if before_agenda.get_party(after_partyunit.party_id) is None:
-                add_grainunit_partyunit_insert(x_learnunit, after_partyunit)
-
-
-def add_grainunit_partyunit_insert(x_learnunit: LearnUnit, x_partyunit: PartyUnit):
-    x_grainunit = grainunit_shop("partyunit", grain_insert())
-    x_grainunit.set_locator("party_id", x_partyunit.party_id)
-    x_grainunit.set_required_arg("party_id", x_partyunit.party_id)
-    if x_partyunit.creditor_weight != None:
-        x_grainunit.set_optional_arg("creditor_weight", x_partyunit.creditor_weight)
-    if x_partyunit.debtor_weight != None:
-        x_grainunit.set_optional_arg("debtor_weight", x_partyunit.debtor_weight)
-    if x_partyunit.depotlink_type != None:
-        x_grainunit.set_optional_arg("depotlink_type", x_partyunit.depotlink_type)
     x_learnunit.set_grainunit(x_grainunit)
