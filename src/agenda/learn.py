@@ -482,7 +482,7 @@ def create_learnunit(
     # add_grainunits_idea_reasonunit_insert(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_reasonunit_delete(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_reasonunit_update(x_learnunit, before_agenda, after_agenda)
-    # add_grainunits_idea_beliefunit_insert(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_beliefunit_insert(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_beliefunit_delete(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_beliefunit_update(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_suffgroup_insert(x_learnunit, before_agenda, after_agenda)
@@ -899,13 +899,53 @@ def add_grainunit_idea_beliefunit_update(
     x_learnunit.set_grainunit(x_grainunit)
 
 
+def add_grainunits_idea_beliefunit_insert(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    before_idea_list = list(before_agenda._idea_dict.values())
+    for before_ideaunit in before_idea_list:
+        if after_agenda.idea_exists(before_ideaunit.get_road()):
+            after_ideaunit = after_agenda.get_idea_obj(before_ideaunit.get_road())
+            if (
+                after_ideaunit != None
+                and after_ideaunit.get_beliefunits_dict()
+                != before_ideaunit.get_beliefunits_dict()
+            ):
+                for before_base in before_ideaunit._beliefunits.keys():
+                    print("huh")
+                    if after_ideaunit._beliefunits.get(before_base) is None:
+                        add_grainunit_idea_beliefunit_insert(
+                            x_learnunit=x_learnunit,
+                            idea_road=before_ideaunit.get_road(),
+                            before_beliefunit=before_ideaunit._beliefunits.get(
+                                before_base
+                            ),
+                        )
+
+
+def add_grainunit_idea_beliefunit_insert(
+    x_learnunit: LearnUnit, idea_road: RoadUnit, before_beliefunit: BeliefUnit
+):
+    x_grainunit = grainunit_shop("idea_beliefunit", grain_insert())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("base", before_beliefunit.base)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("base", before_beliefunit.base)
+    if before_beliefunit.pick != None:
+        x_grainunit.set_optional_arg("pick", before_beliefunit.pick)
+    if before_beliefunit.open != None:
+        x_grainunit.set_optional_arg("open", before_beliefunit.open)
+    if before_beliefunit.nigh != None:
+        x_grainunit.set_optional_arg("nigh", before_beliefunit.nigh)
+    x_learnunit.set_grainunit(x_grainunit)
+
+
 def add_grainunits_idea_update(
     x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
     after_idea_list = list(after_agenda._idea_dict.values())
     for after_ideaunit in after_idea_list:
         if before_agenda.idea_exists(after_ideaunit.get_road()):
-            print("huh")
             before_ideaunit = before_agenda.get_idea_obj(after_ideaunit.get_road())
             if before_ideaunit != None and (
                 before_ideaunit._addin != after_ideaunit._addin

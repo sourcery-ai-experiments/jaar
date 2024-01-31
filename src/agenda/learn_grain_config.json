@@ -215,12 +215,12 @@
         "INSERT": {
             "grain_order": 6,
             "optional_args": {
+                "pick": "RoadUnit",
                 "nigh": "float",
                 "open": "float"
             },
             "required_args": {
                 "base": "RoadUnit",
-                "pick": "RoadUnit",
                 "road": "RoadUnit"
             }
         },

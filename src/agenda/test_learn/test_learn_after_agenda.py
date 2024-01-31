@@ -698,7 +698,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_bel
     update_disc_grainunit.set_locator("base", knee_road)
     update_disc_grainunit.set_required_arg("road", ball_road)
     update_disc_grainunit.set_required_arg("base", knee_road)
-    update_disc_grainunit.set_required_arg("pick", broken_road)
+    update_disc_grainunit.set_optional_arg("pick", broken_road)
     update_disc_grainunit.set_optional_arg("open", broken_open)
     update_disc_grainunit.set_optional_arg("nigh", broken_nigh)
     # print(f"{update_disc_grainunit=}")
