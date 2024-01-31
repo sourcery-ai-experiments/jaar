@@ -1061,6 +1061,56 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_insert
     )
     assert get_grainunit_total_count(sue_learnunit) == 1
 
+
+def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_update():
+    # GIVEN
+    sue_road = get_sue_personroad()
+    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    knee_text = "knee"
+    knee_road = before_sue_agendaunit.make_l1_road(knee_text)
+    medical_text = "get medical attention"
+    medical_road = before_sue_agendaunit.make_road(knee_road, medical_text)
+    before_sue_agendaunit.add_l1_idea(ideaunit_shop(knee_text))
+    before_sue_agendaunit.add_idea(ideaunit_shop(medical_text), knee_road)
+    before_medical_suff_idea_active = True
+    before_sue_agendaunit.edit_idea_attr(
+        road=ball_road,
+        reason_base=medical_road,
+        reason_suff_idea_active=before_medical_suff_idea_active,
+    )
+
+    after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+    after_medical_suff_idea_active = False
+    after_sue_agendaunit.edit_idea_attr(
+        road=ball_road,
+        reason_base=medical_road,
+        reason_suff_idea_active=after_medical_suff_idea_active,
+    )
+
+    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+
+    # THEN
+    print(f"{print_grainunit_keys(sue_learnunit)=}")
+    x_keylist = [
+        grain_update(),
+        "idea_reasonunit",
+        ball_road,
+        medical_road,
+    ]
+    ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
+    assert ball_grainunit.get_locator("road") == ball_road
+    assert ball_grainunit.get_locator("base") == medical_road
+    assert (
+        ball_grainunit.get_value("suff_idea_active") == after_medical_suff_idea_active
+    )
+    assert get_grainunit_total_count(sue_learnunit) == 1
+
     # # WHEN
     # medical_suff_idea_active = True
     # update_disc_grainunit = grainunit_shop("idea_reasonunit", grain_insert())

@@ -487,7 +487,7 @@ def create_learnunit(
     )
     add_grainunits_idea_reasonunit_insert(x_learnunit, before_agenda, after_agenda)
     # add_grainunits_idea_reasonunit_delete(x_learnunit, before_agenda, after_agenda)
-    # add_grainunits_idea_reasonunit_update(x_learnunit, before_agenda, after_agenda)
+    add_grainunits_idea_reasonunit_update(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_beliefunit_insert(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_beliefunit_delete(x_learnunit, before_agenda, after_agenda)
     add_grainunits_idea_beliefunit_update(x_learnunit, before_agenda, after_agenda)
@@ -863,7 +863,6 @@ def add_grainunits_idea_reasonunit_insert(
                 and before_ideaunit.get_reasonunits_dict()
                 != after_ideaunit.get_reasonunits_dict()
             ):
-                print("huh")
                 for after_base in after_ideaunit._reasonunits.keys():
                     if before_ideaunit._reasonunits.get(after_base) is None:
                         add_grainunit_idea_reasonunit_insert(
@@ -884,6 +883,54 @@ def add_grainunit_idea_reasonunit_insert(
     x_grainunit.set_required_arg("road", idea_road)
     x_grainunit.set_required_arg("base", after_reasonunit.base)
     if after_reasonunit.suff_idea_active != None:
+        x_grainunit.set_optional_arg(
+            "suff_idea_active", after_reasonunit.suff_idea_active
+        )
+    x_learnunit.set_grainunit(x_grainunit)
+
+
+def add_grainunits_idea_reasonunit_update(
+    x_learnunit: LearnUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    after_idea_list = list(after_agenda._idea_dict.values())
+    for after_ideaunit in after_idea_list:
+        if before_agenda.idea_exists(after_ideaunit.get_road()):
+            before_ideaunit = before_agenda.get_idea_obj(after_ideaunit.get_road())
+            if (
+                before_ideaunit != None
+                and before_ideaunit.get_reasonunits_dict()
+                != after_ideaunit.get_reasonunits_dict()
+            ):
+                for after_base in after_ideaunit._reasonunits.keys():
+                    if (
+                        before_ideaunit._reasonunits.get(after_base) != None
+                        and before_ideaunit.get_reasonunit(after_base).suff_idea_active
+                        != after_ideaunit.get_reasonunit(after_base).suff_idea_active
+                    ):
+                        add_grainunit_idea_reasonunit_update(
+                            x_learnunit=x_learnunit,
+                            idea_road=after_ideaunit.get_road(),
+                            before_reasonunit=before_ideaunit._reasonunits.get(
+                                after_base
+                            ),
+                            after_reasonunit=after_ideaunit._reasonunits.get(
+                                after_base
+                            ),
+                        )
+
+
+def add_grainunit_idea_reasonunit_update(
+    x_learnunit: LearnUnit,
+    idea_road: RoadUnit,
+    before_reasonunit: ReasonUnit,
+    after_reasonunit: ReasonUnit,
+):
+    x_grainunit = grainunit_shop("idea_reasonunit", grain_update())
+    x_grainunit.set_locator("road", idea_road)
+    x_grainunit.set_locator("base", after_reasonunit.base)
+    x_grainunit.set_required_arg("road", idea_road)
+    x_grainunit.set_required_arg("base", after_reasonunit.base)
+    if before_reasonunit.suff_idea_active != after_reasonunit.suff_idea_active:
         x_grainunit.set_optional_arg(
             "suff_idea_active", after_reasonunit.suff_idea_active
         )
