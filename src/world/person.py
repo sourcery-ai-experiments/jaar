@@ -32,8 +32,7 @@ class PersonUnit:
     _primary_contract_road: PersonRoad = None
 
     def is_primary_contract_road_valid(self) -> bool:
-        if self._primary_contract_road != None:
-            return True
+        return self._primary_contract_road != None
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
@@ -85,6 +84,7 @@ class PersonUnit:
             x_problemunit.set_healerlink(healerlink_shop(self.person_id))
             x_healerlink = x_problemunit.get_healerlink(self.person_id)
             x_healerlink.set_economylink(economylink_shop(economy_id))
+        self._primary_contract_road = create_economyaddress(self.person_id, economy_id)
 
         if self.economylink_exists(economy_id) == False:
             raise InvalidEconomyException(
