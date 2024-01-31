@@ -7,10 +7,10 @@ from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.learn import (
     LearnUnit,
-    create_learnunit,
     grain_insert,
     grain_update,
     grain_delete,
+    learnunit_shop,
 )
 from src.agenda.examples.example_learns import get_sue_personroad
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
@@ -53,20 +53,22 @@ def get_grainunit_total_count(x_learnunit: LearnUnit) -> int:
     )
 
 
-def test_create_learnunit_ReturnsCorrectObj_EmptyLearnUnit():
+def test_LearnUnit_create_grainunits_CorrectHandlesEmptyAgendas():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_agenda = get_agenda_with_4_levels()
+    sue_learnunit = learnunit_shop(sue_road)
+    assert sue_learnunit.grainunits == {}
 
     # WHEN
-    sue_learnunit = create_learnunit(sue_agenda, sue_agenda, sue_road)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(sue_agenda, sue_agenda)
 
     # THEN
     assert sue_learnunit.grainunits == {}
-    assert sue_learnunit.agenda_road == sue_road
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_partyunit_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -84,7 +86,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agenda, after_sue_agenda, sue_road)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     assert len(sue_learnunit.grainunits.get(grain_insert()).get("partyunit")) == 1
@@ -100,7 +103,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_insert():
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_partyunit_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -114,7 +117,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
     before_sue_agenda.add_partyunit(rico_text)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agenda, after_sue_agenda, sue_road)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     rico_grainunit = get_nested_value(
@@ -127,7 +131,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_delete():
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_partyunit_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -146,7 +150,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agenda, after_sue_agenda, sue_road)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     x_keylist = [grain_update(), "partyunit", rico_text]
@@ -160,7 +165,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_partyunit_update():
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_AgendaUnit_weight_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -180,7 +185,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_upda
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agenda, after_sue_agenda, sue_road)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     sue_grainunits = sue_learnunit.grainunits
@@ -212,7 +218,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_AgendaUnit_weight_upda
     assert get_grainunit_total_count(sue_learnunit) == 6
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_group_partylink_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -234,7 +240,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_insert
     # print(f"{after_sue_agendaunit.get_groupunit(run_text)=}")
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [grain_insert(), "groupunit", run_text]
@@ -259,7 +268,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_insert
     assert get_grainunit_total_count(sue_learnunit) == 5
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_group_partylink_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -291,7 +300,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_update
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [grain_update(), "groupunit", run_text]
@@ -312,7 +324,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_update
     assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_group_partylink_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -344,7 +356,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_delete
     assert after_sue_agendaunit.get_groupunit(run_text) is None
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [grain_delete(), "groupunit", run_text]
@@ -364,7 +379,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_group_partylink_delete
     assert get_grainunit_total_count(sue_learnunit) == 4
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -386,7 +401,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_delete():
     after_sue_agendaunit.del_idea_obj(ball_road)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [grain_delete(), "idea", street_road]
@@ -403,7 +421,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_delete():
     assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -440,7 +458,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_insert():
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -465,7 +486,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_insert():
     assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -506,7 +527,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_update():
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -523,7 +547,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_update():
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_balancelink_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -562,7 +586,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_delet
     after_sue_agendaunit.edit_idea_attr(disc_road, balancelink_del=run_text)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_au, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_au, after_sue_agendaunit)
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -575,7 +600,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_delet
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_balancelink_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -621,7 +646,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_inser
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_au, after_sue_au)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_au, after_sue_au)
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -638,7 +664,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_inser
     assert get_grainunit_total_count(sue_learnunit) == 2
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_balancelink_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -671,7 +697,8 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_updat
         ),
     )
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_au, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(before_sue_au, after_sue_agendaunit)
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -685,7 +712,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_balancelink_updat
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_beliefunit_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -724,7 +751,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_update
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -739,7 +769,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_update
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_beliefunit_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -770,7 +800,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -784,7 +817,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_insert
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_beliefunit_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -815,7 +848,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_delete
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -828,7 +864,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_beliefunit_delete
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premiseunit_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -865,7 +901,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -886,7 +925,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premiseunit_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -927,7 +966,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -945,7 +987,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premiseunit_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -993,7 +1035,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -1014,7 +1059,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_premis
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1039,7 +1084,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_insert
         reason_suff_idea_active=after_medical_suff_idea_active,
     )
 
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -1058,7 +1106,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_insert
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_update():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_update():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1090,7 +1138,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_update
     )
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -1109,7 +1160,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_update
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_reasonunit_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1137,7 +1188,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_delete
     after_ball_idea.del_reasonunit_base(medical_road)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -1153,7 +1207,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_reasonunit_delete
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_insert():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_suffgroup_insert():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1171,7 +1225,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_insert(
     after_ball_ideaunit._assignedunit.set_suffgroup(rico_text)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
@@ -1187,7 +1244,7 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_insert(
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_delete():
+def test_LearnUnit_create_difference_grainunits_Creates_GrainUnit_idea_suffgroup_delete():
     # GIVEN
     sue_road = get_sue_personroad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1207,7 +1264,10 @@ def test_create_learnunit_ReturnsCorrectObjWith_GrainUnit_idea_suffgroup_delete(
     after_ball_ideaunit._assignedunit.del_suffgroup(rico_text)
 
     # WHEN
-    sue_learnunit = create_learnunit(before_sue_agendaunit, after_sue_agendaunit)
+    sue_learnunit = learnunit_shop(sue_road)
+    sue_learnunit.create_difference_grainunits(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
