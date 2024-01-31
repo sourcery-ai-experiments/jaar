@@ -74,9 +74,9 @@ def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
     assert (
         str(excinfo.value)
         == f"""'{x_category}' UPDATE GrainUnit is invalid
-x_grainunit.is_locator_valid()=True
-x_grainunit.is_required_args_valid()=False
-x_grainunit.is_optional_args_valid()=True"""
+                x_grainunit.is_locator_valid()=True
+                x_grainunit.is_required_args_valid()=False
+                x_grainunit.is_optional_args_valid()=True"""
     )
 
 
