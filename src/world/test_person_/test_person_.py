@@ -152,7 +152,7 @@ def test_PersonUnit_get_problemunit_CorrectlyGetsProblemUnit():
     yao_personunit.create_problemunit_from_problem_id(knee_text)
 
     # WHEN
-    knee_problem = yao_personunit.get_problemunit(knee_text)
+    knee_problem = yao_personunit.get_problem_obj(knee_text)
 
     # THEN
     assert knee_problem != None
@@ -167,7 +167,7 @@ def test_PersonUnit_economylink_exists_ReturnsCorrectObj():
     knee_text = "knee discomfort"
     yao_personunit.create_problemunit_from_problem_id(knee_text)
     texas_text = "Texas"
-    knee_problem = yao_personunit.get_problemunit(knee_text)
+    knee_problem = yao_personunit.get_problem_obj(knee_text)
     knee_problem.set_healerlink(healerlink_shop(yao_text))
     yao_healerlink = knee_problem.get_healerlink(yao_text)
     assert yao_personunit.economylink_exists(texas_text) == False
@@ -189,7 +189,7 @@ def test_PersonUnit_del_problemunit_CorrectlyDeletesProblemUnit():
     yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
     knee_text = "knee discomfort"
     yao_personunit.create_problemunit_from_problem_id(knee_text)
-    before_knee_problem = yao_personunit.get_problemunit(knee_text)
+    before_knee_problem = yao_personunit.get_problem_obj(knee_text)
     assert before_knee_problem != None
     assert before_knee_problem.problem_id == knee_text
 
@@ -197,7 +197,7 @@ def test_PersonUnit_del_problemunit_CorrectlyDeletesProblemUnit():
     yao_personunit.del_problemunit(knee_text)
 
     # THEN
-    after_knee_problem = yao_personunit.get_problemunit(knee_text)
+    after_knee_problem = yao_personunit.get_problem_obj(knee_text)
     assert after_knee_problem is None
 
 
@@ -225,7 +225,7 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
     knee_text = "knee discomfort"
     yao_personunit.create_problemunit_from_problem_id(knee_text)
     diet_text = "diet"
-    knee_problem = yao_personunit.get_problemunit(knee_text)
+    knee_problem = yao_personunit.get_problem_obj(knee_text)
     knee_problem.set_healerlink(healerlink_shop(yao_text))
     yao_healerlink = knee_problem.get_healerlink(yao_text)
     yao_healerlink.set_economylink(economylink_shop(diet_text))
@@ -237,13 +237,14 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
 
     # THEN
     # diet_economy = yao_person.get_economy()
+    assert yao_personunit._problems != {}
     assert yao_personunit._economys != {}
     diet_economy = yao_personunit._economys.get(diet_text)
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
     assert diet_economy.economys_dir == f"{yao_person_dir}/economys"
-    assert yao_personunit._primary_contract_road == create_economyaddress(
-        yao_text, diet_text
+    assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
+        knee_text, yao_text, diet_text
     )
 
 
@@ -388,18 +389,18 @@ def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():
 def test_PersonUnit_is_primary_contract_road_valid_ReturnsCorrectBool():
     # GIVEN
     yao_text = "Yao"
-    yao_person_dir = f"/persons/{yao_text}"
-    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
+    yao_personunit = personunit_shop(person_id=yao_text)
     assert yao_personunit._primary_contract_road is None
     assert yao_personunit.is_primary_contract_road_valid() == False
 
     # WHEN
     diet_text = "diet"
-    yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
+    knee_text = "knee"
+    yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
 
     # THEN
-    diet_economyaddress = yao_personunit.get_economyaddress(diet_text)
-    assert yao_personunit._primary_contract_road == diet_economyaddress
+    diet_proad = yao_personunit.make_proad(knee_text, yao_text, diet_text)
+    assert yao_personunit._primary_contract_road == diet_proad
     assert yao_personunit.is_primary_contract_road_valid()
 
 
@@ -412,7 +413,7 @@ def test_PersonUnit_make_personroad_ReturnsCorrectObj():
     knee_text = "Knee"
     yao_personunit.set_economyunit(ohio_text, x_problem_id=knee_text)
     assert yao_personunit.economyunit_exists(ohio_text)
-    knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
     sue_text = "Sue"
     knee_problemunit.set_healerlink(healerlink_shop(sue_text))
     sue_healerlink = knee_problemunit.get_healerlink(sue_text)
@@ -425,13 +426,13 @@ def test_PersonUnit_make_personroad_ReturnsCorrectObj():
 
     # WHEN / THEN
     yao_1_proad = "Yao"
-    assert yao_1_proad == yao_personunit.make_proad(yao_1_proad)
+    assert yao_1_proad == yao_personunit.make_proad()
     yao_2_proad = create_road(yao_1_proad, knee_text)
-    assert yao_2_proad == yao_personunit.make_proad(yao_1_proad, knee_text)
+    assert yao_2_proad == yao_personunit.make_proad(knee_text)
     yao_3_proad = create_road(yao_2_proad, sue_text)
-    assert yao_3_proad == yao_personunit.make_proad(yao_2_proad, sue_text)
+    assert yao_3_proad == yao_personunit.make_proad(knee_text, sue_text)
     yao_4_proad = create_road(yao_3_proad, ohio_text)
-    assert yao_4_proad == yao_personunit.make_proad(yao_3_proad, ohio_text)
+    assert yao_4_proad == yao_personunit.make_proad(knee_text, sue_text, ohio_text)
 
 
 def test_PersonUnit_make_personroad_RaisesException():
@@ -442,7 +443,7 @@ def test_PersonUnit_make_personroad_RaisesException():
     ohio_text = "Ohio"
     knee_text = "Knee"
     yao_personunit.set_economyunit(ohio_text, x_problem_id=knee_text)
-    knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
     sue_text = "Sue"
     knee_problemunit.set_healerlink(healerlink_shop(sue_text))
     sue_healerlink = knee_problemunit.get_healerlink(sue_text)
@@ -452,43 +453,132 @@ def test_PersonUnit_make_personroad_RaisesException():
     leg_text = "Leg"
     yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
     assert yao_personunit._primary_contract_road != None
-    yao_1_proad = "Yao"
-    # assert yao_1_proad == yao_personunit.make_proad(yao_1_proad)
-    yao_2_proad = create_road(yao_1_proad, knee_text)
-    # assert yao_2_proad == yao_personunit.make_proad(yao_1_proad, knee_text)
-    yao_3_proad = create_road(yao_2_proad, sue_text)
-    # assert yao_3_proad == yao_personunit.make_proad(yao_2_proad, sue_text)
-    yao_4_proad = create_road(yao_3_proad, ohio_text)
-    # assert yao_4_proad == yao_personunit.make_proad(yao_3_proad, ohio_text)
 
     # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        yao_personunit.make_proad(sue_text)
-    assert (
-        str(excinfo.value)
-        == f"PersonRoad make failure: '{sue_text}' is not personunit person_id '{yao_text}'"
-    )
-
     arm_text = "Arm"
     with pytest_raises(Exception) as excinfo:
-        yao_personunit.make_proad(yao_1_proad, arm_text)
+        yao_personunit.make_proad(arm_text)
     assert (
         str(excinfo.value)
         == f"PersonRoad make failure: ProblemID '{arm_text}' does not exist."
     )
 
+    # WHEN / THEN
     bob_text = "Bob"
     with pytest_raises(Exception) as excinfo:
-        yao_personunit.make_proad(yao_2_proad, bob_text)
+        yao_personunit.make_proad(knee_text, bob_text)
     assert (
         str(excinfo.value)
         == f"PersonRoad make failure: HealerID '{bob_text}' does not exist."
     )
 
+    # WHEN / THEN
     idaho_text = "Idaho"
     with pytest_raises(Exception) as excinfo:
-        yao_personunit.make_proad(yao_3_proad, idaho_text)
+        yao_personunit.make_proad(knee_text, sue_text, idaho_text)
     assert (
         str(excinfo.value)
         == f"PersonRoad make failure: EconomyID '{idaho_text}' does not exist."
     )
+
+
+def test_PersonUnit_get_problemunits_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    knee_text = "Knee"
+    yao_personunit.set_problemunit(problemunit_shop(knee_text))
+    arm_text = "Arm"
+    yao_personunit.set_problemunit(problemunit_shop(arm_text))
+    leg_text = "Leg"
+    yao_personunit.set_problemunit(problemunit_shop(leg_text))
+
+    # WHEN
+    x_problemunits = yao_personunit.get_problemunits()
+
+    # THEN
+    knee_proad = yao_personunit.make_proad(knee_text)
+    arm_proad = yao_personunit.make_proad(arm_text)
+    leg_proad = yao_personunit.make_proad(leg_text)
+
+    assert x_problemunits.get(knee_proad) != None
+    assert x_problemunits.get(arm_proad) != None
+    assert x_problemunits.get(leg_proad) != None
+    assert len(x_problemunits) == 3
+
+
+def test_PersonUnit_get_healerlink_objs_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    sue_text = "Sue"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    knee_text = "Knee"
+    yao_personunit.set_problemunit(problemunit_shop(knee_text))
+    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
+    knee_problemunit.set_healerlink(healerlink_shop(sue_text))
+    arm_text = "Arm"
+    yao_personunit.set_problemunit(problemunit_shop(arm_text))
+    arm_problemunit = yao_personunit.get_problem_obj(arm_text)
+    arm_problemunit.set_healerlink(healerlink_shop(yao_text))
+    leg_text = "Leg"
+    yao_personunit.set_problemunit(problemunit_shop(leg_text))
+    leg_problemunit = yao_personunit.get_problem_obj(leg_text)
+    leg_problemunit.set_healerlink(healerlink_shop(sue_text))
+    leg_problemunit.set_healerlink(healerlink_shop(yao_text))
+
+    # WHEN
+    x_healerlinks = yao_personunit.get_healerlink_objs()
+
+    # THEN
+    knee_sue_proad = yao_personunit.make_proad(knee_text, sue_text)
+    arm_yao_proad = yao_personunit.make_proad(arm_text, yao_text)
+    leg_sue_proad = yao_personunit.make_proad(leg_text, sue_text)
+    leg_yao_proad = yao_personunit.make_proad(leg_text, sue_text)
+
+    print(f"{x_healerlinks.keys()=}")
+    assert x_healerlinks.get(knee_sue_proad) != None
+    assert x_healerlinks.get(arm_yao_proad) != None
+    assert x_healerlinks.get(leg_sue_proad) != None
+    assert x_healerlinks.get(leg_yao_proad) != None
+    knee_sue_healerlink = knee_problemunit.get_healerlink(sue_text)
+    arm_yao_healerlink = arm_problemunit.get_healerlink(yao_text)
+    leg_sue_healerlink = leg_problemunit.get_healerlink(sue_text)
+    leg_yao_healerlink = leg_problemunit.get_healerlink(sue_text)
+    assert x_healerlinks.get(knee_sue_proad) == knee_sue_healerlink
+    assert x_healerlinks.get(arm_yao_proad) == arm_yao_healerlink
+    assert x_healerlinks.get(leg_sue_proad) == leg_sue_healerlink
+    assert x_healerlinks.get(leg_yao_proad) == leg_yao_healerlink
+    assert len(x_healerlinks) == 4
+
+
+def test_PersonUnit_get_economyslink_objs_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    ohio_text = "Ohio"
+    knee_text = "Knee"
+    yao_personunit.set_economyunit(ohio_text, x_problem_id=knee_text)
+    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
+    sue_text = "Sue"
+    knee_problemunit.set_healerlink(healerlink_shop(sue_text))
+    sue_healerlink = knee_problemunit.get_healerlink(sue_text)
+    sue_healerlink.set_economylink(economylink_shop(ohio_text))
+
+    iowa_text = "Iowa"
+    leg_text = "Leg"
+    yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
+    assert yao_personunit.problem_exists(knee_text)
+
+    # WHEN
+    x_economylinks = yao_personunit.get_economyslink_objs()
+
+    # THEN
+    knee_yao_ohio_proad = yao_personunit.make_proad(knee_text, yao_text, ohio_text)
+    knee_sue_ohio_proad = yao_personunit.make_proad(knee_text, sue_text, ohio_text)
+    leg_yao_iowa_proad = yao_personunit.make_proad(leg_text, yao_text, iowa_text)
+
+    print(f"{x_economylinks.keys()=}")
+    assert x_economylinks.get(knee_yao_ohio_proad) != None
+    assert x_economylinks.get(knee_sue_ohio_proad) != None
+    assert x_economylinks.get(leg_yao_iowa_proad) != None
+    assert len(x_economylinks) == 3

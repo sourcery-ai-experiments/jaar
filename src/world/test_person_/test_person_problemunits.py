@@ -22,9 +22,9 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     yao_personunit.set_problemunit(problemunit_shop(problem_id=bore_text, weight=35))
     yao_personunit.set_problemunit(problemunit_shop(problem_id=rain_text, weight=5))
 
-    knee_problemunit = yao_personunit.get_problemunit(knee_text)
-    bore_problemunit = yao_personunit.get_problemunit(bore_text)
-    rain_problemunit = yao_personunit.get_problemunit(rain_text)
+    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
+    bore_problemunit = yao_personunit.get_problem_obj(bore_text)
+    rain_problemunit = yao_personunit.get_problem_obj(rain_text)
 
     assert knee_problemunit._relative_weight is None
     assert bore_problemunit._relative_weight is None
@@ -88,9 +88,9 @@ def test_personunit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     yao_personunit.set_problemunits_weight_metrics()
 
     # THEN
-    z_knee_problemunit = yao_personunit.get_problemunit(knee_text)
-    z_bore_problemunit = yao_personunit.get_problemunit(bore_problem_id)
-    z_rain_problemunit = yao_personunit.get_problemunit(rain_problem_id)
+    z_knee_problemunit = yao_personunit.get_problem_obj(knee_text)
+    z_bore_problemunit = yao_personunit.get_problem_obj(bore_problem_id)
+    z_rain_problemunit = yao_personunit.get_problem_obj(rain_problem_id)
     assert z_knee_problemunit._relative_weight == 0.6
     assert z_bore_problemunit._relative_weight == 0.35
     assert z_rain_problemunit._relative_weight == 0.05

@@ -148,6 +148,9 @@ class ProblemUnit:
             for x_healerlink in self._healerlinks.values()
         )
 
+    def get_healerlink_objs(self) -> dict[HealerID:HealerLink]:
+        return self._healerlinks
+
     def get_healerlinks_dict(self) -> dict:
         return {
             healerlink_x.healer_id: healerlink_x.get_dict()

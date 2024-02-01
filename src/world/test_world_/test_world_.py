@@ -255,7 +255,7 @@ def test_WorldUnit_create_person_economy_SetsCorrectObjs_healerlink_economylink_
     tim_healerlink.set_economylink(economylink_shop(rest_text))
     static_knee_problemunit = problemunit_shop(knee_text)
     static_knee_problemunit.set_healerlink(tim_healerlink)
-    gen_knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    gen_knee_problemunit = yao_personunit.get_problem_obj(knee_text)
     assert gen_knee_problemunit._healerlinks == static_knee_problemunit._healerlinks
     assert gen_knee_problemunit == static_knee_problemunit
     assert yao_personunit.get_economyunit(rest_text) is None

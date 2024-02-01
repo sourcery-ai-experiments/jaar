@@ -12,6 +12,7 @@ from src._prime.road import (
     RoadNode,
     road_validate,
     get_single_roadnode,
+    create_road_from_nodes,
 )
 from src.agenda.agenda import AgendaUnit
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -19,8 +20,10 @@ from src.world.problem import (
     ProblemID,
     ProblemUnit,
     problemunit_shop,
+    HealerLink,
     healerlink_shop,
     economylink_shop,
+    EconomyLink,
 )
 from dataclasses import dataclass
 
@@ -46,20 +49,19 @@ class PersonUnit:
 
     def make_proad(
         self,
-        parent_road: RoadUnit = None,
-        terminus_node: RoadNode = None,
+        problem_id: ProblemID = None,
+        healer_id: HealerID = None,
+        economy_id: EconomyID = None,
     ) -> RoadUnit:
-        x_road = create_road(
-            parent_road=parent_road,
-            terminus_node=terminus_node,
-            delimiter=self._road_delimiter,
-        )
+        x_road_nodes = [self.person_id]
+        if problem_id != None:
+            x_road_nodes.append(problem_id)
+        if healer_id != None:
+            x_road_nodes.append(healer_id)
+        if economy_id != None:
+            x_road_nodes.append(economy_id)
+        x_road = create_road_from_nodes(x_road_nodes, delimiter=self._road_delimiter)
 
-        person_id_node = self._get_single_proad_node(x_road, "PersonID")
-        if person_id_node != self.person_id:
-            raise PRoadFailureException(
-                f"PersonRoad make failure: '{person_id_node}' is not personunit person_id '{self.person_id}'"
-            )
         problem_id_node = self._get_single_proad_node(x_road, "ProblemID")
         if problem_id_node != None and self.problem_exists(problem_id_node) == False:
             raise PRoadFailureException(
@@ -117,7 +119,7 @@ class PersonUnit:
     def set_problemunit(self, problemunit: ProblemUnit):
         self._problems[problemunit.problem_id] = problemunit
 
-    def get_problemunit(self, x_problem_id: ProblemID) -> ProblemUnit:
+    def get_problem_obj(self, x_problem_id: ProblemID) -> ProblemUnit:
         return self._problems.get(x_problem_id)
 
     def del_problemunit(self, x_problem_id: ProblemID):
@@ -152,7 +154,7 @@ class PersonUnit:
     ):
         if x_problem_id != None:
             self.create_problemunit_from_problem_id(x_problem_id)
-            x_problemunit = self.get_problemunit(x_problem_id)
+            x_problemunit = self.get_problem_obj(x_problem_id)
             x_problemunit.set_healerlink(healerlink_shop(self.person_id))
             x_healerlink = x_problemunit.get_healerlink(self.person_id)
             x_healerlink.set_economylink(economylink_shop(economy_id))
@@ -174,8 +176,10 @@ class PersonUnit:
             )
 
         if self._primary_contract_road is None and len(self._economys) == 1:
-            self._primary_contract_road = create_economyaddress(
-                self.person_id, economy_id
+            if x_problem_id is None:
+                x_problem_id = list(self._problems.keys())[0]
+            self._primary_contract_road = self.make_proad(
+                x_problem_id, self.person_id, economy_id
             )
 
     def get_economyaddress(self, economy_id: EconomyID) -> EconomyAddress:
@@ -206,10 +210,35 @@ class PersonUnit:
             for problemunit_x in self._problems.values()
         }
 
+    def get_problemunits(self) -> dict[ProblemID:ProblemUnit]:
+        return {
+            self.make_proad(x_problem_id): x_problem_obj
+            for x_problem_id, x_problem_obj in self._problems.items()
+        }
+
+    def get_healerlink_objs(self) -> dict[HealerID:HealerLink]:
+        x_dict = {}
+        for x_problemunit in self.get_problemunits().values():
+            for x_key, x_obj in x_problemunit.get_healerlink_objs().items():
+                x_dict[self.make_proad(x_problemunit.problem_id, x_key)] = x_obj
+        return x_dict
+
+    def get_economyslink_objs(self) -> dict[EconomyID:EconomyLink]:
+        x_dict = {}
+        for x_healerlink_proad, x_healerlink in self.get_healerlink_objs().items():
+            x_problem_id = self._get_single_proad_node(x_healerlink_proad, "ProblemID")
+            for x_key, x_obj in x_healerlink._economylinks.items():
+                x_healer_id = x_healerlink.healer_id
+                x_dict[self.make_proad(x_problem_id, x_healer_id, x_key)] = x_obj
+        return x_dict
+
     def get_dict(self) -> dict[str:str]:
         return {
             "person_id": self.person_id,
+            "person_dir": self.person_dir,
             "_economys": self.get_economys_dict(),
+            "_primary_contract_road": self._primary_contract_road,
+            "_primary_contract_active": self._primary_contract_active,
             "_problems": self.get_problems_dict(),
         }
 
