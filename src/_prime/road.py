@@ -91,12 +91,6 @@ class EconomyRoad(RoadUnit):
     pass
 
 
-class EconomyAddress(RoadUnit):
-    """A RoadUnit of only HealerID and EconomyID"""
-
-    pass
-
-
 class AgendaRoad(RoadUnit):
     """RodeUnit with nodes seperated by Agenda._road_delimiter that
     starts with EconomyID"""
@@ -268,15 +262,21 @@ def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: st
     return road.replace(old_delimiter, new_delimiter)
 
 
-def create_economyaddress(
-    person_id: PersonID, economy_id: EconomyID, delimiter: str = None
-) -> EconomyAddress:
-    return EconomyAddress(create_road(person_id, economy_id, delimiter))
-
-
-def get_economyaddress_from_healerroad(x_healerroad: HealerRoad, delimiter: str = None):
-    road_nodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
-    return create_road(road_nodes[0], road_nodes[1])
+def create_proad(
+    person_id: PersonID,
+    problem_id: ProblemID = None,
+    healer_id: HealerID = None,
+    economy_id: EconomyID = None,
+    delimiter: str = None,
+) -> PersonRoad:
+    x_road_nodes = [person_id]
+    if problem_id != None:
+        x_road_nodes.append(problem_id)
+    if None not in (problem_id, healer_id):
+        x_road_nodes.append(healer_id)
+    if None not in (problem_id, healer_id, economy_id):
+        x_road_nodes.append(economy_id)
+    return create_road_from_nodes(x_road_nodes, delimiter=delimiter)
 
 
 def get_economyroad_from_healerroad(

@@ -1,7 +1,6 @@
 from src._prime.road import (
     create_road,
     default_road_delimiter_if_none,
-    create_economyaddress,
 )
 from src.world.problem import healerlink_shop, economylink_shop
 from src.world.person import PersonUnit, personunit_shop
@@ -330,40 +329,6 @@ def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
     assert diet_economy.economys_dir == f"{yao_personunit.person_dir}/economys"
-
-
-def test_PersonUnit_get_economyaddress_ReturnsCorrectObj():
-    # GIVEN
-    yao_text = "Yao"
-    yao_person_dir = f"/persons/{yao_text}"
-    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
-    diet_text = "diet"
-    yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
-
-    # WHEN
-    diet_economyaddress = yao_personunit.get_economyaddress(diet_text)
-
-    # THEN
-    assert diet_economyaddress != None
-    assert diet_economyaddress == create_road(yao_text, diet_text)
-
-
-def test_PersonUnit_get_economyaddress_RaisesException():
-    # GIVEN
-    yao_text = "Yao"
-    yao_person_dir = f"/persons/{yao_text}"
-    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
-    diet_text = "diet"
-    yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
-
-    # WHEN/THEN
-    texas_text = "Texas"
-    with pytest_raises(Exception) as excinfo:
-        yao_personunit.get_economyaddress(texas_text)
-    assert (
-        str(excinfo.value)
-        == f"Cannot get economyaddress for {yao_text} because economy {texas_text} does not exist"
-    )
 
 
 def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():

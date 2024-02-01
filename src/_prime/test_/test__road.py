@@ -10,11 +10,8 @@ from src._prime.road import (
     AgentID,
     PartyID,
     RoadUnit,
-    EconomyAddress,
     EconomyRoad,
     AgendaRoad,
-    create_economyaddress,
-    get_economyaddress_from_healerroad,
     get_economyroad_from_healerroad,
     change_road,
     is_sub_road,
@@ -30,6 +27,7 @@ from src._prime.road import (
     get_default_economy_root_roadnode as root_label,
     create_road_from_nodes,
     create_road,
+    create_proad,
     get_diff_road,
     create_road,
     is_heir_road,
@@ -540,36 +538,32 @@ EconomyID"""
     )
 
 
-def test_EconomyAddress_Exists():
-    # GIVEN
-    bob_texas_text = "bob,texas"
-
-    # WHEN
-    bob_texas_economyaddress = EconomyAddress(bob_texas_text)
-
-    # THEN
-    assert bob_texas_economyaddress != None
-    assert bob_texas_economyaddress == bob_texas_text
-    assert (
-        inspect_getdoc(bob_texas_economyaddress)
-        == """A RoadUnit of only HealerID and EconomyID"""
-    )
-
-
-def test_create_economyaddress_ReturnsCorrect():
+def test_create_proad_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    bob_person_id = PersonID(bob_text)
+    leg_text = "Leg"
+    sue_text = "Sue"
     texas_text = "Texas"
-    texas_economy_id = EconomyID(texas_text)
 
     # WHEN
-    bob_texas_economyaddress = create_economyaddress(bob_person_id, texas_economy_id)
+    bob_road = create_road(bob_text)
+    assert bob_road == create_proad(bob_text)
+    bob_leg_road = create_road(bob_text, leg_text)
+    assert bob_leg_road == create_proad(bob_text, leg_text)
+    bob_leg_sue_road = create_road(bob_leg_road, sue_text)
+    assert bob_leg_sue_road == create_proad(bob_text, leg_text, sue_text)
+    bob_leg_sue_texas_road = create_road(bob_leg_sue_road, texas_text)
+    assert bob_leg_sue_texas_road == create_proad(
+        bob_text, leg_text, sue_text, texas_text
+    )
 
-    # THEN
-    assert bob_texas_economyaddress != None
-    bob_texas_road = create_road("Bob", "Texas")
-    assert bob_texas_economyaddress == EconomyAddress(bob_texas_road)
+    slash_text = "/"
+    slash_bob_leg_sue_road = create_road_from_nodes(
+        [bob_text, leg_text, sue_text], delimiter=slash_text
+    )
+    assert slash_bob_leg_sue_road == create_proad(
+        bob_text, leg_text, sue_text, delimiter=slash_text
+    )
 
 
 def test_HealerRoad_Exists():
@@ -589,26 +583,6 @@ def test_HealerRoad_Exists():
 PersonID
 ProblemID
 HealerID"""
-    )
-
-
-def test_get_economyaddress_from_healerroad_ReturnsCorrectObj():
-    # GIVEN
-    bob_text = "Bob"
-    bob_person_id = PersonID(bob_text)
-    texas_text = "Texas"
-    texas_economy_id = EconomyID(texas_text)
-    sports_road = create_road(
-        create_economyaddress(bob_person_id, texas_economy_id), "sports"
-    )
-    sports_healerroad = HealerRoad(sports_road)
-
-    # WHEN
-    bob_texas_economyaddress = get_economyaddress_from_healerroad(sports_healerroad)
-
-    # THEN
-    assert bob_texas_economyaddress == create_economyaddress(
-        bob_person_id, texas_economy_id
     )
 
 
