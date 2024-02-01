@@ -73,7 +73,7 @@ class PersonUnit:
         economy_id_node = self._get_single_proad_node(x_road, "EconomyID")
         if (
             economy_id_node != None
-            and self.economyunit_exists(economy_id_node) == False
+            and self.economylink_exists(economy_id_node) == False
         ):
             raise PRoadFailureException(
                 f"PersonRoad make failure: EconomyID '{economy_id_node}' does not exist."
@@ -173,7 +173,7 @@ class PersonUnit:
                 _road_delimiter=self._road_delimiter,
             )
 
-        if len(self._economys) == 1 and self._primary_contract_road is None:
+        if self._primary_contract_road is None and len(self._economys) == 1:
             self._primary_contract_road = create_economyaddress(
                 self.person_id, economy_id
             )
