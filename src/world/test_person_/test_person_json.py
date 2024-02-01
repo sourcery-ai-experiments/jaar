@@ -1,7 +1,8 @@
-from src.world.person import personunit_shop
+from src.world.person import personunit_shop, PersonUnit
+from src.tools.python import x_get_dict
 
 
-def test_personunit_get_dict_CorrectlyGetsDict():
+def test_personunit_get_dict_CorrectlyGetsDict_simple():
     # GIVEN
     yao_text = "Yao"
     yao_artbitarydirectory = f"/artbitarydirectory/persons/{yao_text}"
@@ -28,3 +29,23 @@ def test_personunit_get_dict_CorrectlyGetsDict():
         "_primary_contract_active": True,
     }
     assert yao_personunit_x_dict == yao_personunit_get_dict
+
+
+# def test_PersonUnit_get_json_ExportsJSONWorksForSimpleExample():
+#     pass
+
+
+# def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
+#     pass
+
+
+# def test_save_file_CorrectlySavesPersonUnitJSON(env_dir_setup_cleanup):
+#     pass
+
+
+# def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
+#     pass
+
+
+# def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
+#     pass

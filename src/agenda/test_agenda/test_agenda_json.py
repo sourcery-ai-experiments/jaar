@@ -23,7 +23,7 @@ from src.tools.file import save_file, open_file
 from pytest import raises as pytest_raises
 
 
-def test_agenda_get_dict_ReturnsDictObject():
+def test_AgendaUnit_get_dict_ReturnsDictObject():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
@@ -115,7 +115,7 @@ def test_agenda_get_dict_ReturnsDictObject():
     assert x_agenda_originlink["weight"] == 1
 
 
-def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
+def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     # GIVEN
     run_text = "runners"
     tom_agenda = agendaunit_shop("Tom")
@@ -132,7 +132,7 @@ def test_agenda_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     assert idearoot_dict["_assignedunit"] == {"_suffgroups": {run_text: run_text}}
 
 
-def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
+def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
     run_text = ",run"
@@ -158,7 +158,7 @@ def test_agenda_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     assert assigned_dict_x == {"_suffgroups": {run_text: run_text}}
 
 
-def test_export_to_JSON_simple_example_works():
+def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_economy_id = "tiger_econ"
@@ -200,7 +200,7 @@ def test_export_to_JSON_simple_example_works():
     assert len(shave_beliefunits) == len(x_idearoot._kids[shave_text]._beliefunits)
 
 
-def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
+def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
@@ -255,7 +255,7 @@ def test_export_to_JSON_BigExampleCorrectlyReturnsValues():
     assert len(agenda_dict[originunit_text][_links])
 
 
-def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
+def test_save_file_CorrectlySavesAgendaUnitJSON(env_dir_setup_cleanup):
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     x_x_agenda_json = x_agenda.get_json()
@@ -272,7 +272,7 @@ def test_save_file_CorrectlySavesAgendaJSON(env_dir_setup_cleanup):
     assert open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
 
 
-def test_agenda_get_json_CorrectlyWorksForSimpleExample():
+def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # GIVEN
     yue_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     yue_agenda.set_max_tree_traverse(23)
@@ -376,7 +376,7 @@ def test_agenda_get_json_CorrectlyWorksForSimpleExample():
     assert json_agenda._originunit == yue_agenda._originunit
 
 
-def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
+def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     # GIVEN
     slash_delimiter = "/"
     a_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
@@ -392,35 +392,23 @@ def test_agenda_get_json_CorrectlyWorksFor_delimiter_Data():
     assert b_bob_agenda._road_delimiter == a_bob_agenda._road_delimiter
 
 
-# def test_agenda_get_json_CorrectlyWorksForNotSimpleExample():
-#     # GIVEN
-#     x_agenda1 = example_agendas_agenda_v001()
-#     x_agenda1.set_agenda_metrics()
-#     x_agenda1_json = x_agenda1.get_json()
-#     assert x_is_json(json_x=x_agenda1_json)
+def test_agenda_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
+    # GIVEN
+    x_agenda1 = example_agendas_agenda_v001()
+    x_agenda1._weight = 15
+    assert 15 == x_agenda1._weight
+    assert x_agenda1._idearoot._weight != x_agenda1._weight
+    assert x_agenda1._idearoot._weight == 1
 
-#     file_name = "example_agenda1.json"
-#     file_dir = get_agenda_examples_dir()
-#     print("File may fail since example_agenda1.json is created by a later test")
-#     x_agenda3_json = open_file(dest_dir=file_dir, file_name=file_name)
-#     # print(x_agenda3_json[299000:299155])
+    # WHEN
+    x_agenda2 = agenda_get_from_json(x_agenda1.get_json())
 
-#     # WHEN
-#     x_agenda3 = agenda_get_from_json(x_agenda_json=x_agenda3_json)
-
-#     # THEN
-#     assert str(type(x_agenda3)).find(".agenda.AgendaUnit'>") > 0
-#     assert x_agenda3._agent_id != None
-#     assert x_agenda3._agent_id == x_agenda1._agent_id
-#     assert x_agenda3._max_tree_traverse == 2
-#     assert x_agenda3._max_tree_traverse == x_agenda1._max_tree_traverse
-#     assert x_agenda3._idearoot._agent_id != None
-#     assert x_agenda3._idearoot._agent_id == x_agenda1._idearoot._agent_id
-#     assert x_agenda3._idearoot._parent_road == ""
-#     assert x_agenda3._idearoot._parent_road == x_agenda1._idearoot._parent_road
-#     assert len(x_agenda3._idearoot._kids) == len(x_agenda1._idearoot._kids)
-#     assert len(x_agenda3._groups) == 34
-#     assert len(x_agenda3._partys) == 22
+    # THEN
+    assert x_agenda1._weight == 15
+    assert x_agenda1._weight == x_agenda2._weight
+    assert x_agenda1._idearoot._weight == 1
+    assert x_agenda1._idearoot._weight == x_agenda2._idearoot._weight
+    assert x_agenda1._idearoot._kids == x_agenda2._idearoot._kids
 
 
 def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
@@ -461,22 +449,3 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     ccn_agenda3 = ccn_dict_of_obj.get(x_agenda3._agent_id)
     x_agenda3.set_agenda_metrics()
     assert ccn_agenda3 == x_agenda3
-
-
-def test_agenda_jsonExportCorrectyExportsWeights():
-    # GIVEN
-    x_agenda1 = example_agendas_agenda_v001()
-    x_agenda1._weight = 15
-    assert 15 == x_agenda1._weight
-    assert x_agenda1._idearoot._weight != x_agenda1._weight
-    assert x_agenda1._idearoot._weight == 1
-
-    # WHEN
-    x_agenda2 = agenda_get_from_json(x_agenda1.get_json())
-
-    # THEN
-    assert x_agenda1._weight == 15
-    assert x_agenda1._weight == x_agenda2._weight
-    assert x_agenda1._idearoot._weight == 1
-    assert x_agenda1._idearoot._weight == x_agenda2._idearoot._weight
-    assert x_agenda1._idearoot._kids == x_agenda2._idearoot._kids
