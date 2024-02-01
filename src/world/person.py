@@ -7,7 +7,7 @@ from src._prime.road import (
     validate_roadnode,
     PersonRoad,
 )
-from dataclasses import dataclass
+from src.agenda.agenda import AgendaUnit
 from src.economy.economy import EconomyUnit, economyunit_shop
 from src.world.problem import (
     ProblemID,
@@ -16,6 +16,7 @@ from src.world.problem import (
     healerlink_shop,
     economylink_shop,
 )
+from dataclasses import dataclass
 
 
 class InvalidEconomyException(Exception):
@@ -28,8 +29,13 @@ class PersonUnit:
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
     _problems: dict[ProblemID:ProblemUnit] = None
-    _road_delimiter: str = None
     _primary_contract_road: PersonRoad = None
+    _primary_contract_active: bool = None
+    _primary_contract_obj: AgendaUnit = None
+    _road_delimiter: str = None
+
+    def set_primary_contract_active(self, _primary_contract_active: bool):
+        self._primary_contract_active = _primary_contract_active
 
     def is_primary_contract_road_valid(self) -> bool:
         return self._primary_contract_road != None
@@ -84,7 +90,6 @@ class PersonUnit:
             x_problemunit.set_healerlink(healerlink_shop(self.person_id))
             x_healerlink = x_problemunit.get_healerlink(self.person_id)
             x_healerlink.set_economylink(economylink_shop(economy_id))
-        self._primary_contract_road = create_economyaddress(self.person_id, economy_id)
 
         if self.economylink_exists(economy_id) == False:
             raise InvalidEconomyException(
@@ -100,6 +105,11 @@ class PersonUnit:
                 economys_dir=economys_dir,
                 _manager_person_id=self.person_id,
                 _road_delimiter=self._road_delimiter,
+            )
+
+        if len(self._economys) == 1 and self._primary_contract_road is None:
+            self._primary_contract_road = create_economyaddress(
+                self.person_id, economy_id
             )
 
     def get_economyaddress(self, economy_id: EconomyID) -> EconomyAddress:
@@ -143,13 +153,17 @@ def personunit_shop(
     person_dir: str = None,
     _road_delimiter: str = None,
     _primary_contract_road: PersonRoad = None,
+    _primary_contract_active: bool = None,
 ) -> PersonUnit:
+    if _primary_contract_active is None:
+        _primary_contract_active = True
     x_personunit = PersonUnit(
         person_dir=person_dir,
         _economys={},
         _problems={},
-        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _primary_contract_road=_primary_contract_road,
+        _primary_contract_active=_primary_contract_active,
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)
     return x_personunit

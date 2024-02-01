@@ -1,4 +1,8 @@
-from src._prime.road import create_road, default_road_delimiter_if_none
+from src._prime.road import (
+    create_road,
+    default_road_delimiter_if_none,
+    create_economyaddress,
+)
 from src.world.problem import healerlink_shop, economylink_shop
 from src.world.person import PersonUnit, personunit_shop
 from src.world.problem import problemunit_shop
@@ -14,6 +18,9 @@ def test_PersonUnit_exists():
     assert x_person.person_dir is None
     assert x_person._economys is None
     assert x_person._problems is None
+    assert x_person._primary_contract_road is None
+    assert x_person._primary_contract_active is None
+    assert x_person._primary_contract_obj is None
     assert x_person._road_delimiter is None
 
 
@@ -61,8 +68,10 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person.person_dir == f"/persons/{sue_text}"
     assert x_person._economys == {}
     assert x_person._problems == {}
-    assert x_person._road_delimiter == default_road_delimiter_if_none()
     assert x_person._primary_contract_road == sue_personroad
+    assert x_person._primary_contract_active
+    assert x_person._primary_contract_obj is None
+    assert x_person._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
@@ -70,16 +79,35 @@ def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
     dallas_text = "dallas"
     dallas_dir = ""
     slash_text = "/"
+    x_primary_contract_active = False
 
     # WHEN
     x_person = personunit_shop(
-        person_id=dallas_text, person_dir=dallas_dir, _road_delimiter=slash_text
+        person_id=dallas_text,
+        person_dir=dallas_dir,
+        _primary_contract_active=x_primary_contract_active,
+        _road_delimiter=slash_text,
     )
 
     # THEN
     assert x_person.person_id == dallas_text
     assert x_person.person_dir == dallas_dir
+    assert x_person._primary_contract_active == x_primary_contract_active
     assert x_person._road_delimiter == slash_text
+
+
+def test_PersonUnit_set_primary_contract_active_CorrectlySetsAttr():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    assert yao_personunit._primary_contract_active
+
+    # WHEN
+    x_primary_contract_active = False
+    yao_personunit.set_primary_contract_active(x_primary_contract_active)
+
+    # THEN
+    assert yao_personunit._primary_contract_active == x_primary_contract_active
 
 
 def test_PersonUnit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUnit():
@@ -201,16 +229,22 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
     knee_problem.set_healerlink(healerlink_shop(yao_text))
     yao_healerlink = knee_problem.get_healerlink(yao_text)
     yao_healerlink.set_economylink(economylink_shop(diet_text))
+    assert yao_personunit._economys == {}
+    assert yao_personunit._primary_contract_road is None
 
     # WHEN
     yao_personunit.set_economyunit(economy_id=diet_text)
 
     # THEN
     # diet_economy = yao_person.get_economy()
+    assert yao_personunit._economys != {}
     diet_economy = yao_personunit._economys.get(diet_text)
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
     assert diet_economy.economys_dir == f"{yao_person_dir}/economys"
+    assert yao_personunit._primary_contract_road == create_economyaddress(
+        yao_text, diet_text
+    )
 
 
 def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyLink():
