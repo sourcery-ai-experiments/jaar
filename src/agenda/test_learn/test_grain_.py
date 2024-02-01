@@ -41,13 +41,13 @@ def test_category_ref_ReturnsCorrectObj():
     assert is_category_ref("idearoot") == False
 
 
-def every_crud_text_has_grain_order(grain_config_dict, grain_order_text):
+def check_every_crud_dict_has_element(grain_config_dict, grain_order_text):
     for category, category_dict in grain_config_dict.items():
         if category_dict.get(grain_insert()) != None:
             category_insert = category_dict.get(grain_insert())
             if category_insert.get(grain_order_text) is None:
                 print(
-                    f"{category} {grain_insert()} {category_insert.get(grain_order_text)=}"
+                    f"Missing from {category} {grain_insert()} {category_insert.get(grain_order_text)=}"
                 )
                 return False
 
@@ -55,7 +55,7 @@ def every_crud_text_has_grain_order(grain_config_dict, grain_order_text):
             category_update = category_dict.get(grain_update())
             if category_update.get(grain_order_text) is None:
                 print(
-                    f"{category} {grain_update()} {category_update.get(grain_order_text)=}"
+                    f"Missing from {category} {grain_update()} {category_update.get(grain_order_text)=}"
                 )
                 return False
 
@@ -63,7 +63,7 @@ def every_crud_text_has_grain_order(grain_config_dict, grain_order_text):
             category_delete = category_dict.get(grain_delete())
             if category_delete.get(grain_order_text) is None:
                 print(
-                    f"{category} {grain_delete()} {category_delete.get(grain_order_text)=}"
+                    f"Missing from {category} {grain_delete()} {category_delete.get(grain_order_text)=}"
                 )
                 return False
     return True
@@ -72,9 +72,13 @@ def every_crud_text_has_grain_order(grain_config_dict, grain_order_text):
 def test_get_grain_config_dict_EveryCrudOperationHasLearnOrderGroup():
     # GIVEN
     grain_order_text = "grain_order"
+    description_elements_text = "description_elements"
 
     # WHEN / THEN
-    assert every_crud_text_has_grain_order(get_grain_config_dict(), grain_order_text)
+    assert check_every_crud_dict_has_element(get_grain_config_dict(), grain_order_text)
+    assert check_every_crud_dict_has_element(
+        get_grain_config_dict(), description_elements_text
+    )
     mog = grain_order_text
     # # Simple script for editing learn_grain_config.json
     # set_mog("partyunit", grain_insert(), mog, 0)

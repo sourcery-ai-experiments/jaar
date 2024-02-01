@@ -91,6 +91,10 @@ def set_mog(
     save_grain_config_file(grain_config_dict)
 
 
+class GrainUnitDescriptionException(Exception):
+    pass
+
+
 @dataclass
 class GrainUnit:
     category: str = None
@@ -99,6 +103,35 @@ class GrainUnit:
     required_args: dict[str:str] = None
     optional_args: dict[str:str] = None
     grain_order: int = None
+    _crud_cache: str = None
+
+    def get_description(self) -> str:
+        if self.is_valid() == False:
+            raise GrainUnitDescriptionException("grainunit is not valid")
+
+        description_elements = self._get_crud_dict().get("description_elements")
+
+        x_str = ""
+        arg_value = ""
+        preceding_text = ""
+        proceding_text = ""
+        for description_element in description_elements:
+            for x_key, x_value in description_element.items():
+                if x_key == "arg":
+                    print(f"{x_value=} {self.get_value(x_value)=}")
+                    arg_value = self.get_value(x_value)
+                elif x_key == "preceding text":
+                    preceding_text = x_value
+                elif x_key == "proceding text":
+                    proceding_text = x_value
+            x_str = f"{preceding_text}{arg_value}{proceding_text}"
+            print(f"{x_str=}")
+        return x_str
+
+    def get_all_args_in_list(self):
+        x_list = list(self.required_args.values())
+        x_list.extend(list(self.optional_args.values()))
+        return x_list
 
     def set_grain_order(self):
         self.grain_order = get_mog(
@@ -114,7 +147,7 @@ class GrainUnit:
         return self.locator.get(x_key)
 
     def is_locator_valid(self) -> bool:
-        category_dict = get_grain_config_dict().get(self.category)
+        category_dict = self._get_category_dict()
         locator_dict = get_empty_dict_if_none(category_dict.get("locator"))
         return locator_dict.keys() == self.locator.keys()
 
@@ -124,12 +157,16 @@ class GrainUnit:
     def set_optional_arg(self, x_key: str, x_value: any):
         self.optional_args[x_key] = x_value
 
-    def _get_category_dict(self):
-        return get_grain_config_dict().get(self.category)
+    def _get_category_dict(self) -> dict:
+        if self._crud_cache is None:
+            self._crud_cache = get_grain_config_dict()
+        return self._crud_cache.get(self.category)
+
+    def _get_crud_dict(self) -> dict:
+        return self._get_category_dict().get(self.crud_text)
 
     def _get_required_args_dict(self) -> dict:
-        crud_dict = self._get_category_dict().get(self.crud_text)
-        return crud_dict.get("required_args")
+        return self._get_crud_dict().get("required_args")
 
     def _get_optional_args_dict(self) -> dict:
         crud_dict = self._get_category_dict().get(self.crud_text)

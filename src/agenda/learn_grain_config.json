@@ -1,6 +1,7 @@
 {
     "_auto_output_to_forum": {
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 26,
             "required_args": {
                 "_auto_output_to_forum": "bool"
@@ -9,6 +10,13 @@
     },
     "_max_tree_traverse": {
         "UPDATE": {
+            "description_elements": [
+                {
+                    "arg": "_max_tree_traverse",
+                    "preceding text": "Agenda's maximum number of Agenda output evaluations changed to ",
+                    "proceding text": "."
+                }
+            ],
             "grain_order": 26,
             "required_args": {
                 "_max_tree_traverse": "int"
@@ -17,6 +25,13 @@
     },
     "_meld_strategy": {
         "UPDATE": {
+            "description_elements": [
+                {
+                    "arg": "_meld_strategy",
+                    "preceding text": "Agenda's Meld Strategy changed to ",
+                    "proceding text": "."
+                }
+            ],
             "grain_order": 26,
             "required_args": {
                 "_meld_strategy": "str"
@@ -25,6 +40,13 @@
     },
     "_party_creditor_pool": {
         "UPDATE": {
+            "description_elements": [
+                {
+                    "arg": "_party_creditor_pool",
+                    "preceding text": "Agenda's creditor pool limit changed to ",
+                    "proceding text": "."
+                }
+            ],
             "grain_order": 26,
             "required_args": {
                 "_party_creditor_pool": "int"
@@ -33,6 +55,13 @@
     },
     "_party_debtor_pool": {
         "UPDATE": {
+            "description_elements": [
+                {
+                    "arg": "_party_debtor_pool",
+                    "preceding text": "Agenda's debtor pool limit changed to ",
+                    "proceding text": "."
+                }
+            ],
             "grain_order": 26,
             "required_args": {
                 "_party_debtor_pool": "int"
@@ -41,6 +70,13 @@
     },
     "AgendaUnit_weight": {
         "UPDATE": {
+            "description_elements": [
+                {
+                    "arg": "AgendaUnit_weight",
+                    "preceding text": "Agenda's weight changed to ",
+                    "proceding text": "."
+                }
+            ],
             "grain_order": 26,
             "required_args": {
                 "AgendaUnit_weight": "int"
@@ -49,12 +85,14 @@
     },
     "groupunit": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 25,
             "required_args": {
                 "group_id": "GroupID"
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 2,
             "optional_args": {
                 "_treasury_partylinks": "RoadUnit"
@@ -67,6 +105,7 @@
             "group_id": "GroupID"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 10,
             "optional_args": {
                 "_treasury_partylinks": "RoadUnit"
@@ -78,6 +117,7 @@
     },
     "groupunit_partylink": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 23,
             "required_args": {
                 "group_id": "GroupID",
@@ -85,6 +125,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 1,
             "optional_args": {
                 "creditor_weight": "int",
@@ -100,6 +141,7 @@
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 11,
             "optional_args": {
                 "creditor_weight": "int",
@@ -113,6 +155,7 @@
     },
     "idea": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 22,
             "optional_args": {
                 "del_children": "bool"
@@ -122,6 +165,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 3,
             "optional_args": {
                 "_addin": "float",
@@ -145,6 +189,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 12,
             "optional_args": {
                 "_addin": "float",
@@ -167,6 +212,7 @@
     },
     "idea_balancelink": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 21,
             "optional_args": {
                 "group_id": "creditor_weight",
@@ -178,6 +224,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 4,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
@@ -193,6 +240,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 13,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
@@ -206,6 +254,7 @@
     },
     "idea_beliefunit": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 19,
             "required_args": {
                 "base": "RoadUnit",
@@ -213,11 +262,12 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 6,
             "optional_args": {
-                "pick": "RoadUnit",
                 "nigh": "float",
-                "open": "float"
+                "open": "float",
+                "pick": "RoadUnit"
             },
             "required_args": {
                 "base": "RoadUnit",
@@ -229,6 +279,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 14,
             "optional_args": {
                 "nigh": "float",
@@ -243,6 +294,7 @@
     },
     "idea_reasonunit": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 18,
             "required_args": {
                 "base": "RoadUnit",
@@ -250,6 +302,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 7,
             "optional_args": {
                 "suff_idea_active": "bool"
@@ -264,6 +317,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 16,
             "optional_args": {
                 "suff_idea_active": "bool"
@@ -276,6 +330,7 @@
     },
     "idea_reasonunit_premiseunit": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 17,
             "required_args": {
                 "base": "RoadUnit",
@@ -284,6 +339,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 8,
             "optional_args": {
                 "divisor": "int",
@@ -302,6 +358,7 @@
             "road": "RoadUnit"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 15,
             "optional_args": {
                 "divisor": "int",
@@ -317,6 +374,7 @@
     },
     "idea_suffgroup": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 20,
             "required_args": {
                 "group_id": "GroupID",
@@ -324,6 +382,7 @@
             }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 5,
             "required_args": {
                 "group_id": "GroupID",
@@ -337,10 +396,14 @@
     },
     "partyunit": {
         "DELETE": {
+            "description_elements": [],
             "grain_order": 24,
-            "required_args": {"party_id": "PartyID"}
+            "required_args": {
+                "party_id": "PartyID"
+            }
         },
         "INSERT": {
+            "description_elements": [],
             "grain_order": 0,
             "optional_args": {
                 "creditor_weight": "float",
@@ -355,6 +418,7 @@
             "party_id": "PartyID"
         },
         "UPDATE": {
+            "description_elements": [],
             "grain_order": 9,
             "optional_args": {
                 "creditor_weight": "float",
