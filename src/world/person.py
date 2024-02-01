@@ -2,10 +2,16 @@ from src._prime.road import (
     default_road_delimiter_if_none,
     EconomyID,
     PersonID,
+    HealerID,
     EconomyAddress,
     create_economyaddress,
     validate_roadnode,
     PersonRoad,
+    create_road,
+    RoadUnit,
+    RoadNode,
+    road_validate,
+    get_single_roadnode,
 )
 from src.agenda.agenda import AgendaUnit
 from src.economy.economy import EconomyUnit, economyunit_shop
@@ -23,6 +29,10 @@ class InvalidEconomyException(Exception):
     pass
 
 
+class PRoadFailureException(Exception):
+    pass
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -33,6 +43,62 @@ class PersonUnit:
     _primary_contract_active: bool = None
     _primary_contract_obj: AgendaUnit = None
     _road_delimiter: str = None
+
+    def make_proad(
+        self,
+        parent_road: RoadUnit = None,
+        terminus_node: RoadNode = None,
+    ) -> RoadUnit:
+        x_road = create_road(
+            parent_road=parent_road,
+            terminus_node=terminus_node,
+            delimiter=self._road_delimiter,
+        )
+
+        person_id_node = self._get_single_proad_node(x_road, "PersonID")
+        if person_id_node != self.person_id:
+            raise PRoadFailureException(
+                f"PersonRoad make failure: '{person_id_node}' is not personunit person_id '{self.person_id}'"
+            )
+        problem_id_node = self._get_single_proad_node(x_road, "ProblemID")
+        if problem_id_node != None and self.problem_exists(problem_id_node) == False:
+            raise PRoadFailureException(
+                f"PersonRoad make failure: ProblemID '{problem_id_node}' does not exist."
+            )
+        healer_id_node = self._get_single_proad_node(x_road, "HealerID")
+        if healer_id_node != None and self.healer_exists(healer_id_node) == False:
+            raise PRoadFailureException(
+                f"PersonRoad make failure: HealerID '{healer_id_node}' does not exist."
+            )
+        economy_id_node = self._get_single_proad_node(x_road, "EconomyID")
+        if (
+            economy_id_node != None
+            and self.economyunit_exists(economy_id_node) == False
+        ):
+            raise PRoadFailureException(
+                f"PersonRoad make failure: EconomyID '{economy_id_node}' does not exist."
+            )
+
+        return x_road
+
+    def _get_single_proad_node(
+        self, x_road: PersonRoad, roadnode_type: RoadNode
+    ) -> RoadNode:
+        return get_single_roadnode(
+            roadunit_type="PersonRoad",
+            x_roadunit=x_road,
+            roadnode_type=roadnode_type,
+            delimiter=self._road_delimiter,
+        )
+
+    def healer_exists(self, healer_id: HealerID) -> bool:
+        return any(
+            x_problemunit.healer_exists(healer_id)
+            for x_problemunit in self._problems.values()
+        )
+
+    def problem_exists(self, problem_id: ProblemID) -> bool:
+        return self._problems.get(problem_id) != None
 
     def set_primary_contract_active(self, _primary_contract_active: bool):
         self._primary_contract_active = _primary_contract_active
@@ -120,7 +186,7 @@ class PersonUnit:
 
         return create_economyaddress(self.person_id, economy_id, self._road_delimiter)
 
-    def economyunit_exists(self, economy_id: EconomyID):
+    def economyunit_exists(self, economy_id: EconomyID) -> bool:
         return self._economys.get(economy_id) != None
 
     def get_economyunit(self, economy_id: EconomyID) -> EconomyUnit:

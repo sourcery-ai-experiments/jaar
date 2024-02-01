@@ -130,6 +130,9 @@ class ProblemUnit:
         self._manager_importance = person_importance
         self.set_healerlinks_weight_metrics()
 
+    def healer_exists(self, healer_id: HealerID) -> bool:
+        return self._healerlinks.get(healer_id) != None
+
     def set_healerlink(self, healerlink: HealerLink):
         self._healerlinks[healerlink.healer_id] = healerlink
 

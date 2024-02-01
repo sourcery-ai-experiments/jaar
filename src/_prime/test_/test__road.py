@@ -770,6 +770,10 @@ def test_get_single_roadnode_ReturnsCorrectObj():
     economy_id_text = "EconomyID"
     personroad_text = "PersonRoad"
 
+    assert get_single_roadnode(personroad_text, bob_text, problem_id_text) is None
+    assert get_single_roadnode(personroad_text, bob_text, healer_id_text) is None
+    assert get_single_roadnode(personroad_text, bob_text, economy_id_text) is None
+
     assert get_single_roadnode(personroad_text, bob_road, person_id_text) == bob_text
     assert get_single_roadnode(personroad_text, bob_road, problem_id_text) == food_text
     assert get_single_roadnode(personroad_text, bob_road, healer_id_text) == yao_text

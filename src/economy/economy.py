@@ -318,7 +318,6 @@ class EconomyUnit:
         delete_dir(dir=self.get_treasury_db_path())
 
     def set_economy_id(self, economy_id: str):
-        print(f"{economy_id=} {self._road_delimiter=}")
         self.economy_id = validate_roadnode(economy_id, self._road_delimiter)
 
     def get_treasury_db_path(self):

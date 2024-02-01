@@ -128,8 +128,7 @@ class AgendaUnit:
             terminus_node=terminus_node,
             delimiter=self._road_delimiter,
         )
-        x_road = road_validate(x_road, self._road_delimiter, self._economy_id)
-        return x_road
+        return road_validate(x_road, self._road_delimiter, self._economy_id)
 
     def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._economy_id, l1_node)

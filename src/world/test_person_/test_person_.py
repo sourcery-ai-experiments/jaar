@@ -318,8 +318,7 @@ def test_PersonUnit_all_economyunits_linked_to_problem_ReturnsCorrectObj():
 def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     # GIVEN
     yao_text = "Yao"
-    yao_person_dir = f"/persons/{yao_text}"
-    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
+    yao_personunit = personunit_shop(person_id=yao_text)
     diet_text = "diet"
     yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
 
@@ -329,7 +328,7 @@ def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     # THEN
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
-    assert diet_economy.economys_dir == f"{yao_person_dir}/economys"
+    assert diet_economy.economys_dir == f"{yao_personunit.person_dir}/economys"
 
 
 def test_PersonUnit_get_economyaddress_ReturnsCorrectObj():
@@ -402,3 +401,94 @@ def test_PersonUnit_is_primary_contract_road_valid_ReturnsCorrectBool():
     diet_economyaddress = yao_personunit.get_economyaddress(diet_text)
     assert yao_personunit._primary_contract_road == diet_economyaddress
     assert yao_personunit.is_primary_contract_road_valid()
+
+
+def test_PersonUnit_make_personroad_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    assert yao_personunit._road_delimiter != None
+    ohio_text = "Ohio"
+    knee_text = "Knee"
+    yao_personunit.set_economyunit(ohio_text, x_problem_id=knee_text)
+    assert yao_personunit.economyunit_exists(ohio_text)
+    knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    sue_text = "Sue"
+    knee_problemunit.set_healerlink(healerlink_shop(sue_text))
+    sue_healerlink = knee_problemunit.get_healerlink(sue_text)
+    sue_healerlink.set_economylink(economylink_shop(ohio_text))
+
+    iowa_text = "Iowa"
+    leg_text = "Leg"
+    yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
+    assert yao_personunit._primary_contract_road != None
+
+    # WHEN / THEN
+    yao_1_proad = "Yao"
+    assert yao_1_proad == yao_personunit.make_proad(yao_1_proad)
+    yao_2_proad = create_road(yao_1_proad, knee_text)
+    assert yao_2_proad == yao_personunit.make_proad(yao_1_proad, knee_text)
+    yao_3_proad = create_road(yao_2_proad, sue_text)
+    assert yao_3_proad == yao_personunit.make_proad(yao_2_proad, sue_text)
+    yao_4_proad = create_road(yao_3_proad, ohio_text)
+    assert yao_4_proad == yao_personunit.make_proad(yao_3_proad, ohio_text)
+
+
+def test_PersonUnit_make_personroad_RaisesException():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(person_id=yao_text)
+    assert yao_personunit._road_delimiter != None
+    ohio_text = "Ohio"
+    knee_text = "Knee"
+    yao_personunit.set_economyunit(ohio_text, x_problem_id=knee_text)
+    knee_problemunit = yao_personunit.get_problemunit(knee_text)
+    sue_text = "Sue"
+    knee_problemunit.set_healerlink(healerlink_shop(sue_text))
+    sue_healerlink = knee_problemunit.get_healerlink(sue_text)
+    sue_healerlink.set_economylink(economylink_shop(ohio_text))
+
+    iowa_text = "Iowa"
+    leg_text = "Leg"
+    yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
+    assert yao_personunit._primary_contract_road != None
+    yao_1_proad = "Yao"
+    # assert yao_1_proad == yao_personunit.make_proad(yao_1_proad)
+    yao_2_proad = create_road(yao_1_proad, knee_text)
+    # assert yao_2_proad == yao_personunit.make_proad(yao_1_proad, knee_text)
+    yao_3_proad = create_road(yao_2_proad, sue_text)
+    # assert yao_3_proad == yao_personunit.make_proad(yao_2_proad, sue_text)
+    yao_4_proad = create_road(yao_3_proad, ohio_text)
+    # assert yao_4_proad == yao_personunit.make_proad(yao_3_proad, ohio_text)
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        yao_personunit.make_proad(sue_text)
+    assert (
+        str(excinfo.value)
+        == f"PersonRoad make failure: '{sue_text}' is not personunit person_id '{yao_text}'"
+    )
+
+    arm_text = "Arm"
+    with pytest_raises(Exception) as excinfo:
+        yao_personunit.make_proad(yao_1_proad, arm_text)
+    assert (
+        str(excinfo.value)
+        == f"PersonRoad make failure: ProblemID '{arm_text}' does not exist."
+    )
+
+    bob_text = "Bob"
+    with pytest_raises(Exception) as excinfo:
+        yao_personunit.make_proad(yao_2_proad, bob_text)
+    assert (
+        str(excinfo.value)
+        == f"PersonRoad make failure: HealerID '{bob_text}' does not exist."
+    )
+
+    idaho_text = "Idaho"
+    with pytest_raises(Exception) as excinfo:
+        yao_personunit.make_proad(yao_3_proad, idaho_text)
+    assert (
+        str(excinfo.value)
+        == f"PersonRoad make failure: EconomyID '{idaho_text}' does not exist."
+    )
