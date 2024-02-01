@@ -393,8 +393,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.populate_intent_table_row(row=row, intent_item=intent_item)
                 row += 1
             elif intent_item._task == True and self.current_task_road is None:
-                self.current_task_road = (
-                    f"{intent_item._parent_road},{intent_item._label}"
+                self.current_task_road = self.x_agenda.make_road(
+                    intent_item._parent_road, intent_item._label
                 )
                 self.intent_task_display(intent_item)
 

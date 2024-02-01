@@ -202,7 +202,7 @@ def test_get_time_():
 #     assert hy400_idea.divisor == 400
 
 #     hy400c1_person_id = "100yr regular"
-#     hy400c1_road = f"{hy400_road},{hy400c1_person_id}"
+#     hy400c1_road = create_road(hy400_road,hy400c1_person_id)
 #     print(f"{hy400c1_road=}")
 #     hy400c1_idea = hy400_idea.get_kid(hy400c1_person_id]
 #     assert hy400c1_idea != None
@@ -211,7 +211,7 @@ def test_get_time_():
 #     assert hy400c1_idea.divisor is None
 
 #     hy400c14y_person_id = "regular 4yr"
-#     hy400c14y_road = f"{hy400c1_road},{hy400c14y_person_id}"
+#     hy400c14y_road = create_road(hy400c1_road,hy400c14y_person_id}"
 #     print(f"{hy400c14y_road=}")
 #     hy400c14y_idea = hy400c1_idea.get_kid(hy400c14y_person_id]
 #     assert hy400c14y_idea != None
@@ -220,7 +220,7 @@ def test_get_time_():
 #     assert hy400c14y_idea.divisor == 4
 
 #     hy400c3_person_id = "300yr range"
-#     hy400c3_road = f"{hy400_road},{hy400c3_person_id}"
+#     hy400c3_road = create_road(hy400_road,hy400c3_person_id}"
 #     print(f"{hy400c3_road=}")
 #     hy400c3_idea = hy400_idea.get_kid(hy400c3_person_id]
 #     assert hy400c3_idea != None
@@ -229,7 +229,7 @@ def test_get_time_():
 #     assert hy400c3_idea.divisor is None
 
 #     hy400c3c1_person_id = "100yr no century leap"
-#     hy400c3c1_road = f"{hy400c3_road},{hy400c3c1_person_id}"
+#     hy400c3c1_road = create_road(hy400c3_road,hy400c3c1_person_id}"
 #     print(f"{hy400c3c1_road=}")
 #     hy400c3c1_idea = hy400c3_idea.get_kid(hy400c3c1_person_id]
 #     assert hy400c3c1_idea != None
@@ -238,7 +238,7 @@ def test_get_time_():
 #     assert hy400c3c1_idea.divisor == 100
 
 #     hy400c3c14y_person_id = "4yr no leap"
-#     hy400c3c14y_road = f"{hy400c3c1_road},{hy400c3c14y_person_id}"
+#     hy400c3c14y_road = create_road(hy400c3c1_road,hy400c3c14y_person_id}"
 #     print(f"{hy400c3c14y_road=}")
 #     hy400c3c14y_idea = hy400c3c1_idea.get_kid(hy400c3c14y_person_id]
 #     assert hy400c3c14y_idea != None
@@ -247,7 +247,7 @@ def test_get_time_():
 #     assert hy400c3c14y_idea.divisor is None
 
 #     hy400c3c196_person_id = "96yr range"
-#     hy400c3c196_road = f"{hy400c3c1_road},{hy400c3c196_person_id}"
+#     hy400c3c196_road = create_road(hy400c3c1_road,hy400c3c196_person_id}"
 #     print(f"{hy400c3c196_road=}")
 #     hy400c3c196_idea = hy400c3c1_idea.get_kid(hy400c3c196_person_id]
 #     assert hy400c3c196_idea != None
@@ -256,7 +256,7 @@ def test_get_time_():
 #     assert hy400c3c196_idea.divisor is None
 
 #     hy400c3c196ry_person_id = "regular 4yr"
-#     hy400c3c196ry_road = f"{hy400c3c196_road},{hy400c3c196ry_person_id}"
+#     hy400c3c196ry_road = create_road(hy400c3c196_road,hy400c3c196ry_person_id}"
 #     print(f"{hy400c3c196ry_road=}")
 #     hy400c3c196ry_idea = hy400c3c196_idea.get_kid(hy400c3c196ry_person_id]
 #     assert hy400c3c196ry_idea != None

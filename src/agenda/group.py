@@ -163,7 +163,7 @@ class GroupUnit(GroupCore):
 
         # if self.group_id != other_group.group_id:
         #     raise InvalidGroupException(
-        #             f"Meld fail idea={self._parent_road},{self._label} {attrs[0]}:{attrs[1]} with {other_idea._parent_road},{other_idea._label} {attrs[0]}:{attrs[2]}"
+        #             f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
         #     )
 
 

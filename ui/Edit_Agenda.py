@@ -31,7 +31,7 @@ class Edit_Agenda(qw, Ui_Form):
         # base_x = "A,time,jajatime"
         base_x = self.belief_base_update_combo.currentText()
         self.x_agenda.set_intent_task_complete(
-            task_road=f"{_road},{_label}", base=base_x
+            task_road=self.x_agenda.make_road(_road, _label), base=base_x
         )
         self.refresh_all()
 

@@ -150,9 +150,7 @@ class Lemmas:
         self, x_idea: IdeaUnit, src_belief: BeliefUnit, src_idea: IdeaUnit
     ) -> BeliefUnit:
         if x_idea._begin is None or x_idea._close is None:
-            raise InvalidLemmaException(
-                f"Idea {x_idea._parent_road},{x_idea._label} does not have range"
-            )
+            raise InvalidLemmaException(f"Idea {x_idea.get_road()} does not have range")
 
         idea_begin = x_idea._begin
         idea_close = x_idea._close

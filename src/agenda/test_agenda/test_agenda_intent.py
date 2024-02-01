@@ -477,7 +477,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     # for reason_y in c_reason.values():
     #     for premise_y in reason_y.premises.values():
     #         print(
-    #             f"Idea: {c_idea._parent_road},{c_idea._label}  Reason: {reason_y.base} open:{premise_y.open} nigh:{premise_y.nigh} diff:{premise_y.nigh-premise_y.open}"
+    #             f"Idea: {c_idea.get_road()}  Reason: {reason_y.base} open:{premise_y.open} nigh:{premise_y.nigh} diff:{premise_y.nigh-premise_y.open}"
     #         )
 
     # for base, count_x in zia_agenda.get_reason_bases().items():

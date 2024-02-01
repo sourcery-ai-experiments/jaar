@@ -298,7 +298,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.set_groupunit(y_groupunit=swim_group)
 
 #     yaya_text = "yaya"
-#     yaya_road = f"{src1},{yaya_text}"
+#     yaya_road = create_road(src1,yaya_text)
 #     s1.add_idea(ideaunit_shop(yaya_text), parent_road=src1_road)
 #     s1.set_belief(base=yaya_road, belief=yaya_road)
 
