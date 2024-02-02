@@ -251,10 +251,10 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     x_economy = _delete_and_set_ex6(x_economy_id=ex7_text)
     #     sal_text = "sal"
     #     # x_economy = _delete_and_set_ex6()
-    #     # # x_economy.set_manager_person_id(sal_text)
+    #     # # x_economy.set_proad_nodes(sal_text)
     #     # ex6_text = "ex6"
     #     # x_economy = economyunit_shop(economy_id=ex6_text, economys_dir=get_test_economys_dir())
-    #     # x_economy.set_manager_person_id(sal_text)
+    #     # x_economy.set_proad_nodes(sal_text)
     #     # x_economy.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 
     #     # WHEN

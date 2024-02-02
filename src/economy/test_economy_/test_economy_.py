@@ -1,9 +1,15 @@
 from src._prime.road import default_road_delimiter_if_none, create_road
 from src.tools.file import delete_dir
 from os import path as os_path
-from src.economy.economy import EconomyUnit, economyunit_shop
-from src.economy.examples.economy_env_kit import (
+from src.economy.economy import (
+    EconomyUnit,
+    economyunit_shop,
+    get_temp_env_person_id,
+    get_temp_env_problem_id,
+    get_temp_env_healer_id,
     get_temp_env_economy_id,
+)
+from src.economy.examples.economy_env_kit import (
     get_test_economys_dir,
     change_economy_id_example_economy,
     copy_evaluation_economy,
@@ -23,6 +29,8 @@ def test_EconomyUnit_exists():
     assert x_economy.economy_id == x_economy_id
     assert x_economy.economys_dir == get_test_economys_dir()
     assert x_economy._manager_person_id is None
+    assert x_economy._problem_id is None
+    assert x_economy._healer_id is None
     assert x_economy._road_delimiter is None
 
 
@@ -39,7 +47,90 @@ def test_EconomyUnit_set_economy_id_CorrectlySetsAttr():
     assert x_economyunit.economy_id == texas_text
 
 
-def test_EconomyUnit_set_economy_id_RaisesErrorIfParameterContains_road_delimiter():
+def test_EconomyUnit_set_proad_nodes_CorrectsSetAttrsGivenVariables():
+    # GIVEN
+    x_economy_id = get_temp_env_economy_id()
+    x_economy = EconomyUnit(economy_id=x_economy_id)
+
+    # WHEN
+    zia_text = "Zia"
+    knee_text = "knee"
+    sue_text = "Sue"
+    x_economy.set_proad_nodes(
+        person_id=zia_text, problem_id=knee_text, healer_id=sue_text
+    )
+
+    # THEN
+    assert x_economy._manager_person_id == zia_text
+    assert x_economy._problem_id == knee_text
+    assert x_economy._healer_id == sue_text
+
+
+def test_EconomyUnit_set_proad_nodes_CorrectsSetsAttrsGivenNones():
+    # GIVEN
+    x_economy_id = get_temp_env_economy_id()
+    x_economy = EconomyUnit(economy_id=x_economy_id)
+
+    # WHEN
+    x_economy.set_proad_nodes()
+
+    # THEN
+    assert x_economy._manager_person_id == get_temp_env_person_id()
+    assert x_economy._problem_id == get_temp_env_problem_id()
+    assert x_economy._healer_id == get_temp_env_healer_id()
+
+
+def test_economyunit_shop_ReturnsObj(env_dir_setup_cleanup):
+    # GIVEN
+    x_economy_id = get_temp_env_economy_id()
+    economy_dir = f"src/economy/examples/economys/{x_economy_id}"
+    sue_text = "Sue"
+    assert os_path.exists(economy_dir) is False
+    knee_text = "knee"
+    zia_text = "knee"
+
+    # WHEN
+    x_economy = economyunit_shop(
+        x_economy_id,
+        get_test_economys_dir(),
+        _manager_person_id=sue_text,
+        _problem_id=knee_text,
+        _healer_id=zia_text,
+    )
+
+    # THEN
+    assert x_economy != None
+    assert x_economy.economy_id == x_economy_id
+    assert os_path.exists(economy_dir)
+    assert x_economy._treasury_db != None
+    assert x_economy._manager_person_id == sue_text
+    assert x_economy._problem_id == knee_text
+    assert x_economy._healer_id == zia_text
+    assert x_economy._clerkunits == {}
+    assert x_economy._road_delimiter == default_road_delimiter_if_none()
+
+
+def test_economyunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
+    # GIVEN
+    x_economy_id = get_temp_env_economy_id()
+    # assert os_path.exists(economy_dir) is False
+
+    # WHEN
+    x_economy = economyunit_shop(x_economy_id)
+
+    # THEN
+    assert x_economy != None
+    assert x_economy.economy_id == x_economy_id
+    # assert os_path.exists(economy_dir)
+    assert x_economy._treasury_db != None
+    assert x_economy._manager_person_id == get_temp_env_person_id()
+    assert x_economy._problem_id == get_temp_env_problem_id()
+    assert x_economy._healer_id == get_temp_env_healer_id()
+    assert x_economy._clerkunits == {}
+    assert x_economy._road_delimiter == default_road_delimiter_if_none()
+
+
+def test_economyunit_shop_RaisesErrorIfParameterContains_road_delimiter():
     # GIVEN
     slash_text = "/"
     texas_text = f"Texas{slash_text}Arkansas"
@@ -51,28 +142,6 @@ def test_EconomyUnit_set_economy_id_RaisesErrorIfParameterContains_road_delimite
         str(excinfo.value)
         == f"'{texas_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
-
-
-def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
-    # GIVEN
-    x_economy_id = get_temp_env_economy_id()
-    economy_dir = f"src/economy/examples/economys/{x_economy_id}"
-    sue_text = "Sue"
-    assert os_path.exists(economy_dir) is False
-
-    # WHEN
-    x_economy = economyunit_shop(
-        x_economy_id, get_test_economys_dir(), _manager_person_id=sue_text
-    )
-
-    # THEN
-    assert x_economy != None
-    assert x_economy.economy_id == x_economy_id
-    assert os_path.exists(economy_dir)
-    assert x_economy._treasury_db != None
-    assert x_economy._manager_person_id == sue_text
-    assert x_economy._clerkunits == {}
-    assert x_economy._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
@@ -95,31 +164,7 @@ def test_EconomyUnit_set_road_delimiter_CorrectSetsAttribute(
     assert x_economy._road_delimiter == slash_text
 
 
-def test_economyunit_shop_CorrectlyReturnsObj(env_dir_setup_cleanup):
-    # GIVEN
-    x_economy_id = get_temp_env_economy_id()
-    economy_dir = f"src/economy/examples/economys/{x_economy_id}"
-    sue_text = "Sue"
-    assert os_path.exists(economy_dir) is False
-
-    # WHEN
-    x_economy = economyunit_shop(
-        x_economy_id,
-        economys_dir=get_test_economys_dir(),
-        _manager_person_id=sue_text,
-    )
-
-    # THEN
-    assert x_economy != None
-    assert x_economy.economy_id == x_economy_id
-    assert os_path.exists(economy_dir)
-    assert x_economy._treasury_db != None
-    assert x_economy._manager_person_id == sue_text
-    assert x_economy._clerkunits == {}
-    assert x_economy._road_delimiter == default_road_delimiter_if_none()
-
-
-def test_economy_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
+def test_EconomyUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create economy
     x_economy_id = get_temp_env_economy_id()
     x_economy = EconomyUnit(x_economy_id, economys_dir=get_test_economys_dir())
@@ -314,22 +359,7 @@ def test_copy_evaluation_economy_CorrectlyRaisesError(env_dir_setup_cleanup):
     )
 
 
-def test_economyunit_set_manager_person_id_CorrectsSetsData(env_dir_setup_cleanup):
-    # GIVEN
-    x_economy_id = get_temp_env_economy_id()
-    x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())
-    assert x_economy.economy_id == x_economy_id
-    assert x_economy._manager_person_id is None
-
-    # WHEN
-    zuo_text = "Zuo"
-    x_economy.set_manager_person_id(zuo_text)
-
-    # THEN
-    assert x_economy._manager_person_id == zuo_text
-
-
-def test_economyunit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_EconomyUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_economy_id = get_temp_env_economy_id()
     x_economy = economyunit_shop(x_economy_id, economys_dir=get_test_economys_dir())

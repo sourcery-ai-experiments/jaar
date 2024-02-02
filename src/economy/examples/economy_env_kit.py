@@ -16,8 +16,14 @@ from src.agenda.examples.example_agendas import (
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
-
-from src.economy.economy import EconomyUnit, economyunit_shop
+from src.economy.economy import (
+    EconomyUnit,
+    economyunit_shop,
+    get_temp_env_economy_id,
+    get_temp_env_healer_id,
+    get_temp_env_person_id,
+    get_temp_env_problem_id,
+)
 from src.economy.examples.example_clerks import (
     get_1node_agenda as example_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
@@ -26,10 +32,6 @@ from src.economy.examples.example_clerks import (
 )
 from os import listdir as os_listdir, rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
-
-
-def get_temp_env_economy_id():
-    return "ex_env04"
 
 
 def get_temp_env_dir():
