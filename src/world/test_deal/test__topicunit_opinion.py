@@ -275,7 +275,7 @@ def test_TopicUnit_get_all_roads_ReturnsCorrectObj():
     assert len(cook_topic.opinionunits) == 4
 
 
-def test_create_topicunit_CorrectlyReturnsObj():
+def test_create_topicunit_ReturnsObj():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
 

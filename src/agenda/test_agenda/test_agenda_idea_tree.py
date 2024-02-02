@@ -80,7 +80,7 @@ def test_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     assert yrx._all_party_debt == True
 
 
-def test_get_idea_obj_CorrectlyReturnsIdea():
+def test_get_idea_obj_ReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"

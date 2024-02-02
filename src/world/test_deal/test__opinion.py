@@ -52,7 +52,7 @@ def test_OpinionUnit_set_love_CorrectSetsAttrs():
     assert beef_opinionunit.love == beef_love
 
 
-def test_opinionunit_shop_CorrectlyReturnsObj():
+def test_opinionunit_shop_ReturnsObj():
     # GIVEN
     gas_road = create_road(root_label(), "gas cooking")
 

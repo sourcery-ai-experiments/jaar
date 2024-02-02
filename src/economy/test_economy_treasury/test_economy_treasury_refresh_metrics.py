@@ -501,7 +501,7 @@ def test_economy_get_groupunit_catalog_table_insert_sqlstr_CorrectlyPopulatesTab
     assert get_groupunit_catalog_table_count(treasury_conn, bob_text) == 1
 
 
-def test_get_groupunit_catalog_dict_CorrectlyReturnsGroupUnitData(
+def test_get_groupunit_catalog_dict_ReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN

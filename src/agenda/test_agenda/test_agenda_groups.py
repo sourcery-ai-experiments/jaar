@@ -928,7 +928,7 @@ def test_AgendaUnit_get_groupunits_dict_ReturnsCorrectObj():
     assert len(x_groupunits_dict) == 3
 
 
-def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
+def test_get_partys_relevant_groups_ReturnsEmptyDict():
     # GIVEN
     bob_text = "Bob"
     agenda_with_partys = agendaunit_shop(bob_text)
@@ -950,7 +950,7 @@ def test_get_partys_relevant_groups_CorrectlyReturnsEmptyDict():
     assert relevant_x == {}
 
 
-def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
+def test_get_partys_relevant_groups_Returns2SinglePartyGroups():
     # GIVEN
     bob_text = "Bob"
     sam_text = "Sam"
@@ -972,7 +972,7 @@ def test_get_partys_relevant_groups_CorrectlyReturns2SinglePartyGroups():
     assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
 
 
-def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
+def test_get_party_relevant_groups_ReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(jes_text)
@@ -993,7 +993,7 @@ def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
     assert noa_mrg == {}
 
 
-def test_get_party_relevant_groups_CorrectlyReturnsCorrectDict():
+def test_get_party_relevant_groups_ReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(jes_text)

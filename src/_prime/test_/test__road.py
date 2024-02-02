@@ -144,7 +144,7 @@ def test_road_change_road_CorrectlyRoadUnit():
     assert change_road(old_roses_road, "random_text", plants_road) == old_roses_road
 
 
-def test_road_get_all_road_nodes_CorrectlyReturnsRoadNodes():
+def test_road_get_all_road_nodes_ReturnsRoadNodes():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
@@ -165,7 +165,7 @@ def test_road_get_all_road_nodes_CorrectlyReturnsRoadNodes():
     assert get_all_road_nodes(road=roses_road) == roses_list
 
 
-def test_road_get_terminus_node_CorrectlyReturnsRoadNode():
+def test_road_get_terminus_node_ReturnsRoadNode():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
@@ -182,7 +182,7 @@ def test_road_get_terminus_node_CorrectlyReturnsRoadNode():
     assert get_terminus_node(road=roses_road) == roses_text
 
 
-def test_road_get_terminus_node_CorrectlyReturnsRoadNodeWhenNonDefaultDelimiter():
+def test_road_get_terminus_node_ReturnsRoadNodeWhenNonDefaultDelimiter():
     # GIVEN
     casa_text = "casa"
     bloomers_text = "bloomers"
@@ -199,7 +199,7 @@ def test_road_get_terminus_node_CorrectlyReturnsRoadNodeWhenNonDefaultDelimiter(
     assert get_terminus_node(slash_roses_road, slash_text) == roses_text
 
 
-def test_road_get_root_node_from_road_CorrectlyReturnsRoadNode():
+def test_road_get_root_node_from_road_ReturnsRoadNode():
     # GIVEN
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
@@ -292,7 +292,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectDict_Scenario1():
     assert new_dict_x.get(old_seasons_road) is None
 
 
-def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():
+def test_road_get_ancestor_roads_ReturnsAncestorRoadUnits():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     nation_text = "nation-state"
@@ -322,7 +322,7 @@ def test_road_get_ancestor_roads_CorrectlyReturnsAncestorRoadUnits():
     assert get_ancestor_roads(root_label()) == [root_label()]
 
 
-def test_road_get_forefather_roads_CorrectlyReturnsAncestorRoadUnitsWithoutSource():
+def test_road_get_forefather_roads_ReturnsAncestorRoadUnitsWithoutSource():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     nation_text = "nation-state"
@@ -453,7 +453,7 @@ def test_is_heir_road_CorrectlyIdentifiesHeirs():
     assert is_heir_road(src=f"earth{x_s}sea", heir=f"earth{x_s}seaside") == False
 
 
-def test_replace_road_delimiter_CorrectlyReturnsNewObj():
+def test_replace_road_delimiter_ReturnsNewObj():
     # GIVEN
     casa_text = "casa"
     gen_casa_road = create_road(root_label(), casa_text)

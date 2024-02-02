@@ -196,7 +196,7 @@ def test_WorldUnit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_c
     assert len(x_world._personunits.get(luca_text)._problems) == 0
 
 
-def test_WorldUnit_get_personunit_from_memory_CorrectlyReturnsPerson(
+def test_WorldUnit_get_personunit_from_memory_ReturnsPerson(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -216,7 +216,7 @@ def test_WorldUnit_get_personunit_from_memory_CorrectlyReturnsPerson(
     assert luca_gotten_obj == luca_person_obj
 
 
-def test_WorldUnit_get_personunit_from_memory_CorrectlyReturnsNone(
+def test_WorldUnit_get_personunit_from_memory_ReturnsNone(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN

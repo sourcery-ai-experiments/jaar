@@ -21,7 +21,7 @@ def test_TopicUnit_exists():
     assert x_topic._calc_is_dialectic is None
 
 
-def test_topicunit_shop_CorrectlyReturnsObj():
+def test_topicunit_shop_ReturnsObj():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
 

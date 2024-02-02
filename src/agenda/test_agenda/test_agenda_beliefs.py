@@ -773,7 +773,7 @@ def test_AgendaUnit_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     assert sue_agenda.get_idea_obj(climate_road) != None
 
 
-def test_AgendaUnit_get_beliefunits_base_and_belief_list_CorrectlyReturnsListOfBeliefUnits():
+def test_AgendaUnit_get_beliefunits_base_and_belief_list_ReturnsListOfBeliefUnits():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
 

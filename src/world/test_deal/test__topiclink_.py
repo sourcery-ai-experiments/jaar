@@ -17,7 +17,7 @@ def test_TopicLink_exists():
     assert x_topiclink.weight is None
 
 
-def test_topiclink_shop_CorrectlyReturnsObj():
+def test_topiclink_shop_ReturnsObj():
     # GIVEN
     cook_road = create_road(root_label(), "cooking")
 

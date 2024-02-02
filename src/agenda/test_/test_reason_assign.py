@@ -133,7 +133,7 @@ def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     assert assigned_heir_x._agent_id_assigned == _agent_id_assigned_x
 
 
-def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllPartys_v1():
+def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v1():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"
@@ -151,7 +151,7 @@ def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllParty
     assert len(all_partys) == 1
 
 
-def test_AssignedHeir_get_all_suff_partys_CorrectlyReturnsSingleDictWithAllPartys_v2():
+def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v2():
     # GIVEN
     jim_text = "jim"
     sue_text = "sue"

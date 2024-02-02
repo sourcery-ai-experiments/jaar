@@ -664,7 +664,7 @@ def test_IdeaUnit_get_reasonheir_ReturnsCorrectObj():
     assert reason_heir_z.base == tool_text
 
 
-def test_IdeaUnit_get_reasonheir_CorrectlyReturnsNone():
+def test_IdeaUnit_get_reasonheir_ReturnsNone():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)

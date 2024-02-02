@@ -72,7 +72,7 @@ def test_BeliefUnit_clear_range_works_2():
     assert weekday_belief.nigh == 65
 
 
-def test_BeliefUnit_get_dict_CorrectlyReturnsDict():
+def test_BeliefUnit_get_dict_ReturnsDict():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -99,7 +99,7 @@ def test_BeliefUnit_get_dict_CorrectlyReturnsDict():
     assert belief_dict == static_dict
 
 
-def test_BeliefUnit_get_dict_CorrectlyReturnsPartialDict():
+def test_BeliefUnit_get_dict_ReturnsPartialDict():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)

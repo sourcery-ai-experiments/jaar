@@ -1281,7 +1281,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
 #     )
 
 
-def test_AgendaUnit_get_partyunits_party_id_list_CorrectlyReturnsListOfPartyUnits():
+def test_AgendaUnit_get_partyunits_party_id_list_ReturnsListOfPartyUnits():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     sam_text = "sam"
@@ -1308,7 +1308,7 @@ def test_AgendaUnit_get_partyunits_party_id_list_CorrectlyReturnsListOfPartyUnit
     assert partyunit_list_x[3] == will_text
 
 
-def test_get_intersection_of_partys_CorrectlyReturnsUnionOfKeysOfTwoDictionarys_scenario1():
+def test_get_intersection_of_partys_ReturnsUnionOfKeysOfTwoDictionarys_scenario1():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)

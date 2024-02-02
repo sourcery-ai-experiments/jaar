@@ -791,7 +791,7 @@ def test_PremiseUnit_meld_raises_NotSameDivisorError():
     )
 
 
-def test_PremiseUnits_get_from_dict_CorrectlyReturnsCompleteObj():
+def test_PremiseUnits_get_from_dict_ReturnsCompleteObj():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)

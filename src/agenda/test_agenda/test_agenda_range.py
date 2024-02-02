@@ -71,7 +71,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     assert x_idea._denom == 5
 
 
-def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
+def test_get_idea_ranged_kids_ReturnsAllChildren():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     noa_agenda.set_time_hreg_ideas(c400_count=7)
@@ -86,7 +86,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsAllChildren():
     assert len(ranged_ideas) == 7
 
 
-def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
+def test_get_idea_ranged_kids_ReturnsSomeChildrenScen1():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     noa_agenda.set_time_hreg_ideas(c400_count=7)
@@ -107,7 +107,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen1():
     assert len(ranged_ideas) == 3
 
 
-def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
+def test_get_idea_ranged_kids_ReturnsSomeChildrenScen2():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     noa_agenda.set_time_hreg_ideas(c400_count=7)
@@ -121,7 +121,7 @@ def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen2():
     assert len(noa_agenda.get_idea_ranged_kids(week_road, begin=0, close=3000)) == 3
 
 
-def test_get_idea_ranged_kids_CorrectlyReturnsSomeChildrenScen3():
+def test_get_idea_ranged_kids_ReturnsSomeChildrenScen3():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     noa_agenda.set_time_hreg_ideas(c400_count=7)
