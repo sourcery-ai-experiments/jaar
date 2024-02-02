@@ -24,16 +24,16 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # x_economy.save_forum_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
     # x_economy.save_forum_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_economy.create_new_clerkunit(clerk_cid=xia_text)
+    x_economy.create_new_clerkunit(clerk_id=xia_text)
     x_economy.set_clerk_depotlink(
         xia_text, input_agenda._agent_id, depotlink_type="blind_trust"
     )
-    x_economy.save_clerkunit_file(clerk_cid=xia_text)
+    x_economy.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_economy.get_clerkunit(cid=xia_text)
     # print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_economy.get_output_agenda(clerk_cid=xia_text)
+    output_agenda = x_economy.get_output_agenda(clerk_id=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_agent_id(new_agent_id=xia_text)
@@ -101,15 +101,15 @@ def test_economy_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     # x_economy.save_forum_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
     # x_economy.save_forum_agenda(ex_cxs_agenda_v001())
     xia_text = "Xia"
-    x_economy.create_new_clerkunit(clerk_cid=xia_text)
+    x_economy.create_new_clerkunit(clerk_id=xia_text)
     x_economy.set_clerk_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
     x_economy.set_clerk_depotlink(xia_text, x2_agenda._agent_id, "blind_trust")
-    x_economy.save_clerkunit_file(clerk_cid=xia_text)
+    x_economy.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_economy.get_clerkunit(cid=xia_text)
     print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_economy.get_output_agenda(clerk_cid=xia_text)
+    output_agenda = x_economy.get_output_agenda(clerk_id=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._economy_id},C,D"
@@ -164,9 +164,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     x_economy.save_forum_agenda(ernie_agenda)
     x_economy.save_forum_agenda(jessi_agenda)
     x_economy.save_forum_agenda(old_steve_agenda)
-    x_economy.create_new_clerkunit(clerk_cid=ernie_text)
-    x_economy.create_new_clerkunit(clerk_cid=jessi_text)
-    # x_economy.create_new_clerkunit(clerk_cid=steve_text)
+    x_economy.create_new_clerkunit(clerk_id=ernie_text)
+    x_economy.create_new_clerkunit(clerk_id=jessi_text)
+    # x_economy.create_new_clerkunit(clerk_id=steve_text)
     ux_ernie = x_economy.get_clerkunit(cid=ernie_text)
     ux_jessi = x_economy.get_clerkunit(cid=jessi_text)
     # ux_steve = x_economy.get_clerkunit(cid=steve_text)

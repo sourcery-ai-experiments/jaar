@@ -89,7 +89,7 @@ def test_ClerkUnit_save_contract_agenda_contractPersonIDMustBeHealer(
     x_clerk.save_contract_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_contract_agenda()._agent_id == x_clerk._clerk_cid
+    assert x_clerk.open_contract_agenda()._agent_id == x_clerk._clerk_id
 
 
 def test_ClerkUnit_open_contract_agenda_WhenStartingAgendaFileExists(
@@ -114,7 +114,7 @@ def test_ClerkUnit_open_contract_agenda_WhenStartingAgendaFileExists(
     assert contract_agenda._idearoot._beliefunits == {}
     assert contract_agenda._partys == {}
     assert contract_agenda._groups == {}
-    assert contract_agenda._agent_id == x_clerk._clerk_cid
+    assert contract_agenda._agent_id == x_clerk._clerk_id
 
 
 def test_ClerkUnit_erase_contract_agenda_file_DeletesFileCorrectly(
@@ -144,9 +144,9 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    clerk_cid = "Yao"
+    clerk_id = "Yao"
     env_dir = get_temp_clerkunit_dir()
-    x_clerk = clerkunit_shop(clerk_cid, env_dir, get_temp_economy_id())
+    x_clerk = clerkunit_shop(clerk_id, env_dir, get_temp_economy_id())
     x_clerk.create_core_dir_and_files()
     x_agenda = example_get_2node_agenda()
     src_agent_id = x_agenda._agent_id
@@ -205,14 +205,14 @@ def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    clerk_cid_x = "boots3"
+    clerk_id_x = "boots3"
     x_clerk = clerkunit_shop(
-        clerk_cid_x, get_temp_clerkunit_dir(), get_temp_economy_id()
+        clerk_id_x, get_temp_clerkunit_dir(), get_temp_economy_id()
     )
     x_clerk.create_core_dir_and_files()
     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._agent_id == clerk_cid_x
+    assert x_agenda_output_before._agent_id == clerk_id_x
     assert x_agenda_output_before._idearoot._label == get_temp_economy_id()
     # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_agent_id="digested1"))
 
@@ -220,7 +220,7 @@ def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
     sx_output_after = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    x_agenda = agendaunit_shop(_agent_id=clerk_cid_x, _weight=0.0)
+    x_agenda = agendaunit_shop(_agent_id=clerk_id_x, _weight=0.0)
     x_agenda.set_economy_id(get_temp_economy_id())
     x_agenda._idearoot._parent_road = ""
     x_agenda.set_agenda_metrics()

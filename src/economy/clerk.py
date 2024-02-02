@@ -1,4 +1,4 @@
-from src._prime.road import AgentID, PersonID, PartyID
+from src._prime.road import AgentID, PersonID, PartyID, ClerkID
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     get_meld_of_agenda_files,
@@ -23,13 +23,9 @@ class InvalidclerkException(Exception):
     pass
 
 
-class clerkCID(PersonID):
-    pass
-
-
 @dataclass
 class ClerkUnit:
-    _clerk_cid: clerkCID = None
+    _clerk_id: ClerkID = None
     _env_dir: str = None
     _economy_id: str = None
     _clerkunit_dir: str = None
@@ -48,7 +44,7 @@ class ClerkUnit:
 
     def refresh_depot_agendas(self):
         for party_x in self._contract._partys.values():
-            if party_x.party_id != self._clerk_cid:
+            if party_x.party_id != self._clerk_id:
                 party_agenda = agendaunit_get_from_json(
                     x_agenda_json=self.open_forum_agenda(party_x.party_id)
                 )
@@ -99,10 +95,10 @@ class ClerkUnit:
     def _set_assignment_depotlink(self, outer_agent_id):
         src_agenda = self.open_depot_agenda(outer_agent_id)
         src_agenda.set_agenda_metrics()
-        empty_agenda = agendaunit_shop(_agent_id=self._clerk_cid)
+        empty_agenda = agendaunit_shop(_agent_id=self._clerk_id)
         empty_agenda.set_economy_id(self._economy_id)
         assign_agenda = src_agenda.get_assignment(
-            empty_agenda, self.get_contract()._partys, self._clerk_cid
+            empty_agenda, self.get_contract()._partys, self._clerk_id
         )
         assign_agenda.set_agenda_metrics()
         self.save_agenda_to_digest(assign_agenda, src_agenda._agent_id)
@@ -158,11 +154,11 @@ class ClerkUnit:
     def set_env_dir(
         self,
         env_dir: str,
-        clerk_cid: clerkCID,
+        clerk_id: ClerkID,
         economy_id: str,
         _road_delimiter: str = None,
     ):
-        self._clerk_cid = clerk_cid
+        self._clerk_id = clerk_id
         self._env_dir = env_dir
         self._economy_id = economy_id
         self._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
@@ -171,22 +167,22 @@ class ClerkUnit:
         env_clerkunits_folder = "clerkunits"
         agendas_str = "agendas"
         self._clerkunits_dir = f"{self._env_dir}/{env_clerkunits_folder}"
-        self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_cid}"
+        self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_id}"
         self._contract_file_name = "contract_agenda.json"
         self._contract_file_path = f"{self._clerkunit_dir}/{self._contract_file_name}"
         self._agenda_output_file_name = "output_agenda.json"
         self._agenda_output_file_path = (
             f"{self._clerkunit_dir}/{self._agenda_output_file_name}"
         )
-        self._forum_file_name = f"{self._clerk_cid}.json"
+        self._forum_file_name = f"{self._clerk_id}.json"
         self._agendas_forum_dir = f"{self._env_dir}/{agendas_str}"
         self._agendas_depot_dir = f"{self._clerkunit_dir}/{agendas_str}"
         self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
 
-    def set_clerk_cid(self, new_cid: clerkCID):
+    def set_clerk_id(self, new_cid: ClerkID):
         old_clerkunit_dir = self._clerkunit_dir
-        self._clerk_cid = new_cid
+        self._clerk_id = new_cid
         self.set_dirs()
 
         x_func_rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)
@@ -240,7 +236,7 @@ class ClerkUnit:
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def save_contract_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_agent_id(self._clerk_cid)
+        x_agenda.set_agent_id(self._clerk_id)
         x_agenda.set_road_delimiter(self._road_delimiter)
         self._save_agenda_to_path(
             x_agenda, self._clerkunit_dir, self._contract_file_name
@@ -294,11 +290,11 @@ class ClerkUnit:
 
     def _get_empty_contract_agenda(self):
         x_agenda = agendaunit_shop(
-            _agent_id=self._clerk_cid,
+            _agent_id=self._clerk_id,
             _weight=0,
             _road_delimiter=self._road_delimiter,
         )
-        x_agenda.add_partyunit(party_id=self._clerk_cid)
+        x_agenda.add_partyunit(party_id=self._clerk_id)
         x_agenda.set_economy_id(self._economy_id)
         return x_agenda
 
@@ -317,7 +313,7 @@ class ClerkUnit:
             x_agenda_file_path = f"{self._agendas_depot_dir}/{x_agenda_file_name}"
         if not os_path.exists(x_agenda_file_path):
             raise InvalidclerkException(
-                f"agent_id {self._clerk_cid} cannot find agenda {agent_id} in {x_agenda_file_path}"
+                f"agent_id {self._clerk_id} cannot find agenda {agent_id} in {x_agenda_file_path}"
             )
 
     def _contract_agenda_exists(self) -> bool:
@@ -347,7 +343,7 @@ def clerkunit_shop(
     x_clerk = ClerkUnit()
     x_clerk.set_env_dir(
         env_dir=env_dir,
-        clerk_cid=agent_id,
+        clerk_id=agent_id,
         economy_id=economy_id,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )

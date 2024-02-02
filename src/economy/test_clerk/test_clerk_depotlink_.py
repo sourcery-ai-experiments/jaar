@@ -244,7 +244,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     economy_id = get_temp_env_economy_id()
     sx = economyunit_shop(economy_id=economy_id, economys_dir=env_dir)
     yao_text = "Yao"
-    sx.create_new_clerkunit(clerk_cid=yao_text)
+    sx.create_new_clerkunit(clerk_id=yao_text)
     yao_agenda = sx.get_clerkunit(cid=yao_text)
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 1
 

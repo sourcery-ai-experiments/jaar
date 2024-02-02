@@ -21,7 +21,7 @@ def test_ClerkUnit_exists():
     bob_clerkadmin = ClerkUnit(bob_text, env_dir, get_temp_economy_id())
 
     # THEN
-    assert bob_clerkadmin._clerk_cid != None
+    assert bob_clerkadmin._clerk_id != None
     assert bob_clerkadmin._env_dir != None
     assert bob_clerkadmin._economy_id != None
     assert bob_clerkadmin._road_delimiter is None
@@ -100,7 +100,7 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     jul_text = "julian"
     env_dir = get_temp_clerkunit_dir()
     jul_clerkunit = ClerkUnit(
-        _clerk_cid=jul_text,
+        _clerk_id=jul_text,
         _env_dir=env_dir,
         _economy_id=get_temp_economy_id(),
         _road_delimiter=",",
@@ -163,7 +163,7 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWritecontractAgenda(
     )
 
 
-def test_ClerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_clerkunit_dir()
 
@@ -193,7 +193,7 @@ def test_ClerkUnit_set_clerk_cid_WorksCorrectly(clerk_dir_setup_cleanup):
     assert os_path.exists(new_contract_file_path) == False
 
     # WHEN
-    jul_clerkunit.set_clerk_cid(new_cid=tim_text)
+    jul_clerkunit.set_clerk_id(new_cid=tim_text)
 
     # THEN
     assert os_path.exists(old_clerkunit_dir) == False

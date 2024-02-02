@@ -27,6 +27,12 @@ class HealerID(PersonID):
     pass
 
 
+class ClerkID(PersonID):
+    """A RoadNode used to identify a ClerkUnit's user"""
+
+    pass
+
+
 class EconomyID(RoadNode):  # Created to help track the concept
     """A RoadNode used to identify a Healer's Economy"""
 

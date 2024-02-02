@@ -14,7 +14,7 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
     # GIVEN
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     amer_text = "Amer"
-    x_economy.create_new_clerkunit(clerk_cid=amer_text)
+    x_economy.create_new_clerkunit(clerk_id=amer_text)
     amer_clerk = x_economy.get_clerkunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_economy_id(x_economy.economy_id)
@@ -42,7 +42,7 @@ def test_economy_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clea
 
     # create assignment for Cali
     cali_text = "Cali"
-    x_economy.create_new_clerkunit(clerk_cid=cali_text)
+    x_economy.create_new_clerkunit(clerk_id=cali_text)
     cali_clerk = x_economy.get_clerkunit(cid=cali_text)
     cali_clerk.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_economy.get_output_agenda(cali_text)
@@ -82,8 +82,8 @@ def test_economy_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     x_economy = economyunit_shop(get_temp_env_economy_id(), get_test_economys_dir())
     amer_text = "Amer"
     beto_text = "Beto"
-    x_economy.create_new_clerkunit(clerk_cid=amer_text)
-    x_economy.create_new_clerkunit(clerk_cid=beto_text)
+    x_economy.create_new_clerkunit(clerk_id=amer_text)
+    x_economy.create_new_clerkunit(clerk_id=beto_text)
     amer_clerk = x_economy.get_clerkunit(cid=amer_text)
     beto_clerk = x_economy.get_clerkunit(cid=beto_text)
     # print(f"{beto_clerk=}")

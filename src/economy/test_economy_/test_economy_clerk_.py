@@ -21,7 +21,7 @@ def test_economyunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(timmy_dir) == False
 
     # WHEN
-    x_economy.create_new_clerkunit(clerk_cid=timmy_text)
+    x_economy.create_new_clerkunit(clerk_id=timmy_text)
 
     # THEN
     print(f"{timmy_dir=}")
@@ -76,14 +76,14 @@ def test_economyunit_del_clerkunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     xia_text = "Xia"
     xia_dir = f"{x_economy.get_clerkunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/contract_agenda.json"
-    x_economy.create_new_clerkunit(clerk_cid=xia_text)
-    x_economy.save_clerkunit_file(clerk_cid=xia_text)
+    x_economy.create_new_clerkunit(clerk_id=xia_text)
+    x_economy.save_clerkunit_file(clerk_id=xia_text)
     print(f"{xia_file_path=}")
     assert os_path.exists(xia_dir)
     assert os_path.exists(xia_file_path)
 
     # WHEN
-    x_economy.del_clerkunit_dir(clerk_cid=xia_text)
+    x_economy.del_clerkunit_dir(clerk_id=xia_text)
 
     # THEN
     assert os_path.exists(xia_file_path) == False

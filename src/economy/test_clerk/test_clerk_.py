@@ -17,7 +17,7 @@ def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
     # GIVEN
     assert x_clerk != None
     assert x_clerk._contract is None
-    assert x_clerk._clerk_cid is None
+    assert x_clerk._clerk_id is None
     assert x_clerk._env_dir is None
     assert x_clerk._economy_id is None
     assert x_clerk._clerkunit_dir is None
@@ -46,7 +46,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     )
 
     # GIVEN
-    assert x_clerk._clerk_cid != None
+    assert x_clerk._clerk_id != None
     assert x_clerk._economy_id != None
     assert x_clerk._economy_id == get_temp_economy_id()
     assert x_clerk._road_delimiter == default_road_delimiter_if_none()
@@ -108,14 +108,14 @@ def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
     # GIVEN
     slash_text = "/"
     tim_clerk = ClerkUnit(
-        _clerk_cid="Tim",
+        _clerk_id="Tim",
         _env_dir=get_temp_clerkunit_dir(),
         _economy_id=get_temp_economy_id(),
         _road_delimiter=slash_text,
     )
     tim_clerk.set_env_dir(
         env_dir=get_temp_clerkunit_dir(),
-        clerk_cid="Tim",
+        clerk_id="Tim",
         economy_id=get_temp_economy_id(),
         _road_delimiter=default_road_delimiter_if_none(slash_text),
     )

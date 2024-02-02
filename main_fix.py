@@ -104,7 +104,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
         self.economy_id_combo_refresh()
         self.economy_id_combo.setCurrentText(first_env)
-        self._healer_load(clerk_cid="ernie")
+        self._healer_load(clerk_id="ernie")
 
     def save_contract(self):
         if self.contract != None:
@@ -147,13 +147,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.depotlink_pid.setText(f"{selected_healer} - {selected_agenda}")
 
     def healers_table_select(self):
-        x_clerk_cid = self.healers_table.item(self.healers_table.currentRow(), 0).text()
-        self._healer_load(clerk_cid=x_clerk_cid)
+        x_clerk_id = self.healers_table.item(self.healers_table.currentRow(), 0).text()
+        self._healer_load(clerk_id=x_clerk_id)
 
-    def _healer_load(self, clerk_cid: str):
-        self.economy_x.create_new_clerkunit(clerk_cid=clerk_cid)
-        self.x_clerk = self.economy_x._clerkunits.get(clerk_cid)
-        self.clerk_cid.setText(self.x_clerk._clerk_cid)
+    def _healer_load(self, clerk_id: str):
+        self.economy_x.create_new_clerkunit(clerk_id=clerk_id)
+        self.x_clerk = self.economy_x._clerkunits.get(clerk_id)
+        self.clerk_id.setText(self.x_clerk._clerk_id)
         self.refresh_healer()
 
     def depotlinks_table_select(self):
@@ -173,13 +173,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.economy_x.get_forum_agenda(
         self.ignore_agenda_x = self.economy_x.get_agenda_from_ignores_dir(
-            clerk_cid=self.x_clerk.pid, _healer=ignore_agenda_agent_id
+            clerk_id=self.x_clerk.pid, _healer=ignore_agenda_agent_id
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
         self.economy_x.set_ignore_agenda_file(
-            clerk_cid=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
+            clerk_id=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
 
@@ -233,14 +233,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def healer_insert(self):
-        self.economy_x.create_new_clerkunit(clerk_cid=self.clerk_cid.text())
+        self.economy_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
         self.refresh_healers()
 
     def healer_update_pid(self):
         currently_selected = self.healers_table.item(
             self.healers_table.currentRow(), 0
         ).text()
-        typed_in = self.clerk_cid.text()
+        typed_in = self.clerk_id.text()
         if currently_selected != typed_in:
             self.economy_x.change_clerkunit_cid(
                 old_label=currently_selected, new_label=typed_in
@@ -249,7 +249,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def healer_delete(self):
         self.economy_x.del_clerkunit_dir(
-            clerk_cid=self.healers_table.item(self.healers_table.currentRow(), 0).text()
+            clerk_id=self.healers_table.item(self.healers_table.currentRow(), 0).text()
         )
         self.refresh_healers()
 
@@ -268,33 +268,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.economy_x.save_clerkunit_file(clerk_cid=self.x_clerk.pid)
+            self.economy_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
         self.refresh_healer()
 
     def depotlink_update(self):
-        clerk_cid_x = self.x_clerk.pid
+        clerk_id_x = self.x_clerk.pid
         self.economy_x.update_depotlink(
-            clerk_cid=clerk_cid_x,
+            clerk_id=clerk_id_x,
             party_id=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.economy_x.save_clerkunit_file(clerk_cid=clerk_cid_x)
+        self.economy_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
-        clerk_cid_x = self.x_clerk.pid
+        clerk_id_x = self.x_clerk.pid
         self.economy_x.del_depotlink(
-            clerk_cid=clerk_cid_x, agendaunit_agent_id=self.depotlink_pid.text()
+            clerk_id=clerk_id_x, agendaunit_agent_id=self.depotlink_pid.text()
         )
-        self.economy_x.save_clerkunit_file(clerk_cid=clerk_cid_x)
+        self.economy_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_healer()
 
     def get_agenda_agent_id_list(self):
         return [[file_name] for file_name in dir_files(self.economy_x.get_forum_dir())]
 
-    def get_clerk_cid_list(self):
+    def get_clerk_id_list(self):
         healers_healer_list = []
         if self.economy_x != None:
             healers_healer_list.extend(
@@ -424,7 +424,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_economy()
 
     def _sub_refresh_agents_table(self):
-        self.refresh_x(self.healers_table, ["Healers Table"], self.get_clerk_cid_list())
+        self.refresh_x(self.healers_table, ["Healers Table"], self.get_clerk_id_list())
 
     def _sub_refresh_depotlinks_table(self):
         depotlink_types = list(get_depotlink_types())
@@ -436,7 +436,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.x_clerk is None:
             column_header = "Agendalinks Table"
         elif self.x_clerk != None:
-            column_header = f"'{self.x_clerk._clerk_cid}' agendas"
+            column_header = f"'{self.x_clerk._clerk_id}' agendas"
         self.refresh_x(
             self.depotlinks_table,
             [column_header, "Link Type", "Weight"],
