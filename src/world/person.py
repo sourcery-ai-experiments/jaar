@@ -160,9 +160,7 @@ class PersonUnit:
                 f"Cannot set_economyunit {economy_id} because no justifying problem exists."
             )
 
-        if self.economyunit_exists(economy_id) == False or (
-            self.economyunit_exists(economy_id) and replace
-        ):
+        if self.economyunit_exists(economy_id) == False or replace:
             x_economyunit = economyunit_shop(
                 economy_id, _road_delimiter=self._road_delimiter
             )
