@@ -459,8 +459,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     work_idea.set_beliefunit(beliefunit=beliefunit_x)
-    work_idea._originunit.set_originlink(person_id="Ray", weight=None)
-    work_idea._originunit.set_originlink(person_id="Lei", weight=4)
+    work_idea._originunit.set_originlink(party_id="Ray", weight=None)
+    work_idea._originunit.set_originlink(party_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13

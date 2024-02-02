@@ -8,7 +8,7 @@ from src.agenda.learn import (
     grain_delete,
 )
 from src.agenda.examples.example_learns import (
-    get_sue_personroad,
+    get_sue_proad,
     get_sue_learnunit_example1,
 )
 from pytest import raises as pytest_raises
@@ -25,7 +25,7 @@ def test_LearnUnit_exists():
 
 def test_learnunit_shop_ReturnsCorrectObj():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
 
     # WHEN
     sue_learnunit = learnunit_shop(sue_road)
@@ -37,7 +37,7 @@ def test_learnunit_shop_ReturnsCorrectObj():
 
 def test_LearnUnit_set_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     attribute_value = 55
     category = "AgendaUnit_weight"
@@ -63,7 +63,7 @@ def test_LearnUnit_set_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
 
 def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     x_category = "AgendaUnit_weight"
     agenda_weight_grainunit = grainunit_shop(x_category, grain_update())
@@ -82,7 +82,7 @@ def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
 
 def test_LearnUnit_get_grain_ReturnsCorrectObj():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     AgendaUnit_weight_value = 55
     AgendaUnit_weight_text = "AgendaUnit_weight"
@@ -103,7 +103,7 @@ def test_LearnUnit_get_grain_ReturnsCorrectObj():
 
 def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     assert sue_learnunit.grainunits == {}
 
@@ -125,7 +125,7 @@ def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
 
 def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_partyunits():
     # GIVEN
-    sue_road = get_sue_personroad()
+    sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     assert sue_learnunit.grainunits == {}
 
@@ -168,7 +168,7 @@ def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_partyunits():
 
 def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_max_tree_traverse():
     # GIVEN
-    sue_learnunit = learnunit_shop(get_sue_personroad())
+    sue_learnunit = learnunit_shop(get_sue_proad())
     assert sue_learnunit.grainunits == {}
 
     # WHEN

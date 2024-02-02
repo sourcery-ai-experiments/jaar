@@ -53,7 +53,6 @@ from src._prime.road import (
     RoadNode,
     RoadUnit,
     is_string_in_road,
-    PersonID,
     AgentID,
     PartyID,
 )
@@ -306,8 +305,8 @@ class AgendaUnit:
 
         # get dict of all partylinks that are in all balanceheirs
         balanceheir_partyunits = {}
-        for balanceheir_person_id in balanceheir_dict:
-            groupunit = self.get_groupunit(balanceheir_person_id)
+        for balanceheir_party_id in balanceheir_dict:
+            groupunit = self.get_groupunit(balanceheir_party_id)
             for partylink in groupunit._partys.values():
                 balanceheir_partyunits[partylink.party_id] = self.get_party(
                     partylink.party_id
@@ -1020,12 +1019,12 @@ class AgendaUnit:
 
     def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
-            _balancelink_person_id
-            for _balancelink_person_id in x_idea._balancelinks.keys()
-            if self.get_groupunit(_balancelink_person_id) is None
+            _balancelink_group_id
+            for _balancelink_group_id in x_idea._balancelinks.keys()
+            if self.get_groupunit(_balancelink_group_id) is None
         ]
-        for _balancelink_person_id in _balancelinks_to_delete:
-            x_idea._balancelinks.pop(_balancelink_person_id)
+        for _balancelink_group_id in _balancelinks_to_delete:
+            x_idea._balancelinks.pop(_balancelink_group_id)
 
         if x_idea._assignedunit != None:
             _suffgroups_to_delete = [
@@ -2054,11 +2053,9 @@ class AgendaUnit:
                 agenda_x.set_groupunit(group_x)
 
     def _get_assignor_promise_ideas(
-        self, agenda_x, assignor_person_id: GroupID
+        self, agenda_x, assignor_party_id: GroupID
     ) -> dict[RoadUnit:int]:
-        assignor_groups = get_party_relevant_groups(
-            agenda_x._groups, assignor_person_id
-        )
+        assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_party_id)
         return {
             idea_road: -1
             for idea_road, x_idea in self._idea_dict.items()

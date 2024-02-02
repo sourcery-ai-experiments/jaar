@@ -88,8 +88,8 @@ def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
-    # for group_person_id in bob1_agenda._groups.values():
-    #     print(f"bob1_agenda {group_person_id.person_id=}")
+    # for x_group_id in bob1_agenda._groups.values():
+    #     print(f"bob1_agenda {x_group_id.party_id=}")
 
     assert len(bob1_agenda._groups) == 2
     assert bob1_agenda.get_groupunit(run_text) != None
@@ -406,8 +406,8 @@ def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
     assert abs(bob_family_bl._agenda_debt - yao_family_bl._agenda_debt) < 0.0001
 
     # for balanceline in bob_agendar_bl.values():
-    #     if balanceline.person_id != fam_text:
-    #         assert balanceline == yao_agendar_bl.get(balanceline.person_id)
+    #     if balanceline.party_id != fam_text:
+    #         assert balanceline == yao_agendar_bl.get(balanceline.party_id)
     assert bob_agendar_bl == yao_agendar_bl
     # assert x_agenda1._idearoot._balancelines == bob2_agenda._idearoot._balancelines
     # assert x_agenda1._idearoot == bob2_agenda._idearoot
@@ -427,7 +427,7 @@ def test_AgendaUnit__meld_originlinks_CorrectlySetsOriginLinks():
     # THEN
     assert len(bob_agenda._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
-    bob_sue_originunit.set_originlink(person_id=sue_text, weight=sue_weight)
+    bob_sue_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
     assert bob_agenda._originunit == bob_sue_originunit
 
 
@@ -457,7 +457,7 @@ def test_AgendaUnit_meld_OriginUnitsCorrectlySet():
 
     # THEN
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(person_id=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
     assert len(bob_agenda._originunit._links) == 1
     assert bob_agenda._originunit == sue_originunit
     bob_free_idea = bob_agenda.get_idea_obj(free_road)

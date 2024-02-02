@@ -374,21 +374,21 @@ def test_agenda4party_Exists():
     vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
-    sandy_person_id = PartyID(sandy_text)
-    x_agenda.add_partyunit(party_id=sandy_person_id)
-    x_balancelink = balancelink_shop(group_id=sandy_person_id)
+    sandy_party_id = PartyID(sandy_text)
+    x_agenda.add_partyunit(party_id=sandy_party_id)
+    x_balancelink = balancelink_shop(group_id=sandy_party_id)
     yrx = x_agenda._idearoot
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
     # WHEN
     sandy_agenda4party = x_agenda.get_agenda4party(
-        beliefs=None, party_id=sandy_person_id
+        beliefs=None, party_id=sandy_party_id
     )
 
     # THEN
     assert sandy_agenda4party
     assert str(type(sandy_agenda4party)).find(".agenda.AgendaUnit'>")
-    assert sandy_agenda4party._agent_id == sandy_person_id
+    assert sandy_agenda4party._agent_id == sandy_party_id
 
 
 def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
@@ -406,22 +406,22 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
     x_agenda.add_idea(vaccum_idea, parent_road=work_road)
 
-    billy_person_id = PartyID("billy")
-    x_agenda.add_partyunit(party_id=billy_person_id)
-    billy_bl = balancelink_shop(group_id=billy_person_id)
+    billy_party_id = PartyID("billy")
+    x_agenda.add_partyunit(party_id=billy_party_id)
+    billy_bl = balancelink_shop(group_id=billy_party_id)
     yrx = x_agenda._idearoot
     yrx._kids[week_text].set_balancelink(balancelink=billy_bl)
     yrx._kids[feed_text].set_balancelink(balancelink=billy_bl)
     nation_text = "nation-state"
     yrx._kids[nation_text].set_balancelink(balancelink=billy_bl)
 
-    sandy_person_id = PartyID(sandy_text)
-    x_agenda.add_partyunit(party_id=sandy_person_id)
-    sandy_bl = balancelink_shop(group_id=sandy_person_id)
+    sandy_party_id = PartyID(sandy_text)
+    x_agenda.add_partyunit(party_id=sandy_party_id)
+    sandy_bl = balancelink_shop(group_id=sandy_party_id)
     yrx._kids[work_text]._kids[email_text].set_balancelink(balancelink=sandy_bl)
 
     # WHEN
-    sandy_agenda4party = x_agenda.get_agenda4party(sandy_person_id, beliefs=None)
+    sandy_agenda4party = x_agenda.get_agenda4party(sandy_party_id, beliefs=None)
 
     # THEN
     assert len(sandy_agenda4party._idearoot._kids) > 0

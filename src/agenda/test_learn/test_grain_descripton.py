@@ -9,7 +9,7 @@ from src.agenda.learn import (
     grainunit_shop,
 )
 from src.agenda.examples.example_learns import (
-    get_sue_personroad,
+    get_sue_proad,
     get_yao_example_roadunit as yao_roadunit,
 )
 
@@ -682,7 +682,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
 # def test_LearnUnit_get_sue_learnunit_example1_ContainsGrainUnits():
 #     # GIVEN
-#     sue_text = get_single_roadnode("PersonRoad", get_sue_personroad(), "PersonID")
+#     sue_text = get_single_roadnode("PersonRoad", get_sue_proad(), "PersonID")
 
 #     rico_text = "Rico"
 #     carm_text = "Carmen"
