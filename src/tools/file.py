@@ -122,14 +122,16 @@ def rename_dir(src, dst):
 def get_proad_dir(x_proad: PersonRoad, delimiter: str = None):
     if delimiter is None:
         delimiter = default_road_delimiter_if_none(delimiter)
-    # person_id_node = get_node("PersonRoad", x_proad, "PersonID", delimiter)
+    person_id_node = get_node("PersonRoad", x_proad, "PersonID", delimiter)
     problem_id_node = get_node("PersonRoad", x_proad, "ProblemID", delimiter)
     healer_id_node = get_node("PersonRoad", x_proad, "HealerID", delimiter)
     economy_id_node = get_node("PersonRoad", x_proad, "EconomyID", delimiter)
 
     # if person_id_node != None:
     #     x_proad = f"/{person_id_node}"
-    x_proad = f"/problems/{problem_id_node}" if problem_id_node != None else ""
+    x_proad = f"/{person_id_node}" if person_id_node != None else ""
+    if problem_id_node != None:
+        x_proad = f"{x_proad}/problems/{problem_id_node}"
     if healer_id_node != None:
         x_proad = f"{x_proad}/healers/{healer_id_node}"
     if economy_id_node != None:

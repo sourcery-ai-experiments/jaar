@@ -234,10 +234,10 @@ def test_get_proad_dir_ReturnsCorrectObj():
     leg_proad = create_proad(yao_text, leg_text)
     sue_proad = create_proad(yao_text, leg_text, sue_text)
     run_proad = create_proad(yao_text, leg_text, sue_text, run_text)
-    yao_dir = f""
-    leg_dir = f"/problems/{leg_text}"
-    sue_dir = f"/problems/{leg_text}/healers/{sue_text}"
-    run_dir = f"/problems/{leg_text}/healers/{sue_text}/economys/{run_text}"
+    yao_dir = f"/{yao_text}"
+    leg_dir = f"/{yao_text}/problems/{leg_text}"
+    sue_dir = f"/{yao_text}/problems/{leg_text}/healers/{sue_text}"
+    run_dir = f"/{yao_text}/problems/{leg_text}/healers/{sue_text}/economys/{run_text}"
 
     # WHEN / THEN
     assert yao_dir == get_proad_dir(yao_proad)

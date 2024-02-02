@@ -270,12 +270,13 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
     knee_text = "knee discomfort"
     yao_personunit.create_problemunit_from_problem_id(knee_text)
     knee_problem = yao_personunit.get_problem_obj(knee_text)
-    knee_problem.set_healerlink(healerlink_shop(yao_text))
-    yao_healerlink = knee_problem.get_healerlink(yao_text)
     sue_text = "Sue"
+    knee_problem.set_healerlink(healerlink_shop(sue_text))
+    sue_healerlink = knee_problem.get_healerlink(sue_text)
     diet_text = "diet"
-    yao_healerlink.set_economylink(economylink_shop(diet_text))
+    sue_healerlink.set_economylink(economylink_shop(diet_text))
     assert yao_personunit._economys == {}
+    assert yao_personunit.healer_exists(sue_text)
     assert yao_personunit._primary_contract_road is None
 
     # WHEN
@@ -294,7 +295,7 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
     # print(f"{diet_economy.economys_dir=}")
     assert diet_economy.economys_dir == get_proad_dir(diet_proad)
     assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
-        knee_text, yao_text, diet_text
+        knee_text, sue_text, diet_text
     )
 
 
