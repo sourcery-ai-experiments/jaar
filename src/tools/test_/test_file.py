@@ -1,9 +1,5 @@
-from src.tools.file import (
-    dir_files,
-    save_file,
-    open_file,
-    count_files,
-)
+from src._prime.road import create_proad
+from src.tools.file import dir_files, save_file, open_file, count_files, get_proad_dir
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
     env_dir_setup_cleanup,
@@ -226,3 +222,25 @@ def test_count_files_ReturnsNoneIfDirectoryDoesNotExist(
 
     # THEN
     assert dir_count is None
+
+
+def test_get_proad_dir_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    leg_text = "leg pain"
+    sue_text = "Sue"
+    run_text = "run"
+    yao_proad = create_proad(yao_text)
+    leg_proad = create_proad(yao_text, leg_text)
+    sue_proad = create_proad(yao_text, leg_text, sue_text)
+    run_proad = create_proad(yao_text, leg_text, sue_text, run_text)
+    yao_dir = f""
+    leg_dir = f"/problems/{leg_text}"
+    sue_dir = f"/problems/{leg_text}/healers/{sue_text}"
+    run_dir = f"/problems/{leg_text}/healers/{sue_text}/economys/{run_text}"
+
+    # WHEN / THEN
+    assert yao_dir == get_proad_dir(yao_proad)
+    assert leg_dir == get_proad_dir(leg_proad)
+    assert sue_dir == get_proad_dir(sue_proad)
+    assert run_dir == get_proad_dir(run_proad)

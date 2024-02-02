@@ -1,3 +1,8 @@
+from src._prime.road import (
+    PersonRoad,
+    get_single_roadnode as get_node,
+    default_road_delimiter_if_none,
+)
 from os import (
     path as os_path,
     makedirs as os_makedirs,
@@ -112,3 +117,22 @@ def dir_files(
 
 def rename_dir(src, dst):
     os_rename(src=src, dst=dst)
+
+
+def get_proad_dir(x_proad: PersonRoad, delimiter: str = None):
+    if delimiter is None:
+        delimiter = default_road_delimiter_if_none(delimiter)
+    # person_id_node = get_node("PersonRoad", x_proad, "PersonID", delimiter)
+    problem_id_node = get_node("PersonRoad", x_proad, "ProblemID", delimiter)
+    healer_id_node = get_node("PersonRoad", x_proad, "HealerID", delimiter)
+    economy_id_node = get_node("PersonRoad", x_proad, "EconomyID", delimiter)
+
+    # if person_id_node != None:
+    #     x_proad = f"/{person_id_node}"
+    x_proad = f"/problems/{problem_id_node}" if problem_id_node != None else ""
+    if healer_id_node != None:
+        x_proad = f"{x_proad}/healers/{healer_id_node}"
+    if economy_id_node != None:
+        x_proad = f"{x_proad}/economys/{economy_id_node}"
+
+    return x_proad

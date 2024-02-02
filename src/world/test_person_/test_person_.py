@@ -1,11 +1,19 @@
-from src._prime.road import (
-    create_road,
-    default_road_delimiter_if_none,
+from src._prime.road import create_road, default_road_delimiter_if_none, create_proad
+from src.economy.economy import (
+    get_temp_env_problem_id,
+    get_temp_env_economy_id,
+    get_temp_env_healer_id,
+    get_temp_env_person_id,
 )
 from src.world.problem import healerlink_shop, economylink_shop
 from src.world.person import PersonUnit, personunit_shop
 from src.world.problem import problemunit_shop
 from pytest import raises as pytest_raises
+from src.world.examples.world_env_kit import (
+    get_temp_world_dir,
+    worlds_dir_setup_cleanup,
+)
+from src.tools.file import get_proad_dir
 
 
 def test_PersonUnit_exists():
@@ -216,23 +224,26 @@ def test_PersonUnit_set_economyunit_RaisesErrorIfNoAssociatedProblemExists():
     )
 
 
-def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
+def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v1():
     # GIVEN
     yao_text = "Yao"
     yao_person_dir = f"/persons/{yao_text}"
     yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
     knee_text = "knee discomfort"
+    diet_problem_dir = f"/problems/{knee_text}"
     yao_personunit.create_problemunit_from_problem_id(knee_text)
-    diet_text = "diet"
     knee_problem = yao_personunit.get_problem_obj(knee_text)
     knee_problem.set_healerlink(healerlink_shop(yao_text))
     yao_healerlink = knee_problem.get_healerlink(yao_text)
+    diet_healer_dir = f"{diet_problem_dir}/healers/{yao_text}"
+    diet_text = "diet"
     yao_healerlink.set_economylink(economylink_shop(diet_text))
+    diet_economy_dir = f"{diet_healer_dir}/economys/{diet_text}"
     assert yao_personunit._economys == {}
     assert yao_personunit._primary_contract_road is None
 
     # WHEN
-    yao_personunit.set_economyunit(economy_id=diet_text)
+    yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
 
     # THEN
     # diet_economy = yao_person.get_economy()
@@ -241,7 +252,47 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit():
     diet_economy = yao_personunit._economys.get(diet_text)
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
-    assert diet_economy.economys_dir == f"{yao_person_dir}/economys"
+    assert diet_economy._healer_id == yao_text
+    print(f"         {diet_economy_dir=}")
+    print(f"{diet_economy.economys_dir=}")
+    diet_proad = create_proad(yao_text, knee_text, yao_text, diet_text)
+    assert diet_economy.economys_dir == get_proad_dir(diet_proad)
+    assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
+        knee_text, yao_text, diet_text
+    )
+
+
+def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
+    # GIVEN
+    yao_text = "Yao"
+    yao_person_dir = f"/persons/{yao_text}"
+    yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
+    knee_text = "knee discomfort"
+    yao_personunit.create_problemunit_from_problem_id(knee_text)
+    knee_problem = yao_personunit.get_problem_obj(knee_text)
+    knee_problem.set_healerlink(healerlink_shop(yao_text))
+    yao_healerlink = knee_problem.get_healerlink(yao_text)
+    sue_text = "Sue"
+    diet_text = "diet"
+    yao_healerlink.set_economylink(economylink_shop(diet_text))
+    assert yao_personunit._economys == {}
+    assert yao_personunit._primary_contract_road is None
+
+    # WHEN
+    yao_personunit.set_economyunit(
+        diet_text, x_problem_id=knee_text, x_healer_id=sue_text
+    )
+
+    # THEN
+    # diet_economy = yao_person.get_economy()
+    diet_economy = yao_personunit._economys.get(diet_text)
+    assert diet_economy != None
+    assert diet_economy.economy_id == diet_text
+    assert diet_economy._healer_id == sue_text
+    diet_proad = create_proad(yao_text, knee_text, sue_text, diet_text)
+    # print(f"         {diet_economy_dir=}")
+    # print(f"{diet_economy.economys_dir=}")
+    assert diet_economy.economys_dir == get_proad_dir(diet_proad)
     assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
         knee_text, yao_text, diet_text
     )
@@ -320,7 +371,8 @@ def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     yao_text = "Yao"
     yao_personunit = personunit_shop(person_id=yao_text)
     diet_text = "diet"
-    yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
+    knee_text = "knee"
+    yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
 
     # WHEN
     diet_economy = yao_personunit.get_economyunit(diet_text)
@@ -328,7 +380,12 @@ def test_PersonUnit_get_economyunit_CorrectlyGetsEconomyUnit():
     # THEN
     assert diet_economy != None
     assert diet_economy.economy_id == diet_text
-    assert diet_economy.economys_dir == f"{yao_personunit.person_dir}/economys"
+
+    diet_proad = create_proad(yao_text, knee_text, yao_text, diet_text)
+    # diet_economy_dir = get_proad_dir(diet_proad)
+    # print(f"         {diet_economy_dir=}")
+    # print(f"{diet_economy.economys_dir=}")
+    assert diet_economy.economys_dir == get_proad_dir(diet_proad)
 
 
 def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():
@@ -337,11 +394,17 @@ def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():
     yao_person_dir = f"/persons/{yao_text}"
     yao_personunit = personunit_shop(person_id=yao_text, person_dir=yao_person_dir)
     diet_text = "diet"
-    yao_personunit.set_economyunit(diet_text, x_problem_id="Knee")
+    knee_text = "knee"
+    yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
     before_diet_economy = yao_personunit.get_economyunit(diet_text)
     assert before_diet_economy != None
     assert before_diet_economy.economy_id == diet_text
-    assert before_diet_economy.economys_dir == f"{yao_person_dir}/economys"
+
+    diet_proad = create_proad(yao_text, knee_text, yao_text, diet_text)
+    # diet_economy_dir = get_proad_dir(diet_proad)
+    # print(f"                {diet_economy_dir=}")
+    # print(f"{before_diet_economy.economys_dir=}")
+    assert before_diet_economy.economys_dir == get_proad_dir(diet_proad)
 
     # WHEN
     yao_personunit.del_economyunit(diet_text)
@@ -423,28 +486,19 @@ def test_PersonUnit_make_personroad_RaisesException():
     arm_text = "Arm"
     with pytest_raises(Exception) as excinfo:
         yao_personunit.make_proad(arm_text)
-    assert (
-        str(excinfo.value)
-        == f"PersonRoad make failure: ProblemID '{arm_text}' does not exist."
-    )
+    assert str(excinfo.value) == f"proad: ProblemID '{arm_text}' does not exist."
 
     # WHEN / THEN
     bob_text = "Bob"
     with pytest_raises(Exception) as excinfo:
         yao_personunit.make_proad(knee_text, bob_text)
-    assert (
-        str(excinfo.value)
-        == f"PersonRoad make failure: HealerID '{bob_text}' does not exist."
-    )
+    assert str(excinfo.value) == f"proad: HealerID '{bob_text}' does not exist."
 
     # WHEN / THEN
     idaho_text = "Idaho"
     with pytest_raises(Exception) as excinfo:
         yao_personunit.make_proad(knee_text, sue_text, idaho_text)
-    assert (
-        str(excinfo.value)
-        == f"PersonRoad make failure: EconomyID '{idaho_text}' does not exist."
-    )
+    assert str(excinfo.value) == f"proad: EconomyID '{idaho_text}' does not exist."
 
 
 def test_PersonUnit_get_problemunits_ReturnsCorrectObj():

@@ -58,25 +58,24 @@ class PersonUnit:
             economy_id=economy_id,
             delimiter=self._road_delimiter,
         )
-        problem_id_node = self._get_single_proad_node(x_proad, "ProblemID")
-        if problem_id_node != None and self.problem_exists(problem_id_node) == False:
-            raise PRoadFailureException(
-                f"PersonRoad make failure: ProblemID '{problem_id_node}' does not exist."
-            )
-        healer_id_node = self._get_single_proad_node(x_proad, "HealerID")
-        if healer_id_node != None and self.healer_exists(healer_id_node) == False:
-            raise PRoadFailureException(
-                f"PersonRoad make failure: HealerID '{healer_id_node}' does not exist."
-            )
-        economy_id_node = self._get_single_proad_node(x_proad, "EconomyID")
-        if (
-            economy_id_node != None
-            and self.economylink_exists(economy_id_node) == False
-        ):
-            raise PRoadFailureException(
-                f"PersonRoad make failure: EconomyID '{economy_id_node}' does not exist."
-            )
 
+        problem_id_node = self._get_single_proad_node(x_proad, "ProblemID")
+        if problem_id_node != None:
+            problem_id_text = f"proad: ProblemID '{problem_id_node}' does not exist."
+            if self.problem_exists(problem_id_node) == False:
+                raise PRoadFailureException(problem_id_text)
+
+        healer_id_node = self._get_single_proad_node(x_proad, "HealerID")
+        if healer_id_node != None:
+            healer_id_text = f"proad: HealerID '{healer_id_node}' does not exist."
+            if self.healer_exists(healer_id_node) == False:
+                raise PRoadFailureException(healer_id_text)
+
+        economy_id_node = self._get_single_proad_node(x_proad, "EconomyID")
+        if economy_id_node != None:
+            economy_id_text = f"proad: EconomyID '{economy_id_node}' does not exist."
+            if self.economylink_exists(economy_id_node) == False:
+                raise PRoadFailureException(economy_id_text)
         return x_proad
 
     def _get_single_proad_node(
@@ -147,6 +146,7 @@ class PersonUnit:
         economy_id: EconomyID,
         replace: bool = False,
         x_problem_id: ProblemID = None,
+        x_healer_id: HealerID = None,
     ):
         if x_problem_id != None:
             self.create_problemunit_from_problem_id(x_problem_id)
@@ -163,13 +163,17 @@ class PersonUnit:
         if self.economyunit_exists(economy_id) == False or (
             self.economyunit_exists(economy_id) and replace
         ):
-            economys_dir = f"{self.person_dir}/economys"
-            self._economys[economy_id] = economyunit_shop(
-                economy_id=economy_id,
-                economys_dir=economys_dir,
-                _manager_person_id=self.person_id,
-                _road_delimiter=self._road_delimiter,
+            if x_healer_id is None:
+                x_healer_id = self.person_id
+            x_economyunit = economyunit_shop(
+                economy_id, _road_delimiter=self._road_delimiter
             )
+            x_economyunit.set_proad_nodes(self.person_id, x_problem_id, x_healer_id)
+            x_problem_dir = f"/problems/{x_economyunit._problem_id}"
+            x_healer_dir = f"{x_problem_dir}/healers/{x_economyunit._healer_id}"
+            x_economy_dir = f"{x_healer_dir}/economys/{x_economyunit.economy_id}"
+            x_economyunit.economys_dir = x_economy_dir
+            self._economys[economy_id] = x_economyunit
 
         if self._primary_contract_road is None and len(self._economys) == 1:
             if x_problem_id is None:

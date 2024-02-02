@@ -1,5 +1,9 @@
 from src.world.person import personunit_shop, PersonUnit
 from src.tools.python import x_get_dict
+from src.world.examples.world_env_kit import (
+    get_temp_world_dir,
+    worlds_dir_setup_cleanup,
+)
 
 
 def test_personunit_get_dict_CorrectlyGetsDict_simple():
