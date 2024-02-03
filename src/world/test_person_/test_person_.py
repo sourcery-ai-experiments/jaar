@@ -24,6 +24,7 @@ def test_PersonUnit_exists():
     assert x_person.person_id is None
     assert x_person.person_dir is None
     assert x_person._economys is None
+    assert x_person._problembeams is None
     assert x_person._problems is None
     assert x_person._primary_contract_road is None
     assert x_person._primary_contract_active is None
@@ -74,6 +75,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person.person_id == sue_text
     assert x_person.person_dir == f"/persons/{sue_text}"
     assert x_person._economys == {}
+    assert x_person._problembeams == {}
     assert x_person._problems == {}
     assert x_person._primary_contract_road == sue_personroad
     assert x_person._primary_contract_active

@@ -37,10 +37,75 @@ class PRoadFailureException(Exception):
 
 
 @dataclass
+class ProblemBeam:
+    person_id: str = None
+    healer_id: str = None
+    healer_weight: int = None
+    healer_relative_weight: float = None
+    healer_person_importance: float = None
+    problem_id: str = None
+    problem_weight: int = None
+    problem_relative_weight: float = None
+    problem_person_importance: float = None
+    economy_id: str = None
+    economy_weight: int = None
+    economy_relative_weight: float = None
+    economy_person_importance: float = None
+    _road_delimiter: str = None
+    _proad: PersonRoad = None
+
+    def set_proad(self):
+        self._proad = create_proad(
+            person_id=self.person_id,
+            problem_id=self.problem_id,
+            healer_id=self.healer_id,
+            economy_id=self.economy_id,
+            delimiter=self._road_delimiter,
+        )
+
+
+def problembeam_shop(
+    person_id: str = None,
+    healer_id: str = None,
+    healer_weight: int = None,
+    healer_relative_weight: float = None,
+    healer_person_importance: float = None,
+    problem_id: str = None,
+    problem_weight: int = None,
+    problem_relative_weight: float = None,
+    problem_person_importance: float = None,
+    economy_id: str = None,
+    economy_weight: int = None,
+    economy_relative_weight: float = None,
+    economy_person_importance: float = None,
+    _road_delimiter: str = None,
+):
+    x_problembeam = ProblemBeam(
+        person_id=person_id,
+        healer_id=healer_id,
+        healer_weight=healer_weight,
+        healer_relative_weight=healer_relative_weight,
+        healer_person_importance=healer_person_importance,
+        problem_id=problem_id,
+        problem_weight=problem_weight,
+        problem_relative_weight=problem_relative_weight,
+        problem_person_importance=problem_person_importance,
+        economy_id=economy_id,
+        economy_weight=economy_weight,
+        economy_relative_weight=economy_relative_weight,
+        economy_person_importance=economy_person_importance,
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+    )
+    x_problembeam.set_proad()
+    return x_problembeam
+
+
+@dataclass
 class PersonUnit:
     person_id: PersonID = None
     person_dir: str = None
     _economys: dict[EconomyID:EconomyUnit] = None
+    _problembeams: dict[PersonRoad:ProblemBeam] = None
     _problems: dict[ProblemID:ProblemUnit] = None
     _primary_contract_road: PersonRoad = None
     _primary_contract_active: bool = None
@@ -118,7 +183,7 @@ class PersonUnit:
     def del_problemunit(self, x_problem_id: ProblemID):
         self._problems.pop(x_problem_id)
 
-    def set_problemunits_weight_metrics(self):
+    def set_person_metrics(self):
         total_problemunits_weight = sum(
             x_problemunit.weight for x_problemunit in self._problems.values()
         )
@@ -126,6 +191,31 @@ class PersonUnit:
             x_problemunit.set_relative_weight(
                 x_problemunit.weight / total_problemunits_weight
             )
+        self._set_problembeams()
+
+    def _set_problembeams(self):
+        self._problembeams = {}
+        for x_problemunit in self.get_problemunits().values():
+            for x_healerlink in x_problemunit.get_healerlink_objs().values():
+                for x_economylink in x_healerlink._economylinks.values():
+                    x_problembeam = problembeam_shop(
+                        person_id=self.person_id,
+                        problem_id=x_problemunit.problem_id,
+                        problem_weight=x_problemunit.weight,
+                        problem_relative_weight=x_problemunit._relative_weight,
+                        problem_person_importance=x_problemunit._manager_importance,
+                        healer_id=x_healerlink.healer_id,
+                        healer_weight=x_healerlink.weight,
+                        healer_relative_weight=x_healerlink._relative_weight,
+                        healer_person_importance=x_healerlink._manager_importance,
+                        economy_id=x_economylink.economy_id,
+                        economy_weight=x_economylink.weight,
+                        economy_relative_weight=x_economylink._relative_weight,
+                        economy_person_importance=x_economylink._manager_importance,
+                        _road_delimiter=self._road_delimiter,
+                    )
+                    x_problembeam.set_proad()
+                    self._problembeams[x_problembeam._proad] = x_problembeam
 
     def economylink_exists(self, economy_id: EconomyID) -> bool:
         return any(
@@ -297,6 +387,7 @@ def personunit_shop(
         person_dir=person_dir,
         _economys={},
         _problems={},
+        _problembeams={},
         _primary_contract_road=_primary_contract_road,
         _primary_contract_active=_primary_contract_active,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),

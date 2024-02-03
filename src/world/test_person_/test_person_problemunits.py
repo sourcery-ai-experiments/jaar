@@ -1,4 +1,4 @@
-from src.world.person import personunit_shop
+from src.world.person import personunit_shop, problembeam_shop
 from src.world.problem import problemunit_shop, healerlink_shop, economylink_shop
 from src.world.examples.world_env_kit import (
     get_temp_world_dir,
@@ -6,7 +6,7 @@ from src.world.examples.world_env_kit import (
 )
 
 
-def test_PersonUnit_set_problemunits_weight_metrics_SetsCorrectlyV1(
+def test_PersonUnit_set_person_metrics_SetsCorrectlyV1(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -31,7 +31,7 @@ def test_PersonUnit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     assert rain_problemunit._relative_weight is None
 
     # WHEN
-    yao_personunit.set_problemunits_weight_metrics()
+    yao_personunit.set_person_metrics()
 
     # THEN
     assert knee_problemunit._relative_weight == 0.6
@@ -42,7 +42,7 @@ def test_PersonUnit_set_problemunits_weight_metrics_SetsCorrectlyV1(
     assert rain_problemunit._manager_importance == 0.05
 
 
-def test_PersonUnit_set_problemunits_weight_metrics_SetsCorrectlyV2(
+def test_PersonUnit_set_person_metrics_SetsCorrectlyV2(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -85,7 +85,7 @@ def test_PersonUnit_set_problemunits_weight_metrics_SetsCorrectlyV2(
     yao_personunit.set_problemunit(x_rain_problemunit)
 
     # WHEN
-    yao_personunit.set_problemunits_weight_metrics()
+    yao_personunit.set_person_metrics()
 
     # THEN
     z_knee_problemunit = yao_personunit.get_problem_obj(knee_text)
@@ -171,3 +171,60 @@ def test_PersonUnit_popup_visualization_CorrectlyPopsUpVisualization(
     print(f"{view_fig_in_test=}")
     if view_fig_in_test:
         yao_personunit.popup_visualization(economylink_by_problem=True, show_fig=True)
+
+
+def test_PersonUnit_set_person_metrics_CorrectlySets_problembeams():
+    # GIVEN
+    yao_text = "Yao"
+    yao_personunit = personunit_shop(yao_text)
+    knee_text = "knee"
+    bore_text = "bore"
+    rain_text = "rain"
+    x_knee_problemunit = problemunit_shop(knee_text, 60)
+    x_bore_problemunit = problemunit_shop(bore_text, 35)
+    x_rain_problemunit = problemunit_shop(rain_text, 5)
+    tim_text = "Tim"
+    sue_text = "Sue"
+    ray_text = "Ray"
+    knee_tim_healerlink = healerlink_shop(tim_text, weight=10)
+    bore_sue_healerlink = healerlink_shop(sue_text, weight=2)
+    bore_tim_healerlink = healerlink_shop(tim_text, weight=3)
+    rain_sue_healerlink = healerlink_shop(sue_text, weight=7)
+    rain_tim_healerlink = healerlink_shop(tim_text, weight=15)
+    rain_ray_healerlink = healerlink_shop(ray_text, weight=5)
+    plan1_text = "plan1"
+    plan2_text = "plan2"
+    plan3_text = "plan3"
+    knee_tim_healerlink.set_economylink(economylink_shop(plan1_text, 7))
+    bore_sue_healerlink.set_economylink(economylink_shop(plan2_text, 2))
+    bore_sue_healerlink.set_economylink(economylink_shop(plan3_text, 23))
+    bore_tim_healerlink.set_economylink(economylink_shop(plan3_text, 8))
+    rain_sue_healerlink.set_economylink(economylink_shop(plan3_text, 11))
+    rain_ray_healerlink.set_economylink(economylink_shop(plan3_text, 11))
+    rain_tim_healerlink.set_economylink(economylink_shop(plan1_text, 2))
+    x_knee_problemunit.set_healerlink(knee_tim_healerlink)
+    x_bore_problemunit.set_healerlink(bore_sue_healerlink)
+    x_bore_problemunit.set_healerlink(bore_tim_healerlink)
+    x_rain_problemunit.set_healerlink(rain_sue_healerlink)
+    x_rain_problemunit.set_healerlink(rain_ray_healerlink)
+    x_rain_problemunit.set_healerlink(rain_tim_healerlink)
+    yao_personunit.set_problemunit(x_knee_problemunit)
+    yao_personunit.set_problemunit(x_bore_problemunit)
+    yao_personunit.set_problemunit(x_rain_problemunit)
+    assert yao_personunit._problembeams == {}
+
+    # WHEN
+    yao_personunit.set_person_metrics()
+
+    # THEN
+    assert len(yao_personunit._problembeams) == 7
+    # x_yao_knee_tim_plan1_problembeam = problembeam_shop(person_id=)
+
+    # Confirm problembeams do not accumulate
+    # WHEN
+    yao_personunit.del_problemunit(knee_text)
+
+    # THEN
+    yao_personunit.set_person_metrics()
+    assert len(yao_personunit._problembeams) != 7
+    assert len(yao_personunit._problembeams) == 6
