@@ -13,17 +13,17 @@ from src.economy.treasury_sqlstr import (
 )
 
 
-def get_partyunit_table_treasurying_attr_set_count_sqlstr():
-    # def get_partyunit_table_treasurying_attr_set_count_sqlstr(currency_master:):
+def get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr():
+    # def get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr(currency_master:):
     #     return f"""
     # SELECT COUNT(*)
-    # FROM partyunit
+    # FROM agenda_partyunit
     # WHERE _treasury_tax_paid IS NOT NULL
     #     AND agent_id = {currency_master}
     # """
     return """
 SELECT COUNT(*) 
-FROM partyunit
+FROM agenda_partyunit
 WHERE _treasury_tax_paid IS NOT NULL
 ;
 """
@@ -53,11 +53,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     x_economy.save_forum_agenda(tom_agentunit)
 
     x_economy.refresh_treasury_forum_agendas_data()
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 4
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (
@@ -139,11 +139,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
     x_economy.save_forum_agenda(ava_agenda)
     x_economy.refresh_treasury_forum_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 6
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (
@@ -224,11 +224,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
 
     x_economy.refresh_treasury_forum_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 8
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (
@@ -310,11 +310,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
 
     x_economy.refresh_treasury_forum_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (
@@ -399,11 +399,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 
     x_economy.refresh_treasury_forum_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (
@@ -468,11 +468,11 @@ def test_economy_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitT
 
     x_economy.refresh_treasury_forum_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("partyunit")
+    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_economy.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
-        get_partyunit_table_treasurying_attr_set_count_sqlstr()
+        get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
     assert (

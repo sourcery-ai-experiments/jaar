@@ -11,10 +11,10 @@ from src.economy.examples.economy_env_kit import (
 from src.economy.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
-    get_partyunit_table_update_treasury_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr,
     PartyTreasuryUnit,
     get_partytreasuryunit_dict,
-    get_partyunit_table_insert_sqlstr,
+    get_agenda_partyunit_table_insert_sqlstr,
     get_partyview_dict,
     PartyDBUnit,
     RiverLedgerUnit,
@@ -23,7 +23,7 @@ from src.economy.treasury_sqlstr import (
 )
 
 
-def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_economy_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -55,7 +55,7 @@ def test_economy_get_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert tim_partyunit._treasury_credit_score == tim_credit_score
     assert tim_partyunit._treasury_voice_rank == tim_voice_rank
 
-    insert_sqlstr = get_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
+    insert_sqlstr = get_agenda_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
     print(insert_sqlstr)
 
     # WHEN
@@ -170,7 +170,9 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     sal_partyunit._agenda_intent_ratio_credit = 0.5
     sal_partyunit._agenda_intent_ratio_debt = 0.4
 
-    insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(bob_agenda, sal_partyunit)
+    insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(
+        bob_agenda, sal_partyunit
+    )
 
     tim_text = "tim"
     tim_partyunit = partyunit_shop(tim_text, _creditor_live=True, _debtor_live=False)
@@ -181,7 +183,9 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     tim_partyunit._agenda_intent_ratio_credit = 0.051
     tim_partyunit._agenda_intent_ratio_debt = 0.049
 
-    insert_sqlstr_tim = get_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
+    insert_sqlstr_tim = get_agenda_partyunit_table_insert_sqlstr(
+        bob_agenda, tim_partyunit
+    )
 
     with x_economy.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr_sal)
@@ -394,7 +398,7 @@ def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryin
     assert x_agenda._partys.get(elu_text)._treasury_tax_diff is None
 
 
-def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesTable01(
+def test_get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example economy with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -413,7 +417,9 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
     tom_partyunit._agenda_intent_ratio_credit = 0.5
     tom_partyunit._agenda_intent_ratio_debt = 0.411
 
-    insert_sqlstr_tom = get_partyunit_table_insert_sqlstr(bob_agenda, tom_partyunit)
+    insert_sqlstr_tom = get_agenda_partyunit_table_insert_sqlstr(
+        bob_agenda, tom_partyunit
+    )
     sal_partyunit = partyunit_shop(sal_text, _creditor_live=True, _debtor_live=False)
     sal_partyunit._agenda_credit = 0.9
     sal_partyunit._agenda_debt = 0.8
@@ -422,7 +428,9 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
     sal_partyunit._agenda_intent_ratio_credit = 0.5
     sal_partyunit._agenda_intent_ratio_debt = 0.455
 
-    insert_sqlstr_sal = get_partyunit_table_insert_sqlstr(bob_agenda, sal_partyunit)
+    insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(
+        bob_agenda, sal_partyunit
+    )
 
     river_block_1 = RiverBlockUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
     river_block_2 = RiverBlockUnit(bob_text, bob_text, sal_text, 0.2, 1.0, 0, None, 1)
@@ -442,7 +450,7 @@ def test_get_partyunit_table_update_treasury_tax_paid_sqlstr_CorrectlyPopulatesT
         treasury_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_partyunit_table_update_treasury_tax_paid_sqlstr(
+    mstr_sqlstr = get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr(
         currency_agent_id=bob_text
     )
     with x_economy.get_treasury_conn() as treasury_conn:

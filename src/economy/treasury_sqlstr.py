@@ -498,7 +498,7 @@ SELECT
 , _treasury_tax_paid tax_total
 , _agenda_intent_ratio_debt debt
 , (_agenda_intent_ratio_debt - _treasury_tax_paid) tax_diff
-FROM partyunit
+FROM agenda_partyunit
 WHERE currency_master = '{currency_agent_id}'
     AND _treasury_tax_paid IS NOT NULL
 ;
@@ -586,10 +586,10 @@ WHERE agent_id = '{agenda._agent_id}'
 
 
 # partyunit
-def get_partyunit_table_create_sqlstr() -> str:
+def get_agenda_partyunit_table_create_sqlstr() -> str:
     """Create table that holds the starting river metrics for every agenda's party. All the metrics."""
     return """
-CREATE TABLE IF NOT EXISTS partyunit (
+CREATE TABLE IF NOT EXISTS agenda_partyunit (
   agent_id VARCHAR(255) NOT NULL 
 , party_id VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
@@ -613,71 +613,71 @@ CREATE TABLE IF NOT EXISTS partyunit (
 """
 
 
-def get_partyunit_table_update_treasury_tax_paid_sqlstr(
+def get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr(
     currency_agent_id: PersonID,
 ) -> str:
     return f"""
-UPDATE partyunit
+UPDATE agenda_partyunit
 SET _treasury_tax_paid = (
     SELECT SUM(block.currency_close-block.currency_start) 
     FROM river_block block
     WHERE block.currency_master='{currency_agent_id}' 
         AND block.dst_agent_id=block.currency_master
-        AND block.src_agent_id = partyunit.party_id
+        AND block.src_agent_id = agenda_partyunit.party_id
     )
 WHERE EXISTS (
     SELECT block.currency_close
     FROM river_block block
-    WHERE partyunit.agent_id='{currency_agent_id}' 
-        AND partyunit.party_id = block.dst_agent_id
+    WHERE agenda_partyunit.agent_id='{currency_agent_id}' 
+        AND agenda_partyunit.party_id = block.dst_agent_id
 )
 ;
 """
 
 
-def get_partyunit_table_update_credit_score_sqlstr(
+def get_agenda_partyunit_table_update_credit_score_sqlstr(
     currency_agent_id: PersonID,
 ) -> str:
     return f"""
-UPDATE partyunit
+UPDATE agenda_partyunit
 SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
-    WHERE reach.currency_master = partyunit.agent_id
-        AND reach.src_agent_id = partyunit.party_id
+    WHERE reach.currency_master = agenda_partyunit.agent_id
+        AND reach.src_agent_id = agenda_partyunit.party_id
     )
-WHERE partyunit.agent_id = '{currency_agent_id}'
+WHERE agenda_partyunit.agent_id = '{currency_agent_id}'
 ;
 """
 
 
-def get_partyunit_table_update_treasury_voice_rank_sqlstr(
+def get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(
     agent_id: PersonID,
 ) -> str:
     return f"""
-UPDATE partyunit
+UPDATE agenda_partyunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.party_id
         , row_number() over (order by p2._treasury_credit_score DESC) rn
-        FROM partyunit p2
+        FROM agenda_partyunit p2
         WHERE p2.agent_id = '{agent_id}'
     ) p3
-    WHERE p3.party_id = partyunit.party_id AND partyunit.agent_id = '{agent_id}'
+    WHERE p3.party_id = agenda_partyunit.party_id AND agenda_partyunit.agent_id = '{agent_id}'
     )
-WHERE partyunit.agent_id = '{agent_id}'
+WHERE agenda_partyunit.agent_id = '{agent_id}'
 ;
 """
 
 
-def get_partyunit_table_insert_sqlstr(
+def get_agenda_partyunit_table_insert_sqlstr(
     x_agenda: AgendaUnit, x_partyunit: PartyUnit
 ) -> str:
     """Create table that holds a the output credit metrics."""
     return f"""
-INSERT INTO partyunit (
+INSERT INTO agenda_partyunit (
   agent_id
 , party_id
 , _agenda_credit
@@ -740,7 +740,7 @@ SELECT
 , _treasury_credit_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-FROM partyunit
+FROM agenda_partyunit
 WHERE agent_id = '{payer_agent_id}' 
 ;
 """
@@ -796,11 +796,11 @@ def get_river_ledger_unit(
     )
 
 
-# idea_catalog
-def get_idea_catalog_table_create_sqlstr() -> str:
+# agenda_ideaunit
+def get_agenda_ideaunit_table_create_sqlstr() -> str:
     """table that holds every road and its agent_id"""
     return """
-CREATE TABLE IF NOT EXISTS idea_catalog (
+CREATE TABLE IF NOT EXISTS agenda_ideaunit (
   agent_id VARCHAR(255) NOT NULL
 , idea_road VARCHAR(1000) NOT NULL
 )
@@ -808,9 +808,9 @@ CREATE TABLE IF NOT EXISTS idea_catalog (
 """
 
 
-def get_idea_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
+def get_agenda_ideaunit_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("idea_catalog")} 
+{get_table_count_sqlstr("agenda_ideaunit")} 
 WHERE agent_id = '{agent_id}'
 ;
 """
@@ -827,24 +827,24 @@ class IdeaCatalog:
     idea_road: str
 
 
-def get_idea_catalog_table_insert_sqlstr(
-    idea_catalog: IdeaCatalog,
+def get_agenda_ideaunit_table_insert_sqlstr(
+    agenda_ideaunit: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO idea_catalog (agent_id, idea_road) VALUES ('{idea_catalog.agent_id}', '{idea_catalog.idea_road}');"""
+    # return f"""INSERT INTO agenda_ideaunit (agent_id, idea_road) VALUES ('{agenda_ideaunit.agent_id}', '{agenda_ideaunit.idea_road}');"""
     return f"""
-INSERT INTO idea_catalog (
+INSERT INTO agenda_ideaunit (
   agent_id
 , idea_road
 )
 VALUES (
-  '{idea_catalog.agent_id}'
-, '{create_road_without_root_node(idea_catalog.idea_road)}'
+  '{agenda_ideaunit.agent_id}'
+, '{create_road_without_root_node(agenda_ideaunit.idea_road)}'
 )
 ;
 """
 
 
-def get_idea_catalog_dict(db_conn: Connection, search_road: RoadUnit = None):
+def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:
@@ -854,7 +854,7 @@ def get_idea_catalog_dict(db_conn: Connection, search_road: RoadUnit = None):
 SELECT 
   agent_id
 , idea_road
-FROM idea_catalog
+FROM agenda_ideaunit
 {where_clause}
 ;
 """
@@ -862,17 +862,17 @@ FROM idea_catalog
 
     dict_x = {}
     for row in results.fetchall():
-        idea_catalog_x = IdeaCatalog(agent_id=row[0], idea_road=row[1])
-        dict_key = f"{idea_catalog_x.agent_id} {idea_catalog_x.idea_road}"
-        dict_x[dict_key] = idea_catalog_x
+        agenda_ideaunit_x = IdeaCatalog(agent_id=row[0], idea_road=row[1])
+        dict_key = f"{agenda_ideaunit_x.agent_id} {agenda_ideaunit_x.idea_road}"
+        dict_x[dict_key] = agenda_ideaunit_x
     return dict_x
 
 
-# belief_catalog
-def get_belief_catalog_table_create_sqlstr() -> str:
+# agenda_idea_beliefunit
+def get_agenda_idea_beliefunit_table_create_sqlstr() -> str:
     """table that holds every belief base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
-CREATE TABLE IF NOT EXISTS belief_catalog (
+CREATE TABLE IF NOT EXISTS agenda_idea_beliefunit (
   agent_id VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
@@ -881,9 +881,9 @@ CREATE TABLE IF NOT EXISTS belief_catalog (
 """
 
 
-def get_belief_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
+def get_agenda_idea_beliefunit_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("belief_catalog")} WHERE agent_id = '{agent_id}'
+{get_table_count_sqlstr("agenda_idea_beliefunit")} WHERE agent_id = '{agent_id}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -900,28 +900,28 @@ class BeliefCatalog:
     pick: str
 
 
-def get_belief_catalog_table_insert_sqlstr(
-    belief_catalog: BeliefCatalog,
+def get_agenda_idea_beliefunit_table_insert_sqlstr(
+    agenda_idea_beliefunit: BeliefCatalog,
 ) -> str:
     return f"""
-INSERT INTO belief_catalog (
+INSERT INTO agenda_idea_beliefunit (
   agent_id
 , base
 , pick
 )
 VALUES (
-  '{belief_catalog.agent_id}'
-, '{belief_catalog.base}'
-, '{belief_catalog.pick}'
+  '{agenda_idea_beliefunit.agent_id}'
+, '{agenda_idea_beliefunit.base}'
+, '{agenda_idea_beliefunit.pick}'
 )
 ;
 """
 
 
-# groupunit_catalog
-def get_groupunit_catalog_table_create_sqlstr() -> str:
+# agenda_groupunit
+def get_agenda_groupunit_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS groupunit_catalog (
+CREATE TABLE IF NOT EXISTS agenda_groupunit (
   agent_id VARCHAR(255) NOT NULL
 , groupunit_group_id VARCHAR(1000) NOT NULL
 , treasury_partylinks VARCHAR(1000) NULL
@@ -930,9 +930,9 @@ CREATE TABLE IF NOT EXISTS groupunit_catalog (
 """
 
 
-def get_groupunit_catalog_table_count(db_conn: Connection, agent_id: str) -> str:
+def get_agenda_groupunit_table_count(db_conn: Connection, agent_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("groupunit_catalog")} WHERE agent_id = '{agent_id}'
+{get_table_count_sqlstr("agenda_groupunit")} WHERE agent_id = '{agent_id}'
 ;
 """
     results = db_conn.execute(sqlstr)
@@ -949,46 +949,46 @@ class GroupUnitCatalog:
     treasury_partylinks: str
 
 
-def get_groupunit_catalog_table_insert_sqlstr(
-    groupunit_catalog: GroupUnitCatalog,
+def get_agenda_groupunit_table_insert_sqlstr(
+    agenda_groupunit: GroupUnitCatalog,
 ) -> str:
     return f"""
-INSERT INTO groupunit_catalog (
+INSERT INTO agenda_groupunit (
   agent_id
 , groupunit_group_id
 , treasury_partylinks
 )
 VALUES (
-  '{groupunit_catalog.agent_id}'
-, '{groupunit_catalog.groupunit_group_id}'
-, '{groupunit_catalog.treasury_partylinks}'
+  '{agenda_groupunit.agent_id}'
+, '{agenda_groupunit.groupunit_group_id}'
+, '{agenda_groupunit.treasury_partylinks}'
 )
 ;
 """
 
 
-def get_groupunit_catalog_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
+def get_agenda_groupunit_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]:
     sqlstr = """
 SELECT 
   agent_id
 , groupunit_group_id
 , treasury_partylinks
-FROM groupunit_catalog
+FROM agenda_groupunit
 ;
 """
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
     for row in results.fetchall():
-        groupunit_catalog_x = GroupUnitCatalog(
+        agenda_groupunit_x = GroupUnitCatalog(
             agent_id=row[0],
             groupunit_group_id=row[1],
             treasury_partylinks=row[2],
         )
         dict_key = (
-            f"{groupunit_catalog_x.agent_id} {groupunit_catalog_x.groupunit_group_id}"
+            f"{agenda_groupunit_x.agent_id} {agenda_groupunit_x.groupunit_group_id}"
         )
-        dict_x[dict_key] = groupunit_catalog_x
+        dict_x[dict_key] = agenda_groupunit_x
     return dict_x
 
 
@@ -1080,12 +1080,12 @@ VALUES (
 """
 
 
-def get_partyunit_table_insert_sqlstr(
+def get_agenda_partyunit_table_insert_sqlstr(
     x_agenda: AgendaUnit, x_partyunit: PartyUnit
 ) -> str:
     """Create table that holds a the output credit metrics."""
     return f"""
-INSERT INTO partyunit (
+INSERT INTO agenda_partyunit (
   agent_id
 , party_id
 , _agenda_credit
@@ -1133,13 +1133,13 @@ WHERE agent_id = '{calendar_agent_id}'
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
-    list_x.append(get_belief_catalog_table_create_sqlstr())
-    list_x.append(get_idea_catalog_table_create_sqlstr())
-    list_x.append(get_partyunit_table_create_sqlstr())
+    list_x.append(get_agenda_idea_beliefunit_table_create_sqlstr())
+    list_x.append(get_agenda_ideaunit_table_create_sqlstr())
+    list_x.append(get_agenda_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())
-    list_x.append(get_groupunit_catalog_table_create_sqlstr())
+    list_x.append(get_agenda_groupunit_table_create_sqlstr())
     list_x.append(get_calendar_table_create_sqlstr())
     return list_x
 

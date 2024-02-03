@@ -29,10 +29,10 @@ from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.economy.treasury_sqlstr import (
     get_partytreasuryunit_dict,
-    get_partyunit_table_insert_sqlstr,
-    get_partyunit_table_update_treasury_tax_paid_sqlstr,
-    get_partyunit_table_update_credit_score_sqlstr,
-    get_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_partyunit_table_insert_sqlstr,
+    get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -45,13 +45,13 @@ from src.economy.treasury_sqlstr import (
     RiverBlockUnit,
     PartyTreasuryUnit,
     IdeaCatalog,
-    get_idea_catalog_table_insert_sqlstr,
-    get_idea_catalog_dict,
+    get_agenda_ideaunit_table_insert_sqlstr,
+    get_agenda_ideaunit_dict,
     BeliefCatalog,
-    get_belief_catalog_table_insert_sqlstr,
+    get_agenda_idea_beliefunit_table_insert_sqlstr,
     GroupUnitCatalog,
-    get_groupunit_catalog_table_insert_sqlstr,
-    get_groupunit_catalog_dict,
+    get_agenda_groupunit_table_insert_sqlstr,
+    get_agenda_groupunit_dict,
     get_agendatreasuryunits_dict,
     get_agendaunit_update_sqlstr,
     CalendarReport,
@@ -127,13 +127,13 @@ class EconomyUnit:
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
                 groupunit_x.clear_partylinks()
-                ic = get_idea_catalog_dict(
+                ic = get_agenda_ideaunit_dict(
                     self.get_treasury_conn(),
                     groupunit_x._treasury_partylinks,
                 )
-                for idea_catalog in ic.values():
-                    if x_agent_id != idea_catalog.agent_id:
-                        partylink_x = partylink_shop(party_id=idea_catalog.agent_id)
+                for agenda_ideaunit in ic.values():
+                    if x_agent_id != agenda_ideaunit.agent_id:
+                        partylink_x = partylink_shop(party_id=agenda_ideaunit.agent_id)
                         groupunit_x.set_partylink(partylink_x)
         self.save_forum_agenda(x_agenda)
         self.refresh_treasury_forum_agendas_data()
@@ -236,13 +236,13 @@ class EconomyUnit:
             treasury_conn.execute(get_river_circle_table_insert_sqlstr(agent_id))
             treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(agent_id))
             treasury_conn.execute(
-                get_partyunit_table_update_treasury_tax_paid_sqlstr(agent_id)
+                get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr(agent_id)
             )
             treasury_conn.execute(
-                get_partyunit_table_update_credit_score_sqlstr(agent_id)
+                get_agenda_partyunit_table_update_credit_score_sqlstr(agent_id)
             )
             treasury_conn.execute(
-                get_partyunit_table_update_treasury_voice_rank_sqlstr(agent_id)
+                get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(agent_id)
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
@@ -288,39 +288,45 @@ class EconomyUnit:
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for x_partyunit in agendaunit_x._partys.values():
-                sqlstr = get_partyunit_table_insert_sqlstr(agendaunit_x, x_partyunit)
+                sqlstr = get_agenda_partyunit_table_insert_sqlstr(
+                    agendaunit_x, x_partyunit
+                )
                 cur.execute(sqlstr)
 
     def _treasury_insert_groupunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
-                groupunit_catalog_x = GroupUnitCatalog(
+                agenda_groupunit_x = GroupUnitCatalog(
                     agent_id=agendaunit_x._agent_id,
                     groupunit_group_id=groupunit_x.group_id,
                     treasury_partylinks=groupunit_x._treasury_partylinks,
                 )
-                sqlstr = get_groupunit_catalog_table_insert_sqlstr(groupunit_catalog_x)
+                sqlstr = get_agenda_groupunit_table_insert_sqlstr(agenda_groupunit_x)
                 cur.execute(sqlstr)
 
     def _treasury_insert_ideaunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
-                idea_catalog_x = IdeaCatalog(agendaunit_x._agent_id, idea_x.get_road())
-                sqlstr = get_idea_catalog_table_insert_sqlstr(idea_catalog_x)
+                agenda_ideaunit_x = IdeaCatalog(
+                    agendaunit_x._agent_id, idea_x.get_road()
+                )
+                sqlstr = get_agenda_ideaunit_table_insert_sqlstr(agenda_ideaunit_x)
                 cur.execute(sqlstr)
 
     def _treasury_insert_belief(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
             for belief_x in agendaunit_x._idearoot._beliefunits.values():
-                belief_catalog_x = BeliefCatalog(
+                agenda_idea_beliefunit_x = BeliefCatalog(
                     agent_id=agendaunit_x._agent_id,
                     base=belief_x.base,
                     pick=belief_x.pick,
                 )
-                sqlstr = get_belief_catalog_table_insert_sqlstr(belief_catalog_x)
+                sqlstr = get_agenda_idea_beliefunit_table_insert_sqlstr(
+                    agenda_idea_beliefunit_x
+                )
                 cur.execute(sqlstr)
 
     def get_treasury_conn(self) -> Connection:
