@@ -6,7 +6,7 @@ from src.world.examples.world_env_kit import (
 )
 
 
-def test_personunit_get_dict_CorrectlyGetsDict_simple():
+def test_PersonUnit_get_dict_CorrectlyGetsDict_simple():
     # GIVEN
     yao_text = "Yao"
     yao_artbitarydirectory = f"/artbitarydirectory/persons/{yao_text}"

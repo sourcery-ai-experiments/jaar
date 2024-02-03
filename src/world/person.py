@@ -23,6 +23,9 @@ from src.world.problem import (
 )
 from src.tools.file import get_proad_dir
 from dataclasses import dataclass
+from plotly.express import treemap, Constant
+from pandas import DataFrame
+from numpy import average
 
 
 class InvalidEconomyException(Exception):
@@ -230,6 +233,55 @@ class PersonUnit:
             "_primary_contract_active": self._primary_contract_active,
             "_problems": self.get_problems_dict(),
         }
+
+    def popup_visualization(
+        self, economylink_by_problem: bool = False, show_fig: bool = True
+    ):
+        if economylink_by_problem:
+            # grab all economylink data
+            el_data = []
+
+            for x_problemunit in self.get_problemunits().values():
+                for x_healerlink in x_problemunit.get_healerlink_objs().values():
+                    el_data.extend(
+                        [
+                            self.person_id,
+                            x_problemunit.problem_id,
+                            x_problemunit.weight,
+                            x_healerlink.healer_id,
+                            x_healerlink.weight,
+                            x_economylink.economy_id,
+                            x_economylink.weight,
+                        ]
+                        for x_economylink in x_healerlink._economylinks.values()
+                    )
+            # initialize list of lists
+
+            # Create the pandas DataFrame
+            df = DataFrame(
+                el_data,
+                columns=[
+                    "PersonID",
+                    "ProblemID",
+                    "Problem Weight",
+                    "HealerID",
+                    "Healer Weight",
+                    "EconomyID",
+                    "Economy Weight",
+                ],
+            )
+            fig = treemap(
+                df,
+                path=[Constant("PersonID"), "ProblemID", "HealerID", "EconomyID"],
+                values="Economy Weight",
+                # color="lifeExp",
+                # hover_data=["iso_alpha"],
+                # color_continuous_scale="RdBu",
+                # color_continuous_midpoint=average(df["Economy Weight"], weights=df["pop"]),
+            )
+            fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
+            if show_fig:
+                fig.show()
 
 
 def personunit_shop(
