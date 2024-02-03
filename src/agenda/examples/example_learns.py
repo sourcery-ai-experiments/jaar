@@ -28,29 +28,18 @@ def get_yao_example_roadunit() -> PersonRoad:
 def get_sue_learnunit_example1() -> LearnUnit:
     sue_learnunit = learnunit_shop(get_sue_proad())
 
-    weight_name = "AgendaUnit_weight"
-    weight_grainunit = grainunit_shop(weight_name, grain_update())
-    weight_grainunit.set_required_arg(weight_name, 55)
-    sue_learnunit.set_grainunit(weight_grainunit)
-
+    agendaunit_text = "agendaunit"
+    weight_name = "_weight"
+    x_grainunit = grainunit_shop(agendaunit_text, grain_update())
+    x_grainunit.set_optional_arg(weight_name, 55)
     x_attribute = "_max_tree_traverse"
-    x_grainunit = grainunit_shop(x_attribute, grain_update())
-    x_grainunit.set_required_arg(x_attribute, 66)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    x_grainunit.set_optional_arg(x_attribute, 66)
     x_attribute = "_party_creditor_pool"
-    x_grainunit = grainunit_shop(x_attribute, grain_update())
-    x_grainunit.set_required_arg(x_attribute, 77)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    x_grainunit.set_optional_arg(x_attribute, 77)
     x_attribute = "_party_debtor_pool"
-    x_grainunit = grainunit_shop(x_attribute, grain_update())
-    x_grainunit.set_required_arg(x_attribute, 88)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    x_grainunit.set_optional_arg(x_attribute, 88)
     x_attribute = "_meld_strategy"
-    x_grainunit = grainunit_shop(x_attribute, grain_update())
-    x_grainunit.set_required_arg(x_attribute, "override")
+    x_grainunit.set_optional_arg(x_attribute, "override")
     sue_learnunit.set_grainunit(x_grainunit)
 
     category = "partyunit"

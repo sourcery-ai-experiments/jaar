@@ -210,7 +210,7 @@ def test_GroupUnit_edit_partylink_CorrectlySetsAttr():
     assert todd_partylink.creditor_weight == new_todd_creditor_weight
 
 
-def test_GroupUnit_partylink_exists_worksCorrectly():
+def test_partylink_exists_worksCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -344,7 +344,7 @@ def test_GroupUnit_reset_agenda_importance_reset_partylinks():
     assert biker_partylink_mery._agenda_intent_debt == 0
 
 
-def test_GroupUnit_partylink_meld_BaseScenarioWorks():
+def test_partylink_meld_BaseScenarioWorks():
     # GIVEN
     todd_party = partylink_shop(party_id="Todd")
     merry_party = partylink_shop(party_id="Merry")
@@ -363,7 +363,7 @@ def test_GroupUnit_partylink_meld_BaseScenarioWorks():
     assert len(bikers_group._partys) == 2
 
 
-def test_GroupUnit_partylink_meld_GainScenarioWorks():
+def test_partylink_meld_GainScenarioWorks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"

@@ -1,86 +1,43 @@
 {
-    "_auto_output_to_forum": {
-        "UPDATE": {
-            "description_elements": [],
-            "grain_order": 26,
-            "required_args": {
-                "_auto_output_to_forum": "bool"
-            }
-        }
-    },
-    "_max_tree_traverse": {
+    "agendaunit": {
         "UPDATE": {
             "description_elements": [
                 {
                     "arg": "_max_tree_traverse",
                     "preceding text": "Agenda's maximum number of Agenda output evaluations changed to ",
                     "proceding text": "."
-                }
-            ],
-            "grain_order": 26,
-            "required_args": {
-                "_max_tree_traverse": "int"
-            }
-        }
-    },
-    "_meld_strategy": {
-        "UPDATE": {
-            "description_elements": [
+                },
                 {
                     "arg": "_meld_strategy",
                     "preceding text": "Agenda's Meld Strategy changed to ",
                     "proceding text": "."
-                }
-            ],
-            "grain_order": 26,
-            "required_args": {
-                "_meld_strategy": "str"
-            }
-        }
-    },
-    "_party_creditor_pool": {
-        "UPDATE": {
-            "description_elements": [
+                },
                 {
                     "arg": "_party_creditor_pool",
                     "preceding text": "Agenda's creditor pool limit changed to ",
                     "proceding text": "."
-                }
-            ],
-            "grain_order": 26,
-            "required_args": {
-                "_party_creditor_pool": "int"
-            }
-        }
-    },
-    "_party_debtor_pool": {
-        "UPDATE": {
-            "description_elements": [
+                },
                 {
                     "arg": "_party_debtor_pool",
                     "preceding text": "Agenda's debtor pool limit changed to ",
                     "proceding text": "."
-                }
-            ],
-            "grain_order": 26,
-            "required_args": {
-                "_party_debtor_pool": "int"
-            }
-        }
-    },
-    "AgendaUnit_weight": {
-        "UPDATE": {
-            "description_elements": [
+                },
                 {
-                    "arg": "AgendaUnit_weight",
+                    "arg": "_weight",
                     "preceding text": "Agenda's weight changed to ",
                     "proceding text": "."
                 }
             ],
             "grain_order": 26,
-            "required_args": {
-                "AgendaUnit_weight": "int"
-            }
+            "optional_args": {
+                "_auto_output_to_forum": "bool",
+                "_max_tree_traverse": "int",
+                "_meld_strategy": "str",
+                "_party_creditor_pool": "int",
+                "_party_debtor_pool": "int",
+                "_weight": "int"
+            },
+            "required_args": {}
         }
     },
     "groupunit": {
@@ -112,101 +69,6 @@
             },
             "required_args": {
                 "group_id": "GroupID"
-            }
-        }
-    },
-    "groupunit_partylink": {
-        "DELETE": {
-            "description_elements": [],
-            "grain_order": 23,
-            "required_args": {
-                "group_id": "GroupID",
-                "party_id": "PartyID"
-            }
-        },
-        "INSERT": {
-            "description_elements": [],
-            "grain_order": 1,
-            "optional_args": {
-                "creditor_weight": "int",
-                "debtor_weight": "int"
-            },
-            "required_args": {
-                "group_id": "GroupID",
-                "party_id": "PartyID"
-            }
-        },
-        "locator": {
-            "group_id": "GroupID",
-            "party_id": "PartyID"
-        },
-        "UPDATE": {
-            "description_elements": [],
-            "grain_order": 11,
-            "optional_args": {
-                "creditor_weight": "int",
-                "debtor_weight": "int"
-            },
-            "required_args": {
-                "group_id": "GroupID",
-                "party_id": "PartyID"
-            }
-        }
-    },
-    "idea": {
-        "DELETE": {
-            "description_elements": [],
-            "grain_order": 22,
-            "optional_args": {
-                "del_children": "bool"
-            },
-            "required_args": {
-                "road": "RoadUnit"
-            }
-        },
-        "INSERT": {
-            "description_elements": [],
-            "grain_order": 3,
-            "optional_args": {
-                "_addin": "float",
-                "_begin": "float",
-                "_close": "float",
-                "_denom": "int",
-                "_meld_strategy": "str",
-                "_numeric_road": "RoadUnit",
-                "_numor": "int",
-                "_range_source_road": "RoadUnit",
-                "_reest": "bool",
-                "_weight": "int",
-                "promise": "bool"
-            },
-            "required_args": {
-                "label": "RoadUnit",
-                "parent_road": "RoadUnit"
-            }
-        },
-        "locator": {
-            "road": "RoadUnit"
-        },
-        "UPDATE": {
-            "description_elements": [],
-            "grain_order": 12,
-            "optional_args": {
-                "_addin": "float",
-                "_begin": "float",
-                "_close": "float",
-                "_denom": "int",
-                "_meld_strategy": "str",
-                "_numeric_road": "RoadUnit",
-                "_numor": "int",
-                "_range_source_road": "RoadUnit",
-                "_reest": "bool",
-                "_weight": "int",
-                "label": "RoadUnit",
-                "promise": "bool"
-            },
-            "required_args": {
-                "road": "RoadUnit"
             }
         }
     },
@@ -292,43 +154,7 @@
             }
         }
     },
-    "idea_reasonunit": {
-        "DELETE": {
-            "description_elements": [],
-            "grain_order": 18,
-            "required_args": {
-                "base": "RoadUnit",
-                "road": "RoadUnit"
-            }
-        },
-        "INSERT": {
-            "description_elements": [],
-            "grain_order": 7,
-            "optional_args": {
-                "suff_idea_active": "bool"
-            },
-            "required_args": {
-                "base": "RoadUnit",
-                "road": "RoadUnit"
-            }
-        },
-        "locator": {
-            "base": "RoadUnit",
-            "road": "RoadUnit"
-        },
-        "UPDATE": {
-            "description_elements": [],
-            "grain_order": 16,
-            "optional_args": {
-                "suff_idea_active": "bool"
-            },
-            "required_args": {
-                "base": "RoadUnit",
-                "road": "RoadUnit"
-            }
-        }
-    },
-    "idea_reasonunit_premiseunit": {
+    "idea_reason_premiseunit": {
         "DELETE": {
             "description_elements": [],
             "grain_order": 17,
@@ -372,6 +198,42 @@
             }
         }
     },
+    "idea_reasonunit": {
+        "DELETE": {
+            "description_elements": [],
+            "grain_order": 18,
+            "required_args": {
+                "base": "RoadUnit",
+                "road": "RoadUnit"
+            }
+        },
+        "INSERT": {
+            "description_elements": [],
+            "grain_order": 7,
+            "optional_args": {
+                "suff_idea_active": "bool"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "road": "RoadUnit"
+            }
+        },
+        "locator": {
+            "base": "RoadUnit",
+            "road": "RoadUnit"
+        },
+        "UPDATE": {
+            "description_elements": [],
+            "grain_order": 16,
+            "optional_args": {
+                "suff_idea_active": "bool"
+            },
+            "required_args": {
+                "base": "RoadUnit",
+                "road": "RoadUnit"
+            }
+        }
+    },
     "idea_suffgroup": {
         "DELETE": {
             "description_elements": [],
@@ -392,6 +254,101 @@
         "locator": {
             "group_id": "RoadUnit",
             "road": "RoadUnit"
+        }
+    },
+    "ideaunit": {
+        "DELETE": {
+            "description_elements": [],
+            "grain_order": 22,
+            "optional_args": {
+                "del_children": "bool"
+            },
+            "required_args": {
+                "road": "RoadUnit"
+            }
+        },
+        "INSERT": {
+            "description_elements": [],
+            "grain_order": 3,
+            "optional_args": {
+                "_addin": "float",
+                "_begin": "float",
+                "_close": "float",
+                "_denom": "int",
+                "_meld_strategy": "str",
+                "_numeric_road": "RoadUnit",
+                "_numor": "int",
+                "_range_source_road": "RoadUnit",
+                "_reest": "bool",
+                "_weight": "int",
+                "promise": "bool"
+            },
+            "required_args": {
+                "label": "RoadUnit",
+                "parent_road": "RoadUnit"
+            }
+        },
+        "locator": {
+            "road": "RoadUnit"
+        },
+        "UPDATE": {
+            "description_elements": [],
+            "grain_order": 12,
+            "optional_args": {
+                "_addin": "float",
+                "_begin": "float",
+                "_close": "float",
+                "_denom": "int",
+                "_meld_strategy": "str",
+                "_numeric_road": "RoadUnit",
+                "_numor": "int",
+                "_range_source_road": "RoadUnit",
+                "_reest": "bool",
+                "_weight": "int",
+                "label": "RoadUnit",
+                "promise": "bool"
+            },
+            "required_args": {
+                "road": "RoadUnit"
+            }
+        }
+    },
+    "partylink": {
+        "DELETE": {
+            "description_elements": [],
+            "grain_order": 23,
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            }
+        },
+        "INSERT": {
+            "description_elements": [],
+            "grain_order": 1,
+            "optional_args": {
+                "creditor_weight": "int",
+                "debtor_weight": "int"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            }
+        },
+        "locator": {
+            "group_id": "GroupID",
+            "party_id": "PartyID"
+        },
+        "UPDATE": {
+            "description_elements": [],
+            "grain_order": 11,
+            "optional_args": {
+                "creditor_weight": "int",
+                "debtor_weight": "int"
+            },
+            "required_args": {
+                "group_id": "GroupID",
+                "party_id": "PartyID"
+            }
         }
     },
     "partyunit": {

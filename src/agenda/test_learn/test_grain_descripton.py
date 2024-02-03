@@ -17,9 +17,10 @@ from src.agenda.examples.example_learns import (
 def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # WHEN
     new2_value = 66
-    category = "_max_tree_traverse"
+    category = "agendaunit"
+    opt_arg2 = "_max_tree_traverse"
     x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new2_value)
+    x_grainunit.set_optional_arg(opt_arg2, new2_value)
     # THEN
     assert (
         x_grainunit.get_description()
@@ -28,9 +29,9 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
     # WHEN
     new5_value = "override"
-    category = "_meld_strategy"
+    opt_arg5 = "_meld_strategy"
     x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new5_value)
+    x_grainunit.set_optional_arg(opt_arg5, new5_value)
     # THEN
     assert (
         x_grainunit.get_description()
@@ -39,9 +40,9 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
     # WHEN
     new3_value = 77
-    category = "_party_creditor_pool"
+    opt_arg3 = "_party_creditor_pool"
     x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new3_value)
+    x_grainunit.set_optional_arg(opt_arg3, new3_value)
     # THEN
     assert (
         x_grainunit.get_description()
@@ -50,9 +51,9 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
     # WHEN
     new4_value = 88
-    category = "_party_debtor_pool"
+    opt_arg4 = "_party_debtor_pool"
     x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new4_value)
+    x_grainunit.set_optional_arg(opt_arg4, new4_value)
     # THEN
     assert (
         x_grainunit.get_description()
@@ -61,10 +62,10 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
     # GIVEN
     new1_value = 55
-    category = "AgendaUnit_weight"
+    opt_arg1 = "_weight"
     # WHEN
     x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new1_value)
+    x_grainunit.set_optional_arg(opt_arg1, new1_value)
     # THEN
     assert x_grainunit.get_description() == f"Agenda's weight changed to {new1_value}."
 
@@ -114,7 +115,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # THEN
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_delete_groupunit_partylink():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_delete_partylink():
 #     # GIVEN
 
 #     rico_text = "Rico"
@@ -132,13 +133,13 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_groupunit.set_partylink(partylink_shop(dizz_text))
 
 #     # WHEN
-#     rico_grainunit = grainunit_shop("groupunit_partylink", grain_delete())
+#     rico_grainunit = grainunit_shop("partylink", grain_delete())
 #     rico_grainunit.set_locator("group_id", run_text)
 #     rico_grainunit.set_locator("party_id", rico_text)
 #     rico_grainunit.set_required_arg("group_id", run_text)
 #     rico_grainunit.set_required_arg("party_id", rico_text)
 #     # print(f"{rico_grainunit=}")
-#     carm_grainunit = grainunit_shop("groupunit_partylink", grain_delete())
+#     carm_grainunit = grainunit_shop("partylink", grain_delete())
 #     carm_grainunit.set_locator("group_id", fly_text)
 #     carm_grainunit.set_locator("party_id", carm_text)
 #     carm_grainunit.set_required_arg("group_id", fly_text)
@@ -146,7 +147,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # print(f"{carm_grainunit=}")
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_insert_groupunit_partylink():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_insert_partylink():
 #     # GIVEN
 
 #     rico_text = "Rico"
@@ -158,7 +159,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     run_groupunit.set_partylink(partylink_shop(carm_text))
 
 #     # WHEN
-#     rico_grainunit = grainunit_shop("groupunit_partylink", grain_insert())
+#     rico_grainunit = grainunit_shop("partylink", grain_insert())
 #     rico_grainunit.set_locator("group_id", run_text)
 #     rico_grainunit.set_locator("party_id", rico_text)
 #     rico_grainunit.set_required_arg("group_id", run_text)
@@ -168,7 +169,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     print(f"{rico_grainunit=}")
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_update_groupunit_partylink():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_update_partylink():
 #     # GIVEN
 
 #     rico_text = "Rico"
@@ -179,7 +180,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     run_groupunit.set_partylink(partylink_shop(rico_text, old_rico_run_creditor_weight))
 
 #     # WHEN
-#     rico_grainunit = grainunit_shop("groupunit_partylink", grain_update())
+#     rico_grainunit = grainunit_shop("partylink", grain_update())
 #     rico_grainunit.set_locator("group_id", run_text)
 #     rico_grainunit.set_locator("party_id", rico_text)
 #     rico_grainunit.set_required_arg("group_id", run_text)
@@ -255,7 +256,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     disc_road = create_road(sports_road, disc_text)
 
 #     # WHEN
-#     delete_disc_grainunit = grainunit_shop("idea", grain_delete())
+#     delete_disc_grainunit = grainunit_shop("ideaunit", grain_delete())
 #     delete_disc_grainunit.set_locator("road", disc_road)
 #     delete_disc_grainunit.set_required_arg("road", disc_road)
 #     print(f"{delete_disc_grainunit=}")
@@ -280,7 +281,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_numeric_road = None
 #     # x_numor = 10
 #     x_promise = True
-#     insert_disc_grainunit = grainunit_shop("idea", grain_insert())
+#     insert_disc_grainunit = grainunit_shop("ideaunit", grain_insert())
 #     insert_disc_grainunit.set_locator("road", disc_road)
 #     insert_disc_grainunit.set_required_arg("label", disc_text)
 #     insert_disc_grainunit.set_required_arg("parent_road", sports_road)
@@ -312,7 +313,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_meld_strategy = "override"
 #     # x_numor = 10
 #     x_promise = True
-#     insert_disc_grainunit = grainunit_shop("idea", grain_update())
+#     insert_disc_grainunit = grainunit_shop("ideaunit", grain_update())
 #     insert_disc_grainunit.set_locator("road", ball_road)
 #     insert_disc_grainunit.set_required_arg("road", ball_road)
 #     # insert_disc_grainunit.set_optional_arg("_addin", x_addin)
@@ -488,7 +489,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # print(f"{update_disc_grainunit=}")
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit_premiseunit():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_update_idea_reason_premiseunit():
 #     # GIVEN
 
 #     sports_text = "sports"
@@ -505,7 +506,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     broken_nigh = 77
 #     broken_divisor = 3
 #     update_disc_grainunit = grainunit_shop(
-#         "idea_reasonunit_premiseunit", grain_update()
+#         "idea_reason_premiseunit", grain_update()
 #     )
 #     update_disc_grainunit.set_locator("road", ball_road)
 #     update_disc_grainunit.set_locator("base", knee_road)
@@ -519,7 +520,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # print(f"{update_disc_grainunit=}")
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit_premiseunit():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_insert_idea_reason_premiseunit():
 #     # GIVEN
 
 #     sports_text = "sports"
@@ -538,7 +539,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     medical_nigh = 77
 #     medical_divisor = 3
 #     update_disc_grainunit = grainunit_shop(
-#         "idea_reasonunit_premiseunit", grain_insert()
+#         "idea_reason_premiseunit", grain_insert()
 #     )
 #     update_disc_grainunit.set_locator("road", ball_road)
 #     update_disc_grainunit.set_locator("base", knee_road)
@@ -552,7 +553,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # print(f"{update_disc_grainunit=}")
 
 
-# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit_premiseunit():
+# def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnit_delete_idea_reason_premiseunit():
 #     # GIVEN
 
 #     sports_text = "sports"
@@ -567,7 +568,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     medical_road = create_road(knee_road, medical_text)
 #     # WHEN
 #     update_disc_grainunit = grainunit_shop(
-#         "idea_reasonunit_premiseunit", grain_delete()
+#         "idea_reason_premiseunit", grain_delete()
 #     )
 #     update_disc_grainunit.set_locator("road", ball_road)
 #     update_disc_grainunit.set_locator("base", knee_road)

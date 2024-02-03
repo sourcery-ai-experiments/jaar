@@ -45,34 +45,23 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     sue_weight = 44
     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
 
+    category = "agendaunit"
+    x_grainunit = grainunit_shop(category, grain_update())
     new1_value = 55
-    category = "AgendaUnit_weight"
-    x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new1_value)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    new1_arg = "_weight"
+    x_grainunit.set_optional_arg(new1_arg, new1_value)
     new2_value = 66
-    category = "_max_tree_traverse"
-    x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new2_value)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    new2_arg = "_max_tree_traverse"
+    x_grainunit.set_optional_arg(new2_arg, new2_value)
     new3_value = 77
-    category = "_party_creditor_pool"
-    x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new3_value)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    new3_arg = "_party_creditor_pool"
+    x_grainunit.set_optional_arg(new3_arg, new3_value)
     new4_value = 88
-    category = "_party_debtor_pool"
-    x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new4_value)
-    sue_learnunit.set_grainunit(x_grainunit)
-
+    new4_arg = "_party_debtor_pool"
+    x_grainunit.set_optional_arg(new4_arg, new4_value)
     new5_value = "override"
-    category = "_meld_strategy"
-    x_grainunit = grainunit_shop(category, grain_update())
-    x_grainunit.set_required_arg(category, new5_value)
+    new5_arg = "_meld_strategy"
+    x_grainunit.set_optional_arg(new5_arg, new5_value)
     sue_learnunit.set_grainunit(x_grainunit)
 
     # WHEN
@@ -80,12 +69,12 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
     # THEN
     print(f"{sue_learnunit.grainunits.keys()=}")
-    assert after_sue_agendaunit._weight == new1_value
-    assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
     assert after_sue_agendaunit._max_tree_traverse == new2_value
     assert after_sue_agendaunit._party_creditor_pool == new3_value
     assert after_sue_agendaunit._party_debtor_pool == new4_value
     assert after_sue_agendaunit._meld_strategy == new5_value
+    assert after_sue_agendaunit._weight == new1_value
+    assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
 
 
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
@@ -178,7 +167,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
     assert rico_party.creditor_weight == rico_creditor_weight
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit_partylink():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylink():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -204,13 +193,13 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupuni
     assert len(before_sue_agendaunit.get_groupunit(fly_text)._partys) == 3
 
     # WHEN
-    rico_grainunit = grainunit_shop("groupunit_partylink", grain_delete())
+    rico_grainunit = grainunit_shop("partylink", grain_delete())
     rico_grainunit.set_locator("group_id", run_text)
     rico_grainunit.set_locator("party_id", rico_text)
     rico_grainunit.set_required_arg("group_id", run_text)
     rico_grainunit.set_required_arg("party_id", rico_text)
     # print(f"{rico_grainunit=}")
-    carm_grainunit = grainunit_shop("groupunit_partylink", grain_delete())
+    carm_grainunit = grainunit_shop("partylink", grain_delete())
     carm_grainunit.set_locator("group_id", fly_text)
     carm_grainunit.set_locator("party_id", carm_text)
     carm_grainunit.set_required_arg("group_id", fly_text)
@@ -226,7 +215,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupuni
     assert len(after_sue_agendaunit.get_groupunit(run_text)._partys) == 1
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit_partylink():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -244,7 +233,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupuni
     assert len(before_sue_agendaunit.get_groupunit(run_text)._partys) == 1
 
     # WHEN
-    rico_grainunit = grainunit_shop("groupunit_partylink", grain_insert())
+    rico_grainunit = grainunit_shop("partylink", grain_insert())
     rico_grainunit.set_locator("group_id", run_text)
     rico_grainunit.set_locator("party_id", rico_text)
     rico_grainunit.set_required_arg("group_id", run_text)
@@ -264,7 +253,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupuni
     assert after_run_rico_partylink.creditor_weight == rico_run_creditor_weight
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit_partylink():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -282,7 +271,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupuni
     assert before_run_rico_partylink.debtor_weight == 1
 
     # WHEN
-    rico_grainunit = grainunit_shop("groupunit_partylink", grain_update())
+    rico_grainunit = grainunit_shop("partylink", grain_update())
     rico_grainunit.set_locator("group_id", run_text)
     rico_grainunit.set_locator("party_id", rico_text)
     rico_grainunit.set_required_arg("group_id", run_text)
@@ -424,7 +413,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit
     assert before_sue_agendaunit.idea_exists(disc_road)
 
     # WHEN
-    delete_disc_grainunit = grainunit_shop("idea", grain_delete())
+    delete_disc_grainunit = grainunit_shop("ideaunit", grain_delete())
     delete_disc_grainunit.set_locator("road", disc_road)
     delete_disc_grainunit.set_required_arg("road", disc_road)
     print(f"{delete_disc_grainunit=}")
@@ -461,7 +450,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit
     x_numeric_road = None
     # x_numor = 10
     x_promise = True
-    insert_disc_grainunit = grainunit_shop("idea", grain_insert())
+    insert_disc_grainunit = grainunit_shop("ideaunit", grain_insert())
     insert_disc_grainunit.set_locator("road", disc_road)
     insert_disc_grainunit.set_required_arg("label", disc_text)
     insert_disc_grainunit.set_required_arg("parent_road", sports_road)
@@ -507,7 +496,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     x_meld_strategy = "override"
     # x_numor = 10
     x_promise = True
-    insert_disc_grainunit = grainunit_shop("idea", grain_update())
+    insert_disc_grainunit = grainunit_shop("ideaunit", grain_update())
     insert_disc_grainunit.set_locator("road", ball_road)
     insert_disc_grainunit.set_required_arg("road", ball_road)
     # insert_disc_grainunit.set_optional_arg("_addin", x_addin)
@@ -808,7 +797,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bel
     assert after_ball_idea._beliefunits.get(knee_road).nigh == medical_nigh
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit_premiseunit():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -841,9 +830,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_rea
     broken_open = 45
     broken_nigh = 77
     broken_divisor = 3
-    update_disc_grainunit = grainunit_shop(
-        "idea_reasonunit_premiseunit", grain_update()
-    )
+    update_disc_grainunit = grainunit_shop("idea_reason_premiseunit", grain_update())
     update_disc_grainunit.set_locator("road", ball_road)
     update_disc_grainunit.set_locator("base", knee_road)
     update_disc_grainunit.set_locator("need", broken_road)
@@ -869,7 +856,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_rea
     assert after_broken_premiseunit.divisor == broken_divisor
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit_premiseunit():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -900,9 +887,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_rea
     medical_open = 45
     medical_nigh = 77
     medical_divisor = 3
-    update_disc_grainunit = grainunit_shop(
-        "idea_reasonunit_premiseunit", grain_insert()
-    )
+    update_disc_grainunit = grainunit_shop("idea_reason_premiseunit", grain_insert())
     update_disc_grainunit.set_locator("road", ball_road)
     update_disc_grainunit.set_locator("base", knee_road)
     update_disc_grainunit.set_locator("need", medical_road)
@@ -928,7 +913,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_rea
     assert after_medical_premiseunit.divisor == medical_divisor
 
 
-def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit_premiseunit():
+def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -959,9 +944,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_rea
     assert before_knee_reasonunit.get_premise(medical_road) != None
 
     # WHEN
-    update_disc_grainunit = grainunit_shop(
-        "idea_reasonunit_premiseunit", grain_delete()
-    )
+    update_disc_grainunit = grainunit_shop("idea_reason_premiseunit", grain_delete())
     update_disc_grainunit.set_locator("road", ball_road)
     update_disc_grainunit.set_locator("base", knee_road)
     update_disc_grainunit.set_locator("need", medical_road)

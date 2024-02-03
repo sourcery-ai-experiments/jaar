@@ -14,30 +14,19 @@ from src.agenda.learn import (
 
 
 def test_category_ref_ReturnsCorrectObj():
-    assert get_grain_config_dict() != None
-
-
-def test_category_ref_ReturnsCorrectObj():
-    idea_text = "idea"
     assert category_ref() == {
-        "AgendaUnit_weight",
-        "_max_tree_traverse",
-        "_party_creditor_pool",
-        "_party_debtor_pool",
-        "_auto_output_to_forum",
-        "_meld_strategy",
+        "agendaunit",
         "partyunit",
         "groupunit",
-        "groupunit_partylink",
-        idea_text,
-        f"{idea_text}_balancelink",
-        f"{idea_text}_reasonunit",
-        f"{idea_text}_reasonunit_premiseunit",
-        f"{idea_text}_suffgroup",
-        f"{idea_text}_beliefunit",
+        "partylink",
+        "ideaunit",
+        "idea_balancelink",
+        "idea_reasonunit",
+        "idea_reason_premiseunit",
+        "idea_suffgroup",
+        "idea_beliefunit",
     }
     assert "partyunit" in category_ref()
-    assert is_category_ref(idea_text)
     assert is_category_ref("idearoot") == False
 
 
@@ -82,29 +71,29 @@ def test_get_grain_config_dict_EveryCrudOperationHasLearnOrderGroup():
     mog = grain_order_text
     # # Simple script for editing learn_grain_config.json
     # set_mog("partyunit", grain_insert(), mog, 0)
-    # set_mog("groupunit_partylink", grain_insert(), mog, 1)
+    # set_mog("partylink", grain_insert(), mog, 1)
     # set_mog("groupunit", grain_insert(), mog, 2)
-    # set_mog("idea", grain_insert(), mog, 3)
+    # set_mog("ideaunit", grain_insert(), mog, 3)
     # set_mog("idea_balancelink", grain_insert(), mog, 4)
     # set_mog("idea_suffgroup", grain_insert(), mog, 5)
     # set_mog("idea_beliefunit", grain_insert(), mog, 6)
     # set_mog("idea_reasonunit", grain_insert(), mog, 7)
-    # set_mog("idea_reasonunit_premiseunit", grain_insert(), mog, 8)
+    # set_mog("idea_reason_premiseunit", grain_insert(), mog, 8)
     # set_mog("partyunit", grain_update(), mog, 9)
     # set_mog("groupunit", grain_update(), mog, 10)
-    # set_mog("groupunit_partylink", grain_update(), mog, 11)
-    # set_mog("idea", grain_update(), mog, 12)
+    # set_mog("partylink", grain_update(), mog, 11)
+    # set_mog("ideaunit", grain_update(), mog, 12)
     # set_mog("idea_balancelink", grain_update(), mog, 13)
     # set_mog("idea_beliefunit", grain_update(), mog, 14)
-    # set_mog("idea_reasonunit_premiseunit", grain_update(), mog, 15)
+    # set_mog("idea_reason_premiseunit", grain_update(), mog, 15)
     # set_mog("idea_reasonunit", grain_update(), mog, 16)
-    # set_mog("idea_reasonunit_premiseunit", grain_delete(), mog, 17)
+    # set_mog("idea_reason_premiseunit", grain_delete(), mog, 17)
     # set_mog("idea_reasonunit", grain_delete(), mog, 18)
     # set_mog("idea_beliefunit", grain_delete(), mog, 19)
     # set_mog("idea_suffgroup", grain_delete(), mog, 20)
     # set_mog("idea_balancelink", grain_delete(), mog, 21)
-    # set_mog("idea", grain_delete(), mog, 22)
-    # set_mog("groupunit_partylink", grain_delete(), mog, 23)
+    # set_mog("ideaunit", grain_delete(), mog, 22)
+    # set_mog("partylink", grain_delete(), mog, 23)
     # set_mog("partyunit", grain_delete(), mog, 24)
     # set_mog("groupunit", grain_delete(), mog, 25)
     # set_mog("AgendaUnit_weight", grain_update(), mog, 26)
@@ -115,37 +104,32 @@ def test_get_grain_config_dict_EveryCrudOperationHasLearnOrderGroup():
     # set_mog("_meld_strategy", grain_update(), mog, 26)
 
     assert 0 == get_mog("partyunit", grain_insert(), mog, 0)
-    assert 1 == get_mog("groupunit_partylink", grain_insert(), mog, 1)
+    assert 1 == get_mog("partylink", grain_insert(), mog, 1)
     assert 2 == get_mog("groupunit", grain_insert(), mog, 2)
-    assert 3 == get_mog("idea", grain_insert(), mog, 3)
+    assert 3 == get_mog("ideaunit", grain_insert(), mog, 3)
     assert 4 == get_mog("idea_balancelink", grain_insert(), mog, 4)
     assert 5 == get_mog("idea_suffgroup", grain_insert(), mog, 5)
     assert 6 == get_mog("idea_beliefunit", grain_insert(), mog, 6)
     assert 7 == get_mog("idea_reasonunit", grain_insert(), mog, 7)
-    assert 8 == get_mog("idea_reasonunit_premiseunit", grain_insert(), mog, 8)
+    assert 8 == get_mog("idea_reason_premiseunit", grain_insert(), mog, 8)
     assert 9 == get_mog("partyunit", grain_update(), mog, 9)
     assert 10 == get_mog("groupunit", grain_update(), mog, 10)
-    assert 11 == get_mog("groupunit_partylink", grain_update(), mog, 11)
-    assert 12 == get_mog("idea", grain_update(), mog, 12)
+    assert 11 == get_mog("partylink", grain_update(), mog, 11)
+    assert 12 == get_mog("ideaunit", grain_update(), mog, 12)
     assert 13 == get_mog("idea_balancelink", grain_update(), mog, 13)
     assert 14 == get_mog("idea_beliefunit", grain_update(), mog, 14)
-    assert 15 == get_mog("idea_reasonunit_premiseunit", grain_update(), mog, 15)
+    assert 15 == get_mog("idea_reason_premiseunit", grain_update(), mog, 15)
     assert 16 == get_mog("idea_reasonunit", grain_update(), mog, 16)
-    assert 17 == get_mog("idea_reasonunit_premiseunit", grain_delete(), mog, 17)
+    assert 17 == get_mog("idea_reason_premiseunit", grain_delete(), mog, 17)
     assert 18 == get_mog("idea_reasonunit", grain_delete(), mog, 18)
     assert 19 == get_mog("idea_beliefunit", grain_delete(), mog, 19)
     assert 20 == get_mog("idea_suffgroup", grain_delete(), mog, 20)
     assert 21 == get_mog("idea_balancelink", grain_delete(), mog, 21)
-    assert 22 == get_mog("idea", grain_delete(), mog, 22)
-    assert 23 == get_mog("groupunit_partylink", grain_delete(), mog, 23)
+    assert 22 == get_mog("ideaunit", grain_delete(), mog, 22)
+    assert 23 == get_mog("partylink", grain_delete(), mog, 23)
     assert 24 == get_mog("partyunit", grain_delete(), mog, 24)
     assert 25 == get_mog("groupunit", grain_delete(), mog, 25)
-    assert 26 == get_mog("AgendaUnit_weight", grain_update(), mog, 26)
-    assert 26 == get_mog("_max_tree_traverse", grain_update(), mog, 26)
-    assert 26 == get_mog("_party_creditor_pool", grain_update(), mog, 26)
-    assert 26 == get_mog("_party_debtor_pool", grain_update(), mog, 26)
-    assert 26 == get_mog("_auto_output_to_forum", grain_update(), mog, 26)
-    assert 26 == get_mog("_meld_strategy", grain_update(), mog, 26)
+    assert 26 == get_mog("agendaunit", grain_update(), mog, 26)
 
 
 def test_GrainUnit_exists():
@@ -265,8 +249,8 @@ def test_GrainUnit_get_locator_ReturnsCorrectObj():
 # def test_GrainUnit_get_locator_key_ReturnsCorrectObj_double_parameter():
 #     # GIVEN
 #     bob_text = "Bob"
-#     groupunit_partylink_text = "groupunit_partylink"
-#     gupl_grainunit = grainunit_shop(groupunit_partylink_text)
+#     partylink_text = "partylink"
+#     gupl_grainunit = grainunit_shop(partylink_text)
 #     party_id_text = "party_id"
 #     tom_text = "Tom"
 #     gupl_grainunit.set_locator(party_id_text, bob_text)
@@ -277,7 +261,7 @@ def test_GrainUnit_get_locator_ReturnsCorrectObj():
 #     # WHEN / THEN
 #     assert (
 #         gupl_grainunit.get_locator_key()
-#         == f"{groupunit_partylink_text} {run_text} {bob_text}"
+#         == f"{partylink_text} {run_text} {bob_text}"
 #     )
 
 

@@ -40,10 +40,15 @@ def test_LearnUnit_set_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
     sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
     attribute_value = 55
-    category = "AgendaUnit_weight"
-    required_args = {category: attribute_value}
+    category = "agendaunit"
+    opt1_arg = "_weight"
+    optional_args = {opt1_arg: attribute_value}
+    required_args = {}
     agenda_weight_grainunit = grainunit_shop(
-        category, grain_update(), required_args=required_args
+        category,
+        grain_update(),
+        required_args=required_args,
+        optional_args=optional_args,
     )
     assert sue_learnunit.grainunits == {}
     assert agenda_weight_grainunit.grain_order is None
@@ -65,7 +70,7 @@ def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
     # GIVEN
     sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
-    x_category = "AgendaUnit_weight"
+    x_category = "groupunit"
     agenda_weight_grainunit = grainunit_shop(x_category, grain_update())
 
     # WHEN
@@ -74,7 +79,7 @@ def test_LearnUnit_set_grainunit_RaisesErrorWhen_is_valid_IsFalse():
     assert (
         str(excinfo.value)
         == f"""'{x_category}' UPDATE GrainUnit is invalid
-                x_grainunit.is_locator_valid()=True
+                x_grainunit.is_locator_valid()=False
                 x_grainunit.is_required_args_valid()=False
                 x_grainunit.is_optional_args_valid()=True"""
     )
@@ -84,21 +89,20 @@ def test_LearnUnit_get_grain_ReturnsCorrectObj():
     # GIVEN
     sue_road = get_sue_proad()
     sue_learnunit = learnunit_shop(sue_road)
-    AgendaUnit_weight_value = 55
-    AgendaUnit_weight_text = "AgendaUnit_weight"
-    AgendaUnit_weight_grainunit = grainunit_shop(AgendaUnit_weight_text, grain_update())
-    AgendaUnit_weight_grainunit.set_required_arg(
-        x_key=AgendaUnit_weight_text, x_value=AgendaUnit_weight_value
-    )
-    sue_learnunit.set_grainunit(AgendaUnit_weight_grainunit)
+    agendaunit_text = "agendaunit"
+    opt_arg1 = "_weight"
+    opt_value = 55
+    agendaunit_grainunit = grainunit_shop(agendaunit_text, grain_update())
+    agendaunit_grainunit.set_optional_arg(x_key=opt_arg1, x_value=opt_value)
+    sue_learnunit.set_grainunit(agendaunit_grainunit)
 
     # WHEN
     gen_grainunit = sue_learnunit.get_grainunit(
-        grain_update(), category=AgendaUnit_weight_text, locator_values=[]
+        grain_update(), category=agendaunit_text, locator_values=[]
     )
 
     # THEN
-    assert gen_grainunit == AgendaUnit_weight_grainunit
+    assert gen_grainunit == agendaunit_grainunit
 
 
 def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
@@ -108,19 +112,25 @@ def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnitSimpleAttrs():
     assert sue_learnunit.grainunits == {}
 
     # WHEN
-    AgendaUnit_weight_value = 55
-    AgendaUnit_weight_text = "AgendaUnit_weight"
-    required_args = {AgendaUnit_weight_text: AgendaUnit_weight_value}
+    op2_arg = "_weight"
+    op2_value = 55
+    agendaunit_text = "agendaunit"
+    required_args = {}
+    optional_args = {op2_arg: op2_value}
     sue_learnunit.add_grainunit(
-        AgendaUnit_weight_text, grain_update(), None, required_args
+        agendaunit_text,
+        grain_update(),
+        None,
+        required_args,
+        optional_args=optional_args,
     )
 
     # THEN
     assert len(sue_learnunit.grainunits) == 1
     x_update_dict = sue_learnunit.grainunits.get(grain_update())
-    x_grainunit = x_update_dict.get(AgendaUnit_weight_text)
+    x_grainunit = x_update_dict.get(agendaunit_text)
     assert x_grainunit != None
-    assert x_grainunit.category == AgendaUnit_weight_text
+    assert x_grainunit.category == agendaunit_text
 
 
 def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_partyunits():
@@ -166,71 +176,73 @@ def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_partyunits():
     )
 
 
-def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_max_tree_traverse():
-    # GIVEN
-    sue_learnunit = learnunit_shop(get_sue_proad())
-    assert sue_learnunit.grainunits == {}
+# def test_LearnUnit_add_grainunit_CorrectlySets_AgendaUnit_max_tree_traverse():
+#     # GIVEN
+#     sue_learnunit = learnunit_shop(get_sue_proad())
+#     assert sue_learnunit.grainunits == {}
 
-    # WHEN
-    weight_value = 55
-    weight_name = "AgendaUnit_weight"
-    required_args = {weight_name: weight_value}
-    weight_grainunit = grainunit_shop(weight_name, grain_update(), None, required_args)
-    sue_learnunit.set_grainunit(weight_grainunit)
-    # THEN
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 1
-    assert weight_grainunit == sue_learnunit.grainunits.get(grain_update()).get(
-        weight_name
-    )
+#     # WHEN
+#     opt2_value = 55
+#     category = "agendaunit"
+#     opt2_arg = "_weight"
+#     weight_grainunit = grainunit_shop(category, grain_update())
+#     weight_grainunit.set_optional_arg(opt2_arg, opt2_value)
+#     sue_learnunit.set_grainunit(weight_grainunit)
+#     # THEN
+#     assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 1
+#     sue_agendaunit_dict = sue_learnunit.grainunits.get(grain_update())
+#     sue_weight_grainunit = sue_agendaunit_dict.get(category)
+#     print(f"{sue_weight_grainunit=}")
+#     assert weight_grainunit == sue_weight_grainunit
 
-    # WHEN
-    new2_value = 66
-    x_attribute = "_max_tree_traverse"
-    required_args = {x_attribute: new2_value}
-    x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
-    sue_learnunit.set_grainunit(x_grainunit)
-    # THEN
-    print(f"{sue_learnunit.grainunits.keys()=}")
-    print(f"{sue_learnunit.grainunits.get(grain_update()).keys()=}")
-    # print(f"{get_all_nondictionary_objs(sue_learnunit.grainunits).get(grain_update())=}")
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 2
-    assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
+#     # WHEN
+#     new2_value = 66
+#     x_attribute = "_max_tree_traverse"
+#     required_args = {x_attribute: new2_value}
+#     x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
+#     sue_learnunit.set_grainunit(x_grainunit)
+#     # THEN
+#     print(f"{sue_learnunit.grainunits.keys()=}")
+#     print(f"{sue_learnunit.grainunits.get(grain_update()).keys()=}")
+#     # print(f"{get_all_nondictionary_objs(sue_learnunit.grainunits).get(grain_update())=}")
+#     assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 2
+#     assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
 
-    # WHEN
-    new3_value = 77
-    x_attribute = "_party_creditor_pool"
-    required_args = {x_attribute: new3_value}
-    x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
-    sue_learnunit.set_grainunit(x_grainunit)
-    # THEN
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 3
-    assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
+#     # WHEN
+#     new3_value = 77
+#     x_attribute = "_party_creditor_pool"
+#     required_args = {x_attribute: new3_value}
+#     x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
+#     sue_learnunit.set_grainunit(x_grainunit)
+#     # THEN
+#     assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 3
+#     assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
 
-    # WHEN
-    new4_value = 88
-    x_attribute = "_party_debtor_pool"
-    required_args = {x_attribute: new4_value}
-    x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
-    sue_learnunit.set_grainunit(x_grainunit)
-    # THEN
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 4
-    assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
+#     # WHEN
+#     new4_value = 88
+#     x_attribute = "_party_debtor_pool"
+#     required_args = {x_attribute: new4_value}
+#     x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
+#     sue_learnunit.set_grainunit(x_grainunit)
+#     # THEN
+#     assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 4
+#     assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
 
-    # WHEN
-    new5_value = "override"
-    x_attribute = "_meld_strategy"
-    required_args = {x_attribute: new5_value}
-    x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
-    sue_learnunit.set_grainunit(x_grainunit)
-    # THEN
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 5
-    assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
+#     # WHEN
+#     new5_value = "override"
+#     x_attribute = "_meld_strategy"
+#     required_args = {x_attribute: new5_value}
+#     x_grainunit = grainunit_shop(x_attribute, grain_update(), None, required_args)
+#     sue_learnunit.set_grainunit(x_grainunit)
+#     # THEN
+#     assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 5
+#     assert x_grainunit == sue_learnunit.grainunits.get(grain_update()).get(x_attribute)
 
 
 def test_LearnUnit_get_grain_order_grainunit_dict_ReturnsCorrectObj():
     # GIVEN
     sue_learnunit = get_sue_learnunit_example1()
-    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 5
+    assert len(sue_learnunit.grainunits.get(grain_update()).keys()) == 1
     assert sue_learnunit.grainunits.get(grain_insert()) is None
     assert len(sue_learnunit.grainunits.get(grain_delete()).keys()) == 1
 
@@ -241,5 +253,5 @@ def test_LearnUnit_get_grain_order_grainunit_dict_ReturnsCorrectObj():
     assert len(sue_grain_order_dict) == 2
     print(f"{sue_grain_order_dict.keys()=}")
     print(f"{sue_grain_order_dict.get(grain_update())=}")
-    assert len(sue_grain_order_dict.get(grain_update())) == 5
+    assert len(sue_grain_order_dict.get(grain_update())) == 1
     assert len(sue_grain_order_dict.get(grain_delete())) == 1

@@ -225,7 +225,7 @@ def test_economy_refresh_treasury_forum_agendas_data_CorrectlyPopulates_groupuni
     assert get_single_result(x_economy.get_treasury_conn(), sqlstr) == 3
 
 
-def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_Groupunit_Partylinks(
+def test_economy_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN

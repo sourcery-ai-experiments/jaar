@@ -1,0 +1,95 @@
+{
+    "tables": {
+        "agendaunit": {
+            "columns": {
+                "agent_id": {},
+                "rational": {}
+            }
+        },
+        "belief_catalog": {
+            "columns": {
+                "agent_id": {},
+                "base": {},
+                "pick": {}
+            }
+        },
+        "calendar": {
+            "columns": {
+                "agent_id": {},
+                "intent_idea_road": {},
+                "intent_weight": {},
+                "report_date_range_cease": {},
+                "report_date_range_start": {},
+                "report_interval_intent_state_max_count": {},
+                "report_interval_intent_task_max_count": {},
+                "report_interval_length": {},
+                "report_time_road": {},
+                "task": {},
+                "time_begin": {},
+                "time_close": {}
+            }
+        },
+        "groupunit_catalog": {
+            "columns": {
+                "agent_id": {},
+                "groupunit_group_id": {},
+                "treasury_partylinks": {}
+            }
+        },
+        "idea_catalog": {
+            "columns": {
+                "agent_id": {},
+                "idea_road": {}
+            }
+        },
+        "partyunit": {
+            "columns": {
+                "_agenda_credit": {},
+                "_agenda_debt": {},
+                "_agenda_intent_credit": {},
+                "_agenda_intent_debt": {},
+                "_agenda_intent_ratio_credit": {},
+                "_agenda_intent_ratio_debt": {},
+                "_creditor_live": {},
+                "_debtor_live": {},
+                "_treasury_credit_score": {},
+                "_treasury_tax_diff": {},
+                "_treasury_tax_paid": {},
+                "_treasury_voice_hx_lowest_rank": {},
+                "_treasury_voice_rank": {},
+                "agent_id": {},
+                "party_id": {}
+            }
+        },
+        "river_block": {
+            "columns": {
+                "block_num": {},
+                "currency_close": {},
+                "currency_master": {},
+                "currency_start": {},
+                "dst_agent_id": {},
+                "parent_block_num": {},
+                "river_tree_level": {},
+                "src_agent_id": {}
+            }
+        },
+        "river_circle": {
+            "columns": {
+                "circle_num": {},
+                "curr_close": {},
+                "curr_start": {},
+                "currency_master": {},
+                "dst_agent_id": {}
+            }
+        },
+        "river_reach": {
+            "columns": {
+                "currency_master": {},
+                "reach_curr_close": {},
+                "reach_curr_start": {},
+                "set_num": {},
+                "src_agent_id": {}
+            }
+        }
+    }
+}

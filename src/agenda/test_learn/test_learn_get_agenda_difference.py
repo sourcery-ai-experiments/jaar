@@ -190,32 +190,32 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_AgendaUnit_weight_update
 
     # THEN
     sue_grainunits = sue_learnunit.grainunits
-    x_keylist = [grain_update(), "AgendaUnit_weight"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_grainunits, x_keylist)
-    assert rico_grainunit.get_value("AgendaUnit_weight") == x_agendaUnit_weight
+    assert rico_grainunit.get_value("_weight") == x_agendaUnit_weight
 
-    x_keylist = [grain_update(), "_max_tree_traverse"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_max_tree_traverse") == x_max_tree_traverse
 
-    x_keylist = [grain_update(), "_party_creditor_pool"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_party_creditor_pool") == x_party_creditor_pool
 
-    x_keylist = [grain_update(), "_party_debtor_pool"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_party_debtor_pool") == x_party_debtor_pool
 
-    x_keylist = [grain_update(), "_auto_output_to_forum"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_auto_output_to_forum") == x_auto_output_to_forum
 
-    x_keylist = [grain_update(), "_meld_strategy"]
+    x_keylist = [grain_update(), "agendaunit"]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("_meld_strategy") == x_meld_strategy
 
     print(f"{get_grainunit_total_count(sue_learnunit)=}")
-    assert get_grainunit_total_count(sue_learnunit) == 6
+    assert get_grainunit_total_count(sue_learnunit) == 1
 
 
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert():
@@ -251,7 +251,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert()
     print(f"\n{rico_grainunit=}")
     assert rico_grainunit.get_value("_treasury_partylinks") == x_treasury_partylinks
 
-    x_keylist = [grain_insert(), "groupunit_partylink", run_text, rico_text]
+    x_keylist = [grain_insert(), "partylink", run_text, rico_text]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("group_id") == run_text
     assert rico_grainunit.get_value("party_id") == rico_text
@@ -309,7 +309,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update()
     print(f"\n{rico_grainunit=}")
     assert rico_grainunit.get_value("_treasury_partylinks") == swim_text
 
-    x_keylist = [grain_update(), "groupunit_partylink", run_text, rico_text]
+    x_keylist = [grain_update(), "partylink", run_text, rico_text]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("group_id") == run_text
     assert rico_grainunit.get_value("party_id") == rico_text
@@ -360,7 +360,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_delete()
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("group_id") == run_text
 
-    x_keylist = [grain_delete(), "groupunit_partylink", fly_text, dizz_text]
+    x_keylist = [grain_delete(), "partylink", fly_text, dizz_text]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert rico_grainunit.get_value("group_id") == fly_text
     assert rico_grainunit.get_value("party_id") == dizz_text
@@ -399,12 +399,12 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_delete():
     sue_learnunit.add_all_grainunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [grain_delete(), "idea", street_road]
+    x_keylist = [grain_delete(), "ideaunit", street_road]
     street_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert street_grainunit.get_locator("road") == street_road
     assert street_grainunit.get_value("road") == street_road
 
-    x_keylist = [grain_delete(), "idea", ball_road]
+    x_keylist = [grain_delete(), "ideaunit", ball_road]
     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert ball_grainunit.get_locator("road") == ball_road
     assert ball_grainunit.get_value("road") == ball_road
@@ -456,13 +456,13 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_insert():
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
 
-    x_keylist = [grain_insert(), "idea", disc_road]
+    x_keylist = [grain_insert(), "ideaunit", disc_road]
     street_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert street_grainunit.get_locator("road") == disc_road
     assert street_grainunit.get_value("label") == disc_text
     assert street_grainunit.get_value("parent_road") == sports_road
 
-    x_keylist = [grain_insert(), "idea", music_road]
+    x_keylist = [grain_insert(), "ideaunit", music_road]
     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert ball_grainunit.get_locator("road") == music_road
     assert ball_grainunit.get_value("label") == music_text
@@ -523,7 +523,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_update():
     # THEN
     print(f"{print_grainunit_keys(sue_learnunit)=}")
 
-    x_keylist = [grain_update(), "idea", music_road]
+    x_keylist = [grain_update(), "ideaunit", music_road]
     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert ball_grainunit.get_locator("road") == music_road
     assert ball_grainunit.get_value("_begin") == after_music_begin
@@ -846,7 +846,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_delete()
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_insert():
+def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_insert():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -890,7 +890,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseu
     print(f"{print_grainunit_keys(sue_learnunit)=}")
     x_keylist = [
         grain_insert(),
-        "idea_reasonunit_premiseunit",
+        "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
@@ -905,7 +905,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseu
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_delete():
+def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_delete():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -953,7 +953,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseu
     print(f"{print_grainunit_keys(sue_learnunit)=}")
     x_keylist = [
         grain_delete(),
-        "idea_reasonunit_premiseunit",
+        "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
@@ -965,7 +965,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseu
     assert get_grainunit_total_count(sue_learnunit) == 1
 
 
-def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseunit_update():
+def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_update():
     # GIVEN
     sue_road = get_sue_proad()
     sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
@@ -1020,7 +1020,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_premiseu
     print(f"{print_grainunit_keys(sue_learnunit)=}")
     x_keylist = [
         grain_update(),
-        "idea_reasonunit_premiseunit",
+        "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
