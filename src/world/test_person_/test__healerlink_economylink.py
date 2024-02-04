@@ -80,7 +80,7 @@ def test_HealerLink_set_economylinks_weight_metrics_SetsCorrectly():
     # GIVEN
     yao_text = "Yao"
     yao_hl = healerlink_shop(healer_id=yao_text)
-    yao_hl._manager_importance = 0.25
+    yao_hl._person_clout = 0.25
     fight_text = "fight"
     flee_text = "flee"
     nego_text = "negoiate"
@@ -93,9 +93,9 @@ def test_HealerLink_set_economylinks_weight_metrics_SetsCorrectly():
     assert fight_economylink._relative_weight is None
     assert flee_economylink._relative_weight is None
     assert nego_economylink._relative_weight is None
-    assert fight_economylink._manager_importance is None
-    assert flee_economylink._manager_importance is None
-    assert nego_economylink._manager_importance is None
+    assert fight_economylink._person_clout is None
+    assert flee_economylink._person_clout is None
+    assert nego_economylink._person_clout is None
 
     # WHEN
     yao_hl.set_economylinks_weight_metrics()
@@ -104,6 +104,6 @@ def test_HealerLink_set_economylinks_weight_metrics_SetsCorrectly():
     assert fight_economylink._relative_weight == 0.5
     assert flee_economylink._relative_weight == 0.35
     assert nego_economylink._relative_weight == 0.15
-    assert fight_economylink._manager_importance == 0.125
-    assert flee_economylink._manager_importance == 0.0875
-    assert nego_economylink._manager_importance == 0.0375
+    assert fight_economylink._person_clout == 0.125
+    assert flee_economylink._person_clout == 0.0875
+    assert nego_economylink._person_clout == 0.0375

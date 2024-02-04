@@ -15,25 +15,25 @@ def test_problemunit_set_relative_weight_SetsCorrectly():
     assert knee_problemunit._relative_weight == x_relative_weight
 
 
-def test_problemunit_set_manager_importance_SetsCorrectly():
+def test_problemunit_set_person_clout_SetsCorrectly():
     # GIVEN
     knee_text = "knee discomfort"
     knee_problemunit = problemunit_shop(problem_id=knee_text)
-    assert knee_problemunit._manager_importance is None
+    assert knee_problemunit._person_clout is None
 
     # WHEN
-    x_manager_importance = 0.45
-    knee_problemunit.set_manager_importance(x_manager_importance)
+    x_person_clout = 0.45
+    knee_problemunit.set_person_clout(x_person_clout)
 
     # THEN
-    assert knee_problemunit._manager_importance == x_manager_importance
+    assert knee_problemunit._person_clout == x_person_clout
 
 
 def test_problemunit_set_healerlinks_weight_metrics_SetsCorrectly():
     # GIVEN
     knee_text = "knee discomfort"
     knee_problemunit = problemunit_shop(problem_id=knee_text)
-    knee_problemunit._manager_importance = 0.25
+    knee_problemunit._person_clout = 0.25
 
     yao_text = "Yao"
     sue_text = "Sue"
@@ -49,9 +49,9 @@ def test_problemunit_set_healerlinks_weight_metrics_SetsCorrectly():
     assert yao_healerlink._relative_weight is None
     assert sue_healerlink._relative_weight is None
     assert tim_healerlink._relative_weight is None
-    assert yao_healerlink._manager_importance is None
-    assert sue_healerlink._manager_importance is None
-    assert tim_healerlink._manager_importance is None
+    assert yao_healerlink._person_clout is None
+    assert sue_healerlink._person_clout is None
+    assert tim_healerlink._person_clout is None
 
     # WHEN
     knee_problemunit.set_healerlinks_weight_metrics()
@@ -60,6 +60,6 @@ def test_problemunit_set_healerlinks_weight_metrics_SetsCorrectly():
     assert yao_healerlink._relative_weight == 0.75
     assert sue_healerlink._relative_weight == 0.15
     assert tim_healerlink._relative_weight == 0.10
-    assert yao_healerlink._manager_importance == 0.1875
-    assert sue_healerlink._manager_importance == 0.0375
-    assert tim_healerlink._manager_importance == 0.025
+    assert yao_healerlink._person_clout == 0.1875
+    assert sue_healerlink._person_clout == 0.0375
+    assert tim_healerlink._person_clout == 0.025

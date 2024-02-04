@@ -29,8 +29,6 @@ def test_PersonUnit_get_dict_CorrectlyGetsDict_simple():
         "person_dir": yao_artbitarydirectory,
         "_economys": {diet_text: None},
         "_problems": {knee_text: knee_problemunit.get_dict()},
-        "_primary_contract_road": knee_proad,
-        "_primary_contract_active": True,
     }
     assert yao_personunit_x_dict == yao_personunit_get_dict
 

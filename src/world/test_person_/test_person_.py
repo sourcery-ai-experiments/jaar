@@ -24,11 +24,9 @@ def test_PersonUnit_exists():
     assert x_person.person_id is None
     assert x_person.person_dir is None
     assert x_person._economys is None
+    assert x_person._economy_metrics is None
     assert x_person._problembeams is None
     assert x_person._problems is None
-    assert x_person._primary_contract_road is None
-    assert x_person._primary_contract_active is None
-    assert x_person._primary_contract_obj is None
     assert x_person._road_delimiter is None
 
 
@@ -67,9 +65,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     sue_personroad = create_road(sue_personroad, "economy1")
 
     # WHEN
-    x_person = personunit_shop(
-        person_id=sue_text, _primary_contract_road=sue_personroad
-    )
+    x_person = personunit_shop(person_id=sue_text)
 
     # THEN
     assert x_person.person_id == sue_text
@@ -77,46 +73,7 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     assert x_person._economys == {}
     assert x_person._problembeams == {}
     assert x_person._problems == {}
-    assert x_person._primary_contract_road == sue_personroad
-    assert x_person._primary_contract_active
-    assert x_person._primary_contract_obj is None
     assert x_person._road_delimiter == default_road_delimiter_if_none()
-
-
-def test_personunit_shop_ReturnsPersonUnitWithCorrectAttrs_v2():
-    # GIVEN
-    dallas_text = "dallas"
-    dallas_dir = ""
-    slash_text = "/"
-    x_primary_contract_active = False
-
-    # WHEN
-    x_person = personunit_shop(
-        person_id=dallas_text,
-        person_dir=dallas_dir,
-        _primary_contract_active=x_primary_contract_active,
-        _road_delimiter=slash_text,
-    )
-
-    # THEN
-    assert x_person.person_id == dallas_text
-    assert x_person.person_dir == dallas_dir
-    assert x_person._primary_contract_active == x_primary_contract_active
-    assert x_person._road_delimiter == slash_text
-
-
-def test_PersonUnit_set_primary_contract_active_CorrectlySetsAttr():
-    # GIVEN
-    yao_text = "Yao"
-    yao_personunit = personunit_shop(person_id=yao_text)
-    assert yao_personunit._primary_contract_active
-
-    # WHEN
-    x_primary_contract_active = False
-    yao_personunit.set_primary_contract_active(x_primary_contract_active)
-
-    # THEN
-    assert yao_personunit._primary_contract_active == x_primary_contract_active
 
 
 def test_PersonUnit_create_problemunit_from_problem_id_CorrectlyCreatesProblemUnit():
@@ -242,7 +199,6 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v1():
     yao_healerlink.set_economylink(economylink_shop(diet_text))
     diet_economy_dir = f"{diet_healer_dir}/economys/{diet_text}"
     assert yao_personunit._economys == {}
-    assert yao_personunit._primary_contract_road is None
 
     # WHEN
     yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
@@ -259,9 +215,6 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v1():
     print(f"{diet_economy.economys_dir=}")
     diet_proad = create_proad(yao_text, knee_text, yao_text, diet_text)
     assert diet_economy.economys_dir == get_proad_dir(diet_proad)
-    assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
-        knee_text, yao_text, diet_text
-    )
 
 
 def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
@@ -279,7 +232,6 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
     sue_healerlink.set_economylink(economylink_shop(diet_text))
     assert yao_personunit._economys == {}
     assert yao_personunit.healer_exists(sue_text)
-    assert yao_personunit._primary_contract_road is None
 
     # WHEN
     yao_personunit.set_economyunit(
@@ -296,9 +248,6 @@ def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyUnit_v2():
     # print(f"         {diet_economy_dir=}")
     # print(f"{diet_economy.economys_dir=}")
     assert diet_economy.economys_dir == get_proad_dir(diet_proad)
-    assert yao_personunit._primary_contract_road == yao_personunit.make_proad(
-        knee_text, sue_text, diet_text
-    )
 
 
 def test_PersonUnit_set_economyunit_CorrectlyCreatesEconomyLink():
@@ -417,24 +366,6 @@ def test_PersonUnit_del_economyunit_CorrectlyDeletesEconomyUnit():
     assert after_diet_economy is None
 
 
-def test_PersonUnit_is_primary_contract_road_valid_ReturnsCorrectBool():
-    # GIVEN
-    yao_text = "Yao"
-    yao_personunit = personunit_shop(person_id=yao_text)
-    assert yao_personunit._primary_contract_road is None
-    assert yao_personunit.is_primary_contract_road_valid() == False
-
-    # WHEN
-    diet_text = "diet"
-    knee_text = "knee"
-    yao_personunit.set_economyunit(diet_text, x_problem_id=knee_text)
-
-    # THEN
-    diet_proad = yao_personunit.make_proad(knee_text, yao_text, diet_text)
-    assert yao_personunit._primary_contract_road == diet_proad
-    assert yao_personunit.is_primary_contract_road_valid()
-
-
 def test_PersonUnit_make_personroad_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
@@ -453,7 +384,6 @@ def test_PersonUnit_make_personroad_ReturnsCorrectObj():
     iowa_text = "Iowa"
     leg_text = "Leg"
     yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
-    assert yao_personunit._primary_contract_road != None
 
     # WHEN / THEN
     yao_1_proad = "Yao"
@@ -483,7 +413,6 @@ def test_PersonUnit_make_personroad_RaisesException():
     iowa_text = "Iowa"
     leg_text = "Leg"
     yao_personunit.set_economyunit(iowa_text, x_problem_id=leg_text)
-    assert yao_personunit._primary_contract_road != None
 
     # WHEN / THEN
     arm_text = "Arm"

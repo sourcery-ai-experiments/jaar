@@ -16,7 +16,7 @@ def test_problemunit_exists():
     assert knee_problemunit.weight == knee_weight
     assert knee_problemunit._healerlinks is None
     assert knee_problemunit._relative_weight is None
-    assert knee_problemunit._manager_importance is None
+    assert knee_problemunit._person_clout is None
     assert knee_problemunit._road_delimiter is None
 
 
@@ -59,5 +59,5 @@ def test_problemunit_shop_ReturnsNoneProblemUnitWithCorrectAttrs_v1():
     assert knee_problemunit.weight == 1
     assert knee_problemunit._healerlinks == {}
     assert knee_problemunit._relative_weight is None
-    assert knee_problemunit._manager_importance is None
+    assert knee_problemunit._person_clout is None
     assert knee_problemunit._road_delimiter == default_road_delimiter_if_none()

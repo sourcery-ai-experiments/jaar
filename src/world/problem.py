@@ -15,13 +15,13 @@ class EconomyLink:
     economy_id: EconomyID
     weight: float
     _relative_weight: float = None
-    _manager_importance: float = None
+    _person_clout: float = None
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
 
-    def set_manager_importance(self, person_importance: float):
-        self._manager_importance = person_importance
+    def set_person_clout(self, person_clout: float):
+        self._person_clout = person_clout
 
     def get_dict(self) -> dict[str:str]:
         return {"economy_id": self.economy_id, "weight": self.weight}
@@ -40,7 +40,7 @@ class HealerLink:
     in_tribe: bool
     _economylinks: dict[EconomyID:EconomyLink] = None
     _relative_weight: float = None
-    _manager_importance: float = None
+    _person_clout: float = None
 
     def set_economylinks_weight_metrics(self):
         total_economylinks_weight = sum(
@@ -50,15 +50,15 @@ class HealerLink:
             x_economylink.set_relative_weight(
                 x_economylink.weight / total_economylinks_weight
             )
-            x_economylink.set_manager_importance(
-                x_economylink._relative_weight * self._manager_importance
+            x_economylink.set_person_clout(
+                x_economylink._relative_weight * self._person_clout
             )
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
 
-    def set_manager_importance(self, person_importance: float):
-        self._manager_importance = person_importance
+    def set_person_clout(self, person_clout: float):
+        self._person_clout = person_clout
         self.set_economylinks_weight_metrics()
 
     def set_economylink(self, economylink: EconomyLink):
@@ -103,7 +103,7 @@ class ProblemUnit:
     weight: float = None
     _healerlinks: dict[PersonID:HealerLink] = None
     _relative_weight: float = None
-    _manager_importance: float = None
+    _person_clout: float = None
     _road_delimiter: str = None
 
     def set_problem_id(self, x_problem_id: ProblemID):
@@ -118,16 +118,16 @@ class ProblemUnit:
             x_healerlink.set_relative_weight(
                 x_healerlink.weight / total_healerlinks_weight
             )
-            x_healerlink.set_manager_importance(
-                x_healerlink._relative_weight * self._manager_importance
+            x_healerlink.set_person_clout(
+                x_healerlink._relative_weight * self._person_clout
             )
 
     def set_relative_weight(self, relative_weight: float):
         self._relative_weight = relative_weight
-        self.set_manager_importance(self._relative_weight)
+        self.set_person_clout(self._relative_weight)
 
-    def set_manager_importance(self, person_importance: float):
-        self._manager_importance = person_importance
+    def set_person_clout(self, person_clout: float):
+        self._person_clout = person_clout
         self.set_healerlinks_weight_metrics()
 
     def healer_exists(self, healer_id: HealerID) -> bool:
