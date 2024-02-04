@@ -337,14 +337,12 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.set_forum_agenda_button.setFont(font)
         self.set_forum_agenda_button.setObjectName("set_forum_agenda_button")
-        self.reload_all_src_agendas_button = QtWidgets.QPushButton(self.centralwidget)
-        self.reload_all_src_agendas_button.setGeometry(QtCore.QRect(190, 620, 141, 21))
+        self.reload_forum_agendas_button = QtWidgets.QPushButton(self.centralwidget)
+        self.reload_forum_agendas_button.setGeometry(QtCore.QRect(190, 620, 141, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.reload_all_src_agendas_button.setFont(font)
-        self.reload_all_src_agendas_button.setObjectName(
-            "reload_all_src_agendas_button"
-        )
+        self.reload_forum_agendas_button.setFont(font)
+        self.reload_forum_agendas_button.setObjectName("reload_forum_agendas_button")
         self.set_forum_and_reload_srcs_button = QtWidgets.QPushButton(
             self.centralwidget
         )
@@ -460,8 +458,8 @@ class Ui_MainWindow(object):
         self.set_forum_agenda_button.setText(
             _translate("MainWindow", "output_agenda to forum_dir")
         )
-        self.reload_all_src_agendas_button.setText(
-            _translate("MainWindow", "refresh_all_src_agendas")
+        self.reload_forum_agendas_button.setText(
+            _translate("MainWindow", "refresh_forum_agendas")
         )
         self.set_forum_and_reload_srcs_button.setText(
             _translate("MainWindow", "dest2forum and refresh")

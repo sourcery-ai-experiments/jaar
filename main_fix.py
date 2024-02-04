@@ -74,7 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.healer_update_button.clicked.connect(self.healer_update_pid)
         self.healer_delete_button.clicked.connect(self.healer_delete)
         self.healers_table.itemClicked.connect(self.healers_table_select)
-        self.reload_all_src_agendas_button.clicked.connect(self.reload_all_src_agendas)
+        self.reload_forum_agendas_button.clicked.connect(self.reload_forum_agendas)
         self.set_forum_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
         self.set_forum_and_reload_srcs_button.clicked.connect(
             self.set_forum_and_reload_srcs
@@ -111,13 +111,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.x_clerk.save_contract_agenda(self.contract)
         self.refresh_healer()
 
-    def reload_all_src_agendas(self):
+    def reload_forum_agendas(self):
         if self.economy_x != None:
-            self.economy_x.reload_all_clerkunits_src_agendaunits()
+            self.economy_x.reload_all_clerkunits_forum_agendaunits()
 
     def set_forum_and_reload_srcs(self):
         self.save_output_agenda_to_forum()
-        self.reload_all_src_agendas()
+        self.reload_forum_agendas()
 
     def save_output_agenda_to_forum(self):
         if self.x_clerk != None:

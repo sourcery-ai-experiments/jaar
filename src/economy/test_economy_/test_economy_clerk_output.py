@@ -189,7 +189,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     #     print(f"{ux._agendas_forum_dir=} {file_name=}")
 
     # WHEN
-    x_economy.reload_all_clerkunits_src_agendaunits()
+    x_economy.reload_all_clerkunits_forum_agendaunits()
 
     # THEN
     assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 5

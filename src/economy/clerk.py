@@ -93,15 +93,15 @@ class ClerkUnit:
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._agent_id)
 
     def _set_assignment_depotlink(self, outer_agent_id):
-        src_agenda = self.open_depot_agenda(outer_agent_id)
-        src_agenda.set_agenda_metrics()
+        depot_agenda = self.open_depot_agenda(outer_agent_id)
+        depot_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_agent_id=self._clerk_id)
         empty_agenda.set_economy_id(self._economy_id)
-        assign_agenda = src_agenda.get_assignment(
+        assign_agenda = depot_agenda.get_assignment(
             empty_agenda, self.get_contract()._partys, self._clerk_id
         )
         assign_agenda.set_agenda_metrics()
-        self.save_agenda_to_digest(assign_agenda, src_agenda._agent_id)
+        self.save_agenda_to_digest(assign_agenda, depot_agenda._agent_id)
 
     def _set_partyunit_depotlink(
         self,
@@ -175,8 +175,10 @@ class ClerkUnit:
             f"{self._clerkunit_dir}/{self._agenda_output_file_name}"
         )
         self._forum_file_name = f"{self._clerk_id}.json"
+        forum_text = "forum"
+        depot_text = "depot"
         self._agendas_forum_dir = f"{self._env_dir}/{agendas_str}"
-        self._agendas_depot_dir = f"{self._clerkunit_dir}/{agendas_str}"
+        self._agendas_depot_dir = f"{self._clerkunit_dir}/{depot_text}"
         self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
 

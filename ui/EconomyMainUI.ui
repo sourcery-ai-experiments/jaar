@@ -836,7 +836,7 @@
      <string>output_agenda to forum_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_all_src_agendas_button">
+   <widget class="QPushButton" name="reload_forum_agendas_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property name="text">
-     <string>refresh_all_src_agendas</string>
+     <string>refresh_forum_agendas</string>
     </property>
    </widget>
    <widget class="QPushButton" name="set_forum_and_reload_srcs_button">

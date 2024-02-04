@@ -492,7 +492,7 @@ class EconomyUnit:
             file_text=x_agenda.get_json(),
         )
 
-    def reload_all_clerkunits_src_agendaunits(self):
+    def reload_all_clerkunits_forum_agendaunits(self):
         for x_clerkunit in self._clerkunits.values():
             x_clerkunit.refresh_depot_agendas()
 
