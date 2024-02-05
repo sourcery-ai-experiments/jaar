@@ -174,7 +174,8 @@ def test_EconomyUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanu
     economy_dir = f"src/economy/examples/economys/{x_economy_id}"
     economy_file_name = "economy.json"
     economy_file_path = f"{economy_dir}/{economy_file_name}"
-    agendas_dir = f"{economy_dir}/agendas"
+    forum_text = "forum"
+    forum_dir = f"{economy_dir}/{forum_text}"
     clerkunits_dir = f"{economy_dir}/clerkunits"
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{economy_dir}/{treasury_file_name}"
@@ -182,7 +183,7 @@ def test_EconomyUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(economy_dir) is False
     assert os_path.isdir(economy_dir) is False
     assert os_path.exists(economy_file_path) is False
-    assert os_path.exists(agendas_dir) is False
+    assert os_path.exists(forum_dir) is False
     assert os_path.exists(clerkunits_dir) is False
     assert os_path.exists(treasury_file_path) is False
 
@@ -193,11 +194,11 @@ def test_EconomyUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(economy_dir)
     assert os_path.isdir(economy_dir)
     assert os_path.exists(economy_file_path)
-    assert os_path.exists(agendas_dir)
+    assert os_path.exists(forum_dir)
     assert os_path.exists(clerkunits_dir)
     assert os_path.exists(treasury_file_path)
     assert x_economy.get_object_root_dir() == economy_dir
-    assert x_economy.get_forum_dir() == agendas_dir
+    assert x_economy.get_forum_dir() == forum_dir
     assert x_economy.get_clerkunits_dir() == clerkunits_dir
     assert x_economy.get_treasury_db_path() == treasury_file_path
 
@@ -210,14 +211,16 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     old_economy_dir = f"src/economy/examples/economys/{old_x_economy_id}"
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
-    old_agendas_dir = f"{old_economy_dir}/agendas"
+    forum_text = "forum"
+    old_forum_dir = f"{old_economy_dir}/{forum_text}"
     old_clerkunits_dir = f"{old_economy_dir}/clerkunits"
 
     new_x_economy_id = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_x_economy_id}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
-    new_agendas_dir = f"{new_economy_dir}/agendas"
+    forum_text = "forum"
+    new_forum_dir = f"{new_economy_dir}/{forum_text}"
     new_clerkunits_dir = f"{new_economy_dir}/clerkunits"
     delete_dir(dir=new_economy_dir)
     print(f"{new_economy_dir=}")
@@ -233,17 +236,17 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_agendas_dir)
+    assert os_path.exists(old_forum_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_forum_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_forum_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
-    assert os_path.exists(new_agendas_dir) is False
+    assert os_path.exists(new_forum_dir) is False
     assert os_path.exists(new_clerkunits_dir) is False
-    assert x_economy.get_forum_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_forum_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
@@ -256,17 +259,17 @@ def test_change_economy_id_example_economy_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_economy_dir) is False
     assert os_path.isdir(old_economy_dir) is False
     assert os_path.exists(old_economy_file_path) is False
-    assert os_path.exists(old_agendas_dir) is False
+    assert os_path.exists(old_forum_dir) is False
     assert os_path.exists(old_clerkunits_dir) is False
-    assert x_economy.get_forum_dir() != old_agendas_dir
+    assert x_economy.get_forum_dir() != old_forum_dir
     assert x_economy.get_clerkunits_dir() != old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
-    assert os_path.exists(new_agendas_dir)
+    assert os_path.exists(new_forum_dir)
     assert os_path.exists(new_clerkunits_dir)
-    assert x_economy.get_forum_dir() == new_agendas_dir
+    assert x_economy.get_forum_dir() == new_forum_dir
     assert x_economy.get_clerkunits_dir() == new_clerkunits_dir
     assert x_economy.economy_id == new_x_economy_id
 
@@ -283,7 +286,8 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     old_economy_dir = f"src/economy/examples/economys/{old_x_economy_id}"
     old_economy_file_name = "economy.json"
     old_economy_file_path = f"{old_economy_dir}/{old_economy_file_name}"
-    old_agendas_dir = f"{old_economy_dir}/agendas"
+    forum_text = "forum"
+    old_forum_dir = f"{old_economy_dir}/{forum_text}"
     old_clerkunits_dir = f"{old_economy_dir}/clerkunits"
 
     x_economy = economyunit_shop(old_x_economy_id, get_test_economys_dir())
@@ -292,24 +296,24 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_agendas_dir)
+    assert os_path.exists(old_forum_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_forum_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_forum_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     new_x_economy_id = "ex_env1"
     new_economy_dir = f"src/economy/examples/economys/{new_x_economy_id}"
     new_economy_file_name = "economy.json"
     new_economy_file_path = f"{new_economy_dir}/{new_economy_file_name}"
-    new_agendas_dir = f"{new_economy_dir}/agendas"
+    new_forum_dir = f"{new_economy_dir}/{forum_text}"
     new_clerkunits_dir = f"{new_economy_dir}/clerkunits"
 
     assert os_path.exists(new_economy_dir) is False
     assert os_path.isdir(new_economy_dir) is False
     assert os_path.exists(new_economy_file_path) is False
-    assert os_path.exists(new_agendas_dir) is False
+    assert os_path.exists(new_forum_dir) is False
     assert os_path.exists(new_clerkunits_dir) is False
-    assert x_economy.get_forum_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_forum_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 
@@ -322,17 +326,17 @@ def test_copy_evaluation_economy_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanu
     assert os_path.exists(old_economy_dir)
     assert os_path.isdir(old_economy_dir)
     assert os_path.exists(old_economy_file_path)
-    assert os_path.exists(old_agendas_dir)
+    assert os_path.exists(old_forum_dir)
     assert os_path.exists(old_clerkunits_dir)
-    assert x_economy.get_forum_dir() == old_agendas_dir
+    assert x_economy.get_forum_dir() == old_forum_dir
     assert x_economy.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_economy_dir)
     assert os_path.isdir(new_economy_dir)
     assert os_path.exists(new_economy_file_path)
-    assert os_path.exists(new_agendas_dir)
+    assert os_path.exists(new_forum_dir)
     assert os_path.exists(new_clerkunits_dir)
-    assert x_economy.get_forum_dir() != new_agendas_dir
+    assert x_economy.get_forum_dir() != new_forum_dir
     assert x_economy.get_clerkunits_dir() != new_clerkunits_dir
     assert x_economy.economy_id != new_x_economy_id
 

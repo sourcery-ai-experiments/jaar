@@ -448,7 +448,7 @@ class EconomyUnit:
 
     # forum dir management
     def get_forum_dir(self):
-        return f"{self.get_object_root_dir()}/agendas"
+        return f"{self.get_object_root_dir()}/forum"
 
     def get_ignores_dir(self, clerk_id: ClerkID):
         per_x = self.get_clerkunit(clerk_id)
@@ -486,6 +486,7 @@ class EconomyUnit:
 
     def save_forum_agenda(self, x_agenda: AgendaUnit):
         x_agenda.set_economy_id(economy_id=self.economy_id)
+        print(f"{self.get_forum_dir()=}")
         save_file(
             dest_dir=self.get_forum_dir(),
             file_name=f"{x_agenda._agent_id}.json",

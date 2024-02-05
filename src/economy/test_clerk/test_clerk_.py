@@ -27,7 +27,7 @@ def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
     assert x_clerk._agenda_output_file_name is None
     assert x_clerk._agenda_output_file_path is None
     assert x_clerk._forum_file_name is None
-    assert x_clerk._agendas_forum_dir is None
+    assert x_clerk._forum_dir is None
     assert x_clerk._agendas_depot_dir is None
     assert x_clerk._agendas_ignore_dir is None
     assert x_clerk._agendas_digest_dir is None
@@ -61,8 +61,9 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
     env_dir = get_temp_clerkunit_dir()
     x_economy_id = get_temp_economy_id()
     tim_text = "Tim"
+    forum_text = "forum"
     forum_file_name = f"{tim_text}.json"
-    forum_file_path = f"{get_temp_clerkunit_dir()}/agendas/{forum_file_name}"
+    forum_file_path = f"{get_temp_clerkunit_dir()}/{forum_text}/{forum_file_name}"
     print(f"{forum_file_path=}")
     # forum_file_path = f"src/economy/examples/ex_env/agendas/{forum_file_name}"
     x_clerk = clerkunit_shop(

@@ -31,7 +31,7 @@ def test_ClerkUnit_exists():
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
     assert bob_clerkadmin._forum_file_name is None
-    assert bob_clerkadmin._agendas_forum_dir is None
+    assert bob_clerkadmin._forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
     assert bob_clerkadmin._agendas_ignore_dir is None
     assert bob_clerkadmin._agendas_digest_dir is None
@@ -46,7 +46,7 @@ def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
     assert bob_clerkadmin._forum_file_name is None
-    assert bob_clerkadmin._agendas_forum_dir is None
+    assert bob_clerkadmin._forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
     assert bob_clerkadmin._agendas_ignore_dir is None
     assert bob_clerkadmin._agendas_digest_dir is None
@@ -60,7 +60,7 @@ def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._agenda_output_file_name != None
     assert bob_clerkadmin._agenda_output_file_path != None
     assert bob_clerkadmin._forum_file_name != None
-    assert bob_clerkadmin._agendas_forum_dir != None
+    assert bob_clerkadmin._forum_dir != None
     assert bob_clerkadmin._agendas_depot_dir != None
     assert bob_clerkadmin._agendas_ignore_dir != None
     assert bob_clerkadmin._agendas_digest_dir != None
@@ -75,12 +75,12 @@ def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     x_contract_file_path = f"{x_clerkunit_dir}/{x_contract_file_name}"
     x_agenda_output_file_name = "output_agenda.json"
     x_agenda_output_file_path = f"{x_clerkunit_dir}/{x_agenda_output_file_name}"
-    agendas_str = "agendas"
+    forum_text = "forum"
     depot_text = "depot"
     x_agendas_depot_dir = f"{x_clerkunit_dir}/{depot_text}"
     x_agendas_ignore_dir = f"{x_clerkunit_dir}/ignores"
     x_agendas_digest_dir = f"{x_clerkunit_dir}/digests"
-    x_agendas_forum_dir = f"{env_dir}/{agendas_str}"
+    x_forum_dir = f"{env_dir}/{forum_text}"
     assert bob_clerkadmin._clerkunits_dir == x_clerkunits_dir
     assert bob_clerkadmin._clerkunit_dir == x_clerkunit_dir
     assert bob_clerkadmin._contract_file_name == x_contract_file_name
@@ -91,7 +91,7 @@ def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._agendas_ignore_dir == x_agendas_ignore_dir
     assert bob_clerkadmin._agendas_digest_dir == x_agendas_digest_dir
     assert bob_clerkadmin._forum_file_name == x_forum_file_name
-    assert bob_clerkadmin._agendas_forum_dir == x_agendas_forum_dir
+    assert bob_clerkadmin._forum_dir == x_forum_dir
 
 
 def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
@@ -217,9 +217,7 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(
     x_agenda.set_agent_id(new_agent_id=bob_text)
     bob_clerkadmin.create_core_dir_and_files(x_agenda)
 
-    forum_file_path = (
-        f"{bob_clerkadmin._agendas_forum_dir}/{bob_clerkadmin._forum_file_name}"
-    )
+    forum_file_path = f"{bob_clerkadmin._forum_dir}/{bob_clerkadmin._forum_file_name}"
     print(f"{forum_file_path=}")
     assert os_path.exists(forum_file_path) is False
 

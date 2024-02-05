@@ -259,7 +259,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         if self.x_clerk != None:
             agenda_json = open_file(
-                dest_dir=self.x_clerk._agendas_forum_dir,
+                dest_dir=self.x_clerk._forum_dir,
                 file_name=f"{agenda_agent_id}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)

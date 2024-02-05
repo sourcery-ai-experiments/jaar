@@ -35,7 +35,7 @@ class ClerkUnit:
     _agenda_output_file_name: str = None
     _agenda_output_file_path: str = None
     _forum_file_name: str = None
-    _agendas_forum_dir: str = None
+    _forum_dir: str = None
     _agendas_depot_dir: str = None
     _agendas_ignore_dir: str = None
     _agendas_digest_dir: str = None
@@ -165,7 +165,6 @@ class ClerkUnit:
 
     def set_dirs(self):
         env_clerkunits_folder = "clerkunits"
-        agendas_str = "agendas"
         self._clerkunits_dir = f"{self._env_dir}/{env_clerkunits_folder}"
         self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_id}"
         self._contract_file_name = "contract_agenda.json"
@@ -177,7 +176,7 @@ class ClerkUnit:
         self._forum_file_name = f"{self._clerk_id}.json"
         forum_text = "forum"
         depot_text = "depot"
-        self._agendas_forum_dir = f"{self._env_dir}/{agendas_str}"
+        self._forum_dir = f"{self._env_dir}/{forum_text}"
         self._agendas_depot_dir = f"{self._clerkunit_dir}/{depot_text}"
         self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
@@ -191,7 +190,7 @@ class ClerkUnit:
 
     def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
         single_dir_create_if_null(x_path=self._clerkunit_dir)
-        single_dir_create_if_null(x_path=self._agendas_forum_dir)
+        single_dir_create_if_null(x_path=self._forum_dir)
         single_dir_create_if_null(x_path=self._agendas_depot_dir)
         single_dir_create_if_null(x_path=self._agendas_digest_dir)
         single_dir_create_if_null(x_path=self._agendas_ignore_dir)
@@ -206,7 +205,7 @@ class ClerkUnit:
     ):
         if file_name is None:
             file_name = f"{x_agenda._agent_id}.json"
-        # if dest_dir == self._agendas_forum_dir:
+        # if dest_dir == self._forum_dir:
         #     file_name = self._forum_file_name
         save_file(
             dest_dir=dest_dir,
@@ -216,7 +215,7 @@ class ClerkUnit:
         )
 
     def save_agenda_to_forum(self, x_agenda: AgendaUnit):
-        dest_dir = self._agendas_forum_dir
+        dest_dir = self._forum_dir
         self._save_agenda_to_path(x_agenda, dest_dir)
 
     def save_ignore_agenda(self, x_agenda: AgendaUnit, src_agent_id: str):
@@ -261,7 +260,8 @@ class ClerkUnit:
 
     def open_forum_agenda(self, agent_id: PersonID) -> str:
         file_name_x = f"{agent_id}.json"
-        return open_file(self._agendas_forum_dir, file_name_x)
+        print(f"{self._forum_dir=}")
+        return open_file(self._forum_dir, file_name_x)
 
     def open_depot_agenda(self, agent_id: PersonID) -> AgendaUnit:
         file_name_x = f"{agent_id}.json"

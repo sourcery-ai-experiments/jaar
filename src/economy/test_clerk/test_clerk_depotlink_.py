@@ -260,12 +260,12 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 4
     new_steve_agenda = get_cal3nodes(_agent_id=steve_text)
     sx.save_forum_agenda(new_steve_agenda)
-    print(f"{env_dir=} {yao_agenda._agendas_forum_dir=}")
+    print(f"{env_dir=} {yao_agenda._forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
-    #     print(f"{bob_agenda._agendas_forum_dir=} {file_name=}")
+    #     print(f"{bob_agenda._forum_dir=} {file_name=}")
 
-    # for file_name in dir_files(dir_path=bob_agenda._agendas_forum_dir):
-    #     print(f"{bob_agenda._agendas_forum_dir=} {file_name=}")
+    # for file_name in dir_files(dir_path=bob_agenda._forum_dir):
+    #     print(f"{bob_agenda._forum_dir=} {file_name=}")
 
     # WHEN
     yao_agenda.refresh_depot_agendas()
