@@ -30,7 +30,7 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from src.market.bank_sqlstr import (
     get_partybankunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
-    get_agenda_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_bank_due_paid_sqlstr,
     get_agenda_partyunit_table_update_credit_score_sqlstr,
     get_agenda_partyunit_table_update_bank_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
@@ -236,7 +236,7 @@ class MarketUnit:
             bank_conn.execute(get_river_circle_table_insert_sqlstr(agent_id))
             bank_conn.execute(get_river_reach_table_final_insert_sqlstr(agent_id))
             bank_conn.execute(
-                get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(agent_id)
+                get_agenda_partyunit_table_update_bank_due_paid_sqlstr(agent_id)
             )
             bank_conn.execute(
                 get_agenda_partyunit_table_update_credit_score_sqlstr(agent_id)
@@ -667,8 +667,8 @@ def set_bank_partybankunits_to_agenda_partyunits(
         partybankunit = partybankunits.get(x_partyunit.party_id)
         if partybankunit != None:
             x_partyunit.set_banking_data(
-                tax_paid=partybankunit.tax_total,
-                tax_diff=partybankunit.tax_diff,
+                due_paid=partybankunit.due_total,
+                due_diff=partybankunit.due_diff,
                 credit_score=partybankunit.credit_score,
                 voice_rank=partybankunit.voice_rank,
             )

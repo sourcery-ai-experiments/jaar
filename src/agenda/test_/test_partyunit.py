@@ -31,8 +31,8 @@ def test_PartyUnit_exists():
     assert bob_partyunit._agenda_intent_debt is None
     assert bob_partyunit._creditor_live is None
     assert bob_partyunit._debtor_live is None
-    assert bob_partyunit._bank_tax_paid is None
-    assert bob_partyunit._bank_tax_diff is None
+    assert bob_partyunit._bank_due_paid is None
+    assert bob_partyunit._bank_due_diff is None
     assert bob_partyunit._bank_credit_score is None
     assert bob_partyunit._bank_voice_rank is None
     assert bob_partyunit._bank_voice_hx_lowest_rank is None
@@ -322,28 +322,28 @@ def test_PartyUnit_set_banking_data_MethodWorkCorrectly():
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     assert bob_partyunit._agenda_intent_ratio_credit == 0.077
     assert bob_partyunit._agenda_intent_ratio_debt == 0.066
-    assert bob_partyunit._bank_tax_paid is None
-    assert bob_partyunit._bank_tax_diff is None
+    assert bob_partyunit._bank_due_paid is None
+    assert bob_partyunit._bank_due_diff is None
     assert bob_partyunit._bank_credit_score is None
     assert bob_partyunit._bank_voice_rank is None
     assert bob_partyunit._bank_voice_hx_lowest_rank is None
 
     # WHEN
-    x_tax_paid = 0.2
-    x_tax_diff = 0.123
+    x_due_paid = 0.2
+    x_due_diff = 0.123
     x_bank_credit_score = 900
     x_bank_voice_rank = 45
     bob_partyunit.set_banking_data(
-        tax_paid=x_tax_paid,
-        tax_diff=x_tax_diff,
+        due_paid=x_due_paid,
+        due_diff=x_due_diff,
         credit_score=x_bank_credit_score,
         voice_rank=x_bank_voice_rank,
     )
     # THEN
     assert bob_partyunit._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
     assert bob_partyunit._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
-    assert bob_partyunit._bank_tax_paid == x_tax_paid
-    assert bob_partyunit._bank_tax_diff == x_tax_diff
+    assert bob_partyunit._bank_due_paid == x_due_paid
+    assert bob_partyunit._bank_due_diff == x_due_diff
     assert bob_partyunit._bank_credit_score == x_bank_credit_score
     assert bob_partyunit._bank_voice_rank == x_bank_voice_rank
     assert bob_partyunit._bank_voice_hx_lowest_rank == x_bank_voice_rank
@@ -357,13 +357,13 @@ def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lo
     bob_partyunit = partyunit_shop(bob_party_id)
     bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
-    x_tax_paid = 0.2
-    x_tax_diff = 0.123
+    x_due_paid = 0.2
+    x_due_diff = 0.123
     x_bank_credit_score = 900
     old_x_bank_voice_rank = 45
     bob_partyunit.set_banking_data(
-        tax_paid=x_tax_paid,
-        tax_diff=x_tax_diff,
+        due_paid=x_due_paid,
+        due_diff=x_due_diff,
         credit_score=x_bank_credit_score,
         voice_rank=old_x_bank_voice_rank,
     )
@@ -372,8 +372,8 @@ def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lo
     # WHEN
     new_x_bank_voice_rank = 33
     bob_partyunit.set_banking_data(
-        tax_paid=x_tax_paid,
-        tax_diff=x_tax_diff,
+        due_paid=x_due_paid,
+        due_diff=x_due_diff,
         credit_score=x_bank_credit_score,
         voice_rank=new_x_bank_voice_rank,
     )
@@ -383,8 +383,8 @@ def test_PartyUnit_set_banking_data_CorrectlyDecreasesOrIgnores_bank_voice_hx_lo
     # WHEN
     not_lower_x_bank_voice_rank = 60
     bob_partyunit.set_banking_data(
-        tax_paid=x_tax_paid,
-        tax_diff=x_tax_diff,
+        due_paid=x_due_paid,
+        due_diff=x_due_diff,
         credit_score=x_bank_credit_score,
         voice_rank=not_lower_x_bank_voice_rank,
     )
@@ -401,13 +401,13 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     x_bank_credit_score = 900
     x_bank_voice_rank = 45
     bob_partyunit.set_banking_data(
-        tax_paid=0.399,
-        tax_diff=0.044,
+        due_paid=0.399,
+        due_diff=0.044,
         credit_score=x_bank_credit_score,
         voice_rank=x_bank_voice_rank,
     )
-    assert bob_partyunit._bank_tax_paid == 0.399
-    assert bob_partyunit._bank_tax_diff == 0.044
+    assert bob_partyunit._bank_due_paid == 0.399
+    assert bob_partyunit._bank_due_diff == 0.044
     assert bob_partyunit._bank_credit_score == x_bank_credit_score
     assert bob_partyunit._bank_voice_rank == x_bank_voice_rank
 
@@ -415,8 +415,8 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
     bob_partyunit.clear_banking_data()
 
     # THEN
-    assert bob_partyunit._bank_tax_paid is None
-    assert bob_partyunit._bank_tax_diff is None
+    assert bob_partyunit._bank_due_paid is None
+    assert bob_partyunit._bank_due_diff is None
     assert bob_partyunit._bank_credit_score is None
     assert bob_partyunit._bank_voice_rank is None
 
@@ -424,12 +424,12 @@ def test_PartyUnit_clear_banking_data_MethodWorkCorrectly():
 def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     bob_text = "Bob"
-    bob_bank_tax_paid = 0.55
-    bob_bank_tax_diff = 0.66
+    bob_bank_due_paid = 0.55
+    bob_bank_due_diff = 0.66
     depotlink_type = "assignment"
     bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
-    bob_partyunit._bank_tax_paid = bob_bank_tax_paid
-    bob_partyunit._bank_tax_diff = bob_bank_tax_diff
+    bob_partyunit._bank_due_paid = bob_bank_due_paid
+    bob_partyunit._bank_due_diff = bob_bank_due_diff
     bob_creditor_live = False
     bob_debtor_live = True
     bob_partyunit._creditor_live = bob_creditor_live
@@ -460,8 +460,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "debtor_weight": bob_debtor_weight,
         "_creditor_live": bob_creditor_live,
         "_debtor_live": bob_debtor_live,
-        "_bank_tax_paid": bob_bank_tax_paid,
-        "_bank_tax_diff": bob_bank_tax_diff,
+        "_bank_due_paid": bob_bank_due_paid,
+        "_bank_due_diff": bob_bank_due_diff,
         "_bank_credit_score": bob_bank_credit_score,
         "_bank_voice_rank": bob_bank_voice_rank,
         "_bank_voice_hx_lowest_rank": bob_bank_voice_hx_lowest_rank,
@@ -476,8 +476,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     yao_debtor_weight = 17
     yao_creditor_live = False
     yao_debtor_live = True
-    yao_bank_tax_paid = 0.55
-    yao_bank_tax_diff = 0.66
+    yao_bank_due_paid = 0.55
+    yao_bank_due_diff = 0.66
     yao_depotlink_type = "assignment"
     yao_bank_credit_score = 7000
     yao_bank_voice_rank = 898
@@ -489,8 +489,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
             "debtor_weight": yao_debtor_weight,
             "_creditor_live": yao_creditor_live,
             "_debtor_live": yao_debtor_live,
-            "_bank_tax_paid": yao_bank_tax_paid,
-            "_bank_tax_diff": yao_bank_tax_diff,
+            "_bank_due_paid": yao_bank_due_paid,
+            "_bank_due_diff": yao_bank_due_diff,
             "_bank_credit_score": yao_bank_credit_score,
             "_bank_voice_rank": yao_bank_voice_rank,
             "_bank_voice_hx_lowest_rank": yao_bank_voice_hx_lowest_rank,
@@ -512,8 +512,8 @@ def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
     assert yao_partyunit.debtor_weight == yao_debtor_weight
     assert yao_partyunit._creditor_live == yao_creditor_live
     assert yao_partyunit._debtor_live == yao_debtor_live
-    assert yao_partyunit._bank_tax_paid == yao_bank_tax_paid
-    assert yao_partyunit._bank_tax_diff == yao_bank_tax_diff
+    assert yao_partyunit._bank_due_paid == yao_bank_due_paid
+    assert yao_partyunit._bank_due_diff == yao_bank_due_diff
     assert yao_partyunit._bank_credit_score == yao_bank_credit_score
     assert yao_partyunit._bank_voice_rank == yao_bank_voice_rank
     assert (

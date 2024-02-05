@@ -480,10 +480,10 @@ WHERE cash_master = '{cash_agent_id}'
 @dataclass
 class PartyBankUnit:
     cash_master: str
-    tax_agent_id: str
-    tax_total: float
+    due_agent_id: str
+    due_total: float
     debt: float
-    tax_diff: float
+    due_diff: float
     credit_score: float
     voice_rank: int
 
@@ -494,13 +494,13 @@ def get_partybankunit_dict(
     sqlstr = f"""
 SELECT
   agent_id cash_master
-, party_id tax_agent_id
-, _bank_tax_paid tax_total
+, party_id due_agent_id
+, _bank_due_paid due_total
 , _agenda_intent_ratio_debt debt
-, (_agenda_intent_ratio_debt - _bank_tax_paid) tax_diff
+, (_agenda_intent_ratio_debt - _bank_due_paid) due_diff
 FROM agenda_partyunit
 WHERE cash_master = '{cash_agent_id}'
-    AND _bank_tax_paid IS NOT NULL
+    AND _bank_due_paid IS NOT NULL
 ;
 """
     dict_x = {}
@@ -509,14 +509,14 @@ WHERE cash_master = '{cash_agent_id}'
     for row in results.fetchall():
         partybankunit_x = PartyBankUnit(
             cash_master=row[0],
-            tax_agent_id=row[1],
-            tax_total=row[2],
+            due_agent_id=row[1],
+            due_total=row[2],
             debt=row[3],
-            tax_diff=row[4],
+            due_diff=row[4],
             credit_score=None,
             voice_rank=None,
         )
-        dict_x[partybankunit_x.tax_agent_id] = partybankunit_x
+        dict_x[partybankunit_x.due_agent_id] = partybankunit_x
     return dict_x
 
 
@@ -600,8 +600,8 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _agenda_intent_ratio_debt FLOAT
 , _creditor_live INT
 , _debtor_live INT
-, _bank_tax_paid FLOAT
-, _bank_tax_diff FLOAT
+, _bank_due_paid FLOAT
+, _bank_due_diff FLOAT
 , _bank_credit_score FLOAT
 , _bank_voice_rank INT
 , _bank_voice_hx_lowest_rank INT
@@ -613,12 +613,12 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 """
 
 
-def get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(
+def get_agenda_partyunit_table_update_bank_due_paid_sqlstr(
     cash_agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE agenda_partyunit
-SET _bank_tax_paid = (
+SET _bank_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{cash_agent_id}' 
@@ -688,8 +688,8 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _bank_tax_paid
-, _bank_tax_diff
+, _bank_due_paid
+, _bank_due_diff
 , _bank_credit_score
 , _bank_voice_rank
 , _bank_voice_hx_lowest_rank
@@ -705,8 +705,8 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
 , {sqlite_bool(x_partyunit._creditor_live)}
 , {sqlite_bool(x_partyunit._debtor_live)}
-, {sqlite_null(x_partyunit._bank_tax_paid)}
-, {sqlite_null(x_partyunit._bank_tax_diff)}
+, {sqlite_null(x_partyunit._bank_due_paid)}
+, {sqlite_null(x_partyunit._bank_due_diff)}
 , {sqlite_null(x_partyunit._bank_credit_score)}
 , {sqlite_null(x_partyunit._bank_voice_rank)}
 , {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
@@ -735,8 +735,8 @@ SELECT
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _bank_tax_paid
-, _bank_tax_diff
+, _bank_due_paid
+, _bank_due_diff
 , _bank_credit_score
 , _bank_voice_rank
 , _bank_voice_hx_lowest_rank
@@ -759,8 +759,8 @@ WHERE agent_id = '{payer_agent_id}'
             _agenda_intent_ratio_debt=row[7],
             _creditor_live=row[8],
             _debtor_live=row[9],
-            _bank_tax_paid=row[10],
-            _bank_tax_diff=row[11],
+            _bank_due_paid=row[10],
+            _bank_due_diff=row[11],
             _bank_credit_score=row[12],
             _bank_voice_rank=row[13],
             _bank_voice_hx_lowest_rank=row[14],
@@ -1096,8 +1096,8 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _bank_tax_paid
-, _bank_tax_diff
+, _bank_due_paid
+, _bank_due_diff
 , _bank_credit_score
 , _bank_voice_rank
 , _bank_voice_hx_lowest_rank
@@ -1113,8 +1113,8 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
 , {sqlite_bool(x_partyunit._creditor_live)}
 , {sqlite_bool(x_partyunit._debtor_live)}
-, {sqlite_null(x_partyunit._bank_tax_paid)}
-, {sqlite_null(x_partyunit._bank_tax_diff)}
+, {sqlite_null(x_partyunit._bank_due_paid)}
+, {sqlite_null(x_partyunit._bank_due_diff)}
 , {sqlite_null(x_partyunit._bank_credit_score)}
 , {sqlite_null(x_partyunit._bank_voice_rank)}
 , {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}

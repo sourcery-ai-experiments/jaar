@@ -3,7 +3,7 @@ from src.market.bank_sqlstr import (
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
     get_agenda_partyunit_table_create_sqlstr,
-    get_agenda_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_bank_due_paid_sqlstr,
     get_agenda_partyunit_table_update_credit_score_sqlstr,
     get_agenda_partyunit_table_update_bank_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
@@ -53,14 +53,14 @@ FROM agendaunit
 def test_get_partyunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "bob"
-    generated_sqlstr = get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(
+    generated_sqlstr = get_agenda_partyunit_table_update_bank_due_paid_sqlstr(
         bob_text
     )
 
     # THEN
     example_sqlstr = f"""
 UPDATE agenda_partyunit
-SET _bank_tax_paid = (
+SET _bank_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{bob_text}' 
@@ -363,8 +363,8 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _agenda_intent_ratio_debt FLOAT
 , _creditor_live INT
 , _debtor_live INT
-, _bank_tax_paid FLOAT
-, _bank_tax_diff FLOAT
+, _bank_due_paid FLOAT
+, _bank_due_diff FLOAT
 , _bank_credit_score FLOAT
 , _bank_voice_rank INT
 , _bank_voice_hx_lowest_rank INT

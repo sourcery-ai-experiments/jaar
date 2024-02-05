@@ -18,13 +18,13 @@ def get_agenda_partyunit_table_banking_attr_set_count_sqlstr():
     #     return f"""
     # SELECT COUNT(*)
     # FROM agenda_partyunit
-    # WHERE _bank_tax_paid IS NOT NULL
+    # WHERE _bank_due_paid IS NOT NULL
     #     AND agent_id = {cash_master}
     # """
     return """
 SELECT COUNT(*) 
 FROM agenda_partyunit
-WHERE _bank_tax_paid IS NOT NULL
+WHERE _bank_due_paid IS NOT NULL
 ;
 """
 
@@ -60,21 +60,14 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     x_market.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 4
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 4
     with x_market.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, cash_agent_id=sal_text)
 
@@ -91,22 +84,19 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     assert block_3.river_tree_level == 2
     assert block_3.parent_block_num == 1
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 2
-    )
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 2
 
     with x_market.get_bank_conn() as bank_conn:
         partybankunits = get_partybankunit_dict(bank_conn, sal_text)
     assert len(partybankunits) == 2
-    river_sal_tax_bob = partybankunits.get(bob_text)
-    river_sal_tax_tom = partybankunits.get(tom_text)
+    river_sal_due_bob = partybankunits.get(bob_text)
+    river_sal_due_tom = partybankunits.get(tom_text)
 
-    print(f"{river_sal_tax_bob=}")
-    print(f"{river_sal_tax_tom=}")
+    print(f"{river_sal_due_bob=}")
+    print(f"{river_sal_due_tom=}")
 
-    assert river_sal_tax_bob.tax_total == 0.25
-    assert river_sal_tax_tom.tax_total == 0.75
+    assert river_sal_due_bob.due_total == 0.25
+    assert river_sal_due_tom.due_total == 0.75
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable03(
@@ -146,30 +136,20 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     x_market.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 6
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 6
     with x_market.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, cash_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 2
-    )
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 2
 
     with x_market.get_bank_conn() as bank_conn:
         partybankunits = get_partybankunit_dict(bank_conn, sal_text)
@@ -178,13 +158,13 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     assert partybankunits.get(tom_text) != None
     assert partybankunits.get(ava_text) is None
 
-    river_sal_tax_bob = partybankunits.get(bob_text)
-    print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = partybankunits.get(tom_text)
-    print(f"{river_sal_tax_tom=}")
+    river_sal_due_bob = partybankunits.get(bob_text)
+    print(f"{river_sal_due_bob=}")
+    river_sal_due_tom = partybankunits.get(tom_text)
+    print(f"{river_sal_due_tom=}")
 
-    assert round(river_sal_tax_bob.tax_total, 15) == 0.15
-    assert river_sal_tax_tom.tax_total == 0.7
+    assert round(river_sal_due_bob.due_total, 15) == 0.15
+    assert river_sal_due_tom.due_total == 0.7
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable04(
@@ -231,30 +211,20 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     x_market.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
     # with x_market.get_bank_conn() as bank_conn:
     #     river_blocks = get_river_block_dict(bank_conn, cash_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 2
-    )
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 2
 
     with x_market.get_bank_conn() as bank_conn:
         partybankunits = get_partybankunit_dict(bank_conn, sal_text)
@@ -263,13 +233,13 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     assert partybankunits.get(tom_text) != None
     assert partybankunits.get(ava_text) is None
 
-    river_sal_tax_bob = partybankunits.get(bob_text)
-    print(f"{river_sal_tax_bob=}")
-    river_sal_tax_tom = partybankunits.get(tom_text)
-    print(f"{river_sal_tax_tom=}")
+    river_sal_due_bob = partybankunits.get(bob_text)
+    print(f"{river_sal_due_bob=}")
+    river_sal_due_tom = partybankunits.get(tom_text)
+    print(f"{river_sal_due_tom=}")
 
-    assert round(river_sal_tax_bob.tax_total, 15) == 0.15
-    assert river_sal_tax_tom.tax_total == 0.7
+    assert round(river_sal_due_bob.due_total, 15) == 0.15
+    assert river_sal_due_tom.due_total == 0.7
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable05_v1(
@@ -317,30 +287,20 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     x_market.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
     # with x_market.get_bank_conn() as bank_conn:
     #     river_blocks = get_river_block_dict(bank_conn, cash_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 2
-    )
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 2
 
     with x_market.get_bank_conn() as bank_conn:
         partybankunits = get_partybankunit_dict(bank_conn, sal_text)
@@ -350,15 +310,15 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     assert partybankunits.get(elu_text) is None
     assert partybankunits.get(ava_text) is None
 
-    river_sal_tax_bob = partybankunits.get(bob_text)
-    river_sal_tax_tom = partybankunits.get(tom_text)
-    river_sal_tax_elu = partybankunits.get(elu_text)
-    print(f"{river_sal_tax_bob=}")
-    print(f"{river_sal_tax_tom=}")
-    print(f"{river_sal_tax_elu=}")
+    river_sal_due_bob = partybankunits.get(bob_text)
+    river_sal_due_tom = partybankunits.get(tom_text)
+    river_sal_due_elu = partybankunits.get(elu_text)
+    print(f"{river_sal_due_bob=}")
+    print(f"{river_sal_due_tom=}")
+    print(f"{river_sal_due_elu=}")
 
-    assert round(river_sal_tax_bob.tax_total, 15) == 0.15
-    assert round(river_sal_tax_tom.tax_total, 15) == 0.7
+    assert round(river_sal_due_bob.due_total, 15) == 0.15
+    assert round(river_sal_due_tom.due_total, 15) == 0.7
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
@@ -406,13 +366,8 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     mbc = 13
@@ -424,9 +379,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == mbc
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == mbc
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable05(
@@ -474,30 +427,20 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
         get_agenda_partyunit_table_banking_attr_set_count_sqlstr()
     )
     river_block_count_sqlstr = get_table_count_sqlstr("river_block")
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
-    )
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 0
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 0
 
     # WHEN
     x_market.set_credit_flow_for_agenda(agent_id=sal_text)
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
-    )
+    assert get_single_result(x_market.get_bank_conn(), river_block_count_sqlstr) == 40
     with x_market.get_bank_conn() as bank_conn:
         river_blocks = get_river_block_dict(bank_conn, cash_agent_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
-    assert (
-        get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr)
-        == 2
-    )
+    assert get_single_result(x_market.get_bank_conn(), partybankunit_count_sqlstr) == 2
 
     with x_market.get_bank_conn() as bank_conn:
         partybankunits = get_partybankunit_dict(bank_conn, sal_text)
@@ -508,15 +451,15 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     assert partybankunits.get(elu_text) is None
     assert partybankunits.get(ava_text) is None
 
-    river_sal_tax_bob = partybankunits.get(bob_text)
-    river_sal_tax_tom = partybankunits.get(tom_text)
-    river_sal_tax_elu = partybankunits.get(elu_text)
-    print(f"{river_sal_tax_bob=}")
-    print(f"{river_sal_tax_tom=}")
-    print(f"{river_sal_tax_elu=}")
+    river_sal_due_bob = partybankunits.get(bob_text)
+    river_sal_due_tom = partybankunits.get(tom_text)
+    river_sal_due_elu = partybankunits.get(elu_text)
+    print(f"{river_sal_due_bob=}")
+    print(f"{river_sal_due_tom=}")
+    print(f"{river_sal_due_elu=}")
 
-    assert round(river_sal_tax_bob.tax_total, 15) == 0.15
-    assert round(river_sal_tax_tom.tax_total, 15) == 0.7
+    assert round(river_sal_due_bob.due_total, 15) == 0.15
+    assert round(river_sal_due_tom.due_total, 15) == 0.7
 
 
 def test_market_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
@@ -633,12 +576,12 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     bob_party = sal_agenda_before._partys.get(bob_text)
     tom_party = sal_agenda_before._partys.get(tom_text)
     ava_party = sal_agenda_before._partys.get(ava_text)
-    assert bob_party._bank_tax_paid is None
-    assert tom_party._bank_tax_paid is None
-    assert ava_party._bank_tax_paid is None
-    assert bob_party._bank_tax_diff is None
-    assert tom_party._bank_tax_diff is None
-    assert ava_party._bank_tax_diff is None
+    assert bob_party._bank_due_paid is None
+    assert tom_party._bank_due_paid is None
+    assert ava_party._bank_due_paid is None
+    assert bob_party._bank_due_diff is None
+    assert tom_party._bank_due_diff is None
+    assert ava_party._bank_due_diff is None
     assert bob_party._bank_voice_rank is None
     assert tom_party._bank_voice_rank is None
     assert ava_party._bank_voice_rank is None
@@ -654,8 +597,8 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert len(sal_partybankunits) == 2
     bob_partybank = sal_partybankunits.get(bob_text)
     tom_partybank = sal_partybankunits.get(tom_text)
-    assert bob_partybank.tax_agent_id == bob_text
-    assert tom_partybank.tax_agent_id == tom_text
+    assert bob_partybank.due_agent_id == bob_text
+    assert tom_partybank.due_agent_id == tom_text
     assert bob_partybank.cash_master == sal_text
     assert tom_partybank.cash_master == sal_text
 
@@ -665,38 +608,38 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     ava_party = sal_agenda_after._partys.get(ava_text)
     elu_party = sal_agenda_after._partys.get(elu_text)
 
-    assert bob_partybank.tax_total == bob_party._bank_tax_paid
-    assert bob_partybank.tax_diff == bob_party._bank_tax_diff
-    assert tom_partybank.tax_total == tom_party._bank_tax_paid
-    assert tom_partybank.tax_diff == tom_party._bank_tax_diff
+    assert bob_partybank.due_total == bob_party._bank_due_paid
+    assert bob_partybank.due_diff == bob_party._bank_due_diff
+    assert tom_partybank.due_total == tom_party._bank_due_paid
+    assert tom_partybank.due_diff == tom_party._bank_due_diff
     assert elu_party is None
 
     # for partybank_uid, sal_partybankunit in sal_partybankunits.items():
     #     print(f"{partybank_uid=} {sal_partybankunit=}")
     #     assert sal_partybankunit.cash_master == sal_text
-    #     assert sal_partybankunit.tax_agent_id in [bob_text, tom_text, elu_text]
-    #     x_partyunit = sal_agenda_after._partys.get(sal_partybankunit.tax_agent_id)
+    #     assert sal_partybankunit.due_agent_id in [bob_text, tom_text, elu_text]
+    #     x_partyunit = sal_agenda_after._partys.get(sal_partybankunit.due_agent_id)
     #     if x_partyunit != None:
     #         # print(
-    #         #     f"{sal_partybankunit.cash_master=} {sal_partybankunit.tax_agent_id=} {x_partyunit.party_id=} tax_total: {sal_partybankunit.tax_total} Tax Paid: {x_partyunit._bank_tax_paid}"
+    #         #     f"{sal_partybankunit.cash_master=} {sal_partybankunit.due_agent_id=} {x_partyunit.party_id=} due_total: {sal_partybankunit.due_total} _Due_ Paid: {x_partyunit._bank_due_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partybankunit.cash_master=} {sal_partybankunit.tax_agent_id=} {x_partyunit.party_id=} tax_diff:  {sal_partybankunit.tax_diff} Tax Paid: {x_partyunit._bank_tax_diff}"
+    #         #     f"{sal_partybankunit.cash_master=} {sal_partybankunit.due_agent_id=} {x_partyunit.party_id=} due_diff:  {sal_partybankunit.due_diff} _Due_ Paid: {x_partyunit._bank_due_diff}"
     #         # )
-    #         assert sal_partybankunit.tax_total == x_partyunit._bank_tax_paid
-    #         assert sal_partybankunit.tax_diff == x_partyunit._bank_tax_diff
+    #         assert sal_partybankunit.due_total == x_partyunit._bank_due_paid
+    #         assert sal_partybankunit.due_diff == x_partyunit._bank_due_diff
 
     assert sal_partybankunits.get(ava_text) is None
-    assert ava_party._bank_tax_paid is None
-    assert ava_party._bank_tax_diff is None
+    assert ava_party._bank_due_paid is None
+    assert ava_party._bank_due_diff is None
 
     # for x_partyunit in sal_agenda_after._partys.values():
-    #     print(f"sal_agenda_after {x_partyunit.party_id=} {x_partyunit._bank_tax_paid=}")
+    #     print(f"sal_agenda_after {x_partyunit.party_id=} {x_partyunit._bank_due_paid=}")
     #     partybankunit_x = sal_partybankunits.get(x_partyunit.party_id)
     #     if partybankunit_x is None:
-    #         assert x_partyunit._bank_tax_paid is None
-    #         assert x_partyunit._bank_tax_diff is None
+    #         assert x_partyunit._bank_due_paid is None
+    #         assert x_partyunit._bank_due_diff is None
     #     else:
-    #         assert x_partyunit._bank_tax_paid != None
-    #         assert x_partyunit._bank_tax_diff != None
+    #         assert x_partyunit._bank_due_paid != None
+    #         assert x_partyunit._bank_due_diff != None
     # assert sal_agenda_after != sal_agenda_before

@@ -11,7 +11,7 @@ from src.market.examples.market_env_kit import (
 from src.market.bank_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
-    get_agenda_partyunit_table_update_bank_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_bank_due_paid_sqlstr,
     PartyBankUnit,
     get_partybankunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -45,13 +45,13 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
     tim_partyunit._agenda_intent_ratio_credit = 0.5
     tim_partyunit._agenda_intent_ratio_debt = 0.4
 
-    tim_tax_paid = 0.5151
+    tim_due_paid = 0.5151
     tim_credit_score = 0.5252
     tim_voice_rank = 33
     tim_partyunit.set_banking_data(
-        tim_tax_paid, None, tim_credit_score, tim_voice_rank
+        tim_due_paid, None, tim_credit_score, tim_voice_rank
     )
-    assert tim_partyunit._bank_tax_paid == tim_tax_paid
+    assert tim_partyunit._bank_due_paid == tim_due_paid
     assert tim_partyunit._bank_credit_score == tim_credit_score
     assert tim_partyunit._bank_voice_rank == tim_voice_rank
 
@@ -82,7 +82,7 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
     assert tim_ledger._agenda_intent_ratio_debt == 0.4
     assert tim_ledger._creditor_live
     assert tim_ledger._debtor_live == False
-    assert tim_ledger._bank_tax_paid == tim_tax_paid
+    assert tim_ledger._bank_due_paid == tim_due_paid
     assert tim_ledger._bank_credit_score == tim_credit_score
     assert tim_ledger._bank_voice_rank == tim_voice_rank
 
@@ -316,30 +316,30 @@ def test_RiverLedgerUnit_Exists():
 def test_PartyBankUnit_exists():
     # GIVEN
     x_cash_master = "x_cash_master"
-    x_tax_agent_id = "x_tax_agent_id"
-    x_tax_total = "x_tax_total"
+    x_due_agent_id = "x_due_agent_id"
+    x_due_total = "x_due_total"
     x_debt = "x_debt"
-    x_tax_diff = "x_tax_diff"
+    x_due_diff = "x_due_diff"
     x_credit_score = "credit_score"
     x_voice_rank = "voice_rank"
 
     # WHEN
     x_partybank = PartyBankUnit(
         cash_master=x_cash_master,
-        tax_agent_id=x_tax_agent_id,
-        tax_total=x_tax_total,
+        due_agent_id=x_due_agent_id,
+        due_total=x_due_total,
         debt=x_debt,
-        tax_diff=x_tax_diff,
+        due_diff=x_due_diff,
         credit_score=x_credit_score,
         voice_rank=x_voice_rank,
     )
 
     # THEN
     assert x_partybank.cash_master == x_cash_master
-    assert x_partybank.tax_agent_id == x_tax_agent_id
-    assert x_partybank.tax_total == x_tax_total
+    assert x_partybank.due_agent_id == x_due_agent_id
+    assert x_partybank.due_total == x_due_total
     assert x_partybank.debt == x_debt
-    assert x_partybank.tax_diff == x_tax_diff
+    assert x_partybank.due_diff == x_due_diff
     assert x_partybank.credit_score == x_credit_score
     assert x_partybank.voice_rank == x_voice_rank
 
@@ -355,18 +355,18 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=wil_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=fry_text))
-    assert x_agenda._partys.get(sam_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(sam_text)._bank_tax_diff is None
-    assert x_agenda._partys.get(wil_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(wil_text)._bank_tax_diff is None
-    assert x_agenda._partys.get(fry_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(fry_text)._bank_tax_diff is None
+    assert x_agenda._partys.get(sam_text)._bank_due_paid is None
+    assert x_agenda._partys.get(sam_text)._bank_due_diff is None
+    assert x_agenda._partys.get(wil_text)._bank_due_paid is None
+    assert x_agenda._partys.get(wil_text)._bank_due_diff is None
+    assert x_agenda._partys.get(fry_text)._bank_due_paid is None
+    assert x_agenda._partys.get(fry_text)._bank_due_diff is None
     elu_partyunit = partyunit_shop(party_id=elu_text)
-    elu_partyunit._bank_tax_paid = 0.003
-    elu_partyunit._bank_tax_diff = 0.007
+    elu_partyunit._bank_due_paid = 0.003
+    elu_partyunit._bank_due_diff = 0.007
     x_agenda.set_partyunit(partyunit=elu_partyunit)
-    assert x_agenda._partys.get(elu_text)._bank_tax_paid == 0.003
-    assert x_agenda._partys.get(elu_text)._bank_tax_diff == 0.007
+    assert x_agenda._partys.get(elu_text)._bank_due_paid == 0.003
+    assert x_agenda._partys.get(elu_text)._bank_due_diff == 0.007
 
     partybankunit_sam = PartyBankUnit(
         bob_text, sam_text, 0.209, 0, 0.034, None, None
@@ -378,9 +378,9 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
         bob_text, fry_text, 0.111, 0, 0.006, None, None
     )
     partybankunits = {
-        partybankunit_sam.tax_agent_id: partybankunit_sam,
-        partybankunit_wil.tax_agent_id: partybankunit_wil,
-        partybankunit_fry.tax_agent_id: partybankunit_fry,
+        partybankunit_sam.due_agent_id: partybankunit_sam,
+        partybankunit_wil.due_agent_id: partybankunit_wil,
+        partybankunit_fry.due_agent_id: partybankunit_fry,
     }
     # WHEN
     set_bank_partybankunits_to_agenda_partyunits(
@@ -388,17 +388,17 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     )
 
     # THEN
-    assert x_agenda._partys.get(sam_text)._bank_tax_paid == 0.209
-    assert x_agenda._partys.get(sam_text)._bank_tax_diff == 0.034
-    assert x_agenda._partys.get(wil_text)._bank_tax_paid == 0.501
-    assert x_agenda._partys.get(wil_text)._bank_tax_diff == 0.024
-    assert x_agenda._partys.get(fry_text)._bank_tax_paid == 0.111
-    assert x_agenda._partys.get(fry_text)._bank_tax_diff == 0.006
-    assert x_agenda._partys.get(elu_text)._bank_tax_paid is None
-    assert x_agenda._partys.get(elu_text)._bank_tax_diff is None
+    assert x_agenda._partys.get(sam_text)._bank_due_paid == 0.209
+    assert x_agenda._partys.get(sam_text)._bank_due_diff == 0.034
+    assert x_agenda._partys.get(wil_text)._bank_due_paid == 0.501
+    assert x_agenda._partys.get(wil_text)._bank_due_diff == 0.024
+    assert x_agenda._partys.get(fry_text)._bank_due_paid == 0.111
+    assert x_agenda._partys.get(fry_text)._bank_due_diff == 0.006
+    assert x_agenda._partys.get(elu_text)._bank_due_paid is None
+    assert x_agenda._partys.get(elu_text)._bank_due_diff is None
 
 
-def test_get_agenda_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulatesTable01(
+def test_get_agenda_partyunit_table_update_bank_due_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
@@ -450,7 +450,7 @@ def test_get_agenda_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulat
         bank_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(
+    mstr_sqlstr = get_agenda_partyunit_table_update_bank_due_paid_sqlstr(
         cash_agent_id=bob_text
     )
     with x_market.get_bank_conn() as bank_conn:
@@ -468,21 +468,21 @@ def test_get_agenda_partyunit_table_update_bank_tax_paid_sqlstr_CorrectlyPopulat
 
     bob_tom_x = partybankunits.get(tom_text)
     assert bob_tom_x.cash_master == bob_text
-    assert bob_tom_x.tax_agent_id == tom_text
-    assert bob_tom_x.tax_total == 0.2
+    assert bob_tom_x.due_agent_id == tom_text
+    assert bob_tom_x.due_total == 0.2
     assert bob_tom_x.debt == 0.411
-    assert round(bob_tom_x.tax_diff, 15) == 0.211
+    assert round(bob_tom_x.due_diff, 15) == 0.211
 
     bob_sal_x = partybankunits.get(sal_text)
     assert bob_sal_x.cash_master == bob_text
-    assert bob_sal_x.tax_agent_id == sal_text
-    assert bob_sal_x.tax_total == 0.8
+    assert bob_sal_x.due_agent_id == sal_text
+    assert bob_sal_x.due_total == 0.8
     assert bob_sal_x.debt == 0.455
-    assert round(bob_sal_x.tax_diff, 15) == -0.345
+    assert round(bob_sal_x.due_diff, 15) == -0.345
 
     # for value in partybankunits.values():
     #     assert value.cash_master == bob_text
-    #     assert value.tax_agent_id in [tom_text, sal_text]
-    #     assert value.tax_total in [0.2, 0.8]
+    #     assert value.due_agent_id in [tom_text, sal_text]
+    #     assert value.due_total in [0.2, 0.8]
     #     assert value.debt in [0.411, 0.455]
-    #     assert round(value.tax_diff, 15) in [0.211, -0.345]
+    #     assert round(value.due_diff, 15) in [0.211, -0.345]
