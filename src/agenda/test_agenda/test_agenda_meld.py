@@ -140,7 +140,7 @@ def test_AgendaUnit_idearoot_meld_idearoot_AttrCorrectlyMelded():
         bob1_agenda.meld(bob2_agenda)
     assert (
         str(excinfo.value)
-        == f"Meld fail idea={bob1_agenda._economy_id} _uid:1 with {bob2_agenda._economy_id} _uid:4"
+        == f"Meld fail idea={bob1_agenda._market_id} _uid:1 with {bob2_agenda._market_id} _uid:4"
     )
 
 

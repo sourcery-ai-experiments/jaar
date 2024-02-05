@@ -170,7 +170,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     # THEN
     work_idea = x_agenda._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_road()=}")
-    assert work_idea._parent_road == x_agenda._economy_id
+    assert work_idea._parent_road == x_agenda._market_id
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -405,7 +405,7 @@ def test_get_intent_dict():
 def test_exammple_idea_list_HasCorrectData():
     x_agenda = agenda_v001()
     print(f"{x_agenda.get_reason_bases()=}")
-    # day_hour = f"{x_agenda._economy_id},day_hour"
+    # day_hour = f"{x_agenda._market_id},day_hour"
     # x_agenda.set_belief(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
     day_min_road = x_agenda.make_l1_road(day_min_text)
@@ -520,7 +520,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     }
     mt_reasonunit = reasonunit_shop(week_road, premises=mt_premises)
     mt_reasonheir = reasonheir_shop(week_road, premises=mt_premises, _status=False)
-    x_idearoot = x_agenda.get_idea_obj(x_agenda._economy_id)
+    x_idearoot = x_agenda.get_idea_obj(x_agenda._market_id)
     x_idearoot.set_reasonunit(reason=mt_reasonunit)
     # print(f"{x_agenda._reasonunits[week_road].base=}")
     # print(f"{x_agenda._reasonunits[week_road].premises[mon_road].need=}")
@@ -562,11 +562,11 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
 
     # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
 
-    # x_agenda.set_belief(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Tuesday")
+    # x_agenda.set_belief(base=f"{x_agenda._market_id},weekdays", pick=f"{x_agenda._market_id},weekdays,Tuesday")
     # idea_list = x_agenda.get_idea_list()
     # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
 
-    # x_agenda.set_belief(base=f"{x_agenda._economy_id},weekdays", pick=f"{x_agenda._economy_id},weekdays,Wednesday")
+    # x_agenda.set_belief(base=f"{x_agenda._market_id},weekdays", pick=f"{x_agenda._market_id},weekdays,Wednesday")
     # idea_list = x_agenda.get_idea_list()
     # assert YR.get_active(road=bird_idea, idea_list=idea_list) == False
 

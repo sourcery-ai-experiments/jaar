@@ -13,7 +13,7 @@ from ui.pyqt_func import (
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.tools.file import open_file
+from src.instrument.file import open_file
 from sys import exit as sys_exit
 
 # from PyQt5 import QtWidgets as qtw
@@ -149,9 +149,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer.stop()
         if self.cb_update_now_repeat.checkState() == 2:
             curr_time_frame = str(self.update_now_time_frame.currentText())
-            curr_time_second = 60
-            curr_time_millisecond = curr_time_second * 1000
-            self.timer.start(curr_time_millisecond)
+            curr_time_sec = 60
+            curr_time_millisec = curr_time_sec * 1000
+            self.timer.start(curr_time_millisec)
         else:
             self.timer.stop()
 
@@ -168,7 +168,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_belief_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
-        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        road_minute = f"{self.x_agenda._market_id},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         self.x_agenda.set_belief(
             base=road_minute,
@@ -178,7 +178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_all()
 
     def _set_belief_time_open_midnight_attr(self):
-        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        road_minute = f"{self.x_agenda._market_id},time,jajatime"
         open_dt = self.x_agenda.get_time_dt_from_min(
             self.x_agenda._idearoot._beliefunits[road_minute].open
         )
@@ -212,7 +212,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_belief_time_open_soft(self):
         # now_x = datetime.now()
-        # road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        # road_minute = f"{self.x_agenda._market_id},time,jajatime"
         # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
         # self.x_agenda.set_belief(
         #     base=road_minute,
@@ -263,7 +263,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.current_file_path_l.setText(self.file_path)
         # save_file(
         #     dest_dir=agenda_clerkunit_dir,
-        #     file_name=f"{self.x_agenda._economy_id}.json",
+        #     file_name=f"{self.x_agenda._market_id}.json",
         #     file_text=x_agenda.get_json(),
         # )
 
@@ -280,14 +280,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def agenda_new(self):
         self.x_agenda = agendaunit_shop(_agent_id="new")
         self.x_agenda.set_time_hreg_ideas(c400_count=7)
-        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        road_minute = f"{self.x_agenda._market_id},time,jajatime"
         self.x_agenda.set_belief(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
 
     def refresh_datetime_display(self):
-        road_minute = f"{self.x_agenda._economy_id},time,jajatime"
+        road_minute = f"{self.x_agenda._market_id},time,jajatime"
         jajatime_open = self.x_agenda.get_time_dt_from_min(
             self.x_agenda._idearoot._beliefunits[road_minute].open
         )
@@ -367,9 +367,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
             raise MainAppException("No table selection for belief update.")
         belief_update_combo_text = self.belief_update_combo.currentText()
-        self.x_agenda._idearoot._beliefunits[
-            base_road
-        ].belief = belief_update_combo_text
+        self.x_agenda._idearoot._beliefunits[base_road].belief = (
+            belief_update_combo_text
+        )
         self.base_road = None
         self.refresh_all
 
@@ -405,12 +405,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(row, 1, qtw1(ax._label))
         x_hregidea = HregTimeIdeaSource(",")
 
-        if ax._reasonunits.get(f"{self.x_agenda._economy_id},time,jajatime") != None:
+        if ax._reasonunits.get(f"{self.x_agenda._market_id},time,jajatime") != None:
             jajatime_reason = ax._reasonunits.get(
-                f"{self.x_agenda._economy_id},time,jajatime"
+                f"{self.x_agenda._market_id},time,jajatime"
             )
             premise_x = jajatime_reason.premises.get(
-                f"{self.x_agenda._economy_id},time,jajatime"
+                f"{self.x_agenda._market_id},time,jajatime"
             )
             if premise_x != None and premise_x.open != 0:
                 tw_open = qtw1(
@@ -462,14 +462,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_hregidea = HregTimeIdeaSource(",")
         self.label_intent_label_data.setText(intent_item._label)
         if (
-            intent_item._reasonunits.get(f"{self.x_agenda._economy_id},time,jajatime")
+            intent_item._reasonunits.get(f"{self.x_agenda._market_id},time,jajatime")
             != None
         ):
             jajatime_reason = intent_item._reasonunits.get(
-                f"{self.x_agenda._economy_id},time,jajatime"
+                f"{self.x_agenda._market_id},time,jajatime"
             )
             premise_x = jajatime_reason.premises.get(
-                f"{self.x_agenda._economy_id},time,jajatime,day"
+                f"{self.x_agenda._market_id},time,jajatime,day"
             )
             if premise_x != None:
                 self.label_intent_day_data.setText("day_stuff")
@@ -487,10 +487,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_jajaday_open_nigh(self, intent_item):
         jajatime_reason = intent_item._reasonunits.get(
-            f"{self.x_agenda._economy_id},time,jajatime"
+            f"{self.x_agenda._market_id},time,jajatime"
         )
         premise_x = jajatime_reason.premises.get(
-            f"{self.x_agenda._economy_id},time,jajatime,day"
+            f"{self.x_agenda._market_id},time,jajatime,day"
         )
         if premise_x != None:
             open_x = premise_x.open

@@ -33,8 +33,8 @@ class ClerkID(PersonID):
     pass
 
 
-class EconomyID(RoadNode):  # Created to help track the concept
-    """A RoadNode used to identify a Healer's Economy"""
+class MarketID(RoadNode):  # Created to help track the concept
+    """A RoadNode used to identify a Healer's Market"""
 
     pass
 
@@ -58,28 +58,28 @@ class RoadUnit(str):
 
 
 class PersonRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+    """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
     PersonID (Must Exist)
     ProblemID
     HealerID
-    EconomyRoad
+    MarketRoad
     """
 
     pass
 
 
 class ProblemRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+    """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
     ProblemID (Must Exist)
     HealerID
-    EconomyRoad
+    MarketRoad
     """
 
     pass
 
 
 class HealerRoad(RoadUnit):
-    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+    """RodeUnit with node and road seperated by EconUnit._road_delimiter:
     PersonID
     ProblemID
     HealerID"""
@@ -87,19 +87,19 @@ class HealerRoad(RoadUnit):
     pass
 
 
-class EconomyRoad(RoadUnit):
-    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+class MarketRoad(RoadUnit):
+    """RodeUnit with node and road seperated by EconUnit._road_delimiter:
     PersonID
     ProblemID
     HealerID
-    EconomyID"""
+    MarketID"""
 
     pass
 
 
 class AgendaRoad(RoadUnit):
     """RodeUnit with nodes seperated by Agenda._road_delimiter that
-    starts with EconomyID"""
+    starts with MarketID"""
 
     pass
 
@@ -226,7 +226,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_economy_root_roadnode() -> EconomyID:
+def get_default_market_root_roadnode() -> MarketID:
     return "A"
 
 
@@ -272,7 +272,7 @@ def create_proad(
     person_id: PersonID,
     problem_id: ProblemID = None,
     healer_id: HealerID = None,
-    economy_id: EconomyID = None,
+    market_id: MarketID = None,
     delimiter: str = None,
 ) -> PersonRoad:
     x_road_nodes = [person_id]
@@ -280,14 +280,14 @@ def create_proad(
         x_road_nodes.append(problem_id)
     if None not in (problem_id, healer_id):
         x_road_nodes.append(healer_id)
-    if None not in (problem_id, healer_id, economy_id):
-        x_road_nodes.append(economy_id)
+    if None not in (problem_id, healer_id, market_id):
+        x_road_nodes.append(market_id)
     return create_road_from_nodes(x_road_nodes, delimiter=delimiter)
 
 
-def get_economyroad_from_healerroad(
+def get_marketroad_from_healerroad(
     x_healerroad: HealerRoad, delimiter: str = None
-) -> EconomyRoad:
+) -> MarketRoad:
     x_roadnodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
     return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)
 
@@ -298,7 +298,7 @@ def get_single_roadnode(
     x_roadunit_nodes = get_all_road_nodes(x_roadunit, delimiter=delimiter)
     x_roadnode = None
     if roadunit_type == "PersonRoad":
-        if roadnode_type == "EconomyID" and len(x_roadunit_nodes) > 3:
+        if roadnode_type == "MarketID" and len(x_roadunit_nodes) > 3:
             x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[3]
         elif roadnode_type == "HealerID" and len(x_roadunit_nodes) > 2:
             x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[2]

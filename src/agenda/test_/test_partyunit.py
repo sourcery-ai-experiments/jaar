@@ -6,7 +6,7 @@ from src.agenda.party import (
     partyunits_get_from_json,
     get_default_depotlink_type,
 )
-from src.tools.python import x_is_json, x_get_json
+from src.instrument.python import x_is_json, x_get_json
 from pytest import raises as pytest_raises
 
 

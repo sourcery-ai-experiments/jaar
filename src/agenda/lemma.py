@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import BeliefUnit, RoadUnit, beliefunit_shop
 from src.agenda.idea import IdeaUnit
-from src.tools.python import get_empty_dict_if_none
+from src.instrument.python import get_empty_dict_if_none
 
 
 class InvalidLemmaException(Exception):

@@ -63,13 +63,13 @@ screenshots and explanatory text.
 base attributes vs reason attributess
 
 <!-- TODO: Add explanations -->
-EconomyUnit objects
+MarketUnit objects
 
-EconomyUnit ClerkUnit objects
+MarketUnit ClerkUnit objects
 
-EconomyUnit ClerkUnit Agenda objects
+MarketUnit ClerkUnit Agenda objects
 
-EconomyUnit Treasury objects
+MarketUnit Treasury objects
 
 <!-- TODO: Add explanations -->
 AgendaUnit objects

@@ -26,7 +26,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     tim_agenda = agendaunit_shop("Tim")
-    tim_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tim_agenda._economy_id)
+    tim_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tim_agenda._market_id)
     assert tim_agenda._idearoot._assignedunit == assigned_unit_x
     assert tim_agenda._idearoot._assignedheir is None
 
@@ -124,11 +124,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_road(noa_agenda1._economy_id, work_text)
+    work_road = noa_agenda1.make_road(noa_agenda1._market_id, work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_road(noa_agenda1._economy_id, swim_text)
-    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._economy_id)
-    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._economy_id)
+    swim_road = noa_agenda1.make_road(noa_agenda1._market_id, swim_text)
+    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
+    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
@@ -157,11 +157,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_road(noa_agenda1._economy_id, work_text)
+    work_road = noa_agenda1.make_road(noa_agenda1._market_id, work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_road(noa_agenda1._economy_id, swim_text)
-    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._economy_id)
-    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._economy_id)
+    swim_road = noa_agenda1.make_road(noa_agenda1._market_id, swim_text)
+    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
+    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)

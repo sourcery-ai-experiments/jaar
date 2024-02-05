@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     premises_get_from_dict,
 )
 from src._prime.road import (
-    get_default_economy_root_roadnode as root_label,
+    get_default_market_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
     find_replace_road_key_dict,
@@ -870,11 +870,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
     assert new_premises_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeEconomyIDScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeMarketIDScenario():
     # GIVEN
-    old_economy_id = "El Paso"
+    old_market_id = "El Paso"
     casa_text = "casa"
-    old_casa_road = create_road(old_economy_id, casa_text)
+    old_casa_road = create_road(old_market_id, casa_text)
     seasons_text = "seasons"
     old_seasons_road = create_road(old_casa_road, seasons_text)
     old_premise_x = premiseunit_shop(need=old_seasons_road)
@@ -883,8 +883,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeEconom
     assert old_premises_x.get(old_seasons_road) == old_premise_x
 
     # WHEN
-    new_economy_id = "Austin"
-    new_casa_road = create_road(new_economy_id, casa_text)
+    new_market_id = "Austin"
+    new_casa_road = create_road(new_market_id, casa_text)
     new_seasons_road = create_road(new_casa_road, seasons_text)
 
     new_premises_x = find_replace_road_key_dict(

@@ -28,11 +28,11 @@ from src._prime.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_default_economy_root_roadnode as root_label,
+    get_default_market_root_roadnode as root_label,
     create_road as road_create_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
-    EconomyID,
+    MarketID,
 )
 from src.agenda.group import (
     BalanceHeir,
@@ -47,7 +47,7 @@ from src.agenda.group import (
 from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
-from src.tools.python import get_empty_dict_if_none, get_1_if_None
+from src.instrument.python import get_empty_dict_if_none, get_1_if_None
 from src._prime.meld import get_meld_weight, validate_meld_strategy
 from copy import deepcopy
 
@@ -217,7 +217,7 @@ class IdeaUnit:
     _parent_road: RoadUnit = None
     _root: bool = None
     _kids: dict = None
-    _agenda_economy_id: EconomyID = None
+    _agenda_market_id: MarketID = None
     _uid: int = None  # Calculated field?
     _balancelinks: dict[GroupID:BalanceLink] = None
     _balanceheirs: dict[GroupID:BalanceHeir] = None  # Calculated field
@@ -518,13 +518,13 @@ class IdeaUnit:
         if (
             self._root
             and _label != None
-            and _label != self._agenda_economy_id
-            and self._agenda_economy_id != None
+            and _label != self._agenda_market_id
+            and self._agenda_market_id != None
         ):
             raise Idea_root_LabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{self._agenda_economy_id}'"
+                f"Cannot set idearoot to string other than '{self._agenda_market_id}'"
             )
-        elif self._root and self._agenda_economy_id is None:
+        elif self._root and self._agenda_market_id is None:
             self._label = root_label()
         # elif _label != None:
         else:
@@ -1089,7 +1089,7 @@ def ideaunit_shop(
     _originunit: OriginUnit = None,
     _meld_strategy: str = None,
     _root: bool = None,
-    _agenda_economy_id: EconomyID = None,
+    _agenda_market_id: MarketID = None,
     # Calculated fields
     _level: int = None,
     _kids_total_weight: int = None,
@@ -1115,8 +1115,8 @@ def ideaunit_shop(
         _kids_total_weight = 0
     if _root is None:
         _root = False
-    if _agenda_economy_id is None:
-        _agenda_economy_id = root_label()
+    if _agenda_market_id is None:
+        _agenda_market_id = root_label()
 
     x_ideakid = IdeaUnit(
         _label=None,
@@ -1145,7 +1145,7 @@ def ideaunit_shop(
         _originunit=_originunit,
         _meld_strategy=_meld_strategy,
         _root=_root,
-        _agenda_economy_id=_agenda_economy_id,
+        _agenda_market_id=_agenda_market_id,
         # Calculated fields
         _level=_level,
         _kids_total_weight=_kids_total_weight,
@@ -1164,7 +1164,7 @@ def ideaunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     if x_ideakid._root:
-        x_ideakid.set_idea_label(_label=_agenda_economy_id)
+        x_ideakid.set_idea_label(_label=_agenda_market_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
     x_ideakid.set_assignedunit_empty_if_null()

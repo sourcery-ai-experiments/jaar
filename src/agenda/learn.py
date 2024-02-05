@@ -17,7 +17,7 @@ from src.agenda.group import (
 from src.agenda.idea import ideaunit_shop, IdeaUnit
 from src.agenda.agenda import AgendaUnit
 from src.agenda.examples.agenda_env import get_codespace_agenda_dir
-from src.tools.python import (
+from src.instrument.python import (
     get_empty_dict_if_none,
     x_get_json,
     x_get_dict,
@@ -25,7 +25,7 @@ from src.tools.python import (
     get_nested_value,
     get_all_nondictionary_objs,
 )
-from src.tools.file import open_file, save_file
+from src.instrument.file import open_file, save_file
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
 

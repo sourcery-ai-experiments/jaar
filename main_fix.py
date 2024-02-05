@@ -1,4 +1,4 @@
-# # command to for converting ui form to python file: pyuic5 ui\economyMainUI.ui -o ui\economyMainUI.py
+# # command to for converting ui form to python file: pyuic5 ui\marketMainUI.ui -o ui\marketMainUI.py
 from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView
 from PyQt5 import QtCore as qtc
@@ -12,18 +12,18 @@ from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
 )
-from src.economy.economy import economyunit_shop
-from src.economy.examples.economy_env_kit import (
-    create_example_economys_list,
+from src.market.market import marketunit_shop
+from src.market.examples.market_env_kit import (
+    create_example_markets_list,
     setup_test_example_environment,
-    create_example_economy,
-    delete_dir_example_economy,
-    change_economy_id_example_economy,
-    get_test_economys_dir,
+    create_example_market,
+    delete_dir_example_market,
+    change_market_id_example_market,
+    get_test_markets_dir,
 )
 
 from src.agenda.party import get_depotlink_types
-from src.tools.file import open_file, dir_files
+from src.instrument.file import open_file, dir_files
 from ui.pyqt_func import agenda_importance_diplay
 
 
@@ -62,10 +62,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         # signals for opening windows
         self.refresh_all_button.clicked.connect(self.refresh_all)
-        self.economy_insert_button.clicked.connect(self.economy_insert)
-        self.economy_load_button.clicked.connect(self.economy_load_from_file)
-        self.economy_update_button.clicked.connect(self.economy_update_pid)
-        self.economy_delete_button.clicked.connect(self.economy_delete)
+        self.market_insert_button.clicked.connect(self.market_insert)
+        self.market_load_button.clicked.connect(self.market_load_from_file)
+        self.market_update_button.clicked.connect(self.market_update_pid)
+        self.market_delete_button.clicked.connect(self.market_delete)
         self.agenda_insert_button.clicked.connect(self.agenda_insert)
         self.agenda_update_button.clicked.connect(self.agenda_update_pid)
         self.agenda_delete_button.clicked.connect(self.agenda_delete)
@@ -94,16 +94,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
 
         self.x_clerk = None
-        self.economy_x = None
+        self.market_x = None
         self.ignore_agenda_x = None
         setup_test_example_environment()
         first_env = "ex5"
-        self.economy_x = economyunit_shop(
-            economy_id=first_env, economys_dir=get_test_economys_dir()
+        self.market_x = marketunit_shop(
+            market_id=first_env, markets_dir=get_test_markets_dir()
         )
-        self.refresh_economy()
-        self.economy_id_combo_refresh()
-        self.economy_id_combo.setCurrentText(first_env)
+        self.refresh_market()
+        self.market_id_combo_refresh()
+        self.market_id_combo.setCurrentText(first_env)
         self._healer_load(clerk_id="ernie")
 
     def save_contract(self):
@@ -112,8 +112,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_healer()
 
     def reload_forum_agendas(self):
-        if self.economy_x != None:
-            self.economy_x.reload_all_clerkunits_forum_agendaunits()
+        if self.market_x != None:
+            self.market_x.reload_all_clerkunits_forum_agendaunits()
 
     def set_forum_and_reload_srcs(self):
         self.save_output_agenda_to_forum()
@@ -122,16 +122,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_output_agenda_to_forum(self):
         if self.x_clerk != None:
             self.x_clerk.save_output_agenda_to_forum()
-        self.refresh_economy()
+        self.refresh_market()
 
-    def economy_load_from_file(self):
-        economy_selected = self.economy_id_combo.currentText()
-        self.economy_x = economyunit_shop(
-            economy_id=economy_selected, economys_dir=get_test_economys_dir()
+    def market_load_from_file(self):
+        market_selected = self.market_id_combo.currentText()
+        self.market_x = marketunit_shop(
+            market_id=market_selected, markets_dir=get_test_markets_dir()
         )
-        self.economy_x.create_dirs_if_null(in_memory_treasury=False)
-        self.economy_id.setText(economy_selected)
-        self.refresh_economy()
+        self.market_x.create_dirs_if_null(in_memory_treasury=False)
+        self.market_id.setText(market_selected)
+        self.refresh_market()
 
     def agendas_table_select(self):
         self.agenda_agent_id.setText(
@@ -151,8 +151,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._healer_load(clerk_id=x_clerk_id)
 
     def _healer_load(self, clerk_id: str):
-        self.economy_x.create_new_clerkunit(clerk_id=clerk_id)
-        self.x_clerk = self.economy_x._clerkunits.get(clerk_id)
+        self.market_x.create_new_clerkunit(clerk_id=clerk_id)
+        self.x_clerk = self.market_x._clerkunits.get(clerk_id)
         self.clerk_id.setText(self.x_clerk._clerk_id)
         self.refresh_healer()
 
@@ -171,14 +171,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_agenda_agent_id = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.economy_x.get_forum_agenda(
-        self.ignore_agenda_x = self.economy_x.get_agenda_from_ignores_dir(
+        # self.ignore_agenda_x = self.market_x.get_forum_agenda(
+        self.ignore_agenda_x = self.market_x.get_agenda_from_ignores_dir(
             clerk_id=self.x_clerk.pid, _healer=ignore_agenda_agent_id
         )
         self.edit_agenda = self.ignore_agenda_x
 
     def ignore_agenda_file_update(self):
-        self.economy_x.set_ignore_agenda_file(
+        self.market_x.set_ignore_agenda_file(
             clerk_id=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
         )
         self.refresh_healer()
@@ -191,27 +191,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.digests_table.setHidden(False)
 
-    def economy_insert(self):
-        create_example_economy(economy_id=self.economy_id.text())
-        self.economy_id_combo_refresh()
+    def market_insert(self):
+        create_example_market(market_id=self.market_id.text())
+        self.market_id_combo_refresh()
 
-    def economy_update_pid(self):
-        change_economy_id_example_economy(
-            economy_obj=self.economy_x, new_party_id=self.economy_id.text()
+    def market_update_pid(self):
+        change_market_id_example_market(
+            market_obj=self.market_x, new_party_id=self.market_id.text()
         )
-        self.economy_id_combo_refresh()
+        self.market_id_combo_refresh()
 
-    def economy_delete(self):
-        delete_dir_example_economy(economy_obj=self.economy_x)
-        self.economy_x = None
-        self.economy_id_combo_refresh()
-        self.refresh_economy()
+    def market_delete(self):
+        delete_dir_example_market(market_obj=self.market_x)
+        self.market_x = None
+        self.market_id_combo_refresh()
+        self.refresh_market()
 
     def agenda_insert(self):
-        self.economy_x.save_forum_agenda(
+        self.market_x.save_forum_agenda(
             agenda_x=agendaunit_shop(_agent_id=self.agenda_agent_id.text())
         )
-        self.refresh_economy()
+        self.refresh_market()
 
     def agenda_update_pid(self):
         currently_selected = self.agendas_table.item(
@@ -219,21 +219,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_agent_id.text()
         if currently_selected != typed_in:
-            self.economy_x.change_forum_agent_id(
+            self.market_x.change_forum_agent_id(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_economy()
+            self.refresh_market()
 
     def agenda_delete(self):
-        self.economy_x.del_forum_agenda(
+        self.market_x.del_forum_agenda(
             agenda_x_label=self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
         )
-        self.refresh_economy()
+        self.refresh_market()
 
     def healer_insert(self):
-        self.economy_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
+        self.market_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
         self.refresh_healers()
 
     def healer_update_pid(self):
@@ -242,13 +242,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.clerk_id.text()
         if currently_selected != typed_in:
-            self.economy_x.change_clerkunit_cid(
+            self.market_x.change_clerkunit_cid(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_healers()
 
     def healer_delete(self):
-        self.economy_x.del_clerkunit_dir(
+        self.market_x.del_clerkunit_dir(
             clerk_id=self.healers_table.item(self.healers_table.currentRow(), 0).text()
         )
         self.refresh_healers()
@@ -268,38 +268,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_type=self.depotlink_type_combo.currentText(),
                 depotlink_weight=self.depotlink_weight.text(),
             )
-            self.economy_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
+            self.market_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
         self.refresh_healer()
 
     def depotlink_update(self):
         clerk_id_x = self.x_clerk.pid
-        self.economy_x.update_depotlink(
+        self.market_x.update_depotlink(
             clerk_id=clerk_id_x,
             party_id=self.depotlink_pid.text(),
             depotlink_type=self.depotlink_type_combo.currentText(),
             creditor_weight=self.depotlink_weight.text(),
             debtor_weight=self.depotlink_weight.text(),
         )
-        self.economy_x.save_clerkunit_file(clerk_id=clerk_id_x)
+        self.market_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_healer()
 
     def depotlink_delete(self):
         clerk_id_x = self.x_clerk.pid
-        self.economy_x.del_depotlink(
+        self.market_x.del_depotlink(
             clerk_id=clerk_id_x, agendaunit_agent_id=self.depotlink_pid.text()
         )
-        self.economy_x.save_clerkunit_file(clerk_id=clerk_id_x)
+        self.market_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_healer()
 
     def get_agenda_agent_id_list(self):
-        return [[file_name] for file_name in dir_files(self.economy_x.get_forum_dir())]
+        return [[file_name] for file_name in dir_files(self.market_x.get_forum_dir())]
 
     def get_clerk_id_list(self):
         healers_healer_list = []
-        if self.economy_x != None:
+        if self.market_x != None:
             healers_healer_list.extend(
                 [healer_dir]
-                for healer_dir in self.economy_x.get_clerkunit_dir_paths_list()
+                for healer_dir in self.market_x.get_clerkunit_dir_paths_list()
             )
         return healers_healer_list
 
@@ -421,7 +421,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return x_list
 
     def refresh_all(self):
-        self.refresh_economy()
+        self.refresh_market()
 
     def _sub_refresh_agents_table(self):
         self.refresh_x(self.healers_table, ["Healers Table"], self.get_clerk_id_list())
@@ -536,9 +536,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             column_width=[50, 200, 300],
         )
 
-    def economy_id_combo_refresh(self):
-        self.economy_id_combo.clear()
-        self.economy_id_combo.addItems(create_example_economys_list())
+    def market_id_combo_refresh(self):
+        self.market_id_combo.clear()
+        self.market_id_combo.addItems(create_example_markets_list())
 
     def refresh_healers(self):
         self.x_clerk = None
@@ -558,10 +558,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._sub_refresh_p_beliefs_table()
         self._sub_refresh_p_intent_table()
 
-    def refresh_economy(self):
+    def refresh_market(self):
         self.refresh_x(
             self.agendas_table,
-            ["Economy Forum Agendas"],
+            ["Market Forum Agendas"],
             self.get_agenda_agent_id_list(),
         )
         self.refresh_healers()

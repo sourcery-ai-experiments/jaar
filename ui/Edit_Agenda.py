@@ -61,7 +61,7 @@ class Edit_Agenda(qw, Ui_Form):
 
         else:
             self.belief_base_update_init_road = (
-                f"{self.x_agenda._economy_id},time,jajatime"
+                f"{self.x_agenda._market_id},time,jajatime"
             )
             self.belief_base_update_combo.setCurrentText(
                 self.belief_base_update_init_road
@@ -115,15 +115,15 @@ class Edit_Agenda(qw, Ui_Form):
             premise_open_x != None
             and premise_nigh_x != None
             and (
-                premise_need_x == f"{self.x_agenda._economy_id},time,jajatime"
-                or premise_need_x[:21] == f"{self.x_agenda._economy_id},time,jajatime"
+                premise_need_x == f"{self.x_agenda._market_id},time,jajatime"
+                or premise_need_x[:21] == f"{self.x_agenda._market_id},time,jajatime"
             )
         ):
             legible_x_text = self.x_agenda.get_jajatime_repeating_legible_text(
                 open=premise_open_x, nigh=premise_nigh_x, divisor=premise_divisor_x
             )
         elif premise_open_x != None and premise_nigh_x != None:
-            text_x = f"{self.x_agenda._economy_id},time,jajatime"
+            text_x = f"{self.x_agenda._market_id},time,jajatime"
             legible_x_text = (
                 f"premise {premise_open_x}-{premise_nigh_x} {premise_divisor_x=}"
             )

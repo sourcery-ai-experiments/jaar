@@ -17,7 +17,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v002 as example_agendas_agenda_v002,
     yr_explanation,
 )
-from src.tools.file import open_file
+from src.instrument.file import open_file
 
 
 def test_get_intent_dict_ReturnsCorrectObj():
@@ -824,7 +824,7 @@ def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFix_active_Setting
     #         print(f"{x_ideaunit._kids.keys()=}")
 
     # WHEN
-    print("set second belief")
+    print("set 2nd belief")
     bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, nigh=1064136133)
     print("get 2nd intent dictionary")
     bob_intent_dict = bob_agenda.get_intent_dict()

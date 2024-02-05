@@ -6,13 +6,13 @@ from src._prime.road import (
     ProblemRoad,
     HealerID,
     HealerRoad,
-    EconomyID,
+    MarketID,
     AgentID,
     PartyID,
     RoadUnit,
-    EconomyRoad,
+    MarketRoad,
     AgendaRoad,
-    get_economyroad_from_healerroad,
+    get_marketroad_from_healerroad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -24,7 +24,7 @@ from src._prime.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_economy_root_roadnode as root_label,
+    get_default_market_root_roadnode as root_label,
     create_road_from_nodes,
     create_road,
     create_proad,
@@ -84,18 +84,18 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 def test_road_road_validate_correctlyReturnsRoadUnit():
     x_s = default_road_delimiter_if_none()
-    _economy_id = "x"
-    casa_road = f"{_economy_id}{x_s}casa"
-    source_road = f"{_economy_id}{x_s}source"
-    fun_road = f"{_economy_id}{x_s}fun"
-    assert road_validate(None, x_s, _economy_id) == ""
-    assert road_validate("", x_s, _economy_id) == ""
-    assert road_validate(f"{_economy_id}{x_s}casa", x_s, _economy_id) == casa_road
-    assert road_validate(f"A{x_s}casa", x_s, _economy_id) == casa_road
-    assert road_validate(f"{x_s}source", x_s, _economy_id) == source_road
-    assert road_validate(f"source{x_s}fun", x_s, _economy_id) == fun_road
-    assert road_validate("source", x_s, _economy_id) == _economy_id
-    assert road_validate(f"AA{x_s}casa", x_s, _economy_id) == casa_road
+    _market_id = "x"
+    casa_road = f"{_market_id}{x_s}casa"
+    source_road = f"{_market_id}{x_s}source"
+    fun_road = f"{_market_id}{x_s}fun"
+    assert road_validate(None, x_s, _market_id) == ""
+    assert road_validate("", x_s, _market_id) == ""
+    assert road_validate(f"{_market_id}{x_s}casa", x_s, _market_id) == casa_road
+    assert road_validate(f"A{x_s}casa", x_s, _market_id) == casa_road
+    assert road_validate(f"{x_s}source", x_s, _market_id) == source_road
+    assert road_validate(f"source{x_s}fun", x_s, _market_id) == fun_road
+    assert road_validate("source", x_s, _market_id) == _market_id
+    assert road_validate(f"AA{x_s}casa", x_s, _market_id) == casa_road
 
 
 def test_road_create_road_ReturnsCorrectRoadUnitWith_delimiter():
@@ -346,7 +346,7 @@ def test_road_get_forefather_roads_ReturnsAncestorRoadUnitsWithoutSource():
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_economy_root_roadnode_ReturnsCorrectObj():
+def test_road_get_default_market_root_roadnode_ReturnsCorrectObj():
     assert root_label() == "A"
 
 
@@ -518,23 +518,23 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
     )
 
 
-def test_EconomyRoad_Exists():
+def test_MarketRoad_Exists():
     # GIVEN
     texas_text = "texas"
 
     # WHEN
-    texas_economyroad = EconomyRoad(texas_text)
+    texas_marketroad = MarketRoad(texas_text)
 
     # THEN
-    assert texas_economyroad != None
-    assert texas_economyroad == texas_text
+    assert texas_marketroad != None
+    assert texas_marketroad == texas_text
     assert (
-        inspect_getdoc(texas_economyroad)
-        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+        inspect_getdoc(texas_marketroad)
+        == """RodeUnit with node and road seperated by EconUnit._road_delimiter:
 PersonID
 ProblemID
 HealerID
-EconomyID"""
+MarketID"""
     )
 
 
@@ -579,14 +579,14 @@ def test_HealerRoad_Exists():
     assert sports_healerroad == sports_road
     assert (
         inspect_getdoc(sports_healerroad)
-        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
+        == """RodeUnit with node and road seperated by EconUnit._road_delimiter:
 PersonID
 ProblemID
 HealerID"""
     )
 
 
-def test_get_economyroad_from_healerroad_ReturnsCorrectObj():
+def test_get_marketroad_from_healerroad_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     texas_text = "texas"
@@ -595,7 +595,7 @@ def test_get_economyroad_from_healerroad_ReturnsCorrectObj():
     bob_roses_road = create_road(bob_texas_road, roses_text)
 
     # WHEN
-    texas_roses_road = get_economyroad_from_healerroad(bob_roses_road)
+    texas_roses_road = get_marketroad_from_healerroad(bob_roses_road)
 
     # THEN
     print(f"{texas_roses_road=}")
@@ -627,16 +627,16 @@ def test_HealerID_exists():
     )
 
 
-def test_EconomyID_exists():
+def test_MarketID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_economy_id = EconomyID(bob_text)
+    bob_market_id = MarketID(bob_text)
     # THEN
-    assert bob_economy_id == bob_text
+    assert bob_market_id == bob_text
     assert (
-        inspect_getdoc(bob_economy_id)
-        == "A RoadNode used to identify a Healer's Economy"
+        inspect_getdoc(bob_market_id)
+        == "A RoadNode used to identify a Healer's Market"
     )
 
 
@@ -680,10 +680,10 @@ def test_ProblemRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+        == """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
 ProblemID (Must Exist)
 HealerID
-EconomyRoad"""
+MarketRoad"""
     )
 
 
@@ -691,7 +691,7 @@ def test_PersonRoad_Exists():
     # GIVEN
     problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
     bob_road = create_road(problem1_road, HealerID("Bob"))
-    texas_road = create_road(bob_road, EconomyID("texas"))
+    texas_road = create_road(bob_road, MarketID("texas"))
     sports_road = create_road(texas_road, "sports")
 
     # WHEN
@@ -702,11 +702,11 @@ def test_PersonRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+        == """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
 PersonID (Must Exist)
 ProblemID
 HealerID
-EconomyRoad"""
+MarketRoad"""
     )
 
 
@@ -725,7 +725,7 @@ def test_AgendaRoad_Exists():
     assert (
         inspect_getdoc(yao_agendaroad)
         == """RodeUnit with nodes seperated by Agenda._road_delimiter that
-starts with EconomyID"""
+starts with MarketID"""
     )
 
 
@@ -741,17 +741,17 @@ def test_get_single_roadnode_ReturnsCorrectObj():
     person_id_text = "PersonID"
     problem_id_text = "ProblemID"
     healer_id_text = "HealerID"
-    economy_id_text = "EconomyID"
+    market_id_text = "MarketID"
     personroad_text = "PersonRoad"
 
     assert get_single_roadnode(personroad_text, bob_text, problem_id_text) is None
     assert get_single_roadnode(personroad_text, bob_text, healer_id_text) is None
-    assert get_single_roadnode(personroad_text, bob_text, economy_id_text) is None
+    assert get_single_roadnode(personroad_text, bob_text, market_id_text) is None
 
     assert get_single_roadnode(personroad_text, bob_road, person_id_text) == bob_text
     assert get_single_roadnode(personroad_text, bob_road, problem_id_text) == food_text
     assert get_single_roadnode(personroad_text, bob_road, healer_id_text) == yao_text
-    assert get_single_roadnode(personroad_text, bob_road, economy_id_text) == ohio_text
+    assert get_single_roadnode(personroad_text, bob_road, market_id_text) == ohio_text
 
 
 def test_validate_roadnode_RaisesErrorWhenNotRoadNode():

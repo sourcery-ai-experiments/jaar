@@ -13,7 +13,7 @@ from src.agenda.agenda import (
 )
 from src.agenda.reason_assign import assigned_unit_shop
 from src.agenda.examples.agenda_env import get_agenda_examples_dir
-from src.tools.file import open_file
+from src.instrument.file import open_file
 
 
 def agenda_v001() -> AgendaUnit:
@@ -56,7 +56,7 @@ def agenda_v002() -> AgendaUnit:
             file_name="example_agenda2.json",
         )
     )
-    print(f"{bob_agenda._economy_id=} {bob_agenda._road_delimiter=}")
+    print(f"{bob_agenda._market_id=} {bob_agenda._road_delimiter=}")
     return bob_agenda
 
 
@@ -416,7 +416,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     cali_assignunit.set_suffgroup(cali_text)
     amos_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
-    # print(f"{amos_agenda._economy_id=}")
+    # print(f"{amos_agenda._market_id=}")
     amos_agenda.set_belief(base=basket_road, pick=b_full_road)
 
     return amos_agenda

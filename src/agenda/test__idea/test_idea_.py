@@ -9,7 +9,7 @@ from src.agenda.reason_idea import (
 from src.agenda.reason_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
 from src._prime.road import (
-    get_default_economy_root_roadnode as root_label,
+    get_default_market_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
 )
@@ -54,7 +54,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._originunit is None
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
-    assert x_ideaunit._agenda_economy_id is None
+    assert x_ideaunit._agenda_market_id is None
 
 
 def test_ideaunit_shop_ReturnsCorrectObj():
@@ -97,7 +97,7 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
-    assert x_ideaunit._agenda_economy_id == root_label()
+    assert x_ideaunit._agenda_market_id == root_label()
 
 
 def test_IdeaUnit_get_obj_key_ReturnsCorrectObj():
@@ -636,40 +636,40 @@ def test_IdeaUnit_get_reasonunit_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    tool_text = "tool"
-    clean_idea.set_reasonunit(reasonunit_shop(base=tool_text))
+    instrument_text = "instrument"
+    clean_idea.set_reasonunit(reasonunit_shop(base=instrument_text))
 
     # WHEN
-    x_reasonunit = clean_idea.get_reasonunit(base=tool_text)
+    x_reasonunit = clean_idea.get_reasonunit(base=instrument_text)
 
     # THEN
     assert x_reasonunit != None
-    assert x_reasonunit.base == tool_text
+    assert x_reasonunit.base == instrument_text
 
 
 def test_IdeaUnit_get_reasonheir_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    tool_text = "tool"
-    reason_heir_x = reasonheir_shop(base=tool_text)
+    instrument_text = "instrument"
+    reason_heir_x = reasonheir_shop(base=instrument_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
     clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 
     # WHEN
-    reason_heir_z = clean_idea.get_reasonheir(base=tool_text)
+    reason_heir_z = clean_idea.get_reasonheir(base=instrument_text)
 
     # THEN
     assert reason_heir_z != None
-    assert reason_heir_z.base == tool_text
+    assert reason_heir_z.base == instrument_text
 
 
 def test_IdeaUnit_get_reasonheir_ReturnsNone():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    tool_text = "tool"
-    reason_heir_x = reasonheir_shop(tool_text)
+    instrument_text = "instrument"
+    reason_heir_x = reasonheir_shop(instrument_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
     clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 
@@ -710,8 +710,8 @@ def test_IdeaUnit_set_active_IfFullactive_hxResetToTrue():
 # clean_text = "clean"
 # clean_idea = ideaunit_shop(_label=clean_text)
 #     clean_idea.set_reason_premise(
-#         base="testing1,second",
-#         premise="testing1,second,next",
+#         base="testing1,sec",
+#         premise="testing1,sec,next",
 #         open=None,
 #         nigh=None,
 #         divisor=None,

@@ -1,5 +1,5 @@
 from src.agenda.idea import ideaunit_shop
-from src._prime.road import get_default_economy_root_roadnode as root_label
+from src._prime.road import get_default_market_root_roadnode as root_label
 from pytest import raises as pytest_raises
 
 
@@ -15,7 +15,7 @@ def test_ideaunit_shop_With_root_ReturnsCorrectObj():
     assert x_idearoot._root == True
 
 
-def test_IdeaUnit_set_idea_label_get_default_economy_root_roadnode_DoesNotRaisesError():
+def test_IdeaUnit_set_idea_label_get_default_market_root_roadnode_DoesNotRaisesError():
     # GIVEN
     x_idearoot = ideaunit_shop(_root=True)
 
@@ -30,7 +30,7 @@ def test_IdeaUnit_set_idea_label_get_default_economy_root_roadnode_DoesNotRaises
 def test_IdeaUnit_set_idea_label_CorrectlyDoesNotRaisesError():
     # GIVEN
     el_paso_text = "El Paso"
-    x_idearoot = ideaunit_shop(_root=True, _agenda_economy_id=el_paso_text)
+    x_idearoot = ideaunit_shop(_root=True, _agenda_market_id=el_paso_text)
 
     # WHEN
     x_idearoot.set_idea_label(_label=el_paso_text)
@@ -42,7 +42,7 @@ def test_IdeaUnit_set_idea_label_CorrectlyDoesNotRaisesError():
 def test_IdeaUnit_set_idea_label_DoesRaisesError():
     # GIVEN
     el_paso_text = "El Paso"
-    x_idearoot = ideaunit_shop(_root=True, _agenda_economy_id=el_paso_text)
+    x_idearoot = ideaunit_shop(_root=True, _agenda_market_id=el_paso_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -54,7 +54,7 @@ def test_IdeaUnit_set_idea_label_DoesRaisesError():
     )
 
 
-def test_IdeaUnit_set_idea_label_RaisesErrorWhen_agenda_economy_id_IsNone():
+def test_IdeaUnit_set_idea_label_RaisesErrorWhen_agenda_market_id_IsNone():
     # GIVEN
     x_idearoot = ideaunit_shop(_root=True)
 
@@ -68,9 +68,9 @@ def test_IdeaUnit_set_idea_label_RaisesErrorWhen_agenda_economy_id_IsNone():
     )
 
 
-def test_IdeaUnit_set_idea_label_agenda_economy_id_EqualRootLabelDoesNotRaisesError():
+def test_IdeaUnit_set_idea_label_agenda_market_id_EqualRootLabelDoesNotRaisesError():
     # GIVEN
-    x_idearoot = ideaunit_shop(_root=True, _agenda_economy_id=root_label())
+    x_idearoot = ideaunit_shop(_root=True, _agenda_market_id=root_label())
 
     # WHEN
     x_idearoot.set_idea_label(_label=root_label())

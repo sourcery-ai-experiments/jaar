@@ -7,7 +7,7 @@ from src.agenda.reason_idea import (
     beliefunits_get_from_dict,
 )
 from src._prime.road import (
-    get_default_economy_root_roadnode as root_label,
+    get_default_market_root_roadnode as root_label,
     create_road,
 )
 from pytest import raises as pytest_raises
@@ -225,7 +225,7 @@ def test_BeliefCore_get_obj_key_works():
     # GIVEN
     ced_min_text = "ced_minute"
     min_road = create_road(root_label(), ced_min_text)
-    secs_text = "seconds"
+    secs_text = "secs"
     secs_road = create_road(min_road, secs_text)
 
     # WHEN

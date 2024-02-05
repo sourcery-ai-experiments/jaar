@@ -18,8 +18,8 @@ from src.agenda.examples.agenda_env import (
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assigned_unit_shop
-from src.tools.python import x_is_json, x_get_dict
-from src.tools.file import save_file, open_file
+from src.instrument.python import x_is_json, x_get_dict
+from src.instrument.file import save_file, open_file
 from pytest import raises as pytest_raises
 
 
@@ -56,7 +56,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict != None
     assert str(type(agenda_dict)) == "<class 'dict'>"
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_economy_id"] == x_agenda._economy_id
+    assert agenda_dict["_market_id"] == x_agenda._market_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -76,7 +76,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_idearoot._label == x_agenda._economy_id
+    assert x_idearoot._label == x_agenda._market_id
     assert idearoot_dict["_label"] == x_idearoot._label
     assert idearoot_dict["_weight"] != agenda_weight
     assert idearoot_dict["_weight"] == x_idearoot._weight
@@ -86,11 +86,11 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_obj(month_week_road)
-    print("checking economy_id,month_week...range_source_road equal to...")
+    print("checking market_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_road(
-        x_agenda._economy_id, "ced_week"
+        x_agenda._market_id, "ced_week"
     )
     assert month_week_special_dict == month_week_idea_x._range_source_road
 
@@ -121,7 +121,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     tom_agenda = agendaunit_shop("Tom")
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(group_id=run_text)
-    tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tom_agenda._economy_id)
+    tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tom_agenda._market_id)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
@@ -161,8 +161,8 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
-    tiger_economy_id = "tiger_econ"
-    x_agenda.set_economy_id(tiger_economy_id)
+    tiger_market_id = "tiger"
+    x_agenda.set_market_id(tiger_market_id)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
 
@@ -177,7 +177,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     agenda_dict = x_get_dict(x_json)
 
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_economy_id"] == x_agenda._economy_id
+    assert agenda_dict["_market_id"] == x_agenda._market_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     with pytest_raises(Exception) as excinfo:
@@ -221,7 +221,7 @@ def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
     # THEN
     _kids = "_kids"
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_economy_id"] == x_agenda._economy_id
+    assert agenda_dict["_market_id"] == x_agenda._market_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -276,8 +276,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # GIVEN
     yue_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     yue_agenda.set_max_tree_traverse(23)
-    tiger_economy_id = "tiger_econ"
-    yue_agenda.set_economy_id(tiger_economy_id)
+    tiger_market_id = "tiger"
+    yue_agenda.set_market_id(tiger_market_id)
     yue_party_creditor_pool = 2
     yue_party_debtor_pool = 2
     yue_agenda.set_party_creditor_pool(yue_party_creditor_pool)
@@ -302,14 +302,14 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(group_id=run_text)
-    yue_agenda.edit_idea_attr(yue_agenda._economy_id, assignedunit=run_assigned_unit)
+    yue_agenda.edit_idea_attr(yue_agenda._market_id, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(group_id=tim_text)
     yue_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
     yue_agenda.edit_idea_attr(
-        yue_agenda._economy_id, balancelink=balancelink_shop(sue_text)
+        yue_agenda._market_id, balancelink=balancelink_shop(sue_text)
     )
 
     yao_text = "Yao"
@@ -327,7 +327,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
     assert json_agenda._agent_id != None
     assert json_agenda._agent_id == yue_agenda._agent_id
-    assert json_agenda._economy_id == yue_agenda._economy_id
+    assert json_agenda._market_id == yue_agenda._market_id
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == yue_agenda._max_tree_traverse
     assert json_agenda._auto_output_to_forum == yue_agenda._auto_output_to_forum
