@@ -37,7 +37,7 @@ def test_market_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     y_agenda = example_get_7nodeJRootWithH_agenda()
     x_market.save_forum_agenda(y_agenda)
 
@@ -51,7 +51,7 @@ def test_market_change_forum_agent_id_ChangesAgendaPersonID(
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     old_agent_id = "old1"
     y_agenda = agendaunit_shop(_agent_id=old_agent_id)
     old_y_agenda_path = f"{x_market.get_forum_dir()}/{old_agent_id}.json"
@@ -78,7 +78,7 @@ def test_market_Sets_idearoot_Label(
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     assert old_x_agenda._idearoot._label == "A"
 

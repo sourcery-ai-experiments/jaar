@@ -8,7 +8,7 @@ from src.market.examples.market_env_kit import (
     get_test_markets_dir,
     env_dir_setup_cleanup,
 )
-from src.market.treasury_sqlstr import (
+from src.market.bank_sqlstr import (
     get_table_count_sqlstr,
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
@@ -123,16 +123,16 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.task == x_task
 
 
-def test_market_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
+def test_market_bank_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
     x_time_road = "A,time,jajatime"
     x_date_range_start = 1000000600
@@ -168,34 +168,34 @@ def test_market_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     # WHEN
     calendar_insert_sqlstr = get_calendar_table_insert_sqlstr(bob_calendarintentunit)
     print(f"{calendar_insert_sqlstr}")
-    market_conn = x_market.get_treasury_conn()
+    market_conn = x_market.get_bank_conn()
     market_conn.execute(calendar_insert_sqlstr)
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 1
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 1
 
     # WHEN
     calendar_delete_sqlstr = get_calendar_table_delete_sqlstr(bob_text)
     print(f"{calendar_delete_sqlstr}")
-    market_conn = x_market.get_treasury_conn()
+    market_conn = x_market.get_bank_conn()
     market_conn.execute(calendar_delete_sqlstr)
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0
 
 
-def test_market_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
+def test_market_bank_insert_intent_into_bank_RaisesBaseDoesNotExistError():
     # GIVEN
     # A agenda that has 1 intent item
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.refresh_bank_forum_agendas_data()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
 
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
     bob_text = "Bob"
@@ -204,21 +204,21 @@ def test_market_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        x_market.insert_intent_into_treasury(amos_agenda, x_calendarreport)
+        x_market.insert_intent_into_bank(amos_agenda, x_calendarreport)
     assert (
         str(excinfo.value)
         == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._agent_id}'."
     )
 
 
-def test_market_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
+def test_market_bank_insert_intent_into_bank_CorrectlyPopulatesBank():
     # GIVEN
     # A agenda that has 1 intent item
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
     bob_agenda = get_agenda_with_tuesday_cleaning_task()
@@ -239,10 +239,10 @@ def test_market_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury(
         intent_max_count_task=x_intent_max_count_task,
         intent_max_count_state=x_intent_max_count_state,
     )
-    x_market.insert_intent_into_treasury(bob_agenda, x_calendarreport)
+    x_market.insert_intent_into_bank(bob_agenda, x_calendarreport)
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 6
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 6
 
     # GIVEN
     new_interval_count = 3
@@ -256,6 +256,6 @@ def test_market_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury(
         intent_max_count_task=x_intent_max_count_task,
         intent_max_count_state=x_intent_max_count_state,
     )
-    x_market.insert_intent_into_treasury(bob_agenda, x_calendarreport)
+    x_market.insert_intent_into_bank(bob_agenda, x_calendarreport)
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), calendar_count_sqlstr) == 4
+    assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 4

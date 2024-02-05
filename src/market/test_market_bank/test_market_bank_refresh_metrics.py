@@ -12,7 +12,7 @@ from src.market.examples.market_env_kit import (
     env_dir_setup_cleanup,
 )
 from src.instrument.sqlite import get_single_result
-from src.market.treasury_sqlstr import (
+from src.market.bank_sqlstr import (
     get_table_count_sqlstr,
     get_agenda_ideaunit_table_count,
     IdeaCatalog,
@@ -35,14 +35,14 @@ from src.market.examples.example_clerks import (
 from src.instrument.sqlite import get_single_result
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -50,25 +50,25 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryI
     bob_agentunit = agendaunit_shop(_agent_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_market.save_forum_agenda(bob_agentunit)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryFile(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=False)
+    x_market.create_dirs_if_null(in_memory_bank=False)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -76,25 +76,25 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyDeletesOldTreasuryF
     bob_agentunit = agendaunit_shop(_agent_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_market.save_forum_agenda(bob_agentunit)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesPartyunitTable01(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -126,25 +126,25 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesPartyunitT
     x_market.save_forum_agenda(elu_agentunit)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
     assert (
-        get_single_result(x_market.get_treasury_conn(), partyunit_count_sqlstr) == 12
+        get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 12
     )
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -157,23 +157,23 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTabl
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
-    assert get_single_result(x_market.get_treasury_conn(), agenda_count_sqlstrs) == 0
+    assert get_single_result(x_market.get_bank_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), agenda_count_sqlstrs) == 4
+    assert get_single_result(x_market.get_bank_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -186,23 +186,23 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulatesAgendaTabl
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
-    assert get_single_result(x_market.get_treasury_conn(), agenda_count_sqlstrs) == 0
+    assert get_single_result(x_market.get_bank_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), agenda_count_sqlstrs) == 4
+    assert get_single_result(x_market.get_bank_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulates_agenda_groupunit(
+def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulates_agenda_groupunit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     bob_text = "bob"
     tom_text = "tom"
@@ -216,32 +216,32 @@ def test_market_refresh_treasury_forum_agendas_data_CorrectlyPopulates_agenda_gr
     x_market.save_forum_agenda(tom_agenda)
 
     sqlstr = get_table_count_sqlstr("agenda_groupunit")
-    assert get_single_result(x_market.get_treasury_conn(), sqlstr) == 0
+    assert get_single_result(x_market.get_bank_conn(), sqlstr) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert get_single_result(x_market.get_treasury_conn(), sqlstr) == 3
+    assert get_single_result(x_market.get_bank_conn(), sqlstr) == 3
 
 
-def test_market_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
+def test_market_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
     # two others have idea create_road(root_label()},sports,swimming"
-    # run set_treasury_metrics
+    # run set_bank_metrics
     # assert
-    # _treasury_partylinks
+    # _bank_partylinks
     # assert group "swimming expert" has 1 party
-    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
-    # run set_treasury_metrics
+    # change groupunit "swimming expert" _bank_partylinks ==  create_road(root_label()}sports,swimmer"
+    # run set_bank_metrics
     # assert group "swimming expert" has 2 different party
     x_market_id = x_market.market_id
 
@@ -278,17 +278,17 @@ def test_market_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     x_market.save_forum_agenda(tom_agenda)
     x_market.save_forum_agenda(ava_agenda)
 
-    x_market.set_agenda_treasury_attrs(x_agent_id=sal_text)
+    x_market.set_agenda_bank_attrs(x_agent_id=sal_text)
     e1_sal_agenda = x_market.get_forum_agenda(agent_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()},sports,swimmer"
+    # change groupunit "swimming expert" _bank_partylinks ==  create_road(root_label()},sports,swimmer"
     sal_swim_road = create_road(sal_sports_road, swim_text)
-    swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
+    swim_group_unit.set_attr(_bank_partylinks=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
     x_market.save_forum_agenda(sal_agenda)
-    x_market.set_agenda_treasury_attrs(x_agent_id=sal_text)
+    x_market.set_agenda_bank_attrs(x_agent_id=sal_text)
 
     # THEN
     e1_sal_agenda = x_market.get_forum_agenda(agent_id=sal_text)
@@ -300,31 +300,31 @@ def test_market_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable0
 ):
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "bob"
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 0
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_ideaunit_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     resources_road = create_road(get_temp_env_market_id(), "resources")
     water_road = create_road(resources_road, "water")
     water_agenda_ideaunit = IdeaCatalog(agent_id=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_agenda_ideaunit_table_insert_sqlstr(water_agenda_ideaunit)
-    with x_market.get_treasury_conn() as treasury_conn:
+    with x_market.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
-        treasury_conn.execute(water_insert_sqlstr)
+        bank_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_ideaunit_table_count(bank_conn, bob_text) == 1
 
 
-def test_market_refresh_treasury_forum_agendas_data_Populates_agenda_ideaunit_table(
+def test_market_refresh_bank_forum_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -339,23 +339,23 @@ def test_market_refresh_treasury_forum_agendas_data_Populates_agenda_ideaunit_ta
     x_market.save_forum_agenda(tim_agenda)
     x_market.save_forum_agenda(sal_agenda)
 
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 0
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_ideaunit_table_count(bank_conn, bob_text) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 3
-        assert get_agenda_ideaunit_table_count(treasury_conn, tim_text) == 6
-        assert get_agenda_ideaunit_table_count(treasury_conn, sal_text) == 5
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_ideaunit_table_count(bank_conn, bob_text) == 3
+        assert get_agenda_ideaunit_table_count(bank_conn, tim_text) == 6
+        assert get_agenda_ideaunit_table_count(bank_conn, sal_text) == 5
 
 
 def test_market_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "bob"
     sal_text = "sal"
@@ -373,21 +373,21 @@ def test_market_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanu
     x_market.save_forum_agenda(tim_agenda)
     x_market.save_forum_agenda(sal_agenda)
     x_market.save_forum_agenda(elu_agenda)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
     i_count_sqlstr = get_table_count_sqlstr("agenda_ideaunit")
-    with x_market.get_treasury_conn() as treasury_conn:
+    with x_market.get_bank_conn() as bank_conn:
         print(f"{i_count_sqlstr=}")
-        assert get_single_result(x_market.get_treasury_conn(), i_count_sqlstr) == 20
+        assert get_single_result(x_market.get_bank_conn(), i_count_sqlstr) == 20
 
     # WHEN / THEN
-    assert len(get_agenda_ideaunit_dict(x_market.get_treasury_conn())) == 20
+    assert len(get_agenda_ideaunit_dict(x_market.get_bank_conn())) == 20
     b_road = create_road(get_temp_env_market_id(), "B")
-    assert len(get_agenda_ideaunit_dict(x_market.get_treasury_conn(), b_road)) == 3
+    assert len(get_agenda_ideaunit_dict(x_market.get_bank_conn(), b_road)) == 3
     c_road = create_road(get_temp_env_market_id(), "C")
     ce_road = create_road(c_road, "E")
-    assert len(get_agenda_ideaunit_dict(x_market.get_treasury_conn(), ce_road)) == 2
+    assert len(get_agenda_ideaunit_dict(x_market.get_bank_conn(), ce_road)) == 2
     ex_road = create_road(get_temp_env_market_id())
-    assert len(get_agenda_ideaunit_dict(x_market.get_treasury_conn(), ex_road)) == 4
+    assert len(get_agenda_ideaunit_dict(x_market.get_bank_conn(), ex_road)) == 4
 
 
 def test_market_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -395,11 +395,11 @@ def test_market_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulate
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "bob"
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 0
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     weather_road = create_road(get_temp_env_market_id(), "weather")
@@ -409,20 +409,20 @@ def test_market_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulate
         pick=create_road(weather_road, "rain"),
     )
     water_insert_sqlstr = get_agenda_idea_beliefunit_table_insert_sqlstr(weather_rain)
-    with x_market.get_treasury_conn() as treasury_conn:
+    with x_market.get_bank_conn() as bank_conn:
         print(water_insert_sqlstr)
-        treasury_conn.execute(water_insert_sqlstr)
+        bank_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_idea_beliefunit_table_count(bank_conn, bob_text) == 1
 
 
-def test_refresh_treasury_forum_agendas_data_Populates_agenda_idea_beliefunit_table(
+def test_refresh_bank_forum_agendas_data_Populates_agenda_idea_beliefunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # TODO create 3 agendas with varying numbers of beliefs
     bob_text = "bob"
@@ -457,22 +457,22 @@ def test_refresh_treasury_forum_agendas_data_Populates_agenda_idea_beliefunit_ta
     x_market.save_forum_agenda(tim_agenda)
     x_market.save_forum_agenda(sal_agenda)
 
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 0
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text) == 0
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text) == 0
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, bob_text) == 0
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, tim_text) == 0
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, sal_text) == 0
 
     # WHEN
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text)=}")
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text)=}")
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text)=}")
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 2
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text) == 1
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text) == 1
+    print(f"{get_agenda_idea_beliefunit_table_count(bank_conn, bob_text)=}")
+    print(f"{get_agenda_idea_beliefunit_table_count(bank_conn, tim_text)=}")
+    print(f"{get_agenda_idea_beliefunit_table_count(bank_conn, sal_text)=}")
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, bob_text) == 2
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, tim_text) == 1
+        assert get_agenda_idea_beliefunit_table_count(bank_conn, sal_text) == 1
 
 
 def test_market_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -480,25 +480,25 @@ def test_market_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "bob"
-    with x_market.get_treasury_conn() as treasury_conn:
-        assert get_agenda_groupunit_table_count(treasury_conn, bob_text) == 0
+    with x_market.get_bank_conn() as bank_conn:
+        assert get_agenda_groupunit_table_count(bank_conn, bob_text) == 0
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
         agent_id=bob_text,
         groupunit_group_id="US Dollar",
-        treasury_partylinks=create_road(get_temp_env_market_id(), "USA"),
+        bank_partylinks=create_road(get_temp_env_market_id(), "USA"),
     )
     bob_group_sqlstr = get_agenda_groupunit_table_insert_sqlstr(bob_group_x)
-    with x_market.get_treasury_conn() as treasury_conn:
+    with x_market.get_bank_conn() as bank_conn:
         print(bob_group_sqlstr)
-        treasury_conn.execute(bob_group_sqlstr)
+        bank_conn.execute(bob_group_sqlstr)
 
     # THEN
-    assert get_agenda_groupunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_groupunit_table_count(bank_conn, bob_text) == 1
 
 
 def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
@@ -517,14 +517,14 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     tom_agenda.add_partyunit(party_id=elu_text)
     x_market.save_forum_agenda(bob_agenda)
     x_market.save_forum_agenda(tom_agenda)
-    x_market.refresh_treasury_forum_agendas_data()
+    x_market.refresh_bank_forum_agendas_data()
     sqlstr = get_table_count_sqlstr("agenda_groupunit")
-    assert get_single_result(x_market.get_treasury_conn(), sqlstr) == 3
+    assert get_single_result(x_market.get_bank_conn(), sqlstr) == 3
 
     # WHEN
-    with x_market.get_treasury_conn() as treasury_conn:
+    with x_market.get_bank_conn() as bank_conn:
         print("try to grab GroupUnit data")
-        agenda_groupunit_dict = get_agenda_groupunit_dict(db_conn=treasury_conn)
+        agenda_groupunit_dict = get_agenda_groupunit_dict(db_conn=bank_conn)
 
     # THEN
     assert len(agenda_groupunit_dict) == 3

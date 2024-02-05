@@ -44,11 +44,11 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     elu_partyunit = partyunit_shop(party_id=elu_text)
 
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
-    ava_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
-    bob_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
-    cal_partyunit.set_treasurying_data(None, None, None, voice_rank=77)
-    dom_partyunit.set_treasurying_data(None, None, None, voice_rank=55)
-    elu_partyunit.set_treasurying_data(None, None, None, voice_rank=99)
+    ava_partyunit.set_banking_data(None, None, None, voice_rank=33)
+    bob_partyunit.set_banking_data(None, None, None, voice_rank=33)
+    cal_partyunit.set_banking_data(None, None, None, voice_rank=77)
+    dom_partyunit.set_banking_data(None, None, None, voice_rank=55)
+    elu_partyunit.set_banking_data(None, None, None, voice_rank=99)
     yao_agenda.set_partyunit(ava_partyunit)
     yao_agenda.set_partyunit(bob_partyunit)
     yao_agenda.set_partyunit(cal_partyunit)
@@ -70,12 +70,12 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     assert bob_filename == x1[4]
 
     # WHEN
-    ava_partyunit._set_treasury_voice_hx_lowest_rank(11)
+    ava_partyunit._set_bank_voice_hx_lowest_rank(11)
 
     # THEN
-    assert ava_partyunit._treasury_voice_rank == bob_partyunit._treasury_voice_rank
-    assert ava_partyunit._treasury_voice_hx_lowest_rank == 11
-    assert bob_partyunit._treasury_voice_hx_lowest_rank == 33
+    assert ava_partyunit._bank_voice_rank == bob_partyunit._bank_voice_rank
+    assert ava_partyunit._bank_voice_hx_lowest_rank == 11
+    assert bob_partyunit._bank_voice_hx_lowest_rank == 33
     x2 = get_file_names_in_voice_rank_order(yao_agenda, meldees_dir=temp_dir)
     assert ava_filename == x2[4]
     assert bob_filename == x2[3]
@@ -83,7 +83,7 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     delete_dir(temp_dir)
 
 
-def test_market_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
+def test_market_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -111,11 +111,11 @@ def test_market_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_12
     cal_partyunit = yao_contract_agenda.get_party(cal_text)
     dom_partyunit = yao_contract_agenda.get_party(dom_text)
     elu_partyunit = yao_contract_agenda.get_party(elu_text)
-    assert ava_partyunit._treasury_voice_rank is None
-    assert bob_partyunit._treasury_voice_rank is None
-    assert cal_partyunit._treasury_voice_rank is None
-    assert dom_partyunit._treasury_voice_rank is None
-    assert elu_partyunit._treasury_voice_rank is None
+    assert ava_partyunit._bank_voice_rank is None
+    assert bob_partyunit._bank_voice_rank is None
+    assert cal_partyunit._bank_voice_rank is None
+    assert dom_partyunit._bank_voice_rank is None
+    assert elu_partyunit._bank_voice_rank is None
 
     # WHEN
     descretional_text = "descretional"
@@ -128,13 +128,13 @@ def test_market_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_12
     cal_partyunit = yao_forum_agenda.get_party(cal_text)
     dom_partyunit = yao_forum_agenda.get_party(dom_text)
     elu_partyunit = yao_forum_agenda.get_party(elu_text)
-    assert ava_partyunit._treasury_voice_rank != None
-    assert bob_partyunit._treasury_voice_rank != None
-    assert cal_partyunit._treasury_voice_rank != None
-    assert dom_partyunit._treasury_voice_rank != None
-    assert elu_partyunit._treasury_voice_rank != None
-    assert ava_partyunit._treasury_voice_rank == 0
-    assert bob_partyunit._treasury_voice_rank == 1
-    assert cal_partyunit._treasury_voice_rank == 2
-    assert dom_partyunit._treasury_voice_rank == 3
-    assert elu_partyunit._treasury_voice_rank == 4
+    assert ava_partyunit._bank_voice_rank != None
+    assert bob_partyunit._bank_voice_rank != None
+    assert cal_partyunit._bank_voice_rank != None
+    assert dom_partyunit._bank_voice_rank != None
+    assert elu_partyunit._bank_voice_rank != None
+    assert ava_partyunit._bank_voice_rank == 0
+    assert bob_partyunit._bank_voice_rank == 1
+    assert cal_partyunit._bank_voice_rank == 2
+    assert dom_partyunit._bank_voice_rank == 3
+    assert elu_partyunit._bank_voice_rank == 4

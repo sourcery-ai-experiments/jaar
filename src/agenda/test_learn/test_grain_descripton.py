@@ -215,7 +215,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_grainunit = grainunit_shop("groupunit", grain_insert())
 #     x_grainunit.set_locator("group_id", fly_text)
 #     x_grainunit.set_required_arg("group_id", fly_text)
-#     x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
+#     x_grainunit.set_optional_arg("_bank_partylinks", yao_roadunit())
 #     print(f"{x_grainunit=}")
 
 
@@ -228,7 +228,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_grainunit = grainunit_shop("groupunit", grain_update())
 #     x_grainunit.set_locator("group_id", run_text)
 #     x_grainunit.set_required_arg("group_id", run_text)
-#     x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
+#     x_grainunit.set_optional_arg("_bank_partylinks", yao_roadunit())
 #     print(f"{x_grainunit=}")
 
 

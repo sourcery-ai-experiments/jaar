@@ -21,8 +21,8 @@ from pytest import raises as pytest_raises
 def test_load_marketunit_CorrectlyLoadsMarketFromPersistentFiles(
     env_dir_setup_cleanup,
 ):
-    # create marketunit1 "texas", create two clerkunits with contract agendas. Create treasury and currency river
-    # assert treasury table row population
+    # create marketunit1 "texas", create two clerkunits with contract agendas. Create bank and cash river
+    # assert bank table row population
     # load marketunit2 "texas2", load two clerkunits with contract agendas.
-    # Connect to treasury and assert table row population.
+    # Connect to bank and assert table row population.
     pass

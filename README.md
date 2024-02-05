@@ -69,7 +69,7 @@ MarketUnit ClerkUnit objects
 
 MarketUnit ClerkUnit Agenda objects
 
-MarketUnit Treasury objects
+MarketUnit Bank objects
 
 <!-- TODO: Add explanations -->
 AgendaUnit objects

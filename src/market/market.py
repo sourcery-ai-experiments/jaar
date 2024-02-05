@@ -27,12 +27,12 @@ from src.instrument.python import get_empty_dict_if_none
 from src.market.clerk import ClerkUnit, clerkunit_shop, ClerkID
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
-from src.market.treasury_sqlstr import (
-    get_partytreasuryunit_dict,
+from src.market.bank_sqlstr import (
+    get_partybankunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
-    get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr,
+    get_agenda_partyunit_table_update_bank_tax_paid_sqlstr,
     get_agenda_partyunit_table_update_credit_score_sqlstr,
-    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_partyunit_table_update_bank_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -43,7 +43,7 @@ from src.market.treasury_sqlstr import (
     PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
-    PartyTreasuryUnit,
+    PartyBankUnit,
     IdeaCatalog,
     get_agenda_ideaunit_table_insert_sqlstr,
     get_agenda_ideaunit_dict,
@@ -52,7 +52,7 @@ from src.market.treasury_sqlstr import (
     GroupUnitCatalog,
     get_agenda_groupunit_table_insert_sqlstr,
     get_agenda_groupunit_dict,
-    get_agendatreasuryunits_dict,
+    get_agendabankunits_dict,
     get_agendaunit_update_sqlstr,
     CalendarReport,
     CalendarIntentUnit,
@@ -89,7 +89,7 @@ class MarketUnit:
     _problem_id: ProblemID = None
     _healer_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
-    _treasury_db = None
+    _bank_db = None
     _road_delimiter: str = None
 
     def set_road_delimiter(self, new_road_delimiter: str):
@@ -111,32 +111,32 @@ class MarketUnit:
         self._problem_id = problem_id
         self._healer_id = healer_id
 
-    # treasurying
+    # banking
     def set_voice_ranks(self, agent_id: AgentID, sort_order: str):
         if sort_order == "descretional":
             x_clerk = self.get_clerkunit(agent_id)
             x_contract = x_clerk.get_contract()
             for count_x, x_partyunit in enumerate(x_contract._partys.values()):
-                x_partyunit.set_treasury_voice_rank(count_x)
+                x_partyunit.set_bank_voice_rank(count_x)
             x_clerk.set_contract(x_contract)
             x_clerk.save_refreshed_output_to_forum()
 
-    def set_agenda_treasury_attrs(self, x_agent_id: AgentID):
+    def set_agenda_bank_attrs(self, x_agent_id: AgentID):
         x_agenda = self.get_forum_agenda(x_agent_id)
 
         for groupunit_x in x_agenda._groups.values():
-            if groupunit_x._treasury_partylinks != None:
+            if groupunit_x._bank_partylinks != None:
                 groupunit_x.clear_partylinks()
                 ic = get_agenda_ideaunit_dict(
-                    self.get_treasury_conn(),
-                    groupunit_x._treasury_partylinks,
+                    self.get_bank_conn(),
+                    groupunit_x._bank_partylinks,
                 )
                 for agenda_ideaunit in ic.values():
                     if x_agent_id != agenda_ideaunit.agent_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.agent_id)
                         groupunit_x.set_partylink(partylink_x)
         self.save_forum_agenda(x_agenda)
-        self.refresh_treasury_forum_agendas_data()
+        self.refresh_bank_forum_agendas_data()
 
     def set_credit_flow_for_agenda(
         self, agent_id: AgentID, max_blocks_count: int = None
@@ -145,7 +145,7 @@ class MarketUnit:
         if max_blocks_count is None:
             max_blocks_count = 40
         self._set_river_blocks(agent_id, max_blocks_count)
-        self._set_partytreasuryunits_circles(agent_id)
+        self._set_partybankunits_circles(agent_id)
 
     def _set_river_blocks(self, x_agent_id: AgentID, max_blocks_count: int):
         # changes in river_block loop
@@ -155,10 +155,10 @@ class MarketUnit:
             parent_agenda_ledger = general_circle.pop(0)
             ledgers_len = len(parent_agenda_ledger._partyviews.values())
             parent_range = parent_agenda_ledger.get_range()
-            parent_close = parent_agenda_ledger.currency_cease
+            parent_close = parent_agenda_ledger.cash_cease
 
             # changes in river_block loop
-            curr_onset = parent_agenda_ledger.currency_onset
+            curr_onset = parent_agenda_ledger.cash_onset
             ledgers_count = 0
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
@@ -171,11 +171,11 @@ class MarketUnit:
                     curr_close = parent_close
 
                 river_block_x = RiverBlockUnit(
-                    currency_agent_id=x_agent_id,
+                    cash_agent_id=x_agent_id,
                     src_agent_id=x_child_ledger.agent_id,
                     dst_agent_id=x_child_ledger.party_id,
-                    currency_start=curr_onset,
-                    currency_close=curr_close,
+                    cash_start=curr_onset,
+                    cash_close=curr_close,
                     block_num=blocks_count,
                     parent_block_num=parent_agenda_ledger.block_num,
                     river_tree_level=parent_agenda_ledger.river_tree_level + 1,
@@ -198,116 +198,116 @@ class MarketUnit:
     ) -> RiverLedgerUnit:
         river_ledger_x = None
 
-        with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
+        with self.get_bank_conn() as bank_conn:
+            bank_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
 
             if river_block_x.block_returned() == False:
-                river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
+                river_ledger_x = get_river_ledger_unit(bank_conn, river_block_x)
 
         return river_ledger_x
 
     def _clear_all_source_river_data(self, agent_id: str):
-        with self.get_treasury_conn() as treasury_conn:
+        with self.get_bank_conn() as bank_conn:
             block_s = get_river_block_table_delete_sqlstr(agent_id)
-            treasury_conn.execute(block_s)
+            bank_conn.execute(block_s)
 
     def _get_root_river_ledger_unit(self, agent_id: str) -> RiverLedgerUnit:
-        default_currency_onset = 0.0
-        default_currency_cease = 1.0
+        default_cash_onset = 0.0
+        default_cash_cease = 1.0
         default_root_river_tree_level = 0
         default_root_block_num = None  # maybe change to 1?
         default_root_parent_block_num = None
         root_river_block = RiverBlockUnit(
-            currency_agent_id=agent_id,
+            cash_agent_id=agent_id,
             src_agent_id=None,
             dst_agent_id=agent_id,
-            currency_start=default_currency_onset,
-            currency_close=default_currency_cease,
+            cash_start=default_cash_onset,
+            cash_close=default_cash_cease,
             block_num=default_root_block_num,
             parent_block_num=default_root_parent_block_num,
             river_tree_level=default_root_river_tree_level,
         )
-        with self.get_treasury_conn() as treasury_conn:
-            source_river_ledger = get_river_ledger_unit(treasury_conn, root_river_block)
+        with self.get_bank_conn() as bank_conn:
+            source_river_ledger = get_river_ledger_unit(bank_conn, root_river_block)
         return source_river_ledger
 
-    def _set_partytreasuryunits_circles(self, agent_id: str):
-        with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_river_circle_table_insert_sqlstr(agent_id))
-            treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(agent_id))
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr(agent_id)
+    def _set_partybankunits_circles(self, agent_id: str):
+        with self.get_bank_conn() as bank_conn:
+            bank_conn.execute(get_river_circle_table_insert_sqlstr(agent_id))
+            bank_conn.execute(get_river_reach_table_final_insert_sqlstr(agent_id))
+            bank_conn.execute(
+                get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(agent_id)
             )
-            treasury_conn.execute(
+            bank_conn.execute(
                 get_agenda_partyunit_table_update_credit_score_sqlstr(agent_id)
             )
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(agent_id)
+            bank_conn.execute(
+                get_agenda_partyunit_table_update_bank_voice_rank_sqlstr(agent_id)
             )
 
-            sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
+            sal_partybankunits = get_partybankunit_dict(bank_conn, agent_id)
             x_agenda = self.get_forum_agenda(agent_id=agent_id)
-            set_treasury_partytreasuryunits_to_agenda_partyunits(
-                x_agenda, sal_partytreasuryunits
+            set_bank_partybankunits_to_agenda_partyunits(
+                x_agenda, sal_partybankunits
             )
             self.save_forum_agenda(x_agenda)
 
-    def get_partytreasuryunits(self, agent_id: str) -> dict[str:PartyTreasuryUnit]:
-        with self.get_treasury_conn() as treasury_conn:
-            partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, agent_id)
-        return partytreasuryunits
+    def get_partybankunits(self, agent_id: str) -> dict[str:PartyBankUnit]:
+        with self.get_bank_conn() as bank_conn:
+            partybankunits = get_partybankunit_dict(bank_conn, agent_id)
+        return partybankunits
 
-    def refresh_treasury_forum_agendas_data(self, in_memory: bool = None):
-        if in_memory is None and self._treasury_db != None:
+    def refresh_bank_forum_agendas_data(self, in_memory: bool = None):
+        if in_memory is None and self._bank_db != None:
             in_memory = True
-        self._create_treasury_db(in_memory=in_memory, overwrite=True)
-        self._treasury_populate_agendas_data()
+        self._create_bank_db(in_memory=in_memory, overwrite=True)
+        self._bank_populate_agendas_data()
 
-    def _treasury_populate_agendas_data(self):
+    def _bank_populate_agendas_data(self):
         for file_name in self.get_forum_dir_file_names_list():
             agenda_json = open_file(self.get_forum_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
-            self._treasury_insert_agendaunit(agendaunit_x)
-            self._treasury_insert_partyunit(agendaunit_x)
-            self._treasury_insert_groupunit(agendaunit_x)
-            self._treasury_insert_ideaunit(agendaunit_x)
-            self._treasury_insert_belief(agendaunit_x)
+            self._bank_insert_agendaunit(agendaunit_x)
+            self._bank_insert_partyunit(agendaunit_x)
+            self._bank_insert_groupunit(agendaunit_x)
+            self._bank_insert_ideaunit(agendaunit_x)
+            self._bank_insert_belief(agendaunit_x)
 
-    def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+    def _bank_insert_agendaunit(self, agendaunit_x: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
             cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
 
-    def _treasury_set_agendaunit_attrs(self, agenda: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_agendaunit_update_sqlstr(agenda))
+    def _bank_set_agendaunit_attrs(self, agenda: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            bank_conn.execute(get_agendaunit_update_sqlstr(agenda))
 
-    def _treasury_insert_partyunit(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+    def _bank_insert_partyunit(self, agendaunit_x: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
             for x_partyunit in agendaunit_x._partys.values():
                 sqlstr = get_agenda_partyunit_table_insert_sqlstr(
                     agendaunit_x, x_partyunit
                 )
                 cur.execute(sqlstr)
 
-    def _treasury_insert_groupunit(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+    def _bank_insert_groupunit(self, agendaunit_x: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
             for groupunit_x in agendaunit_x._groups.values():
                 agenda_groupunit_x = GroupUnitCatalog(
                     agent_id=agendaunit_x._agent_id,
                     groupunit_group_id=groupunit_x.group_id,
-                    treasury_partylinks=groupunit_x._treasury_partylinks,
+                    bank_partylinks=groupunit_x._bank_partylinks,
                 )
                 sqlstr = get_agenda_groupunit_table_insert_sqlstr(agenda_groupunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_ideaunit(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+    def _bank_insert_ideaunit(self, agendaunit_x: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
             for idea_x in agendaunit_x._idea_dict.values():
                 agenda_ideaunit_x = IdeaCatalog(
                     agendaunit_x._agent_id, idea_x.get_road()
@@ -315,9 +315,9 @@ class MarketUnit:
                 sqlstr = get_agenda_ideaunit_table_insert_sqlstr(agenda_ideaunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_belief(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+    def _bank_insert_belief(self, agendaunit_x: AgendaUnit):
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
             for belief_x in agendaunit_x._idearoot._beliefunits.values():
                 agenda_idea_beliefunit_x = BeliefCatalog(
                     agent_id=agendaunit_x._agent_id,
@@ -329,38 +329,38 @@ class MarketUnit:
                 )
                 cur.execute(sqlstr)
 
-    def get_treasury_conn(self) -> Connection:
-        if self._treasury_db is None:
-            return sqlite3_connect(self.get_treasury_db_path())
+    def get_bank_conn(self) -> Connection:
+        if self._bank_db is None:
+            return sqlite3_connect(self.get_bank_db_path())
         else:
-            return self._treasury_db
+            return self._bank_db
 
-    def _create_treasury_db(
+    def _create_bank_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         if overwrite:
-            self._delete_treasury()
+            self._delete_bank()
 
-        treasury_file_new = True
+        bank_file_new = True
         if in_memory:
-            self._treasury_db = sqlite3_connect(":memory:")
+            self._bank_db = sqlite3_connect(":memory:")
         else:
-            sqlite3_connect(self.get_treasury_db_path())
+            sqlite3_connect(self.get_bank_db_path())
 
-        if treasury_file_new:
-            with self.get_treasury_conn() as treasury_conn:
+        if bank_file_new:
+            with self.get_bank_conn() as bank_conn:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
-                    treasury_conn.execute(sqlstr)
+                    bank_conn.execute(sqlstr)
 
-    def _delete_treasury(self):
-        self._treasury_db = None
-        delete_dir(dir=self.get_treasury_db_path())
+    def _delete_bank(self):
+        self._bank_db = None
+        delete_dir(dir=self.get_bank_db_path())
 
     def set_market_id(self, market_id: str):
         self.market_id = validate_roadnode(market_id, self._road_delimiter)
 
-    def get_treasury_db_path(self):
-        return f"{self.get_object_root_dir()}/treasury.db"
+    def get_bank_db_path(self):
+        return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
         return f"{self.markets_dir}/{self.market_id}"
@@ -373,7 +373,7 @@ class MarketUnit:
             file_text="",
         )
 
-    def create_dirs_if_null(self, in_memory_treasury: bool = None):
+    def create_dirs_if_null(self, in_memory_bank: bool = None):
         market_dir = self.get_object_root_dir()
         agendas_dir = self.get_forum_dir()
         clerkunits_dir = self.get_clerkunits_dir()
@@ -381,7 +381,7 @@ class MarketUnit:
         single_dir_create_if_null(x_path=agendas_dir)
         single_dir_create_if_null(x_path=clerkunits_dir)
         self._create_main_file_if_null(x_dir=market_dir)
-        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
+        self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
     # ClerkUnit management
     def get_clerkunits_dir(self):
@@ -596,7 +596,7 @@ class MarketUnit:
                 delimiter=self._road_delimiter,
             )
 
-    def insert_intent_into_treasury(
+    def insert_intent_into_bank(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
         if x_agendaunit.idea_exists(x_calendarreport.time_road) == False:
@@ -604,8 +604,8 @@ class MarketUnit:
                 f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._agent_id}'."
             )
 
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
+        with self.get_bank_conn() as bank_conn:
+            cur = bank_conn.cursor()
 
             del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.agent_id)
             cur.execute(del_sqlstr)
@@ -639,11 +639,11 @@ def marketunit_shop(
     _problem_id: ProblemID = None,
     _healer_id: HealerID = None,
     _clerkunits: dict[AgentID:ClerkUnit] = None,
-    in_memory_treasury: bool = None,
+    in_memory_bank: bool = None,
     _road_delimiter: str = None,
 ) -> MarketUnit:
-    if in_memory_treasury is None:
-        in_memory_treasury = True
+    if in_memory_bank is None:
+        in_memory_bank = True
     if markets_dir is None:
         markets_dir = f"/markets/{market_id}"
     market_x = MarketUnit(
@@ -655,20 +655,20 @@ def marketunit_shop(
     market_x.set_proad_nodes(
         person_id=_manager_person_id, problem_id=_problem_id, healer_id=_healer_id
     )
-    market_x.create_dirs_if_null(in_memory_treasury=in_memory_treasury)
+    market_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return market_x
 
 
-def set_treasury_partytreasuryunits_to_agenda_partyunits(
-    x_agenda: AgendaUnit, partytreasuryunits: dict[str:PartyTreasuryUnit]
+def set_bank_partybankunits_to_agenda_partyunits(
+    x_agenda: AgendaUnit, partybankunits: dict[str:PartyBankUnit]
 ):
     for x_partyunit in x_agenda._partys.values():
-        x_partyunit.clear_treasurying_data()
-        partytreasuryunit = partytreasuryunits.get(x_partyunit.party_id)
-        if partytreasuryunit != None:
-            x_partyunit.set_treasurying_data(
-                tax_paid=partytreasuryunit.tax_total,
-                tax_diff=partytreasuryunit.tax_diff,
-                credit_score=partytreasuryunit.credit_score,
-                voice_rank=partytreasuryunit.voice_rank,
+        x_partyunit.clear_banking_data()
+        partybankunit = partybankunits.get(x_partyunit.party_id)
+        if partybankunit != None:
+            x_partyunit.set_banking_data(
+                tax_paid=partybankunit.tax_total,
+                tax_diff=partybankunit.tax_diff,
+                credit_score=partybankunit.credit_score,
+                voice_rank=partybankunit.voice_rank,
             )

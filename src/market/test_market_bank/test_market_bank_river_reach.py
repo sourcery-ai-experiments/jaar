@@ -5,7 +5,7 @@ from src.market.examples.market_env_kit import (
     env_dir_setup_cleanup,
 )
 from src.instrument.sqlite import get_single_result
-from src.market.treasury_sqlstr import (
+from src.market.bank_sqlstr import (
     get_table_count_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
@@ -16,7 +16,7 @@ from src.market.treasury_sqlstr import (
     get_agenda_partyunit_table_create_sqlstr,
     get_agenda_partyunit_table_insert_sqlstr,
     get_agenda_partyunit_table_update_credit_score_sqlstr,
-    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_partyunit_table_update_bank_voice_rank_sqlstr,
 )
 from src.instrument.sqlite import get_single_result
 from sqlite3 import connect as sqlite3_connect
@@ -33,7 +33,7 @@ def test_get_river_reach_table_insert_sqlstr_InsertsWithoutError():
     # WHEN
     select_example_sqlstr = """
 SELECT 
-  'Yao' currency_master
+  'Yao' cash_master
 , 'Sue' src_agent_id
 , 4 set_num
 , 0.78 reach_curr_start
@@ -104,7 +104,7 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
 SELECT 
   agent_id
 , party_id
-, _treasury_credit_score
+, _bank_credit_score
 FROM agenda_partyunit
 WHERE agent_id = '{yao_text}'
 """
@@ -144,7 +144,7 @@ WHERE agent_id = '{yao_text}'
     assert y_rows[2][2] == (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
 
 
-def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutError():
+def test_get_agenda_partyunit_table_update_bank_voice_rank_sqlstr_UpdatesWithoutError():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -168,12 +168,12 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
     bob_partyunit = partyunit_shop(bob_text)
     cal_partyunit = partyunit_shop(cal_text)
     dee_partyunit = partyunit_shop(dee_text)
-    bob_partyunit.set_treasurying_data(None, None, bob_credit_score, None)
-    cal_partyunit.set_treasurying_data(None, None, cal_credit_score, None)
-    dee_partyunit.set_treasurying_data(None, None, dee_credit_score, None)
-    print(f"{bob_partyunit._treasury_credit_score=}")
-    print(f"{cal_partyunit._treasury_credit_score=}")
-    print(f"{dee_partyunit._treasury_credit_score=}")
+    bob_partyunit.set_banking_data(None, None, bob_credit_score, None)
+    cal_partyunit.set_banking_data(None, None, cal_credit_score, None)
+    dee_partyunit.set_banking_data(None, None, dee_credit_score, None)
+    print(f"{bob_partyunit._bank_credit_score=}")
+    print(f"{cal_partyunit._bank_credit_score=}")
+    print(f"{dee_partyunit._bank_credit_score=}")
 
     partyunit_text = "agenda_partyunit"
     x_db = sqlite3_connect(":memory:")
@@ -194,8 +194,8 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
 SELECT 
   agent_id
 , party_id
-, _treasury_credit_score
-, _treasury_voice_rank
+, _bank_credit_score
+, _bank_voice_rank
 FROM agenda_partyunit
 WHERE agent_id = '{yao_text}'
 """
@@ -211,9 +211,9 @@ WHERE agent_id = '{yao_text}'
     assert x_rows[0][1] == bob_text
     assert x_rows[1][1] == cal_text
     assert x_rows[2][1] == dee_text
-    assert x_rows[0][2] - bob_partyunit._treasury_credit_score < 0.000001
-    assert x_rows[1][2] == cal_partyunit._treasury_credit_score
-    assert x_rows[2][2] == dee_partyunit._treasury_credit_score
+    assert x_rows[0][2] - bob_partyunit._bank_credit_score < 0.000001
+    assert x_rows[1][2] == cal_partyunit._bank_credit_score
+    assert x_rows[2][2] == dee_partyunit._bank_credit_score
     assert x_rows[0][3] is None
     assert x_rows[1][3] is None
     assert x_rows[2][3] is None
@@ -221,7 +221,7 @@ WHERE agent_id = '{yao_text}'
     # WHEN
     with x_db as x_conn:
         x_conn.execute(
-            get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(yao_text)
+            get_agenda_partyunit_table_update_bank_voice_rank_sqlstr(yao_text)
         )
 
     # THEN
@@ -245,7 +245,7 @@ WHERE agent_id = '{yao_text}'
 
 # STEPS TO CALCULATE RIVER_REACH
 # 1. from river_blocks select river_reach_touch:
-#   all river_blocks that share a currency range with any river_circle
+#   all river_blocks that share a cash range with any river_circle
 # 2. from river_reach_touch select river_reach_intersection:
 #   every row of river_reach_touch with intersection of river_circle and river_block
 # 3. from river_reach_intersection select river_reach_ordered:
@@ -294,7 +294,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
         assert 0 == get_single_result(x_conn, get_table_count_sqlstr(circle_text))
         assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
     insert_block_values_str = """
-INSERT INTO river_block (currency_master, src_agent_id, dst_agent_id, currency_start, currency_close, block_num, parent_block_num, river_tree_level)
+INSERT INTO river_block (cash_master, src_agent_id, dst_agent_id, cash_start, cash_close, block_num, parent_block_num, river_tree_level)
 VALUES ('sal', 'sal', 'ava', 0.0, 0.1, 0, NULL, 1)
 ,('sal', 'sal', 'bob', 0.1, 0.3, 1, NULL, 1)
 ,('sal', 'sal', 'tom', 0.3, 1.0, 2, NULL, 1)
@@ -398,7 +398,7 @@ VALUES ('sal', 'sal', 'ava', 0.0, 0.1, 0, NULL, 1)
 ;
 """
     insert_circle_values_str = """
-INSERT INTO river_circle (currency_master, dst_agent_id, circle_num, curr_start, curr_close)
+INSERT INTO river_circle (cash_master, dst_agent_id, circle_num, curr_start, curr_close)
 VALUES ('sal', 'sal', 0, 0.0440126668651765, 0.1)
 , ('sal', 'sal', 1, 0.123164561507988, 1.0)
 ;

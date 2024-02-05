@@ -52,7 +52,7 @@
             "description_elements": [],
             "grain_order": 2,
             "optional_args": {
-                "_treasury_partylinks": "RoadUnit"
+                "_bank_partylinks": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"
@@ -65,7 +65,7 @@
             "description_elements": [],
             "grain_order": 10,
             "optional_args": {
-                "_treasury_partylinks": "RoadUnit"
+                "_bank_partylinks": "RoadUnit"
             },
             "required_args": {
                 "group_id": "GroupID"

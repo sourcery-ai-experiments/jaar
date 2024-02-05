@@ -152,7 +152,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     env_dir = get_test_markets_dir()
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id=market_id, markets_dir=env_dir)
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     # ux = clerkunit_shop(agent_id=healer1_text, env_dir=env_dir)
 
     ernie_text = "ernie"

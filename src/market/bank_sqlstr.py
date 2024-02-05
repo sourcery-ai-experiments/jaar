@@ -5,28 +5,28 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_river_score_select_sqlstr(currency_master):
+def get_river_score_select_sqlstr(cash_master):
     return f"""
 SELECT 
-  currency_master
+  cash_master
 , src_agent_id
 , SUM(reach_curr_close - reach_curr_start) range_sum
 FROM river_reach
-WHERE currency_master = '{currency_master}'
-GROUP BY currency_master, src_agent_id
+WHERE cash_master = '{cash_master}'
+GROUP BY cash_master, src_agent_id
 ORDER BY range_sum DESC
 ;
 """
 
 
-def get_river_reach_table_final_insert_sqlstr(currency_master: PersonID) -> str:
-    reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(currency_master)
+def get_river_reach_table_final_insert_sqlstr(cash_master: PersonID) -> str:
+    reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(cash_master)
     return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
 
 
 def get_river_reach_table_insert_sqlstr(select_query: str) -> str:
     return f"""
-INSERT INTO river_reach (currency_master, src_agent_id, set_num, reach_curr_start, reach_curr_close)
+INSERT INTO river_reach (cash_master, src_agent_id, set_num, reach_curr_start, reach_curr_close)
 {select_query}
 ;
 """
@@ -35,82 +35,82 @@ INSERT INTO river_reach (currency_master, src_agent_id, set_num, reach_curr_star
 def get_river_reach_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS river_reach (
-  currency_master VARCHAR(255) NOT NULL
+  cash_master VARCHAR(255) NOT NULL
 , src_agent_id VARCHAR(255) NOT NULL
 , set_num INT NOT NULL
 , reach_curr_start FLOAT NOT NULL
 , reach_curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(cash_master) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(src_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
 
 
-def get_river_reach_table_touch_select_sqlstr(currency_master: PersonID) -> str:
+def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
     return f"""
     SELECT 
-    block.currency_master
+    block.cash_master
     , block.src_agent_id src
     , block.dst_agent_id dst
     , CASE 
-        WHEN block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_start
-            AND block.currency_close <= circle.curr_close
+        WHEN block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_start
+            AND block.cash_close <= circle.curr_close
             THEN circle.curr_start --'leftside' 
-        WHEN block.currency_start >= circle.curr_start 
-            AND block.currency_start < circle.curr_close
-            AND block.currency_close > circle.curr_close
-            THEN block.currency_start --'rightside' 
-        WHEN block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_close
+        WHEN block.cash_start >= circle.curr_start 
+            AND block.cash_start < circle.curr_close
+            AND block.cash_close > circle.curr_close
+            THEN block.cash_start --'rightside' 
+        WHEN block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_close
             THEN circle.curr_start --'outside' 
-        WHEN block.currency_start >= circle.curr_start 
-            AND block.currency_close <= circle.curr_close
-            THEN block.currency_start --'inside' 
+        WHEN block.cash_start >= circle.curr_start 
+            AND block.cash_close <= circle.curr_close
+            THEN block.cash_start --'inside' 
             END reach_start
     , CASE 
-        WHEN block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_start
-            AND block.currency_close <= circle.curr_close
-            THEN block.currency_close --'leftside' 
-        WHEN block.currency_start >= circle.curr_start 
-            AND block.currency_start < circle.curr_close
-            AND block.currency_close > circle.curr_close
+        WHEN block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_start
+            AND block.cash_close <= circle.curr_close
+            THEN block.cash_close --'leftside' 
+        WHEN block.cash_start >= circle.curr_start 
+            AND block.cash_start < circle.curr_close
+            AND block.cash_close > circle.curr_close
             THEN circle.curr_close --'rightside' 
-        WHEN block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_close
+        WHEN block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_close
             THEN circle.curr_close --'outside' 
-        WHEN block.currency_start >= circle.curr_start 
-            AND block.currency_close <= circle.curr_close
-            THEN block.currency_close --'inside' 
+        WHEN block.cash_start >= circle.curr_start 
+            AND block.cash_close <= circle.curr_close
+            THEN block.cash_close --'inside' 
             END reach_close
     FROM river_block block
     JOIN river_circle circle on 
-            (block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_close)
-        OR     (block.currency_start >= circle.curr_start 
-            AND block.currency_close <= circle.curr_close)
-        OR     (block.currency_start < circle.curr_start 
-            AND block.currency_close > circle.curr_start
-            AND block.currency_close <= circle.curr_close)
-        OR     (block.currency_start >= circle.curr_start 
-            AND block.currency_start < circle.curr_close
-            AND block.currency_close > circle.curr_close)
-    WHERE block.currency_master = '{currency_master}'
-        AND block.src_agent_id != block.currency_master
+            (block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_close)
+        OR     (block.cash_start >= circle.curr_start 
+            AND block.cash_close <= circle.curr_close)
+        OR     (block.cash_start < circle.curr_start 
+            AND block.cash_close > circle.curr_start
+            AND block.cash_close <= circle.curr_close)
+        OR     (block.cash_start >= circle.curr_start 
+            AND block.cash_start < circle.curr_close
+            AND block.cash_close > circle.curr_close)
+    WHERE block.cash_master = '{cash_master}'
+        AND block.src_agent_id != block.cash_master
     ORDER BY 
     block.src_agent_id
     , block.dst_agent_id
-    , block.currency_start
-    , block.currency_close
+    , block.cash_start
+    , block.cash_close
 """
 
 
-def get_river_reach_table_final_select_sqlstr(currency_master: PersonID) -> str:
+def get_river_reach_table_final_select_sqlstr(cash_master: PersonID) -> str:
     return f"""
 WITH reach_inter(curr_mstr, src, dst, reach_start, reach_close) AS (
-{get_river_reach_table_touch_select_sqlstr(currency_master)}
+{get_river_reach_table_touch_select_sqlstr(cash_master)}
 ),
 reach_order(
   curr_mstr
@@ -245,40 +245,40 @@ def get_table_count_sqlstr(table_name: str) -> str:
 
 
 # river_block
-def get_river_block_table_delete_sqlstr(currency_agent_id: str) -> str:
+def get_river_block_table_delete_sqlstr(cash_agent_id: str) -> str:
     return f"""
 DELETE FROM river_block
-WHERE currency_master = '{currency_agent_id}' 
+WHERE cash_master = '{cash_agent_id}' 
 ;
 """
 
 
 def get_river_block_table_create_sqlstr() -> str:
-    """Table that stores each block of currency from src_agent_id to dst_agent_id.
-    currency_master: every currency starts with a agent_id as credit source
-        All river blocks with destination currency agent_id stop. For that currency range
+    """Table that stores each block of cash from src_agent_id to dst_agent_id.
+    cash_master: every cash starts with a agent_id as credit source
+        All river blocks with destination cash agent_id stop. For that cash range
         there is no more block
     src_agent_id: agent_id that is source of credit
     dst_agent_id: agent_id that is destination of credit.
-    currency_start: range of currency influenced start
-    currency_close: range of currency influenced close
+    cash_start: range of cash influenced start
+    cash_close: range of cash influenced close
     block_num: the sequence number of transactions before this one
     parent_block_num: river blocks can have multiple children but only one parent
-    river_tree_level: how many ancestors between currency_master first credit outblock
+    river_tree_level: how many ancestors between cash_master first credit outblock
         and this river block
     JSchalk 24 Oct 2023
     """
     return """
 CREATE TABLE IF NOT EXISTS river_block (
-  currency_master VARCHAR(255) NOT NULL
+  cash_master VARCHAR(255) NOT NULL
 , src_agent_id VARCHAR(255) NOT NULL
 , dst_agent_id VARCHAR(255) NOT NULL
-, currency_start FLOAT NOT NULL
-, currency_close FLOAT NOT NULL
+, cash_start FLOAT NOT NULL
+, cash_close FLOAT NOT NULL
 , block_num INT NOT NULL
 , parent_block_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(cash_master) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(src_agent_id) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(dst_agent_id) REFERENCES agendaunit(agent_id)
 )
@@ -288,17 +288,17 @@ CREATE TABLE IF NOT EXISTS river_block (
 
 @dataclass
 class RiverBlockUnit:
-    currency_agent_id: str
+    cash_agent_id: str
     src_agent_id: str
     dst_agent_id: str
-    currency_start: float
-    currency_close: float
+    cash_start: float
+    cash_close: float
     block_num: int
     parent_block_num: int
     river_tree_level: int
 
     def block_returned(self) -> bool:
-        return self.currency_agent_id == self.dst_agent_id
+        return self.cash_agent_id == self.dst_agent_id
 
 
 def get_river_block_table_insert_sqlstr(
@@ -306,21 +306,21 @@ def get_river_block_table_insert_sqlstr(
 ) -> str:
     return f"""
 INSERT INTO river_block (
-  currency_master
+  cash_master
 , src_agent_id
 , dst_agent_id
-, currency_start 
-, currency_close
+, cash_start 
+, cash_close
 , block_num
 , parent_block_num
 , river_tree_level
 )
 VALUES (
-  '{river_block_x.currency_agent_id}'
+  '{river_block_x.cash_agent_id}'
 , '{river_block_x.src_agent_id}'
 , '{river_block_x.dst_agent_id}'
-, {sqlite_null(river_block_x.currency_start)}
-, {sqlite_null(river_block_x.currency_close)}
+, {sqlite_null(river_block_x.cash_start)}
+, {sqlite_null(river_block_x.cash_close)}
 , {river_block_x.block_num}
 , {sqlite_null(river_block_x.parent_block_num)}
 , {river_block_x.river_tree_level}
@@ -330,20 +330,20 @@ VALUES (
 
 
 def get_river_block_dict(
-    db_conn: str, currency_agent_id: str
+    db_conn: str, cash_agent_id: str
 ) -> dict[str:RiverBlockUnit]:
     sqlstr = f"""
 SELECT 
-  currency_master
+  cash_master
 , src_agent_id
 , dst_agent_id
-, currency_start
-, currency_close
+, cash_start
+, cash_close
 , block_num
 , parent_block_num
 , river_tree_level
 FROM river_block
-WHERE currency_master = '{currency_agent_id}' 
+WHERE cash_master = '{cash_agent_id}' 
 ;
 """
     dict_x = {}
@@ -353,11 +353,11 @@ WHERE currency_master = '{currency_agent_id}'
 
     for count_x, row in enumerate(results_x):
         river_block_x = RiverBlockUnit(
-            currency_agent_id=row[0],
+            cash_agent_id=row[0],
             src_agent_id=row[1],
             dst_agent_id=row[2],
-            currency_start=row[3],
-            currency_close=row[4],
+            cash_start=row[3],
+            cash_close=row[4],
             block_num=row[5],
             parent_block_num=row[6],
             river_tree_level=row[7],
@@ -367,10 +367,10 @@ WHERE currency_master = '{currency_agent_id}'
 
 
 # river_circle
-def get_river_circle_table_delete_sqlstr(currency_agent_id: str) -> str:
+def get_river_circle_table_delete_sqlstr(cash_agent_id: str) -> str:
     return f"""
 DELETE FROM river_circle
-WHERE currency_master = '{currency_agent_id}' 
+WHERE cash_master = '{cash_agent_id}' 
 ;
 """
 
@@ -379,68 +379,68 @@ def get_river_circle_table_create_sqlstr() -> str:
     """Check get_river_circle_table_insert_sqlstrget_river_circle_table_insert_sqlstr doc string"""
     return """
 CREATE TABLE IF NOT EXISTS river_circle (
-  currency_master VARCHAR(255) NOT NULL
+  cash_master VARCHAR(255) NOT NULL
 , dst_agent_id VARCHAR(255) NOT NULL
 , circle_num INT NOT NULL
 , curr_start FLOAT NOT NULL
 , curr_close FLOAT NOT NULL
-, FOREIGN KEY(currency_master) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(cash_master) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(dst_agent_id) REFERENCES agendaunit(agent_id)
 )
 ;
 """
 
 
-def get_river_circle_table_insert_sqlstr(currency_agent_id: str) -> str:
-    """Table that stores discontinuous currency ranges that circle back from source (currency_master)
-    to final destination (currency_master)
+def get_river_circle_table_insert_sqlstr(cash_agent_id: str) -> str:
+    """Table that stores discontinuous cash ranges that circle back from source (cash_master)
+    to final destination (cash_master)
     Columns
-    currency_master: every currency starts with a agent_id as credit source
+    cash_master: every cash starts with a agent_id as credit source
     dst_agent_id: agent_id that is destination of credit.
         All river blocks with destination agent_id are summed into ranges called circles
     circle_num: all destination agent_id circles have a unique number. (sequential 0, 1, 2...)
-    currency_start: range of circle start
-    currency_close: range of circle close
+    cash_start: range of circle start
+    cash_close: range of circle close
     JSchalk 24 Oct 2023
     """
     return f"""
 INSERT INTO river_circle (
-  currency_master
+  cash_master
 , dst_agent_id
 , circle_num
 , curr_start
 , curr_close
 )
 SELECT 
-  currency_master
+  cash_master
 , dst_agent_id
-, currency_circle_num
-, min(currency_start) currency_circle_start
-, max(currency_close) currency_circle_close
+, cash_circle_num
+, min(cash_start) cash_circle_start
+, max(cash_close) cash_circle_close
 FROM  (
-SELECT *, SUM(step) OVER (ORDER BY currency_start) AS currency_circle_num
+SELECT *, SUM(step) OVER (ORDER BY cash_start) AS cash_circle_num
 FROM  (
     SELECT 
     CASE 
-    WHEN lag(currency_close) OVER (ORDER BY currency_start) < currency_start 
-        OR lag(currency_close) OVER (ORDER BY currency_start) = NULL 
+    WHEN lag(cash_close) OVER (ORDER BY cash_start) < cash_start 
+        OR lag(cash_close) OVER (ORDER BY cash_start) = NULL 
     THEN 1
     ELSE 0
     END AS step
     , *
     FROM  river_block
-    WHERE currency_master = '{currency_agent_id}' and dst_agent_id = currency_master 
+    WHERE cash_master = '{cash_agent_id}' and dst_agent_id = cash_master 
     ) b
 ) c
-GROUP BY currency_master, dst_agent_id, currency_circle_num
-ORDER BY currency_circle_start
+GROUP BY cash_master, dst_agent_id, cash_circle_num
+ORDER BY cash_circle_start
 ;
 """
 
 
 @dataclass
 class RiverCircleUnit:
-    currency_master: str
+    cash_master: str
     dst_agent_id: str
     circle_num: int
     curr_start: float
@@ -448,17 +448,17 @@ class RiverCircleUnit:
 
 
 def get_river_circle_dict(
-    db_conn: Connection, currency_agent_id: str
+    db_conn: Connection, cash_agent_id: str
 ) -> dict[str:RiverCircleUnit]:
     sqlstr = f"""
 SELECT
-  currency_master
+  cash_master
 , dst_agent_id
 , circle_num
 , curr_start
 , curr_close
 FROM river_circle
-WHERE currency_master = '{currency_agent_id}'
+WHERE cash_master = '{cash_agent_id}'
 ;
 """
     dict_x = {}
@@ -466,7 +466,7 @@ WHERE currency_master = '{currency_agent_id}'
 
     for row in results.fetchall():
         river_circle_x = RiverCircleUnit(
-            currency_master=row[0],
+            cash_master=row[0],
             dst_agent_id=row[1],
             circle_num=row[2],
             curr_start=row[3],
@@ -476,10 +476,10 @@ WHERE currency_master = '{currency_agent_id}'
     return dict_x
 
 
-# PartyTreasuryUnit
+# PartyBankUnit
 @dataclass
-class PartyTreasuryUnit:
-    currency_master: str
+class PartyBankUnit:
+    cash_master: str
     tax_agent_id: str
     tax_total: float
     debt: float
@@ -488,27 +488,27 @@ class PartyTreasuryUnit:
     voice_rank: int
 
 
-def get_partytreasuryunit_dict(
-    db_conn: Connection, currency_agent_id: str
-) -> dict[str:PartyTreasuryUnit]:
+def get_partybankunit_dict(
+    db_conn: Connection, cash_agent_id: str
+) -> dict[str:PartyBankUnit]:
     sqlstr = f"""
 SELECT
-  agent_id currency_master
+  agent_id cash_master
 , party_id tax_agent_id
-, _treasury_tax_paid tax_total
+, _bank_tax_paid tax_total
 , _agenda_intent_ratio_debt debt
-, (_agenda_intent_ratio_debt - _treasury_tax_paid) tax_diff
+, (_agenda_intent_ratio_debt - _bank_tax_paid) tax_diff
 FROM agenda_partyunit
-WHERE currency_master = '{currency_agent_id}'
-    AND _treasury_tax_paid IS NOT NULL
+WHERE cash_master = '{cash_agent_id}'
+    AND _bank_tax_paid IS NOT NULL
 ;
 """
     dict_x = {}
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        partytreasuryunit_x = PartyTreasuryUnit(
-            currency_master=row[0],
+        partybankunit_x = PartyBankUnit(
+            cash_master=row[0],
             tax_agent_id=row[1],
             tax_total=row[2],
             debt=row[3],
@@ -516,7 +516,7 @@ WHERE currency_master = '{currency_agent_id}'
             credit_score=None,
             voice_rank=None,
         )
-        dict_x[partytreasuryunit_x.tax_agent_id] = partytreasuryunit_x
+        dict_x[partybankunit_x.tax_agent_id] = partybankunit_x
     return dict_x
 
 
@@ -558,21 +558,21 @@ FROM agendaunit
 
 
 @dataclass
-class AgendaTreasuryUnit:
+class AgendaBankUnit:
     agent_id: PersonID
     rational: bool
 
 
-def get_agendatreasuryunits_dict(
+def get_agendabankunits_dict(
     db_conn: Connection,
-) -> dict[PersonID:AgendaTreasuryUnit]:
+) -> dict[PersonID:AgendaBankUnit]:
     results = db_conn.execute(get_agendaunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
-        x_agendatreasuryunit = AgendaTreasuryUnit(
+        x_agendabankunit = AgendaBankUnit(
             agent_id=row[0], rational=sqlite_to_python(row[1])
         )
-        dict_x[x_agendatreasuryunit.agent_id] = x_agendatreasuryunit
+        dict_x[x_agendabankunit.agent_id] = x_agendabankunit
     return dict_x
 
 
@@ -600,11 +600,11 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _agenda_intent_ratio_debt FLOAT
 , _creditor_live INT
 , _debtor_live INT
-, _treasury_tax_paid FLOAT
-, _treasury_tax_diff FLOAT
-, _treasury_credit_score FLOAT
-, _treasury_voice_rank INT
-, _treasury_voice_hx_lowest_rank INT
+, _bank_tax_paid FLOAT
+, _bank_tax_diff FLOAT
+, _bank_credit_score FLOAT
+, _bank_voice_rank INT
+, _bank_voice_hx_lowest_rank INT
 , FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
 , FOREIGN KEY(party_id) REFERENCES agendaunit(agent_id)
 , UNIQUE(agent_id, party_id)
@@ -613,22 +613,22 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 """
 
 
-def get_agenda_partyunit_table_update_treasury_tax_paid_sqlstr(
-    currency_agent_id: PersonID,
+def get_agenda_partyunit_table_update_bank_tax_paid_sqlstr(
+    cash_agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE agenda_partyunit
-SET _treasury_tax_paid = (
-    SELECT SUM(block.currency_close-block.currency_start) 
+SET _bank_tax_paid = (
+    SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
-    WHERE block.currency_master='{currency_agent_id}' 
-        AND block.dst_agent_id=block.currency_master
+    WHERE block.cash_master='{cash_agent_id}' 
+        AND block.dst_agent_id=block.cash_master
         AND block.src_agent_id = agenda_partyunit.party_id
     )
 WHERE EXISTS (
-    SELECT block.currency_close
+    SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_partyunit.agent_id='{currency_agent_id}' 
+    WHERE agenda_partyunit.agent_id='{cash_agent_id}' 
         AND agenda_partyunit.party_id = block.dst_agent_id
 )
 ;
@@ -636,32 +636,32 @@ WHERE EXISTS (
 
 
 def get_agenda_partyunit_table_update_credit_score_sqlstr(
-    currency_agent_id: PersonID,
+    cash_agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE agenda_partyunit
-SET _treasury_credit_score = (
+SET _bank_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
-    WHERE reach.currency_master = agenda_partyunit.agent_id
+    WHERE reach.cash_master = agenda_partyunit.agent_id
         AND reach.src_agent_id = agenda_partyunit.party_id
     )
-WHERE agenda_partyunit.agent_id = '{currency_agent_id}'
+WHERE agenda_partyunit.agent_id = '{cash_agent_id}'
 ;
 """
 
 
-def get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(
+def get_agenda_partyunit_table_update_bank_voice_rank_sqlstr(
     agent_id: PersonID,
 ) -> str:
     return f"""
 UPDATE agenda_partyunit
-SET _treasury_voice_rank = 
+SET _bank_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.party_id
-        , row_number() over (order by p2._treasury_credit_score DESC) rn
+        , row_number() over (order by p2._bank_credit_score DESC) rn
         FROM agenda_partyunit p2
         WHERE p2.agent_id = '{agent_id}'
     ) p3
@@ -688,11 +688,11 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _treasury_tax_paid
-, _treasury_tax_diff
-, _treasury_credit_score
-, _treasury_voice_rank
-, _treasury_voice_hx_lowest_rank
+, _bank_tax_paid
+, _bank_tax_diff
+, _bank_credit_score
+, _bank_voice_rank
+, _bank_voice_hx_lowest_rank
 )
 VALUES (
   '{x_agenda._agent_id}' 
@@ -705,11 +705,11 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
 , {sqlite_bool(x_partyunit._creditor_live)}
 , {sqlite_bool(x_partyunit._debtor_live)}
-, {sqlite_null(x_partyunit._treasury_tax_paid)}
-, {sqlite_null(x_partyunit._treasury_tax_diff)}
-, {sqlite_null(x_partyunit._treasury_credit_score)}
-, {sqlite_null(x_partyunit._treasury_voice_rank)}
-, {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
+, {sqlite_null(x_partyunit._bank_tax_paid)}
+, {sqlite_null(x_partyunit._bank_tax_diff)}
+, {sqlite_null(x_partyunit._bank_credit_score)}
+, {sqlite_null(x_partyunit._bank_voice_rank)}
+, {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
 )
 ;
 """
@@ -735,11 +735,11 @@ SELECT
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _treasury_tax_paid
-, _treasury_tax_diff
-, _treasury_credit_score
-, _treasury_voice_rank
-, _treasury_voice_hx_lowest_rank
+, _bank_tax_paid
+, _bank_tax_diff
+, _bank_credit_score
+, _bank_voice_rank
+, _bank_voice_hx_lowest_rank
 FROM agenda_partyunit
 WHERE agent_id = '{payer_agent_id}' 
 ;
@@ -759,11 +759,11 @@ WHERE agent_id = '{payer_agent_id}'
             _agenda_intent_ratio_debt=row[7],
             _creditor_live=row[8],
             _debtor_live=row[9],
-            _treasury_tax_paid=row[10],
-            _treasury_tax_diff=row[11],
-            _treasury_credit_score=row[12],
-            _treasury_voice_rank=row[13],
-            _treasury_voice_hx_lowest_rank=row[14],
+            _bank_tax_paid=row[10],
+            _bank_tax_diff=row[11],
+            _bank_credit_score=row[12],
+            _bank_voice_rank=row[13],
+            _bank_voice_hx_lowest_rank=row[14],
         )
         dict_x[partyview_x.party_id] = partyview_x
     return dict_x
@@ -772,14 +772,14 @@ WHERE agent_id = '{payer_agent_id}'
 @dataclass
 class RiverLedgerUnit:
     agent_id: str
-    currency_onset: float
-    currency_cease: float
+    cash_onset: float
+    cash_cease: float
     _partyviews: dict[str:PartyDBUnit]
     river_tree_level: int
     block_num: int
 
     def get_range(self):
-        return self.currency_cease - self.currency_onset
+        return self.cash_cease - self.cash_onset
 
 
 def get_river_ledger_unit(
@@ -788,8 +788,8 @@ def get_river_ledger_unit(
     partyview_x = get_partyview_dict(db_conn, river_block_x.dst_agent_id)
     return RiverLedgerUnit(
         agent_id=river_block_x.dst_agent_id,
-        currency_onset=river_block_x.currency_start,
-        currency_cease=river_block_x.currency_close,
+        cash_onset=river_block_x.cash_start,
+        cash_cease=river_block_x.cash_close,
         _partyviews=partyview_x,
         river_tree_level=river_block_x.river_tree_level,
         block_num=river_block_x.block_num,
@@ -924,7 +924,7 @@ def get_agenda_groupunit_table_create_sqlstr() -> str:
 CREATE TABLE IF NOT EXISTS agenda_groupunit (
   agent_id VARCHAR(255) NOT NULL
 , groupunit_group_id VARCHAR(1000) NOT NULL
-, treasury_partylinks VARCHAR(1000) NULL
+, bank_partylinks VARCHAR(1000) NULL
 )
 ;
 """
@@ -946,7 +946,7 @@ def get_agenda_groupunit_table_count(db_conn: Connection, agent_id: str) -> str:
 class GroupUnitCatalog:
     agent_id: str
     groupunit_group_id: str
-    treasury_partylinks: str
+    bank_partylinks: str
 
 
 def get_agenda_groupunit_table_insert_sqlstr(
@@ -956,12 +956,12 @@ def get_agenda_groupunit_table_insert_sqlstr(
 INSERT INTO agenda_groupunit (
   agent_id
 , groupunit_group_id
-, treasury_partylinks
+, bank_partylinks
 )
 VALUES (
   '{agenda_groupunit.agent_id}'
 , '{agenda_groupunit.groupunit_group_id}'
-, '{agenda_groupunit.treasury_partylinks}'
+, '{agenda_groupunit.bank_partylinks}'
 )
 ;
 """
@@ -972,7 +972,7 @@ def get_agenda_groupunit_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]
 SELECT 
   agent_id
 , groupunit_group_id
-, treasury_partylinks
+, bank_partylinks
 FROM agenda_groupunit
 ;
 """
@@ -983,7 +983,7 @@ FROM agenda_groupunit
         agenda_groupunit_x = GroupUnitCatalog(
             agent_id=row[0],
             groupunit_group_id=row[1],
-            treasury_partylinks=row[2],
+            bank_partylinks=row[2],
         )
         dict_key = (
             f"{agenda_groupunit_x.agent_id} {agenda_groupunit_x.groupunit_group_id}"
@@ -1096,11 +1096,11 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_ratio_debt
 , _creditor_live
 , _debtor_live
-, _treasury_tax_paid
-, _treasury_tax_diff
-, _treasury_credit_score
-, _treasury_voice_rank
-, _treasury_voice_hx_lowest_rank
+, _bank_tax_paid
+, _bank_tax_diff
+, _bank_credit_score
+, _bank_voice_rank
+, _bank_voice_hx_lowest_rank
 )
 VALUES (
   '{x_agenda._agent_id}' 
@@ -1113,11 +1113,11 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
 , {sqlite_bool(x_partyunit._creditor_live)}
 , {sqlite_bool(x_partyunit._debtor_live)}
-, {sqlite_null(x_partyunit._treasury_tax_paid)}
-, {sqlite_null(x_partyunit._treasury_tax_diff)}
-, {sqlite_null(x_partyunit._treasury_credit_score)}
-, {sqlite_null(x_partyunit._treasury_voice_rank)}
-, {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
+, {sqlite_null(x_partyunit._bank_tax_paid)}
+, {sqlite_null(x_partyunit._bank_tax_diff)}
+, {sqlite_null(x_partyunit._bank_credit_score)}
+, {sqlite_null(x_partyunit._bank_voice_rank)}
+, {sqlite_null(x_partyunit._bank_voice_hx_lowest_rank)}
 )
 ;
 """
@@ -1144,19 +1144,19 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     return list_x
 
 
-def get_db_tables(treasury_conn: Connection) -> dict[str:int]:
+def get_db_tables(bank_conn: Connection) -> dict[str:int]:
     sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-    results = treasury_conn.execute(sqlstr)
+    results = bank_conn.execute(sqlstr)
 
     return {row[0]: 1 for row in results}
 
 
-def get_db_columns(treasury_conn: Connection) -> dict[str : dict[str:int]]:
-    table_names = get_db_tables(treasury_conn)
+def get_db_columns(bank_conn: Connection) -> dict[str : dict[str:int]]:
+    table_names = get_db_tables(bank_conn)
     table_column_dict = {}
     for table_name in table_names.keys():
         sqlstr = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}');"
-        results = treasury_conn.execute(sqlstr)
+        results = bank_conn.execute(sqlstr)
         table_column_dict[table_name] = {row[0]: 1 for row in results}
 
     return table_column_dict

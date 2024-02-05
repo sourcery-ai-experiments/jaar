@@ -102,7 +102,7 @@ def test_marketunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert x_market != None
     assert x_market.market_id == x_market_id
     assert os_path.exists(market_dir)
-    assert x_market._treasury_db != None
+    assert x_market._bank_db != None
     assert x_market._manager_person_id == sue_text
     assert x_market._problem_id == knee_text
     assert x_market._healer_id == zia_text
@@ -122,7 +122,7 @@ def test_marketunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     assert x_market != None
     assert x_market.market_id == x_market_id
     # assert os_path.exists(market_dir)
-    assert x_market._treasury_db != None
+    assert x_market._bank_db != None
     assert x_market._manager_person_id == get_temp_env_person_id()
     assert x_market._problem_id == get_temp_env_problem_id()
     assert x_market._healer_id == get_temp_env_healer_id()
@@ -177,18 +177,18 @@ def test_MarketUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup
     forum_text = "forum"
     forum_dir = f"{market_dir}/{forum_text}"
     clerkunits_dir = f"{market_dir}/clerkunits"
-    treasury_file_name = "treasury.db"
-    treasury_file_path = f"{market_dir}/{treasury_file_name}"
+    bank_file_name = "bank.db"
+    bank_file_path = f"{market_dir}/{bank_file_name}"
 
     assert os_path.exists(market_dir) is False
     assert os_path.isdir(market_dir) is False
     assert os_path.exists(market_file_path) is False
     assert os_path.exists(forum_dir) is False
     assert os_path.exists(clerkunits_dir) is False
-    assert os_path.exists(treasury_file_path) is False
+    assert os_path.exists(bank_file_path) is False
 
     # WHEN
-    x_market.create_dirs_if_null(in_memory_treasury=False)
+    x_market.create_dirs_if_null(in_memory_bank=False)
 
     # THEN check agendas src directory created
     assert os_path.exists(market_dir)
@@ -196,11 +196,11 @@ def test_MarketUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(market_file_path)
     assert os_path.exists(forum_dir)
     assert os_path.exists(clerkunits_dir)
-    assert os_path.exists(treasury_file_path)
+    assert os_path.exists(bank_file_path)
     assert x_market.get_object_root_dir() == market_dir
     assert x_market.get_forum_dir() == forum_dir
     assert x_market.get_clerkunits_dir() == clerkunits_dir
-    assert x_market.get_treasury_db_path() == treasury_file_path
+    assert x_market.get_bank_db_path() == bank_file_path
 
 
 def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
@@ -231,7 +231,7 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     # delete_dir(x_market.get_object_root_dir())
     # print(f"{x_market.get_object_root_dir()=}")
 
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
 
     assert os_path.exists(old_market_dir)
     assert os_path.isdir(old_market_dir)

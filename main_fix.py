@@ -129,7 +129,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_x = marketunit_shop(
             market_id=market_selected, markets_dir=get_test_markets_dir()
         )
-        self.market_x.create_dirs_if_null(in_memory_treasury=False)
+        self.market_x.create_dirs_if_null(in_memory_bank=False)
         self.market_id.setText(market_selected)
         self.refresh_market()
 

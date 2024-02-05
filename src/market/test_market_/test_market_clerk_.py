@@ -14,7 +14,7 @@ def test_marketunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
     print(f"create env '{x_market_id}' directories.")
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     timmy_text = "timmy"
     timmy_dir = f"{x_market.get_clerkunits_dir()}/{timmy_text}"
     print(f"{timmy_dir=}")
@@ -32,7 +32,7 @@ def test_marketunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_market.get_clerkunits_dir()}/{old_bob_text}"
     old_bob_file_path = f"{old_bob_dir}/contract_agenda.json"
@@ -94,7 +94,7 @@ def test_marketunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     bob_text = "Bob"
     bob_dir = f"{x_market.get_clerkunits_dir()}/{bob_text}"
     bob_file_path = f"{bob_dir}/contract_agenda.json"
@@ -129,7 +129,7 @@ def test_marketunit_clerkunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_treasury=True)
+    x_market.create_dirs_if_null(in_memory_bank=True)
     bob_text = "Bob"
 
     # WHEN / THEN
