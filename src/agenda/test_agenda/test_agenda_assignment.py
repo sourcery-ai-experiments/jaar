@@ -388,7 +388,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_agent_id=yao_text)
     casa_text = "casa"
-    casa_road = yao_agenda.make_road(yao_agenda._market_id, casa_text)
+    casa_road = yao_agenda.make_l1_road(casa_text)
     yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
     yao_agenda.set_agenda_metrics()
 
@@ -533,7 +533,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # road_x='A,casa,laundry basket status,bare'
     # road_x='A,casa,laundry_task_road'
     casa_text = "casa"
-    casa_road = amer_agenda.make_road(amer_agenda._market_id, casa_text)
+    casa_road = amer_agenda.make_l1_road(casa_text)
     basket_text = "laundry basket status"
     basket_road = amer_agenda.make_road(casa_road, basket_text)
     b_full_text = "full"

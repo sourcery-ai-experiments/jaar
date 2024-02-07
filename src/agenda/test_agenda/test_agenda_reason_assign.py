@@ -124,9 +124,9 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_road(noa_agenda1._market_id, work_text)
+    work_road = noa_agenda1.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_road(noa_agenda1._market_id, swim_text)
+    swim_road = noa_agenda1.make_l1_road(swim_text)
     noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
     noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
     swim_assignedunit = assigned_unit_shop()
@@ -157,9 +157,9 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa_agenda1.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_road(noa_agenda1._market_id, work_text)
+    work_road = noa_agenda1.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_road(noa_agenda1._market_id, swim_text)
+    swim_road = noa_agenda1.make_l1_road(swim_text)
     noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
     noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
     swim_assignedunit = assigned_unit_shop()

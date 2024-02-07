@@ -8,27 +8,41 @@ from src.agenda.group import balanceline_shop, balancelink_shop
 from pytest import raises as pytest_raises
 
 
-def test_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
+def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    x_rational = True
+    x_tree_traverse_count = 555
+    x_idea_dict = {1: 2, 2: 4}
+    x_market_justifed = True
+    sue_agenda._rational = x_rational
+    sue_agenda._tree_traverse_count = x_tree_traverse_count
+    sue_agenda._idea_dict = x_idea_dict
+    sue_agenda._market_justified = x_market_justifed
+    assert sue_agenda._rational == x_rational
+    assert sue_agenda._tree_traverse_count == x_tree_traverse_count
+    assert sue_agenda._idea_dict == x_idea_dict
+    assert sue_agenda._market_justified == x_market_justifed
+
+    # WHEN
+    sue_agenda._clear_agenda_base_metrics()
+
+    # THEN
+    assert sue_agenda._rational != x_rational
+    assert not sue_agenda._rational
+    assert sue_agenda._tree_traverse_count != x_tree_traverse_count
+    assert sue_agenda._tree_traverse_count == 0
+    assert sue_agenda._idea_dict != x_idea_dict
+    assert sue_agenda._idea_dict == {
+        sue_agenda._idearoot.get_road(): sue_agenda._idearoot
+    }
+    assert sue_agenda._market_justified != x_market_justifed
+    assert not sue_agenda._market_justified
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-
-    # idea ",{week_text},Sunday"
-    # idea ",{week_text},Monday"
-    # idea ",{week_text},Tuesday"
-    # idea ",{week_text},Wednesday"
-    # idea ",{week_text},Thursday"
-    # idea ",{week_text},Friday"
-    # idea ",{week_text},Saturday"
-    # idea ",{week_text}"
-    # idea ",{nation_text},USA,Texas"
-    # idea ",{nation_text},USA,Oregon"
-    # idea ",{nation_text},USA"
-    # idea ",{nation_text},France"
-    # idea ",{nation_text},Brazil"
-    # idea ",{nation_text}"
-    # idea work_text  # , promise=True)
-    # idea feed_text  # , promise=True)
-
     # test root status:
     work_text = "work"
     week_text = "weekdays"
@@ -80,7 +94,7 @@ def test_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     assert yrx._all_party_debt == True
 
 
-def test_get_idea_obj_ReturnsIdea():
+def test_AgendaUnit_get_idea_obj_ReturnsIdea():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     nation_text = "nation-state"
@@ -119,7 +133,7 @@ def test_get_idea_obj_ReturnsIdea():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{wrong_road}'"
 
 
-def test_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
+def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     # GIVEN
     tim_agenda = agendaunit_shop(_agent_id="Tim")
     assert tim_agenda._idearoot._descendant_promise_count is None
@@ -135,7 +149,7 @@ def test_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     assert tim_agenda._idearoot._all_party_debt == True
 
 
-def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
+def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     work_text = "work"
@@ -193,7 +207,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
 
 
-def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
+def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
@@ -243,7 +257,7 @@ def test_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
     assert week_idea._kids[tue_text]._all_party_debt == True
 
 
-def test_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
+def test_AgendaUnit_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -270,7 +284,7 @@ def test_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
     assert not x_agenda._idearoot._kids[work_text]._balancelines
 
 
-def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
+def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -330,7 +344,7 @@ def test_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}
 
 
-def test_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
+def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_agenda_metrics()
@@ -466,9 +480,7 @@ def test_AgendaUnit_get_orderd_node_list_WorksCorrectly():
     x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
     assert x_1st_road_in_ordered_list == x_agenda._market_id
     x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
-    assert x_8th_road_in_ordered_list == x_agenda.make_road(
-        x_agenda._market_id, week_text
-    )
+    assert x_8th_road_in_ordered_list == x_agenda.make_l1_road(week_text)
 
     # WHEN
     y_agenda = agendaunit_shop()

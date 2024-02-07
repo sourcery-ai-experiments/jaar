@@ -34,6 +34,8 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
     assert x_ideaunit.promise is None
+    assert x_ideaunit._market_bool is None
+    assert x_ideaunit._problem_bool is None
     assert x_ideaunit._descendant_promise_count is None
     assert x_ideaunit._balancelines is None
     assert x_ideaunit._balanceheirs is None
@@ -57,9 +59,11 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._agenda_market_id is None
 
 
-def test_ideaunit_shop_ReturnsCorrectObj():
+def test_ideaunit_shop_NoParametersReturnsCorrectObj():
+    # GIVEN / WHEN
     x_ideaunit = ideaunit_shop()
-    print(f"{x_ideaunit._active=}")
+
+    # THEN
     assert x_ideaunit
     assert x_ideaunit._kids == {}
     assert x_ideaunit._weight >= 1
@@ -76,6 +80,8 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
     assert x_ideaunit.promise is False
+    assert x_ideaunit._market_bool is False
+    assert x_ideaunit._problem_bool is False
     assert x_ideaunit._descendant_promise_count is None
     assert x_ideaunit._balancelines == {}
     assert x_ideaunit._balancelinks == {}
@@ -98,6 +104,18 @@ def test_ideaunit_shop_ReturnsCorrectObj():
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
     assert x_ideaunit._agenda_market_id == root_label()
+
+def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():
+    # GIVEN 
+    x_market_bool = True
+    x_problem_bool = True
+
+    # WHEN 
+    x_ideaunit = ideaunit_shop(_market_bool=x_market_bool, _problem_bool=x_problem_bool)
+
+    # THEN
+    assert x_ideaunit._market_bool == x_market_bool
+    assert x_ideaunit._problem_bool == x_problem_bool
 
 
 def test_IdeaUnit_get_obj_key_ReturnsCorrectObj():

@@ -206,9 +206,7 @@ def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
 ):
     # GIVEN
     clerk_id_x = "boots3"
-    x_clerk = clerkunit_shop(
-        clerk_id_x, get_temp_clerkunit_dir(), get_temp_market_id()
-    )
+    x_clerk = clerkunit_shop(clerk_id_x, get_temp_clerkunit_dir(), get_temp_market_id())
     x_clerk.create_core_dir_and_files()
     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
@@ -266,9 +264,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
     assert sx_idearoot._beliefunits == input_idearoot._beliefunits
     new_output_agenda_b_idea = sx_idearoot.get_kid("B")
     assert new_output_agenda_b_idea._parent_road == input_b_idea._parent_road
-    assert (
-        new_output_agenda_b_idea._agenda_market_id == input_b_idea._agenda_market_id
-    )
+    assert new_output_agenda_b_idea._agenda_market_id == input_b_idea._agenda_market_id
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
@@ -353,8 +349,8 @@ def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     print(f"{output_agenda_x._market_id=} {output_agenda_x._idearoot._label=}")
     print(f"{output_agenda_x._idearoot._kids.keys()=}")
     assert output_agenda_x._idearoot._originunit == originunit_shop()
-    a_road = output_agenda_x.make_road(output_agenda_x._market_id, "A")
-    c_road = output_agenda_x.make_road(output_agenda_x._market_id, "C")
+    a_road = output_agenda_x.make_l1_road("A")
+    c_road = output_agenda_x.make_l1_road("C")
     d_road = output_agenda_x.make_road(c_road, "D")
     print(f"{d_road=}")
     d_idea = output_agenda_x.get_idea_obj(d_road)

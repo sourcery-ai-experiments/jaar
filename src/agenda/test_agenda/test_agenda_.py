@@ -11,7 +11,7 @@ from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_AgendaUnit_exists():
+def test_AgendaUnit_Exists():
     # GIVEN
 
     # WHEN
@@ -31,6 +31,7 @@ def test_AgendaUnit_exists():
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy is None
+    assert x_agenda._market_justified is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -62,6 +63,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy == override_meld_strategy
+    assert x_agenda._market_justified == False
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
@@ -85,7 +87,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
 
 
-def test_agenda_IsAbleToSetTaskAsComplete():
+def test_AgendaUnit_IsAbleToSetTaskAsComplete():
     x_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
 
     assert x_agenda != None
@@ -105,7 +107,7 @@ def test_agenda_IsAbleToSetTaskAsComplete():
     assert mail_idea._task == False
 
 
-def test_agenda_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
+def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
     x_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
@@ -122,7 +124,7 @@ def test_agenda_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
     assert mail_idea._task == True
 
 
-def test_agenda_ideaoot_uid_isAlwaysEqualTo1():
+def test_AgendaUnit_ideaoot_uid_isAlwaysEqualTo1():
     # GIVEN
     zia_text = "Zia"
 
@@ -133,7 +135,7 @@ def test_agenda_ideaoot_uid_isAlwaysEqualTo1():
     assert zia_agenda._idearoot._uid == 1
 
 
-def test_agenda_set_max_tree_traverse_CorrectlySetsInt():
+def test_AgendaUnit_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(_agent_id=zia_text)
@@ -146,7 +148,7 @@ def test_agenda_set_max_tree_traverse_CorrectlySetsInt():
     assert zia_agenda._max_tree_traverse == 11
 
 
-def test_agenda_set_max_tree_traverse_CorrectlyRaisesError():
+def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(_agent_id=zia_text)
@@ -161,7 +163,7 @@ def test_agenda_set_max_tree_traverse_CorrectlyRaisesError():
     )
 
 
-def test_agenda_set_party_creditor_pool_CorrectlySetsInt():
+def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsInt():
     # GIVEN
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(_agent_id=zia_text)
@@ -178,7 +180,7 @@ def test_agenda_set_party_creditor_pool_CorrectlySetsInt():
     assert zia_agenda._party_debtor_pool == x_party_debtor_pool
 
 
-def test_agenda_set_auto_output_to_forum_SetsBoolCorrectlyGivenNoneOrBool():
+def test_AgendaUnit_set_auto_output_to_forum_SetsBoolCorrectlyGivenNoneOrBool():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()
 
@@ -225,7 +227,7 @@ def test_AgendaUnit_shop_CorrectlySetsGiven_auto_output_to_forum():
     assert x_agenda._auto_output_to_forum == True
 
 
-def test_agenda_set_market_id_CorrectlySetsAttr():
+def test_AgendaUnit_set_market_id_CorrectlySetsAttr():
     # GIVEN
     market_id_text = "Sun"
     noa_text = "Noa"
@@ -239,7 +241,7 @@ def test_agenda_set_market_id_CorrectlySetsAttr():
     assert x_agenda._market_id == market_id_text
 
 
-def test_agenda_set_road_delimiter_CorrectlySetsAttr():
+def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
     # GIVEN
     market_id_text = "Sun"
     noa_text = "Noa"

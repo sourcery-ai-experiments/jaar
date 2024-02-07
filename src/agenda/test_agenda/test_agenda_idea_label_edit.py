@@ -118,7 +118,7 @@ def test_agenda_set_market_id_CorrectlySetsAttr():
     tim_agenda.set_market_id(market_id=market_id_text)
 
     # THEN
-    new_work_road = tim_agenda.make_road(market_id_text, work_text)
+    new_work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
     new_swim_road = tim_agenda.make_road(new_work_road, swim_text)
     assert tim_agenda._market_id == market_id_text

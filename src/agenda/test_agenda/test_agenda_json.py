@@ -89,9 +89,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     print("checking market_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
-    assert month_week_special_dict == x_agenda.make_road(
-        x_agenda._market_id, "ced_week"
-    )
+    assert month_week_special_dict == x_agenda.make_l1_road("ced_week")
     assert month_week_special_dict == month_week_idea_x._range_source_road
 
     # checking an ideakid._numeric_road attribute
@@ -437,8 +435,8 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     ccn2_agenda = ccn_dict_of_obj.get(x_agenda2._agent_id)
     assert ccn2_agenda._idearoot._label == x_agenda2._idearoot._label
     assert ccn2_agenda._idearoot._parent_road == x_agenda2._idearoot._parent_road
-    shave_road = ccn2_agenda.make_road("A", "shave")
-    week_road = ccn2_agenda.make_road("A", "weekdays")
+    shave_road = ccn2_agenda.make_l1_road("shave")
+    week_road = ccn2_agenda.make_l1_road("weekdays")
     assert ccn2_agenda.get_idea_obj(shave_road) == x_agenda2.get_idea_obj(shave_road)
     assert ccn2_agenda.get_idea_obj(week_road) == x_agenda2.get_idea_obj(week_road)
     assert ccn2_agenda._idearoot == x_agenda2._idearoot

@@ -281,7 +281,9 @@
                 "_range_source_road": "RoadUnit",
                 "_reest": "bool",
                 "_weight": "int",
-                "promise": "bool"
+                "promise": "bool",
+                "_market_bool": "bool",
+                "_problem_bool": "bool"
             },
             "required_args": {
                 "label": "RoadUnit",

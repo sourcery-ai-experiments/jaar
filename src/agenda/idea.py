@@ -1,4 +1,15 @@
 from dataclasses import dataclass
+from src._prime.road import (
+    RoadUnit,
+    RoadNode,
+    is_sub_road,
+    get_default_market_root_roadnode as root_label,
+    create_road as road_create_road,
+    default_road_delimiter_if_none,
+    replace_road_delimiter,
+    MarketID,
+)
+from src._prime.meld import get_meld_default
 from src.agenda.reason_assign import (
     AssignedUnit,
     AssignedHeir,
@@ -24,16 +35,6 @@ from src.agenda.reason_idea import (
     reasons_get_from_dict,
     beliefunits_get_from_dict,
 )
-from src._prime.road import (
-    RoadUnit,
-    RoadNode,
-    is_sub_road,
-    get_default_market_root_roadnode as root_label,
-    create_road as road_create_road,
-    default_road_delimiter_if_none,
-    replace_road_delimiter,
-    MarketID,
-)
 from src.agenda.group import (
     BalanceHeir,
     BalanceLink,
@@ -47,7 +48,12 @@ from src.agenda.group import (
 from src.agenda.origin import OriginUnit, originunit_get_from_dict
 from src.agenda.party import PartyID
 from src.agenda.origin import originunit_shop
-from src.instrument.python import get_empty_dict_if_none, get_1_if_None
+from src.instrument.python import (
+    get_empty_dict_if_none,
+    get_1_if_None,
+    get_0_if_None,
+    get_False_if_None,
+)
 from src._prime.meld import get_meld_weight, validate_meld_strategy
 from copy import deepcopy
 
@@ -239,6 +245,8 @@ class IdeaUnit:
     promise: bool = None
     _originunit: OriginUnit = None
     _meld_strategy: str = None
+    _market_bool: bool = None
+    _problem_bool: bool = None
     # Calculated fields
     _level: int = None
     _kids_total_weight: int = None
@@ -1090,6 +1098,8 @@ def ideaunit_shop(
     _meld_strategy: str = None,
     _root: bool = None,
     _agenda_market_id: MarketID = None,
+    _market_bool: bool = None,
+    _problem_bool: bool = None,
     # Calculated fields
     _level: int = None,
     _kids_total_weight: int = None,
@@ -1107,14 +1117,8 @@ def ideaunit_shop(
     _active_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
 ) -> IdeaUnit:
-    if promise is None:
-        promise = False
     if _meld_strategy is None:
-        _meld_strategy = "default"
-    if _kids_total_weight is None:
-        _kids_total_weight = 0
-    if _root is None:
-        _root = False
+        _meld_strategy = get_meld_default()
     if _agenda_market_id is None:
         _agenda_market_id = root_label()
 
@@ -1141,14 +1145,16 @@ def ideaunit_shop(
         _reest=_reest,
         _range_source_road=_range_source_road,
         _numeric_road=_numeric_road,
-        promise=promise,
+        promise=get_False_if_None(promise),
+        _market_bool=get_False_if_None(_market_bool),
+        _problem_bool=get_False_if_None(_problem_bool),
         _originunit=_originunit,
         _meld_strategy=_meld_strategy,
-        _root=_root,
+        _root=get_False_if_None(_root),
         _agenda_market_id=_agenda_market_id,
         # Calculated fields
         _level=_level,
-        _kids_total_weight=_kids_total_weight,
+        _kids_total_weight=get_0_if_None(_kids_total_weight),
         _agenda_importance=_agenda_importance,
         _agenda_coin_onset=_agenda_coin_onset,
         _agenda_coin_cease=_agenda_coin_cease,

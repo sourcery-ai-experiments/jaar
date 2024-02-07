@@ -57,7 +57,13 @@ from src._prime.road import (
     PartyID,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
-from src.instrument.python import x_get_json, x_get_dict
+from src.instrument.python import (
+    x_get_json,
+    x_get_dict,
+    get_1_if_None,
+    get_False_if_None,
+    get_empty_dict_if_none,
+)
 from src._prime.meld import (
     get_meld_weight,
     MeldStrategy,
@@ -110,6 +116,7 @@ class AgendaUnit:
     _idea_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
     _tree_traverse_count: int = None  # set_agenda_metrics Calculated field
     _rational: bool = None  # set_agenda_metrics Calculated field
+    _market_justified: bool = None
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
@@ -320,7 +327,7 @@ class AgendaUnit:
         return x_hregidea.get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
-        time_road = self.make_road(self._market_id, "time")
+        time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
         c400_road = self.make_road(tech_road, "400 year cycle")
         c400_idea = self.get_idea_obj(c400_road)
@@ -333,7 +340,7 @@ class AgendaUnit:
         c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
 
-        time_road = self.make_road(self._market_id, "time")
+        time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
 
         # identify which range the time is in
@@ -363,7 +370,7 @@ class AgendaUnit:
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
-        time_road = self.make_road(self._market_id, "time")
+        time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
 
         year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
@@ -434,7 +441,7 @@ class AgendaUnit:
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
         x_hregidea = HregIdea(self._road_delimiter)
         open_in_week = open % divisor
-        time_road = self.make_road(self._market_id, "time")
+        time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
         week_road = self.make_road(tech_road, "week")
         weekday_ideas_dict = self.get_idea_ranged_kids(
@@ -716,7 +723,7 @@ class AgendaUnit:
     def set_time_beliefs(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
-        time_road = self.make_road(self._market_id, "time")
+        time_road = self.make_l1_road("time")
         minutes_belief = self.make_road(time_road, "jajatime")
         self.set_belief(
             base=minutes_belief,
@@ -1672,10 +1679,14 @@ class AgendaUnit:
         self.set_agenda_metrics()
         return list(self._idea_dict.values())
 
-    def set_agenda_metrics(self):
+    def _clear_agenda_base_metrics(self):
         self._rational = False
-        self._tree_traverse_count = 0
+        self._tree_traverse_count = False
         self._idea_dict = {self._idearoot.get_road(): self._idearoot}
+        self._market_justified = False
+
+    def set_agenda_metrics(self):
+        self._clear_agenda_base_metrics()
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
@@ -1837,7 +1848,7 @@ class AgendaUnit:
             yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
-                range_source_road_x = self.make_road(self._market_id, yb.sr)
+                range_source_road_x = self.make_l1_road(yb.sr)
 
             x_idea = ideaunit_shop(
                 _label=yb.n,
@@ -1851,12 +1862,12 @@ class AgendaUnit:
                 _reest=yb.mr,
                 _range_source_road=range_source_road_x,
             )
-            road_x = self.make_road(self._market_id, yb.rr)
+            road_x = self.make_l1_road(yb.rr)
             self.add_idea(x_idea, parent_road=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
-                numeric_road_x = self.make_road(self._market_id, yb.nr)
+                numeric_road_x = self.make_l1_road(yb.nr)
                 self.edit_idea_attr(
                     road=self.make_road(road_x, yb.n), numeric_road=numeric_road_x
                 )
@@ -2077,12 +2088,8 @@ def agendaunit_shop(
     _road_delimiter: str = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
-    if _weight is None:
-        _weight = 1
     if _agent_id is None:
         _agent_id = ""
-    if _auto_output_to_forum is None:
-        _auto_output_to_forum = False
     if _market_id is None:
         _market_id = get_default_market_root_roadnode()
     if _meld_strategy is None:
@@ -2090,14 +2097,15 @@ def agendaunit_shop(
 
     x_agenda = AgendaUnit(
         _agent_id=_agent_id,
-        _weight=_weight,
-        _auto_output_to_forum=_auto_output_to_forum,
+        _weight=get_1_if_None(_weight),
+        _auto_output_to_forum=get_False_if_None(_auto_output_to_forum),
         _market_id=_market_id,
-        _partys={},
-        _groups={},
-        _idea_dict={},
+        _partys=get_empty_dict_if_none(None),
+        _groups=get_empty_dict_if_none(None),
+        _idea_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
+        _market_justified=get_False_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_market_id=x_agenda._market_id
