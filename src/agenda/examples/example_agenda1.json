@@ -1722,9 +1722,9 @@
                                 "_weight": 1,
                                 "promise": true
                             },
-                            "check humidifer levels": {
+                            "check humidifer": {
                                 "_is_expanded": true,
-                                "_label": "check humidifer levels",
+                                "_label": "check humidifer",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,day_minute": {
