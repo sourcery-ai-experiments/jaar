@@ -665,3 +665,23 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v6():
 
     # THEN
     assert sue_agenda._market_justified == False
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v7():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    sue_agenda.add_l1_idea(
+        ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
+    )
+    sue_agenda.add_idea(
+        ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True), texas_road
+    )
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified == False

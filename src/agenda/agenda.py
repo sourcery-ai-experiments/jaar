@@ -1566,6 +1566,7 @@ class AgendaUnit:
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         market_justified_by_problem = True
+        market_bool_count = 0
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
@@ -1599,10 +1600,11 @@ class AgendaUnit:
 
             if x_idea_obj._market_bool:
                 market_justified_by_problem = False
+                market_bool_count += 1
             if x_idea_obj._problem_bool:
                 market_justified_by_problem = True
 
-        if market_justified_by_problem == False:
+        if market_justified_by_problem == False or market_bool_count > 1:
             self._market_justified = False
 
     def _set_root_attributes(self):
