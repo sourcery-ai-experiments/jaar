@@ -1709,10 +1709,6 @@ class AgendaUnit:
         sibling_ratio = weight / sibling_total_weight
         return parent_agenda_importance * sibling_ratio
 
-    def get_idea_list(self) -> list[IdeaUnit]:
-        self.set_agenda_metrics()
-        return list(self._idea_dict.values())
-
     def _clear_agenda_base_metrics(self):
         self._rational = False
         self._tree_traverse_count = 0
@@ -1804,7 +1800,7 @@ class AgendaUnit:
     def get_idea_tree_ordered_road_list(
         self, no_range_descendants: bool = False
     ) -> list[RoadUnit]:
-        idea_list = list(self.get_idea_dict.values())
+        idea_list = list(self.get_idea_dict().values())
         node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
@@ -1967,7 +1963,8 @@ class AgendaUnit:
         )
 
     def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:
-        x_list = self.get_idea_list()
+        self.set_agenda_metrics()
+        x_list = list(self._idea_dict.values())
         x_list.pop(0)
         return x_list
 

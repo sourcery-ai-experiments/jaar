@@ -1,3 +1,4 @@
+from src._prime.road import get_default_market_root_roadnode
 from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop
@@ -153,49 +154,51 @@ def test_examples_agenda_v001_HasGroups():
 
 def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     # GIVEN
-    prom_text = "prom"
-    x_agenda = agendaunit_shop(prom_text)
+    sue_text = "Sue"
+    sue_agenda = agendaunit_shop(sue_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
 
-    assert len(x_agenda._partys) == 3
-    assert len(x_agenda._groups) == 3
+    assert len(sue_agenda._partys) == 3
+    assert len(sue_agenda._groups) == 3
     swim_text = "swim"
-    x_agenda.add_l1_idea(ideaunit_shop(swim_text))
+    sue_agenda.add_l1_idea(ideaunit_shop(swim_text))
     balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
     balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
     balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
-    swim_road = x_agenda.make_road(prom_text, swim_text)
-    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
-    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
-    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+    swim_road = sue_agenda.make_l1_road(swim_text)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
 
-    assert x_agenda._idearoot._balancelinks in (None, {})
-    assert len(x_agenda._idearoot._kids[swim_text]._balancelinks) == 3
-
-    x_agenda.add_idea(ideaunit_shop("streets"), parent_road=swim_road)
+    street_text = "streets"
+    sue_agenda.add_idea(ideaunit_shop(street_text), parent_road=swim_road)
+    assert sue_agenda._idearoot._balancelinks in (None, {})
+    assert len(sue_agenda._idearoot._kids[swim_text]._balancelinks) == 3
 
     # WHEN
-    idea_list = x_agenda.get_idea_list()
+    idea_dict = sue_agenda.get_idea_dict()
 
     # THEN
-    idea_prom = idea_list[1]
-    idea_prom_swim = idea_list[2]
+    print(f"{idea_dict.keys()=} {get_default_market_root_roadnode()=}")
+    root_idea = idea_dict.get(get_default_market_root_roadnode())
+    swim_idea = idea_dict.get(swim_road)
+    street_idea = idea_dict.get(sue_agenda.make_road(swim_road, street_text))
 
-    assert len(idea_prom._balancelinks) == 3
-    assert len(idea_prom._balanceheirs) == 3
-    assert idea_prom_swim._balancelinks in (None, {})
-    assert len(idea_prom_swim._balanceheirs) == 3
+    assert len(swim_idea._balancelinks) == 3
+    assert len(swim_idea._balanceheirs) == 3
+    assert street_idea._balancelinks in (None, {})
+    assert len(street_idea._balanceheirs) == 3
 
-    print(f"{len(idea_list)}")
-    print(f"{idea_list[0]._balancelinks}")
-    print(f"{idea_list[0]._balanceheirs}")
-    print(f"{idea_list[1]._balanceheirs}")
-    assert len(x_agenda._idearoot._kids["swim"]._balanceheirs) == 3
+    print(f"{len(idea_dict)}")
+    print(f"{swim_idea._balancelinks}")
+    print(f"{swim_idea._balanceheirs}")
+    print(f"{swim_idea._balanceheirs}")
+    assert len(sue_agenda._idearoot._kids["swim"]._balanceheirs) == 3
 
 
 def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
@@ -222,8 +225,6 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
 
-    # idea_list = x_agenda.get_idea_list()
-    # idea_prom = idea_list[1]
     assert len(swim_idea._balancelinks) == 3
     assert len(swim_idea._balanceheirs) == 3
 
@@ -249,13 +250,14 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
 
 def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
     # GIVEN
-    x_agenda = agendaunit_shop("prom")
+    sue_text = "Sue"
+    sue_agenda = agendaunit_shop(sue_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
     blink_rico = balancelink_shop(
         group_id=rico_text, creditor_weight=20, debtor_weight=6
     )
@@ -263,16 +265,17 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
         group_id=carm_text, creditor_weight=10, debtor_weight=1
     )
     blink_patr = balancelink_shop(group_id=patr_text, creditor_weight=10)
-    x_agenda._idearoot.set_balancelink(balancelink=blink_rico)
-    x_agenda._idearoot.set_balancelink(balancelink=blink_carm)
-    x_agenda._idearoot.set_balancelink(balancelink=blink_patr)
-    assert len(x_agenda._idearoot._balancelinks) == 3
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_rico)
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_carm)
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_patr)
+    assert len(sue_agenda._idearoot._balancelinks) == 3
 
     # WHEN
-    idea_list = x_agenda.get_idea_list()
+    idea_dict = sue_agenda.get_idea_dict()
 
     # THEN
-    idea_prom = idea_list[0]
+    print(f"{idea_dict.keys()=}")
+    idea_prom = idea_dict.get(get_default_market_root_roadnode())
     assert len(idea_prom._balanceheirs) == 3
 
     bheir_rico = idea_prom._balanceheirs.get(rico_text)

@@ -169,9 +169,9 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     except KeyError as e:
         assert str(e) == "'A,weekdays'"
 
-    idea_list = list(x_agenda.get_idea_dict().values())
-
-    from_list_get_active(road=work_road, idea_list=idea_list)
+    x_agenda.set_agenda_metrics()
+    # idea_dict = x_agenda.get_idea_dict()
+    # from_list_get_active(road=work_road, idea_dict=idea_dict)
 
     work_wk_cal_reasonheir = work_idea._reasonheirs[week_road]
     print(f"{len(work_wk_cal_reasonheir.premises)=}")

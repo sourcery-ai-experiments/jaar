@@ -476,14 +476,14 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
 
 # class YR:
 def from_list_get_active(
-    road: RoadUnit, idea_list: list, asse_bool: bool = None
+    road: RoadUnit, idea_dict: dict, asse_bool: bool = None
 ) -> bool:
     active = None
     temp_idea = None
 
     active_true_count = 0
     active_false_count = 0
-    for idea in idea_list:
+    for idea in idea_dict.values():
         if idea.get_road() == road:
             temp_idea = idea
             print(

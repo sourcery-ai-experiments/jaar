@@ -24,112 +24,112 @@ def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> 
 
 def test_agenda_idea_dict_isDictionaryAndIsFullyPopulated():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert len(x_agenda._idea_dict) == 17
+    assert len(sue_agenda._idea_dict) == 17
 
 
-def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
+def test_agenda_get_idea_dict_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
-    sun_road = x_agenda.make_road(week_road, sun_text)
+    sun_road = sue_agenda.make_road(week_road, sun_text)
 
     # WHEN
-    x_agenda.set_belief(base=week_road, pick=sun_road)
-    idea_list = x_agenda.get_idea_list()
+    sue_agenda.set_belief(base=week_road, pick=sun_road)
+    idea_dict = sue_agenda.get_idea_dict()
 
     # THEN
-    assert idea_list
-    assert len(idea_list) == 17
+    assert idea_dict
+    assert len(idea_dict) == 17
 
-    # for idea in x_agenda._idea_dict.values():
+    # for idea in sue_agenda._idea_dict.values():
     #     print(f"{work_road=} {idea.get_road()=}")
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
-    assert x_agenda._idea_dict.get(work_road)._active == False
+    work_road = sue_agenda.make_l1_road(work_text)
+    assert sue_agenda._idea_dict.get(work_road)._active == False
 
 
-def test_agenda_get_idea_list_SetsSatiateStatusCorrectlyWhenBeliefChanges():
+def test_agenda_get_idea_dict_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Wednesday"
-    sun_road = x_agenda.make_road(week_road, sun_text)
+    sun_road = sue_agenda.make_road(week_road, sun_text)
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
+    work_road = sue_agenda.make_l1_road(work_text)
 
     # WHEN
-    x_agenda.set_belief(base=week_road, pick=sun_road)
+    sue_agenda.set_belief(base=week_road, pick=sun_road)
 
     # THEN
-    idea_list = x_agenda.get_idea_list()
-    assert idea_list
-    assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active == False
+    idea_dict = sue_agenda.get_idea_dict()
+    assert idea_dict
+    assert len(idea_dict) == 17
+    assert sue_agenda._idea_dict.get(work_road)._active == False
 
     # WHEN
     states_text = "nation-state"
-    states_road = x_agenda.make_l1_road(states_text)
+    states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
-    usa_road = x_agenda.make_road(states_road, usa_text)
-    x_agenda.set_belief(base=states_road, pick=usa_road)
+    usa_road = sue_agenda.make_road(states_road, usa_text)
+    sue_agenda.set_belief(base=states_road, pick=usa_road)
 
     # THEN
-    idea_list = x_agenda.get_idea_list()
-    assert idea_list
-    assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active
+    idea_dict = sue_agenda.get_idea_dict()
+    assert idea_dict
+    assert len(idea_dict) == 17
+    assert sue_agenda._idea_dict.get(work_road)._active
 
     # WHEN
     france_text = "France"
-    france_road = x_agenda.make_road(states_road, france_text)
-    x_agenda.set_belief(base=states_road, pick=france_road)
+    france_road = sue_agenda.make_road(states_road, france_text)
+    sue_agenda.set_belief(base=states_road, pick=france_road)
 
     # THEN
-    idea_list = x_agenda.get_idea_list()
-    assert idea_list
-    assert len(idea_list) == 17
-    assert x_agenda._idea_dict.get(work_road)._active == False
+    idea_dict = sue_agenda.get_idea_dict()
+    assert idea_dict
+    assert len(idea_dict) == 17
+    assert sue_agenda._idea_dict.get(work_road)._active == False
 
 
-def test_agenda_get_idea_list_returns_correct_list():
+def test_agenda_get_idea_dict_returns_correct_list():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = sue_agenda.make_l1_road(week_text)
     wed_text = "Wednesday"
-    wed_road = x_agenda.make_road(week_road, wed_text)
+    wed_road = sue_agenda.make_road(week_road, wed_text)
     state_text = "nation-state"
-    state_road = x_agenda.make_l1_road(state_text)
+    state_road = sue_agenda.make_l1_road(state_text)
     france_text = "France"
-    france_road = x_agenda.make_road(state_road, france_text)
-    x_agenda.set_belief(base=week_road, pick=wed_road)
-    x_agenda.set_belief(base=state_road, pick=france_road)
+    france_road = sue_agenda.make_road(state_road, france_text)
+    sue_agenda.set_belief(base=week_road, pick=wed_road)
+    sue_agenda.set_belief(base=state_road, pick=france_road)
 
     work_text = "work"
-    work_road = x_agenda.make_l1_road(work_text)
-    work_idea = x_agenda.get_idea_obj(work_road)
-    print(f"{x_agenda._agent_id=} {len(work_idea._reasonunits)=}")
+    work_road = sue_agenda.make_l1_road(work_text)
+    work_idea = sue_agenda.get_idea_obj(work_road)
+    print(f"{sue_agenda._agent_id=} {len(work_idea._reasonunits)=}")
     # print(f"{work_idea._reasonunits=}")
-    print(f"{x_agenda._agent_id=} {len(x_agenda._idearoot._beliefunits)=}")
-    # print(f"{x_agenda._idearoot._beliefunits=}")
+    print(f"{sue_agenda._agent_id=} {len(sue_agenda._idearoot._beliefunits)=}")
+    # print(f"{sue_agenda._idearoot._beliefunits=}")
 
-    idea_list = x_agenda.get_idea_list()
-    assert idea_list
-    assert len(idea_list) == 17
+    idea_dict = sue_agenda.get_idea_dict()
+    assert idea_dict
+    assert len(idea_dict) == 17
 
     usa_text = "USA"
-    usa_road = x_agenda.make_road(state_road, usa_text)
+    usa_road = sue_agenda.make_road(state_road, usa_text)
     oregon_text = "Oregon"
-    oregon_road = x_agenda.make_road(usa_road, oregon_text)
+    oregon_road = sue_agenda.make_road(usa_road, oregon_text)
 
     wed = premiseunit_shop(need=wed_road)
     wed._status = True
@@ -165,12 +165,12 @@ def test_agenda_get_idea_list_returns_correct_list():
     }
 
     # WHEN
-    x_agenda.set_belief(base=state_road, pick=oregon_road)
+    sue_agenda.set_belief(base=state_road, pick=oregon_road)
 
     # THEN
-    work_idea = x_agenda._idea_dict.get(work_road)
+    work_idea = sue_agenda._idea_dict.get(work_road)
     print(f"\nlook at {work_idea.get_road()=}")
-    assert work_idea._parent_road == x_agenda._market_id
+    assert work_idea._parent_road == sue_agenda._market_id
     assert work_idea._kids == {}
     assert work_idea._weight == 30
     assert work_idea._label == work_text
@@ -201,7 +201,7 @@ def test_agenda_get_idea_list_returns_correct_list():
     # assert work_idea._reasonunits == x1_reasonunits
 
     # print("iterate through every idea...")
-    # for curr_idea in idea_list:
+    # for curr_idea in idea_dict:
     #     if str(type(curr_idea)).find(".idea.IdeaUnit'>") > 0:
     #         assert curr_idea._active != None
 
@@ -261,7 +261,7 @@ def test_agenda_set_agenda_metrics_CorrectlyClears_agenda_coin():
     assert x_agenda.get_idea_obj(week_road)._agenda_coin_cease != 13
 
 
-def test_agenda_get_idea_list_CorrectlyCalculatesIdeaAttr_agenda_coin():
+def test_agenda_set_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_coin():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao", _weight=10)
 
@@ -330,11 +330,11 @@ def test_agenda_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
 
     # WHEN
     idea_list_without_idearoot = x_agenda.get_idea_list_without_idearoot()
-    idea_list_with_idearoot = x_agenda.get_idea_list()
+    idea_dict_with_idearoot = x_agenda.get_idea_dict()
 
     # THEN
     assert len(idea_list_without_idearoot) == 28
-    assert len(idea_list_without_idearoot) + 1 == len(idea_list_with_idearoot)
+    assert len(idea_list_without_idearoot) + 1 == len(idea_dict_with_idearoot)
 
     # for idea in x_agenda.get_idea_list_without_idearoot():
     #     assert str(type(idea)).find(".idea.IdeaUnit'>") > 0
@@ -343,58 +343,58 @@ def test_agenda_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
     #     print(f"{idea._label=}")
 
 
-def test_agenda_get_idea_list_CorrectlyCalculatesRangeAttributes():
+def test_agenda_set_agenda_metrics_CorrectlyCalculatesRangeAttributes():
     # GIVEN
-    x_agenda = get_agenda_with7amCleanTableReason()
-    idea_list = x_agenda.get_idea_list()
+    sue_agenda = get_agenda_with7amCleanTableReason()
+    sue_agenda.set_agenda_metrics()
     house_text = "housework"
-    house_road = x_agenda.make_l1_road(house_text)
+    house_road = sue_agenda.make_l1_road(house_text)
     clean_text = "clean table"
-    clean_road = x_agenda.make_road(house_road, clean_text)
-    assert x_agenda._idea_dict.get(clean_road)._active == False
+    clean_road = sue_agenda.make_road(house_road, clean_text)
+    assert sue_agenda._idea_dict.get(clean_road)._active == False
 
     # set beliefs as midnight to 8am
     time_text = "timetech"
-    time_road = x_agenda.make_l1_road(time_text)
+    time_road = sue_agenda.make_l1_road(time_text)
     day24hr_text = "24hr day"
-    day24hr_road = x_agenda.make_road(time_road, day24hr_text)
+    day24hr_road = sue_agenda.make_road(time_road, day24hr_text)
     day24hr_base = day24hr_road
     day24hr_pick = day24hr_road
     day24hr_open = 0.0
     day24hr_nigh = 8.0
 
     # WHEN
-    x_agenda.set_belief(
+    sue_agenda.set_belief(
         base=day24hr_base, pick=day24hr_pick, open=day24hr_open, nigh=day24hr_nigh
     )
 
     # THEN
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(clean_road)._active
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._idea_dict.get(clean_road)._active
 
     # WHEN
     # set beliefs as 8am to 10am
     day24hr_open = 8.0
     day24hr_nigh = 10.0
-    print(x_agenda._idearoot._beliefunits[day24hr_road])
-    x_agenda.set_belief(
+    print(sue_agenda._idearoot._beliefunits[day24hr_road])
+    sue_agenda.set_belief(
         base=day24hr_base, pick=day24hr_pick, open=day24hr_open, nigh=day24hr_nigh
     )
-    print(x_agenda._idearoot._beliefunits[day24hr_road])
-    print(x_agenda._idearoot._kids[house_text]._kids[clean_text]._reasonunits)
-    # x_agenda._idearoot._kids["housework"]._kids[clean_text]._active = None
+    print(sue_agenda._idearoot._beliefunits[day24hr_road])
+    print(sue_agenda._idearoot._kids[house_text]._kids[clean_text]._reasonunits)
+    # sue_agenda._idearoot._kids["housework"]._kids[clean_text]._active = None
 
     # THEN
-    x_agenda.set_agenda_metrics()
-    assert x_agenda._idea_dict.get(clean_road)._active == False
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._idea_dict.get(clean_road)._active == False
 
 
 def test_get_intent_dict():
     # GIVEN
-    x_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
 
     # WHEN
-    promise_items = x_agenda.get_intent_dict()
+    promise_items = sue_agenda.get_intent_dict()
 
     # THEN
     assert promise_items != None
@@ -402,48 +402,48 @@ def test_get_intent_dict():
     assert len(promise_items) == 1
 
 
-def test_exammple_idea_list_HasCorrectData():
-    x_agenda = agenda_v001()
-    print(f"{x_agenda.get_reason_bases()=}")
-    # day_hour = f"{x_agenda._market_id},day_hour"
-    # x_agenda.set_belief(base=day_hour, pick=day_hour, open=0, nigh=23)
+def test_exammple_idea_dict_HasCorrectData():
+    yao_agenda = agenda_v001()
+    print(f"{yao_agenda.get_reason_bases()=}")
+    # day_hour = f"{yao_agenda._market_id},day_hour"
+    # yao_agenda.set_belief(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = x_agenda.make_l1_road(day_min_text)
-    x_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=1439)
+    day_min_road = yao_agenda.make_l1_road(day_min_text)
+    yao_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=1439)
 
     mood_text = "Moods"
-    mood_road = x_agenda.make_l1_road(mood_text)
-    x_agenda.set_belief(base=mood_road, pick=mood_road)
-    print(f"{x_agenda.get_reason_bases()=}")
+    mood_road = yao_agenda.make_l1_road(mood_text)
+    yao_agenda.set_belief(base=mood_road, pick=mood_road)
+    print(f"{yao_agenda.get_reason_bases()=}")
 
     yr_mon_text = "year_month"
-    yr_mon_road = x_agenda.make_l1_road(yr_mon_text)
-    x_agenda.set_belief(base=yr_mon_road, pick=yr_mon_road)
+    yr_mon_road = yao_agenda.make_l1_road(yr_mon_text)
+    yao_agenda.set_belief(base=yr_mon_road, pick=yr_mon_road)
     inter_text = "Internet"
-    inter_road = x_agenda.make_l1_road(inter_text)
-    x_agenda.set_belief(base=inter_road, pick=inter_road)
-    assert x_agenda != None
-    # print(f"{x_agenda._agent_id=}")
-    # print(f"{len(x_agenda._idearoot._kids)=}")
+    inter_road = yao_agenda.make_l1_road(inter_text)
+    yao_agenda.set_belief(base=inter_road, pick=inter_road)
+    assert yao_agenda != None
+    # print(f"{yao_agenda._agent_id=}")
+    # print(f"{len(yao_agenda._idearoot._kids)=}")
     ulty_text = "Ultimate Frisbee"
-    ulty_road = x_agenda.make_l1_road(ulty_text)
+    ulty_road = yao_agenda.make_l1_road(ulty_text)
 
-    # if x_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
-    assert x_agenda._idearoot._kids[ulty_text]._reasonunits != None
-    assert x_agenda._agent_id != None
+    # if yao_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
+    assert yao_agenda._idearoot._kids[ulty_text]._reasonunits != None
+    assert yao_agenda._agent_id != None
 
-    # for belief in x_agenda._idearoot._beliefunits.values():
+    # for belief in yao_agenda._idearoot._beliefunits.values():
     #     print(f"{belief=}")
 
-    idea_list = x_agenda.get_idea_list()
+    yao_agenda.set_agenda_metrics()
     # print(f"{str(type(idea))=}")
-    # print(f"{len(idea_list)=}")
+    # print(f"{len(idea_dict)=}")
     laundry_text = "laundry monday"
-    casa_road = x_agenda.make_l1_road("casa")
-    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
-    laundry_road = x_agenda.make_road(cleaning_road, laundry_text)
+    casa_road = yao_agenda.make_l1_road("casa")
+    cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
+    laundry_road = yao_agenda.make_road(cleaning_road, laundry_text)
 
-    # for idea in idea_list:
+    # for idea in idea_dict:
     #     assert (
     #         str(type(idea)).find(".idea.IdeaUnit'>") > 0
     #         or str(type(idea)).find(".idea.IdeaUnit'>") > 0
@@ -453,61 +453,61 @@ def test_exammple_idea_list_HasCorrectData():
     #         for reason in idea._reasonunits.values():
     #             print(f"{idea._label=} {reason.base=}")  # {reason.premises=}")
     # assert idea._active == False
-    assert x_agenda._idea_dict.get(laundry_road)._active == False
+    assert yao_agenda._idea_dict.get(laundry_road)._active == False
 
     # WHEN
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = yao_agenda.make_l1_road(week_text)
     mon_text = "Monday"
-    mon_road = x_agenda.make_road(week_road, mon_text)
-    x_agenda.set_belief(base=week_road, pick=mon_road)
+    mon_road = yao_agenda.make_road(week_road, mon_text)
+    yao_agenda.set_belief(base=week_road, pick=mon_road)
 
-    x_agenda.set_agenda_metrics()
+    yao_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idea_dict.get(laundry_road)._active == False
+    assert yao_agenda._idea_dict.get(laundry_road)._active == False
 
 
-def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
+def test_exammple_set_agenda_metrics_OptionWeekdaysCorrectlyWork():
     # GIVEN
-    x_agenda = agenda_v001()
+    yao_agenda = agenda_v001()
 
     day_hr_text = "day_hour"
-    day_hr_road = x_agenda.make_l1_road(day_hr_text)
-    x_agenda.set_belief(base=day_hr_road, pick=day_hr_road, open=0, nigh=23)
+    day_hr_road = yao_agenda.make_l1_road(day_hr_text)
+    yao_agenda.set_belief(base=day_hr_road, pick=day_hr_road, open=0, nigh=23)
     day_min_text = "day_minute"
-    day_min_road = x_agenda.make_l1_road(day_min_text)
-    x_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=59)
+    day_min_road = yao_agenda.make_l1_road(day_min_text)
+    yao_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     mon_wk_text = "month_week"
-    mon_wk_road = x_agenda.make_l1_road(mon_wk_text)
-    x_agenda.set_belief(base=mon_wk_road, pick=mon_wk_road)
+    mon_wk_road = yao_agenda.make_l1_road(mon_wk_text)
+    yao_agenda.set_belief(base=mon_wk_road, pick=mon_wk_road)
     nation_text = "Nation-States"
-    nation_road = x_agenda.make_l1_road(nation_text)
-    x_agenda.set_belief(base=nation_road, pick=nation_road)
+    nation_road = yao_agenda.make_l1_road(nation_text)
+    yao_agenda.set_belief(base=nation_road, pick=nation_road)
     mood_text = "Moods"
-    mood_road = x_agenda.make_l1_road(mood_text)
-    x_agenda.set_belief(base=mood_road, pick=mood_road)
+    mood_road = yao_agenda.make_l1_road(mood_text)
+    yao_agenda.set_belief(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = x_agenda.make_l1_road(aaron_text)
-    x_agenda.set_belief(base=aaron_road, pick=aaron_road)
+    aaron_road = yao_agenda.make_l1_road(aaron_text)
+    yao_agenda.set_belief(base=aaron_road, pick=aaron_road)
     inter_text = "Internet"
-    inter_road = x_agenda.make_l1_road(inter_text)
-    x_agenda.set_belief(base=inter_road, pick=inter_road)
+    inter_road = yao_agenda.make_l1_road(inter_text)
+    yao_agenda.set_belief(base=inter_road, pick=inter_road)
     yr_mon_text = "year_month"
-    yr_mon_road = x_agenda.make_l1_road(yr_mon_text)
-    x_agenda.set_belief(base=yr_mon_road, pick=yr_mon_road, open=0, nigh=1000)
+    yr_mon_road = yao_agenda.make_l1_road(yr_mon_text)
+    yao_agenda.set_belief(base=yr_mon_road, pick=yr_mon_road, open=0, nigh=1000)
 
-    idea_list = x_agenda.get_idea_list()
-    missing_beliefs = x_agenda.get_missing_belief_bases()
+    yao_agenda.set_agenda_metrics()
+    missing_beliefs = yao_agenda.get_missing_belief_bases()
     # for missing_belief, count in missing_beliefs.items():
     #     print(f"{missing_belief=} {count=}")
 
     week_text = "weekdays"
-    week_road = x_agenda.make_l1_road(week_text)
+    week_road = yao_agenda.make_l1_road(week_text)
     mon_text = "Monday"
-    mon_road = x_agenda.make_road(week_road, mon_text)
+    mon_road = yao_agenda.make_road(week_road, mon_text)
     tue_text = "Tuesday"
-    tue_road = x_agenda.make_road(week_road, tue_text)
+    tue_road = yao_agenda.make_road(week_road, tue_text)
     mon_premise_x = premiseunit_shop(need=mon_road)
     mon_premise_x._status = False
     mon_premise_x._task = False
@@ -520,11 +520,11 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     }
     mt_reasonunit = reasonunit_shop(week_road, premises=mt_premises)
     mt_reasonheir = reasonheir_shop(week_road, premises=mt_premises, _status=False)
-    x_idearoot = x_agenda.get_idea_obj(x_agenda._market_id)
+    x_idearoot = yao_agenda.get_idea_obj(yao_agenda._market_id)
     x_idearoot.set_reasonunit(reason=mt_reasonunit)
-    # print(f"{x_agenda._reasonunits[week_road].base=}")
-    # print(f"{x_agenda._reasonunits[week_road].premises[mon_road].need=}")
-    # print(f"{x_agenda._reasonunits[week_road].premises[tue_road].need=}")
+    # print(f"{yao_agenda._reasonunits[week_road].base=}")
+    # print(f"{yao_agenda._reasonunits[week_road].premises[mon_road].need=}")
+    # print(f"{yao_agenda._reasonunits[week_road].premises[tue_road].need=}")
     week_reasonunit = x_idearoot._reasonunits[week_road]
     print(f"{week_reasonunit.premises=}")
     premise_mon = week_reasonunit.premises.get(mon_road)
@@ -536,7 +536,7 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     assert week_reasonunit == mt_reasonunit
 
     # WHEN
-    idea_list = x_agenda.get_idea_list()
+    idea_dict = yao_agenda.get_idea_dict()
 
     # THEN
     gen_week_reasonheir = x_idearoot.get_reasonheir(week_road)
@@ -547,55 +547,57 @@ def test_exammple_idea_list_OptionWeekdaysCorrectlyWork():
     assert gen_week_reasonheir == mt_reasonheir
 
     casa_text = "casa"
-    casa_road = x_agenda.make_l1_road(casa_text)
+    casa_road = yao_agenda.make_l1_road(casa_text)
     bird_text = "say hi to birds"
-    bird_road = x_agenda.make_road(casa_road, bird_text)
-    assert from_list_get_active(road=bird_road, idea_list=idea_list) == False
+    bird_road = yao_agenda.make_road(casa_road, bird_text)
+    assert from_list_get_active(road=bird_road, idea_dict=idea_dict) == False
 
-    # x_agenda.set_belief(base=week_road, pick=mon_road)
-    # idea_list = x_agenda.get_idea_list()
+    # yao_agenda.set_belief(base=week_road, pick=mon_road)
+    # idea_dict = yao_agenda.get_idea_dict()
     # casa_idea = x_idearoot._kids[casa_text]
     # twee_idea = casa_idea._kids[bird_text]
     # print(f"{len(x_idearoot._reasonheirs)=}")
     # print(f"{len(casa_idea._reasonheirs)=}")
     # print(f"{len(twee_idea._reasonheirs)=}")
 
-    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
+    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
 
-    # x_agenda.set_belief(base=f"{x_agenda._market_id},weekdays", pick=f"{x_agenda._market_id},weekdays,Tuesday")
-    # idea_list = x_agenda.get_idea_list()
-    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == True
+    # yao_agenda.set_belief(base=f"{yao_agenda._market_id},weekdays", pick=f"{yao_agenda._market_id},weekdays,Tuesday")
+    # idea_dict = yao_agenda.get_idea_dict()
+    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
 
-    # x_agenda.set_belief(base=f"{x_agenda._market_id},weekdays", pick=f"{x_agenda._market_id},weekdays,Wednesday")
-    # idea_list = x_agenda.get_idea_list()
-    # assert YR.get_active(road=bird_idea, idea_list=idea_list) == False
+    # yao_agenda.set_belief(base=f"{yao_agenda._market_id},weekdays", pick=f"{yao_agenda._market_id},weekdays,Wednesday")
+    # idea_dict = yao_agenda.get_idea_dict()
+    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == False
 
 
-def test_exammple_idea_list_Every6WeeksReason():
+def test_exammple_idea_dict_Every6WeeksReason():
     # GIVEN
-    x_agenda = agenda_v001()
+    yao_agenda = agenda_v001()
     day_text = "day_hour"
-    day_road = x_agenda.make_l1_road(day_text)
+    day_road = yao_agenda.make_l1_road(day_text)
     min_text = "day_minute"
-    min_road = x_agenda.make_l1_road(day_text)
+    min_road = yao_agenda.make_l1_road(day_text)
 
     # WHEN
-    x_agenda.set_belief(base=day_road, pick=day_road, open=0, nigh=23)
-    x_agenda.set_belief(base=min_road, pick=min_road, open=0, nigh=59)
-    idea_list = x_agenda.get_idea_list()
+    yao_agenda.set_belief(base=day_road, pick=day_road, open=0, nigh=23)
+    yao_agenda.set_belief(base=min_road, pick=min_road, open=0, nigh=59)
+    idea_dict = yao_agenda.get_idea_dict()
 
     # THEN
-    ced_week_base = x_agenda.make_l1_road("ced_week")
+    ced_week_base = yao_agenda.make_l1_road("ced_week")
 
     premise_divisor = None
     premise_open = None
     premise_nigh = None
-    print(f"{len(idea_list)=}")
+    print(f"{len(idea_dict)=}")
 
-    casa_road = x_agenda.make_l1_road("casa")
-    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
-    clean_couch_road = x_agenda.make_road(cleaning_road, "clean sheets couch blankets")
-    clean_sheet_idea = x_agenda.get_idea_obj(clean_couch_road)
+    casa_road = yao_agenda.make_l1_road("casa")
+    cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
+    clean_couch_road = yao_agenda.make_road(
+        cleaning_road, "clean sheets couch blankets"
+    )
+    clean_sheet_idea = yao_agenda.get_idea_obj(clean_couch_road)
     # print(f"{clean_sheet_idea._reasonunits.values()=}")
     ced_week_reason = clean_sheet_idea._reasonunits.get(ced_week_base)
     ced_week_premise = ced_week_reason.premises.get(ced_week_base)
@@ -609,7 +611,7 @@ def test_exammple_idea_list_Every6WeeksReason():
     # print(f"{idea._reasonunits=}")
     assert clean_sheet_idea._active == False
 
-    # for idea in idea_list:
+    # for idea in idea_dict:
     #     # print(f"{idea._parent_road=}")
     #     if idea._label == "clean sheets couch blankets":
     #         print(f"{idea.get_road()=}")
@@ -619,30 +621,30 @@ def test_exammple_idea_list_Every6WeeksReason():
     print(
         f"There exists a idea with a reason_base {ced_week_base} that also has lemmet div =6 and open/nigh =1"
     )
-    # print(f"{len(idea_list)=}")
+    # print(f"{len(idea_dict)=}")
     ced_week_open = 6001
 
     # WHEN
-    x_agenda.set_belief(
+    yao_agenda.set_belief(
         base=ced_week_base, pick=ced_week_base, open=ced_week_open, nigh=ced_week_open
     )
     nation_text = "Nation-States"
-    nation_road = x_agenda.make_l1_road(nation_text)
-    x_agenda.set_belief(base=nation_road, pick=nation_road)
+    nation_road = yao_agenda.make_l1_road(nation_text)
+    yao_agenda.set_belief(base=nation_road, pick=nation_road)
     print(
         f"Nation-states set and also belief set: {ced_week_base=} with {ced_week_open=} and {ced_week_open=}"
     )
-    print(f"{x_agenda._idearoot._beliefunits=}")
-    idea_list = x_agenda.get_idea_list()
+    print(f"{yao_agenda._idearoot._beliefunits=}")
+    yao_agenda.set_agenda_metrics()
 
     # THEN
     week_text = "ced_week"
-    week_road = x_agenda.make_l1_road(week_text)
-    casa_road = x_agenda.make_l1_road("casa")
-    cleaning_road = x_agenda.make_road(casa_road, "cleaning")
+    week_road = yao_agenda.make_l1_road(week_text)
+    casa_road = yao_agenda.make_l1_road("casa")
+    cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
     clean_couch_text = "clean sheets couch blankets"
-    clean_couch_road = x_agenda.make_road(cleaning_road, clean_couch_text)
-    clean_couch_idea = x_agenda.get_idea_obj(road=clean_couch_road)
+    clean_couch_road = yao_agenda.make_road(cleaning_road, clean_couch_text)
+    clean_couch_idea = yao_agenda.get_idea_obj(road=clean_couch_road)
     week_reason = clean_couch_idea._reasonunits.get(week_road)
     week_premise = week_reason.premises.get(week_road)
     print(f"{clean_couch_idea._label=} {week_reason.base=} {week_premise=}")
@@ -666,13 +668,13 @@ def print_premise_info(road: str, idea_list):
 
 def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     # GIVEN
-    x_agenda = agenda_v001()
+    yao_agenda = agenda_v001()
 
     # WHEN
-    idea_list = x_agenda.get_idea_list()
+    idea_dict = yao_agenda.get_idea_dict()
 
     # THEN
-    print(f"{len(idea_list)=}")
+    print(f"{len(idea_dict)=}")
     # first_idea_kid_count = 0
     # first_idea_kid_none_count = 0
     # first_idea_kid_true_count = 0
@@ -700,55 +702,55 @@ def test_exammple_idea_list_EveryIdeaHasSatiateStatus():
     #     assert idea._active in (True, False)
     # assert idea_kid_count == len(idea_list_without_idearoot)
 
-    assert len(idea_list) == sum(idea._active != None for idea in idea_list)
+    assert len(idea_dict) == sum(idea._active != None for idea in idea_dict.values())
 
 
 def test_exammple_idea_list_EveryOtherMonthWorks():
     # GIVEN
-    x_agenda = agenda_v001()
+    yao_agenda = agenda_v001()
     minute_text = "day_minute"
-    minute_road = x_agenda.make_l1_road(minute_text)
-    x_agenda.set_belief(base=minute_road, pick=minute_road, open=0, nigh=1399)
+    minute_road = yao_agenda.make_l1_road(minute_text)
+    yao_agenda.set_belief(base=minute_road, pick=minute_road, open=0, nigh=1399)
     month_text = "month_week"
-    month_road = x_agenda.make_l1_road(month_text)
-    x_agenda.set_belief(base=month_road, pick=month_road)
+    month_road = yao_agenda.make_l1_road(month_text)
+    yao_agenda.set_belief(base=month_road, pick=month_road)
     nations_text = "Nation-States"
-    nations_road = x_agenda.make_l1_road(nations_text)
-    x_agenda.set_belief(base=nations_road, pick=nations_road)
+    nations_road = yao_agenda.make_l1_road(nations_text)
+    yao_agenda.set_belief(base=nations_road, pick=nations_road)
     mood_text = "Moods"
-    mood_road = x_agenda.make_l1_road(mood_text)
-    x_agenda.set_belief(base=mood_road, pick=mood_road)
+    mood_road = yao_agenda.make_l1_road(mood_text)
+    yao_agenda.set_belief(base=mood_road, pick=mood_road)
     aaron_text = "Aaron Donald things effected by him"
-    aaron_road = x_agenda.make_l1_road(aaron_text)
-    x_agenda.set_belief(base=aaron_road, pick=aaron_road)
+    aaron_road = yao_agenda.make_l1_road(aaron_text)
+    yao_agenda.set_belief(base=aaron_road, pick=aaron_road)
     internet_text = "Internet"
-    internet_road = x_agenda.make_l1_road(internet_text)
-    x_agenda.set_belief(base=internet_road, pick=internet_road)
+    internet_road = yao_agenda.make_l1_road(internet_text)
+    yao_agenda.set_belief(base=internet_road, pick=internet_road)
     weekdays_text = "weekdays"
-    weekdays_road = x_agenda.make_l1_road(weekdays_text)
-    x_agenda.set_belief(base=weekdays_road, pick=weekdays_road)
-    idea_list = x_agenda.get_idea_list()
-    print(f"{len(idea_list)=}")
+    weekdays_road = yao_agenda.make_l1_road(weekdays_text)
+    yao_agenda.set_belief(base=weekdays_road, pick=weekdays_road)
+    idea_dict = yao_agenda.get_idea_dict()
+    print(f"{len(idea_dict)=}")
 
     casa_text = "casa"
-    casa_road = x_agenda.make_l1_road(casa_text)
+    casa_road = yao_agenda.make_l1_road(casa_text)
     clean_text = "cleaning"
-    clean_road = x_agenda.make_road(casa_road, clean_text)
+    clean_road = yao_agenda.make_road(casa_road, clean_text)
     mat_label = "deep clean play mat"
-    mat_road = x_agenda.make_road(clean_road, mat_label)
-    assert from_list_get_active(road=mat_road, idea_list=idea_list) == False
+    mat_road = yao_agenda.make_road(clean_road, mat_label)
+    assert from_list_get_active(road=mat_road, idea_dict=idea_dict) == False
 
-    year_month_base = x_agenda.make_l1_road("year_month")
+    year_month_base = yao_agenda.make_l1_road("year_month")
     print(f"{year_month_base=}, {year_month_base=}")
 
     # WHEN
-    x_agenda.set_belief(base=year_month_base, pick=year_month_base, open=0, nigh=8)
-    ced_week = x_agenda.make_l1_road("ced_week")
-    x_agenda.set_belief(base=ced_week, pick=ced_week, open=0, nigh=4)
+    yao_agenda.set_belief(base=year_month_base, pick=year_month_base, open=0, nigh=8)
+    ced_week = yao_agenda.make_l1_road("ced_week")
+    yao_agenda.set_belief(base=ced_week, pick=ced_week, open=0, nigh=4)
 
     # THEN
-    idea_list = x_agenda.get_idea_list()
-    print(f"{len(idea_list)=}")
-    print(f"{len(x_agenda._idearoot._beliefunits)=}")
-    # from_list_get_active(road=mat_road, idea_list=idea_list)
-    assert from_list_get_active(road=mat_road, idea_list=idea_list)
+    idea_dict = yao_agenda.get_idea_dict()
+    print(f"{len(idea_dict)=}")
+    print(f"{len(yao_agenda._idearoot._beliefunits)=}")
+    # from_list_get_active(road=mat_road, idea_dict=idea_dict)
+    assert from_list_get_active(road=mat_road, idea_dict=idea_dict)

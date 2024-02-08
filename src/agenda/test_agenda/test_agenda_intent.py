@@ -320,7 +320,7 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     print(f"{run_reasonunits.premises[day_road]._status=}")
     print(f"{run_reasonunits.premises[day_road]._task=}")
     print(f"{zia_agenda.get_reason_bases()=}")
-    assert len(zia_agenda.get_idea_list()) == 4
+    assert len(zia_agenda.get_idea_dict()) == 4
     assert len(zia_agenda.get_intent_dict()) == 1
     print(f"{zia_agenda.get_intent_dict().keys()=}")
     assert zia_agenda.get_intent_dict().get(run_road)._task == True
@@ -386,8 +386,8 @@ def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
     x_agenda = get_from_json(x_agenda_json=x_agenda_json)
 
     # THEN
-    assert len(x_agenda.get_idea_list()) == 253
-    print(f"{len(x_agenda.get_idea_list())=}")
+    assert len(x_agenda.get_idea_dict()) == 253
+    print(f"{len(x_agenda.get_idea_dict())=}")
     casa_text = "casa"
     casa_road = x_agenda.make_l1_road(casa_text)
     body_text = "workout"
@@ -398,7 +398,7 @@ def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
     assert not veg_idea._active
     assert veg_idea.promise
 
-    # idea_list = x_agenda.get_idea_list()
+    # idea_list = x_agenda.get_idea_dict()
     # action_true_count = 0
     # for idea in idea_list:
     #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
