@@ -1565,6 +1565,7 @@ class AgendaUnit:
         child_balancelines = None
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
+        market_justified_by_problem = True
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
@@ -1596,6 +1597,14 @@ class AgendaUnit:
             x_idea_obj._all_party_credit = group_everyone
             x_idea_obj._all_party_debt = group_everyone
 
+            if x_idea_obj._market_bool:
+                market_justified_by_problem = False
+            if x_idea_obj._problem_bool:
+                market_justified_by_problem = True
+
+        if market_justified_by_problem == False:
+            self._market_justified = False
+
     def _set_root_attributes(self):
         x_idearoot = self._idearoot
         x_idearoot._level = 0
@@ -1606,7 +1615,6 @@ class AgendaUnit:
         x_idearoot.inherit_balanceheirs()
         x_idearoot.clear_balancelines()
         x_idearoot._weight = 1
-        x_idearoot._kids_total_weight = 0
         x_idearoot.set_kids_total_weight()
         x_idearoot.set_sibling_total_weight(1)
         x_idearoot.set_active(
@@ -1681,9 +1689,9 @@ class AgendaUnit:
 
     def _clear_agenda_base_metrics(self):
         self._rational = False
-        self._tree_traverse_count = False
+        self._tree_traverse_count = 0
         self._idea_dict = {self._idearoot.get_road(): self._idearoot}
-        self._market_justified = False
+        self._market_justified = True
 
     def set_agenda_metrics(self):
         self._clear_agenda_base_metrics()

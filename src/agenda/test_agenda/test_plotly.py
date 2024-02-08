@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.agenda.graph import display_agenda
+from src.agenda.graphic import display_agenda
 
 
 def test_display_ideatree_GivenAgenda():

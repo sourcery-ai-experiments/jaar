@@ -5,6 +5,7 @@ from src.agenda.party import PartyID
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balanceline_shop, balancelink_shop
+from src.agenda.graphic import display_agenda
 from pytest import raises as pytest_raises
 
 
@@ -14,7 +15,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     x_rational = True
     x_tree_traverse_count = 555
     x_idea_dict = {1: 2, 2: 4}
-    x_market_justifed = True
+    x_market_justifed = False
     sue_agenda._rational = x_rational
     sue_agenda._tree_traverse_count = x_tree_traverse_count
     sue_agenda._idea_dict = x_idea_dict
@@ -37,7 +38,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
         sue_agenda._idearoot.get_road(): sue_agenda._idearoot
     }
     assert sue_agenda._market_justified != x_market_justifed
-    assert not sue_agenda._market_justified
+    assert sue_agenda._market_justified
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
@@ -580,3 +581,87 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     assert sue_agenda.idea_exists(swim_road) == False
     assert sue_agenda.idea_exists(idaho_road) == False
     assert sue_agenda.idea_exists(japan_road) == False
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v1():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v2():
+    # GIVEN
+    sue_agenda = example_agendas_get_agenda_with_4_levels()
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v3():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.add_l1_idea(ideaunit_shop("Texas", _market_bool=True))
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified == False
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v4():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.add_l1_idea(
+        ideaunit_shop("Texas", _market_bool=True, _problem_bool=True)
+    )
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v5():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_agenda.add_idea(ideaunit_shop("El Paso", _market_bool=True), texas_road)
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_v6():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _market_bool=True))
+    sue_agenda.add_idea(ideaunit_shop("El Paso", _problem_bool=True), texas_road)
+    assert sue_agenda._market_justified == False
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._market_justified == False
