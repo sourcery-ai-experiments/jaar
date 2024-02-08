@@ -509,6 +509,22 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
     assert sue_agenda._idearoot._kids[work_text]._range_source_road == end_road
 
+    # _market_bool: bool
+    sue_agenda._idearoot._kids[work_text]._market_bool = "fun3rol"
+    range_source_road = sue_agenda._idearoot._kids[work_text]._market_bool
+    assert range_source_road == "fun3rol"
+    x_market_bool = True
+    sue_agenda.edit_idea_attr(road=work_road, market_bool=x_market_bool)
+    assert sue_agenda._idearoot._kids[work_text]._market_bool == x_market_bool
+
+    # _problem_bool: bool
+    sue_agenda._idearoot._kids[work_text]._problem_bool = "fun3rol"
+    range_source_road = sue_agenda._idearoot._kids[work_text]._problem_bool
+    assert range_source_road == "fun3rol"
+    x_problem_bool = True
+    sue_agenda.edit_idea_attr(road=work_road, problem_bool=x_problem_bool)
+    assert sue_agenda._idearoot._kids[work_text]._problem_bool == x_problem_bool
+
     print(f"{work_road=} {end_road=}")
 
 

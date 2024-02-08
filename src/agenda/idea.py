@@ -97,6 +97,8 @@ class IdeaAttrFilter:
     balancelink_del: GroupID = None
     is_expanded: bool = None
     meld_strategy: str = None
+    market_bool: bool = None
+    problem_bool: bool = None
 
     def get_premise_need(self):
         return self.reason_premise
@@ -179,6 +181,8 @@ def ideaattrfilter_shop(
     balancelink_del: GroupID = None,
     is_expanded: bool = None,
     meld_strategy: str = None,
+    market_bool: bool = None,
+    problem_bool: bool = None,
 ) -> IdeaAttrFilter:
     x_ideaattrfilter = IdeaAttrFilter(
         weight=weight,
@@ -210,6 +214,8 @@ def ideaattrfilter_shop(
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
         meld_strategy=meld_strategy,
+        market_bool=market_bool,
+        problem_bool=problem_bool,
     )
     if x_ideaattrfilter.has_ratio_attrs():
         x_ideaattrfilter.set_ratio_attr_defaults_if_none()
@@ -752,6 +758,10 @@ class IdeaUnit:
             self._meld_strategy = validate_meld_strategy(idea_attr.meld_strategy)
         if idea_attr.beliefunit != None:
             self.set_beliefunit(idea_attr.beliefunit)
+        if idea_attr.market_bool != None:
+            self._market_bool = idea_attr.market_bool
+        if idea_attr.problem_bool != None:
+            self._problem_bool = idea_attr.problem_bool
 
         self._del_reasonunit_all_cases(
             base=idea_attr.reason_del_premise_base,

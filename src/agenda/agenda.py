@@ -1297,6 +1297,8 @@ class AgendaUnit:
         balancelink_del: GroupID = None,
         is_expanded: bool = None,
         meld_strategy: MeldStrategy = None,
+        market_bool: bool = None,
+        problem_bool: bool = None,
     ):
         x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
@@ -1328,6 +1330,8 @@ class AgendaUnit:
             promise=promise,
             beliefunit=beliefunit,
             meld_strategy=meld_strategy,
+            market_bool=market_bool,
+            problem_bool=problem_bool,
         )
         if x_ideaattrfilter.has_numeric_attrs():
             self._set_ideaattrfilter_begin_close(x_ideaattrfilter, road)
