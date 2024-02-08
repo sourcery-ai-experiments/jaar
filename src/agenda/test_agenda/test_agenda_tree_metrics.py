@@ -54,7 +54,7 @@ def test_AgendaUnit_get_tree_set_all_idea_uids_unique():
     # THEN
     tree_metrics_after = yao_agenda.get_tree_metrics()
     # for uid, uid_count in tree_metrics_after.uid_dict.items():
-    #     # print(f"{uid=} {uid_count=} {len(yao_agenda.get_idea_list())=}")
+    #     # print(f"{uid=} {uid_count=} {len(yao_agenda.get_idea_dict())=}")
     #     print(f"{uid=} {uid_count=} ")
     assert len(tree_metrics_after.uid_dict) == 253
     assert tree_metrics_after.all_idea_uids_are_unique == True

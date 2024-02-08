@@ -246,7 +246,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     yao_text = "Yao"
     sx.create_new_clerkunit(clerk_id=yao_text)
     yao_agenda = sx.get_clerkunit(cid=yao_text)
-    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 1
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 1
 
     ernie_text = "ernie"
     ernie_agenda = get_cal2nodes(_agent_id=ernie_text)
@@ -257,7 +257,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
-    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 4
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 4
     new_steve_agenda = get_cal3nodes(_agent_id=steve_text)
     sx.save_forum_agenda(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._forum_dir=}")
@@ -271,4 +271,4 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     yao_agenda.refresh_depot_agendas()
 
     # THEN
-    assert len(yao_agenda.get_remelded_output_agenda().get_idea_list()) == 5
+    assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 5

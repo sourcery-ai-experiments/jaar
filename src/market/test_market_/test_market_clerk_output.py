@@ -176,9 +176,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     ux_jessi.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     # ux_steve.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     # ux_steve.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
-    assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 4
-    assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 4
-    # assert len(ux_steve.get_remelded_output_agenda().get_idea_list()) == 4
+    assert len(ux_ernie.get_remelded_output_agenda().get_idea_dict()) == 4
+    assert len(ux_jessi.get_remelded_output_agenda().get_idea_dict()) == 4
+    # assert len(ux_steve.get_remelded_output_agenda().get_idea_dict()) == 4
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_agent_id="steve")
     x_market.save_forum_agenda(new_steve_agenda)
     # print(f"{env_dir=} {ux._forum_dir=}")
@@ -192,5 +192,5 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     x_market.reload_all_clerkunits_forum_agendaunits()
 
     # THEN
-    assert len(ux_ernie.get_remelded_output_agenda().get_idea_list()) == 5
-    assert len(ux_jessi.get_remelded_output_agenda().get_idea_list()) == 5
+    assert len(ux_ernie.get_remelded_output_agenda().get_idea_dict()) == 5
+    assert len(ux_jessi.get_remelded_output_agenda().get_idea_dict()) == 5

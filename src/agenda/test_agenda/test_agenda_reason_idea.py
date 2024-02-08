@@ -169,7 +169,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     except KeyError as e:
         assert str(e) == "'A,weekdays'"
 
-    idea_list = x_agenda.get_idea_list()
+    idea_list = list(x_agenda.get_idea_dict().values())
 
     from_list_get_active(road=work_road, idea_list=idea_list)
 
@@ -222,7 +222,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     cost_text = "cost_tracking"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
     a4_agenda.add_idea(ideaunit_shop(cost_text), parent_road=cost_road)
-    a4_agenda.get_idea_list()
+    a4_agenda.set_agenda_metrics()
 
     # THEN
     work_idea = a4_agenda._idearoot._kids[work_text]
@@ -298,7 +298,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     assert cost_idea._reasonheirs == {}
 
     # WHEN
-    idea_list = a4_agenda.get_idea_list()
+    a4_agenda.set_agenda_metrics()
 
     # THEN
     assert a4_agenda._idearoot._reasonheirs == {}  # work_wk_built_reasonheir
@@ -446,9 +446,7 @@ def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh
     time_road = x_agenda.make_l1_road(time)
     rus_war = "rus_war"
     rus_war_road = x_agenda.make_road(time_road, rus_war)
-    x_agenda.add_idea(
-        ideaunit_shop(time, _begin=100, _close=2000), x_agenda._market_id
-    )
+    x_agenda.add_idea(ideaunit_shop(time, _begin=100, _close=2000), x_agenda._market_id)
     x_agenda.add_idea(ideaunit_shop(rus_war, _begin=22, _close=34), time_road)
 
     # WHEN
@@ -537,7 +535,7 @@ def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIf
     commute_text = "commute to work"
     commute_road = x_agenda.make_l1_road(commute_text)
     x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._market_id)
-    x_agenda.get_idea_list()  # set tree metrics
+    x_agenda.set_agenda_metrics()  # set tree metrics
     commute_idea = x_agenda.get_idea_obj(commute_road)
     assert len(commute_idea._reasonunits) == 0
 
@@ -607,7 +605,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
         reason_base=weekdays_road,
         reason_premise=thu_road,
     )
-    x_agenda.get_idea_list()  # set tree metrics
+    x_agenda.set_agenda_metrics()  # set tree metrics
     work_idea = x_agenda.get_idea_obj(work_road)
     assert work_idea._active == False
 
@@ -623,7 +621,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
         reason_suff_idea_active=True,
     )
     commute_idea = x_agenda.get_idea_obj(commute_road)
-    x_agenda.get_idea_list()
+    x_agenda.set_agenda_metrics()
     assert commute_idea._active == False
 
     # Belief: base: (...,weekdays) pick: (...,weekdays,wednesday)
@@ -637,7 +635,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     print("before changing belief")
     x_agenda.set_belief(base=weekdays_road, pick=thu_road)
     print("after changing belief")
-    x_agenda.get_idea_list()
+    x_agenda.set_agenda_metrics()
     assert work_idea._active == True
 
     # THEN

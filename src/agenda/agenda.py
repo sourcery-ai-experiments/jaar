@@ -98,6 +98,10 @@ class PartyMissingException(Exception):
     pass
 
 
+class Exception_market_justified(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _market_id: MarketID = None
@@ -693,7 +697,7 @@ class AgendaUnit:
         new_group_id: GroupID,
         allow_group_overwite: bool,
     ):
-        for x_idea in self.get_idea_list():
+        for x_idea in self.get_idea_dict().values():
             if (
                 x_idea._balancelinks.get(new_group_id) != None
                 and x_idea._balancelinks.get(old_group_id) != None
@@ -880,6 +884,22 @@ class AgendaUnit:
     def del_belief(self, base: RoadUnit):
         self._idearoot.del_beliefunit(base)
 
+    def get_idea_dict(self, problem: bool = None) -> dict[RoadUnit:IdeaUnit]:
+        self.set_agenda_metrics()
+        if problem:
+            if self._market_justified == False:
+                raise Exception_market_justified(
+                    f"Cannot return problem set because _market_justified={self._market_justified}."
+                )
+
+            return {
+                x_idea.get_road(): x_idea
+                for x_idea in self._idea_dict.values()
+                if x_idea._problem_bool
+            }
+        else:
+            return self._idea_dict
+
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = treemetrics_shop()
         tree_metrics.evaluate_node(
@@ -921,7 +941,7 @@ class AgendaUnit:
         idea_uid_max = tree_metrics.uid_max
         idea_uid_dict = tree_metrics.uid_dict
 
-        for x_idea in self.get_idea_list():
+        for x_idea in self.get_idea_dict().values():
             if x_idea._uid is None or idea_uid_dict.get(x_idea._uid) > 1:
                 new_idea_uid_max = idea_uid_max + 1
                 self.edit_idea_attr(road=x_idea.get_road(), uid=new_idea_uid_max)
@@ -1784,7 +1804,7 @@ class AgendaUnit:
     def get_idea_tree_ordered_road_list(
         self, no_range_descendants: bool = False
     ) -> list[RoadUnit]:
-        idea_list = self.get_idea_list()
+        idea_list = list(self.get_idea_dict.values())
         node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [

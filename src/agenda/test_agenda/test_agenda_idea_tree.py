@@ -672,12 +672,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMar
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    sue_agenda.add_l1_idea(
-        ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
-    )
-    sue_agenda.add_idea(
-        ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True), texas_road
-    )
+    texas_idea = ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
+    sue_agenda.add_l1_idea(texas_idea)
+    elpaso_idea = ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True)
+    sue_agenda.add_idea(elpaso_idea, texas_road)
     assert sue_agenda._market_justified == False
 
     # WHEN
@@ -687,21 +685,43 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMar
     assert sue_agenda._market_justified == False
 
 
-# def test_AgendaUnit_get_problems_ReturnsCorrectObjWhenSingle():
-#     # GIVEN
-#     sue_agenda = agendaunit_shop("Sue")
-#     texas_text = "Texas"
-#     texas_road = sue_agenda.make_l1_road(texas_text)
-#     sue_agenda.add_l1_idea(
-#         ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
-#     )
-#     sue_agenda.add_idea(
-#         ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True), texas_road
-#     )
-#     assert sue_agenda._market_justified == False
+def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_market_justified_IsFalse():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    texas_idea = ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
+    sue_agenda.add_l1_idea(texas_idea)
+    elpaso_idea = ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True)
+    sue_agenda.add_idea(elpaso_idea, texas_road)
+    sue_agenda.set_agenda_metrics()
+    assert sue_agenda._market_justified == False
 
-#     # WHEN
-#     sue_agenda.set_agenda_metrics()
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        sue_agenda.get_idea_dict(problem=True)
+    assert (
+        str(excinfo.value)
+        == f"Cannot return problem set because _market_justified={sue_agenda._market_justified}."
+    )
 
-#     # THEN
-#     assert sue_agenda._market_justified == False
+
+def test_AgendaUnit_get_idea_dict_ReturnsCorrectObjWhenSingle():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    casa_text = "casa"
+    sue_agenda.add_l1_idea(ideaunit_shop(casa_text))
+
+    # WHEN
+    problems_dict = sue_agenda.get_idea_dict(problem=True)
+
+    # THEN
+    assert sue_agenda._market_justified
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    texas_idea = sue_agenda.get_idea_obj(texas_road)
+    assert len(problems_dict) == 1
+    assert problems_dict == {texas_road: texas_idea}
+
+    assert 1 == 2

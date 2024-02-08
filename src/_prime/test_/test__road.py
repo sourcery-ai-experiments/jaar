@@ -482,7 +482,7 @@ def test_replace_road_delimiter_CorrectlyRaisesError():
     assert comma_delimiter == ","
     assert gen_cooker_road == comma_delimiter_cooker_road
 
-    # WHEN
+    # WHEN / THEN
     slash_delimiter = "/"
     with pytest_raises(Exception) as excinfo:
         gen_cooker_road = replace_road_delimiter(
@@ -635,8 +635,7 @@ def test_MarketID_exists():
     # THEN
     assert bob_market_id == bob_text
     assert (
-        inspect_getdoc(bob_market_id)
-        == "A RoadNode used to identify a Healer's Market"
+        inspect_getdoc(bob_market_id) == "A RoadNode used to identify a Healer's Market"
     )
 
 

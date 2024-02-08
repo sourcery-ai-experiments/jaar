@@ -712,7 +712,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             #     nigh=nigh_x,
             #     divisor=divisor_x,
             # )
-            self.x_agenda.get_idea_list()
+            self.x_agenda.set_agenda_metrics()
             self.reason_table_load()
 
     def reason_delete(self):

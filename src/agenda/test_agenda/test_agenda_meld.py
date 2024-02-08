@@ -162,7 +162,7 @@ def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     bob2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
-    assert len(bob1_agenda.get_idea_list()) == 1
+    assert len(bob1_agenda.get_idea_dict()) == 1
     assert bob1_agenda.idea_exists(tech_road) == False
     assert bob1_agenda.idea_exists(bowl_road) == False
     assert bob1_agenda.idea_exists(swim_road) == False
@@ -172,7 +172,7 @@ def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     bob1_agenda.meld(bob2_agenda)
 
     # THEN
-    assert len(bob1_agenda.get_idea_list()) == 5
+    assert len(bob1_agenda.get_idea_dict()) == 5
     assert bob1_agenda.idea_exists(tech_road)
     assert bob1_agenda.idea_exists(bowl_road)
     assert bob1_agenda.idea_exists(swim_road)
@@ -199,14 +199,14 @@ def test_AgendaUnit_idearoot_meld_2SameIdeasScenario():
     yao2_agenda.add_l1_idea(ideaunit_shop(tech_text))
     yao2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     assert yao1_agenda.get_idea_obj(bowl_road)._weight == 1
-    assert len(yao1_agenda.get_idea_list()) == 3
+    assert len(yao1_agenda.get_idea_dict()) == 3
 
     # WHEN
     yao1_agenda.meld(yao2_agenda)
 
     # THEN
     assert yao1_agenda.get_idea_obj(bowl_road)._weight == 1
-    assert len(yao1_agenda.get_idea_list()) == 3
+    assert len(yao1_agenda.get_idea_dict()) == 3
 
 
 def test_AgendaUnit_beliefunits_meld_BaseScenarioWorks():
@@ -389,7 +389,7 @@ def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
     #     assert bob_agenda_group_obj.uid == yao_agenda._groups[bob_agenda_group_key].uid
     #     assert bob_agenda_group_obj == yao_agenda._groups[bob_agenda_group_key]
     assert bob_agenda._groups == yao_agenda._groups
-    assert len(bob_agenda.get_idea_list()) == len(yao_agenda.get_idea_list())
+    assert len(bob_agenda.get_idea_dict()) == len(yao_agenda.get_idea_dict())
 
     bob_agendar_bl = bob_idearoot._balancelines
     bob_family_bl = bob_agendar_bl.get(family_text)

@@ -107,7 +107,7 @@ def test_get_time_():
     kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
 
-    idea_list = kia_agenda.get_idea_list()
+    kia_agenda.set_agenda_metrics()
     # for idea_x in idea_list:
     #     if idea_x._label in ["min2010", "years"]:
     #         print(

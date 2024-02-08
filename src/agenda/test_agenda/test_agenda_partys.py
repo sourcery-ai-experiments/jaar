@@ -221,7 +221,7 @@ def test_AgendaUnit_get_partys_depotlink_count_GetsCorrectCount():
     assert sue_agenda.get_partys_depotlink_count() == 2
 
 
-def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -370,7 +370,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     )
 
 
-def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
@@ -515,7 +515,7 @@ def test_AgendaUnit_get_idea_list_CorrectlySetsPartyUnitAgendaImportance():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_AgendaUnit_get_idea_list_CorrectlySetsPartGroupedLWPartyUnitAgendaImportance():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartGroupedLWPartyUnitAgendaImportance():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
