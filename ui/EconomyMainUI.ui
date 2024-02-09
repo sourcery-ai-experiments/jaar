@@ -39,7 +39,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="healers_table">
+   <widget class="QTableWidget" name="agent_ids_table">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -55,7 +55,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Healers</string>
+      <string>Agent_ids</string>
      </property>
     </column>
     <column>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agenda_healer">
+   <widget class="QLineEdit" name="agenda_agent_id">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -262,7 +262,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="healer_update_button">
+   <widget class="QPushButton" name="agent_id_update_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -277,10 +277,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Healer PID</string>
+     <string>Change Agent_id PID</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="healer_insert_button">
+   <widget class="QPushButton" name="agent_id_insert_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -295,10 +295,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new Healer</string>
+     <string>Add new Agent_id</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="healer_delete_button">
+   <widget class="QPushButton" name="agent_id_delete_button">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -313,7 +313,7 @@
      </font>
     </property>
     <property name="text">
-     <string>delete Healer</string>
+     <string>delete Agent_id</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="clerk_id">
@@ -436,7 +436,7 @@
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="healer_edit_button">
+   <widget class="QPushButton" name="agent_id_edit_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -451,7 +451,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit Healer</string>
+     <string>Edit Agent_id</string>
     </property>
    </widget>
    <widget class="QPushButton" name="depotlink_edit_button">
@@ -488,7 +488,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Healers Agenda</string>
+      <string>Agent_ids Agenda</string>
      </property>
     </column>
     <column>
@@ -518,7 +518,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Healers Partys</string>
+      <string>Agent_ids Partys</string>
      </property>
     </column>
     <column>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Healers Groups</string>
+      <string>Agent_ids Groups</string>
      </property>
     </column>
     <column>
@@ -578,7 +578,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Healer Ideas</string>
+      <string>Agent_id Ideas</string>
      </property>
     </column>
     <column>

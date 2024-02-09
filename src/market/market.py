@@ -247,9 +247,7 @@ class MarketUnit:
 
             sal_partybankunits = get_partybankunit_dict(bank_conn, agent_id)
             x_agenda = self.get_forum_agenda(agent_id=agent_id)
-            set_bank_partybankunits_to_agenda_partyunits(
-                x_agenda, sal_partybankunits
-            )
+            set_bank_partybankunits_to_agenda_partyunits(x_agenda, sal_partybankunits)
             self.save_forum_agenda(x_agenda)
 
     def get_partybankunits(self, agent_id: str) -> dict[str:PartyBankUnit]:

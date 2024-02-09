@@ -307,7 +307,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.agenda_healer.setText(self.x_agenda._agent_id)
+        self.agenda_agent_id.setText(self.x_agenda._agent_id)
         self.beliefs_table_load()
         self.intent_states_load()
 

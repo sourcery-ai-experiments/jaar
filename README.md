@@ -21,8 +21,8 @@
 positions are aggregated by a listener into a coherant intent that can include promises 
 of actions and/or promises of states of existence. Listening and acting on it.
 
-A healer's intent in the community is built by the the weighted intreprtation of
-1. Other healers intents 
+A persons's intent in the community is built by the the weighted intreprtation of
+1. Other persons intents 
 2. Their own independent intent
 
 Each intent is saved as a JSON file. 

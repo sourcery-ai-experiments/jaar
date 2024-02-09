@@ -105,18 +105,17 @@ class PersonUnit:
     #         el_data = []
 
     #         for x_problemunit in self.get_problemunits().values():
-    #             for x_healerlink in x_problemunit.get_healerlink_objs().values():
     #                 el_data.extend(
     #                     [
     #                         self.person_id,
     #                         x_problemunit.problem_id,
     #                         x_problemunit.weight,
-    #                         x_healerlink.healer_id,
-    #                         x_healerlink.weight,
+    #                         x_.healer_id,
+    #                         x_.weight,
     #                         x_marketlink.market_id,
     #                         x_marketlink.weight,
     #                     ]
-    #                     for x_marketlink in x_healerlink._marketlinks.values()
+    #                     for x_marketlink in x_._marketlinks.values()
     #                 )
     #         # initialize list of lists
 

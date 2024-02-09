@@ -59,10 +59,6 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
 #     # WHEN
 #     # luca_personunit = texas_world.get_personunit_from_memory(luca_text)
 #     # for x_problemunit in luca_personunit._problems.values():
-#     #     for x_healerlink in x_problemunit._healerlinks.values():
-#     #         print(
-#     #             f"{x_problemunit.problem_id=} {x_healerlink.person_id=} {x_healerlink._marketlinks.keys()=}"
-#     #         )
 #     # print(f"{texas_world._personunits.keys()=}")
 #     gen_luca_agenda = texas_world.get_world_agenda(luca_text)
 

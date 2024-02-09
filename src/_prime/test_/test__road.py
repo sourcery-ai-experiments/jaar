@@ -5,14 +5,12 @@ from src._prime.road import (
     ProblemID,
     ProblemRoad,
     HealerID,
-    HealerRoad,
     MarketID,
     AgentID,
     PartyID,
     RoadUnit,
     MarketRoad,
     AgendaRoad,
-    get_marketroad_from_healerroad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -535,42 +533,6 @@ ProblemID
 HealerID
 MarketID"""
     )
-
-
-def test_HealerRoad_Exists():
-    # GIVEN
-    texas_road = create_road("Bob", "texas")
-    sports_road = create_road(texas_road, "sports")
-
-    # WHEN
-    sports_healerroad = HealerRoad(sports_road)
-
-    # THEN
-    assert sports_healerroad != None
-    assert sports_healerroad == sports_road
-    assert (
-        inspect_getdoc(sports_healerroad)
-        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-PersonID
-ProblemID
-HealerID"""
-    )
-
-
-def test_get_marketroad_from_healerroad_ReturnsCorrectObj():
-    # GIVEN
-    bob_text = "Bob"
-    texas_text = "texas"
-    bob_texas_road = create_road(bob_text, texas_text)
-    roses_text = "roses"
-    bob_roses_road = create_road(bob_texas_road, roses_text)
-
-    # WHEN
-    texas_roses_road = get_marketroad_from_healerroad(bob_roses_road)
-
-    # THEN
-    print(f"{texas_roses_road=}")
-    assert texas_roses_road == create_road(texas_text, roses_text)
 
 
 def test_ProblemID_exists():

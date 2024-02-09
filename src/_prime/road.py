@@ -78,15 +78,6 @@ class ProblemRoad(RoadUnit):
     pass
 
 
-class HealerRoad(RoadUnit):
-    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-    PersonID
-    ProblemID
-    HealerID"""
-
-    pass
-
-
 class MarketRoad(RoadUnit):
     """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
     PersonID
@@ -266,13 +257,6 @@ def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: st
             f"Cannot replace_road_delimiter '{old_delimiter}' with '{new_delimiter}' because the new one already exists in road '{road}'."
         )
     return road.replace(old_delimiter, new_delimiter)
-
-
-def get_marketroad_from_healerroad(
-    x_healerroad: HealerRoad, delimiter: str = None
-) -> MarketRoad:
-    x_roadnodes = get_all_road_nodes(x_healerroad, delimiter=delimiter)
-    return create_road_from_nodes(x_roadnodes[1:], delimiter=delimiter)
 
 
 def get_single_roadnode(

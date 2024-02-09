@@ -70,10 +70,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_update_button.clicked.connect(self.agenda_update_pid)
         self.agenda_delete_button.clicked.connect(self.agenda_delete)
         self.agendas_table.itemClicked.connect(self.agendas_table_select)
-        self.healer_insert_button.clicked.connect(self.healer_insert)
-        self.healer_update_button.clicked.connect(self.healer_update_pid)
-        self.healer_delete_button.clicked.connect(self.healer_delete)
-        self.healers_table.itemClicked.connect(self.healers_table_select)
+        self.agent_id_insert_button.clicked.connect(self.agent_id_insert)
+        self.agent_id_update_button.clicked.connect(self.agent_id_update_pid)
+        self.agent_id_delete_button.clicked.connect(self.agent_id_delete)
+        self.agent_ids_table.itemClicked.connect(self.agent_ids_table_select)
         self.reload_forum_agendas_button.clicked.connect(self.reload_forum_agendas)
         self.set_forum_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
         self.set_forum_and_reload_srcs_button.clicked.connect(
@@ -104,12 +104,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_market()
         self.market_id_combo_refresh()
         self.market_id_combo.setCurrentText(first_env)
-        self._healer_load(clerk_id="ernie")
+        self._agent_id_load(clerk_id="ernie")
 
     def save_contract(self):
         if self.contract != None:
             self.x_clerk.save_contract_agenda(self.contract)
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def reload_forum_agendas(self):
         if self.market_x != None:
@@ -137,24 +137,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_agent_id.setText(
             self.agendas_table.item(self.agendas_table.currentRow(), 0).text()
         )
-        if self.healers_table.currentRow() != -1:
-            selected_healer = self.healers_table.item(
-                self.healers_table.currentRow(), 0
+        if self.agent_ids_table.currentRow() != -1:
+            selected_agent_id = self.agent_ids_table.item(
+                self.agent_ids_table.currentRow(), 0
             ).text()
             selected_agenda = self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
-            self.depotlink_pid.setText(f"{selected_healer} - {selected_agenda}")
+            self.depotlink_pid.setText(f"{selected_agent_id} - {selected_agenda}")
 
-    def healers_table_select(self):
-        x_clerk_id = self.healers_table.item(self.healers_table.currentRow(), 0).text()
-        self._healer_load(clerk_id=x_clerk_id)
+    def agent_ids_table_select(self):
+        x_clerk_id = self.agent_ids_table.item(
+            self.agent_ids_table.currentRow(), 0
+        ).text()
+        self._agent_id_load(clerk_id=x_clerk_id)
 
-    def _healer_load(self, clerk_id: str):
+    def _agent_id_load(self, clerk_id: str):
         self.market_x.create_new_clerkunit(clerk_id=clerk_id)
         self.x_clerk = self.market_x._clerkunits.get(clerk_id)
         self.clerk_id.setText(self.x_clerk._clerk_id)
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def depotlinks_table_select(self):
         self.depotlink_pid.setText(
@@ -173,7 +175,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         # self.ignore_agenda_x = self.market_x.get_forum_agenda(
         self.ignore_agenda_x = self.market_x.get_agenda_from_ignores_dir(
-            clerk_id=self.x_clerk.pid, _healer=ignore_agenda_agent_id
+            clerk_id=self.x_clerk.pid, _agent_id=ignore_agenda_agent_id
         )
         self.edit_agenda = self.ignore_agenda_x
 
@@ -181,7 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_x.set_ignore_agenda_file(
             clerk_id=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
         )
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def show_ignores_table(self):
         self.ignores_table.setHidden(False)
@@ -232,26 +234,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_market()
 
-    def healer_insert(self):
+    def agent_id_insert(self):
         self.market_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
-        self.refresh_healers()
+        self.refresh_agent_ids()
 
-    def healer_update_pid(self):
-        currently_selected = self.healers_table.item(
-            self.healers_table.currentRow(), 0
+    def agent_id_update_pid(self):
+        currently_selected = self.agent_ids_table.item(
+            self.agent_ids_table.currentRow(), 0
         ).text()
         typed_in = self.clerk_id.text()
         if currently_selected != typed_in:
             self.market_x.change_clerkunit_cid(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_healers()
+            self.refresh_agent_ids()
 
-    def healer_delete(self):
+    def agent_id_delete(self):
         self.market_x.del_clerkunit_dir(
-            clerk_id=self.healers_table.item(self.healers_table.currentRow(), 0).text()
+            clerk_id=self.agent_ids_table.item(
+                self.agent_ids_table.currentRow(), 0
+            ).text()
         )
-        self.refresh_healers()
+        self.refresh_agent_ids()
 
     def depotlink_insert(self):
         agenda_agent_id = self.agendas_table.item(
@@ -269,7 +273,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_weight=self.depotlink_weight.text(),
             )
             self.market_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def depotlink_update(self):
         clerk_id_x = self.x_clerk.pid
@@ -281,7 +285,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             debtor_weight=self.depotlink_weight.text(),
         )
         self.market_x.save_clerkunit_file(clerk_id=clerk_id_x)
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def depotlink_delete(self):
         clerk_id_x = self.x_clerk.pid
@@ -289,19 +293,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             clerk_id=clerk_id_x, agendaunit_agent_id=self.depotlink_pid.text()
         )
         self.market_x.save_clerkunit_file(clerk_id=clerk_id_x)
-        self.refresh_healer()
+        self.refresh_agent_id()
 
     def get_agenda_agent_id_list(self):
         return [[file_name] for file_name in dir_files(self.market_x.get_forum_dir())]
 
     def get_clerk_id_list(self):
-        healers_healer_list = []
+        agent_ids_agent_id_list = []
         if self.market_x != None:
-            healers_healer_list.extend(
-                [healer_dir]
-                for healer_dir in self.market_x.get_clerkunit_dir_paths_list()
+            agent_ids_agent_id_list.extend(
+                [agent_id_dir]
+                for agent_id_dir in self.market_x.get_clerkunit_dir_paths_list()
             )
-        return healers_healer_list
+        return agent_ids_agent_id_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
@@ -313,7 +317,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(f"{cl_dir=} {cl_filename=}")
                 agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
-                depotlink_row = [cl_val._healer, "", ""]
+                depotlink_row = [cl_val._agent_id, "", ""]
                 depotlinks_list.append(depotlink_row)
         return depotlinks_list
 
@@ -343,11 +347,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.healer_output_agenda != None:
-            idea_list = self.healer_output_agenda.get_idea_tree_ordered_road_list()
+        if self.agent_id_output_agenda != None:
+            idea_list = self.agent_id_output_agenda.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.healer_output_agenda.get_idea_obj(idea_road)
+                idea_obj = self.agent_id_output_agenda.get_idea_obj(idea_road)
 
                 if idea_obj._parent_road.find("time") != 3:
                     x_list.append(
@@ -362,34 +366,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_partys_list(self):
         x_list = []
-        if self.healer_output_agenda != None:
+        if self.agent_id_output_agenda != None:
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(partyunit._agenda_credit)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
                     partyunit.party_id,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
-                for partyunit in self.healer_output_agenda._partys.values()
+                for partyunit in self.agent_id_output_agenda._partys.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.healer_output_agenda != None:
+        if self.agent_id_output_agenda != None:
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(groupunit._agenda_debt)}/{agenda_importance_diplay(groupunit._agenda_credit)}",
                     groupunit.group_id,
                     len(groupunit._partys),
                 ]
-                for groupunit in self.healer_output_agenda._groups.values()
+                for groupunit in self.agent_id_output_agenda._groups.values()
             )
         return x_list
 
     def get_p_beliefs_list(self):
         x_list = []
-        if self.healer_output_agenda != None:
-            for beliefunit in self.healer_output_agenda._idearoot._beliefunits.values():
+        if self.agent_id_output_agenda != None:
+            for (
+                beliefunit
+            ) in self.agent_id_output_agenda._idearoot._beliefunits.values():
                 open_nigh = ""
                 if beliefunit.open is None and beliefunit.nigh is None:
                     open_nigh = ""
@@ -407,8 +413,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_intent_list(self):
         x_list = []
-        if self.healer_output_agenda != None:
-            intent_list = self.healer_output_agenda.get_intent_dict()
+        if self.agent_id_output_agenda != None:
+            intent_list = self.agent_id_output_agenda.get_intent_dict()
             intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
             x_list.extend(
                 [
@@ -424,7 +430,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_market()
 
     def _sub_refresh_agents_table(self):
-        self.refresh_x(self.healers_table, ["Healers Table"], self.get_clerk_id_list())
+        self.refresh_x(
+            self.agent_ids_table, ["agent_ids Table"], self.get_clerk_id_list()
+        )
 
     def _sub_refresh_depotlinks_table(self):
         depotlink_types = list(get_depotlink_types())
@@ -540,18 +548,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.market_id_combo.clear()
         self.market_id_combo.addItems(create_example_markets_list())
 
-    def refresh_healers(self):
+    def refresh_agent_ids(self):
         self.x_clerk = None
         self._sub_refresh_agents_table()
-        self.refresh_healer()
+        self.refresh_agent_id()
 
-    def refresh_healer(self):
+    def refresh_agent_id(self):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.healer_output_agenda = None
+        self.agent_id_output_agenda = None
         if self.x_clerk != None:
-            self.healer_output_agenda = self.x_clerk.get_remelded_output_agenda()
+            self.agent_id_output_agenda = self.x_clerk.get_remelded_output_agenda()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
@@ -564,7 +572,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ["Market Forum Agendas"],
             self.get_agenda_agent_id_list(),
         )
-        self.refresh_healers()
+        self.refresh_agent_ids()
 
     def refresh_x(
         self,

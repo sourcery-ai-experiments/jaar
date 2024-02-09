@@ -306,7 +306,7 @@
      <string>Update</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agenda_healer">
+   <widget class="QLineEdit" name="agenda_agent_id">
     <property name="geometry">
      <rect>
       <x>100</x>

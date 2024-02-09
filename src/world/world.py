@@ -113,18 +113,10 @@ class WorldUnit:
     def get_world_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
         world_agenda = agendaunit_shop(person_id)
-        for person_problemunit in x_personunit._problems.values():
-            for person_healerlink in person_problemunit._healerlinks.values():
-                healer_personunit = self.get_personunit_from_memory(
-                    person_healerlink.healer_id
-                )
-                for x_marketlink in person_healerlink._marketlinks.values():
-                    x_marketunit = healer_personunit.get_marketunit(
-                        x_marketlink.market_id
-                    )
-                    forum_agenda = x_marketunit.get_forum_agenda(person_id)
-                    forum_agenda.set_market_id(world_agenda._market_id)
-                    world_agenda.meld(forum_agenda)
+        # for person_problemunit in x_personunit._problems.values():
+        #             forum_agenda = x_marketunit.get_forum_agenda(person_id)
+        #             forum_agenda.set_market_id(world_agenda._market_id)
+        #             world_agenda.meld(forum_agenda)
         return world_agenda
 
     def create_person_market(
