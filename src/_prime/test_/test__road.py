@@ -81,18 +81,18 @@ def test_road_is_sub_road_correctlyReturnsBool():
 
 def test_road_road_validate_correctlyReturnsRoadUnit():
     x_s = default_road_delimiter_if_none()
-    _market_id = "x"
-    casa_road = f"{_market_id}{x_s}casa"
-    source_road = f"{_market_id}{x_s}source"
-    fun_road = f"{_market_id}{x_s}fun"
-    assert road_validate(None, x_s, _market_id) == ""
-    assert road_validate("", x_s, _market_id) == ""
-    assert road_validate(f"{_market_id}{x_s}casa", x_s, _market_id) == casa_road
-    assert road_validate(f"A{x_s}casa", x_s, _market_id) == casa_road
-    assert road_validate(f"{x_s}source", x_s, _market_id) == source_road
-    assert road_validate(f"source{x_s}fun", x_s, _market_id) == fun_road
-    assert road_validate("source", x_s, _market_id) == _market_id
-    assert road_validate(f"AA{x_s}casa", x_s, _market_id) == casa_road
+    _world_id = "x"
+    casa_road = f"{_world_id}{x_s}casa"
+    source_road = f"{_world_id}{x_s}source"
+    fun_road = f"{_world_id}{x_s}fun"
+    assert road_validate(None, x_s, _world_id) == ""
+    assert road_validate("", x_s, _world_id) == ""
+    assert road_validate(f"{_world_id}{x_s}casa", x_s, _world_id) == casa_road
+    assert road_validate(f"A{x_s}casa", x_s, _world_id) == casa_road
+    assert road_validate(f"{x_s}source", x_s, _world_id) == source_road
+    assert road_validate(f"source{x_s}fun", x_s, _world_id) == fun_road
+    assert road_validate("source", x_s, _world_id) == _world_id
+    assert road_validate(f"AA{x_s}casa", x_s, _world_id) == casa_road
 
 
 def test_road_create_road_ReturnsCorrectRoadUnitWith_delimiter():
@@ -564,11 +564,11 @@ def test_MarketID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_market_id = MarketID(bob_text)
+    bob_world_id = MarketID(bob_text)
     # THEN
-    assert bob_market_id == bob_text
+    assert bob_world_id == bob_text
     assert (
-        inspect_getdoc(bob_market_id) == "A RoadNode used to identify a Healer's Market"
+        inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Market"
     )
 
 

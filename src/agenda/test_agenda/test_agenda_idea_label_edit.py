@@ -63,7 +63,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenMarketIDisNone()
     assert tim_agenda._idearoot._label == tim_agenda._world_id
 
 
-def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_market_id_IsDifferent():
+def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferent():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
@@ -95,7 +95,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_market_id_IsDiffere
     )
 
 
-def test_agenda_set_market_id_CorrectlySetsAttr():
+def test_agenda_set_world_id_CorrectlySetsAttr():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
@@ -114,17 +114,17 @@ def test_agenda_set_market_id_CorrectlySetsAttr():
     assert tim_agenda._world_id == tim_agenda._world_id
 
     # WHEN
-    market_id_text = "Sun"
-    tim_agenda.set_world_id(world_id=market_id_text)
+    world_id_text = "Sun"
+    tim_agenda.set_world_id(world_id=world_id_text)
 
     # THEN
     new_work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
     new_swim_road = tim_agenda.make_road(new_work_road, swim_text)
-    assert tim_agenda._world_id == market_id_text
-    assert tim_agenda._idearoot._label == market_id_text
+    assert tim_agenda._world_id == world_id_text
+    assert tim_agenda._idearoot._label == world_id_text
     work_idea = tim_agenda.get_idea_obj(new_work_road)
-    assert work_idea._parent_road == market_id_text
+    assert work_idea._parent_road == world_id_text
     swim_idea = tim_agenda.get_idea_obj(new_swim_road)
     assert swim_idea._parent_road == new_work_road
 
@@ -410,8 +410,8 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
 
     # THEN
     assert cook_idea.get_road() != comma_cook_road
-    luca_market_id = luca_agenda._world_id
-    slash_work_road = create_road(luca_market_id, work_text, delimiter=slash_text)
+    luca_world_id = luca_agenda._world_id
+    slash_work_road = create_road(luca_world_id, work_text, delimiter=slash_text)
     slash_cook_road = create_road(slash_work_road, cook_text, delimiter=slash_text)
     assert cook_idea.get_road() == slash_cook_road
 

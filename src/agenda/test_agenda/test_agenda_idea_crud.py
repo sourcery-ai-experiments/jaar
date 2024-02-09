@@ -251,10 +251,10 @@ def test_agenda_add_idea_creates_reasons_ideas():
 def test_agenda_add_idea_CorrectlySets_agenda_world_id():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    agenda_market_id = "Texas"
-    sue_agenda.set_world_id(world_id=agenda_market_id)
+    agenda_world_id = "Texas"
+    sue_agenda.set_world_id(world_id=agenda_world_id)
     sue_agenda.set_agenda_metrics()
-    assert sue_agenda._world_id == agenda_market_id
+    assert sue_agenda._world_id == agenda_world_id
 
     work_road = sue_agenda.make_l1_road("work")
     clean_road = sue_agenda.make_road(work_road, "cleaning")
@@ -266,7 +266,7 @@ def test_agenda_add_idea_CorrectlySets_agenda_world_id():
 
     # THEN
     cookery_idea = sue_agenda.get_idea_obj(cookery_road)
-    assert cookery_idea._agenda_world_id == agenda_market_id
+    assert cookery_idea._agenda_world_id == agenda_world_id
 
 
 def test_agenda_del_idea_obj_Level0CannotBeDeleted():
