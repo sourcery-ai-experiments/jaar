@@ -7,7 +7,6 @@ from src._prime.road import (
 from src.agenda.agenda import agendaunit_shop
 from src.market.market import MarketUnit, MarketID
 from src.world.deal import DealUnit
-from src.world.problem import problemunit_shop, healerlink_shop, marketlink_shop
 from src.world.person import PersonUnit, personunit_shop
 from src.instrument.python import get_empty_dict_if_none
 from dataclasses import dataclass
@@ -135,22 +134,17 @@ class WorldUnit:
         healer_id: HealerID,
         market_id: MarketID,
     ):
-        x_healerlink = healerlink_shop(healer_id)
-        x_healerlink.set_marketlink(marketlink_shop(market_id))
-        x_problemunit = problemunit_shop(x_problem_id)
-        x_problemunit.set_healerlink(x_healerlink)
 
         self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_personunit.set_problemunit(x_problemunit)
 
         self.set_personunit(healer_id, replace_personunit=False, replace_alert=False)
-        healer_personunit = self.get_personunit_from_memory(healer_id)
-        healer_personunit.set_marketunit(market_id, False, x_problem_id)
-        x_marketunit = healer_personunit.get_marketunit(market_id)
-        x_marketunit.full_setup_clerkunit(healer_id)
-        if healer_id != x_personunit.person_id:
-            self._set_partyunit(x_marketunit, x_personunit.person_id, healer_id)
+        # healer_personunit = self.get_personunit_from_memory(healer_id)
+        # healer_personunit.set_marketunit(market_id, False, x_problem_id)
+        # x_marketunit = healer_personunit.get_marketunit(market_id)
+        # x_marketunit.full_setup_clerkunit(healer_id)
+        # if healer_id != x_personunit.person_id:
+        #     self._set_partyunit(x_marketunit, x_personunit.person_id, healer_id)
 
     def _set_partyunit(
         self, x_marketunit: MarketUnit, person_id: PersonID, party_id: PersonID

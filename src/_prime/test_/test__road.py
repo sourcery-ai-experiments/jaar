@@ -27,7 +27,6 @@ from src._prime.road import (
     get_default_market_root_roadnode as root_label,
     create_road_from_nodes,
     create_road,
-    create_proad,
     get_diff_road,
     create_road,
     is_heir_road,
@@ -535,34 +534,6 @@ PersonID
 ProblemID
 HealerID
 MarketID"""
-    )
-
-
-def test_create_proad_ReturnsCorrectObj():
-    # GIVEN
-    bob_text = "Bob"
-    leg_text = "Leg"
-    sue_text = "Sue"
-    texas_text = "Texas"
-
-    # WHEN
-    bob_road = create_road(bob_text)
-    assert bob_road == create_proad(bob_text)
-    bob_leg_road = create_road(bob_text, leg_text)
-    assert bob_leg_road == create_proad(bob_text, leg_text)
-    bob_leg_sue_road = create_road(bob_leg_road, sue_text)
-    assert bob_leg_sue_road == create_proad(bob_text, leg_text, sue_text)
-    bob_leg_sue_texas_road = create_road(bob_leg_sue_road, texas_text)
-    assert bob_leg_sue_texas_road == create_proad(
-        bob_text, leg_text, sue_text, texas_text
-    )
-
-    slash_text = "/"
-    slash_bob_leg_sue_road = create_road_from_nodes(
-        [bob_text, leg_text, sue_text], delimiter=slash_text
-    )
-    assert slash_bob_leg_sue_road == create_proad(
-        bob_text, leg_text, sue_text, delimiter=slash_text
     )
 
 

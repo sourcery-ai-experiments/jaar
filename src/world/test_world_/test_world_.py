@@ -1,12 +1,11 @@
 from src._prime.road import default_road_delimiter_if_none
-from src.world.problem import problemunit_shop, healerlink_shop, marketlink_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
 
-from src.world.person import personunit_shop, problemunit_shop
+from src.world.person import personunit_shop
 from pytest import raises as pytest_raises
 
 
@@ -175,25 +174,20 @@ def test_WorldUnit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cl
     assert world._personunits.get(luca_text) == luca_person_obj
 
 
-def test_WorldUnit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
-    # GIVEN
-    dallas_text = "dallas"
-    world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
-    world.set_personunit(luca_text)
-    luca_person = world.get_personunit_from_memory(luca_text)
-    luca_person.set_problemunit(problemunit_shop("Bob"))
-    assert world.personunit_exists(luca_text)
-    assert len(world._personunits.get(luca_text)._problems) == 1
+# def test_WorldUnit__set_person_in_memory_CorrectlyReplacesObj(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     dallas_text = "dallas"
+#     world = worldunit_shop(mark=dallas_text, worlds_dir=get_test_worlds_dir())
+#     luca_text = "Luca"
+#     world.set_personunit(luca_text)
+#     luca_person = world.get_personunit_from_memory(luca_text)
+#     assert world.personunit_exists(luca_text)
 
-    # WHEN
-    luca_person_dir = f"{world._persons_dir}/{luca_text}"
-    world._set_person_in_memory(
-        personunit_shop(person_id=luca_text, person_dir=luca_person_dir)
-    )
-
-    # THEN
-    assert len(world._personunits.get(luca_text)._problems) == 0
+#     # WHEN
+#     luca_person_dir = f"{world._persons_dir}/{luca_text}"
+#     world._set_person_in_memory(
+#         personunit_shop(person_id=luca_text, person_dir=luca_person_dir)
+#     )
 
 
 def test_WorldUnit_get_personunit_from_memory_ReturnsPerson(
@@ -229,38 +223,3 @@ def test_WorldUnit_get_personunit_from_memory_ReturnsNone(
 
     # THEN
     assert luca_gotten_obj is None
-
-
-def test_WorldUnit_create_person_market_SetsCorrectObjs_healerlink_marketlink_marketunit(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    world = worldunit_shop(mark="Oregon", worlds_dir=get_test_worlds_dir())
-    yao_text = "Yao"
-
-    # WHEN
-    knee_text = "knee"
-    tim_text = "Tim"
-    rest_text = "rest"
-    world.create_person_market(
-        person_id=yao_text,
-        x_problem_id=knee_text,
-        healer_id=tim_text,
-        market_id=rest_text,
-    )
-
-    # THEN
-    yao_personunit = world.get_personunit_from_memory(yao_text)
-    tim_healerlink = healerlink_shop(tim_text)
-    tim_healerlink.set_marketlink(marketlink_shop(rest_text))
-    static_knee_problemunit = problemunit_shop(knee_text)
-    static_knee_problemunit.set_healerlink(tim_healerlink)
-    gen_knee_problemunit = yao_personunit.get_problem_obj(knee_text)
-    assert gen_knee_problemunit._healerlinks == static_knee_problemunit._healerlinks
-    assert gen_knee_problemunit == static_knee_problemunit
-    assert yao_personunit.get_marketunit(rest_text) is None
-
-    tim_personunit = world.get_personunit_from_memory(tim_text)
-    rest_marketunit = tim_personunit.get_marketunit(rest_text)
-    assert rest_marketunit.get_forum_agenda(yao_text) != None
-    assert rest_marketunit.get_forum_agenda(tim_text) != None

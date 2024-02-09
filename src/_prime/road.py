@@ -268,23 +268,6 @@ def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: st
     return road.replace(old_delimiter, new_delimiter)
 
 
-def create_proad(
-    person_id: PersonID,
-    problem_id: ProblemID = None,
-    healer_id: HealerID = None,
-    market_id: MarketID = None,
-    delimiter: str = None,
-) -> PersonRoad:
-    x_road_nodes = [person_id]
-    if problem_id != None:
-        x_road_nodes.append(problem_id)
-    if None not in (problem_id, healer_id):
-        x_road_nodes.append(healer_id)
-    if None not in (problem_id, healer_id, market_id):
-        x_road_nodes.append(market_id)
-    return create_road_from_nodes(x_road_nodes, delimiter=delimiter)
-
-
 def get_marketroad_from_healerroad(
     x_healerroad: HealerRoad, delimiter: str = None
 ) -> MarketRoad:

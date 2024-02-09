@@ -13,22 +13,16 @@ def test_PersonUnit_get_dict_CorrectlyGetsDict_simple():
     yao_personunit = personunit_shop(
         person_id=yao_text, person_dir=yao_artbitarydirectory
     )
-    diet_text = "diet"
-    knee_text = "knee discomfort"
-    yao_personunit.set_marketunit(diet_text, x_problem_id=knee_text)
 
     # WHEN
     yao_personunit_get_dict = yao_personunit.get_dict()
 
     # THEN
-    knee_problemunit = yao_personunit.get_problem_obj(knee_text)
-    knee_proad = yao_personunit.make_proad(knee_text, yao_text, diet_text)
-    print(f"{knee_proad=}")
     yao_personunit_x_dict = {
         "person_id": yao_text,
         "person_dir": yao_artbitarydirectory,
-        "_markets": {diet_text: None},
-        "_problems": {knee_text: knee_problemunit.get_dict()},
+        "_markets": {},
+        "_problems": {},
     }
     assert yao_personunit_x_dict == yao_personunit_get_dict
 
