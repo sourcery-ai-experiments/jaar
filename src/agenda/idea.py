@@ -10,6 +10,7 @@ from src._prime.road import (
     MarketID,
 )
 from src._prime.meld import get_meld_default
+from src.agenda.healer import HealerHold, healerhold_shop
 from src.agenda.reason_assign import (
     AssignedUnit,
     AssignedHeir,
@@ -80,6 +81,7 @@ class IdeaAttrFilter:
     reason_del_premise_need: RoadUnit = None
     reason_suff_idea_active: str = None
     assignedunit: AssignedUnit = None
+    healerhold: HealerHold = None
     begin: float = None
     close: float = None
     addin: float = None
@@ -97,7 +99,6 @@ class IdeaAttrFilter:
     balancelink_del: GroupID = None
     is_expanded: bool = None
     meld_strategy: str = None
-    market_bool: bool = None
     problem_bool: bool = None
 
     def get_premise_need(self):
@@ -164,6 +165,7 @@ def ideaattrfilter_shop(
     reason_del_premise_need: RoadUnit = None,
     reason_suff_idea_active: str = None,
     assignedunit: AssignedUnit = None,
+    healerhold: HealerHold = None,
     begin: float = None,
     close: float = None,
     addin: float = None,
@@ -181,7 +183,6 @@ def ideaattrfilter_shop(
     balancelink_del: GroupID = None,
     is_expanded: bool = None,
     meld_strategy: str = None,
-    market_bool: bool = None,
     problem_bool: bool = None,
 ) -> IdeaAttrFilter:
     x_ideaattrfilter = IdeaAttrFilter(
@@ -197,6 +198,7 @@ def ideaattrfilter_shop(
         reason_del_premise_need=reason_del_premise_need,
         reason_suff_idea_active=reason_suff_idea_active,
         assignedunit=assignedunit,
+        healerhold=healerhold,
         begin=begin,
         close=close,
         addin=addin,
@@ -214,7 +216,6 @@ def ideaattrfilter_shop(
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
         meld_strategy=meld_strategy,
-        market_bool=market_bool,
         problem_bool=problem_bool,
     )
     if x_ideaattrfilter.has_ratio_attrs():
@@ -240,6 +241,7 @@ class IdeaUnit:
     _assignedheir: AssignedHeir = None  # Calculated field
     _beliefunits: dict[RoadUnit:BeliefUnit] = None
     _beliefheirs: dict[RoadUnit:BeliefHeir] = None  # Calculated field
+    _healerhold: HealerHold = None
     _begin: float = None
     _close: float = None
     _addin: float = None
@@ -251,7 +253,6 @@ class IdeaUnit:
     promise: bool = None
     _originunit: OriginUnit = None
     _meld_strategy: str = None
-    _market_bool: bool = None
     _problem_bool: bool = None
     # Calculated fields
     _level: int = None
@@ -724,6 +725,8 @@ class IdeaUnit:
             )
         if idea_attr.assignedunit != None:
             self._assignedunit = idea_attr.assignedunit
+        if idea_attr.healerhold != None:
+            self._healerhold = idea_attr.healerhold
         if idea_attr.begin != None:
             self._begin = idea_attr.begin
         if idea_attr.close != None:
@@ -758,8 +761,6 @@ class IdeaUnit:
             self._meld_strategy = validate_meld_strategy(idea_attr.meld_strategy)
         if idea_attr.beliefunit != None:
             self.set_beliefunit(idea_attr.beliefunit)
-        if idea_attr.market_bool != None:
-            self._market_bool = idea_attr.market_bool
         if idea_attr.problem_bool != None:
             self._problem_bool = idea_attr.problem_bool
 
@@ -1095,6 +1096,7 @@ def ideaunit_shop(
     _assignedheir: AssignedHeir = None,  # Calculated field
     _beliefunits: dict[BeliefUnit] = None,
     _beliefheirs: dict[BeliefHeir] = None,  # Calculated field
+    _healerhold: HealerHold = None,
     _begin: float = None,
     _close: float = None,
     _addin: float = None,
@@ -1108,7 +1110,6 @@ def ideaunit_shop(
     _meld_strategy: str = None,
     _root: bool = None,
     _agenda_world_id: MarketID = None,
-    _market_bool: bool = None,
     _problem_bool: bool = None,
     # Calculated fields
     _level: int = None,
@@ -1131,6 +1132,8 @@ def ideaunit_shop(
         _meld_strategy = get_meld_default()
     if _agenda_world_id is None:
         _agenda_world_id = root_label()
+    if _healerhold is None:
+        _healerhold = healerhold_shop()
 
     x_ideakid = IdeaUnit(
         _label=None,
@@ -1147,6 +1150,7 @@ def ideaunit_shop(
         _assignedheir=_assignedheir,
         _beliefunits=get_empty_dict_if_none(_beliefunits),
         _beliefheirs=get_empty_dict_if_none(_beliefheirs),
+        _healerhold=_healerhold,
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1156,7 +1160,6 @@ def ideaunit_shop(
         _range_source_road=_range_source_road,
         _numeric_road=_numeric_road,
         promise=get_False_if_None(promise),
-        _market_bool=get_False_if_None(_market_bool),
         _problem_bool=get_False_if_None(_problem_bool),
         _originunit=_originunit,
         _meld_strategy=_meld_strategy,

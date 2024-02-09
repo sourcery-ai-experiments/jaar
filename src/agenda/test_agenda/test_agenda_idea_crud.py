@@ -1,3 +1,4 @@
+from src.agenda.healer import healerhold_shop
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
@@ -509,18 +510,18 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
     assert sue_agenda._idearoot._kids[work_text]._range_source_road == end_road
 
-    # _market_bool: bool
-    sue_agenda._idearoot._kids[work_text]._market_bool = "fun3rol"
-    range_source_road = sue_agenda._idearoot._kids[work_text]._market_bool
-    assert range_source_road == "fun3rol"
-    x_market_bool = True
-    sue_agenda.edit_idea_attr(road=work_road, market_bool=x_market_bool)
-    assert sue_agenda._idearoot._kids[work_text]._market_bool == x_market_bool
+    # _healerhold: bool
+    sue_agenda._idearoot._kids[work_text]._healerhold = "fun3rol"
+    src_healerhold = sue_agenda._idearoot._kids[work_text]._healerhold
+    assert src_healerhold == "fun3rol"
+    x_healerhold = healerhold_shop({"Sue", "Yao"})
+    sue_agenda.edit_idea_attr(road=work_road, healerhold=x_healerhold)
+    assert sue_agenda._idearoot._kids[work_text]._healerhold == x_healerhold
 
     # _problem_bool: bool
     sue_agenda._idearoot._kids[work_text]._problem_bool = "fun3rol"
-    range_source_road = sue_agenda._idearoot._kids[work_text]._problem_bool
-    assert range_source_road == "fun3rol"
+    src_problem_bool = sue_agenda._idearoot._kids[work_text]._problem_bool
+    assert src_problem_bool == "fun3rol"
     x_problem_bool = True
     sue_agenda.edit_idea_attr(road=work_road, problem_bool=x_problem_bool)
     assert sue_agenda._idearoot._kids[work_text]._problem_bool == x_problem_bool

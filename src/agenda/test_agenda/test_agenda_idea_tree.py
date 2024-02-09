@@ -1,6 +1,7 @@
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
+from src.agenda.healer import healerhold_shop
 from src.agenda.party import PartyID
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
@@ -607,10 +608,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenThereA
     assert sue_agenda._market_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleIdeaUnit_market_bool_IsTrue():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleIdeaUnit_healerhold_any_group_id_exists_IsTrue():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.add_l1_idea(ideaunit_shop("Texas", _market_bool=True))
+    sue_agenda.add_l1_idea(ideaunit_shop("Texas", _healerhold=healerhold_shop({"Yao"})))
     assert sue_agenda._market_justified == False
 
     # WHEN
@@ -623,8 +624,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingle
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleProblemAndMarket():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
+    yao_healerhold = healerhold_shop({"Yao"})
     sue_agenda.add_l1_idea(
-        ideaunit_shop("Texas", _market_bool=True, _problem_bool=True)
+        ideaunit_shop("Texas", _healerhold=yao_healerhold, _problem_bool=True)
     )
     assert sue_agenda._market_justified == False
 
@@ -638,10 +640,12 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingle
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarketIsLevelAboveProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
+    yao_healerhold = healerhold_shop({"Yao"})
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_agenda.add_idea(ideaunit_shop("El Paso", _market_bool=True), texas_road)
+    ep_text = "El Paso"
+    sue_agenda.add_idea(ideaunit_shop(ep_text, _healerhold=yao_healerhold), texas_road)
     assert sue_agenda._market_justified == False
 
     # WHEN
@@ -656,7 +660,8 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarket
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _market_bool=True))
+    yao_healerhold = healerhold_shop({"Yao"})
+    sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _healerhold=yao_healerhold))
     sue_agenda.add_idea(ideaunit_shop("El Paso", _problem_bool=True), texas_road)
     assert sue_agenda._market_justified == False
 
@@ -670,11 +675,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarket
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMarketsAreOneTheSameLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
+    yao_healerhold = healerhold_shop({"Yao"})
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    texas_idea = ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
+    texas_idea = ideaunit_shop(
+        texas_text, _healerhold=yao_healerhold, _problem_bool=True
+    )
     sue_agenda.add_l1_idea(texas_idea)
-    elpaso_idea = ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True)
+    elpaso_idea = ideaunit_shop(
+        "El Paso", _healerhold=yao_healerhold, _problem_bool=True
+    )
     sue_agenda.add_idea(elpaso_idea, texas_road)
     assert sue_agenda._market_justified == False
 
@@ -688,11 +698,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMar
 def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_market_justified_IsFalse():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
+    yao_healerhold = healerhold_shop({"Yao"})
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    texas_idea = ideaunit_shop(texas_text, _market_bool=True, _problem_bool=True)
+    texas_idea = ideaunit_shop(
+        texas_text, _healerhold=yao_healerhold, _problem_bool=True
+    )
     sue_agenda.add_l1_idea(texas_idea)
-    elpaso_idea = ideaunit_shop("El Paso", _market_bool=True, _problem_bool=True)
+    elpaso_idea = ideaunit_shop(
+        "El Paso", _healerhold=yao_healerhold, _problem_bool=True
+    )
     sue_agenda.add_idea(elpaso_idea, texas_road)
     sue_agenda.set_agenda_metrics()
     assert sue_agenda._market_justified == False

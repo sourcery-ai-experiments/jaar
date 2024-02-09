@@ -86,7 +86,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_obj(month_week_road)
-    print("checking market_id,month_week...range_source_road equal to...")
+    print("checking world_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_l1_road("ced_week")
@@ -159,8 +159,8 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
-    tiger_market_id = "tiger"
-    x_agenda.set_world_id(tiger_market_id)
+    tiger_world_id = "tiger"
+    x_agenda.set_world_id(tiger_world_id)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
 
@@ -274,8 +274,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # GIVEN
     yue_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     yue_agenda.set_max_tree_traverse(23)
-    tiger_market_id = "tiger"
-    yue_agenda.set_world_id(tiger_market_id)
+    tiger_world_id = "tiger"
+    yue_agenda.set_world_id(tiger_world_id)
     yue_party_creditor_pool = 2
     yue_party_debtor_pool = 2
     yue_agenda.set_party_creditor_pool(yue_party_creditor_pool)

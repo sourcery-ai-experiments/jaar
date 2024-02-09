@@ -1,4 +1,9 @@
-from src.agenda.idea import IdeaUnit, ideaunit_shop, get_obj_from_idea_dict
+from src._prime.road import (
+    get_default_market_root_roadnode as root_label,
+    create_road,
+    default_road_delimiter_if_none,
+)
+from src.agenda.healer import healerhold_shop
 from src.agenda.group import GroupID, balancelink_shop, balanceheir_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
@@ -8,11 +13,7 @@ from src.agenda.reason_idea import (
 )
 from src.agenda.reason_assign import assigned_unit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
-from src._prime.road import (
-    get_default_market_root_roadnode as root_label,
-    create_road,
-    default_road_delimiter_if_none,
-)
+from src.agenda.idea import IdeaUnit, ideaunit_shop, get_obj_from_idea_dict
 from pytest import raises as pytest_raises
 
 
@@ -34,7 +35,6 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
     assert x_ideaunit.promise is None
-    assert x_ideaunit._market_bool is None
     assert x_ideaunit._problem_bool is None
     assert x_ideaunit._descendant_promise_count is None
     assert x_ideaunit._balancelines is None
@@ -43,6 +43,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._beliefheirs is None
     assert x_ideaunit._beliefunits is None
     assert x_ideaunit._meld_strategy is None
+    assert x_ideaunit._healerhold is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
     assert x_ideaunit._active_hx is None
@@ -80,7 +81,6 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
     assert x_ideaunit.promise is False
-    assert x_ideaunit._market_bool is False
     assert x_ideaunit._problem_bool is False
     assert x_ideaunit._descendant_promise_count is None
     assert x_ideaunit._balancelines == {}
@@ -90,6 +90,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._beliefheirs == {}
     assert x_ideaunit._beliefunits == {}
     assert x_ideaunit._meld_strategy == "default"
+    assert x_ideaunit._healerhold == healerhold_shop()
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
     assert x_ideaunit._active_hx == {}
@@ -108,14 +109,14 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
 
 def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():
     # GIVEN
-    x_market_bool = True
+    x_healerhold = healerhold_shop({"Sue", "Yao"})
     x_problem_bool = True
 
     # WHEN
-    x_ideaunit = ideaunit_shop(_market_bool=x_market_bool, _problem_bool=x_problem_bool)
+    x_ideaunit = ideaunit_shop(_healerhold=x_healerhold, _problem_bool=x_problem_bool)
 
     # THEN
-    assert x_ideaunit._market_bool == x_market_bool
+    assert x_ideaunit._healerhold == x_healerhold
     assert x_ideaunit._problem_bool == x_problem_bool
 
 

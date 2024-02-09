@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from src.agenda.healer import HealerHold
 from src.agenda.party import (
     PartyUnit,
     PartyLink,
@@ -1300,6 +1301,7 @@ class AgendaUnit:
         reason_del_premise_need: RoadUnit = None,
         reason_suff_idea_active: str = None,
         assignedunit: AssignedUnit = None,
+        healerhold: HealerHold = None,
         begin: float = None,
         close: float = None,
         addin: float = None,
@@ -1317,7 +1319,6 @@ class AgendaUnit:
         balancelink_del: GroupID = None,
         is_expanded: bool = None,
         meld_strategy: MeldStrategy = None,
-        market_bool: bool = None,
         problem_bool: bool = None,
     ):
         x_ideaattrfilter = ideaattrfilter_shop(
@@ -1333,6 +1334,7 @@ class AgendaUnit:
             reason_del_premise_need=reason_del_premise_need,
             reason_suff_idea_active=reason_suff_idea_active,
             assignedunit=assignedunit,
+            healerhold=healerhold,
             begin=begin,
             close=close,
             addin=addin,
@@ -1350,7 +1352,6 @@ class AgendaUnit:
             promise=promise,
             beliefunit=beliefunit,
             meld_strategy=meld_strategy,
-            market_bool=market_bool,
             problem_bool=problem_bool,
         )
         if x_ideaattrfilter.has_numeric_attrs():
@@ -1590,7 +1591,7 @@ class AgendaUnit:
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         market_justified_by_problem = True
-        market_bool_count = 0
+        healerhold_count = 0
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
@@ -1622,13 +1623,13 @@ class AgendaUnit:
             x_idea_obj._all_party_credit = group_everyone
             x_idea_obj._all_party_debt = group_everyone
 
-            if x_idea_obj._market_bool:
+            if x_idea_obj._healerhold.any_group_id_exists():
                 market_justified_by_problem = False
-                market_bool_count += 1
+                healerhold_count += 1
             if x_idea_obj._problem_bool:
                 market_justified_by_problem = True
 
-        if market_justified_by_problem == False or market_bool_count > 1:
+        if market_justified_by_problem == False or healerhold_count > 1:
             self._market_justified = False
 
     def _set_root_attributes(self):
