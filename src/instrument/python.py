@@ -6,6 +6,10 @@ def get_empty_dict_if_none(x_dict: dict) -> dict:
     return {} if x_dict is None else x_dict
 
 
+def get_empty_set_if_none(x_set: set) -> set:
+    return set() if x_set is None else x_set
+
+
 def get_1_if_None(x_obj):
     return 1 if x_obj is None else x_obj
 
