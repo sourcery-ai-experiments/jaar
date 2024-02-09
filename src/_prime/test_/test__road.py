@@ -530,7 +530,7 @@ def test_MarketRoad_Exists():
     assert texas_marketroad == texas_text
     assert (
         inspect_getdoc(texas_marketroad)
-        == """RodeUnit with node and road seperated by EconUnit._road_delimiter:
+        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
 PersonID
 ProblemID
 HealerID
@@ -579,7 +579,7 @@ def test_HealerRoad_Exists():
     assert sports_healerroad == sports_road
     assert (
         inspect_getdoc(sports_healerroad)
-        == """RodeUnit with node and road seperated by EconUnit._road_delimiter:
+        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
 PersonID
 ProblemID
 HealerID"""
@@ -679,7 +679,7 @@ def test_ProblemRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
+        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
 ProblemID (Must Exist)
 HealerID
 MarketRoad"""
@@ -701,7 +701,7 @@ def test_PersonRoad_Exists():
     assert sports_problemroad == sports_road
     assert (
         inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
+        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
 PersonID (Must Exist)
 ProblemID
 HealerID

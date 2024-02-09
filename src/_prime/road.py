@@ -58,7 +58,7 @@ class RoadUnit(str):
 
 
 class PersonRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
+    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
     PersonID (Must Exist)
     ProblemID
     HealerID
@@ -69,7 +69,7 @@ class PersonRoad(RoadUnit):
 
 
 class ProblemRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by EconUnit._road_delimiter:
+    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
     ProblemID (Must Exist)
     HealerID
     MarketRoad
@@ -79,7 +79,7 @@ class ProblemRoad(RoadUnit):
 
 
 class HealerRoad(RoadUnit):
-    """RodeUnit with node and road seperated by EconUnit._road_delimiter:
+    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
     PersonID
     ProblemID
     HealerID"""
@@ -88,7 +88,7 @@ class HealerRoad(RoadUnit):
 
 
 class MarketRoad(RoadUnit):
-    """RodeUnit with node and road seperated by EconUnit._road_delimiter:
+    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
     PersonID
     ProblemID
     HealerID

@@ -723,5 +723,3 @@ def test_AgendaUnit_get_idea_dict_ReturnsCorrectObjWhenSingle():
     texas_idea = sue_agenda.get_idea_obj(texas_road)
     assert len(problems_dict) == 1
     assert problems_dict == {texas_road: texas_idea}
-
-    assert 1 == 2
