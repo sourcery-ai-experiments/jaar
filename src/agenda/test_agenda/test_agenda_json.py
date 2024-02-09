@@ -56,7 +56,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict != None
     assert str(type(agenda_dict)) == "<class 'dict'>"
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_market_id"] == x_agenda._market_id
+    assert agenda_dict["_world_id"] == x_agenda._world_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -76,7 +76,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_idearoot._label == x_agenda._market_id
+    assert x_idearoot._label == x_agenda._world_id
     assert idearoot_dict["_label"] == x_idearoot._label
     assert idearoot_dict["_weight"] != agenda_weight
     assert idearoot_dict["_weight"] == x_idearoot._weight
@@ -119,7 +119,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_AssignedUnit():
     tom_agenda = agendaunit_shop("Tom")
     assigned_unit_x = assigned_unit_shop()
     assigned_unit_x.set_suffgroup(group_id=run_text)
-    tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tom_agenda._market_id)
+    tom_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tom_agenda._world_id)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
@@ -160,7 +160,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     # GIVEN
     x_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_market_id = "tiger"
-    x_agenda.set_market_id(tiger_market_id)
+    x_agenda.set_world_id(tiger_market_id)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
 
@@ -175,7 +175,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     agenda_dict = x_get_dict(x_json)
 
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_market_id"] == x_agenda._market_id
+    assert agenda_dict["_world_id"] == x_agenda._world_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     with pytest_raises(Exception) as excinfo:
@@ -219,7 +219,7 @@ def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
     # THEN
     _kids = "_kids"
     assert agenda_dict["_agent_id"] == x_agenda._agent_id
-    assert agenda_dict["_market_id"] == x_agenda._market_id
+    assert agenda_dict["_world_id"] == x_agenda._world_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -275,7 +275,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     yue_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     yue_agenda.set_max_tree_traverse(23)
     tiger_market_id = "tiger"
-    yue_agenda.set_market_id(tiger_market_id)
+    yue_agenda.set_world_id(tiger_market_id)
     yue_party_creditor_pool = 2
     yue_party_debtor_pool = 2
     yue_agenda.set_party_creditor_pool(yue_party_creditor_pool)
@@ -300,14 +300,14 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 
     run_assigned_unit = assigned_unit_shop()
     run_assigned_unit.set_suffgroup(group_id=run_text)
-    yue_agenda.edit_idea_attr(yue_agenda._market_id, assignedunit=run_assigned_unit)
+    yue_agenda.edit_idea_attr(yue_agenda._world_id, assignedunit=run_assigned_unit)
     tim_assigned_unit = assigned_unit_shop()
     tim_assigned_unit.set_suffgroup(group_id=tim_text)
     yue_agenda.edit_idea_attr(shave_road, assignedunit=tim_assigned_unit)
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
     yue_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
     yue_agenda.edit_idea_attr(
-        yue_agenda._market_id, balancelink=balancelink_shop(sue_text)
+        yue_agenda._world_id, balancelink=balancelink_shop(sue_text)
     )
 
     yao_text = "Yao"
@@ -325,7 +325,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
     assert json_agenda._agent_id != None
     assert json_agenda._agent_id == yue_agenda._agent_id
-    assert json_agenda._market_id == yue_agenda._market_id
+    assert json_agenda._world_id == yue_agenda._world_id
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == yue_agenda._max_tree_traverse
     assert json_agenda._auto_output_to_forum == yue_agenda._auto_output_to_forum

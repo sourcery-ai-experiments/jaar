@@ -120,11 +120,11 @@ def test_AgendaUnit_get_idea_obj_ReturnsIdea():
     assert week_idea._label == week_text
 
     # WHEN
-    root_idea = x_agenda.get_idea_obj(road=x_agenda._market_id)
+    root_idea = x_agenda.get_idea_obj(road=x_agenda._world_id)
 
     # THEN
     assert root_idea != None
-    assert root_idea._label == x_agenda._market_id
+    assert root_idea._label == x_agenda._world_id
 
     # WHEN / THEN
     bobdylan_text = "bobdylan"
@@ -181,7 +181,7 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     # idea "
 
     # test root status:
-    x_idearoot = x_agenda.get_idea_obj(x_agenda._market_id)
+    x_idearoot = x_agenda.get_idea_obj(x_agenda._world_id)
     assert x_idearoot._descendant_promise_count is None
     assert x_idearoot._all_party_credit is None
     assert x_idearoot._all_party_debt is None
@@ -479,7 +479,7 @@ def test_AgendaUnit_get_orderd_node_list_WorksCorrectly():
     # THEN
     assert len(ordered_node_list) == 17
     x_1st_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[0]
-    assert x_1st_road_in_ordered_list == x_agenda._market_id
+    assert x_1st_road_in_ordered_list == x_agenda._world_id
     x_8th_road_in_ordered_list = x_agenda.get_idea_tree_ordered_road_list()[8]
     assert x_8th_road_in_ordered_list == x_agenda.make_l1_road(week_text)
 
@@ -488,7 +488,7 @@ def test_AgendaUnit_get_orderd_node_list_WorksCorrectly():
 
     # THEN
     y_1st_road_in_ordered_list = y_agenda.get_idea_tree_ordered_road_list()[0]
-    assert y_1st_road_in_ordered_list == x_agenda._market_id
+    assert y_1st_road_in_ordered_list == x_agenda._world_id
 
 
 def test_AgendaUnit_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():

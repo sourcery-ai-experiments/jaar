@@ -14,7 +14,7 @@ def test_ClerkUnit_save_agenda_to_depot_assignment_link_CorrectlyCreatesAssignme
 ):
     # GIVEN
     amos_agenda = get_agenda_assignment_laundry_example1()
-    amos_agenda.set_market_id(get_temp_market_id())
+    amos_agenda.set_world_id(get_temp_market_id())
     cali_text = "Cali"
     cali_ux = clerkunit_shop(cali_text, get_temp_clerkunit_dir(), get_temp_market_id())
     cali_ux.create_core_dir_and_files()

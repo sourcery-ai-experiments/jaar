@@ -115,7 +115,7 @@ class WorldUnit:
         world_agenda = agendaunit_shop(person_id)
         # for person_problemunit in x_personunit._problems.values():
         #             forum_agenda = x_marketunit.get_forum_agenda(person_id)
-        #             forum_agenda.set_market_id(world_agenda._market_id)
+        #             forum_agenda.set_world_id(world_agenda._world_id)
         #             world_agenda.meld(forum_agenda)
         return world_agenda
 

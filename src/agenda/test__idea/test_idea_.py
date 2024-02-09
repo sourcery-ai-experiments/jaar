@@ -56,7 +56,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._originunit is None
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
-    assert x_ideaunit._agenda_market_id is None
+    assert x_ideaunit._agenda_world_id is None
 
 
 def test_ideaunit_shop_NoParametersReturnsCorrectObj():
@@ -103,14 +103,15 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
-    assert x_ideaunit._agenda_market_id == root_label()
+    assert x_ideaunit._agenda_world_id == root_label()
+
 
 def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():
-    # GIVEN 
+    # GIVEN
     x_market_bool = True
     x_problem_bool = True
 
-    # WHEN 
+    # WHEN
     x_ideaunit = ideaunit_shop(_market_bool=x_market_bool, _problem_bool=x_problem_bool)
 
     # THEN

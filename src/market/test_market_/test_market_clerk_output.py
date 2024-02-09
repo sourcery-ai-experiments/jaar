@@ -112,7 +112,7 @@ def test_market_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     output_agenda = x_market.get_output_agenda(clerk_id=xia_text)
 
     # THEN
-    output_agenda_d_road = f"{output_agenda._market_id},C,D"
+    output_agenda_d_road = f"{output_agenda._world_id},C,D"
     output_agenda_d_idea = output_agenda.get_idea_obj(output_agenda_d_road)
     print(f" {output_agenda_d_idea._weight=} ")
     assert output_agenda != None

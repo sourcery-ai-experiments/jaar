@@ -17,7 +17,7 @@ def test_market_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clean
     x_market.create_new_clerkunit(clerk_id=amer_text)
     amer_clerk = x_market.get_clerkunit(cid=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_market_id(x_market.market_id)
+    laundry_agenda.set_world_id(x_market.market_id)
     amer_clerk.set_contract(laundry_agenda)
 
     casa_text = "casa"
@@ -88,7 +88,7 @@ def test_market_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     beto_clerk = x_market.get_clerkunit(cid=beto_text)
     # print(f"{beto_clerk=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
-    laundry_agenda.set_market_id(x_market.market_id)
+    laundry_agenda.set_world_id(x_market.market_id)
     amer_clerk.set_contract(laundry_agenda)
     beto_clerk.set_contract(laundry_agenda)
 

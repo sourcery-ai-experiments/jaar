@@ -8,7 +8,7 @@ from src.market.market import MarketUnit
 #     x_market.create_new_clerkunit(clerk_id=yao_text)
 #     yao_clerk = x_market.get_clerkunit(cid=yao_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
-#     laundry_agenda.set_market_id(x_market.market_id)
+#     laundry_agenda.set_world_id(x_market.market_id)
 #     print(f"{laundry_agenda._agent_id=}")
 #     yao_clerk.set_contract(laundry_agenda)
 

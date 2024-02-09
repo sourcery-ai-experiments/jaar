@@ -190,13 +190,13 @@ def test_agenda__get_relevant_roads_RootRoadUnitReturnsOnlyItself():
     x_agenda.set_agenda_metrics()
 
     # WHEN
-    root_dict = {x_agenda._market_id: -1}
+    root_dict = {x_agenda._world_id: -1}
     relevant_roads = x_agenda._get_relevant_roads(root_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 1
-    assert relevant_roads == {x_agenda._market_id: -1}
+    assert relevant_roads == {x_agenda._world_id: -1}
 
 
 def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
@@ -215,7 +215,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads == {x_agenda._market_id: -1, sun_road: -1, week_road: -1}
+    assert relevant_roads == {x_agenda._world_id: -1, sun_road: -1, week_road: -1}
 
 
 def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
@@ -231,7 +231,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     unim_text = "unimportant"
     unim_road = neo_agenda.make_l1_road(unim_text)
     unim_idea = ideaunit_shop(unim_text)
-    neo_agenda.add_idea(unim_idea, parent_road=neo_agenda._market_id)
+    neo_agenda.add_idea(unim_idea, parent_road=neo_agenda._world_id)
 
     status_text = "cleaniness status"
     status_road = neo_agenda.make_road(casa_road, status_text)
@@ -250,7 +250,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 4
     assert relevant_roads == {
-        neo_agenda._market_id: -1,
+        neo_agenda._world_id: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -297,7 +297,7 @@ def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseAndDescendents():
     assert relevant_roads.get(moderately_road) != None
     assert relevant_roads.get(very_much_road) != None
     assert relevant_roads == {
-        x_agenda._market_id: -1,
+        x_agenda._world_id: -1,
         casa_road: -1,
         status_road: -1,
         floor_road: -1,
@@ -340,7 +340,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     assert relevant_roads.get(work_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
-        yao_agenda._market_id: -1,
+        yao_agenda._world_id: -1,
         work_road: -1,
         day_road: -1,
     }
@@ -377,7 +377,7 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     assert relevant_roads.get(min_range_road) != None
     assert relevant_roads.get(day_len_road) != None
     assert relevant_roads.get(min_days_road) != None
-    assert relevant_roads.get(yao_agenda._market_id) != None
+    assert relevant_roads.get(yao_agenda._world_id) != None
     # min_days_idea = yao_agenda.get_idea_obj(min_days_road)
 
 
@@ -396,7 +396,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     relevant_roads = {
-        yao_agenda._market_id: "descendant",
+        yao_agenda._world_id: "descendant",
         casa_road: "An ex",
     }
     yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
@@ -439,7 +439,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
 
     # WHEN
     relevant_roads = {
-        yao_agenda._market_id: "descendant",
+        yao_agenda._world_id: "descendant",
         casa_road: "not the casa_road",
         basket_road: "assigned",
     }
@@ -494,10 +494,10 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
 def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
-    market_id_text = "tiger"
-    print(f"{amer_agenda._market_id=} {amer_agenda._idea_dict.keys()=}")
-    amer_agenda.set_market_id(market_id_text)
-    print(f"{amer_agenda._market_id=} {amer_agenda._idea_dict.keys()=}")
+    world_id_text = "tiger"
+    print(f"{amer_agenda._world_id=} {amer_agenda._idea_dict.keys()=}")
+    amer_agenda.set_world_id(world_id_text)
+    print(f"{amer_agenda._world_id=} {amer_agenda._idea_dict.keys()=}")
     casa_text = "casa"
     casa_road = amer_agenda.make_l1_road(casa_text)
     laundry_task_road_text = "do_laundry"
@@ -508,8 +508,8 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     # WHEN
     cali_text = "Cali"
     cali_agenda = agendaunit_shop(_agent_id=cali_text)
-    cali_agenda.set_market_id(market_id_text)
-    print(f"{cali_agenda._market_id=} {cali_agenda._idea_dict.keys()=}")
+    cali_agenda.set_world_id(world_id_text)
+    print(f"{cali_agenda._world_id=} {cali_agenda._idea_dict.keys()=}")
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
         assignor_partys={cali_text: -1, amer_agenda._agent_id: -1},

@@ -466,7 +466,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_insert():
     ball_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
     assert ball_grainunit.get_locator("road") == music_road
     assert ball_grainunit.get_value("label") == music_text
-    assert ball_grainunit.get_value("parent_road") == after_sue_agendaunit._market_id
+    assert ball_grainunit.get_value("parent_road") == after_sue_agendaunit._world_id
     assert ball_grainunit.get_value("_begin") == music_begin
     assert ball_grainunit.get_value("_close") == music_close
     assert ball_grainunit.get_value("_meld_strategy") == music_meld_strategy

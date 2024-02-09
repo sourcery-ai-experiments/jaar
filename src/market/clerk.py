@@ -89,14 +89,14 @@ class ClerkUnit:
             self.save_agenda_to_digest(x_agenda)
         elif link_type == "ignore":
             new_x_agenda = agendaunit_shop(_agent_id=outer_agent_id)
-            new_x_agenda.set_market_id(self._market_id)
+            new_x_agenda.set_world_id(self._market_id)
             self.set_ignore_agenda_file(new_x_agenda, new_x_agenda._agent_id)
 
     def _set_assignment_depotlink(self, outer_agent_id):
         depot_agenda = self.open_depot_agenda(outer_agent_id)
         depot_agenda.set_agenda_metrics()
         empty_agenda = agendaunit_shop(_agent_id=self._clerk_id)
-        empty_agenda.set_market_id(self._market_id)
+        empty_agenda.set_world_id(self._market_id)
         assign_agenda = depot_agenda.get_assignment(
             empty_agenda, self.get_contract()._partys, self._clerk_id
         )
@@ -297,7 +297,7 @@ class ClerkUnit:
             _road_delimiter=self._road_delimiter,
         )
         x_agenda.add_partyunit(party_id=self._clerk_id)
-        x_agenda.set_market_id(self._market_id)
+        x_agenda.set_world_id(self._market_id)
         return x_agenda
 
     def erase_depot_agenda(self, agent_id):

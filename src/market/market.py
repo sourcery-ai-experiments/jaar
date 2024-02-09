@@ -483,8 +483,7 @@ class MarketUnit:
         delete_dir(f"{self.get_forum_dir()}/{x_agent_id}.json")
 
     def save_forum_agenda(self, x_agenda: AgendaUnit):
-        x_agenda.set_market_id(market_id=self.market_id)
-        print(f"{self.get_forum_dir()=}")
+        x_agenda.set_world_id(world_id=self.market_id)
         save_file(
             dest_dir=self.get_forum_dir(),
             file_name=f"{x_agenda._agent_id}.json",

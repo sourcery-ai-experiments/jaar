@@ -26,7 +26,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assigned_unit_x = assigned_unit_shop()
 
     tim_agenda = agendaunit_shop("Tim")
-    tim_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tim_agenda._market_id)
+    tim_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tim_agenda._world_id)
     assert tim_agenda._idearoot._assignedunit == assigned_unit_x
     assert tim_agenda._idearoot._assignedheir is None
 
@@ -117,30 +117,30 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
 def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     noa_text = "Noa"
-    noa_agenda1 = agendaunit_shop(noa_text)
+    noa1_agenda = agendaunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa_agenda1.add_partyunit(party_id=xia_text)
-    noa_agenda1.add_partyunit(party_id=zoa_text)
+    noa1_agenda.add_partyunit(party_id=xia_text)
+    noa1_agenda.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_l1_road(work_text)
+    work_road = noa1_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_l1_road(swim_text)
-    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
-    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
+    swim_road = noa1_agenda.make_l1_road(swim_text)
+    noa1_agenda.add_idea(ideaunit_shop(work_text), parent_road=noa1_agenda._world_id)
+    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
-    noa_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
-    noa_agenda1_swim_idea = noa_agenda1.get_idea_obj(swim_road)
-    noa_agenda1_swim_suffgroups = noa_agenda1_swim_idea._assignedunit._suffgroups
-    assert len(noa_agenda1_swim_suffgroups) == 2
+    noa1_agenda.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
+    noa1_agenda_swim_idea = noa1_agenda.get_idea_obj(swim_road)
+    noa1_agenda_swim_suffgroups = noa1_agenda_swim_idea._assignedunit._suffgroups
+    assert len(noa1_agenda_swim_suffgroups) == 2
 
     # WHEN
-    noa_agenda2 = agendaunit_shop(noa_text)
-    noa_agenda2.add_partyunit(party_id=xia_text)
-    filtered_idea = noa_agenda2._get_filtered_balancelinks_idea(noa_agenda1_swim_idea)
+    noa2_agenda = agendaunit_shop(noa_text)
+    noa2_agenda.add_partyunit(party_id=xia_text)
+    filtered_idea = noa2_agenda._get_filtered_balancelinks_idea(noa1_agenda_swim_idea)
 
     # THEN
     filtered_swim_suffgroups = filtered_idea._assignedunit._suffgroups
@@ -150,33 +150,33 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
 
 def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # GIVEN
-    noa_agenda1 = agendaunit_shop("Noa")
+    noa1_agenda = agendaunit_shop("Noa")
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa_agenda1.add_partyunit(party_id=xia_text)
-    noa_agenda1.add_partyunit(party_id=zoa_text)
+    noa1_agenda.add_partyunit(party_id=xia_text)
+    noa1_agenda.add_partyunit(party_id=zoa_text)
 
     work_text = "work"
-    work_road = noa_agenda1.make_l1_road(work_text)
+    work_road = noa1_agenda.make_l1_road(work_text)
     swim_text = "swim"
-    swim_road = noa_agenda1.make_l1_road(swim_text)
-    noa_agenda1.add_idea(ideaunit_shop(work_text), parent_road=noa_agenda1._market_id)
-    noa_agenda1.add_idea(ideaunit_shop(swim_text), parent_road=noa_agenda1._market_id)
+    swim_road = noa1_agenda.make_l1_road(swim_text)
+    noa1_agenda.add_idea(ideaunit_shop(work_text), parent_road=noa1_agenda._world_id)
+    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
     swim_assignedunit = assigned_unit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
-    noa_agenda1.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
-    noa_agenda1_swim_idea = noa_agenda1.get_idea_obj(swim_road)
-    noa_agenda1_swim_suffgroups = noa_agenda1_swim_idea._assignedunit._suffgroups
-    assert len(noa_agenda1_swim_suffgroups) == 2
+    noa1_agenda.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
+    noa1_agenda_swim_idea = noa1_agenda.get_idea_obj(swim_road)
+    noa1_agenda_swim_suffgroups = noa1_agenda_swim_idea._assignedunit._suffgroups
+    assert len(noa1_agenda_swim_suffgroups) == 2
 
     # WHEN
-    noa_agenda2 = agendaunit_shop("Noa")
-    noa_agenda2.add_partyunit(party_id=xia_text)
-    noa_agenda2.add_l1_idea(noa_agenda1_swim_idea, create_missing_ideas_groups=False)
+    noa2_agenda = agendaunit_shop("Noa")
+    noa2_agenda.add_partyunit(party_id=xia_text)
+    noa2_agenda.add_l1_idea(noa1_agenda_swim_idea, create_missing_ideas_groups=False)
 
     # THEN
-    noa_agenda2_swim_idea = noa_agenda2.get_idea_obj(swim_road)
-    noa_agenda2_swim_suffgroups = noa_agenda2_swim_idea._assignedunit._suffgroups
-    assert len(noa_agenda2_swim_suffgroups) == 1
-    assert list(noa_agenda2_swim_suffgroups) == [xia_text]
+    noa2_agenda_swim_idea = noa2_agenda.get_idea_obj(swim_road)
+    noa2_agenda_swim_suffgroups = noa2_agenda_swim_idea._assignedunit._suffgroups
+    assert len(noa2_agenda_swim_suffgroups) == 1
+    assert list(noa2_agenda_swim_suffgroups) == [xia_text]

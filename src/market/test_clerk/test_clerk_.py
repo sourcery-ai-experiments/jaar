@@ -51,7 +51,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     assert x_clerk._market_id == get_temp_market_id()
     assert x_clerk._road_delimiter == default_road_delimiter_if_none()
     assert x_clerk._contract != None
-    assert x_clerk._contract._market_id == get_temp_market_id()
+    assert x_clerk._contract._world_id == get_temp_market_id()
 
 
 def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
@@ -66,15 +66,13 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
     forum_file_path = f"{get_temp_clerkunit_dir()}/{forum_text}/{forum_file_name}"
     print(f"{forum_file_path=}")
     # forum_file_path = f"src/market/examples/ex_env/agendas/{forum_file_name}"
-    x_clerk = clerkunit_shop(
-        tim_text, env_dir, x_market_id, _auto_output_to_forum=True
-    )
+    x_clerk = clerkunit_shop(tim_text, env_dir, x_market_id, _auto_output_to_forum=True)
     x_clerk.create_core_dir_and_files()
     assert os_path.exists(forum_file_path) is False
 
     # WHEN
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
-    tim_agenda.set_market_id(x_market_id)
+    tim_agenda.set_world_id(x_market_id)
     x_clerk.set_depot_agenda(tim_agenda, "blind_trust")
 
     # THEN
@@ -142,9 +140,7 @@ def test_clerkunit_get_contract_getsMemoryAgendaIfExists(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_clerk = clerkunit_shop(
-        tim_text, get_temp_clerkunit_dir(), get_temp_market_id()
-    )
+    tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_market_id())
     tim_clerk.create_core_dir_and_files()
     contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
     contract_agenda1 = tim_clerk.get_contract()
@@ -174,9 +170,7 @@ def test_clerkunit_set_contract_savescontractAgendaSet_contract_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_clerk = clerkunit_shop(
-        tim_text, get_temp_clerkunit_dir(), get_temp_market_id()
-    )
+    tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_market_id())
     tim_clerk.create_core_dir_and_files()
     contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
     contract_agenda1 = tim_clerk.get_contract()
@@ -200,9 +194,7 @@ def test_clerkunit_set_contract_savesGivenAgendaSet_contract_None(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_clerk = clerkunit_shop(
-        tim_text, get_temp_clerkunit_dir(), get_temp_market_id()
-    )
+    tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_market_id())
     tim_clerk.create_core_dir_and_files()
     contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
     contract_agenda1 = tim_clerk.get_contract()
@@ -247,9 +239,7 @@ def test_clerkunit_set_contract_if_emtpy_DoesNotReplace_contract(
 ):
     # GIVEN
     tim_text = "Tim"
-    tim_clerk = clerkunit_shop(
-        tim_text, get_temp_clerkunit_dir(), get_temp_market_id()
-    )
+    tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_market_id())
     tim_clerk.create_core_dir_and_files()
     saved_agenda = agendaunit_shop(_agent_id=tim_text)
     saved_agenda_uid_text = "this is pulled AgendaUnit uid"

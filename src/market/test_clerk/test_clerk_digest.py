@@ -55,11 +55,11 @@ def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     # WHEN
     contract_agenda = x_clerk.open_contract_agenda()
     assert contract_agenda != None
-    assert contract_agenda._market_id == market_id_text
+    assert contract_agenda._world_id == market_id_text
 
     # THEN
     x_agenda = agendaunit_shop(_agent_id=tim_text)
-    x_agenda.set_market_id(get_temp_market_id())
+    x_agenda.set_world_id(get_temp_market_id())
     x_agenda.set_agenda_metrics()
     # x_idearoot = ideaunit_shop(_root=True, _label=gio_text, _parent_road="")
     # x_idearoot._agenda_importance = 1
@@ -181,7 +181,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     x_agenda = example_get_2node_agenda()
     src_agent_id = x_agenda._agent_id
     assert count_files(sue_agenda._agendas_digest_dir) == 0
-    print(f"{x_agenda._market_id=}")
+    print(f"{x_agenda._world_id=}")
 
     # WHEN
     sue_agenda.set_depot_agenda(x_agenda=x_agenda, depotlink_type="blind_trust")
@@ -219,7 +219,7 @@ def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
 
     # THEN
     x_agenda = agendaunit_shop(_agent_id=clerk_id_x, _weight=0.0)
-    x_agenda.set_market_id(get_temp_market_id())
+    x_agenda.set_world_id(get_temp_market_id())
     x_agenda._idearoot._parent_road = ""
     x_agenda.set_agenda_metrics()
 
@@ -246,7 +246,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
     input_agenda.meld(input_agenda)
     input_idearoot = input_agenda._idearoot
     input_b_idea = input_idearoot.get_kid("B")
-    assert input_b_idea._agenda_market_id == get_temp_market_id()
+    assert input_b_idea._agenda_world_id == get_temp_market_id()
     yao_clerk.set_depot_agenda(x_agenda=input_agenda, depotlink_type="blind_trust")
 
     # WHEN
@@ -257,14 +257,14 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 
     assert new_output_agenda._weight == 0
     assert new_output_agenda._weight != input_agenda._weight
-    assert new_output_agenda._market_id == input_agenda._market_id
+    assert new_output_agenda._world_id == input_agenda._world_id
     sx_idearoot = new_output_agenda._idearoot
-    assert sx_idearoot._agenda_market_id == input_idearoot._agenda_market_id
+    assert sx_idearoot._agenda_world_id == input_idearoot._agenda_world_id
     assert sx_idearoot._parent_road == input_idearoot._parent_road
     assert sx_idearoot._beliefunits == input_idearoot._beliefunits
     new_output_agenda_b_idea = sx_idearoot.get_kid("B")
     assert new_output_agenda_b_idea._parent_road == input_b_idea._parent_road
-    assert new_output_agenda_b_idea._agenda_market_id == input_b_idea._agenda_market_id
+    assert new_output_agenda_b_idea._agenda_world_id == input_b_idea._agenda_world_id
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
@@ -346,7 +346,7 @@ def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     output_agenda_x = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    print(f"{output_agenda_x._market_id=} {output_agenda_x._idearoot._label=}")
+    print(f"{output_agenda_x._world_id=} {output_agenda_x._idearoot._label=}")
     print(f"{output_agenda_x._idearoot._kids.keys()=}")
     assert output_agenda_x._idearoot._originunit == originunit_shop()
     a_road = output_agenda_x.make_l1_road("A")

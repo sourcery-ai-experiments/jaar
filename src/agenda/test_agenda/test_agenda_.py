@@ -19,7 +19,7 @@ def test_AgendaUnit_Exists():
 
     assert x_agenda
     assert x_agenda._agent_id is None
-    assert x_agenda._market_id is None
+    assert x_agenda._world_id is None
     assert x_agenda._weight is None
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._tree_traverse_count is None
@@ -38,20 +38,20 @@ def test_AgendaUnit_Exists():
 def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     noa_text = "Noa"
-    iowa_market_id = "Iowa"
+    iowa_world_id = "Iowa"
     slash_road_delimiter = "/"
     override_meld_strategy = "override"
 
     # WHEN
     x_agenda = agendaunit_shop(
         _agent_id=noa_text,
-        _market_id=iowa_market_id,
+        _world_id=iowa_world_id,
         _road_delimiter=slash_road_delimiter,
         _meld_strategy=override_meld_strategy,
     )
     assert x_agenda
     assert x_agenda._agent_id == noa_text
-    assert x_agenda._market_id == iowa_market_id
+    assert x_agenda._world_id == iowa_world_id
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._tree_traverse_count is None
@@ -71,9 +71,9 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
 def test_AgendaUnit_shop_ReturnsCorrect_meld_strategy():
     # GIVEN
     noa_text = "Noa"
-    iowa_market_id = "Iowa"
+    iowa_world_id = "Iowa"
     # WHEN
-    x_agenda = agendaunit_shop(noa_text, iowa_market_id)
+    x_agenda = agendaunit_shop(noa_text, iowa_world_id)
     # THEN
     assert x_agenda._meld_strategy == "default"
 
@@ -83,7 +83,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     x_agenda = agendaunit_shop()
 
     assert x_agenda._agent_id == ""
-    assert x_agenda._market_id == root_label()
+    assert x_agenda._world_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -229,28 +229,28 @@ def test_AgendaUnit_shop_CorrectlySetsGiven_auto_output_to_forum():
     assert x_agenda._auto_output_to_forum == True
 
 
-def test_AgendaUnit_set_market_id_CorrectlySetsAttr():
+def test_AgendaUnit_set_world_id_CorrectlySetsAttr():
     # GIVEN
-    market_id_text = "Sun"
+    world_id_text = "Sun"
     noa_text = "Noa"
     x_agenda = agendaunit_shop(_agent_id=noa_text, _auto_output_to_forum=True)
-    assert x_agenda._market_id == root_label()
+    assert x_agenda._world_id == root_label()
 
     # WHEN
-    x_agenda.set_market_id(market_id=market_id_text)
+    x_agenda.set_world_id(world_id=world_id_text)
 
     # THEN
-    assert x_agenda._market_id == market_id_text
+    assert x_agenda._world_id == world_id_text
 
 
 def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
     # GIVEN
-    market_id_text = "Sun"
+    world_id_text = "Sun"
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _agent_id=noa_text,
-        _market_id=market_id_text,
+        _world_id=world_id_text,
         _auto_output_to_forum=True,
         _road_delimiter=slash_road_delimiter,
     )
@@ -266,12 +266,12 @@ def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
 
 def test_AgendaUnit_make_road_ReturnsCorrectObj():
     # GIVEN
-    market_id_text = "Sun"
+    world_id_text = "Sun"
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _agent_id=noa_text,
-        _market_id=market_id_text,
+        _world_id=world_id_text,
         _auto_output_to_forum=True,
         _road_delimiter=slash_road_delimiter,
     )

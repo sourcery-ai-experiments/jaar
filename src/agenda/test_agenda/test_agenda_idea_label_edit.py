@@ -40,27 +40,27 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenMarketIDisNone()
     tim_agenda.add_l1_idea(ideaunit_shop(work_text))
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
     assert tim_agenda._agent_id == tim_text
-    assert tim_agenda._idearoot._label == tim_agenda._market_id
+    assert tim_agenda._idearoot._label == tim_agenda._world_id
     work_idea = tim_agenda.get_idea_obj(work_road)
-    assert work_idea._parent_road == tim_agenda._market_id
+    assert work_idea._parent_road == tim_agenda._world_id
     swim_idea = tim_agenda.get_idea_obj(swim_road)
     assert swim_idea._parent_road == work_road
 
     # WHEN
     moon_text = "moon"
-    tim_agenda.edit_idea_label(old_road=tim_agenda._market_id, new_label=moon_text)
+    tim_agenda.edit_idea_label(old_road=tim_agenda._world_id, new_label=moon_text)
 
     # THEN
     # with pytest_raises(Exception) as excinfo:
     #     moon_text = "moon"
-    #     tim_agenda.edit_idea_label(old_road=tim_agenda._market_id, new_label=moon_text)
+    #     tim_agenda.edit_idea_label(old_road=tim_agenda._world_id, new_label=moon_text)
     # assert (
     #     str(excinfo.value)
-    #     == f"Cannot set idearoot to string other than '{tim_agenda._market_id}'"
+    #     == f"Cannot set idearoot to string other than '{tim_agenda._world_id}'"
     # )
 
     assert tim_agenda._idearoot._label != moon_text
-    assert tim_agenda._idearoot._label == tim_agenda._market_id
+    assert tim_agenda._idearoot._label == tim_agenda._world_id
 
 
 def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_market_id_IsDifferent():
@@ -74,11 +74,11 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_market_id_IsDiffere
     tim_agenda.add_l1_idea(ideaunit_shop(work_text))
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
     sun_text = "sun"
-    tim_agenda._market_id = sun_text
-    tim_agenda._idearoot._agenda_market_id = sun_text
+    tim_agenda._world_id = sun_text
+    tim_agenda._idearoot._agenda_world_id = sun_text
     assert tim_agenda._agent_id == tim_text
-    assert tim_agenda._market_id == sun_text
-    assert tim_agenda._idearoot._agenda_market_id == sun_text
+    assert tim_agenda._world_id == sun_text
+    assert tim_agenda._idearoot._agenda_world_id == sun_text
     assert tim_agenda._idearoot._label == root_label()
     work_idea = tim_agenda.get_idea_obj(work_road)
     assert work_idea._parent_road == root_label()
@@ -106,22 +106,22 @@ def test_agenda_set_market_id_CorrectlySetsAttr():
     tim_agenda.add_l1_idea(ideaunit_shop(work_text))
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=old_work_road)
     assert tim_agenda._agent_id == tim_text
-    assert tim_agenda._idearoot._label == tim_agenda._market_id
+    assert tim_agenda._idearoot._label == tim_agenda._world_id
     work_idea = tim_agenda.get_idea_obj(old_work_road)
-    assert work_idea._parent_road == tim_agenda._market_id
+    assert work_idea._parent_road == tim_agenda._world_id
     swim_idea = tim_agenda.get_idea_obj(old_swim_road)
     assert swim_idea._parent_road == old_work_road
-    assert tim_agenda._market_id == tim_agenda._market_id
+    assert tim_agenda._world_id == tim_agenda._world_id
 
     # WHEN
     market_id_text = "Sun"
-    tim_agenda.set_market_id(market_id=market_id_text)
+    tim_agenda.set_world_id(world_id=market_id_text)
 
     # THEN
     new_work_road = tim_agenda.make_l1_road(work_text)
     swim_text = "swim"
     new_swim_road = tim_agenda.make_road(new_work_road, swim_text)
-    assert tim_agenda._market_id == market_id_text
+    assert tim_agenda._world_id == market_id_text
     assert tim_agenda._idearoot._label == market_id_text
     work_idea = tim_agenda.get_idea_obj(new_work_road)
     assert work_idea._parent_road == market_id_text
@@ -233,7 +233,7 @@ def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
     old_casa_text = "casa"
     old_casa_road = tim_agenda.make_l1_road(old_casa_text)
     tim_agenda.add_l1_idea(ideaunit_shop(old_casa_text))
-    tim_agenda.edit_idea_attr(tim_agenda._market_id, range_source_road=old_casa_road)
+    tim_agenda.edit_idea_attr(tim_agenda._world_id, range_source_road=old_casa_road)
     assert tim_agenda._idearoot._range_source_road == old_casa_road
 
     # WHEN
@@ -330,7 +330,7 @@ def test_agenda_set_agent_id_CorrectlyChangesBoth():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     assert sue_agenda._agent_id == "Sue"
-    assert sue_agenda._idearoot._label == sue_agenda._market_id
+    assert sue_agenda._idearoot._label == sue_agenda._world_id
     # mid_label1 = "tim"
     # sue_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
     # assert sue_agenda._agent_id == old_label
@@ -342,7 +342,7 @@ def test_agenda_set_agent_id_CorrectlyChangesBoth():
 
     # THEN
     assert sue_agenda._agent_id == bob_text
-    assert sue_agenda._idearoot._label == sue_agenda._market_id
+    assert sue_agenda._idearoot._label == sue_agenda._world_id
 
 
 def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
@@ -398,7 +398,7 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     comma_text = ","
     assert luca_agenda._road_delimiter == comma_text
     comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
-    # print(f"{luca_agenda._market_id=} {luca_agenda._idearoot._label=} {work_road=}")
+    # print(f"{luca_agenda._world_id=} {luca_agenda._idearoot._label=} {work_road=}")
     # print(f"{cook_idea._parent_road=} {cook_idea._label=}")
     # comma_work_idea = luca_agenda.get_idea_obj(comma_work_road)
     # print(f"{comma_work_idea._parent_road=} {comma_work_idea._label=}")
@@ -410,7 +410,7 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
 
     # THEN
     assert cook_idea.get_road() != comma_cook_road
-    luca_market_id = luca_agenda._market_id
+    luca_market_id = luca_agenda._world_id
     slash_work_road = create_road(luca_market_id, work_text, delimiter=slash_text)
     slash_cook_road = create_road(slash_work_road, cook_text, delimiter=slash_text)
     assert cook_idea.get_road() == slash_cook_road

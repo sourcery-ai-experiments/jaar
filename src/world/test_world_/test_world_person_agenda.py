@@ -37,7 +37,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
 
     # THEN
     static_luca_agenda = agendaunit_shop(luca_text)
-    assert gen_luca_agenda._market_id == static_luca_agenda._market_id
+    assert gen_luca_agenda._world_id == static_luca_agenda._world_id
     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
@@ -64,5 +64,5 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
 
 #     # THEN
 #     static_luca_agenda = agendaunit_shop(luca_text)
-#     assert gen_luca_agenda._market_id == static_luca_agenda._market_id
+#     assert gen_luca_agenda._world_id == static_luca_agenda._world_id
 #     assert gen_luca_agenda.get_party(gilo_text) != None
