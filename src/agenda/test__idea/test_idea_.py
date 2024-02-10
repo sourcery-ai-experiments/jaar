@@ -394,6 +394,13 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({field_text: False}, field_text) == False
 
     # GIVEN
+    field_text = "_problem_bool"
+    # WHEN / THEN
+    assert get_obj_from_idea_dict({field_text: True}, field_text)
+    assert get_obj_from_idea_dict({}, field_text) == False
+    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
+
+    # GIVEN
     field_text = "_kids"
     # WHEN / THEN
     assert get_obj_from_idea_dict({field_text: {}}, field_text) == {}
@@ -487,6 +494,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     yao_healerhold = healerhold_shop({yao_text})
     work_text = "work"
     work_road = create_road(root_label(), work_text)
+    x_problem_bool = True
     work_idea = ideaunit_shop(
         _parent_road=work_road,
         _kids=None,
@@ -501,6 +509,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _active=True,
         _range_source_road="test123",
         promise=True,
+        _problem_bool=x_problem_bool,
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     work_idea.set_beliefunit(beliefunit=beliefunit_x)
@@ -544,6 +553,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict["_reest"] == work_idea._reest
     assert work_dict["_range_source_road"] == work_idea._range_source_road
     assert work_dict["promise"] == work_idea.promise
+    assert work_dict["_problem_bool"] == work_idea._problem_bool
+    assert work_dict["_problem_bool"] == x_problem_bool
     assert work_idea._is_expanded
     assert work_dict.get("_is_expanded") is None
     assert len(work_dict["_beliefunits"]) == len(work_idea.get_beliefunits_dict())
@@ -551,7 +562,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict.get("_meld_strategy") is None
 
 
-def test_IdeaUnit_get_dict_ReturnsCorrectIncompleteDict():
+def test_IdeaUnit_get_dict_ReturnsCorrectDictWithoutEmptyAttributes():
     # GIVEN
     work_idea = ideaunit_shop()
 

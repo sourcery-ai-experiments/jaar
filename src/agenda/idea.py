@@ -1033,6 +1033,8 @@ class IdeaUnit:
             x_dict["_numeric_road"] = self._numeric_road
         if self.promise:
             x_dict["promise"] = self.promise
+        if self._problem_bool:
+            x_dict["_problem_bool"] = self._problem_bool
         if self._beliefunits not in [{}, None]:
             x_dict["_beliefunits"] = self.get_beliefunits_dict()
         if self._is_expanded == False:
@@ -1236,7 +1238,7 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key in {"_kids"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else {}
-    elif dict_key in {"promise"}:
+    elif dict_key in {"promise", "_problem_bool"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     elif dict_key in {"_is_expanded"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else True

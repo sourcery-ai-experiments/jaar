@@ -183,6 +183,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     run_text = "runners"
     run_healerhold = healerhold_shop({run_text})
     zia_agenda.edit_idea_attr(road=zia_agenda._world_id, healerhold=run_healerhold)
+    zia_agenda.edit_idea_attr(road=zia_agenda._world_id, problem_bool=True)
 
     # WHEN
     x_json = zia_agenda.get_json()
@@ -220,6 +221,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     print(f"{idearoot_healerhold=}")
     assert len(idearoot_healerhold) == 1
     assert x_idearoot._healerhold.any_group_id_exists()
+    assert x_idearoot._problem_bool
 
 
 def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
@@ -309,6 +311,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     shave_road = zia_agenda.make_l1_road(shave_text)
     shave_idea_y1 = zia_agenda.get_idea_obj(shave_road)
     shave_idea_y1._originunit.set_originlink(party_id="Sue", weight=4.3)
+    shave_idea_y1._problem_bool = True
     # print(f"{shave_road=}")
     # print(f"{json_shave_idea._label=} {json_shave_idea._parent_road=}")
 
@@ -399,6 +402,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_shave_idea._healerhold == zia_shave_idea._healerhold
     assert len(json_shave_idea._balancelinks) == 2
     assert len(json_shave_idea._beliefunits) == 1
+    assert zia_shave_idea._problem_bool
+    assert json_shave_idea._problem_bool == zia_shave_idea._problem_bool
 
     assert len(json_agenda._originunit._links) == 1
     assert json_agenda._originunit == zia_agenda._originunit
