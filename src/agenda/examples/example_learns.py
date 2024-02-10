@@ -8,7 +8,7 @@ from src.agenda.learn import (
 )
 
 
-def get_sue_proad() -> PersonRoad:
+def get_sue_road() -> PersonRoad:
     sue_text = "Sue"
     food_text = "Hunger"
     yao_text = "Yao"
@@ -26,7 +26,7 @@ def get_yao_example_roadunit() -> PersonRoad:
 
 
 def get_sue_learnunit_example1() -> LearnUnit:
-    sue_learnunit = learnunit_shop(get_sue_proad())
+    sue_learnunit = learnunit_shop(get_sue_road())
 
     agendaunit_text = "agendaunit"
     weight_name = "_weight"

@@ -117,24 +117,3 @@ def dir_files(
 
 def rename_dir(src, dst):
     os_rename(src=src, dst=dst)
-
-
-def get_proad_dir(x_proad: PersonRoad, delimiter: str = None):
-    if delimiter is None:
-        delimiter = default_road_delimiter_if_none(delimiter)
-    person_id_node = get_node("PersonRoad", x_proad, "PersonID", delimiter)
-    problem_id_node = get_node("PersonRoad", x_proad, "ProblemID", delimiter)
-    healer_id_node = get_node("PersonRoad", x_proad, "HealerID", delimiter)
-    market_id_node = get_node("PersonRoad", x_proad, "MarketID", delimiter)
-
-    # if person_id_node != None:
-    #     x_proad = f"/{person_id_node}"
-    x_proad = f"/{person_id_node}" if person_id_node != None else ""
-    if problem_id_node != None:
-        x_proad = f"{x_proad}/problems/{problem_id_node}"
-    if healer_id_node != None:
-        x_proad = f"{x_proad}/healers/{healer_id_node}"
-    if market_id_node != None:
-        x_proad = f"{x_proad}/markets/{market_id_node}"
-
-    return x_proad

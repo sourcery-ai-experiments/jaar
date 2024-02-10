@@ -22,10 +22,6 @@ class InvalidMarketException(Exception):
     pass
 
 
-class PRoadFailureException(Exception):
-    pass
-
-
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -37,16 +33,6 @@ class PersonUnit:
     _market_metrics: dict[MarketID:MarketUnit] = None
     _problems: dict[ProblemID:] = None
     _road_delimiter: str = None
-
-    def _get_single_proad_node(
-        self, x_road: PersonRoad, roadnode_type: RoadNode
-    ) -> RoadNode:
-        return get_single_roadnode(
-            roadunit_type="PersonRoad",
-            x_roadunit=x_road,
-            roadnode_type=roadnode_type,
-            delimiter=self._road_delimiter,
-        )
 
     def healer_exists(self, healer_id: HealerID) -> bool:
         return any(
