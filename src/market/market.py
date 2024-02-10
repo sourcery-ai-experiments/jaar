@@ -86,30 +86,12 @@ class MarketUnit:
     market_id: MarketID = None
     markets_dir: str = None
     _manager_person_id: HealerID = None
-    _problem_id: ProblemID = None
-    _healer_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
     _bank_db = None
     _road_delimiter: str = None
 
     def set_road_delimiter(self, new_road_delimiter: str):
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
-
-    def set_proad_nodes(
-        self,
-        person_id: PersonID = None,
-        problem_id: ProblemID = None,
-        healer_id: HealerID = None,
-    ):
-        if person_id is None:
-            person_id = get_temp_env_person_id()
-        if problem_id is None:
-            problem_id = get_temp_env_problem_id()
-        if healer_id is None:
-            healer_id = get_temp_env_healer_id()
-        self._manager_person_id = person_id
-        self._problem_id = problem_id
-        self._healer_id = healer_id
 
     # banking
     def set_voice_ranks(self, agent_id: AgentID, sort_order: str):
@@ -633,8 +615,6 @@ def marketunit_shop(
     market_id: MarketID,
     markets_dir: str = None,
     _manager_person_id: PersonID = None,
-    _problem_id: ProblemID = None,
-    _healer_id: HealerID = None,
     _clerkunits: dict[AgentID:ClerkUnit] = None,
     in_memory_bank: bool = None,
     _road_delimiter: str = None,
@@ -647,11 +627,11 @@ def marketunit_shop(
         markets_dir=markets_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
+    if _manager_person_id is None:
+        _manager_person_id = get_temp_env_person_id()
     market_x.set_road_delimiter(_road_delimiter)
     market_x.set_market_id(market_id=market_id)
-    market_x.set_proad_nodes(
-        person_id=_manager_person_id, problem_id=_problem_id, healer_id=_healer_id
-    )
+    market_x._manager_person_id = _manager_person_id
     market_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
     return market_x
 

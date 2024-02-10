@@ -265,10 +265,10 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     x_market = _delete_and_set_ex6(x_market_id=ex7_text)
     #     sal_text = "sal"
     #     # x_market = _delete_and_set_ex6()
-    #     # # x_market.set_proad_nodes(sal_text)
+    #     # # x_market.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
     #     # x_market = marketunit_shop(market_id=ex6_text, markets_dir=get_test_markets_dir())
-    #     # x_market.set_proad_nodes(sal_text)
+    #     # x_market.set_road_nodes(sal_text)
     #     # x_market.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 
     #     # WHEN

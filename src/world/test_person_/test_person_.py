@@ -11,7 +11,7 @@ from src.world.examples.world_env_kit import (
     get_temp_world_dir,
     worlds_dir_setup_cleanup,
 )
-from src.instrument.file import get_proad_dir
+
 
 
 def test_PersonUnit_exists():
@@ -21,6 +21,9 @@ def test_PersonUnit_exists():
     # THEN
     assert x_person.person_id is None
     assert x_person.person_dir is None
+    assert x_person._gut_obj is None
+    assert x_person._gut_file_name is None
+    assert x_person._gut_path is None
     assert x_person._markets is None
     assert x_person._market_metrics is None
     assert x_person._problems is None
@@ -31,6 +34,9 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     # GIVEN / WHEN
     x_person = PersonUnit()
     assert x_person.person_id is None
+    assert x_person.person_dir is None
+    assert x_person._gut_file_name is None
+    assert x_person._gut_path is None
 
     # GIVEN
     yao_text = "Yao"
@@ -38,6 +44,9 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # THEN
     assert x_person.person_id == yao_text
+    assert x_person.person_dir == f"/persons/{yao_text}"
+    assert x_person._gut_file_name == "gut.json"
+    assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter():
@@ -67,6 +76,8 @@ def test_personunit_shop_ReturnsNonePersonUnitWithCorrectAttrs_v1():
     # THEN
     assert x_person.person_id == sue_text
     assert x_person.person_dir == f"/persons/{sue_text}"
+    assert x_person._gut_file_name == "gut.json"
+    assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
     assert x_person._markets == {}
     assert x_person._problems == {}
     assert x_person._road_delimiter == default_road_delimiter_if_none()

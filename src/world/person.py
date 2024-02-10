@@ -12,7 +12,6 @@ from src._prime.road import (
 )
 from src.agenda.agenda import AgendaUnit
 from src.market.market import MarketUnit
-from src.instrument.file import get_proad_dir
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
 from pandas import DataFrame
@@ -31,6 +30,9 @@ class PRoadFailureException(Exception):
 class PersonUnit:
     person_id: PersonID = None
     person_dir: str = None
+    _gut_obj: AgendaUnit = None
+    _gut_file_name: str = None
+    _gut_path: str = None
     _markets: dict[MarketID:MarketUnit] = None
     _market_metrics: dict[MarketID:MarketUnit] = None
     _problems: dict[ProblemID:] = None
@@ -59,6 +61,10 @@ class PersonUnit:
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
         if self.person_dir is None:
             self.person_dir = f"/persons/{self.person_id}"
+        if self._gut_file_name is None:
+            self._gut_file_name = "gut.json"
+        if self._gut_path is None:
+            self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
 
     def set_person_metrics(self):
         # total_problemunits_weight = sum(

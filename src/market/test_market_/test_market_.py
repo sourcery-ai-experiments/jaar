@@ -29,8 +29,6 @@ def test_MarketUnit_exists():
     assert x_market.market_id == x_market_id
     assert x_market.markets_dir == get_test_markets_dir()
     assert x_market._manager_person_id is None
-    assert x_market._problem_id is None
-    assert x_market._healer_id is None
     assert x_market._road_delimiter is None
 
 
@@ -47,39 +45,6 @@ def test_MarketUnit_set_market_id_CorrectlySetsAttr():
     assert x_marketunit.market_id == texas_text
 
 
-def test_MarketUnit_set_proad_nodes_CorrectsSetAttrsGivenVariables():
-    # GIVEN
-    x_market_id = get_temp_env_market_id()
-    x_market = MarketUnit(market_id=x_market_id)
-
-    # WHEN
-    zia_text = "Zia"
-    knee_text = "knee"
-    sue_text = "Sue"
-    x_market.set_proad_nodes(
-        person_id=zia_text, problem_id=knee_text, healer_id=sue_text
-    )
-
-    # THEN
-    assert x_market._manager_person_id == zia_text
-    assert x_market._problem_id == knee_text
-    assert x_market._healer_id == sue_text
-
-
-def test_MarketUnit_set_proad_nodes_CorrectsSetsAttrsGivenNones():
-    # GIVEN
-    x_market_id = get_temp_env_market_id()
-    x_market = MarketUnit(market_id=x_market_id)
-
-    # WHEN
-    x_market.set_proad_nodes()
-
-    # THEN
-    assert x_market._manager_person_id == get_temp_env_person_id()
-    assert x_market._problem_id == get_temp_env_problem_id()
-    assert x_market._healer_id == get_temp_env_healer_id()
-
-
 def test_marketunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
@@ -94,8 +59,6 @@ def test_marketunit_shop_ReturnsObj(env_dir_setup_cleanup):
         x_market_id,
         get_test_markets_dir(),
         _manager_person_id=sue_text,
-        _problem_id=knee_text,
-        _healer_id=zia_text,
     )
 
     # THEN
@@ -104,8 +67,6 @@ def test_marketunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(market_dir)
     assert x_market._bank_db != None
     assert x_market._manager_person_id == sue_text
-    assert x_market._problem_id == knee_text
-    assert x_market._healer_id == zia_text
     assert x_market._clerkunits == {}
     assert x_market._road_delimiter == default_road_delimiter_if_none()
 
@@ -124,8 +85,6 @@ def test_marketunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     # assert os_path.exists(market_dir)
     assert x_market._bank_db != None
     assert x_market._manager_person_id == get_temp_env_person_id()
-    assert x_market._problem_id == get_temp_env_problem_id()
-    assert x_market._healer_id == get_temp_env_healer_id()
     assert x_market._clerkunits == {}
     assert x_market._road_delimiter == default_road_delimiter_if_none()
 
@@ -251,9 +210,7 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     assert x_market.market_id != new_x_market_id
 
     # WHEN
-    change_market_id_example_market(
-        market_obj=x_market, new_market_id=new_x_market_id
-    )
+    change_market_id_example_market(market_obj=x_market, new_market_id=new_x_market_id)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_market_dir) is False
@@ -383,7 +340,5 @@ def test_MarketUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     # WHEN / THEN
     assert x_market.market_id == x_market.build_market_road()
     assert market_road_with_woot == x_market.build_market_road(market_road_wo_root)
-    assert bloomers_road_with_root == x_market.build_market_road(
-        bloomers_road_wo_root
-    )
+    assert bloomers_road_with_root == x_market.build_market_road(bloomers_road_wo_root)
     assert roses_road_with_root == x_market.build_market_road(roses_road_wo_root)

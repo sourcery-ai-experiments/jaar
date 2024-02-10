@@ -10,8 +10,8 @@ from src.world.topic import (
 
 def get_cooking_topic() -> TopicUnit:
     """is_meaningful=True"""
-    yao_proad = create_road("Yao", "Texas")
-    cook_road = create_road(yao_proad, "cooking")
+    yao_road = create_road("Yao", "Texas")
+    cook_road = create_road(yao_road, "cooking")
     cook_topic = topicunit_shop(cook_road)
     cheap_road = create_road(cook_road, "cheap food")
     fresh_road = create_road(cook_road, "farm fresh")
@@ -30,8 +30,8 @@ def get_cooking_topic() -> TopicUnit:
 
 def get_climate_topic() -> TopicUnit:
     """is_meaningful=True"""
-    yao_proad = create_road("Yao", "Texas")
-    climate_road = create_road(yao_proad, "climate")
+    yao_road = create_road("Yao", "Texas")
+    climate_road = create_road(yao_road, "climate")
     climate_topic = topicunit_shop(climate_road)
 
     crazy_road = create_road(climate_road, "crazy weather")
@@ -45,8 +45,8 @@ def get_climate_topic() -> TopicUnit:
 
 def get_speedboats_action_topic() -> TopicUnit:
     """is_meaningful=True"""
-    yao_proad = create_road("Yao", "Texas")
-    climate_road = create_road(yao_proad, "speedboats")
+    yao_road = create_road("Yao", "Texas")
+    climate_road = create_road(yao_road, "speedboats")
     climate_topic = topicunit_shop(climate_road, action=True)
 
     stop_road = create_road(climate_road, "stop using")
@@ -60,8 +60,8 @@ def get_speedboats_action_topic() -> TopicUnit:
 
 def get_gasheater_action_topic() -> TopicUnit:
     """is_meaningful=False"""
-    yao_proad = create_road("Yao", "Texas")
-    gasheater_road = create_road(yao_proad, "home gas heaters")
+    yao_road = create_road("Yao", "Texas")
+    gasheater_road = create_road(yao_road, "home gas heaters")
     gasheater_topic = topicunit_shop(gasheater_road, action=True)
 
     keep_road = create_road(gasheater_road, "keep using")
@@ -72,8 +72,8 @@ def get_gasheater_action_topic() -> TopicUnit:
 
 def get_childcare_topic() -> TopicUnit:
     """is_meaningful=True"""
-    yao_proad = create_road("Yao", "Texas")
-    family_road = create_road(yao_proad, "family")
+    yao_road = create_road("Yao", "Texas")
+    family_road = create_road(yao_road, "family")
     childcare_road = create_road(family_road, "childcare")
     childcare_topic = topicunit_shop(childcare_road)
 
@@ -88,8 +88,8 @@ def get_childcare_topic() -> TopicUnit:
 
 def get_helen_action_topic() -> TopicUnit:
     """is_meaningful=True"""
-    yao_proad = create_road("childcare", "Oregon")
-    psu_road = create_road(yao_proad, "PSU")
+    yao_road = create_road("childcare", "Oregon")
+    psu_road = create_road(yao_road, "PSU")
     helen_road = create_road(psu_road, "Helen Gordon")
     helen_topic = topicunit_shop(helen_road, action=True)
 
@@ -103,8 +103,8 @@ def get_helen_action_topic() -> TopicUnit:
 
 
 def get_cooking_vowunit() -> VowUnit:
-    yao_proad = create_road("Yao", "Texas")
-    cook_road = create_road(yao_proad, "cooking")
+    yao_road = create_road("Yao", "Texas")
+    cook_road = create_road(yao_road, "cooking")
     eight_uid = 8
     eight_vowunit = vowunit_shop(uid=eight_uid)
     eight_vowunit.set_topiclink(topiclink_shop(cook_road))
@@ -112,8 +112,8 @@ def get_cooking_vowunit() -> VowUnit:
 
 
 def get_climate_vowunit() -> VowUnit:
-    yao_proad = create_road("Yao", "Texas")
-    climate_road = create_road(yao_proad, "climate")
+    yao_road = create_road("Yao", "Texas")
+    climate_road = create_road(yao_road, "climate")
     six_uid = 6
     six_vowunit = vowunit_shop(uid=six_uid)
     six_vowunit.set_topiclink(topiclink_shop(climate_road))
@@ -121,8 +121,8 @@ def get_climate_vowunit() -> VowUnit:
 
 
 def get_speedboat_action_vowunit() -> VowUnit:
-    yao_proad = create_road("Yao", "Texas")
-    speedboat_road = create_road(yao_proad, "speedboats")
+    yao_road = create_road("Yao", "Texas")
+    speedboat_road = create_road(yao_road, "speedboats")
     seven_uid = 7
     seven_vowunit = vowunit_shop(uid=seven_uid)
     seven_vowunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
