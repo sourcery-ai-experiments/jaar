@@ -11,7 +11,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.agenda.reason_assign import assigned_unit_shop
+from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.agenda_env import get_agenda_examples_dir
 from src.instrument.file import open_file
 
@@ -266,35 +266,35 @@ def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
 
 
 def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
-    yue_agenda = agendaunit_shop(_agent_id="Yue", _weight=10)
+    zia_agenda = agendaunit_shop(_agent_id="Zia", _weight=10)
     shave_text = "shave"
-    shave_road = yue_agenda.make_l1_road(shave_text)
+    shave_road = zia_agenda.make_l1_road(shave_text)
     idea_kid_shave = ideaunit_shop(shave_text, _weight=30, promise=True)
-    yue_agenda.add_l1_idea(idea_kid_shave)
+    zia_agenda.add_l1_idea(idea_kid_shave)
     week_text = "weekdays"
-    week_road = yue_agenda.make_l1_road(week_text)
+    week_road = zia_agenda.make_l1_road(week_text)
     week_idea = ideaunit_shop(week_text, _weight=40)
-    yue_agenda.add_l1_idea(week_idea)
+    zia_agenda.add_l1_idea(week_idea)
 
     sun_text = "Sunday"
-    sun_road = yue_agenda.make_road(week_road, sun_text)
+    sun_road = zia_agenda.make_road(week_road, sun_text)
     church_text = "Church"
-    church_road = yue_agenda.make_road(sun_road, church_text)
+    church_road = zia_agenda.make_road(sun_road, church_text)
     mon_text = "Monday"
-    mon_road = yue_agenda.make_road(week_road, mon_text)
+    mon_road = zia_agenda.make_road(week_road, mon_text)
     idea_grandkidU = ideaunit_shop(sun_text, _weight=20)
     idea_grandkidM = ideaunit_shop(mon_text, _weight=20)
-    yue_agenda.add_idea(idea_grandkidU, week_road)
-    yue_agenda.add_idea(idea_grandkidM, week_road)
+    zia_agenda.add_idea(idea_grandkidU, week_road)
+    zia_agenda.add_idea(idea_grandkidM, week_road)
 
     shave_reason = reasonunit_shop(week_road)
     shave_reason.set_premise(mon_road)
 
-    yue_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
-    yue_agenda.set_belief(base=week_road, pick=sun_road)
+    zia_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
+    zia_agenda.set_belief(base=week_road, pick=sun_road)
     beliefunit_x = beliefunit_shop(base=week_road, pick=church_road)
-    yue_agenda.edit_idea_attr(road=shave_road, beliefunit=beliefunit_x)
-    return yue_agenda
+    zia_agenda.edit_idea_attr(road=shave_road, beliefunit=beliefunit_x)
+    return zia_agenda
 
 
 def get_agenda_base_time_example() -> AgendaUnit:
@@ -412,7 +412,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_smel_road
     )
     # assign Cali to task
-    cali_assignunit = assigned_unit_shop()
+    cali_assignunit = assignedunit_shop()
     cali_assignunit.set_suffgroup(cali_text)
     amos_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")

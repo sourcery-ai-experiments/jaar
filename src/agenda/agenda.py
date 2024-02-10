@@ -274,7 +274,7 @@ class AgendaUnit:
 
     def _evaluate_relevancy(
         self,
-        to_evaluate_list: [RoadUnit],
+        to_evaluate_list: list[RoadUnit],
         to_evaluate_hx_dict: dict[RoadUnit:int],
         to_evaluate_road: RoadUnit,
         road_type: str,
@@ -395,7 +395,7 @@ class AgendaUnit:
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
 
-    def get_time_hour_from_min(self, min: int) -> (int, int, list[int]):
+    def get_time_hour_from_min(self, min: int) -> set[int, int, list[int]]:
         month_num, day_num, day_rem_min, day_x = self.get_time_month_from_min(min=min)
         hr_x = day_x.get_kids_in_range(begin=day_rem_min, close=day_rem_min)[0]
         hr_rem_min = day_rem_min - hr_x._begin
@@ -887,19 +887,18 @@ class AgendaUnit:
 
     def get_idea_dict(self, problem: bool = None) -> dict[RoadUnit:IdeaUnit]:
         self.set_agenda_metrics()
-        if problem:
-            if self._market_justified == False:
-                raise Exception_market_justified(
-                    f"Cannot return problem set because _market_justified={self._market_justified}."
-                )
-
-            return {
-                x_idea.get_road(): x_idea
-                for x_idea in self._idea_dict.values()
-                if x_idea._problem_bool
-            }
-        else:
+        if not problem:
             return self._idea_dict
+        if self._market_justified == False:
+            raise Exception_market_justified(
+                f"Cannot return problem set because _market_justified={self._market_justified}."
+            )
+
+        return {
+            x_idea.get_road(): x_idea
+            for x_idea in self._idea_dict.values()
+            if x_idea._problem_bool
+        }
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = treemetrics_shop()
@@ -1186,7 +1185,7 @@ class AgendaUnit:
 
     def _set_ideaattrfilter_begin_close(
         self, ideaattrfilter: IdeaAttrFilter, idea_road: RoadUnit
-    ) -> (float, float):
+    ) -> set[float, float]:
         x_iaf = ideaattrfilter
         anc_roads = get_ancestor_roads(road=idea_road)
         if (
@@ -2206,6 +2205,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
         _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
         _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
+        _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
         _beliefunits=get_obj_from_idea_dict(idearoot_dict, "_beliefunits"),
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
@@ -2244,6 +2244,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             promise=get_obj_from_idea_dict(idea_dict, "promise"),
             _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
+            _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
             _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
             _beliefunits=get_obj_from_idea_dict(idea_dict, "_beliefunits"),

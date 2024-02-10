@@ -10,14 +10,14 @@ from src._prime.road import default_road_delimiter_if_none
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # GIVEN
-    yue_agenda = agendaunit_shop("Yue")
+    zia_agenda = agendaunit_shop("Zia")
     invalid_rootnode_swim_road = "swimming"
-    assert invalid_rootnode_swim_road != yue_agenda._world_id
+    assert invalid_rootnode_swim_road != zia_agenda._world_id
     work_text = "work"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yue_agenda.add_idea(
+        zia_agenda.add_idea(
             ideaunit_shop(work_text), parent_road=invalid_rootnode_swim_road
         )
     assert (
@@ -28,13 +28,13 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
 
 def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     # GIVEN
-    yue_agenda = agendaunit_shop("Yue")
-    swim_road = yue_agenda.make_l1_road("swimming")
+    zia_agenda = agendaunit_shop("Zia")
+    swim_road = zia_agenda.make_l1_road("swimming")
     work_text = "work"
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        yue_agenda.add_idea(
+        zia_agenda.add_idea(
             ideaunit_shop(work_text),
             parent_road=swim_road,
             create_missing_ancestors=False,
@@ -47,16 +47,16 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
 
 def test_agenda_add_l1_idea_CorrectlySetsAttr():
     # GIVEN
-    yue_agenda = agendaunit_shop("Yue")
+    zia_agenda = agendaunit_shop("Zia")
     work_text = "work"
-    work_road = yue_agenda.make_l1_road(work_text)
-    assert yue_agenda.idea_exists(work_road) == False
+    work_road = zia_agenda.make_l1_road(work_text)
+    assert zia_agenda.idea_exists(work_road) == False
 
     # WHEN
-    yue_agenda.add_l1_idea(ideaunit_shop(work_text))
+    zia_agenda.add_l1_idea(ideaunit_shop(work_text))
 
     # THEN
-    assert yue_agenda.idea_exists(work_road)
+    assert zia_agenda.idea_exists(work_road)
 
 
 def test_agenda_idea_kid_CanHaveKids():

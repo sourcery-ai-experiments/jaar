@@ -11,7 +11,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop,
     premiseunit_shop,
 )
-from src.agenda.reason_assign import assigned_unit_shop, assigned_heir_shop
+from src.agenda.reason_assign import assignedunit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
 from src.agenda.idea import IdeaUnit, ideaunit_shop, get_obj_from_idea_dict
 from pytest import raises as pytest_raises
@@ -99,7 +99,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._agenda_coin_cease is None
     assert x_ideaunit._reasonunits == {}
     assert x_ideaunit._reasonheirs == {}
-    assert x_ideaunit._assignedunit == assigned_unit_shop()
+    assert x_ideaunit._assignedunit == assignedunit_shop()
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
@@ -400,6 +400,26 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({}, field_text) == {}
 
 
+def test_get_obj_from_idea_dict_ReturnsCorrect_HealerHold():
+    # GIVEN
+    # WHEN / THEN
+    healerhold_key = "_healerhold"
+    assert get_obj_from_idea_dict({}, healerhold_key) == healerhold_shop()
+
+    # WHEN
+    sue_text = "sue"
+    jim_text = "Jim"
+    healerhold_dict = {"healerhold_group_ids": [sue_text, jim_text]}
+    ideaunit_dict = {healerhold_key: healerhold_dict}
+
+    # THEN
+    static_healerhold = healerhold_shop()
+    static_healerhold.set_group_id(x_group_id=sue_text)
+    static_healerhold.set_group_id(x_group_id=jim_text)
+    assert get_obj_from_idea_dict(ideaunit_dict, healerhold_key) != None
+    assert get_obj_from_idea_dict(ideaunit_dict, healerhold_key) == static_healerhold
+
+
 def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
@@ -461,7 +481,10 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         "debtor_weight": flyer_link.debtor_weight,
     }
     x1_balancelinks = {biker_group_id: biker_get_dict, flyer_group_id: flyer_get_dict}
-
+    sue_text = "Sue"
+    yao_text = "Yao"
+    sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
+    yao_healerhold = healerhold_shop({yao_text})
     work_text = "work"
     work_road = create_road(root_label(), work_text)
     work_idea = ideaunit_shop(
@@ -473,6 +496,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _level=1,
         _reasonunits=x1_reasonunits,
         _reasonheirs=x1_reasonheirs,
+        _assignedunit=sue_assignedunit,
+        _healerhold=yao_healerhold,
         _active=True,
         _range_source_road="test123",
         promise=True,
@@ -506,6 +531,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert work_dict["_reasonunits"] == work_idea.get_reasonunits_dict()
     assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
     assert work_dict["_balancelinks"] == x1_balancelinks
+    assert work_dict["_assignedunit"] == sue_assignedunit.get_dict()
+    assert work_dict["_healerhold"] == yao_healerhold.get_dict()
     assert work_dict["_originunit"] == work_idea.get_originunit_dict()
     assert work_dict["_weight"] == work_idea._weight
     assert work_dict["_label"] == work_idea._label
@@ -591,7 +618,8 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_idea._meld_strategy == "default"
     assert work_idea._beliefunits == {}
     assert work_idea._balancelinks == {}
-    assert work_idea._assignedunit == assigned_unit_shop()
+    assert work_idea._assignedunit == assignedunit_shop()
+    assert work_idea._healerhold == healerhold_shop()
     assert work_idea._originunit == originunit_shop()
     assert work_idea._kids == {}
 
@@ -605,6 +633,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert work_dict.get("_beliefunits") is None
     assert work_dict.get("_balancelinks") is None
     assert work_dict.get("_assignedunit") is None
+    assert work_dict.get("_healerhold") is None
     assert work_dict.get("_originunit") is None
     assert work_dict.get("_kids") is None
 
@@ -817,7 +846,7 @@ def test_IdeaUnit_set_assignedunit_empty_if_null():
 
     # THEN
     assert run_idea._assignedunit != None
-    assert run_idea._assignedunit == assigned_unit_shop()
+    assert run_idea._assignedunit == assignedunit_shop()
 
 
 def test_IdeaUnit_set_assignedheir_CorrectlySetsAttr():
@@ -833,11 +862,11 @@ def test_IdeaUnit_set_assignedheir_CorrectlySetsAttr():
 
     # THEN
     assert sport_idea._assignedheir != None
-    swim_assigned_unit = assigned_unit_shop()
-    swim_assigned_unit.set_suffgroup(group_id=swim_text)
+    swim_assignedunit = assignedunit_shop()
+    swim_assignedunit.set_suffgroup(group_id=swim_text)
     swim_assigned_heir = assigned_heir_shop()
     swim_assigned_heir.set_suffgroups(
-        assignunit=swim_assigned_unit, parent_assignheir=None, agenda_groups=None
+        assignunit=swim_assignedunit, parent_assignheir=None, agenda_groups=None
     )
     assert sport_idea._assignedheir == swim_assigned_heir
 

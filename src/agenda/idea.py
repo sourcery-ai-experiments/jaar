@@ -10,11 +10,11 @@ from src._prime.road import (
     MarketID,
 )
 from src._prime.meld import get_meld_default
-from src.agenda.healer import HealerHold, healerhold_shop
+from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
 from src.agenda.reason_assign import (
     AssignedUnit,
     AssignedHeir,
-    assigned_unit_shop,
+    assignedunit_shop,
     assigned_heir_shop,
     assignedunit_get_from_dict,
 )
@@ -1007,8 +1007,10 @@ class IdeaUnit:
             x_dict["_kids"] = self.get_kids_dict()
         if self._reasonunits not in [{}, None]:
             x_dict["_reasonunits"] = self.get_reasonunits_dict()
-        if self._assignedunit not in [None, assigned_unit_shop()]:
+        if self._assignedunit not in [None, assignedunit_shop()]:
             x_dict["_assignedunit"] = self.get_assignedunit_dict()
+        if self._healerhold not in [None, healerhold_shop()]:
+            x_dict["_healerhold"] = self._healerhold.get_dict()
         if self._balancelinks not in [{}, None]:
             x_dict["_balancelinks"] = self.get_balancelinks_dict()
         if self._originunit not in [None, originunit_shop()]:
@@ -1060,7 +1062,7 @@ class IdeaUnit:
 
     def set_assignedunit_empty_if_null(self):
         if self._assignedunit is None:
-            self._assignedunit = assigned_unit_shop()
+            self._assignedunit = assignedunit_shop()
 
     def set_assignedheir(
         self,
@@ -1206,7 +1208,13 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
         return (
             assignedunit_get_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else assigned_unit_shop()
+            else assignedunit_shop()
+        )
+    elif dict_key == "_healerhold":
+        return (
+            healerhold_get_from_dict(x_dict[dict_key])
+            if x_dict.get(dict_key) != None
+            else healerhold_shop()
         )
     elif dict_key == "_originunit":
         return (

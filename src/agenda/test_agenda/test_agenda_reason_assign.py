@@ -1,4 +1,4 @@
-from src.agenda.reason_assign import assigned_heir_shop, assigned_unit_shop
+from src.agenda.reason_assign import assigned_heir_shop, assignedunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
@@ -11,23 +11,23 @@ def test_agenda_edit_idea_attr_CorrectlySetsAssignedUnit():
     run_road = xio_agenda.make_l1_road(run_text)
     xio_agenda.add_l1_idea(ideaunit_shop(run_text))
     run_idea = xio_agenda.get_idea_obj(run_road)
-    assert run_idea._assignedunit == assigned_unit_shop()
+    assert run_idea._assignedunit == assignedunit_shop()
 
     # WHEN
-    assigned_unit_x = assigned_unit_shop()
-    xio_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=run_road)
+    assignedunit_x = assignedunit_shop()
+    xio_agenda.edit_idea_attr(assignedunit=assignedunit_x, road=run_road)
 
     # THEN
-    assert run_idea._assignedunit == assigned_unit_x
+    assert run_idea._assignedunit == assignedunit_x
 
 
 def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     # GIVEN
-    assigned_unit_x = assigned_unit_shop()
+    assignedunit_x = assignedunit_shop()
 
     tim_agenda = agendaunit_shop("Tim")
-    tim_agenda.edit_idea_attr(assignedunit=assigned_unit_x, road=tim_agenda._world_id)
-    assert tim_agenda._idearoot._assignedunit == assigned_unit_x
+    tim_agenda.edit_idea_attr(assignedunit=assignedunit_x, road=tim_agenda._world_id)
+    assert tim_agenda._idearoot._assignedunit == assignedunit_x
     assert tim_agenda._idearoot._assignedheir is None
 
     # WHEN
@@ -36,7 +36,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     # THEN
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
-        parent_assignheir=None, assignunit=assigned_unit_x, agenda_groups=None
+        parent_assignheir=None, assignunit=assignedunit_x, agenda_groups=None
     )
     assert tim_agenda._idearoot._assignedheir != None
     assert tim_agenda._idearoot._assignedheir == assigned_heir_x
@@ -45,16 +45,16 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
 def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     # GIVEN
     bob_text = "Bob"
-    assigned_unit_x = assigned_unit_shop()
+    assignedunit_x = assignedunit_shop()
 
     bob_agenda = agendaunit_shop(bob_text)
     run_text = "run"
     run_road = bob_agenda.make_road(bob_text, run_text)
     bob_agenda.add_partyunit(party_id=bob_text)
     bob_agenda.add_l1_idea(ideaunit_shop(run_text))
-    bob_agenda.edit_idea_attr(road=run_road, assignedunit=assigned_unit_x)
+    bob_agenda.edit_idea_attr(road=run_road, assignedunit=assignedunit_x)
     run_idea = bob_agenda.get_idea_obj(run_road)
-    assert run_idea._assignedunit == assigned_unit_x
+    assert run_idea._assignedunit == assignedunit_x
     assert run_idea._assignedheir is None
 
     # WHEN
@@ -67,7 +67,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
         parent_assignheir=None,
-        assignunit=assigned_unit_x,
+        assignunit=assignedunit_x,
         agenda_groups=bob_agenda._groups,
     )
     print(f"{assigned_heir_x._agent_id_assigned=}")
@@ -86,18 +86,18 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     morn_road = noa_agenda.make_road(swim_road, morn_text)
     four_text = "fourth"
     four_road = noa_agenda.make_road(morn_road, four_text)
-    assigned_unit_x = assigned_unit_shop()
+    assignedunit_x = assignedunit_shop()
     swimmers_text = ",swimmers"
-    assigned_unit_x.set_suffgroup(group_id=swimmers_text)
+    assignedunit_x.set_suffgroup(group_id=swimmers_text)
 
     noa_agenda.set_groupunit(y_groupunit=groupunit_shop(group_id=swimmers_text))
     noa_agenda.add_l1_idea(ideaunit_shop(swim_text))
     noa_agenda.add_idea(ideaunit_shop(morn_text), parent_road=swim_road)
     noa_agenda.add_idea(ideaunit_shop(four_text), parent_road=morn_road)
-    noa_agenda.edit_idea_attr(road=swim_road, assignedunit=assigned_unit_x)
+    noa_agenda.edit_idea_attr(road=swim_road, assignedunit=assignedunit_x)
     # print(noa_agenda.make_road(four_road=}\n{morn_road=))
     four_idea = noa_agenda.get_idea_obj(four_road)
-    assert four_idea._assignedunit == assigned_unit_shop()
+    assert four_idea._assignedunit == assignedunit_shop()
     assert four_idea._assignedheir is None
 
     # WHEN
@@ -107,7 +107,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assigned_heir_x = assigned_heir_shop()
     assigned_heir_x.set_suffgroups(
         parent_assignheir=None,
-        assignunit=assigned_unit_x,
+        assignunit=assignedunit_x,
         agenda_groups=noa_agenda._groups,
     )
     assert four_idea._assignedheir != None
@@ -129,7 +129,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     swim_road = noa1_agenda.make_l1_road(swim_text)
     noa1_agenda.add_idea(ideaunit_shop(work_text), parent_road=noa1_agenda._world_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
-    swim_assignedunit = assigned_unit_shop()
+    swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
     noa1_agenda.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)
@@ -162,7 +162,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     swim_road = noa1_agenda.make_l1_road(swim_text)
     noa1_agenda.add_idea(ideaunit_shop(work_text), parent_road=noa1_agenda._world_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
-    swim_assignedunit = assigned_unit_shop()
+    swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
     noa1_agenda.edit_idea_attr(road=swim_road, assignedunit=swim_assignedunit)

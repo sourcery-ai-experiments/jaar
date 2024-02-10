@@ -6,7 +6,7 @@ from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
-from src.agenda.reason_assign import assigned_unit_shop
+from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
     get_agenda_with_4_levels_and_2reasons as example_agendas_get_agenda_with_4_levels_and_2reasons,
@@ -719,23 +719,23 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
 
     sue_text = "sue"
     bob_agenda.add_partyunit(party_id=sue_text)
-    assigned_unit_sue = assigned_unit_shop()
-    assigned_unit_sue.set_suffgroup(group_id=sue_text)
+    assignedunit_sue = assignedunit_shop()
+    assignedunit_sue.set_suffgroup(group_id=sue_text)
     assert len(bob_agenda.get_intent_dict()) == 1
 
     # WHEN
-    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_sue)
+    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assignedunit_sue)
 
     # THEN
     assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
     bob_agenda.add_partyunit(party_id=bob_text)
-    assigned_unit_bob = assigned_unit_shop()
-    assigned_unit_bob.set_suffgroup(group_id=bob_text)
+    assignedunit_bob = assignedunit_shop()
+    assignedunit_bob.set_suffgroup(group_id=bob_text)
 
     # WHEN
-    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assigned_unit_bob)
+    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assignedunit_bob)
 
     # THEN
     assert len(bob_agenda.get_intent_dict()) == 1
@@ -761,7 +761,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     run_group.set_partylink(partylink=partylink_shop(party_id=sue_text))
     bob_agenda.set_groupunit(y_groupunit=run_group)
 
-    run_assignedunit = assigned_unit_shop()
+    run_assignedunit = assignedunit_shop()
     run_assignedunit.set_suffgroup(group_id=run_text)
     assert len(bob_agenda.get_intent_dict()) == 1
 

@@ -28,7 +28,7 @@ class AssignedUnit:
         return self._suffgroups.get(group_id)
 
 
-def assigned_unit_shop(_suffgroups: dict[GroupID:GroupID] = None) -> AssignedUnit:
+def assignedunit_shop(_suffgroups: dict[GroupID:GroupID] = None) -> AssignedUnit:
     if _suffgroups is None:
         _suffgroups = {}
 
@@ -36,7 +36,7 @@ def assigned_unit_shop(_suffgroups: dict[GroupID:GroupID] = None) -> AssignedUni
 
 
 def create_assignedunit(suffgroup: GroupID):
-    x_assignedunit = assigned_unit_shop()
+    x_assignedunit = assignedunit_shop()
     x_assignedunit.set_suffgroup(suffgroup)
     return x_assignedunit
 
@@ -103,7 +103,7 @@ class AssignedHeir:
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all partys of the idea's assigned_unit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
+                    f"parent_assigned_heir does not contain all partys of the idea's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
                 )
 
             # set dict_x = to assignedunit groups
@@ -140,8 +140,8 @@ def assigned_heir_shop(
 
 
 def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
-    assigned_unit_x = assigned_unit_shop()
+    assignedunit_x = assignedunit_shop()
     for suffgroup_group_id in assignedunit_dict.get("_suffgroups"):
-        assigned_unit_x.set_suffgroup(group_id=suffgroup_group_id)
+        assignedunit_x.set_suffgroup(group_id=suffgroup_group_id)
 
-    return assigned_unit_x
+    return assignedunit_x

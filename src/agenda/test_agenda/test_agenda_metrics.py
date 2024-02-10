@@ -43,27 +43,27 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     carm_text = "carmen"
     patr_text = "patrick"
 
-    yue_agenda = agendaunit_shop("Yue")
+    zia_agenda = agendaunit_shop("Zia")
     au_rico = partyunit_shop(party_id=rico_text)
     au_carm = partyunit_shop(party_id=carm_text)
     au_patr = partyunit_shop(party_id=patr_text)
     # print(f"{rico=}")
-    yue_agenda.set_partyunit(partyunit=au_rico)
-    yue_agenda.set_partyunit(partyunit=au_carm)
-    yue_agenda.set_partyunit(partyunit=au_patr)
-    yue_agenda._idearoot.set_balancelink(
+    zia_agenda.set_partyunit(partyunit=au_rico)
+    zia_agenda.set_partyunit(partyunit=au_carm)
+    zia_agenda.set_partyunit(partyunit=au_patr)
+    zia_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
     )
-    yue_agenda._idearoot.set_balancelink(
+    zia_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
     )
-    yue_agenda._idearoot.set_balancelink(
+    zia_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
     )
 
     # WHEN
-    assert yue_agenda.get_partys_metrics() != None
-    partys_metrics = yue_agenda.get_partys_metrics()
+    assert zia_agenda.get_partys_metrics() != None
+    partys_metrics = zia_agenda.get_partys_metrics()
 
     # THEN
     balancelink_rico = partys_metrics[rico_text]
@@ -75,7 +75,7 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     assert balancelink_rico.group_id == rico_text
     assert balancelink_carm.group_id == carm_text
     assert balancelink_patr.group_id == patr_text
-    all_groups = yue_agenda._groups
+    all_groups = zia_agenda._groups
     groupunit_rico = all_groups[rico_text]
     groupunit_carm = all_groups[carm_text]
     groupunit_patr = all_groups[patr_text]
