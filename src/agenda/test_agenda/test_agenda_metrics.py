@@ -1,6 +1,8 @@
+from src.agenda.graphic import display_agenda
 from src.agenda.party import partyunit_shop
 from src.agenda.group import GroupID, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
+from src.agenda.healer import healerhold_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_with7amCleanTableReason,
@@ -14,6 +16,84 @@ from src.agenda.reason_idea import (
     reasonheir_shop,
 )
 from src.agenda.agenda import agendaunit_shop
+
+
+def test_AgendaUnit_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
+    yao_agenda = agenda_v001()
+    yao_agenda_metrics = yao_agenda.get_tree_metrics()
+
+    print(f"{yao_agenda_metrics.level_count=}")
+    print(f"{yao_agenda_metrics.reason_bases=}")
+    assert yao_agenda_metrics != None
+    reason_bases_x = yao_agenda_metrics.reason_bases
+    assert reason_bases_x != None
+    assert len(reason_bases_x) > 0
+
+
+def test_AgendaUnit_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
+    yao_agenda = agenda_v001()
+    missing_bases = yao_agenda.get_missing_belief_bases()
+    assert missing_bases != None
+    print(f"{missing_bases=}")
+    print(f"{len(missing_bases)=}")
+    assert len(missing_bases) == 11
+
+    yao_agenda.set_belief(
+        base=yao_agenda.make_l1_road("day_minute"),
+        pick=yao_agenda.make_l1_road("day_minute"),
+        open=0,
+        nigh=1439,
+    )
+    missing_bases = yao_agenda.get_missing_belief_bases()
+
+    assert len(missing_bases) == 11
+
+
+def test_AgendaUnit_3AdvocatesNoideaunit_shop():
+    # GIVEN
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+
+    zia_agenda = agendaunit_shop("Zia")
+    au_rico = partyunit_shop(party_id=rico_text)
+    au_carm = partyunit_shop(party_id=carm_text)
+    au_patr = partyunit_shop(party_id=patr_text)
+    # print(f"{rico=}")
+    zia_agenda.set_partyunit(partyunit=au_rico)
+    zia_agenda.set_partyunit(partyunit=au_carm)
+    zia_agenda.set_partyunit(partyunit=au_patr)
+    zia_agenda._idearoot.set_balancelink(
+        balancelink=balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
+    )
+    zia_agenda._idearoot.set_balancelink(
+        balancelink=balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
+    )
+    zia_agenda._idearoot.set_balancelink(
+        balancelink=balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
+    )
+
+    # WHEN
+    assert zia_agenda.get_partys_metrics() != None
+    partys_metrics = zia_agenda.get_partys_metrics()
+
+    # THEN
+    balancelink_rico = partys_metrics[rico_text]
+    balancelink_carm = partys_metrics[carm_text]
+    balancelink_patr = partys_metrics[patr_text]
+    assert balancelink_rico.group_id != None
+    assert balancelink_carm.group_id != None
+    assert balancelink_patr.group_id != None
+    assert balancelink_rico.group_id == rico_text
+    assert balancelink_carm.group_id == carm_text
+    assert balancelink_patr.group_id == patr_text
+    all_groups = zia_agenda._groups
+    groupunit_rico = all_groups[rico_text]
+    groupunit_carm = all_groups[carm_text]
+    groupunit_patr = all_groups[patr_text]
+    assert groupunit_rico._party_mirror == True
+    assert groupunit_carm._party_mirror == True
+    assert groupunit_patr._party_mirror == True
 
 
 def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -409,7 +489,7 @@ def test_get_intent_dict_ReturnsCorrectObj():
     assert len(promise_items) == 1
 
 
-def test_agenda_v001_HasCorrectData():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsData_agenda_v001():
     yao_agenda = agenda_v001()
     print(f"{yao_agenda.get_reason_bases()=}")
     # day_hour = f"{yao_agenda._world_id},day_hour"
@@ -468,14 +548,13 @@ def test_agenda_v001_HasCorrectData():
     mon_text = "Monday"
     mon_road = yao_agenda.make_road(week_road, mon_text)
     yao_agenda.set_belief(base=week_road, pick=mon_road)
-
     yao_agenda.set_agenda_metrics()
 
     # THEN
     assert yao_agenda._idea_dict.get(laundry_road)._active == False
 
 
-def test_agenda_v001_set_agenda_metrics_OptionWeekdaysCorrectlyWork():
+def test_AgendaUnit_set_agenda_metrics_OptionWeekdaysCorrectlyWork_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
 
@@ -578,7 +657,7 @@ def test_agenda_v001_set_agenda_metrics_OptionWeekdaysCorrectlyWork():
     # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6WeeksReason():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6WeeksReason_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
     day_text = "day_hour"
@@ -656,21 +735,6 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6Wee
     week_premise = week_reason.premises.get(week_road)
     print(f"{clean_couch_idea._label=} {week_reason.base=} {week_premise=}")
     assert week_premise.divisor == 6 and week_premise.open == 1
-
-
-def print_premise_info(road: str, idea_list):
-    satiate_status = None
-    premise_divisor = None
-    premise_open = None
-    premise_nigh = None
-
-    for idea in idea_list:
-        if idea._parent_road == road:
-            for reason in idea._reasonunits.values():
-                for premise_x in reason.premises.values():
-                    print(
-                        f"{idea._label=} base:{reason.base} need:{premise_x.need} open:{premise_x.open} nigh:{premise_x.nigh} div:{premise_x.divisor} status:{premise_x._status}"
-                    )
 
 
 def test_AgendaUnit_set_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
@@ -756,7 +820,7 @@ def test_AgendaUnit_set_agenda_metrics_EveryOtherMonthWorks_agenda_v001():
     yao_agenda.set_belief(base=year_month_base, pick=year_month_base, open=0, nigh=8)
     ced_week = yao_agenda.make_l1_road("ced_week")
     yao_agenda.set_belief(base=ced_week, pick=ced_week, open=0, nigh=4)
-    yao_agenda.set_agenda_metrics
+    yao_agenda.set_agenda_metrics()
 
     # THEN
     print(f"{len(idea_dict)=}")
@@ -765,79 +829,69 @@ def test_AgendaUnit_set_agenda_metrics_EveryOtherMonthWorks_agenda_v001():
     assert from_list_get_active(road=mat_road, idea_dict=yao_agenda._idea_dict)
 
 
-def test_AgendaUnit_get_tree_metrics_TracksReasonsThatHaveNoBeliefBases():
-    yao_agenda = agenda_v001()
-    yao_agenda_metrics = yao_agenda.get_tree_metrics()
-
-    print(f"{yao_agenda_metrics.level_count=}")
-    print(f"{yao_agenda_metrics.reason_bases=}")
-    assert yao_agenda_metrics != None
-    reason_bases_x = yao_agenda_metrics.reason_bases
-    assert reason_bases_x != None
-    assert len(reason_bases_x) > 0
-
-
-def test_AgendaUnit_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs():
-    yao_agenda = agenda_v001()
-    missing_bases = yao_agenda.get_missing_belief_bases()
-    assert missing_bases != None
-    print(f"{missing_bases=}")
-    print(f"{len(missing_bases)=}")
-    assert len(missing_bases) == 11
-
-    yao_agenda.set_belief(
-        base=yao_agenda.make_l1_road("day_minute"),
-        pick=yao_agenda.make_l1_road("day_minute"),
-        open=0,
-        nigh=1439,
-    )
-    missing_bases = yao_agenda.get_missing_belief_bases()
-
-    assert len(missing_bases) == 11
-
-
-def test_AgendaUnit_3AdvocatesNoideaunit_shop():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_importance():
     # GIVEN
-    rico_text = "rico"
-    carm_text = "carmen"
-    patr_text = "patrick"
-
-    zia_agenda = agendaunit_shop("Zia")
-    au_rico = partyunit_shop(party_id=rico_text)
-    au_carm = partyunit_shop(party_id=carm_text)
-    au_patr = partyunit_shop(party_id=patr_text)
-    # print(f"{rico=}")
-    zia_agenda.set_partyunit(partyunit=au_rico)
-    zia_agenda.set_partyunit(partyunit=au_carm)
-    zia_agenda.set_partyunit(partyunit=au_patr)
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
-    )
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
-    )
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
-    )
+    sue_agenda = agendaunit_shop("Sue")
+    assert sue_agenda._sum_healerhold_importance == 0
 
     # WHEN
-    assert zia_agenda.get_partys_metrics() != None
-    partys_metrics = zia_agenda.get_partys_metrics()
+    sue_agenda.set_agenda_metrics()
 
     # THEN
-    balancelink_rico = partys_metrics[rico_text]
-    balancelink_carm = partys_metrics[carm_text]
-    balancelink_patr = partys_metrics[patr_text]
-    assert balancelink_rico.group_id != None
-    assert balancelink_carm.group_id != None
-    assert balancelink_patr.group_id != None
-    assert balancelink_rico.group_id == rico_text
-    assert balancelink_carm.group_id == carm_text
-    assert balancelink_patr.group_id == patr_text
-    all_groups = zia_agenda._groups
-    groupunit_rico = all_groups[rico_text]
-    groupunit_carm = all_groups[carm_text]
-    groupunit_patr = all_groups[patr_text]
-    assert groupunit_rico._party_mirror == True
-    assert groupunit_carm._party_mirror == True
-    assert groupunit_patr._party_mirror == True
+    assert sue_agenda._sum_healerhold_importance == 0
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v1():
+    # GIVEN
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda.set_agenda_metrics()
+    nation_road = sue_agenda.make_l1_road("nation-state")
+    usa_road = sue_agenda.make_road(nation_road, "USA")
+    oregon_road = sue_agenda.make_road(usa_road, "Oregon")
+    sue_healerhold = healerhold_shop({"Sue"})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    oregon_idea = sue_agenda.get_idea_obj(oregon_road)
+    print(f"{oregon_idea._agenda_importance=}")
+    assert sue_agenda._sum_healerhold_importance == 0
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    assert sue_agenda._sum_healerhold_importance == 0.038461538461538464
+
+    # WHEN
+    week_road = sue_agenda.make_l1_road("weekdays")
+    sue_agenda.edit_idea_attr(week_road, problem_bool=True)
+    mon_road = sue_agenda.make_road(week_road, "Monday")
+    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
+    mon_idea = sue_agenda.get_idea_obj(mon_road)
+    print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    assert sue_agenda._sum_healerhold_importance != 0.038461538461538464
+    assert sue_agenda._sum_healerhold_importance == 0.06923076923076923
+
+    # WHEN
+    tue_road = sue_agenda.make_road(week_road, "Tuesday")
+    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
+    # tue_idea = sue_agenda.get_idea_obj(tue_road)
+    # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
+    # sat_road = sue_agenda.make_road(week_road, "Saturday")
+    # sat_idea = sue_agenda.get_idea_obj(sat_road)
+    # print(f"{sat_idea._problem_bool=} {sat_idea._agenda_importance=}")
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert sue_agenda._sum_healerhold_importance != 0.06923076923076923
+    assert sue_agenda._sum_healerhold_importance == 0.1
+
+    # WHEN
+    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
+    week_idea = sue_agenda.get_idea_obj(week_road)
+    print(
+        f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
+    )
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    # display_agenda(sue_agenda, "Market").show()
+    assert sue_agenda._sum_healerhold_importance == 0

@@ -62,6 +62,7 @@ from src.instrument.python import (
     x_get_json,
     x_get_dict,
     get_1_if_None,
+    get_0_if_None,
     get_False_if_None,
     get_empty_dict_if_none,
 )
@@ -121,7 +122,8 @@ class AgendaUnit:
     _idea_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
     _tree_traverse_count: int = None  # set_agenda_metrics Calculated field
     _rational: bool = None  # set_agenda_metrics Calculated field
-    _market_justified: bool = None
+    _market_justified: bool = None  # set_agenda_metrics Calculated field
+    _sum_healerhold_importance: bool = None  # set_agenda_metrics Calculated field
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
@@ -1625,6 +1627,7 @@ class AgendaUnit:
             if x_idea_obj._healerhold.any_group_id_exists():
                 market_justified_by_problem = False
                 healerhold_count += 1
+                self._sum_healerhold_importance += x_idea_obj._agenda_importance
             if x_idea_obj._problem_bool:
                 market_justified_by_problem = True
 
@@ -1709,18 +1712,22 @@ class AgendaUnit:
         sibling_ratio = weight / sibling_total_weight
         return parent_agenda_importance * sibling_ratio
 
-    def _clear_agenda_base_metrics(self):
+    def _set_tree_traverse_starting_point(self):
         self._rational = False
         self._tree_traverse_count = 0
         self._idea_dict = {self._idearoot.get_road(): self._idearoot}
+
+    def _clear_agenda_base_metrics(self):
         self._market_justified = True
+        self._sum_healerhold_importance = 0
 
     def set_agenda_metrics(self):
-        self._clear_agenda_base_metrics()
+        self._set_tree_traverse_starting_point()
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
+            self._clear_agenda_base_metrics()
             self._execute_tree_traverse()
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
@@ -1776,6 +1783,8 @@ class AgendaUnit:
         self._distribute_agenda_intent_importance()
         self._distribute_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
+        if self._market_justified == False:
+            self._sum_healerhold_importance = 0
 
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
@@ -2137,6 +2146,7 @@ def agendaunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _market_justified=get_False_if_None(),
+        _sum_healerhold_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_world_id=x_agenda._world_id

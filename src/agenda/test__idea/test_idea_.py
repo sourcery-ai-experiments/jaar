@@ -58,7 +58,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
     assert x_ideaunit._agenda_world_id is None
-    assert x_ideaunit._problem_weight is None
+    assert x_ideaunit._healerhold_importance is None
 
 
 def test_ideaunit_shop_NoParametersReturnsCorrectObj():
@@ -106,7 +106,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
     assert x_ideaunit._agenda_world_id == root_label()
-    assert x_ideaunit._problem_weight == 0
+    assert x_ideaunit._healerhold_importance == 0
 
 
 def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():

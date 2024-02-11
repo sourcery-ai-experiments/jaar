@@ -270,7 +270,7 @@ class IdeaUnit:
     _sibling_total_weight: int = None
     _active_hx: dict[int:bool] = None
     _road_delimiter: str = None
-    _problem_weight: float = None
+    _healerhold_importance: float = None
 
     def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
@@ -1132,7 +1132,7 @@ def ideaunit_shop(
     _sibling_total_weight: int = None,
     _active_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
-    _problem_weight: float = None,
+    _healerhold_importance: float = None,
 ) -> IdeaUnit:
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
@@ -1187,7 +1187,7 @@ def ideaunit_shop(
         _sibling_total_weight=_sibling_total_weight,
         _active_hx=get_empty_dict_if_none(_active_hx),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-        _problem_weight=get_0_if_None(_problem_weight),
+        _healerhold_importance=get_0_if_None(_healerhold_importance),
     )
     if x_ideakid._root:
         x_ideakid.set_idea_label(_label=_agenda_world_id)

@@ -31,6 +31,15 @@ def _get_color_for_ideaunit_trace(x_ideaunit: IdeaUnit, mode: str) -> str:
             return "Black"
     elif mode == "Task":
         return "Red" if x_ideaunit.promise else "Pink"
+    elif mode == "Market":
+        if x_ideaunit._problem_bool and x_ideaunit._healerhold.any_group_id_exists():
+            return "Purple"
+        elif x_ideaunit._healerhold.any_group_id_exists():
+            return "Blue"
+        elif x_ideaunit._problem_bool:
+            return "Red"
+        else:
+            return "Pink"
 
 
 def _add_individual_trace(
@@ -86,23 +95,28 @@ def _add_ideaunit_traces(
         prev_road = x_idea.get_road()
 
 
-def _update_layout_fig(x_fig: Figure, mode: str):
+def _update_layout_fig(x_fig: Figure, mode: str, x_agenda: AgendaUnit):
     x_title = "Tree with lines Layout"
     if mode == "Task":
         x_title = "Idea Tree with task ideas in Red."
+    x_title += f" (Items: {len(x_agenda._idea_dict)})"
+    x_title += f" (_sum_healerhold_importance: {x_agenda._sum_healerhold_importance})"
+    x_title += f" (_market_justified: {x_agenda._market_justified})"
     x_fig.update_layout(
-        title=x_title,
+        title_text=x_title,
         font_size=12,
     )
 
 
 def display_agenda(x_agenda: AgendaUnit, mode: str = None) -> Figure:
+    """Mode can be None, Task, Market"""
+
     x_fig = Figure()
     current_y = 0
     trace_list = []
     anno_list = []
     _add_ideaunit_traces(trace_list, anno_list, x_agenda, current_y, mode=mode)
-    _update_layout_fig(x_fig, mode)
+    _update_layout_fig(x_fig, mode, x_agenda=x_agenda)
     while trace_list:
         x_trace = trace_list.pop(-1)
         x_fig.add_trace(x_trace)

@@ -10,24 +10,21 @@ from src.agenda.graphic import display_agenda
 from pytest import raises as pytest_raises
 
 
-def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
+def test_AgendaUnit_set_tree_traverse_starting_point_CorrectlySetsAttrs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     x_rational = True
     x_tree_traverse_count = 555
     x_idea_dict = {1: 2, 2: 4}
-    x_market_justifed = False
     sue_agenda._rational = x_rational
     sue_agenda._tree_traverse_count = x_tree_traverse_count
     sue_agenda._idea_dict = x_idea_dict
-    sue_agenda._market_justified = x_market_justifed
     assert sue_agenda._rational == x_rational
     assert sue_agenda._tree_traverse_count == x_tree_traverse_count
     assert sue_agenda._idea_dict == x_idea_dict
-    assert sue_agenda._market_justified == x_market_justifed
 
     # WHEN
-    sue_agenda._clear_agenda_base_metrics()
+    sue_agenda._set_tree_traverse_starting_point()
 
     # THEN
     assert sue_agenda._rational != x_rational
@@ -38,8 +35,25 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     assert sue_agenda._idea_dict == {
         sue_agenda._idearoot.get_road(): sue_agenda._idearoot
     }
+
+
+def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    x_market_justifed = False
+    x_sum_healerhold_importance = 140
+    sue_agenda._market_justified = x_market_justifed
+    sue_agenda._sum_healerhold_importance = x_sum_healerhold_importance
+    assert sue_agenda._market_justified == x_market_justifed
+    assert sue_agenda._sum_healerhold_importance == x_sum_healerhold_importance
+
+    # WHEN
+    sue_agenda._clear_agenda_base_metrics()
+
+    # THEN
     assert sue_agenda._market_justified != x_market_justifed
     assert sue_agenda._market_justified
+    assert sue_agenda._sum_healerhold_importance == 0
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():

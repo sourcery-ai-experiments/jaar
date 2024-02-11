@@ -32,6 +32,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy is None
     assert x_agenda._market_justified is None
+    assert x_agenda._sum_healerhold_importance is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -64,6 +65,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy == override_meld_strategy
     assert x_agenda._market_justified == False
+    assert x_agenda._sum_healerhold_importance == False
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
@@ -87,9 +89,9 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
 
 
-def test_AgendaUnit_IsAbleToSetTaskAsComplete():
+def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
+    # GIVEN
     x_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
-
     mail_text = "obtain mail"
     assert x_agenda != None
     assert len(x_agenda._idearoot._kids[mail_text]._reasonunits) == 1
@@ -100,10 +102,13 @@ def test_AgendaUnit_IsAbleToSetTaskAsComplete():
     assert mail_idea.promise == True
     assert mail_idea._task == True
 
+    # WHEN 
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=85)
     x_agenda.set_agenda_metrics()
+
+    # THEN 
     assert mail_idea.promise == True
     assert mail_idea._task == False
 
