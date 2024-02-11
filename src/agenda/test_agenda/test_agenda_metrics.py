@@ -853,11 +853,13 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v
     oregon_idea = sue_agenda.get_idea_obj(oregon_road)
     print(f"{oregon_idea._agenda_importance=}")
     assert sue_agenda._sum_healerhold_importance == 0
+    assert oregon_idea._healerhold_importance == 0
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
     assert sue_agenda._sum_healerhold_importance == 0.038461538461538464
+    assert oregon_idea._healerhold_importance == 1
 
     # WHEN
     week_road = sue_agenda.make_l1_road("weekdays")
@@ -865,16 +867,18 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v
     mon_road = sue_agenda.make_road(week_road, "Monday")
     sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
     mon_idea = sue_agenda.get_idea_obj(mon_road)
-    print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
+    # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
     sue_agenda.set_agenda_metrics()
     # THEN
     assert sue_agenda._sum_healerhold_importance != 0.038461538461538464
     assert sue_agenda._sum_healerhold_importance == 0.06923076923076923
+    assert oregon_idea._healerhold_importance == 0.5555555555555556
+    assert mon_idea._healerhold_importance == 0.4444444444444444
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
     sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
-    # tue_idea = sue_agenda.get_idea_obj(tue_road)
+    tue_idea = sue_agenda.get_idea_obj(tue_road)
     # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
     # sat_road = sue_agenda.make_road(week_road, "Saturday")
     # sat_idea = sue_agenda.get_idea_obj(sat_road)
@@ -884,6 +888,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v
     # THEN
     assert sue_agenda._sum_healerhold_importance != 0.06923076923076923
     assert sue_agenda._sum_healerhold_importance == 0.1
+    assert oregon_idea._healerhold_importance == 0.38461538461538464
+    assert mon_idea._healerhold_importance == 0.3076923076923077
+    assert tue_idea._healerhold_importance == 0.3076923076923077
 
     # WHEN
     sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
@@ -895,3 +902,6 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v
     # THEN
     # display_agenda(sue_agenda, "Market").show()
     assert sue_agenda._sum_healerhold_importance == 0
+    assert oregon_idea._healerhold_importance == 0
+    assert mon_idea._healerhold_importance == 0
+    assert tue_idea._healerhold_importance == 0

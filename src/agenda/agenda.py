@@ -1732,6 +1732,7 @@ class AgendaUnit:
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
+        self._after_all_tree_traverses_set_healerhold_importance()
 
     def _execute_tree_traverse(self):
         self._pre_tree_traverse_credit_debt_reset()
@@ -1783,8 +1784,17 @@ class AgendaUnit:
         self._distribute_agenda_intent_importance()
         self._distribute_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
+
+    def _after_all_tree_traverses_set_healerhold_importance(self):
         if self._market_justified == False:
             self._sum_healerhold_importance = 0
+        for x_idea in self._idea_dict.values():
+            if self._sum_healerhold_importance == 0:
+                x_idea._healerhold_importance = 0
+            else:
+                x_idea._healerhold_importance = (
+                    x_idea._agenda_importance / self._sum_healerhold_importance
+                )
 
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
