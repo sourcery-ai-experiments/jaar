@@ -167,9 +167,9 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
             raise EditMainViewException("No table selection for belief update.")
         belief_update_combo_text = self.belief_update_combo.currentText()
-        self.x_agenda._idearoot._beliefunits[
-            base_road
-        ].belief = belief_update_combo_text
+        self.x_agenda._idearoot._beliefunits[base_road].belief = (
+            belief_update_combo_text
+        )
         self.base_road = None
         self.refresh_all
 
@@ -193,7 +193,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             groups_count = 0
             for group in self.x_agenda._groups.values():
                 for partylink in group._partys.values():
-                    if partylink.party_id == party.pid:
+                    if partylink.party_id == party.party_id:
                         groups_count += 1
 
             qt_agenda_credit = qtw.QTableWidgetItem(
@@ -201,7 +201,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.party_list.setRowCount(row)
-            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.pid))
+            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.party_id))
             self.party_list.setItem(row - 1, 1, qt_agenda_credit)
 
     def open_editideaunit(self):

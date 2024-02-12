@@ -970,7 +970,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reasonheir_count_flag=reasonheir_count_flag,
             reason_count_flag=reason_count_flag,
             reason_view_flag=reason_view_flag,
-            reason_view_pid=reason_view_base,
+            reason_view_person_id=reason_view_base,
             beliefheir_view_flag=beliefheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_agenda=self.x_agenda,
