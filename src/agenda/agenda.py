@@ -120,6 +120,7 @@ class AgendaUnit:
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # created by ClerkUnit process
     _idea_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
+    _market_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
     _tree_traverse_count: int = None  # set_agenda_metrics Calculated field
     _rational: bool = None  # set_agenda_metrics Calculated field
     _market_justified: bool = None  # set_agenda_metrics Calculated field
@@ -1786,6 +1787,7 @@ class AgendaUnit:
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
+        self._market_dict = {}
         if self._market_justified == False:
             self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
@@ -1795,6 +1797,8 @@ class AgendaUnit:
                 x_idea._healerhold_importance = (
                     x_idea._agenda_importance / self._sum_healerhold_importance
                 )
+            if self._market_justified and x_idea._healerhold.any_group_id_exists():
+                self._market_dict[x_idea.get_road()] = x_idea
 
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
@@ -2153,6 +2157,7 @@ def agendaunit_shop(
         _partys=get_empty_dict_if_none(None),
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
+        _market_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _market_justified=get_False_if_None(),

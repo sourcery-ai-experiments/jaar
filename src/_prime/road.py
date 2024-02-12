@@ -58,22 +58,9 @@ class RoadUnit(str):
 
 
 class PersonRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+    """RodeUnit with nodes seperated by WorldUnit._road_delimiter:
     PersonID (Must Exist)
-    ProblemID
-    HealerID
-    MarketRoad
-    """
-
-    pass
-
-
-class ProblemRoad(RoadUnit):
-    """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
-    ProblemID (Must Exist)
-    HealerID
-    MarketRoad
-    """
+    RoadUnit"""
 
     pass
 
@@ -81,16 +68,14 @@ class ProblemRoad(RoadUnit):
 class MarketRoad(RoadUnit):
     """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
     PersonID
-    ProblemID
-    HealerID
-    MarketID"""
+    AgendaRoad"""
 
     pass
 
 
 class AgendaRoad(RoadUnit):
     """RodeUnit with nodes seperated by Agenda._road_delimiter that
-    starts with MarketID"""
+    starts with WorldID"""
 
     pass
 

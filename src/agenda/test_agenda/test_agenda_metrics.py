@@ -833,15 +833,17 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_importa
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     assert sue_agenda._sum_healerhold_importance == 0
+    assert sue_agenda._market_dict == {}
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
     assert sue_agenda._sum_healerhold_importance == 0
+    assert sue_agenda._market_dict == {}
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v1():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.set_agenda_metrics()
@@ -905,3 +907,63 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance_v
     assert oregon_idea._healerhold_importance == 0
     assert mon_idea._healerhold_importance == 0
     assert tue_idea._healerhold_importance == 0
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
+    # GIVEN
+    sue_agenda = get_agenda_with_4_levels_and_2reasons()
+    sue_agenda.set_agenda_metrics()
+    nation_road = sue_agenda.make_l1_road("nation-state")
+    usa_road = sue_agenda.make_road(nation_road, "USA")
+    oregon_road = sue_agenda.make_road(usa_road, "Oregon")
+    sue_healerhold = healerhold_shop({"Sue"})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    assert len(sue_agenda._market_dict) == 0
+    assert sue_agenda._market_dict.get(oregon_road) is None
+
+    # WHEN
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    assert len(sue_agenda._market_dict) == 1
+    assert sue_agenda._market_dict.get(oregon_road) != None
+
+    # WHEN
+    week_road = sue_agenda.make_l1_road("weekdays")
+    sue_agenda.edit_idea_attr(week_road, problem_bool=True)
+    mon_road = sue_agenda.make_road(week_road, "Monday")
+    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
+    # mon_idea = sue_agenda.get_idea_obj(mon_road)
+    # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    assert len(sue_agenda._market_dict) == 2
+    assert sue_agenda._market_dict.get(oregon_road) != None
+    assert sue_agenda._market_dict.get(mon_road) != None
+
+    # WHEN
+    tue_road = sue_agenda.make_road(week_road, "Tuesday")
+    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
+    # tue_idea = sue_agenda.get_idea_obj(tue_road)
+    # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
+    # sat_road = sue_agenda.make_road(week_road, "Saturday")
+    # sat_idea = sue_agenda.get_idea_obj(sat_road)
+    # print(f"{sat_idea._problem_bool=} {sat_idea._agenda_importance=}")
+    sue_agenda.set_agenda_metrics()
+
+    # THEN
+    assert len(sue_agenda._market_dict) == 3
+    assert sue_agenda._market_dict.get(oregon_road) != None
+    assert sue_agenda._market_dict.get(mon_road) != None
+    assert sue_agenda._market_dict.get(tue_road) != None
+
+    # WHEN
+    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
+    week_idea = sue_agenda.get_idea_obj(week_road)
+    print(
+        f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
+    )
+    sue_agenda.set_agenda_metrics()
+    # THEN
+    # display_agenda(sue_agenda, "Market").show()
+    assert len(sue_agenda._market_dict) == 0
+    assert sue_agenda._market_dict == {}

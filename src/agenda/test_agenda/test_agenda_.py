@@ -27,6 +27,8 @@ def test_AgendaUnit_Exists():
     assert x_agenda._originunit is None
     assert x_agenda._auto_output_to_forum is None
     assert x_agenda._idearoot is None
+    assert x_agenda._idea_dict is None
+    assert x_agenda._market_dict is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
@@ -60,6 +62,8 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._originunit == originunit_shop()
     assert x_agenda._auto_output_to_forum == False
     assert x_agenda._idearoot != None
+    assert x_agenda._idea_dict == {}
+    assert x_agenda._market_dict == {}
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
@@ -102,13 +106,13 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     assert mail_idea.promise == True
     assert mail_idea._task == True
 
-    # WHEN 
+    # WHEN
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=85)
     x_agenda.set_agenda_metrics()
 
-    # THEN 
+    # THEN
     assert mail_idea.promise == True
     assert mail_idea._task == False
 

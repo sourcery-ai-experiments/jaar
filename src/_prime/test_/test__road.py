@@ -3,7 +3,6 @@ from src._prime.road import (
     PersonID,
     PersonRoad,
     ProblemID,
-    ProblemRoad,
     HealerID,
     MarketID,
     AgentID,
@@ -529,9 +528,7 @@ def test_MarketRoad_Exists():
         inspect_getdoc(texas_marketroad)
         == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
 PersonID
-ProblemID
-HealerID
-MarketID"""
+AgendaRoad"""
     )
 
 
@@ -598,27 +595,6 @@ def test_PartyID_exists():
     )
 
 
-def test_ProblemRoad_Exists():
-    # GIVEN
-    bob_road = create_road("problem1", "Bob")
-    texas_road = create_road(bob_road, "texas")
-    sports_road = create_road(texas_road, "sports")
-
-    # WHEN
-    sports_problemroad = ProblemRoad(sports_road)
-
-    # THEN
-    assert sports_problemroad != None
-    assert sports_problemroad == sports_road
-    assert (
-        inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
-ProblemID (Must Exist)
-HealerID
-MarketRoad"""
-    )
-
-
 def test_PersonRoad_Exists():
     # GIVEN
     problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
@@ -627,18 +603,16 @@ def test_PersonRoad_Exists():
     sports_road = create_road(texas_road, "sports")
 
     # WHEN
-    sports_problemroad = PersonRoad(sports_road)
+    sports_personroad = PersonRoad(sports_road)
 
     # THEN
-    assert sports_problemroad != None
-    assert sports_problemroad == sports_road
+    assert sports_personroad != None
+    assert sports_personroad == sports_road
     assert (
-        inspect_getdoc(sports_problemroad)
-        == """RodeUnit with following nodes seperated by WorldUnit._road_delimiter:
+        inspect_getdoc(sports_personroad)
+        == """RodeUnit with nodes seperated by WorldUnit._road_delimiter:
 PersonID (Must Exist)
-ProblemID
-HealerID
-MarketRoad"""
+RoadUnit"""
     )
 
 
@@ -657,7 +631,7 @@ def test_AgendaRoad_Exists():
     assert (
         inspect_getdoc(yao_agendaroad)
         == """RodeUnit with nodes seperated by Agenda._road_delimiter that
-starts with MarketID"""
+starts with WorldID"""
     )
 
 
