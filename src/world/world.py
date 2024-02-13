@@ -71,8 +71,8 @@ class WorldUnit:
         replace_alert: bool = True,
     ):
         x_personunit = personunit_shop(
-            person_id,
-            self._get_person_dir(person_id),
+            person_id=person_id,
+            world_dir=self._world_dir,
             _road_delimiter=self._road_delimiter,
         )
         if (

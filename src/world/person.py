@@ -10,12 +10,15 @@ from src._prime.road import (
     RoadNode,
     get_single_roadnode,
 )
-from src.agenda.agenda import AgendaUnit
+from src.world.examples.world_env_kit import get_temp_world_dir
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.market.market import MarketUnit
+from src.instrument.file import save_file
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
 from pandas import DataFrame
 from numpy import average
+from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
 class InvalidMarketException(Exception):
@@ -25,6 +28,8 @@ class InvalidMarketException(Exception):
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
+    world_dir: str = None
+    persons_dir: str = None
     person_dir: str = None
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
@@ -45,24 +50,23 @@ class PersonUnit:
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
-        if self.person_dir is None:
-            self.person_dir = f"/persons/{self.person_id}"
+        if self.world_dir is None:
+            self.world_dir = get_temp_world_dir()
+        self.persons_dir = f"{self.world_dir}/persons"
+        self.person_dir = f"{self.persons_dir}/{self.person_id}"
         if self._gut_file_name is None:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
 
-    def set_person_metrics(self):
-        # total_problemunits_weight = sum(
-        #     x_problemunit.weight for x_problemunit in self._problems.values()
-        # )
-        # for x_problemunit in self._problems.values():
-        #     x_problemunit.set_relative_weight(
-        #         x_problemunit.weight / total_problemunits_weight
-        #     )
-        # self._set_problembeams()
-        # self._set_market_metrics()
-        pass
+    def create_and_save_new_gut(self):
+        gut_agenda = agendaunit_shop(_agent_id=self.person_id)
+        save_file(
+            dest_dir=self.person_dir,
+            file_name=self._gut_file_name,
+            file_text=gut_agenda.get_json(),
+            replace=False,
+        )
 
     # def _set_market_metrics(self):
     #     self._clear_marketmetrics()
@@ -80,14 +84,6 @@ class PersonUnit:
     def _clear_marketmetrics(self):
         for x_marketmetric in self._market_metrics.values():
             x_marketmetric.clear_person_clout()
-
-    def get_dict(self) -> dict[str:str]:
-        return {
-            "person_id": self.person_id,
-            "person_dir": self.person_dir,
-            "_markets": {},
-            "_problems": {},
-        }
 
     # def popup_visualization(
     #     self, marketlink_by_problem: bool = False, show_fig: bool = True
@@ -140,17 +136,20 @@ class PersonUnit:
 
 def personunit_shop(
     person_id: PersonID,
-    person_dir: str = None,
+    world_dir: str = None,
     _road_delimiter: str = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
-        person_dir=person_dir,
+        world_dir=world_dir,
         _markets={},
         _market_metrics={},
         _problems={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)
+    # if os_path_exists(x_personunit._gut_path) == False:
+    x_personunit.create_and_save_new_gut()
+
     return x_personunit
 
 

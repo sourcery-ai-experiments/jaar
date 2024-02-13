@@ -9,7 +9,7 @@ from src.market.examples.clerk_env_kit import (
     get_temp_market_id,
     clerk_dir_setup_cleanup,
 )
-from os import path as os_path
+from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
 def test_ClerkUnit_exists():
@@ -107,13 +107,13 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
         _road_delimiter=",",
     )
     jul_clerkunit.set_dirs()
-    assert os_path.exists(jul_clerkunit._clerkunits_dir) is False
-    assert os_path.exists(jul_clerkunit._clerkunit_dir) is False
-    assert os_path.exists(jul_clerkunit._contract_file_path) is False
-    assert os_path.isdir(jul_clerkunit._clerkunit_dir) is False
-    assert os_path.exists(jul_clerkunit._agendas_depot_dir) is False
-    assert os_path.exists(jul_clerkunit._agendas_digest_dir) is False
-    assert os_path.exists(jul_clerkunit._agendas_ignore_dir) is False
+    assert os_path_exists(jul_clerkunit._clerkunits_dir) is False
+    assert os_path_exists(jul_clerkunit._clerkunit_dir) is False
+    assert os_path_exists(jul_clerkunit._contract_file_path) is False
+    assert os_path_isdir(jul_clerkunit._clerkunit_dir) is False
+    assert os_path_exists(jul_clerkunit._agendas_depot_dir) is False
+    assert os_path_exists(jul_clerkunit._agendas_digest_dir) is False
+    assert os_path_exists(jul_clerkunit._agendas_ignore_dir) is False
 
     # WHEN
     x_agenda = example_get_7nodeJRootWithH_agenda()
@@ -122,13 +122,13 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     # THEN check agendas src directory created
     print(f"Checking {jul_clerkunit._clerkunits_dir=}")
     print(f"Checking {jul_clerkunit._clerkunit_dir=}")
-    assert os_path.exists(jul_clerkunit._clerkunits_dir)
-    assert os_path.exists(jul_clerkunit._clerkunit_dir)
-    assert os_path.exists(jul_clerkunit._contract_file_path)
-    assert os_path.isdir(jul_clerkunit._clerkunit_dir)
-    assert os_path.exists(jul_clerkunit._agendas_depot_dir)
-    assert os_path.exists(jul_clerkunit._agendas_digest_dir)
-    assert os_path.exists(jul_clerkunit._agendas_ignore_dir)
+    assert os_path_exists(jul_clerkunit._clerkunits_dir)
+    assert os_path_exists(jul_clerkunit._clerkunit_dir)
+    assert os_path_exists(jul_clerkunit._contract_file_path)
+    assert os_path_isdir(jul_clerkunit._clerkunit_dir)
+    assert os_path_exists(jul_clerkunit._agendas_depot_dir)
+    assert os_path_exists(jul_clerkunit._agendas_digest_dir)
+    assert os_path_exists(jul_clerkunit._agendas_ignore_dir)
 
 
 def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
@@ -141,7 +141,7 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
     jul_clerkunit.set_dirs()
     x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
-    assert os_path.exists(jul_clerkunit._contract_file_path)
+    assert os_path_exists(jul_clerkunit._contract_file_path)
     # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._contract_file_path))
     ex1 = "teesting text"
     save_file(
@@ -182,32 +182,30 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     contract_file_name = "contract_agenda.json"
     old_contract_file_path = f"{old_clerkunit_dir}/{contract_file_name}"
 
-    assert os_path.exists(old_clerkunit_dir)
-    assert os_path.isdir(old_clerkunit_dir)
-    assert os_path.exists(old_contract_file_path)
+    assert os_path_exists(old_clerkunit_dir)
+    assert os_path_isdir(old_clerkunit_dir)
+    assert os_path_exists(old_contract_file_path)
 
     tim_text = "tim"
     new_clerkunit_dir = f"{clerkunits_dir}/{tim_text}"
     new_contract_file_path = f"{new_clerkunit_dir}/{contract_file_name}"
-    assert os_path.exists(new_clerkunit_dir) == False
-    assert os_path.isdir(new_clerkunit_dir) == False
-    assert os_path.exists(new_contract_file_path) == False
+    assert os_path_exists(new_clerkunit_dir) == False
+    assert os_path_isdir(new_clerkunit_dir) == False
+    assert os_path_exists(new_contract_file_path) == False
 
     # WHEN
     jul_clerkunit.set_clerk_id(new_cid=tim_text)
 
     # THEN
-    assert os_path.exists(old_clerkunit_dir) == False
-    assert os_path.isdir(old_clerkunit_dir) == False
-    assert os_path.exists(old_contract_file_path) == False
-    assert os_path.exists(new_clerkunit_dir)
-    assert os_path.isdir(new_clerkunit_dir)
-    assert os_path.exists(new_contract_file_path)
+    assert os_path_exists(old_clerkunit_dir) == False
+    assert os_path_isdir(old_clerkunit_dir) == False
+    assert os_path_exists(old_contract_file_path) == False
+    assert os_path_exists(new_clerkunit_dir)
+    assert os_path_isdir(new_clerkunit_dir)
+    assert os_path_exists(new_contract_file_path)
 
 
-def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(
-    clerk_dir_setup_cleanup,
-):
+def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(clerk_dir_setup_cleanup):
     # GIVEN
     bob_text = "bob"
     bob_clerkadmin = clerkunit_shop(
@@ -219,10 +217,10 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(
 
     forum_file_path = f"{bob_clerkadmin._forum_dir}/{bob_clerkadmin._forum_file_name}"
     print(f"{forum_file_path=}")
-    assert os_path.exists(forum_file_path) is False
+    assert os_path_exists(forum_file_path) is False
 
     # WHEN
     bob_clerkadmin.save_agenda_to_forum(x_agenda)
 
     # THEN
-    assert os_path.exists(forum_file_path)
+    assert os_path_exists(forum_file_path)
