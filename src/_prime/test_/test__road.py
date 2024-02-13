@@ -31,6 +31,7 @@ from src._prime.road import (
     replace_road_delimiter,
     get_single_roadnode,
     validate_roadnode,
+    is_roadunit_convertible_to_path,
 )
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
@@ -694,3 +695,45 @@ def test_validate_roadnode_RaisesErrorWhenRoadNode():
         str(excinfo.value)
         == f"'{bob_text}' needs to not be a RoadNode. Must contain delimiter: '{comma_text}'"
     )
+
+
+def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
+    # GIVEN
+    comma_text = ","
+    assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
+    assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
+    assert is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
+
+
+def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter():
+    # GIVEN
+    question_text = "?"
+    sport_text = "sport"
+    run_text = "run,"
+    lap_text = "lap"
+    sport_road = create_road(sport_text, delimiter=question_text)
+    run_road = create_road(sport_road, run_text, delimiter=question_text)
+    lap_road = create_road(run_road, lap_text, delimiter=question_text)
+    assert lap_road == f"{sport_road}?{run_text}?{lap_text}"
+
+    assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
+    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+
+
+def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():
+    # GIVEN
+    question_text = "?"
+    sport_text = "sport"
+    run_text = "run/jump"
+    lap_text = "lap"
+    sport_road = create_road(sport_text, delimiter=question_text)
+    run_road = create_road(sport_road, run_text, delimiter=question_text)
+    lap_road = create_road(run_road, lap_text, delimiter=question_text)
+    assert lap_road == f"{sport_road}?{run_text}?{lap_text}"
+
+    assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
+    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text) == False
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text) == False
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False

@@ -4,6 +4,11 @@ from src.instrument.file import (
     open_file,
     count_files,
     get_directory_path,
+    is_path_valid,
+    can_current_user_edit_paths,
+    is_path_existent_or_creatable,
+    is_path_probably_creatable,
+    is_path_existent_or_probably_creatable,
 )
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
@@ -248,3 +253,43 @@ def test_get_directory_path_ReturnsCorrectObj():
     assert dallas_path == f"/{texas_text}/{dallas_text}"
     assert elpaso_path == f"/{texas_text}/{elpaso_text}"
     assert kern_path == f"/{texas_text}/{elpaso_text}/{kern_text}"
+
+
+def test_is_path_valid_ReturnsCorrectObj():
+    # GIVE / WHEN / THEN
+    assert is_path_valid("run")
+    assert is_path_valid("run/trail")
+    assert is_path_valid("run/,trail")
+    assert is_path_valid("trail?") == False
+    assert is_path_valid("run/trail?") == False
+    assert is_path_valid("run//trail////")
+
+
+def test_can_current_user_edit_paths_ReturnsCorrectObj():
+    # GIVE / WHEN / THEN
+    """I don't have the tools to test this rigth now. For now make sure it runs."""
+    assert can_current_user_edit_paths()
+
+
+def test_is_path_existent_or_creatable_ReturnsCorrectObj():
+    # GIVE / WHEN / THEN
+    """I don't have the tools to test this rigth now. For now make sure it runs."""
+    assert is_path_existent_or_creatable("run")
+    assert is_path_existent_or_creatable("run/trail?") == False
+    assert is_path_existent_or_creatable("run///trail")
+
+
+def test_is_path_probably_creatable_ReturnsCorrectObj():
+    # GIVE / WHEN / THEN
+    """I don't have the tools to test this rigth now. For now make sure it runs."""
+    assert is_path_probably_creatable("run")
+    assert is_path_probably_creatable("run/trail?") == False
+    assert is_path_probably_creatable("run///trail") == False
+
+
+def test_is_path_existent_or_probably_creatable_ReturnsCorrectObj():
+    # GIVE / WHEN / THEN
+    """I don't have the tools to test this rigth now. For now make sure it runs."""
+    assert is_path_existent_or_probably_creatable("run")
+    assert is_path_existent_or_probably_creatable("run/trail?") == False
+    assert is_path_existent_or_probably_creatable("run///trail") == False
