@@ -10,10 +10,14 @@ from src._prime.road import (
     RoadNode,
     get_single_roadnode,
 )
-from src.world.examples.world_env_kit import get_temp_world_dir
-from src.agenda.agenda import AgendaUnit, agendaunit_shop
+from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
+from src.agenda.agenda import (
+    AgendaUnit,
+    agendaunit_shop,
+    get_from_json as agenda_get_from_json,
+)
 from src.market.market import MarketUnit
-from src.instrument.file import save_file
+from src.instrument.file import save_file, open_file
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
 from pandas import DataFrame
@@ -28,7 +32,8 @@ class InvalidMarketException(Exception):
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
-    world_dir: str = None
+    worlds_dir: str = None
+    world_id: str = None
     persons_dir: str = None
     person_dir: str = None
     _gut_obj: AgendaUnit = None
@@ -50,8 +55,11 @@ class PersonUnit:
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
-        if self.world_dir is None:
-            self.world_dir = get_temp_world_dir()
+        if self.world_id is None:
+            self.world_id = get_test_world_id()
+        if self.worlds_dir is None:
+            self.worlds_dir = get_test_worlds_dir()
+        self.world_dir = f"{self.worlds_dir}/{self.world_id}"
         self.persons_dir = f"{self.world_dir}/persons"
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
         if self._gut_file_name is None:
@@ -59,14 +67,30 @@ class PersonUnit:
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
 
-    def create_and_save_new_gut(self):
-        gut_agenda = agendaunit_shop(_agent_id=self.person_id)
-        save_file(
-            dest_dir=self.person_dir,
-            file_name=self._gut_file_name,
-            file_text=gut_agenda.get_json(),
-            replace=False,
-        )
+    def gut_file_exists(self) -> bool:
+        return os_path_exists(self._gut_path)
+
+    def _save_agenda_to_gut_path(self, x_agenda: AgendaUnit, replace: bool = True):
+        if replace in {True, False}:
+            save_file(
+                dest_dir=self.person_dir,
+                file_name=self._gut_file_name,
+                file_text=x_agenda.get_json(),
+                replace=replace,
+            )
+
+    def create_gut_file_if_does_not_exist(self):
+        if self.gut_file_exists() == False:
+            self._save_agenda_to_gut_path(
+                agendaunit_shop(_agent_id=self.person_id, _world_id=self.world_id)
+            )
+
+    def get_gut_file_agenda(self) -> AgendaUnit:
+        gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
+        return agenda_get_from_json(gut_json)
+
+    def load_gut_file(self):
+        self._gut_obj = self.get_gut_file_agenda()
 
     # def _set_market_metrics(self):
     #     self._clear_marketmetrics()
@@ -136,11 +160,13 @@ class PersonUnit:
 
 def personunit_shop(
     person_id: PersonID,
-    world_dir: str = None,
+    world_id: str = None,
+    worlds_dir: str = None,
     _road_delimiter: str = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
-        world_dir=world_dir,
+        world_id=world_id,
+        worlds_dir=worlds_dir,
         _markets={},
         _market_metrics={},
         _problems={},
@@ -148,8 +174,6 @@ def personunit_shop(
     )
     x_personunit.set_person_id(person_id)
     # if os_path_exists(x_personunit._gut_path) == False:
-    x_personunit.create_and_save_new_gut()
-
     return x_personunit
 
 

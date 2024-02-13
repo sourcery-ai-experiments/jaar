@@ -68,7 +68,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     w1_text = "w1"
 #     world = worldunit_shop(w1_text, get_test_worlds_dir())
 #     yao_text = "Yao"
-#     world.set_personunit(yao_text)
+#     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_marketunit(texas_text)
@@ -118,7 +118,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # ):
 #     world = worldunit_shop("w1", get_test_worlds_dir())
 #     yao_text = "Yao"
-#     world.set_personunit(yao_text)
+#     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_marketunit(texas_text)
@@ -243,7 +243,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # def test_WorldUnit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
 #     world = worldunit_shop("w1", get_test_worlds_dir())
 #     yao_text = "Yao"
-#     world.set_personunit(yao_text)
+#     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_marketunit(texas_text)
@@ -341,7 +341,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # # ):
 # #     world = worldunit_shop("w1", get_test_worlds_dir())
 # #     yao_text = "Yao"
-# #     world.set_personunit(yao_text)
+# #     world.add_personunit(yao_text)
 # #     yao_person = world.get_personunit_from_memory(yao_text)
 # #     texas_text = "Texas"
 # #     yao_person.set_marketunit(texas_text)

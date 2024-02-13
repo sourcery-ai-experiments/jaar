@@ -11,7 +11,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
-    texas_world = worldunit_shop(mark="texas", worlds_dir=get_test_worlds_dir())
+    texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
     texas_world._set_person_in_memory(personunit_shop(person_id=luca_text))
 
@@ -26,7 +26,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
-    texas_world = worldunit_shop(mark="texas", worlds_dir=get_test_worlds_dir())
+    texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
     luca_text = "Luca"
     water_text = "Clean water"
     dallas_text = "Dallas"
@@ -46,7 +46,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
 #     worlds_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     texas_world = worldunit_shop(mark="texas", worlds_dir=get_test_worlds_dir())
+#     texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
 #     luca_text = "Luca"
 #     water_text = "dirty water"
 #     dallas_text = "Dallas"

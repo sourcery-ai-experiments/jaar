@@ -1,7 +1,7 @@
 from src.world.person import personunit_shop, PersonUnit
 from src.instrument.python import x_get_dict
 from src.world.examples.world_env_kit import (
-    get_temp_world_dir,
+    get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
 

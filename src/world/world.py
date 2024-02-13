@@ -16,13 +16,13 @@ class PersonExistsException(Exception):
     pass
 
 
-class WorldMark(str):  # Created to help track the concept
+class WorldID(str):  # Created to help track the concept
     pass
 
 
 @dataclass
 class WorldUnit:
-    mark: WorldMark
+    world_id: WorldID
     worlds_dir: str
     _world_dir: str = None
     _persons_dir: str = None
@@ -54,7 +54,7 @@ class WorldUnit:
         return f"{self._persons_dir}/{person_id}"
 
     def _set_world_dirs(self):
-        self._world_dir = f"{self.worlds_dir}/{self.mark}"
+        self._world_dir = f"{self.worlds_dir}/{self.world_id}"
         self._persons_dir = f"{self._world_dir}/persons"
         self._deals_dir = f"{self._world_dir}/deals"
 
@@ -64,7 +64,7 @@ class WorldUnit:
     def _set_person_in_memory(self, personunit: PersonUnit):
         self._personunits[personunit.person_id] = personunit
 
-    def set_personunit(
+    def add_personunit(
         self,
         person_id: PersonID,
         replace_personunit: bool = False,
@@ -72,7 +72,8 @@ class WorldUnit:
     ):
         x_personunit = personunit_shop(
             person_id=person_id,
-            world_dir=self._world_dir,
+            world_id=self.world_id,
+            worlds_dir=self.worlds_dir,
             _road_delimiter=self._road_delimiter,
         )
         if (
@@ -82,7 +83,7 @@ class WorldUnit:
             self._set_person_in_memory(x_personunit)
         elif replace_alert:
             raise PersonExistsException(
-                f"set_personunit fail: {x_personunit.person_id} already exists"
+                f"add_personunit fail: {x_personunit.person_id} already exists"
             )
 
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
@@ -95,7 +96,7 @@ class WorldUnit:
         clerk_person_id: PersonID,
     ):
         if self.personunit_exists(treasurer_person_id) == False:
-            self.set_personunit(treasurer_person_id)
+            self.add_personunit(treasurer_person_id)
         x_personunit = self.get_personunit_from_memory(treasurer_person_id)
 
         if x_personunit.marketunit_exists(market_id) == False:
@@ -103,7 +104,7 @@ class WorldUnit:
         x_market = x_personunit.get_marketunit(market_id)
 
         if self.personunit_exists(clerk_person_id) == False:
-            self.set_personunit(clerk_person_id)
+            self.add_personunit(clerk_person_id)
 
         if x_market.clerkunit_exists(treasurer_person_id) == False:
             x_market.add_clerkunit(treasurer_person_id)
@@ -113,6 +114,9 @@ class WorldUnit:
     def get_world_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
         world_agenda = agendaunit_shop(person_id)
+        # for market_idea in x_personunit._gut_obj._market_dict.values():
+        #     pass
+
         # for person_problemunit in x_personunit._problems.values():
         #             forum_agenda = x_marketunit.get_forum_agenda(person_id)
         #             forum_agenda.set_world_id(world_agenda._world_id)
@@ -127,10 +131,10 @@ class WorldUnit:
         market_id: MarketID,
     ):
 
-        self.set_personunit(person_id, replace_personunit=False, replace_alert=False)
+        self.add_personunit(person_id, replace_personunit=False, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(person_id)
 
-        self.set_personunit(healer_id, replace_personunit=False, replace_alert=False)
+        self.add_personunit(healer_id, replace_personunit=False, replace_alert=False)
         # healer_personunit = self.get_personunit_from_memory(healer_id)
         # healer_personunit.set_marketunit(market_id, False, x_problem_id)
         # x_marketunit = healer_personunit.get_marketunit(market_id)
@@ -150,10 +154,10 @@ class WorldUnit:
 
 
 def worldunit_shop(
-    mark: WorldMark, worlds_dir: str, _road_delimiter: str = None
+    world_id: WorldID, worlds_dir: str, _road_delimiter: str = None
 ) -> WorldUnit:
     world_x = WorldUnit(
-        mark=mark,
+        world_id=world_id,
         worlds_dir=worlds_dir,
         _personunits=get_empty_dict_if_none(None),
         _dealunits=get_empty_dict_if_none(None),
