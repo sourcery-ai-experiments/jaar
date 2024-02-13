@@ -19,13 +19,13 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     # GIVEN
     temp_dir = f"{get_test_markets_dir()}/voice_rank_order_temp"
     print(f"{temp_dir=}")
-    yao_text = "yao"
+    yao_text = "Yao"
 
-    ava_text = "ava"
-    bob_text = "bob"
-    cal_text = "cal"
-    dom_text = "dom"
-    elu_text = "elu"
+    ava_text = "Ava"
+    bob_text = "Bob"
+    cal_text = "Cal"
+    dom_text = "Dom"
+    elu_text = "Elu"
     ava_filename = f"{ava_text}.json"
     bob_filename = f"{bob_text}.json"
     cal_filename = f"{cal_text}.json"
@@ -88,13 +88,13 @@ def test_market_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
 ):
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    ava_text = "ava"
-    bob_text = "bob"
-    cal_text = "cal"
-    dom_text = "dom"
-    elu_text = "elu"
+    ava_text = "Ava"
+    bob_text = "Bob"
+    cal_text = "Cal"
+    dom_text = "Dom"
+    elu_text = "Elu"
 
-    yao_text = "yao"
+    yao_text = "Yao"
     yao_new_agenda = agendaunit_shop(_agent_id=yao_text)
     yao_new_agenda.set_partyunit(partyunit_shop(ava_text))
     yao_new_agenda.set_partyunit(partyunit_shop(bob_text))

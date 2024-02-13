@@ -717,7 +717,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
     assert len(bob_agenda.get_intent_dict()) == 1
 
-    sue_text = "sue"
+    sue_text = "Sue"
     bob_agenda.add_partyunit(party_id=sue_text)
     assignedunit_sue = assignedunit_shop()
     assignedunit_sue.set_suffgroup(group_id=sue_text)
@@ -753,7 +753,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     work_road = bob_agenda.make_road(bob_text, work_text)
     bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
 
-    sue_text = "sue"
+    sue_text = "Sue"
     bob_agenda.add_partyunit(party_id=sue_text)
 
     run_text = ",runners"

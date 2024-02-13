@@ -193,7 +193,7 @@ def test_AgendaUnit_get_party_ReturnsCorrectObj():
 
 def test_AgendaUnit_get_partys_depotlink_count_GetsCorrectCount():
     # GIVEN
-    sue_text = "sue"
+    sue_text = "Sue"
     sue_agenda = agendaunit_shop(_agent_id=sue_text)
     assign_text = "assignment"
 
@@ -1316,7 +1316,7 @@ def test_get_intersection_of_partys_ReturnsUnionOfKeysOfTwoDictionarys_scenario1
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
-    elu_text = "elu"
+    elu_text = "Elu"
     bob_agenda.set_partyunit(partyunit=partyunit_shop(bob_text))
     bob_agenda.set_partyunit(partyunit=partyunit_shop(sam_text))
     bob_agenda.set_partyunit(partyunit=partyunit_shop(wil_text))

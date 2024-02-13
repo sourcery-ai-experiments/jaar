@@ -352,6 +352,5 @@ def clerkunit_shop(
     x_clerk.set_dirs()
     x_clerk.get_contract()
     x_clerk._contract._set_auto_output_to_forum(_auto_output_to_forum)
-    # x_clerk.save_contract_agenda(x_clerk.get_contract())
     x_clerk.get_contract()
     return x_clerk

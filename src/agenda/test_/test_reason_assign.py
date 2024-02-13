@@ -78,7 +78,7 @@ def test_AssignedUnit_set_suffgroup_CorrectlySets_suffgroups_v1():
     assert len(assignedunit_x._suffgroups) == 0
 
     # WHEN
-    jim_text = "jim"
+    jim_text = "Jim"
     assignedunit_x.set_suffgroup(group_id=jim_text)
 
     # THEN
@@ -88,8 +88,8 @@ def test_AssignedUnit_set_suffgroup_CorrectlySets_suffgroups_v1():
 def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
     # GIVEN
     assignedunit_x = assignedunit_shop(_suffgroups={})
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     assignedunit_x.set_suffgroup(group_id=jim_text)
     assignedunit_x.set_suffgroup(group_id=sue_text)
     assert len(assignedunit_x._suffgroups) == 2
@@ -135,8 +135,8 @@ def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
 
 def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v1():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
@@ -153,8 +153,8 @@ def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v1():
 
 def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v2():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
@@ -195,8 +195,8 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_Empty_suffgro
 
 def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
 
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
@@ -220,8 +220,8 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
 def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
 
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
@@ -245,8 +245,8 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
 def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
@@ -276,8 +276,8 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
 def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
@@ -414,10 +414,10 @@ def test_AssignedHeir_set_suffgroup_AssignedUnitEqualParentAssignedHeir_NonEmpty
 
 def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_NonEmpty():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     bob_text = "Bob"
-    tom_text = "tom"
+    tom_text = "Tom"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
@@ -461,10 +461,10 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
 
 def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_RaisesError():
     # GIVEN
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     bob_text = "Bob"
-    tom_text = "tom"
+    tom_text = "Tom"
     x_agenda = agendaunit_shop(_agent_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)

@@ -78,7 +78,7 @@ def test_originunit_set_originlink_CorrectlySetsOriginLink():
     originunit_x = originunit_shop()
 
     # WHEN
-    tim_text = "tim"
+    tim_text = "Tim"
     tim_weight = 3
     originunit_x.set_originlink(party_id=tim_text, weight=tim_weight)
 
@@ -91,7 +91,7 @@ def test_originunit_set_originlink_CorrectlySetsOriginLink():
 def test_originunit_del_originlink_CorrectlyDeletesOriginLink():
     # GIVEN
     originunit_x = originunit_shop()
-    tim_text = "tim"
+    tim_text = "Tim"
     tim_weight = 3
     originunit_x.set_originlink(party_id=tim_text, weight=tim_weight)
     assert originunit_x._links.get(tim_text) != None

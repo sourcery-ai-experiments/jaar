@@ -30,8 +30,8 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
-    tim_text = "tim"
+    bob_text = "Bob"
+    tim_text = "Tim"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tim_partyunit = partyunit_shop(
         party_id=tim_text,
@@ -89,8 +89,8 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
 
 def test_RiverBlockUnit_exists():
     # GIVEN
-    bob_text = "bob"
-    tom_text = "tom"
+    bob_text = "Bob"
+    tom_text = "Tom"
     cash_onset = 400
     cash_cease = 600
     river_tree_level = 6
@@ -122,9 +122,9 @@ def test_RiverBlockUnit_exists():
 
 def test_RiverBlockUnit_block_returned_WorksCorrectly():
     # GIVEN
-    bob_text = "bob"
-    sal_text = "sal"
-    tom_text = "tom"
+    bob_text = "Bob"
+    sal_text = "Sal"
+    tom_text = "Tom"
     cash_onset = 400
     cash_cease = 600
     river_tree_level = 6
@@ -159,8 +159,8 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
-    sal_text = "sal"
+    bob_text = "Bob"
+    sal_text = "Sal"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     sal_partyunit = partyunit_shop(sal_text, _creditor_live=True, _debtor_live=False)
     sal_partyunit._agenda_credit = 0.9
@@ -174,7 +174,7 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
         bob_agenda, sal_partyunit
     )
 
-    tim_text = "tim"
+    tim_text = "Tim"
     tim_partyunit = partyunit_shop(tim_text, _creditor_live=True, _debtor_live=False)
     tim_partyunit._agenda_credit = 0.012
     tim_partyunit._agenda_debt = 0.017
@@ -223,9 +223,9 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    bob_text = "bob"
-    tim_text = "tim"
-    sal_text = "sal"
+    bob_text = "Bob"
+    tim_text = "Tim"
+    sal_text = "Sal"
 
     river_block_unit = RiverBlockUnit(
         cash_agent_id=bob_text,
@@ -262,9 +262,9 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
 
 def test_RiverLedgerUnit_Exists():
     # GIVEN
-    bob_text = "bob"
-    sal_text = "sal"
-    tom_text = "tom"
+    bob_text = "Bob"
+    sal_text = "Sal"
+    tom_text = "Tom"
     x1_partydbunit = PartyDBUnit(
         agent_id=bob_text,
         party_id=sal_text,
@@ -346,12 +346,12 @@ def test_PartyBankUnit_exists():
 
 def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     x_agenda = agendaunit_shop(_agent_id=bob_text)
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
-    elu_text = "elu"
+    elu_text = "Elu"
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=wil_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=fry_text))
@@ -404,9 +404,9 @@ def test_get_agenda_partyunit_table_update_bank_due_paid_sqlstr_CorrectlyPopulat
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    bob_text = "bob"
-    tom_text = "tom"
-    sal_text = "sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    sal_text = "Sal"
 
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tom_partyunit = partyunit_shop(tom_text, _creditor_live=True, _debtor_live=False)

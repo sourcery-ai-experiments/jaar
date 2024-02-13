@@ -52,7 +52,7 @@ FROM agendaunit
 
 def test_get_partyunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     generated_sqlstr = get_agenda_partyunit_table_update_bank_due_paid_sqlstr(
         bob_text
     )
@@ -80,7 +80,7 @@ WHERE EXISTS (
 
 def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     generated_sqlstr = get_river_reach_table_touch_select_sqlstr(bob_text)
 
     # THEN
@@ -146,7 +146,7 @@ def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
 
 def test_get_river_reach_table_final_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    bob_text = "bob"
+    bob_text = "Bob"
     generated_sqlstr = get_river_reach_table_final_select_sqlstr(bob_text)
 
     # THEN

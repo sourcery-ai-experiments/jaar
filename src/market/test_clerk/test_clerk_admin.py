@@ -168,7 +168,7 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_clerkunit_dir()
 
-    old_bob_text = "bob"
+    old_bob_text = "Bob"
     jul_clerkunit = clerkunit_shop(old_bob_text, env_dir, get_temp_market_id())
     x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.set_dirs()
@@ -186,7 +186,7 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     assert os_path_isdir(old_clerkunit_dir)
     assert os_path_exists(old_contract_file_path)
 
-    tim_text = "tim"
+    tim_text = "Tim"
     new_clerkunit_dir = f"{clerkunits_dir}/{tim_text}"
     new_contract_file_path = f"{new_clerkunit_dir}/{contract_file_name}"
     assert os_path_exists(new_clerkunit_dir) == False
@@ -207,7 +207,7 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
 
 def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(clerk_dir_setup_cleanup):
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     bob_clerkadmin = clerkunit_shop(
         bob_text, get_temp_clerkunit_dir(), get_temp_market_id()
     )

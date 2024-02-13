@@ -263,7 +263,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # GIVEN
     #     ex7_text = "ex7"
     #     x_market = _delete_and_set_ex6(x_market_id=ex7_text)
-    #     sal_text = "sal"
+    #     sal_text = "Sal"
     #     # x_market = _delete_and_set_ex6()
     #     # # x_market.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
@@ -411,7 +411,7 @@ VALUES ('sal', 'sal', 0, 0.0440126668651765, 0.1)
         assert 2 == get_single_result(x_db, get_table_count_sqlstr(circle_text))
 
     # WHEN
-    sal_text = "sal"
+    sal_text = "Sal"
     reach_sqlstr = get_river_reach_table_touch_select_sqlstr(sal_text)
     reach_count_sqlstr = f"""SELECT COUNT(*) FROM ({reach_sqlstr}) x;"""
     reach_rows_num = get_single_result(x_db, reach_count_sqlstr)

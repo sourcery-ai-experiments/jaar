@@ -31,11 +31,11 @@ def test_market_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup
     assert len(get_agendabankunits_dict(x_market.get_bank_conn())) == 0
 
     # WHEN
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=sal_text))
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
@@ -76,11 +76,11 @@ def test_market_bank_bank_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     x_market = marketunit_shop(market_id, get_test_markets_dir())
     x_market.create_dirs_if_null(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tom_agenda = agendaunit_shop(_agent_id=tom_text)

@@ -315,9 +315,9 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # print(f"{shave_road=}")
     # print(f"{json_shave_idea._label=} {json_shave_idea._parent_road=}")
 
-    sue_text = "sue"
+    sue_text = "Sue"
     zia_agenda.add_partyunit(party_id=sue_text)
-    tim_text = "tim"
+    tim_text = "Tim"
     zia_agenda.add_partyunit(party_id=tim_text)
     run_text = ",runners"
     run_group = groupunit_shop(group_id=run_text)

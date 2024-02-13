@@ -18,11 +18,11 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -57,11 +57,11 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)

@@ -63,7 +63,7 @@ def test_HealerHold_set_group_id_CorrectlySets_group_ids_v1():
     assert len(x_healerhold._group_ids) == 0
 
     # WHEN
-    jim_text = "jim"
+    jim_text = "Jim"
     x_healerhold.set_group_id(x_group_id=jim_text)
 
     # THEN
@@ -73,8 +73,8 @@ def test_HealerHold_set_group_id_CorrectlySets_group_ids_v1():
 def test_HealerHold_del_group_id_CorrectlyDeletes_group_ids_v1():
     # GIVEN
     x_healerhold = healerhold_shop()
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     x_healerhold.set_group_id(x_group_id=jim_text)
     x_healerhold.set_group_id(x_group_id=sue_text)
     assert len(x_healerhold._group_ids) == 2
@@ -89,8 +89,8 @@ def test_HealerHold_del_group_id_CorrectlyDeletes_group_ids_v1():
 def test_HealerHold_group_id_exists_ReturnsCorrectObj():
     # GIVEN
     x_healerhold = healerhold_shop()
-    jim_text = "jim"
-    sue_text = "sue"
+    jim_text = "Jim"
+    sue_text = "Sue"
     assert x_healerhold.group_id_exists(jim_text) == False
     assert x_healerhold.group_id_exists(sue_text) == False
 
@@ -108,7 +108,7 @@ def test_HealerHold_any_group_id_exists_ReturnsCorrectObj():
     assert x_healerhold.any_group_id_exists() == False
 
     # WHEN / THEN
-    sue_text = "sue"
+    sue_text = "Sue"
     x_healerhold.set_group_id(x_group_id=sue_text)
     assert x_healerhold.any_group_id_exists()
 
@@ -134,7 +134,7 @@ def test_healerhold_get_from_dict_ReturnsCorrectObj():
     assert healerhold_get_from_dict(empty_dict) == healerhold_shop()
 
     # WHEN / THEN
-    sue_text = "sue"
+    sue_text = "Sue"
     jim_text = "Jim"
     static_healerhold = healerhold_shop()
     static_healerhold.set_group_id(x_group_id=sue_text)

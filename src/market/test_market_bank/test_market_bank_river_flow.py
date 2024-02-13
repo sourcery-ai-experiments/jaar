@@ -35,9 +35,9 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    bob_text = "bob"
-    tom_text = "tom"
-    sal_text = "sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    sal_text = "Sal"
 
     sal_agentunit = agendaunit_shop(_agent_id=sal_text)
     sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1)
@@ -105,10 +105,10 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     # GIVEN 4 agendas, 85% of river blocks to sal
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -173,11 +173,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -248,11 +248,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -327,11 +327,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -388,11 +388,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -468,11 +468,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRang
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
@@ -537,11 +537,11 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda_src = agendaunit_shop(_agent_id=sal_text)
     sal_agenda_src.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)

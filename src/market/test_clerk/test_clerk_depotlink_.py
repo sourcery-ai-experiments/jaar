@@ -45,11 +45,11 @@ def test_clerkunit_set_depotlink_CorrectlySetscontractPartys(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_text = "yao"
+    yao_text = "Yao"
     env_dir = get_temp_clerkunit_dir()
     yao_ux = clerkunit_shop(yao_text, env_dir, get_temp_market_id())
     yao_ux.set_contract_if_empty()
-    sue_text = "sue"
+    sue_text = "Sue"
     create_agenda_file(yao_ux._agendas_depot_dir, sue_text)
     assert list(yao_ux._contract._partys.keys()) == [yao_text]
 
@@ -189,7 +189,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    bob_text = "bob"
+    bob_text = "Bob"
     env_dir = get_temp_clerkunit_dir()
     bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_market_id())
     zia_text = "Zia"
@@ -223,7 +223,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
     cx1 = bob_ux.open_ignore_agenda(agent_id=zia_text)
     assert len(cx1._partys) == 0
-    cx1.add_partyunit(party_id="tim")
+    cx1.add_partyunit(party_id="Tim")
     assert len(cx1._partys) == 1
 
     # WHEN

@@ -331,7 +331,7 @@ def test_agenda_set_agent_id_CorrectlyChangesBoth():
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     assert sue_agenda._agent_id == "Sue"
     assert sue_agenda._idearoot._label == sue_agenda._world_id
-    # mid_label1 = "tim"
+    # mid_label1 = "Tim"
     # sue_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
     # assert sue_agenda._agent_id == old_label
     # assert sue_agenda._idearoot._label == mid_label1

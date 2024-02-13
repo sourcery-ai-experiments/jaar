@@ -44,8 +44,8 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankInMemory(
     )
     x_market.create_dirs_if_null(in_memory_bank=True)
 
-    bob_text = "bob"
-    tom_text = "tom"
+    bob_text = "Bob"
+    tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(_agent_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
@@ -70,8 +70,8 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankFile(
     )
     x_market.create_dirs_if_null(in_memory_bank=False)
 
-    bob_text = "bob"
-    tom_text = "tom"
+    bob_text = "Bob"
+    tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(_agent_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
@@ -96,10 +96,10 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesPartyunitTable
     )
     x_market.create_dirs_if_null(in_memory_bank=True)
 
-    bob_text = "bob"
-    tom_text = "tom"
-    sal_text = "sal"
-    elu_text = "elu"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    sal_text = "Sal"
+    elu_text = "Elu"
 
     bob_agentunit = agendaunit_shop(_agent_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
@@ -146,10 +146,10 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     )
     x_market.create_dirs_if_null(in_memory_bank=True)
 
-    bob_text = "bob"
-    tom_text = "tom"
-    sal_text = "sal"
-    elu_text = "elu"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    sal_text = "Sal"
+    elu_text = "Elu"
 
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
@@ -175,10 +175,10 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     )
     x_market.create_dirs_if_null(in_memory_bank=True)
 
-    bob_text = "bob"
-    tom_text = "tom"
-    sal_text = "sal"
-    elu_text = "elu"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    sal_text = "Sal"
+    elu_text = "Elu"
 
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=bob_text))
     x_market.save_forum_agenda(agendaunit_shop(_agent_id=tom_text))
@@ -204,9 +204,9 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulates_agenda_groupu
     )
     x_market.create_dirs_if_null(in_memory_bank=True)
 
-    bob_text = "bob"
-    tom_text = "tom"
-    elu_text = "elu"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    elu_text = "Elu"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     bob_agenda.add_partyunit(party_id=tom_text)
@@ -245,10 +245,10 @@ def test_market_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_partylinks(
     # assert group "swimming expert" has 2 different party
     x_market_id = x_market.market_id
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
 
     sal_agenda = agendaunit_shop(sal_text, x_market_id)
     bob_agenda = agendaunit_shop(bob_text, x_market_id)
@@ -302,7 +302,7 @@ def test_market_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable0
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
+    bob_text = "Bob"
     with x_market.get_bank_conn() as bank_conn:
         assert get_agenda_ideaunit_table_count(bank_conn, bob_text) == 0
 
@@ -326,9 +326,9 @@ def test_market_refresh_bank_forum_agendas_data_Populates_agenda_ideaunit_table(
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
-    sal_text = "sal"
-    tim_text = "tim"
+    bob_text = "Bob"
+    sal_text = "Sal"
+    tim_text = "Tim"
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
@@ -357,10 +357,10 @@ def test_market_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanu
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
-    sal_text = "sal"
-    tim_text = "tim"
-    elu_text = "elu"
+    bob_text = "Bob"
+    sal_text = "Sal"
+    tim_text = "Tim"
+    elu_text = "Elu"
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
@@ -397,7 +397,7 @@ def test_market_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulate
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
+    bob_text = "Bob"
     with x_market.get_bank_conn() as bank_conn:
         assert get_agenda_idea_beliefunit_table_count(bank_conn, bob_text) == 0
 
@@ -425,9 +425,9 @@ def test_refresh_bank_forum_agendas_data_Populates_agenda_idea_beliefunit_table(
     x_market.refresh_bank_forum_agendas_data()
 
     # TODO create 3 agendas with varying numbers of beliefs
-    bob_text = "bob"
-    sal_text = "sal"
-    tim_text = "tim"
+    bob_text = "Bob"
+    sal_text = "Sal"
+    tim_text = "Tim"
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
@@ -482,7 +482,7 @@ def test_market_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
     x_market.refresh_bank_forum_agendas_data()
 
-    bob_text = "bob"
+    bob_text = "Bob"
     with x_market.get_bank_conn() as bank_conn:
         assert get_agenda_groupunit_table_count(bank_conn, bob_text) == 0
 
@@ -507,9 +507,9 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     # GIVEN
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
-    bob_text = "bob"
-    tom_text = "tom"
-    elu_text = "elu"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    elu_text = "Elu"
     bob_agenda = agendaunit_shop(_agent_id=bob_text)
     tom_agenda = agendaunit_shop(_agent_id=tom_text)
     bob_agenda.add_partyunit(party_id=tom_text)

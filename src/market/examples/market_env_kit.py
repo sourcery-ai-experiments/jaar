@@ -217,11 +217,11 @@ def _delete_and_set_ex6(x_market_id: str = None):
     delete_dir(x_market.get_object_root_dir())
     x_market.create_dirs_if_null(in_memory_bank=False)
 
-    sal_text = "sal"
-    bob_text = "bob"
-    tom_text = "tom"
-    ava_text = "ava"
-    elu_text = "elu"
+    sal_text = "Sal"
+    bob_text = "Bob"
+    tom_text = "Tom"
+    ava_text = "Ava"
+    elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_agent_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)

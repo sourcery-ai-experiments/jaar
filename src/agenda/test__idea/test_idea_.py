@@ -416,7 +416,7 @@ def test_get_obj_from_idea_dict_ReturnsCorrect_HealerHold():
     assert get_obj_from_idea_dict({}, healerhold_key) == healerhold_shop()
 
     # WHEN
-    sue_text = "sue"
+    sue_text = "Sue"
     jim_text = "Jim"
     healerhold_dict = {"healerhold_group_ids": [sue_text, jim_text]}
     ideaunit_dict = {healerhold_key: healerhold_dict}
