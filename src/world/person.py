@@ -17,7 +17,7 @@ from src.agenda.agenda import (
     get_from_json as agenda_get_from_json,
 )
 from src.market.market import MarketUnit
-from src.instrument.file import save_file, open_file
+from src.instrument.file import save_file, open_file, single_dir_create_if_null
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
 from pandas import DataFrame
@@ -39,6 +39,7 @@ class PersonUnit:
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
+    _markets_dir: str = None
     _markets: dict[MarketID:MarketUnit] = None
     _market_metrics: dict[MarketID:MarketUnit] = None
     _problems: dict[ProblemID:] = None
@@ -62,6 +63,7 @@ class PersonUnit:
         self.world_dir = f"{self.worlds_dir}/{self.world_id}"
         self.persons_dir = f"{self.world_dir}/persons"
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
+        self._markets_dir = f"{self.person_dir}/markets"
         if self._gut_file_name is None:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
@@ -78,6 +80,13 @@ class PersonUnit:
                 file_text=x_agenda.get_json(),
                 replace=replace,
             )
+
+    def create_core_dir_and_files(self):
+        single_dir_create_if_null(self.world_dir)
+        single_dir_create_if_null(self.persons_dir)
+        single_dir_create_if_null(self.person_dir)
+        single_dir_create_if_null(self._markets_dir)
+        self.create_gut_file_if_does_not_exist()
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
