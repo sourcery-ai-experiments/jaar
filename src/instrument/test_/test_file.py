@@ -3,6 +3,7 @@ from src.instrument.file import (
     save_file,
     open_file,
     count_files,
+    get_directory_path,
 )
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
@@ -226,3 +227,24 @@ def test_count_files_ReturnsNoneIfDirectoryDoesNotExist(
 
     # THEN
     assert dir_count is None
+
+
+def test_get_directory_path_ReturnsCorrectObj():
+    # GIVEN
+    texas_text = "texas"
+    dallas_text = "dallas"
+    elpaso_text = "el paso"
+    kern_text = "kern"
+
+    # WHEN
+    texas_path = get_directory_path([texas_text])
+    dallas_path = get_directory_path([texas_text, dallas_text])
+    elpaso_path = get_directory_path([texas_text, elpaso_text])
+    kern_path = get_directory_path([texas_text, elpaso_text, kern_text])
+
+    # THEN
+    assert "" == get_directory_path()
+    assert texas_path == f"/{texas_text}"
+    assert dallas_path == f"/{texas_text}/{dallas_text}"
+    assert elpaso_path == f"/{texas_text}/{elpaso_text}"
+    assert kern_path == f"/{texas_text}/{elpaso_text}/{kern_text}"

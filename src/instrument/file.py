@@ -117,3 +117,13 @@ def dir_files(
 
 def rename_dir(src, dst):
     os_rename(src=src, dst=dst)
+
+
+def get_directory_path(x_list: list[str] = None) -> str:
+    if x_list is None:
+        x_list = []
+    x_str = ""
+    while x_list != []:
+        x_level = x_list.pop(0)
+        x_str = f"{x_str}/{x_level}"
+    return x_str

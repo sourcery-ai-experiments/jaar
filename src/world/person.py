@@ -17,7 +17,12 @@ from src.agenda.agenda import (
     get_from_json as agenda_get_from_json,
 )
 from src.market.market import MarketUnit
-from src.instrument.file import save_file, open_file, single_dir_create_if_null
+from src.instrument.file import (
+    save_file,
+    open_file,
+    single_dir_create_if_null,
+    get_directory_path,
+)
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
 from pandas import DataFrame
@@ -100,6 +105,15 @@ class PersonUnit:
 
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
+
+    def _get_market_path(self, x_list: list[RoadNode]) -> str:
+        idearoot_list = ["idearoot", *x_list]
+        return f"{self._markets_dir}{get_directory_path(x_list=idearoot_list)}"
+
+    def _create_market_dir(self, x_list: list[RoadNode]) -> str:
+        x_market_path = self._get_market_path(x_list)
+        print(f"{x_market_path=}")
+        single_dir_create_if_null(x_market_path)
 
     # def _set_market_metrics(self):
     #     self._clear_marketmetrics()

@@ -268,13 +268,54 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     sue_person.create_core_dir_and_files()
 
     # THEN
-    assert os_path_exists(sue_person.world_dir) 
-    assert os_path_exists(sue_person.persons_dir) 
-    assert os_path_exists(sue_person.person_dir) 
-    assert os_path_exists(sue_person._gut_path) 
-    assert os_path_exists(sue_person._markets_dir) 
+    assert os_path_exists(sue_person.world_dir)
+    assert os_path_exists(sue_person.persons_dir)
+    assert os_path_exists(sue_person.person_dir)
+    assert os_path_exists(sue_person._gut_path)
+    assert os_path_exists(sue_person._markets_dir)
 
 
+def test_PersonUnit_get_market_path_ReturnsCorrectObj():
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    texas_text = "texas"
+    dallas_text = "dallas"
+    elpaso_text = "el paso"
+    kern_text = "kern"
+
+    # WHEN
+    texas_path = sue_person._get_market_path([texas_text])
+    dallas_path = sue_person._get_market_path([texas_text, dallas_text])
+    elpaso_path = sue_person._get_market_path([texas_text, elpaso_text])
+    kern_path = sue_person._get_market_path([texas_text, elpaso_text, kern_text])
+
+    # THEN
+    idearoot_dir = f"{sue_person._markets_dir}/idearoot"
+    assert texas_path == f"{idearoot_dir}/{texas_text}"
+    assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
+    assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
+    assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
+
+
+def test_PersonUnit_create_market_dir_CreatesDir(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_person.create_core_dir_and_files()
+    assert os_path_exists(sue_person._markets_dir)
+    dallas_text = "dallas"
+    dallas_list = [dallas_text]
+    dallas_dir = sue_person._get_market_path(dallas_list)
+    print(f"{dallas_dir=}")
+    assert os_path_exists(dallas_dir) == False
+
+    # WHEN
+    sue_person._create_market_dir(dallas_list)
+
+    # THEN
+    print(f"{dallas_dir=}")
+    assert os_path_exists(dallas_dir)
 
 
 # def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
