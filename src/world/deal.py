@@ -4,7 +4,6 @@ from src._prime.road import (
     PersonID,
     MarketRoad,
     PartyID,
-    get_single_roadnode,
 )
 from src.world.vow import VowID, VowUnit, vowunit_shop
 from src.world.topic import TopicUnit
@@ -26,8 +25,8 @@ class get_member_attr_Exception(Exception):
 
 @dataclass
 class DealUnit:
-    _author_road: MarketRoad = None
-    _reader_road: MarketRoad = None
+    _author: PersonID = None
+    _reader: PersonID = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _vowunits: dict[VowID:VowUnit] = None
 
@@ -135,34 +134,26 @@ class DealUnit:
     def actor_has_vowunit(self, actor: PersonID, action_filter: bool = None) -> bool:
         return self.get_actor_vowunits(actor, action_filter=action_filter) != {}
 
-    def get_member_attr(self, member: str, attr: str):
+    def get_member_attr(self, member: str):
         if member not in ("reader", "author"):
             raise get_member_attr_Exception(
                 f"get_member_attr cannot receive '{member}' as member parameter."
             )
         if member == "reader":
-            return get_single_roadnode(
-                roadunit_type="PersonRoad",
-                x_roadunit=self._reader_road,
-                roadnode_type=attr,
-            )
+            return self._reader
         elif member == "author":
-            return get_single_roadnode(
-                roadunit_type="PersonRoad",
-                x_roadunit=self._author_road,
-                roadnode_type=attr,
-            )
+            return self._author
 
 
 def dealunit_shop(
-    _author_road: MarketRoad,
-    _reader_road: MarketRoad,
+    _author: PersonID,
+    _reader: PersonID,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
     _vowunits: dict[VowID:VowUnit] = None,
 ):
     return DealUnit(
-        _author_road=_author_road,
-        _reader_road=_reader_road,
+        _author=_author,
+        _reader=_reader,
         _topicunits=get_empty_dict_if_none(_topicunits),
         _vowunits=get_empty_dict_if_none(_vowunits),
     )

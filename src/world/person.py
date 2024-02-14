@@ -5,10 +5,9 @@ from src._prime.road import (
     HealerID,
     ProblemID,
     validate_roadnode,
-    PersonRoad,
     RoadUnit,
     RoadNode,
-    get_single_roadnode,
+    get_all_road_nodes,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.agenda.agenda import (
@@ -45,9 +44,6 @@ class PersonUnit:
     _gut_file_name: str = None
     _gut_path: str = None
     _markets_dir: str = None
-    _markets: dict[MarketID:MarketUnit] = None
-    _market_metrics: dict[MarketID:MarketUnit] = None
-    _problems: dict[ProblemID:] = None
     _road_delimiter: str = None
 
     def healer_exists(self, healer_id: HealerID) -> bool:
@@ -110,27 +106,11 @@ class PersonUnit:
         idearoot_list = ["idearoot", *x_list]
         return f"{self._markets_dir}{get_directory_path(x_list=idearoot_list)}"
 
-    def _create_market_dir(self, x_list: list[RoadNode]) -> str:
-        x_market_path = self._get_market_path(x_list)
+    def _create_market_dir(self, x_roadunit: RoadUnit) -> str:
+        road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
+        x_market_path = self._get_market_path(road_nodes)
         print(f"{x_market_path=}")
         single_dir_create_if_null(x_market_path)
-
-    # def _set_market_metrics(self):
-    #     self._clear_marketmetrics()
-
-    #     for x_problembeam in self._problembeams.values():
-    #         if self._market_metrics.get(x_problembeam.market_id) is None:
-    #             self._market_metrics[x_problembeam.market_id] = marketmetric_shop(
-    #                 x_problembeam.market_id
-    #             )
-    #         x_marketmetric = self._market_metrics.get(x_problembeam.market_id)
-    #         print(f"{x_marketmetric._person_clout=}")
-    #         x_marketmetric.add_person_clout(x_problembeam.market_person_clout)
-    #         print(f"{x_marketmetric._person_clout=}")
-
-    def _clear_marketmetrics(self):
-        for x_marketmetric in self._market_metrics.values():
-            x_marketmetric.clear_person_clout()
 
     # def popup_visualization(
     #     self, marketlink_by_problem: bool = False, show_fig: bool = True
@@ -190,9 +170,6 @@ def personunit_shop(
     x_personunit = PersonUnit(
         world_id=world_id,
         worlds_dir=worlds_dir,
-        _markets={},
-        _market_metrics={},
-        _problems={},
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)

@@ -249,23 +249,6 @@ def replace_road_delimiter(road: RoadUnit, old_delimiter: str, new_delimiter: st
     return road.replace(old_delimiter, new_delimiter)
 
 
-def get_single_roadnode(
-    roadunit_type: str, x_roadunit: RoadUnit, roadnode_type: str, delimiter: str = None
-):
-    x_roadunit_nodes = get_all_road_nodes(x_roadunit, delimiter=delimiter)
-    x_roadnode = None
-    if roadunit_type == "PersonRoad":
-        if roadnode_type == "MarketID" and len(x_roadunit_nodes) > 3:
-            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[3]
-        elif roadnode_type == "HealerID" and len(x_roadunit_nodes) > 2:
-            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[2]
-        elif roadnode_type == "PersonID" and len(x_roadunit_nodes) > 0:
-            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[0]
-        elif roadnode_type == "ProblemID" and len(x_roadunit_nodes) > 1:
-            x_roadnode = get_all_road_nodes(x_roadunit, delimiter)[1]
-    return x_roadnode
-
-
 class ValidateRoadNodeException(Exception):
     pass
 

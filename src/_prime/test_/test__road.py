@@ -29,7 +29,6 @@ from src._prime.road import (
     is_heir_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
-    get_single_roadnode,
     validate_roadnode,
     is_roadunit_convertible_to_path,
 )
@@ -634,31 +633,6 @@ def test_AgendaRoad_Exists():
         == """RodeUnit with nodes seperated by Agenda._road_delimiter that
 starts with WorldID"""
     )
-
-
-def test_get_single_roadnode_ReturnsCorrectObj():
-    # GIVEN
-    bob_text = "Bob"
-    yao_text = "Yao"
-    food_text = "food"
-    ohio_text = "Ohio"
-    bob_road = create_road_from_nodes([bob_text, food_text, yao_text, ohio_text])
-
-    # WHEN / THEN
-    person_id_text = "PersonID"
-    problem_id_text = "ProblemID"
-    healer_id_text = "HealerID"
-    market_id_text = "MarketID"
-    personroad_text = "PersonRoad"
-
-    assert get_single_roadnode(personroad_text, bob_text, problem_id_text) is None
-    assert get_single_roadnode(personroad_text, bob_text, healer_id_text) is None
-    assert get_single_roadnode(personroad_text, bob_text, market_id_text) is None
-
-    assert get_single_roadnode(personroad_text, bob_road, person_id_text) == bob_text
-    assert get_single_roadnode(personroad_text, bob_road, problem_id_text) == food_text
-    assert get_single_roadnode(personroad_text, bob_road, healer_id_text) == yao_text
-    assert get_single_roadnode(personroad_text, bob_road, market_id_text) == ohio_text
 
 
 def test_validate_roadnode_RaisesErrorWhenNotRoadNode():

@@ -38,9 +38,6 @@ def test_PersonUnit_exists():
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
-    assert x_person._markets is None
-    assert x_person._market_metrics is None
-    assert x_person._problems is None
     assert x_person._road_delimiter is None
 
 
@@ -107,8 +104,6 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person._gut_file_name == "gut.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._markets == {}
-    assert sue_person._problems == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -130,8 +125,6 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters()
     assert sue_person._gut_file_name == "gut.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._markets == {}
-    assert sue_person._problems == {}
     assert sue_person._road_delimiter == slash_text
 
 
@@ -311,40 +304,40 @@ def test_PersonUnit_create_market_dir_CreatesDir(worlds_dir_setup_cleanup):
     assert os_path_exists(dallas_dir) == False
 
     # WHEN
-    sue_person._create_market_dir(dallas_list)
+    sue_person._create_market_dir(dallas_text)
 
     # THEN
     print(f"{dallas_dir=}")
     assert os_path_exists(dallas_dir)
 
 
-# def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
-#     worlds_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     sue_text = "Sue"
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-#     sue_person = personunit_shop(person_id=sue_text)
-#     assert sue_person.gut_file_exists() == False
+def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.gut_file_exists() == False
 
-#     # WHEN
-#     sue_agenda = agendaunit_shop(sue_text)
-#     bob_text = "Bob"
-#     sue_agenda.add_partyunit(bob_text)
-#     sue_person.create_gut_file_if_does_not_exist()
+    # WHEN
+    sue_agenda = agendaunit_shop(sue_text)
+    bob_text = "Bob"
+    sue_agenda.add_partyunit(bob_text)
+    sue_person.create_gut_file_if_does_not_exist()
 
-#     # THEN
-#     assert sue_person.gut_file_exists()
+    # THEN
+    assert sue_person.gut_file_exists()
 
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-#     sue_persons_dir = f"{sue_world_dir}/persons"
-#     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-#     sue_gut_file_name = "gut.json"
-#     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
-#     print(f"{gut_file_text=}")
-#     gut_agenda = agenda_get_from_json(gut_file_text)
-#     assert gut_agenda._world_id == get_test_world_id()
-#     assert gut_agenda._agent_id == sue_text
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_person_dir = f"{sue_persons_dir}/{sue_text}"
+    sue_gut_file_name = "gut.json"
+    gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
+    print(f"{gut_file_text=}")
+    gut_agenda = agenda_get_from_json(gut_file_text)
+    assert gut_agenda._world_id == get_test_world_id()
+    assert gut_agenda._agent_id == sue_text
 
 
 # def test_personunit_shop_CreatesPersonAgenda_gut_IfItDoesNotExist(

@@ -1,4 +1,3 @@
-from src._prime.road import get_single_roadnode
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
@@ -71,7 +70,7 @@ def test_LearnUnit_create_grainunits_CorrectHandlesEmptyAgendas():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     rico_text = "Rico"
@@ -106,7 +105,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_insert():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     before_sue_agenda.add_partyunit("Yao")
     before_sue_agenda.add_partyunit("Zia")
@@ -134,7 +133,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_delete():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     rico_text = "Rico"
@@ -168,7 +167,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_partyunit_update():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_AgendaUnit_weight_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     x_agendaUnit_weight = 55
@@ -221,7 +220,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_AgendaUnit_weight_update
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     rico_text = "Rico"
@@ -269,7 +268,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -323,7 +322,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -376,7 +375,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_delete()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -416,7 +415,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_delete():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -479,7 +478,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_insert():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -538,7 +537,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_update():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -591,7 +590,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_delete(
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -655,7 +654,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_insert(
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -703,7 +702,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_balancelink_update(
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -758,7 +757,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_update()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -804,7 +803,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_insert()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -849,7 +848,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_beliefunit_delete()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -908,7 +907,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -968,7 +967,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -1038,7 +1037,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reason_premiseunit_
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -1083,7 +1082,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_insert()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_update():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -1135,7 +1134,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_update()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -1180,7 +1179,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_reasonunit_delete()
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_suffgroup_insert():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_agendaunit.add_partyunit(rico_text)
@@ -1215,7 +1214,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_suffgroup_insert():
 def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_idea_suffgroup_delete():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_agendaunit.add_partyunit(rico_text)

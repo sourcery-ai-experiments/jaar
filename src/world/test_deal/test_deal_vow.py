@@ -9,7 +9,7 @@ from pytest import raises as pytest_raises
 
 def test_DealUnit_set_vowunit_SetsAttrCorrectly():
     # GIVEN
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     assert farm_dealunit._vowunits == {}
 
     # WHEN
@@ -29,7 +29,7 @@ def test_DealUnit_set_vowunit_SetsAttrCorrectly():
 
 def test_DealUnit_get_vowunit_ReturnsCorrectObj():
     # GIVEN
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     one_text = "1"
     farm_dealunit.set_vowunit(vowunit_shop(one_text))
 
@@ -39,7 +39,7 @@ def test_DealUnit_get_vowunit_ReturnsCorrectObj():
 
 def test_DealUnit_vowunit_exists_ReturnsCorrectObj():
     # GIVEN
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     one_text = "1"
     assert farm_dealunit.vowunit_exists(one_text) == False
 
@@ -52,7 +52,7 @@ def test_DealUnit_vowunit_exists_ReturnsCorrectObj():
 
 def test_DealUnit_del_vowunit_CorrectlySetsAttr():
     # GIVEN
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     one_text = "1"
     farm_dealunit.set_vowunit(vowunit_shop(one_text))
     assert farm_dealunit.vowunit_exists(one_text)
@@ -66,7 +66,7 @@ def test_DealUnit_del_vowunit_CorrectlySetsAttr():
 
 def test_DealUnit_add_vowunit_SetsAttrCorrectly():
     # GIVEN
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author="Bob", _reader="Tim")
     assert farm_dealunit._vowunits == {}
 
     # WHEN
@@ -104,7 +104,7 @@ def test_DealUnit_add_vowunit_SetsAttrCorrectly():
 def test_DealUnit_edit_vowunit_attr_CorrectlySetsAttribute():
     # GIVEN
     tim_text = "Tim"
-    farm_dealunit = dealunit_shop(_author_road="Bob", _reader_road=tim_text)
+    farm_dealunit = dealunit_shop(_author="Bob", _reader=tim_text)
     x_uid = 7
     x_author_weight = 3
     x_reader_weight = 3
@@ -138,7 +138,7 @@ def test_DealUnit_edit_vowunit_attr_CorrectlySetsAttribute():
 def test_DealUnit_set_actor_vowunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
     eight_vowunit = get_cooking_vowunit()
     farm_dealunit.set_vowunit(eight_vowunit)
 
@@ -155,7 +155,7 @@ def test_DealUnit_set_actor_vowunit_CorrectlySetsAttr():
 def test_DealUnit_del_actor_vowunit_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
     eight_vowunit = get_cooking_vowunit()
     farm_dealunit.set_vowunit(eight_vowunit)
     cooking_vowunit = farm_dealunit.get_vowunit(eight_vowunit.uid)
@@ -172,7 +172,7 @@ def test_DealUnit_del_actor_vowunit_CorrectlySetsAttr():
 def test_DealUnit_get_actor_vowunits_ReturnsCorrectObjs():
     # GIVEN
     bob_text = "Bob"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road="Tim")
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader="Tim")
     eight_vowunit = get_cooking_vowunit()
     farm_dealunit.set_vowunit(eight_vowunit)
     assert farm_dealunit.get_actor_vowunits(eight_vowunit.uid) == {}
@@ -193,7 +193,7 @@ def test_DealUnit_get_actor_vowunits_ReturnsCorrectActionTopics():
     # GIVEN
     bob_text = "Bob"
     yao_text = "Yao"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road=yao_text)
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
     assert farm_dealunit.actor_has_vowunit(bob_text, action_filter=True) == False
     assert farm_dealunit.actor_has_vowunit(yao_text, action_filter=True) == False
 
@@ -211,7 +211,7 @@ def test_DealUnit_set_deal_metrics_CorrectlySetsVow_relative_deal_weight():
     # GIVEN
     bob_text = "Bob"
     yao_text = "Yao"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road=yao_text)
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
     s1_vowunit = farm_dealunit.add_vowunit()
     s1_vowunit.set_actor(bob_text)
     s1_vowunit.edit_attr(author_weight=4, reader_weight=1)
@@ -237,7 +237,7 @@ def test_DealUnit_set_deal_metrics_RaisesErrorWhen_author_weight_IsZero():
     # GIVEN
     bob_text = "Bob"
     yao_text = "Yao"
-    farm_dealunit = dealunit_shop(_author_road=bob_text, _reader_road=yao_text)
+    farm_dealunit = dealunit_shop(_author=bob_text, _reader=yao_text)
     s1_vowunit = farm_dealunit.add_vowunit()
     s1_vowunit.set_actor(bob_text)
     s1_vowunit.edit_attr(author_weight=0, reader_weight=1)

@@ -1,4 +1,3 @@
-from src._prime.road import get_single_roadnode
 from src._prime.meld import get_meld_default
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
@@ -26,7 +25,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_SimplestScenario():
     sue_learnunit = learnunit_shop(sue_road)
 
     # WHEN
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     sue_weight = 55
     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
     after_sue_agendaunit = sue_learnunit.get_after_agenda(before_sue_agendaunit)
@@ -40,7 +39,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # GIVEN
     sue_road = get_sue_road()
     sue_learnunit = learnunit_shop(sue_road)
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
 
     sue_weight = 44
     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
@@ -81,7 +80,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     # GIVEN
     sue_road = get_sue_road()
     sue_learnunit = learnunit_shop(sue_road)
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
@@ -109,7 +108,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     # GIVEN
     sue_road = get_sue_road()
     sue_learnunit = learnunit_shop(sue_road)
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
@@ -144,7 +143,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
     # GIVEN
     sue_road = get_sue_road()
     sue_learnunit = learnunit_shop(sue_road)
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
@@ -170,7 +169,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -218,7 +217,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylin
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -256,7 +255,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylin
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_agendaunit.add_partyunit(rico_text)
@@ -295,7 +294,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_partylin
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     fly_text = ",flyers"
@@ -321,7 +320,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupuni
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
@@ -347,7 +346,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupuni
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
@@ -365,15 +364,14 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupuni
 
     # THEN
     assert (
-        after_sue_agendaunit.get_groupunit(run_text)._bank_partylinks
-        == yao_roadunit()
+        after_sue_agendaunit.get_groupunit(run_text)._bank_partylinks == yao_roadunit()
     )
 
 
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     fly_text = ",flyers"
@@ -399,7 +397,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupuni
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -429,7 +427,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -476,7 +474,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit_SimpleAttributes():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
@@ -524,7 +522,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -577,7 +575,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_bal
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_balancelink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -622,7 +620,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bal
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_balancelink():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
@@ -663,7 +661,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_bal
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_beliefunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -708,7 +706,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_bel
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_beliefunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -747,7 +745,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_bel
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_beliefunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -800,7 +798,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bel
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -859,7 +857,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -916,7 +914,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reason_premiseunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -965,7 +963,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1005,7 +1003,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1055,7 +1053,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1092,7 +1090,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_rea
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suffgroup():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_au.add_partyunit(rico_text)
@@ -1123,7 +1121,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suf
 def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suffgroup():
     # GIVEN
     sue_road = get_sue_road()
-    sue_text = get_single_roadnode("PersonRoad", sue_road, "PersonID")
+    sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_au.add_partyunit(rico_text)
@@ -1155,7 +1153,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suf
 
 def test_LearnUnit_get_sue_learnunit_example1_ContainsGrainUnits():
     # GIVEN
-    sue_text = get_single_roadnode("PersonRoad", get_sue_road(), "PersonID")
+    sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"

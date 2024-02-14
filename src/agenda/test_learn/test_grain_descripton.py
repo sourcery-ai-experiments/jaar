@@ -1,4 +1,4 @@
-from src._prime.road import get_single_roadnode, create_road
+from src._prime.road import create_road
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.group import groupunit_shop
@@ -683,7 +683,7 @@ def test_GrainUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
 # def test_LearnUnit_get_sue_learnunit_example1_ContainsGrainUnits():
 #     # GIVEN
-#     sue_text = get_single_roadnode("PersonRoad", get_sue_road(), "PersonID")
+#     sue_text = "Sue"
 
 #     rico_text = "Rico"
 #     carm_text = "Carmen"
