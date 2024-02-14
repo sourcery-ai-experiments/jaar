@@ -1,7 +1,7 @@
 # from lw.agenda import AgendaUnit
 from src.agenda.agenda import agendaunit_shop
 from src.instrument.file import (
-    single_dir_create_if_null,
+    set_dir,
     delete_dir,
     copy_dir,
     save_file,
@@ -74,7 +74,7 @@ def _delete_and_set_ex3():
     market_id = "ex3"
     x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
     delete_dir(x_market.get_object_root_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.save_forum_agenda(example_get_1node_agenda())
     x_market.save_forum_agenda(
         example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
@@ -130,7 +130,7 @@ def _delete_and_set_ex4():
     x_market_id = "ex4"
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
     delete_dir(x_market.get_object_root_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
     x_market.save_forum_agenda(example_agendas_get_agenda_with7amCleanTableReason())
     x_market.save_forum_agenda(example_agendas_get_agenda_base_time_example())
@@ -141,7 +141,7 @@ def _delete_and_set_ex5():
     x_market_id = "ex5"
     x_p = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
     delete_dir(x_p.get_object_root_dir())
-    x_p.create_dirs_if_null(in_memory_bank=True)
+    x_p.set_market_dirs(in_memory_bank=True)
 
     # ethical code ernie
     # ethical code steve
@@ -204,7 +204,7 @@ def _delete_and_set_ex6(x_market_id: str = None):
         x_market_id = "ex6"
     x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
     delete_dir(x_market.get_object_root_dir())
-    x_market.create_dirs_if_null(in_memory_bank=False)
+    x_market.set_market_dirs(in_memory_bank=False)
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -244,7 +244,7 @@ def _delete_and_set_ex6(x_market_id: str = None):
 
 def create_example_market(market_id: str):
     x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
 
 def delete_dir_example_market(market_obj: MarketUnit):

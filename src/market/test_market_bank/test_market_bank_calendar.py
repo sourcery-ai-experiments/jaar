@@ -129,7 +129,7 @@ def test_market_bank_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     # GIVEN
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
     assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0
@@ -189,7 +189,7 @@ def test_market_bank_insert_intent_into_bank_RaisesBaseDoesNotExistError():
     # A agenda that has 1 intent item
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
@@ -215,7 +215,7 @@ def test_market_bank_insert_intent_into_bank_CorrectlyPopulatesBank():
     # GIVEN
     # A agenda that has 1 intent item
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
     assert get_single_result(x_market.get_bank_conn(), calendar_count_sqlstr) == 0

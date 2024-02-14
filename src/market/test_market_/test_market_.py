@@ -123,7 +123,7 @@ def test_MarketUnit_set_road_delimiter_CorrectSetsAttribute(
     assert x_market._road_delimiter == slash_text
 
 
-def test_MarketUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup):
+def test_MarketUnit_set_market_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create market
     x_market_id = get_temp_env_market_id()
     x_market = MarketUnit(x_market_id, markets_dir=get_test_markets_dir())
@@ -147,7 +147,7 @@ def test_MarketUnit_create_dirs_if_null_CreatesDirAndFiles(env_dir_setup_cleanup
     assert os_path.exists(bank_file_path) is False
 
     # WHEN
-    x_market.create_dirs_if_null(in_memory_bank=False)
+    x_market.set_market_dirs(in_memory_bank=False)
 
     # THEN check agendas src directory created
     assert os_path.exists(market_dir)
@@ -190,7 +190,7 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     # delete_dir(x_market.get_object_root_dir())
     # print(f"{x_market.get_object_root_dir()=}")
 
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     assert os_path.exists(old_market_dir)
     assert os_path.isdir(old_market_dir)
@@ -248,7 +248,7 @@ def test_copy_evaluation_market_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     old_clerkunits_dir = f"{old_market_dir}/clerkunits"
 
     x_market = marketunit_shop(old_x_market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null()
+    x_market.set_market_dirs()
 
     assert os_path.exists(old_market_dir)
     assert os_path.isdir(old_market_dir)
@@ -307,7 +307,7 @@ def test_copy_evaluation_market_CorrectlyRaisesError(env_dir_setup_cleanup):
     # GIVEN create market
     old_x_market_id = get_temp_env_market_id()
     x_market = marketunit_shop(old_x_market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null()
+    x_market.set_market_dirs()
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:

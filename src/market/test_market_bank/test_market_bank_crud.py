@@ -12,7 +12,7 @@ def test_market_bank_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_cleanu
     # GIVEN
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
 
     # WHEN
@@ -26,7 +26,7 @@ def test_market_bank_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup
     # GIVEN
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     assert len(get_agendabankunits_dict(x_market.get_bank_conn())) == 0
 
@@ -74,7 +74,7 @@ def test_market_bank_bank_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     # GIVEN
     market_id = get_temp_env_market_id()
     x_market = marketunit_shop(market_id, get_test_markets_dir())
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     sal_text = "Sal"
     bob_text = "Bob"

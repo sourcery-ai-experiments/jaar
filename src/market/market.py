@@ -17,7 +17,7 @@ from src.agenda.agenda import (
     partylink_shop,
 )
 from src.instrument.file import (
-    single_dir_create_if_null,
+    set_dir,
     delete_dir,
     save_file,
     open_file,
@@ -353,13 +353,13 @@ class MarketUnit:
             file_text="",
         )
 
-    def create_dirs_if_null(self, in_memory_bank: bool = None):
+    def set_market_dirs(self, in_memory_bank: bool = None):
         market_dir = self.get_object_root_dir()
         agendas_dir = self.get_forum_dir()
         clerkunits_dir = self.get_clerkunits_dir()
-        single_dir_create_if_null(x_path=market_dir)
-        single_dir_create_if_null(x_path=agendas_dir)
-        single_dir_create_if_null(x_path=clerkunits_dir)
+        set_dir(x_path=market_dir)
+        set_dir(x_path=agendas_dir)
+        set_dir(x_path=clerkunits_dir)
         self._create_main_file_if_null(x_dir=market_dir)
         self._create_bank_db(in_memory=in_memory_bank, overwrite=True)
 
@@ -632,7 +632,7 @@ def marketunit_shop(
     market_x.set_road_delimiter(_road_delimiter)
     market_x.set_market_id(market_id=market_id)
     market_x._manager_person_id = _manager_person_id
-    market_x.create_dirs_if_null(in_memory_bank=in_memory_bank)
+    market_x.set_market_dirs(in_memory_bank=in_memory_bank)
     return market_x
 
 

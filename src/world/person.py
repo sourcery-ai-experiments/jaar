@@ -19,7 +19,7 @@ from src.market.market import MarketUnit
 from src.instrument.file import (
     save_file,
     open_file,
-    single_dir_create_if_null,
+    set_dir,
     get_directory_path,
 )
 from dataclasses import dataclass
@@ -45,15 +45,6 @@ class PersonUnit:
     _gut_path: str = None
     _markets_dir: str = None
     _road_delimiter: str = None
-
-    def healer_exists(self, healer_id: HealerID) -> bool:
-        return any(
-            x_problemunit.healer_exists(healer_id)
-            for x_problemunit in self._problems.values()
-        )
-
-    def problem_exists(self, problem_id: ProblemID) -> bool:
-        return self._problems.get(problem_id) != None
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
@@ -83,10 +74,10 @@ class PersonUnit:
             )
 
     def create_core_dir_and_files(self):
-        single_dir_create_if_null(self.world_dir)
-        single_dir_create_if_null(self.persons_dir)
-        single_dir_create_if_null(self.person_dir)
-        single_dir_create_if_null(self._markets_dir)
+        set_dir(self.world_dir)
+        set_dir(self.persons_dir)
+        set_dir(self.person_dir)
+        set_dir(self._markets_dir)
         self.create_gut_file_if_does_not_exist()
 
     def create_gut_file_if_does_not_exist(self):
@@ -109,8 +100,7 @@ class PersonUnit:
     def _create_market_dir(self, x_roadunit: RoadUnit) -> str:
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
         x_market_path = self._get_market_path(road_nodes)
-        print(f"{x_market_path=}")
-        single_dir_create_if_null(x_market_path)
+        set_dir(x_market_path)
 
     # def popup_visualization(
     #     self, marketlink_by_problem: bool = False, show_fig: bool = True
@@ -173,12 +163,10 @@ def personunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)
-    # if os_path_exists(x_personunit._gut_path) == False:
     return x_personunit
 
 
 def get_from_json(x_person_json: str) -> PersonUnit:
-    # return get_from_dict(x_get_dict(x_person_json))
     return None
 
 

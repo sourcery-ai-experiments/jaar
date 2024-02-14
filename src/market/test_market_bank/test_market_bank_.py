@@ -67,7 +67,7 @@ def test_market_get_bank_db_conn_CreatesBankDBIfItDoesNotExist(
     assert str(excinfo.value) == "unable to open database file"
 
     # WHEN
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     # THEN
     assert check_connection(x_market.get_bank_conn())

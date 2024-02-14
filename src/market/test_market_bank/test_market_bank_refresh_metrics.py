@@ -42,7 +42,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankInMemory(
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -68,7 +68,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankFile(
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=False)
+    x_market.set_market_dirs(in_memory_bank=False)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -94,7 +94,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesPartyunitTable
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -144,7 +144,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -173,7 +173,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -202,7 +202,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulates_agenda_groupu
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -232,7 +232,7 @@ def test_market_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_partylinks(
     x_market = marketunit_shop(
         market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
     )
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
     # two others have idea create_road(root_label()},sports,swimming"

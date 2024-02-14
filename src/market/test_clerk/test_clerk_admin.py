@@ -37,7 +37,7 @@ def test_ClerkUnit_exists():
     assert bob_clerkadmin._agendas_digest_dir is None
 
 
-def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
+def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_clerkunit_dir()
@@ -53,7 +53,7 @@ def test_ClerkUnit_set_dir_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._contract_file_name is None
     assert bob_clerkadmin._contract_file_path is None
     # WHEN
-    bob_clerkadmin.set_dirs()
+    bob_clerkadmin.set_clerkunit_dirs()
 
     # THEN
     assert bob_clerkadmin._clerkunit_dir != None
@@ -106,7 +106,7 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
         _market_id=get_temp_market_id(),
         _road_delimiter=",",
     )
-    jul_clerkunit.set_dirs()
+    jul_clerkunit.set_clerkunit_dirs()
     assert os_path_exists(jul_clerkunit._clerkunits_dir) is False
     assert os_path_exists(jul_clerkunit._clerkunit_dir) is False
     assert os_path_exists(jul_clerkunit._contract_file_path) is False
@@ -138,7 +138,7 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
     jul_text = "julian"
     env_dir = get_temp_clerkunit_dir()
     jul_clerkunit = clerkunit_shop(jul_text, env_dir, get_temp_market_id())
-    jul_clerkunit.set_dirs()
+    jul_clerkunit.set_clerkunit_dirs()
     x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     assert os_path_exists(jul_clerkunit._contract_file_path)
@@ -171,7 +171,7 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     old_bob_text = "Bob"
     jul_clerkunit = clerkunit_shop(old_bob_text, env_dir, get_temp_market_id())
     x_agenda = example_get_7nodeJRootWithH_agenda()
-    jul_clerkunit.set_dirs()
+    jul_clerkunit.set_clerkunit_dirs()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     old_clerkunit_dir = jul_clerkunit._clerkunit_dir
     # old_clerkunit_dir = f"{env_dir}/clerkunits/{old_healer_text}"

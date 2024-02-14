@@ -30,12 +30,12 @@ def check_table_column_existence(tables_dict: dict, x_market: MarketUnit) -> boo
     return True
 
 
-def test_market_create_dirs_if_null_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
+def test_market_set_market_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create market
     x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
 
     # WHEN
-    x_market.create_dirs_if_null(in_memory_bank=True)
+    x_market.set_market_dirs(in_memory_bank=True)
 
     # THEN
     # grab config.json

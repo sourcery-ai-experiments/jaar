@@ -8,7 +8,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.instrument.file import (
-    single_dir_create_if_null,
+    set_dir,
     save_file,
     open_file,
     delete_dir,
@@ -163,7 +163,7 @@ class ClerkUnit:
         self._market_id = market_id
         self._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
 
-    def set_dirs(self):
+    def set_clerkunit_dirs(self):
         env_clerkunits_folder = "clerkunits"
         self._clerkunits_dir = f"{self._env_dir}/{env_clerkunits_folder}"
         self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_id}"
@@ -184,16 +184,16 @@ class ClerkUnit:
     def set_clerk_id(self, new_cid: ClerkID):
         old_clerkunit_dir = self._clerkunit_dir
         self._clerk_id = new_cid
-        self.set_dirs()
+        self.set_clerkunit_dirs()
 
         x_func_rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)
 
     def create_core_dir_and_files(self, contract_agenda: AgendaUnit = None):
-        single_dir_create_if_null(x_path=self._clerkunit_dir)
-        single_dir_create_if_null(x_path=self._forum_dir)
-        single_dir_create_if_null(x_path=self._agendas_depot_dir)
-        single_dir_create_if_null(x_path=self._agendas_digest_dir)
-        single_dir_create_if_null(x_path=self._agendas_ignore_dir)
+        set_dir(x_path=self._clerkunit_dir)
+        set_dir(x_path=self._forum_dir)
+        set_dir(x_path=self._agendas_depot_dir)
+        set_dir(x_path=self._agendas_digest_dir)
+        set_dir(x_path=self._agendas_ignore_dir)
 
         if contract_agenda is None and self._contract_agenda_exists() == False:
             self.save_contract_agenda(self._get_empty_contract_agenda())
@@ -349,7 +349,7 @@ def clerkunit_shop(
         market_id=market_id,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
-    x_clerk.set_dirs()
+    x_clerk.set_clerkunit_dirs()
     x_clerk.get_contract()
     x_clerk._contract._set_auto_output_to_forum(_auto_output_to_forum)
     x_clerk.get_contract()

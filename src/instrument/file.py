@@ -26,7 +26,7 @@ from errno import ENAMETOOLONG as errno_ENAMETOOLONG, ERANGE as errno_ERANGE
 from tempfile import TemporaryFile as tempfile_TemporaryFile
 
 
-def single_dir_create_if_null(x_path: str):
+def set_dir(x_path: str):
     if not os_path_exists(x_path):
         os_makedirs(x_path)
 

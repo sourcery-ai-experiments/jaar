@@ -118,7 +118,7 @@ def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
         market_id=get_temp_market_id(),
         _road_delimiter=default_road_delimiter_if_none(slash_text),
     )
-    tim_clerk.set_dirs()
+    tim_clerk.set_clerkunit_dirs()
     tim_clerk.create_core_dir_and_files()
     assert os_path.exists(tim_clerk._contract_file_path)
     delete_dir(dir=tim_clerk._contract_file_path)

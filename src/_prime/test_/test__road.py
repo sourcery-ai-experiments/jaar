@@ -700,7 +700,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiter
     # GIVEN
     question_text = "?"
     sport_text = "sport"
-    run_text = "run/jump"
+    run_text = "run/swim"
     lap_text = "lap"
     sport_road = create_road(sport_text, delimiter=question_text)
     run_road = create_road(sport_road, run_text, delimiter=question_text)
