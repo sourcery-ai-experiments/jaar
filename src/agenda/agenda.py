@@ -1,42 +1,3 @@
-from dataclasses import dataclass
-from datetime import datetime
-from src.agenda.healer import HealerHold
-from src.agenda.party import (
-    PartyUnit,
-    PartyLink,
-    partyunits_get_from_dict,
-    partyunit_shop,
-    partylink_shop,
-    PartyUnitExternalMetrics,
-)
-from src.agenda.group import (
-    BalanceLink,
-    GroupID,
-    GroupUnit,
-    get_from_dict as groupunits_get_from_dict,
-    groupunit_shop,
-    balancelink_shop,
-)
-from src.agenda.reason_idea import (
-    BeliefCore,
-    BeliefUnit,
-    BeliefUnit,
-    ReasonUnit,
-    RoadUnit,
-    beliefunit_shop,
-)
-from src.agenda.reason_assign import AssignedUnit
-from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
-from src.agenda.idea import (
-    IdeaUnit,
-    ideaunit_shop,
-    ideaattrfilter_shop,
-    IdeaAttrFilter,
-    get_obj_from_idea_dict,
-    MarketID,
-)
-from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
-from src.agenda.lemma import lemmas_shop, Lemmas
 from src._prime.road import (
     get_parent_road_from_road,
     is_sub_road,
@@ -57,7 +18,51 @@ from src._prime.road import (
     AgentID,
     PartyID,
     HealerID,
+    is_roadunit_convertible_to_path,
 )
+from src._prime.meld import (
+    get_meld_weight,
+    MeldStrategy,
+    get_meld_default,
+    validate_meld_strategy,
+)
+from src.agenda.party import (
+    PartyUnit,
+    PartyLink,
+    partyunits_get_from_dict,
+    partyunit_shop,
+    partylink_shop,
+    PartyUnitExternalMetrics,
+)
+from src.agenda.group import (
+    BalanceLink,
+    GroupID,
+    GroupUnit,
+    get_from_dict as groupunits_get_from_dict,
+    groupunit_shop,
+    balancelink_shop,
+)
+from src.agenda.healer import HealerHold
+from src.agenda.reason_idea import (
+    BeliefCore,
+    BeliefUnit,
+    BeliefUnit,
+    ReasonUnit,
+    RoadUnit,
+    beliefunit_shop,
+)
+from src.agenda.reason_assign import AssignedUnit
+from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
+from src.agenda.idea import (
+    IdeaUnit,
+    ideaunit_shop,
+    ideaattrfilter_shop,
+    IdeaAttrFilter,
+    get_obj_from_idea_dict,
+    MarketID,
+)
+from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
+from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.instrument.python import (
     x_get_json,
@@ -67,14 +72,10 @@ from src.instrument.python import (
     get_False_if_None,
     get_empty_dict_if_none,
 )
-from src._prime.meld import (
-    get_meld_weight,
-    MeldStrategy,
-    get_meld_default,
-    validate_meld_strategy,
-)
-from copy import deepcopy as copy_deepcopy
 from src.instrument.file import dir_files, open_file
+from copy import deepcopy as copy_deepcopy
+from dataclasses import dataclass
+from datetime import datetime
 
 
 class InvalidAgendaException(Exception):
@@ -101,7 +102,7 @@ class PartyMissingException(Exception):
     pass
 
 
-class Exception_market_justified(Exception):
+class Exception_markets_justified(Exception):
     pass
 
 
@@ -126,7 +127,8 @@ class AgendaUnit:
     _healer_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
-    _market_justified: bool = None
+    _markets_justified: bool = None
+    _markets_buildable: bool = None
     _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
 
@@ -896,9 +898,9 @@ class AgendaUnit:
         self.set_agenda_metrics()
         if not problem:
             return self._idea_dict
-        if self._market_justified == False:
-            raise Exception_market_justified(
-                f"Cannot return problem set because _market_justified={self._market_justified}."
+        if self._markets_justified == False:
+            raise Exception_markets_justified(
+                f"Cannot return problem set because _markets_justified={self._markets_justified}."
             )
 
         return {
@@ -1644,7 +1646,7 @@ class AgendaUnit:
                 market_justified_by_problem = True
 
         if market_justified_by_problem == False or healerhold_count > 1:
-            self._market_justified = False
+            self._markets_justified = False
 
     def _set_root_attributes(self):
         x_idearoot = self._idearoot
@@ -1730,8 +1732,11 @@ class AgendaUnit:
         self._idea_dict = {self._idearoot.get_road(): self._idearoot}
 
     def _clear_agenda_base_metrics(self):
-        self._market_justified = True
+        self._markets_justified = True
+        self._markets_buildable = False
         self._sum_healerhold_importance = 0
+        self._market_dict = {}
+        self._healer_dict = {}
 
     def set_agenda_metrics(self):
         self._set_tree_traverse_starting_point()
@@ -1798,8 +1803,9 @@ class AgendaUnit:
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
+        # populate _healer_dict
         self._market_dict = {}
-        if self._market_justified == False:
+        if self._markets_justified == False:
             self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
             if self._sum_healerhold_importance == 0:
@@ -1808,15 +1814,26 @@ class AgendaUnit:
                 x_idea._healerhold_importance = (
                     x_idea._agenda_importance / self._sum_healerhold_importance
                 )
-            if self._market_justified and x_idea._healerhold.any_group_id_exists():
+            if self._markets_justified and x_idea._healerhold.any_group_id_exists():
                 self._market_dict[x_idea.get_road()] = x_idea
 
+        # populate _healer_dict
         self._healer_dict = {}
         for x_market_road, x_market_idea in self._market_dict.items():
             for x_group_id in x_market_idea._healerhold._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
                     self._healer_dict[x_party_id] = {x_market_road: x_market_idea}
+
+        # set markets_buildable
+        self._markets_buildable = self.get_markets_buildable()
+
+    def get_markets_buildable(self):
+        return all(
+            is_roadunit_convertible_to_path(market_road, delimiter=self._road_delimiter)
+            != False
+            for market_road in self._market_dict.keys()
+        )
 
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
@@ -2179,7 +2196,8 @@ def agendaunit_shop(
         _healer_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
-        _market_justified=get_False_if_None(),
+        _markets_justified=get_False_if_None(),
+        _markets_buildable=get_False_if_None(),
         _sum_healerhold_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(

@@ -42,18 +42,27 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     sue_agenda = agendaunit_shop("Sue")
     x_market_justifed = False
     x_sum_healerhold_importance = 140
-    sue_agenda._market_justified = x_market_justifed
+    sue_agenda._markets_justified = x_market_justifed
+    sue_agenda._markets_buildable = "swimmers"
     sue_agenda._sum_healerhold_importance = x_sum_healerhold_importance
-    assert sue_agenda._market_justified == x_market_justifed
+    sue_agenda._market_dict = {"run": "run"}
+    sue_agenda._healer_dict = {"run": "run"}
+    assert sue_agenda._markets_justified == x_market_justifed
+    assert sue_agenda._markets_buildable != False
     assert sue_agenda._sum_healerhold_importance == x_sum_healerhold_importance
+    assert sue_agenda._market_dict != {}
+    assert sue_agenda._healer_dict != {}
 
     # WHEN
     sue_agenda._clear_agenda_base_metrics()
 
     # THEN
-    assert sue_agenda._market_justified != x_market_justifed
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified != x_market_justifed
+    assert sue_agenda._markets_justified
+    assert sue_agenda._markets_buildable == False
     assert sue_agenda._sum_healerhold_importance == 0
+    assert not sue_agenda._market_dict
+    assert not sue_agenda._healer_dict
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
@@ -598,44 +607,44 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     assert sue_agenda.idea_exists(japan_road) == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenAgendaUnitEmpty():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenAgendaUnitEmpty():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenThereAreNotAny():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenThereAreNotAny():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleIdeaUnit_healerhold_any_group_id_exists_IsTrue():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenSingleIdeaUnit_healerhold_any_group_id_exists_IsTrue():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.add_l1_idea(ideaunit_shop("Texas", _healerhold=healerhold_shop({"Yao"})))
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleProblemAndMarket():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenSingleProblemAndMarket():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -644,16 +653,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingle
     sue_agenda.add_l1_idea(
         ideaunit_shop("Texas", _healerhold=yao_healerhold, _problem_bool=True)
     )
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarketIsLevelAboveProblem():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenMarketIsLevelAboveProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -665,16 +674,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarket
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     ep_text = "El Paso"
     sue_agenda.add_idea(ideaunit_shop(ep_text, _healerhold=yao_healerhold), texas_road)
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarketIsLevelBelowProblem():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenMarketIsLevelBelowProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
@@ -682,16 +691,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarket
     yao_healerhold = healerhold_shop({"Yao"})
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _healerhold=yao_healerhold))
     sue_agenda.add_idea(ideaunit_shop("El Paso", _problem_bool=True), texas_road)
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMarketsAreOneTheSameLine():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenTwoMarketsAreOneTheSameLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_healerhold = healerhold_shop({"Yao"})
@@ -705,16 +714,16 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenTwoMar
         "El Paso", _healerhold=yao_healerhold, _problem_bool=True
     )
     sue_agenda.add_idea(elpaso_idea, texas_road)
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
 
-def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_market_justified_IsFalse():
+def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_markets_justified_IsFalse():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_healerhold = healerhold_shop({"Yao"})
@@ -729,14 +738,14 @@ def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_market_justified_IsFalse():
     )
     sue_agenda.add_idea(elpaso_idea, texas_road)
     sue_agenda.set_agenda_metrics()
-    assert sue_agenda._market_justified == False
+    assert sue_agenda._markets_justified == False
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         sue_agenda.get_idea_dict(problem=True)
     assert (
         str(excinfo.value)
-        == f"Cannot return problem set because _market_justified={sue_agenda._market_justified}."
+        == f"Cannot return problem set because _markets_justified={sue_agenda._markets_justified}."
     )
 
 
@@ -752,7 +761,7 @@ def test_AgendaUnit_get_idea_dict_ReturnsCorrectObjWhenSingle():
     problems_dict = sue_agenda.get_idea_dict(problem=True)
 
     # THEN
-    assert sue_agenda._market_justified
+    assert sue_agenda._markets_justified
     texas_road = sue_agenda.make_l1_road(texas_text)
     texas_idea = sue_agenda.get_idea_obj(texas_road)
     assert len(problems_dict) == 1
