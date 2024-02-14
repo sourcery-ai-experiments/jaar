@@ -16,21 +16,14 @@ from src.agenda.examples.example_agendas import (
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.market.market import (
-    MarketUnit,
-    marketunit_shop,
-    get_temp_env_market_id,
-    get_temp_env_healer_id,
-    get_temp_env_person_id,
-    get_temp_env_problem_id,
-)
+from src.market.market import MarketUnit, marketunit_shop, get_temp_env_market_id
 from src.market.examples.example_clerks import (
     get_1node_agenda as example_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
     get_agenda_2CleanNodesRandomWeights as example_get_agenda_2CleanNodesRandomWeights,
     get_agenda_3CleanNodesRandomWeights as example_get_agenda_3CleanNodesRandomWeights,
 )
-from os import listdir as os_listdir, rename as os_rename, path as os_path
+from os import rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
@@ -79,9 +72,7 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex3():
     market_id = "ex3"
-    x_market = marketunit_shop(
-        market_id=market_id, markets_dir=get_test_markets_dir()
-    )
+    x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
     delete_dir(x_market.get_object_root_dir())
     x_market.create_dirs_if_null(in_memory_bank=True)
     x_market.save_forum_agenda(example_get_1node_agenda())
@@ -143,9 +134,7 @@ def _delete_and_set_ex4():
     x_market.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
     x_market.save_forum_agenda(example_agendas_get_agenda_with7amCleanTableReason())
     x_market.save_forum_agenda(example_agendas_get_agenda_base_time_example())
-    x_market.save_forum_agenda(
-        example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
-    )
+    x_market.save_forum_agenda(example_agendas_get_agenda_x1_3levels_1reason_1beliefs())
 
 
 def _delete_and_set_ex5():
@@ -254,9 +243,7 @@ def _delete_and_set_ex6(x_market_id: str = None):
 
 
 def create_example_market(market_id: str):
-    x_market = marketunit_shop(
-        market_id=market_id, markets_dir=get_test_markets_dir()
-    )
+    x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
     x_market.create_dirs_if_null(in_memory_bank=True)
 
 

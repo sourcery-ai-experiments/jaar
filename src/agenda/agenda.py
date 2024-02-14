@@ -56,6 +56,7 @@ from src._prime.road import (
     is_string_in_road,
     AgentID,
     PartyID,
+    HealerID,
 )
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.instrument.python import (
@@ -119,12 +120,15 @@ class AgendaUnit:
     _auto_output_to_forum: bool = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # created by ClerkUnit process
-    _idea_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
-    _market_dict: dict[RoadUnit:IdeaUnit] = None  # set_agenda_metrics Calculated field
-    _tree_traverse_count: int = None  # set_agenda_metrics Calculated field
-    _rational: bool = None  # set_agenda_metrics Calculated field
-    _market_justified: bool = None  # set_agenda_metrics Calculated field
-    _sum_healerhold_importance: bool = None  # set_agenda_metrics Calculated field
+    # set_agenda_metrics Calculated field begin
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None
+    _market_dict: dict[RoadUnit:IdeaUnit] = None
+    _healer_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
+    _tree_traverse_count: int = None
+    _rational: bool = None
+    _market_justified: bool = None
+    _sum_healerhold_importance: bool = None
+    # set_agenda_metrics Calculated field end
 
     def set_party_creditor_pool(self, x_party_creditor_pool: int):
         self._party_creditor_pool = x_party_creditor_pool
@@ -1323,6 +1327,13 @@ class AgendaUnit:
         meld_strategy: MeldStrategy = None,
         problem_bool: bool = None,
     ):
+        if healerhold != None:
+            for x_group_id in healerhold._group_ids:
+                if self._groups.get(x_group_id) is None:
+                    raise Exception(
+                        f"Idea cannot edit healerhold because group_id '{x_group_id}' does not exist as group in Agenda"
+                    )
+
         x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
             uid=uid,
@@ -1800,6 +1811,13 @@ class AgendaUnit:
             if self._market_justified and x_idea._healerhold.any_group_id_exists():
                 self._market_dict[x_idea.get_road()] = x_idea
 
+        self._healer_dict = {}
+        for x_market_road, x_market_idea in self._market_dict.items():
+            for x_group_id in x_market_idea._healerhold._group_ids:
+                x_groupunit = self.get_groupunit(x_group_id)
+                for x_party_id in x_groupunit._partys.keys():
+                    self._healer_dict[x_party_id] = {x_market_road: x_market_idea}
+
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
             raise PartyunitsCreditorDebtorSumException(
@@ -2158,6 +2176,7 @@ def agendaunit_shop(
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _market_dict=get_empty_dict_if_none(None),
+        _healer_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _market_justified=get_False_if_None(),

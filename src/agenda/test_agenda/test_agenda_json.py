@@ -134,7 +134,12 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_assignedunit():
 def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
-    run_text = "runners"
+    yao_text = "Yao"
+    tom_agenda.add_partyunit(yao_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(yao_text))
+    tom_agenda.set_groupunit(run_groupunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_group_id(x_group_id=run_text)
     tom_agenda.edit_idea_attr(road=tom_agenda._world_id, healerhold=run_healerhold)
@@ -180,7 +185,12 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     zia_agenda.set_world_id(tiger_world_id)
     override_text = "override"
     zia_agenda.set_meld_strategy(override_text)
-    run_text = "runners"
+    yao_text = "Yao"
+    zia_agenda.add_partyunit(yao_text)
+    run_text = ",runners"
+    run_groupunit = groupunit_shop(run_text)
+    run_groupunit.set_partylink(partylink_shop(yao_text))
+    zia_agenda.set_groupunit(run_groupunit)
     run_healerhold = healerhold_shop({run_text})
     zia_agenda.edit_idea_attr(road=zia_agenda._world_id, healerhold=run_healerhold)
     zia_agenda.edit_idea_attr(road=zia_agenda._world_id, problem_bool=True)
@@ -337,7 +347,6 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
         zia_agenda._world_id, balancelink=balancelink_shop(sue_text)
     )
     # add healerhold to shave ideaunit
-    run_text = "runners"
     run_healerhold = healerhold_shop({run_text})
     zia_agenda.edit_idea_attr(shave_road, healerhold=run_healerhold)
 

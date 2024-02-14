@@ -8,7 +8,7 @@ from pytest import raises as pytest_raises
 from src._prime.road import default_road_delimiter_if_none
 
 
-def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
+def test_AgendaUnit_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
     invalid_rootnode_swim_road = "swimming"
@@ -26,7 +26,7 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     )
 
 
-def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
+def test_AgendaUnit_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
     swim_road = zia_agenda.make_l1_road("swimming")
@@ -45,7 +45,7 @@ def test_agenda_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     )
 
 
-def test_agenda_add_l1_idea_CorrectlySetsAttr():
+def test_AgendaUnit_add_l1_idea_CorrectlySetsAttr():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
     work_text = "work"
@@ -59,7 +59,7 @@ def test_agenda_add_l1_idea_CorrectlySetsAttr():
     assert zia_agenda.idea_exists(work_road)
 
 
-def test_agenda_idea_kid_CanHaveKids():
+def test_AgendaUnit_IdeaUnit_kids_CanHaveKids():
     # GIVEN / WHEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -80,7 +80,7 @@ def test_agenda_idea_kid_CanHaveKids():
     assert sue_agenda.get_level_count(level=3) == 2
 
 
-def test_agenda_add_idea_CanAddKidTo_idearoot():
+def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -101,7 +101,7 @@ def test_agenda_add_idea_CanAddKidTo_idearoot():
     assert sue_agenda.get_level_count(level=1) == 5
 
 
-def test_agenda_add_idea_CanAddKidToKidIdea():
+def test_AgendaUnit_add_idea_CanAddKidToKidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -129,7 +129,7 @@ def test_agenda_add_idea_CanAddKidToKidIdea():
     assert sue_agenda.get_intent_dict()
 
 
-def test_agenda_add_idea_CanAddKidToGrandkidIdea():
+def test_AgendaUnit_add_idea_CanAddKidToGrandkidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -151,7 +151,7 @@ def test_agenda_add_idea_CanAddKidToGrandkidIdea():
     assert sue_agenda.get_level_count(level=3) == 3
 
 
-def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
+def test_AgendaUnit_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     # GIVEN
     slash_text = "/"
     assert slash_text != default_road_delimiter_if_none()
@@ -181,7 +181,7 @@ def test_agenda_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
     assert work_idea._reasonunits.get(week_road) != None
 
 
-def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
+def test_AgendaUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -206,7 +206,7 @@ def test_agenda_add_idea_CanCreateRoadUnitToGrandkidIdea():
     assert sue_agenda.get_level_count(level=3) == 3
 
 
-def test_agenda_add_idea_creates_reasons_ideas():
+def test_AgendaUnit_add_idea_creates_reasons_ideas():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -249,7 +249,7 @@ def test_agenda_add_idea_creates_reasons_ideas():
     assert sue_agenda.get_level_count(level=3) == 4
 
 
-def test_agenda_add_idea_CorrectlySets_agenda_world_id():
+def test_AgendaUnit_add_idea_CorrectlySets_agenda_world_id():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     agenda_world_id = "Texas"
@@ -270,7 +270,7 @@ def test_agenda_add_idea_CorrectlySets_agenda_world_id():
     assert cookery_idea._agenda_world_id == agenda_world_id
 
 
-def test_agenda_del_idea_obj_Level0CannotBeDeleted():
+def test_AgendaUnit_del_idea_obj_Level0CannotBeDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     root_road = sue_agenda._world_id
@@ -281,7 +281,7 @@ def test_agenda_del_idea_obj_Level0CannotBeDeleted():
     assert str(excinfo.value) == "Idearoot cannot be deleted"
 
 
-def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenDeleted():
+def test_AgendaUnit_del_idea_obj_Level1CanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     week_text = "weekdays"
@@ -304,7 +304,7 @@ def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenDeleted():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{new_sunday_road}'"
 
 
-def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
+def test_AgendaUnit_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -327,7 +327,7 @@ def test_agenda_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
     assert new_sunday_idea._parent_road == sue_agenda._world_id
 
 
-def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
+def test_AgendaUnit_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
@@ -359,7 +359,7 @@ def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
     assert sue_agenda._idea_dict.get(usa_road) is None
 
 
-def test_agenda_del_idea_obj_Level2CanBeDeleted_ChildrenDeleted():
+def test_AgendaUnit_del_idea_obj_Level2CanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     wkday_road = sue_agenda.make_l1_road("weekdays")
@@ -375,7 +375,7 @@ def test_agenda_del_idea_obj_Level2CanBeDeleted_ChildrenDeleted():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{monday_road}'"
 
 
-def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenDeleted():
+def test_AgendaUnit_del_idea_obj_LevelNCanBeDeleted_ChildrenDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     states_text = "nation-state"
@@ -395,7 +395,7 @@ def test_agenda_del_idea_obj_LevelNCanBeDeleted_ChildrenDeleted():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{usa_texas_road}'"
 
 
-def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
+def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda = get_agenda_with_4_levels()
     work_text = "work"
     work_road = sue_agenda.make_l1_road(work_text)
@@ -510,11 +510,15 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda.edit_idea_attr(road=work_road, range_source_road=end_road)
     assert sue_agenda._idearoot._kids[work_text]._range_source_road == end_road
 
-    # _healerhold: bool
+    # _healerhold:
     sue_agenda._idearoot._kids[work_text]._healerhold = "fun3rol"
     src_healerhold = sue_agenda._idearoot._kids[work_text]._healerhold
     assert src_healerhold == "fun3rol"
-    x_healerhold = healerhold_shop({"Sue", "Yao"})
+    sue_text = "Sue"
+    yao_text = "Yao"
+    x_healerhold = healerhold_shop({sue_text, yao_text})
+    sue_agenda.add_partyunit(sue_text)
+    sue_agenda.add_partyunit(yao_text)
     sue_agenda.edit_idea_attr(road=work_road, healerhold=x_healerhold)
     assert sue_agenda._idearoot._kids[work_text]._healerhold == x_healerhold
 
@@ -529,7 +533,7 @@ def test_agenda_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     print(f"{work_road=} {end_road=}")
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEdit_meld_strategy_AnyIdeaIfInvaildThrowsError():
+def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_meld_strategy_AnyIdeaIfInvaildThrowsError():
     sue_agenda = get_agenda_with_4_levels()
     work_road = sue_agenda.make_l1_road("work")
 
@@ -543,7 +547,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEdit_meld_strategy_AnyIdeaIfInvaild
     )
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
+def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrowsError():
     yao_agenda = agendaunit_shop("Yao")
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -575,7 +579,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaIfInvaildDenomThrow
     assert clean_idea._close == 10
 
 
-def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
+def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsError():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     work = "work"
@@ -606,7 +610,7 @@ def test_agenda_edit_idea_attr_agendaIsAbleToEditDenomAnyIdeaInvaildDenomThrowsE
     yao_agenda.edit_idea_attr(road=w_road, numeric_road=day_road)
 
 
-def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrowError():
+def test_AgendaUnit_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrowError():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     work_text = "work"
@@ -649,7 +653,33 @@ def test_agenda_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeThrow
     assert work_idea3._addin == 0
 
 
-def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
+def test_AgendaUnit_edit_idea_attr_RaisesErrorWhen_healerhold_group_ids_DoNotExist():
+    # GIVEN
+    yao_agenda = agendaunit_shop("Yao")
+    work_text = "work"
+    work_road = yao_agenda.make_l1_road(work_text)
+    yao_agenda.add_l1_idea(ideaunit_shop(work_text))
+    day_text = "day_range"
+    day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
+    day_road = yao_agenda.make_l1_road(day_text)
+    yao_agenda.add_l1_idea(day_idea)
+
+    work_idea = yao_agenda.get_idea_obj(road=work_road)
+    assert work_idea._begin is None
+    assert work_idea._close is None
+
+    # WHEN / THEN
+    sue_text = "Sue"
+    x_healerhold = healerhold_shop({sue_text})
+    with pytest_raises(Exception) as excinfo:
+        yao_agenda.edit_idea_attr(road=work_road, healerhold=x_healerhold)
+    assert (
+        str(excinfo.value)
+        == f"Idea cannot edit healerhold because group_id '{sue_text}' does not exist as group in Agenda"
+    )
+
+
+def test_AgendaUnit_add_idea_MustReorderKidsDictToBeAlphabetical():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa")
     work_text = "work"
@@ -664,7 +694,7 @@ def test_agenda_add_idea_MustReorderKidsDictToBeAlphabetical():
     assert idea_list[0]._label == swim_text
 
 
-def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
+def test_AgendaUnit_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParent():
     noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
     sports_road = noa_agenda.make_l1_road(sports_text)
@@ -685,7 +715,7 @@ def test_agenda_add_idea_adoptee_RaisesErrorIfAdopteeIdeaDoesNotHaveCorrectParen
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{hike_road}'"
 
 
-def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
+def test_AgendaUnit_add_idea_adoptee_CorrectlyAddsAdoptee():
     noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
     sports_road = noa_agenda.make_l1_road(sports_text)
@@ -724,7 +754,7 @@ def test_agenda_add_idea_adoptee_CorrectlyAddsAdoptee():
     assert noa_agenda._idea_dict.get(sports_hike_road) is None
 
 
-def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
+def test_AgendaUnit_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdeas():
     noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
     sports_road = noa_agenda.make_l1_road(sports_text)
@@ -774,7 +804,7 @@ def test_agenda_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdoptedIdea
     assert noa_agenda._idea_dict.get(sports_bball_road) != None
 
 
-def test_agenda_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState():
+def test_AgendaUnit_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState():
     noa_agenda = agendaunit_shop("Noa")
     sports_text = "sports"
     sports_road = noa_agenda.make_l1_road(sports_text)

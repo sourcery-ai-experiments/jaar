@@ -29,6 +29,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._idearoot is None
     assert x_agenda._idea_dict is None
     assert x_agenda._market_dict is None
+    assert x_agenda._healer_dict is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
@@ -64,6 +65,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._idearoot != None
     assert x_agenda._idea_dict == {}
     assert x_agenda._market_dict == {}
+    assert x_agenda._healer_dict == {}
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None

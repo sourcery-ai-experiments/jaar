@@ -638,7 +638,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingle
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingleProblemAndMarket():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    yao_healerhold = healerhold_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_healerhold = healerhold_shop({yao_text})
     sue_agenda.add_l1_idea(
         ideaunit_shop("Texas", _healerhold=yao_healerhold, _problem_bool=True)
     )
@@ -654,7 +656,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenSingle
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_justified_WhenMarketIsLevelAboveProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    yao_healerhold = healerhold_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_healerhold = healerhold_shop({yao_text})
+
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
