@@ -1803,8 +1803,11 @@ class AgendaUnit:
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
-        # populate _healer_dict
-        self._market_dict = {}
+        self._set_market_dict()
+        self._healer_dict = self._get_healer_dict()
+        self._markets_buildable = self._get_markets_buildable()
+
+    def _set_market_dict(self):
         if self._markets_justified == False:
             self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
@@ -1817,18 +1820,16 @@ class AgendaUnit:
             if self._markets_justified and x_idea._healerhold.any_group_id_exists():
                 self._market_dict[x_idea.get_road()] = x_idea
 
-        # populate _healer_dict
-        self._healer_dict = {}
+    def _get_healer_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
+        _healer_dict = {}
         for x_market_road, x_market_idea in self._market_dict.items():
             for x_group_id in x_market_idea._healerhold._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
-                    self._healer_dict[x_party_id] = {x_market_road: x_market_idea}
+                    _healer_dict[x_party_id] = {x_market_road: x_market_idea}
+        return _healer_dict
 
-        # set markets_buildable
-        self._markets_buildable = self.get_markets_buildable()
-
-    def get_markets_buildable(self):
+    def _get_markets_buildable(self) -> bool:
         return all(
             is_roadunit_convertible_to_path(market_road, delimiter=self._road_delimiter)
             != False
