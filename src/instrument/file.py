@@ -10,6 +10,7 @@ from os import (
     W_OK as os_W_OK,
     access as os_access,
     lstat as os_lstat,
+    walk as os_walk,
 )
 from shutil import rmtree as shutil_rmtree, copytree as shutil_copytree
 from os.path import (
@@ -254,5 +255,17 @@ def is_path_existent_or_probably_creatable(path: str) -> bool:
 # # -*- CODE BLOCK END -*-
 
 
-def is_roadunit_convertible_to_path(roadunit) -> bool:
-    pass
+def get_all_dirs_with_file(x_file_name: str, x_dir: pathlib_Path) -> set[str]:
+    relative_dirs = set()
+    for dirpath, dirnames, filenames in os_walk(x_dir):
+        for filename in filenames:
+            if filename == x_file_name:
+                x_dir_path = pathlib_Path(dirpath)
+                relative_path = x_dir_path.relative_to(x_dir)
+                relative_dirs.add(str(relative_path).replace("\\", "/"))
+    return relative_dirs
+
+
+def get_parts_dir(x_dir: pathlib_Path) -> list[str]:
+    x_parts = pathlib_Path(x_dir).parts
+    return [str(x_part) for x_part in x_parts]

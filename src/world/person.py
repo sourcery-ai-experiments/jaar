@@ -1,14 +1,13 @@
 from src._prime.road import (
     default_road_delimiter_if_none,
-    EconID,
     PersonID,
-    HealerID,
-    ProblemID,
     validate_roadnode,
     RoadUnit,
     RoadNode,
     get_all_road_nodes,
     get_terminus_node,
+    change_road,
+    create_road_from_nodes,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.agenda.agenda import (
@@ -23,6 +22,9 @@ from src.instrument.file import (
     open_file,
     set_dir,
     get_directory_path,
+    get_all_dirs_with_file,
+    get_parts_dir,
+    delete_dir,
 )
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
@@ -101,14 +103,20 @@ class PersonUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
+    def get_econ_rootpathpart(self):
+        return "idearoot"
+
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
 
     def _get_econ_path(self, x_list: list[RoadNode]) -> str:
-        idearoot_list = ["idearoot", *x_list]
+        idearoot_list = [*x_list]
         return f"{self._econs_dir}{get_directory_path(x_list=idearoot_list)}"
 
     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
+        x_roadunit = change_road(
+            x_roadunit, self.world_id, self.get_econ_rootpathpart()
+        )
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
         x_econ_path = self._get_econ_path(road_nodes)
         set_dir(x_econ_path)
@@ -144,7 +152,16 @@ class PersonUnit:
         for econ_idea in x_person_econs.values():
             self._create_econunit(econ_roadunit=econ_idea.get_road())
 
-        # set manager_person_id contract
+        # delete any
+        curr_treasury_dirs = get_all_dirs_with_file("treasury.db", self._econs_dir)
+        for treasury_dir in curr_treasury_dirs:
+            treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
+            treasury_road = change_road(
+                treasury_road, self.get_econ_rootpathpart(), self.world_id
+            )
+            if x_person_econs.get(treasury_road) is None:
+                dir_to_delete = f"{self._econs_dir}/{treasury_dir}"
+                delete_dir(dir_to_delete)
 
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True

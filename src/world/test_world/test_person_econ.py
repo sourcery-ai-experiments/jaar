@@ -18,16 +18,19 @@ def test_PersonUnit_get_econ_path_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
+    idearoot = "idearoot"
     texas_text = "texas"
     dallas_text = "dallas"
     elpaso_text = "el paso"
     kern_text = "kern"
 
     # WHEN
-    texas_path = sue_person._get_econ_path([texas_text])
-    dallas_path = sue_person._get_econ_path([texas_text, dallas_text])
-    elpaso_path = sue_person._get_econ_path([texas_text, elpaso_text])
-    kern_path = sue_person._get_econ_path([texas_text, elpaso_text, kern_text])
+    texas_path = sue_person._get_econ_path([idearoot, texas_text])
+    dallas_path = sue_person._get_econ_path([idearoot, texas_text, dallas_text])
+    elpaso_path = sue_person._get_econ_path([idearoot, texas_text, elpaso_text])
+    kern_path = sue_person._get_econ_path(
+        [idearoot, texas_text, elpaso_text, kern_text]
+    )
 
     # THEN
     idearoot_dir = f"{sue_person._econs_dir}/idearoot"
@@ -68,8 +71,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     texas_road = sue_gut_agenda.make_l1_road(texas_text)
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_nodes = get_all_road_nodes(dallas_road, delimiter=pound_text)
-    dallas_dir = sue_person._get_econ_path(dallas_nodes)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
     dallas_db_path = f"{dallas_dir}/treasury.db"
     print(f"{dallas_dir=}")
     print(f"{dallas_db_path=}")
@@ -171,10 +173,8 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(
     # display_agenda(sue_gut_agenda, mode="Econ").show()
     sue_person._save_agenda_to_gut_path(sue_gut_agenda)
 
-    dallas_nodes = get_all_road_nodes(dallas_road)
-    elpaso_nodes = get_all_road_nodes(elpaso_road)
-    dallas_dir = sue_person._get_econ_path(dallas_nodes)
-    elpaso_dir = sue_person._get_econ_path(elpaso_nodes)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/treasury.db"
     elpaso_db_path = f"{elpaso_dir}/treasury.db"
     print(f"{dallas_dir=}")
@@ -219,10 +219,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(
     sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
     sue_person._save_agenda_to_gut_path(sue_gut_agenda)
-    dallas_nodes = get_all_road_nodes(dallas_road)
-    elpaso_nodes = get_all_road_nodes(elpaso_road)
-    dallas_dir = sue_person._get_econ_path(dallas_nodes)
-    elpaso_dir = sue_person._get_econ_path(elpaso_nodes)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/treasury.db"
     elpaso_db_path = f"{elpaso_dir}/treasury.db"
     print(f"{dallas_dir=}")

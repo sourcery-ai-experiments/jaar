@@ -9,6 +9,7 @@ from src.instrument.file import (
     is_path_existent_or_creatable,
     is_path_probably_creatable,
     is_path_existent_or_probably_creatable,
+    get_all_dirs_with_file,
 )
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
@@ -293,3 +294,22 @@ def test_is_path_existent_or_probably_creatable_ReturnsCorrectObj():
     assert is_path_existent_or_probably_creatable("run")
     assert is_path_existent_or_probably_creatable("run/trail?") == False
     assert is_path_existent_or_probably_creatable("run///trail") == False
+
+
+def test_get_all_dirs_with_file_ReturnsCorrectDirectorys(env_dir_setup_cleanup):
+    # GIVEN
+    env_dir = get_agenda_temp_env_dir()
+    x1_file_name = "x1.txt"
+    x1_file_text = "trying this"
+    iowa_rel_dir = "iowa/dallas"
+    ohio_rel_dir = "ohio/elpaso"
+    iowa_dir = f"{env_dir}/{iowa_rel_dir}"
+    ohio_dir = f"{env_dir}/{ohio_rel_dir}"
+    save_file(dest_dir=iowa_dir, file_name=x1_file_name, file_text=x1_file_text)
+    save_file(dest_dir=ohio_dir, file_name=x1_file_name, file_text=x1_file_text)
+
+    # WHEN
+    directory_set = get_all_dirs_with_file(x_file_name=x1_file_name, x_dir=env_dir)
+
+    # THEN
+    assert directory_set == {iowa_rel_dir, ohio_rel_dir}
