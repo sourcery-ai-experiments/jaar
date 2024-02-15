@@ -245,12 +245,12 @@ def change_agenda_with_grainunit(x_agenda: AgendaUnit, x_grainunit: GrainUnit):
         x_agenda.del_groupunit(group_id)
     elif xs.category == "groupunit" and xs.crud_text == grain_update():
         x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-        x_groupunit._bank_partylinks = xs.get_value("_bank_partylinks")
+        x_groupunit._treasury_partylinks = xs.get_value("_treasury_partylinks")
     elif xs.category == "groupunit" and xs.crud_text == grain_insert():
         x_agenda.set_groupunit(
             groupunit_shop(
                 group_id=xs.get_locator("group_id"),
-                _bank_partylinks=xs.get_locator("_bank_partylinks"),
+                _treasury_partylinks=xs.get_locator("_treasury_partylinks"),
             ),
             create_missing_partys=False,
             replace=False,
@@ -434,7 +434,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._party_debtor_pool != y_obj._party_debtor_pool
         )
     elif category == "groupunit":
-        return x_obj._bank_partylinks != y_obj._bank_partylinks
+        return x_obj._treasury_partylinks != y_obj._treasury_partylinks
     elif category in {"partylink", "idea_balancelink"}:
         return (x_obj.creditor_weight != y_obj.creditor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
@@ -674,10 +674,10 @@ class LearnUnit:
             x_grainunit = grainunit_shop("groupunit", grain_insert())
             x_grainunit.set_locator("group_id", insert_groupunit.group_id)
             x_grainunit.set_required_arg("group_id", insert_groupunit.group_id)
-            if insert_groupunit._bank_partylinks != None:
+            if insert_groupunit._treasury_partylinks != None:
                 x_grainunit.set_optional_arg(
-                    "_bank_partylinks",
-                    insert_groupunit._bank_partylinks,
+                    "_treasury_partylinks",
+                    insert_groupunit._treasury_partylinks,
                 )
             self.set_grainunit(x_grainunit)
             self.add_grainunit_partylinks_inserts(
@@ -696,8 +696,8 @@ class LearnUnit:
                 x_grainunit.set_locator("group_id", after_groupunit.group_id)
                 x_grainunit.set_required_arg("group_id", after_groupunit.group_id)
                 x_grainunit.set_optional_arg(
-                    "_bank_partylinks",
-                    after_groupunit._bank_partylinks,
+                    "_treasury_partylinks",
+                    after_groupunit._treasury_partylinks,
                 )
                 self.set_grainunit(x_grainunit)
 

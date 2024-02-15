@@ -1,4 +1,4 @@
-from src._prime.road import create_road, get_default_market_root_roadnode as root_label
+from src._prime.road import create_road, get_default_econ_root_roadnode as root_label
 from src.world.topic import topiclink_shop
 from src.world.deal import VowUnit, vowunit_shop
 

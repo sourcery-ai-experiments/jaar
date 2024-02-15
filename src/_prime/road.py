@@ -207,7 +207,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_market_root_roadnode() -> MarketID:
+def get_default_econ_root_roadnode() -> MarketID:
     return "A"
 
 

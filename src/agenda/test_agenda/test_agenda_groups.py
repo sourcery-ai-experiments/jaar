@@ -1,4 +1,4 @@
-from src._prime.road import get_default_market_root_roadnode
+from src._prime.road import get_default_econ_root_roadnode
 from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop
@@ -184,8 +184,8 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     idea_dict = sue_agenda.get_idea_dict()
 
     # THEN
-    print(f"{idea_dict.keys()=} {get_default_market_root_roadnode()=}")
-    root_idea = idea_dict.get(get_default_market_root_roadnode())
+    print(f"{idea_dict.keys()=} {get_default_econ_root_roadnode()=}")
+    root_idea = idea_dict.get(get_default_econ_root_roadnode())
     swim_idea = idea_dict.get(swim_road)
     street_idea = idea_dict.get(sue_agenda.make_road(swim_road, street_text))
 
@@ -275,7 +275,7 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
 
     # THEN
     print(f"{idea_dict.keys()=}")
-    idea_prom = idea_dict.get(get_default_market_root_roadnode())
+    idea_prom = idea_dict.get(get_default_econ_root_roadnode())
     assert len(idea_prom._balanceheirs) == 3
 
     bheir_rico = idea_prom._balanceheirs.get(rico_text)

@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src._prime.road import (
-    get_default_market_root_roadnode as root_label,
+    get_default_econ_root_roadnode as root_label,
     default_road_delimiter_if_none,
 )
 from src.agenda.origin import originunit_shop
@@ -28,14 +28,14 @@ def test_AgendaUnit_Exists():
     assert x_agenda._auto_output_to_forum is None
     assert x_agenda._idearoot is None
     assert x_agenda._idea_dict is None
-    assert x_agenda._market_dict is None
+    assert x_agenda._econ_dict is None
     assert x_agenda._healers_dict is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy is None
-    assert x_agenda._markets_justified is None
-    assert x_agenda._markets_buildable is None
+    assert x_agenda._econs_justified is None
+    assert x_agenda._econs_buildable is None
     assert x_agenda._sum_healerhold_importance is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
@@ -65,14 +65,14 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._auto_output_to_forum == False
     assert x_agenda._idearoot != None
     assert x_agenda._idea_dict == {}
-    assert x_agenda._market_dict == {}
+    assert x_agenda._econ_dict == {}
     assert x_agenda._healers_dict == {}
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy == override_meld_strategy
-    assert x_agenda._markets_justified == False
-    assert x_agenda._markets_buildable == False
+    assert x_agenda._econs_justified == False
+    assert x_agenda._econs_buildable == False
     assert x_agenda._sum_healerhold_importance == False
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0

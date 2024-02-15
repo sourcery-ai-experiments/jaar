@@ -332,7 +332,7 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupuni
     x_grainunit = grainunit_shop("groupunit", grain_insert())
     x_grainunit.set_locator("group_id", fly_text)
     x_grainunit.set_required_arg("group_id", fly_text)
-    x_grainunit.set_optional_arg("_bank_partylinks", yao_roadunit())
+    x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
     print(f"{x_grainunit=}")
     sue_learnunit = learnunit_shop(sue_road)
     sue_learnunit.set_grainunit(x_grainunit)
@@ -350,13 +350,13 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupuni
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-    assert before_sue_agendaunit.get_groupunit(run_text)._bank_partylinks is None
+    assert before_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks is None
 
     # WHEN
     x_grainunit = grainunit_shop("groupunit", grain_update())
     x_grainunit.set_locator("group_id", run_text)
     x_grainunit.set_required_arg("group_id", run_text)
-    x_grainunit.set_optional_arg("_bank_partylinks", yao_roadunit())
+    x_grainunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
     print(f"{x_grainunit=}")
     sue_learnunit = learnunit_shop(sue_road)
     sue_learnunit.set_grainunit(x_grainunit)
@@ -364,7 +364,8 @@ def test_LearnUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupuni
 
     # THEN
     assert (
-        after_sue_agendaunit.get_groupunit(run_text)._bank_partylinks == yao_roadunit()
+        after_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks
+        == yao_roadunit()
     )
 
 

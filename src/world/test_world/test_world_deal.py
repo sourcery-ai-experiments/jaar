@@ -71,12 +71,12 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_marketunit(texas_text)
-#     texas_market = yao_person.get_marketunit(texas_text)
-#     texas_forum_dir = texas_market.get_forum_dir()
+#     yao_person.set_econunit(texas_text)
+#     texas_econ = yao_person.get_econunit(texas_text)
+#     texas_forum_dir = texas_econ.get_forum_dir()
 
 #     highway_wantunit = create_wantunit(
-#         marketdeletemeaddress=marketdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix="flying in airplanes",
 #         positive="Do not fly",
 #         negative="Continue flying",
@@ -108,9 +108,9 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert os_path.exists(forum_tim_file_path)
 #     assert os_path.exists(forum_xio_file_path)
 #     assert os_path.exists(forum_yao_file_path)
-#     assert texas_market.get_clerkunit(tim_text).get_contract() != None
-#     assert texas_market.get_clerkunit(xio_text).get_contract() != None
-#     assert texas_market.get_clerkunit(yao_text).get_contract() != None
+#     assert texas_econ.get_clerkunit(tim_text).get_contract() != None
+#     assert texas_econ.get_clerkunit(xio_text).get_contract() != None
+#     assert texas_econ.get_clerkunit(yao_text).get_contract() != None
 
 
 # def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
@@ -121,8 +121,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_marketunit(texas_text)
-#     texas_market = yao_person.get_marketunit(texas_text)
+#     yao_person.set_econunit(texas_text)
+#     texas_econ = yao_person.get_econunit(texas_text)
 
 #     flying_text = "flying in airplanes"
 #     no_fly_text = "Do not fly"
@@ -132,7 +132,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     boiling_text = "boiling"
 
 #     highway_wantunit = create_wantunit(
-#         marketdeletemeaddress=marketdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
@@ -154,19 +154,19 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.apply_requestunit(highway_requestunit)
 
 #     # THEN
-#     xio_contract = texas_market.get_clerkunit(xio_text).get_contract()
+#     xio_contract = texas_econ.get_clerkunit(xio_text).get_contract()
 #     xio_partyunit = xio_contract.get_party(xio_text)
 #     tim_partyunit = xio_contract.get_party(tim_text)
 #     assert xio_partyunit != None
 #     assert tim_partyunit != None
 #     assert tim_partyunit.creditor_weight == 1
 #     assert tim_partyunit.debtor_weight == 1
-#     flying_road = marketunit.build_market_road(texas_market.market_id, flying_text)
-#     no_fly_road = marketunit.build_market_road(flying_road, no_fly_text)
-#     yesfly_road = marketunit.build_market_road(flying_road, yesfly_text)
-#     weather_road = marketunit.build_market_road(texas_market.market_id, weather_text)
-#     healthy_road = marketunit.build_market_road(weather_road, healthy_text)
-#     boiling_road = marketunit.build_market_road(weather_road, boiling_text)
+#     flying_road = econunit.build_econ_road(texas_econ.econ_id, flying_text)
+#     no_fly_road = econunit.build_econ_road(flying_road, no_fly_text)
+#     yesfly_road = econunit.build_econ_road(flying_road, yesfly_text)
+#     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
+#     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
+#     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
 #     print(f"{xio_contract._idea_dict.keys()=}")
 #     print(f"{flying_road=}")
 #     print(f"{no_fly_road=}")
@@ -231,11 +231,11 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert len(xio_contract.get_intent_dict()) == 0
 
 #     # check tim contract
-#     tim_contract = texas_market.get_clerkunit(tim_text).get_contract()
+#     tim_contract = texas_econ.get_clerkunit(tim_text).get_contract()
 #     assert tim_contract.get_party(xio_text) != None
 #     assert tim_contract.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
-#     tim_forum = texas_market.get_forum_agenda(tim_text)
+#     tim_forum = texas_econ.get_forum_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1
 #     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
 
@@ -246,8 +246,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_marketunit(texas_text)
-#     texas_market = yao_person.get_marketunit(texas_text)
+#     yao_person.set_econunit(texas_text)
+#     texas_econ = yao_person.get_econunit(texas_text)
 
 #     flying_text = "flying in airplanes"
 #     no_fly_text = "Do not fly"
@@ -257,7 +257,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     boiling_text = "boiling"
 
 #     highway_wantunit = create_wantunit(
-#         marketdeletemeaddress=marketdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
@@ -281,7 +281,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.apply_requestunit(highway_requestunit)
 
 #     # THEN
-#     xio_contract = texas_market.get_clerkunit(xio_text).get_contract()
+#     xio_contract = texas_econ.get_clerkunit(xio_text).get_contract()
 #     xio_partyunit = xio_contract.get_party(xio_text)
 #     tim_partyunit = xio_contract.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -293,12 +293,12 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert len(environmentalist_group._partys) == 1
 #     assert environmentalist_group.get_partylink(tim_text) != None
 
-#     flying_road = marketunit.build_market_road(texas_market.market_id, flying_text)
-#     no_fly_road = marketunit.build_market_road(flying_road, no_fly_text)
-#     yesfly_road = marketunit.build_market_road(flying_road, yesfly_text)
-#     weather_road = marketunit.build_market_road(texas_market.market_id, weather_text)
-#     healthy_road = marketunit.build_market_road(weather_road, healthy_text)
-#     boiling_road = marketunit.build_market_road(weather_road, boiling_text)
+#     flying_road = econunit.build_econ_road(texas_econ.econ_id, flying_text)
+#     no_fly_road = econunit.build_econ_road(flying_road, no_fly_text)
+#     yesfly_road = econunit.build_econ_road(flying_road, yesfly_text)
+#     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
+#     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
+#     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
 #     flying_idea = xio_contract.get_idea_obj(flying_road)
 #     no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
 #     yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
@@ -327,11 +327,11 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert len(xio_contract.get_intent_dict()) == 0
 
 #     # check tim contract
-#     tim_contract = texas_market.get_clerkunit(tim_text).get_contract()
+#     tim_contract = texas_econ.get_clerkunit(tim_text).get_contract()
 #     assert tim_contract.get_party(xio_text) != None
 #     assert tim_contract.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
-#     tim_forum = texas_market.get_forum_agenda(tim_text)
+#     tim_forum = texas_econ.get_forum_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1
 #     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
 
@@ -344,11 +344,11 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # #     world.add_personunit(yao_text)
 # #     yao_person = world.get_personunit_from_memory(yao_text)
 # #     texas_text = "Texas"
-# #     yao_person.set_marketunit(texas_text)
-# #     texas_market = yao_person.get_marketunit(texas_text)
+# #     yao_person.set_econunit(texas_text)
+# #     texas_econ = yao_person.get_econunit(texas_text)
 
 # #     fly_wantunit = create_wantunit(
-# #         marketdeletemeaddress=marketdeletemeaddress_shop("war", yao_text, texas_text),
+# #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 # #         fix="flying in airplanes",
 # #         positive="Do not fly",
 # #         negative="Continue flying",

@@ -30,7 +30,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     luca_text = "Luca"
     water_text = "Clean water"
     dallas_text = "Dallas"
-    texas_world.create_person_market(luca_text, water_text, luca_text, dallas_text)
+    texas_world.create_person_econ(luca_text, water_text, luca_text, dallas_text)
 
     # WHEN
     gen_luca_agenda = texas_world.get_world_agenda(luca_text)
@@ -41,7 +41,7 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
-# TODO reopen this after market creation from Agenda works correctly.
+# TODO reopen this after econ creation from Agenda works correctly.
 # def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
 #     worlds_dir_setup_cleanup,
 # ):
@@ -50,11 +50,11 @@ def test_WorldUnit_get_world_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
 #     luca_text = "Luca"
 #     water_text = "dirty water"
 #     dallas_text = "Dallas"
-#     texas_world.create_person_market(luca_text, water_text, luca_text, dallas_text)
+#     texas_world.create_person_econ(luca_text, water_text, luca_text, dallas_text)
 #     air_text = "dirty air"
 #     gilo_text = "Gilo"
 #     south_text = "The South"
-#     texas_world.create_person_market(luca_text, air_text, gilo_text, south_text)
+#     texas_world.create_person_econ(luca_text, air_text, gilo_text, south_text)
 
 #     # WHEN
 #     # luca_personunit = texas_world.get_personunit_from_memory(luca_text)

@@ -16,7 +16,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.market.market import MarketUnit, marketunit_shop
+from src.econ.econ import MarketUnit, econunit_shop
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
     save_file,
@@ -46,11 +46,11 @@ class PersonUnit:
     world_id: str = None
     persons_dir: str = None
     person_dir: str = None
-    _markets_dir: str = None
+    _econs_dir: str = None
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
-    _market_objs: dict[RoadUnit:MarketUnit] = None
+    _econ_objs: dict[RoadUnit:MarketUnit] = None
     _road_delimiter: str = None
 
     def set_person_id(self, x_person_id: PersonID):
@@ -62,7 +62,7 @@ class PersonUnit:
         self.world_dir = f"{self.worlds_dir}/{self.world_id}"
         self.persons_dir = f"{self.world_dir}/persons"
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
-        self._markets_dir = f"{self.person_dir}/markets"
+        self._econs_dir = f"{self.person_dir}/econs"
         if self._gut_file_name is None:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
@@ -84,7 +84,7 @@ class PersonUnit:
         set_dir(self.world_dir)
         set_dir(self.persons_dir)
         set_dir(self.person_dir)
-        set_dir(self._markets_dir)
+        set_dir(self._econs_dir)
         self.create_gut_file_if_does_not_exist()
 
     def create_gut_file_if_does_not_exist(self):
@@ -104,56 +104,54 @@ class PersonUnit:
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
 
-    def _get_market_path(self, x_list: list[RoadNode]) -> str:
+    def _get_econ_path(self, x_list: list[RoadNode]) -> str:
         idearoot_list = ["idearoot", *x_list]
-        return f"{self._markets_dir}{get_directory_path(x_list=idearoot_list)}"
+        return f"{self._econs_dir}{get_directory_path(x_list=idearoot_list)}"
 
-    def _create_market_dir(self, x_roadunit: RoadUnit) -> str:
+    def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
-        x_market_path = self._get_market_path(road_nodes)
-        set_dir(x_market_path)
-        return x_market_path
+        x_econ_path = self._get_econ_path(road_nodes)
+        set_dir(x_econ_path)
+        return x_econ_path
 
-    def _create_marketunit(self, market_roadunit: RoadUnit):
-        x_market_path = self._create_market_dir(market_roadunit)
-        terminus_node = get_terminus_node(
-            market_roadunit, delimiter=self._road_delimiter
-        )
-        x_marketunit = marketunit_shop(
-            market_id=terminus_node,
-            market_dir=x_market_path,
+    def _create_econunit(self, econ_roadunit: RoadUnit):
+        x_econ_path = self._create_econ_dir(econ_roadunit)
+        terminus_node = get_terminus_node(econ_roadunit, delimiter=self._road_delimiter)
+        x_econunit = econunit_shop(
+            econ_id=terminus_node,
+            econ_dir=x_econ_path,
             _manager_person_id=self.person_id,
             _road_delimiter=self._road_delimiter,
         )
-        x_marketunit.set_market_dirs()
-        self._market_objs[market_roadunit] = x_marketunit
+        x_econunit.set_econ_dirs()
+        self._econ_objs[econ_roadunit] = x_econunit
 
-    def create_person_marketunits(self, market_exceptions: bool = True):
+    def create_person_econunits(self, econ_exceptions: bool = True):
         x_gut_agenda = self.get_gut_file_agenda()
-        x_gut_agenda.set_agenda_metrics(market_exceptions)
-        if x_gut_agenda._markets_justified == False:
+        x_gut_agenda.set_agenda_metrics(econ_exceptions)
+        if x_gut_agenda._econs_justified == False:
             raise PersonCreateMarketUnitsException(
-                f"Cannot set '{self.person_id}' gut agenda marketunits because 'AgendaUnit._markets_justified' is False."
+                f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_justified' is False."
             )
-        if x_gut_agenda._markets_buildable == False:
+        if x_gut_agenda._econs_buildable == False:
             raise PersonCreateMarketUnitsException(
-                f"Cannot set '{self.person_id}' gut agenda marketunits because 'AgendaUnit._markets_buildable' is False."
+                f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_buildable' is False."
             )
 
-        x_person_markets = x_gut_agenda._healers_dict.get(self.person_id)
-        x_person_markets = get_empty_dict_if_none(x_person_markets)
-        for market_idea in x_person_markets.values():
-            print(f"{market_idea._label=}")
-            print(f"{market_idea._label=}")
-            self._create_marketunit(market_roadunit=market_idea.get_road())
+        x_person_econs = x_gut_agenda._healers_dict.get(self.person_id)
+        x_person_econs = get_empty_dict_if_none(x_person_econs)
+        for econ_idea in x_person_econs.values():
+            print(f"{econ_idea._label=}")
+            print(f"{econ_idea._label=}")
+            self._create_econunit(econ_roadunit=econ_idea.get_road())
 
         # set manager_person_id contract
 
     # def popup_visualization(
-    #     self, marketlink_by_problem: bool = False, show_fig: bool = True
+    #     self, econlink_by_problem: bool = False, show_fig: bool = True
     # ):
-    #     if marketlink_by_problem:
-    #         # grab all marketlink data
+    #     if econlink_by_problem:
+    #         # grab all econlink data
     #         el_data = []
 
     #         for x_problemunit in self.get_problemunits().values():
@@ -164,10 +162,10 @@ class PersonUnit:
     #                         x_problemunit.weight,
     #                         x_.healer_id,
     #                         x_.weight,
-    #                         x_marketlink.market_id,
-    #                         x_marketlink.weight,
+    #                         x_econlink.econ_id,
+    #                         x_econlink.weight,
     #                     ]
-    #                     for x_marketlink in x_._marketlinks.values()
+    #                     for x_econlink in x_._econlinks.values()
     #                 )
     #         # initialize list of lists
 
@@ -202,13 +200,13 @@ def personunit_shop(
     person_id: PersonID,
     world_id: str = None,
     worlds_dir: str = None,
-    _market_objs: dict[RoadUnit:MarketUnit] = None,
+    _econ_objs: dict[RoadUnit:MarketUnit] = None,
     _road_delimiter: str = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
         world_id=world_id,
         worlds_dir=worlds_dir,
-        _market_objs=get_empty_dict_if_none(_market_objs),
+        _econ_objs=get_empty_dict_if_none(_econ_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)

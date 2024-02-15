@@ -36,7 +36,7 @@ class GroupUnit(GroupCore):
     _agenda_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _agenda_intent_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
     _agenda_intent_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
-    _bank_partylinks: RoadUnit = None
+    _treasury_partylinks: RoadUnit = None
     _road_delimiter: str = None
 
     def set_group_id(self, group_id: GroupID = None):
@@ -48,9 +48,9 @@ class GroupUnit(GroupCore):
                     group_id, self._road_delimiter, not_roadnode_required=True
                 )
 
-    def set_attr(self, _bank_partylinks: RoadUnit):
-        if _bank_partylinks != None:
-            self._bank_partylinks = _bank_partylinks
+    def set_attr(self, _treasury_partylinks: RoadUnit):
+        if _treasury_partylinks != None:
+            self._treasury_partylinks = _treasury_partylinks
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {"group_id": self.group_id}
@@ -58,8 +58,8 @@ class GroupUnit(GroupCore):
             x_dict["_party_mirror"] = self._party_mirror
         if self._partys not in [{}, None]:
             x_dict["_partys"] = self.get_partys_dict()
-        if self._bank_partylinks != None:
-            x_dict["_bank_partylinks"] = self._bank_partylinks
+        if self._treasury_partylinks != None:
+            x_dict["_treasury_partylinks"] = self._treasury_partylinks
 
         return x_dict
 
@@ -180,8 +180,8 @@ def get_from_dict(x_dict: dict) -> dict[GroupID:GroupUnit]:
             group_id=groupunit_dict["group_id"],
             _party_mirror=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirror"),
             _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
-            _bank_partylinks=get_obj_from_groupunit_dict(
-                groupunit_dict, "_bank_partylinks"
+            _treasury_partylinks=get_obj_from_groupunit_dict(
+                groupunit_dict, "_treasury_partylinks"
             ),
         )
         groupunits[x_group.group_id] = x_group
@@ -201,12 +201,12 @@ def groupunit_shop(
     group_id: GroupID,
     _party_mirror: bool = None,
     _partys: dict[PartyID:PartyLink] = None,
-    _bank_partylinks: RoadUnit = None,
+    _treasury_partylinks: RoadUnit = None,
     _road_delimiter: str = None,
 ) -> GroupUnit:
-    if _party_mirror and _bank_partylinks != None:
+    if _party_mirror and _treasury_partylinks != None:
         raise InvalidGroupException(
-            f"_bank_partylinks cannot be '{_bank_partylinks}' for a single_party GroupUnit. It must have no value."
+            f"_treasury_partylinks cannot be '{_treasury_partylinks}' for a single_party GroupUnit. It must have no value."
         )
 
     if _party_mirror is None:
@@ -218,7 +218,7 @@ def groupunit_shop(
         _agenda_debt=get_0_if_None(),
         _agenda_intent_credit=get_0_if_None(),
         _agenda_intent_debt=get_0_if_None(),
-        _bank_partylinks=_bank_partylinks,
+        _treasury_partylinks=_treasury_partylinks,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_groupunit.set_group_id(group_id=group_id)

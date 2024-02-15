@@ -101,7 +101,7 @@ def _update_layout_fig(x_fig: Figure, mode: str, x_agenda: AgendaUnit):
         x_title = "Idea Tree with task ideas in Red."
     x_title += f" (Items: {len(x_agenda._idea_dict)})"
     x_title += f" (_sum_healerhold_importance: {x_agenda._sum_healerhold_importance})"
-    x_title += f" (_markets_justified: {x_agenda._markets_justified})"
+    x_title += f" (_econs_justified: {x_agenda._econs_justified})"
     x_fig.update_layout(
         title_text=x_title,
         font_size=12,

@@ -833,14 +833,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_importa
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     assert sue_agenda._sum_healerhold_importance == 0
-    assert sue_agenda._market_dict == {}
+    assert sue_agenda._econ_dict == {}
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
     assert sue_agenda._sum_healerhold_importance == 0
-    assert sue_agenda._market_dict == {}
+    assert sue_agenda._econ_dict == {}
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance():
@@ -910,7 +910,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance()
     assert tue_idea._healerhold_importance == 0
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit("Sue")
@@ -920,14 +920,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     sue_healerhold = healerhold_shop({"Sue"})
     sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
-    assert len(sue_agenda._market_dict) == 0
-    assert sue_agenda._market_dict.get(oregon_road) is None
+    assert len(sue_agenda._econ_dict) == 0
+    assert sue_agenda._econ_dict.get(oregon_road) is None
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert len(sue_agenda._market_dict) == 1
-    assert sue_agenda._market_dict.get(oregon_road) != None
+    assert len(sue_agenda._econ_dict) == 1
+    assert sue_agenda._econ_dict.get(oregon_road) != None
 
     # WHEN
     week_road = sue_agenda.make_l1_road("weekdays")
@@ -938,9 +938,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
     # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert len(sue_agenda._market_dict) == 2
-    assert sue_agenda._market_dict.get(oregon_road) != None
-    assert sue_agenda._market_dict.get(mon_road) != None
+    assert len(sue_agenda._econ_dict) == 2
+    assert sue_agenda._econ_dict.get(oregon_road) != None
+    assert sue_agenda._econ_dict.get(mon_road) != None
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
@@ -953,10 +953,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert len(sue_agenda._market_dict) == 3
-    assert sue_agenda._market_dict.get(oregon_road) != None
-    assert sue_agenda._market_dict.get(mon_road) != None
-    assert sue_agenda._market_dict.get(tue_road) != None
+    assert len(sue_agenda._econ_dict) == 3
+    assert sue_agenda._econ_dict.get(oregon_road) != None
+    assert sue_agenda._econ_dict.get(mon_road) != None
+    assert sue_agenda._econ_dict.get(tue_road) != None
 
     # WHEN
     sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
@@ -967,8 +967,8 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
     sue_agenda.set_agenda_metrics()
     # THEN
     # display_agenda(sue_agenda, "Market").show()
-    assert len(sue_agenda._market_dict) == 0
-    assert sue_agenda._market_dict == {}
+    assert len(sue_agenda._econ_dict) == 0
+    assert sue_agenda._econ_dict == {}
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healers_dict():
@@ -1008,19 +1008,19 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healers_dict():
     assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_idea}
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_buildable_True():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_buildable_True():
     # GIVEN
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    assert sue_agenda._markets_buildable == False
+    assert sue_agenda._econs_buildable == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._markets_buildable
+    assert sue_agenda._econs_buildable
 
     # GIVEN
     nation_road = sue_agenda.make_l1_road("nation-state")
@@ -1036,22 +1036,22 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_buildable_True():
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._markets_buildable
+    assert sue_agenda._econs_buildable
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_buildable_False():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_buildable_False():
     # GIVEN
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    assert sue_agenda._markets_buildable == False
+    assert sue_agenda._econs_buildable == False
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._markets_buildable
+    assert sue_agenda._econs_buildable
 
     # GIVEN
     nation_road = sue_agenda.make_l1_road("nation-state")
@@ -1062,9 +1062,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_buildable_False():
     sue_agenda.add_idea(ideaunit_shop(bend_text), oregon_road)
     sue_healerhold = healerhold_shop({sue_text})
     sue_agenda.edit_idea_attr(bend_road, problem_bool=True, healerhold=sue_healerhold)
-    assert sue_agenda._markets_buildable
+    assert sue_agenda._econs_buildable
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._markets_buildable == False
+    assert sue_agenda._econs_buildable == False

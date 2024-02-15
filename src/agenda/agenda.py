@@ -7,7 +7,7 @@ from src._prime.road import (
     get_root_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_market_root_roadnode,
+    get_default_econ_root_roadnode,
     get_all_road_nodes,
     get_forefather_roads,
     create_road,
@@ -102,7 +102,7 @@ class PartyMissingException(Exception):
     pass
 
 
-class Exception_markets_justified(Exception):
+class Exception_econs_justified(Exception):
     pass
 
 
@@ -123,12 +123,12 @@ class AgendaUnit:
     _originunit: OriginUnit = None  # created by ClerkUnit process
     # set_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
-    _market_dict: dict[RoadUnit:IdeaUnit] = None
+    _econ_dict: dict[RoadUnit:IdeaUnit] = None
     _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
-    _markets_justified: bool = None
-    _markets_buildable: bool = None
+    _econs_justified: bool = None
+    _econs_buildable: bool = None
     _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
 
@@ -898,9 +898,9 @@ class AgendaUnit:
         self.set_agenda_metrics()
         if not problem:
             return self._idea_dict
-        if self._markets_justified == False:
-            raise Exception_markets_justified(
-                f"Cannot return problem set because _markets_justified={self._markets_justified}."
+        if self._econs_justified == False:
+            raise Exception_econs_justified(
+                f"Cannot return problem set because _econs_justified={self._econs_justified}."
             )
 
         return {
@@ -1600,12 +1600,12 @@ class AgendaUnit:
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
         return {x_idea._label: x_idea for x_idea in idea_list}
 
-    def _set_ancestors_metrics(self, road: RoadUnit, market_exceptions: bool = False):
+    def _set_ancestors_metrics(self, road: RoadUnit, econ_exceptions: bool = False):
         task_count = 0
         child_balancelines = None
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
-        market_justified_by_problem = True
+        econ_justified_by_problem = True
         healerhold_count = 0
 
         while ancestor_roads != []:
@@ -1639,20 +1639,20 @@ class AgendaUnit:
             x_idea_obj._all_party_debt = group_everyone
 
             if x_idea_obj._healerhold.any_group_id_exists():
-                market_justified_by_problem = False
+                econ_justified_by_problem = False
                 healerhold_count += 1
                 self._sum_healerhold_importance += x_idea_obj._agenda_importance
             if x_idea_obj._problem_bool:
-                market_justified_by_problem = True
+                econ_justified_by_problem = True
 
-        if market_justified_by_problem == False or healerhold_count > 1:
-            if market_exceptions:
-                raise Exception_markets_justified(
-                    f"IdeaUnit '{road}' cannot sponsor ancestor markets."
+        if econ_justified_by_problem == False or healerhold_count > 1:
+            if econ_exceptions:
+                raise Exception_econs_justified(
+                    f"IdeaUnit '{road}' cannot sponsor ancestor econs."
                 )
-            self._markets_justified = False
+            self._econs_justified = False
 
-    def _set_root_attributes(self, market_exceptions: bool):
+    def _set_root_attributes(self, econ_exceptions: bool):
         x_idearoot = self._idearoot
         x_idearoot._level = 0
         x_idearoot.set_parent_road(parent_road="")
@@ -1677,7 +1677,7 @@ class AgendaUnit:
         x_idearoot.promise = False
 
         if x_idearoot.is_kidless():
-            self._set_ancestors_metrics(self._idearoot.get_road(), market_exceptions)
+            self._set_ancestors_metrics(self._idearoot.get_road(), econ_exceptions)
             self._distribute_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
@@ -1686,7 +1686,7 @@ class AgendaUnit:
         coin_onset: float,
         parent_coin_cease: float,
         parent_idea: IdeaUnit,
-        market_exceptions: bool,
+        econ_exceptions: bool,
     ):
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_parent_road(parent_idea.get_road())
@@ -1714,7 +1714,7 @@ class AgendaUnit:
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
-            self._set_ancestors_metrics(idea_kid.get_road(), market_exceptions)
+            self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
             self._distribute_agenda_importance(idea=idea_kid)
 
     def _distribute_agenda_importance(self, idea: IdeaUnit):
@@ -1737,28 +1737,28 @@ class AgendaUnit:
         self._idea_dict = {self._idearoot.get_road(): self._idearoot}
 
     def _clear_agenda_base_metrics(self):
-        self._markets_justified = True
-        self._markets_buildable = False
+        self._econs_justified = True
+        self._econs_buildable = False
         self._sum_healerhold_importance = 0
-        self._market_dict = {}
+        self._econ_dict = {}
         self._healers_dict = {}
 
-    def set_agenda_metrics(self, market_exceptions: bool = False):
+    def set_agenda_metrics(self, econ_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
             self._clear_agenda_base_metrics()
-            self._execute_tree_traverse(market_exceptions)
+            self._execute_tree_traverse(econ_exceptions)
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
         self._after_all_tree_traverses_set_healerhold_importance()
 
-    def _execute_tree_traverse(self, market_exceptions: bool = False):
+    def _execute_tree_traverse(self, econ_exceptions: bool = False):
         self._pre_tree_traverse_credit_debt_reset()
-        self._set_root_attributes(market_exceptions)
+        self._set_root_attributes(econ_exceptions)
 
         coin_onset = self._idearoot._agenda_coin_onset
         parent_coin_cease = self._idearoot._agenda_coin_cease
@@ -1770,7 +1770,7 @@ class AgendaUnit:
                 coin_onset=coin_onset,
                 parent_coin_cease=parent_coin_cease,
                 parent_idea=self._idearoot,
-                market_exceptions=market_exceptions,
+                econ_exceptions=econ_exceptions,
             )
             cache_idea_list.append(idea_kid)
             coin_onset += idea_kid._agenda_importance
@@ -1790,7 +1790,7 @@ class AgendaUnit:
                         coin_onset=coin_onset,
                         parent_coin_cease=parent_coin_cease,
                         parent_idea=parent_idea,
-                        market_exceptions=market_exceptions,
+                        econ_exceptions=econ_exceptions,
                     )
                     cache_idea_list.append(idea_kid)
                     coin_onset += idea_kid._agenda_importance
@@ -1810,12 +1810,12 @@ class AgendaUnit:
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
-        self._set_market_dict()
+        self._set_econ_dict()
         self._healers_dict = self._get_healers_dict()
-        self._markets_buildable = self._get_markets_buildable()
+        self._econs_buildable = self._get_econs_buildable()
 
-    def _set_market_dict(self):
-        if self._markets_justified == False:
+    def _set_econ_dict(self):
+        if self._econs_justified == False:
             self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
             if self._sum_healerhold_importance == 0:
@@ -1824,27 +1824,27 @@ class AgendaUnit:
                 x_idea._healerhold_importance = (
                     x_idea._agenda_importance / self._sum_healerhold_importance
                 )
-            if self._markets_justified and x_idea._healerhold.any_group_id_exists():
-                self._market_dict[x_idea.get_road()] = x_idea
+            if self._econs_justified and x_idea._healerhold.any_group_id_exists():
+                self._econ_dict[x_idea.get_road()] = x_idea
 
     def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
         _healers_dict = {}
-        for x_market_road, x_market_idea in self._market_dict.items():
-            for x_group_id in x_market_idea._healerhold._group_ids:
+        for x_econ_road, x_econ_idea in self._econ_dict.items():
+            for x_group_id in x_econ_idea._healerhold._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
                     if _healers_dict.get(x_party_id) is None:
-                        _healers_dict[x_party_id] = {x_market_road: x_market_idea}
+                        _healers_dict[x_party_id] = {x_econ_road: x_econ_idea}
                     else:
                         healer_dict = _healers_dict.get(x_party_id)
-                        healer_dict[x_market_road] = x_market_idea
+                        healer_dict[x_econ_road] = x_econ_idea
         return _healers_dict
 
-    def _get_markets_buildable(self) -> bool:
+    def _get_econs_buildable(self) -> bool:
         return all(
-            is_roadunit_convertible_to_path(market_road, delimiter=self._road_delimiter)
+            is_roadunit_convertible_to_path(econ_road, delimiter=self._road_delimiter)
             != False
-            for market_road in self._market_dict.keys()
+            for econ_road in self._econ_dict.keys()
         )
 
     def _pre_tree_traverse_credit_debt_reset(self):
@@ -2192,7 +2192,7 @@ def agendaunit_shop(
     if _agent_id is None:
         _agent_id = ""
     if _world_id is None:
-        _world_id = get_default_market_root_roadnode()
+        _world_id = get_default_econ_root_roadnode()
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
 
@@ -2204,12 +2204,12 @@ def agendaunit_shop(
         _partys=get_empty_dict_if_none(None),
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
-        _market_dict=get_empty_dict_if_none(None),
+        _econ_dict=get_empty_dict_if_none(None),
         _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
-        _markets_justified=get_False_if_None(),
-        _markets_buildable=get_False_if_None(),
+        _econs_justified=get_False_if_None(),
+        _econs_buildable=get_False_if_None(),
         _sum_healerhold_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
@@ -2387,9 +2387,9 @@ def get_meldeeorderunit(
         primary_voice_rank_for_meldee = default_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
     else:
-        primary_voice_rank_for_meldee = primary_meldee_partyunit._bank_voice_rank
+        primary_voice_rank_for_meldee = primary_meldee_partyunit._treasury_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = (
-            primary_meldee_partyunit._bank_voice_hx_lowest_rank
+            primary_meldee_partyunit._treasury_voice_hx_lowest_rank
         )
         if primary_voice_rank_for_meldee is None:
             primary_voice_rank_for_meldee = default_voice_rank

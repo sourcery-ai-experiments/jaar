@@ -1,5 +1,5 @@
 from src._prime.road import (
-    get_default_market_root_roadnode as root_label,
+    get_default_econ_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
 )

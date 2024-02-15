@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop as c_beliefunit,
     RoadUnit,
 )
-from src._prime.road import get_default_market_root_roadnode as root_label, create_road
+from src._prime.road import get_default_econ_root_roadnode as root_label, create_road
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy

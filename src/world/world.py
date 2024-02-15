@@ -5,7 +5,7 @@ from src._prime.road import (
     PersonID,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.market.market import MarketUnit, MarketID
+from src.econ.econ import MarketUnit, MarketID
 from src.world.deal import DealUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.instrument.python import get_empty_dict_if_none
@@ -89,46 +89,46 @@ class WorldUnit:
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
-    def add_market_connection(
+    def add_econ_connection(
         self,
         treasurer_person_id: PersonID,
-        market_id: MarketID,
+        econ_id: MarketID,
         clerk_person_id: PersonID,
     ):
         if self.personunit_exists(treasurer_person_id) == False:
             self.add_personunit(treasurer_person_id)
         x_personunit = self.get_personunit_from_memory(treasurer_person_id)
 
-        if x_personunit.marketunit_exists(market_id) == False:
-            x_personunit.set_marketunit(market_id)
-        x_market = x_personunit.get_marketunit(market_id)
+        if x_personunit.econunit_exists(econ_id) == False:
+            x_personunit.set_econunit(econ_id)
+        x_econ = x_personunit.get_econunit(econ_id)
 
         if self.personunit_exists(clerk_person_id) == False:
             self.add_personunit(clerk_person_id)
 
-        if x_market.clerkunit_exists(treasurer_person_id) == False:
-            x_market.add_clerkunit(treasurer_person_id)
-        if x_market.clerkunit_exists(clerk_person_id) == False:
-            x_market.add_clerkunit(clerk_person_id)
+        if x_econ.clerkunit_exists(treasurer_person_id) == False:
+            x_econ.add_clerkunit(treasurer_person_id)
+        if x_econ.clerkunit_exists(clerk_person_id) == False:
+            x_econ.add_clerkunit(clerk_person_id)
 
     def get_world_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
         world_agenda = agendaunit_shop(person_id)
-        # for market_idea in x_personunit._gut_obj._market_dict.values():
+        # for econ_idea in x_personunit._gut_obj._econ_dict.values():
         #     pass
 
         # for person_problemunit in x_personunit._problems.values():
-        #             forum_agenda = x_marketunit.get_forum_agenda(person_id)
+        #             forum_agenda = x_econunit.get_forum_agenda(person_id)
         #             forum_agenda.set_world_id(world_agenda._world_id)
         #             world_agenda.meld(forum_agenda)
         return world_agenda
 
-    def create_person_market(
+    def create_person_econ(
         self,
         person_id: PersonID,
         x_problem_id: ProblemID,
         healer_id: HealerID,
-        market_id: MarketID,
+        econ_id: MarketID,
     ):
 
         self.add_personunit(person_id, replace_personunit=False, replace_alert=False)
@@ -136,17 +136,17 @@ class WorldUnit:
 
         self.add_personunit(healer_id, replace_personunit=False, replace_alert=False)
         # healer_personunit = self.get_personunit_from_memory(healer_id)
-        # healer_personunit.set_marketunit(market_id, False, x_problem_id)
-        # x_marketunit = healer_personunit.get_marketunit(market_id)
-        # x_marketunit.full_setup_clerkunit(healer_id)
+        # healer_personunit.set_econunit(econ_id, False, x_problem_id)
+        # x_econunit = healer_personunit.get_econunit(econ_id)
+        # x_econunit.full_setup_clerkunit(healer_id)
         # if healer_id != x_personunit.person_id:
-        #     self._set_partyunit(x_marketunit, x_personunit.person_id, healer_id)
+        #     self._set_partyunit(x_econunit, x_personunit.person_id, healer_id)
 
     def _set_partyunit(
-        self, x_marketunit: MarketUnit, person_id: PersonID, party_id: PersonID
+        self, x_econunit: MarketUnit, person_id: PersonID, party_id: PersonID
     ):
-        x_marketunit.full_setup_clerkunit(person_id)
-        person_clerkunit = x_marketunit.get_clerkunit(person_id)
+        x_econunit.full_setup_clerkunit(person_id)
+        person_clerkunit = x_econunit.get_clerkunit(person_id)
         person_contract = person_clerkunit.get_contract()
         person_contract.add_partyunit(party_id)
         person_clerkunit.save_contract_agenda(person_contract)

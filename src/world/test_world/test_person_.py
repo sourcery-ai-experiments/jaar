@@ -21,11 +21,11 @@ def test_PersonUnit_exists():
     assert x_person.worlds_dir is None
     assert x_person.persons_dir is None
     assert x_person.person_dir is None
-    assert x_person._markets_dir is None
+    assert x_person._econs_dir is None
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
-    assert x_person._market_objs is None
+    assert x_person._econ_objs is None
     assert x_person._road_delimiter is None
 
 
@@ -39,7 +39,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
-    assert x_person._markets_dir is None
+    assert x_person._econs_dir is None
 
     # GIVEN
     yao_text = "Yao"
@@ -53,7 +53,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
     assert x_person._gut_file_name == "gut.json"
     assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
-    assert x_person._markets_dir == f"{x_person.person_dir}/markets"
+    assert x_person._econs_dir == f"{x_person.person_dir}/econs"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter():
@@ -88,11 +88,11 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person.world_dir == f"{sue_person.worlds_dir}/{sue_person.world_id}"
     assert sue_person.persons_dir == f"{sue_person.world_dir}/persons"
     assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
-    assert sue_person._markets_dir == f"{sue_person.person_dir}/markets"
+    assert sue_person._econs_dir == f"{sue_person.person_dir}/econs"
     assert sue_person._gut_file_name == "gut.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._market_objs == {}
+    assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -272,7 +272,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.world_dir) is False
     assert os_path_exists(sue_person.persons_dir) is False
     assert os_path_exists(sue_person.person_dir) is False
-    assert os_path_exists(sue_person._markets_dir) is False
+    assert os_path_exists(sue_person._econs_dir) is False
     assert os_path_exists(sue_person._gut_path) is False
 
     # WHEN
@@ -283,4 +283,4 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.persons_dir)
     assert os_path_exists(sue_person.person_dir)
     assert os_path_exists(sue_person._gut_path)
-    assert os_path_exists(sue_person._markets_dir)
+    assert os_path_exists(sue_person._econs_dir)

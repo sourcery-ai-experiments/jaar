@@ -228,8 +228,8 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert()
     after_sue_agendaunit.add_partyunit(rico_text)
     after_sue_agendaunit.add_partyunit(carm_text)
     run_text = ",runners"
-    x_bank_partylinks = "Yao"
-    run_groupunit = groupunit_shop(run_text, _bank_partylinks=x_bank_partylinks)
+    x_treasury_partylinks = "Yao"
+    run_groupunit = groupunit_shop(run_text, _treasury_partylinks=x_treasury_partylinks)
     rico_creditor_weight = 77
     rico_debtor_weight = 88
     rico_partylink = partylink_shop(rico_text, rico_creditor_weight, rico_debtor_weight)
@@ -248,7 +248,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_insert()
     assert rico_grainunit.get_value("group_id") == run_text
     # print(f"\n{sue_learnunit.grainunits=}")
     print(f"\n{rico_grainunit=}")
-    assert rico_grainunit.get_value("_bank_partylinks") == x_bank_partylinks
+    assert rico_grainunit.get_value("_treasury_partylinks") == x_treasury_partylinks
 
     x_keylist = [grain_insert(), "partylink", run_text, rico_text]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)
@@ -275,8 +275,8 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update()
     before_sue_agendaunit.add_partyunit(rico_text)
     before_sue_agendaunit.add_partyunit(carm_text)
     run_text = ",runners"
-    x_bank_partylinks = "Yao"
-    run_groupunit = groupunit_shop(run_text, _bank_partylinks=x_bank_partylinks)
+    x_treasury_partylinks = "Yao"
+    run_groupunit = groupunit_shop(run_text, _treasury_partylinks=x_treasury_partylinks)
     before_rico_creditor_weight = 77
     before_rico_debtor_weight = 88
     run_groupunit.set_partylink(
@@ -289,7 +289,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update()
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     after_run_groupunit = after_sue_agendaunit.get_groupunit(run_text)
     swim_text = "swimming"
-    after_run_groupunit._bank_partylinks = swim_text
+    after_run_groupunit._treasury_partylinks = swim_text
     after_rico_creditor_weight = 55
     after_rico_debtor_weight = 66
     after_run_groupunit.edit_partylink(
@@ -306,7 +306,7 @@ def test_LearnUnit_add_all_grainunits_Creates_GrainUnit_group_partylink_update()
     assert rico_grainunit.get_value("group_id") == run_text
     # print(f"\n{sue_learnunit.grainunits=}")
     print(f"\n{rico_grainunit=}")
-    assert rico_grainunit.get_value("_bank_partylinks") == swim_text
+    assert rico_grainunit.get_value("_treasury_partylinks") == swim_text
 
     x_keylist = [grain_update(), "partylink", run_text, rico_text]
     rico_grainunit = get_nested_value(sue_learnunit.grainunits, x_keylist)

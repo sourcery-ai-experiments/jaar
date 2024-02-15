@@ -69,7 +69,7 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         #     road=f"{root_label},time,jajatime"
         # )
         minutes_belief = self.agenda_x._idearoot._beliefunits[
-            f"{self.agenda_x._market_id},time,jajatime"
+            f"{self.agenda_x._econ_id},time,jajatime"
         ]
 
         dt_open = self.agenda_x.get_time_dt_from_min(min=minutes_belief.open)
