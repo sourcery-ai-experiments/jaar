@@ -1,4 +1,4 @@
-from src.econ.econ import econunit_shop, MarketUnit
+from src.econ.econ import econunit_shop, EconUnit
 from src.econ.examples.econ_env_kit import (
     get_temp_env_econ_id,
     get_test_econ_dir,
@@ -9,7 +9,7 @@ from src.instrument.file import open_file
 from src.instrument.python import get_nested_value, x_get_dict
 
 
-def check_table_column_existence(tables_dict: dict, x_econ: MarketUnit) -> bool:
+def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
     with x_econ.get_treasury_conn() as treasury_conn:
         db_tables = get_db_tables(treasury_conn)
         db_tables_columns = get_db_columns(treasury_conn)

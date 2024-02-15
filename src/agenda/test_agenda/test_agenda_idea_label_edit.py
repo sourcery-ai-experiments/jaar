@@ -28,7 +28,7 @@ def test_AgendaUnit_edit_idea_label_FailsWhenIdeaDoesNotExist():
     assert str(excinfo.value) == f"Idea old_road='{no_idea_road}' does not exist"
 
 
-def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenMarketIDisNone():
+def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconIDisNone():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)

@@ -5,7 +5,7 @@ from src._prime.road import (
     PersonID,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.econ.econ import MarketUnit, MarketID
+from src.econ.econ import EconUnit, EconID
 from src.world.deal import DealUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.instrument.python import get_empty_dict_if_none
@@ -92,7 +92,7 @@ class WorldUnit:
     def add_econ_connection(
         self,
         treasurer_person_id: PersonID,
-        econ_id: MarketID,
+        econ_id: EconID,
         clerk_person_id: PersonID,
     ):
         if self.personunit_exists(treasurer_person_id) == False:
@@ -128,7 +128,7 @@ class WorldUnit:
         person_id: PersonID,
         x_problem_id: ProblemID,
         healer_id: HealerID,
-        econ_id: MarketID,
+        econ_id: EconID,
     ):
 
         self.add_personunit(person_id, replace_personunit=False, replace_alert=False)
@@ -143,7 +143,7 @@ class WorldUnit:
         #     self._set_partyunit(x_econunit, x_personunit.person_id, healer_id)
 
     def _set_partyunit(
-        self, x_econunit: MarketUnit, person_id: PersonID, party_id: PersonID
+        self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
     ):
         x_econunit.full_setup_clerkunit(person_id)
         person_clerkunit = x_econunit.get_clerkunit(person_id)

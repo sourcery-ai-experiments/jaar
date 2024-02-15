@@ -2,7 +2,7 @@ from src._prime.road import default_road_delimiter_if_none, create_road
 from src.instrument.file import delete_dir
 from os import path as os_path
 from src.econ.econ import (
-    MarketUnit,
+    EconUnit,
     econunit_shop,
     get_temp_env_person_id,
     get_temp_env_problem_id,
@@ -18,7 +18,7 @@ from src.econ.examples.econ_env_kit import (
 from pytest import raises as pytest_raises
 
 
-def test_load_econunit_CorrectlyLoadsMarketFromPersistentFiles(
+def test_load_econunit_CorrectlyLoadsEconFromPersistentFiles(
     env_dir_setup_cleanup,
 ):
     # create econunit1 "texas", create two clerkunits with contract agendas. Create treasury and cash river

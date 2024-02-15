@@ -1,6 +1,6 @@
 from src._prime.road import (
     default_road_delimiter_if_none,
-    MarketID,
+    EconID,
     PersonID,
     HealerID,
     ProblemID,
@@ -16,7 +16,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.econ.econ import MarketUnit, econunit_shop
+from src.econ.econ import EconUnit, econunit_shop
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
     save_file,
@@ -31,11 +31,11 @@ from numpy import average
 from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
-class InvalidMarketException(Exception):
+class InvalidEconException(Exception):
     pass
 
 
-class PersonCreateMarketUnitsException(Exception):
+class PersonCreateEconUnitsException(Exception):
     pass
 
 
@@ -50,7 +50,7 @@ class PersonUnit:
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
-    _econ_objs: dict[RoadUnit:MarketUnit] = None
+    _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
 
     def set_person_id(self, x_person_id: PersonID):
@@ -130,11 +130,11 @@ class PersonUnit:
         x_gut_agenda = self.get_gut_file_agenda()
         x_gut_agenda.set_agenda_metrics(econ_exceptions)
         if x_gut_agenda._econs_justified == False:
-            raise PersonCreateMarketUnitsException(
+            raise PersonCreateEconUnitsException(
                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_justified' is False."
             )
         if x_gut_agenda._econs_buildable == False:
-            raise PersonCreateMarketUnitsException(
+            raise PersonCreateEconUnitsException(
                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_buildable' is False."
             )
 
@@ -178,18 +178,18 @@ class PersonUnit:
     #                 "Problem Weight",
     #                 "HealerID",
     #                 "Healer Weight",
-    #                 "MarketID",
-    #                 "Market Weight",
+    #                 "EconID",
+    #                 "Econ Weight",
     #             ],
     #         )
     #         fig = treemap(
     #             df,
-    #             path=[Constant("PersonID"), "ProblemID", "HealerID", "MarketID"],
-    #             values="Market Weight",
+    #             path=[Constant("PersonID"), "ProblemID", "HealerID", "EconID"],
+    #             values="Econ Weight",
     #             # color="lifeExp",
     #             # hover_data=["iso_alpha"],
     #             # color_continuous_scale="RdBu",
-    #             # color_continuous_midpoint=average(df["Market Weight"], weights=df["pop"]),
+    #             # color_continuous_midpoint=average(df["Econ Weight"], weights=df["pop"]),
     #         )
     #         fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
     #         if show_fig:
@@ -200,7 +200,7 @@ def personunit_shop(
     person_id: PersonID,
     world_id: str = None,
     worlds_dir: str = None,
-    _econ_objs: dict[RoadUnit:MarketUnit] = None,
+    _econ_objs: dict[RoadUnit:EconUnit] = None,
     _road_delimiter: str = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(

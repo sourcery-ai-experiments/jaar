@@ -38,8 +38,8 @@ class ClerkID(PersonID):
     pass
 
 
-class MarketID(RoadNode):  # Created to help track the concept
-    """A RoadNode used to identify a Healer's Market"""
+class EconID(RoadNode):  # Created to help track the concept
+    """A RoadNode used to identify a Healer's Econ"""
 
     pass
 
@@ -70,7 +70,7 @@ class PersonRoad(RoadUnit):
     pass
 
 
-class MarketRoad(RoadUnit):
+class EconRoad(RoadUnit):
     """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
     PersonID
     AgendaRoad"""
@@ -207,7 +207,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_econ_root_roadnode() -> MarketID:
+def get_default_econ_root_roadnode() -> EconID:
     return "A"
 
 

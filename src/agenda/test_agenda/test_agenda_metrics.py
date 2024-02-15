@@ -903,7 +903,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance()
     )
     sue_agenda.set_agenda_metrics()
     # THEN
-    # display_agenda(sue_agenda, "Market").show()
+    # display_agenda(sue_agenda, "Econ").show()
     assert sue_agenda._sum_healerhold_importance == 0
     assert oregon_idea._healerhold_importance == 0
     assert mon_idea._healerhold_importance == 0
@@ -966,7 +966,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
     )
     sue_agenda.set_agenda_metrics()
     # THEN
-    # display_agenda(sue_agenda, "Market").show()
+    # display_agenda(sue_agenda, "Econ").show()
     assert len(sue_agenda._econ_dict) == 0
     assert sue_agenda._econ_dict == {}
 

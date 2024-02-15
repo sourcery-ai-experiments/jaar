@@ -2,7 +2,7 @@ from src._prime.road import default_road_delimiter_if_none, create_road
 from src.instrument.file import delete_dir
 from os import path as os_path
 from src.econ.econ import (
-    MarketUnit,
+    EconUnit,
     econunit_shop,
     get_temp_env_person_id,
     get_temp_env_problem_id,
@@ -18,12 +18,12 @@ from src.econ.examples.econ_env_kit import (
 from pytest import raises as pytest_raises
 
 
-def test_MarketUnit_exists():
+def test_EconUnit_exists():
     # GIVEN
     x_econ_id = "test1"
 
     # WHEN
-    x_econ = MarketUnit(x_econ_id, econ_dir=get_test_econ_dir())
+    x_econ = EconUnit(x_econ_id, econ_dir=get_test_econ_dir())
 
     # THEN
     assert x_econ.econ_id == x_econ_id
@@ -32,9 +32,9 @@ def test_MarketUnit_exists():
     assert x_econ._road_delimiter is None
 
 
-def test_MarketUnit_set_econ_id_CorrectlySetsAttr():
+def test_EconUnit_set_econ_id_CorrectlySetsAttr():
     # GIVEN
-    x_econunit = MarketUnit()
+    x_econunit = EconUnit()
     assert x_econunit.econ_id is None
 
     # WHEN
@@ -103,7 +103,7 @@ def test_econunit_shop_RaisesErrorIfParameterContains_road_delimiter():
     )
 
 
-def test_MarketUnit_set_road_delimiter_CorrectSetsAttribute(
+def test_EconUnit_set_road_delimiter_CorrectSetsAttribute(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -121,10 +121,10 @@ def test_MarketUnit_set_road_delimiter_CorrectSetsAttribute(
     assert x_econ._road_delimiter == slash_text
 
 
-def test_MarketUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
+def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create econ
     x_econ_id = get_temp_env_econ_id()
-    x_econ = MarketUnit(x_econ_id, econ_dir=get_test_econ_dir())
+    x_econ = EconUnit(x_econ_id, econ_dir=get_test_econ_dir())
     print(f"{get_test_econ_dir()=} {x_econ.econ_dir=}")
     # delete_dir(x_econ.get_object_root_dir())
     print(f"delete {x_econ.get_object_root_dir()=}")
@@ -315,7 +315,7 @@ def test_copy_evaluation_econ_CorrectlyRaisesError(env_dir_setup_cleanup):
     )
 
 
-def test_MarketUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_EconUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())

@@ -57,7 +57,7 @@ def test_PersonUnit_create_econ_dir_CreatesDir(worlds_dir_setup_cleanup):
     assert os_path_exists(dallas_dir)
 
 
-def test_PersonUnit_create_econunit_CreatesMarketUnit(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     # GIVEN
     pound_text = "#"
     sue_text = "Sue"
@@ -147,7 +147,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     )
 
 
-def test_PersonUnit_create_person_econunits_CreatesMarketUnits(
+def test_PersonUnit_create_person_econunits_CreatesEconUnits(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -168,7 +168,7 @@ def test_PersonUnit_create_person_econunits_CreatesMarketUnits(
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Market").show()
+    # display_agenda(sue_gut_agenda, mode="Econ").show()
     sue_person._save_agenda_to_gut_path(sue_gut_agenda)
 
     dallas_nodes = get_all_road_nodes(dallas_road)

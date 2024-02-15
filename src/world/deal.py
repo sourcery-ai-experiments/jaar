@@ -2,7 +2,7 @@ from src._prime.road import (
     RoadUnit,
     PersonRoad,
     PersonID,
-    MarketRoad,
+    EconRoad,
     PartyID,
 )
 from src.world.vow import VowID, VowUnit, vowunit_shop

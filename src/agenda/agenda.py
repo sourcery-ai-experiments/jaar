@@ -59,7 +59,7 @@ from src.agenda.idea import (
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
-    MarketID,
+    EconID,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
@@ -2183,7 +2183,7 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _agent_id: AgentID = None,
-    _world_id: MarketID = None,
+    _world_id: EconID = None,
     _weight: float = None,
     _auto_output_to_forum: bool = None,
     _road_delimiter: str = None,

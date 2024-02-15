@@ -1,5 +1,5 @@
 from src.instrument.file import delete_dir
-from src.econ.econ import econunit_shop, MarketUnit
+from src.econ.econ import econunit_shop, EconUnit
 from os import path as os_path
 from src.econ.examples.econ_env_kit import (
     get_temp_env_econ_id,
@@ -60,7 +60,7 @@ def test_econ_get_treasury_db_conn_CreatesBankDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = MarketUnit(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = EconUnit(get_temp_env_econ_id(), get_test_econ_dir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(x_econ.get_treasury_conn())

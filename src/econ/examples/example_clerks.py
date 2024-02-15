@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, MarketID
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, EconID
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.econ.clerk import clerkunit_shop, ClerkUnit
 from src.econ.examples.clerk_env_kit import get_temp_econ_id
@@ -21,7 +21,7 @@ def get_Jnode2node_agenda() -> AgendaUnit:
     return x_agenda
 
 
-def get_2node_agenda(world_id: MarketID = None) -> AgendaUnit:
+def get_2node_agenda(world_id: EconID = None) -> AgendaUnit:
     if world_id is None:
         world_id = get_temp_econ_id()
     a_text = "A"

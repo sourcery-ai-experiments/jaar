@@ -1,9 +1,9 @@
 from src._prime.road import create_road
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
-from src.econ.econ import MarketUnit
+from src.econ.econ import EconUnit
 
 
-# def get_econ_WithLaundryTaskMeldFromOneClerkToAnother(x_econ: MarketUnit):
+# def get_econ_WithLaundryTaskMeldFromOneClerkToAnother(x_econ: EconUnit):
 #     yao_text = "Yao"
 #     x_econ.create_new_clerkunit(clerk_id=yao_text)
 #     yao_clerk = x_econ.get_clerkunit(cid=yao_text)

@@ -7,7 +7,7 @@ from src._prime.road import (
     ProblemID,
     PersonID,
     PartyID,
-    MarketID,
+    EconID,
     validate_roadnode,
 )
 from src.agenda.agenda import (
@@ -82,8 +82,8 @@ class IntentBaseDoesNotExistException(Exception):
 
 
 @dataclass
-class MarketUnit:
-    econ_id: MarketID = None
+class EconUnit:
+    econ_id: EconID = None
     econ_dir: str = None
     _manager_person_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
@@ -612,18 +612,18 @@ class MarketUnit:
 
 
 def econunit_shop(
-    econ_id: MarketID,
+    econ_id: EconID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
     _clerkunits: dict[AgentID:ClerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,
-) -> MarketUnit:
+) -> EconUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
         econ_dir = f"/{econ_id}"
-    econ_x = MarketUnit(
+    econ_x = EconUnit(
         econ_dir=econ_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )

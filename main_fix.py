@@ -565,7 +565,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_econ(self):
         self.refresh_x(
             self.agendas_table,
-            ["Market Forum Agendas"],
+            ["Econ Forum Agendas"],
             self.get_agenda_agent_id_list(),
         )
         self.refresh_agent_ids()

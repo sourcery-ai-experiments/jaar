@@ -31,7 +31,7 @@ def _get_color_for_ideaunit_trace(x_ideaunit: IdeaUnit, mode: str) -> str:
             return "Black"
     elif mode == "Task":
         return "Red" if x_ideaunit.promise else "Pink"
-    elif mode == "Market":
+    elif mode == "Econ":
         if x_ideaunit._problem_bool and x_ideaunit._healerhold.any_group_id_exists():
             return "Purple"
         elif x_ideaunit._healerhold.any_group_id_exists():
@@ -109,7 +109,7 @@ def _update_layout_fig(x_fig: Figure, mode: str, x_agenda: AgendaUnit):
 
 
 def display_agenda(x_agenda: AgendaUnit, mode: str = None) -> Figure:
-    """Mode can be None, Task, Market"""
+    """Mode can be None, Task, Econ"""
 
     x_fig = Figure()
     current_y = 0

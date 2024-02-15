@@ -644,7 +644,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleI
     assert sue_agenda._econs_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleProblemAndMarket():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleProblemAndEcon():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -662,7 +662,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleP
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenMarketIsLevelAboveProblem():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsLevelAboveProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -683,7 +683,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenMarketI
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenMarketIsLevelBelowProblem():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsLevelBelowProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
@@ -700,7 +700,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenMarketI
     assert sue_agenda._econs_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenMarketIsLevelBelowProblem():
+def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
@@ -721,7 +721,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenMarketIsLevelBelo
     )
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoMarketsAreOneTheSameLine():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheSameLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_healerhold = healerhold_shop({"Yao"})

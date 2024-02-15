@@ -4,11 +4,11 @@ from src._prime.road import (
     PersonRoad,
     ProblemID,
     HealerID,
-    MarketID,
+    EconID,
     AgentID,
     PartyID,
     RoadUnit,
-    MarketRoad,
+    EconRoad,
     AgendaRoad,
     change_road,
     is_sub_road,
@@ -514,12 +514,12 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
     )
 
 
-def test_MarketRoad_Exists():
+def test_EconRoad_Exists():
     # GIVEN
     texas_text = "texas"
 
     # WHEN
-    texas_econroad = MarketRoad(texas_text)
+    texas_econroad = EconRoad(texas_text)
 
     # THEN
     assert texas_econroad != None
@@ -557,16 +557,14 @@ def test_HealerID_exists():
     )
 
 
-def test_MarketID_exists():
+def test_EconID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_world_id = MarketID(bob_text)
+    bob_world_id = EconID(bob_text)
     # THEN
     assert bob_world_id == bob_text
-    assert (
-        inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Market"
-    )
+    assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Econ"
 
 
 def test_AgentID_exists():
@@ -599,7 +597,7 @@ def test_PersonRoad_Exists():
     # GIVEN
     problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
     bob_road = create_road(problem1_road, HealerID("Bob"))
-    texas_road = create_road(bob_road, MarketID("texas"))
+    texas_road = create_road(bob_road, EconID("texas"))
     sports_road = create_road(texas_road, "sports")
 
     # WHEN

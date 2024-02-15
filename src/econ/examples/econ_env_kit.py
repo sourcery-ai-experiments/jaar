@@ -16,7 +16,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.econ.econ import MarketUnit, econunit_shop, get_temp_env_econ_id
+from src.econ.econ import EconUnit, econunit_shop, get_temp_env_econ_id
 from src.econ.examples.example_clerks import (
     get_1node_agenda as example_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
@@ -247,11 +247,11 @@ def create_example_econ(econ_id: str):
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
 
-def delete_dir_example_econ(econ_obj: MarketUnit):
+def delete_dir_example_econ(econ_obj: EconUnit):
     delete_dir(econ_obj.get_object_root_dir())
 
 
-def change_econ_id_example_econ(econ_obj: MarketUnit, new_econ_id):
+def change_econ_id_example_econ(econ_obj: EconUnit, new_econ_id):
     # base_dir = econ_obj.get_object_root_dir()
     base_dir = "src/econ/examples/econs"
     src_dir = f"{base_dir}/{econ_obj.econ_id}"
