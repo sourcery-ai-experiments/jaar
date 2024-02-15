@@ -10,14 +10,14 @@ from src.instrument.file import (
 from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_test_markets_dir()}/voice_rank_order_temp"
+    temp_dir = f"{get_test_market_dir()}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "Yao"
 
@@ -87,7 +87,7 @@ def test_market_bank_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"

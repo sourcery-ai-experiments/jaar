@@ -10,7 +10,7 @@ from src.market.market import (
     get_temp_env_market_id,
 )
 from src.market.examples.market_env_kit import (
-    get_test_markets_dir,
+    get_test_market_dir,
     change_market_id_example_market,
     copy_evaluation_market,
     env_dir_setup_cleanup,
@@ -23,11 +23,11 @@ def test_MarketUnit_exists():
     x_market_id = "test1"
 
     # WHEN
-    x_market = MarketUnit(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = MarketUnit(x_market_id, market_dir=get_test_market_dir())
 
     # THEN
     assert x_market.market_id == x_market_id
-    assert x_market.markets_dir == get_test_markets_dir()
+    assert x_market.market_dir == get_test_market_dir()
     assert x_market._manager_person_id is None
     assert x_market._road_delimiter is None
 
@@ -57,7 +57,7 @@ def test_marketunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # WHEN
     x_market = marketunit_shop(
         x_market_id,
-        get_test_markets_dir(),
+        get_test_market_dir(),
         _manager_person_id=sue_text,
     )
 
@@ -111,7 +111,7 @@ def test_MarketUnit_set_road_delimiter_CorrectSetsAttribute(
     market_dir = f"src/market/examples/markets/{x_market_id}"
     sue_text = "Sue"
     x_market = marketunit_shop(
-        x_market_id, get_test_markets_dir(), _manager_person_id=sue_text
+        x_market_id, get_test_market_dir(), _manager_person_id=sue_text
     )
     assert x_market._road_delimiter == default_road_delimiter_if_none()
 
@@ -126,8 +126,8 @@ def test_MarketUnit_set_road_delimiter_CorrectSetsAttribute(
 def test_MarketUnit_set_market_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create market
     x_market_id = get_temp_env_market_id()
-    x_market = MarketUnit(x_market_id, markets_dir=get_test_markets_dir())
-    print(f"{get_test_markets_dir()=} {x_market.markets_dir=}")
+    x_market = MarketUnit(x_market_id, market_dir=get_test_market_dir())
+    print(f"{get_test_market_dir()=} {x_market.market_dir=}")
     # delete_dir(x_market.get_object_root_dir())
     print(f"delete {x_market.get_object_root_dir()=}")
     market_dir = f"src/market/examples/markets/{x_market_id}"
@@ -185,7 +185,7 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     print(f"{new_market_dir=}")
 
     x_market = marketunit_shop(
-        market_id=old_x_market_id, markets_dir=get_test_markets_dir()
+        market_id=old_x_market_id, market_dir=get_test_market_dir()
     )
     # delete_dir(x_market.get_object_root_dir())
     # print(f"{x_market.get_object_root_dir()=}")
@@ -210,6 +210,7 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     assert x_market.market_id != new_x_market_id
 
     # WHEN
+    print(f"{new_x_market_id=} {old_x_market_id=}")
     change_market_id_example_market(market_obj=x_market, new_market_id=new_x_market_id)
 
     # THEN check agendas src directory created
@@ -218,6 +219,9 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_market_file_path) is False
     assert os_path.exists(old_forum_dir) is False
     assert os_path.exists(old_clerkunits_dir) is False
+    assert x_market.market_id == new_x_market_id
+    print(f"{x_market.get_forum_dir()=}")
+    print(f"           {old_forum_dir=}")
     assert x_market.get_forum_dir() != old_forum_dir
     assert x_market.get_clerkunits_dir() != old_clerkunits_dir
 
@@ -228,7 +232,6 @@ def test_change_market_id_example_market_CorrectlyChangesDirAndFiles(
     assert os_path.exists(new_clerkunits_dir)
     assert x_market.get_forum_dir() == new_forum_dir
     assert x_market.get_clerkunits_dir() == new_clerkunits_dir
-    assert x_market.market_id == new_x_market_id
 
     # Undo change to directory
     # delete_dir(dir=old_market_dir)
@@ -247,7 +250,7 @@ def test_copy_evaluation_market_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
     old_forum_dir = f"{old_market_dir}/{forum_text}"
     old_clerkunits_dir = f"{old_market_dir}/clerkunits"
 
-    x_market = marketunit_shop(old_x_market_id, get_test_markets_dir())
+    x_market = marketunit_shop(old_x_market_id, get_test_market_dir())
     x_market.set_market_dirs()
 
     assert os_path.exists(old_market_dir)
@@ -306,7 +309,7 @@ def test_copy_evaluation_market_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup
 def test_copy_evaluation_market_CorrectlyRaisesError(env_dir_setup_cleanup):
     # GIVEN create market
     old_x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(old_x_market_id, get_test_markets_dir())
+    x_market = marketunit_shop(old_x_market_id, get_test_market_dir())
     x_market.set_market_dirs()
 
     # WHEN/THEN
@@ -323,7 +326,7 @@ def test_copy_evaluation_market_CorrectlyRaisesError(env_dir_setup_cleanup):
 def test_MarketUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     bob_text = "Bob"
     market_road_with_woot = create_road(x_market.market_id, bob_text)
     market_road_wo_root = bob_text

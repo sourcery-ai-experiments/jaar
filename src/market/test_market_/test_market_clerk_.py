@@ -1,10 +1,10 @@
 from src.market.market import marketunit_shop
 from src.market.clerk import clerkunit_shop
 from src.market.examples.market_env_kit import (
-    get_temp_env_dir,
+    get_test_market_dir,
     get_temp_env_market_id,
     env_dir_setup_cleanup,
-    get_test_markets_dir,
+    get_test_market_dir,
 )
 from os import path as os_path
 
@@ -12,7 +12,7 @@ from os import path as os_path
 def test_marketunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     print(f"create env '{x_market_id}' directories.")
     x_market.set_market_dirs(in_memory_bank=True)
     timmy_text = "timmy"
@@ -31,7 +31,7 @@ def test_marketunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
 def test_marketunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_market.get_clerkunits_dir()}/{old_bob_text}"
@@ -72,7 +72,7 @@ def test_marketunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
 def test_marketunit_del_clerkunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     xia_text = "Xia"
     xia_dir = f"{x_market.get_clerkunits_dir()}/{xia_text}"
     xia_file_path = f"{xia_dir}/contract_agenda.json"
@@ -93,7 +93,7 @@ def test_marketunit_del_clerkunit_dir_WorksCorrectly(env_dir_setup_cleanup):
 def test_marketunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     bob_text = "Bob"
     bob_dir = f"{x_market.get_clerkunits_dir()}/{bob_text}"
@@ -110,7 +110,7 @@ def test_marketunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     print(f"{bob_file_path=}")
     bob_static_clerkunit = clerkunit_shop(
         agent_id=bob_text,
-        env_dir=get_temp_env_dir(),
+        env_dir=get_test_market_dir(),
         market_id=get_temp_env_market_id(),
     )
     bob_gen_clerkunit = x_market.get_clerkunit(bob_text)
@@ -128,7 +128,7 @@ def test_marketunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
 def test_marketunit_clerkunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     bob_text = "Bob"
 

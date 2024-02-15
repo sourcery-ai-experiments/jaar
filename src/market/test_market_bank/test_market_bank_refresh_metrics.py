@@ -8,7 +8,7 @@ from src.agenda.agenda import (
 from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.instrument.sqlite import get_single_result
@@ -40,7 +40,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankInMemory(
 ):
     # GIVEN
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -66,7 +66,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyDeletesOldBankFile(
 ):
     # GIVEN
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=False)
 
@@ -92,7 +92,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesPartyunitTable
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -132,9 +132,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesPartyunitTable
     x_market.refresh_bank_forum_agendas_data()
 
     # THEN
-    assert (
-        get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 12
-    )
+    assert get_single_result(x_market.get_bank_conn(), partyunit_count_sqlstr) == 12
 
 
 def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
@@ -142,7 +140,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -171,7 +169,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulatesAgendaTable01(
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -200,7 +198,7 @@ def test_market_refresh_bank_forum_agendas_data_CorrectlyPopulates_agenda_groupu
 ):
     # GIVEN
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -230,7 +228,7 @@ def test_market_set_agenda_bank_attrs_CorrectlyPopulatesAgenda_partylinks(
 ):
     # GIVEN
     x_market = marketunit_shop(
-        market_id=get_temp_env_market_id(), markets_dir=get_test_markets_dir()
+        market_id=get_temp_env_market_id(), market_dir=get_test_market_dir()
     )
     x_market.set_market_dirs(in_memory_bank=True)
 
@@ -299,7 +297,7 @@ def test_market_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -323,7 +321,7 @@ def test_market_refresh_bank_forum_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -354,7 +352,7 @@ def test_market_refresh_bank_forum_agendas_data_Populates_agenda_ideaunit_table(
 
 def test_market_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -394,7 +392,7 @@ def test_market_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulate
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -421,7 +419,7 @@ def test_refresh_bank_forum_agendas_data_Populates_agenda_idea_beliefunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     # TODO create 3 agendas with varying numbers of beliefs
@@ -479,7 +477,7 @@ def test_market_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 partyunit rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -505,7 +503,7 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     bob_text = "Bob"
     tom_text = "Tom"

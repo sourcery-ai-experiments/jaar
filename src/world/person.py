@@ -8,6 +8,7 @@ from src._prime.road import (
     RoadUnit,
     RoadNode,
     get_all_road_nodes,
+    get_terminus_node,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.agenda.agenda import (
@@ -15,7 +16,8 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.market.market import MarketUnit
+from src.market.market import MarketUnit, marketunit_shop
+from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
     save_file,
     open_file,
@@ -40,10 +42,11 @@ class PersonUnit:
     world_id: str = None
     persons_dir: str = None
     person_dir: str = None
+    _markets_dir: str = None
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
-    _markets_dir: str = None
+    _market_objs: dict[RoadUnit:MarketUnit] = None
     _road_delimiter: str = None
 
     def set_person_id(self, x_person_id: PersonID):
@@ -83,7 +86,11 @@ class PersonUnit:
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
             self._save_agenda_to_gut_path(
-                agendaunit_shop(_agent_id=self.person_id, _world_id=self.world_id)
+                agendaunit_shop(
+                    _agent_id=self.person_id,
+                    _world_id=self.world_id,
+                    _road_delimiter=self._road_delimiter,
+                )
             )
 
     def get_gut_file_agenda(self) -> AgendaUnit:
@@ -101,6 +108,21 @@ class PersonUnit:
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
         x_market_path = self._get_market_path(road_nodes)
         set_dir(x_market_path)
+        return x_market_path
+
+    def _create_marketunit(self, x_roadunit: RoadUnit):
+        x_market_path = self._create_market_dir(x_roadunit)
+        terminus_node = get_terminus_node(x_roadunit, delimiter=self._road_delimiter)
+        x_marketunit = marketunit_shop(
+            market_id=terminus_node,
+            market_dir=x_market_path,
+            _manager_person_id=self.person_id,
+            _road_delimiter=self._road_delimiter,
+        )
+        x_marketunit.set_market_dirs()
+        self._market_objs[x_roadunit] = x_marketunit
+
+        # set manager_person_id contract
 
     # def popup_visualization(
     #     self, marketlink_by_problem: bool = False, show_fig: bool = True
@@ -155,11 +177,13 @@ def personunit_shop(
     person_id: PersonID,
     world_id: str = None,
     worlds_dir: str = None,
+    _market_objs: dict[RoadUnit:MarketUnit] = None,
     _road_delimiter: str = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
         world_id=world_id,
         worlds_dir=worlds_dir,
+        _market_objs=get_empty_dict_if_none(_market_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_personunit.set_person_id(person_id)

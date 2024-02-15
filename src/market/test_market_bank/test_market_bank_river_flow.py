@@ -2,7 +2,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.instrument.sqlite import get_single_result
@@ -33,7 +33,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -103,7 +103,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -171,7 +171,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -246,7 +246,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -325,7 +325,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -386,7 +386,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyPopulatespartybankunitTable0
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -466,7 +466,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRang
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -535,7 +535,7 @@ def test_market_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"

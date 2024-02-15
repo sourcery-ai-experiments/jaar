@@ -10,7 +10,7 @@ from src.market.market import (
     get_temp_env_market_id,
 )
 from src.market.examples.market_env_kit import (
-    get_test_markets_dir,
+    get_test_market_dir,
     change_market_id_example_market,
     copy_evaluation_market,
     env_dir_setup_cleanup,

@@ -1,7 +1,7 @@
 from src.market.market import marketunit_shop, MarketUnit
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.market.bank_sqlstr import get_db_tables, get_db_columns
@@ -32,7 +32,7 @@ def check_table_column_existence(tables_dict: dict, x_market: MarketUnit) -> boo
 
 def test_market_set_market_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create market
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     # WHEN
     x_market.set_market_dirs(in_memory_bank=True)

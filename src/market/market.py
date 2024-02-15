@@ -84,7 +84,7 @@ class IntentBaseDoesNotExistException(Exception):
 @dataclass
 class MarketUnit:
     market_id: MarketID = None
-    markets_dir: str = None
+    market_dir: str = None
     _manager_person_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
     _bank_db = None
@@ -343,7 +343,7 @@ class MarketUnit:
         return f"{self.get_object_root_dir()}/bank.db"
 
     def get_object_root_dir(self):
-        return f"{self.markets_dir}/{self.market_id}"
+        return self.market_dir
 
     def _create_main_file_if_null(self, x_dir):
         market_file_name = "market.json"
@@ -613,7 +613,7 @@ class MarketUnit:
 
 def marketunit_shop(
     market_id: MarketID,
-    markets_dir: str = None,
+    market_dir: str = None,
     _manager_person_id: PersonID = None,
     _clerkunits: dict[AgentID:ClerkUnit] = None,
     in_memory_bank: bool = None,
@@ -621,10 +621,10 @@ def marketunit_shop(
 ) -> MarketUnit:
     if in_memory_bank is None:
         in_memory_bank = True
-    if markets_dir is None:
-        markets_dir = f"/markets/{market_id}"
+    if market_dir is None:
+        market_dir = f"/{market_id}"
     market_x = MarketUnit(
-        markets_dir=markets_dir,
+        market_dir=market_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
     )
     if _manager_person_id is None:

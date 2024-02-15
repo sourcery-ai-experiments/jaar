@@ -3,7 +3,7 @@ from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
     env_dir_setup_cleanup,
-    get_test_markets_dir,
+    get_test_market_dir,
 )
 from src.market.examples.example_clerks import (
     get_agenda_assignment_laundry_example1,
@@ -12,7 +12,7 @@ from src.market.examples.example_clerks import (
 
 def test_market_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     amer_text = "Amer"
     x_market.create_new_clerkunit(clerk_id=amer_text)
     amer_clerk = x_market.get_clerkunit(cid=amer_text)
@@ -79,7 +79,7 @@ def test_market_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_clean
 
 def test_market_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     amer_text = "Amer"
     beto_text = "Beto"
     x_market.create_new_clerkunit(clerk_id=amer_text)

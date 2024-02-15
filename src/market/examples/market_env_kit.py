@@ -27,7 +27,7 @@ from os import rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_temp_env_dir():
+def get_test_market_dir():
     return f"{get_test_markets_dir()}/{get_temp_env_market_id()}"
 
 
@@ -37,7 +37,7 @@ def get_test_markets_dir():
 
 @pytest_fixture()
 def env_dir_setup_cleanup():
-    env_dir = get_temp_env_dir()
+    env_dir = get_test_market_dir()
     delete_dir(dir=env_dir)
     yield env_dir
     delete_dir(dir=env_dir)
@@ -72,7 +72,7 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex3():
     market_id = "ex3"
-    x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(market_id=market_id, market_dir=get_test_market_dir())
     delete_dir(x_market.get_object_root_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     x_market.save_forum_agenda(example_get_1node_agenda())
@@ -128,7 +128,7 @@ def _delete_and_set_ex3():
 
 def _delete_and_set_ex4():
     x_market_id = "ex4"
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     delete_dir(x_market.get_object_root_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     x_market.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
@@ -139,7 +139,7 @@ def _delete_and_set_ex4():
 
 def _delete_and_set_ex5():
     x_market_id = "ex5"
-    x_p = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_p = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     delete_dir(x_p.get_object_root_dir())
     x_p.set_market_dirs(in_memory_bank=True)
 
@@ -202,7 +202,7 @@ def _delete_and_set_ex5():
 def _delete_and_set_ex6(x_market_id: str = None):
     if x_market_id is None:
         x_market_id = "ex6"
-    x_market = marketunit_shop(x_market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(x_market_id, market_dir=get_test_market_dir())
     delete_dir(x_market.get_object_root_dir())
     x_market.set_market_dirs(in_memory_bank=False)
 
@@ -243,7 +243,7 @@ def _delete_and_set_ex6(x_market_id: str = None):
 
 
 def create_example_market(market_id: str):
-    x_market = marketunit_shop(market_id=market_id, markets_dir=get_test_markets_dir())
+    x_market = marketunit_shop(market_id=market_id, market_dir=get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
 
 
@@ -258,6 +258,7 @@ def change_market_id_example_market(market_obj: MarketUnit, new_market_id):
     dst_dir = f"{base_dir}/{new_market_id}"
     os_rename(src=src_dir, dst=dst_dir)
     market_obj.set_market_id(market_id=new_market_id)
+    market_obj.market_dir = dst_dir
 
 
 class InvalidmarketCopyException(Exception):

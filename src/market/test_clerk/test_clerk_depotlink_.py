@@ -242,7 +242,7 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     # GIVEN
     env_dir = get_temp_clerkunit_dir()
     market_id = get_temp_env_market_id()
-    sx = marketunit_shop(market_id=market_id, markets_dir=env_dir)
+    sx = marketunit_shop(market_id=market_id, market_dir=env_dir)
     yao_text = "Yao"
     sx.create_new_clerkunit(clerk_id=yao_text)
     yao_agenda = sx.get_clerkunit(cid=yao_text)

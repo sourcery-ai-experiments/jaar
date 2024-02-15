@@ -2,7 +2,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.market.bank_sqlstr import (
@@ -16,7 +16,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -55,7 +55,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -91,9 +91,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     x_market.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
     with x_market.get_bank_conn() as bank_conn:
         bank_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
-        assert (
-            len(get_river_circle_dict(bank_conn, cash_agent_id=sal_text)) == 0
-        )
+        assert len(get_river_circle_dict(bank_conn, cash_agent_id=sal_text)) == 0
 
     # WHEN / THEN
     mstr_sqlstr = get_river_circle_table_insert_sqlstr(cash_agent_id=sal_text)

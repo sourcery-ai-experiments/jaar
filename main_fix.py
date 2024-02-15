@@ -19,7 +19,7 @@ from src.market.examples.market_env_kit import (
     create_example_market,
     delete_dir_example_market,
     change_market_id_example_market,
-    get_test_markets_dir,
+    get_test_market_dir,
 )
 
 from src.agenda.party import get_depotlink_types
@@ -99,7 +99,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         setup_test_example_environment()
         first_env = "ex5"
         self.market_x = marketunit_shop(
-            market_id=first_env, markets_dir=get_test_markets_dir()
+            market_id=first_env, market_dir=get_test_market_dir()
         )
         self.refresh_market()
         self.market_id_combo_refresh()
@@ -127,7 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def market_load_from_file(self):
         market_selected = self.market_id_combo.currentText()
         self.market_x = marketunit_shop(
-            market_id=market_selected, markets_dir=get_test_markets_dir()
+            market_id=market_selected, market_dir=get_test_market_dir()
         )
         self.market_x.set_market_dirs(in_memory_bank=False)
         self.market_id.setText(market_selected)

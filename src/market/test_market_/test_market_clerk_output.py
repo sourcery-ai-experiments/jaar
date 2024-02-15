@@ -9,7 +9,7 @@ from src.market.examples.example_clerks import (
 )
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 
@@ -18,7 +18,7 @@ def test_market_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     input_agenda = example_get_6node_agenda()
     x_market.save_forum_agenda(input_agenda)
     # x_market.save_forum_agenda(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
@@ -92,7 +92,7 @@ def test_market_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x1_agenda = example_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
@@ -149,9 +149,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_test_markets_dir()
+    env_dir = get_test_market_dir()
     market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(market_id=market_id, markets_dir=env_dir)
+    x_market = marketunit_shop(market_id=market_id, market_dir=env_dir)
     x_market.set_market_dirs(in_memory_bank=True)
     # ux = clerkunit_shop(agent_id=healer1_text, env_dir=env_dir)
 

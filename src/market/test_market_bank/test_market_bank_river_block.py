@@ -5,7 +5,7 @@ from src.market.market import (
 )
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.market.bank_sqlstr import (
@@ -27,7 +27,7 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -48,9 +48,7 @@ def test_market_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable
     tim_due_paid = 0.5151
     tim_credit_score = 0.5252
     tim_voice_rank = 33
-    tim_partyunit.set_banking_data(
-        tim_due_paid, None, tim_credit_score, tim_voice_rank
-    )
+    tim_partyunit.set_banking_data(tim_due_paid, None, tim_credit_score, tim_voice_rank)
     assert tim_partyunit._bank_due_paid == tim_due_paid
     assert tim_partyunit._bank_credit_score == tim_credit_score
     assert tim_partyunit._bank_voice_rank == tim_voice_rank
@@ -156,7 +154,7 @@ def test_RiverBlockUnit_block_returned_WorksCorrectly():
 
 def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.refresh_bank_forum_agendas_data()
 
     bob_text = "Bob"
@@ -221,7 +219,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     bob_text = "Bob"
     tim_text = "Tim"
@@ -368,15 +366,9 @@ def test_agenda_set_banking_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
     assert x_agenda._partys.get(elu_text)._bank_due_paid == 0.003
     assert x_agenda._partys.get(elu_text)._bank_due_diff == 0.007
 
-    partybankunit_sam = PartyBankUnit(
-        bob_text, sam_text, 0.209, 0, 0.034, None, None
-    )
-    partybankunit_wil = PartyBankUnit(
-        bob_text, wil_text, 0.501, 0, 0.024, None, None
-    )
-    partybankunit_fry = PartyBankUnit(
-        bob_text, fry_text, 0.111, 0, 0.006, None, None
-    )
+    partybankunit_sam = PartyBankUnit(bob_text, sam_text, 0.209, 0, 0.034, None, None)
+    partybankunit_wil = PartyBankUnit(bob_text, wil_text, 0.501, 0, 0.024, None, None)
+    partybankunit_fry = PartyBankUnit(bob_text, fry_text, 0.111, 0, 0.006, None, None)
     partybankunits = {
         partybankunit_sam.due_agent_id: partybankunit_sam,
         partybankunit_wil.due_agent_id: partybankunit_wil,
@@ -402,7 +394,7 @@ def test_get_agenda_partyunit_table_update_bank_due_paid_sqlstr_CorrectlyPopulat
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example market with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -459,9 +451,7 @@ def test_get_agenda_partyunit_table_update_bank_due_paid_sqlstr_CorrectlyPopulat
 
     # THEN
     with x_market.get_bank_conn() as bank_conn:
-        partybankunits = get_partybankunit_dict(
-            bank_conn, cash_agent_id=bob_text
-        )
+        partybankunits = get_partybankunit_dict(bank_conn, cash_agent_id=bob_text)
         print(f"{partybankunits=}")
 
     assert len(partybankunits) == 2

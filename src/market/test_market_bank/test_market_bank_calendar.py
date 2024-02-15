@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 from src.market.market import marketunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.market.bank_sqlstr import (
@@ -128,7 +128,7 @@ def test_market_bank_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
 ):
     # GIVEN
     market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(market_id, get_test_markets_dir())
+    x_market = marketunit_shop(market_id, get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")
@@ -188,7 +188,7 @@ def test_market_bank_insert_intent_into_bank_RaisesBaseDoesNotExistError():
     # GIVEN
     # A agenda that has 1 intent item
     market_id = get_temp_env_market_id()
-    x_market = marketunit_shop(market_id, get_test_markets_dir())
+    x_market = marketunit_shop(market_id, get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
 
@@ -214,7 +214,7 @@ def test_market_bank_insert_intent_into_bank_RaisesBaseDoesNotExistError():
 def test_market_bank_insert_intent_into_bank_CorrectlyPopulatesBank():
     # GIVEN
     # A agenda that has 1 intent item
-    x_market = marketunit_shop(get_temp_env_market_id(), get_test_markets_dir())
+    x_market = marketunit_shop(get_temp_env_market_id(), get_test_market_dir())
     x_market.set_market_dirs(in_memory_bank=True)
     x_market.refresh_bank_forum_agendas_data()
     calendar_count_sqlstr = get_table_count_sqlstr("calendar")

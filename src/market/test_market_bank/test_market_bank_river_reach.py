@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.market.examples.market_env_kit import (
     get_temp_env_market_id,
-    get_test_markets_dir,
+    get_test_market_dir,
     env_dir_setup_cleanup,
 )
 from src.instrument.sqlite import get_single_result
@@ -267,7 +267,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # x_market = _delete_and_set_ex6()
     #     # # x_market.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
-    #     # x_market = marketunit_shop(market_id=ex6_text, markets_dir=get_test_markets_dir())
+    #     # x_market = marketunit_shop(market_id=ex6_text, market_dir=get_test_market_dir())
     #     # x_market.set_road_nodes(sal_text)
     #     # x_market.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 
