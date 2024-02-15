@@ -46,12 +46,12 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     sue_agenda._markets_buildable = "swimmers"
     sue_agenda._sum_healerhold_importance = x_sum_healerhold_importance
     sue_agenda._market_dict = {"run": "run"}
-    sue_agenda._healer_dict = {"run": "run"}
+    sue_agenda._healers_dict = {"run": "run"}
     assert sue_agenda._markets_justified == x_market_justifed
     assert sue_agenda._markets_buildable != False
     assert sue_agenda._sum_healerhold_importance == x_sum_healerhold_importance
     assert sue_agenda._market_dict != {}
-    assert sue_agenda._healer_dict != {}
+    assert sue_agenda._healers_dict != {}
 
     # WHEN
     sue_agenda._clear_agenda_base_metrics()
@@ -62,7 +62,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     assert sue_agenda._markets_buildable == False
     assert sue_agenda._sum_healerhold_importance == 0
     assert not sue_agenda._market_dict
-    assert not sue_agenda._healer_dict
+    assert not sue_agenda._healers_dict
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
@@ -698,6 +698,27 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenMarke
 
     # THEN
     assert sue_agenda._markets_justified == False
+
+
+def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenMarketIsLevelBelowProblem():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    texas_text = "Texas"
+    texas_road = sue_agenda.make_l1_road(texas_text)
+    yao_healerhold = healerhold_shop({"Yao"})
+    texas_idea = ideaunit_shop(texas_text, _healerhold=yao_healerhold)
+    sue_agenda.add_l1_idea(texas_idea)
+    elpaso_idea = ideaunit_shop("El Paso", _problem_bool=True)
+    sue_agenda.add_idea(elpaso_idea, texas_road)
+    assert sue_agenda._markets_justified == False
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        sue_agenda.set_agenda_metrics(market_exceptions=True)
+    assert (
+        str(excinfo.value)
+        == f"IdeaUnit '{elpaso_idea.get_road()}' cannot sponsor ancestor markets."
+    )
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_justified_WhenTwoMarketsAreOneTheSameLine():

@@ -971,19 +971,19 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_market_dict_v1():
     assert sue_agenda._market_dict == {}
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healer_dict():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healers_dict():
     # GIVEN
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    assert sue_agenda._healer_dict == {}
+    assert sue_agenda._healers_dict == {}
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._healer_dict == {}
+    assert sue_agenda._healers_dict == {}
 
     # GIVEN
     nation_road = sue_agenda.make_l1_road("nation-state")
@@ -995,17 +995,17 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healer_dict():
     week_road = sue_agenda.make_l1_road("weekdays")
     bob_healerhold = healerhold_shop({bob_text})
     sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
-    assert sue_agenda._healer_dict == {}
+    assert sue_agenda._healers_dict == {}
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert len(sue_agenda._healer_dict) == 2
+    assert len(sue_agenda._healers_dict) == 2
     week_idea = sue_agenda.get_idea_obj(week_road)
-    assert sue_agenda._healer_dict.get(bob_text) == {week_road: week_idea}
+    assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_idea}
     oregon_idea = sue_agenda.get_idea_obj(oregon_road)
-    assert sue_agenda._healer_dict.get(sue_text) == {oregon_road: oregon_idea}
+    assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_idea}
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_markets_buildable_True():

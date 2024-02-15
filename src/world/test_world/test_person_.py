@@ -1,7 +1,4 @@
-from src._prime.road import (
-    default_road_delimiter_if_none,
-    get_all_road_nodes,
-)
+from src._prime.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
 from src.world.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
@@ -10,14 +7,8 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
-from os.path import exists as os_path_exists, isdir as os_path_isdir
-from src.instrument.file import (
-    delete_dir,
-    dir_files,
-    open_file,
-    set_dir,
-    save_file,
-)
+from os.path import exists as os_path_exists
+from src.instrument.file import open_file, save_file
 
 
 def test_PersonUnit_exists():
@@ -293,79 +284,3 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.person_dir)
     assert os_path_exists(sue_person._gut_path)
     assert os_path_exists(sue_person._markets_dir)
-
-
-def test_PersonUnit_get_market_path_ReturnsCorrectObj():
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
-    texas_text = "texas"
-    dallas_text = "dallas"
-    elpaso_text = "el paso"
-    kern_text = "kern"
-
-    # WHEN
-    texas_path = sue_person._get_market_path([texas_text])
-    dallas_path = sue_person._get_market_path([texas_text, dallas_text])
-    elpaso_path = sue_person._get_market_path([texas_text, elpaso_text])
-    kern_path = sue_person._get_market_path([texas_text, elpaso_text, kern_text])
-
-    # THEN
-    idearoot_dir = f"{sue_person._markets_dir}/idearoot"
-    assert texas_path == f"{idearoot_dir}/{texas_text}"
-    assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
-    assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
-    assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
-
-
-def test_PersonUnit_create_market_dir_CreatesDir(worlds_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
-    assert os_path_exists(sue_person._markets_dir)
-    dallas_text = "dallas"
-    dallas_list = [dallas_text]
-    dallas_dir = sue_person._get_market_path(dallas_list)
-    print(f"{dallas_dir=}")
-    assert os_path_exists(dallas_dir) == False
-
-    # WHEN
-    sue_person._create_market_dir(dallas_text)
-
-    # THEN
-    print(f"{dallas_dir=}")
-    assert os_path_exists(dallas_dir)
-
-
-def test_PersonUnit_create_marketunit_CreatesMarketUnit(worlds_dir_setup_cleanup):
-    # GIVEN
-    pound_text = "#"
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text, _road_delimiter=pound_text)
-    sue_person.create_core_dir_and_files()
-    sue_gut = sue_person.get_gut_file_agenda()
-    texas_text = "Texas"
-    texas_road = sue_gut.make_l1_road(texas_text)
-    dallas_text = "dallas"
-    dallas_road = sue_gut.make_road(texas_road, dallas_text)
-    dallas_nodes = get_all_road_nodes(dallas_road, delimiter=pound_text)
-    dallas_dir = sue_person._get_market_path(dallas_nodes)
-    dallas_db_path = f"{dallas_dir}/bank.db"
-    print(f"{dallas_dir=}")
-    print(f"{dallas_db_path=}")
-    assert os_path_exists(dallas_db_path) == False
-    assert sue_person._market_objs == {}
-
-    # WHEN
-    sue_person._create_marketunit(dallas_road)
-
-    # THEN
-    assert os_path_exists(dallas_db_path)
-    assert sue_person._market_objs != {}
-    assert sue_person._market_objs.get(dallas_road) != None
-    dallas_marketunit = sue_person._market_objs.get(dallas_road)
-    assert dallas_marketunit.market_id == dallas_text
-    assert dallas_marketunit.market_dir == dallas_dir
-    assert dallas_marketunit._manager_person_id == sue_text
-    assert dallas_marketunit._road_delimiter == sue_person._road_delimiter

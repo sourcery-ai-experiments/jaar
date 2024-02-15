@@ -35,6 +35,10 @@ class InvalidMarketException(Exception):
     pass
 
 
+class PersonCreateMarketUnitsException(Exception):
+    pass
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -110,9 +114,11 @@ class PersonUnit:
         set_dir(x_market_path)
         return x_market_path
 
-    def _create_marketunit(self, x_roadunit: RoadUnit):
-        x_market_path = self._create_market_dir(x_roadunit)
-        terminus_node = get_terminus_node(x_roadunit, delimiter=self._road_delimiter)
+    def _create_marketunit(self, market_roadunit: RoadUnit):
+        x_market_path = self._create_market_dir(market_roadunit)
+        terminus_node = get_terminus_node(
+            market_roadunit, delimiter=self._road_delimiter
+        )
         x_marketunit = marketunit_shop(
             market_id=terminus_node,
             market_dir=x_market_path,
@@ -120,7 +126,26 @@ class PersonUnit:
             _road_delimiter=self._road_delimiter,
         )
         x_marketunit.set_market_dirs()
-        self._market_objs[x_roadunit] = x_marketunit
+        self._market_objs[market_roadunit] = x_marketunit
+
+    def create_person_marketunits(self, market_exceptions: bool = True):
+        x_gut_agenda = self.get_gut_file_agenda()
+        x_gut_agenda.set_agenda_metrics(market_exceptions)
+        if x_gut_agenda._markets_justified == False:
+            raise PersonCreateMarketUnitsException(
+                f"Cannot set '{self.person_id}' gut agenda marketunits because 'AgendaUnit._markets_justified' is False."
+            )
+        if x_gut_agenda._markets_buildable == False:
+            raise PersonCreateMarketUnitsException(
+                f"Cannot set '{self.person_id}' gut agenda marketunits because 'AgendaUnit._markets_buildable' is False."
+            )
+
+        x_person_markets = x_gut_agenda._healers_dict.get(self.person_id)
+        x_person_markets = get_empty_dict_if_none(x_person_markets)
+        for market_idea in x_person_markets.values():
+            print(f"{market_idea._label=}")
+            print(f"{market_idea._label=}")
+            self._create_marketunit(market_roadunit=market_idea.get_road())
 
         # set manager_person_id contract
 

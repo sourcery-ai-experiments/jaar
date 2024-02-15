@@ -124,7 +124,7 @@ class AgendaUnit:
     # set_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _market_dict: dict[RoadUnit:IdeaUnit] = None
-    _healer_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
+    _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
     _markets_justified: bool = None
@@ -1600,7 +1600,7 @@ class AgendaUnit:
         idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
         return {x_idea._label: x_idea for x_idea in idea_list}
 
-    def _set_ancestors_metrics(self, road: RoadUnit):
+    def _set_ancestors_metrics(self, road: RoadUnit, market_exceptions: bool = False):
         task_count = 0
         child_balancelines = None
         group_everyone = None
@@ -1646,9 +1646,13 @@ class AgendaUnit:
                 market_justified_by_problem = True
 
         if market_justified_by_problem == False or healerhold_count > 1:
+            if market_exceptions:
+                raise Exception_markets_justified(
+                    f"IdeaUnit '{road}' cannot sponsor ancestor markets."
+                )
             self._markets_justified = False
 
-    def _set_root_attributes(self):
+    def _set_root_attributes(self, market_exceptions: bool):
         x_idearoot = self._idearoot
         x_idearoot._level = 0
         x_idearoot.set_parent_road(parent_road="")
@@ -1673,7 +1677,7 @@ class AgendaUnit:
         x_idearoot.promise = False
 
         if x_idearoot.is_kidless():
-            self._set_ancestors_metrics(road=self._idearoot.get_road())
+            self._set_ancestors_metrics(self._idearoot.get_road(), market_exceptions)
             self._distribute_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
@@ -1682,6 +1686,7 @@ class AgendaUnit:
         coin_onset: float,
         parent_coin_cease: float,
         parent_idea: IdeaUnit,
+        market_exceptions: bool,
     ):
         idea_kid.set_level(parent_level=parent_idea._level)
         idea_kid.set_parent_road(parent_idea.get_road())
@@ -1709,7 +1714,7 @@ class AgendaUnit:
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
-            self._set_ancestors_metrics(road=idea_kid.get_road())
+            self._set_ancestors_metrics(idea_kid.get_road(), market_exceptions)
             self._distribute_agenda_importance(idea=idea_kid)
 
     def _distribute_agenda_importance(self, idea: IdeaUnit):
@@ -1736,24 +1741,24 @@ class AgendaUnit:
         self._markets_buildable = False
         self._sum_healerhold_importance = 0
         self._market_dict = {}
-        self._healer_dict = {}
+        self._healers_dict = {}
 
-    def set_agenda_metrics(self):
+    def set_agenda_metrics(self, market_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
 
         while (
             not self._rational and self._tree_traverse_count < self._max_tree_traverse
         ):
             self._clear_agenda_base_metrics()
-            self._execute_tree_traverse()
+            self._execute_tree_traverse(market_exceptions)
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
         self._after_all_tree_traverses_set_healerhold_importance()
 
-    def _execute_tree_traverse(self):
+    def _execute_tree_traverse(self, market_exceptions: bool = False):
         self._pre_tree_traverse_credit_debt_reset()
-        self._set_root_attributes()
+        self._set_root_attributes(market_exceptions)
 
         coin_onset = self._idearoot._agenda_coin_onset
         parent_coin_cease = self._idearoot._agenda_coin_cease
@@ -1765,6 +1770,7 @@ class AgendaUnit:
                 coin_onset=coin_onset,
                 parent_coin_cease=parent_coin_cease,
                 parent_idea=self._idearoot,
+                market_exceptions=market_exceptions,
             )
             cache_idea_list.append(idea_kid)
             coin_onset += idea_kid._agenda_importance
@@ -1784,6 +1790,7 @@ class AgendaUnit:
                         coin_onset=coin_onset,
                         parent_coin_cease=parent_coin_cease,
                         parent_idea=parent_idea,
+                        market_exceptions=market_exceptions,
                     )
                     cache_idea_list.append(idea_kid)
                     coin_onset += idea_kid._agenda_importance
@@ -1804,7 +1811,7 @@ class AgendaUnit:
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
         self._set_market_dict()
-        self._healer_dict = self._get_healer_dict()
+        self._healers_dict = self._get_healers_dict()
         self._markets_buildable = self._get_markets_buildable()
 
     def _set_market_dict(self):
@@ -1820,14 +1827,18 @@ class AgendaUnit:
             if self._markets_justified and x_idea._healerhold.any_group_id_exists():
                 self._market_dict[x_idea.get_road()] = x_idea
 
-    def _get_healer_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
-        _healer_dict = {}
+    def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
+        _healers_dict = {}
         for x_market_road, x_market_idea in self._market_dict.items():
             for x_group_id in x_market_idea._healerhold._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
-                    _healer_dict[x_party_id] = {x_market_road: x_market_idea}
-        return _healer_dict
+                    if _healers_dict.get(x_party_id) is None:
+                        _healers_dict[x_party_id] = {x_market_road: x_market_idea}
+                    else:
+                        healer_dict = _healers_dict.get(x_party_id)
+                        healer_dict[x_market_road] = x_market_idea
+        return _healers_dict
 
     def _get_markets_buildable(self) -> bool:
         return all(
@@ -2194,7 +2205,7 @@ def agendaunit_shop(
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _market_dict=get_empty_dict_if_none(None),
-        _healer_dict=get_empty_dict_if_none(None),
+        _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _markets_justified=get_False_if_None(),
