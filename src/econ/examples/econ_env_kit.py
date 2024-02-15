@@ -16,7 +16,11 @@ from src.agenda.examples.example_agendas import (
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.econ.econ import EconUnit, econunit_shop, get_temp_env_econ_id
+from src.econ.econ import (
+    EconUnit,
+    econunit_shop,
+    get_temp_env_econ_id,
+)
 from src.econ.examples.example_clerks import (
     get_1node_agenda as example_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
@@ -71,8 +75,9 @@ def setup_test_example_environment():
 
 
 def _delete_and_set_ex3():
-    econ_id = "ex3"
-    x_econ = econunit_shop(econ_id=econ_id, econ_dir=get_test_econ_dir())
+    x_econ_id = "ex3"
+    ex3_dir = f"{get_test_econs_dir()}/{x_econ_id}"
+    x_econ = econunit_shop(econ_id=x_econ_id, econ_dir=ex3_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_forum_agenda(example_get_1node_agenda())
@@ -128,7 +133,8 @@ def _delete_and_set_ex3():
 
 def _delete_and_set_ex4():
     x_econ_id = "ex4"
-    x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
+    ex4_dir = f"{get_test_econs_dir()}/{x_econ_id}"
+    x_econ = econunit_shop(x_econ_id, econ_dir=ex4_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
@@ -139,7 +145,8 @@ def _delete_and_set_ex4():
 
 def _delete_and_set_ex5():
     x_econ_id = "ex5"
-    x_p = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
+    ex5_dir = f"{get_test_econs_dir()}/{x_econ_id}"
+    x_p = econunit_shop(x_econ_id, econ_dir=ex5_dir)
     delete_dir(x_p.get_object_root_dir())
     x_p.set_econ_dirs(in_memory_treasury=True)
 
@@ -202,7 +209,8 @@ def _delete_and_set_ex5():
 def _delete_and_set_ex6(x_econ_id: str = None):
     if x_econ_id is None:
         x_econ_id = "ex6"
-    x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
+    ex6_dir = f"{get_test_econs_dir()}/{x_econ_id}"
+    x_econ = econunit_shop(x_econ_id, econ_dir=ex6_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
