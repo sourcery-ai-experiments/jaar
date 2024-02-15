@@ -140,9 +140,8 @@ class PersonUnit:
 
         x_person_econs = x_gut_agenda._healers_dict.get(self.person_id)
         x_person_econs = get_empty_dict_if_none(x_person_econs)
+        self._econ_objs = {}
         for econ_idea in x_person_econs.values():
-            print(f"{econ_idea._label=}")
-            print(f"{econ_idea._label=}")
             self._create_econunit(econ_roadunit=econ_idea.get_road())
 
         # set manager_person_id contract

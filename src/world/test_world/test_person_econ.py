@@ -194,3 +194,56 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(
     assert sue_person._econ_objs != {}
     assert sue_person._econ_objs.get(dallas_road) != None
     assert sue_person._econ_objs.get(elpaso_road) != None
+
+
+def test_PersonUnit_create_person_econunits_DeletesEconUnits(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_person.create_core_dir_and_files()
+    sue_gut_agenda = sue_person.get_gut_file_agenda()
+    sue_gut_agenda.add_partyunit(sue_text)
+    texas_text = "Texas"
+    texas_road = sue_gut_agenda.make_l1_road(texas_text)
+    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    dallas_text = "dallas"
+    elpaso_text = "el paso"
+    dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
+    elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
+    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.add_idea(dallas_idea, texas_road)
+    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
+    sue_gut_agenda.set_agenda_metrics()
+    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    dallas_nodes = get_all_road_nodes(dallas_road)
+    elpaso_nodes = get_all_road_nodes(elpaso_road)
+    dallas_dir = sue_person._get_econ_path(dallas_nodes)
+    elpaso_dir = sue_person._get_econ_path(elpaso_nodes)
+    dallas_db_path = f"{dallas_dir}/treasury.db"
+    elpaso_db_path = f"{elpaso_dir}/treasury.db"
+    print(f"{dallas_dir=}")
+    print(f"{elpaso_db_path=}")
+    print(f"{dallas_db_path=}")
+    print(f"{elpaso_db_path=}")
+    sue_person.create_person_econunits()
+    assert os_path_exists(dallas_db_path)
+    assert os_path_exists(elpaso_db_path)
+    assert sue_person._econ_objs.get(dallas_road) != None
+    assert sue_person._econ_objs.get(elpaso_road) != None
+
+    # WHEN
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
+    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
+    sue_gut_agenda.set_agenda_metrics()
+    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person.create_person_econunits()
+
+    # THEN
+    assert sue_person._econ_objs.get(dallas_road) != None
+    assert sue_person._econ_objs.get(elpaso_road) is None
+    assert os_path_exists(dallas_db_path)
+    assert os_path_exists(elpaso_db_path) == False
