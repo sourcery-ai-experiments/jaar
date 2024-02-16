@@ -301,3 +301,46 @@ def test_PersonUnit_set_econunit_contract_CorrectlySetsContract(
 
     # THEN
     assert sue_clerk.get_contract().get_party(bob_text) != None
+
+
+def test_PersonUnit_set_econunits_contract_CorrectlySetsContracts(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_person.create_core_dir_and_files()
+    sue_gut_agenda = sue_person.get_gut_file_agenda()
+    sue_gut_agenda.add_partyunit(sue_text)
+    bob_text = "Bob"
+    sue_gut_agenda.add_partyunit(bob_text)
+    texas_text = "Texas"
+    texas_road = sue_gut_agenda.make_l1_road(texas_text)
+    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    dallas_text = "dallas"
+    dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
+    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.add_idea(dallas_idea, texas_road)
+    elpaso_text = "el paso"
+    elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
+    # sue_gut_agenda.set_agenda_metrics()
+    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person.create_person_econunits()
+    dallas_econ = sue_person.get_econ(dallas_road)
+    dallas_econ.create_new_clerkunit(sue_text)
+    dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
+    assert dallas_sue_clerk.get_contract().get_party(bob_text) is None
+    # assert elpaso_sue_clerk.get_contract().get_party(bob_text) is None
+
+    # WHEN
+    sue_person.set_econunits_contract(sue_gut_agenda)
+
+    # THEN
+    assert dallas_sue_clerk.get_contract().get_party(bob_text) != None
+    elpaso_econ = sue_person.get_econ(elpaso_road)
+    elpaso_econ.create_new_clerkunit(sue_text)
+    elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
+    assert elpaso_sue_clerk.get_contract().get_party(bob_text) != None

@@ -169,8 +169,14 @@ class PersonUnit:
 
     def set_econunit_contract(self, econ_road: RoadUnit, contract: AgendaUnit):
         x_econ = self.get_econ(econ_road)
+        if x_econ.clerkunit_exists(contract._agent_id) == False:
+            x_econ.create_new_clerkunit(contract._agent_id)
         x_clerkunit = x_econ.get_clerkunit(contract._agent_id)
         x_clerkunit.set_contract(contract)
+
+    def set_econunits_contract(self, contract: AgendaUnit):
+        for x_econ_road in self._econ_objs.keys():
+            self.set_econunit_contract(x_econ_road, contract)
 
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True
