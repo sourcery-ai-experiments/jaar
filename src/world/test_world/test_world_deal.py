@@ -77,7 +77,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 
 #     highway_wantunit = create_wantunit(
 #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
-#         fix="flying in airplanes",
+#         fix="flying in 737s",
 #         positive="Do not fly",
 #         negative="Continue flying",
 #         isssue="global environment",
@@ -124,7 +124,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
 
-#     flying_text = "flying in airplanes"
+#     flying_text = "flying in 737s"
 #     no_fly_text = "Do not fly"
 #     yesfly_text = "Continue flying"
 #     weather_text = "global weather"
@@ -249,7 +249,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
 
-#     flying_text = "flying in airplanes"
+#     flying_text = "flying in 737s"
 #     no_fly_text = "Do not fly"
 #     yesfly_text = "Continue flying"
 #     weather_text = "global weather"
@@ -349,7 +349,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 
 # #     fly_wantunit = create_wantunit(
 # #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
-# #         fix="flying in airplanes",
+# #         fix="flying in 737s",
 # #         positive="Do not fly",
 # #         negative="Continue flying",
 # #         isssue="global weather",

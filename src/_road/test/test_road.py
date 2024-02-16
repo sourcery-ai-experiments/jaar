@@ -126,18 +126,18 @@ def test_road_change_road_CorrectlyRoadUnit():
     casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
     bloomers_road = create_road(casa_road, bloomers_text)
-    plants_text = "plants"
-    plants_road = create_road(casa_road, plants_text)
+    greenery_text = "greenery"
+    greenery_road = create_road(casa_road, greenery_text)
     roses_text = "roses"
     old_roses_road = create_road(bloomers_road, roses_text)
-    new_roses_road = create_road(plants_road, roses_text)
+    new_roses_road = create_road(greenery_road, roses_text)
 
-    print(f"{change_road(old_roses_road, bloomers_road, plants_road)}")
+    print(f"{change_road(old_roses_road, bloomers_road, greenery_road)}")
 
     # WHEN / THEN
     assert change_road(bloomers_road, bloomers_road, bloomers_road) == bloomers_road
-    assert change_road(old_roses_road, bloomers_road, plants_road) == new_roses_road
-    assert change_road(old_roses_road, "random_text", plants_road) == old_roses_road
+    assert change_road(old_roses_road, bloomers_road, greenery_road) == new_roses_road
+    assert change_road(old_roses_road, "random_text", greenery_road) == old_roses_road
 
 
 def test_road_get_all_road_nodes_ReturnsRoadNodes():

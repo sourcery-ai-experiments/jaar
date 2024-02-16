@@ -299,8 +299,7 @@ def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
 
 def get_agenda_base_time_example() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_worker_id="Sue")
-    plant_idea = ideaunit_shop("plant")
-    sue_agenda.add_l1_idea(plant_idea)
+    sue_agenda.add_l1_idea(ideaunit_shop("gig"))
     return sue_agenda
 
 
@@ -502,11 +501,11 @@ def from_list_get_active(
 
     if asse_bool in {True, False}:
         if active != asse_bool:
-            yr_explanation(temp_idea)
+            yr_elucidation(temp_idea)
 
         assert active == asse_bool
     else:
-        yr_explanation(temp_idea)
+        yr_elucidation(temp_idea)
     return active
 
 
@@ -525,7 +524,7 @@ def yr_print_idea_base_info(idea, filter: bool):
                 )
 
 
-def yr_explanation(idea):
+def yr_elucidation(idea):
     str1 = f"'{yr_d(idea._parent_road)}' idea"
     str2 = f" has ReasonU:{yr_x(idea._reasonunits)} LH:{yr_x(idea._reasonheirs)}"
     str3 = f" {str(type(idea))}"

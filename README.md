@@ -53,16 +53,16 @@ If you have installed `jaar` before, and you should ensure `pip` downloads the l
 
 Should examples be found in a separate repository to ensure the `jaar` repository stays 
 relatively small, whilst still providing a thorough knowledgebase of code-samples, 
-screenshots and explanatory text.
+screenshots and elucidatory text.
 
 -->
 
 ## 1.2 Notes about data structure
 
-<!-- TODO: Add explanations -->
+<!-- TODO: Add elucidations -->
 base attributes vs reason attributess
 
-<!-- TODO: Add explanations -->
+<!-- TODO: Add elucidations -->
 EconUnit objects
 
 EconUnit ClerkUnit objects
@@ -71,7 +71,7 @@ EconUnit ClerkUnit Agenda objects
 
 EconUnit Bank objects
 
-<!-- TODO: Add explanations -->
+<!-- TODO: Add elucidations -->
 AgendaUnit objects
 
 AgendaUnit PartyUnit objects
@@ -108,7 +108,7 @@ variables and can be hard to follow.
 <!-- TODO: Add examples 
 Should examples be in a separate repository to ensure the `jaar` repository stays 
 relatively small? (whilst still providing a thorough knowledgebase of code-samples, 
-screenshots and explanatory text.)
+screenshots and elucidatory text.)
 -->
 
 

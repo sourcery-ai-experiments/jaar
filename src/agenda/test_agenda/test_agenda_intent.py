@@ -15,7 +15,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
-    yr_explanation,
+    yr_elucidation,
 )
 from src.instrument.file import open_file
 
@@ -50,8 +50,8 @@ def test_agenda_get_intent_dict_ReturnsIntentWithOnlyCorrectItems():
     # THEN
     assert intent_dict
     # for intent_item in intent_dict:
-    #     yr_explanation(idea=intent_item)
-    # yr_explanation(idea=intent_dict[0])
+    #     yr_elucidation(idea=intent_item)
+    # yr_elucidation(idea=intent_dict[0])
 
     assert len(intent_dict) == 1
     print(f"{intent_dict=}")

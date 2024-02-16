@@ -4202,9 +4202,9 @@
                     "decrease carbon footprint": {
                         "_is_expanded": true,
                         "_kids": {
-                            "never fly a private plane": {
+                            "never fly a private G5": {
                                 "_is_expanded": true,
-                                "_label": "never fly a private plane",
+                                "_label": "never fly a private G5",
                                 "_meld_strategy": "default",
                                 "_numeric_road": "",
                                 "_range_source_road": "",
