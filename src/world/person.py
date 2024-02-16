@@ -1,6 +1,7 @@
 from src._prime.road import (
     default_road_delimiter_if_none,
     PersonID,
+    EconID,
     validate_roadnode,
     RoadUnit,
     RoadNode,
@@ -103,7 +104,7 @@ class PersonUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
-    def get_econ_rootpart(self):
+    def get_rootpart_of_econ_dir(self):
         return "idearoot"
 
     def load_gut_file(self):
@@ -113,7 +114,9 @@ class PersonUnit:
         return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-        x_roadunit = change_road(x_roadunit, self.world_id, self.get_econ_rootpart())
+        x_roadunit = change_road(
+            x_roadunit, self.world_id, self.get_rootpart_of_econ_dir()
+        )
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
         x_econ_path = self._get_person_econ_dir(road_nodes)
         set_dir(x_econ_path)
@@ -155,11 +158,19 @@ class PersonUnit:
         for treasury_dir in curr_treasury_dirs:
             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
             treasury_road = change_road(
-                treasury_road, self.get_econ_rootpart(), self.world_id
+                treasury_road, self.get_rootpart_of_econ_dir(), self.world_id
             )
             if x_person_econs.get(treasury_road) is None:
                 dir_to_delete = f"{self._econs_dir}/{treasury_dir}"
                 delete_dir(dir_to_delete)
+
+    def get_econ(self, econ_road: RoadUnit) -> EconUnit:
+        return self._econ_objs.get(econ_road)
+
+    def set_econunit_contract(self, econ_road: RoadUnit, contract: AgendaUnit):
+        x_econ = self.get_econ(econ_road)
+        x_clerkunit = x_econ.get_clerkunit(contract._agent_id)
+        x_clerkunit.set_contract(contract)
 
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True

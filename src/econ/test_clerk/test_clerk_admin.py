@@ -194,7 +194,7 @@ def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
     assert os_path_exists(new_contract_file_path) == False
 
     # WHEN
-    jul_clerkunit.set_clerk_id(new_cid=tim_text)
+    jul_clerkunit.set_clerk_id(new_clerk_id=tim_text)
 
     # THEN
     assert os_path_exists(old_clerkunit_dir) == False

@@ -29,7 +29,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
         xia_text, input_agenda._agent_id, depotlink_type="blind_trust"
     )
     x_econ.save_clerkunit_file(clerk_id=xia_text)
-    xia_healer = x_econ.get_clerkunit(cid=xia_text)
+    xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
     # print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
@@ -105,7 +105,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     x_econ.set_clerk_depotlink(xia_text, x1_agenda._agent_id, "blind_trust")
     x_econ.set_clerk_depotlink(xia_text, x2_agenda._agent_id, "blind_trust")
     x_econ.save_clerkunit_file(clerk_id=xia_text)
-    xia_healer = x_econ.get_clerkunit(cid=xia_text)
+    xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
     print(f"{xia_healer._contract._partys.keys()=}")
 
     # WHEN
@@ -167,9 +167,9 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     x_econ.create_new_clerkunit(clerk_id=ernie_text)
     x_econ.create_new_clerkunit(clerk_id=jessi_text)
     # x_econ.create_new_clerkunit(clerk_id=steve_text)
-    ux_ernie = x_econ.get_clerkunit(cid=ernie_text)
-    ux_jessi = x_econ.get_clerkunit(cid=jessi_text)
-    # ux_steve = x_econ.get_clerkunit(cid=steve_text)
+    ux_ernie = x_econ.get_clerkunit(clerk_id=ernie_text)
+    ux_jessi = x_econ.get_clerkunit(clerk_id=jessi_text)
+    # ux_steve = x_econ.get_clerkunit(clerk_id=steve_text)
     ux_ernie.set_depot_agenda(x_agenda=jessi_agenda, depotlink_type="blind_trust")
     ux_ernie.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
     ux_jessi.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")

@@ -102,7 +102,7 @@ def test_econ_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234
     yao_new_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_new_agenda.set_partyunit(partyunit_shop(elu_text))
     x_econ.create_new_clerkunit(yao_text)
-    yao_clerk = x_econ.get_clerkunit(cid=yao_text)
+    yao_clerk = x_econ.get_clerkunit(clerk_id=yao_text)
     yao_clerk.set_contract(yao_new_agenda)
 
     yao_contract_agenda = yao_clerk.get_contract()

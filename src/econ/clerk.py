@@ -181,9 +181,9 @@ class ClerkUnit:
         self._agendas_ignore_dir = f"{self._clerkunit_dir}/ignores"
         self._agendas_digest_dir = f"{self._clerkunit_dir}/digests"
 
-    def set_clerk_id(self, new_cid: ClerkID):
+    def set_clerk_id(self, new_clerk_id: ClerkID):
         old_clerkunit_dir = self._clerkunit_dir
-        self._clerk_id = new_cid
+        self._clerk_id = new_clerk_id
         self.set_clerkunit_dirs()
 
         x_func_rename_dir(src=old_clerkunit_dir, dst=self._clerkunit_dir)

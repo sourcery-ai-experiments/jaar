@@ -240,7 +240,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.clerk_id.text()
         if currently_selected != typed_in:
-            self.econ_x.change_clerkunit_cid(
+            self.econ_x.change_clerkunit_clerk_id(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_agent_ids()

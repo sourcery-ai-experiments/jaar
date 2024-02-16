@@ -1,6 +1,7 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_agenda
+from src.econ.clerk import clerkunit_shop
 from src.econ.econ import treasury_db_filename
 from src.world.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
@@ -143,9 +144,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     )
 
 
-def test_PersonUnit_create_person_econunits_CreatesEconUnits(
-    worlds_dir_setup_cleanup,
-):
+def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -190,9 +189,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(
     assert sue_person._econ_objs.get(elpaso_road) != None
 
 
-def test_PersonUnit_create_person_econunits_DeletesEconUnits(
-    worlds_dir_setup_cleanup,
-):
+def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -239,3 +236,68 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(
     assert sue_person._econ_objs.get(elpaso_road) is None
     assert os_path_exists(dallas_db_path)
     assert os_path_exists(elpaso_db_path) == False
+
+
+def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_person.create_core_dir_and_files()
+    sue_gut_agenda = sue_person.get_gut_file_agenda()
+    sue_gut_agenda.add_partyunit(sue_text)
+    texas_text = "Texas"
+    texas_road = sue_gut_agenda.make_l1_road(texas_text)
+    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    dallas_text = "dallas"
+    dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
+    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.add_idea(dallas_idea, texas_road)
+    sue_gut_agenda.set_agenda_metrics()
+    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
+    print(f"{dallas_dir=}")
+    assert sue_person._econ_objs == {}
+
+    # WHEN
+    sue_person.create_person_econunits()
+    dallas_econ = sue_person.get_econ(dallas_road)
+
+    # THEN
+    assert dallas_econ != None
+    assert dallas_econ.econ_id == dallas_text
+    assert sue_person._econ_objs.get(dallas_road) == dallas_econ
+
+
+def test_PersonUnit_set_econunit_contract_CorrectlySetsContract(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_person.create_core_dir_and_files()
+    sue_gut_agenda = sue_person.get_gut_file_agenda()
+    sue_gut_agenda.add_partyunit(sue_text)
+    bob_text = "Bob"
+    sue_gut_agenda.add_partyunit(bob_text)
+    texas_text = "Texas"
+    texas_road = sue_gut_agenda.make_l1_road(texas_text)
+    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    dallas_text = "dallas"
+    dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
+    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.add_idea(dallas_idea, texas_road)
+    sue_gut_agenda.set_agenda_metrics()
+    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person.create_person_econunits()
+    dallas_econ = sue_person.get_econ(dallas_road)
+    dallas_econ.create_new_clerkunit(sue_text)
+    sue_clerk = dallas_econ.get_clerkunit(sue_text)
+    assert sue_clerk.get_contract().get_party(bob_text) is None
+
+    # WHEN
+    sue_person.set_econunit_contract(dallas_road, sue_gut_agenda)
+
+    # THEN
+    assert sue_clerk.get_contract().get_party(bob_text) != None

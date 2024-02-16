@@ -111,17 +111,17 @@ class WorldUnit:
         if x_econ.clerkunit_exists(clerk_person_id) == False:
             x_econ.add_clerkunit(clerk_person_id)
 
-    def get_world_agenda(self, person_id: PersonID):
+    def get_focal_agenda(self, person_id: PersonID):
         x_personunit = self.get_personunit_from_memory(person_id)
-        world_agenda = agendaunit_shop(person_id)
+        focal_agenda = agendaunit_shop(person_id)
         # for econ_idea in x_personunit._gut_obj._econ_dict.values():
         #     pass
 
         # for person_problemunit in x_personunit._problems.values():
         #             forum_agenda = x_econunit.get_forum_agenda(person_id)
-        #             forum_agenda.set_world_id(world_agenda._world_id)
-        #             world_agenda.meld(forum_agenda)
-        return world_agenda
+        #             forum_agenda.set_world_id(focal_agenda._world_id)
+        #             focal_agenda.meld(forum_agenda)
+        return focal_agenda
 
     def create_person_econ(
         self,

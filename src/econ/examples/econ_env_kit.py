@@ -97,7 +97,7 @@ def _delete_and_set_ex3():
     x_econ.set_clerk_depotlink(
         xia_text, agenda_agent_id=bob_text, depotlink_type="blind_trust"
     )
-    # w1_obj = x_econ.get_clerkunit(cid=w1_text)
+    # w1_obj = x_econ.get_clerkunit(clerk_id=w1_text)
 
     bob_text = "bob wurld"
     create_agenda_file_for_econs(x_econ.get_object_root_dir(), bob_text)

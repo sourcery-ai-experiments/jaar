@@ -4,7 +4,6 @@ from src._prime.road import (
     default_road_delimiter_if_none,
     AgentID,
     HealerID,
-    ProblemID,
     PersonID,
     PartyID,
     EconID,
@@ -391,32 +390,32 @@ class EconUnit:
         )
         self.set_clerkunit(clerkunit=x_clerkunit)
 
-    def clerkunit_exists(self, cid: ClerkID):
-        return self._clerkunits.get(cid) != None
+    def clerkunit_exists(self, clerk_id: ClerkID):
+        return self._clerkunits.get(clerk_id) != None
 
     def create_new_clerkunit(self, clerk_id: ClerkID):
         x_clerkunit = clerkunit_shop(clerk_id, self.get_object_root_dir(), self.econ_id)
         x_clerkunit.create_core_dir_and_files()
         self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
 
-    def get_clerkunit(self, cid: ClerkID) -> ClerkUnit:
-        return self._clerkunits.get(cid)
+    def get_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
+        return self._clerkunits.get(clerk_id)
 
     def set_clerkunit(self, clerkunit: ClerkUnit):
         self._clerkunits[clerkunit._clerk_id] = clerkunit
         self.save_clerkunit_file(clerk_id=clerkunit._clerk_id)
 
     def save_clerkunit_file(self, clerk_id: ClerkID):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_clerkunit.save_contract_agenda(x_clerkunit.get_contract())
 
-    def change_clerkunit_cid(self, old_cid: ClerkID, new_cid: ClerkID):
-        clerk_x = self.get_clerkunit(cid=old_cid)
+    def change_clerkunit_clerk_id(self, old_clerk_id: ClerkID, new_clerk_id: ClerkID):
+        clerk_x = self.get_clerkunit(clerk_id=old_clerk_id)
         old_clerkunit_dir = clerk_x._clerkunit_dir
-        clerk_x.set_clerk_id(new_cid=new_cid)
+        clerk_x.set_clerk_id(new_clerk_id=new_clerk_id)
         self.set_clerkunit(clerk_x)
         delete_dir(old_clerkunit_dir)
-        self.del_clerkunit_from_econ(clerk_id=old_cid)
+        self.del_clerkunit_from_econ(clerk_id=old_clerk_id)
 
     def del_clerkunit_from_econ(self, clerk_id: ClerkID):
         self._clerkunits.pop(clerk_id)
@@ -454,7 +453,7 @@ class EconUnit:
         )
 
     def set_ignore_agenda_file(self, clerk_id: ClerkID, agenda_obj: AgendaUnit):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_clerkunit.set_ignore_agenda_file(
             agendaunit=agenda_obj, src_agent_id=agenda_obj._agent_id
         )
@@ -513,7 +512,7 @@ class EconUnit:
         debtor_weight: float = None,
         ignore_agenda: AgendaUnit = None,
     ):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_agenda = self.get_forum_agenda(agent_id=agenda_agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
@@ -532,7 +531,7 @@ class EconUnit:
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_agenda = agendaunit_shop(_agent_id=agent_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
@@ -550,7 +549,7 @@ class EconUnit:
         creditor_weight: str,
         debtor_weight: str,
     ):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_agenda = self.get_forum_agenda(_agent_id=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
@@ -561,12 +560,12 @@ class EconUnit:
         )
 
     def del_depotlink(self, clerk_id: ClerkID, agendaunit_agent_id: AgentID):
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_clerkunit.del_depot_agenda(agent_id=agendaunit_agent_id)
 
     # Healer output_agenda
     def get_output_agenda(self, clerk_id: ClerkID) -> AgendaUnit:
-        x_clerkunit = self.get_clerkunit(cid=clerk_id)
+        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         return x_clerkunit.get_remelded_output_agenda()
 
     def build_econ_road(self, road_wo_econ_root: RoadUnit = None):

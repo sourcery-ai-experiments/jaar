@@ -28,7 +28,7 @@ def test_econunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(timmy_dir)
 
 
-def test_econunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
+def test_econunit_change_clerkunit_clerk_id_WorksCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
@@ -49,13 +49,15 @@ def test_econunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
     assert os_path.exists(old_bob_file_path)
-    old_bob_clerkunit = x_econ.get_clerkunit(cid=old_bob_text)
-    assert x_econ.get_clerkunit(cid=new_bob_text) is None
+    old_bob_clerkunit = x_econ.get_clerkunit(clerk_id=old_bob_text)
+    assert x_econ.get_clerkunit(clerk_id=new_bob_text) is None
     assert old_bob_clerkunit._clerkunit_dir == old_bob_dir
     assert old_bob_clerkunit._clerkunit_dir != new_bob_dir
 
     # WHEN
-    x_econ.change_clerkunit_cid(old_cid=old_bob_text, new_cid=new_bob_text)
+    x_econ.change_clerkunit_clerk_id(
+        old_clerk_id=old_bob_text, new_clerk_id=new_bob_text
+    )
 
     # THEN
     assert os_path.exists(new_bob_dir)
@@ -63,8 +65,8 @@ def test_econunit_change_clerkunit_cid_WorksCorrectly(env_dir_setup_cleanup):
     print(f"{new_bob_file_path=}")
     assert os_path.exists(new_bob_file_path)
     assert os_path.exists(old_bob_file_path) == False
-    assert x_econ.get_clerkunit(cid=old_bob_text) is None
-    new_bob_clerkunit = x_econ.get_clerkunit(cid=new_bob_text)
+    assert x_econ.get_clerkunit(clerk_id=old_bob_text) is None
+    new_bob_clerkunit = x_econ.get_clerkunit(clerk_id=new_bob_text)
     assert new_bob_clerkunit._clerkunit_dir != old_bob_dir
     assert new_bob_clerkunit._clerkunit_dir == new_bob_dir
 
@@ -100,7 +102,7 @@ def test_econunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     bob_file_path = f"{bob_dir}/contract_agenda.json"
     assert os_path.exists(bob_dir) == False
     assert os_path.exists(bob_file_path) == False
-    assert x_econ.get_clerkunit(cid=bob_text) is None
+    assert x_econ.get_clerkunit(clerk_id=bob_text) is None
 
     # WHEN
     x_econ.add_clerkunit(agent_id=bob_text)
@@ -133,8 +135,8 @@ def test_econunit_clerkunit_exists_WorksCorrectly(env_dir_setup_cleanup):
     bob_text = "Bob"
 
     # WHEN / THEN
-    assert x_econ.clerkunit_exists(cid=bob_text) == False
+    assert x_econ.clerkunit_exists(clerk_id=bob_text) == False
 
     # WHEN / THEN
     x_econ.add_clerkunit(agent_id=bob_text)
-    assert x_econ.clerkunit_exists(cid=bob_text)
+    assert x_econ.clerkunit_exists(clerk_id=bob_text)

@@ -15,7 +15,7 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     amer_text = "Amer"
     x_econ.create_new_clerkunit(clerk_id=amer_text)
-    amer_clerk = x_econ.get_clerkunit(cid=amer_text)
+    amer_clerk = x_econ.get_clerkunit(clerk_id=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_world_id(x_econ.econ_id)
     amer_clerk.set_contract(laundry_agenda)
@@ -43,7 +43,7 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     # create assignment for Cali
     cali_text = "Cali"
     x_econ.create_new_clerkunit(clerk_id=cali_text)
-    cali_clerk = x_econ.get_clerkunit(cid=cali_text)
+    cali_clerk = x_econ.get_clerkunit(clerk_id=cali_text)
     cali_clerk.set_depot_agenda(amer_output, "assignment")
     old_cali_agenda = x_econ.get_output_agenda(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
@@ -84,8 +84,8 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     beto_text = "Beto"
     x_econ.create_new_clerkunit(clerk_id=amer_text)
     x_econ.create_new_clerkunit(clerk_id=beto_text)
-    amer_clerk = x_econ.get_clerkunit(cid=amer_text)
-    beto_clerk = x_econ.get_clerkunit(cid=beto_text)
+    amer_clerk = x_econ.get_clerkunit(clerk_id=amer_text)
+    beto_clerk = x_econ.get_clerkunit(clerk_id=beto_text)
     # print(f"{beto_clerk=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_world_id(x_econ.econ_id)
