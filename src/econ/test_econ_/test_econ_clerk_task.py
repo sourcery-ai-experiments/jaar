@@ -18,7 +18,7 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     amer_clerk = x_econ.get_clerkunit(clerk_id=amer_text)
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_world_id(x_econ.econ_id)
-    amer_clerk.set_contract(laundry_agenda)
+    amer_clerk.set_plan(laundry_agenda)
 
     casa_text = "casa"
     basket_text = "laundry basket status"
@@ -31,10 +31,8 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     b_bare_text = "bare"
     b_bare_road = create_road({basket_road}, {b_bare_text})
     # set basket status to "bare"
-    contract_x = amer_clerk.get_contract().set_belief(
-        base=basket_road, pick=b_bare_road
-    )
-    amer_clerk.set_contract(contract_x)
+    plan_x = amer_clerk.get_plan().set_belief(base=basket_road, pick=b_bare_road)
+    amer_clerk.set_plan(plan_x)
     # save belief change to forum
     amer_clerk.save_refreshed_output_to_forum()
     # print(f"{x_econ.get_forum_agenda(amer_text)._idearoot._beliefunits.keys()=}")
@@ -54,8 +52,8 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
 
     # WHEN
     # set basket status to "full"
-    amer_clerk.get_contract().set_belief(base=basket_road, pick=b_full_road)
-    amer_clerk.set_contract()
+    amer_clerk.get_plan().set_belief(base=basket_road, pick=b_full_road)
+    amer_clerk.set_plan()
     amer_clerk.save_refreshed_output_to_forum()
 
     cali_clerk.refresh_depot_agendas()
@@ -89,8 +87,8 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # print(f"{beto_clerk=}")
     laundry_agenda = get_agenda_assignment_laundry_example1()
     laundry_agenda.set_world_id(x_econ.econ_id)
-    amer_clerk.set_contract(laundry_agenda)
-    beto_clerk.set_contract(laundry_agenda)
+    amer_clerk.set_plan(laundry_agenda)
+    beto_clerk.set_plan(laundry_agenda)
 
     casa_text = "casa"
     casa_road = create_road(x_econ.econ_id, casa_text)
@@ -102,11 +100,11 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     b_bare_road = create_road(basket_road, b_bare_text)
 
     # amer forum laundry belief as "full"
-    amer_contract_x = amer_clerk.get_contract().set_belief(basket_road, b_full_road)
-    beto_contract_x = beto_clerk.get_contract().set_belief(basket_road, b_bare_road)
+    amer_plan_x = amer_clerk.get_plan().set_belief(basket_road, b_full_road)
+    beto_plan_x = beto_clerk.get_plan().set_belief(basket_road, b_bare_road)
 
-    amer_clerk.set_contract(amer_contract_x)
-    beto_clerk.set_contract(beto_contract_x)
+    amer_clerk.set_plan(amer_plan_x)
+    beto_clerk.set_plan(beto_plan_x)
     amer_clerk.save_refreshed_output_to_forum()
     beto_clerk.save_refreshed_output_to_forum()
     amer_output = x_econ.get_forum_agenda(amer_text)
@@ -135,9 +133,9 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     assert old_cali_basket_belief.pick == b_bare_road
 
     # WHEN voice_rank is changed
-    cali_contract = cali_kichen.get_contract()
-    cali_amer_party = cali_contract.get_party(amer_text)
-    cali_beto_party = cali_contract.get_party(beto_text)
+    cali_plan = cali_kichen.get_plan()
+    cali_amer_party = cali_plan.get_party(amer_text)
+    cali_beto_party = cali_plan.get_party(beto_text)
     amer_voice_rank = 45
     beto_voice_rank = 100
     cali_amer_party.set_treasurying_data(None, None, None, voice_rank=amer_voice_rank)
@@ -145,12 +143,12 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # print(f"{cali_amer_party._treasury_voice_rank=} {amer_voice_rank=}")
     # print(f"{cali_beto_party._treasury_voice_rank=} {beto_voice_rank=}")
 
-    cali_kichen.set_contract(cali_contract)
+    cali_kichen.set_plan(cali_plan)
 
-    print("get new contract...")
-    # new_cali_contract = cali_kichen.get_contract()
-    # new_cali_amer_party = new_cali_contract.get_party(amer_text)
-    # new_cali_beto_party = new_cali_contract.get_party(beto_text)
+    print("get new plan...")
+    # new_cali_plan = cali_kichen.get_plan()
+    # new_cali_amer_party = new_cali_plan.get_party(amer_text)
+    # new_cali_beto_party = new_cali_plan.get_party(beto_text)
     # print(f"{new_cali_amer_party._treasury_voice_rank=} ")
     # print(f"{new_cali_beto_party._treasury_voice_rank=} ")
 

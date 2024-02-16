@@ -21,8 +21,8 @@ from pytest import raises as pytest_raises
 def test_load_econunit_CorrectlyLoadsEconFromPersistentFiles(
     env_dir_setup_cleanup,
 ):
-    # create econunit1 "texas", create two clerkunits with contract agendas. Create treasury and cash river
+    # create econunit1 "texas", create two clerkunits with plan agendas. Create treasury and cash river
     # assert treasury table row population
-    # load econunit2 "texas2", load two clerkunits with contract agendas.
+    # load econunit2 "texas2", load two clerkunits with plan agendas.
     # Connect to treasury and assert table row population.
     pass

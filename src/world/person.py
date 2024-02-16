@@ -167,19 +167,19 @@ class PersonUnit:
     def get_econ(self, econ_road: RoadUnit) -> EconUnit:
         return self._econ_objs.get(econ_road)
 
-    def set_econunit_contract(self, econ_road: RoadUnit, contract: AgendaUnit):
+    def set_econunit_plan(self, econ_road: RoadUnit, plan: AgendaUnit):
         x_econ = self.get_econ(econ_road)
-        if x_econ.clerkunit_exists(contract._worker_id) == False:
-            x_econ.create_new_clerkunit(contract._worker_id)
-        x_clerkunit = x_econ.get_clerkunit(contract._worker_id)
-        x_clerkunit.set_contract(contract)
+        if x_econ.clerkunit_exists(plan._worker_id) == False:
+            x_econ.create_new_clerkunit(plan._worker_id)
+        x_clerkunit = x_econ.get_clerkunit(plan._worker_id)
+        x_clerkunit.set_plan(plan)
 
-    def set_econunits_contract(self, contract: AgendaUnit):
+    def set_econunits_plan(self, plan: AgendaUnit):
         for x_econ_road in self._econ_objs.keys():
-            self.set_econunit_contract(x_econ_road, contract)
+            self.set_econunit_plan(x_econ_road, plan)
 
-    def set_person_econunits_contract(self):
-        self.set_econunits_contract(self.get_gut_file_agenda())
+    def set_person_econunits_plan(self):
+        self.set_econunits_plan(self.get_gut_file_agenda())
 
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True

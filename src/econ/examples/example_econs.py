@@ -10,7 +10,7 @@ from src.econ.econ import EconUnit
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
 #     laundry_agenda.set_world_id(x_econ.econ_id)
 #     print(f"{laundry_agenda._worker_id=}")
-#     yao_clerk.set_contract(laundry_agenda)
+#     yao_clerk.set_plan(laundry_agenda)
 
 #     casa_text = "casa"
 #     basket_text = "laundry basket status"
@@ -23,8 +23,8 @@ from src.econ.econ import EconUnit
 #     b_bare_text = "bare"
 #     b_bare_road = create_road({basket_road}, {b_bare_text})
 #     # set basket status to "bare"
-#     contract_x = yao_clerk.get_contract().set_belief(base=basket_road, pick=b_bare_road)
-#     yao_clerk.set_contract(contract_x)
+#     plan_x = yao_clerk.get_plan().set_belief(base=basket_road, pick=b_bare_road)
+#     yao_clerk.set_plan(plan_x)
 #     # save belief change to forum
 #     yao_clerk.save_refreshed_output_to_forum()
 #     # print(f"{x_econ.get_forum_agenda(yao_text)._idearoot._beliefunits.keys()=}")
@@ -44,8 +44,8 @@ from src.econ.econ import EconUnit
 
 #     # WHEN
 #     # set basket status to "full"
-#     yao_clerk.get_contract().set_belief(base=basket_road, pick=b_full_road)
-#     yao_clerk.set_contract()
+#     yao_clerk.get_plan().set_belief(base=basket_road, pick=b_full_road)
+#     yao_clerk.set_plan()
 #     yao_clerk.save_refreshed_output_to_forum()
 
 #     cali_clerk.refresh_depot_agendas()

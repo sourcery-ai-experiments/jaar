@@ -17,31 +17,31 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_ClerkUnit_save_contract_agenda_CreateStartingAgendaFile(
+# def test_ClerkUnit_save_plan_agenda_CreateStartingAgendaFile(
 #     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_worker_id = "Lai"
 #     env_dir = get_temp_clerkunit_dir()
 #     lai_agenda = clerkunit_shop(worker_id=lai_worker_id, env_dir=env_dir)
-#     lai_contract_file_name = lai_agenda._contract_file_name
+#     lai_plan_file_name = lai_agenda._plan_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         open_file(lai_agenda._clerkunit_dir, lai_contract_file_name)
+#         open_file(lai_agenda._clerkunit_dir, lai_plan_file_name)
 #     assert (
 #         str(excinfo.value)
-#         == f"Could not load file {lai_agenda._contract_file_path} (2, 'No such file or directory')"
+#         == f"Could not load file {lai_agenda._plan_file_path} (2, 'No such file or directory')"
 #     )
 
 #     # WHEN
-#     lai_agenda.save_contract_agenda(
+#     lai_agenda.save_plan_agenda(
 #         agenda_x=example_agendas_get_agenda_with_4_levels()
 #     )
 
 #     # THEN
-#     assert open_file(lai_agenda._clerkunit_dir, lai_contract_file_name) != None
+#     assert open_file(lai_agenda._clerkunit_dir, lai_plan_file_name) != None
 
 
-def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
+def test_ClerkUnitopen_plan_agenda_WhenStartingAgendaFileDoesNotExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -51,9 +51,9 @@ def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     x_clerk = clerkunit_shop(worker_id=tim_text, env_dir=env_dir, econ_id=econ_id_text)
 
     # WHEN
-    contract_agenda = x_clerk.open_contract_agenda()
-    assert contract_agenda != None
-    assert contract_agenda._world_id == econ_id_text
+    plan_agenda = x_clerk.open_plan_agenda()
+    assert plan_agenda != None
+    assert plan_agenda._world_id == econ_id_text
 
     # THEN
     x_agenda = agendaunit_shop(_worker_id=tim_text)
@@ -67,13 +67,13 @@ def test_ClerkUnitopen_contract_agenda_WhenStartingAgendaFileDoesNotExists(
     # x_idearoot._all_party_credit = True
     # x_idearoot._all_party_debt = True
 
-    assert contract_agenda._idearoot == x_agenda._idearoot
-    assert contract_agenda._idearoot._beliefunits == {}
-    assert list(contract_agenda._partys.keys()) == [tim_text]
-    assert list(contract_agenda._groups.keys()) == [tim_text]
+    assert plan_agenda._idearoot == x_agenda._idearoot
+    assert plan_agenda._idearoot._beliefunits == {}
+    assert list(plan_agenda._partys.keys()) == [tim_text]
+    assert list(plan_agenda._groups.keys()) == [tim_text]
 
 
-def test_ClerkUnit_save_contract_agenda_contractPersonIDMustBeHealer(
+def test_ClerkUnit_save_plan_agenda_planPersonIDMustBeHealer(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -84,57 +84,57 @@ def test_ClerkUnit_save_contract_agenda_contractPersonIDMustBeHealer(
     assert x_agenda._worker_id != gio_text
 
     # WHEN
-    x_clerk.save_contract_agenda(x_agenda=x_agenda)
+    x_clerk.save_plan_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_contract_agenda()._worker_id == x_clerk._clerk_id
+    assert x_clerk.open_plan_agenda()._worker_id == x_clerk._clerk_id
 
 
-def test_ClerkUnit_open_contract_agenda_WhenStartingAgendaFileExists(
+def test_ClerkUnit_open_plan_agenda_WhenStartingAgendaFileExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
     x_clerk = clerkunit_shop(gio_text, get_temp_clerkunit_dir(), get_temp_econ_id())
-    x_clerk.save_contract_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
+    x_clerk.save_plan_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
     # WHEN
-    assert x_clerk.open_contract_agenda() != None
-    contract_agenda = x_clerk.open_contract_agenda()
+    assert x_clerk.open_plan_agenda() != None
+    plan_agenda = x_clerk.open_plan_agenda()
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_worker_id(new_worker_id=gio_text)
     x_agenda.set_agenda_metrics()
 
-    assert contract_agenda._idearoot._kids == x_agenda._idearoot._kids
-    assert contract_agenda._idearoot == x_agenda._idearoot
-    assert contract_agenda._idearoot._beliefunits == {}
-    assert contract_agenda._partys == {}
-    assert contract_agenda._groups == {}
-    assert contract_agenda._worker_id == x_clerk._clerk_id
+    assert plan_agenda._idearoot._kids == x_agenda._idearoot._kids
+    assert plan_agenda._idearoot == x_agenda._idearoot
+    assert plan_agenda._idearoot._beliefunits == {}
+    assert plan_agenda._partys == {}
+    assert plan_agenda._groups == {}
+    assert plan_agenda._worker_id == x_clerk._clerk_id
 
 
-def test_ClerkUnit_erase_contract_agenda_file_DeletesFileCorrectly(
+def test_ClerkUnit_erase_plan_agenda_file_DeletesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
     env_dir = get_temp_clerkunit_dir()
     x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_econ_id())
-    x_clerk.save_contract_agenda(example_agendas_get_agenda_with_4_levels())
-    file_name = x_clerk._contract_file_name
+    x_clerk.save_plan_agenda(example_agendas_get_agenda_with_4_levels())
+    file_name = x_clerk._plan_file_name
     assert open_file(x_clerk._clerkunit_dir, file_name) != None
 
     # WHEN
-    x_clerk.erase_contract_agenda_file()
+    x_clerk.erase_plan_agenda_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
         open_file(x_clerk._clerkunit_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {x_clerk._clerkunit_dir}/contract_agenda.json (2, 'No such file or directory')"
+        == f"Could not load file {x_clerk._clerkunit_dir}/plan_agenda.json (2, 'No such file or directory')"
     )
 
 
@@ -321,24 +321,24 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert new_output_agenda != s1
 
 
-def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
+def test_ClerkUnit_plan_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    # clerkunit with contract_agenda and no other depot agendas
+    # clerkunit with plan_agenda and no other depot agendas
     yao_text = "Yao"
-    contract_origin_weight = 1
+    plan_origin_weight = 1
     yao_originunit = originunit_shop()
-    yao_originunit.set_originlink(party_id=yao_text, weight=contract_origin_weight)
-    contract_agenda_x = example_get_7nodeJRoot_agenda()
-    contract_agenda_x.set_worker_id(yao_text)
+    yao_originunit.set_originlink(party_id=yao_text, weight=plan_origin_weight)
+    plan_agenda_x = example_get_7nodeJRoot_agenda()
+    plan_agenda_x.set_worker_id(yao_text)
 
-    assert contract_agenda_x._idearoot._originunit == originunit_shop()
-    assert contract_agenda_x._idearoot._originunit != yao_originunit
+    assert plan_agenda_x._idearoot._originunit == originunit_shop()
+    assert plan_agenda_x._idearoot._originunit != yao_originunit
 
     x_clerk = clerkunit_shop(yao_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     x_clerk.create_core_dir_and_files()
-    x_clerk.save_contract_agenda(x_agenda=contract_agenda_x)
+    x_clerk.save_plan_agenda(x_agenda=plan_agenda_x)
 
     # WHEN
     output_agenda_x = x_clerk.get_remelded_output_agenda()
@@ -359,4 +359,4 @@ def test_ClerkUnit_contract_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
 
     output_originlink = output_agenda_x._originunit._links.get(yao_text)
     assert output_originlink.party_id == yao_text
-    assert output_originlink.weight == contract_origin_weight
+    assert output_originlink.weight == plan_origin_weight

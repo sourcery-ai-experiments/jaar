@@ -26,8 +26,8 @@ def test_ClerkUnit_exists():
     assert bob_clerkadmin._econ_id != None
     assert bob_clerkadmin._road_delimiter is None
     assert bob_clerkadmin._clerkunit_dir is None
-    assert bob_clerkadmin._contract_file_name is None
-    assert bob_clerkadmin._contract_file_path is None
+    assert bob_clerkadmin._plan_file_name is None
+    assert bob_clerkadmin._plan_file_path is None
     assert bob_clerkadmin._agenda_output_file_name is None
     assert bob_clerkadmin._agenda_output_file_path is None
     assert bob_clerkadmin._forum_file_name is None
@@ -50,8 +50,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._agendas_depot_dir is None
     assert bob_clerkadmin._agendas_ignore_dir is None
     assert bob_clerkadmin._agendas_digest_dir is None
-    assert bob_clerkadmin._contract_file_name is None
-    assert bob_clerkadmin._contract_file_path is None
+    assert bob_clerkadmin._plan_file_name is None
+    assert bob_clerkadmin._plan_file_path is None
     # WHEN
     bob_clerkadmin.set_clerkunit_dirs()
 
@@ -64,15 +64,15 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._agendas_depot_dir != None
     assert bob_clerkadmin._agendas_ignore_dir != None
     assert bob_clerkadmin._agendas_digest_dir != None
-    assert bob_clerkadmin._contract_file_name != None
-    assert bob_clerkadmin._contract_file_path != None
+    assert bob_clerkadmin._plan_file_name != None
+    assert bob_clerkadmin._plan_file_path != None
 
     healers_drectory_folder = "clerkunits"
     x_clerkunits_dir = f"{env_dir}/{healers_drectory_folder}"
     x_clerkunit_dir = f"{x_clerkunits_dir}/{bob_text}"
     x_forum_file_name = f"{bob_text}.json"
-    x_contract_file_name = "contract_agenda.json"
-    x_contract_file_path = f"{x_clerkunit_dir}/{x_contract_file_name}"
+    x_plan_file_name = "plan_agenda.json"
+    x_plan_file_path = f"{x_clerkunit_dir}/{x_plan_file_name}"
     x_agenda_output_file_name = "output_agenda.json"
     x_agenda_output_file_path = f"{x_clerkunit_dir}/{x_agenda_output_file_name}"
     forum_text = "forum"
@@ -83,8 +83,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     x_forum_dir = f"{env_dir}/{forum_text}"
     assert bob_clerkadmin._clerkunits_dir == x_clerkunits_dir
     assert bob_clerkadmin._clerkunit_dir == x_clerkunit_dir
-    assert bob_clerkadmin._contract_file_name == x_contract_file_name
-    assert bob_clerkadmin._contract_file_path == x_contract_file_path
+    assert bob_clerkadmin._plan_file_name == x_plan_file_name
+    assert bob_clerkadmin._plan_file_path == x_plan_file_path
     assert bob_clerkadmin._agenda_output_file_name == x_agenda_output_file_name
     assert bob_clerkadmin._agenda_output_file_path == x_agenda_output_file_path
     assert bob_clerkadmin._agendas_depot_dir == x_agendas_depot_dir
@@ -109,7 +109,7 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     jul_clerkunit.set_clerkunit_dirs()
     assert os_path_exists(jul_clerkunit._clerkunits_dir) is False
     assert os_path_exists(jul_clerkunit._clerkunit_dir) is False
-    assert os_path_exists(jul_clerkunit._contract_file_path) is False
+    assert os_path_exists(jul_clerkunit._plan_file_path) is False
     assert os_path_isdir(jul_clerkunit._clerkunit_dir) is False
     assert os_path_exists(jul_clerkunit._agendas_depot_dir) is False
     assert os_path_exists(jul_clerkunit._agendas_digest_dir) is False
@@ -124,14 +124,14 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     print(f"Checking {jul_clerkunit._clerkunit_dir=}")
     assert os_path_exists(jul_clerkunit._clerkunits_dir)
     assert os_path_exists(jul_clerkunit._clerkunit_dir)
-    assert os_path_exists(jul_clerkunit._contract_file_path)
+    assert os_path_exists(jul_clerkunit._plan_file_path)
     assert os_path_isdir(jul_clerkunit._clerkunit_dir)
     assert os_path_exists(jul_clerkunit._agendas_depot_dir)
     assert os_path_exists(jul_clerkunit._agendas_digest_dir)
     assert os_path_exists(jul_clerkunit._agendas_ignore_dir)
 
 
-def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
+def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_planAgenda(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN create healer
@@ -141,27 +141,21 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
     jul_clerkunit.set_clerkunit_dirs()
     x_agenda = example_get_7nodeJRootWithH_agenda()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
-    assert os_path_exists(jul_clerkunit._contract_file_path)
-    # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._contract_file_path))
+    assert os_path_exists(jul_clerkunit._plan_file_path)
+    # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._plan_file_path))
     ex1 = "teesting text"
     save_file(
         dest_dir=jul_clerkunit._clerkunit_dir,
-        file_name=jul_clerkunit._contract_file_name,
+        file_name=jul_clerkunit._plan_file_name,
         file_text=ex1,
     )
-    assert (
-        open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name)
-        == ex1
-    )
+    assert open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._plan_file_name) == ex1
 
     # WHEN
     jul_clerkunit.create_core_dir_and_files(x_agenda)
 
     # THEN
-    assert (
-        open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._contract_file_name)
-        == ex1
-    )
+    assert open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._plan_file_name) == ex1
 
 
 def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
@@ -179,19 +173,19 @@ def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
     clerkunits_text = "clerkunits"
     clerkunits_dir = f"{env_dir}/clerkunits"
     print(f"{clerkunits_dir}/{old_bob_text}")
-    contract_file_name = "contract_agenda.json"
-    old_contract_file_path = f"{old_clerkunit_dir}/{contract_file_name}"
+    plan_file_name = "plan_agenda.json"
+    old_plan_file_path = f"{old_clerkunit_dir}/{plan_file_name}"
 
     assert os_path_exists(old_clerkunit_dir)
     assert os_path_isdir(old_clerkunit_dir)
-    assert os_path_exists(old_contract_file_path)
+    assert os_path_exists(old_plan_file_path)
 
     tim_text = "Tim"
     new_clerkunit_dir = f"{clerkunits_dir}/{tim_text}"
-    new_contract_file_path = f"{new_clerkunit_dir}/{contract_file_name}"
+    new_plan_file_path = f"{new_clerkunit_dir}/{plan_file_name}"
     assert os_path_exists(new_clerkunit_dir) == False
     assert os_path_isdir(new_clerkunit_dir) == False
-    assert os_path_exists(new_contract_file_path) == False
+    assert os_path_exists(new_plan_file_path) == False
 
     # WHEN
     jul_clerkunit.set_clerk_id(new_clerk_id=tim_text)
@@ -199,10 +193,10 @@ def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
     # THEN
     assert os_path_exists(old_clerkunit_dir) == False
     assert os_path_isdir(old_clerkunit_dir) == False
-    assert os_path_exists(old_contract_file_path) == False
+    assert os_path_exists(old_plan_file_path) == False
     assert os_path_exists(new_clerkunit_dir)
     assert os_path_isdir(new_clerkunit_dir)
-    assert os_path_exists(new_contract_file_path)
+    assert os_path_exists(new_plan_file_path)
 
 
 def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(clerk_dir_setup_cleanup):

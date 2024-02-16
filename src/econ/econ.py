@@ -124,10 +124,10 @@ class EconUnit:
     def set_voice_ranks(self, worker_id: AgentID, sort_order: str):
         if sort_order == "descretional":
             x_clerk = self.get_clerkunit(worker_id)
-            x_contract = x_clerk.get_contract()
-            for count_x, x_partyunit in enumerate(x_contract._partys.values()):
+            x_plan = x_clerk.get_plan()
+            for count_x, x_partyunit in enumerate(x_plan._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            x_clerk.set_contract(x_contract)
+            x_clerk.set_plan(x_plan)
             x_clerk.save_refreshed_output_to_forum()
 
     def set_agenda_treasury_attrs(self, x_worker_id: AgentID):
@@ -409,7 +409,7 @@ class EconUnit:
 
     def save_clerkunit_file(self, clerk_id: ClerkID):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.save_contract_agenda(x_clerkunit.get_contract())
+        x_clerkunit.save_plan_agenda(x_clerkunit.get_plan())
 
     def change_clerkunit_clerk_id(self, old_clerk_id: ClerkID, new_clerk_id: ClerkID):
         clerk_x = self.get_clerkunit(clerk_id=old_clerk_id)

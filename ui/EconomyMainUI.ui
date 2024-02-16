@@ -872,7 +872,7 @@
      <string>dest2forum and refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_open_button">
+   <widget class="QPushButton" name="plan_open_button">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -887,10 +887,10 @@
      </font>
     </property>
     <property name="text">
-     <string>contract</string>
+     <string>plan</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="contract_save_button">
+   <widget class="QPushButton" name="plan_save_button">
     <property name="geometry">
      <rect>
       <x>530</x>

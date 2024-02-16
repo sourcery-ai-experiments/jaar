@@ -16,14 +16,14 @@ def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
 
     # GIVEN
     assert x_clerk != None
-    assert x_clerk._contract is None
+    assert x_clerk._plan is None
     assert x_clerk._clerk_id is None
     assert x_clerk._env_dir is None
     assert x_clerk._econ_id is None
     assert x_clerk._clerkunit_dir is None
     assert x_clerk._clerkunits_dir is None
-    assert x_clerk._contract_file_name is None
-    assert x_clerk._contract_file_path is None
+    assert x_clerk._plan_file_name is None
+    assert x_clerk._plan_file_path is None
     assert x_clerk._agenda_output_file_name is None
     assert x_clerk._agenda_output_file_path is None
     assert x_clerk._forum_file_name is None
@@ -50,8 +50,8 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     assert x_clerk._econ_id != None
     assert x_clerk._econ_id == get_temp_econ_id()
     assert x_clerk._road_delimiter == default_road_delimiter_if_none()
-    assert x_clerk._contract != None
-    assert x_clerk._contract._world_id == get_temp_econ_id()
+    assert x_clerk._plan != None
+    assert x_clerk._plan._world_id == get_temp_econ_id()
 
 
 def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
@@ -101,7 +101,7 @@ def test_clerkunit_auto_output_to_forum_DoesNotSaveAgendaToForumDirWhenFalse(
     assert os_path.exists(forum_file_path) is False
 
 
-def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
+def test_clerkunit_get_plan_createsEmptyAgendaWhenFileDoesNotExist(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -120,121 +120,121 @@ def test_clerkunit_get_contract_createsEmptyAgendaWhenFileDoesNotExist(
     )
     tim_clerk.set_clerkunit_dirs()
     tim_clerk.create_core_dir_and_files()
-    assert os_path.exists(tim_clerk._contract_file_path)
-    delete_dir(dir=tim_clerk._contract_file_path)
-    assert os_path.exists(tim_clerk._contract_file_path) is False
-    assert tim_clerk._contract is None
+    assert os_path.exists(tim_clerk._plan_file_path)
+    delete_dir(dir=tim_clerk._plan_file_path)
+    assert os_path.exists(tim_clerk._plan_file_path) is False
+    assert tim_clerk._plan is None
 
     # WHEN
-    contract_agenda = tim_clerk.get_contract()
+    plan_agenda = tim_clerk.get_plan()
 
     # THEN
-    assert os_path.exists(tim_clerk._contract_file_path)
-    assert tim_clerk._contract != None
-    assert contract_agenda._road_delimiter != None
-    assert contract_agenda._road_delimiter == slash_text
+    assert os_path.exists(tim_clerk._plan_file_path)
+    assert tim_clerk._plan != None
+    assert plan_agenda._road_delimiter != None
+    assert plan_agenda._road_delimiter == slash_text
 
 
-def test_clerkunit_get_contract_getsMemoryAgendaIfExists(
+def test_clerkunit_get_plan_getsMemoryAgendaIfExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
     tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     tim_clerk.create_core_dir_and_files()
-    contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
-    contract_agenda1 = tim_clerk.get_contract()
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract != None
+    plan_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._plan_file_name}"
+    plan_agenda1 = tim_clerk.get_plan()
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan != None
 
     # WHEN
     ray_text = "Ray"
-    tim_clerk._contract = agendaunit_shop(_worker_id=ray_text)
-    contract_agenda2 = tim_clerk.get_contract()
+    tim_clerk._plan = agendaunit_shop(_worker_id=ray_text)
+    plan_agenda2 = tim_clerk.get_plan()
 
     # THEN
-    assert contract_agenda2._worker_id == ray_text
-    assert contract_agenda2 != contract_agenda1
+    assert plan_agenda2._worker_id == ray_text
+    assert plan_agenda2 != plan_agenda1
 
     # WHEN
-    tim_clerk._contract = None
-    contract_agenda3 = tim_clerk.get_contract()
+    tim_clerk._plan = None
+    plan_agenda3 = tim_clerk.get_plan()
 
     # THEN
-    assert contract_agenda3._worker_id != ray_text
-    assert contract_agenda3 == contract_agenda1
+    assert plan_agenda3._worker_id != ray_text
+    assert plan_agenda3 == plan_agenda1
 
 
-def test_clerkunit_set_contract_savescontractAgendaSet_contract_None(
+def test_clerkunit_set_plan_savesplanAgendaSet_plan_None(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
     tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     tim_clerk.create_core_dir_and_files()
-    contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
-    contract_agenda1 = tim_clerk.get_contract()
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract != None
+    plan_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._plan_file_name}"
+    plan_agenda1 = tim_clerk.get_plan()
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan != None
 
     # WHEN
     uid_text = "Not a actual uid"
-    tim_clerk._contract._idearoot._uid = uid_text
-    tim_clerk.set_contract()
+    tim_clerk._plan._idearoot._uid = uid_text
+    tim_clerk.set_plan()
 
     # THEN
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract is None
-    contract_agenda2 = tim_clerk.get_contract()
-    assert contract_agenda2._idearoot._uid == uid_text
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan is None
+    plan_agenda2 = tim_clerk.get_plan()
+    assert plan_agenda2._idearoot._uid == uid_text
 
 
-def test_clerkunit_set_contract_savesGivenAgendaSet_contract_None(
+def test_clerkunit_set_plan_savesGivenAgendaSet_plan_None(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     tim_text = "Tim"
     tim_clerk = clerkunit_shop(tim_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     tim_clerk.create_core_dir_and_files()
-    contract_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._contract_file_name}"
-    contract_agenda1 = tim_clerk.get_contract()
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract != None
+    plan_file_path = f"{tim_clerk._clerkunit_dir}/{tim_clerk._plan_file_name}"
+    plan_agenda1 = tim_clerk.get_plan()
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan != None
 
     # WHEN
-    contract_uid_text = "this is ._contract uid"
-    tim_clerk._contract._idearoot._uid = contract_uid_text
+    plan_uid_text = "this is ._plan uid"
+    tim_clerk._plan._idearoot._uid = plan_uid_text
 
     new_agenda = agendaunit_shop(_worker_id=tim_text)
     new_agenda_uid_text = "this is pulled AgendaUnit uid"
     new_agenda._idearoot._uid = new_agenda_uid_text
 
-    tim_clerk.set_contract(new_agenda)
+    tim_clerk.set_plan(new_agenda)
 
     # THEN
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract is None
-    assert tim_clerk.get_contract()._idearoot._uid != contract_uid_text
-    assert tim_clerk.get_contract()._idearoot._uid == new_agenda_uid_text
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan is None
+    assert tim_clerk.get_plan()._idearoot._uid != plan_uid_text
+    assert tim_clerk.get_plan()._idearoot._uid == new_agenda_uid_text
 
     # GIVEN
-    tim_clerk.set_contract(new_agenda)
-    assert os_path.exists(contract_file_path)
-    assert tim_clerk._contract is None
+    tim_clerk.set_plan(new_agenda)
+    assert os_path.exists(plan_file_path)
+    assert tim_clerk._plan is None
 
     # WHEN
-    tim_clerk.set_contract_if_empty()
+    tim_clerk.set_plan_if_empty()
 
     # THEN
-    assert tim_clerk._contract != None
-    assert os_path.exists(contract_file_path)
+    assert tim_clerk._plan != None
+    assert os_path.exists(plan_file_path)
 
     # WHEN
-    contract_uid_text = "this is ._contract uid"
-    tim_clerk._contract._idearoot._uid = contract_uid_text
+    plan_uid_text = "this is ._plan uid"
+    tim_clerk._plan._idearoot._uid = plan_uid_text
 
 
-def test_clerkunit_set_contract_if_emtpy_DoesNotReplace_contract(
+def test_clerkunit_set_plan_if_emtpy_DoesNotReplace_plan(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -244,16 +244,16 @@ def test_clerkunit_set_contract_if_emtpy_DoesNotReplace_contract(
     saved_agenda = agendaunit_shop(_worker_id=tim_text)
     saved_agenda_uid_text = "this is pulled AgendaUnit uid"
     saved_agenda._idearoot._uid = saved_agenda_uid_text
-    tim_clerk.set_contract(saved_agenda)
-    tim_clerk.get_contract()
-    assert tim_clerk._contract != None
+    tim_clerk.set_plan(saved_agenda)
+    tim_clerk.get_plan()
+    assert tim_clerk._plan != None
 
     # WHEN
-    contract_uid_text = "this is ._contract uid"
-    tim_clerk._contract._idearoot._uid = contract_uid_text
-    tim_clerk.set_contract_if_empty()
+    plan_uid_text = "this is ._plan uid"
+    tim_clerk._plan._idearoot._uid = plan_uid_text
+    tim_clerk.set_plan_if_empty()
 
     # THEN
-    assert tim_clerk._contract != None
-    assert tim_clerk._contract._idearoot._uid == contract_uid_text
-    assert tim_clerk._contract._idearoot._uid != saved_agenda_uid_text
+    assert tim_clerk._plan != None
+    assert tim_clerk._plan._idearoot._uid == plan_uid_text
+    assert tim_clerk._plan._idearoot._uid != saved_agenda_uid_text

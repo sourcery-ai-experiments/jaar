@@ -254,7 +254,7 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert gen_luca_gut.get_party(bob_text) != None
 
 
-def test_WorldUnit_set_person_econunits_contract_CorrectlySetsContracts(
+def test_WorldUnit_set_person_econunits_plan_CorrectlySetsplans(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -288,15 +288,15 @@ def test_WorldUnit_set_person_econunits_contract_CorrectlySetsContracts(
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
     dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_contract().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_contract().get_party(bob_text) is None
+    assert dallas_sue_clerk.get_plan().get_party(bob_text) is None
+    # assert elpaso_sue_clerk.get_plan().get_party(bob_text) is None
 
     # WHEN
-    sue_person.set_person_econunits_contract()
+    sue_person.set_person_econunits_plan()
 
     # THEN
-    assert dallas_sue_clerk.get_contract().get_party(bob_text) != None
+    assert dallas_sue_clerk.get_plan().get_party(bob_text) != None
     elpaso_econ = sue_person.get_econ(elpaso_road)
     elpaso_econ.create_new_clerkunit(sue_text)
     elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_contract().get_party(bob_text) != None
+    assert elpaso_sue_clerk.get_plan().get_party(bob_text) != None

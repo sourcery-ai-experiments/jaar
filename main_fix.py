@@ -43,8 +43,8 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
-            self.main_window.contract = self.main_window.x_clerk.open_contract_agenda()
-            self.editmain_view.agenda_x = self.main_window.contract
+            self.main_window.plan = self.main_window.x_clerk.open_plan_agenda()
+            self.editmain_view.agenda_x = self.main_window.plan
         else:
             self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
         self.editmain_view.refresh_all()
@@ -85,8 +85,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
-        self.contract_open_button.clicked.connect(self.open_editmain)
-        self.contract_save_button.clicked.connect(self.save_contract)
+        self.plan_open_button.clicked.connect(self.open_editmain)
+        self.plan_save_button.clicked.connect(self.save_plan)
 
         self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
         self.depotlink_update_button.clicked.connect(self.depotlink_update)
@@ -104,9 +104,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.econ_id_combo.setCurrentText(first_env)
         self._worker_id_load(clerk_id="ernie")
 
-    def save_contract(self):
-        if self.contract != None:
-            self.x_clerk.save_contract_agenda(self.contract)
+    def save_plan(self):
+        if self.plan != None:
+            self.x_clerk.save_plan_agenda(self.plan)
         self.refresh_worker_id()
 
     def reload_forum_agendas(self):

@@ -30,7 +30,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     )
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    # print(f"{xia_healer._contract._partys.keys()=}")
+    # print(f"{xia_healer._plan._partys.keys()=}")
 
     # WHEN
     output_agenda = x_econ.get_output_agenda(clerk_id=xia_text)
@@ -106,7 +106,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     x_econ.set_clerk_depotlink(xia_text, x2_agenda._worker_id, "blind_trust")
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    print(f"{xia_healer._contract._partys.keys()=}")
+    print(f"{xia_healer._plan._partys.keys()=}")
 
     # WHEN
     output_agenda = x_econ.get_output_agenda(clerk_id=xia_text)

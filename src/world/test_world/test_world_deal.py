@@ -61,10 +61,10 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
     assert oregon_world.dealunit_exists(yao_sue_uid) == False
 
 
-# def test_WorldUnit_apply_requestunit_CorrectlyCreates_contract_agendas(
+# def test_WorldUnit_apply_requestunit_CorrectlyCreates_plan_agendas(
 #     worlds_dir_setup_cleanup,
 # ):
-#     # GIVEN requester and requestee contract_agendas does not exist
+#     # GIVEN requester and requestee plan_agendas does not exist
 #     w1_text = "w1"
 #     world = worldunit_shop(w1_text, get_test_worlds_dir())
 #     yao_text = "Yao"
@@ -108,12 +108,12 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert os_path.exists(forum_tim_file_path)
 #     assert os_path.exists(forum_xio_file_path)
 #     assert os_path.exists(forum_yao_file_path)
-#     assert texas_econ.get_clerkunit(tim_text).get_contract() != None
-#     assert texas_econ.get_clerkunit(xio_text).get_contract() != None
-#     assert texas_econ.get_clerkunit(yao_text).get_contract() != None
+#     assert texas_econ.get_clerkunit(tim_text).get_plan() != None
+#     assert texas_econ.get_clerkunit(xio_text).get_plan() != None
+#     assert texas_econ.get_clerkunit(yao_text).get_plan() != None
 
 
-# def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_contract_agenda(
+# def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_plan_agenda(
 #     worlds_dir_setup_cleanup,
 # ):
 #     world = worldunit_shop("w1", get_test_worlds_dir())
@@ -154,9 +154,9 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.apply_requestunit(highway_requestunit)
 
 #     # THEN
-#     xio_contract = texas_econ.get_clerkunit(xio_text).get_contract()
-#     xio_partyunit = xio_contract.get_party(xio_text)
-#     tim_partyunit = xio_contract.get_party(tim_text)
+#     xio_plan = texas_econ.get_clerkunit(xio_text).get_plan()
+#     xio_partyunit = xio_plan.get_party(xio_text)
+#     tim_partyunit = xio_plan.get_party(tim_text)
 #     assert xio_partyunit != None
 #     assert tim_partyunit != None
 #     assert tim_partyunit.creditor_weight == 1
@@ -167,15 +167,15 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
 #     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
 #     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
-#     print(f"{xio_contract._idea_dict.keys()=}")
+#     print(f"{xio_plan._idea_dict.keys()=}")
 #     print(f"{flying_road=}")
 #     print(f"{no_fly_road=}")
-#     flying_idea = xio_contract.get_idea_obj(flying_road)
-#     no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
-#     yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
-#     weather_idea = xio_contract.get_idea_obj(weather_road)
-#     healthy_idea = xio_contract.get_idea_obj(healthy_road)
-#     boiling_idea = xio_contract.get_idea_obj(boiling_road)
+#     flying_idea = xio_plan.get_idea_obj(flying_road)
+#     no_fly_idea = xio_plan.get_idea_obj(no_fly_road)
+#     yesfly_idea = xio_plan.get_idea_obj(yesfly_road)
+#     weather_idea = xio_plan.get_idea_obj(weather_road)
+#     healthy_idea = xio_plan.get_idea_obj(healthy_road)
+#     boiling_idea = xio_plan.get_idea_obj(boiling_road)
 #     assert flying_idea != None
 #     assert no_fly_idea != None
 #     assert yesfly_idea != None
@@ -224,16 +224,16 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert healthy_idea._balancelinks.get(tim_text) != None
 #     assert boiling_idea._balancelinks.get(tim_text) != None
 
-#     xio_beliefunits = xio_contract._idearoot._beliefunits
+#     xio_beliefunits = xio_plan._idearoot._beliefunits
 #     assert len(xio_beliefunits) == 1
 #     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
 #     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
-#     assert len(xio_contract.get_intent_dict()) == 0
+#     assert len(xio_plan.get_intent_dict()) == 0
 
-#     # check tim contract
-#     tim_contract = texas_econ.get_clerkunit(tim_text).get_contract()
-#     assert tim_contract.get_party(xio_text) != None
-#     assert tim_contract.get_party(xio_text).debtor_weight == 7
+#     # check tim plan
+#     tim_plan = texas_econ.get_clerkunit(tim_text).get_plan()
+#     assert tim_plan.get_party(xio_text) != None
+#     assert tim_plan.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
 #     tim_forum = texas_econ.get_forum_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1
@@ -281,15 +281,15 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.apply_requestunit(highway_requestunit)
 
 #     # THEN
-#     xio_contract = texas_econ.get_clerkunit(xio_text).get_contract()
-#     xio_partyunit = xio_contract.get_party(xio_text)
-#     tim_partyunit = xio_contract.get_party(tim_text)
+#     xio_plan = texas_econ.get_clerkunit(xio_text).get_plan()
+#     xio_partyunit = xio_plan.get_party(xio_text)
+#     tim_partyunit = xio_plan.get_party(tim_text)
 #     assert xio_partyunit != None
 #     assert tim_partyunit != None
 #     assert tim_partyunit.creditor_weight == 1
 #     assert tim_partyunit.debtor_weight == 1
-#     assert xio_contract._groups.get(environmentalist_text) != None
-#     environmentalist_group = xio_contract.get_groupunit(environmentalist_text)
+#     assert xio_plan._groups.get(environmentalist_text) != None
+#     environmentalist_group = xio_plan.get_groupunit(environmentalist_text)
 #     assert len(environmentalist_group._partys) == 1
 #     assert environmentalist_group.get_partylink(tim_text) != None
 
@@ -299,12 +299,12 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
 #     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
 #     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
-#     flying_idea = xio_contract.get_idea_obj(flying_road)
-#     no_fly_idea = xio_contract.get_idea_obj(no_fly_road)
-#     yesfly_idea = xio_contract.get_idea_obj(yesfly_road)
-#     weather_idea = xio_contract.get_idea_obj(weather_road)
-#     healthy_idea = xio_contract.get_idea_obj(healthy_road)
-#     boiling_idea = xio_contract.get_idea_obj(boiling_road)
+#     flying_idea = xio_plan.get_idea_obj(flying_road)
+#     no_fly_idea = xio_plan.get_idea_obj(no_fly_road)
+#     yesfly_idea = xio_plan.get_idea_obj(yesfly_road)
+#     weather_idea = xio_plan.get_idea_obj(weather_road)
+#     healthy_idea = xio_plan.get_idea_obj(healthy_road)
+#     boiling_idea = xio_plan.get_idea_obj(boiling_road)
 
 #     assert flying_idea._assignedunit.get_suffgroup(tim_text) is None
 #     assert no_fly_idea._assignedunit.get_suffgroup(tim_text) is None
@@ -320,16 +320,16 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert healthy_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 #     assert boiling_idea._assignedunit.get_suffgroup(environmentalist_text) != None
 
-#     xio_beliefunits = xio_contract._idearoot._beliefunits
+#     xio_beliefunits = xio_plan._idearoot._beliefunits
 #     assert len(xio_beliefunits) == 1
 #     static_weather_beliefunit = beliefunit_shop(weather_road, pick=boiling_road)
 #     assert xio_beliefunits.get(weather_road) == static_weather_beliefunit
-#     assert len(xio_contract.get_intent_dict()) == 0
+#     assert len(xio_plan.get_intent_dict()) == 0
 
-#     # check tim contract
-#     tim_contract = texas_econ.get_clerkunit(tim_text).get_contract()
-#     assert tim_contract.get_party(xio_text) != None
-#     assert tim_contract.get_party(xio_text).debtor_weight == 7
+#     # check tim plan
+#     tim_plan = texas_econ.get_clerkunit(tim_text).get_plan()
+#     assert tim_plan.get_party(xio_text) != None
+#     assert tim_plan.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
 #     tim_forum = texas_econ.get_forum_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1

@@ -152,9 +152,9 @@ class WorldUnit:
     ):
         x_econunit.full_setup_clerkunit(person_id)
         person_clerkunit = x_econunit.get_clerkunit(person_id)
-        person_contract = person_clerkunit.get_contract()
-        person_contract.add_partyunit(party_id)
-        person_clerkunit.save_contract_agenda(person_contract)
+        person_plan = person_clerkunit.get_plan()
+        person_plan.add_partyunit(party_id)
+        person_clerkunit.save_plan_agenda(person_plan)
         person_clerkunit.save_refreshed_output_to_forum()
 
 
