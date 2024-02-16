@@ -15,7 +15,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.econ.econ import EconUnit, econunit_shop
+from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
     save_file,
@@ -149,7 +149,9 @@ class PersonUnit:
             self._create_econunit(econ_roadunit=econ_idea.get_road())
 
         # delete any
-        curr_treasury_dirs = get_all_dirs_with_file("treasury.db", self._econs_dir)
+        curr_treasury_dirs = get_all_dirs_with_file(
+            treasury_db_filename(), self._econs_dir
+        )
         for treasury_dir in curr_treasury_dirs:
             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
             treasury_road = change_road(

@@ -81,6 +81,10 @@ class IntentBaseDoesNotExistException(Exception):
     pass
 
 
+def treasury_db_filename() -> str:
+    return "treasury.db"
+
+
 @dataclass
 class EconUnit:
     econ_id: EconID = None
@@ -342,7 +346,7 @@ class EconUnit:
         self.econ_id = validate_roadnode(econ_id, self._road_delimiter)
 
     def get_treasury_db_path(self):
-        return f"{self.get_object_root_dir()}/treasury.db"
+        return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
 
     def get_object_root_dir(self):
         return self.econ_dir

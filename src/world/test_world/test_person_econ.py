@@ -1,6 +1,7 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_agenda
+from src.econ.econ import treasury_db_filename
 from src.world.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
 from src.world.examples.world_env_kit import worlds_dir_setup_cleanup
@@ -65,7 +66,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
-    dallas_db_path = f"{dallas_dir}/treasury.db"
+    dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{dallas_db_path=}")
     assert os_path_exists(dallas_db_path) == False
@@ -168,8 +169,8 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(
 
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
-    dallas_db_path = f"{dallas_dir}/treasury.db"
-    elpaso_db_path = f"{elpaso_dir}/treasury.db"
+    dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
+    elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{elpaso_db_path=}")
     print(f"{dallas_db_path=}")
@@ -214,8 +215,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(
     sue_person._save_agenda_to_gut_path(sue_gut_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
-    dallas_db_path = f"{dallas_dir}/treasury.db"
-    elpaso_db_path = f"{elpaso_dir}/treasury.db"
+    dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
+    elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{elpaso_db_path=}")
     print(f"{dallas_db_path=}")

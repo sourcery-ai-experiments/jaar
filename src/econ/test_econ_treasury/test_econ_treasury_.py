@@ -1,5 +1,5 @@
 from src.instrument.file import delete_dir
-from src.econ.econ import econunit_shop, EconUnit
+from src.econ.econ import econunit_shop, EconUnit, treasury_db_filename
 from os import path as os_path
 from src.econ.examples.econ_env_kit import (
     get_temp_env_econ_id,
@@ -37,7 +37,7 @@ def test_econ_create_treasury_db_DoesNotOverWriteDBIfItExists(
 
     # Given
     x_file_text = "Texas Dallas ElPaso"
-    db_file = "treasury.db"
+    db_file = treasury_db_filename()
     save_file(x_econ.econ_dir, file_name=db_file, file_text=x_file_text, replace=True)
     assert os_path.exists(x_econ.get_treasury_db_path())
     assert open_file(x_econ.econ_dir, file_name=db_file) == x_file_text
