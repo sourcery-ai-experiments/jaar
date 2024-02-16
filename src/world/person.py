@@ -103,22 +103,19 @@ class PersonUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
-    def get_econ_rootpathpart(self):
+    def get_econ_rootpart(self):
         return "idearoot"
 
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
 
-    def _get_econ_path(self, x_list: list[RoadNode]) -> str:
-        idearoot_list = [*x_list]
-        return f"{self._econs_dir}{get_directory_path(x_list=idearoot_list)}"
+    def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
+        return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-        x_roadunit = change_road(
-            x_roadunit, self.world_id, self.get_econ_rootpathpart()
-        )
+        x_roadunit = change_road(x_roadunit, self.world_id, self.get_econ_rootpart())
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
-        x_econ_path = self._get_econ_path(road_nodes)
+        x_econ_path = self._get_person_econ_dir(road_nodes)
         set_dir(x_econ_path)
         return x_econ_path
 
@@ -157,7 +154,7 @@ class PersonUnit:
         for treasury_dir in curr_treasury_dirs:
             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
             treasury_road = change_road(
-                treasury_road, self.get_econ_rootpathpart(), self.world_id
+                treasury_road, self.get_econ_rootpart(), self.world_id
             )
             if x_person_econs.get(treasury_road) is None:
                 dir_to_delete = f"{self._econs_dir}/{treasury_dir}"

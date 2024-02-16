@@ -14,7 +14,7 @@ from os.path import exists as os_path_exists
 from src.instrument.file import delete_dir, dir_files, open_file, set_dir, save_file
 
 
-def test_PersonUnit_get_econ_path_ReturnsCorrectObj():
+def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -25,10 +25,10 @@ def test_PersonUnit_get_econ_path_ReturnsCorrectObj():
     kern_text = "kern"
 
     # WHEN
-    texas_path = sue_person._get_econ_path([idearoot, texas_text])
-    dallas_path = sue_person._get_econ_path([idearoot, texas_text, dallas_text])
-    elpaso_path = sue_person._get_econ_path([idearoot, texas_text, elpaso_text])
-    kern_path = sue_person._get_econ_path(
+    texas_path = sue_person._get_person_econ_dir([idearoot, texas_text])
+    dallas_path = sue_person._get_person_econ_dir([idearoot, texas_text, dallas_text])
+    elpaso_path = sue_person._get_person_econ_dir([idearoot, texas_text, elpaso_text])
+    kern_path = sue_person._get_person_econ_dir(
         [idearoot, texas_text, elpaso_text, kern_text]
     )
 
@@ -48,7 +48,7 @@ def test_PersonUnit_create_econ_dir_CreatesDir(worlds_dir_setup_cleanup):
     assert os_path_exists(sue_person._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
-    dallas_dir = sue_person._get_econ_path(dallas_list)
+    dallas_dir = sue_person._get_person_econ_dir(dallas_list)
     print(f"{dallas_dir=}")
     assert os_path_exists(dallas_dir) == False
 
