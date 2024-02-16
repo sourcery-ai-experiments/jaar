@@ -104,40 +104,40 @@ def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
 def test_AssignedHeir_exists():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _agent_id_assigned_x = True
+    _worker_id_assigned_x = True
 
     # WHEN
     assigned_heir_x = AssignedHeir(
-        _suffgroups=_suffgroups_x, _agent_id_assigned=_agent_id_assigned_x
+        _suffgroups=_suffgroups_x, _worker_id_assigned=_worker_id_assigned_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._agent_id_assigned == _agent_id_assigned_x
+    assert assigned_heir_x._worker_id_assigned == _worker_id_assigned_x
 
 
 def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
     _suffgroups_x = {1: 2}
-    _agent_id_assigned_x = "example"
+    _worker_id_assigned_x = "example"
 
     # WHEN
     assigned_heir_x = assigned_heir_shop(
-        _suffgroups=_suffgroups_x, _agent_id_assigned=_agent_id_assigned_x
+        _suffgroups=_suffgroups_x, _worker_id_assigned=_worker_id_assigned_x
     )
 
     # THEN
     assert assigned_heir_x
     assert assigned_heir_x._suffgroups == _suffgroups_x
-    assert assigned_heir_x._agent_id_assigned == _agent_id_assigned_x
+    assert assigned_heir_x._worker_id_assigned == _worker_id_assigned_x
 
 
 def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
 
@@ -156,7 +156,7 @@ def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v2():
     jim_text = "Jim"
     sue_text = "Sue"
     bob_text = "Bob"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
@@ -177,31 +177,31 @@ def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v2():
     assert len(all_partys) == 2
 
 
-def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_Empty_suffgroups_x():
+def test_AssignedHeir_set_worker_id_assigned_CorrectlySetsAttribute_Empty_suffgroups_x():
     # GIVEN
     _suffgroups_x = {}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
     # WHEN
     agenda_groups = {}
-    assigned_heir_x.set_agent_id_assigned(
-        agenda_groups=agenda_groups, agenda_agent_id=""
+    assigned_heir_x.set_worker_id_assigned(
+        agenda_groups=agenda_groups, agenda_worker_id=""
     )
 
     # THEN
-    assert assigned_heir_x._agent_id_assigned
+    assert assigned_heir_x._worker_id_assigned
 
 
-def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
+def test_AssignedHeir_set_worker_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
 
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
-    agenda_agent_id = x_agenda._agent_id
+    agenda_worker_id = x_agenda._worker_id
     agenda_groups = x_agenda._groups
     print(f"{len(agenda_groups)=}")
     # print(f"{agenda_groups.get(jim_text)=}")
@@ -209,24 +209,24 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
     # WHEN
-    assigned_heir_x.set_agent_id_assigned(agenda_groups, agenda_agent_id)
+    assigned_heir_x.set_worker_id_assigned(agenda_groups, agenda_worker_id)
 
     # THEN
-    assert assigned_heir_x._agent_id_assigned
+    assert assigned_heir_x._worker_id_assigned
 
 
-def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
+def test_AssignedHeir_set_worker_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
 
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
-    agenda_agent_id = x_agenda._agent_id
+    agenda_worker_id = x_agenda._worker_id
     agenda_groups = x_agenda._groups
     print(f"{len(agenda_groups)=}")
     # print(f"{agenda_groups.get(jim_text)=}")
@@ -234,21 +234,21 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {sue_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
     # WHEN
-    assigned_heir_x.set_agent_id_assigned(agenda_groups, agenda_agent_id)
+    assigned_heir_x.set_worker_id_assigned(agenda_groups, agenda_worker_id)
 
     # THEN
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
 
-def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
+def test_AssignedHeir_set_worker_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
     bob_text = "Bob"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
@@ -261,17 +261,17 @@ def test_AssignedHeir_set_agent_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._agent_id_assigned == False
-    assigned_heir_x.set_agent_id_assigned(x_agenda._groups, x_agenda._agent_id)
-    assert assigned_heir_x._agent_id_assigned
+    assert assigned_heir_x._worker_id_assigned == False
+    assigned_heir_x.set_worker_id_assigned(x_agenda._groups, x_agenda._worker_id)
+    assert assigned_heir_x._worker_id_assigned
 
     # WHEN
     swim_group.del_partylink(party_id=jim_text)
     x_agenda.set_groupunit(y_groupunit=swim_group)
-    assigned_heir_x.set_agent_id_assigned(x_agenda._groups, x_agenda._agent_id)
+    assigned_heir_x.set_worker_id_assigned(x_agenda._groups, x_agenda._worker_id)
 
     # THEN
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
 
 def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
@@ -279,7 +279,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     jim_text = "Jim"
     sue_text = "Sue"
     bob_text = "Bob"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
@@ -292,17 +292,17 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._agent_id_assigned == False
-    assigned_heir_x.set_agent_id_assigned(x_agenda._groups, x_agenda._agent_id)
-    assert assigned_heir_x._agent_id_assigned
+    assert assigned_heir_x._worker_id_assigned == False
+    assigned_heir_x.set_worker_id_assigned(x_agenda._groups, x_agenda._worker_id)
+    assert assigned_heir_x._worker_id_assigned
 
     # WHEN
     swim_group.del_partylink(party_id=jim_text)
     x_agenda.set_groupunit(y_groupunit=swim_group)
-    assigned_heir_x.set_agent_id_assigned(x_agenda._groups, x_agenda._agent_id)
+    assigned_heir_x.set_worker_id_assigned(x_agenda._groups, x_agenda._worker_id)
 
     # THEN
-    assert assigned_heir_x._agent_id_assigned == False
+    assert assigned_heir_x._worker_id_assigned == False
 
 
 def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirEmpty():
@@ -418,7 +418,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqual_ParentAssignedHeir_Non
     sue_text = "Sue"
     bob_text = "Bob"
     tom_text = "Tom"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)
@@ -465,7 +465,7 @@ def test_AssignedHeir_set_suffgroup_AssignedUnit_NotEqualParentAssignedHeir_Rais
     sue_text = "Sue"
     bob_text = "Bob"
     tom_text = "Tom"
-    x_agenda = agendaunit_shop(_agent_id=jim_text)
+    x_agenda = agendaunit_shop(_worker_id=jim_text)
     x_agenda.add_partyunit(party_id=jim_text)
     x_agenda.add_partyunit(party_id=sue_text)
     x_agenda.add_partyunit(party_id=bob_text)

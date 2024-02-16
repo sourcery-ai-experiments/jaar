@@ -254,7 +254,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._commit_file_save()
 
     def _get_file_name(self):
-        return f"agenda_{self.x_agenda._agent_id}.json"
+        return f"agenda_{self.x_agenda._worker_id}.json"
 
     def _commit_file_save(self):
         x_agenda_json = self.x_agenda.get_json()
@@ -278,7 +278,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_load(x_agenda_json=self.x_agenda_json)
 
     def agenda_new(self):
-        self.x_agenda = agendaunit_shop(_agent_id="new")
+        self.x_agenda = agendaunit_shop(_worker_id="new")
         self.x_agenda.set_time_hreg_ideas(c400_count=7)
         road_minute = f"{self.x_agenda._world_id},time,jajatime"
         self.x_agenda.set_belief(
@@ -307,7 +307,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
-        self.agenda_agent_id.setText(self.x_agenda._agent_id)
+        self.agenda_worker_id.setText(self.x_agenda._worker_id)
         self.beliefs_table_load()
         self.intent_states_load()
 
@@ -324,7 +324,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         row = 0
         for belief in self.get_beliefs_list():
-            base_text = belief.base.replace(f"{self.x_agenda._agent_id}", "")
+            base_text = belief.base.replace(f"{self.x_agenda._worker_id}", "")
             base_text = base_text[1:]
             belief_text = belief.pick.replace(belief.base, "")
             belief_text = belief_text[1:]
@@ -343,7 +343,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             row += 1
 
         for base, count in self.x_agenda.get_missing_belief_bases().items():
-            base_text = base.replace(f"{self.x_agenda._agent_id}", "")
+            base_text = base.replace(f"{self.x_agenda._worker_id}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
@@ -431,7 +431,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setItem(row, 6, qtw1(""))
 
     def set_intent_states_table_properties(self):
-        self.intent_states.setObjectName("Agenda Agent_ID")
+        self.intent_states.setObjectName("Agenda worker_id")
         self.intent_states.setColumnWidth(0, 30)
         self.intent_states.setColumnWidth(1, 200)
         self.intent_states.setColumnWidth(2, 120)

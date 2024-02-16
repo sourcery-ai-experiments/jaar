@@ -94,7 +94,7 @@ class PersonUnit:
         if self.gut_file_exists() == False:
             self._save_agenda_to_gut_path(
                 agendaunit_shop(
-                    _agent_id=self.person_id,
+                    _worker_id=self.person_id,
                     _world_id=self.world_id,
                     _road_delimiter=self._road_delimiter,
                 )
@@ -169,9 +169,9 @@ class PersonUnit:
 
     def set_econunit_contract(self, econ_road: RoadUnit, contract: AgendaUnit):
         x_econ = self.get_econ(econ_road)
-        if x_econ.clerkunit_exists(contract._agent_id) == False:
-            x_econ.create_new_clerkunit(contract._agent_id)
-        x_clerkunit = x_econ.get_clerkunit(contract._agent_id)
+        if x_econ.clerkunit_exists(contract._worker_id) == False:
+            x_econ.create_new_clerkunit(contract._worker_id)
+        x_clerkunit = x_econ.get_clerkunit(contract._worker_id)
         x_clerkunit.set_contract(contract)
 
     def set_econunits_contract(self, contract: AgendaUnit):

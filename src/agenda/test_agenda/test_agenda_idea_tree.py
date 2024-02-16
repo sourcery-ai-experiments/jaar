@@ -160,7 +160,7 @@ def test_AgendaUnit_get_idea_obj_ReturnsIdea():
 
 def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     # GIVEN
-    tim_agenda = agendaunit_shop(_agent_id="Tim")
+    tim_agenda = agendaunit_shop(_worker_id="Tim")
     assert tim_agenda._idearoot._descendant_promise_count is None
     assert tim_agenda._idearoot._all_party_credit is None
     assert tim_agenda._idearoot._all_party_debt is None
@@ -427,7 +427,7 @@ def test_agenda4party_Exists():
     # THEN
     assert sandy_agenda4party
     assert str(type(sandy_agenda4party)).find(".agenda.AgendaUnit'>")
-    assert sandy_agenda4party._agent_id == sandy_party_id
+    assert sandy_agenda4party._worker_id == sandy_party_id
 
 
 def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():

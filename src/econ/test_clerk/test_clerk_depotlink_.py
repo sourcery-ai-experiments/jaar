@@ -34,10 +34,10 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     file_path_x = f"{sue_agenda._agendas_depot_dir}/{tim_text}.json"
     print(f"{file_path_x=}")
     with pytest_raises(Exception) as excinfo:
-        sue_agenda._set_depotlink(outer_agent_id=tim_text)
+        sue_agenda._set_depotlink(outer_worker_id=tim_text)
     assert (
         str(excinfo.value)
-        == f"agent_id {sue_text} cannot find agenda {tim_text} in {file_path_x}"
+        == f"worker_id {sue_text} cannot find agenda {tim_text} in {file_path_x}"
     )
 
 
@@ -54,7 +54,7 @@ def test_clerkunit_set_depotlink_CorrectlySetscontractPartys(
     assert list(yao_ux._contract._partys.keys()) == [yao_text]
 
     # WHEN
-    yao_ux._set_depotlink(outer_agent_id=sue_text)
+    yao_ux._set_depotlink(outer_worker_id=sue_text)
 
     # THEN
     assert list(yao_ux._contract._partys.keys()) == [yao_text, sue_text]
@@ -70,33 +70,33 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     cali_ux.create_core_dir_and_files()
     cali_ux.set_contract_if_empty()
     cali_ux.save_agenda_to_depot(amer_agenda)
-    assert cali_ux.get_contract().get_party(amer_agenda._agent_id) is None
-    amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._agent_id}.json"
+    assert cali_ux.get_contract().get_party(amer_agenda._worker_id) is None
+    amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._worker_id}.json"
     assert os_path.exists(amer_digest_path) is False
 
     # WHEN
     assignment_text = "assignment"
     print("next set depotlink")
-    cali_ux._set_depotlink(amer_agenda._agent_id, link_type=assignment_text)
+    cali_ux._set_depotlink(amer_agenda._worker_id, link_type=assignment_text)
     print("after set depotlink")
 
     # THEN
     assert (
-        cali_ux.get_contract().get_party(amer_agenda._agent_id).depotlink_type
+        cali_ux.get_contract().get_party(amer_agenda._worker_id).depotlink_type
         == assignment_text
     )
     assert os_path.exists(amer_digest_path)
     digest_agenda = agenda_get_from_json(
         open_file(
             dest_dir=cali_ux._agendas_digest_dir,
-            file_name=f"{amer_agenda._agent_id}.json",
+            file_name=f"{amer_agenda._worker_id}.json",
         )
     )
-    print(f"{digest_agenda._agent_id=}")
+    print(f"{digest_agenda._worker_id=}")
     print(f"{len(digest_agenda._idea_dict)=}")
     digest_agenda.set_agenda_metrics()
     assert len(digest_agenda._idea_dict) == 9
-    assert digest_agenda._agent_id == cali_text
+    assert digest_agenda._worker_id == cali_text
 
 
 def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup):
@@ -112,7 +112,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup)
     assert bob_agenda._contract.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
-    bob_agenda.del_depot_agenda(agent_id=yao_text)
+    bob_agenda.del_depot_agenda(worker_id=yao_text)
 
     # THEN
     assert list(bob_agenda._contract._partys.keys()) == [bob_text, yao_text]
@@ -134,7 +134,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
 
     # WHEN
-    bob_agenda.del_depot_agenda(agent_id=lai_text)
+    bob_agenda.del_depot_agenda(worker_id=lai_text)
 
     # THEN
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
@@ -178,7 +178,7 @@ def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_agenda._contract.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
-    bob_agenda.del_depot_agenda(agent_id=yao_text)
+    bob_agenda.del_depot_agenda(worker_id=yao_text)
 
     # THEN
     assert list(bob_agenda._contract._partys.keys()) == [bob_text, yao_text]
@@ -201,7 +201,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     assert count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
     # WHEN
-    bob_agenda.del_depot_agenda(agent_id=zia_text)
+    bob_agenda.del_depot_agenda(worker_id=zia_text)
 
     # THEN
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 0
@@ -221,17 +221,17 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     bob_ux.set_contract_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
-    cx1 = bob_ux.open_ignore_agenda(agent_id=zia_text)
+    cx1 = bob_ux.open_ignore_agenda(worker_id=zia_text)
     assert len(cx1._partys) == 0
     cx1.add_partyunit(party_id="Tim")
     assert len(cx1._partys) == 1
 
     # WHEN
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
-    bob_ux.set_ignore_agenda_file(zia_agenda, src_agent_id=None)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
+    bob_ux.set_ignore_agenda_file(zia_agenda, src_worker_id=None)
 
     # THEN
-    cx2 = bob_ux.open_ignore_agenda(agent_id=zia_text)
+    cx2 = bob_ux.open_ignore_agenda(worker_id=zia_text)
     assert len(cx2._partys) == 0
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
@@ -249,16 +249,16 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 1
 
     ernie_text = "ernie"
-    ernie_agenda = get_cal2nodes(_agent_id=ernie_text)
+    ernie_agenda = get_cal2nodes(_worker_id=ernie_text)
     steve_text = "steve"
-    old_steve_agenda = get_cal2nodes(_agent_id=steve_text)
+    old_steve_agenda = get_cal2nodes(_worker_id=steve_text)
     sx.save_forum_agenda(ernie_agenda)
     sx.save_forum_agenda(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 4
-    new_steve_agenda = get_cal3nodes(_agent_id=steve_text)
+    new_steve_agenda = get_cal3nodes(_worker_id=steve_text)
     sx.save_forum_agenda(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):

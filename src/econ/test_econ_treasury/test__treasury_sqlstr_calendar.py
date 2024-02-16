@@ -15,7 +15,7 @@ def test_get_calendar_table_create_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS calendar (
-  agent_id VARCHAR(255) NOT NULL
+  worker_id VARCHAR(255) NOT NULL
 , report_time_road VARCHAR(10000) NOT NULL
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(agent_id) REFERENCES agendaunit(agent_id)
+, FOREIGN KEY(worker_id) REFERENCES agendaunit(worker_id)
 )
 ;
 """
@@ -49,7 +49,7 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
     x_intent_weight = 0.5
     x_task = True
     x_calendarreport = CalendarReport(
-        agent_id=bob_text,
+        worker_id=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -74,7 +74,7 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = f"""
 INSERT INTO calendar (
-  agent_id
+  worker_id
 , report_time_road
 , report_date_range_start
 , report_date_range_cease
@@ -116,7 +116,7 @@ def test_get_calendar_table_delete_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = f"""
 DELETE FROM calendar
-WHERE agent_id = '{bob_text}' 
+WHERE worker_id = '{bob_text}' 
 ;
 """
     assert generated_sqlstr == example_sqlstr

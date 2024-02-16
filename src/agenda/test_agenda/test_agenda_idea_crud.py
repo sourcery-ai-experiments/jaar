@@ -95,7 +95,7 @@ def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
+    print(f"{(sue_agenda._worker_id == new_idea_parent_road[0])=}")
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert sue_agenda.get_idea_count() == 18
     assert sue_agenda.get_level_count(level=1) == 5
@@ -114,7 +114,7 @@ def test_AgendaUnit_add_idea_CanAddKidToKidIdea():
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    # print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
+    # print(f"{(sue_agenda._worker_id == new_idea_parent_road[0])=}")
     # print(sue_agenda._idearoot._kids["gig"])
     # print(f"{(len(new_idea_parent_road) == 1)=}")
     assert sue_agenda.get_idea_count() == 18
@@ -142,7 +142,7 @@ def test_AgendaUnit_add_idea_CanAddKidToGrandkidIdea():
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    print(f"{(sue_agenda._agent_id == new_idea_parent_road[0])=}")
+    print(f"{(sue_agenda._worker_id == new_idea_parent_road[0])=}")
     print(sue_agenda._idearoot._kids["gig"])
     print(f"{(len(new_idea_parent_road) == 1)=}")
     assert sue_agenda.get_idea_count() == 18

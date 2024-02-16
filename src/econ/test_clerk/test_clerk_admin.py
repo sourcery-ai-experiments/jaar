@@ -212,7 +212,7 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(clerk_dir_setup_cl
         bob_text, get_temp_clerkunit_dir(), get_temp_econ_id()
     )
     x_agenda = example_get_6node_agenda()
-    x_agenda.set_agent_id(new_agent_id=bob_text)
+    x_agenda.set_worker_id(new_worker_id=bob_text)
     bob_clerkadmin.create_core_dir_and_files(x_agenda)
 
     forum_file_path = f"{bob_clerkadmin._forum_dir}/{bob_clerkadmin._forum_file_name}"

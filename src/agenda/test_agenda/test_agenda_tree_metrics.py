@@ -6,7 +6,7 @@ from src._road.road import create_road_from_nodes
 
 def test_AgendaUnit_get_tree_metrics_exists():
     # GIVEN
-    zia_agenda = agendaunit_shop(_agent_id="Zia")
+    zia_agenda = agendaunit_shop(_worker_id="Zia")
 
     # WHEN
     zia_agenda_tree_metrics = zia_agenda.get_tree_metrics()
@@ -63,7 +63,7 @@ def test_AgendaUnit_get_tree_set_all_idea_uids_unique():
 def test_AgendaUnit_set_all_idea_uids_unique_SetsUIDsCorrectly():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
     swim_text = "swim"
     sports_text = "sports"
     zia_agenda.add_l1_idea(ideaunit_shop(swim_text, _uid=None))

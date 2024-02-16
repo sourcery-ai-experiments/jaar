@@ -81,7 +81,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
         row = 0
         for belief in self.get_beliefs_list():
-            base_text = belief.base.replace(f"{self.x_agenda._agent_id}", "")
+            base_text = belief.base.replace(f"{self.x_agenda._worker_id}", "")
             base_text = base_text[1:]
             belief_text = belief.pick.replace(belief.base, "")
             belief_text = belief_text[1:]
@@ -100,7 +100,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
             row += 1
 
         for base, count in self.x_agenda.get_missing_belief_bases().items():
-            base_text = base.replace(f"{self.x_agenda._agent_id}", "")
+            base_text = base.replace(f"{self.x_agenda._worker_id}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"

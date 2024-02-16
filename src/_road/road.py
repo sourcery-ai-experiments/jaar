@@ -45,7 +45,7 @@ class EconID(RoadNode):  # Created to help track the concept
 
 
 class AgentID(HealerID):
-    """A RoadNode used to identify a AgendaUnit's agent_id"""
+    """A RoadNode used to identify a AgendaUnit's worker_id"""
 
     pass
 

@@ -2,21 +2,21 @@
     "tables": {
         "agenda_groupunit": {
             "columns": {
-                "agent_id": {},
+                "worker_id": {},
                 "groupunit_group_id": {},
                 "treasury_partylinks": {}
             }
         },
         "agenda_idea_beliefunit": {
             "columns": {
-                "agent_id": {},
+                "worker_id": {},
                 "base": {},
                 "pick": {}
             }
         },
         "agenda_ideaunit": {
             "columns": {
-                "agent_id": {},
+                "worker_id": {},
                 "idea_road": {}
             }
         },
@@ -35,19 +35,19 @@
                 "_treasury_due_paid": {},
                 "_treasury_voice_hx_lowest_rank": {},
                 "_treasury_voice_rank": {},
-                "agent_id": {},
+                "worker_id": {},
                 "party_id": {}
             }
         },
         "agendaunit": {
             "columns": {
-                "agent_id": {},
+                "worker_id": {},
                 "rational": {}
             }
         },
         "calendar": {
             "columns": {
-                "agent_id": {},
+                "worker_id": {},
                 "intent_idea_road": {},
                 "intent_weight": {},
                 "report_date_range_cease": {},
@@ -67,10 +67,10 @@
                 "cash_close": {},
                 "cash_master": {},
                 "cash_start": {},
-                "dst_agent_id": {},
+                "dst_worker_id": {},
                 "parent_block_num": {},
                 "river_tree_level": {},
-                "src_agent_id": {}
+                "src_worker_id": {}
             }
         },
         "river_circle": {
@@ -79,7 +79,7 @@
                 "curr_close": {},
                 "curr_start": {},
                 "cash_master": {},
-                "dst_agent_id": {}
+                "dst_worker_id": {}
             }
         },
         "river_reach": {
@@ -88,7 +88,7 @@
                 "reach_curr_close": {},
                 "reach_curr_start": {},
                 "set_num": {},
-                "src_agent_id": {}
+                "src_worker_id": {}
             }
         }
     }

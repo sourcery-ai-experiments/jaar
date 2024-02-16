@@ -571,12 +571,12 @@ def test_AgentID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_agent_id = AgentID(bob_text)
+    bob_worker_id = AgentID(bob_text)
     # THEN
-    assert bob_agent_id == bob_text
+    assert bob_worker_id == bob_text
     assert (
-        inspect_getdoc(bob_agent_id)
-        == "A RoadNode used to identify a AgendaUnit's agent_id"
+        inspect_getdoc(bob_worker_id)
+        == "A RoadNode used to identify a AgendaUnit's worker_id"
     )
 
 

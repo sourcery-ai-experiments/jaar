@@ -194,7 +194,7 @@ def test_AgendaUnit_get_party_ReturnsCorrectObj():
 def test_AgendaUnit_get_partys_depotlink_count_GetsCorrectCount():
     # GIVEN
     sue_text = "Sue"
-    sue_agenda = agendaunit_shop(_agent_id=sue_text)
+    sue_agenda = agendaunit_shop(_worker_id=sue_text)
     assign_text = "assignment"
 
     # WHEN

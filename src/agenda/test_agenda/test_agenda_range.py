@@ -37,7 +37,7 @@ def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario1():
 
 def test_agendaAddingIdeaWithAddinCorrectlyTransformsRangeScenario2():
     # GIVEN
-    bob_agenda = agendaunit_shop(_agent_id="Bob", _weight=10)
+    bob_agenda = agendaunit_shop(_worker_id="Bob", _weight=10)
 
     l1 = "level1"
     bob_agenda.add_l1_idea(ideaunit_shop(l1, _weight=30))

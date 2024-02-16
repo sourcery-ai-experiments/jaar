@@ -215,7 +215,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlySavesFile(
     # THEN
     gut_agenda = sue_person.get_gut_file_agenda()
     assert gut_agenda._world_id == get_test_world_id()
-    assert gut_agenda._agent_id == sue_text
+    assert gut_agenda._worker_id == sue_text
     bob_text = "Bob"
     assert gut_agenda.get_party(bob_text) is None
 
@@ -260,7 +260,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
     print(f"{gut_file_text=}")
     gut_agenda = agenda_get_from_json(gut_file_text)
     assert gut_agenda._world_id == get_test_world_id()
-    assert gut_agenda._agent_id == sue_text
+    assert gut_agenda._worker_id == sue_text
 
 
 def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(

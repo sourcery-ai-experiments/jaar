@@ -17,9 +17,9 @@ def test_clerkunit_set_depot_agenda_SetsCorrectInfo(clerk_dir_setup_cleanup):
     # WHEN
     assignment_text = "assignment"
     zia_text = "Zia"
-    x_clerk.set_depot_agenda(agendaunit_shop(_agent_id=zia_text), assignment_text)
+    x_clerk.set_depot_agenda(agendaunit_shop(_worker_id=zia_text), assignment_text)
     zoa_text = "Zoa"
-    x_clerk.set_depot_agenda(agendaunit_shop(_agent_id=zoa_text), assignment_text)
+    x_clerk.set_depot_agenda(agendaunit_shop(_worker_id=zoa_text), assignment_text)
 
     # THEN
     print(f"{x_clerk._contract._partys.keys()=}")

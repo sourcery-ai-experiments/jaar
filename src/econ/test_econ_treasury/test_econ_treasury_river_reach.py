@@ -34,7 +34,7 @@ def test_get_river_reach_table_insert_sqlstr_InsertsWithoutError():
     select_example_sqlstr = """
 SELECT 
   'Yao' cash_master
-, 'Sue' src_agent_id
+, 'Sue' src_worker_id
 , 4 set_num
 , 0.78 reach_curr_start
 , 0.89 reach_curr_close
@@ -102,11 +102,11 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
 
     partyunit_select_str = f"""
 SELECT 
-  agent_id
+  worker_id
 , party_id
 , _treasury_credit_score
 FROM agenda_partyunit
-WHERE agent_id = '{yao_text}'
+WHERE worker_id = '{yao_text}'
 """
     with x_db as x_conn:
         results = x_conn.execute(partyunit_select_str)
@@ -192,12 +192,12 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
 
     partyunit_select_str = f"""
 SELECT 
-  agent_id
+  worker_id
 , party_id
 , _treasury_credit_score
 , _treasury_voice_rank
 FROM agenda_partyunit
-WHERE agent_id = '{yao_text}'
+WHERE worker_id = '{yao_text}'
 """
     with x_db as x_conn:
         results = x_conn.execute(partyunit_select_str)
@@ -249,9 +249,9 @@ WHERE agent_id = '{yao_text}'
 # 2. from river_reach_touch select river_reach_intersection:
 #   every row of river_reach_touch with intersection of river_circle and river_block
 # 3. from river_reach_intersection select river_reach_ordered:
-#   every row of river_reach_intersection ordered by src_agent_id, curr_start, curr_close
+#   every row of river_reach_intersection ordered by src_worker_id, curr_start, curr_close
 # 4. from river_reach_ordered select river_reach_stepped:
-#   every row of river_reach_ordered with column identifying sets of src_agent_id/intersecting curr ranges
+#   every row of river_reach_ordered with column identifying sets of src_worker_id/intersecting curr ranges
 # 5. from river_reach_stepped select river_reach_final:
 #   one row for every river_reach_stepped set with min curr_start and max curr_close
 
@@ -294,7 +294,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
         assert 0 == get_single_result(x_conn, get_table_count_sqlstr(circle_text))
         assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
     insert_block_values_str = """
-INSERT INTO river_block (cash_master, src_agent_id, dst_agent_id, cash_start, cash_close, block_num, parent_block_num, river_tree_level)
+INSERT INTO river_block (cash_master, src_worker_id, dst_worker_id, cash_start, cash_close, block_num, parent_block_num, river_tree_level)
 VALUES ('Sal', 'Sal', 'Ava', 0.0, 0.1, 0, NULL, 1)
 ,('Sal', 'Sal', 'Bob', 0.1, 0.3, 1, NULL, 1)
 ,('Sal', 'Sal', 'Tom', 0.3, 1.0, 2, NULL, 1)
@@ -398,7 +398,7 @@ VALUES ('Sal', 'Sal', 'Ava', 0.0, 0.1, 0, NULL, 1)
 ;
 """
     insert_circle_values_str = """
-INSERT INTO river_circle (cash_master, dst_agent_id, circle_num, curr_start, curr_close)
+INSERT INTO river_circle (cash_master, dst_worker_id, circle_num, curr_start, curr_close)
 VALUES ('Sal', 'Sal', 0, 0.0440126668651765, 0.1)
 , ('Sal', 'Sal', 1, 0.123164561507988, 1.0)
 ;

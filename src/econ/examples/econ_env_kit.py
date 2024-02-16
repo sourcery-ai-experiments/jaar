@@ -47,16 +47,16 @@ def env_dir_setup_cleanup():
     delete_dir(dir=env_dir)
 
 
-def create_agenda_file_for_econs(econ_dir: str, agent_id: str):
-    x_agenda = agendaunit_shop(_agent_id=agent_id)
+def create_agenda_file_for_econs(econ_dir: str, worker_id: str):
+    x_agenda = agendaunit_shop(_worker_id=worker_id)
     agenda_dir = f"{econ_dir}/agendas"
-    # file_path = f"{agenda_dir}/{x_agenda._agent_id}.json"
+    # file_path = f"{agenda_dir}/{x_agenda._worker_id}.json"
     # if not path.exists(file_path):
-    # print(f"{file_path=} {x_agenda._agent_id=}")
+    # print(f"{file_path=} {x_agenda._worker_id=}")
 
     save_file(
         dest_dir=agenda_dir,
-        file_name=f"{x_agenda._agent_id}.json",
+        file_name=f"{x_agenda._worker_id}.json",
         file_text=x_agenda.get_json(),
     )
 
@@ -89,13 +89,13 @@ def _delete_and_set_ex3():
     x_econ.save_forum_agenda(example_agenda_v001)
     x_econ.save_forum_agenda(example_agenda_v002)
 
-    # x_econ.set_agent_id(x_clerk=clerkunit_shop(agent_id="w1", env_dir=x_econ.get_object_root_dir()))
-    # x_econ.set_agent_id(x_clerk=clerkunit_shop(agent_id="w2", env_dir=x_econ.get_object_root_dir()))
+    # x_econ.set_worker_id(x_clerk=clerkunit_shop(worker_id="w1", env_dir=x_econ.get_object_root_dir()))
+    # x_econ.set_worker_id(x_clerk=clerkunit_shop(worker_id="w2", env_dir=x_econ.get_object_root_dir()))
     xia_text = "Xia"
     x_econ.create_new_clerkunit(clerk_id=xia_text)
-    bob_text = example_agenda_v002._agent_id
+    bob_text = example_agenda_v002._worker_id
     x_econ.set_clerk_depotlink(
-        xia_text, agenda_agent_id=bob_text, depotlink_type="blind_trust"
+        xia_text, agenda_worker_id=bob_text, depotlink_type="blind_trust"
     )
     # w1_obj = x_econ.get_clerkunit(clerk_id=w1_text)
 
@@ -103,17 +103,17 @@ def _delete_and_set_ex3():
     create_agenda_file_for_econs(x_econ.get_object_root_dir(), bob_text)
     # print(f"create agenda_list {w1_text=}")
     x_econ.create_depotlink_to_generated_agenda(
-        clerk_id=xia_text, agent_id=bob_text, depotlink_type="ignore"
+        clerk_id=xia_text, worker_id=bob_text, depotlink_type="ignore"
     )
     land_text = "tim wurld"
     create_agenda_file_for_econs(
-        econ_dir=x_econ.get_object_root_dir(), agent_id=land_text
+        econ_dir=x_econ.get_object_root_dir(), worker_id=land_text
     )
     x_econ.create_depotlink_to_generated_agenda(
-        clerk_id=xia_text, agent_id=land_text, depotlink_type="blind_trust"
+        clerk_id=xia_text, worker_id=land_text, depotlink_type="blind_trust"
     )
-    # x_econ.create_depotlink_to_generated_agenda(clerk_id=w1_text, agent_id="test9")
-    # x_econ.create_depotlink_to_generated_agenda(clerk_id=w1_text, agent_id="Bobs agenda")
+    # x_econ.create_depotlink_to_generated_agenda(clerk_id=w1_text, worker_id="test9")
+    # x_econ.create_depotlink_to_generated_agenda(clerk_id=w1_text, worker_id="Bobs agenda")
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     # print(f"WHAT WHAT {x_econ.get_object_root_dir()}")
     # print(f"WHAT WHAT {x_econ.get_object_root_dir()}/clerkunits/w1/w1.json")
@@ -167,43 +167,45 @@ def _delete_and_set_ex5():
     x_p.save_forum_agenda(ag_4)
     x_p.save_forum_agenda(ag_5)
 
-    x_p.create_new_clerkunit(clerk_id=ag_1._agent_id)
-    x_p.create_new_clerkunit(clerk_id=ag_2._agent_id)
-    x_p.create_new_clerkunit(clerk_id=ag_3._agent_id)
-    x_p.create_new_clerkunit(clerk_id=ag_4._agent_id)
-    x_p.create_new_clerkunit(clerk_id=ag_5._agent_id)
+    x_p.create_new_clerkunit(clerk_id=ag_1._worker_id)
+    x_p.create_new_clerkunit(clerk_id=ag_2._worker_id)
+    x_p.create_new_clerkunit(clerk_id=ag_3._worker_id)
+    x_p.create_new_clerkunit(clerk_id=ag_4._worker_id)
+    x_p.create_new_clerkunit(clerk_id=ag_5._worker_id)
 
-    x_p.set_clerk_depotlink(ag_1._agent_id, ag_2._agent_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_1._agent_id, ag_3._agent_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_1._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_1._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_2._worker_id, "blind_trust", 3, 3.1)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_3._worker_id, "blind_trust", 7, 7.1)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
 
-    x_p.set_clerk_depotlink(ag_2._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_2._agent_id, ag_3._agent_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_2._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_3._worker_id, "blind_trust", 7, 7.1)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
     x_agenda = example_get_agenda_3CleanNodesRandomWeights()
-    x_p.set_clerk_depotlink(ag_2._agent_id, ag_5._agent_id, "ignore", 5, 5.1, x_agenda)
+    x_p.set_clerk_depotlink(
+        ag_2._worker_id, ag_5._worker_id, "ignore", 5, 5.1, x_agenda
+    )
 
-    x_p.set_clerk_depotlink(ag_3._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_3._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_3._agent_id, ag_4._agent_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_3._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
 
-    x_p.set_clerk_depotlink(ag_4._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_4._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_4._agent_id, ag_3._agent_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_4._agent_id, ag_5._agent_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_3._worker_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
 
-    x_p.set_clerk_depotlink(ag_5._agent_id, ag_1._agent_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_5._agent_id, ag_2._agent_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_5._agent_id, ag_3._agent_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_5._agent_id, ag_4._agent_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_3._worker_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_4._worker_id, "blind_trust", 5, 5.1)
 
-    x_p.save_clerkunit_file(clerk_id=ag_1._agent_id)
-    x_p.save_clerkunit_file(clerk_id=ag_2._agent_id)
-    x_p.save_clerkunit_file(clerk_id=ag_3._agent_id)
-    x_p.save_clerkunit_file(clerk_id=ag_4._agent_id)
-    x_p.save_clerkunit_file(clerk_id=ag_5._agent_id)
+    x_p.save_clerkunit_file(clerk_id=ag_1._worker_id)
+    x_p.save_clerkunit_file(clerk_id=ag_2._worker_id)
+    x_p.save_clerkunit_file(clerk_id=ag_3._worker_id)
+    x_p.save_clerkunit_file(clerk_id=ag_4._worker_id)
+    x_p.save_clerkunit_file(clerk_id=ag_5._worker_id)
 
 
 def _delete_and_set_ex6(x_econ_id: str = None):
@@ -220,32 +222,32 @@ def _delete_and_set_ex6(x_econ_id: str = None):
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_agent_id=sal_text)
+    sal_agenda = agendaunit_shop(_worker_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_forum_agenda(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_agent_id=bob_text)
+    bob_agenda = agendaunit_shop(_worker_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_forum_agenda(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_agent_id=tom_text)
+    tom_agenda = agendaunit_shop(_worker_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_forum_agenda(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_agent_id=ava_text)
+    ava_agenda = agendaunit_shop(_worker_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_forum_agenda(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_agent_id=elu_text)
+    elu_agenda = agendaunit_shop(_worker_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_forum_agenda(elu_agenda)
 
     x_econ.refresh_treasury_forum_agendas_data()
-    x_econ.set_credit_flow_for_agenda(agent_id=sal_text, max_blocks_count=100)
+    x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=100)
 
     return x_econ
 

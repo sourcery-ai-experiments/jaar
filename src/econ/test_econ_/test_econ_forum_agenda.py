@@ -22,7 +22,7 @@ def test_econ_set_agenda_CreatesAgendaFile(env_dir_setup_cleanup):
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs()
     y_agenda = example_get_1node_agenda()
-    y_path = f"{x_econ.get_forum_dir()}/{y_agenda._agent_id}.json"
+    y_path = f"{x_econ.get_forum_dir()}/{y_agenda._worker_id}.json"
     assert os_path.exists(y_path) == False
 
     # WHEN
@@ -42,28 +42,30 @@ def test_econ_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     x_econ.save_forum_agenda(y_agenda)
 
     # WHEN / THEN
-    assert x_econ.get_forum_agenda(agent_id=y_agenda._agent_id) == y_agenda
+    assert x_econ.get_forum_agenda(worker_id=y_agenda._worker_id) == y_agenda
 
 
-def test_econ_change_forum_agent_id_ChangesAgendaPersonID(
+def test_econ_change_forum_worker_id_ChangesAgendaPersonID(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    old_agent_id = "old1"
-    y_agenda = agendaunit_shop(_agent_id=old_agent_id)
-    old_y_agenda_path = f"{x_econ.get_forum_dir()}/{old_agent_id}.json"
+    old_worker_id = "old1"
+    y_agenda = agendaunit_shop(_worker_id=old_worker_id)
+    old_y_agenda_path = f"{x_econ.get_forum_dir()}/{old_worker_id}.json"
     x_econ.save_forum_agenda(y_agenda)
     print(f"{old_y_agenda_path=}")
 
     # WHEN
-    new_agent_id = "new1"
-    new_y_agenda_path = f"{x_econ.get_forum_dir()}/{new_agent_id}.json"
+    new_worker_id = "new1"
+    new_y_agenda_path = f"{x_econ.get_forum_dir()}/{new_worker_id}.json"
     assert os_path.exists(new_y_agenda_path) == False
     assert os_path.exists(old_y_agenda_path)
-    x_econ.change_forum_agent_id(old_agent_id=old_agent_id, new_agent_id=new_agent_id)
+    x_econ.change_forum_worker_id(
+        old_worker_id=old_worker_id, new_worker_id=new_worker_id
+    )
 
     # THEN
     assert os_path.exists(old_y_agenda_path) == False
@@ -84,5 +86,5 @@ def test_econ_Sets_idearoot_Label(
     x_econ.save_forum_agenda(old_x_agenda)
 
     # THEN
-    new_x_agenda = x_econ.get_forum_agenda(old_x_agenda._agent_id)
+    new_x_agenda = x_econ.get_forum_agenda(old_x_agenda._worker_id)
     assert new_x_agenda._idearoot._label == x_econ_id

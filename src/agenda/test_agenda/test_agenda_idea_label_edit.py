@@ -31,7 +31,7 @@ def test_AgendaUnit_edit_idea_label_FailsWhenIdeaDoesNotExist():
 def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconIDisNone():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_agent_id=tim_text)
+    tim_agenda = agendaunit_shop(_worker_id=tim_text)
 
     gig_text = "gig"
     gig_road = tim_agenda.make_l1_road(gig_text)
@@ -39,7 +39,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconIDisNone():
     swim_road = tim_agenda.make_road(gig_road, swim_text)
     tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=gig_road)
-    assert tim_agenda._agent_id == tim_text
+    assert tim_agenda._worker_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._world_id
     gig_idea = tim_agenda.get_idea_obj(gig_road)
     assert gig_idea._parent_road == tim_agenda._world_id
@@ -66,7 +66,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconIDisNone():
 def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferent():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_agent_id=tim_text)
+    tim_agenda = agendaunit_shop(_worker_id=tim_text)
     gig_text = "gig"
     gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
@@ -76,7 +76,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferen
     sun_text = "sun"
     tim_agenda._world_id = sun_text
     tim_agenda._idearoot._agenda_world_id = sun_text
-    assert tim_agenda._agent_id == tim_text
+    assert tim_agenda._worker_id == tim_text
     assert tim_agenda._world_id == sun_text
     assert tim_agenda._idearoot._agenda_world_id == sun_text
     assert tim_agenda._idearoot._label == root_label()
@@ -98,14 +98,14 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferen
 def test_agenda_set_world_id_CorrectlySetsAttr():
     # GIVEN
     tim_text = "Tim"
-    tim_agenda = agendaunit_shop(_agent_id=tim_text)
+    tim_agenda = agendaunit_shop(_worker_id=tim_text)
     gig_text = "gig"
     old_gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
     old_swim_road = tim_agenda.make_road(old_gig_road, swim_text)
     tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
     tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=old_gig_road)
-    assert tim_agenda._agent_id == tim_text
+    assert tim_agenda._worker_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._world_id
     gig_idea = tim_agenda.get_idea_obj(old_gig_road)
     assert gig_idea._parent_road == tim_agenda._world_id
@@ -326,22 +326,22 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
     assert len(gig_idea._reasonunits) == 2
 
 
-def test_agenda_set_agent_id_CorrectlyChangesBoth():
+def test_agenda_set_worker_id_CorrectlyChangesBoth():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
-    assert sue_agenda._agent_id == "Sue"
+    assert sue_agenda._worker_id == "Sue"
     assert sue_agenda._idearoot._label == sue_agenda._world_id
     # mid_label1 = "Tim"
     # sue_agenda.edit_idea_label(old_road=old_label, new_label=mid_label1)
-    # assert sue_agenda._agent_id == old_label
+    # assert sue_agenda._worker_id == old_label
     # assert sue_agenda._idearoot._label == mid_label1
 
     # WHEN
     bob_text = "Bob"
-    sue_agenda.set_agent_id(new_agent_id=bob_text)
+    sue_agenda.set_worker_id(new_worker_id=bob_text)
 
     # THEN
-    assert sue_agenda._agent_id == bob_text
+    assert sue_agenda._worker_id == bob_text
     assert sue_agenda._idearoot._label == sue_agenda._world_id
 
 

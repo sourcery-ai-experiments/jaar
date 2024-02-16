@@ -18,7 +18,7 @@ def test_AgendaUnit_Exists():
     x_agenda = AgendaUnit()
 
     assert x_agenda
-    assert x_agenda._agent_id is None
+    assert x_agenda._worker_id is None
     assert x_agenda._world_id is None
     assert x_agenda._weight is None
     assert x_agenda._max_tree_traverse is None
@@ -49,13 +49,13 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
 
     # WHEN
     x_agenda = agendaunit_shop(
-        _agent_id=noa_text,
+        _worker_id=noa_text,
         _world_id=iowa_world_id,
         _road_delimiter=slash_road_delimiter,
         _meld_strategy=override_meld_strategy,
     )
     assert x_agenda
-    assert x_agenda._agent_id == noa_text
+    assert x_agenda._worker_id == noa_text
     assert x_agenda._world_id == iowa_world_id
     assert x_agenda._weight == 1
     assert x_agenda._max_tree_traverse == 3
@@ -92,7 +92,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     # GIVE/ WHEN
     x_agenda = agendaunit_shop()
 
-    assert x_agenda._agent_id == ""
+    assert x_agenda._worker_id == ""
     assert x_agenda._world_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
 
@@ -144,7 +144,7 @@ def test_AgendaUnit_ideaoot_uid_isAlwaysEqualTo1():
     zia_text = "Zia"
 
     # WHEN
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
 
     # THEN
     assert zia_agenda._idearoot._uid == 1
@@ -153,7 +153,7 @@ def test_AgendaUnit_ideaoot_uid_isAlwaysEqualTo1():
 def test_AgendaUnit_set_max_tree_traverse_CorrectlySetsInt():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
     assert zia_agenda._max_tree_traverse == 3
 
     # WHEN
@@ -166,7 +166,7 @@ def test_AgendaUnit_set_max_tree_traverse_CorrectlySetsInt():
 def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
     assert zia_agenda._max_tree_traverse == 3
 
     # WHEN/THEN
@@ -181,7 +181,7 @@ def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
 def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsInt():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_agent_id=zia_text)
+    zia_agenda = agendaunit_shop(_worker_id=zia_text)
     assert zia_agenda._party_creditor_pool is None
     assert zia_agenda._party_debtor_pool is None
 
@@ -236,7 +236,7 @@ def test_AgendaUnit_shop_CorrectlySetsGiven_auto_output_to_forum():
 
     # WHEN
     noa_text = "Noa"
-    x_agenda = agendaunit_shop(_agent_id=noa_text, _auto_output_to_forum=True)
+    x_agenda = agendaunit_shop(_worker_id=noa_text, _auto_output_to_forum=True)
 
     # THEN
     assert x_agenda._auto_output_to_forum == True
@@ -246,7 +246,7 @@ def test_AgendaUnit_set_world_id_CorrectlySetsAttr():
     # GIVEN
     world_id_text = "Sun"
     noa_text = "Noa"
-    x_agenda = agendaunit_shop(_agent_id=noa_text, _auto_output_to_forum=True)
+    x_agenda = agendaunit_shop(_worker_id=noa_text, _auto_output_to_forum=True)
     assert x_agenda._world_id == root_label()
 
     # WHEN
@@ -262,7 +262,7 @@ def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
-        _agent_id=noa_text,
+        _worker_id=noa_text,
         _world_id=world_id_text,
         _auto_output_to_forum=True,
         _road_delimiter=slash_road_delimiter,
@@ -283,7 +283,7 @@ def test_AgendaUnit_make_road_ReturnsCorrectObj():
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
-        _agent_id=noa_text,
+        _worker_id=noa_text,
         _world_id=world_id_text,
         _auto_output_to_forum=True,
         _road_delimiter=slash_road_delimiter,

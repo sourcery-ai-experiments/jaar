@@ -70,10 +70,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agenda_update_button.clicked.connect(self.agenda_update_pid)
         self.agenda_delete_button.clicked.connect(self.agenda_delete)
         self.agendas_table.itemClicked.connect(self.agendas_table_select)
-        self.agent_id_insert_button.clicked.connect(self.agent_id_insert)
-        self.agent_id_update_button.clicked.connect(self.agent_id_update_pid)
-        self.agent_id_delete_button.clicked.connect(self.agent_id_delete)
-        self.agent_ids_table.itemClicked.connect(self.agent_ids_table_select)
+        self.worker_id_insert_button.clicked.connect(self.worker_id_insert)
+        self.worker_id_update_button.clicked.connect(self.worker_id_update_pid)
+        self.worker_id_delete_button.clicked.connect(self.worker_id_delete)
+        self.worker_ids_table.itemClicked.connect(self.worker_ids_table_select)
         self.reload_forum_agendas_button.clicked.connect(self.reload_forum_agendas)
         self.set_forum_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
         self.set_forum_and_reload_srcs_button.clicked.connect(
@@ -102,12 +102,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
         self.econ_id_combo_refresh()
         self.econ_id_combo.setCurrentText(first_env)
-        self._agent_id_load(clerk_id="ernie")
+        self._worker_id_load(clerk_id="ernie")
 
     def save_contract(self):
         if self.contract != None:
             self.x_clerk.save_contract_agenda(self.contract)
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
     def reload_forum_agendas(self):
         if self.econ_x != None:
@@ -130,29 +130,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
 
     def agendas_table_select(self):
-        self.agenda_agent_id.setText(
+        self.agenda_worker_id.setText(
             self.agendas_table.item(self.agendas_table.currentRow(), 0).text()
         )
-        if self.agent_ids_table.currentRow() != -1:
-            selected_agent_id = self.agent_ids_table.item(
-                self.agent_ids_table.currentRow(), 0
+        if self.worker_ids_table.currentRow() != -1:
+            selected_worker_id = self.worker_ids_table.item(
+                self.worker_ids_table.currentRow(), 0
             ).text()
             selected_agenda = self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
-            self.depotlink_pid.setText(f"{selected_agent_id} - {selected_agenda}")
+            self.depotlink_pid.setText(f"{selected_worker_id} - {selected_agenda}")
 
-    def agent_ids_table_select(self):
-        x_clerk_id = self.agent_ids_table.item(
-            self.agent_ids_table.currentRow(), 0
+    def worker_ids_table_select(self):
+        x_clerk_id = self.worker_ids_table.item(
+            self.worker_ids_table.currentRow(), 0
         ).text()
-        self._agent_id_load(clerk_id=x_clerk_id)
+        self._worker_id_load(clerk_id=x_clerk_id)
 
-    def _agent_id_load(self, clerk_id: str):
+    def _worker_id_load(self, clerk_id: str):
         self.econ_x.create_new_clerkunit(clerk_id=clerk_id)
         self.x_clerk = self.econ_x._clerkunits.get(clerk_id)
         self.clerk_id.setText(self.x_clerk._clerk_id)
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
     def depotlinks_table_select(self):
         self.depotlink_pid.setText(
@@ -166,12 +166,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def ignores_table_select(self):
-        ignore_agenda_agent_id = self.ignores_table.item(
+        ignore_agenda_worker_id = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
         # self.ignore_agenda_x = self.econ_x.get_forum_agenda(
         self.ignore_agenda_x = self.econ_x.get_agenda_from_ignores_dir(
-            clerk_id=self.x_clerk.pid, _agent_id=ignore_agenda_agent_id
+            clerk_id=self.x_clerk.pid, _worker_id=ignore_agenda_worker_id
         )
         self.edit_agenda = self.ignore_agenda_x
 
@@ -179,7 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.econ_x.set_ignore_agenda_file(
             clerk_id=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
         )
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
     def show_ignores_table(self):
         self.ignores_table.setHidden(False)
@@ -207,7 +207,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_insert(self):
         self.econ_x.save_forum_agenda(
-            agenda_x=agendaunit_shop(_agent_id=self.agenda_agent_id.text())
+            agenda_x=agendaunit_shop(_worker_id=self.agenda_worker_id.text())
         )
         self.refresh_econ()
 
@@ -215,9 +215,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         currently_selected = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
-        typed_in = self.agenda_agent_id.text()
+        typed_in = self.agenda_worker_id.text()
         if currently_selected != typed_in:
-            self.econ_x.change_forum_agent_id(
+            self.econ_x.change_forum_worker_id(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_econ()
@@ -230,37 +230,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_econ()
 
-    def agent_id_insert(self):
+    def worker_id_insert(self):
         self.econ_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
-        self.refresh_agent_ids()
+        self.refresh_worker_ids()
 
-    def agent_id_update_pid(self):
-        currently_selected = self.agent_ids_table.item(
-            self.agent_ids_table.currentRow(), 0
+    def worker_id_update_pid(self):
+        currently_selected = self.worker_ids_table.item(
+            self.worker_ids_table.currentRow(), 0
         ).text()
         typed_in = self.clerk_id.text()
         if currently_selected != typed_in:
             self.econ_x.change_clerkunit_clerk_id(
                 old_label=currently_selected, new_label=typed_in
             )
-            self.refresh_agent_ids()
+            self.refresh_worker_ids()
 
-    def agent_id_delete(self):
+    def worker_id_delete(self):
         self.econ_x.del_clerkunit_dir(
-            clerk_id=self.agent_ids_table.item(
-                self.agent_ids_table.currentRow(), 0
+            clerk_id=self.worker_ids_table.item(
+                self.worker_ids_table.currentRow(), 0
             ).text()
         )
-        self.refresh_agent_ids()
+        self.refresh_worker_ids()
 
     def depotlink_insert(self):
-        agenda_agent_id = self.agendas_table.item(
+        agenda_worker_id = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
         if self.x_clerk != None:
             agenda_json = open_file(
                 dest_dir=self.x_clerk._forum_dir,
-                file_name=f"{agenda_agent_id}.json",
+                file_name=f"{agenda_worker_id}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
             self.x_clerk.set_depot_agenda(
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 depotlink_weight=self.depotlink_weight.text(),
             )
             self.econ_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
     def depotlink_update(self):
         clerk_id_x = self.x_clerk.pid
@@ -281,27 +281,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             debtor_weight=self.depotlink_weight.text(),
         )
         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
     def depotlink_delete(self):
         clerk_id_x = self.x_clerk.pid
         self.econ_x.del_depotlink(
-            clerk_id=clerk_id_x, agendaunit_agent_id=self.depotlink_pid.text()
+            clerk_id=clerk_id_x, agendaunit_worker_id=self.depotlink_pid.text()
         )
         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
-    def get_agenda_agent_id_list(self):
+    def get_agenda_worker_id_list(self):
         return [[file_name] for file_name in dir_files(self.econ_x.get_forum_dir())]
 
     def get_clerk_id_list(self):
-        agent_ids_agent_id_list = []
+        worker_ids_worker_id_list = []
         if self.econ_x != None:
-            agent_ids_agent_id_list.extend(
-                [agent_id_dir]
-                for agent_id_dir in self.econ_x.get_clerkunit_dir_paths_list()
+            worker_ids_worker_id_list.extend(
+                [worker_id_dir]
+                for worker_id_dir in self.econ_x.get_clerkunit_dir_paths_list()
             )
-        return agent_ids_agent_id_list
+        return worker_ids_worker_id_list
 
     def get_depotlink_list(self):
         depotlinks_list = []
@@ -313,7 +313,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print(f"{cl_dir=} {cl_filename=}")
                 agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
-                depotlink_row = [cl_val._agent_id, "", ""]
+                depotlink_row = [cl_val._worker_id, "", ""]
                 depotlinks_list.append(depotlink_row)
         return depotlinks_list
 
@@ -343,11 +343,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_ideas_list(self):
         x_list = []
-        if self.agent_id_output_agenda != None:
-            idea_list = self.agent_id_output_agenda.get_idea_tree_ordered_road_list()
+        if self.worker_id_output_agenda != None:
+            idea_list = self.worker_id_output_agenda.get_idea_tree_ordered_road_list()
 
             for idea_road in idea_list:
-                idea_obj = self.agent_id_output_agenda.get_idea_obj(idea_road)
+                idea_obj = self.worker_id_output_agenda.get_idea_obj(idea_road)
 
                 if idea_obj._parent_road.find("time") != 3:
                     x_list.append(
@@ -362,36 +362,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_partys_list(self):
         x_list = []
-        if self.agent_id_output_agenda != None:
+        if self.worker_id_output_agenda != None:
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(partyunit._agenda_credit)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
                     partyunit.party_id,
                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
                 ]
-                for partyunit in self.agent_id_output_agenda._partys.values()
+                for partyunit in self.worker_id_output_agenda._partys.values()
             )
         return x_list
 
     def get_p_groups_list(self):
         x_list = []
-        if self.agent_id_output_agenda != None:
+        if self.worker_id_output_agenda != None:
             x_list.extend(
                 [
                     f"{agenda_importance_diplay(groupunit._agenda_debt)}/{agenda_importance_diplay(groupunit._agenda_credit)}",
                     groupunit.group_id,
                     len(groupunit._partys),
                 ]
-                for groupunit in self.agent_id_output_agenda._groups.values()
+                for groupunit in self.worker_id_output_agenda._groups.values()
             )
         return x_list
 
     def get_p_beliefs_list(self):
         x_list = []
-        if self.agent_id_output_agenda != None:
+        if self.worker_id_output_agenda != None:
             for (
                 beliefunit
-            ) in self.agent_id_output_agenda._idearoot._beliefunits.values():
+            ) in self.worker_id_output_agenda._idearoot._beliefunits.values():
                 open_nigh = ""
                 if beliefunit.open is None and beliefunit.nigh is None:
                     open_nigh = ""
@@ -409,8 +409,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_p_intent_list(self):
         x_list = []
-        if self.agent_id_output_agenda != None:
-            intent_list = self.agent_id_output_agenda.get_intent_dict()
+        if self.worker_id_output_agenda != None:
+            intent_list = self.worker_id_output_agenda.get_intent_dict()
             intent_list.sort(key=lambda x: x._agenda_importance, reverse=True)
             x_list.extend(
                 [
@@ -427,7 +427,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _sub_refresh_agents_table(self):
         self.refresh_x(
-            self.agent_ids_table, ["agent_ids Table"], self.get_clerk_id_list()
+            self.worker_ids_table, ["worker_ids Table"], self.get_clerk_id_list()
         )
 
     def _sub_refresh_depotlinks_table(self):
@@ -544,18 +544,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.econ_id_combo.clear()
         self.econ_id_combo.addItems(create_example_econs_list())
 
-    def refresh_agent_ids(self):
+    def refresh_worker_ids(self):
         self.x_clerk = None
         self._sub_refresh_agents_table()
-        self.refresh_agent_id()
+        self.refresh_worker_id()
 
-    def refresh_agent_id(self):
+    def refresh_worker_id(self):
         self._sub_refresh_depotlinks_table()
         self._sub_refresh_digests_table()
         self._sub_refresh_ignores_table()
-        self.agent_id_output_agenda = None
+        self.worker_id_output_agenda = None
         if self.x_clerk != None:
-            self.agent_id_output_agenda = self.x_clerk.get_remelded_output_agenda()
+            self.worker_id_output_agenda = self.x_clerk.get_remelded_output_agenda()
         self._sub_refresh_p_ideas_table()
         self._sub_refresh_p_partys_table()
         self._sub_refresh_p_groups_table()
@@ -566,9 +566,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_x(
             self.agendas_table,
             ["Econ Forum Agendas"],
-            self.get_agenda_agent_id_list(),
+            self.get_agenda_worker_id_list(),
         )
-        self.refresh_agent_ids()
+        self.refresh_worker_ids()
 
     def refresh_x(
         self,

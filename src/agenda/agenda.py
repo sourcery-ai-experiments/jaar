@@ -109,7 +109,7 @@ class Exception_econs_justified(Exception):
 @dataclass
 class AgendaUnit:
     _world_id: str = None
-    _agent_id: AgentID = None
+    _worker_id: AgentID = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupID:GroupUnit] = None
@@ -215,7 +215,7 @@ class AgendaUnit:
         self.set_agenda_metrics()
         x_idea = self.get_idea_obj(road)
         new_weight = self._weight * x_idea._agenda_importance
-        x_agenda = agendaunit_shop(_agent_id=self._idearoot._label, _weight=new_weight)
+        x_agenda = agendaunit_shop(_worker_id=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
             src_yx = self.get_idea_obj(road_assc)
@@ -1118,8 +1118,8 @@ class AgendaUnit:
         for kid in d_temp_idea._kids.values():
             self.add_idea(kid, parent_road=parent_road)
 
-    def set_agent_id(self, new_agent_id):
-        self._agent_id = new_agent_id
+    def set_worker_id(self, new_worker_id):
+        self._worker_id = new_worker_id
 
     def edit_idea_label(
         self,
@@ -1667,7 +1667,7 @@ class AgendaUnit:
         x_idearoot.set_active(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
-            agenda_agent_id=self._agent_id,
+            agenda_worker_id=self._worker_id,
         )
         x_idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
         x_idearoot.set_balanceheirs_agenda_credit_debt()
@@ -1698,7 +1698,7 @@ class AgendaUnit:
         idea_kid.set_active(
             tree_traverse_count=self._tree_traverse_count,
             agenda_groupunits=self._groups,
-            agenda_agent_id=self._agent_id,
+            agenda_worker_id=self._worker_id,
         )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
         idea_kid.set_agenda_importance(
@@ -1922,7 +1922,7 @@ class AgendaUnit:
             "_groups": self.get_groupunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
-            "_agent_id": self._agent_id,
+            "_worker_id": self._worker_id,
             "_world_id": self._world_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_auto_output_to_forum": self._auto_output_to_forum,
@@ -1983,7 +1983,7 @@ class AgendaUnit:
 
     def get_agenda4party(self, party_id: PartyID, beliefs: dict[RoadUnit:BeliefCore]):
         self.set_agenda_metrics()
-        agenda4party = agendaunit_shop(_agent_id=party_id)
+        agenda4party = agendaunit_shop(_worker_id=party_id)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
         # get party's partys: partyzone
 
@@ -2052,14 +2052,14 @@ class AgendaUnit:
             other_weight=other_agenda._weight,
             other_meld_strategy="default",
         )
-        self._meld_originlinks(other_agenda._agent_id, party_weight)
+        self._meld_originlinks(other_agenda._worker_id, party_weight)
 
     def _meld_ideas(self, other_agenda, party_weight: float):
         # meld idearoot
         self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
 
         # meld all other ideas
-        party_id = other_agenda._agent_id
+        party_id = other_agenda._worker_id
         o_idea_list = other_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
@@ -2182,22 +2182,22 @@ class AgendaUnit:
 
 
 def agendaunit_shop(
-    _agent_id: AgentID = None,
+    _worker_id: AgentID = None,
     _world_id: EconID = None,
     _weight: float = None,
     _auto_output_to_forum: bool = None,
     _road_delimiter: str = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
-    if _agent_id is None:
-        _agent_id = ""
+    if _worker_id is None:
+        _worker_id = ""
     if _world_id is None:
         _world_id = get_default_econ_root_roadnode()
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
 
     x_agenda = AgendaUnit(
-        _agent_id=_agent_id,
+        _worker_id=_worker_id,
         _weight=get_1_if_None(_weight),
         _auto_output_to_forum=get_False_if_None(_auto_output_to_forum),
         _world_id=_world_id,
@@ -2228,7 +2228,7 @@ def get_from_json(x_agenda_json: str) -> AgendaUnit:
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
-    x_agenda.set_agent_id(get_obj_from_agenda_dict(agenda_dict, "_agent_id"))
+    x_agenda.set_worker_id(get_obj_from_agenda_dict(agenda_dict, "_worker_id"))
     x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
     x_agenda._auto_output_to_forum = get_obj_from_agenda_dict(
         agenda_dict, "_auto_output_to_forum"
@@ -2363,13 +2363,13 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
     agendaunits = {}
     for agendaunit_dict in x_dict.values():
         x_agenda = get_from_dict(agenda_dict=agendaunit_dict)
-        agendaunits[x_agenda._agent_id] = x_agenda
+        agendaunits[x_agenda._worker_id] = x_agenda
     return agendaunits
 
 
 @dataclass
 class MeldeeOrderUnit:
-    agent_id: AgentID
+    worker_id: AgentID
     voice_rank: int
     voice_hx_lowest_rank: int
     file_name: str
@@ -2378,8 +2378,8 @@ class MeldeeOrderUnit:
 def get_meldeeorderunit(
     primary_agenda: AgendaUnit, meldee_file_name: str
 ) -> MeldeeOrderUnit:
-    file_src_agent_id = meldee_file_name.replace(".json", "")
-    primary_meldee_partyunit = primary_agenda.get_party(file_src_agent_id)
+    file_src_worker_id = meldee_file_name.replace(".json", "")
+    primary_meldee_partyunit = primary_agenda.get_party(file_src_worker_id)
 
     default_voice_rank = 0
     default_voice_hx_lowest_rank = 0
@@ -2396,7 +2396,7 @@ def get_meldeeorderunit(
             primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
 
     return MeldeeOrderUnit(
-        agent_id=file_src_agent_id,
+        worker_id=file_src_worker_id,
         voice_rank=primary_voice_rank_for_meldee,
         voice_hx_lowest_rank=primary_voice_hx_lowest_rank_for_meldee,
         file_name=meldee_file_name,
@@ -2407,10 +2407,10 @@ def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]
     agenda_voice_ranks = {}
     for meldee_file_name in dir_files(dir_path=meldees_dir):
         meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
-        agenda_voice_ranks[meldee_orderunit.agent_id] = meldee_orderunit
+        agenda_voice_ranks[meldee_orderunit.worker_id] = meldee_orderunit
     agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
     agendas_voice_rank_ordered_list.sort(
-        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.agent_id)
+        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.worker_id)
     )
     return [
         x_meldeeorderunit.file_name

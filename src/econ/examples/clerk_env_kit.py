@@ -15,23 +15,23 @@ def get_temp_econ_id() -> str:
 
 @pytest_fixture()
 def clerk_dir_setup_cleanup():
-    agent_id_dir = get_temp_clerkunit_dir()
-    delete_dir(dir=agent_id_dir)
-    yield agent_id_dir
-    delete_dir(dir=agent_id_dir)
+    worker_id_dir = get_temp_clerkunit_dir()
+    delete_dir(dir=worker_id_dir)
+    yield worker_id_dir
+    delete_dir(dir=worker_id_dir)
 
 
-def create_agenda_file(agenda_clerkunit_dir: str, agent_id: AgentID):
-    x_agenda = agendaunit_shop(_agent_id=agent_id)
-    # file_path = f"{agenda_clerkunit_dir}/{x_agenda._agent_id}.json"
+def create_agenda_file(agenda_clerkunit_dir: str, worker_id: AgentID):
+    x_agenda = agendaunit_shop(_worker_id=worker_id)
+    # file_path = f"{agenda_clerkunit_dir}/{x_agenda._worker_id}.json"
     # # if not path.exists(file_path):
-    # print(f"{file_path=} {x_agenda._agent_id=}")
+    # print(f"{file_path=} {x_agenda._worker_id=}")
     # with open(f"{file_path}", "w") as f:
-    #     print(f" saving {x_agenda._agent_id=} to {file_path=}")
+    #     print(f" saving {x_agenda._worker_id=} to {file_path=}")
     #     f.write(x_agenda.get_json())
     save_file(
         dest_dir=agenda_clerkunit_dir,
-        file_name=f"{x_agenda._agent_id}.json",
+        file_name=f"{x_agenda._worker_id}.json",
         file_text=x_agenda.get_json(),
     )
     # print(f"print all {agenda_dir=} {os_listdir(path=agenda_dir)}")
