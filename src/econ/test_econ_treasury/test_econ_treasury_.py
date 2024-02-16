@@ -7,6 +7,7 @@ from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
+from src.instrument.file import save_file, open_file
 from src.instrument.sqlite import check_connection
 
 
@@ -23,6 +24,33 @@ def test_econ_create_treasury_db_CreatesBankDBIfItDoesNotExist(
 
     # THEN
     assert os_path.exists(x_econ.get_treasury_db_path())
+
+
+def test_econ_create_treasury_db_DoesNotOverWriteDBIfItExists(
+    env_dir_setup_cleanup,
+):
+    # GIVEN create econ
+    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    delete_dir(dir=x_econ.get_treasury_db_path())  # clear out any treasury.db file
+    x_econ._create_treasury_db()
+    assert os_path.exists(x_econ.get_treasury_db_path())
+
+    # Given
+    x_file_text = "Texas Dallas ElPaso"
+    db_file = "treasury.db"
+    save_file(x_econ.econ_dir, file_name=db_file, file_text=x_file_text, replace=True)
+    assert os_path.exists(x_econ.get_treasury_db_path())
+    assert open_file(x_econ.econ_dir, file_name=db_file) == x_file_text
+
+    # WHEN
+    x_econ._create_treasury_db()
+    # THEN
+    assert open_file(x_econ.econ_dir, file_name=db_file) == x_file_text
+
+    # # WHEN
+    # x_econ._create_treasury_db(overwrite=True)
+    # # THEN
+    # assert open_file(x_econ.econ_dir, file_name=db_file) != x_file_text
 
 
 def test_econ_create_treasury_db_CanCreateBankInMemory(env_dir_setup_cleanup):

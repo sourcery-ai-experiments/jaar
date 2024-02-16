@@ -356,13 +356,12 @@ class EconUnit:
         )
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
-        econ_dir = self.get_object_root_dir()
         agendas_dir = self.get_forum_dir()
         clerkunits_dir = self.get_clerkunits_dir()
-        set_dir(x_path=econ_dir)
+        set_dir(x_path=self.get_object_root_dir())
         set_dir(x_path=agendas_dir)
         set_dir(x_path=clerkunits_dir)
-        self._create_main_file_if_null(x_dir=econ_dir)
+        self._create_main_file_if_null(x_dir=self.get_object_root_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
     # ClerkUnit management
