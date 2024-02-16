@@ -178,6 +178,9 @@ class PersonUnit:
         for x_econ_road in self._econ_objs.keys():
             self.set_econunit_contract(x_econ_road, contract)
 
+    def set_person_econunits_contract(self):
+        self.set_econunits_contract(self.get_gut_file_agenda())
+
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True
     # ):
