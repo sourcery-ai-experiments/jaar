@@ -31,7 +31,7 @@ def test_get_intent_dict_ReturnsCorrectObj():
     assert intent_dict
     assert len(intent_dict) == 2
     print(f"{intent_dict.keys()=}")
-    assert bob_agenda.make_l1_road("work") in intent_dict.keys()
+    assert bob_agenda.make_l1_road("gig") in intent_dict.keys()
     assert bob_agenda.make_l1_road("feed cat") in intent_dict.keys()
 
 
@@ -70,10 +70,10 @@ def test_get_intent_returns_intent_WithAgendaImportance():
     assert len(intent_dict) == 2
     assert intent_dict.get(x_agenda.make_l1_road("feed cat"))._agenda_importance
 
-    work_text = "work"
-    print(f"{intent_dict.keys()=} {x_agenda.make_l1_road(work_text)=}")
-    print(f"{intent_dict.get(x_agenda.make_l1_road(work_text))._label=}")
-    assert intent_dict.get(x_agenda.make_l1_road(work_text))._agenda_importance
+    gig_text = "gig"
+    print(f"{intent_dict.keys()=} {x_agenda.make_l1_road(gig_text)=}")
+    print(f"{intent_dict.get(x_agenda.make_l1_road(gig_text))._label=}")
+    assert intent_dict.get(x_agenda.make_l1_road(gig_text))._agenda_importance
 
 
 def test_get_intent_with_No7amItem():
@@ -108,16 +108,16 @@ def test_get_intent_with_7amItem():
     day24hr_road = x_agenda.make_road(timetech_road, "24hr day")
     day24hr_open = 0.0
     day24hr_nigh = 8.0
-    housework_text = "housework"
-    housework_road = x_agenda.make_l1_road(housework_text)
+    housemanagement_text = "housemanagement"
+    housemanagement_road = x_agenda.make_l1_road(housemanagement_text)
     clean_text = "clean table"
-    clean_road = x_agenda.make_road(housework_road, clean_text)
+    clean_road = x_agenda.make_road(housemanagement_road, clean_text)
     x_agenda.set_belief(
         base=day24hr_road, pick=day24hr_road, open=day24hr_open, nigh=day24hr_nigh
     )
     print(x_agenda._idearoot._beliefunits[day24hr_road])
-    print(x_agenda._idearoot._kids[housework_text]._kids[clean_text]._reasonunits)
-    print(x_agenda._idearoot._kids[housework_text]._kids[clean_text]._active)
+    print(x_agenda._idearoot._kids[housemanagement_text]._kids[clean_text]._reasonunits)
+    print(x_agenda._idearoot._kids[housemanagement_text]._kids[clean_text]._active)
 
     # THEN
     intent_dict = x_agenda.get_intent_dict()
@@ -294,7 +294,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     assert len(action_list) == 29
 
 
-def test_set_intent_task_as_complete_RangeWorksCorrectly():
+def test_set_intent_task_as_complete_SetsAttrCorrectly_Range():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -334,7 +334,7 @@ def test_set_intent_task_as_complete_RangeWorksCorrectly():
     assert intent_dict == {}
 
 
-def test_set_intent_task_as_complete_DivisionWorksCorrectly():
+def test_set_intent_task_as_complete_SetsAttrCorrectly_Division():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -390,7 +390,7 @@ def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
     print(f"{len(x_agenda.get_idea_dict())=}")
     casa_text = "casa"
     casa_road = x_agenda.make_l1_road(casa_text)
-    body_text = "workout"
+    body_text = "exercise"
     body_road = x_agenda.make_road(casa_road, body_text)
     veg_text = "cook veggies every morning"
     veg_road = x_agenda.make_road(body_road, veg_text)
@@ -712,9 +712,9 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    work_text = "work"
-    work_road = bob_agenda.make_road(bob_text, work_text)
-    bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
+    gig_text = "gig"
+    gig_road = bob_agenda.make_road(bob_text, gig_text)
+    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, promise=True))
     assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "Sue"
@@ -724,7 +724,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assert len(bob_agenda.get_intent_dict()) == 1
 
     # WHEN
-    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assignedunit_sue)
+    bob_agenda.edit_idea_attr(road=gig_road, assignedunit=assignedunit_sue)
 
     # THEN
     assert len(bob_agenda.get_intent_dict()) == 0
@@ -735,7 +735,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     assignedunit_bob.set_suffgroup(group_id=bob_text)
 
     # WHEN
-    bob_agenda.edit_idea_attr(road=work_road, assignedunit=assignedunit_bob)
+    bob_agenda.edit_idea_attr(road=gig_road, assignedunit=assignedunit_bob)
 
     # THEN
     assert len(bob_agenda.get_intent_dict()) == 1
@@ -749,9 +749,9 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
     bob_agenda.add_partyunit(party_id=bob_text)
-    work_text = "work"
-    work_road = bob_agenda.make_road(bob_text, work_text)
-    bob_agenda.add_l1_idea(ideaunit_shop(work_text, promise=True))
+    gig_text = "gig"
+    gig_road = bob_agenda.make_road(bob_text, gig_text)
+    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, promise=True))
 
     sue_text = "Sue"
     bob_agenda.add_partyunit(party_id=sue_text)
@@ -766,7 +766,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     assert len(bob_agenda.get_intent_dict()) == 1
 
     # WHEN
-    bob_agenda.edit_idea_attr(road=work_road, assignedunit=run_assignedunit)
+    bob_agenda.edit_idea_attr(road=gig_road, assignedunit=run_assignedunit)
 
     # THEN
     assert len(bob_agenda.get_intent_dict()) == 0

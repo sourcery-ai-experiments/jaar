@@ -25,7 +25,7 @@ def get_meld_strategys() -> dict[MeldStrategy:None]:
     match: melder and meldee will have equal weight or error thrown
     sum: melder and meldee sum weights
     ignore: melder ignores weight from meldee
-    override: meldee overwrites melder weight (only works on meldee=default)
+    override: meldee overwrites melder weight (only executes on meldee=default)
     default: meldee ignores meldee unless meldee is override
     """
     return {"default", "match", "sum", "accept", "override"}

@@ -3,7 +3,7 @@ from datetime import datetime
 from random import randint
 
 
-def test_time_get_time_min_from_dt_WorksCorrectly():
+def test_time_get_time_min_from_dt_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
@@ -14,7 +14,7 @@ def test_time_get_time_min_from_dt_WorksCorrectly():
     assert kia_agenda.get_time_min_from_dt(dt=datetime(1200, 1, 1, 0, 0)) == 631139040
 
 
-def test_get_time_400YearCycle_from_min_WorksCorrectly():
+def test_get_time_400YearCycle_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop("Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_c400_from_min(min=0)[0] == 0
@@ -23,7 +23,7 @@ def test_get_time_400YearCycle_from_min_WorksCorrectly():
     assert kia_agenda.get_time_c400_from_min(min=841518720)[0] == 4
 
 
-def test_get_time_c400year_from_min_WorksCorrectly():
+def test_get_time_c400year_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop("Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_c400yr_from_min(min=0)[0] == 0
@@ -38,7 +38,7 @@ def test_get_time_c400year_from_min_WorksCorrectly():
     assert kia_agenda.get_time_c400yr_from_min(min=157785120)[0] == 300
 
 
-def _check_time_conversion_works_with_random_inputs(x_agenda: AgendaUnit):
+def _check_time_conversion_with_random_inputs(x_agenda: AgendaUnit):
     py_dt = datetime(
         year=randint(1, 2800),
         month=randint(1, 12),
@@ -50,7 +50,7 @@ def _check_time_conversion_works_with_random_inputs(x_agenda: AgendaUnit):
     assert py_dt == x_agenda.get_time_dt_from_min(x_agenda.get_time_min_from_dt(py_dt))
 
 
-def test_get_time_dt_from_min_WorksCorrectly():
+def test_get_time_dt_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop(_agent_id="Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_dt_from_min(min=5000000)
@@ -71,9 +71,9 @@ def test_get_time_dt_from_min_WorksCorrectly():
         2022, 10, 30, 0, 0
     )
 
-    _check_time_conversion_works_with_random_inputs(kia_agenda)
-    _check_time_conversion_works_with_random_inputs(kia_agenda)
-    _check_time_conversion_works_with_random_inputs(kia_agenda)
+    _check_time_conversion_with_random_inputs(kia_agenda)
+    _check_time_conversion_with_random_inputs(kia_agenda)
+    _check_time_conversion_with_random_inputs(kia_agenda)
 
     # for year, month, day, hr, min in .product(
     #     range(479, 480), range(1, 3), range(20, 28), range(12, 14), range(1430, 1440)
@@ -292,15 +292,15 @@ def test_get_time_():
 # x_agenda.get_idea_obj({x_agenda.make_l1_road("hreg,weekday"})
 
 # wed_premise_x = premiseunit_shop(need=wednesday_road)
-# work_wk_reason = reasonunit_shop(weekday_road, premises={wed_premise.need: wed_premise})
-# print(f"{type(work_wk_reason.base)=}")
-# print(f"{work_wk_reason.base=}")
-# agenda_x.edit_idea_attr(road=work_road, reason=work_wk_reason)
-# work_idea = agenda_x.get_kid("work"]
-# assert work_idea._reasonunits != None
-# print(work_idea._reasonunits)
-# assert work_idea._reasonunits[weekday_road] != None
-# assert work_idea._reasonunits[weekday_road] == work_wk_reason
+# woork_wk_reason = reasonunit_shop(weekday_road, premises={wed_premise.need: wed_premise})
+# print(f"{type(woork_wk_reason.base)=}")
+# print(f"{woork_wk_reason.base=}")
+# agenda_x.edit_idea_attr(road=woork_road, reason=woork_wk_reason)
+# woork_idea = agenda_x.get_kid("woork"]
+# assert woork_idea._reasonunits != None
+# print(woork_idea._reasonunits)
+# assert woork_idea._reasonunits[weekday_road] != None
+# assert woork_idea._reasonunits[weekday_road] == woork_wk_reason
 
 # x_agenda = examples.get_agenda_gregorian_years()
 

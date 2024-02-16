@@ -42,7 +42,7 @@ def test_PartyLink_exists():
     assert x_partylink._agenda_intent_debt == 0.55
 
 
-def test_partylink_shop_set_agenda_credit_debt_CorrectlyWorks():
+def test_partylink_shop_set_agenda_credit_debt_SetsAttrCorrectly():
     # GIVEN
     bikers_party_id = PartyID("Yao")
     bikers_creditor_weight = 3.0
@@ -122,7 +122,7 @@ def test_partylink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_partylink_get_from_JSON_SimpleExampleWorks():
+def test_partylink_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     yao_text = "Yao"
     yao_json_dict = {

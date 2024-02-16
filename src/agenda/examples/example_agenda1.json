@@ -775,7 +775,7 @@
                             "IT DEPT off-hours responsiblities": {
                                 "_is_expanded": true,
                                 "_kids": {
-                                    "check ETLs work correctly": {
+                                    "check ETLs ran correctly": {
                                         "_is_expanded": true,
                                         "_kids": {
                                             "check emails": {
@@ -855,7 +855,7 @@
                                                 "promise": true
                                             }
                                         },
-                                        "_label": "check ETLs work correctly",
+                                        "_label": "check ETLs ran correctly",
                                         "_meld_strategy": "default",
                                         "_reasonunits": {
                                             "A,day_minute": {
@@ -895,9 +895,9 @@
                                         "_weight": 1,
                                         "promise": true
                                     },
-                                    "go to work": {
+                                    "go to employment": {
                                         "_is_expanded": false,
-                                        "_label": "go to work",
+                                        "_label": "go to employment",
                                         "_meld_strategy": "default",
                                         "_reasonunits": {
                                             "A,day_minute": {
@@ -939,9 +939,9 @@
                             "IT DEPT regular hours responsiblities": {
                                 "_is_expanded": true,
                                 "_kids": {
-                                    "Add work items to Azure DevOps": {
+                                    "Add items to Azure DevOps": {
                                         "_is_expanded": true,
-                                        "_label": "Add work items to Azure DevOps",
+                                        "_label": "Add items to Azure DevOps",
                                         "_meld_strategy": "default",
                                         "_reasonunits": {
                                             "A,day_minute": {
@@ -3323,7 +3323,7 @@
                         "_weight": 1,
                         "promise": true
                     },
-                    "workout": {
+                    "exercise": {
                         "_is_expanded": true,
                         "_kids": {
                             "5 push-ups": {
@@ -4035,7 +4035,7 @@
                                 "promise": false
                             }
                         },
-                        "_label": "workout",
+                        "_label": "exercise",
                         "_meld_strategy": "default",
                         "_uid": 147,
                         "_weight": 1,

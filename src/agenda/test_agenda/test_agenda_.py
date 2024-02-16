@@ -288,14 +288,14 @@ def test_AgendaUnit_make_road_ReturnsCorrectObj():
         _auto_output_to_forum=True,
         _road_delimiter=slash_road_delimiter,
     )
-    work_text = "work"
-    v1_work_road = x_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    v1_gig_road = x_agenda.make_l1_road(gig_text)
 
     # WHEN
-    v2_work_road = x_agenda.make_l1_road(work_text)
+    v2_gig_road = x_agenda.make_l1_road(gig_text)
 
     # THEN
-    assert v1_work_road == v2_work_road
+    assert v1_gig_road == v2_gig_road
 
 
 def test_AgendaUnit_set_meld_strategy_CorrectlySetsAttr():

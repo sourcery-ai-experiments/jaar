@@ -218,7 +218,7 @@ def test_get_default_depotlink_type_ReturnsCorrectObj():
     assert get_default_depotlink_type() == "assignment"
 
 
-def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
+def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
     # GIVEN
     bob_party_id = "Bob"
     bob_partyunit = partyunit_shop(party_id=bob_party_id)
@@ -247,7 +247,7 @@ def test_PartyUnit_reset_agenda_credit_debt_MethodWorkCorrectly():
     assert bob_partyunit._agenda_intent_ratio_debt == 0
 
 
-def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
+def test_PartyUnit_add_agenda_credit_debt_SetsAttrCorrectly():
     # GIVEN
     bob_party_id = "Bob"
     bob_partyunit = partyunit_shop(party_id=bob_party_id)
@@ -273,7 +273,7 @@ def test_PartyUnit_add_agenda_credit_debt_MethodWorkCorrectly():
     assert bob_partyunit._agenda_intent_debt == 0.56
 
 
-def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
+def test_PartyUnit_set_agenda_intent_ratio_credit_debt_SetsAttrCorrectly():
     # GIVEN
     bob_party_id = "Bob"
     bob_partyunit = partyunit_shop(bob_party_id, creditor_weight=15, debtor_weight=7)
@@ -311,7 +311,7 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_MethodWorkCorrectly():
     assert bob_partyunit._agenda_intent_ratio_debt == 0.5
 
 
-def test_PartyUnit_set_treasurying_data_MethodWorkCorrectly():
+def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
     # GIVEN
     bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
@@ -392,7 +392,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
     assert bob_partyunit._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
 
 
-def test_PartyUnit_clear_treasurying_data_MethodWorkCorrectly():
+def test_PartyUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     # GIVEN
     bob_party_id = "Bob"
     bob_partyunit = partyunit_shop(bob_party_id)
@@ -469,7 +469,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_partyunits_get_from_json_SimpleExampleWorksWithIncompleteData():
+def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteData():
     # GIVEN
     yao_text = "Yao"
     yao_creditor_weight = 13

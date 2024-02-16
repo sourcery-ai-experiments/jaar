@@ -200,7 +200,7 @@ def test_IdeaUnit_balancelinks_exist():
     assert sport_idea._balancelinks == group_links
 
 
-def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues():
+def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithValues():
     # GIVEN
     biker_creditor_weight = 12
     biker_debtor_weight = 15
@@ -256,7 +256,7 @@ def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_WorksCorrectlyWithValues
     assert biker_balanceheir._agenda_debt != None
 
 
-def test_IdeaUnit_get_balancelinks_weight_sum_WorksCorrectlyNoValues():
+def test_IdeaUnit_get_balancelinks_weight_sum_ReturnsCorrectObj_NoValues():
     # GIVEN /WHEN
     sport_text = "sport"
     sport_idea = ideaunit_shop(_label=sport_text)
@@ -494,15 +494,15 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     yao_text = "Yao"
     sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
     yao_healerhold = healerhold_shop({yao_text})
-    work_text = "work"
-    work_road = create_road(root_label(), work_text)
+    gig_text = "gig"
+    gig_road = create_road(root_label(), gig_text)
     x_problem_bool = True
-    work_idea = ideaunit_shop(
-        _parent_road=work_road,
+    gig_idea = ideaunit_shop(
+        _parent_road=gig_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
-        _label=work_text,
+        _label=gig_text,
         _level=1,
         _reasonunits=x1_reasonunits,
         _reasonheirs=x1_reasonheirs,
@@ -514,168 +514,168 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _problem_bool=x_problem_bool,
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    work_idea.set_beliefunit(beliefunit=beliefunit_x)
-    work_idea._originunit.set_originlink(party_id="Ray", weight=None)
-    work_idea._originunit.set_originlink(party_id="Lei", weight=4)
+    gig_idea.set_beliefunit(beliefunit=beliefunit_x)
+    gig_idea._originunit.set_originlink(party_id="Ray", weight=None)
+    gig_idea._originunit.set_originlink(party_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13
     x_denom = 14
     x_numor = 15
     x_reest = 16
-    work_idea._begin = x_begin
-    work_idea._close = x_close
-    work_idea._addin = x_addin
-    work_idea._denom = x_denom
-    work_idea._numor = x_numor
-    work_idea._reest = x_reest
-    work_idea._uid = 17
-    work_idea.add_kid(ideaunit_shop("paper"))
+    gig_idea._begin = x_begin
+    gig_idea._close = x_close
+    gig_idea._addin = x_addin
+    gig_idea._denom = x_denom
+    gig_idea._numor = x_numor
+    gig_idea._reest = x_reest
+    gig_idea._uid = 17
+    gig_idea.add_kid(ideaunit_shop("paper"))
 
     # WHEN
-    work_dict = work_idea.get_dict()
+    gig_dict = gig_idea.get_dict()
 
     # THEN
-    assert work_dict != None
-    assert len(work_dict["_kids"]) == 1
-    assert work_dict["_kids"] == work_idea.get_kids_dict()
-    assert work_dict["_reasonunits"] == work_idea.get_reasonunits_dict()
-    assert work_dict["_balancelinks"] == work_idea.get_balancelinks_dict()
-    assert work_dict["_balancelinks"] == x1_balancelinks
-    assert work_dict["_assignedunit"] == sue_assignedunit.get_dict()
-    assert work_dict["_healerhold"] == yao_healerhold.get_dict()
-    assert work_dict["_originunit"] == work_idea.get_originunit_dict()
-    assert work_dict["_weight"] == work_idea._weight
-    assert work_dict["_label"] == work_idea._label
-    assert work_dict["_uid"] == work_idea._uid
-    assert work_dict["_begin"] == work_idea._begin
-    assert work_dict["_close"] == work_idea._close
-    assert work_dict["_numor"] == work_idea._numor
-    assert work_dict["_denom"] == work_idea._denom
-    assert work_dict["_reest"] == work_idea._reest
-    assert work_dict["_range_source_road"] == work_idea._range_source_road
-    assert work_dict["promise"] == work_idea.promise
-    assert work_dict["_problem_bool"] == work_idea._problem_bool
-    assert work_dict["_problem_bool"] == x_problem_bool
-    assert work_idea._is_expanded
-    assert work_dict.get("_is_expanded") is None
-    assert len(work_dict["_beliefunits"]) == len(work_idea.get_beliefunits_dict())
-    assert work_idea._meld_strategy == "default"
-    assert work_dict.get("_meld_strategy") is None
+    assert gig_dict != None
+    assert len(gig_dict["_kids"]) == 1
+    assert gig_dict["_kids"] == gig_idea.get_kids_dict()
+    assert gig_dict["_reasonunits"] == gig_idea.get_reasonunits_dict()
+    assert gig_dict["_balancelinks"] == gig_idea.get_balancelinks_dict()
+    assert gig_dict["_balancelinks"] == x1_balancelinks
+    assert gig_dict["_assignedunit"] == sue_assignedunit.get_dict()
+    assert gig_dict["_healerhold"] == yao_healerhold.get_dict()
+    assert gig_dict["_originunit"] == gig_idea.get_originunit_dict()
+    assert gig_dict["_weight"] == gig_idea._weight
+    assert gig_dict["_label"] == gig_idea._label
+    assert gig_dict["_uid"] == gig_idea._uid
+    assert gig_dict["_begin"] == gig_idea._begin
+    assert gig_dict["_close"] == gig_idea._close
+    assert gig_dict["_numor"] == gig_idea._numor
+    assert gig_dict["_denom"] == gig_idea._denom
+    assert gig_dict["_reest"] == gig_idea._reest
+    assert gig_dict["_range_source_road"] == gig_idea._range_source_road
+    assert gig_dict["promise"] == gig_idea.promise
+    assert gig_dict["_problem_bool"] == gig_idea._problem_bool
+    assert gig_dict["_problem_bool"] == x_problem_bool
+    assert gig_idea._is_expanded
+    assert gig_dict.get("_is_expanded") is None
+    assert len(gig_dict["_beliefunits"]) == len(gig_idea.get_beliefunits_dict())
+    assert gig_idea._meld_strategy == "default"
+    assert gig_dict.get("_meld_strategy") is None
 
 
 def test_IdeaUnit_get_dict_ReturnsCorrectDictWithoutEmptyAttributes():
     # GIVEN
-    work_idea = ideaunit_shop()
+    gig_idea = ideaunit_shop()
 
     # WHEN
-    work_dict = work_idea.get_dict()
+    gig_dict = gig_idea.get_dict()
 
     # THEN
-    assert work_dict != None
-    assert work_dict == {"_weight": 1}
+    assert gig_dict != None
+    assert gig_dict == {"_weight": 1}
 
 
 def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
-    work_idea = ideaunit_shop()
-    work_idea._is_expanded = False
-    work_idea.promise = True
+    gig_idea = ideaunit_shop()
+    gig_idea._is_expanded = False
+    gig_idea.promise = True
     ignore_text = "ignore"
-    work_idea._meld_strategy = ignore_text
+    gig_idea._meld_strategy = ignore_text
 
     a_text = "a"
     a_road = create_road(root_label(), a_text)
-    work_idea.set_beliefunit(beliefunit_shop(a_road, a_road))
+    gig_idea.set_beliefunit(beliefunit_shop(a_road, a_road))
 
     yao_text = "Yao"
-    work_idea.set_balancelink(balancelink_shop(yao_text))
+    gig_idea.set_balancelink(balancelink_shop(yao_text))
 
-    x_assignedunit = work_idea._assignedunit
+    x_assignedunit = gig_idea._assignedunit
     x_assignedunit.set_suffgroup(group_id=yao_text)
 
-    x_originunit = work_idea._originunit
+    x_originunit = gig_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
 
     rock_text = "Rock"
-    work_idea.add_kid(ideaunit_shop(rock_text))
+    gig_idea.add_kid(ideaunit_shop(rock_text))
 
-    assert not work_idea._is_expanded
-    assert work_idea.promise
-    assert work_idea._meld_strategy != "default"
-    assert work_idea._beliefunits != None
-    assert work_idea._balancelinks != None
-    assert work_idea._assignedunit != None
-    assert work_idea._originunit != None
-    assert work_idea._kids != {}
+    assert not gig_idea._is_expanded
+    assert gig_idea.promise
+    assert gig_idea._meld_strategy != "default"
+    assert gig_idea._beliefunits != None
+    assert gig_idea._balancelinks != None
+    assert gig_idea._assignedunit != None
+    assert gig_idea._originunit != None
+    assert gig_idea._kids != {}
 
     # WHEN
-    work_dict = work_idea.get_dict()
+    gig_dict = gig_idea.get_dict()
 
     # THEN
-    assert work_dict.get("_is_expanded") == False
-    assert work_dict.get("promise")
-    assert work_dict.get("_meld_strategy") == ignore_text
-    assert work_dict.get("_beliefunits") != None
-    assert work_dict.get("_balancelinks") != None
-    assert work_dict.get("_assignedunit") != None
-    assert work_dict.get("_originunit") != None
-    assert work_dict.get("_kids") != None
+    assert gig_dict.get("_is_expanded") == False
+    assert gig_dict.get("promise")
+    assert gig_dict.get("_meld_strategy") == ignore_text
+    assert gig_dict.get("_beliefunits") != None
+    assert gig_dict.get("_balancelinks") != None
+    assert gig_dict.get("_assignedunit") != None
+    assert gig_dict.get("_originunit") != None
+    assert gig_dict.get("_kids") != None
 
 
 def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
-    work_idea = ideaunit_shop()
-    assert work_idea._is_expanded
-    assert work_idea.promise == False
-    assert work_idea._meld_strategy == "default"
-    assert work_idea._beliefunits == {}
-    assert work_idea._balancelinks == {}
-    assert work_idea._assignedunit == assignedunit_shop()
-    assert work_idea._healerhold == healerhold_shop()
-    assert work_idea._originunit == originunit_shop()
-    assert work_idea._kids == {}
+    gig_idea = ideaunit_shop()
+    assert gig_idea._is_expanded
+    assert gig_idea.promise == False
+    assert gig_idea._meld_strategy == "default"
+    assert gig_idea._beliefunits == {}
+    assert gig_idea._balancelinks == {}
+    assert gig_idea._assignedunit == assignedunit_shop()
+    assert gig_idea._healerhold == healerhold_shop()
+    assert gig_idea._originunit == originunit_shop()
+    assert gig_idea._kids == {}
 
     # WHEN
-    work_dict = work_idea.get_dict()
+    gig_dict = gig_idea.get_dict()
 
     # THEN
-    assert work_dict.get("_is_expanded") is None
-    assert work_dict.get("promise") is None
-    assert work_dict.get("_meld_strategy") is None
-    assert work_dict.get("_beliefunits") is None
-    assert work_dict.get("_balancelinks") is None
-    assert work_dict.get("_assignedunit") is None
-    assert work_dict.get("_healerhold") is None
-    assert work_dict.get("_originunit") is None
-    assert work_dict.get("_kids") is None
+    assert gig_dict.get("_is_expanded") is None
+    assert gig_dict.get("promise") is None
+    assert gig_dict.get("_meld_strategy") is None
+    assert gig_dict.get("_beliefunits") is None
+    assert gig_dict.get("_balancelinks") is None
+    assert gig_dict.get("_assignedunit") is None
+    assert gig_dict.get("_healerhold") is None
+    assert gig_dict.get("_originunit") is None
+    assert gig_dict.get("_kids") is None
 
 
 def test_IdeaUnit_vaild_DenomCorrectInheritsBeginAndClose():
     # GIVEN
-    work_text = "work"
+    gig_text = "gig"
     clean_text = "clean"
     # parent idea
-    work_idea = ideaunit_shop(_label=work_text, _begin=22.0, _close=66.0)
+    gig_idea = ideaunit_shop(_label=gig_text, _begin=22.0, _close=66.0)
     # kid idea
     clean_idea = ideaunit_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
 
     # WHEN
-    work_idea.add_kid(idea_kid=clean_idea)
+    gig_idea.add_kid(idea_kid=clean_idea)
 
     # THEN
-    assert work_idea._kids[clean_text]._begin == 2
-    assert work_idea._kids[clean_text]._close == 6
+    assert gig_idea._kids[clean_text]._begin == 2
+    assert gig_idea._kids[clean_text]._close == 6
     kid_idea_expected = ideaunit_shop(
         clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
-    assert work_idea._kids[clean_text] == kid_idea_expected
+    assert gig_idea._kids[clean_text] == kid_idea_expected
 
 
 def test_IdeaUnit_invaild_DenomThrowsError():
     # GIVEN
-    work_text = "work"
-    parent_idea = ideaunit_shop(_label=work_text)
+    gig_text = "gig"
+    parent_idea = ideaunit_shop(_label=gig_text)
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
     clean_text = "clean"

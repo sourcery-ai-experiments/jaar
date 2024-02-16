@@ -75,7 +75,7 @@ def custom_set_idea_attr(
     idea._set_idea_attr(idea_attr=idea_attr)
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_reasonunits():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -110,7 +110,7 @@ def test_IdeaUnit_meld_BaseScenarioWorks_reasonunits():
     assert x1_idea._weight == 1
 
 
-def test_IdeaUnit_meld_TwoReasonsScenarioWorks_reasonunits():
+def test_IdeaUnit_meld_ReturnsCorrectObj_TwoReasonsScenario_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -145,7 +145,7 @@ def test_IdeaUnit_meld_TwoReasonsScenarioWorks_reasonunits():
     assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_IdeaUnit_meld_TwoReasonsMeldScenarioWorks_reasonunits():
+def test_IdeaUnit_meld_ReturnsCorrectObj_TwoReasonsMeldScenario_reasonunits():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(root_label(), ball_text)
@@ -189,7 +189,7 @@ def test_IdeaUnit_meld_TwoReasonsMeldScenarioWorks_reasonunits():
     assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_default():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strategyEquals_default():
     # GIVEN
     casa_text = "casa"
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
@@ -213,7 +213,7 @@ def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_def
     assert x1_idea._balancelinks[br1] == bl_x
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_sum():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strategyEquals_sum():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
@@ -240,7 +240,7 @@ def test_IdeaUnit_meld_BaseScenarioWorks_balancelinkWhen_meld_strategyEquals_sum
     assert x1_idea._balancelinks[br1] == lu_x
 
 
-def test_IdeaUnit_meld_TwoGroupsScenarioWorks_balancelink():
+def test_IdeaUnit_meld_ReturnsCorrectObj_TwoGroupsScenario_balancelink():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
@@ -269,7 +269,7 @@ def test_IdeaUnit_meld_TwoGroupsScenarioWorks_balancelink():
     assert x1_idea._balancelinks[br2] == lu_x2
 
 
-def test_IdeaUnit_meld_BaseScenarioWorks_beliefunits():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_beliefunits():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -293,7 +293,7 @@ def test_IdeaUnit_meld_BaseScenarioWorks_beliefunits():
     assert x1_idea._beliefunits == x2_idea._beliefunits
 
 
-def test_IdeaUnit_meld_2BeliefUnitsWorks_beliefunits():
+def test_IdeaUnit_meld_ReturnsCorrectObj_2BeliefUnits_beliefunits():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)

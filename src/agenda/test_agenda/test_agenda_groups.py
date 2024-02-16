@@ -109,7 +109,7 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlySets_partylinks():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
-def test_AgendaUnit_groups_del_groupunit_worksCorrectly():
+def test_AgendaUnit_groups_del_groupunit_gigsCorrectly():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = "swimmers"
@@ -694,8 +694,8 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
-    work_road = x_agenda.make_l1_road("work")
-    new_idea_parent_road = x_agenda.make_road(work_road, "cleaning")
+    gig_road = x_agenda.make_l1_road("gig")
+    new_idea_parent_road = x_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
         _weight=40, _label=clean_cookery_text, promise=True
@@ -725,11 +725,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda.add_partyunit(party_id=xia_text)
     x1_agenda.add_partyunit(party_id=zoa_text)
 
-    work_text = "work"
-    work_road = x1_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    gig_road = x1_agenda.make_l1_road(gig_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_idea(ideaunit_shop(work_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(gig_text))
     x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
     x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(xia_text))
     x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(zoa_text))
@@ -755,11 +755,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda.add_partyunit(party_id=xia_text)
     x1_agenda.add_partyunit(party_id=zoa_text)
 
-    work_text = "work"
-    work_road = x1_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    gig_road = x1_agenda.make_l1_road(gig_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_idea(ideaunit_shop(work_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(gig_text))
     x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(group_id=xia_text)
@@ -785,8 +785,8 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    work_road = bob_agenda.make_l1_road("work")
-    new_idea_parent_road = bob_agenda.make_road(work_road, "cleaning")
+    gig_road = bob_agenda.make_l1_road("gig")
+    new_idea_parent_road = bob_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
         _weight=40, _label=clean_cookery_text, promise=True

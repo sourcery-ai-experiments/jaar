@@ -39,52 +39,52 @@ def test_ReasonCore_attributesExist():
 def test_reasoncore_shop_ReturnsCorrectAttrWith_delimiter():
     # GIVEN
     slash_text = "/"
-    work_text = "work"
-    work_road = create_road(root_label(), work_text, delimiter=slash_text)
-    print(f"{work_road=} ")
+    gig_text = "gig"
+    gig_road = create_road(root_label(), gig_text, delimiter=slash_text)
+    print(f"{gig_road=} ")
 
     # WHEN
-    work_reason = reasonheir_shop(work_road, delimiter=slash_text)
+    gig_reason = reasonheir_shop(gig_road, delimiter=slash_text)
 
     # THEN
-    assert work_reason.delimiter == slash_text
+    assert gig_reason.delimiter == slash_text
 
 
 def test_reasonheir_shop_ReturnsCorrectObj():
     # GIVEN
-    work_text = "work"
-    work_road = create_road(root_label(), work_text)
+    gig_text = "gig"
+    gig_road = create_road(root_label(), gig_text)
 
     # WHEN
-    work_reason = reasonheir_shop(work_road)
+    gig_reason = reasonheir_shop(gig_road)
 
     # THEN
-    assert work_reason.premises == {}
-    assert work_reason.delimiter == default_road_delimiter_if_none()
+    assert gig_reason.premises == {}
+    assert gig_reason.delimiter == default_road_delimiter_if_none()
 
 
 def test_ReasonHeir_clear_CorrectlyClearsField():
     # GIVEN
-    work_text = "work"
-    work_road = create_road(root_label(), work_text)
+    gig_text = "gig"
+    gig_road = create_road(root_label(), gig_text)
     email_text = "check email"
-    email_road = create_road(work_road, email_text)
+    email_road = create_road(gig_road, email_text)
     email_premise = premiseunit_shop(need=email_road)
     email_premises = {email_premise.need: email_premise}
 
     # WHEN
-    work_reason = reasonheir_shop(base=work_road, premises=email_premises)
+    gig_reason = reasonheir_shop(base=gig_road, premises=email_premises)
     # THEN
-    assert work_reason._status is None
+    assert gig_reason._status is None
 
     # GIVEN
-    work_reason._status = True
-    assert work_reason._status
+    gig_reason._status = True
+    assert gig_reason._status
     # WHEN
-    work_reason.clear_status()
+    gig_reason.clear_status()
     # THEN
-    assert work_reason._status is None
-    assert work_reason._curr_idea_active is None
+    assert gig_reason._status is None
+    assert gig_reason._curr_idea_active is None
 
 
 def test_ReasonHeir_set_status_CorrectlySetsStatus():
@@ -428,7 +428,7 @@ def test_ReasonCore_del_premise_CorrectlyDeletesPremise():
     assert day_reason.get_premises_count() == 0
 
 
-def test_ReasonCore_find_replace_road_works():
+def test_ReasonCore_find_replace_road_gigs():
     # GIVEN
     weekday_text = "weekday"
     sunday_text = "Sunday"
@@ -486,21 +486,21 @@ def test_ReasonCore_set_delimiter_SetsAttrsCorrectly():
 
 def test_ReasonCore_get_obj_key():
     # GIVEN
-    work_text = "work"
-    work_road = create_road(root_label(), work_text)
+    gig_text = "gig"
+    gig_road = create_road(root_label(), gig_text)
     email_text = "check email"
-    email_road = create_road(work_road, email_text)
+    email_road = create_road(gig_road, email_text)
     email_premise = premiseunit_shop(need=email_road)
     premises_x = {email_premise.need: email_premise}
 
     # WHEN
-    x_reason = reasonheir_shop(work_road, premises=premises_x)
+    x_reason = reasonheir_shop(gig_road, premises=premises_x)
 
     # THEN
-    assert x_reason.get_obj_key() == work_road
+    assert x_reason.get_obj_key() == gig_road
 
 
-def test_ReasonCore_meld_BaseScenarioWorks():
+def test_ReasonCore_meld_ReturnsCorrectObj_BaseScenario():
     # GIVEN
     tech_text = "timetech"
     tech_road = create_road(root_label(), tech_text)
@@ -517,7 +517,7 @@ def test_ReasonCore_meld_BaseScenarioWorks():
     assert x1_reason == x1_reason.meld(other_reason=x2_reason)
 
 
-def test_ReasonCore_meld_AddPremisescenarioWorks():
+def test_ReasonCore_meld_ReturnsCorrectObj_AddPremisescenario():
     # GIVEN
     tech_text = "timetech"
     tech_road = create_road(root_label(), tech_text)

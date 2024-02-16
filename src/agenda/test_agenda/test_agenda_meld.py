@@ -209,7 +209,7 @@ def test_AgendaUnit_idearoot_meld_2SameIdeasScenario():
     assert len(yao1_agenda.get_idea_dict()) == 3
 
 
-def test_AgendaUnit_beliefunits_meld_BaseScenarioWorks():
+def test_AgendaUnit_beliefunits_meld_ReturnsCorrectObj_BaseScenario():
     # GIVEN
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
@@ -241,7 +241,7 @@ def test_AgendaUnit_beliefunits_meld_BaseScenarioWorks():
     assert bob1_idearoot._beliefunits == bob2_idearoot._beliefunits
 
 
-def test_AgendaUnit_beliefunits_meld_2BeliefUnitsWorks():
+def test_AgendaUnit_beliefunits_meld_ReturnsCorrectObj_2BeliefUnits():
     # GIVEN
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
@@ -350,7 +350,7 @@ def test_AgendaUnit_beliefunits_meld_BeliefsAttributeCorrectlySet():
     assert bob1_idearoot._beliefunits[swim_road].nigh == 27
 
 
-def test_AgendaUnit_meld_worksCorrectlyForLargeExample():
+def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)

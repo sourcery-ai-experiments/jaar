@@ -224,7 +224,7 @@ def test_AgendaUnit_get_idea_list_BeliefUnitCorrectlyTransformsbeliefheir_shop()
 
     # WHEN
     # earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
-    # swim_y.set_beliefunit(beliefunit=earth_curb) Not sure what this is for. Testing how "set_beliefunit" works?
+    # swim_y.set_beliefunit(beliefunit=earth_curb) Not sure what this is for. Testing what "set_beliefunit" does with the parameters, but what?
     bob_agenda.set_belief(base=earth_road, pick=earth_road, open=3.0, nigh=5.0)
 
     # THEN

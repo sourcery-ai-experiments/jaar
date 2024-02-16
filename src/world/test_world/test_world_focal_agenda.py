@@ -41,7 +41,7 @@ def test_WorldUnit_get_focal_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
-# TODO reopen this after econ creation from Agenda works correctly.
+# TODO reopen this after econ creation from Agenda exists.
 # def test_WorldUnit_get_focal_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
 #     worlds_dir_setup_cleanup,
 # ):

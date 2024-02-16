@@ -141,7 +141,5 @@ src/econ/examples/econs/ex5/
 src/econ/examples/econs/ex6/
 src/econ/examples/econs/ex7
 src/econ/examples/econs/river_env/
-src/econ/test_econ/sql_worksheet01.sql
 main_cli_app.py
 main_cli_app2.py
-query_worksheets/

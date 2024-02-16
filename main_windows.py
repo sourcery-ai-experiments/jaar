@@ -207,7 +207,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self._set_belief_time_open_midnight_attr()
         except Exception:
-            print("agenda does not have jajatime framework")
+            print("agenda does not have jajatime ideaunits")
         self.refresh_all()
 
     def set_belief_time_open_soft(self):

@@ -108,7 +108,7 @@ def test_GroupUnit_set_group_id_RaisesErrorIfParameterDoesNotContain_road_delimi
     )
 
 
-def test_GroupUnit_set_group_id_WorksCorrectly():
+def test_GroupUnit_set_group_id_SetsAttrCorrectly():
     # GIVEN
     swim_text = ",swimmers"
     swim_group = groupunit_shop(group_id=swim_text)
@@ -122,7 +122,7 @@ def test_GroupUnit_set_group_id_WorksCorrectly():
     assert swim_group.group_id == water_text
 
 
-def test_GroupUnit_set_attr_WorksCorrectly():
+def test_GroupUnit_set_attr_SetsAttrCorrectly():
     # GIVEN
     swim_text = ",swimmers"
     swim_group = groupunit_shop(group_id=swim_text)
@@ -210,7 +210,7 @@ def test_GroupUnit_edit_partylink_CorrectlySetsAttr():
     assert todd_partylink.creditor_weight == new_todd_creditor_weight
 
 
-def test_partylink_exists_worksCorrectly():
+def test_partylink_exists_ReturnsCorrectObj():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -224,7 +224,7 @@ def test_partylink_exists_worksCorrectly():
     assert swimmers_group.partylink_exists("todd") == False
 
 
-def test_GroupUnit_del_partylink_worksCorrectly():
+def test_GroupUnit_del_partylink_SetsAttrCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -245,7 +245,7 @@ def test_GroupUnit_del_partylink_worksCorrectly():
     assert swimmers_group._partys.get(todd_text) is None
 
 
-def test_GroupUnit_clear_partylinks_worksCorrectly():
+def test_GroupUnit_clear_partylinks_SetsAttrCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -266,7 +266,7 @@ def test_GroupUnit_clear_partylinks_worksCorrectly():
     assert swimmers_group._partys.get(todd_text) is None
 
 
-def test_GroupUnit_reset_agenda_importance_WorkCorrectly():
+def test_GroupUnit_reset_agenda_importance_SetsAttrCorrectly():
     # GIVEN
     maria_group_id = "maria"
     maria_groupunit = groupunit_shop(group_id=maria_group_id, _party_mirror=True)
@@ -344,7 +344,7 @@ def test_GroupUnit_reset_agenda_importance_reset_partylinks():
     assert biker_partylink_mery._agenda_intent_debt == 0
 
 
-def test_partylink_meld_BaseScenarioWorks():
+def test_partylink_meld_ReturnsCorrectObj_BaseScenario():
     # GIVEN
     todd_party = partylink_shop(party_id="Todd")
     merry_party = partylink_shop(party_id="Merry")
@@ -363,7 +363,7 @@ def test_partylink_meld_BaseScenarioWorks():
     assert len(bikers_group._partys) == 2
 
 
-def test_partylink_meld_GainScenarioWorks():
+def test_partylink_meld_ReturnsCorrectObj_GainScenario():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
@@ -489,7 +489,7 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_GroupUnit_get_from_JSON_SimpleExampleWorks():
+def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     sue_text = "Sue"
     marie_partylink = partylink_shop(
@@ -609,7 +609,7 @@ def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_balancelinks_get_from_JSON_SimpleExampleWorks():
+def test_balancelinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     teacher_text = "teachers"
     teacher_balancelink = balancelink_shop(

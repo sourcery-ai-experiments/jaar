@@ -120,7 +120,7 @@ def test_RiverBlockUnit_exists():
     assert river_block_x.river_tree_level == river_tree_level
 
 
-def test_RiverBlockUnit_block_returned_WorksCorrectly():
+def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
     # GIVEN
     bob_text = "Bob"
     sal_text = "Sal"

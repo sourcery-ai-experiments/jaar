@@ -875,7 +875,7 @@ def test_AgendaUnit_intent_credit_debt_IsCorrectlySet():
     assert x_balanceintentmetrics.intent_no_count == 14
     assert x_balanceintentmetrics.intent_yes_count == 49
     assert x_balanceintentmetrics.intent_no_agenda_i_sum == 0.0037472680016539662
-    assert x_balanceintentmetrics.intent_yes_agenda_i_sum == 0.002796504989487445
+    assert x_balanceintentmetrics.intent_yes_agenda_i_sum == 0.0027965049894874455
     assert are_equal(
         x_balanceintentmetrics.intent_no_agenda_i_sum
         + x_balanceintentmetrics.intent_yes_agenda_i_sum,

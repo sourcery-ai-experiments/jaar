@@ -178,7 +178,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
     assert assigned_dict_x == {"_suffgroups": {run_text: run_text}}
 
 
-def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
+def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     # GIVEN
     zia_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_world_id = "tiger"
@@ -234,7 +234,7 @@ def test_AgendaUnit_get_json_ExportsJSONWorksForSimpleExample():
     assert x_idearoot._problem_bool
 
 
-def test_AgendaUnit_get_json_ExportJSONWorksForBigExample():
+def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     # GIVEN
     yao_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"

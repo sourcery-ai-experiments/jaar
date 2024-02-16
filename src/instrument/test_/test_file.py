@@ -37,7 +37,7 @@ def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
     assert files_dict.get(x2_file_name) == x2_file_text
 
 
-def test_dir_files_delete_extensions_WorksCorrectly(env_dir_setup_cleanup):
+def test_dir_files_delete_extensions_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     env_dir = get_agenda_temp_env_dir()
     x1_name = "x1"

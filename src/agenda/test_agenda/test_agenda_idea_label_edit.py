@@ -15,11 +15,11 @@ def test_AgendaUnit_edit_idea_label_FailsWhenIdeaDoesNotExist():
     # GIVEN
     tim_agenda = agendaunit_shop("Tim")
 
-    work_text = "work"
-    work_road = tim_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
-    tim_agenda.add_l1_idea(ideaunit_shop(work_text))
-    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
+    tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=gig_road)
 
     # WHEN / THEN
     no_idea_road = tim_agenda.make_l1_road("bees")
@@ -33,18 +33,18 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhenEconIDisNone():
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
 
-    work_text = "work"
-    work_road = tim_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
-    swim_road = tim_agenda.make_road(work_road, swim_text)
-    tim_agenda.add_l1_idea(ideaunit_shop(work_text))
-    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
+    swim_road = tim_agenda.make_road(gig_road, swim_text)
+    tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=gig_road)
     assert tim_agenda._agent_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._world_id
-    work_idea = tim_agenda.get_idea_obj(work_road)
-    assert work_idea._parent_road == tim_agenda._world_id
+    gig_idea = tim_agenda.get_idea_obj(gig_road)
+    assert gig_idea._parent_road == tim_agenda._world_id
     swim_idea = tim_agenda.get_idea_obj(swim_road)
-    assert swim_idea._parent_road == work_road
+    assert swim_idea._parent_road == gig_road
 
     # WHEN
     moon_text = "moon"
@@ -67,12 +67,12 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferen
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
-    work_text = "work"
-    work_road = tim_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
-    swim_road = tim_agenda.make_road(work_road, swim_text)
-    tim_agenda.add_l1_idea(ideaunit_shop(work_text))
-    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=work_road)
+    swim_road = tim_agenda.make_road(gig_road, swim_text)
+    tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=gig_road)
     sun_text = "sun"
     tim_agenda._world_id = sun_text
     tim_agenda._idearoot._agenda_world_id = sun_text
@@ -80,10 +80,10 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_world_id_IsDifferen
     assert tim_agenda._world_id == sun_text
     assert tim_agenda._idearoot._agenda_world_id == sun_text
     assert tim_agenda._idearoot._label == root_label()
-    work_idea = tim_agenda.get_idea_obj(work_road)
-    assert work_idea._parent_road == root_label()
+    gig_idea = tim_agenda.get_idea_obj(gig_road)
+    assert gig_idea._parent_road == root_label()
     swim_idea = tim_agenda.get_idea_obj(swim_road)
-    assert swim_idea._parent_road == work_road
+    assert swim_idea._parent_road == gig_road
 
     # WHEN
 
@@ -99,18 +99,18 @@ def test_agenda_set_world_id_CorrectlySetsAttr():
     # GIVEN
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(_agent_id=tim_text)
-    work_text = "work"
-    old_work_road = tim_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    old_gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
-    old_swim_road = tim_agenda.make_road(old_work_road, swim_text)
-    tim_agenda.add_l1_idea(ideaunit_shop(work_text))
-    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=old_work_road)
+    old_swim_road = tim_agenda.make_road(old_gig_road, swim_text)
+    tim_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    tim_agenda.add_idea(ideaunit_shop(swim_text), parent_road=old_gig_road)
     assert tim_agenda._agent_id == tim_text
     assert tim_agenda._idearoot._label == tim_agenda._world_id
-    work_idea = tim_agenda.get_idea_obj(old_work_road)
-    assert work_idea._parent_road == tim_agenda._world_id
+    gig_idea = tim_agenda.get_idea_obj(old_gig_road)
+    assert gig_idea._parent_road == tim_agenda._world_id
     swim_idea = tim_agenda.get_idea_obj(old_swim_road)
-    assert swim_idea._parent_road == old_work_road
+    assert swim_idea._parent_road == old_gig_road
     assert tim_agenda._world_id == tim_agenda._world_id
 
     # WHEN
@@ -118,15 +118,15 @@ def test_agenda_set_world_id_CorrectlySetsAttr():
     tim_agenda.set_world_id(world_id=world_id_text)
 
     # THEN
-    new_work_road = tim_agenda.make_l1_road(work_text)
+    new_gig_road = tim_agenda.make_l1_road(gig_text)
     swim_text = "swim"
-    new_swim_road = tim_agenda.make_road(new_work_road, swim_text)
+    new_swim_road = tim_agenda.make_road(new_gig_road, swim_text)
     assert tim_agenda._world_id == world_id_text
     assert tim_agenda._idearoot._label == world_id_text
-    work_idea = tim_agenda.get_idea_obj(new_work_road)
-    assert work_idea._parent_road == world_id_text
+    gig_idea = tim_agenda.get_idea_obj(new_gig_road)
+    assert gig_idea._parent_road == world_id_text
     swim_idea = tim_agenda.get_idea_obj(new_swim_road)
-    assert swim_idea._parent_road == new_work_road
+    assert swim_idea._parent_road == new_gig_road
 
 
 def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
@@ -288,42 +288,42 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
     old_weekday_road = sue_agenda.make_l1_road(old_weekday_text)
     wednesday_text = "Wednesday"
     old_wednesday_road = sue_agenda.make_road(old_weekday_road, wednesday_text)
-    work_idea = sue_agenda.get_idea_obj(sue_agenda.make_l1_road("work"))
-    # work_wk_reason = reasonunit_shop(weekday, premises={wed_premise.need: wed_premise})
+    gig_idea = sue_agenda.get_idea_obj(sue_agenda.make_l1_road("gig"))
+    # gig_wk_reason = reasonunit_shop(weekday, premises={wed_premise.need: wed_premise})
     # nation_reason = reasonunit_shop(nationstate, premises={usa_premise.need: usa_premise})
-    assert len(work_idea._reasonunits) == 2
-    assert work_idea._reasonunits.get(old_weekday_road) != None
+    assert len(gig_idea._reasonunits) == 2
+    assert gig_idea._reasonunits.get(old_weekday_road) != None
     wednesday_idea = sue_agenda.get_idea_obj(old_weekday_road)
-    work_weekday_reason = work_idea._reasonunits.get(old_weekday_road)
-    assert work_weekday_reason.premises.get(old_wednesday_road) != None
+    gig_weekday_reason = gig_idea._reasonunits.get(old_weekday_road)
+    assert gig_weekday_reason.premises.get(old_wednesday_road) != None
     assert (
-        work_weekday_reason.premises.get(old_wednesday_road).need == old_wednesday_road
+        gig_weekday_reason.premises.get(old_wednesday_road).need == old_wednesday_road
     )
     new_weekday_text = "days of week"
     new_weekday_road = sue_agenda.make_l1_road(new_weekday_text)
     new_wednesday_road = sue_agenda.make_road(new_weekday_road, wednesday_text)
-    assert work_idea._reasonunits.get(new_weekday_text) is None
+    assert gig_idea._reasonunits.get(new_weekday_text) is None
 
     # WHEN
-    # for key_x, reason_x in work_idea._reasonunits.items():
+    # for key_x, reason_x in gig_idea._reasonunits.items():
     #     print(f"Before {key_x=} {reason_x.base=}")
     print(f"BEFORE {wednesday_idea._label=}")
     print(f"BEFORE {wednesday_idea._parent_road=}")
     sue_agenda.edit_idea_label(old_road=old_weekday_road, new_label=new_weekday_text)
-    # for key_x, reason_x in work_idea._reasonunits.items():
+    # for key_x, reason_x in gig_idea._reasonunits.items():
     #     print(f"AFTER {key_x=} {reason_x.base=}")
     print(f"AFTER {wednesday_idea._label=}")
     print(f"AFTER {wednesday_idea._parent_road=}")
 
     # THEN
-    assert work_idea._reasonunits.get(new_weekday_road) != None
-    assert work_idea._reasonunits.get(old_weekday_road) is None
-    work_weekday_reason = work_idea._reasonunits.get(new_weekday_road)
-    assert work_weekday_reason.premises.get(new_wednesday_road) != None
+    assert gig_idea._reasonunits.get(new_weekday_road) != None
+    assert gig_idea._reasonunits.get(old_weekday_road) is None
+    gig_weekday_reason = gig_idea._reasonunits.get(new_weekday_road)
+    assert gig_weekday_reason.premises.get(new_wednesday_road) != None
     assert (
-        work_weekday_reason.premises.get(new_wednesday_road).need == new_wednesday_road
+        gig_weekday_reason.premises.get(new_wednesday_road).need == new_wednesday_road
     )
-    assert len(work_idea._reasonunits) == 2
+    assert len(gig_idea._reasonunits) == 2
 
 
 def test_agenda_set_agent_id_CorrectlyChangesBoth():
@@ -367,15 +367,15 @@ def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     print(f"{luca_agenda._max_tree_traverse=}")
-    work_text = "work"
-    work_road = luca_agenda.make_l1_road(work_text)
-    luca_agenda.add_l1_idea(ideaunit_shop(work_text))
+    gig_text = "gig"
+    gig_road = luca_agenda.make_l1_road(gig_text)
+    luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     slash_text = "/"
     home_text = f"home cooking{slash_text}cleaning"
-    luca_agenda.add_idea(ideaunit_shop(home_text), parent_road=work_road)
+    luca_agenda.add_idea(ideaunit_shop(home_text), parent_road=gig_road)
 
     # WHEN / THEN
-    home_road = luca_agenda.make_road(work_road, home_text)
+    home_road = luca_agenda.make_road(gig_road, home_text)
     print(f"{home_road=}")
     with pytest_raises(Exception) as excinfo:
         luca_agenda.set_road_delimiter(slash_text)
@@ -388,20 +388,20 @@ def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
 def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
-    work_text = "work"
-    luca_agenda.add_l1_idea(ideaunit_shop(work_text))
-    comma_work_road = luca_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    comma_gig_road = luca_agenda.make_l1_road(gig_text)
     cook_text = "cook cooking"
-    luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_work_road)
-    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
+    luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_gig_road)
+    comma_cook_road = luca_agenda.make_road(comma_gig_road, cook_text)
     cook_idea = luca_agenda.get_idea_obj(comma_cook_road)
     comma_text = ","
     assert luca_agenda._road_delimiter == comma_text
-    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
-    # print(f"{luca_agenda._world_id=} {luca_agenda._idearoot._label=} {work_road=}")
+    comma_cook_road = luca_agenda.make_road(comma_gig_road, cook_text)
+    # print(f"{luca_agenda._world_id=} {luca_agenda._idearoot._label=} {gig_road=}")
     # print(f"{cook_idea._parent_road=} {cook_idea._label=}")
-    # comma_work_idea = luca_agenda.get_idea_obj(comma_work_road)
-    # print(f"{comma_work_idea._parent_road=} {comma_work_idea._label=}")
+    # comma_gig_idea = luca_agenda.get_idea_obj(comma_gig_road)
+    # print(f"{comma_gig_idea._parent_road=} {comma_gig_idea._label=}")
     assert cook_idea.get_road() == comma_cook_road
 
     # WHEN
@@ -411,16 +411,16 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     # THEN
     assert cook_idea.get_road() != comma_cook_road
     luca_world_id = luca_agenda._world_id
-    slash_work_road = create_road(luca_world_id, work_text, delimiter=slash_text)
-    slash_cook_road = create_road(slash_work_road, cook_text, delimiter=slash_text)
+    slash_gig_road = create_road(luca_world_id, gig_text, delimiter=slash_text)
+    slash_cook_road = create_road(slash_gig_road, cook_text, delimiter=slash_text)
     assert cook_idea.get_road() == slash_cook_road
 
 
 def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
-    work_text = "work"
-    luca_agenda.add_l1_idea(ideaunit_shop(work_text))
+    gig_text = "gig"
+    luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     time_text = "time"
     comma_time_road = luca_agenda.make_l1_road(time_text)
     _8am_text = "8am"
@@ -429,11 +429,11 @@ def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
     comma_time_reasonunit = reasonunit_shop(base=comma_time_road)
     comma_time_reasonunit.set_premise(comma_8am_road)
 
-    comma_work_road = luca_agenda.make_l1_road(work_text)
-    luca_agenda.edit_idea_attr(road=comma_work_road, reason=comma_time_reasonunit)
-    work_idea = luca_agenda.get_idea_obj(comma_work_road)
-    assert work_idea._reasonunits.get(comma_time_road) != None
-    gen_time_reasonunit = work_idea._reasonunits.get(comma_time_road)
+    comma_gig_road = luca_agenda.make_l1_road(gig_text)
+    luca_agenda.edit_idea_attr(road=comma_gig_road, reason=comma_time_reasonunit)
+    gig_idea = luca_agenda.get_idea_obj(comma_gig_road)
+    assert gig_idea._reasonunits.get(comma_time_road) != None
+    gen_time_reasonunit = gig_idea._reasonunits.get(comma_time_road)
     assert gen_time_reasonunit.premises.get(comma_8am_road) != None
 
     # WHEN
@@ -443,35 +443,35 @@ def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
     # THEN
     slash_time_road = luca_agenda.make_l1_road(time_text)
     slash_8am_road = luca_agenda.make_road(slash_time_road, _8am_text)
-    slash_work_road = luca_agenda.make_l1_road(work_text)
-    work_idea = luca_agenda.get_idea_obj(slash_work_road)
+    slash_gig_road = luca_agenda.make_l1_road(gig_text)
+    gig_idea = luca_agenda.get_idea_obj(slash_gig_road)
     slash_time_road = luca_agenda.make_l1_road(time_text)
     slash_8am_road = luca_agenda.make_road(slash_time_road, _8am_text)
-    assert work_idea._reasonunits.get(slash_time_road) != None
-    gen_time_reasonunit = work_idea._reasonunits.get(slash_time_road)
+    assert gig_idea._reasonunits.get(slash_time_road) != None
+    gen_time_reasonunit = gig_idea._reasonunits.get(slash_time_road)
     assert gen_time_reasonunit.premises.get(slash_8am_road) != None
 
-    assert work_idea._reasonunits.get(comma_time_road) is None
+    assert gig_idea._reasonunits.get(comma_time_road) is None
     assert gen_time_reasonunit.premises.get(comma_8am_road) is None
 
 
 def test_agenda_set_road_delimiter_CorrectlyChangesBeliefUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
-    work_text = "work"
-    luca_agenda.add_l1_idea(ideaunit_shop(work_text))
+    gig_text = "gig"
+    luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     time_text = "time"
     comma_time_road = luca_agenda.make_l1_road(time_text)
     _8am_text = "8am"
     comma_8am_road = luca_agenda.make_road(comma_time_road, _8am_text)
     comma_time_beliefunit = beliefunit_shop(comma_time_road, comma_8am_road)
 
-    comma_work_road = luca_agenda.make_l1_road(work_text)
-    luca_agenda.edit_idea_attr(comma_work_road, beliefunit=comma_time_beliefunit)
-    work_idea = luca_agenda.get_idea_obj(comma_work_road)
-    print(f"{work_idea._beliefunits=} {comma_time_road=}")
-    assert work_idea._beliefunits.get(comma_time_road) != None
-    gen_time_beliefunit = work_idea._beliefunits.get(comma_time_road)
+    comma_gig_road = luca_agenda.make_l1_road(gig_text)
+    luca_agenda.edit_idea_attr(comma_gig_road, beliefunit=comma_time_beliefunit)
+    gig_idea = luca_agenda.get_idea_obj(comma_gig_road)
+    print(f"{gig_idea._beliefunits=} {comma_time_road=}")
+    assert gig_idea._beliefunits.get(comma_time_road) != None
+    gen_time_beliefunit = gig_idea._beliefunits.get(comma_time_road)
 
     # WHEN
     slash_text = "/"
@@ -479,29 +479,29 @@ def test_agenda_set_road_delimiter_CorrectlyChangesBeliefUnit():
 
     # THEN
     slash_time_road = luca_agenda.make_l1_road(time_text)
-    slash_work_road = luca_agenda.make_l1_road(work_text)
-    work_idea = luca_agenda.get_idea_obj(slash_work_road)
+    slash_gig_road = luca_agenda.make_l1_road(gig_text)
+    gig_idea = luca_agenda.get_idea_obj(slash_gig_road)
     slash_time_road = luca_agenda.make_l1_road(time_text)
     slash_8am_road = luca_agenda.make_road(slash_time_road, _8am_text)
-    assert work_idea._beliefunits.get(slash_time_road) != None
-    gen_time_beliefunit = work_idea._beliefunits.get(slash_time_road)
+    assert gig_idea._beliefunits.get(slash_time_road) != None
+    gen_time_beliefunit = gig_idea._beliefunits.get(slash_time_road)
     assert gen_time_beliefunit.base != None
     assert gen_time_beliefunit.base == slash_time_road
     assert gen_time_beliefunit.pick != None
     assert gen_time_beliefunit.pick == slash_8am_road
 
-    assert work_idea._beliefunits.get(comma_time_road) is None
+    assert gig_idea._beliefunits.get(comma_time_road) is None
 
 
 def test_agenda_set_road_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
-    work_text = "work"
-    luca_agenda.add_l1_idea(ideaunit_shop(work_text))
-    comma_work_road = luca_agenda.make_l1_road(work_text)
+    gig_text = "gig"
+    luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    comma_gig_road = luca_agenda.make_l1_road(gig_text)
     cook_text = "cook cooking"
-    luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_work_road)
-    comma_cook_road = luca_agenda.make_road(comma_work_road, cook_text)
+    luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_gig_road)
+    comma_cook_road = luca_agenda.make_road(comma_gig_road, cook_text)
 
     # numeric_road
     taste_text = "foot taste"

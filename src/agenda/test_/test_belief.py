@@ -32,7 +32,7 @@ def test_BeliefUnit_exists():
     assert sunday_belief.nigh == 2.3
 
 
-def test_BeliefUnit_clear_range_works_1():
+def test_BeliefUnit_clear_range_SetsAttrCorrectly_1():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -48,7 +48,7 @@ def test_BeliefUnit_clear_range_works_1():
     assert weekday_belief.nigh is None
 
 
-def test_BeliefUnit_clear_range_works_2():
+def test_BeliefUnit_clear_range_SetsAttrCorrectly_2():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -120,7 +120,7 @@ def test_BeliefUnit_get_dict_ReturnsPartialDict():
     assert belief_dict == static_dict
 
 
-def test_BeliefUnit_find_replace_road_works():
+def test_BeliefUnit_find_replace_road_SetsAttrCorrectly():
     # GIVEN
     weekday_text = "weekday"
     old_weekday_road = create_road(root_label(), weekday_text)
@@ -221,7 +221,7 @@ def test_beliefheir_is_range_ReturnsRangeStatus():
     assert x_beliefheir.is_range() == True
 
 
-def test_BeliefCore_get_obj_key_works():
+def test_BeliefCore_get_obj_key_SetsAttrCorrectly():
     # GIVEN
     ced_min_text = "ced_minute"
     min_road = create_road(root_label(), ced_min_text)

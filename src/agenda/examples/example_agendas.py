@@ -64,9 +64,9 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_agent_id="Sue", _weight=10)
     # print(f"{sue_agenda._auto_output_to_forum=}")
 
-    work = "work"
-    idea_kid_work = ideaunit_shop(work, _weight=30, promise=True)
-    sue_agenda.add_l1_idea(idea_kid_work)
+    gig = "gig"
+    idea_kid_gig = ideaunit_shop(gig, _weight=30, promise=True)
+    sue_agenda.add_l1_idea(idea_kid_gig)
 
     cat = "feed cat"
     idea_kid_feedcat = ideaunit_shop(cat, _weight=30, promise=True)
@@ -142,10 +142,10 @@ def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
     nation_reason = reasonunit_shop(nation_road)
     nation_reason.set_premise(usa_road)
 
-    work_text = "work"
-    work_road = sue_agenda.make_l1_road(work_text)
-    sue_agenda.edit_idea_attr(road=work_road, reason=week_reason)
-    sue_agenda.edit_idea_attr(road=work_road, reason=nation_reason)
+    gig_text = "gig"
+    gig_road = sue_agenda.make_l1_road(gig_text)
+    sue_agenda.edit_idea_attr(road=gig_road, reason=week_reason)
+    sue_agenda.edit_idea_attr(road=gig_road, reason=nation_reason)
     return sue_agenda
 
 
@@ -195,7 +195,7 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     sue_agenda.add_idea(n2_idea, am_road)  # idea_am
     sue_agenda.add_idea(n3_idea, am_road)  # idea_am
 
-    house_text = "housework"
+    house_text = "housemanagement"
     house_road = sue_agenda.make_l1_road(house_text)
     clean_text = "clean table"
     clean_road = sue_agenda.make_road(house_road, clean_text)
@@ -227,9 +227,9 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
         nigh=clean_table_7am_premise_nigh,
     )
     sue_agenda.edit_idea_attr(road=clean_road, reason=clean_table_7am_reason)
-    work_text = "work"
-    work_road = sue_agenda.make_l1_road(work_text)
-    sue_agenda.edit_idea_attr(road=work_road, reason=clean_table_7am_reason)
+    gig_text = "gig"
+    gig_road = sue_agenda.make_l1_road(gig_text)
+    sue_agenda.edit_idea_attr(road=gig_road, reason=clean_table_7am_reason)
     return sue_agenda
 
 

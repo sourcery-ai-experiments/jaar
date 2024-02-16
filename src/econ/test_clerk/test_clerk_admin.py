@@ -164,7 +164,7 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_contractAgenda(
     )
 
 
-def test_ClerkUnit_set_clerk_id_WorksCorrectly(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
     # GIVEN create healer
     env_dir = get_temp_clerkunit_dir()
 

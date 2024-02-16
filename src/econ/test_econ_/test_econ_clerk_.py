@@ -9,7 +9,7 @@ from src.econ.examples.econ_env_kit import (
 from os import path as os_path
 
 
-def test_econunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
+def test_EconUnit_create_new_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
@@ -28,7 +28,7 @@ def test_econunit_create_new_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(timmy_dir)
 
 
-def test_econunit_change_clerkunit_clerk_id_WorksCorrectly(env_dir_setup_cleanup):
+def test_EconUnit_change_clerkunit_clerk_id_SetsAttrsCorrectly(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
@@ -71,7 +71,7 @@ def test_econunit_change_clerkunit_clerk_id_WorksCorrectly(env_dir_setup_cleanup
     assert new_bob_clerkunit._clerkunit_dir == new_bob_dir
 
 
-def test_econunit_del_clerkunit_dir_WorksCorrectly(env_dir_setup_cleanup):
+def test_EconUnit_del_clerkunit_dir_DeletesAttr(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
@@ -92,7 +92,7 @@ def test_econunit_del_clerkunit_dir_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(xia_dir) == False
 
 
-def test_econunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
+def test_EconUnit_add_clerkunit_SetsAttr(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
@@ -127,7 +127,7 @@ def test_econunit_add_clerkunit_WorksCorrectly(env_dir_setup_cleanup):
     assert os_path.exists(bob_file_path)
 
 
-def test_econunit_clerkunit_exists_WorksCorrectly(env_dir_setup_cleanup):
+def test_EconUnit_clerkunit_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())

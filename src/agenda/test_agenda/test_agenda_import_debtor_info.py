@@ -4,7 +4,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.party import PartyUnitExternalMetrics
 
 
-def test_agenda_import_debtor_info_CorrectlyWorks():
+def test_agenda_import_debtor_info_SetsAttrCorrectly():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
     jane_text = "Jane Randolph"

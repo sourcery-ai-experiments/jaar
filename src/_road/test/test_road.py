@@ -211,7 +211,7 @@ def test_road_get_root_node_from_road_ReturnsRoadNode():
     assert get_root_node_from_road(roses_road) == casa_text
 
 
-def test_road_get_parent_road_from_road_works():
+def test_road_get_parent_road_from_road_ReturnsCorrectObj():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
@@ -228,7 +228,7 @@ def test_road_get_parent_road_from_road_works():
     assert get_parent_road_from_road(road=roses_road) == bloomers_road
 
 
-def test_road_create_road_without_root_node_WorksCorrectly():
+def test_road_create_road_without_root_node_ReturnsCorrectObj():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
@@ -346,7 +346,7 @@ def test_road_get_default_econ_root_roadnode_ReturnsCorrectObj():
     assert root_label() == "A"
 
 
-def test_road_create_road_from_nodes_WorksCorrectly():
+def test_road_create_road_from_nodes_ReturnsCorrectObj():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     root_list = get_all_road_nodes(root_label())
@@ -367,7 +367,7 @@ def test_road_create_road_from_nodes_WorksCorrectly():
     assert roses_road == create_road_from_nodes(roses_list)
 
 
-def test_road_create_road_WorksCorrectly():
+def test_road_create_road_ReturnsCorrectObj():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
