@@ -94,6 +94,30 @@ class EconUnit:
     _treasury_db = None
     _road_delimiter: str = None
 
+    # Admin
+    def set_econ_id(self, econ_id: str):
+        self.econ_id = validate_roadnode(econ_id, self._road_delimiter)
+
+    def get_object_root_dir(self):
+        return self.econ_dir
+
+    def _create_main_file_if_null(self, x_dir):
+        econ_file_name = "econ.json"
+        save_file(
+            dest_dir=x_dir,
+            file_name=econ_file_name,
+            file_text="",
+        )
+
+    def set_econ_dirs(self, in_memory_treasury: bool = None):
+        agendas_dir = self.get_forum_dir()
+        clerkunits_dir = self.get_clerkunits_dir()
+        set_dir(x_path=self.get_object_root_dir())
+        set_dir(x_path=agendas_dir)
+        set_dir(x_path=clerkunits_dir)
+        self._create_main_file_if_null(x_dir=self.get_object_root_dir())
+        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
+
     def set_road_delimiter(self, new_road_delimiter: str):
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
@@ -342,31 +366,8 @@ class EconUnit:
         self._treasury_db = None
         delete_dir(dir=self.get_treasury_db_path())
 
-    def set_econ_id(self, econ_id: str):
-        self.econ_id = validate_roadnode(econ_id, self._road_delimiter)
-
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
-
-    def get_object_root_dir(self):
-        return self.econ_dir
-
-    def _create_main_file_if_null(self, x_dir):
-        econ_file_name = "econ.json"
-        save_file(
-            dest_dir=x_dir,
-            file_name=econ_file_name,
-            file_text="",
-        )
-
-    def set_econ_dirs(self, in_memory_treasury: bool = None):
-        agendas_dir = self.get_forum_dir()
-        clerkunits_dir = self.get_clerkunits_dir()
-        set_dir(x_path=self.get_object_root_dir())
-        set_dir(x_path=agendas_dir)
-        set_dir(x_path=clerkunits_dir)
-        self._create_main_file_if_null(x_dir=self.get_object_root_dir())
-        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
     # ClerkUnit management
     def get_clerkunits_dir(self):
