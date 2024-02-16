@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._prime.road import (
+from src._road.road import (
     RoadUnit,
     change_road,
     find_replace_road_key_dict,

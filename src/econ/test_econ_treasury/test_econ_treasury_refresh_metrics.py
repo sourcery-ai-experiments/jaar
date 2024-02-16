@@ -1,4 +1,4 @@
-from src._prime.road import create_road
+from src._road.road import create_road
 from src.agenda.agenda import (
     agendaunit_shop,
     ideaunit_shop,

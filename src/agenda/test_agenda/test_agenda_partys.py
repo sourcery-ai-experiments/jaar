@@ -1,4 +1,4 @@
-from src._prime.road import RoadUnit
+from src._road.road import RoadUnit
 from src.agenda.party import PartyID, partylink_shop, partyunit_shop
 from src.agenda.group import GroupID, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (

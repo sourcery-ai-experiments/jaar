@@ -1,4 +1,4 @@
-from src._prime.road import AgentID, PersonID, PartyID, ClerkID
+from src._road.road import AgentID, PersonID, PartyID, ClerkID
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     get_meld_of_agenda_files,
@@ -14,7 +14,7 @@ from src.instrument.file import (
     delete_dir,
     rename_dir as x_func_rename_dir,
 )
-from src._prime.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
 from dataclasses import dataclass
 from os import path as os_path
 

@@ -4,7 +4,7 @@ from src.agenda.idea import ideaunit_shop, ideaattrfilter_shop
 from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
-from src._prime.road import create_road
+from src._road.road import create_road
 from src.agenda.hreg_time import PremiseUnitHregTime
 from src.agenda.group import BalanceLink, GroupID
 from src.agenda.reason_idea import RoadUnit

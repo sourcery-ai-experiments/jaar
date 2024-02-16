@@ -1,4 +1,4 @@
-from src._prime.road import get_default_econ_root_roadnode as root_label, create_road
+from src._road.road import get_default_econ_root_roadnode as root_label, create_road
 from src.world.topic import topicunit_shop, opinionunit_shop
 
 

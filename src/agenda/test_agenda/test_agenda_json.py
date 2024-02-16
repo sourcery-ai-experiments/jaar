@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
 from src.agenda.idea import ideaunit_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.reason_idea import beliefunit_shop

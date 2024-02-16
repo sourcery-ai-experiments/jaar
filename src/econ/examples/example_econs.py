@@ -1,4 +1,4 @@
-from src._prime.road import create_road
+from src._road.road import create_road
 from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.econ.econ import EconUnit
 

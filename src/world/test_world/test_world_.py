@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,

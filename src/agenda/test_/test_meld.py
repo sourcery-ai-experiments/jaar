@@ -1,4 +1,4 @@
-from src._prime.meld import (
+from src.agenda.meld import (
     get_meld_weight,
     get_meld_strategys,
     MeldStrategy,

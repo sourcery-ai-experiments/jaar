@@ -1,4 +1,4 @@
-from src._prime.road import PersonRoad, RoadUnit
+from src._road.road import PersonRoad, RoadUnit
 from src.agenda.reason_idea import beliefunit_shop, BeliefUnit, PremiseUnit, ReasonUnit
 from src.agenda.party import (
     partyunit_shop,

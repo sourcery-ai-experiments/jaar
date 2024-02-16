@@ -1,4 +1,4 @@
-from src._prime.road import (
+from src._road.road import (
     get_parent_road_from_road,
     is_sub_road,
     road_validate,
@@ -20,7 +20,7 @@ from src._prime.road import (
     HealerID,
     is_roadunit_convertible_to_path,
 )
-from src._prime.meld import (
+from src.agenda.meld import (
     get_meld_weight,
     MeldStrategy,
     get_meld_default,

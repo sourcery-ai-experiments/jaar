@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none, create_road
+from src._road.road import default_road_delimiter_if_none, create_road
 from src.instrument.file import delete_dir
 from os import path as os_path
 from src.econ.econ import (

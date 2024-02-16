@@ -7,7 +7,7 @@ from src.agenda.reason_idea import (
     premiseunit_shop,
     reasons_get_from_dict,
 )
-from src._prime.road import (
+from src._road.road import (
     get_default_econ_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,

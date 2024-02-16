@@ -1,4 +1,4 @@
-from src._prime.road import PersonRoad, create_road_from_nodes as roadnodes
+from src._road.road import PersonRoad, create_road_from_nodes as roadnodes
 from src.agenda.examples.example_learns import get_sue_road
 from src.world.deal import dealunit_shop, DealUnit, vowunit_shop
 

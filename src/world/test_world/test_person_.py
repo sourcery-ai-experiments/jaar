@@ -1,4 +1,4 @@
-from src._prime.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
 from src.world.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises

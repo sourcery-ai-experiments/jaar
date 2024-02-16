@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop as c_beliefunit,
     beliefunits_get_from_dict,
 )
-from src._prime.road import (
+from src._road.road import (
     get_default_econ_root_roadnode as root_label,
     create_road,
 )

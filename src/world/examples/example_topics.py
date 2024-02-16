@@ -1,4 +1,4 @@
-from src._prime.road import create_road
+from src._road.road import create_road
 from src.world.deal import vowunit_shop, VowUnit
 from src.world.topic import (
     topicunit_shop,

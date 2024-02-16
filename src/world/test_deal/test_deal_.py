@@ -1,4 +1,4 @@
-from src._prime.road import create_road_from_nodes as roadnodes
+from src._road.road import create_road_from_nodes as roadnodes
 from src.world.deal import DealUnit, dealunit_shop
 from pytest import raises as pytest_raises
 

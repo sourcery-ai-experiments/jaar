@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._prime.road import (
+from src._road.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
@@ -9,7 +9,7 @@ from src._prime.road import (
     replace_road_delimiter,
     EconID,
 )
-from src._prime.meld import get_meld_default
+from src.agenda.meld import get_meld_default
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
 from src.agenda.reason_assign import (
     AssignedUnit,
@@ -55,7 +55,7 @@ from src.instrument.python import (
     get_0_if_None,
     get_False_if_None,
 )
-from src._prime.meld import get_meld_weight, validate_meld_strategy
+from src.agenda.meld import get_meld_weight, validate_meld_strategy
 from copy import deepcopy
 
 

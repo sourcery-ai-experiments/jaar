@@ -1,5 +1,5 @@
 from src.agenda.agenda import AgendaUnit, PartyUnit
-from src._prime.road import create_road_without_root_node, RoadUnit, PersonID, PartyID
+from src._road.road import create_road_without_root_node, RoadUnit, PersonID, PartyID
 from src.instrument.sqlite import (
     sqlite_bool,
     sqlite_null,

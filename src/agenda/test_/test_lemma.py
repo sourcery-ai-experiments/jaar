@@ -1,7 +1,7 @@
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
 from src.agenda.idea import ideaunit_shop
-from src._prime.road import (
+from src._road.road import (
     get_default_econ_root_roadnode as root_label,
     create_road,
 )

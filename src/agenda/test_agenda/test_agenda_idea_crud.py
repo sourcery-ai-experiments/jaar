@@ -5,7 +5,7 @@ from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balancelink_shop
 from pytest import raises as pytest_raises
-from src._prime.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
 
 
 def test_AgendaUnit_add_idea_RaisesErrorWhen_parent_road_IsInvalid():

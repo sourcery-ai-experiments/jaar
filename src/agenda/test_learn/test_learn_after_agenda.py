@@ -1,4 +1,4 @@
-from src._prime.meld import get_meld_default
+from src.agenda.meld import get_meld_default
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop

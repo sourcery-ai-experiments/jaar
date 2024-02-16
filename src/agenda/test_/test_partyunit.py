@@ -1,4 +1,4 @@
-from src._prime.road import validate_roadnode, default_road_delimiter_if_none
+from src._road.road import validate_roadnode, default_road_delimiter_if_none
 from src.agenda.party import (
     PartyUnit,
     PartyID,

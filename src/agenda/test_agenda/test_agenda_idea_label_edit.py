@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from pytest import raises as pytest_raises
 from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
-from src._prime.road import (
+from src._road.road import (
     get_default_econ_root_roadnode as root_label,
     create_road,
 )

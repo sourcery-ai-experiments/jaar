@@ -1,4 +1,4 @@
-from src._prime.road import (
+from src._road.road import (
     get_default_econ_root_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,

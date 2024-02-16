@@ -1,4 +1,4 @@
-from src._prime.road import create_road
+from src._road.road import create_road
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
     get_temp_env_econ_id,

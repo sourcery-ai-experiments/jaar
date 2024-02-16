@@ -1,4 +1,4 @@
-from src._prime.road import get_default_econ_root_roadnode
+from src._road.road import get_default_econ_root_roadnode
 from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop
