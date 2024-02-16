@@ -15,7 +15,7 @@ from src._road.road import (
     RoadNode,
     RoadUnit,
     is_string_in_road,
-    AgentID,
+    WorkerID,
     PartyID,
     HealerID,
     is_roadunit_convertible_to_path,
@@ -109,7 +109,7 @@ class Exception_econs_justified(Exception):
 @dataclass
 class AgendaUnit:
     _world_id: str = None
-    _worker_id: AgentID = None
+    _worker_id: WorkerID = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupID:GroupUnit] = None
@@ -2182,7 +2182,7 @@ class AgendaUnit:
 
 
 def agendaunit_shop(
-    _worker_id: AgentID = None,
+    _worker_id: WorkerID = None,
     _world_id: EconID = None,
     _weight: float = None,
     _auto_output_to_forum: bool = None,
@@ -2369,7 +2369,7 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
 
 @dataclass
 class MeldeeOrderUnit:
-    worker_id: AgentID
+    worker_id: WorkerID
     voice_rank: int
     voice_hx_lowest_rank: int
     file_name: str

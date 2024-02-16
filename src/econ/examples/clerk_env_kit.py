@@ -1,5 +1,5 @@
 # from os import listdir as os_listdir
-from src._road.road import AgentID
+from src._road.road import WorkerID
 from src.agenda.agenda import agendaunit_shop
 from src.instrument.file import delete_dir, save_file
 from pytest import fixture as pytest_fixture
@@ -21,7 +21,7 @@ def clerk_dir_setup_cleanup():
     delete_dir(dir=worker_id_dir)
 
 
-def create_agenda_file(agenda_clerkunit_dir: str, worker_id: AgentID):
+def create_agenda_file(agenda_clerkunit_dir: str, worker_id: WorkerID):
     x_agenda = agendaunit_shop(_worker_id=worker_id)
     # file_path = f"{agenda_clerkunit_dir}/{x_agenda._worker_id}.json"
     # # if not path.exists(file_path):

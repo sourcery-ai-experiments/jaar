@@ -1,4 +1,4 @@
-from src._road.road import AgentID, PersonID, PartyID, ClerkID
+from src._road.road import WorkerID, PersonID, PartyID, ClerkID
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     get_meld_of_agenda_files,
@@ -123,7 +123,7 @@ class ClerkUnit:
         else:
             party_x.set_depotlink_type(link_type, creditor_weight, debtor_weight)
 
-    def del_depot_agenda(self, worker_id: AgentID):
+    def del_depot_agenda(self, worker_id: WorkerID):
         self._del_depotlink(party_id=worker_id)
         self.erase_depot_agenda(worker_id)
         self.erase_digest_agenda(worker_id)
@@ -334,7 +334,7 @@ class ClerkUnit:
 
 
 def clerkunit_shop(
-    worker_id: AgentID,
+    worker_id: WorkerID,
     env_dir: str,
     econ_id: str,
     _auto_output_to_forum: bool = None,

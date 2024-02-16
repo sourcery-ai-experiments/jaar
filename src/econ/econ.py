@@ -2,7 +2,7 @@ from src._road.road import (
     RoadUnit,
     create_road,
     default_road_delimiter_if_none,
-    AgentID,
+    WorkerID,
     HealerID,
     PersonID,
     PartyID,
@@ -121,7 +121,7 @@ class EconUnit:
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
     # treasurying
-    def set_voice_ranks(self, worker_id: AgentID, sort_order: str):
+    def set_voice_ranks(self, worker_id: WorkerID, sort_order: str):
         if sort_order == "descretional":
             x_clerk = self.get_clerkunit(worker_id)
             x_plan = x_clerk.get_plan()
@@ -130,7 +130,7 @@ class EconUnit:
             x_clerk.set_plan(x_plan)
             x_clerk.save_refreshed_output_to_forum()
 
-    def set_agenda_treasury_attrs(self, x_worker_id: AgentID):
+    def set_agenda_treasury_attrs(self, x_worker_id: WorkerID):
         x_agenda = self.get_forum_agenda(x_worker_id)
 
         for groupunit_x in x_agenda._groups.values():
@@ -148,7 +148,7 @@ class EconUnit:
         self.refresh_treasury_forum_agendas_data()
 
     def set_credit_flow_for_agenda(
-        self, worker_id: AgentID, max_blocks_count: int = None
+        self, worker_id: WorkerID, max_blocks_count: int = None
     ):
         self._clear_all_source_river_data(worker_id)
         if max_blocks_count is None:
@@ -156,7 +156,7 @@ class EconUnit:
         self._set_river_blocks(worker_id, max_blocks_count)
         self._set_partytreasuryunits_circles(worker_id)
 
-    def _set_river_blocks(self, x_worker_id: AgentID, max_blocks_count: int):
+    def _set_river_blocks(self, x_worker_id: WorkerID, max_blocks_count: int):
         # changes in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_worker_id)]
         blocks_count = 0  # changes in river_block loop
@@ -383,7 +383,7 @@ class EconUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, worker_id: AgentID, _auto_output_to_forum: bool = None):
+    def add_clerkunit(self, worker_id: WorkerID, _auto_output_to_forum: bool = None):
         x_clerkunit = clerkunit_shop(
             worker_id=worker_id,
             env_dir=self.get_object_root_dir(),
@@ -425,7 +425,7 @@ class EconUnit:
     def del_clerkunit_dir(self, clerk_id: ClerkID):
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
 
-    def full_setup_clerkunit(self, worker_id: AgentID):
+    def full_setup_clerkunit(self, worker_id: WorkerID):
         self.add_clerkunit(worker_id, _auto_output_to_forum=True)
         requestee_clerkunit = self.get_clerkunit(worker_id)
         requestee_clerkunit.create_core_dir_and_files()
@@ -445,7 +445,7 @@ class EconUnit:
         )
 
     def get_agenda_from_ignores_dir(
-        self, clerk_id: ClerkID, _worker_id: AgentID
+        self, clerk_id: ClerkID, _worker_id: WorkerID
     ) -> AgendaUnit:
         return get_agenda_from_json(
             open_file(
@@ -460,7 +460,7 @@ class EconUnit:
             agendaunit=agenda_obj, src_worker_id=agenda_obj._worker_id
         )
 
-    def change_forum_worker_id(self, old_worker_id: AgentID, new_worker_id: AgentID):
+    def change_forum_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
         x_agenda = self.get_forum_agenda(worker_id=old_worker_id)
         x_agenda.set_worker_id(new_worker_id=new_worker_id)
         self.save_forum_agenda(x_agenda)
@@ -561,7 +561,7 @@ class EconUnit:
             debtor_weight=debtor_weight,
         )
 
-    def del_depotlink(self, clerk_id: ClerkID, agendaunit_worker_id: AgentID):
+    def del_depotlink(self, clerk_id: ClerkID, agendaunit_worker_id: WorkerID):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_clerkunit.del_depot_agenda(worker_id=agendaunit_worker_id)
 
@@ -620,7 +620,7 @@ def econunit_shop(
     econ_id: EconID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
-    _clerkunits: dict[AgentID:ClerkUnit] = None,
+    _clerkunits: dict[WorkerID:ClerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,
 ) -> EconUnit:
