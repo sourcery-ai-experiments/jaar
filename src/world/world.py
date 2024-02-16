@@ -4,7 +4,7 @@ from src._prime.road import (
     ProblemID,
     PersonID,
 )
-from src.agenda.agenda import agendaunit_shop
+from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
 from src.world.deal import DealUnit
 from src.world.person import PersonUnit, personunit_shop
@@ -76,6 +76,7 @@ class WorldUnit:
             worlds_dir=self.worlds_dir,
             _road_delimiter=self._road_delimiter,
         )
+        x_personunit.create_core_dir_and_files()
         if (
             self.personunit_exists(x_personunit.person_id) == False
             and not replace_personunit
@@ -88,6 +89,10 @@ class WorldUnit:
 
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
+
+    def get_person_gut(self, person_id: PersonID) -> AgendaUnit:
+        x_person = self.get_personunit_from_memory(person_id)
+        return x_person.get_gut_file_agenda()
 
     def add_econ_connection(
         self,

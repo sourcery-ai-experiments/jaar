@@ -262,3 +262,23 @@ def test_WorldUnit_get_personunit_from_memory_ReturnsNone(
 
     # THEN
     assert luca_gotten_obj is None
+
+
+def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    dallas_text = "dallas"
+    dallas_world = worldunit_shop(dallas_text, get_test_worlds_dir())
+    luca_text = "Luca"
+    dallas_world.add_personunit(luca_text)
+    luca_person = dallas_world.get_personunit_from_memory(luca_text)
+    bob_text = "Bob"
+    luca_gut = luca_person.get_gut_file_agenda()
+    luca_gut.add_partyunit(bob_text)
+    luca_person._save_agenda_to_gut_path(luca_gut)
+
+    # WHEN
+    gen_luca_gut = dallas_world.get_person_gut(luca_text)
+
+    # THEN
+    assert gen_luca_gut != None
+    assert gen_luca_gut.get_party(bob_text) != None
