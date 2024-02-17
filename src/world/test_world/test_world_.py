@@ -304,23 +304,23 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsplans(
     todd_dallas_luca_clerk = todd_dallas_econ.get_clerkunit(luca_text)
     todd_dallas_todd_clerk = todd_dallas_econ.get_clerkunit(todd_text)
     print(f"{luca_dallas_todd_clerk.get_plan()._partys.keys()=}")
-    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
-    assert todd_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) is None
-    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
-    assert luca_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) is None
+    assert todd_dallas_todd_clerk.open_plan_file().get_party(luca_text) is None
+    assert todd_dallas_luca_clerk.open_plan_file().get_party(todd_text) is None
+    assert luca_dallas_todd_clerk.open_plan_file().get_party(luca_text) is None
+    assert luca_dallas_luca_clerk.open_plan_file().get_party(todd_text) is None
 
     # WHEN
     music_world.set_all_econunits_contract(luca_text)
 
     # THEN
-    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
-    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
-    assert todd_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) != None
-    assert luca_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) != None
+    assert todd_dallas_todd_clerk.open_plan_file().get_party(luca_text) is None
+    assert luca_dallas_todd_clerk.open_plan_file().get_party(luca_text) is None
+    assert todd_dallas_luca_clerk.open_plan_file().get_party(todd_text) != None
+    assert luca_dallas_luca_clerk.open_plan_file().get_party(todd_text) != None
 
     # WHEN
     music_world.set_all_econunits_contract(todd_text)
 
     # THEN
-    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) != None
-    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) != None
+    assert todd_dallas_todd_clerk.open_plan_file().get_party(luca_text) != None
+    assert luca_dallas_todd_clerk.open_plan_file().get_party(luca_text) != None

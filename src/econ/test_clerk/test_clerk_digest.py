@@ -41,7 +41,7 @@ from pytest import raises as pytest_raises
 #     assert open_file(lai_agenda._clerkunit_dir, lai_plan_file_name) != None
 
 
-def test_ClerkUnitopen_plan_agenda_WhenStartingAgendaFileDoesNotExists(
+def test_ClerkUnitopen_plan_file_WhenStartingAgendaFileDoesNotExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -51,7 +51,7 @@ def test_ClerkUnitopen_plan_agenda_WhenStartingAgendaFileDoesNotExists(
     x_clerk = clerkunit_shop(worker_id=tim_text, env_dir=env_dir, econ_id=econ_id_text)
 
     # WHEN
-    plan_agenda = x_clerk.open_plan_agenda()
+    plan_agenda = x_clerk.open_plan_file()
     assert plan_agenda != None
     assert plan_agenda._world_id == econ_id_text
 
@@ -87,10 +87,10 @@ def test_ClerkUnit_save_plan_agenda_planPersonIDMustBeHealer(
     x_clerk.save_plan_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_plan_agenda()._worker_id == x_clerk._clerk_id
+    assert x_clerk.open_plan_file()._worker_id == x_clerk._clerk_id
 
 
-def test_ClerkUnit_open_plan_agenda_WhenStartingAgendaFileExists(
+def test_ClerkUnit_open_plan_file_WhenStartingAgendaFileExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -99,8 +99,8 @@ def test_ClerkUnit_open_plan_agenda_WhenStartingAgendaFileExists(
     x_clerk.save_plan_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
     # WHEN
-    assert x_clerk.open_plan_agenda() != None
-    plan_agenda = x_clerk.open_plan_agenda()
+    assert x_clerk.open_plan_file() != None
+    plan_agenda = x_clerk.open_plan_file()
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()

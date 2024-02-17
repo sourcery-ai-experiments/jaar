@@ -133,7 +133,7 @@ class ClerkUnit:
 
     def get_plan(self):
         if self._plan is None:
-            self._plan = self.open_plan_agenda()
+            self._plan = self.open_plan_file()
         return self._plan
 
     def set_plan(self, x_agenda: AgendaUnit = None):
@@ -246,7 +246,7 @@ class ClerkUnit:
         self._save_agenda_to_path(x_agenda, dest_dir)
 
     def save_output_agenda(self) -> AgendaUnit:
-        x_plan_agenda = self.open_plan_agenda()
+        x_plan_agenda = self.open_plan_file()
         x_plan_agenda.meld(x_plan_agenda, party_weight=1)
         x_agenda = get_meld_of_agenda_files(
             primary_agenda=x_plan_agenda,
@@ -273,7 +273,7 @@ class ClerkUnit:
         agenda_obj.set_agenda_metrics()
         return agenda_obj
 
-    def open_plan_agenda(self) -> AgendaUnit:
+    def open_plan_file(self) -> AgendaUnit:
         x_agenda = None
         if not self._plan_agenda_exists():
             self.save_plan_agenda(self._get_empty_plan_agenda())

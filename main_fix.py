@@ -43,7 +43,7 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
-            self.main_window.plan = self.main_window.x_clerk.open_plan_agenda()
+            self.main_window.plan = self.main_window.x_clerk.open_plan_file()
             self.editmain_view.agenda_x = self.main_window.plan
         else:
             self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
