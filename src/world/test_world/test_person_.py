@@ -169,17 +169,35 @@ def test_PersonUnit_save_agenda_to_gut_path_CorrectlySavesFile(
     gut_agenda = agenda_get_from_json(gut_file_text)
     assert gut_agenda.get_party(bob_text) != None
 
-    # WHEN
-    yao_agenda = agendaunit_shop("Yao")
+    # # WHEN
+    sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
-    yao_agenda.add_partyunit(zia_text)
-    sue_person._save_agenda_to_gut_path(yao_agenda)
+    sue2_agenda.add_partyunit(zia_text)
+    sue_person._save_agenda_to_gut_path(sue2_agenda)
 
     # THEN
     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
     print(f"{gut_file_text=}")
     gut_agenda = agenda_get_from_json(gut_file_text)
     assert gut_agenda.get_party(zia_text) != None
+
+
+def test_PersonUnit_save_agenda_to_gut_path_RaisesErrorWhenAgenda_work_id_IsWrong(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.gut_file_exists() == False
+
+    # WHEN / THEN
+    yao_text = "yao"
+    with pytest_raises(Exception) as excinfo:
+        sue_person._save_agenda_to_gut_path(agendaunit_shop(yao_text))
+    assert (
+        str(excinfo.value)
+        == f"AgendaUnit with worker_id '{yao_text}' cannot be saved as person_id '{sue_text}''s gut agenda."
+    )
 
 
 def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanup):

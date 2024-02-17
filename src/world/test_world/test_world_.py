@@ -254,49 +254,73 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert gen_luca_gut.get_party(bob_text) != None
 
 
-def test_WorldUnit_set_person_econunits_plan_CorrectlySetsplans(
+def test_WorldUnit_set_all_econunits_contract_CorrectlySetsplans(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(music_text, get_test_worlds_dir())
     luca_text = "Luca"
-    music_world.add_personunit(luca_text)
+    todd_text = "Todd"
+    luca_person = music_world.add_personunit(luca_text)
+    todd_person = music_world.add_personunit(todd_text)
+    luca_gut_agenda = luca_person.get_gut_file_agenda()
+    todd_gut_agenda = todd_person.get_gut_file_agenda()
 
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
-    sue_gut_agenda = sue_person.get_gut_file_agenda()
-    sue_gut_agenda.add_partyunit(sue_text)
-    bob_text = "Bob"
-    sue_gut_agenda.add_partyunit(bob_text)
+    luca_gut_agenda.add_partyunit(luca_text)
+    luca_gut_agenda.add_partyunit(todd_text)
+    todd_gut_agenda.add_partyunit(luca_text)
+    todd_gut_agenda.add_partyunit(todd_text)
     texas_text = "Texas"
-    texas_road = sue_gut_agenda.make_l1_road(texas_text)
-    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = luca_gut_agenda.make_l1_road(texas_text)
+    luca_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    todd_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    sue_gut_agenda.add_idea(dallas_idea, texas_road)
+    dallas_road = luca_gut_agenda.make_road(texas_road, dallas_text)
+    dallas_healerhold = healerhold_shop({luca_text, todd_text})
+    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
-    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
-    # sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
-    sue_person.create_person_econunits()
-    dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
-    dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_plan().get_party(bob_text) is None
+    elpaso_road = luca_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_healerhold = healerhold_shop({luca_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+
+    luca_gut_agenda.add_idea(dallas_idea, texas_road)
+    luca_gut_agenda.add_idea(elpaso_idea, texas_road)
+    todd_gut_agenda.add_idea(dallas_idea, texas_road)
+    todd_gut_agenda.add_idea(elpaso_idea, texas_road)
+    # display_agenda(luca_gut_agenda.set_agenda_metrics(), mode="Econ").show()
+    luca_person._save_agenda_to_gut_path(luca_gut_agenda)
+    todd_person._save_agenda_to_gut_path(todd_gut_agenda)
+    luca_person.create_person_econunits()
+    todd_person.create_person_econunits()
+    luca_dallas_econ = luca_person.get_econ(dallas_road)
+    todd_dallas_econ = todd_person.get_econ(dallas_road)
+    luca_dallas_econ.create_new_clerkunit(luca_text)
+    luca_dallas_econ.create_new_clerkunit(todd_text)
+    todd_dallas_econ.create_new_clerkunit(luca_text)
+    todd_dallas_econ.create_new_clerkunit(todd_text)
+    luca_dallas_luca_clerk = luca_dallas_econ.get_clerkunit(luca_text)
+    luca_dallas_todd_clerk = luca_dallas_econ.get_clerkunit(todd_text)
+    todd_dallas_luca_clerk = todd_dallas_econ.get_clerkunit(luca_text)
+    todd_dallas_todd_clerk = todd_dallas_econ.get_clerkunit(todd_text)
+    print(f"{luca_dallas_todd_clerk.get_plan()._partys.keys()=}")
+    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
+    assert todd_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) is None
+    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
+    assert luca_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) is None
 
     # WHEN
-    sue_person.set_person_econunits_plan()
+    music_world.set_all_econunits_contract(luca_text)
 
     # THEN
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) != None
-    elpaso_econ = sue_person.get_econ(elpaso_road)
-    elpaso_econ.create_new_clerkunit(sue_text)
-    elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_plan().get_party(bob_text) != None
+    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
+    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) is None
+    assert todd_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) != None
+    assert luca_dallas_luca_clerk.open_plan_agenda().get_party(todd_text) != None
+
+    # WHEN
+    music_world.set_all_econunits_contract(todd_text)
+
+    # THEN
+    assert todd_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) != None
+    assert luca_dallas_todd_clerk.open_plan_agenda().get_party(luca_text) != None

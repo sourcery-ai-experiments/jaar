@@ -3,6 +3,7 @@ from src._road.road import (
     HealerID,
     ProblemID,
     PersonID,
+    RoadUnit,
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
@@ -69,7 +70,7 @@ class WorldUnit:
         person_id: PersonID,
         replace_personunit: bool = False,
         replace_alert: bool = True,
-    ):
+    ) -> PersonUnit:
         x_personunit = personunit_shop(
             person_id=person_id,
             world_id=self.world_id,
@@ -86,6 +87,7 @@ class WorldUnit:
             raise PersonExistsException(
                 f"add_personunit fail: {x_personunit.person_id} already exists"
             )
+        return self.get_personunit_from_memory(person_id)
 
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
@@ -93,6 +95,29 @@ class WorldUnit:
     def get_person_gut(self, person_id: PersonID) -> AgendaUnit:
         x_person = self.get_personunit_from_memory(person_id)
         return x_person.get_gut_file_agenda()
+
+    def set_all_econunits_contract(self, person_id: PersonID):
+        x_gut = self.get_person_gut(person_id)
+        x_gut.set_agenda_metrics()
+        for healer_id, healer_dict in x_gut._healers_dict.items():
+            healer_person = self.get_personunit_from_memory(healer_id)
+            for econ_idea in healer_dict.values():
+                self._set_person_econunits_agent_contract(
+                    healer_person=healer_person,
+                    econ_road=econ_idea.get_road(),
+                    gut_agenda=x_gut,
+                )
+
+    def _set_person_econunits_agent_contract(
+        self,
+        healer_person: PersonID,
+        econ_road: RoadUnit,
+        gut_agenda: AgendaUnit,
+    ):
+        x_econ = healer_person.get_econ(econ_road)
+        x_econ.create_new_clerkunit(gut_agenda._worker_id)
+        x_clerk = x_econ.get_clerkunit(gut_agenda._worker_id)
+        x_clerk.save_plan_agenda(gut_agenda)
 
     def add_econ_connection(
         self,

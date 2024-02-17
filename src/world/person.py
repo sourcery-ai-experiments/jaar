@@ -42,6 +42,10 @@ class PersonCreateEconUnitsException(Exception):
     pass
 
 
+class Invalid_gut_Exception(Exception):
+    pass
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -75,6 +79,10 @@ class PersonUnit:
         return os_path_exists(self._gut_path)
 
     def _save_agenda_to_gut_path(self, x_agenda: AgendaUnit, replace: bool = True):
+        if x_agenda._worker_id != self.person_id:
+            raise Invalid_gut_Exception(
+                f"AgendaUnit with worker_id '{x_agenda._worker_id}' cannot be saved as person_id '{self.person_id}''s gut agenda."
+            )
         if replace in {True, False}:
             save_file(
                 dest_dir=self.person_dir,
