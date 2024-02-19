@@ -4,68 +4,68 @@ from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.understand import (
-    UnderstandUnit,
+from src.agenda.book import (
+    BookUnit,
     learn_insert,
     learn_update,
     learn_delete,
-    understandunit_shop,
+    bookunit_shop,
 )
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.instrument.python import get_nested_value, get_empty_list_if_None
 from copy import deepcopy as copy_deepcopy
 
 
-def print_learnunit_keys(x_understandunit: UnderstandUnit):
-    for x_learnunit in get_delete_learnunit_list(x_understandunit):
+def print_learnunit_keys(x_bookunit: BookUnit):
+    for x_learnunit in get_delete_learnunit_list(x_bookunit):
         print(f"DELETE {x_learnunit.category} {list(x_learnunit.locator.values())}")
-    for x_learnunit in get_update_learnunit_list(x_understandunit):
+    for x_learnunit in get_update_learnunit_list(x_bookunit):
         print(f"UPDATE {x_learnunit.category} {list(x_learnunit.locator.values())}")
-    for x_learnunit in get_insert_learnunit_list(x_understandunit):
+    for x_learnunit in get_insert_learnunit_list(x_bookunit):
         print(f"INSERT {x_learnunit.category} {list(x_learnunit.locator.values())}")
 
 
-def get_delete_learnunit_list(x_understandunit: UnderstandUnit) -> list:
+def get_delete_learnunit_list(x_bookunit: BookUnit) -> list:
     return get_empty_list_if_None(
-        x_understandunit.get_learn_order_learnunit_dict().get(learn_delete())
+        x_bookunit.get_learn_order_learnunit_dict().get(learn_delete())
     )
 
 
-def get_insert_learnunit_list(x_understandunit: UnderstandUnit):
+def get_insert_learnunit_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_understandunit.get_learn_order_learnunit_dict().get(learn_insert())
+        x_bookunit.get_learn_order_learnunit_dict().get(learn_insert())
     )
 
 
-def get_update_learnunit_list(x_understandunit: UnderstandUnit):
+def get_update_learnunit_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_understandunit.get_learn_order_learnunit_dict().get(learn_update())
+        x_bookunit.get_learn_order_learnunit_dict().get(learn_update())
     )
 
 
-def get_learnunit_total_count(x_understandunit: UnderstandUnit) -> int:
+def get_learnunit_total_count(x_bookunit: BookUnit) -> int:
     return (
-        len(get_delete_learnunit_list(x_understandunit))
-        + len(get_insert_learnunit_list(x_understandunit))
-        + len(get_update_learnunit_list(x_understandunit))
+        len(get_delete_learnunit_list(x_bookunit))
+        + len(get_insert_learnunit_list(x_bookunit))
+        + len(get_update_learnunit_list(x_bookunit))
     )
 
 
-def test_UnderstandUnit_create_learnunits_CorrectHandlesEmptyAgendas():
+def test_BookUnit_create_learnunits_CorrectHandlesEmptyAgendas():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_understandunit = understandunit_shop()
-    assert sue_understandunit.learnunits == {}
+    sue_bookunit = bookunit_shop()
+    assert sue_bookunit.learnunits == {}
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(sue_agenda, sue_agenda)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(sue_agenda, sue_agenda)
 
     # THEN
-    assert sue_understandunit.learnunits == {}
+    assert sue_bookunit.learnunits == {}
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -82,12 +82,12 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    assert len(sue_understandunit.learnunits.get(learn_insert()).get("partyunit")) == 1
-    sue_insert_dict = sue_understandunit.learnunits.get(learn_insert())
+    assert len(sue_bookunit.learnunits.get(learn_insert()).get("partyunit")) == 1
+    sue_insert_dict = sue_bookunit.learnunits.get(learn_insert())
     sue_partyunit_dict = sue_insert_dict.get("partyunit")
     rico_learnunit = sue_partyunit_dict.get(rico_text)
     assert rico_learnunit.get_value("party_id") == rico_text
@@ -95,11 +95,11 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
     assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
     assert rico_learnunit.get_value("depotlink_type") == rico_depotlink_type
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -112,21 +112,21 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_delete():
     before_sue_agenda.add_partyunit(rico_text)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     rico_learnunit = get_nested_value(
-        sue_understandunit.learnunits, [learn_delete(), "partyunit", rico_text]
+        sue_bookunit.learnunits, [learn_delete(), "partyunit", rico_text]
     )
     assert rico_learnunit.get_value("party_id") == rico_text
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    print_learnunit_keys(sue_understandunit)
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    print_learnunit_keys(sue_bookunit)
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -144,22 +144,22 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_partyunit_update():
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
     x_keylist = [learn_update(), "partyunit", rico_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("party_id") == rico_text
     assert rico_learnunit.get_value("creditor_weight") == rico_creditor_weight
     assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
     assert rico_learnunit.get_value("depotlink_type") == rico_depotlink_type
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_AgendaUnit_weight_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_AgendaUnit_weight_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -178,40 +178,40 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_AgendaUnit_weight_u
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    sue_learnunits = sue_understandunit.learnunits
+    sue_learnunits = sue_bookunit.learnunits
     x_keylist = [learn_update(), "agendaunit"]
     rico_learnunit = get_nested_value(sue_learnunits, x_keylist)
     assert rico_learnunit.get_value("_weight") == x_agendaUnit_weight
 
     x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("_max_tree_traverse") == x_max_tree_traverse
 
     x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("_party_creditor_pool") == x_party_creditor_pool
 
     x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("_party_debtor_pool") == x_party_debtor_pool
 
     x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("_auto_output_to_forum") == x_auto_output_to_forum
 
     x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("_meld_strategy") == x_meld_strategy
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -232,33 +232,33 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_ins
     # print(f"{after_sue_agendaunit.get_groupunit(run_text)=}")
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
     x_keylist = [learn_insert(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == run_text
-    # print(f"\n{sue_understandunit.learnunits=}")
+    # print(f"\n{sue_bookunit.learnunits=}")
     print(f"\n{rico_learnunit=}")
     assert rico_learnunit.get_value("_treasury_partylinks") == x_treasury_partylinks
 
     x_keylist = [learn_insert(), "partylink", run_text, rico_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == run_text
     assert rico_learnunit.get_value("party_id") == rico_text
     assert rico_learnunit.get_value("creditor_weight") == rico_creditor_weight
     assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
 
-    print_learnunit_keys(sue_understandunit)
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert len(get_delete_learnunit_list(sue_understandunit)) == 0
-    assert len(get_insert_learnunit_list(sue_understandunit)) == 5
-    assert len(get_delete_learnunit_list(sue_understandunit)) == 0
-    assert get_learnunit_total_count(sue_understandunit) == 5
+    print_learnunit_keys(sue_bookunit)
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert len(get_delete_learnunit_list(sue_bookunit)) == 0
+    assert len(get_insert_learnunit_list(sue_bookunit)) == 5
+    assert len(get_delete_learnunit_list(sue_bookunit)) == 0
+    assert get_learnunit_total_count(sue_bookunit) == 5
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -289,29 +289,29 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_upd
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
     x_keylist = [learn_update(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == run_text
-    # print(f"\n{sue_understandunit.learnunits=}")
+    # print(f"\n{sue_bookunit.learnunits=}")
     print(f"\n{rico_learnunit=}")
     assert rico_learnunit.get_value("_treasury_partylinks") == swim_text
 
     x_keylist = [learn_update(), "partylink", run_text, rico_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == run_text
     assert rico_learnunit.get_value("party_id") == rico_text
     assert rico_learnunit.get_value("creditor_weight") == after_rico_creditor_weight
     assert rico_learnunit.get_value("debtor_weight") == after_rico_debtor_weight
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert get_learnunit_total_count(sue_understandunit) == 2
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert get_learnunit_total_count(sue_bookunit) == 2
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -342,28 +342,28 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_del
     assert after_sue_agendaunit.get_groupunit(run_text) is None
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
     x_keylist = [learn_delete(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == run_text
 
     x_keylist = [learn_delete(), "partylink", fly_text, dizz_text]
-    rico_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert rico_learnunit.get_value("group_id") == fly_text
     assert rico_learnunit.get_value("party_id") == dizz_text
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    print_learnunit_keys(sue_understandunit)
-    assert len(get_delete_learnunit_list(sue_understandunit)) == 4
-    assert len(get_insert_learnunit_list(sue_understandunit)) == 0
-    assert len(get_update_learnunit_list(sue_understandunit)) == 0
-    assert get_learnunit_total_count(sue_understandunit) == 4
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    print_learnunit_keys(sue_bookunit)
+    assert len(get_delete_learnunit_list(sue_bookunit)) == 4
+    assert len(get_insert_learnunit_list(sue_bookunit)) == 0
+    assert len(get_update_learnunit_list(sue_bookunit)) == 0
+    assert get_learnunit_total_count(sue_bookunit) == 4
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -384,25 +384,25 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_delete():
     after_sue_agendaunit.del_idea_obj(ball_road)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
     x_keylist = [learn_delete(), "ideaunit", street_road]
-    street_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    street_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert street_learnunit.get_locator("road") == street_road
     assert street_learnunit.get_value("road") == street_road
 
     x_keylist = [learn_delete(), "ideaunit", ball_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_value("road") == ball_road
 
-    print(f"{get_learnunit_total_count(sue_understandunit)=}")
-    assert get_learnunit_total_count(sue_understandunit) == 2
+    print(f"{get_learnunit_total_count(sue_bookunit)=}")
+    assert get_learnunit_total_count(sue_bookunit) == 2
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -438,20 +438,20 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_insert(), "ideaunit", disc_road]
-    street_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    street_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert street_learnunit.get_locator("road") == disc_road
     assert street_learnunit.get_value("label") == disc_text
     assert street_learnunit.get_value("parent_road") == sports_road
 
     x_keylist = [learn_insert(), "ideaunit", music_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == music_road
     assert ball_learnunit.get_value("label") == music_text
     assert ball_learnunit.get_value("parent_road") == after_sue_agendaunit._world_id
@@ -461,10 +461,10 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
     assert ball_learnunit.get_value("_weight") == music_weight
     assert ball_learnunit.get_value("promise") == music_promise
 
-    assert get_learnunit_total_count(sue_understandunit) == 2
+    assert get_learnunit_total_count(sue_bookunit) == 2
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -504,14 +504,14 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_update(), "ideaunit", music_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == music_road
     assert ball_learnunit.get_value("_begin") == after_music_begin
     assert ball_learnunit.get_value("_close") == after_music_close
@@ -519,10 +519,10 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
     assert ball_learnunit.get_value("_weight") == after_music_weight
     assert ball_learnunit.get_value("promise") == after_music_promise
 
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -560,21 +560,21 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_de
     after_sue_agendaunit.edit_idea_attr(disc_road, balancelink_del=run_text)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_delete(), "idea_balancelink", disc_road, run_text]
-    run_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    run_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert run_learnunit.get_locator("road") == disc_road
     assert run_learnunit.get_locator("group_id") == run_text
 
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -619,14 +619,14 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_in
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_au, after_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_au)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_insert(), "idea_balancelink", disc_road, run_text]
-    run_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    run_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert run_learnunit.get_locator("road") == disc_road
     assert run_learnunit.get_locator("group_id") == run_text
     assert run_learnunit.get_locator("road") == disc_road
@@ -634,10 +634,10 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_in
     assert run_learnunit.get_value("creditor_weight") == after_run_creditor_weight
     assert run_learnunit.get_value("debtor_weight") == after_run_debtor_weight
 
-    assert get_learnunit_total_count(sue_understandunit) == 2
+    assert get_learnunit_total_count(sue_bookunit) == 2
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -669,22 +669,22 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_up
         ),
     )
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_update(), "idea_balancelink", ball_road, run_text]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("group_id") == run_text
     assert ball_learnunit.get_value("creditor_weight") == after_creditor_weight
     assert ball_learnunit.get_value("debtor_weight") == after_debtor_weight
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -722,23 +722,23 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_upd
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
 
     x_keylist = [learn_update(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_value("pick") == broken_road
     assert ball_learnunit.get_value("open") == after_broken_open
     assert ball_learnunit.get_value("nigh") == after_broken_nigh
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -768,22 +768,22 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_ins
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [learn_insert(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_value("pick") == broken_road
     assert ball_learnunit.get_value("open") == after_broken_open
     assert ball_learnunit.get_value("nigh") == after_broken_nigh
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -813,21 +813,21 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_del
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [learn_delete(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_value("road") == ball_road
     assert ball_learnunit.get_value("base") == knee_road
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -863,11 +863,11 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_insert(),
         "idea_reason_premiseunit",
@@ -875,17 +875,17 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_locator("need") == broken_road
     assert ball_learnunit.get_value("open") == broken_open
     assert ball_learnunit.get_value("nigh") == broken_nigh
     assert ball_learnunit.get_value("divisor") == broken_divisor
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -925,11 +925,11 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_delete(),
         "idea_reason_premiseunit",
@@ -937,14 +937,14 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_locator("need") == broken_road
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -991,11 +991,11 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_update(),
         "idea_reason_premiseunit",
@@ -1003,17 +1003,17 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premise
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == knee_road
     assert ball_learnunit.get_locator("need") == broken_road
     assert ball_learnunit.get_value("open") == after_broken_open
     assert ball_learnunit.get_value("nigh") == after_broken_nigh
     assert ball_learnunit.get_value("divisor") == after_broken_divisor
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1037,27 +1037,27 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_ins
         reason_suff_idea_active=after_medical_suff_idea_active,
     )
 
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_insert(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == medical_road
     assert (
         ball_learnunit.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_update():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1088,27 +1088,27 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_upd
     )
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_update(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == medical_road
     assert (
         ball_learnunit.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1135,24 +1135,24 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_del
     after_ball_idea.del_reasonunit_base(medical_road)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_delete(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("base") == medical_road
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_insert():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1169,24 +1169,24 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_inse
     after_ball_ideaunit._assignedunit.set_suffgroup(rico_text)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_insert(),
         "idea_suffgroup",
         ball_road,
         rico_text,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("group_id") == rico_text
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1
 
 
-def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_delete():
+def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1205,18 +1205,18 @@ def test_UnderstandUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_dele
     after_ball_ideaunit._assignedunit.del_suffgroup(rico_text)
 
     # WHEN
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_understandunit)=}")
+    print(f"{print_learnunit_keys(sue_bookunit)=}")
     x_keylist = [
         learn_delete(),
         "idea_suffgroup",
         ball_road,
         rico_text,
     ]
-    ball_learnunit = get_nested_value(sue_understandunit.learnunits, x_keylist)
+    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
     assert ball_learnunit.get_locator("road") == ball_road
     assert ball_learnunit.get_locator("group_id") == rico_text
-    assert get_learnunit_total_count(sue_understandunit) == 1
+    assert get_learnunit_total_count(sue_bookunit) == 1

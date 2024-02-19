@@ -1,5 +1,5 @@
 from src.agenda.party import partyunit_shop
-from src.agenda.understand import (
+from src.agenda.book import (
     LearnUnit,
     learnunit_shop,
     learn_insert,
@@ -59,7 +59,7 @@ def check_every_crud_dict_has_element(learn_config_dict, learn_order_text):
     return True
 
 
-def test_get_learn_config_dict_EveryCrudOperationHasUnderstandOrderGroup():
+def test_get_learn_config_dict_EveryCrudOperationHasBookOrderGroup():
     # GIVEN
     learn_order_text = "learn_order"
     description_elements_text = "description_elements"
@@ -70,7 +70,7 @@ def test_get_learn_config_dict_EveryCrudOperationHasUnderstandOrderGroup():
         get_learn_config_dict(), description_elements_text
     )
     mog = learn_order_text
-    # # Simple script for editing understand_learn_config.json
+    # # Simple script for editing book_learn_config.json
     # set_mog("partyunit", learn_insert(), mog, 0)
     # set_mog("partylink", learn_insert(), mog, 1)
     # set_mog("groupunit", learn_insert(), mog, 2)

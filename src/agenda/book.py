@@ -43,7 +43,7 @@ def learn_delete() -> str:
 
 
 def get_learn_config_file_name() -> str:
-    return "understand_learn_config.json"
+    return "book_learn_config.json"
 
 
 def get_learn_config_dict() -> dict:
@@ -480,7 +480,7 @@ class InvalidLearnUnitException(Exception):
 
 
 @dataclass
-class UnderstandUnit:
+class BookUnit:
     learnunits: dict[str : dict[str:any]] = None
 
     def get_learn_order_learnunit_dict(self) -> dict[int:LearnUnit]:
@@ -1324,5 +1324,5 @@ class UnderstandUnit:
             self.set_learnunit(x_learnunit)
 
 
-def understandunit_shop(learnunits: dict[str:str] = None):
-    return UnderstandUnit(learnunits=get_empty_dict_if_none(learnunits))
+def bookunit_shop(learnunits: dict[str:str] = None):
+    return BookUnit(learnunits=get_empty_dict_if_none(learnunits))

@@ -418,9 +418,9 @@
                     "ACME Employee Responsiblities": {
                         "_is_expanded": false,
                         "_kids": {
-                            "Employee Beliefbook.": {
+                            "Employee Intruction manuel.": {
                                 "_is_expanded": false,
-                                "_label": "Employee Beliefbook.",
+                                "_label": "Employee Intruction manuel.",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,day_minute": {
@@ -3105,9 +3105,9 @@
                             "A,Internet": {
                                 "base": "A,Internet",
                                 "premises": {
-                                    "A,Internet,Facebook": {
+                                    "A,Internet,Faceboook": {
                                         "divisor": null,
-                                        "need": "A,Internet,Facebook",
+                                        "need": "A,Internet,Faceboook",
                                         "nigh": null,
                                         "open": null
                                     }
@@ -4667,9 +4667,9 @@
                         "_weight": 1,
                         "promise": false
                     },
-                    "Facebook": {
+                    "Faceboook": {
                         "_is_expanded": true,
-                        "_label": "Facebook",
+                        "_label": "Faceboook",
                         "_meld_strategy": "default",
                         "_uid": 251,
                         "_weight": 1,

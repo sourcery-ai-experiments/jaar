@@ -537,9 +537,9 @@
                                 "_weight": 1,
                                 "promise": false
                             },
-                            "Know Employee Beliefbook.": {
+                            "Know Employee Intruction manuel.": {
                                 "_is_expanded": true,
-                                "_label": "Know Employee Beliefbook.",
+                                "_label": "Know Employee Intruction manuel.",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,time,jajatime": {
@@ -2623,9 +2623,9 @@
                             "A,Internet": {
                                 "base": "A,Internet",
                                 "premises": {
-                                    "A,Internet,Facebook": {
+                                    "A,Internet,Faceboook": {
                                         "divisor": null,
-                                        "need": "A,Internet,Facebook",
+                                        "need": "A,Internet,Faceboook",
                                         "open": null
                                     }
                                 }
@@ -3926,9 +3926,9 @@
                         "_weight": 1,
                         "promise": false
                     },
-                    "Facebook": {
+                    "Faceboook": {
                         "_is_expanded": true,
-                        "_label": "Facebook",
+                        "_label": "Faceboook",
                         "_meld_strategy": "default",
                         "_uid": 251,
                         "_weight": 1,

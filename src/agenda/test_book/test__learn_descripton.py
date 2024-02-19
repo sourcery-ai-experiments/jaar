@@ -2,7 +2,7 @@ from src._road.road import create_road
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.group import groupunit_shop
-from src.agenda.understand import (
+from src.agenda.book import (
     learn_update,
     learn_delete,
     learn_insert,
@@ -677,7 +677,7 @@ def test_LearnUnit_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     update_disc_learnunit.set_required_arg("group_id", rico_text)
 
 
-# def test_UnderstandUnit_get_sue_understandunit_example1_ContainsLearnUnits():
+# def test_BookUnit_get_sue_bookunit_example1_ContainsLearnUnits():
 #     # GIVEN
 #     sue_text = "Sue"
 

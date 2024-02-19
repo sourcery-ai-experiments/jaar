@@ -5,37 +5,37 @@ from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.understand import (
-    understandunit_shop,
+from src.agenda.book import (
+    bookunit_shop,
     learn_update,
     learn_delete,
     learn_insert,
     learnunit_shop,
 )
-from src.agenda.examples.example_understands import (
-    get_sue_understandunit_example1,
+from src.agenda.examples.example_books import (
+    get_sue_bookunit_example1,
     get_yao_example_roadunit as yao_roadunit,
 )
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_SimplestScenario():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_SimplestScenario():
     # GIVEN
-    sue_understandunit = understandunit_shop()
+    sue_bookunit = bookunit_shop()
 
     # WHEN
     sue_text = "Sue"
     sue_weight = 55
     before_sue_agendaunit = agendaunit_shop(sue_text, _weight=sue_weight)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit._weight == sue_weight
     assert after_sue_agendaunit == before_sue_agendaunit
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # GIVEN
-    sue_understandunit = understandunit_shop()
+    sue_bookunit = bookunit_shop()
     sue_text = "Sue"
 
     sue_weight = 44
@@ -58,13 +58,13 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs
     new5_value = "override"
     new5_arg = "_meld_strategy"
     x_learnunit.set_optional_arg(new5_arg, new5_value)
-    sue_understandunit.set_learnunit(x_learnunit)
+    sue_bookunit.set_learnunit(x_learnunit)
 
     # WHEN
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
-    print(f"{sue_understandunit.learnunits.keys()=}")
+    print(f"{sue_bookunit.learnunits.keys()=}")
     assert after_sue_agendaunit._max_tree_traverse == new2_value
     assert after_sue_agendaunit._party_creditor_pool == new3_value
     assert after_sue_agendaunit._party_debtor_pool == new4_value
@@ -73,9 +73,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs
     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     # GIVEN
-    sue_understandunit = understandunit_shop()
+    sue_bookunit = bookunit_shop()
     sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -88,21 +88,21 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_par
     x_learnunit = learnunit_shop(category, learn_delete())
     x_learnunit.set_locator("party_id", carm_text)
     x_learnunit.set_required_arg("party_id", carm_text)
-    sue_understandunit.set_learnunit(x_learnunit)
+    sue_bookunit.set_learnunit(x_learnunit)
 
     # WHEN
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
-    print(f"{sue_understandunit.learnunits=}")
+    print(f"{sue_bookunit.learnunits=}")
     assert after_sue_agendaunit != before_sue_agendaunit
     assert after_sue_agendaunit.get_party(rico_text) != None
     assert after_sue_agendaunit.get_party(carm_text) is None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     # GIVEN
-    sue_understandunit = understandunit_shop()
+    sue_bookunit = bookunit_shop()
     sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -121,9 +121,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_par
     x_debtor_weight = 66
     x_learnunit.set_optional_arg("creditor_weight", x_creditor_weight)
     x_learnunit.set_optional_arg("debtor_weight", x_debtor_weight)
-    sue_understandunit.set_learnunit(x_learnunit)
-    print(f"{sue_understandunit.learnunits.keys()=}")
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit.set_learnunit(x_learnunit)
+    print(f"{sue_bookunit.learnunits.keys()=}")
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     rico_partyunit = after_sue_agendaunit.get_party(rico_text)
@@ -134,9 +134,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_par
     assert carm_partyunit.debtor_weight == x_debtor_weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
     # GIVEN
-    sue_understandunit = understandunit_shop()
+    sue_bookunit = bookunit_shop()
     sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -151,16 +151,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_par
     x_learnunit.set_required_arg("party_id", rico_text)
     rico_creditor_weight = 55
     x_learnunit.set_optional_arg("creditor_weight", rico_creditor_weight)
-    sue_understandunit.set_learnunit(x_learnunit)
-    print(f"{sue_understandunit.learnunits.keys()=}")
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit.set_learnunit(x_learnunit)
+    print(f"{sue_bookunit.learnunits.keys()=}")
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     rico_party = after_sue_agendaunit.get_party(rico_text)
     assert rico_party.creditor_weight == rico_creditor_weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -197,17 +197,17 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_par
     carm_learnunit.set_required_arg("group_id", fly_text)
     carm_learnunit.set_required_arg("party_id", carm_text)
     # print(f"{carm_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(rico_learnunit)
-    sue_understandunit.set_learnunit(carm_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(rico_learnunit)
+    sue_bookunit.set_learnunit(carm_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert len(after_sue_agendaunit.get_groupunit(fly_text)._partys) == 2
     assert len(after_sue_agendaunit.get_groupunit(run_text)._partys) == 1
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -232,9 +232,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_par
     rico_run_creditor_weight = 17
     rico_learnunit.set_optional_arg("creditor_weight", rico_run_creditor_weight)
     print(f"{rico_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(rico_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(rico_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert len(after_sue_agendaunit.get_groupunit(run_text)._partys) == 2
@@ -244,7 +244,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_par
     assert after_run_rico_partylink.creditor_weight == rico_run_creditor_weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -271,9 +271,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_par
     rico_learnunit.set_optional_arg("creditor_weight", new_rico_run_creditor_weight)
     rico_learnunit.set_optional_arg("debtor_weight", new_rico_run_debtor_weight)
     print(f"{rico_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(rico_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(rico_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     after_run_groupunit = after_sue_agendaunit.get_groupunit(run_text)
@@ -282,7 +282,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_par
     assert after_run_rico_partylink.debtor_weight == new_rico_run_debtor_weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -298,16 +298,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_gro
     print(f"{x_learnunit=}")
     x_learnunit.set_locator("group_id", run_text)
     x_learnunit.set_required_arg("group_id", run_text)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(x_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(x_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.get_groupunit(run_text) is None
     assert after_sue_agendaunit.get_groupunit(fly_text) != None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -323,16 +323,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_gro
     x_learnunit.set_required_arg("group_id", fly_text)
     x_learnunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
     print(f"{x_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(x_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(x_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.get_groupunit(run_text) != None
     assert after_sue_agendaunit.get_groupunit(fly_text) != None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -346,9 +346,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_gro
     x_learnunit.set_required_arg("group_id", run_text)
     x_learnunit.set_optional_arg("_treasury_partylinks", yao_roadunit())
     print(f"{x_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(x_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(x_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert (
@@ -357,7 +357,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_gro
     )
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -373,16 +373,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_gro
     print(f"{x_learnunit=}")
     x_learnunit.set_locator("group_id", run_text)
     x_learnunit.set_required_arg("group_id", run_text)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(x_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(x_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.get_groupunit(run_text) is None
     assert after_sue_agendaunit.get_groupunit(fly_text) != None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -402,16 +402,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     delete_disc_learnunit.set_locator("road", disc_road)
     delete_disc_learnunit.set_required_arg("road", disc_road)
     print(f"{delete_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(delete_disc_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(delete_disc_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.idea_exists(ball_road)
     assert after_sue_agendaunit.idea_exists(disc_road) == False
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -448,16 +448,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     insert_disc_learnunit.set_optional_arg("promise", x_promise)
 
     print(f"{insert_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(insert_disc_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(insert_disc_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.idea_exists(ball_road)
     assert after_sue_agendaunit.idea_exists(disc_road)
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit_SimpleAttributes():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit_SimpleAttributes():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -491,9 +491,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     insert_disc_learnunit.set_optional_arg("promise", x_promise)
 
     print(f"{insert_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(insert_disc_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(insert_disc_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit.get_idea_obj(ball_road)._begin == x_begin
@@ -504,7 +504,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     assert after_sue_agendaunit.get_idea_obj(ball_road).promise
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -547,16 +547,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     delete_disc_learnunit.set_required_arg("road", disc_road)
     delete_disc_learnunit.set_required_arg("group_id", fly_text)
     print(f"{delete_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(delete_disc_learnunit)
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(delete_disc_learnunit)
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     assert len(after_sue_agendaunit.get_idea_obj(ball_road)._balancelinks) == 2
     assert len(after_sue_agendaunit.get_idea_obj(disc_road)._balancelinks) == 1
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_balancelink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -589,9 +589,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     update_disc_learnunit.set_optional_arg("creditor_weight", x_creditor_weight)
     update_disc_learnunit.set_optional_arg("debtor_weight", x_debtor_weight)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     run_balancelink = after_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
@@ -600,7 +600,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     assert run_balancelink.debtor_weight == x_debtor_weight
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_balancelink():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -631,16 +631,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     update_disc_learnunit.set_optional_arg("creditor_weight", x_creditor_weight)
     update_disc_learnunit.set_optional_arg("debtor_weight", x_debtor_weight)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
     assert after_ball_idea._balancelinks.get(run_text) != None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_beliefunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -670,9 +670,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     update_disc_learnunit.set_optional_arg("open", broken_open)
     update_disc_learnunit.set_optional_arg("nigh", broken_nigh)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -684,7 +684,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     assert after_ball_idea._beliefunits.get(knee_road).nigh == broken_nigh
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_beliefunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -713,16 +713,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     update_disc_learnunit.set_required_arg("road", ball_road)
     update_disc_learnunit.set_required_arg("base", knee_road)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
     assert after_ball_idea._beliefunits == {}
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_beliefunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -761,9 +761,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     update_disc_learnunit.set_optional_arg("open", medical_open)
     update_disc_learnunit.set_optional_arg("nigh", medical_nigh)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -774,7 +774,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     assert after_ball_idea._beliefunits.get(knee_road).nigh == medical_nigh
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reason_premiseunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -817,9 +817,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     update_disc_learnunit.set_optional_arg("nigh", broken_nigh)
     update_disc_learnunit.set_optional_arg("divisor", broken_divisor)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -832,7 +832,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     assert after_broken_premiseunit.divisor == broken_divisor
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reason_premiseunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -873,9 +873,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     update_disc_learnunit.set_optional_arg("nigh", medical_nigh)
     update_disc_learnunit.set_optional_arg("divisor", medical_divisor)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -888,7 +888,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     assert after_medical_premiseunit.divisor == medical_divisor
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reason_premiseunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -925,9 +925,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     update_disc_learnunit.set_required_arg("road", ball_road)
     update_disc_learnunit.set_required_arg("base", knee_road)
     update_disc_learnunit.set_required_arg("need", medical_road)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -936,7 +936,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     assert after_knee_reasonunit.get_premise(medical_road) is None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -963,9 +963,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     update_disc_learnunit.set_required_arg("base", knee_road)
     update_disc_learnunit.set_optional_arg("suff_idea_active", medical_suff_idea_active)
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -975,7 +975,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     assert after_knee_reasonunit.suff_idea_active == medical_suff_idea_active
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1012,9 +1012,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
         "suff_idea_active", after_medical_suff_idea_active
     )
     # print(f"{update_disc_learnunit=}")
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
@@ -1024,7 +1024,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_update_ide
     assert after_knee_reasonunit.suff_idea_active == after_medical_suff_idea_active
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1051,16 +1051,16 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     update_disc_learnunit.set_locator("base", knee_road)
     update_disc_learnunit.set_required_arg("road", ball_road)
     update_disc_learnunit.set_required_arg("base", knee_road)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
     assert after_ball_idea.get_reasonunit(knee_road) is None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suffgroup():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suffgroup():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1080,9 +1080,9 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     update_disc_learnunit.set_locator("group_id", rico_text)
     update_disc_learnunit.set_required_arg("road", ball_road)
     update_disc_learnunit.set_required_arg("group_id", rico_text)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
@@ -1090,7 +1090,7 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_insert_ide
     assert after_ball_ideaunit._assignedunit.get_suffgroup(rico_text) != None
 
 
-def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suffgroup():
+def test_BookUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suffgroup():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1112,17 +1112,17 @@ def test_UnderstandUnit_get_after_agenda_ReturnsCorrectObj_AgendaUnit_delete_ide
     update_disc_learnunit.set_locator("group_id", rico_text)
     update_disc_learnunit.set_required_arg("road", ball_road)
     update_disc_learnunit.set_required_arg("group_id", rico_text)
-    sue_understandunit = understandunit_shop()
-    sue_understandunit.set_learnunit(update_disc_learnunit)
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.set_learnunit(update_disc_learnunit)
     print(f"{before_sue_au.get_idea_obj(ball_road)._assignedunit=}")
-    after_sue_au = sue_understandunit.get_after_agenda(before_sue_au)
+    after_sue_au = sue_bookunit.get_after_agenda(before_sue_au)
 
     # THEN
     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
     assert after_ball_ideaunit._assignedunit._suffgroups == {}
 
 
-def test_UnderstandUnit_get_sue_understandunit_example1_ContainsLearnUnits():
+def test_BookUnit_get_sue_bookunit_example1_ContainsLearnUnits():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1153,8 +1153,8 @@ def test_UnderstandUnit_get_sue_understandunit_example1_ContainsLearnUnits():
     assert before_sue_agendaunit.get_groupunit(fly_text) != None
 
     # WHEN
-    sue_understandunit = get_sue_understandunit_example1()
-    after_sue_agendaunit = sue_understandunit.get_after_agenda(before_sue_agendaunit)
+    sue_bookunit = get_sue_bookunit_example1()
+    after_sue_agendaunit = sue_bookunit.get_after_agenda(before_sue_agendaunit)
 
     # THEN
     assert after_sue_agendaunit._weight == 55
