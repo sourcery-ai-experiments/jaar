@@ -4,11 +4,11 @@ from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.book import (
+from src.agenda.atom import (
     BookUnit,
-    learn_insert,
-    learn_update,
-    learn_delete,
+    atom_insert,
+    atom_update,
+    atom_delete,
     bookunit_shop,
 )
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
@@ -16,56 +16,56 @@ from src.instrument.python import get_nested_value, get_empty_list_if_None
 from copy import deepcopy as copy_deepcopy
 
 
-def print_learnunit_keys(x_bookunit: BookUnit):
-    for x_learnunit in get_delete_learnunit_list(x_bookunit):
-        print(f"DELETE {x_learnunit.category} {list(x_learnunit.locator.values())}")
-    for x_learnunit in get_update_learnunit_list(x_bookunit):
-        print(f"UPDATE {x_learnunit.category} {list(x_learnunit.locator.values())}")
-    for x_learnunit in get_insert_learnunit_list(x_bookunit):
-        print(f"INSERT {x_learnunit.category} {list(x_learnunit.locator.values())}")
+def print_agendaatom_keys(x_bookunit: BookUnit):
+    for x_agendaatom in get_delete_agendaatom_list(x_bookunit):
+        print(f"DELETE {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
+    for x_agendaatom in get_update_agendaatom_list(x_bookunit):
+        print(f"UPDATE {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
+    for x_agendaatom in get_insert_agendaatom_list(x_bookunit):
+        print(f"INSERT {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
 
 
-def get_delete_learnunit_list(x_bookunit: BookUnit) -> list:
+def get_delete_agendaatom_list(x_bookunit: BookUnit) -> list:
     return get_empty_list_if_None(
-        x_bookunit.get_learn_order_learnunit_dict().get(learn_delete())
+        x_bookunit.get_atom_order_agendaatom_dict().get(atom_delete())
     )
 
 
-def get_insert_learnunit_list(x_bookunit: BookUnit):
+def get_insert_agendaatom_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_bookunit.get_learn_order_learnunit_dict().get(learn_insert())
+        x_bookunit.get_atom_order_agendaatom_dict().get(atom_insert())
     )
 
 
-def get_update_learnunit_list(x_bookunit: BookUnit):
+def get_update_agendaatom_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_bookunit.get_learn_order_learnunit_dict().get(learn_update())
+        x_bookunit.get_atom_order_agendaatom_dict().get(atom_update())
     )
 
 
-def get_learnunit_total_count(x_bookunit: BookUnit) -> int:
+def get_agendaatom_total_count(x_bookunit: BookUnit) -> int:
     return (
-        len(get_delete_learnunit_list(x_bookunit))
-        + len(get_insert_learnunit_list(x_bookunit))
-        + len(get_update_learnunit_list(x_bookunit))
+        len(get_delete_agendaatom_list(x_bookunit))
+        + len(get_insert_agendaatom_list(x_bookunit))
+        + len(get_update_agendaatom_list(x_bookunit))
     )
 
 
-def test_BookUnit_create_learnunits_CorrectHandlesEmptyAgendas():
+def test_BookUnit_create_agendaatoms_CorrectHandlesEmptyAgendas():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_bookunit = bookunit_shop()
-    assert sue_bookunit.learnunits == {}
+    assert sue_bookunit.agendaatoms == {}
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(sue_agenda, sue_agenda)
+    sue_bookunit.add_all_agendaatoms(sue_agenda, sue_agenda)
 
     # THEN
-    assert sue_bookunit.learnunits == {}
+    assert sue_bookunit.agendaatoms == {}
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -83,23 +83,23 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    assert len(sue_bookunit.learnunits.get(learn_insert()).get("partyunit")) == 1
-    sue_insert_dict = sue_bookunit.learnunits.get(learn_insert())
+    assert len(sue_bookunit.agendaatoms.get(atom_insert()).get("partyunit")) == 1
+    sue_insert_dict = sue_bookunit.agendaatoms.get(atom_insert())
     sue_partyunit_dict = sue_insert_dict.get("partyunit")
-    rico_learnunit = sue_partyunit_dict.get(rico_text)
-    assert rico_learnunit.get_value("party_id") == rico_text
-    assert rico_learnunit.get_value("creditor_weight") == rico_creditor_weight
-    assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
-    assert rico_learnunit.get_value("depotlink_type") == rico_depotlink_type
+    rico_agendaatom = sue_partyunit_dict.get(rico_text)
+    assert rico_agendaatom.get_value("party_id") == rico_text
+    assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
+    assert rico_agendaatom.get_value("debtor_weight") == rico_debtor_weight
+    assert rico_agendaatom.get_value("depotlink_type") == rico_depotlink_type
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -113,20 +113,20 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    rico_learnunit = get_nested_value(
-        sue_bookunit.learnunits, [learn_delete(), "partyunit", rico_text]
+    rico_agendaatom = get_nested_value(
+        sue_bookunit.agendaatoms, [atom_delete(), "partyunit", rico_text]
     )
-    assert rico_learnunit.get_value("party_id") == rico_text
+    assert rico_agendaatom.get_value("party_id") == rico_text
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    print_learnunit_keys(sue_bookunit)
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    print_agendaatom_keys(sue_bookunit)
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -145,21 +145,21 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_partyunit_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    x_keylist = [learn_update(), "partyunit", rico_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("party_id") == rico_text
-    assert rico_learnunit.get_value("creditor_weight") == rico_creditor_weight
-    assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
-    assert rico_learnunit.get_value("depotlink_type") == rico_depotlink_type
+    x_keylist = [atom_update(), "partyunit", rico_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("party_id") == rico_text
+    assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
+    assert rico_agendaatom.get_value("debtor_weight") == rico_debtor_weight
+    assert rico_agendaatom.get_value("depotlink_type") == rico_depotlink_type
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_AgendaUnit_weight_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -179,39 +179,39 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_AgendaUnit_weight_update(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    sue_learnunits = sue_bookunit.learnunits
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_learnunits, x_keylist)
-    assert rico_learnunit.get_value("_weight") == x_agendaUnit_weight
+    sue_agendaatoms = sue_bookunit.agendaatoms
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_weight") == x_agendaUnit_weight
 
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("_max_tree_traverse") == x_max_tree_traverse
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_max_tree_traverse") == x_max_tree_traverse
 
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("_party_creditor_pool") == x_party_creditor_pool
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_party_creditor_pool") == x_party_creditor_pool
 
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("_party_debtor_pool") == x_party_debtor_pool
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_party_debtor_pool") == x_party_debtor_pool
 
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("_auto_output_to_forum") == x_auto_output_to_forum
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_auto_output_to_forum") == x_auto_output_to_forum
 
-    x_keylist = [learn_update(), "agendaunit"]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("_meld_strategy") == x_meld_strategy
+    x_keylist = [atom_update(), "agendaunit"]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("_meld_strategy") == x_meld_strategy
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -233,32 +233,32 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [learn_insert(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == run_text
-    # print(f"\n{sue_bookunit.learnunits=}")
-    print(f"\n{rico_learnunit=}")
-    assert rico_learnunit.get_value("_treasury_partylinks") == x_treasury_partylinks
+    x_keylist = [atom_insert(), "groupunit", run_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == run_text
+    # print(f"\n{sue_bookunit.agendaatoms=}")
+    print(f"\n{rico_agendaatom=}")
+    assert rico_agendaatom.get_value("_treasury_partylinks") == x_treasury_partylinks
 
-    x_keylist = [learn_insert(), "partylink", run_text, rico_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == run_text
-    assert rico_learnunit.get_value("party_id") == rico_text
-    assert rico_learnunit.get_value("creditor_weight") == rico_creditor_weight
-    assert rico_learnunit.get_value("debtor_weight") == rico_debtor_weight
+    x_keylist = [atom_insert(), "partylink", run_text, rico_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == run_text
+    assert rico_agendaatom.get_value("party_id") == rico_text
+    assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
+    assert rico_agendaatom.get_value("debtor_weight") == rico_debtor_weight
 
-    print_learnunit_keys(sue_bookunit)
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert len(get_delete_learnunit_list(sue_bookunit)) == 0
-    assert len(get_insert_learnunit_list(sue_bookunit)) == 5
-    assert len(get_delete_learnunit_list(sue_bookunit)) == 0
-    assert get_learnunit_total_count(sue_bookunit) == 5
+    print_agendaatom_keys(sue_bookunit)
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert len(get_delete_agendaatom_list(sue_bookunit)) == 0
+    assert len(get_insert_agendaatom_list(sue_bookunit)) == 5
+    assert len(get_delete_agendaatom_list(sue_bookunit)) == 0
+    assert get_agendaatom_total_count(sue_bookunit) == 5
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -290,28 +290,28 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [learn_update(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == run_text
-    # print(f"\n{sue_bookunit.learnunits=}")
-    print(f"\n{rico_learnunit=}")
-    assert rico_learnunit.get_value("_treasury_partylinks") == swim_text
+    x_keylist = [atom_update(), "groupunit", run_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == run_text
+    # print(f"\n{sue_bookunit.agendaatoms=}")
+    print(f"\n{rico_agendaatom=}")
+    assert rico_agendaatom.get_value("_treasury_partylinks") == swim_text
 
-    x_keylist = [learn_update(), "partylink", run_text, rico_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == run_text
-    assert rico_learnunit.get_value("party_id") == rico_text
-    assert rico_learnunit.get_value("creditor_weight") == after_rico_creditor_weight
-    assert rico_learnunit.get_value("debtor_weight") == after_rico_debtor_weight
+    x_keylist = [atom_update(), "partylink", run_text, rico_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == run_text
+    assert rico_agendaatom.get_value("party_id") == rico_text
+    assert rico_agendaatom.get_value("creditor_weight") == after_rico_creditor_weight
+    assert rico_agendaatom.get_value("debtor_weight") == after_rico_debtor_weight
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert get_learnunit_total_count(sue_bookunit) == 2
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -343,27 +343,27 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_group_partylink_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [learn_delete(), "groupunit", run_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == run_text
+    x_keylist = [atom_delete(), "groupunit", run_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == run_text
 
-    x_keylist = [learn_delete(), "partylink", fly_text, dizz_text]
-    rico_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert rico_learnunit.get_value("group_id") == fly_text
-    assert rico_learnunit.get_value("party_id") == dizz_text
+    x_keylist = [atom_delete(), "partylink", fly_text, dizz_text]
+    rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert rico_agendaatom.get_value("group_id") == fly_text
+    assert rico_agendaatom.get_value("party_id") == dizz_text
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    print_learnunit_keys(sue_bookunit)
-    assert len(get_delete_learnunit_list(sue_bookunit)) == 4
-    assert len(get_insert_learnunit_list(sue_bookunit)) == 0
-    assert len(get_update_learnunit_list(sue_bookunit)) == 0
-    assert get_learnunit_total_count(sue_bookunit) == 4
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    print_agendaatom_keys(sue_bookunit)
+    assert len(get_delete_agendaatom_list(sue_bookunit)) == 4
+    assert len(get_insert_agendaatom_list(sue_bookunit)) == 0
+    assert len(get_update_agendaatom_list(sue_bookunit)) == 0
+    assert get_agendaatom_total_count(sue_bookunit) == 4
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -385,24 +385,24 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [learn_delete(), "ideaunit", street_road]
-    street_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert street_learnunit.get_locator("road") == street_road
-    assert street_learnunit.get_value("road") == street_road
+    x_keylist = [atom_delete(), "ideaunit", street_road]
+    street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert street_agendaatom.get_locator("road") == street_road
+    assert street_agendaatom.get_value("road") == street_road
 
-    x_keylist = [learn_delete(), "ideaunit", ball_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_value("road") == ball_road
+    x_keylist = [atom_delete(), "ideaunit", ball_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_value("road") == ball_road
 
-    print(f"{get_learnunit_total_count(sue_bookunit)=}")
-    assert get_learnunit_total_count(sue_bookunit) == 2
+    print(f"{get_agendaatom_total_count(sue_bookunit)=}")
+    assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -439,32 +439,32 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_insert(), "ideaunit", disc_road]
-    street_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert street_learnunit.get_locator("road") == disc_road
-    assert street_learnunit.get_value("label") == disc_text
-    assert street_learnunit.get_value("parent_road") == sports_road
+    x_keylist = [atom_insert(), "ideaunit", disc_road]
+    street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert street_agendaatom.get_locator("road") == disc_road
+    assert street_agendaatom.get_value("label") == disc_text
+    assert street_agendaatom.get_value("parent_road") == sports_road
 
-    x_keylist = [learn_insert(), "ideaunit", music_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == music_road
-    assert ball_learnunit.get_value("label") == music_text
-    assert ball_learnunit.get_value("parent_road") == after_sue_agendaunit._world_id
-    assert ball_learnunit.get_value("_begin") == music_begin
-    assert ball_learnunit.get_value("_close") == music_close
-    assert ball_learnunit.get_value("_meld_strategy") == music_meld_strategy
-    assert ball_learnunit.get_value("_weight") == music_weight
-    assert ball_learnunit.get_value("promise") == music_promise
+    x_keylist = [atom_insert(), "ideaunit", music_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == music_road
+    assert ball_agendaatom.get_value("label") == music_text
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("_begin") == music_begin
+    assert ball_agendaatom.get_value("_close") == music_close
+    assert ball_agendaatom.get_value("_meld_strategy") == music_meld_strategy
+    assert ball_agendaatom.get_value("_weight") == music_weight
+    assert ball_agendaatom.get_value("promise") == music_promise
 
-    assert get_learnunit_total_count(sue_bookunit) == 2
+    assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -505,24 +505,24 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_update(), "ideaunit", music_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == music_road
-    assert ball_learnunit.get_value("_begin") == after_music_begin
-    assert ball_learnunit.get_value("_close") == after_music_close
-    assert ball_learnunit.get_value("_meld_strategy") == after_music_meld_strategy
-    assert ball_learnunit.get_value("_weight") == after_music_weight
-    assert ball_learnunit.get_value("promise") == after_music_promise
+    x_keylist = [atom_update(), "ideaunit", music_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == music_road
+    assert ball_agendaatom.get_value("_begin") == after_music_begin
+    assert ball_agendaatom.get_value("_close") == after_music_close
+    assert ball_agendaatom.get_value("_meld_strategy") == after_music_meld_strategy
+    assert ball_agendaatom.get_value("_weight") == after_music_weight
+    assert ball_agendaatom.get_value("promise") == after_music_promise
 
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -561,20 +561,20 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_delete()
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_delete(), "idea_balancelink", disc_road, run_text]
-    run_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert run_learnunit.get_locator("road") == disc_road
-    assert run_learnunit.get_locator("group_id") == run_text
+    x_keylist = [atom_delete(), "idea_balancelink", disc_road, run_text]
+    run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert run_agendaatom.get_locator("road") == disc_road
+    assert run_agendaatom.get_locator("group_id") == run_text
 
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -620,24 +620,24 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_insert()
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_au)
+    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_au)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_insert(), "idea_balancelink", disc_road, run_text]
-    run_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert run_learnunit.get_locator("road") == disc_road
-    assert run_learnunit.get_locator("group_id") == run_text
-    assert run_learnunit.get_locator("road") == disc_road
-    assert run_learnunit.get_locator("group_id") == run_text
-    assert run_learnunit.get_value("creditor_weight") == after_run_creditor_weight
-    assert run_learnunit.get_value("debtor_weight") == after_run_debtor_weight
+    x_keylist = [atom_insert(), "idea_balancelink", disc_road, run_text]
+    run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert run_agendaatom.get_locator("road") == disc_road
+    assert run_agendaatom.get_locator("group_id") == run_text
+    assert run_agendaatom.get_locator("road") == disc_road
+    assert run_agendaatom.get_locator("group_id") == run_text
+    assert run_agendaatom.get_value("creditor_weight") == after_run_creditor_weight
+    assert run_agendaatom.get_value("debtor_weight") == after_run_debtor_weight
 
-    assert get_learnunit_total_count(sue_bookunit) == 2
+    assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -670,21 +670,21 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_balancelink_update()
     )
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_au, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_update(), "idea_balancelink", ball_road, run_text]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("group_id") == run_text
-    assert ball_learnunit.get_value("creditor_weight") == after_creditor_weight
-    assert ball_learnunit.get_value("debtor_weight") == after_debtor_weight
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    x_keylist = [atom_update(), "idea_balancelink", ball_road, run_text]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("group_id") == run_text
+    assert ball_agendaatom.get_value("creditor_weight") == after_creditor_weight
+    assert ball_agendaatom.get_value("debtor_weight") == after_debtor_weight
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -723,22 +723,22 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [learn_update(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_value("pick") == broken_road
-    assert ball_learnunit.get_value("open") == after_broken_open
-    assert ball_learnunit.get_value("nigh") == after_broken_nigh
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    x_keylist = [atom_update(), "idea_beliefunit", ball_road, knee_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("pick") == broken_road
+    assert ball_agendaatom.get_value("open") == after_broken_open
+    assert ball_agendaatom.get_value("nigh") == after_broken_nigh
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -769,21 +769,21 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
-    x_keylist = [learn_insert(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_value("pick") == broken_road
-    assert ball_learnunit.get_value("open") == after_broken_open
-    assert ball_learnunit.get_value("nigh") == after_broken_nigh
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    x_keylist = [atom_insert(), "idea_beliefunit", ball_road, knee_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("pick") == broken_road
+    assert ball_agendaatom.get_value("open") == after_broken_open
+    assert ball_agendaatom.get_value("nigh") == after_broken_nigh
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -814,20 +814,20 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_beliefunit_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
-    x_keylist = [learn_delete(), "idea_beliefunit", ball_road, knee_road]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_value("road") == ball_road
-    assert ball_learnunit.get_value("base") == knee_road
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    x_keylist = [atom_delete(), "idea_beliefunit", ball_road, knee_road]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -864,28 +864,28 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_i
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_insert(),
+        atom_insert(),
         "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_locator("need") == broken_road
-    assert ball_learnunit.get_value("open") == broken_open
-    assert ball_learnunit.get_value("nigh") == broken_nigh
-    assert ball_learnunit.get_value("divisor") == broken_divisor
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_locator("need") == broken_road
+    assert ball_agendaatom.get_value("open") == broken_open
+    assert ball_agendaatom.get_value("nigh") == broken_nigh
+    assert ball_agendaatom.get_value("divisor") == broken_divisor
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -926,25 +926,25 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_d
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_delete(),
+        atom_delete(),
         "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_locator("need") == broken_road
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_locator("need") == broken_road
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -992,28 +992,28 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reason_premiseunit_u
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_update(),
+        atom_update(),
         "idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == knee_road
-    assert ball_learnunit.get_locator("need") == broken_road
-    assert ball_learnunit.get_value("open") == after_broken_open
-    assert ball_learnunit.get_value("nigh") == after_broken_nigh
-    assert ball_learnunit.get_value("divisor") == after_broken_divisor
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_locator("need") == broken_road
+    assert ball_agendaatom.get_value("open") == after_broken_open
+    assert ball_agendaatom.get_value("nigh") == after_broken_nigh
+    assert ball_agendaatom.get_value("divisor") == after_broken_divisor
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1038,26 +1038,26 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_insert():
     )
 
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_insert(),
+        atom_insert(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == medical_road
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == medical_road
     assert (
-        ball_learnunit.get_value("suff_idea_active") == after_medical_suff_idea_active
+        ball_agendaatom.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_update():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1089,26 +1089,26 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_update(),
+        atom_update(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == medical_road
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == medical_road
     assert (
-        ball_learnunit.get_value("suff_idea_active") == after_medical_suff_idea_active
+        ball_agendaatom.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1136,23 +1136,23 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_reasonunit_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_delete(),
+        atom_delete(),
         "idea_reasonunit",
         ball_road,
         medical_road,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("base") == medical_road
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("base") == medical_road
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_insert():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1170,23 +1170,23 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_insert(),
+        atom_insert(),
         "idea_suffgroup",
         ball_road,
         rico_text,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("group_id") == rico_text
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("group_id") == rico_text
+    assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_delete():
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1206,17 +1206,17 @@ def test_BookUnit_add_all_learnunits_Creates_LearnUnit_idea_suffgroup_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_learnunits(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_learnunit_keys(sue_bookunit)=}")
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
-        learn_delete(),
+        atom_delete(),
         "idea_suffgroup",
         ball_road,
         rico_text,
     ]
-    ball_learnunit = get_nested_value(sue_bookunit.learnunits, x_keylist)
-    assert ball_learnunit.get_locator("road") == ball_road
-    assert ball_learnunit.get_locator("group_id") == rico_text
-    assert get_learnunit_total_count(sue_bookunit) == 1
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_locator("road") == ball_road
+    assert ball_agendaatom.get_locator("group_id") == rico_text
+    assert get_agendaatom_total_count(sue_bookunit) == 1

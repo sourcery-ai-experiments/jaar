@@ -28,7 +28,7 @@
                     "proceding text": "."
                 }
             ],
-            "learn_order": 28,
+            "atom_order": 28,
             "optional_args": {
                 "_auto_output_to_forum": "bool",
                 "_max_tree_traverse": "int",
@@ -43,14 +43,14 @@
     "groupunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 27,
+            "atom_order": 27,
             "required_args": {
                 "group_id": "GroupID"
             }
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 2,
+            "atom_order": 2,
             "optional_args": {
                 "_treasury_partylinks": "RoadUnit"
             },
@@ -63,7 +63,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 11,
+            "atom_order": 11,
             "optional_args": {
                 "_treasury_partylinks": "RoadUnit"
             },
@@ -75,7 +75,7 @@
     "idea_balancelink": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 23,
+            "atom_order": 23,
             "optional_args": {
                 "group_id": "creditor_weight",
                 "road": "debtor_weight"
@@ -87,7 +87,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 4,
+            "atom_order": 4,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
                 "debtor_weight": "debtor_weight"
@@ -103,7 +103,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 14,
+            "atom_order": 14,
             "optional_args": {
                 "creditor_weight": "creditor_weight",
                 "debtor_weight": "debtor_weight"
@@ -117,7 +117,7 @@
     "idea_beliefunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 20,
+            "atom_order": 20,
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
@@ -125,7 +125,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 7,
+            "atom_order": 7,
             "optional_args": {
                 "nigh": "float",
                 "open": "float",
@@ -142,7 +142,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 15,
+            "atom_order": 15,
             "optional_args": {
                 "nigh": "float",
                 "open": "float",
@@ -157,7 +157,7 @@
     "idea_healerhold": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 22,
+            "atom_order": 22,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
@@ -165,7 +165,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 6,
+            "atom_order": 6,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
@@ -179,7 +179,7 @@
     "idea_reason_premiseunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 18,
+            "atom_order": 18,
             "required_args": {
                 "base": "RoadUnit",
                 "need": "RoadUnit",
@@ -188,7 +188,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 9,
+            "atom_order": 9,
             "optional_args": {
                 "divisor": "int",
                 "nigh": "float",
@@ -207,7 +207,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 16,
+            "atom_order": 16,
             "optional_args": {
                 "divisor": "int",
                 "nigh": "float",
@@ -223,7 +223,7 @@
     "idea_reasonunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 19,
+            "atom_order": 19,
             "required_args": {
                 "base": "RoadUnit",
                 "road": "RoadUnit"
@@ -231,7 +231,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 8,
+            "atom_order": 8,
             "optional_args": {
                 "suff_idea_active": "bool"
             },
@@ -246,7 +246,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 17,
+            "atom_order": 17,
             "optional_args": {
                 "suff_idea_active": "bool"
             },
@@ -259,7 +259,7 @@
     "idea_suffgroup": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 21,
+            "atom_order": 21,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
@@ -267,7 +267,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 5,
+            "atom_order": 5,
             "required_args": {
                 "group_id": "GroupID",
                 "road": "RoadUnit"
@@ -281,7 +281,7 @@
     "ideaunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 24,
+            "atom_order": 24,
             "optional_args": {
                 "del_children": "bool"
             },
@@ -291,7 +291,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 3,
+            "atom_order": 3,
             "optional_args": {
                 "_addin": "float",
                 "_begin": "float",
@@ -316,7 +316,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 13,
+            "atom_order": 13,
             "optional_args": {
                 "_addin": "float",
                 "_begin": "float",
@@ -339,7 +339,7 @@
     "partylink": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 25,
+            "atom_order": 25,
             "required_args": {
                 "group_id": "GroupID",
                 "party_id": "PartyID"
@@ -347,7 +347,7 @@
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 1,
+            "atom_order": 1,
             "optional_args": {
                 "creditor_weight": "int",
                 "debtor_weight": "int"
@@ -363,7 +363,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 12,
+            "atom_order": 12,
             "optional_args": {
                 "creditor_weight": "int",
                 "debtor_weight": "int"
@@ -377,14 +377,14 @@
     "partyunit": {
         "DELETE": {
             "description_elements": [],
-            "learn_order": 26,
+            "atom_order": 26,
             "required_args": {
                 "party_id": "PartyID"
             }
         },
         "INSERT": {
             "description_elements": [],
-            "learn_order": 0,
+            "atom_order": 0,
             "optional_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float",
@@ -399,7 +399,7 @@
         },
         "UPDATE": {
             "description_elements": [],
-            "learn_order": 10,
+            "atom_order": 10,
             "optional_args": {
                 "creditor_weight": "float",
                 "debtor_weight": "float",
