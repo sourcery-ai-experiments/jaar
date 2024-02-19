@@ -273,7 +273,7 @@
             },
             "group_id": ",hurt by us dollar"
         },
-        ",likes US DOLLAR": {
+        ",appreciates US DOLLAR": {
             "_party_mirror": false,
             "_partys": {
                 "Bob302": {
@@ -297,7 +297,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "group_id": ",likes US DOLLAR"
+            "group_id": ",appreciates US DOLLAR"
         },
         ",OceanVista Apt": {
             "_party_mirror": false,
@@ -3444,7 +3444,7 @@
                 },
                 "_is_expanded": false,
                 "_kids": {
-                    "bens friends would like housing support": {
+                    "bens friends be desperate for of housing support": {
                         "_balancelinks": {
                             "Renee Elise Goldsberry": {
                                 "creditor_weight": 1.0,
@@ -3482,7 +3482,7 @@
                                 "promise": false
                             }
                         },
-                        "_label": "bens friends would like housing support",
+                        "_label": "bens friends be desperate for of housing support",
                         "_meld_strategy": "default",
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {

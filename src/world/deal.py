@@ -1,10 +1,5 @@
-from src._road.road import (
-    RoadUnit,
-    PersonRoad,
-    PersonID,
-    EconRoad,
-    PartyID,
-)
+from src._road.road import RoadUnit, PersonRoad, PersonID
+from src.agenda.atom import BookUnit, bookunit_shop
 from src.world.vow import VowID, VowUnit, vowunit_shop
 from src.world.topic import TopicUnit
 from src.instrument.python import get_empty_dict_if_none
@@ -26,7 +21,8 @@ class get_member_attr_Exception(Exception):
 @dataclass
 class DealUnit:
     _author: PersonID = None
-    _reader: PersonID = None
+    _signers: set[PersonID] = None
+    _like: BookUnit = None
     _topicunits: dict[RoadUnit:TopicUnit] = None
     _vowunits: dict[VowID:VowUnit] = None
 
@@ -134,26 +130,23 @@ class DealUnit:
     def actor_has_vowunit(self, actor: PersonID, action_filter: bool = None) -> bool:
         return self.get_actor_vowunits(actor, action_filter=action_filter) != {}
 
-    def get_member_attr(self, member: str):
-        if member not in ("reader", "author"):
-            raise get_member_attr_Exception(
-                f"get_member_attr cannot receive '{member}' as member parameter."
-            )
-        if member == "reader":
-            return self._reader
-        elif member == "author":
-            return self._author
-
 
 def dealunit_shop(
     _author: PersonID,
-    _reader: PersonID,
+    _signers: set[PersonID] = None,
+    _like: BookUnit = None,
     _topicunits: dict[RoadUnit:TopicUnit] = None,
     _vowunits: dict[VowID:VowUnit] = None,
 ):
+    if _signers is None:
+        _signers = set()
+    if _like is None:
+        _like = bookunit_shop()
+
     return DealUnit(
         _author=_author,
-        _reader=_reader,
+        _signers=_signers,
+        _like=_like,
         _topicunits=get_empty_dict_if_none(_topicunits),
         _vowunits=get_empty_dict_if_none(_vowunits),
     )

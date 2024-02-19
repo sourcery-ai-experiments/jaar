@@ -235,7 +235,7 @@ def test_BeliefCore_get_obj_key_SetsAttrCorrectly():
     assert x_beliefcore.get_obj_key() == min_road
 
 
-def test_beliefcores_meld_CorrectlyMeldLikeObjs_v1():
+def test_beliefcores_meld_CorrectlyMeldSimilarObjs_v1():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -248,7 +248,7 @@ def test_beliefcores_meld_CorrectlyMeldLikeObjs_v1():
     assert hc_x1 == hc_x1.meld(hc_y1)  # meld is a BeliefCore method
 
 
-def test_beliefcores_meld_CorrectlyMeldLikeObjs_v2():
+def test_beliefcores_meld_CorrectlyMeldSimilarObjs_v2():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
