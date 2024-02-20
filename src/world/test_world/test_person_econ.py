@@ -106,7 +106,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     sue_gut_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
     sue_gut_agenda.set_agenda_metrics()
     assert sue_gut_agenda._econs_justified == False
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -133,7 +133,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     sue_gut_agenda.set_agenda_metrics()
     assert sue_gut_agenda._econs_justified
     assert sue_gut_agenda._econs_buildable == False
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -164,7 +164,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cl
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
 
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
@@ -209,7 +209,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
@@ -228,7 +228,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
 
     # THEN
@@ -254,7 +254,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     print(f"{dallas_dir=}")
     assert sue_person._econ_objs == {}
@@ -289,7 +289,7 @@ def test_PersonUnit_set_econunit_plan_CorrectlySetsplan(
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
@@ -327,7 +327,7 @@ def test_PersonUnit_set_econunits_plan_CorrectlySetsplans(
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
@@ -370,7 +370,7 @@ def test_PersonUnit_set_person_econunits_plan_CorrectlySetsplans(
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
     # display_agenda(sue_gut_agenda, mode="Econ").show()
-    sue_person._save_agenda_to_gut_path(sue_gut_agenda)
+    sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)

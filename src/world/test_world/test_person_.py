@@ -25,6 +25,9 @@ def test_PersonUnit_exists():
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
+    assert x_person._work_obj is None
+    assert x_person._work_file_name is None
+    assert x_person._work_path is None
     assert x_person._econ_objs is None
     assert x_person._road_delimiter is None
 
@@ -39,6 +42,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
+    assert x_person._work_file_name is None
+    assert x_person._work_path is None
     assert x_person._econs_dir is None
 
     # GIVEN
@@ -53,6 +58,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
     assert x_person._gut_file_name == "gut.json"
     assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
+    assert x_person._work_file_name == "work.json"
+    assert x_person._work_path == f"{x_person.person_dir}/{x_person._work_file_name}"
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
 
 
@@ -92,6 +99,9 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person._gut_file_name == "gut.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
+    assert sue_person._work_file_name == "work.json"
+    sue_work_file_path = f"{sue_person.person_dir}/{sue_person._work_file_name}"
+    assert sue_person._work_path == sue_work_file_path
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
 
@@ -114,6 +124,9 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters()
     assert sue_person._gut_file_name == "gut.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
+    assert sue_person._work_file_name == "work.json"
+    sue_work_file_path = f"{sue_person.person_dir}/{sue_person._work_file_name}"
+    assert sue_person._work_path == sue_work_file_path
     assert sue_person._road_delimiter == slash_text
 
 
@@ -143,7 +156,7 @@ def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup)
     assert sue_person.gut_file_exists()
 
 
-def test_PersonUnit_save_agenda_to_gut_path_CorrectlySavesFile(
+def test_PersonUnit_save_gut_file_CorrectlySavesFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -155,7 +168,7 @@ def test_PersonUnit_save_agenda_to_gut_path_CorrectlySavesFile(
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_agenda_to_gut_path(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
 
     # THEN
     assert sue_person.gut_file_exists()
@@ -173,7 +186,7 @@ def test_PersonUnit_save_agenda_to_gut_path_CorrectlySavesFile(
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    sue_person._save_agenda_to_gut_path(sue2_agenda)
+    sue_person._save_gut_file(sue2_agenda)
 
     # THEN
     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
@@ -182,7 +195,7 @@ def test_PersonUnit_save_agenda_to_gut_path_CorrectlySavesFile(
     assert gut_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnit_save_agenda_to_gut_path_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_PersonUnit_save_gut_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -193,7 +206,7 @@ def test_PersonUnit_save_agenda_to_gut_path_RaisesErrorWhenAgenda_work_id_IsWron
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_person._save_agenda_to_gut_path(agendaunit_shop(yao_text))
+        sue_person._save_gut_file(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with worker_id '{yao_text}' cannot be saved as person_id '{sue_text}''s gut agenda."
@@ -207,7 +220,7 @@ def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanu
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_agenda_to_gut_path(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
     assert sue_person._gut_obj is None
 
     # WHEN
@@ -240,7 +253,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlySavesFile(
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_agenda_to_gut_path(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
     gut_agenda = sue_person.get_gut_file_agenda()
     assert gut_agenda.get_party(bob_text)
 
@@ -281,6 +294,170 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
     assert gut_agenda._worker_id == sue_text
 
 
+def test_PersonUnit_work_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_person_dir = f"{sue_persons_dir}/{sue_text}"
+    sue_work_file_name = "work.json"
+    sue_work_path = f"{sue_person_dir}/{sue_work_file_name}"
+    print(f"{sue_work_path=}")
+    assert os_path_exists(sue_work_path) == False
+    sue_person = personunit_shop(person_id=sue_text)
+    assert os_path_exists(sue_work_path) == False
+    assert sue_person.work_file_exists() == False
+
+    # WHEN
+    save_file(
+        dest_dir=sue_person.person_dir,
+        file_name=sue_person._work_file_name,
+        file_text=agendaunit_shop(sue_text).get_json(),
+    )
+
+    # THEN
+    assert os_path_exists(sue_work_path)
+    assert sue_person.work_file_exists()
+
+
+def test_PersonUnit_save_work_file_CorrectlySavesFile(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.work_file_exists() == False
+
+    # WHEN
+    sue_agenda = agendaunit_shop(sue_text)
+    bob_text = "Bob"
+    sue_agenda.add_partyunit(bob_text)
+    sue_person._save_work_file(sue_agenda)
+
+    # THEN
+    assert sue_person.work_file_exists()
+
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_person_dir = f"{sue_persons_dir}/{sue_text}"
+    sue_work_file_name = "work.json"
+    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    print(f"{work_file_text=}")
+    work_agenda = agenda_get_from_json(work_file_text)
+    assert work_agenda.get_party(bob_text) != None
+
+    # # WHEN
+    sue2_agenda = agendaunit_shop(sue_text)
+    zia_text = "Zia"
+    sue2_agenda.add_partyunit(zia_text)
+    sue_person._save_work_file(sue2_agenda)
+
+    # THEN
+    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    print(f"{work_file_text=}")
+    work_agenda = agenda_get_from_json(work_file_text)
+    assert work_agenda.get_party(zia_text) != None
+
+
+def test_PersonUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.work_file_exists() == False
+
+    # WHEN / THEN
+    yao_text = "yao"
+    with pytest_raises(Exception) as excinfo:
+        sue_person._save_work_file(agendaunit_shop(yao_text))
+    assert (
+        str(excinfo.value)
+        == f"AgendaUnit with worker_id '{yao_text}' cannot be saved as person_id '{sue_text}''s work agenda."
+    )
+
+
+def test_PersonUnit_load_work_file_CorrectlyLoads_work_obj(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue_agenda = agendaunit_shop(sue_text)
+    bob_text = "Bob"
+    sue_agenda.add_partyunit(bob_text)
+    sue_person._save_work_file(sue_agenda)
+    assert sue_person._work_obj is None
+
+    # WHEN
+    sue_person.load_work_file()
+
+    # THEN
+    assert sue_person._work_obj != None
+    assert sue_person._work_obj.get_party(bob_text) != None
+    assert sue_person._work_obj.get_party("Zia") is None
+
+
+def test_PersonUnit_create_work_file_if_does_not_exist_CorrectlySavesFile(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.work_file_exists() == False
+
+    # WHEN
+    sue_person.create_work_file_if_does_not_exist()
+
+    # THEN
+    work_agenda = sue_person.get_work_file_agenda()
+    assert work_agenda._world_id == get_test_world_id()
+    assert work_agenda._worker_id == sue_text
+    bob_text = "Bob"
+    assert work_agenda.get_party(bob_text) is None
+
+    # GIVEN
+    sue_agenda = agendaunit_shop(sue_text)
+    sue_agenda.add_partyunit(bob_text)
+    sue_person._save_work_file(sue_agenda)
+    work_agenda = sue_person.get_work_file_agenda()
+    assert work_agenda.get_party(bob_text)
+
+    # WHEN
+    sue_person.create_work_file_if_does_not_exist()
+
+    # THEN
+    work_agenda = sue_person.get_work_file_agenda()
+    assert work_agenda.get_party(bob_text)
+
+
+def test_PersonUnit_create_work_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert sue_person.work_file_exists() == False
+
+    # WHEN
+    sue_agenda = agendaunit_shop(sue_text)
+    bob_text = "Bob"
+    sue_agenda.add_partyunit(bob_text)
+    sue_person.create_work_file_if_does_not_exist()
+
+    # THEN
+    assert sue_person.work_file_exists()
+
+    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_person_dir = f"{sue_persons_dir}/{sue_text}"
+    sue_work_file_name = "work.json"
+    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    print(f"{work_file_text=}")
+    work_agenda = agenda_get_from_json(work_file_text)
+    assert work_agenda._world_id == get_test_world_id()
+    assert work_agenda._worker_id == sue_text
+
+
 def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     worlds_dir_setup_cleanup,
 ):
@@ -292,6 +469,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.person_dir) is False
     assert os_path_exists(sue_person._econs_dir) is False
     assert os_path_exists(sue_person._gut_path) is False
+    assert os_path_exists(sue_person._work_path) is False
 
     # WHEN
     sue_person.create_core_dir_and_files()
@@ -300,5 +478,6 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.world_dir)
     assert os_path_exists(sue_person.persons_dir)
     assert os_path_exists(sue_person.person_dir)
-    assert os_path_exists(sue_person._gut_path)
     assert os_path_exists(sue_person._econs_dir)
+    assert os_path_exists(sue_person._gut_path)
+    assert os_path_exists(sue_person._work_path)

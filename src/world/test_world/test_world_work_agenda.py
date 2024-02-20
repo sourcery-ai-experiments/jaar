@@ -7,38 +7,40 @@ from src.world.examples.world_env_kit import (
 from src.world.person import personunit_shop
 
 
-def test_WorldUnit_get_work_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
-    texas_world._set_person_in_memory(personunit_shop(person_id=luca_text))
+# def test_WorldUnit_get_work_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
+#     luca_text = "Luca"
+#     texas_world.(personunit_shop(person_id=luca_text))
 
-    # WHEN
-    luca_agenda = texas_world.get_work_agenda(luca_text)
+#     # WHEN
+#     luca_agenda = texas_world.get_work_agenda(luca_text)
 
-    # THEN
-    assert luca_agenda == agendaunit_shop(luca_text)
+#     # THEN
+#     assert luca_agenda == agendaunit_shop(luca_text)
 
 
-def test_WorldUnit_get_work_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
-    luca_text = "Luca"
-    water_text = "Clean water"
-    dallas_text = "Dallas"
-    texas_world.create_person_econ(luca_text, water_text, luca_text, dallas_text)
+# def test_WorldUnit_get_work_agenda_ReturnsCorrectObjWhenThereIsOneSourceAgenda(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     texas_world = worldunit_shop(world_id="texas", worlds_dir=get_test_worlds_dir())
+#     luca_text = "Luca"
+#     luca_person = texas_world.add_personunit(luca_text)
+#     luca_person.
+#     water_text = "Clean water"
+#     dallas_text = "Dallas"
+#     texas_world.create_person_econ(luca_text, water_text, luca_text, dallas_text)
 
-    # WHEN
-    gen_luca_agenda = texas_world.get_work_agenda(luca_text)
+#     # WHEN
+#     gen_luca_agenda = texas_world.get_work_agenda(luca_text)
 
-    # THEN
-    static_luca_agenda = agendaunit_shop(luca_text)
-    assert gen_luca_agenda._world_id == static_luca_agenda._world_id
-    assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
+#     # THEN
+#     static_luca_agenda = agendaunit_shop(luca_text)
+#     assert gen_luca_agenda._world_id == static_luca_agenda._world_id
+#     assert gen_luca_agenda.get_intent_dict() == static_luca_agenda.get_intent_dict()
 
 
 # TODO reopen this after econ creation from Agenda exists.

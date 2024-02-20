@@ -46,6 +46,10 @@ class Invalid_gut_Exception(Exception):
     pass
 
 
+class Invalid_work_Exception(Exception):
+    pass
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -57,6 +61,9 @@ class PersonUnit:
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
+    _work_obj: AgendaUnit = None
+    _work_file_name: str = None
+    _work_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
 
@@ -74,11 +81,46 @@ class PersonUnit:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
+        if self._work_file_name is None:
+            self._work_file_name = "work.json"
+        if self._work_path is None:
+            self._work_path = f"{self.person_dir}/{self._work_file_name}"
+
+    def create_core_dir_and_files(self):
+        set_dir(self.world_dir)
+        set_dir(self.persons_dir)
+        set_dir(self.person_dir)
+        set_dir(self._econs_dir)
+        self.create_gut_file_if_does_not_exist()
+        self.create_work_file_if_does_not_exist()
+
+    def create_gut_file_if_does_not_exist(self):
+        if self.gut_file_exists() == False:
+            self._save_gut_file(
+                agendaunit_shop(
+                    _worker_id=self.person_id,
+                    _world_id=self.world_id,
+                    _road_delimiter=self._road_delimiter,
+                )
+            )
+
+    def create_work_file_if_does_not_exist(self):
+        if self.work_file_exists() == False:
+            self._save_work_file(
+                agendaunit_shop(
+                    _worker_id=self.person_id,
+                    _world_id=self.world_id,
+                    _road_delimiter=self._road_delimiter,
+                )
+            )
 
     def gut_file_exists(self) -> bool:
         return os_path_exists(self._gut_path)
 
-    def _save_agenda_to_gut_path(self, x_agenda: AgendaUnit, replace: bool = True):
+    def work_file_exists(self) -> bool:
+        return os_path_exists(self._work_path)
+
+    def _save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._worker_id != self.person_id:
             raise Invalid_gut_Exception(
                 f"AgendaUnit with worker_id '{x_agenda._worker_id}' cannot be saved as person_id '{self.person_id}''s gut agenda."
@@ -91,32 +133,35 @@ class PersonUnit:
                 replace=replace,
             )
 
-    def create_core_dir_and_files(self):
-        set_dir(self.world_dir)
-        set_dir(self.persons_dir)
-        set_dir(self.person_dir)
-        set_dir(self._econs_dir)
-        self.create_gut_file_if_does_not_exist()
-
-    def create_gut_file_if_does_not_exist(self):
-        if self.gut_file_exists() == False:
-            self._save_agenda_to_gut_path(
-                agendaunit_shop(
-                    _worker_id=self.person_id,
-                    _world_id=self.world_id,
-                    _road_delimiter=self._road_delimiter,
-                )
+    def _save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
+        if x_agenda._worker_id != self.person_id:
+            raise Invalid_work_Exception(
+                f"AgendaUnit with worker_id '{x_agenda._worker_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
+            )
+        if replace in {True, False}:
+            save_file(
+                dest_dir=self.person_dir,
+                file_name=self._work_file_name,
+                file_text=x_agenda.get_json(),
+                replace=replace,
             )
 
     def get_gut_file_agenda(self) -> AgendaUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
-    def get_rootpart_of_econ_dir(self):
-        return "idearoot"
+    def get_work_file_agenda(self) -> AgendaUnit:
+        work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
+        return agenda_get_from_json(work_json)
 
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
+
+    def load_work_file(self):
+        self._work_obj = self.get_work_file_agenda()
+
+    def get_rootpart_of_econ_dir(self):
+        return "idearoot"
 
     def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
         return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"

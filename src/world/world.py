@@ -75,12 +75,12 @@ class WorldUnit:
         # if overwrite:
         #     self._delete_treasury()
 
-        history_file_new = True
         if in_memory:
             self._history_db = sqlite3_connect(":memory:")
         else:
             sqlite3_connect(self.get_history_db_path())
 
+        history_file_new = True
         # if treasury_file_new:
         #     with self.get_treasury_conn() as treasury_conn:
         #         for sqlstr in get_create_table_if_not_exist_sqlstrs():

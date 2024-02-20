@@ -266,7 +266,7 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     bob_text = "Bob"
     luca_gut = luca_person.get_gut_file_agenda()
     luca_gut.add_partyunit(bob_text)
-    luca_person._save_agenda_to_gut_path(luca_gut)
+    luca_person._save_gut_file(luca_gut)
 
     # WHEN
     gen_luca_gut = music_world.get_person_gut(luca_text)
@@ -311,8 +311,8 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsplans(
     todd_gut_agenda.add_idea(dallas_idea, texas_road)
     todd_gut_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(luca_gut_agenda.set_agenda_metrics(), mode="Econ").show()
-    luca_person._save_agenda_to_gut_path(luca_gut_agenda)
-    todd_person._save_agenda_to_gut_path(todd_gut_agenda)
+    luca_person._save_gut_file(luca_gut_agenda)
+    todd_person._save_gut_file(todd_gut_agenda)
     luca_person.create_person_econunits()
     todd_person.create_person_econunits()
     luca_dallas_econ = luca_person.get_econ(dallas_road)
