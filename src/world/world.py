@@ -5,12 +5,16 @@ from src._road.road import (
     PersonID,
     RoadUnit,
 )
-from src.agenda.agenda import agendaunit_shop, AgendaUnit
+from src.agenda.agenda import (
+    agendaunit_shop,
+    AgendaUnit,
+    get_from_json as get_agenda_from_json,
+)
 from src.econ.econ import EconUnit, EconID
 from src.world.deal import DealUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.instrument.python import get_empty_dict_if_none
-from src.instrument.file import set_dir
+from src.instrument.file import set_dir, open_file
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
@@ -169,8 +173,9 @@ class WorldUnit:
             x_econ.add_clerkunit(clerk_person_id)
 
     def get_work_agenda(self, person_id: PersonID):
+
         x_personunit = self.get_personunit_from_memory(person_id)
-        work_agenda = agendaunit_shop(person_id)
+        work_agenda = agendaunit_shop(person_id, self.world_id)
         # for econ_idea in x_personunit._gut_obj._econ_dict.values():
         #     pass
 
@@ -178,17 +183,8 @@ class WorldUnit:
         #             role_agenda = x_econunit.get_role_agenda(person_id)
         #             role_agenda.set_world_id(work_agenda._world_id)
         #             work_agenda.meld(role_agenda)
-        return work_agenda
-
-    def create_person_econ(
-        self,
-        person_id: PersonID,
-        healer_id: HealerID,
-    ):
-        self.add_personunit(person_id, replace_personunit=False, replace_alert=False)
-        x_personunit = self.get_personunit_from_memory(person_id)
-
-        self.add_personunit(healer_id, replace_personunit=False, replace_alert=False)
+        x_personunit._save_work_file(work_agenda)
+        return x_personunit.get_work_file_agenda()
 
     def _set_partyunit(
         self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

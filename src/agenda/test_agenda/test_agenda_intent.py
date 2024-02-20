@@ -436,7 +436,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     swim = "swim"
     jog = "jog"
     veg = "veg"
-    lift = "life"
+    lift = "lift"
     zia_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=t_road)
     zia_agenda.add_idea(ideaunit_shop(run, promise=True), parent_road=t_road)
     zia_agenda.add_idea(ideaunit_shop(swim, promise=True), parent_road=t_road)

@@ -273,7 +273,7 @@ class PersonUnit:
     #             df,
     #             path=[Constant("PersonID"), "ProblemID", "HealerID", "EconID"],
     #             values="Econ Weight",
-    #             # color="lifeExp",
+    #             # color="liftExp",
     #             # hover_data=["iso_alpha"],
     #             # color_continuous_scale="RdBu",
     #             # color_continuous_midpoint=average(df["Econ Weight"], weights=df["pop"]),
