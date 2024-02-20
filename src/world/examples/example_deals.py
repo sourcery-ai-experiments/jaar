@@ -1,5 +1,5 @@
 from src._road.road import PersonRoad, create_road_from_nodes as roadnodes
-from src.world.deal import dealunit_shop, DealUnit, vowunit_shop
+from src.world.deal import dealunit_shop, DealUnit
 
 
 def get_bob_personroad() -> PersonRoad:
@@ -19,6 +19,5 @@ def get_yao_personroad() -> PersonRoad:
 
 def get_no_topiclinks_yao_sue_dealunit() -> DealUnit:
     yao_sue_dealunit = dealunit_shop(get_yao_personroad(), "Sue")
-    yao_sue_dealunit.set_vowunit(vowunit_shop(1, author_weight=12, reader_weight=7))
-    yao_sue_dealunit.set_vowunit(vowunit_shop(1, author_weight=28, reader_weight=28))
+
     return yao_sue_dealunit

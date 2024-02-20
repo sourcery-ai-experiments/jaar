@@ -1,10 +1,8 @@
 from src._road.road import create_road
-from src.world.deal import vowunit_shop, VowUnit
 from src.world.topic import (
     topicunit_shop,
     opinionunit_shop,
     TopicUnit,
-    topiclink_shop,
 )
 
 
@@ -100,37 +98,3 @@ def get_helen_action_topic() -> TopicUnit:
     helen_topic.set_opinionunit(in_school_opinion)
     helen_topic.set_opinionunit(no_school_opinion)
     return helen_topic
-
-
-def get_cooking_vowunit() -> VowUnit:
-    yao_road = create_road("Yao", "Texas")
-    cook_road = create_road(yao_road, "cooking")
-    eight_uid = 8
-    eight_vowunit = vowunit_shop(uid=eight_uid)
-    eight_vowunit.set_topiclink(topiclink_shop(cook_road))
-    return eight_vowunit
-
-
-def get_climate_vowunit() -> VowUnit:
-    yao_road = create_road("Yao", "Texas")
-    climate_road = create_road(yao_road, "climate")
-    six_uid = 6
-    six_vowunit = vowunit_shop(uid=six_uid)
-    six_vowunit.set_topiclink(topiclink_shop(climate_road))
-    return six_vowunit
-
-
-def get_speedboat_action_vowunit() -> VowUnit:
-    yao_road = create_road("Yao", "Texas")
-    speedboat_road = create_road(yao_road, "speedboats")
-    seven_uid = 7
-    seven_vowunit = vowunit_shop(uid=seven_uid)
-    seven_vowunit.set_topiclink(topiclink_shop(speedboat_road, action=True))
-    return seven_vowunit
-
-
-def get_no_topiclinks_vowunit() -> VowUnit:
-    seven_uid = 7
-    seven_vowunit = vowunit_shop(uid=seven_uid)
-    seven_vowunit.edit_attr(author_weight=10, reader_weight=0)
-    return seven_vowunit
