@@ -8,6 +8,7 @@ from src.world.examples.world_env_kit import (
 )
 
 from src.world.person import personunit_shop
+from os import path as os_path
 from pytest import raises as pytest_raises
 
 
@@ -17,6 +18,7 @@ def test_WorldUnit_exists(worlds_dir_setup_cleanup):
     assert music_world.world_id == music_text
     assert music_world.worlds_dir == get_test_worlds_dir()
     assert music_world._persons_dir is None
+    assert music_world._history_db is None
     assert music_world._personunits is None
     assert music_world._deals_dir is None
     assert music_world._dealunits is None
@@ -62,15 +64,33 @@ def test_WorldUnit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_world = WorldUnit(world_id=music_text, worlds_dir=get_test_worlds_dir())
+    x_world_dir = f"{get_test_worlds_dir()}/{music_text}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    x_deals_dir = f"{x_world_dir}/deals"
+    history_file_name = "history.db"
+    history_file_path = f"{x_world_dir}/{history_file_name}"
+
+    assert music_world._world_dir is None
     assert music_world._persons_dir is None
+    assert music_world._deals_dir is None
+    assert os_path.exists(x_world_dir) is False
+    assert os_path.isdir(x_world_dir) is False
+    assert os_path.exists(x_persons_dir) is False
+    assert os_path.exists(x_deals_dir) is False
+    assert os_path.exists(history_file_path) is False
 
     # WHEN
     music_world._set_world_dirs()
 
     # THEN
-    assert music_world._world_dir == f"{get_test_worlds_dir()}/{music_text}"
-    assert music_world._persons_dir == f"{get_test_worlds_dir()}/{music_text}/persons"
-    assert music_world._deals_dir == f"{get_test_worlds_dir()}/{music_text}/deals"
+    assert music_world._world_dir == x_world_dir
+    assert music_world._persons_dir == x_persons_dir
+    assert music_world._deals_dir == x_deals_dir
+    assert os_path.exists(x_world_dir)
+    assert os_path.isdir(x_world_dir)
+    assert os_path.exists(x_persons_dir)
+    assert os_path.exists(x_deals_dir)
+    assert os_path.exists(history_file_path)
 
 
 def test_worldunit_shop_SetsWorldsDirs(worlds_dir_setup_cleanup):
@@ -125,7 +145,9 @@ def test_WorldUnit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
-    music_world = worldunit_shop(music_text, get_test_worlds_dir(), slash_text)
+    music_world = worldunit_shop(
+        music_text, get_test_worlds_dir(), _road_delimiter=slash_text
+    )
     luca_text = "Luca"
     luca_person_dir = f"{music_world._persons_dir}/{luca_text}"
 
