@@ -183,21 +183,12 @@ class WorldUnit:
     def create_person_econ(
         self,
         person_id: PersonID,
-        x_problem_id: ProblemID,
         healer_id: HealerID,
-        econ_id: EconID,
     ):
-
         self.add_personunit(person_id, replace_personunit=False, replace_alert=False)
         x_personunit = self.get_personunit_from_memory(person_id)
 
         self.add_personunit(healer_id, replace_personunit=False, replace_alert=False)
-        # healer_personunit = self.get_personunit_from_memory(healer_id)
-        # healer_personunit.set_econunit(econ_id, False, x_problem_id)
-        # x_econunit = healer_personunit.get_econunit(econ_id)
-        # x_econunit.full_setup_clerkunit(healer_id)
-        # if healer_id != x_personunit.person_id:
-        #     self._set_partyunit(x_econunit, x_personunit.person_id, healer_id)
 
     def _set_partyunit(
         self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
