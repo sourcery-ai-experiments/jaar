@@ -80,14 +80,14 @@ def _delete_and_set_ex3():
     x_econ = econunit_shop(econ_id=x_econ_id, econ_dir=ex3_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.save_forum_agenda(example_get_1node_agenda())
-    x_econ.save_forum_agenda(
+    x_econ.save_role_agenda_to_forum(example_get_1node_agenda())
+    x_econ.save_role_agenda_to_forum(
         example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     )
     example_agenda_v001 = example_agendas_agenda_v001()
     example_agenda_v002 = example_agendas_agenda_v002()
-    x_econ.save_forum_agenda(example_agenda_v001)
-    x_econ.save_forum_agenda(example_agenda_v002)
+    x_econ.save_role_agenda_to_forum(example_agenda_v001)
+    x_econ.save_role_agenda_to_forum(example_agenda_v002)
 
     # x_econ.set_worker_id(x_clerk=clerkunit_shop(worker_id="w1", env_dir=x_econ.get_object_root_dir()))
     # x_econ.set_worker_id(x_clerk=clerkunit_shop(worker_id="w2", env_dir=x_econ.get_object_root_dir()))
@@ -137,10 +137,14 @@ def _delete_and_set_ex4():
     x_econ = econunit_shop(x_econ_id, econ_dir=ex4_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.save_forum_agenda(example_get_7nodeJRootWithH_agenda())
-    x_econ.save_forum_agenda(example_agendas_get_agenda_with7amCleanTableReason())
-    x_econ.save_forum_agenda(example_agendas_get_agenda_base_time_example())
-    x_econ.save_forum_agenda(example_agendas_get_agenda_x1_3levels_1reason_1beliefs())
+    x_econ.save_role_agenda_to_forum(example_get_7nodeJRootWithH_agenda())
+    x_econ.save_role_agenda_to_forum(
+        example_agendas_get_agenda_with7amCleanTableReason()
+    )
+    x_econ.save_role_agenda_to_forum(example_agendas_get_agenda_base_time_example())
+    x_econ.save_role_agenda_to_forum(
+        example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
+    )
 
 
 def _delete_and_set_ex5():
@@ -161,11 +165,11 @@ def _delete_and_set_ex5():
     ag_4 = example_get_agenda_2CleanNodesRandomWeights("francine")
     ag_5 = example_get_agenda_2CleanNodesRandomWeights("clay")
 
-    x_p.save_forum_agenda(ag_1)
-    x_p.save_forum_agenda(ag_2)
-    x_p.save_forum_agenda(ag_3)
-    x_p.save_forum_agenda(ag_4)
-    x_p.save_forum_agenda(ag_5)
+    x_p.save_role_agenda_to_forum(ag_1)
+    x_p.save_role_agenda_to_forum(ag_2)
+    x_p.save_role_agenda_to_forum(ag_3)
+    x_p.save_role_agenda_to_forum(ag_4)
+    x_p.save_role_agenda_to_forum(ag_5)
 
     x_p.create_new_clerkunit(clerk_id=ag_1._worker_id)
     x_p.create_new_clerkunit(clerk_id=ag_2._worker_id)
@@ -226,27 +230,27 @@ def _delete_and_set_ex6(x_econ_id: str = None):
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_forum_agenda(sal_agenda)
+    x_econ.save_role_agenda_to_forum(sal_agenda)
 
     bob_agenda = agendaunit_shop(_worker_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_forum_agenda(bob_agenda)
+    x_econ.save_role_agenda_to_forum(bob_agenda)
 
     tom_agenda = agendaunit_shop(_worker_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_econ.save_forum_agenda(tom_agenda)
+    x_econ.save_role_agenda_to_forum(tom_agenda)
 
     ava_agenda = agendaunit_shop(_worker_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_econ.save_forum_agenda(ava_agenda)
+    x_econ.save_role_agenda_to_forum(ava_agenda)
 
     elu_agenda = agendaunit_shop(_worker_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_econ.save_forum_agenda(elu_agenda)
+    x_econ.save_role_agenda_to_forum(elu_agenda)
 
-    x_econ.refresh_treasury_forum_agendas_data()
+    x_econ.refresh_treasury_role_agendas_data()
     x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=100)
 
     return x_econ

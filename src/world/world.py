@@ -148,9 +148,9 @@ class WorldUnit:
         #     pass
 
         # for person_problemunit in x_personunit._problems.values():
-        #             forum_agenda = x_econunit.get_forum_agenda(person_id)
-        #             forum_agenda.set_world_id(work_agenda._world_id)
-        #             work_agenda.meld(forum_agenda)
+        #             role_agenda = x_econunit.get_role_agenda(person_id)
+        #             role_agenda.set_world_id(work_agenda._world_id)
+        #             work_agenda.meld(role_agenda)
         return work_agenda
 
     def create_person_econ(

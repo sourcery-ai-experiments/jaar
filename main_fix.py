@@ -74,8 +74,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.worker_id_update_button.clicked.connect(self.worker_id_update_pid)
         self.worker_id_delete_button.clicked.connect(self.worker_id_delete)
         self.worker_ids_table.itemClicked.connect(self.worker_ids_table_select)
-        self.reload_forum_agendas_button.clicked.connect(self.reload_forum_agendas)
-        self.set_forum_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
+        self.reload_forum_role_agendas_button.clicked.connect(
+            self.reload_forum_role_agendas
+        )
+        self.set_role_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
         self.set_forum_and_reload_srcs_button.clicked.connect(
             self.set_forum_and_reload_srcs
         )
@@ -109,13 +111,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.x_clerk.save_plan_agenda(self.plan)
         self.refresh_worker_id()
 
-    def reload_forum_agendas(self):
+    def reload_forum_role_agendas(self):
         if self.econ_x != None:
-            self.econ_x.reload_all_clerkunits_forum_agendaunits()
+            self.econ_x.reload_all_clerkunits_role_agendas()
 
     def set_forum_and_reload_srcs(self):
         self.save_output_agenda_to_forum()
-        self.reload_forum_agendas()
+        self.reload_forum_role_agendas()
 
     def save_output_agenda_to_forum(self):
         if self.x_clerk != None:
@@ -169,7 +171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_agenda_worker_id = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.econ_x.get_forum_agenda(
+        # self.ignore_agenda_x = self.econ_x.get_role_agenda(
         self.ignore_agenda_x = self.econ_x.get_agenda_from_ignores_dir(
             clerk_id=self.x_clerk.pid, _worker_id=ignore_agenda_worker_id
         )
@@ -206,7 +208,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
 
     def agenda_insert(self):
-        self.econ_x.save_forum_agenda(
+        self.econ_x.save_role_agenda_to_forum(
             agenda_x=agendaunit_shop(_worker_id=self.agenda_worker_id.text())
         )
         self.refresh_econ()
@@ -217,13 +219,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_worker_id.text()
         if currently_selected != typed_in:
-            self.econ_x.change_forum_worker_id(
+            self.econ_x.change_role_worker_id(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_econ()
 
     def agenda_delete(self):
-        self.econ_x.del_forum_agenda(
+        self.econ_x.del_role_agenda(
             agenda_x_label=self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()

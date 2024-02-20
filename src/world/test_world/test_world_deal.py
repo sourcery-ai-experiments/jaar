@@ -235,7 +235,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert tim_plan.get_party(xio_text) != None
 #     assert tim_plan.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
-#     tim_forum = texas_econ.get_forum_agenda(tim_text)
+#     tim_forum = texas_econ.get_role_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1
 #     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
 
@@ -331,7 +331,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert tim_plan.get_party(xio_text) != None
 #     assert tim_plan.get_party(xio_text).debtor_weight == 7
 #     # check tim forum
-#     tim_forum = texas_econ.get_forum_agenda(tim_text)
+#     tim_forum = texas_econ.get_role_agenda(tim_text)
 #     assert len(tim_forum.get_intent_dict()) == 1
 #     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
 

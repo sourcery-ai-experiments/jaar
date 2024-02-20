@@ -35,8 +35,8 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     amer_clerk.set_plan(plan_x)
     # save belief change to forum
     amer_clerk.save_refreshed_output_to_forum()
-    # print(f"{x_econ.get_forum_agenda(amer_text)._idearoot._beliefunits.keys()=}")
-    amer_output = x_econ.get_forum_agenda(amer_text)
+    # print(f"{x_econ.get_role_agenda(amer_text)._idearoot._beliefunits.keys()=}")
+    amer_output = x_econ.get_role_agenda(amer_text)
 
     # create assignment for Cali
     cali_text = "Cali"
@@ -59,7 +59,7 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     cali_clerk.refresh_depot_agendas()
     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-    # new_forum_amer = x_econ.get_forum_agenda(amer_text)
+    # new_forum_amer = x_econ.get_role_agenda(amer_text)
     # a_basket_belief = new_forum_amer._idearoot._beliefunits.get(basket_road)
     # print(f"Amer after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
@@ -107,8 +107,8 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     beto_clerk.set_plan(beto_plan_x)
     amer_clerk.save_refreshed_output_to_forum()
     beto_clerk.save_refreshed_output_to_forum()
-    amer_output = x_econ.get_forum_agenda(amer_text)
-    beto_output = x_econ.get_forum_agenda(beto_text)
+    amer_output = x_econ.get_role_agenda(amer_text)
+    beto_output = x_econ.get_role_agenda(beto_text)
 
     cali_text = "Cali"
     x_econ.create_new_clerkunit(cali_text)
@@ -120,7 +120,7 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     cali_kichen.save_refreshed_output_to_forum()
 
     # THEN
-    old_cali_output = x_econ.get_forum_agenda(cali_text)
+    old_cali_output = x_econ.get_role_agenda(cali_text)
     assert len(old_cali_output.get_intent_dict()) == 0
     old_cali_beliefs = old_cali_output._idearoot._beliefunits
     # print(f"{old_cali_output._idearoot._beliefunits=}")
@@ -155,7 +155,7 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     cali_kichen.save_refreshed_output_to_forum()
 
     # THEN final belief changed
-    new_cali_output = x_econ.get_forum_agenda(cali_text)
+    new_cali_output = x_econ.get_role_agenda(cali_text)
     assert len(new_cali_output.get_intent_dict()) == 1
     new_cali_beliefs = new_cali_output._idearoot._beliefunits
     # print(f"{new_cali_output._idearoot._beliefunits=}")

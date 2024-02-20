@@ -252,14 +252,14 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     ernie_agenda = get_cal2nodes(_worker_id=ernie_text)
     steve_text = "steve"
     old_steve_agenda = get_cal2nodes(_worker_id=steve_text)
-    sx.save_forum_agenda(ernie_agenda)
-    sx.save_forum_agenda(old_steve_agenda)
+    sx.save_role_agenda_to_forum(ernie_agenda)
+    sx.save_role_agenda_to_forum(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 4
     new_steve_agenda = get_cal3nodes(_worker_id=steve_text)
-    sx.save_forum_agenda(new_steve_agenda)
+    sx.save_role_agenda_to_forum(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
     #     print(f"{bob_agenda._forum_dir=} {file_name=}")

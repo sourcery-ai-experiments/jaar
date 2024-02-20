@@ -331,18 +331,24 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.save_ignore_button.setFont(font)
         self.save_ignore_button.setObjectName("save_ignore_button")
-        self.set_forum_agenda_button = QtWidgets.QPushButton(self.centralwidget)
-        self.set_forum_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
+        self.set_role_agenda_button = QtWidgets.QPushButton(self.centralwidget)
+        self.set_role_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.set_forum_agenda_button.setFont(font)
-        self.set_forum_agenda_button.setObjectName("set_forum_agenda_button")
-        self.reload_forum_agendas_button = QtWidgets.QPushButton(self.centralwidget)
-        self.reload_forum_agendas_button.setGeometry(QtCore.QRect(190, 620, 141, 21))
+        self.set_role_agenda_button.setFont(font)
+        self.set_role_agenda_button.setObjectName("set_role_agenda_button")
+        self.reload_forum_role_agendas_button = QtWidgets.QPushButton(
+            self.centralwidget
+        )
+        self.reload_forum_role_agendas_button.setGeometry(
+            QtCore.QRect(190, 620, 141, 21)
+        )
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.reload_forum_agendas_button.setFont(font)
-        self.reload_forum_agendas_button.setObjectName("reload_forum_agendas_button")
+        self.reload_forum_role_agendas_button.setFont(font)
+        self.reload_forum_role_agendas_button.setObjectName(
+            "reload_forum_role_agendas_button"
+        )
         self.set_forum_and_reload_srcs_button = QtWidgets.QPushButton(
             self.centralwidget
         )
@@ -461,11 +467,11 @@ class Ui_MainWindow(object):
         self.show_ignores_button.setText(_translate("MainWindow", "ignore"))
         self.open_ignore_button.setText(_translate("MainWindow", "o"))
         self.save_ignore_button.setText(_translate("MainWindow", "s"))
-        self.set_forum_agenda_button.setText(
+        self.set_role_agenda_button.setText(
             _translate("MainWindow", "output_agenda to forum_dir")
         )
-        self.reload_forum_agendas_button.setText(
-            _translate("MainWindow", "refresh_forum_agendas")
+        self.reload_forum_role_agendas_button.setText(
+            _translate("MainWindow", "refresh_role_agendas")
         )
         self.set_forum_and_reload_srcs_button.setText(
             _translate("MainWindow", "dest2forum and refresh")

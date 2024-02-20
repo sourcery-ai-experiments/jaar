@@ -27,8 +27,8 @@ from src.econ.econ import EconUnit
 #     yao_clerk.set_plan(plan_x)
 #     # save belief change to forum
 #     yao_clerk.save_refreshed_output_to_forum()
-#     # print(f"{x_econ.get_forum_agenda(yao_text)._idearoot._beliefunits.keys()=}")
-#     yao_output = x_econ.get_forum_agenda(yao_text)
+#     # print(f"{x_econ.get_role_agenda(yao_text)._idearoot._beliefunits.keys()=}")
+#     yao_output = x_econ.get_role_agenda(yao_text)
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
@@ -51,7 +51,7 @@ from src.econ.econ import EconUnit
 #     cali_clerk.refresh_depot_agendas()
 #     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-#     # new_forum_yao = x_econ.get_forum_agenda(yao_text)
+#     # new_forum_yao = x_econ.get_role_agenda(yao_text)
 #     # a_basket_belief = new_forum_yao._idearoot._beliefunits.get(basket_road)
 #     # print(f"Yao after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 

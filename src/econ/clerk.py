@@ -46,7 +46,7 @@ class ClerkUnit:
         for party_x in self._plan._partys.values():
             if party_x.party_id != self._clerk_id:
                 party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self.open_forum_agenda(party_x.party_id)
+                    x_agenda_json=self.open_role_agenda(party_x.party_id)
                 )
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
@@ -256,7 +256,7 @@ class ClerkUnit:
         file_name = self._agenda_output_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def open_forum_agenda(self, worker_id: PersonID) -> str:
+    def open_role_agenda(self, worker_id: PersonID) -> str:
         file_name_x = f"{worker_id}.json"
         print(f"{self._forum_dir=}")
         return open_file(self._forum_dir, file_name_x)

@@ -131,7 +131,7 @@ class EconUnit:
             x_clerk.save_refreshed_output_to_forum()
 
     def set_agenda_treasury_attrs(self, x_worker_id: WorkerID):
-        x_agenda = self.get_forum_agenda(x_worker_id)
+        x_agenda = self.get_role_agenda(x_worker_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -144,8 +144,8 @@ class EconUnit:
                     if x_worker_id != agenda_ideaunit.worker_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.worker_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_forum_agenda(x_agenda)
-        self.refresh_treasury_forum_agendas_data()
+        self.save_role_agenda_to_forum(x_agenda)
+        self.refresh_treasury_role_agendas_data()
 
     def set_credit_flow_for_agenda(
         self, worker_id: WorkerID, max_blocks_count: int = None
@@ -257,18 +257,18 @@ class EconUnit:
             sal_partytreasuryunits = get_partytreasuryunit_dict(
                 treasury_conn, worker_id
             )
-            x_agenda = self.get_forum_agenda(worker_id=worker_id)
+            x_agenda = self.get_role_agenda(worker_id=worker_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_forum_agenda(x_agenda)
+            self.save_role_agenda_to_forum(x_agenda)
 
     def get_partytreasuryunits(self, worker_id: str) -> dict[str:PartyBankUnit]:
         with self.get_treasury_conn() as treasury_conn:
             partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, worker_id)
         return partytreasuryunits
 
-    def refresh_treasury_forum_agendas_data(self, in_memory: bool = None):
+    def refresh_treasury_role_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
         self._create_treasury_db(in_memory=in_memory, overwrite=True)
@@ -439,7 +439,7 @@ class EconUnit:
         per_x = self.get_clerkunit(clerk_id)
         return per_x._agendas_ignore_dir
 
-    def get_forum_agenda(self, worker_id: str) -> AgendaUnit:
+    def get_role_agenda(self, worker_id: str) -> AgendaUnit:
         return get_agenda_from_json(
             open_file(dest_dir=self.get_forum_dir(), file_name=f"{worker_id}.json")
         )
@@ -460,16 +460,16 @@ class EconUnit:
             agendaunit=agenda_obj, src_worker_id=agenda_obj._worker_id
         )
 
-    def change_forum_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
-        x_agenda = self.get_forum_agenda(worker_id=old_worker_id)
+    def change_role_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
+        x_agenda = self.get_role_agenda(worker_id=old_worker_id)
         x_agenda.set_worker_id(new_worker_id=new_worker_id)
-        self.save_forum_agenda(x_agenda)
-        self.del_forum_agenda(x_worker_id=old_worker_id)
+        self.save_role_agenda_to_forum(x_agenda)
+        self.del_role_agenda(x_worker_id=old_worker_id)
 
-    def del_forum_agenda(self, x_worker_id: str):
+    def del_role_agenda(self, x_worker_id: str):
         delete_dir(f"{self.get_forum_dir()}/{x_worker_id}.json")
 
-    def save_forum_agenda(self, x_agenda: AgendaUnit):
+    def save_role_agenda_to_forum(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.econ_id)
         save_file(
             dest_dir=self.get_forum_dir(),
@@ -477,7 +477,7 @@ class EconUnit:
             file_text=x_agenda.get_json(),
         )
 
-    def reload_all_clerkunits_forum_agendaunits(self):
+    def reload_all_clerkunits_role_agendas(self):
         for x_clerkunit in self._clerkunits.values():
             x_clerkunit.refresh_depot_agendas()
 
@@ -515,7 +515,7 @@ class EconUnit:
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_forum_agenda(worker_id=agenda_worker_id)
+        x_agenda = self.get_role_agenda(worker_id=agenda_worker_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -552,7 +552,7 @@ class EconUnit:
         debtor_weight: str,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_forum_agenda(_worker_id=party_id)
+        x_agenda = self.get_role_agenda(_worker_id=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
