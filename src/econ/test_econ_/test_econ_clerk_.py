@@ -35,7 +35,7 @@ def test_EconUnit_change_clerkunit_clerk_id_SetsAttrsCorrectly(env_dir_setup_cle
     x_econ.set_econ_dirs(in_memory_treasury=True)
     old_bob_text = "old Bob"
     old_bob_dir = f"{x_econ.get_clerkunits_dir()}/{old_bob_text}"
-    old_bob_file_path = f"{old_bob_dir}/plan_agenda.json"
+    old_bob_file_path = f"{old_bob_dir}/role_agenda.json"
     bob_clerkunit = clerkunit_shop(
         old_bob_text, x_econ.get_object_root_dir(), get_temp_env_econ_id()
     )
@@ -44,7 +44,7 @@ def test_EconUnit_change_clerkunit_clerk_id_SetsAttrsCorrectly(env_dir_setup_cle
 
     new_bob_text = "new Bob"
     new_bob_dir = f"{x_econ.get_clerkunits_dir()}/{new_bob_text}"
-    new_bob_file_path = f"{new_bob_dir}/plan_agenda.json"
+    new_bob_file_path = f"{new_bob_dir}/role_agenda.json"
     assert os_path.exists(new_bob_dir) == False
     assert os_path.exists(old_bob_dir)
     assert os_path.exists(new_bob_file_path) == False
@@ -77,7 +77,7 @@ def test_EconUnit_del_clerkunit_dir_DeletesAttr(env_dir_setup_cleanup):
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
     xia_text = "Xia"
     xia_dir = f"{x_econ.get_clerkunits_dir()}/{xia_text}"
-    xia_file_path = f"{xia_dir}/plan_agenda.json"
+    xia_file_path = f"{xia_dir}/role_agenda.json"
     x_econ.create_new_clerkunit(clerk_id=xia_text)
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     print(f"{xia_file_path=}")
@@ -99,7 +99,7 @@ def test_EconUnit_add_clerkunit_SetsAttr(env_dir_setup_cleanup):
     x_econ.set_econ_dirs(in_memory_treasury=True)
     bob_text = "Bob"
     bob_dir = f"{x_econ.get_clerkunits_dir()}/{bob_text}"
-    bob_file_path = f"{bob_dir}/plan_agenda.json"
+    bob_file_path = f"{bob_dir}/role_agenda.json"
     assert os_path.exists(bob_dir) == False
     assert os_path.exists(bob_file_path) == False
     assert x_econ.get_clerkunit(clerk_id=bob_text) is None
@@ -117,12 +117,12 @@ def test_EconUnit_add_clerkunit_SetsAttr(env_dir_setup_cleanup):
     )
     bob_gen_clerkunit = x_econ.get_clerkunit(bob_text)
     assert bob_gen_clerkunit._env_dir == bob_static_clerkunit._env_dir
-    assert bob_gen_clerkunit._plan != None
-    assert bob_static_clerkunit._plan != None
+    assert bob_gen_clerkunit._role != None
+    assert bob_static_clerkunit._role != None
     assert bob_gen_clerkunit == bob_static_clerkunit
-    print(f"{   bob_gen_clerkunit._plan._worker_id=}")
-    print(f"{bob_static_clerkunit._plan._worker_id=}")
-    assert bob_gen_clerkunit._plan == bob_static_clerkunit._plan
+    print(f"{   bob_gen_clerkunit._role._worker_id=}")
+    print(f"{bob_static_clerkunit._role._worker_id=}")
+    assert bob_gen_clerkunit._role == bob_static_clerkunit._role
     assert os_path.exists(bob_dir)
     assert os_path.exists(bob_file_path)
 

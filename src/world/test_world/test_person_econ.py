@@ -269,7 +269,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 
-def test_PersonUnit_set_econunit_plan_CorrectlySetsplan(
+def test_PersonUnit_set_econunit_role_CorrectlySetsrole(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -294,16 +294,16 @@ def test_PersonUnit_set_econunit_plan_CorrectlySetsplan(
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
     sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert sue_clerk.get_plan().get_party(bob_text) is None
+    assert sue_clerk.get_role().get_party(bob_text) is None
 
     # WHEN
-    sue_person.set_econunit_plan(dallas_road, sue_gut_agenda)
+    sue_person.set_econunit_role(dallas_road, sue_gut_agenda)
 
     # THEN
-    assert sue_clerk.get_plan().get_party(bob_text) != None
+    assert sue_clerk.get_role().get_party(bob_text) != None
 
 
-def test_PersonUnit_set_econunits_plan_CorrectlySetsplans(
+def test_PersonUnit_set_econunits_role_CorrectlySetsroles(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -332,21 +332,21 @@ def test_PersonUnit_set_econunits_plan_CorrectlySetsplans(
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
     dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_plan().get_party(bob_text) is None
+    assert dallas_sue_clerk.get_role().get_party(bob_text) is None
+    # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
 
     # WHEN
-    sue_person.set_econunits_plan(sue_gut_agenda)
+    sue_person.set_econunits_role(sue_gut_agenda)
 
     # THEN
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) != None
+    assert dallas_sue_clerk.get_role().get_party(bob_text) != None
     elpaso_econ = sue_person.get_econ(elpaso_road)
     elpaso_econ.create_new_clerkunit(sue_text)
     elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_plan().get_party(bob_text) != None
+    assert elpaso_sue_clerk.get_role().get_party(bob_text) != None
 
 
-def test_PersonUnit_set_person_econunits_plan_CorrectlySetsplans(
+def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,15 +375,15 @@ def test_PersonUnit_set_person_econunits_plan_CorrectlySetsplans(
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_econ.create_new_clerkunit(sue_text)
     dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_plan().get_party(bob_text) is None
+    assert dallas_sue_clerk.get_role().get_party(bob_text) is None
+    # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
 
     # WHEN
-    sue_person.set_person_econunits_plan()
+    sue_person.set_person_econunits_role()
 
     # THEN
-    assert dallas_sue_clerk.get_plan().get_party(bob_text) != None
+    assert dallas_sue_clerk.get_role().get_party(bob_text) != None
     elpaso_econ = sue_person.get_econ(elpaso_road)
     elpaso_econ.create_new_clerkunit(sue_text)
     elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_plan().get_party(bob_text) != None
+    assert elpaso_sue_clerk.get_role().get_party(bob_text) != None

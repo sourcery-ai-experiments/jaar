@@ -103,14 +103,14 @@ def test_econ_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234
     yao_new_agenda.set_partyunit(partyunit_shop(elu_text))
     x_econ.create_new_clerkunit(yao_text)
     yao_clerk = x_econ.get_clerkunit(clerk_id=yao_text)
-    yao_clerk.set_plan(yao_new_agenda)
+    yao_clerk.set_role(yao_new_agenda)
 
-    yao_plan_agenda = yao_clerk.get_plan()
-    ava_partyunit = yao_plan_agenda.get_party(ava_text)
-    bob_partyunit = yao_plan_agenda.get_party(bob_text)
-    cal_partyunit = yao_plan_agenda.get_party(cal_text)
-    dom_partyunit = yao_plan_agenda.get_party(dom_text)
-    elu_partyunit = yao_plan_agenda.get_party(elu_text)
+    yao_role_agenda = yao_clerk.get_role()
+    ava_partyunit = yao_role_agenda.get_party(ava_text)
+    bob_partyunit = yao_role_agenda.get_party(bob_text)
+    cal_partyunit = yao_role_agenda.get_party(cal_text)
+    dom_partyunit = yao_role_agenda.get_party(dom_text)
+    elu_partyunit = yao_role_agenda.get_party(elu_text)
     assert ava_partyunit._treasury_voice_rank is None
     assert bob_partyunit._treasury_voice_rank is None
     assert cal_partyunit._treasury_voice_rank is None
@@ -122,12 +122,12 @@ def test_econ_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234
     x_econ.set_voice_ranks(yao_text, sort_order=descretional_text)
 
     # THEN
-    yao_role_agenda = x_econ.get_role_agenda_file(yao_text)
-    ava_partyunit = yao_role_agenda.get_party(ava_text)
-    bob_partyunit = yao_role_agenda.get_party(bob_text)
-    cal_partyunit = yao_role_agenda.get_party(cal_text)
-    dom_partyunit = yao_role_agenda.get_party(dom_text)
-    elu_partyunit = yao_role_agenda.get_party(elu_text)
+    yao_job_agenda = x_econ.get_job_agenda_file(yao_text)
+    ava_partyunit = yao_job_agenda.get_party(ava_text)
+    bob_partyunit = yao_job_agenda.get_party(bob_text)
+    cal_partyunit = yao_job_agenda.get_party(cal_text)
+    dom_partyunit = yao_job_agenda.get_party(dom_text)
+    elu_partyunit = yao_job_agenda.get_party(elu_text)
     assert ava_partyunit._treasury_voice_rank != None
     assert bob_partyunit._treasury_voice_rank != None
     assert cal_partyunit._treasury_voice_rank != None

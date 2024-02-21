@@ -14,15 +14,15 @@ from src.econ.examples.econ_env_kit import (
 )
 
 
-def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario1(
+def test_EconUnit_get_refreshed_job_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     input_agenda = example_get_6node_agenda()
-    x_econ.save_role_agenda_to_forum(input_agenda)
-    # x_econ.save_role_agenda_to_forum(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
-    # x_econ.save_role_agenda_to_forum(ex_cxs_agenda_v001())
+    x_econ.save_job_agenda_to_forum(input_agenda)
+    # x_econ.save_job_agenda_to_forum(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
+    # x_econ.save_job_agenda_to_forum(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_econ.create_new_clerkunit(clerk_id=xia_text)
     x_econ.set_clerk_depotlink(
@@ -30,10 +30,10 @@ def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario1(
     )
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    # print(f"{xia_healer._plan._partys.keys()=}")
+    # print(f"{xia_healer._role._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_econ.get_refreshed_role(clerk_id=xia_text)
+    output_agenda = x_econ.get_refreshed_job(clerk_id=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_worker_id(new_worker_id=xia_text)
@@ -88,7 +88,7 @@ def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario1(
     assert output_agenda._idearoot == input_agenda._idearoot
 
 
-def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario2(
+def test_EconUnit_get_refreshed_job_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -96,20 +96,20 @@ def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario2(
     x1_agenda = example_get_6node_agenda()
     x2_agenda = ex_agenda_v002()
 
-    x_econ.save_role_agenda_to_forum(x1_agenda)
-    x_econ.save_role_agenda_to_forum(x2_agenda)
-    # x_econ.save_role_agenda_to_forum(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
-    # x_econ.save_role_agenda_to_forum(ex_cxs_agenda_v001())
+    x_econ.save_job_agenda_to_forum(x1_agenda)
+    x_econ.save_job_agenda_to_forum(x2_agenda)
+    # x_econ.save_job_agenda_to_forum(ex_cxs_get_agenda_1Task_1CE0MinutesReason_1Belief())
+    # x_econ.save_job_agenda_to_forum(ex_cxs_agenda_v001())
     xia_text = "Xia"
     x_econ.create_new_clerkunit(clerk_id=xia_text)
     x_econ.set_clerk_depotlink(xia_text, x1_agenda._worker_id, "blind_trust")
     x_econ.set_clerk_depotlink(xia_text, x2_agenda._worker_id, "blind_trust")
     x_econ.save_clerkunit_file(clerk_id=xia_text)
     xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    print(f"{xia_healer._plan._partys.keys()=}")
+    print(f"{xia_healer._role._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_econ.get_refreshed_role(clerk_id=xia_text)
+    output_agenda = x_econ.get_refreshed_job(clerk_id=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._world_id},C,D"
@@ -161,9 +161,9 @@ def test_ClerkUnit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     ernie_agenda = get_agenda_2CleanNodesRandomWeights(_worker_id=ernie_text)
     jessi_agenda = get_agenda_2CleanNodesRandomWeights(_worker_id=jessi_text)
     old_steve_agenda = get_agenda_2CleanNodesRandomWeights(_worker_id=steve_text)
-    x_econ.save_role_agenda_to_forum(ernie_agenda)
-    x_econ.save_role_agenda_to_forum(jessi_agenda)
-    x_econ.save_role_agenda_to_forum(old_steve_agenda)
+    x_econ.save_job_agenda_to_forum(ernie_agenda)
+    x_econ.save_job_agenda_to_forum(jessi_agenda)
+    x_econ.save_job_agenda_to_forum(old_steve_agenda)
     x_econ.create_new_clerkunit(clerk_id=ernie_text)
     x_econ.create_new_clerkunit(clerk_id=jessi_text)
     # x_econ.create_new_clerkunit(clerk_id=steve_text)
@@ -180,7 +180,7 @@ def test_ClerkUnit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     assert len(ux_jessi.get_remelded_output_agenda().get_idea_dict()) == 4
     # assert len(ux_steve.get_remelded_output_agenda().get_idea_dict()) == 4
     new_steve_agenda = get_agenda_3CleanNodesRandomWeights(_worker_id="steve")
-    x_econ.save_role_agenda_to_forum(new_steve_agenda)
+    x_econ.save_job_agenda_to_forum(new_steve_agenda)
     # print(f"{env_dir=} {ux._forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
     #     print(f"{ux._forum_dir=} {file_name=}")
@@ -189,7 +189,7 @@ def test_ClerkUnit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     #     print(f"{ux._forum_dir=} {file_name=}")
 
     # WHEN
-    x_econ.reload_all_clerkunits_role_agendas()
+    x_econ.reload_all_clerkunits_job_agendas()
 
     # THEN
     assert len(ux_ernie.get_remelded_output_agenda().get_idea_dict()) == 5

@@ -118,7 +118,7 @@ class AgendaUnit:
     _road_delimiter: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
-    _auto_output_role_to_forum: bool = None
+    _auto_output_job_to_forum: bool = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # created by ClerkUnit process
     # set_agenda_metrics Calculated field begin
@@ -1925,7 +1925,7 @@ class AgendaUnit:
             "_worker_id": self._worker_id,
             "_world_id": self._world_id,
             "_max_tree_traverse": self._max_tree_traverse,
-            "_auto_output_role_to_forum": self._auto_output_role_to_forum,
+            "_auto_output_job_to_forum": self._auto_output_job_to_forum,
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
@@ -2174,18 +2174,18 @@ class AgendaUnit:
             if (x_idea.assignor_in(assignor_groups) and x_idea.promise)
         }
 
-    def _set_auto_output_role_to_forum(self, bool_x: bool):
-        if bool_x is None and self._auto_output_role_to_forum is None:
-            self._auto_output_role_to_forum = False
-        elif bool_x is not None or not self._auto_output_role_to_forum:
-            self._auto_output_role_to_forum = bool_x is not None and bool_x
+    def _set_auto_output_job_to_forum(self, bool_x: bool):
+        if bool_x is None and self._auto_output_job_to_forum is None:
+            self._auto_output_job_to_forum = False
+        elif bool_x is not None or not self._auto_output_job_to_forum:
+            self._auto_output_job_to_forum = bool_x is not None and bool_x
 
 
 def agendaunit_shop(
     _worker_id: WorkerID = None,
     _world_id: EconID = None,
     _weight: float = None,
-    _auto_output_role_to_forum: bool = None,
+    _auto_output_job_to_forum: bool = None,
     _road_delimiter: str = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
@@ -2199,7 +2199,7 @@ def agendaunit_shop(
     x_agenda = AgendaUnit(
         _worker_id=_worker_id,
         _weight=get_1_if_None(_weight),
-        _auto_output_role_to_forum=get_False_if_None(_auto_output_role_to_forum),
+        _auto_output_job_to_forum=get_False_if_None(_auto_output_job_to_forum),
         _world_id=_world_id,
         _partys=get_empty_dict_if_none(None),
         _groups=get_empty_dict_if_none(None),
@@ -2230,8 +2230,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
     x_agenda.set_worker_id(get_obj_from_agenda_dict(agenda_dict, "_worker_id"))
     x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
-    x_agenda._auto_output_role_to_forum = get_obj_from_agenda_dict(
-        agenda_dict, "_auto_output_role_to_forum"
+    x_agenda._auto_output_job_to_forum = get_obj_from_agenda_dict(
+        agenda_dict, "_auto_output_job_to_forum"
     )
     x_agenda.set_max_tree_traverse(
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
@@ -2353,7 +2353,7 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key == "_max_tree_traverse":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
-    elif dict_key == "_auto_output_role_to_forum":
+    elif dict_key == "_auto_output_job_to_forum":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None

@@ -427,7 +427,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
     if category == "agendaunit":
         return (
             x_obj._weight != y_obj._weight
-            or x_obj._auto_output_role_to_forum != y_obj._auto_output_role_to_forum
+            or x_obj._auto_output_job_to_forum != y_obj._auto_output_job_to_forum
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
             or x_obj._party_creditor_pool != y_obj._party_creditor_pool
@@ -560,7 +560,7 @@ class BookUnit:
                 "_party_debtor_pool", after_agenda._party_debtor_pool
             )
             x_agendaatom.set_optional_arg(
-                "_auto_output_role_to_forum", after_agenda._auto_output_role_to_forum
+                "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
             )
             x_agendaatom.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
             self.set_agendaatom(x_agendaatom)

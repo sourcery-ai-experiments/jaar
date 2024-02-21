@@ -11,50 +11,50 @@ from src.instrument.file import open_file
 from os.path import exists as os_path_exists
 
 
-def test_WorldUnit_generate_work_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
+def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_text = "Music"
     music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
     luca_text = "Luca"
-    x_luca_work_path = f"{music_world._persons_dir}/{luca_text}/work.json"
-    assert os_path_exists(x_luca_work_path) == False
+    x_luca_life_path = f"{music_world._persons_dir}/{luca_text}/life.json"
+    assert os_path_exists(x_luca_life_path) == False
     luca_person = music_world.add_personunit(luca_text)
-    assert luca_person._work_path == x_luca_work_path
-    assert os_path_exists(x_luca_work_path)
+    assert luca_person._life_path == x_luca_life_path
+    assert os_path_exists(x_luca_life_path)
 
     # WHEN
-    luca_work = music_world.generate_work_agenda(luca_text)
+    luca_life = music_world.generate_life_agenda(luca_text)
 
     # THEN
     example_agenda = agendaunit_shop(luca_text, music_text)
     example_agenda.set_agenda_metrics()
-    assert luca_work._world_id == example_agenda._world_id
-    assert luca_work == example_agenda
+    assert luca_life._world_id == example_agenda._world_id
+    assert luca_life == example_agenda
 
 
-def test_WorldUnit_generate_work_agenda_ReturnsRegeneratedObj(
+def test_WorldUnit_generate_life_agenda_ReturnsRegeneratedObj(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_world = worldunit_shop("music", get_test_worlds_dir(), True)
     luca_text = "Luca"
     luca_person = music_world.add_personunit(luca_text)
-    before_luca_agenda = luca_person.get_work_file_agenda()
+    before_luca_agenda = luca_person.get_life_file_agenda()
     bob_text = "Bob"
     before_luca_agenda.add_partyunit(bob_text)
-    luca_person._save_work_file(before_luca_agenda)
-    assert luca_person.get_work_file_agenda().get_party(bob_text) != None
+    luca_person._save_life_file(before_luca_agenda)
+    assert luca_person.get_life_file_agenda().get_party(bob_text) != None
 
     # WHEN
-    after_luca_agenda = music_world.generate_work_agenda(luca_text)
+    after_luca_agenda = music_world.generate_life_agenda(luca_text)
 
-    # THEN method should wipe over work agenda
+    # THEN method should wipe over life agenda
     assert after_luca_agenda.get_party(bob_text) is None
 
 
-def test_WorldUnit_generate_work_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
+def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -62,7 +62,7 @@ def test_WorldUnit_generate_work_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAge
 
     bob_text = "Bob"
     bob_person = music_world.add_personunit(bob_text)
-    assert music_world.generate_work_agenda(bob_text).get_party(bob_text) is None
+    assert music_world.generate_life_agenda(bob_text).get_party(bob_text) is None
 
     # WHEN
     bob_gut_agenda = bob_person.get_gut_file_agenda()
@@ -77,7 +77,7 @@ def test_WorldUnit_generate_work_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAge
     bob_person._save_gut_file(bob_gut_agenda)
 
     # THEN
-    assert music_world.generate_work_agenda(bob_text).get_party(bob_text) != None
+    assert music_world.generate_life_agenda(bob_text).get_party(bob_text) != None
 
     # sue_text = "Sue"
     # sue_person = music_world.add_personunit(sue_text)
@@ -97,10 +97,10 @@ def test_WorldUnit_generate_work_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAge
     # dallas_econ = sue_person.get_econ(dallas_road)
     # dallas_econ.create_new_clerkunit(sue_text)
     # dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    # assert dallas_sue_clerk.get_plan().get_party(bob_text) is None
-    # # assert elpaso_sue_clerk.get_plan().get_party(bob_text) is None
+    # assert dallas_sue_clerk.get_role().get_party(bob_text) is None
+    # # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
 
     # # WHEN
-    # sue_work_agenda = music_world.generate_work_agenda(sue_text)
+    # sue_life_agenda = music_world.generate_life_agenda(sue_text)
 
     # # THEN

@@ -331,23 +331,21 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.save_ignore_button.setFont(font)
         self.save_ignore_button.setObjectName("save_ignore_button")
-        self.set_role_agenda_button = QtWidgets.QPushButton(self.centralwidget)
-        self.set_role_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
+        self.set_job_agenda_button = QtWidgets.QPushButton(self.centralwidget)
+        self.set_job_agenda_button.setGeometry(QtCore.QRect(190, 640, 141, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.set_role_agenda_button.setFont(font)
-        self.set_role_agenda_button.setObjectName("set_role_agenda_button")
-        self.reload_forum_role_agendas_button = QtWidgets.QPushButton(
-            self.centralwidget
-        )
-        self.reload_forum_role_agendas_button.setGeometry(
+        self.set_job_agenda_button.setFont(font)
+        self.set_job_agenda_button.setObjectName("set_job_agenda_button")
+        self.reload_forum_job_agendas_button = QtWidgets.QPushButton(self.centralwidget)
+        self.reload_forum_job_agendas_button.setGeometry(
             QtCore.QRect(190, 620, 141, 21)
         )
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.reload_forum_role_agendas_button.setFont(font)
-        self.reload_forum_role_agendas_button.setObjectName(
-            "reload_forum_role_agendas_button"
+        self.reload_forum_job_agendas_button.setFont(font)
+        self.reload_forum_job_agendas_button.setObjectName(
+            "reload_forum_job_agendas_button"
         )
         self.set_forum_and_reload_srcs_button = QtWidgets.QPushButton(
             self.centralwidget
@@ -361,18 +359,18 @@ class Ui_MainWindow(object):
         self.set_forum_and_reload_srcs_button.setObjectName(
             "set_forum_and_reload_srcs_button"
         )
-        self.plan_open_button = QtWidgets.QPushButton(self.centralwidget)
-        self.plan_open_button.setGeometry(QtCore.QRect(530, 50, 51, 21))
+        self.role_open_button = QtWidgets.QPushButton(self.centralwidget)
+        self.role_open_button.setGeometry(QtCore.QRect(530, 50, 51, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.plan_open_button.setFont(font)
-        self.plan_open_button.setObjectName("plan_open_button")
-        self.plan_save_button = QtWidgets.QPushButton(self.centralwidget)
-        self.plan_save_button.setGeometry(QtCore.QRect(530, 70, 51, 21))
+        self.role_open_button.setFont(font)
+        self.role_open_button.setObjectName("role_open_button")
+        self.role_save_button = QtWidgets.QPushButton(self.centralwidget)
+        self.role_save_button.setGeometry(QtCore.QRect(530, 70, 51, 21))
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.plan_save_button.setFont(font)
-        self.plan_save_button.setObjectName("plan_save_button")
+        self.role_save_button.setFont(font)
+        self.role_save_button.setObjectName("role_save_button")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1557, 21))
@@ -467,17 +465,17 @@ class Ui_MainWindow(object):
         self.show_ignores_button.setText(_translate("MainWindow", "ignore"))
         self.open_ignore_button.setText(_translate("MainWindow", "o"))
         self.save_ignore_button.setText(_translate("MainWindow", "s"))
-        self.set_role_agenda_button.setText(
+        self.set_job_agenda_button.setText(
             _translate("MainWindow", "output_agenda to forum_dir")
         )
-        self.reload_forum_role_agendas_button.setText(
-            _translate("MainWindow", "refresh_role_agendas")
+        self.reload_forum_job_agendas_button.setText(
+            _translate("MainWindow", "refresh_job_agendas")
         )
         self.set_forum_and_reload_srcs_button.setText(
             _translate("MainWindow", "dest2forum and refresh")
         )
-        self.plan_open_button.setText(_translate("MainWindow", "plan"))
-        self.plan_save_button.setText(_translate("MainWindow", "save"))
+        self.role_open_button.setText(_translate("MainWindow", "role"))
+        self.role_save_button.setText(_translate("MainWindow", "save"))
         self.menubar.setAccessibleName(_translate("MainWindow", "File"))
         self.menubar.setAccessibleDescription(
             _translate("MainWindow", "General Operations")

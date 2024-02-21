@@ -124,14 +124,14 @@ class EconUnit:
     def set_voice_ranks(self, worker_id: WorkerID, sort_order: str):
         if sort_order == "descretional":
             x_clerk = self.get_clerkunit(worker_id)
-            x_plan = x_clerk.get_plan()
-            for count_x, x_partyunit in enumerate(x_plan._partys.values()):
+            x_role = x_clerk.get_role()
+            for count_x, x_partyunit in enumerate(x_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            x_clerk.set_plan(x_plan)
-            x_clerk.save_refreshed_role_to_forum()
+            x_clerk.set_role(x_role)
+            x_clerk.save_refreshed_job_to_forum()
 
     def set_agenda_treasury_attrs(self, x_worker_id: WorkerID):
-        x_agenda = self.get_role_agenda_file(x_worker_id)
+        x_agenda = self.get_job_agenda_file(x_worker_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -144,8 +144,8 @@ class EconUnit:
                     if x_worker_id != agenda_ideaunit.worker_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.worker_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_role_agenda_to_forum(x_agenda)
-        self.refresh_treasury_role_agendas_data()
+        self.save_job_agenda_to_forum(x_agenda)
+        self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
         self, worker_id: WorkerID, max_blocks_count: int = None
@@ -257,18 +257,18 @@ class EconUnit:
             sal_partytreasuryunits = get_partytreasuryunit_dict(
                 treasury_conn, worker_id
             )
-            x_agenda = self.get_role_agenda_file(worker_id=worker_id)
+            x_agenda = self.get_job_agenda_file(worker_id=worker_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_role_agenda_to_forum(x_agenda)
+            self.save_job_agenda_to_forum(x_agenda)
 
     def get_partytreasuryunits(self, worker_id: str) -> dict[str:PartyBankUnit]:
         with self.get_treasury_conn() as treasury_conn:
             partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, worker_id)
         return partytreasuryunits
 
-    def refresh_treasury_role_agendas_data(self, in_memory: bool = None):
+    def refresh_treasury_job_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
         self._create_treasury_db(in_memory=in_memory, overwrite=True)
@@ -384,13 +384,13 @@ class EconUnit:
         )
 
     def add_clerkunit(
-        self, worker_id: WorkerID, _auto_output_role_to_forum: bool = None
+        self, worker_id: WorkerID, _auto_output_job_to_forum: bool = None
     ):
         x_clerkunit = clerkunit_shop(
             worker_id=worker_id,
             env_dir=self.get_object_root_dir(),
             econ_id=self.econ_id,
-            _auto_output_role_to_forum=_auto_output_role_to_forum,
+            _auto_output_job_to_forum=_auto_output_job_to_forum,
         )
         self.set_clerkunit(clerkunit=x_clerkunit)
 
@@ -411,7 +411,7 @@ class EconUnit:
 
     def save_clerkunit_file(self, clerk_id: ClerkID):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.save_plan_agenda(x_clerkunit.get_plan())
+        x_clerkunit.save_role_agenda(x_clerkunit.get_role())
 
     def change_clerkunit_clerk_id(self, old_clerk_id: ClerkID, new_clerk_id: ClerkID):
         clerk_x = self.get_clerkunit(clerk_id=old_clerk_id)
@@ -428,10 +428,10 @@ class EconUnit:
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
 
     def full_setup_clerkunit(self, worker_id: WorkerID):
-        self.add_clerkunit(worker_id, _auto_output_role_to_forum=True)
+        self.add_clerkunit(worker_id, _auto_output_job_to_forum=True)
         requestee_clerkunit = self.get_clerkunit(worker_id)
         requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_role_to_forum()
+        requestee_clerkunit.save_refreshed_job_to_forum()
 
     # forum dir management
     def get_forum_dir(self):
@@ -441,7 +441,7 @@ class EconUnit:
         per_x = self.get_clerkunit(clerk_id)
         return per_x._agendas_ignore_dir
 
-    def get_role_agenda_file(self, worker_id: str) -> AgendaUnit:
+    def get_job_agenda_file(self, worker_id: str) -> AgendaUnit:
         return get_agenda_from_json(
             open_file(dest_dir=self.get_forum_dir(), file_name=f"{worker_id}.json")
         )
@@ -462,16 +462,16 @@ class EconUnit:
             agendaunit=agenda_obj, src_worker_id=agenda_obj._worker_id
         )
 
-    def change_role_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
-        x_agenda = self.get_role_agenda_file(worker_id=old_worker_id)
+    def change_job_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
+        x_agenda = self.get_job_agenda_file(worker_id=old_worker_id)
         x_agenda.set_worker_id(new_worker_id=new_worker_id)
-        self.save_role_agenda_to_forum(x_agenda)
-        self.del_role_agenda(x_worker_id=old_worker_id)
+        self.save_job_agenda_to_forum(x_agenda)
+        self.del_job_agenda(x_worker_id=old_worker_id)
 
-    def del_role_agenda(self, x_worker_id: str):
+    def del_job_agenda(self, x_worker_id: str):
         delete_dir(f"{self.get_forum_dir()}/{x_worker_id}.json")
 
-    def save_role_agenda_to_forum(self, x_agenda: AgendaUnit):
+    def save_job_agenda_to_forum(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.econ_id)
         save_file(
             dest_dir=self.get_forum_dir(),
@@ -479,7 +479,7 @@ class EconUnit:
             file_text=x_agenda.get_json(),
         )
 
-    def reload_all_clerkunits_role_agendas(self):
+    def reload_all_clerkunits_job_agendas(self):
         for x_clerkunit in self._clerkunits.values():
             x_clerkunit.refresh_depot_agendas()
 
@@ -517,7 +517,7 @@ class EconUnit:
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_role_agenda_file(worker_id=agenda_worker_id)
+        x_agenda = self.get_job_agenda_file(worker_id=agenda_worker_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -554,7 +554,7 @@ class EconUnit:
         debtor_weight: str,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_role_agenda(_worker_id=party_id)
+        x_agenda = self.get_job_agenda(_worker_id=party_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -568,7 +568,7 @@ class EconUnit:
         x_clerkunit.del_depot_agenda(worker_id=agendaunit_worker_id)
 
     # Healer output_agenda
-    def get_refreshed_role(self, clerk_id: ClerkID) -> AgendaUnit:
+    def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         return x_clerkunit.get_remelded_output_agenda()
 

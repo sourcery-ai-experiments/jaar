@@ -43,8 +43,8 @@ class MainApp(QApplication):
 
     def editmain_show(self):
         if self.main_window.ignore_agenda_x is None:
-            self.main_window.plan = self.main_window.x_clerk.open_plan_file()
-            self.editmain_view.agenda_x = self.main_window.plan
+            self.main_window.role = self.main_window.x_clerk.open_role_file()
+            self.editmain_view.agenda_x = self.main_window.role
         else:
             self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
         self.editmain_view.refresh_all()
@@ -74,10 +74,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.worker_id_update_button.clicked.connect(self.worker_id_update_pid)
         self.worker_id_delete_button.clicked.connect(self.worker_id_delete)
         self.worker_ids_table.itemClicked.connect(self.worker_ids_table_select)
-        self.reload_forum_role_agendas_button.clicked.connect(
-            self.reload_forum_role_agendas
+        self.reload_forum_job_agendas_button.clicked.connect(
+            self.reload_forum_job_agendas
         )
-        self.set_role_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
+        self.set_job_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
         self.set_forum_and_reload_srcs_button.clicked.connect(
             self.set_forum_and_reload_srcs
         )
@@ -87,8 +87,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignores_table.setHidden(True)
         self.show_ignores_button.clicked.connect(self.show_ignores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
-        self.plan_open_button.clicked.connect(self.open_editmain)
-        self.plan_save_button.clicked.connect(self.save_plan)
+        self.role_open_button.clicked.connect(self.open_editmain)
+        self.role_save_button.clicked.connect(self.save_role)
 
         self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
         self.depotlink_update_button.clicked.connect(self.depotlink_update)
@@ -106,18 +106,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.econ_id_combo.setCurrentText(first_env)
         self._worker_id_load(clerk_id="ernie")
 
-    def save_plan(self):
-        if self.plan != None:
-            self.x_clerk.save_plan_agenda(self.plan)
+    def save_role(self):
+        if self.role != None:
+            self.x_clerk.save_role_agenda(self.role)
         self.refresh_worker_id()
 
-    def reload_forum_role_agendas(self):
+    def reload_forum_job_agendas(self):
         if self.econ_x != None:
-            self.econ_x.reload_all_clerkunits_role_agendas()
+            self.econ_x.reload_all_clerkunits_job_agendas()
 
     def set_forum_and_reload_srcs(self):
         self.save_output_agenda_to_forum()
-        self.reload_forum_role_agendas()
+        self.reload_forum_job_agendas()
 
     def save_output_agenda_to_forum(self):
         if self.x_clerk != None:
@@ -171,7 +171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ignore_agenda_worker_id = self.ignores_table.item(
             self.ignores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.econ_x.get_role_agenda(
+        # self.ignore_agenda_x = self.econ_x.get_job_agenda(
         self.ignore_agenda_x = self.econ_x.get_agenda_from_ignores_dir(
             clerk_id=self.x_clerk.pid, _worker_id=ignore_agenda_worker_id
         )
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
 
     def agenda_insert(self):
-        self.econ_x.save_role_agenda_to_forum(
+        self.econ_x.save_job_agenda_to_forum(
             agenda_x=agendaunit_shop(_worker_id=self.agenda_worker_id.text())
         )
         self.refresh_econ()
@@ -219,13 +219,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         typed_in = self.agenda_worker_id.text()
         if currently_selected != typed_in:
-            self.econ_x.change_role_worker_id(
+            self.econ_x.change_job_worker_id(
                 old_label=currently_selected, new_label=typed_in
             )
             self.refresh_econ()
 
     def agenda_delete(self):
-        self.econ_x.del_role_agenda(
+        self.econ_x.del_job_agenda(
             agenda_x_label=self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()

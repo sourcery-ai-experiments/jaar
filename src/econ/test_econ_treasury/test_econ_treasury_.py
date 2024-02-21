@@ -69,7 +69,7 @@ def test_EconUnit_create_treasury_db_CanCreateBankInMemory(env_dir_setup_cleanup
     assert os_path.exists(x_econ.get_treasury_db_path()) == False
 
 
-def test_EconUnit_refresh_treasury_role_agendas_data_CanConnectToBankInMemory(
+def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -78,7 +78,7 @@ def test_EconUnit_refresh_treasury_role_agendas_data_CanConnectToBankInMemory(
     assert os_path.exists(x_econ.get_treasury_db_path()) == False
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert os_path.exists(x_econ.get_treasury_db_path()) == False

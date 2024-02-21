@@ -35,7 +35,7 @@ from src.econ.examples.example_clerks import (
 from src.instrument.sqlite import get_single_result
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyDeletesOldBankInMemory(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldBankInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -47,19 +47,19 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyDeletesOldBankInMemory
 
     bob_agentunit = agendaunit_shop(_worker_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_econ.save_role_agenda_to_forum(bob_agentunit)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(bob_agentunit)
+    x_econ.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyDeletesOldBankFile(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldBankFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -71,19 +71,19 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyDeletesOldBankFile(
 
     bob_agentunit = agendaunit_shop(_worker_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
-    x_econ.save_role_agenda_to_forum(bob_agentunit)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(bob_agentunit)
+    x_econ.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesPartyunitTable01(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -99,37 +99,37 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesPartyunitTabl
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     bob_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_econ.save_role_agenda_to_forum(bob_agentunit)
+    x_econ.save_job_agenda_to_forum(bob_agentunit)
 
     sal_agentunit = agendaunit_shop(_worker_id=sal_text)
     sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1, debtor_weight=4)
     sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     sal_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_econ.save_role_agenda_to_forum(sal_agentunit)
+    x_econ.save_job_agenda_to_forum(sal_agentunit)
 
     tom_agentunit = agendaunit_shop(_worker_id=tom_text)
     tom_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     tom_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_econ.save_role_agenda_to_forum(tom_agentunit)
+    x_econ.save_job_agenda_to_forum(tom_agentunit)
 
     elu_agentunit = agendaunit_shop(_worker_id=elu_text)
     elu_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     elu_agentunit.add_partyunit(party_id=tom_text, creditor_weight=1, debtor_weight=4)
     elu_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
-    x_econ.save_role_agenda_to_forum(elu_agentunit)
+    x_econ.save_job_agenda_to_forum(elu_agentunit)
 
     partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 12
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -141,22 +141,22 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesAgendaTable01
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -168,22 +168,22 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulatesAgendaTable01
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
 
     agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulates_agenda_groupunit(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupunit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -198,14 +198,14 @@ def test_econ_refresh_treasury_role_agendas_data_CorrectlyPopulates_agenda_group
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tom_agenda)
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tom_agenda)
 
     sqlstr = get_table_count_sqlstr("agenda_groupunit")
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 3
@@ -257,13 +257,13 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     swim_group_unit.set_partylink(partylink=bob_link)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
 
-    x_econ.save_role_agenda_to_forum(sal_agenda)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tom_agenda)
-    x_econ.save_role_agenda_to_forum(ava_agenda)
+    x_econ.save_job_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tom_agenda)
+    x_econ.save_job_agenda_to_forum(ava_agenda)
 
     x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
-    e1_sal_agenda = x_econ.get_role_agenda_file(worker_id=sal_text)
+    e1_sal_agenda = x_econ.get_job_agenda_file(worker_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -271,11 +271,11 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     sal_swim_road = create_road(sal_sports_road, swim_text)
     swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
-    x_econ.save_role_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(sal_agenda)
     x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
 
     # THEN
-    e1_sal_agenda = x_econ.get_role_agenda_file(worker_id=sal_text)
+    e1_sal_agenda = x_econ.get_job_agenda_file(worker_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
@@ -284,7 +284,7 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
 ):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
@@ -303,12 +303,12 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 1
 
 
-def test_econ_refresh_treasury_role_agendas_data_Populates_agenda_ideaunit_table(
+def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     sal_text = "Sal"
@@ -319,15 +319,15 @@ def test_econ_refresh_treasury_role_agendas_data_Populates_agenda_ideaunit_table
     bob_agenda.set_worker_id(new_worker_id=bob_text)
     tim_agenda.set_worker_id(new_worker_id=tim_text)
     sal_agenda.set_worker_id(new_worker_id=sal_text)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tim_agenda)
-    x_econ.save_role_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tim_agenda)
+    x_econ.save_job_agenda_to_forum(sal_agenda)
 
     with x_econ.get_treasury_conn() as treasury_conn:
         assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     with x_econ.get_treasury_conn() as treasury_conn:
@@ -339,7 +339,7 @@ def test_econ_refresh_treasury_role_agendas_data_Populates_agenda_ideaunit_table
 def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     sal_text = "Sal"
@@ -353,11 +353,11 @@ def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     tim_agenda.set_worker_id(new_worker_id=tim_text)
     sal_agenda.set_worker_id(new_worker_id=sal_text)
     elu_agenda.set_worker_id(new_worker_id=elu_text)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tim_agenda)
-    x_econ.save_role_agenda_to_forum(sal_agenda)
-    x_econ.save_role_agenda_to_forum(elu_agenda)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tim_agenda)
+    x_econ.save_job_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(elu_agenda)
+    x_econ.refresh_treasury_job_agendas_data()
     i_count_sqlstr = get_table_count_sqlstr("agenda_ideaunit")
     with x_econ.get_treasury_conn() as treasury_conn:
         print(f"{i_count_sqlstr=}")
@@ -379,7 +379,7 @@ def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesT
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
@@ -401,12 +401,12 @@ def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesT
     assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 1
 
 
-def test_refresh_treasury_role_agendas_data_Populates_agenda_idea_beliefunit_table(
+def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # TODO create 3 agendas with varying numbers of beliefs
     bob_text = "Bob"
@@ -437,9 +437,9 @@ def test_refresh_treasury_role_agendas_data_Populates_agenda_idea_beliefunit_tab
     cookery_road = create_road(casa_road, cookery_text)
     sal_agenda.set_belief(base=cookery_road, pick=cookery_road)
 
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tim_agenda)
-    x_econ.save_role_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tim_agenda)
+    x_econ.save_job_agenda_to_forum(sal_agenda)
 
     with x_econ.get_treasury_conn() as treasury_conn:
         assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 0
@@ -447,7 +447,7 @@ def test_refresh_treasury_role_agendas_data_Populates_agenda_idea_beliefunit_tab
         assert get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text) == 0
 
     # WHEN
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text)=}")
@@ -464,7 +464,7 @@ def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
@@ -499,9 +499,9 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tom_agenda)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tom_agenda)
+    x_econ.refresh_treasury_job_agendas_data()
     sqlstr = get_table_count_sqlstr("agenda_groupunit")
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 3
 

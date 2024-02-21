@@ -818,7 +818,7 @@
      <string>s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_role_agenda_button">
+   <widget class="QPushButton" name="set_job_agenda_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -836,7 +836,7 @@
      <string>output_agenda to forum_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_forum_role_agendas_button">
+   <widget class="QPushButton" name="reload_forum_job_agendas_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -851,7 +851,7 @@
      </font>
     </property>
     <property name="text">
-     <string>refresh_role_agendas</string>
+     <string>refresh_job_agendas</string>
     </property>
    </widget>
    <widget class="QPushButton" name="set_forum_and_reload_srcs_button">
@@ -872,7 +872,7 @@
      <string>dest2forum and refresh</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="plan_open_button">
+   <widget class="QPushButton" name="role_open_button">
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -887,10 +887,10 @@
      </font>
     </property>
     <property name="text">
-     <string>plan</string>
+     <string>role</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="plan_save_button">
+   <widget class="QPushButton" name="role_save_button">
     <property name="geometry">
      <rect>
       <x>530</x>

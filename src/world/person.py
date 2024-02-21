@@ -46,7 +46,7 @@ class Invalid_gut_Exception(Exception):
     pass
 
 
-class Invalid_work_Exception(Exception):
+class Invalid_life_Exception(Exception):
     pass
 
 
@@ -61,9 +61,9 @@ class PersonUnit:
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
-    _work_obj: AgendaUnit = None
-    _work_file_name: str = None
-    _work_path: str = None
+    _life_obj: AgendaUnit = None
+    _life_file_name: str = None
+    _life_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
 
@@ -81,10 +81,10 @@ class PersonUnit:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
-        if self._work_file_name is None:
-            self._work_file_name = "work.json"
-        if self._work_path is None:
-            self._work_path = f"{self.person_dir}/{self._work_file_name}"
+        if self._life_file_name is None:
+            self._life_file_name = "life.json"
+        if self._life_path is None:
+            self._life_path = f"{self.person_dir}/{self._life_file_name}"
 
     def create_core_dir_and_files(self):
         set_dir(self.world_dir)
@@ -92,7 +92,7 @@ class PersonUnit:
         set_dir(self.person_dir)
         set_dir(self._econs_dir)
         self.create_gut_file_if_does_not_exist()
-        self.create_work_file_if_does_not_exist()
+        self.create_life_file_if_does_not_exist()
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
@@ -104,9 +104,9 @@ class PersonUnit:
                 )
             )
 
-    def create_work_file_if_does_not_exist(self):
-        if self.work_file_exists() == False:
-            self._save_work_file(
+    def create_life_file_if_does_not_exist(self):
+        if self.life_file_exists() == False:
+            self._save_life_file(
                 agendaunit_shop(
                     _worker_id=self.person_id,
                     _world_id=self.world_id,
@@ -117,8 +117,8 @@ class PersonUnit:
     def gut_file_exists(self) -> bool:
         return os_path_exists(self._gut_path)
 
-    def work_file_exists(self) -> bool:
-        return os_path_exists(self._work_path)
+    def life_file_exists(self) -> bool:
+        return os_path_exists(self._life_path)
 
     def _save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._worker_id != self.person_id:
@@ -133,15 +133,15 @@ class PersonUnit:
                 replace=replace,
             )
 
-    def _save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
+    def _save_life_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._worker_id != self.person_id:
-            raise Invalid_work_Exception(
-                f"AgendaUnit with worker_id '{x_agenda._worker_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
+            raise Invalid_life_Exception(
+                f"AgendaUnit with worker_id '{x_agenda._worker_id}' cannot be saved as person_id '{self.person_id}''s life agenda."
             )
         if replace in {True, False}:
             save_file(
                 dest_dir=self.person_dir,
-                file_name=self._work_file_name,
+                file_name=self._life_file_name,
                 file_text=x_agenda.get_json(),
                 replace=replace,
             )
@@ -150,15 +150,15 @@ class PersonUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
-    def get_work_file_agenda(self) -> AgendaUnit:
-        work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
-        return agenda_get_from_json(work_json)
+    def get_life_file_agenda(self) -> AgendaUnit:
+        life_json = open_file(dest_dir=self.person_dir, file_name=self._life_file_name)
+        return agenda_get_from_json(life_json)
 
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
 
-    def load_work_file(self):
-        self._work_obj = self.get_work_file_agenda()
+    def load_life_file(self):
+        self._life_obj = self.get_life_file_agenda()
 
     def get_rootpart_of_econ_dir(self):
         return "idearoot"
@@ -220,19 +220,19 @@ class PersonUnit:
     def get_econ(self, econ_road: RoadUnit) -> EconUnit:
         return self._econ_objs.get(econ_road)
 
-    def set_econunit_plan(self, econ_road: RoadUnit, plan: AgendaUnit):
+    def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
         x_econ = self.get_econ(econ_road)
-        if x_econ.clerkunit_exists(plan._worker_id) == False:
-            x_econ.create_new_clerkunit(plan._worker_id)
-        x_clerkunit = x_econ.get_clerkunit(plan._worker_id)
-        x_clerkunit.set_plan(plan)
+        if x_econ.clerkunit_exists(role._worker_id) == False:
+            x_econ.create_new_clerkunit(role._worker_id)
+        x_clerkunit = x_econ.get_clerkunit(role._worker_id)
+        x_clerkunit.set_role(role)
 
-    def set_econunits_plan(self, plan: AgendaUnit):
+    def set_econunits_role(self, role: AgendaUnit):
         for x_econ_road in self._econ_objs.keys():
-            self.set_econunit_plan(x_econ_road, plan)
+            self.set_econunit_role(x_econ_road, role)
 
-    def set_person_econunits_plan(self):
-        self.set_econunits_plan(self.get_gut_file_agenda())
+    def set_person_econunits_role(self):
+        self.set_econunits_role(self.get_gut_file_agenda())
 
     # def popup_visualization(
     #     self, econlink_by_problem: bool = False, show_fig: bool = True

@@ -17,31 +17,31 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_ClerkUnit_save_plan_agenda_CreateStartingAgendaFile(
+# def test_ClerkUnit_save_role_agenda_CreateStartingAgendaFile(
 #     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     lai_worker_id = "Lai"
 #     env_dir = get_temp_clerkunit_dir()
 #     lai_agenda = clerkunit_shop(worker_id=lai_worker_id, env_dir=env_dir)
-#     lai_plan_file_name = lai_agenda._plan_file_name
+#     lai_role_file_name = lai_agenda._role_file_name
 #     with pytest_raises(Exception) as excinfo:
-#         open_file(lai_agenda._clerkunit_dir, lai_plan_file_name)
+#         open_file(lai_agenda._clerkunit_dir, lai_role_file_name)
 #     assert (
 #         str(excinfo.value)
-#         == f"Could not load file {lai_agenda._plan_file_path} (2, 'No such file or directory')"
+#         == f"Could not load file {lai_agenda._role_file_path} (2, 'No such file or directory')"
 #     )
 
 #     # WHEN
-#     lai_agenda.save_plan_agenda(
+#     lai_agenda.save_role_agenda(
 #         agenda_x=example_agendas_get_agenda_with_4_levels()
 #     )
 
 #     # THEN
-#     assert open_file(lai_agenda._clerkunit_dir, lai_plan_file_name) != None
+#     assert open_file(lai_agenda._clerkunit_dir, lai_role_file_name) != None
 
 
-def test_ClerkUnitopen_plan_file_WhenStartingAgendaFileDoesNotExists(
+def test_ClerkUnitopen_role_file_WhenStartingAgendaFileDoesNotExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -51,9 +51,9 @@ def test_ClerkUnitopen_plan_file_WhenStartingAgendaFileDoesNotExists(
     x_clerk = clerkunit_shop(worker_id=tim_text, env_dir=env_dir, econ_id=econ_id_text)
 
     # WHEN
-    plan_agenda = x_clerk.open_plan_file()
-    assert plan_agenda != None
-    assert plan_agenda._world_id == econ_id_text
+    role_agenda = x_clerk.open_role_file()
+    assert role_agenda != None
+    assert role_agenda._world_id == econ_id_text
 
     # THEN
     x_agenda = agendaunit_shop(_worker_id=tim_text)
@@ -67,13 +67,13 @@ def test_ClerkUnitopen_plan_file_WhenStartingAgendaFileDoesNotExists(
     # x_idearoot._all_party_credit = True
     # x_idearoot._all_party_debt = True
 
-    assert plan_agenda._idearoot == x_agenda._idearoot
-    assert plan_agenda._idearoot._beliefunits == {}
-    assert list(plan_agenda._partys.keys()) == [tim_text]
-    assert list(plan_agenda._groups.keys()) == [tim_text]
+    assert role_agenda._idearoot == x_agenda._idearoot
+    assert role_agenda._idearoot._beliefunits == {}
+    assert list(role_agenda._partys.keys()) == [tim_text]
+    assert list(role_agenda._groups.keys()) == [tim_text]
 
 
-def test_ClerkUnit_save_plan_agenda_planPersonIDMustBeHealer(
+def test_ClerkUnit_save_role_agenda_rolePersonIDMustBeHealer(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -84,57 +84,57 @@ def test_ClerkUnit_save_plan_agenda_planPersonIDMustBeHealer(
     assert x_agenda._worker_id != gio_text
 
     # WHEN
-    x_clerk.save_plan_agenda(x_agenda=x_agenda)
+    x_clerk.save_role_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_plan_file()._worker_id == x_clerk._clerk_id
+    assert x_clerk.open_role_file()._worker_id == x_clerk._clerk_id
 
 
-def test_ClerkUnit_open_plan_file_WhenStartingAgendaFileExists(
+def test_ClerkUnit_open_role_file_WhenStartingAgendaFileExists(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
     x_clerk = clerkunit_shop(gio_text, get_temp_clerkunit_dir(), get_temp_econ_id())
-    x_clerk.save_plan_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
+    x_clerk.save_role_agenda(x_agenda=example_agendas_get_agenda_with_4_levels())
 
     # WHEN
-    assert x_clerk.open_plan_file() != None
-    plan_agenda = x_clerk.open_plan_file()
+    assert x_clerk.open_role_file() != None
+    role_agenda = x_clerk.open_role_file()
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     x_agenda.set_worker_id(new_worker_id=gio_text)
     x_agenda.set_agenda_metrics()
 
-    assert plan_agenda._idearoot._kids == x_agenda._idearoot._kids
-    assert plan_agenda._idearoot == x_agenda._idearoot
-    assert plan_agenda._idearoot._beliefunits == {}
-    assert plan_agenda._partys == {}
-    assert plan_agenda._groups == {}
-    assert plan_agenda._worker_id == x_clerk._clerk_id
+    assert role_agenda._idearoot._kids == x_agenda._idearoot._kids
+    assert role_agenda._idearoot == x_agenda._idearoot
+    assert role_agenda._idearoot._beliefunits == {}
+    assert role_agenda._partys == {}
+    assert role_agenda._groups == {}
+    assert role_agenda._worker_id == x_clerk._clerk_id
 
 
-def test_ClerkUnit_erase_plan_agenda_file_DeletesFileCorrectly(
+def test_ClerkUnit_erase_role_agenda_file_DeletesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     gio_text = "Gio"
     env_dir = get_temp_clerkunit_dir()
     x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_econ_id())
-    x_clerk.save_plan_agenda(example_agendas_get_agenda_with_4_levels())
-    file_name = x_clerk._plan_file_name
+    x_clerk.save_role_agenda(example_agendas_get_agenda_with_4_levels())
+    file_name = x_clerk._role_file_name
     assert open_file(x_clerk._clerkunit_dir, file_name) != None
 
     # WHEN
-    x_clerk.erase_plan_agenda_file()
+    x_clerk.erase_role_agenda_file()
 
     # THEN
     with pytest_raises(Exception) as excinfo:
         open_file(x_clerk._clerkunit_dir, file_name)
     assert (
         str(excinfo.value)
-        == f"Could not load file {x_clerk._clerkunit_dir}/plan_agenda.json (2, 'No such file or directory')"
+        == f"Could not load file {x_clerk._clerkunit_dir}/role_agenda.json (2, 'No such file or directory')"
     )
 
 
@@ -321,24 +321,24 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert new_output_agenda != s1
 
 
-def test_ClerkUnit_plan_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
+def test_ClerkUnit_role_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
-    # clerkunit with plan_agenda and no other depot agendas
+    # clerkunit with role_agenda and no other depot agendas
     yao_text = "Yao"
-    plan_origin_weight = 1
+    role_origin_weight = 1
     yao_originunit = originunit_shop()
-    yao_originunit.set_originlink(party_id=yao_text, weight=plan_origin_weight)
-    plan_agenda_x = example_get_7nodeJRoot_agenda()
-    plan_agenda_x.set_worker_id(yao_text)
+    yao_originunit.set_originlink(party_id=yao_text, weight=role_origin_weight)
+    role_agenda_x = example_get_7nodeJRoot_agenda()
+    role_agenda_x.set_worker_id(yao_text)
 
-    assert plan_agenda_x._idearoot._originunit == originunit_shop()
-    assert plan_agenda_x._idearoot._originunit != yao_originunit
+    assert role_agenda_x._idearoot._originunit == originunit_shop()
+    assert role_agenda_x._idearoot._originunit != yao_originunit
 
     x_clerk = clerkunit_shop(yao_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     x_clerk.create_core_dir_and_files()
-    x_clerk.save_plan_agenda(x_agenda=plan_agenda_x)
+    x_clerk.save_role_agenda(x_agenda=role_agenda_x)
 
     # WHEN
     output_agenda_x = x_clerk.get_remelded_output_agenda()
@@ -359,4 +359,4 @@ def test_ClerkUnit_plan_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
 
     output_originlink = output_agenda_x._originunit._links.get(yao_text)
     assert output_originlink.party_id == yao_text
-    assert output_originlink.weight == plan_origin_weight
+    assert output_originlink.weight == role_origin_weight

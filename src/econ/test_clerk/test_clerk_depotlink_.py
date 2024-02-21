@@ -26,9 +26,9 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     sue_text = "Sue"
     env_dir = get_temp_clerkunit_dir()
     sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_econ_id())
-    sue_agenda.set_plan_if_empty()
+    sue_agenda.set_role_if_empty()
     tim_text = "Tim"
-    assert list(sue_agenda._plan._partys.keys()) == [sue_text]
+    assert list(sue_agenda._role._partys.keys()) == [sue_text]
 
     # WHEN / THEN
     file_path_x = f"{sue_agenda._agendas_depot_dir}/{tim_text}.json"
@@ -41,24 +41,24 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     )
 
 
-def test_clerkunit_set_depotlink_CorrectlySetsplanPartys(
+def test_clerkunit_set_depotlink_CorrectlySetsrolePartys(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_clerkunit_dir()
     yao_ux = clerkunit_shop(yao_text, env_dir, get_temp_econ_id())
-    yao_ux.set_plan_if_empty()
+    yao_ux.set_role_if_empty()
     sue_text = "Sue"
     create_agenda_file(yao_ux._agendas_depot_dir, sue_text)
-    assert list(yao_ux._plan._partys.keys()) == [yao_text]
+    assert list(yao_ux._role._partys.keys()) == [yao_text]
 
     # WHEN
     yao_ux._set_depotlink(outer_worker_id=sue_text)
 
     # THEN
-    assert list(yao_ux._plan._partys.keys()) == [yao_text, sue_text]
-    assert yao_ux._plan.get_party(sue_text).depotlink_type is None
+    assert list(yao_ux._role._partys.keys()) == [yao_text, sue_text]
+    assert yao_ux._role.get_party(sue_text).depotlink_type is None
 
 
 def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup):
@@ -68,9 +68,9 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     cali_text = "Cali"
     cali_ux = clerkunit_shop(cali_text, get_temp_clerkunit_dir(), get_temp_econ_id())
     cali_ux.create_core_dir_and_files()
-    cali_ux.set_plan_if_empty()
+    cali_ux.set_role_if_empty()
     cali_ux.save_agenda_to_depot(amer_agenda)
-    assert cali_ux.get_plan().get_party(amer_agenda._worker_id) is None
+    assert cali_ux.get_role().get_party(amer_agenda._worker_id) is None
     amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._worker_id}.json"
     assert os_path.exists(amer_digest_path) is False
 
@@ -82,7 +82,7 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
 
     # THEN
     assert (
-        cali_ux.get_plan().get_party(amer_agenda._worker_id).depotlink_type
+        cali_ux.get_role().get_party(amer_agenda._worker_id).depotlink_type
         == assignment_text
     )
     assert os_path.exists(amer_digest_path)
@@ -108,15 +108,15 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup)
     create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
     bob_agenda._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_agenda._plan._partys.keys()) == [bob_text, yao_text]
-    assert bob_agenda._plan.get_party(yao_text).depotlink_type == assignment_text
+    assert list(bob_agenda._role._partys.keys()) == [bob_text, yao_text]
+    assert bob_agenda._role.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_agenda.del_depot_agenda(worker_id=yao_text)
 
     # THEN
-    assert list(bob_agenda._plan._partys.keys()) == [bob_text, yao_text]
-    assert bob_agenda._plan.get_party(yao_text).depotlink_type is None
+    assert list(bob_agenda._role._partys.keys()) == [bob_text, yao_text]
+    assert bob_agenda._role.get_party(yao_text).depotlink_type is None
 
 
 def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
@@ -128,7 +128,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_econ_id())
     lai_text = "Lai"
     create_agenda_file(bob_agenda._agendas_depot_dir, lai_text)
-    bob_agenda.set_plan_if_empty()
+    bob_agenda.set_role_if_empty()
     bob_agenda._set_depotlink(lai_text, link_type="blind_trust")
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
     assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
@@ -152,7 +152,7 @@ def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
     assert count_files(bob_agenda._agendas_depot_dir) is None  # dir does not exist
 
     # WHEN
-    bob_agenda.set_plan_if_empty()
+    bob_agenda.set_role_if_empty()
     bob_agenda.set_depot_agenda(x_agenda=cal1, depotlink_type="blind_trust")
 
     # THEN
@@ -172,17 +172,17 @@ def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     yao_text = "Yao"
     create_agenda_file(bob_agenda._agendas_depot_dir, yao_text)
     assignment_text = "assignment"
-    bob_agenda.set_plan_if_empty()
+    bob_agenda.set_role_if_empty()
     bob_agenda._set_depotlink(yao_text, link_type=assignment_text)
-    assert list(bob_agenda._plan._partys.keys()) == [bob_text, yao_text]
-    assert bob_agenda._plan.get_party(yao_text).depotlink_type == assignment_text
+    assert list(bob_agenda._role._partys.keys()) == [bob_text, yao_text]
+    assert bob_agenda._role.get_party(yao_text).depotlink_type == assignment_text
 
     # WHEN
     bob_agenda.del_depot_agenda(worker_id=yao_text)
 
     # THEN
-    assert list(bob_agenda._plan._partys.keys()) == [bob_text, yao_text]
-    assert bob_agenda._plan.get_party(yao_text).depotlink_type is None
+    assert list(bob_agenda._role._partys.keys()) == [bob_text, yao_text]
+    assert bob_agenda._role.get_party(yao_text).depotlink_type is None
 
 
 def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
@@ -194,7 +194,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     bob_agenda = clerkunit_shop(bob_text, env_dir, get_temp_econ_id())
     zia_text = "Zia"
     create_agenda_file(bob_agenda._agendas_depot_dir, zia_text)
-    bob_agenda.set_plan_if_empty()
+    bob_agenda.set_role_if_empty()
     bob_agenda._set_depotlink(zia_text, link_type="ignore")
     assert count_files(dir_path=bob_agenda._agendas_depot_dir) == 1
     assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 1
@@ -218,7 +218,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     bob_ux = clerkunit_shop(bob_text, env_dir, get_temp_econ_id())
     zia_text = "Zia"
     create_agenda_file(bob_ux._agendas_depot_dir, zia_text)
-    bob_ux.set_plan_if_empty()
+    bob_ux.set_role_if_empty()
     bob_ux._set_depotlink(zia_text, link_type="ignore")
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
     cx1 = bob_ux.open_ignore_agenda(worker_id=zia_text)
@@ -252,14 +252,14 @@ def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     ernie_agenda = get_cal2nodes(_worker_id=ernie_text)
     steve_text = "steve"
     old_steve_agenda = get_cal2nodes(_worker_id=steve_text)
-    sx.save_role_agenda_to_forum(ernie_agenda)
-    sx.save_role_agenda_to_forum(old_steve_agenda)
+    sx.save_job_agenda_to_forum(ernie_agenda)
+    sx.save_job_agenda_to_forum(old_steve_agenda)
     yao_agenda.set_depot_agenda(x_agenda=ernie_agenda, depotlink_type="blind_trust")
     yao_agenda.set_depot_agenda(x_agenda=old_steve_agenda, depotlink_type="blind_trust")
 
     assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 4
     new_steve_agenda = get_cal3nodes(_worker_id=steve_text)
-    sx.save_role_agenda_to_forum(new_steve_agenda)
+    sx.save_job_agenda_to_forum(new_steve_agenda)
     print(f"{env_dir=} {yao_agenda._forum_dir=}")
     # for file_name in dir_files(dir_path=env_dir):
     #     print(f"{bob_agenda._forum_dir=} {file_name=}")

@@ -13,7 +13,7 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_clea
     econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(econ_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
 
     # WHEN
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
@@ -27,7 +27,7 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(econ_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_econ.get_treasury_conn())) == 0
 
     # WHEN
@@ -36,12 +36,12 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=ava_text))
-    x_econ.save_role_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=ava_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
 
     # THEN
@@ -75,7 +75,7 @@ def test_econ_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(econ_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.refresh_treasury_job_agendas_data()
     sal_text = "Sal"
     bob_text = "Bob"
     tom_text = "Tom"
@@ -86,12 +86,12 @@ def test_econ_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_agenda = agendaunit_shop(_worker_id=tom_text)
     ava_agenda = agendaunit_shop(_worker_id=ava_text)
     elu_agenda = agendaunit_shop(_worker_id=elu_text)
-    x_econ.save_role_agenda_to_forum(sal_agenda)
-    x_econ.save_role_agenda_to_forum(bob_agenda)
-    x_econ.save_role_agenda_to_forum(tom_agenda)
-    x_econ.save_role_agenda_to_forum(ava_agenda)
-    x_econ.save_role_agenda_to_forum(elu_agenda)
-    x_econ.refresh_treasury_role_agendas_data()
+    x_econ.save_job_agenda_to_forum(sal_agenda)
+    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_job_agenda_to_forum(tom_agenda)
+    x_econ.save_job_agenda_to_forum(ava_agenda)
+    x_econ.save_job_agenda_to_forum(elu_agenda)
+    x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
     assert x_agendatreasuryunits.get(sal_text).rational is None
     assert x_agendatreasuryunits.get(bob_text).rational is None

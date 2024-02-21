@@ -148,7 +148,7 @@ class WorldUnit:
         x_econ = healer_person.get_econ(econ_road)
         x_econ.create_new_clerkunit(gut_agenda._worker_id)
         x_clerk = x_econ.get_clerkunit(gut_agenda._worker_id)
-        x_clerk.save_plan_agenda(gut_agenda)
+        x_clerk.save_role_agenda(gut_agenda)
 
     def add_econ_connection(
         self,
@@ -172,8 +172,8 @@ class WorldUnit:
         if x_econ.clerkunit_exists(clerk_person_id) == False:
             x_econ.add_clerkunit(clerk_person_id)
 
-    def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_work = agendaunit_shop(person_id, self.world_id)
+    def generate_life_agenda(self, person_id: PersonID) -> AgendaUnit:
+        x_life = agendaunit_shop(person_id, self.world_id)
         x_personunit = self.get_personunit(person_id)
         x_gut = x_personunit.get_gut_file_agenda()
         x_gut.set_agenda_metrics()
@@ -184,25 +184,25 @@ class WorldUnit:
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.create_new_clerkunit(person_id)
                 x_clerk = x_econ.get_clerkunit(person_id)
-                x_clerk.save_refreshed_role_to_forum()
-                x_role = x_econ.get_role_agenda_file(person_id)
-                x_work.meld(x_role)
-        x_personunit._save_work_file(x_work)
-        return self.get_work_file_agenda(person_id)
+                x_clerk.save_refreshed_job_to_forum()
+                x_job = x_econ.get_job_agenda_file(person_id)
+                x_life.meld(x_job)
+        x_personunit._save_life_file(x_life)
+        return self.get_life_file_agenda(person_id)
 
-    def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
+    def get_life_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)
-        return x_personunit.get_work_file_agenda()
+        return x_personunit.get_life_file_agenda()
 
     def _set_partyunit(
         self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
     ):
         x_econunit.full_setup_clerkunit(person_id)
         person_clerkunit = x_econunit.get_clerkunit(person_id)
-        person_plan = person_clerkunit.get_plan()
-        person_plan.add_partyunit(party_id)
-        person_clerkunit.save_plan_agenda(person_plan)
-        person_clerkunit.save_refreshed_role_to_forum()
+        person_role = person_clerkunit.get_role()
+        person_role.add_partyunit(party_id)
+        person_clerkunit.save_role_agenda(person_role)
+        person_clerkunit.save_refreshed_job_to_forum()
 
 
 def worldunit_shop(
