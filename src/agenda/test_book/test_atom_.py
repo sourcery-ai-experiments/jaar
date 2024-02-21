@@ -10,10 +10,11 @@ from src.agenda.atom import (
     get_atom_config_dict,
     get_mog,
     set_mog,
+    get_atom_columns_build,
 )
 
 
-def test_category_ref_ReturnsCorrectObj():
+def test_atom_config_HasCorrect_category():
     assert category_ref() == {
         "agendaunit",
         "partyunit",
@@ -130,6 +131,58 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     assert 26 == get_mog("partyunit", atom_delete(), mog, 26)
     assert 27 == get_mog("groupunit", atom_delete(), mog, 27)
     assert 28 == get_mog("agendaunit", atom_update(), mog, 28)
+
+
+def _every_crud_dict_has_elements(crud_dict: dict) -> bool:
+    required_args_text = "required_args"
+    optional_args_text = "optional_args"
+    python_type_text = "python_type"
+    sqlite_datatype_text = "sqlite_datatype"
+    for required_arg, x_dict in crud_dict.get(required_args_text).items():
+        if x_dict.get(python_type_text) is None:
+            print(f"python_type_text failed for {required_arg=}")
+            return False
+        if x_dict.get(sqlite_datatype_text) is None:
+            print(f"sqlite_datatype_text failed for {required_arg=}")
+            return False
+    if crud_dict.get(optional_args_text) != None:
+        for optional_arg, x_dict in crud_dict.get(optional_args_text).items():
+            if x_dict.get(python_type_text) is None:
+                print(f"python_type_text failed for {optional_arg=}")
+                return False
+            if x_dict.get(sqlite_datatype_text) is None:
+                print(f"sqlite_datatype_text failed for {optional_arg=}")
+                return False
+
+
+def check_every_arg_dict_has_elements(atom_config_dict):
+    for category, category_dict in atom_config_dict.items():
+        if category_dict.get(atom_insert()) != None:
+            print(f"{category=} {atom_insert()=}")
+            _every_crud_dict_has_elements(category_dict.get(atom_insert()))
+        if category_dict.get(atom_update()) != None:
+            print(f"{category=} {atom_update()=}")
+            _every_crud_dict_has_elements(category_dict.get(atom_update()))
+        if category_dict.get(atom_delete()) != None:
+            print(f"{category=} {atom_delete()=}")
+            _every_crud_dict_has_elements(category_dict.get(atom_delete()))
+    return True
+
+
+def test_atom_config_AllArgsHave_python_type_sqlite_datatype():
+    # GIVEN
+    # WHEN / THEN
+    assert check_every_arg_dict_has_elements(get_atom_config_dict())
+
+
+def test_get_atom_columns_build_ReturnsCorrectObj():
+    # GIVEN / WHEN
+    atom_columns = get_atom_columns_build()
+
+    # THEN
+    assert len(atom_columns) == 111
+    assert atom_columns.get("agendaunit_UPDATE__auto_output_job_to_forum") == "INTEGER"
+    # print(f"{atom_columns.keys()=}")
 
 
 def test_AgendaAtom_exists():

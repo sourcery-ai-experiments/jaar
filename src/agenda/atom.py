@@ -52,6 +52,71 @@ def get_atom_config_dict() -> dict:
     )
 
 
+def add_to_atom_table_columns(x_dict, atom_category, crud, arg_key, arg_value):
+    x_dict[f"{atom_category}_{crud}_{arg_key}"] = arg_value.get("sqlite_datatype")
+
+
+def get_atom_columns_build() -> dict[str:]:
+    required_args_text = "required_args"
+    optional_args_text = "optional_args"
+    atom_table_columns = {}
+    atom_config = get_atom_config_dict()
+    for atom_category, category_dict in atom_config.items():
+        catergory_insert = category_dict.get(atom_insert())
+        catergory_update = category_dict.get(atom_update())
+        catergory_delete = category_dict.get(atom_delete())
+        if catergory_insert != None:
+            required_args = catergory_insert.get(required_args_text)
+            optional_args = catergory_insert.get(optional_args_text)
+            for required_arg, x_value in required_args.items():
+                add_to_atom_table_columns(
+                    atom_table_columns,
+                    atom_category,
+                    atom_insert(),
+                    required_arg,
+                    x_value,
+                )
+            for optional_arg, x_value in optional_args.items():
+                add_to_atom_table_columns(
+                    atom_table_columns,
+                    atom_category,
+                    atom_insert(),
+                    optional_arg,
+                    x_value,
+                )
+        if catergory_update != None:
+            required_args = catergory_update.get(required_args_text)
+            optional_args = catergory_update.get(optional_args_text)
+            for required_arg, x_value in required_args.items():
+                add_to_atom_table_columns(
+                    atom_table_columns,
+                    atom_category,
+                    atom_update(),
+                    required_arg,
+                    x_value,
+                )
+            for optional_arg, x_value in optional_args.items():
+                add_to_atom_table_columns(
+                    atom_table_columns,
+                    atom_category,
+                    atom_update(),
+                    optional_arg,
+                    x_value,
+                )
+        if catergory_delete != None:
+            required_args = catergory_delete.get(required_args_text)
+            optional_args = catergory_delete.get(optional_args_text)
+            for required_arg, x_value in required_args.items():
+                add_to_atom_table_columns(
+                    atom_table_columns,
+                    atom_category,
+                    atom_delete(),
+                    required_arg,
+                    x_value,
+                )
+    return atom_table_columns
+
+
 def save_atom_config_file(atom_config_dict):
     save_file(
         dest_dir=get_codespace_agenda_dir(),
@@ -120,7 +185,6 @@ class AgendaAtom:
         for description_element in description_elements:
             for x_key, x_value in description_element.items():
                 if x_key == "arg":
-                    print(f"{x_value=} {self.get_value(x_value)=}")
                     arg_value = self.get_value(x_value)
                 elif x_key == "preceding text":
                     preceding_text = x_value
@@ -130,7 +194,6 @@ class AgendaAtom:
                 x_str = f"{preceding_text}{arg_value}{proceding_text}"
             elif arg_value != None:
                 x_str = f"{x_str} {preceding_text}{arg_value}{proceding_text}"
-            print(f"{x_str=}")
         return x_str
 
     def get_all_args_in_list(self):
