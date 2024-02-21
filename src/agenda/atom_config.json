@@ -30,7 +30,7 @@
             ],
             "atom_order": 28,
             "optional_args": {
-                "_auto_output_to_forum": "bool",
+                "_auto_output_role_to_forum": "bool",
                 "_max_tree_traverse": "int",
                 "_meld_strategy": "str",
                 "_party_creditor_pool": "int",

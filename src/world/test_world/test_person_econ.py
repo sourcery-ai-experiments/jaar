@@ -81,7 +81,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     assert sue_person._econ_objs != {}
     assert sue_person._econ_objs.get(dallas_road) != None
     dallas_econunit = sue_person._econ_objs.get(dallas_road)
-    assert dallas_econunit.econ_id == dallas_text
+    assert dallas_econunit.econ_id == sue_person.world_id
     assert dallas_econunit.econ_dir == dallas_dir
     assert dallas_econunit._manager_person_id == sue_text
     assert dallas_econunit._road_delimiter == sue_person._road_delimiter
@@ -265,7 +265,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.econ_id == dallas_text
+    assert dallas_econ.econ_id == sue_person.world_id
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 

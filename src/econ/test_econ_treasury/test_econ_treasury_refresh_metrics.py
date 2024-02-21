@@ -263,7 +263,7 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     x_econ.save_role_agenda_to_forum(ava_agenda)
 
     x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
-    e1_sal_agenda = x_econ.get_role_agenda(worker_id=sal_text)
+    e1_sal_agenda = x_econ.get_role_agenda_file(worker_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -275,7 +275,7 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
 
     # THEN
-    e1_sal_agenda = x_econ.get_role_agenda(worker_id=sal_text)
+    e1_sal_agenda = x_econ.get_role_agenda_file(worker_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 

@@ -128,10 +128,10 @@ class EconUnit:
             for count_x, x_partyunit in enumerate(x_plan._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             x_clerk.set_plan(x_plan)
-            x_clerk.save_refreshed_output_to_forum()
+            x_clerk.save_refreshed_role_to_forum()
 
     def set_agenda_treasury_attrs(self, x_worker_id: WorkerID):
-        x_agenda = self.get_role_agenda(x_worker_id)
+        x_agenda = self.get_role_agenda_file(x_worker_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -257,7 +257,7 @@ class EconUnit:
             sal_partytreasuryunits = get_partytreasuryunit_dict(
                 treasury_conn, worker_id
             )
-            x_agenda = self.get_role_agenda(worker_id=worker_id)
+            x_agenda = self.get_role_agenda_file(worker_id=worker_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
@@ -383,12 +383,14 @@ class EconUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, worker_id: WorkerID, _auto_output_to_forum: bool = None):
+    def add_clerkunit(
+        self, worker_id: WorkerID, _auto_output_role_to_forum: bool = None
+    ):
         x_clerkunit = clerkunit_shop(
             worker_id=worker_id,
             env_dir=self.get_object_root_dir(),
             econ_id=self.econ_id,
-            _auto_output_to_forum=_auto_output_to_forum,
+            _auto_output_role_to_forum=_auto_output_role_to_forum,
         )
         self.set_clerkunit(clerkunit=x_clerkunit)
 
@@ -426,10 +428,10 @@ class EconUnit:
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
 
     def full_setup_clerkunit(self, worker_id: WorkerID):
-        self.add_clerkunit(worker_id, _auto_output_to_forum=True)
+        self.add_clerkunit(worker_id, _auto_output_role_to_forum=True)
         requestee_clerkunit = self.get_clerkunit(worker_id)
         requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_output_to_forum()
+        requestee_clerkunit.save_refreshed_role_to_forum()
 
     # forum dir management
     def get_forum_dir(self):
@@ -439,7 +441,7 @@ class EconUnit:
         per_x = self.get_clerkunit(clerk_id)
         return per_x._agendas_ignore_dir
 
-    def get_role_agenda(self, worker_id: str) -> AgendaUnit:
+    def get_role_agenda_file(self, worker_id: str) -> AgendaUnit:
         return get_agenda_from_json(
             open_file(dest_dir=self.get_forum_dir(), file_name=f"{worker_id}.json")
         )
@@ -461,7 +463,7 @@ class EconUnit:
         )
 
     def change_role_worker_id(self, old_worker_id: WorkerID, new_worker_id: WorkerID):
-        x_agenda = self.get_role_agenda(worker_id=old_worker_id)
+        x_agenda = self.get_role_agenda_file(worker_id=old_worker_id)
         x_agenda.set_worker_id(new_worker_id=new_worker_id)
         self.save_role_agenda_to_forum(x_agenda)
         self.del_role_agenda(x_worker_id=old_worker_id)
@@ -515,7 +517,7 @@ class EconUnit:
         ignore_agenda: AgendaUnit = None,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_role_agenda(worker_id=agenda_worker_id)
+        x_agenda = self.get_role_agenda_file(worker_id=agenda_worker_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
@@ -566,7 +568,7 @@ class EconUnit:
         x_clerkunit.del_depot_agenda(worker_id=agendaunit_worker_id)
 
     # Healer output_agenda
-    def get_output_agenda(self, clerk_id: ClerkID) -> AgendaUnit:
+    def get_refreshed_role(self, clerk_id: ClerkID) -> AgendaUnit:
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         return x_clerkunit.get_remelded_output_agenda()
 

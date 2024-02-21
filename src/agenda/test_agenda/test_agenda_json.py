@@ -61,7 +61,9 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
-    assert agenda_dict["_auto_output_to_forum"] == x_agenda._auto_output_to_forum
+    assert (
+        agenda_dict["_auto_output_role_to_forum"] == x_agenda._auto_output_role_to_forum
+    )
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
     assert agenda_dict["_party_creditor_pool"] == x_agenda._party_creditor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
@@ -352,7 +354,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 
     yao_text = "Yao"
     zia_agenda._originunit.set_originlink(yao_text, 1)
-    zia_agenda._auto_output_to_forum = True
+    zia_agenda._auto_output_role_to_forum = True
     override_text = "override"
     zia_agenda.set_meld_strategy(override_text)
 
@@ -368,7 +370,9 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._world_id == zia_agenda._world_id
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == zia_agenda._max_tree_traverse
-    assert json_agenda._auto_output_to_forum == zia_agenda._auto_output_to_forum
+    assert (
+        json_agenda._auto_output_role_to_forum == zia_agenda._auto_output_role_to_forum
+    )
     assert json_agenda._road_delimiter == zia_agenda._road_delimiter
     assert json_agenda._party_creditor_pool == zia_agenda._party_creditor_pool
     assert json_agenda._party_debtor_pool == zia_agenda._party_debtor_pool

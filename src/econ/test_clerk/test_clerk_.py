@@ -24,8 +24,8 @@ def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
     assert x_clerk._clerkunits_dir is None
     assert x_clerk._plan_file_name is None
     assert x_clerk._plan_file_path is None
-    assert x_clerk._agenda_output_file_name is None
-    assert x_clerk._agenda_output_file_path is None
+    assert x_clerk._role_file_name is None
+    assert x_clerk._role_file_path is None
     assert x_clerk._forum_file_name is None
     assert x_clerk._forum_dir is None
     assert x_clerk._agendas_depot_dir is None
@@ -54,7 +54,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
     assert x_clerk._plan._world_id == get_temp_econ_id()
 
 
-def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
+def test_clerkunit_auto_output_role_to_forum_SavesAgendaToForumDirWhenTrue(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -66,7 +66,9 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
     forum_file_path = f"{get_temp_clerkunit_dir()}/{forum_text}/{forum_file_name}"
     print(f"{forum_file_path=}")
     # forum_file_path = f"src/econ/examples/ex_env/agendas/{forum_file_name}"
-    x_clerk = clerkunit_shop(tim_text, env_dir, x_econ_id, _auto_output_to_forum=True)
+    x_clerk = clerkunit_shop(
+        tim_text, env_dir, x_econ_id, _auto_output_role_to_forum=True
+    )
     x_clerk.create_core_dir_and_files()
     assert os_path.exists(forum_file_path) is False
 
@@ -79,7 +81,7 @@ def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDirWhenTrue(
     assert os_path.exists(forum_file_path)
 
 
-def test_clerkunit_auto_output_to_forum_DoesNotSaveAgendaToForumDirWhenFalse(
+def test_clerkunit_auto_output_role_to_forum_DoesNotSaveAgendaToForumDirWhenFalse(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN

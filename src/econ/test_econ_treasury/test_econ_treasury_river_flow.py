@@ -603,7 +603,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     x_econ.save_role_agenda_to_forum(elu_agenda)
 
     x_econ.refresh_treasury_role_agendas_data()
-    sal_agenda_before = x_econ.get_role_agenda(worker_id=sal_text)
+    sal_agenda_before = x_econ.get_role_agenda_file(worker_id=sal_text)
 
     x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=100)
     assert len(sal_agenda_before._partys) == 3
@@ -637,7 +637,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert bob_partytreasury.cash_master == sal_text
     assert tom_partytreasury.cash_master == sal_text
 
-    sal_agenda_after = x_econ.get_role_agenda(worker_id=sal_text)
+    sal_agenda_after = x_econ.get_role_agenda_file(worker_id=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)

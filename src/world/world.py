@@ -118,20 +118,20 @@ class WorldUnit:
             raise PersonExistsException(
                 f"add_personunit fail: {x_personunit.person_id} already exists"
             )
-        return self.get_personunit_from_memory(person_id)
+        return self.get_personunit(person_id)
 
-    def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
+    def get_personunit(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
     def get_person_gut(self, person_id: PersonID) -> AgendaUnit:
-        x_person = self.get_personunit_from_memory(person_id)
+        x_person = self.get_personunit(person_id)
         return x_person.get_gut_file_agenda()
 
     def set_all_econunits_contract(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()
         for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit_from_memory(healer_id)
+            healer_person = self.get_personunit(healer_id)
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
                     healer_person=healer_person,
@@ -158,7 +158,7 @@ class WorldUnit:
     ):
         if self.personunit_exists(treasurer_person_id) == False:
             self.add_personunit(treasurer_person_id)
-        x_personunit = self.get_personunit_from_memory(treasurer_person_id)
+        x_personunit = self.get_personunit(treasurer_person_id)
 
         if x_personunit.econunit_exists(econ_id) == False:
             x_personunit.set_econunit(econ_id)
@@ -172,18 +172,26 @@ class WorldUnit:
         if x_econ.clerkunit_exists(clerk_person_id) == False:
             x_econ.add_clerkunit(clerk_person_id)
 
-    def get_work_agenda(self, person_id: PersonID):
+    def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
+        x_work = agendaunit_shop(person_id, self.world_id)
+        x_personunit = self.get_personunit(person_id)
+        x_gut = x_personunit.get_gut_file_agenda()
+        x_gut.set_agenda_metrics()
+        for healer_id, healer_dict in x_gut._healers_dict.items():
+            healer_person = self.get_personunit(healer_id)
+            healer_person.create_person_econunits()
+            for econ_idea in healer_dict.values():
+                x_econ = healer_person.get_econ(econ_idea.get_road())
+                x_econ.create_new_clerkunit(person_id)
+                x_clerk = x_econ.get_clerkunit(person_id)
+                x_clerk.save_refreshed_role_to_forum()
+                x_role = x_econ.get_role_agenda_file(person_id)
+                x_work.meld(x_role)
+        x_personunit._save_work_file(x_work)
+        return self.get_work_file_agenda(person_id)
 
-        x_personunit = self.get_personunit_from_memory(person_id)
-        work_agenda = agendaunit_shop(person_id, self.world_id)
-        # for econ_idea in x_personunit._gut_obj._econ_dict.values():
-        #     pass
-
-        # for person_problemunit in x_personunit._problems.values():
-        #             role_agenda = x_econunit.get_role_agenda(person_id)
-        #             role_agenda.set_world_id(work_agenda._world_id)
-        #             work_agenda.meld(role_agenda)
-        x_personunit._save_work_file(work_agenda)
+    def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
+        x_personunit = self.get_personunit(person_id)
         return x_personunit.get_work_file_agenda()
 
     def _set_partyunit(
@@ -194,7 +202,7 @@ class WorldUnit:
         person_plan = person_clerkunit.get_plan()
         person_plan.add_partyunit(party_id)
         person_clerkunit.save_plan_agenda(person_plan)
-        person_clerkunit.save_refreshed_output_to_forum()
+        person_clerkunit.save_refreshed_role_to_forum()
 
 
 def worldunit_shop(

@@ -9,7 +9,9 @@ from os import path as os_path
 
 def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
     # GIVEN
-    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    oregon_world = worldunit_shop(
+        "Oregon", get_test_worlds_dir(), in_memory_history_db=True
+    )
     assert oregon_world._dealunits == {}
 
     # WHEN
@@ -24,7 +26,9 @@ def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
 
 def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
-    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    oregon_world = worldunit_shop(
+        "Oregon", get_test_worlds_dir(), in_memory_history_db=True
+    )
     yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
 
     # WHEN
@@ -36,7 +40,9 @@ def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
 def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
-    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    oregon_world = worldunit_shop(
+        "Oregon", get_test_worlds_dir(), in_memory_history_db=True
+    )
     static_yao_sue_uid = 1
     assert oregon_world.dealunit_exists(static_yao_sue_uid) == False
 
@@ -50,7 +56,9 @@ def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
 def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
     # GIVEN
-    oregon_world = worldunit_shop("Oregon", get_test_worlds_dir())
+    oregon_world = worldunit_shop(
+        "Oregon", get_test_worlds_dir(), in_memory_history_db=True
+    )
     yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
     assert oregon_world.dealunit_exists(yao_sue_uid)
 
@@ -66,10 +74,10 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # ):
 #     # GIVEN requester and requestee plan_agendas does not exist
 #     w1_text = "w1"
-#     world = worldunit_shop(w1_text, get_test_worlds_dir())
+#     world = worldunit_shop(w1_text, get_test_worlds_dir(), in_memory_history_db=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
-#     yao_person = world.get_personunit_from_memory(yao_text)
+#     yao_person = world.get_personunit(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
@@ -89,8 +97,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     highway_requestunit = create_requestunit(
 #         wantunit=highway_wantunit, requestee_party_id=tim_text, requester_person_id=xio_text
 #     )
-#     assert world.get_personunit_from_memory(tim_text) is None
-#     assert world.get_personunit_from_memory(xio_text) is None
+#     assert world.get_personunit(tim_text) is None
+#     assert world.get_personunit(xio_text) is None
 #     forum_tim_file_path = f"{texas_forum_dir}/{tim_text}.json"
 #     forum_xio_file_path = f"{texas_forum_dir}/{xio_text}.json"
 #     forum_yao_file_path = f"{texas_forum_dir}/{yao_text}.json"
@@ -102,8 +110,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     world.apply_requestunit(highway_requestunit)
 
 #     # THEN
-#     assert world.get_personunit_from_memory(tim_text) != None
-#     assert world.get_personunit_from_memory(xio_text) != None
+#     assert world.get_personunit(tim_text) != None
+#     assert world.get_personunit(xio_text) != None
 #     print(f"{forum_tim_file_path=}")
 #     assert os_path.exists(forum_tim_file_path)
 #     assert os_path.exists(forum_xio_file_path)
@@ -116,10 +124,10 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_plan_agenda(
 #     worlds_dir_setup_cleanup,
 # ):
-#     world = worldunit_shop("w1", get_test_worlds_dir())
+#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_history_db=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
-#     yao_person = world.get_personunit_from_memory(yao_text)
+#     yao_person = world.get_personunit(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
@@ -241,10 +249,10 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 
 
 # def test_WorldUnit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
-#     world = worldunit_shop("w1", get_test_worlds_dir())
+#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_history_db=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
-#     yao_person = world.get_personunit_from_memory(yao_text)
+#     yao_person = world.get_personunit(yao_text)
 #     texas_text = "Texas"
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
@@ -339,10 +347,10 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # # def test_WorldUnit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
 # #     worlds_dir_setup_cleanup,
 # # ):
-# #     world = worldunit_shop("w1", get_test_worlds_dir())
+# #     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_history_db=True)
 # #     yao_text = "Yao"
 # #     world.add_personunit(yao_text)
-# #     yao_person = world.get_personunit_from_memory(yao_text)
+# #     yao_person = world.get_personunit(yao_text)
 # #     texas_text = "Texas"
 # #     yao_person.set_econunit(texas_text)
 # #     texas_econ = yao_person.get_econunit(texas_text)

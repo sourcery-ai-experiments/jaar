@@ -178,7 +178,7 @@ class PersonUnit:
     def _create_econunit(self, econ_roadunit: RoadUnit):
         x_econ_path = self._create_econ_dir(econ_roadunit)
         x_econunit = econunit_shop(
-            econ_id=get_terminus_node(econ_roadunit, delimiter=self._road_delimiter),
+            econ_id=self.world_id,
             econ_dir=x_econ_path,
             _manager_person_id=self.person_id,
             _road_delimiter=self._road_delimiter,

@@ -10,7 +10,7 @@ from src.econ.examples.example_clerks import (
 )
 
 
-def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup):
+def test_EconUnit_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     amer_text = "Amer"
@@ -34,16 +34,16 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     plan_x = amer_clerk.get_plan().set_belief(base=basket_road, pick=b_bare_road)
     amer_clerk.set_plan(plan_x)
     # save belief change to forum
-    amer_clerk.save_refreshed_output_to_forum()
-    # print(f"{x_econ.get_role_agenda(amer_text)._idearoot._beliefunits.keys()=}")
-    amer_output = x_econ.get_role_agenda(amer_text)
+    amer_clerk.save_refreshed_role_to_forum()
+    # print(f"{x_econ.get_refreshed_role(amer_text)._idearoot._beliefunits.keys()=}")
+    amer_output = x_econ.get_refreshed_role(amer_text)
 
     # create assignment for Cali
     cali_text = "Cali"
     x_econ.create_new_clerkunit(clerk_id=cali_text)
     cali_clerk = x_econ.get_clerkunit(clerk_id=cali_text)
     cali_clerk.set_depot_agenda(amer_output, "assignment")
-    old_cali_agenda = x_econ.get_output_agenda(cali_text)
+    old_cali_agenda = x_econ.get_refreshed_role(cali_text)
     # print(f"{old_cali_agenda._partys.keys()=}")
     # print(f"{old_cali_agenda._idearoot._beliefunits.keys()=}")
     # basket_belief = old_cali_agenda._idearoot._beliefunits.get(basket_road)
@@ -54,12 +54,12 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     # set basket status to "full"
     amer_clerk.get_plan().set_belief(base=basket_road, pick=b_full_road)
     amer_clerk.set_plan()
-    amer_clerk.save_refreshed_output_to_forum()
+    amer_clerk.save_refreshed_role_to_forum()
 
     cali_clerk.refresh_depot_agendas()
     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-    # new_forum_amer = x_econ.get_role_agenda(amer_text)
+    # new_forum_amer = x_econ.get_refreshed_role(amer_text)
     # a_basket_belief = new_forum_amer._idearoot._beliefunits.get(basket_road)
     # print(f"Amer after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
@@ -75,7 +75,7 @@ def test_econ_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup
     assert laundry_task_road in new_cali_agenda.get_intent_dict().keys()
 
 
-def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
+def test_EconUnit_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     amer_text = "Amer"
@@ -105,10 +105,10 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
 
     amer_clerk.set_plan(amer_plan_x)
     beto_clerk.set_plan(beto_plan_x)
-    amer_clerk.save_refreshed_output_to_forum()
-    beto_clerk.save_refreshed_output_to_forum()
-    amer_output = x_econ.get_role_agenda(amer_text)
-    beto_output = x_econ.get_role_agenda(beto_text)
+    amer_clerk.save_refreshed_role_to_forum()
+    beto_clerk.save_refreshed_role_to_forum()
+    amer_output = x_econ.get_refreshed_role(amer_text)
+    beto_output = x_econ.get_refreshed_role(beto_text)
 
     cali_text = "Cali"
     x_econ.create_new_clerkunit(cali_text)
@@ -117,10 +117,10 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     cali_kichen.set_depot_agenda(amer_output, "assignment")
 
     # WHEN
-    cali_kichen.save_refreshed_output_to_forum()
+    cali_kichen.save_refreshed_role_to_forum()
 
     # THEN
-    old_cali_output = x_econ.get_role_agenda(cali_text)
+    old_cali_output = x_econ.get_refreshed_role(cali_text)
     assert len(old_cali_output.get_intent_dict()) == 0
     old_cali_beliefs = old_cali_output._idearoot._beliefunits
     # print(f"{old_cali_output._idearoot._beliefunits=}")
@@ -152,10 +152,10 @@ def test_econ_clerk_MeldOrderChangesOutputBelief(env_dir_setup_cleanup):
     # print(f"{new_cali_amer_party._treasury_voice_rank=} ")
     # print(f"{new_cali_beto_party._treasury_voice_rank=} ")
 
-    cali_kichen.save_refreshed_output_to_forum()
+    cali_kichen.save_refreshed_role_to_forum()
 
     # THEN final belief changed
-    new_cali_output = x_econ.get_role_agenda(cali_text)
+    new_cali_output = x_econ.get_refreshed_role(cali_text)
     assert len(new_cali_output.get_intent_dict()) == 1
     new_cali_beliefs = new_cali_output._idearoot._beliefunits
     # print(f"{new_cali_output._idearoot._beliefunits=}")

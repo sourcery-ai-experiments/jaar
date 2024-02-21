@@ -32,8 +32,8 @@ class ClerkUnit:
     _clerkunits_dir: str = None
     _plan_file_name: str = None
     _plan_file_path: str = None
-    _agenda_output_file_name: str = None
-    _agenda_output_file_path: str = None
+    _role_file_name: str = None
+    _role_file_path: str = None
     _forum_file_name: str = None
     _forum_dir: str = None
     _agendas_depot_dir: str = None
@@ -67,8 +67,8 @@ class ClerkUnit:
         self._set_depotlink(
             x_agenda._worker_id, depotlink_type, creditor_weight, debtor_weight
         )
-        if self.get_plan()._auto_output_to_forum:
-            self.save_refreshed_output_to_forum()
+        if self.get_plan()._auto_output_role_to_forum:
+            self.save_refreshed_role_to_forum()
 
     def _set_depotlink(
         self,
@@ -169,10 +169,8 @@ class ClerkUnit:
         self._clerkunit_dir = f"{self._clerkunits_dir}/{self._clerk_id}"
         self._plan_file_name = "plan_agenda.json"
         self._plan_file_path = f"{self._clerkunit_dir}/{self._plan_file_name}"
-        self._agenda_output_file_name = "output_agenda.json"
-        self._agenda_output_file_path = (
-            f"{self._clerkunit_dir}/{self._agenda_output_file_name}"
-        )
+        self._role_file_name = "output_agenda.json"
+        self._role_file_path = f"{self._clerkunit_dir}/{self._role_file_name}"
         self._forum_file_name = f"{self._clerk_id}.json"
         forum_text = "forum"
         depot_text = "depot"
@@ -253,12 +251,11 @@ class ClerkUnit:
             meldees_dir=self._agendas_digest_dir,
         )
         dest_dir = self._clerkunit_dir
-        file_name = self._agenda_output_file_name
+        file_name = self._role_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
     def open_role_agenda(self, worker_id: PersonID) -> str:
         file_name_x = f"{worker_id}.json"
-        print(f"{self._forum_dir=}")
         return open_file(self._forum_dir, file_name_x)
 
     def open_depot_agenda(self, worker_id: PersonID) -> AgendaUnit:
@@ -283,7 +280,7 @@ class ClerkUnit:
         return x_agenda
 
     def open_output_agenda(self) -> AgendaUnit:
-        x_agenda_json = open_file(self._clerkunit_dir, self._agenda_output_file_name)
+        x_agenda_json = open_file(self._clerkunit_dir, self._role_file_name)
         x_agenda = agendaunit_get_from_json(x_agenda_json)
         x_agenda.set_agenda_metrics()
         return x_agenda
@@ -329,7 +326,7 @@ class ClerkUnit:
         self.save_output_agenda()
         return self.open_output_agenda()
 
-    def save_refreshed_output_to_forum(self):
+    def save_refreshed_role_to_forum(self):
         self.save_agenda_to_forum(self.get_remelded_output_agenda())
 
 
@@ -337,7 +334,7 @@ def clerkunit_shop(
     worker_id: WorkerID,
     env_dir: str,
     econ_id: str,
-    _auto_output_to_forum: bool = None,
+    _auto_output_role_to_forum: bool = None,
     _road_delimiter: str = None,
 ) -> ClerkUnit:
     x_clerk = ClerkUnit()
@@ -349,6 +346,6 @@ def clerkunit_shop(
     )
     x_clerk.set_clerkunit_dirs()
     x_clerk.get_plan()
-    x_clerk._plan._set_auto_output_to_forum(_auto_output_to_forum)
+    x_clerk._plan._set_auto_output_role_to_forum(_auto_output_role_to_forum)
     x_clerk.get_plan()
     return x_clerk

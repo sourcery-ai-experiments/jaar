@@ -42,7 +42,7 @@ def test_econ_get_agenda_currentlyGetsAgenda(env_dir_setup_cleanup):
     x_econ.save_role_agenda_to_forum(y_agenda)
 
     # WHEN / THEN
-    assert x_econ.get_role_agenda(worker_id=y_agenda._worker_id) == y_agenda
+    assert x_econ.get_role_agenda_file(worker_id=y_agenda._worker_id) == y_agenda
 
 
 def test_econ_change_role_worker_id_ChangesAgendaPersonID(
@@ -86,5 +86,5 @@ def test_econ_Sets_idearoot_Label(
     x_econ.save_role_agenda_to_forum(old_x_agenda)
 
     # THEN
-    new_x_agenda = x_econ.get_role_agenda(old_x_agenda._worker_id)
+    new_x_agenda = x_econ.get_role_agenda_file(old_x_agenda._worker_id)
     assert new_x_agenda._idearoot._label == x_econ_id

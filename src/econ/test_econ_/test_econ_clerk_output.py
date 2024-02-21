@@ -14,7 +14,7 @@ from src.econ.examples.econ_env_kit import (
 )
 
 
-def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
+def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -33,7 +33,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     # print(f"{xia_healer._plan._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_econ.get_output_agenda(clerk_id=xia_text)
+    output_agenda = x_econ.get_refreshed_role(clerk_id=xia_text)
     # input agenda must be melded to itself to create originunits
     input_agenda.meld(input_agenda)
     input_agenda.set_worker_id(new_worker_id=xia_text)
@@ -88,7 +88,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario1(
     assert output_agenda._idearoot == input_agenda._idearoot
 
 
-def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
+def test_EconUnit_get_refreshed_role_ReturnsCorrectAgendaObjScenario2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -109,7 +109,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     print(f"{xia_healer._plan._partys.keys()=}")
 
     # WHEN
-    output_agenda = x_econ.get_output_agenda(clerk_id=xia_text)
+    output_agenda = x_econ.get_refreshed_role(clerk_id=xia_text)
 
     # THEN
     output_agenda_d_road = f"{output_agenda._world_id},C,D"
@@ -145,7 +145,7 @@ def test_econ_get_output_agenda_ReturnsCorrectAgendaObjScenario2(
     assert output_agenda._idearoot != x2_agenda._idearoot
 
 
-def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
+def test_ClerkUnit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     env_dir_setup_cleanup,
 ):
     # GIVEN

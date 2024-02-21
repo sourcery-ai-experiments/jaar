@@ -28,8 +28,8 @@ def test_ClerkUnit_exists():
     assert bob_clerkadmin._clerkunit_dir is None
     assert bob_clerkadmin._plan_file_name is None
     assert bob_clerkadmin._plan_file_path is None
-    assert bob_clerkadmin._agenda_output_file_name is None
-    assert bob_clerkadmin._agenda_output_file_path is None
+    assert bob_clerkadmin._role_file_name is None
+    assert bob_clerkadmin._role_file_path is None
     assert bob_clerkadmin._forum_file_name is None
     assert bob_clerkadmin._forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
@@ -43,8 +43,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     env_dir = get_temp_clerkunit_dir()
     bob_clerkadmin = ClerkUnit(bob_text, env_dir, get_temp_econ_id())
     assert bob_clerkadmin._clerkunit_dir is None
-    assert bob_clerkadmin._agenda_output_file_name is None
-    assert bob_clerkadmin._agenda_output_file_path is None
+    assert bob_clerkadmin._role_file_name is None
+    assert bob_clerkadmin._role_file_path is None
     assert bob_clerkadmin._forum_file_name is None
     assert bob_clerkadmin._forum_dir is None
     assert bob_clerkadmin._agendas_depot_dir is None
@@ -57,8 +57,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
 
     # THEN
     assert bob_clerkadmin._clerkunit_dir != None
-    assert bob_clerkadmin._agenda_output_file_name != None
-    assert bob_clerkadmin._agenda_output_file_path != None
+    assert bob_clerkadmin._role_file_name != None
+    assert bob_clerkadmin._role_file_path != None
     assert bob_clerkadmin._forum_file_name != None
     assert bob_clerkadmin._forum_dir != None
     assert bob_clerkadmin._agendas_depot_dir != None
@@ -73,8 +73,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     x_forum_file_name = f"{bob_text}.json"
     x_plan_file_name = "plan_agenda.json"
     x_plan_file_path = f"{x_clerkunit_dir}/{x_plan_file_name}"
-    x_agenda_output_file_name = "output_agenda.json"
-    x_agenda_output_file_path = f"{x_clerkunit_dir}/{x_agenda_output_file_name}"
+    x_role_file_name = "output_agenda.json"
+    x_role_file_path = f"{x_clerkunit_dir}/{x_role_file_name}"
     forum_text = "forum"
     depot_text = "depot"
     x_agendas_depot_dir = f"{x_clerkunit_dir}/{depot_text}"
@@ -85,8 +85,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._clerkunit_dir == x_clerkunit_dir
     assert bob_clerkadmin._plan_file_name == x_plan_file_name
     assert bob_clerkadmin._plan_file_path == x_plan_file_path
-    assert bob_clerkadmin._agenda_output_file_name == x_agenda_output_file_name
-    assert bob_clerkadmin._agenda_output_file_path == x_agenda_output_file_path
+    assert bob_clerkadmin._role_file_name == x_role_file_name
+    assert bob_clerkadmin._role_file_path == x_role_file_path
     assert bob_clerkadmin._agendas_depot_dir == x_agendas_depot_dir
     assert bob_clerkadmin._agendas_ignore_dir == x_agendas_ignore_dir
     assert bob_clerkadmin._agendas_digest_dir == x_agendas_digest_dir
@@ -199,7 +199,9 @@ def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
     assert os_path_exists(new_plan_file_path)
 
 
-def test_clerkunit_auto_output_to_forum_SavesAgendaToForumDir(clerk_dir_setup_cleanup):
+def test_clerkunit_auto_output_role_to_forum_SavesAgendaToForumDir(
+    clerk_dir_setup_cleanup,
+):
     # GIVEN
     bob_text = "Bob"
     bob_clerkadmin = clerkunit_shop(
