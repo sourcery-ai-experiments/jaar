@@ -1,4 +1,4 @@
-from src.world.history_sqlstr import (
+from src.world.journal_sqlstr import (
     get_deal_hx_table_create_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
 )

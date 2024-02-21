@@ -33,7 +33,7 @@ class WorldUnit:
     worlds_dir: str
     _world_dir: str = None
     _persons_dir: str = None
-    _history_db: str = None
+    _journal_db: str = None
     _personunits: dict[PersonID:PersonUnit] = None
     _deals_dir: str = None
     _dealunits: dict[PersonID:PersonUnit] = None
@@ -61,30 +61,30 @@ class WorldUnit:
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
 
-    def _set_world_dirs(self, in_memory_history_db: bool = None):
+    def _set_world_dirs(self, in_memory_journal_db: bool = None):
         self._world_dir = f"{self.worlds_dir}/{self.world_id}"
         self._persons_dir = f"{self._world_dir}/persons"
         self._deals_dir = f"{self._world_dir}/deals"
         set_dir(x_path=self._world_dir)
         set_dir(x_path=self._persons_dir)
         set_dir(x_path=self._deals_dir)
-        self._create_history_db(in_memory=in_memory_history_db)
+        self._create_journal_db(in_memory=in_memory_journal_db)
 
-    def get_history_db_path(self) -> str:
-        return f"{self.worlds_dir}/{self.world_id}/history.db"
+    def get_journal_db_path(self) -> str:
+        return f"{self.worlds_dir}/{self.world_id}/journal.db"
 
-    def _create_history_db(
+    def _create_journal_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         # if overwrite:
         #     self._delete_treasury()
 
         if in_memory:
-            self._history_db = sqlite3_connect(":memory:")
+            self._journal_db = sqlite3_connect(":memory:")
         else:
-            sqlite3_connect(self.get_history_db_path())
+            sqlite3_connect(self.get_journal_db_path())
 
-        history_file_new = True
+        journal_file_new = True
         # if treasury_file_new:
         #     with self.get_treasury_conn() as treasury_conn:
         #         for sqlstr in get_create_table_if_not_exist_sqlstrs():
@@ -208,7 +208,7 @@ class WorldUnit:
 def worldunit_shop(
     world_id: WorldID,
     worlds_dir: str,
-    in_memory_history_db: bool = None,
+    in_memory_journal_db: bool = None,
     _road_delimiter: str = None,
 ) -> WorldUnit:
     world_x = WorldUnit(
@@ -218,6 +218,6 @@ def worldunit_shop(
         _dealunits=get_empty_dict_if_none(None),
     )
     world_x.set_max_deal_uid()
-    world_x._set_world_dirs(in_memory_history_db=in_memory_history_db)
+    world_x._set_world_dirs(in_memory_journal_db=in_memory_journal_db)
     world_x._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return world_x
