@@ -69,7 +69,7 @@ EconUnit ClerkUnit objects
 
 EconUnit ClerkUnit Agenda objects
 
-EconUnit Bank objects
+EconUnit Treasury objects
 
 <!-- TODO: Add elucidations -->
 AgendaUnit objects

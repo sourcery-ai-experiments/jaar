@@ -12,7 +12,7 @@ from src.econ.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
     get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    PartyBankUnit,
+    PartyTreasuryUnit,
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
     get_partyview_dict,
@@ -313,7 +313,7 @@ def test_RiverLedgerUnit_Exists():
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_PartyBankUnit_exists():
+def test_PartyTreasuryUnit_exists():
     # GIVEN
     x_cash_master = "x_cash_master"
     x_due_worker_id = "x_due_worker_id"
@@ -324,7 +324,7 @@ def test_PartyBankUnit_exists():
     x_voice_rank = "voice_rank"
 
     # WHEN
-    x_partytreasury = PartyBankUnit(
+    x_partytreasury = PartyTreasuryUnit(
         cash_master=x_cash_master,
         due_worker_id=x_due_worker_id,
         due_total=x_due_total,
@@ -344,7 +344,7 @@ def test_PartyBankUnit_exists():
     assert x_partytreasury.voice_rank == x_voice_rank
 
 
-def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitBankingAttr():
+def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_worker_id=bob_text)
@@ -368,13 +368,13 @@ def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitBankingAtt
     assert x_agenda._partys.get(elu_text)._treasury_due_paid == 0.003
     assert x_agenda._partys.get(elu_text)._treasury_due_diff == 0.007
 
-    partytreasuryunit_sam = PartyBankUnit(
+    partytreasuryunit_sam = PartyTreasuryUnit(
         bob_text, sam_text, 0.209, 0, 0.034, None, None
     )
-    partytreasuryunit_wil = PartyBankUnit(
+    partytreasuryunit_wil = PartyTreasuryUnit(
         bob_text, wil_text, 0.501, 0, 0.024, None, None
     )
-    partytreasuryunit_fry = PartyBankUnit(
+    partytreasuryunit_fry = PartyTreasuryUnit(
         bob_text, fry_text, 0.111, 0, 0.006, None, None
     )
     partytreasuryunits = {

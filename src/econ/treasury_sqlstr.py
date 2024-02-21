@@ -479,9 +479,9 @@ WHERE cash_master = '{cash_worker_id}'
     return dict_x
 
 
-# PartyBankUnit
+# PartyTreasuryUnit
 @dataclass
-class PartyBankUnit:
+class PartyTreasuryUnit:
     cash_master: str
     due_worker_id: str
     due_total: float
@@ -493,7 +493,7 @@ class PartyBankUnit:
 
 def get_partytreasuryunit_dict(
     db_conn: Connection, cash_worker_id: str
-) -> dict[str:PartyBankUnit]:
+) -> dict[str:PartyTreasuryUnit]:
     sqlstr = f"""
 SELECT
   worker_id cash_master
@@ -510,7 +510,7 @@ WHERE cash_master = '{cash_worker_id}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        partytreasuryunit_x = PartyBankUnit(
+        partytreasuryunit_x = PartyTreasuryUnit(
             cash_master=row[0],
             due_worker_id=row[1],
             due_total=row[2],
@@ -561,18 +561,18 @@ FROM agendaunit
 
 
 @dataclass
-class AgendaBankUnit:
+class AgendaTreasuryUnit:
     worker_id: PersonID
     rational: bool
 
 
 def get_agendatreasuryunits_dict(
     db_conn: Connection,
-) -> dict[PersonID:AgendaBankUnit]:
+) -> dict[PersonID:AgendaTreasuryUnit]:
     results = db_conn.execute(get_agendaunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
-        x_agendatreasuryunit = AgendaBankUnit(
+        x_agendatreasuryunit = AgendaTreasuryUnit(
             worker_id=row[0], rational=sqlite_to_python(row[1])
         )
         dict_x[x_agendatreasuryunit.worker_id] = x_agendatreasuryunit

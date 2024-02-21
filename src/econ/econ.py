@@ -42,7 +42,7 @@ from src.econ.treasury_sqlstr import (
     PartyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
-    PartyBankUnit,
+    PartyTreasuryUnit,
     IdeaCatalog,
     get_agenda_ideaunit_table_insert_sqlstr,
     get_agenda_ideaunit_dict,
@@ -263,7 +263,7 @@ class EconUnit:
             )
             self.save_job_agenda_to_forum(x_agenda)
 
-    def get_partytreasuryunits(self, worker_id: str) -> dict[str:PartyBankUnit]:
+    def get_partytreasuryunits(self, worker_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
             partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, worker_id)
         return partytreasuryunits
@@ -644,7 +644,7 @@ def econunit_shop(
 
 
 def set_treasury_partytreasuryunits_to_agenda_partyunits(
-    x_agenda: AgendaUnit, partytreasuryunits: dict[str:PartyBankUnit]
+    x_agenda: AgendaUnit, partytreasuryunits: dict[str:PartyTreasuryUnit]
 ):
     for x_partyunit in x_agenda._partys.values():
         x_partyunit.clear_treasurying_data()

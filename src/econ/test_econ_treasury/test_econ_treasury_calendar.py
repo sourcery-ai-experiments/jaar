@@ -211,7 +211,7 @@ def test_econ_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError()
     )
 
 
-def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesBank():
+def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A agenda that has 1 intent item
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())

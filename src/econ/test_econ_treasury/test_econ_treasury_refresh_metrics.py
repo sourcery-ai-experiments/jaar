@@ -35,7 +35,7 @@ from src.econ.examples.example_clerks import (
 from src.instrument.sqlite import get_single_result
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldBankInMemory(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -59,7 +59,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldBankInMemory(
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldBankFile(
+def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
