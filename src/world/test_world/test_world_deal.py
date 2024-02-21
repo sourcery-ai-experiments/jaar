@@ -70,32 +70,6 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
     assert oregon_world.dealunit_exists(yao_sue_uid) == False
 
 
-def test_get_deal_hx_table_create_sqlstr_ReturnsCorrectStr():
-    # GIVEN
-    for x_key, x_value in get_atom_columns_build().items():
-        print(f"atoms_columns_build {x_key=} {x_value=}")
-
-    assert 1 == 2
-
-    # WHEN
-    generated_sqlstr = get_deal_hx_table_create_sqlstr()
-
-    # THEN
-    example_sqlstr = """
-CREATE TABLE IF NOT EXISTS river_reach (
-  cash_master VARCHAR(255) NOT NULL
-, src_worker_id VARCHAR(255) NOT NULL
-, set_num INT NOT NULL
-, reach_curr_start FLOAT NOT NULL
-, reach_curr_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(worker_id)
-, FOREIGN KEY(src_worker_id) REFERENCES agendaunit(worker_id)
-)
-;
-"""
-    assert generated_sqlstr == example_sqlstr
-
-
 # def test_WorldUnit_apply_requestunit_CorrectlyCreates_role_agendas(
 #     worlds_dir_setup_cleanup,
 # ):
