@@ -9,13 +9,12 @@ from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
 )
 from src.econ.treasury_sqlstr import (
-    get_table_count_sqlstr,
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
     CalendarIntentUnit,
     CalendarReport,
 )
-from src.instrument.sqlite import get_single_result
+from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
 from pytest import raises as pytest_raises
 
 
@@ -131,7 +130,7 @@ def test_econ_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     x_econ = econunit_shop(econ_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
-    calendar_count_sqlstr = get_table_count_sqlstr("calendar")
+    calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
     x_time_road = "A,time,jajatime"
@@ -194,7 +193,7 @@ def test_econ_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
 
-    calendar_count_sqlstr = get_table_count_sqlstr("calendar")
+    calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
@@ -217,7 +216,7 @@ def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
-    calendar_count_sqlstr = get_table_count_sqlstr("calendar")
+    calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN

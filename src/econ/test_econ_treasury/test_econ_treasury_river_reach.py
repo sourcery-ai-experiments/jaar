@@ -6,7 +6,6 @@ from src.econ.examples.econ_env_kit import (
 )
 from src.instrument.sqlite import get_single_result
 from src.econ.treasury_sqlstr import (
-    get_table_count_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
     get_river_block_table_create_sqlstr,
@@ -18,7 +17,7 @@ from src.econ.treasury_sqlstr import (
     get_agenda_partyunit_table_update_credit_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
 )
-from src.instrument.sqlite import get_single_result
+from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
 from sqlite3 import connect as sqlite3_connect
 
 
@@ -28,7 +27,7 @@ def test_get_river_reach_table_insert_sqlstr_InsertsWithoutError():
     reach_text = "river_reach"
     with x_db as x_conn:
         x_conn.execute(get_river_reach_table_create_sqlstr())
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
     # WHEN
     select_example_sqlstr = """
@@ -46,7 +45,7 @@ SELECT
 
     # THEN
     with x_db as x_conn:
-        assert 1 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 1 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
 
 def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
@@ -57,8 +56,8 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
     with x_db as x_conn:
         x_conn.execute(get_agenda_partyunit_table_create_sqlstr())
         x_conn.execute(get_river_reach_table_create_sqlstr())
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(partyunit_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -97,8 +96,8 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
         x_conn.execute(get_river_reach_table_insert_sqlstr(cal_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr1))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr2))
-        assert 3 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
-        assert 4 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(partyunit_text))
+        assert 4 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
     partyunit_select_str = f"""
 SELECT 
@@ -188,7 +187,7 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
         x_conn.execute(
             get_agenda_partyunit_table_insert_sqlstr(yao_agenda, dee_partyunit)
         )
-        assert 3 == get_single_result(x_conn, get_table_count_sqlstr(partyunit_text))
+        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(partyunit_text))
 
     partyunit_select_str = f"""
 SELECT 
@@ -290,9 +289,9 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     circle_text = "river_circle"
     reach_text = "river_reach"
     with x_db as x_conn:
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(block_text))
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(circle_text))
-        assert 0 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(block_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(circle_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
     insert_block_values_str = """
 INSERT INTO river_block (cash_master, src_worker_id, dst_worker_id, cash_start, cash_close, block_num, parent_block_num, river_tree_level)
 VALUES ('Sal', 'Sal', 'Ava', 0.0, 0.1, 0, NULL, 1)
@@ -407,8 +406,8 @@ VALUES ('Sal', 'Sal', 0, 0.0440126668651765, 0.1)
         x_conn.execute(insert_block_values_str)
         x_conn.execute(insert_circle_values_str)
 
-        assert 100 == get_single_result(x_db, get_table_count_sqlstr(block_text))
-        assert 2 == get_single_result(x_db, get_table_count_sqlstr(circle_text))
+        assert 100 == get_single_result(x_db, get_row_count_sqlstr(block_text))
+        assert 2 == get_single_result(x_db, get_row_count_sqlstr(circle_text))
 
     # WHEN
     sal_text = "Sal"
@@ -426,4 +425,4 @@ VALUES ('Sal', 'Sal', 0, 0.0440126668651765, 0.1)
 
     # THEN
     with x_db as x_conn:
-        assert 6 == get_single_result(x_conn, get_table_count_sqlstr(reach_text))
+        assert 6 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))

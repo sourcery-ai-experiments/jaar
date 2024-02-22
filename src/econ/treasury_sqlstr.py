@@ -5,6 +5,8 @@ from src.instrument.sqlite import (
     sqlite_null,
     sqlite_text,
     sqlite_to_python,
+    get_row_count_sqlstr,
+    get_single_result,
 )
 from dataclasses import dataclass
 from sqlite3 import Connection
@@ -243,10 +245,6 @@ SELECT
 FROM reach_sets_num
 GROUP BY curr_mstr, src, set_num
 """
-
-
-def get_table_count_sqlstr(table_name: str) -> str:
-    return f"SELECT COUNT(*) FROM {table_name}"
 
 
 # river_block
@@ -811,17 +809,13 @@ CREATE TABLE IF NOT EXISTS agenda_ideaunit (
 """
 
 
-def get_agenda_ideaunit_table_count(db_conn: Connection, worker_id: str) -> str:
+def get_agenda_ideaunit_row_count(db_conn: Connection, worker_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("agenda_ideaunit")} 
+{get_row_count_sqlstr("agenda_ideaunit")} 
 WHERE worker_id = '{worker_id}'
 ;
 """
-    results = db_conn.execute(sqlstr)
-    agenda_row_count = 0
-    for row in results.fetchall():
-        agenda_row_count = row[0]
-    return agenda_row_count
+    return get_single_result(db_conn, sqlstr)
 
 
 @dataclass
@@ -884,16 +878,12 @@ CREATE TABLE IF NOT EXISTS agenda_idea_beliefunit (
 """
 
 
-def get_agenda_idea_beliefunit_table_count(db_conn: Connection, worker_id: str) -> str:
+def get_agenda_idea_beliefunit_row_count(db_conn: Connection, worker_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("agenda_idea_beliefunit")} WHERE worker_id = '{worker_id}'
+{get_row_count_sqlstr("agenda_idea_beliefunit")} WHERE worker_id = '{worker_id}'
 ;
 """
-    results = db_conn.execute(sqlstr)
-    agenda_row_count = 0
-    for row in results.fetchall():
-        agenda_row_count = row[0]
-    return agenda_row_count
+    return get_single_result(db_conn, sqlstr)
 
 
 @dataclass
@@ -933,16 +923,12 @@ CREATE TABLE IF NOT EXISTS agenda_groupunit (
 """
 
 
-def get_agenda_groupunit_table_count(db_conn: Connection, worker_id: str) -> str:
+def get_agenda_groupunit_row_count(db_conn: Connection, worker_id: str) -> str:
     sqlstr = f"""
-{get_table_count_sqlstr("agenda_groupunit")} WHERE worker_id = '{worker_id}'
+{get_row_count_sqlstr("agenda_groupunit")} WHERE worker_id = '{worker_id}'
 ;
 """
-    results = db_conn.execute(sqlstr)
-    agenda_row_count = 0
-    for row in results.fetchall():
-        agenda_row_count = row[0]
-    return agenda_row_count
+    return get_single_result(db_conn, sqlstr)
 
 
 @dataclass
@@ -1145,21 +1131,3 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_agenda_groupunit_table_create_sqlstr())
     list_x.append(get_calendar_table_create_sqlstr())
     return list_x
-
-
-def get_db_tables(treasury_conn: Connection) -> dict[str:int]:
-    sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
-    results = treasury_conn.execute(sqlstr)
-
-    return {row[0]: 1 for row in results}
-
-
-def get_db_columns(treasury_conn: Connection) -> dict[str : dict[str:int]]:
-    table_names = get_db_tables(treasury_conn)
-    table_column_dict = {}
-    for table_name in table_names.keys():
-        sqlstr = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}');"
-        results = treasury_conn.execute(sqlstr)
-        table_column_dict[table_name] = {row[0]: 1 for row in results}
-
-    return table_column_dict

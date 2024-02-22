@@ -5,11 +5,10 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
-from src.instrument.sqlite import get_single_result
+from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_river_block_dict,
-    get_table_count_sqlstr,
 )
 
 
@@ -53,13 +52,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     x_econ.save_job_agenda_to_forum(tom_agentunit)
 
     x_econ.refresh_treasury_job_agendas_data()
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 4
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)
@@ -135,13 +134,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     x_econ.save_job_agenda_to_forum(ava_agenda)
     x_econ.refresh_treasury_job_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 6
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)
@@ -216,13 +215,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
 
     x_econ.refresh_treasury_job_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 8
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)
@@ -298,13 +297,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
 
     x_econ.refresh_treasury_job_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)
@@ -383,13 +382,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 
     x_econ.refresh_treasury_job_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)
@@ -449,13 +448,13 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
 
     x_econ.refresh_treasury_job_agendas_data()
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 9
 
     partytreasuryunit_count_sqlstr = (
         get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr()
     )
-    river_block_count_sqlstr = get_table_count_sqlstr("river_block")
+    river_block_count_sqlstr = get_row_count_sqlstr("river_block")
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 0
     assert (
         get_single_result(x_econ.get_treasury_conn(), partytreasuryunit_count_sqlstr)

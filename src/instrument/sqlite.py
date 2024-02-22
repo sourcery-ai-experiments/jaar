@@ -35,11 +35,6 @@ def check_connection(conn: Connection) -> bool:
         return False
 
 
-def get_single_result(db_conn: Connection, sqlstr: str) -> str:
-    results = db_conn.execute(sqlstr)
-    return results.fetchone()[0]
-
-
 def create_insert_sqlstr(
     x_table: str, x_columns: list[str], x_values: list[str]
 ) -> str:
@@ -101,3 +96,34 @@ def get_rowdata(tablename: str, x_conn: Connection, select_sqlstr: str) -> RowDa
     results = x_conn.execute(select_sqlstr)
     row1 = results.fetchone()
     return rowdata_shop(tablename, row1)
+
+
+def get_db_tables(x_conn: Connection) -> dict[str:int]:
+    sqlstr = "SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name;"
+    results = x_conn.execute(sqlstr)
+
+    return {row[0]: 1 for row in results}
+
+
+def get_db_columns(x_conn: Connection) -> dict[str : dict[str:int]]:
+    table_names = get_db_tables(x_conn)
+    table_column_dict = {}
+    for table_name in table_names.keys():
+        sqlstr = f"SELECT name FROM PRAGMA_TABLE_INFO('{table_name}');"
+        results = x_conn.execute(sqlstr)
+        table_column_dict[table_name] = {row[0]: 1 for row in results}
+
+    return table_column_dict
+
+
+def get_single_result(db_conn: Connection, sqlstr: str) -> str:
+    results = db_conn.execute(sqlstr)
+    return results.fetchone()[0]
+
+
+def get_row_count_sqlstr(table_name: str) -> str:
+    return f"SELECT COUNT(*) FROM {table_name}"
+
+
+def get_row_count(db_conn: Connection, table_name: str) -> str:
+    return get_single_result(db_conn, get_row_count_sqlstr(table_name))

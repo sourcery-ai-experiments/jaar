@@ -13,26 +13,24 @@ from src.econ.examples.econ_env_kit import (
 )
 from src.instrument.sqlite import get_single_result
 from src.econ.treasury_sqlstr import (
-    get_table_count_sqlstr,
-    get_agenda_ideaunit_table_count,
+    get_agenda_ideaunit_row_count,
     IdeaCatalog,
     get_agenda_ideaunit_table_insert_sqlstr,
     get_agenda_ideaunit_dict,
-    get_agenda_idea_beliefunit_table_count,
+    get_agenda_idea_beliefunit_row_count,
     BeliefCatalog,
     get_agenda_idea_beliefunit_table_insert_sqlstr,
-    get_agenda_groupunit_table_count,
+    get_agenda_groupunit_row_count,
     GroupUnitCatalog,
     get_agenda_groupunit_table_insert_sqlstr,
     get_agenda_groupunit_dict,
-    get_table_count_sqlstr,
 )
 from src.econ.examples.example_clerks import (
     get_3node_agenda,
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
 )
-from src.instrument.sqlite import get_single_result
+from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
 
 
 def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
@@ -49,7 +47,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMem
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
     x_econ.refresh_treasury_job_agendas_data()
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
@@ -73,7 +71,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
     x_econ.refresh_treasury_job_agendas_data()
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
     # WHEN
@@ -119,7 +117,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable
     elu_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
     x_econ.save_job_agenda_to_forum(elu_agentunit)
 
-    partyunit_count_sqlstr = get_table_count_sqlstr("agenda_partyunit")
+    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 0
 
     # WHEN
@@ -146,7 +144,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
     x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
 
-    agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
+    agenda_count_sqlstrs = get_row_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
@@ -173,7 +171,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
     x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
 
-    agenda_count_sqlstrs = get_table_count_sqlstr("agendaunit")
+    agenda_count_sqlstrs = get_row_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
 
     # WHEN
@@ -201,7 +199,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupu
     x_econ.save_job_agenda_to_forum(bob_agenda)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    sqlstr = get_table_count_sqlstr("agenda_groupunit")
+    sqlstr = get_row_count_sqlstr("agenda_groupunit")
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 0
 
     # WHEN
@@ -288,7 +286,7 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 0
+        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     resources_road = create_road(get_temp_env_econ_id(), "resources")
@@ -300,7 +298,7 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
         treasury_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 1
 
 
 def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
@@ -324,16 +322,16 @@ def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 0
+        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_table_count(treasury_conn, bob_text) == 3
-        assert get_agenda_ideaunit_table_count(treasury_conn, tim_text) == 6
-        assert get_agenda_ideaunit_table_count(treasury_conn, sal_text) == 5
+        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 3
+        assert get_agenda_ideaunit_row_count(treasury_conn, tim_text) == 6
+        assert get_agenda_ideaunit_row_count(treasury_conn, sal_text) == 5
 
 
 def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
@@ -358,7 +356,7 @@ def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     x_econ.save_job_agenda_to_forum(sal_agenda)
     x_econ.save_job_agenda_to_forum(elu_agenda)
     x_econ.refresh_treasury_job_agendas_data()
-    i_count_sqlstr = get_table_count_sqlstr("agenda_ideaunit")
+    i_count_sqlstr = get_row_count_sqlstr("agenda_ideaunit")
     with x_econ.get_treasury_conn() as treasury_conn:
         print(f"{i_count_sqlstr=}")
         assert get_single_result(x_econ.get_treasury_conn(), i_count_sqlstr) == 20
@@ -383,7 +381,7 @@ def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesT
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 0
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     weather_road = create_road(get_temp_env_econ_id(), "weather")
@@ -398,7 +396,7 @@ def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesT
         treasury_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 1
 
 
 def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_table(
@@ -442,21 +440,21 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 0
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text) == 0
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text) == 0
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text) == 0
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text) == 0
 
     # WHEN
     x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text)=}")
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text)=}")
-    print(f"{get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text)=}")
+    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text)=}")
+    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text)=}")
+    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text)=}")
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, bob_text) == 2
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, tim_text) == 1
-        assert get_agenda_idea_beliefunit_table_count(treasury_conn, sal_text) == 1
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 2
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text) == 1
+        assert get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text) == 1
 
 
 def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -468,7 +466,7 @@ def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01
 
     bob_text = "Bob"
     with x_econ.get_treasury_conn() as treasury_conn:
-        assert get_agenda_groupunit_table_count(treasury_conn, bob_text) == 0
+        assert get_agenda_groupunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
@@ -482,7 +480,7 @@ def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01
         treasury_conn.execute(bob_group_sqlstr)
 
     # THEN
-    assert get_agenda_groupunit_table_count(treasury_conn, bob_text) == 1
+    assert get_agenda_groupunit_row_count(treasury_conn, bob_text) == 1
 
 
 def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
@@ -502,7 +500,7 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     x_econ.save_job_agenda_to_forum(bob_agenda)
     x_econ.save_job_agenda_to_forum(tom_agenda)
     x_econ.refresh_treasury_job_agendas_data()
-    sqlstr = get_table_count_sqlstr("agenda_groupunit")
+    sqlstr = get_row_count_sqlstr("agenda_groupunit")
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 3
 
     # WHEN

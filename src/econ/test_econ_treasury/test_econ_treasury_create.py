@@ -4,7 +4,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
-from src.econ.treasury_sqlstr import get_db_tables, get_db_columns
+from src.instrument.sqlite import get_db_tables, get_db_columns
 from src.instrument.file import open_file
 from src.instrument.python import get_nested_value, x_get_dict
 
