@@ -1,4 +1,9 @@
-from src.agenda.atom import get_atom_columns_build
+from src.agenda.atom import (
+    get_atom_columns_build,
+    atom_hx_table_name,
+    atom_curr_table_name,
+    AgendaAtom,
+)
 from src.agenda.agenda import AgendaUnit, PartyUnit
 from src._road.road import create_road_without_root_node, RoadUnit, PersonID, PartyID
 from src.instrument.sqlite import (
@@ -41,8 +46,8 @@ WHERE road = '{road}'
 
 def get_atom_hx_table_create_sqlstr() -> str:
     """Create table that hold atom_hx."""
-    x_str = """
-CREATE TABLE IF NOT EXISTS atom_hx (
+    x_str = f"""
+CREATE TABLE IF NOT EXISTS {atom_hx_table_name()} (
 , person_id VARCHAR(255) NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
@@ -53,17 +58,16 @@ CREATE TABLE IF NOT EXISTS atom_hx (
     return x_str
 
 
-def get_atom_hx_table_insert_sqlstr() -> str:
-    return """
-INSERT INTO atom_hx (person_id..."""
+def get_atom_hx_table_insert_sqlstr(x_atom: AgendaAtom) -> str:
+    return x_atom.get_insert_sqlstr()
 
 
 def get_atom_curr_table_create_sqlstr() -> str:
     """Create table that holds current ."""
-    x_str = """
-CREATE TABLE IF NOT EXISTS atom_curr (
+    x_str = f"""
+CREATE TABLE IF NOT EXISTS {atom_curr_table_name()} (
 , person_id VARCHAR(255) NOT NULL
-, atom_hx_row_id INT NOT NULL"""
+, {atom_hx_table_name()}_row_id INT NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
         if x_value == "TEXT":

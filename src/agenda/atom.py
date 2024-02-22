@@ -25,6 +25,7 @@ from src.instrument.python import (
     get_nested_value,
     get_all_nondictionary_objs,
 )
+from src.instrument.sqlite import create_insert_sqlstr
 from src.instrument.file import open_file, save_file
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -40,6 +41,14 @@ def atom_insert() -> str:
 
 def atom_delete() -> str:
     return "DELETE"
+
+
+def atom_hx_table_name() -> str:
+    return "atom_hx"
+
+
+def atom_curr_table_name() -> str:
+    return "atom_curr"
 
 
 def get_atom_config_file_name() -> str:
@@ -171,6 +180,24 @@ class AgendaAtom:
     optional_args: dict[str:str] = None
     atom_order: int = None
     _crud_cache: str = None
+
+    def get_insert_sqlstr(self) -> str:
+        if self.is_valid() == False:
+            raise AgendaAtomDescriptionException(
+                f"Cannot get_insert_sqlstr '{self.category}' with is_valid=False."
+            )
+
+        x_columns = [
+            f"{self.category}_{self.crud_text}_{required_arg}"
+            for required_arg in self.required_args.keys()
+        ]
+        x_columns.extend(
+            f"{self.category}_{self.crud_text}_{optional_arg}"
+            for optional_arg in self.optional_args.keys()
+        )
+        x_values = list(self.required_args.values())
+        x_values.extend(iter(self.optional_args.values()))
+        return create_insert_sqlstr(atom_hx_table_name(), x_columns, x_values)
 
     def get_description(self) -> str:
         if self.is_valid() == False:

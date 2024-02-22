@@ -37,3 +37,37 @@ def check_connection(conn: Connection) -> bool:
 def get_single_result(db_conn: Connection, sqlstr: str) -> str:
     results = db_conn.execute(sqlstr)
     return results.fetchone()[0]
+
+
+def create_insert_sqlstr(
+    x_table: str, x_columns: list[str], x_values: list[str]
+) -> str:
+    x_str = f"""INSERT INTO {x_table} ("""
+    columns_str = ""
+    for x_column in x_columns:
+        if columns_str == "":
+            columns_str = f"""{columns_str}
+  {x_column}"""
+        else:
+            columns_str = f"""{columns_str}
+, {x_column}"""
+    values_str = ""
+    for x_value in x_values:
+        print(f"{type(x_value)=}")
+        if str(type(x_value)) != "<class 'int'>":
+            x_value = f"'{x_value}'"
+
+        if values_str == "":
+            values_str = f"""{values_str}
+  {x_value}"""
+        else:
+            values_str = f"""{values_str}
+, {x_value}"""
+
+    x_str = f"""{x_str}{columns_str}
+)
+VALUES ({values_str}
+)
+;"""
+    print(x_str)
+    return x_str

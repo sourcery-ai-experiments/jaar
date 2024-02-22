@@ -7,7 +7,10 @@ from src.agenda.atom import (
     atom_delete,
     atom_insert,
     agendaatom_shop,
+    atom_curr_table_name,
+    atom_hx_table_name,
 )
+from pytest import raises as pytest_raises
 
 
 def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
@@ -693,3 +696,84 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_groupunit = groupunit_shop(fly_text)
 #     fly_groupunit.set_partylink(partylink_shop(rico_text))
 #     fly_groupunit.set_partylink(partylink_shop(dizz_text))
+
+
+def test_AgendaAtom_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
+    # WHEN
+    sports_text = "sports"
+    sports_road = create_road("a", sports_text)
+    ball_text = "basketball"
+    ball_road = create_road(sports_road, ball_text)
+    knee_text = "knee"
+    knee_road = create_road("a", knee_text)
+
+    # WHEN
+    x_category = "idea_beliefunit"
+    update_disc_agendaatom = agendaatom_shop(x_category, atom_update())
+    update_disc_agendaatom.set_locator("road", ball_road)
+    update_disc_agendaatom.set_locator("base", knee_road)
+    update_disc_agendaatom.set_required_arg("road", ball_road)
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        update_disc_agendaatom.get_insert_sqlstr()
+    assert (
+        str(excinfo.value)
+        == f"Cannot get_insert_sqlstr '{x_category}' with is_valid=False."
+    )
+
+
+def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
+    # WHEN
+    new2_value = 66
+    category = "agendaunit"
+    opt_arg2 = "_max_tree_traverse"
+    x_agendaatom = agendaatom_shop(category, atom_update())
+    x_agendaatom.set_optional_arg(opt_arg2, new2_value)
+    # THEN
+    x_table = "atom_hx"
+    example_sqlstr = f"""INSERT INTO {x_table} (
+  {category}_{atom_update()}_{opt_arg2}
+)
+VALUES (
+  {new2_value}
+)
+;"""
+    assert x_agendaatom.get_insert_sqlstr() == example_sqlstr
+
+
+def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
+    # WHEN
+    sports_text = "sports"
+    sports_road = create_road("a", sports_text)
+    ball_text = "basketball"
+    ball_road = create_road(sports_road, ball_text)
+    knee_text = "knee"
+    knee_road = create_road("a", knee_text)
+    knee_open = 7
+
+    # WHEN
+    x_category = "idea_beliefunit"
+    road_text = "road"
+    base_text = "base"
+    open_text = "open"
+    update_disc_agendaatom = agendaatom_shop(x_category, atom_insert())
+    update_disc_agendaatom.set_locator(road_text, ball_road)
+    update_disc_agendaatom.set_locator(base_text, knee_road)
+    update_disc_agendaatom.set_required_arg(road_text, ball_road)
+    update_disc_agendaatom.set_required_arg(base_text, knee_road)
+    update_disc_agendaatom.set_optional_arg(open_text, knee_open)
+
+    # THEN
+    example_sqlstr = f"""INSERT INTO {atom_hx_table_name()} (
+  {x_category}_{atom_insert()}_{road_text}
+, {x_category}_{atom_insert()}_{base_text}
+, {x_category}_{atom_insert()}_{open_text}
+)
+VALUES (
+  '{ball_road}'
+, '{knee_road}'
+, {knee_open}
+)
+;"""
+    assert update_disc_agendaatom.get_insert_sqlstr() == example_sqlstr
