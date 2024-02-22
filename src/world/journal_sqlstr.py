@@ -11,10 +11,38 @@ from dataclasses import dataclass
 from sqlite3 import Connection
 
 
-def get_deal_hx_table_create_sqlstr() -> str:
-    """Create table that hold deal_hx."""
+def get_road_ref_table_create_sqlstr() -> str:
+    return """
+CREATE TABLE IF NOT EXISTS road_ref (
+  road VARCHAR(MAX) NOT NULL
+, delimiter VARCHAR(255) NOT NULL
+, UNIQUE(road, delimiter)
+;"""
+
+
+def get_road_ref_table_single_insert_sqlstr(road: RoadUnit, delimiter: str) -> str:
+    return f"""
+INSERT OR IGNORE INTO road_ref (road, delimiter) 
+VALUES (
+  '{road}'
+, '{delimiter}'
+)
+;"""
+
+
+def get_road_ref_table_row_id_select_sqlstr(road: RoadUnit, delimiter: str) -> str:
+    return f"""
+SELECT rowid FROM road_ref  
+WHERE road = '{road}' 
+  AND delimiter = '{delimiter}'
+)
+;"""
+
+
+def get_atom_hx_table_create_sqlstr() -> str:
+    """Create table that hold atom_hx."""
     x_str = """
-CREATE TABLE IF NOT EXISTS deal_hx (
+CREATE TABLE IF NOT EXISTS atom_hx (
 , person_id VARCHAR(255) NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
@@ -25,11 +53,17 @@ CREATE TABLE IF NOT EXISTS deal_hx (
     return x_str
 
 
-def get_deal_curr_table_create_sqlstr() -> str:
-    """Create table that hold deal_hx."""
+def get_atom_hx_table_insert_sqlstr() -> str:
+    return """
+INSERT INTO atom_hx (person_id..."""
+
+
+def get_atom_curr_table_create_sqlstr() -> str:
+    """Create table that holds current ."""
     x_str = """
-CREATE TABLE IF NOT EXISTS deal_hx (
-, person_id VARCHAR(255) NOT NULL"""
+CREATE TABLE IF NOT EXISTS atom_curr (
+, person_id VARCHAR(255) NOT NULL
+, atom_hx_row_id INT NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
         if x_value == "TEXT":
@@ -64,8 +98,9 @@ CREATE TABLE IF NOT EXISTS deal_hx (
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_deal_hx_table_create_sqlstr()]
-    list_x.append(get_deal_curr_table_create_sqlstr())
+    list_x = [get_atom_hx_table_create_sqlstr()]
+    list_x.append(get_atom_curr_table_create_sqlstr())
+    list_x.append(get_road_ref_table_create_sqlstr())
     return list_x
 
 
