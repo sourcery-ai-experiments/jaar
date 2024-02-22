@@ -1,5 +1,10 @@
 from src._road.road import RoadUnit
-from src.agenda.party import PartyID, partylink_shop, partyunit_shop
+from src.agenda.party import (
+    PartyID,
+    partylink_shop,
+    partyunit_shop,
+    PartyUnitExternalMetrics,
+)
 from src.agenda.group import GroupID, groupunit_shop, balancelink_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
@@ -1445,3 +1450,52 @@ def test_AgendaUnit_is_partyunits_debtor_weight_sum_correct_ReturnsCorrectBool()
     # WHEN / THEN
     yao_agenda.set_party_debtor_pool(yao_party_debt_pool)
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
+
+
+def test_AgendaUnit_set_partyunit_external_metrics_SetsAttrs_creditor_live_debtor_live():
+    # GIVEN
+    x_agenda = agendaunit_shop("Yao")
+    jane_text = "Jane Randolph"
+    x_agenda.add_partyunit(jane_text)
+
+    jane_party = x_agenda._partys.get(jane_text)
+    print(f"Before Party {jane_party.party_id} {jane_party._debtor_live=} ")
+    assert jane_party._debtor_live is None
+    assert jane_party._creditor_live is None
+
+    assert sum(
+        party_x._creditor_live is None for party_x in x_agenda._partys.values()
+    ) == len(x_agenda._partys)
+    assert sum(
+        party_x._debtor_live is None for party_x in x_agenda._partys.values()
+    ) == len(x_agenda._partys)
+
+    # WHEN
+    jane_debtor_status = True
+    jane_creditor_status = True
+    jane_metr = PartyUnitExternalMetrics(
+        internal_party_id=jane_text,
+        debtor_live=jane_debtor_status,
+        creditor_live=jane_creditor_status,
+    )
+    x_agenda.set_partyunit_external_metrics(jane_metr)
+
+    # THEN
+    assert jane_party._debtor_live == jane_debtor_status
+    assert jane_party._creditor_live == jane_creditor_status
+
+    assert (
+        sum(party_x._creditor_live is None for party_x in x_agenda._partys.values())
+        == len(x_agenda._partys) - 1
+    )
+    assert (
+        sum(party_x._debtor_live is None for party_x in x_agenda._partys.values())
+        == len(x_agenda._partys) - 1
+    )
+    assert (
+        sum(party_x._creditor_live != None for party_x in x_agenda._partys.values())
+        == 1
+    )
+    assert (
+        sum(party_x._debtor_live != None for party_x in x_agenda._partys.values()) == 1
+    )
