@@ -78,7 +78,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     rico_text = "Rico"
 #     carm_text = "Carmen"
 
-#     category = "partyunit"
+#     category = "agenda_partyunit"
 #     x_agendaatom = agendaatom_shop(category, atom_delete())
 #     x_agendaatom.set_locator("party_id", carm_text)
 #     x_agendaatom.set_required_arg("party_id", carm_text)
@@ -91,7 +91,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     carm_text = "Carmen"
 
 #     # WHEN
-#     category = "partyunit"
+#     category = "agenda_partyunit"
 #     x_agendaatom = agendaatom_shop(category, atom_insert())
 #     x_agendaatom.set_locator("party_id", carm_text)
 #     x_agendaatom.set_required_arg("party_id", carm_text)
@@ -107,7 +107,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     rico_text = "Rico"
 
 #     # WHEN
-#     category = "partyunit"
+#     category = "agenda_partyunit"
 #     x_agendaatom = agendaatom_shop(category, atom_update())
 #     x_agendaatom.set_locator("party_id", rico_text)
 #     x_agendaatom.set_required_arg("party_id", rico_text)
@@ -135,13 +135,13 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_groupunit.set_partylink(partylink_shop(dizz_text))
 
 #     # WHEN
-#     rico_agendaatom = agendaatom_shop("partylink", atom_delete())
+#     rico_agendaatom = agendaatom_shop("agenda_group_partylink", atom_delete())
 #     rico_agendaatom.set_locator("group_id", run_text)
 #     rico_agendaatom.set_locator("party_id", rico_text)
 #     rico_agendaatom.set_required_arg("group_id", run_text)
 #     rico_agendaatom.set_required_arg("party_id", rico_text)
 #     # print(f"{rico_agendaatom=}")
-#     carm_agendaatom = agendaatom_shop("partylink", atom_delete())
+#     carm_agendaatom = agendaatom_shop("agenda_group_partylink", atom_delete())
 #     carm_agendaatom.set_locator("group_id", fly_text)
 #     carm_agendaatom.set_locator("party_id", carm_text)
 #     carm_agendaatom.set_required_arg("group_id", fly_text)
@@ -161,7 +161,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     run_groupunit.set_partylink(partylink_shop(carm_text))
 
 #     # WHEN
-#     rico_agendaatom = agendaatom_shop("partylink", atom_insert())
+#     rico_agendaatom = agendaatom_shop("agenda_group_partylink", atom_insert())
 #     rico_agendaatom.set_locator("group_id", run_text)
 #     rico_agendaatom.set_locator("party_id", rico_text)
 #     rico_agendaatom.set_required_arg("group_id", run_text)
@@ -182,7 +182,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     run_groupunit.set_partylink(partylink_shop(rico_text, old_rico_run_creditor_weight))
 
 #     # WHEN
-#     rico_agendaatom = agendaatom_shop("partylink", atom_update())
+#     rico_agendaatom = agendaatom_shop("agenda_group_partylink", atom_update())
 #     rico_agendaatom.set_locator("group_id", run_text)
 #     rico_agendaatom.set_locator("party_id", rico_text)
 #     rico_agendaatom.set_required_arg("group_id", run_text)
@@ -201,7 +201,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_text = ",flyers"
 
 #     # WHEN
-#     x_agendaatom = agendaatom_shop("groupunit", atom_delete())
+#     x_agendaatom = agendaatom_shop("agenda_groupunit", atom_delete())
 #     print(f"{x_agendaatom=}")
 #     x_agendaatom.set_locator("group_id", run_text)
 #     x_agendaatom.set_required_arg("group_id", run_text)
@@ -214,7 +214,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_text = ",flyers"
 
 #     # WHEN
-#     x_agendaatom = agendaatom_shop("groupunit", atom_insert())
+#     x_agendaatom = agendaatom_shop("agenda_groupunit", atom_insert())
 #     x_agendaatom.set_locator("group_id", fly_text)
 #     x_agendaatom.set_required_arg("group_id", fly_text)
 #     x_agendaatom.set_optional_arg("_treasury_partylinks", yao_roadunit())
@@ -227,7 +227,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     run_text = ",runners"
 
 #     # WHEN
-#     x_agendaatom = agendaatom_shop("groupunit", atom_update())
+#     x_agendaatom = agendaatom_shop("agenda_groupunit", atom_update())
 #     x_agendaatom.set_locator("group_id", run_text)
 #     x_agendaatom.set_required_arg("group_id", run_text)
 #     x_agendaatom.set_optional_arg("_treasury_partylinks", yao_roadunit())
@@ -241,7 +241,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     fly_text = ",flyers"
 
 #     # WHEN
-#     x_agendaatom = agendaatom_shop("groupunit", atom_delete())
+#     x_agendaatom = agendaatom_shop("agenda_groupunit", atom_delete())
 #     print(f"{x_agendaatom=}")
 #     x_agendaatom.set_locator("group_id", run_text)
 #     x_agendaatom.set_required_arg("group_id", run_text)
@@ -258,7 +258,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     disc_road = create_road(sports_road, disc_text)
 
 #     # WHEN
-#     delete_disc_agendaatom = agendaatom_shop("ideaunit", atom_delete())
+#     delete_disc_agendaatom = agendaatom_shop("agenda_ideaunit", atom_delete())
 #     delete_disc_agendaatom.set_locator("road", disc_road)
 #     delete_disc_agendaatom.set_required_arg("road", disc_road)
 #     print(f"{delete_disc_agendaatom=}")
@@ -283,7 +283,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_numeric_road = None
 #     # x_numor = 10
 #     x_promise = True
-#     insert_disc_agendaatom = agendaatom_shop("ideaunit", atom_insert())
+#     insert_disc_agendaatom = agendaatom_shop("agenda_ideaunit", atom_insert())
 #     insert_disc_agendaatom.set_locator("road", disc_road)
 #     insert_disc_agendaatom.set_required_arg("label", disc_text)
 #     insert_disc_agendaatom.set_required_arg("parent_road", sports_road)
@@ -315,7 +315,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     x_meld_strategy = "override"
 #     # x_numor = 10
 #     x_promise = True
-#     insert_disc_agendaatom = agendaatom_shop("ideaunit", atom_update())
+#     insert_disc_agendaatom = agendaatom_shop("agenda_ideaunit", atom_update())
 #     insert_disc_agendaatom.set_locator("road", ball_road)
 #     insert_disc_agendaatom.set_required_arg("road", ball_road)
 #     # insert_disc_agendaatom.set_optional_arg("_addin", x_addin)
@@ -353,7 +353,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     disc_road = create_road(sports_road, disc_text)
 
 #     # WHEN
-#     delete_disc_agendaatom = agendaatom_shop("idea_balancelink", atom_delete())
+#     delete_disc_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_delete())
 #     delete_disc_agendaatom.set_locator("road", disc_road)
 #     delete_disc_agendaatom.set_locator("group_id", fly_text)
 #     delete_disc_agendaatom.set_required_arg("road", disc_road)
@@ -378,7 +378,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # WHEN
 #     x_creditor_weight = 55
 #     x_debtor_weight = 66
-#     update_disc_agendaatom = agendaatom_shop("idea_balancelink", atom_update())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_update())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("group_id", run_text)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -405,7 +405,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # WHEN
 #     x_creditor_weight = 55
 #     x_debtor_weight = 66
-#     update_disc_agendaatom = agendaatom_shop("idea_balancelink", atom_insert())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_insert())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("group_id", run_text)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -430,7 +430,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # WHEN
 #     broken_open = 55
 #     broken_nigh = 66
-#     update_disc_agendaatom = agendaatom_shop("idea_beliefunit", atom_insert())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_insert())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -454,7 +454,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     broken_road = create_road(knee_road, broken_text)
 
 #     # WHEN
-#     update_disc_agendaatom = agendaatom_shop("idea_beliefunit", atom_delete())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_delete())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -480,7 +480,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     # WHEN
 #     medical_open = 45
 #     medical_nigh = 77
-#     update_disc_agendaatom = agendaatom_shop("idea_beliefunit", atom_update())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_update())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -508,7 +508,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     broken_nigh = 77
 #     broken_divisor = 3
 #     update_disc_agendaatom = agendaatom_shop(
-#         "idea_reason_premiseunit", atom_update()
+#         "agenda_idea_reason_premiseunit", atom_update()
 #     )
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
@@ -541,7 +541,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     medical_nigh = 77
 #     medical_divisor = 3
 #     update_disc_agendaatom = agendaatom_shop(
-#         "idea_reason_premiseunit", atom_insert()
+#         "agenda_idea_reason_premiseunit", atom_insert()
 #     )
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
@@ -570,7 +570,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     medical_road = create_road(knee_road, medical_text)
 #     # WHEN
 #     update_disc_agendaatom = agendaatom_shop(
-#         "idea_reason_premiseunit", atom_delete()
+#         "agenda_idea_reason_premiseunit", atom_delete()
 #     )
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
@@ -594,7 +594,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 
 #     # WHEN
 #     medical_suff_idea_active = True
-#     update_disc_agendaatom = agendaatom_shop("idea_reasonunit", atom_insert())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_insert())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -617,7 +617,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     before_medical_suff_idea_active = False
 #     # WHEN
 #     after_medical_suff_idea_active = True
-#     update_disc_agendaatom = agendaatom_shop("idea_reasonunit", atom_update())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_update())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -640,7 +640,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     medical_suff_idea_active = False
 
 #     # WHEN
-#     update_disc_agendaatom = agendaatom_shop("idea_reasonunit", atom_delete())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_delete())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("base", knee_road)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -658,7 +658,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     ball_road = create_road(sports_road, ball_text)
 
 #     # WHEN
-#     update_disc_agendaatom = agendaatom_shop("idea_suffgroup", atom_insert())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_suffgroup", atom_insert())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("group_id", rico_text)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -676,7 +676,7 @@ def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
 #     ball_road = create_road(sports_road, ball_text)
 
 #     # WHEN
-#     update_disc_agendaatom = agendaatom_shop("idea_suffgroup", atom_delete())
+#     update_disc_agendaatom = agendaatom_shop("agenda_idea_suffgroup", atom_delete())
 #     update_disc_agendaatom.set_locator("road", ball_road)
 #     update_disc_agendaatom.set_locator("group_id", rico_text)
 #     update_disc_agendaatom.set_required_arg("road", ball_road)
@@ -711,7 +711,7 @@ def test_AgendaAtom_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     knee_road = create_road("a", knee_text)
 
     # WHEN
-    x_category = "idea_beliefunit"
+    x_category = "agenda_idea_beliefunit"
     update_disc_agendaatom = agendaatom_shop(x_category, atom_update())
     update_disc_agendaatom.set_locator("road", ball_road)
     update_disc_agendaatom.set_locator("base", knee_road)
@@ -754,7 +754,7 @@ def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_idea_beliefunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "idea_beliefunit"
+    x_category = "agenda_idea_beliefunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -792,7 +792,7 @@ def test_get_agendaatom_from_rowdata_ReturnsCorrectObj_idea_beliefunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "idea_beliefunit"
+    x_category = "agenda_idea_beliefunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"

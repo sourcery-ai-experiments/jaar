@@ -17,18 +17,18 @@ from src.agenda.atom import (
 def test_atom_config_HasCorrect_category():
     assert category_ref() == {
         "agendaunit",
-        "partyunit",
-        "groupunit",
-        "partylink",
-        "ideaunit",
-        "idea_balancelink",
-        "idea_reasonunit",
-        "idea_reason_premiseunit",
-        "idea_suffgroup",
-        "idea_healerhold",
-        "idea_beliefunit",
+        "agenda_partyunit",
+        "agenda_groupunit",
+        "agenda_group_partylink",
+        "agenda_ideaunit",
+        "agenda_idea_balancelink",
+        "agenda_idea_reasonunit",
+        "agenda_idea_reason_premiseunit",
+        "agenda_idea_suffgroup",
+        "agenda_idea_healerhold",
+        "agenda_idea_beliefunit",
     }
-    assert "partyunit" in category_ref()
+    assert "agenda_partyunit" in category_ref()
     assert is_category_ref("idearoot") == False
 
 
@@ -72,64 +72,64 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     )
     mog = atom_order_text
     # # Simple script for editing atom_config.json
-    # set_mog("partyunit", atom_insert(), mog, 0)
-    # set_mog("partylink", atom_insert(), mog, 1)
+    # set_mog("agenda_partyunit", atom_insert(), mog, 0)
+    # set_mog("agenda_group_partylink", atom_insert(), mog, 1)
     # set_mog("groupunit", atom_insert(), mog, 2)
-    # set_mog("ideaunit", atom_insert(), mog, 3)
-    # set_mog("idea_balancelink", atom_insert(), mog, 4)
-    # set_mog("idea_suffgroup", atom_insert(), mog, 5)
-    # set_mog("idea_healerhold", atom_insert(), mog, 6)
-    # set_mog("idea_beliefunit", atom_insert(), mog, 7)
-    # set_mog("idea_reasonunit", atom_insert(), mog, 8)
-    # set_mog("idea_reason_premiseunit", atom_insert(), mog, 9)
-    # set_mog("partyunit", atom_update(), mog, 10)
+    # set_mog("agenda_ideaunit", atom_insert(), mog, 3)
+    # set_mog("agenda_idea_balancelink", atom_insert(), mog, 4)
+    # set_mog("agenda_idea_suffgroup", atom_insert(), mog, 5)
+    # set_mog("agenda_idea_healerhold", atom_insert(), mog, 6)
+    # set_mog("agenda_idea_beliefunit", atom_insert(), mog, 7)
+    # set_mog("agenda_idea_reasonunit", atom_insert(), mog, 8)
+    # set_mog("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
+    # set_mog("agenda_partyunit", atom_update(), mog, 10)
     # set_mog("groupunit", atom_update(), mog, 11)
-    # set_mog("partylink", atom_update(), mog, 12)
-    # set_mog("ideaunit", atom_update(), mog, 13)
-    # set_mog("idea_balancelink", atom_update(), mog, 14)
-    # set_mog("idea_beliefunit", atom_update(), mog, 15)
-    # set_mog("idea_reason_premiseunit", atom_update(), mog, 16)
-    # set_mog("idea_reasonunit", atom_update(), mog, 17)
-    # set_mog("idea_reason_premiseunit", atom_delete(), mog, 18)
-    # set_mog("idea_reasonunit", atom_delete(), mog, 19)
-    # set_mog("idea_beliefunit", atom_delete(), mog, 20)
-    # set_mog("idea_suffgroup", atom_delete(), mog, 21)
-    # set_mog("idea_healerhold", atom_delete(), mog, 22)
-    # set_mog("idea_balancelink", atom_delete(), mog, 23)
-    # set_mog("ideaunit", atom_delete(), mog, 24)
-    # set_mog("partylink", atom_delete(), mog, 25)
-    # set_mog("partyunit", atom_delete(), mog, 26)
+    # set_mog("agenda_group_partylink", atom_update(), mog, 12)
+    # set_mog("agenda_ideaunit", atom_update(), mog, 13)
+    # set_mog("agenda_idea_balancelink", atom_update(), mog, 14)
+    # set_mog("agenda_idea_beliefunit", atom_update(), mog, 15)
+    # set_mog("agenda_idea_reason_premiseunit", atom_update(), mog, 16)
+    # set_mog("agenda_idea_reasonunit", atom_update(), mog, 17)
+    # set_mog("agenda_idea_reason_premiseunit", atom_delete(), mog, 18)
+    # set_mog("agenda_idea_reasonunit", atom_delete(), mog, 19)
+    # set_mog("agenda_idea_beliefunit", atom_delete(), mog, 20)
+    # set_mog("agenda_idea_suffgroup", atom_delete(), mog, 21)
+    # set_mog("agenda_idea_healerhold", atom_delete(), mog, 22)
+    # set_mog("agenda_idea_balancelink", atom_delete(), mog, 23)
+    # set_mog("agenda_ideaunit", atom_delete(), mog, 24)
+    # set_mog("agenda_group_partylink", atom_delete(), mog, 25)
+    # set_mog("agenda_partyunit", atom_delete(), mog, 26)
     # set_mog("groupunit", atom_delete(), mog, 27)
     # set_mog("agendaunit", atom_update(), mog, 28)
 
-    assert 0 == get_mog("partyunit", atom_insert(), mog, 0)
-    assert 1 == get_mog("partylink", atom_insert(), mog, 1)
-    assert 2 == get_mog("groupunit", atom_insert(), mog, 2)
-    assert 3 == get_mog("ideaunit", atom_insert(), mog, 3)
-    assert 4 == get_mog("idea_balancelink", atom_insert(), mog, 4)
-    assert 5 == get_mog("idea_suffgroup", atom_insert(), mog, 5)
-    assert 6 == get_mog("idea_healerhold", atom_insert(), mog, 6)
-    assert 7 == get_mog("idea_beliefunit", atom_insert(), mog, 7)
-    assert 8 == get_mog("idea_reasonunit", atom_insert(), mog, 8)
-    assert 9 == get_mog("idea_reason_premiseunit", atom_insert(), mog, 9)
-    assert 10 == get_mog("partyunit", atom_update(), mog, 10)
-    assert 11 == get_mog("groupunit", atom_update(), mog, 11)
-    assert 12 == get_mog("partylink", atom_update(), mog, 12)
-    assert 13 == get_mog("ideaunit", atom_update(), mog, 13)
-    assert 14 == get_mog("idea_balancelink", atom_update(), mog, 14)
-    assert 15 == get_mog("idea_beliefunit", atom_update(), mog, 15)
-    assert 16 == get_mog("idea_reason_premiseunit", atom_update(), mog, 16)
-    assert 17 == get_mog("idea_reasonunit", atom_update(), mog, 17)
-    assert 18 == get_mog("idea_reason_premiseunit", atom_delete(), mog, 18)
-    assert 19 == get_mog("idea_reasonunit", atom_delete(), mog, 19)
-    assert 20 == get_mog("idea_beliefunit", atom_delete(), mog, 20)
-    assert 21 == get_mog("idea_suffgroup", atom_delete(), mog, 21)
-    assert 22 == get_mog("idea_healerhold", atom_delete(), mog, 22)
-    assert 23 == get_mog("idea_balancelink", atom_delete(), mog, 23)
-    assert 24 == get_mog("ideaunit", atom_delete(), mog, 24)
-    assert 25 == get_mog("partylink", atom_delete(), mog, 25)
-    assert 26 == get_mog("partyunit", atom_delete(), mog, 26)
-    assert 27 == get_mog("groupunit", atom_delete(), mog, 27)
+    assert 0 == get_mog("agenda_partyunit", atom_insert(), mog, 0)
+    assert 1 == get_mog("agenda_group_partylink", atom_insert(), mog, 1)
+    assert 2 == get_mog("agenda_groupunit", atom_insert(), mog, 2)
+    assert 3 == get_mog("agenda_ideaunit", atom_insert(), mog, 3)
+    assert 4 == get_mog("agenda_idea_balancelink", atom_insert(), mog, 4)
+    assert 5 == get_mog("agenda_idea_suffgroup", atom_insert(), mog, 5)
+    assert 6 == get_mog("agenda_idea_healerhold", atom_insert(), mog, 6)
+    assert 7 == get_mog("agenda_idea_beliefunit", atom_insert(), mog, 7)
+    assert 8 == get_mog("agenda_idea_reasonunit", atom_insert(), mog, 8)
+    assert 9 == get_mog("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
+    assert 10 == get_mog("agenda_partyunit", atom_update(), mog, 10)
+    assert 11 == get_mog("agenda_groupunit", atom_update(), mog, 11)
+    assert 12 == get_mog("agenda_group_partylink", atom_update(), mog, 12)
+    assert 13 == get_mog("agenda_ideaunit", atom_update(), mog, 13)
+    assert 14 == get_mog("agenda_idea_balancelink", atom_update(), mog, 14)
+    assert 15 == get_mog("agenda_idea_beliefunit", atom_update(), mog, 15)
+    assert 16 == get_mog("agenda_idea_reason_premiseunit", atom_update(), mog, 16)
+    assert 17 == get_mog("agenda_idea_reasonunit", atom_update(), mog, 17)
+    assert 18 == get_mog("agenda_idea_reason_premiseunit", atom_delete(), mog, 18)
+    assert 19 == get_mog("agenda_idea_reasonunit", atom_delete(), mog, 19)
+    assert 20 == get_mog("agenda_idea_beliefunit", atom_delete(), mog, 20)
+    assert 21 == get_mog("agenda_idea_suffgroup", atom_delete(), mog, 21)
+    assert 22 == get_mog("agenda_idea_healerhold", atom_delete(), mog, 22)
+    assert 23 == get_mog("agenda_idea_balancelink", atom_delete(), mog, 23)
+    assert 24 == get_mog("agenda_ideaunit", atom_delete(), mog, 24)
+    assert 25 == get_mog("agenda_group_partylink", atom_delete(), mog, 25)
+    assert 26 == get_mog("agenda_partyunit", atom_delete(), mog, 26)
+    assert 27 == get_mog("agenda_groupunit", atom_delete(), mog, 27)
     assert 28 == get_mog("agendaunit", atom_update(), mog, 28)
 
 
@@ -210,7 +210,7 @@ def test_agendaatom_shop_ReturnsCorrectObj():
     bob_required_dict = {"party_id": "huh"}
     bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
     bob_optional_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
 
     # WHEN
     x_agendaatom = agendaatom_shop(
@@ -233,7 +233,7 @@ def test_agendaatom_shop_ReturnsCorrectObj():
 def test_AgendaAtom_set_required_arg_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     assert partyunit_agendaatom.required_args == {}
 
@@ -248,7 +248,7 @@ def test_AgendaAtom_set_required_arg_CorrectlySetsAttr():
 def test_AgendaAtom_set_optional_arg_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     assert partyunit_agendaatom.optional_args == {}
 
@@ -263,7 +263,7 @@ def test_AgendaAtom_set_optional_arg_CorrectlySetsAttr():
 def test_AgendaAtom_set_locator_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     assert partyunit_agendaatom.locator == {}
 
@@ -278,7 +278,7 @@ def test_AgendaAtom_set_locator_CorrectlySetsAttr():
 def test_AgendaAtom_get_locator_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     party_id_text = "party_id"
     partyunit_agendaatom.set_locator(x_key=party_id_text, x_value=bob_text)
@@ -290,7 +290,7 @@ def test_AgendaAtom_get_locator_ReturnsCorrectObj():
 # def test_AgendaAtom_get_locator_key_ReturnsCorrectObj_single_parameter():
 #     # GIVEN
 #     bob_text = "Bob"
-#     partyunit_text = "partyunit"
+#     partyunit_text = "agenda_partyunit"
 #     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
 #     party_id_text = "party_id"
 #     partyunit_agendaatom.set_locator(x_key=party_id_text, x_value=bob_text)
@@ -302,7 +302,7 @@ def test_AgendaAtom_get_locator_ReturnsCorrectObj():
 # def test_AgendaAtom_get_locator_key_ReturnsCorrectObj_double_parameter():
 #     # GIVEN
 #     bob_text = "Bob"
-#     partylink_text = "partylink"
+#     partylink_text = "agenda_group_partylink"
 #     gupl_agendaatom = agendaatom_shop(partylink_text)
 #     party_id_text = "party_id"
 #     tom_text = "Tom"
@@ -320,7 +320,7 @@ def test_AgendaAtom_get_locator_ReturnsCorrectObj():
 
 def test_AgendaAtom_is_optional_args_valid_ReturnsCorrectBoolean():
     # WHEN
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, crud_text=atom_insert())
     assert bob_insert_agendaatom.is_optional_args_valid()
 
@@ -348,7 +348,7 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
 
     # WHEN
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, crud_text=atom_insert())
@@ -427,7 +427,7 @@ def test_AgendaAtom_get_value_ReturnsObj():
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     bob_locator_dict = {"party_id": bob_text}
     bob_insert_agendaatom.locator = bob_locator_dict
@@ -453,7 +453,7 @@ def test_AgendaAtom_get_value_ReturnsObj():
 
 def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
     bob_text = "Bob"
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     delete_text = atom_delete()
 
     # WHEN
@@ -486,7 +486,7 @@ def test_AgendaAtom_set_atom_order_SetCorrectAttr():
     bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     party_id_text = "party_id"
     bob_insert_agendaatom.set_locator(party_id_text, bob_text)
@@ -507,7 +507,7 @@ def test_AgendaAtom_set_arg_SetsAny_locator_arg_required_arg_optional_arg():
     bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     party_id_text = "party_id"
     cw_text = "creditor_weight"

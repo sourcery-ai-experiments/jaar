@@ -650,7 +650,7 @@ class Ui_Form(object):
         self.submit_child_insert.setText(_translate("Form", "Add Child"))
         self.submit_node_update.setText(_translate("Form", "Update Node"))
         self.label_parent_id.setText(_translate("Form", "Current Node ID:"))
-        self.baseideaunit.headerItem().setText(0, _translate("Form", "ideaunit"))
+        self.baseideaunit.headerItem().setText(0, _translate("Form", "agenda_ideaunit"))
         self.submit_node_delete.setText(_translate("Form", "Delete Node"))
         self.refresh_button.setText(_translate("Form", "Refresh"))
         self.close_button.setText(_translate("Form", "Close"))

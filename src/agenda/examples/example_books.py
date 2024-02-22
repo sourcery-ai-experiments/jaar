@@ -24,7 +24,7 @@ def get_bookunit_example1() -> BookUnit:
     x_agendaatom.set_optional_arg(x_attribute, "override")
     sue_bookunit.set_agendaatom(x_agendaatom)
 
-    category = "partyunit"
+    category = "agenda_partyunit"
     carm_text = "Carmen"
     x_agendaatom = agendaatom_shop(category, atom_delete())
     x_agendaatom.set_locator("party_id", carm_text)

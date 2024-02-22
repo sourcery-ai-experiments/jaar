@@ -58,7 +58,7 @@
             "required_args": {}
         }
     },
-    "groupunit": {
+    "agenda_groupunit": {
         "DELETE": {
             "atom_order": 27,
             "description_elements": [],
@@ -108,7 +108,7 @@
             }
         }
     },
-    "idea_balancelink": {
+    "agenda_idea_balancelink": {
         "DELETE": {
             "atom_order": 23,
             "description_elements": [],
@@ -192,7 +192,7 @@
             }
         }
     },
-    "idea_beliefunit": {
+    "agenda_idea_beliefunit": {
         "DELETE": {
             "atom_order": 20,
             "description_elements": [],
@@ -274,7 +274,7 @@
             }
         }
     },
-    "idea_healerhold": {
+    "agenda_idea_healerhold": {
         "DELETE": {
             "atom_order": 22,
             "description_elements": [],
@@ -316,7 +316,7 @@
             }
         }
     },
-    "idea_reason_premiseunit": {
+    "agenda_idea_reason_premiseunit": {
         "DELETE": {
             "atom_order": 18,
             "description_elements": [],
@@ -414,7 +414,7 @@
             }
         }
     },
-    "idea_reasonunit": {
+    "agenda_idea_reasonunit": {
         "DELETE": {
             "atom_order": 19,
             "description_elements": [],
@@ -480,7 +480,7 @@
             }
         }
     },
-    "idea_suffgroup": {
+    "agenda_idea_suffgroup": {
         "DELETE": {
             "atom_order": 21,
             "description_elements": [],
@@ -522,7 +522,7 @@
             }
         }
     },
-    "ideaunit": {
+    "agenda_ideaunit": {
         "DELETE": {
             "atom_order": 24,
             "description_elements": [],
@@ -594,7 +594,7 @@
             },
             "required_args": {
                 "label": {
-                    "python_type": "RoadUnit",
+                    "python_type": "RoadNode",
                     "sqlite_datatype": "TEXT"
                 },
                 "parent_road": {
@@ -670,7 +670,7 @@
             }
         }
     },
-    "partylink": {
+    "agenda_group_partylink": {
         "DELETE": {
             "atom_order": 25,
             "description_elements": [],
@@ -744,7 +744,7 @@
             }
         }
     },
-    "partyunit": {
+    "agenda_partyunit": {
         "DELETE": {
             "atom_order": 26,
             "description_elements": [],

@@ -60,7 +60,7 @@ def test_BookUnit_set_agendaatom_CorrectlySets_AgendaUnitSimpleAttrs():
 def test_BookUnit_set_agendaatom_RaisesErrorWhen_is_valid_IsFalse():
     # GIVEN
     ex1_bookunit = bookunit_shop()
-    x_category = "groupunit"
+    x_category = "agenda_groupunit"
     agenda_weight_agendaatom = agendaatom_shop(x_category, atom_update())
 
     # WHEN
@@ -146,7 +146,7 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
     bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
     bob_optional_dict[dw_text] = bob_partyunit.get_dict().get(dw_text)
     print(f"{bob_required_dict=}")
-    partyunit_text = "partyunit"
+    partyunit_text = "agenda_partyunit"
     ex1_bookunit.add_agendaatom(
         category=partyunit_text,
         crud_text=atom_insert(),

@@ -86,9 +86,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    assert len(sue_bookunit.agendaatoms.get(atom_insert()).get("partyunit")) == 1
+    assert len(sue_bookunit.agendaatoms.get(atom_insert()).get("agenda_partyunit")) == 1
     sue_insert_dict = sue_bookunit.agendaatoms.get(atom_insert())
-    sue_partyunit_dict = sue_insert_dict.get("partyunit")
+    sue_partyunit_dict = sue_insert_dict.get("agenda_partyunit")
     rico_agendaatom = sue_partyunit_dict.get(rico_text)
     assert rico_agendaatom.get_value("party_id") == rico_text
     assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
@@ -117,7 +117,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_delete():
 
     # THEN
     rico_agendaatom = get_nested_value(
-        sue_bookunit.agendaatoms, [atom_delete(), "partyunit", rico_text]
+        sue_bookunit.agendaatoms, [atom_delete(), "agenda_partyunit", rico_text]
     )
     assert rico_agendaatom.get_value("party_id") == rico_text
 
@@ -148,7 +148,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
     sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    x_keylist = [atom_update(), "partyunit", rico_text]
+    x_keylist = [atom_update(), "agenda_partyunit", rico_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("party_id") == rico_text
     assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
@@ -239,14 +239,14 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_insert(
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [atom_insert(), "groupunit", run_text]
+    x_keylist = [atom_insert(), "agenda_groupunit", run_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == run_text
     # print(f"\n{sue_bookunit.agendaatoms=}")
     print(f"\n{rico_agendaatom=}")
     assert rico_agendaatom.get_value("_treasury_partylinks") == x_treasury_partylinks
 
-    x_keylist = [atom_insert(), "partylink", run_text, rico_text]
+    x_keylist = [atom_insert(), "agenda_group_partylink", run_text, rico_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == run_text
     assert rico_agendaatom.get_value("party_id") == rico_text
@@ -296,14 +296,14 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_update(
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [atom_update(), "groupunit", run_text]
+    x_keylist = [atom_update(), "agenda_groupunit", run_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == run_text
     # print(f"\n{sue_bookunit.agendaatoms=}")
     print(f"\n{rico_agendaatom=}")
     assert rico_agendaatom.get_value("_treasury_partylinks") == swim_text
 
-    x_keylist = [atom_update(), "partylink", run_text, rico_text]
+    x_keylist = [atom_update(), "agenda_group_partylink", run_text, rico_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == run_text
     assert rico_agendaatom.get_value("party_id") == rico_text
@@ -349,11 +349,11 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_delete(
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [atom_delete(), "groupunit", run_text]
+    x_keylist = [atom_delete(), "agenda_groupunit", run_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == run_text
 
-    x_keylist = [atom_delete(), "partylink", fly_text, dizz_text]
+    x_keylist = [atom_delete(), "agenda_group_partylink", fly_text, dizz_text]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("group_id") == fly_text
     assert rico_agendaatom.get_value("party_id") == dizz_text
@@ -391,12 +391,12 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [atom_delete(), "ideaunit", street_road]
+    x_keylist = [atom_delete(), "agenda_ideaunit", street_road]
     street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert street_agendaatom.get_locator("road") == street_road
     assert street_agendaatom.get_value("road") == street_road
 
-    x_keylist = [atom_delete(), "ideaunit", ball_road]
+    x_keylist = [atom_delete(), "agenda_ideaunit", ball_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == ball_road
     assert ball_agendaatom.get_value("road") == ball_road
@@ -447,13 +447,13 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_insert(), "ideaunit", disc_road]
+    x_keylist = [atom_insert(), "agenda_ideaunit", disc_road]
     street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert street_agendaatom.get_locator("road") == disc_road
     assert street_agendaatom.get_value("label") == disc_text
     assert street_agendaatom.get_value("parent_road") == sports_road
 
-    x_keylist = [atom_insert(), "ideaunit", music_road]
+    x_keylist = [atom_insert(), "agenda_ideaunit", music_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == music_road
     assert ball_agendaatom.get_value("label") == music_text
@@ -513,7 +513,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_update(), "ideaunit", music_road]
+    x_keylist = [atom_update(), "agenda_ideaunit", music_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == music_road
     assert ball_agendaatom.get_value("_begin") == after_music_begin
@@ -569,7 +569,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_delete(), "idea_balancelink", disc_road, run_text]
+    x_keylist = [atom_delete(), "agenda_idea_balancelink", disc_road, run_text]
     run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert run_agendaatom.get_locator("road") == disc_road
     assert run_agendaatom.get_locator("group_id") == run_text
@@ -628,7 +628,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_insert(), "idea_balancelink", disc_road, run_text]
+    x_keylist = [atom_insert(), "agenda_idea_balancelink", disc_road, run_text]
     run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert run_agendaatom.get_locator("road") == disc_road
     assert run_agendaatom.get_locator("group_id") == run_text
@@ -678,7 +678,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_update(), "idea_balancelink", ball_road, run_text]
+    x_keylist = [atom_update(), "agenda_idea_balancelink", ball_road, run_text]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == ball_road
     assert ball_agendaatom.get_locator("group_id") == run_text
@@ -731,7 +731,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update(
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
 
-    x_keylist = [atom_update(), "idea_beliefunit", ball_road, knee_road]
+    x_keylist = [atom_update(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == ball_road
     assert ball_agendaatom.get_locator("base") == knee_road
@@ -776,7 +776,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert(
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
-    x_keylist = [atom_insert(), "idea_beliefunit", ball_road, knee_road]
+    x_keylist = [atom_insert(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == ball_road
     assert ball_agendaatom.get_locator("base") == knee_road
@@ -821,7 +821,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete(
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
-    x_keylist = [atom_delete(), "idea_beliefunit", ball_road, knee_road]
+    x_keylist = [atom_delete(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_locator("road") == ball_road
     assert ball_agendaatom.get_locator("base") == knee_road
@@ -873,7 +873,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_insert(),
-        "idea_reason_premiseunit",
+        "agenda_idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
@@ -935,7 +935,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_delete(),
-        "idea_reason_premiseunit",
+        "agenda_idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
@@ -1001,7 +1001,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_update(),
-        "idea_reason_premiseunit",
+        "agenda_idea_reason_premiseunit",
         ball_road,
         knee_road,
         broken_road,
@@ -1047,7 +1047,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert(
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_insert(),
-        "idea_reasonunit",
+        "agenda_idea_reasonunit",
         ball_road,
         medical_road,
     ]
@@ -1098,7 +1098,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update(
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_update(),
-        "idea_reasonunit",
+        "agenda_idea_reasonunit",
         ball_road,
         medical_road,
     ]
@@ -1145,7 +1145,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete(
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_delete(),
-        "idea_reasonunit",
+        "agenda_idea_reasonunit",
         ball_road,
         medical_road,
     ]
@@ -1179,7 +1179,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert()
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_insert(),
-        "idea_suffgroup",
+        "agenda_idea_suffgroup",
         ball_road,
         rico_text,
     ]
@@ -1215,7 +1215,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete()
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [
         atom_delete(),
-        "idea_suffgroup",
+        "agenda_idea_suffgroup",
         ball_road,
         rico_text,
     ]
