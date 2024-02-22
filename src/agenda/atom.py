@@ -25,7 +25,7 @@ from src.instrument.python import (
     get_nested_value,
     get_all_nondictionary_objs,
 )
-from src.instrument.sqlite import create_insert_sqlstr
+from src.instrument.sqlite import create_insert_sqlstr, RowData
 from src.instrument.file import open_file, save_file
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -242,9 +242,21 @@ class AgendaAtom:
         return self.locator.get(x_key)
 
     def is_locator_valid(self) -> bool:
-        category_dict = self._get_category_dict()
-        locator_dict = get_empty_dict_if_none(category_dict.get("locator"))
-        return locator_dict.keys() == self.locator.keys()
+        return self._get_locator_args_dict().keys() == self.locator.keys()
+
+    def _get_locator_args_dict(self) -> dict:
+        return get_empty_dict_if_none(self._get_category_dict().get("locator"))
+
+    def set_arg(self, x_key: str, x_value: any):
+        for required_arg in self._get_required_args_dict():
+            if x_key == required_arg:
+                self.set_required_arg(x_key, x_value)
+        for optional_arg in self._get_optional_args_dict():
+            if x_key == optional_arg:
+                self.set_optional_arg(x_key, x_value)
+        for locator_arg in self._get_locator_args_dict():
+            if x_key == locator_arg:
+                self.set_locator(x_key, x_value)
 
     def set_required_arg(self, x_key: str, x_value: any):
         self.required_args[x_key] = x_value
@@ -265,19 +277,19 @@ class AgendaAtom:
 
     def _get_optional_args_dict(self) -> dict:
         crud_dict = self._get_category_dict().get(self.crud_text)
-        return crud_dict.get("optional_args")
+        return get_empty_dict_if_none(crud_dict.get("optional_args"))
 
     def is_required_args_valid(self) -> bool:
         if self.crud_text not in {atom_delete(), atom_insert(), atom_update()}:
             return False
-        required_args_dict = get_empty_dict_if_none(self._get_required_args_dict())
+        required_args_dict = self._get_required_args_dict()
         return required_args_dict.keys() == self.required_args.keys()
 
     def is_optional_args_valid(self) -> bool:
         if self.crud_text not in {atom_delete(), atom_insert(), atom_update()}:
             return False
 
-        optional_args_dict = get_empty_dict_if_none(self._get_optional_args_dict())
+        optional_args_dict = self._get_optional_args_dict()
         return set(self.optional_args.keys()).issubset(set(optional_args_dict.keys()))
 
     def is_valid(self) -> bool:
@@ -567,6 +579,25 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
 
 class InvalidAgendaAtomException(Exception):
     pass
+
+
+def get_category_from_dict(x_row_dict: dict) -> str:
+    x_category_ref = category_ref()
+    for x_columnname in x_row_dict:
+        for x_category in x_category_ref:
+            if x_columnname.find(x_category) == 0:
+                category_len = len(x_category)
+                return x_category, x_columnname[category_len + 1 : category_len + 7]
+
+
+def get_agendaatom_from_rowdata(x_rowdata: RowData) -> AgendaAtom:
+    category_text, crud_text = get_category_from_dict(x_rowdata.row_dict)
+    x_agendaatom = agendaatom_shop(category=category_text, crud_text=crud_text)
+    front_len = len(category_text) + len(crud_text) + 2
+    for x_columnname, x_value in x_rowdata.row_dict.items():
+        arg_key = x_columnname[front_len:]
+        x_agendaatom.set_arg(x_key=arg_key, x_value=x_value)
+    return x_agendaatom
 
 
 @dataclass

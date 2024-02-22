@@ -1,4 +1,5 @@
-from sqlite3 import Connection
+from sqlite3 import Connection, connect as sqlite3_connect
+from dataclasses import dataclass
 
 
 def sqlite_null(obj_x):
@@ -53,7 +54,6 @@ def create_insert_sqlstr(
 , {x_column}"""
     values_str = ""
     for x_value in x_values:
-        print(f"{type(x_value)=}")
         if str(type(x_value)) != "<class 'int'>":
             x_value = f"'{x_value}'"
 
@@ -64,10 +64,40 @@ def create_insert_sqlstr(
             values_str = f"""{values_str}
 , {x_value}"""
 
-    x_str = f"""{x_str}{columns_str}
+    return f"""{x_str}{columns_str}
 )
 VALUES ({values_str}
 )
 ;"""
-    print(x_str)
-    return x_str
+
+
+def dict_factory(cursor, row):
+    fields = [column[0] for column in cursor.description]
+    return dict(zip(fields, row))
+
+
+@dataclass
+class RowData:
+    tablename: str = None
+    row_dict: str = None
+
+
+class row_dict_Exception(Exception):
+    pass
+
+
+def rowdata_shop(
+    tablename: str,
+    row_dict: str,
+):
+    if str(type(row_dict)) != "<class 'dict'>":
+        raise row_dict_Exception("row_dict is not dictionary")
+    x_dict = {x_key: x_value for x_key, x_value in row_dict.items() if x_value != None}
+    return RowData(tablename, x_dict)
+
+
+def get_rowdata(tablename: str, x_conn: Connection, select_sqlstr: str) -> RowData:
+    x_conn.row_factory = dict_factory
+    results = x_conn.execute(select_sqlstr)
+    row1 = results.fetchone()
+    return rowdata_shop(tablename, row1)

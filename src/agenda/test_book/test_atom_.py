@@ -500,3 +500,27 @@ def test_AgendaAtom_set_atom_order_SetCorrectAttr():
     # WHEN / THEN
     assert bob_insert_agendaatom.get_value(cw_text) == bob_creditor_weight
     assert bob_insert_agendaatom.get_value(dw_text) == bob_debtor_weight
+
+
+def test_AgendaAtom_set_arg_SetsAny_locator_arg_required_arg_optional_arg():
+    # GIVEN
+    bob_text = "Bob"
+    bob_creditor_weight = 55
+    bob_debtor_weight = 66
+    partyunit_text = "partyunit"
+    bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
+    party_id_text = "party_id"
+    cw_text = "creditor_weight"
+    dw_text = "debtor_weight"
+
+    # WHEN
+    bob_insert_agendaatom.set_arg(party_id_text, bob_text)
+    bob_insert_agendaatom.set_arg(cw_text, bob_creditor_weight)
+    bob_insert_agendaatom.set_arg(dw_text, bob_debtor_weight)
+
+    # THEN
+    assert bob_insert_agendaatom.get_value(party_id_text) == bob_text
+    assert bob_insert_agendaatom.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_agendaatom.get_value(dw_text) == bob_debtor_weight
+    assert bob_insert_agendaatom.get_locator(party_id_text) == bob_text
+    assert bob_insert_agendaatom.is_valid()

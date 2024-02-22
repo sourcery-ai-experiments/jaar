@@ -9,8 +9,11 @@ from src.agenda.atom import (
     agendaatom_shop,
     atom_curr_table_name,
     atom_hx_table_name,
+    get_agendaatom_from_rowdata,
 )
+from src.instrument.sqlite import get_rowdata
 from pytest import raises as pytest_raises
+from sqlite3 import connect as sqlite3_connect
 
 
 def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
@@ -742,8 +745,8 @@ VALUES (
     assert x_agendaatom.get_insert_sqlstr() == example_sqlstr
 
 
-def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
-    # WHEN
+def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_idea_beliefunit():
+    # GIVEN
     sports_text = "sports"
     sports_road = create_road("a", sports_text)
     ball_text = "basketball"
@@ -751,8 +754,6 @@ def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-
-    # WHEN
     x_category = "idea_beliefunit"
     road_text = "road"
     base_text = "base"
@@ -763,6 +764,9 @@ def test_AgendaAtom_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     update_disc_agendaatom.set_required_arg(road_text, ball_road)
     update_disc_agendaatom.set_required_arg(base_text, knee_road)
     update_disc_agendaatom.set_optional_arg(open_text, knee_open)
+
+    # WHEN
+    gen_sqlstr = update_disc_agendaatom.get_insert_sqlstr()
 
     # THEN
     example_sqlstr = f"""INSERT INTO {atom_hx_table_name()} (
@@ -776,4 +780,42 @@ VALUES (
 , {knee_open}
 )
 ;"""
-    assert update_disc_agendaatom.get_insert_sqlstr() == example_sqlstr
+    assert gen_sqlstr == example_sqlstr
+
+
+def test_get_agendaatom_from_rowdata_ReturnsCorrectObj_idea_beliefunit():
+    # GIVEN
+    sports_text = "sports"
+    sports_road = create_road("a", sports_text)
+    ball_text = "basketball"
+    ball_road = create_road(sports_road, ball_text)
+    knee_text = "knee"
+    knee_road = create_road("a", knee_text)
+    knee_open = 7
+    x_category = "idea_beliefunit"
+    road_text = "road"
+    base_text = "base"
+    open_text = "open"
+    x_sqlstr = f"""SELECT
+  '{ball_road}' as {x_category}_{atom_insert()}_{road_text}
+, '{knee_road}' as {x_category}_{atom_insert()}_{base_text}
+, {knee_open} as {x_category}_{atom_insert()}_{open_text}
+"""
+    x_conn = sqlite3_connect(":memory:")
+    x_rowdata = get_rowdata(atom_hx_table_name(), x_conn, x_sqlstr)
+
+    # WHEN
+    x_agendaatom = get_agendaatom_from_rowdata(x_rowdata)
+
+    # THEN
+    update_disc_agendaatom = agendaatom_shop(x_category, atom_insert())
+    update_disc_agendaatom.set_locator(road_text, ball_road)
+    update_disc_agendaatom.set_locator(base_text, knee_road)
+    update_disc_agendaatom.set_required_arg(road_text, ball_road)
+    update_disc_agendaatom.set_required_arg(base_text, knee_road)
+    update_disc_agendaatom.set_optional_arg(open_text, knee_open)
+    assert update_disc_agendaatom.category == x_agendaatom.category
+    assert update_disc_agendaatom.crud_text == x_agendaatom.crud_text
+    assert update_disc_agendaatom.locator == x_agendaatom.locator
+    assert update_disc_agendaatom.required_args == x_agendaatom.required_args
+    assert update_disc_agendaatom.optional_args == x_agendaatom.optional_args
