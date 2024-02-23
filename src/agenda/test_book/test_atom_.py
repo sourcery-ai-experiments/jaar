@@ -27,6 +27,10 @@ def test_atom_config_HasCorrect_category():
         "agenda_idea_suffgroup",
         "agenda_idea_healerhold",
         "agenda_idea_beliefunit",
+        "calendar",
+        "river_block",
+        "river_circle",
+        "river_reach",
     }
     assert "agenda_partyunit" in category_ref()
     assert is_category_ref("idearoot") == False
@@ -63,12 +67,20 @@ def check_every_crud_dict_has_element(atom_config_dict, atom_order_text):
             print(f"{category=} missing {treasury_only_text}")
             return False
 
-        # if category_dict.get(treasury_only_text) == 4:  # not in [True, False]:
         print(f"{category_dict.get(treasury_only_text)=}")
         if category_dict.get(treasury_only_text) not in [True, False]:
             print(
                 f"{category=} {treasury_only_text} value '{category_dict.get(treasury_only_text)}' not acceptable"
             )
+            return False
+
+        if category_dict.get(treasury_only_text) is None:
+            print(f"{category=} missing {treasury_only_text}")
+            return False
+
+        calculated_attrs_text = "calculated_attrs"
+        if category_dict.get(calculated_attrs_text) is None:
+            print(f"{category=} {calculated_attrs_text} is missing")
             return False
     return True
 
