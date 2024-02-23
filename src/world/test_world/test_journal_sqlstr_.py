@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS atom_hx (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3308
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3591
 
 
 def test_get_atom_hx_table_insert_sqlstr_ReturnsCorrectStr():
@@ -95,8 +95,6 @@ def test_get_atom_hx_table_insert_sqlstr_ReturnsCorrectStr():
     base_text = "base"
     open_text = "open"
     update_disc_agendaatom = agendaatom_shop(x_category, atom_insert())
-    update_disc_agendaatom.set_locator(road_text, ball_road)
-    update_disc_agendaatom.set_locator(base_text, knee_road)
     update_disc_agendaatom.set_required_arg(road_text, ball_road)
     update_disc_agendaatom.set_required_arg(base_text, knee_road)
     update_disc_agendaatom.set_optional_arg(open_text, knee_open)
@@ -131,7 +129,7 @@ CREATE TABLE IF NOT EXISTS atom_curr (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3340
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3623
 
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():

@@ -61,11 +61,13 @@ def get_nested_value(x_dict: dict, x_keylist: list) -> any:
     x_count = 0
     for x_key in x_keylist:
         if temp_dict.get(x_key) is None:
+            print(f"{x_keylist=} {last_key=}")
             raise NestedValueException(f"'{x_key}' failed at level {x_count}.")
         x_count += 1
         temp_dict = temp_dict.get(x_key)
 
     if temp_dict.get(last_key) is None:
+        # prrint(f"{x_keylist=} {last_key=}")
         raise NestedValueException(f"'{last_key}' failed at level {x_count}.")
     return temp_dict[last_key]
 

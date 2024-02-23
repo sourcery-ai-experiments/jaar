@@ -69,7 +69,6 @@ def test_BookUnit_set_agendaatom_RaisesErrorWhen_is_valid_IsFalse():
     assert (
         str(excinfo.value)
         == f"""'{x_category}' UPDATE AgendaAtom is invalid
-                x_agendaatom.is_locator_valid()=False
                 x_agendaatom.is_required_args_valid()=False
                 x_agendaatom.is_optional_args_valid()=True"""
     )
@@ -87,7 +86,7 @@ def test_BookUnit_get_atom_ReturnsCorrectObj():
 
     # WHEN
     gen_agendaatom = ex1_bookunit.get_agendaatom(
-        atom_update(), category=agendaunit_text, locator_values=[]
+        atom_update(), category=agendaunit_text, required_args=[]
     )
 
     # THEN
@@ -108,7 +107,6 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnitSimpleAttrs():
     ex1_bookunit.add_agendaatom(
         agendaunit_text,
         atom_update(),
-        None,
         required_args,
         optional_args=optional_args,
     )
@@ -129,7 +127,6 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
     # WHEN
     party_id_text = "party_id"
     bob_text = "Bob"
-    bob_locator_dict = {party_id_text: bob_text}
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     bob_partyunit = partyunit_shop(
@@ -150,13 +147,11 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
     ex1_bookunit.add_agendaatom(
         category=partyunit_text,
         crud_text=atom_insert(),
-        locator=bob_locator_dict,
         required_args=bob_required_dict,
         optional_args=bob_optional_dict,
     )
     # THEN
     assert len(ex1_bookunit.agendaatoms) == 1
-    bob_locator_key = f"{partyunit_text} {bob_text}"
     assert (
         ex1_bookunit.agendaatoms.get(atom_insert()).get(partyunit_text).get(bob_text)
         != None

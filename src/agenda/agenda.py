@@ -1,5 +1,5 @@
 from src._road.road import (
-    get_parent_road_from_road,
+    get_parent_road,
     is_sub_road,
     road_validate,
     change_road,
@@ -751,7 +751,7 @@ class AgendaUnit:
             raise InvalidAgendaException(
                 "its difficult to foresee a scenario where idearoot is rangeroot"
             )
-        parent_road = get_parent_road_from_road(idea_road)
+        parent_road = get_parent_road(idea_road)
         parent_idea = self.get_idea_obj(parent_road)
         x_idea = self.get_idea_obj(idea_road)
         return x_idea._numeric_road is None and not parent_idea.is_arithmetic()
@@ -1098,13 +1098,13 @@ class AgendaUnit:
         if self.idea_exists(road) == False:
             self.add_idea(
                 ideaunit_shop(get_terminus_node(road, self._road_delimiter)),
-                parent_road=get_parent_road_from_road(road),
+                parent_road=get_parent_road(road),
             )
 
     def del_idea_obj(self, road: RoadUnit, del_children: bool = True):
         if road == self._idearoot.get_road():
             raise InvalidAgendaException("Idearoot cannot be deleted")
-        parent_road = get_parent_road_from_road(road)
+        parent_road = get_parent_road(road)
         if self.idea_exists(road):
             if not del_children:
                 self._shift_idea_kids(x_road=road)
@@ -1113,7 +1113,7 @@ class AgendaUnit:
         self.set_agenda_metrics()
 
     def _shift_idea_kids(self, x_road: RoadUnit):
-        parent_road = get_parent_road_from_road(x_road)
+        parent_road = get_parent_road(x_road)
         d_temp_idea = self.get_idea_obj(x_road)
         for kid in d_temp_idea._kids.values():
             self.add_idea(kid, parent_road=parent_road)
@@ -1133,7 +1133,7 @@ class AgendaUnit:
         if self.idea_exists(old_road) == False:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
-        parent_road = get_parent_road_from_road(road=old_road)
+        parent_road = get_parent_road(road=old_road)
         new_road = (
             self.make_road(new_label)
             if parent_road == ""
@@ -1157,7 +1157,7 @@ class AgendaUnit:
         x_idea = self.get_idea_obj(old_road)
         x_idea.set_idea_label(new_label)
         x_idea._parent_road = parent_road
-        idea_parent = self.get_idea_obj(get_parent_road_from_road(old_road))
+        idea_parent = self.get_idea_obj(get_parent_road(old_road))
         idea_parent._kids.pop(get_terminus_node(old_road, self._road_delimiter))
         idea_parent._kids[x_idea._label] = x_idea
 

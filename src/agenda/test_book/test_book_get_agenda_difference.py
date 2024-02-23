@@ -18,11 +18,17 @@ from copy import deepcopy as copy_deepcopy
 
 def print_agendaatom_keys(x_bookunit: BookUnit):
     for x_agendaatom in get_delete_agendaatom_list(x_bookunit):
-        print(f"DELETE {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
+        print(
+            f"DELETE {x_agendaatom.category} {list(x_agendaatom.required_args.values())}"
+        )
     for x_agendaatom in get_update_agendaatom_list(x_bookunit):
-        print(f"UPDATE {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
+        print(
+            f"UPDATE {x_agendaatom.category} {list(x_agendaatom.required_args.values())}"
+        )
     for x_agendaatom in get_insert_agendaatom_list(x_bookunit):
-        print(f"INSERT {x_agendaatom.category} {list(x_agendaatom.locator.values())}")
+        print(
+            f"INSERT {x_agendaatom.category} {list(x_agendaatom.required_args.values())}"
+        )
 
 
 def get_delete_agendaatom_list(x_bookunit: BookUnit) -> list:
@@ -383,6 +389,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
     music_text = "music"
     before_sue_agendaunit.add_l1_idea(ideaunit_shop(music_text))
     before_sue_agendaunit.add_idea(ideaunit_shop(disc_text), sports_road)
+    # create after without ball_idea and street_idea
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     after_sue_agendaunit.del_idea_obj(ball_road)
 
@@ -391,15 +398,18 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    x_keylist = [atom_delete(), "agenda_ideaunit", street_road]
-    street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert street_agendaatom.get_locator("road") == street_road
-    assert street_agendaatom.get_value("road") == street_road
+    x_category = "agenda_ideaunit"
+    print(f"{sue_bookunit.agendaatoms.get(atom_delete()).get(x_category).keys()=}")
 
-    x_keylist = [atom_delete(), "agenda_ideaunit", ball_road]
+    x_keylist = [atom_delete(), "agenda_ideaunit", ball_road, street_text]
+    street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert street_agendaatom.get_value("parent_road") == ball_road
+    assert street_agendaatom.get_value("label") == street_text
+
+    x_keylist = [atom_delete(), "agenda_ideaunit", sports_road, ball_text]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("parent_road") == sports_road
+    assert ball_agendaatom.get_value("label") == ball_text
 
     print(f"{get_agendaatom_total_count(sue_bookunit)=}")
     assert get_agendaatom_total_count(sue_bookunit) == 2
@@ -445,17 +455,20 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    print_agendaatom_keys(sue_bookunit)
 
-    x_keylist = [atom_insert(), "agenda_ideaunit", disc_road]
+    x_keylist = [atom_insert(), "agenda_ideaunit", sports_road, disc_text]
     street_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert street_agendaatom.get_locator("road") == disc_road
-    assert street_agendaatom.get_value("label") == disc_text
     assert street_agendaatom.get_value("parent_road") == sports_road
+    assert street_agendaatom.get_value("label") == disc_text
 
-    x_keylist = [atom_insert(), "agenda_ideaunit", music_road]
+    x_keylist = [
+        atom_insert(),
+        "agenda_ideaunit",
+        after_sue_agendaunit._world_id,
+        music_text,
+    ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == music_road
     assert ball_agendaatom.get_value("label") == music_text
     assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
     assert ball_agendaatom.get_value("_begin") == music_begin
@@ -511,11 +524,17 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
     sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
 
     # THEN
-    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    print_agendaatom_keys(sue_bookunit)
 
-    x_keylist = [atom_update(), "agenda_ideaunit", music_road]
+    x_keylist = [
+        atom_update(),
+        "agenda_ideaunit",
+        after_sue_agendaunit._world_id,
+        music_text,
+    ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == music_road
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("label") == music_text
     assert ball_agendaatom.get_value("_begin") == after_music_begin
     assert ball_agendaatom.get_value("_close") == after_music_close
     assert ball_agendaatom.get_value("_meld_strategy") == after_music_meld_strategy
@@ -571,8 +590,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete
 
     x_keylist = [atom_delete(), "agenda_idea_balancelink", disc_road, run_text]
     run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert run_agendaatom.get_locator("road") == disc_road
-    assert run_agendaatom.get_locator("group_id") == run_text
+    assert run_agendaatom.get_value("road") == disc_road
+    assert run_agendaatom.get_value("group_id") == run_text
 
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
@@ -630,10 +649,10 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert
 
     x_keylist = [atom_insert(), "agenda_idea_balancelink", disc_road, run_text]
     run_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert run_agendaatom.get_locator("road") == disc_road
-    assert run_agendaatom.get_locator("group_id") == run_text
-    assert run_agendaatom.get_locator("road") == disc_road
-    assert run_agendaatom.get_locator("group_id") == run_text
+    assert run_agendaatom.get_value("road") == disc_road
+    assert run_agendaatom.get_value("group_id") == run_text
+    assert run_agendaatom.get_value("road") == disc_road
+    assert run_agendaatom.get_value("group_id") == run_text
     assert run_agendaatom.get_value("creditor_weight") == after_run_creditor_weight
     assert run_agendaatom.get_value("debtor_weight") == after_run_debtor_weight
 
@@ -680,8 +699,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update
 
     x_keylist = [atom_update(), "agenda_idea_balancelink", ball_road, run_text]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("group_id") == run_text
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("group_id") == run_text
     assert ball_agendaatom.get_value("creditor_weight") == after_creditor_weight
     assert ball_agendaatom.get_value("debtor_weight") == after_debtor_weight
     assert get_agendaatom_total_count(sue_bookunit) == 1
@@ -733,8 +752,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update(
 
     x_keylist = [atom_update(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
     assert ball_agendaatom.get_value("pick") == broken_road
     assert ball_agendaatom.get_value("open") == after_broken_open
     assert ball_agendaatom.get_value("nigh") == after_broken_nigh
@@ -778,8 +797,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert(
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [atom_insert(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
     assert ball_agendaatom.get_value("pick") == broken_road
     assert ball_agendaatom.get_value("open") == after_broken_open
     assert ball_agendaatom.get_value("nigh") == after_broken_nigh
@@ -823,8 +842,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete(
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
     x_keylist = [atom_delete(), "agenda_idea_beliefunit", ball_road, knee_road]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
     assert ball_agendaatom.get_value("road") == ball_road
     assert ball_agendaatom.get_value("base") == knee_road
     assert get_agendaatom_total_count(sue_bookunit) == 1
@@ -879,9 +898,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
         broken_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
-    assert ball_agendaatom.get_locator("need") == broken_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
+    assert ball_agendaatom.get_value("need") == broken_road
     assert ball_agendaatom.get_value("open") == broken_open
     assert ball_agendaatom.get_value("nigh") == broken_nigh
     assert ball_agendaatom.get_value("divisor") == broken_divisor
@@ -941,9 +960,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
         broken_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
-    assert ball_agendaatom.get_locator("need") == broken_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
+    assert ball_agendaatom.get_value("need") == broken_road
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
@@ -1007,9 +1026,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
         broken_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == knee_road
-    assert ball_agendaatom.get_locator("need") == broken_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == knee_road
+    assert ball_agendaatom.get_value("need") == broken_road
     assert ball_agendaatom.get_value("open") == after_broken_open
     assert ball_agendaatom.get_value("nigh") == after_broken_nigh
     assert ball_agendaatom.get_value("divisor") == after_broken_divisor
@@ -1052,8 +1071,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert(
         medical_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == medical_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == medical_road
     assert (
         ball_agendaatom.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
@@ -1103,8 +1122,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update(
         medical_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == medical_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == medical_road
     assert (
         ball_agendaatom.get_value("suff_idea_active") == after_medical_suff_idea_active
     )
@@ -1150,8 +1169,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete(
         medical_road,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("base") == medical_road
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("base") == medical_road
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
@@ -1184,8 +1203,8 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert()
         rico_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("group_id") == rico_text
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("group_id") == rico_text
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
@@ -1220,6 +1239,6 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete()
         rico_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_locator("road") == ball_road
-    assert ball_agendaatom.get_locator("group_id") == rico_text
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("group_id") == rico_text
     assert get_agendaatom_total_count(sue_bookunit) == 1

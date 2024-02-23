@@ -27,7 +27,6 @@ def get_bookunit_example1() -> BookUnit:
     category = "agenda_partyunit"
     carm_text = "Carmen"
     x_agendaatom = agendaatom_shop(category, atom_delete())
-    x_agendaatom.set_locator("party_id", carm_text)
     x_agendaatom.set_required_arg("party_id", carm_text)
     sue_bookunit.set_agendaatom(x_agendaatom)
     return sue_bookunit

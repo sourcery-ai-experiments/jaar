@@ -133,20 +133,20 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     assert 28 == get_mog("agendaunit", atom_update(), mog, 28)
 
 
-def _every_crud_dict_has_elements(crud_dict: dict) -> bool:
+def _every_category_dict_has_arg_elements(category_dict: dict) -> bool:
     required_args_text = "required_args"
     optional_args_text = "optional_args"
     python_type_text = "python_type"
     sqlite_datatype_text = "sqlite_datatype"
-    for required_arg, x_dict in crud_dict.get(required_args_text).items():
+    for required_arg, x_dict in category_dict.get(required_args_text).items():
         if x_dict.get(python_type_text) is None:
             print(f"python_type_text failed for {required_arg=}")
             return False
         if x_dict.get(sqlite_datatype_text) is None:
             print(f"sqlite_datatype_text failed for {required_arg=}")
             return False
-    if crud_dict.get(optional_args_text) != None:
-        for optional_arg, x_dict in crud_dict.get(optional_args_text).items():
+    if category_dict.get(optional_args_text) != None:
+        for optional_arg, x_dict in category_dict.get(optional_args_text).items():
             if x_dict.get(python_type_text) is None:
                 print(f"python_type_text failed for {optional_arg=}")
                 return False
@@ -156,16 +156,9 @@ def _every_crud_dict_has_elements(crud_dict: dict) -> bool:
 
 
 def check_every_arg_dict_has_elements(atom_config_dict):
-    for category, category_dict in atom_config_dict.items():
-        if category_dict.get(atom_insert()) != None:
-            print(f"{category=} {atom_insert()=}")
-            _every_crud_dict_has_elements(category_dict.get(atom_insert()))
-        if category_dict.get(atom_update()) != None:
-            print(f"{category=} {atom_update()=}")
-            _every_crud_dict_has_elements(category_dict.get(atom_update()))
-        if category_dict.get(atom_delete()) != None:
-            print(f"{category=} {atom_delete()=}")
-            _every_crud_dict_has_elements(category_dict.get(atom_delete()))
+    for category_key, category_dict in atom_config_dict.items():
+        print(f"{category_key=}")
+        _every_category_dict_has_arg_elements(category_dict)
     return True
 
 
@@ -180,7 +173,7 @@ def test_get_atom_columns_build_ReturnsCorrectObj():
     atom_columns = get_atom_columns_build()
 
     # THEN
-    assert len(atom_columns) == 111
+    assert len(atom_columns) == 113
     assert atom_columns.get("agendaunit_UPDATE__auto_output_job_to_forum") == "INTEGER"
     # print(f"{atom_columns.keys()=}")
 
@@ -192,7 +185,6 @@ def test_AgendaAtom_exists():
     # THEN
     x_agendaatom.category is None
     x_agendaatom.crud_text is None
-    x_agendaatom.locator is None
     x_agendaatom.required_args is None
     x_agendaatom.optional_args is None
     x_agendaatom.atom_order is None
@@ -201,7 +193,6 @@ def test_AgendaAtom_exists():
 def test_agendaatom_shop_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    bob_locator_dict = {"party_id": bob_text}
     bob_creditor_weight = 55
     bob_debtor_weight = 66
     bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
@@ -216,7 +207,6 @@ def test_agendaatom_shop_ReturnsCorrectObj():
     x_agendaatom = agendaatom_shop(
         category=partyunit_text,
         crud_text=atom_insert(),
-        locator=bob_locator_dict,
         required_args=bob_required_dict,
         optional_args=bob_optional_dict,
     )
@@ -225,7 +215,6 @@ def test_agendaatom_shop_ReturnsCorrectObj():
     print(f"{x_agendaatom=}")
     assert x_agendaatom.category == partyunit_text
     assert x_agendaatom.crud_text == atom_insert()
-    assert x_agendaatom.locator == bob_locator_dict
     assert x_agendaatom.required_args == bob_required_dict
     assert x_agendaatom.optional_args == bob_optional_dict
 
@@ -260,62 +249,16 @@ def test_AgendaAtom_set_optional_arg_CorrectlySetsAttr():
     assert partyunit_agendaatom.optional_args == {party_id_text: bob_text}
 
 
-def test_AgendaAtom_set_locator_CorrectlySetsAttr():
-    # GIVEN
-    bob_text = "Bob"
-    partyunit_text = "agenda_partyunit"
-    partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
-    assert partyunit_agendaatom.locator == {}
-
-    # WHEN
-    party_id_text = "party_id"
-    partyunit_agendaatom.set_locator(x_key=party_id_text, x_value=bob_text)
-
-    # THEN
-    assert partyunit_agendaatom.locator == {party_id_text: bob_text}
-
-
-def test_AgendaAtom_get_locator_ReturnsCorrectObj():
+def test_AgendaAtom_get_value_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     partyunit_text = "agenda_partyunit"
     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     party_id_text = "party_id"
-    partyunit_agendaatom.set_locator(x_key=party_id_text, x_value=bob_text)
+    partyunit_agendaatom.set_required_arg(x_key=party_id_text, x_value=bob_text)
 
     # WHEN / THEN
-    assert partyunit_agendaatom.get_locator(party_id_text) == bob_text
-
-
-# def test_AgendaAtom_get_locator_key_ReturnsCorrectObj_single_parameter():
-#     # GIVEN
-#     bob_text = "Bob"
-#     partyunit_text = "agenda_partyunit"
-#     partyunit_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
-#     party_id_text = "party_id"
-#     partyunit_agendaatom.set_locator(x_key=party_id_text, x_value=bob_text)
-
-#     # WHEN / THEN
-#     assert partyunit_agendaatom.get_locator_key() == f"{partyunit_text} {bob_text}"
-
-
-# def test_AgendaAtom_get_locator_key_ReturnsCorrectObj_double_parameter():
-#     # GIVEN
-#     bob_text = "Bob"
-#     partylink_text = "agenda_group_partylink"
-#     gupl_agendaatom = agendaatom_shop(partylink_text)
-#     party_id_text = "party_id"
-#     tom_text = "Tom"
-#     gupl_agendaatom.set_locator(party_id_text, bob_text)
-#     group_id_text = "group_id"
-#     run_text = "Runners"
-#     gupl_agendaatom.set_locator(group_id_text, run_text)
-
-#     # WHEN / THEN
-#     assert (
-#         gupl_agendaatom.get_locator_key()
-#         == f"{partylink_text} {run_text} {bob_text}"
-#     )
+    assert partyunit_agendaatom.get_value(party_id_text) == bob_text
 
 
 def test_AgendaAtom_is_optional_args_valid_ReturnsCorrectBoolean():
@@ -354,17 +297,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, crud_text=atom_insert())
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid() == False
-    assert bob_insert_agendaatom.is_required_args_valid() == False
-    assert bob_insert_agendaatom.is_optional_args_valid()
-    assert bob_insert_agendaatom.is_valid() == False
-
-    # WHEN
-    party_id_text = "party_id"
-    bob_insert_agendaatom.set_locator(party_id_text, bob_text)
-
-    # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid() == False
     assert bob_insert_agendaatom.is_optional_args_valid()
     assert bob_insert_agendaatom.is_valid() == False
@@ -373,16 +305,15 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom.set_optional_arg("x_x_x", 12)
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid() == False
     assert bob_insert_agendaatom.is_optional_args_valid() == False
     assert bob_insert_agendaatom.is_valid() == False
 
     # WHEN
+    party_id_text = "party_id"
     bob_insert_agendaatom.set_required_arg(party_id_text, bob_text)
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid()
     assert bob_insert_agendaatom.is_optional_args_valid() == False
     assert bob_insert_agendaatom.is_valid() == False
@@ -399,7 +330,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     )
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid()
     assert bob_insert_agendaatom.is_optional_args_valid()
     assert bob_insert_agendaatom.is_valid()
@@ -408,7 +338,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom.crud_text = None
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid() == False
     assert bob_insert_agendaatom.is_valid() == False
 
@@ -416,7 +345,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom.crud_text = atom_insert()
 
     # THEN
-    assert bob_insert_agendaatom.is_locator_valid()
     assert bob_insert_agendaatom.is_required_args_valid()
     assert bob_insert_agendaatom.is_valid()
 
@@ -429,8 +357,6 @@ def test_AgendaAtom_get_value_ReturnsObj():
     bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
     partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
-    bob_locator_dict = {"party_id": bob_text}
-    bob_insert_agendaatom.locator = bob_locator_dict
     party_id_text = "party_id"
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"
@@ -460,15 +386,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
     bob_delete_agendaatom = agendaatom_shop(partyunit_text, crud_text=delete_text)
 
     # THEN
-    assert bob_delete_agendaatom.is_locator_valid() == False
-    assert bob_delete_agendaatom.is_required_args_valid() == False
-    assert bob_delete_agendaatom.is_valid() == False
-
-    # WHEN
-    bob_delete_agendaatom.set_locator("party_id", bob_text)
-
-    # THEN
-    assert bob_delete_agendaatom.is_locator_valid()
     assert bob_delete_agendaatom.is_required_args_valid() == False
     assert bob_delete_agendaatom.is_valid() == False
 
@@ -476,7 +393,6 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
     bob_delete_agendaatom.set_required_arg("party_id", bob_text)
 
     # THEN
-    assert bob_delete_agendaatom.is_locator_valid()
     assert bob_delete_agendaatom.is_required_args_valid()
     assert bob_delete_agendaatom.is_valid()
 
@@ -489,7 +405,6 @@ def test_AgendaAtom_set_atom_order_SetCorrectAttr():
     partyunit_text = "agenda_partyunit"
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, atom_insert())
     party_id_text = "party_id"
-    bob_insert_agendaatom.set_locator(party_id_text, bob_text)
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"
     bob_insert_agendaatom.set_required_arg(party_id_text, bob_text)
@@ -502,7 +417,7 @@ def test_AgendaAtom_set_atom_order_SetCorrectAttr():
     assert bob_insert_agendaatom.get_value(dw_text) == bob_debtor_weight
 
 
-def test_AgendaAtom_set_arg_SetsAny_locator_arg_required_arg_optional_arg():
+def test_AgendaAtom_set_arg_SetsAny_required_arg_optional_arg():
     # GIVEN
     bob_text = "Bob"
     bob_creditor_weight = 55
@@ -522,5 +437,5 @@ def test_AgendaAtom_set_arg_SetsAny_locator_arg_required_arg_optional_arg():
     assert bob_insert_agendaatom.get_value(party_id_text) == bob_text
     assert bob_insert_agendaatom.get_value(cw_text) == bob_creditor_weight
     assert bob_insert_agendaatom.get_value(dw_text) == bob_debtor_weight
-    assert bob_insert_agendaatom.get_locator(party_id_text) == bob_text
+    assert bob_insert_agendaatom.get_value(party_id_text) == bob_text
     assert bob_insert_agendaatom.is_valid()

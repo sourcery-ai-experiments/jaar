@@ -15,7 +15,7 @@ from src._road.road import (
     get_all_road_nodes,
     get_terminus_node,
     find_replace_road_key_dict,
-    get_parent_road_from_road,
+    get_parent_road,
     create_road_without_root_node,
     get_root_node_from_road,
     road_validate,
@@ -211,7 +211,7 @@ def test_road_get_root_node_from_road_ReturnsRoadNode():
     assert get_root_node_from_road(roses_road) == casa_text
 
 
-def test_road_get_parent_road_from_road_ReturnsCorrectObj():
+def test_road_get_parent_road_ReturnsCorrectObj():
     # GIVEN
     x_s = default_road_delimiter_if_none()
     casa_text = "casa"
@@ -222,10 +222,10 @@ def test_road_get_parent_road_from_road_ReturnsCorrectObj():
     roses_road = f"{bloomers_road}{x_s}{roses_text}"
 
     # WHEN/THENs
-    assert get_parent_road_from_road(road=root_label()) == ""
-    assert get_parent_road_from_road(road=casa_road) == root_label()
-    assert get_parent_road_from_road(road=bloomers_road) == casa_road
-    assert get_parent_road_from_road(road=roses_road) == bloomers_road
+    assert get_parent_road(road=root_label()) == ""
+    assert get_parent_road(road=casa_road) == root_label()
+    assert get_parent_road(road=bloomers_road) == casa_road
+    assert get_parent_road(road=roses_road) == bloomers_road
 
 
 def test_road_create_road_without_root_node_ReturnsCorrectObj():

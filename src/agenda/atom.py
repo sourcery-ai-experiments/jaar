@@ -1,4 +1,10 @@
-from src._road.road import PersonRoad, RoadUnit
+from src._road.road import (
+    PersonRoad,
+    RoadUnit,
+    create_road,
+    get_terminus_node,
+    get_parent_road,
+)
 from src.agenda.reason_idea import beliefunit_shop, BeliefUnit, PremiseUnit, ReasonUnit
 from src.agenda.party import (
     partyunit_shop,
@@ -75,8 +81,8 @@ def get_atom_columns_build() -> dict[str:]:
         catergory_update = category_dict.get(atom_update())
         catergory_delete = category_dict.get(atom_delete())
         if catergory_insert != None:
-            required_args = catergory_insert.get(required_args_text)
-            optional_args = catergory_insert.get(optional_args_text)
+            required_args = category_dict.get(required_args_text)
+            optional_args = category_dict.get(optional_args_text)
             for required_arg, x_value in required_args.items():
                 add_to_atom_table_columns(
                     atom_table_columns,
@@ -94,8 +100,8 @@ def get_atom_columns_build() -> dict[str:]:
                     x_value,
                 )
         if catergory_update != None:
-            required_args = catergory_update.get(required_args_text)
-            optional_args = catergory_update.get(optional_args_text)
+            required_args = category_dict.get(required_args_text)
+            optional_args = category_dict.get(optional_args_text)
             for required_arg, x_value in required_args.items():
                 add_to_atom_table_columns(
                     atom_table_columns,
@@ -113,8 +119,8 @@ def get_atom_columns_build() -> dict[str:]:
                     x_value,
                 )
         if catergory_delete != None:
-            required_args = catergory_delete.get(required_args_text)
-            optional_args = catergory_delete.get(optional_args_text)
+            required_args = category_dict.get(required_args_text)
+            optional_args = category_dict.get(optional_args_text)
             for required_arg, x_value in required_args.items():
                 add_to_atom_table_columns(
                     atom_table_columns,
@@ -175,7 +181,6 @@ class AgendaAtomDescriptionException(Exception):
 class AgendaAtom:
     category: str = None
     crud_text: str = None
-    locator: dict[str:str] = None
     required_args: dict[str:str] = None
     optional_args: dict[str:str] = None
     atom_order: int = None
@@ -235,18 +240,6 @@ class AgendaAtom:
             atom_order_text="atom_order",
         )
 
-    def set_locator(self, x_key: str, x_value: any):
-        self.locator[x_key] = x_value
-
-    def get_locator(self, x_key: str) -> any:
-        return self.locator.get(x_key)
-
-    def is_locator_valid(self) -> bool:
-        return self._get_locator_args_dict().keys() == self.locator.keys()
-
-    def _get_locator_args_dict(self) -> dict:
-        return get_empty_dict_if_none(self._get_category_dict().get("locator"))
-
     def set_arg(self, x_key: str, x_value: any):
         for required_arg in self._get_required_args_dict():
             if x_key == required_arg:
@@ -254,9 +247,6 @@ class AgendaAtom:
         for optional_arg in self._get_optional_args_dict():
             if x_key == optional_arg:
                 self.set_optional_arg(x_key, x_value)
-        for locator_arg in self._get_locator_args_dict():
-            if x_key == locator_arg:
-                self.set_locator(x_key, x_value)
 
     def set_required_arg(self, x_key: str, x_value: any):
         self.required_args[x_key] = x_value
@@ -273,11 +263,10 @@ class AgendaAtom:
         return self._get_category_dict().get(self.crud_text)
 
     def _get_required_args_dict(self) -> dict:
-        return self._get_crud_dict().get("required_args")
+        return self._get_category_dict().get("required_args")
 
     def _get_optional_args_dict(self) -> dict:
-        crud_dict = self._get_category_dict().get(self.crud_text)
-        return get_empty_dict_if_none(crud_dict.get("optional_args"))
+        return get_empty_dict_if_none(self._get_category_dict().get("optional_args"))
 
     def is_required_args_valid(self) -> bool:
         if self.crud_text not in {atom_delete(), atom_insert(), atom_update()}:
@@ -293,11 +282,7 @@ class AgendaAtom:
         return set(self.optional_args.keys()).issubset(set(optional_args_dict.keys()))
 
     def is_valid(self) -> bool:
-        return (
-            self.is_locator_valid()
-            and self.is_required_args_valid()
-            and self.is_optional_args_valid()
-        )
+        return self.is_required_args_valid() and self.is_optional_args_valid()
 
     def get_value(self, arg_key: str) -> any:
         required_value = self.required_args.get(arg_key)
@@ -309,7 +294,6 @@ class AgendaAtom:
 def agendaatom_shop(
     category: str,
     crud_text: str = None,
-    locator: dict[str:str] = None,
     required_args: dict[str:str] = None,
     optional_args: dict[str:str] = None,
 ) -> AgendaAtom:
@@ -317,7 +301,6 @@ def agendaatom_shop(
         return AgendaAtom(
             category=category,
             crud_text=crud_text,
-            locator=get_empty_dict_if_none(locator),
             required_args=get_empty_dict_if_none(required_args),
             optional_args=get_empty_dict_if_none(optional_args),
         )
@@ -343,7 +326,7 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
         if xs.get_value(x_arg) != None:
             x_agenda._weight = xs.get_value(x_arg)
     elif xs.category == "agenda_groupunit" and xs.crud_text == atom_delete():
-        group_id = xs.get_locator("group_id")
+        group_id = xs.get_value("group_id")
         x_agenda.del_groupunit(group_id)
     elif xs.category == "agenda_groupunit" and xs.crud_text == atom_update():
         x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
@@ -351,16 +334,16 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
     elif xs.category == "agenda_groupunit" and xs.crud_text == atom_insert():
         x_agenda.set_groupunit(
             groupunit_shop(
-                group_id=xs.get_locator("group_id"),
-                _treasury_partylinks=xs.get_locator("_treasury_partylinks"),
+                group_id=xs.get_value("group_id"),
+                _treasury_partylinks=xs.get_value("_treasury_partylinks"),
             ),
             create_missing_partys=False,
             replace=False,
             add_partylinks=False,
         )
     elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_delete():
-        x_agenda.get_groupunit(xs.get_locator("group_id")).del_partylink(
-            xs.get_locator("party_id")
+        x_agenda.get_groupunit(xs.get_value("group_id")).del_partylink(
+            xs.get_value("party_id")
         )
     elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_update():
         x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
@@ -370,21 +353,29 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
             debtor_weight=xs.get_value("debtor_weight"),
         )
     elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_insert():
-        x_groupunit = x_agenda.get_groupunit(xs.get_locator("group_id"))
+        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
         x_groupunit.set_partylink(
             partylink_shop(
-                party_id=xs.get_locator("party_id"),
+                party_id=xs.get_value("party_id"),
                 creditor_weight=xs.get_value("creditor_weight"),
                 debtor_weight=xs.get_value("debtor_weight"),
             )
         )
     elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_delete():
-        x_agenda.del_idea_obj(
-            road=xs.get_locator("road"), del_children=xs.get_value("del_children")
+        idea_road = create_road(
+            xs.get_value("parent_road"),
+            xs.get_value("label"),
+            delimiter=x_agenda._road_delimiter,
         )
+        x_agenda.del_idea_obj(road=idea_road, del_children=xs.get_value("del_children"))
     elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_update():
+        idea_road = create_road(
+            xs.get_value("parent_road"),
+            xs.get_value("label"),
+            delimiter=x_agenda._road_delimiter,
+        )
         x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
+            road=idea_road,
             addin=xs.get_value("_addin"),
             begin=xs.get_value("_begin"),
             close=xs.get_value("_close"),
@@ -416,7 +407,7 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
         )
     elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_delete():
         x_agenda.edit_idea_attr(
-            road=xs.get_locator("road"), balancelink_del=xs.get_value("group_id")
+            road=xs.get_value("road"), balancelink_del=xs.get_value("group_id")
         )
     elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_update():
         x_idea = x_agenda.get_idea_obj(xs.get_value("road"))
@@ -515,7 +506,7 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
         x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
         x_ideaunit._assignedunit.set_suffgroup(group_id=xs.get_value("group_id"))
     elif xs.category == "agenda_partyunit" and xs.crud_text == atom_delete():
-        x_agenda.del_partyunit(xs.get_locator("party_id"))
+        x_agenda.del_partyunit(xs.get_value("party_id"))
     elif xs.category == "agenda_partyunit" and xs.crud_text == atom_update():
         x_agenda.edit_partyunit(
             party_id=xs.get_value("party_id"),
@@ -630,7 +621,6 @@ class BookUnit:
         if x_agendaatom.is_valid() == False:
             raise InvalidAgendaAtomException(
                 f"""'{x_agendaatom.category}' {x_agendaatom.crud_text} AgendaAtom is invalid
-                {x_agendaatom.is_locator_valid()=}
                 {x_agendaatom.is_required_args_valid()=}
                 {x_agendaatom.is_optional_args_valid()=}"""
             )
@@ -639,7 +629,7 @@ class BookUnit:
         x_keylist = [
             x_agendaatom.crud_text,
             x_agendaatom.category,
-            *list(x_agendaatom.locator.values()),
+            *list(x_agendaatom.required_args.values()),
         ]
         place_obj_in_dict(self.agendaatoms, x_keylist, x_agendaatom)
 
@@ -647,23 +637,21 @@ class BookUnit:
         self,
         category: str,
         crud_text: str,
-        locator: str = None,
         required_args: str = None,
         optional_args: str = None,
     ):
         x_agendaatom = agendaatom_shop(
             category=category,
             crud_text=crud_text,
-            locator=locator,
             required_args=required_args,
             optional_args=optional_args,
         )
         self.set_agendaatom(x_agendaatom)
 
     def get_agendaatom(
-        self, crud_text: str, category: str, locator_values: list[str]
+        self, crud_text: str, category: str, required_args: list[str]
     ) -> AgendaAtom:
-        x_keylist = [crud_text, category, *locator_values]
+        x_keylist = [crud_text, category, *required_args]
         return get_nested_value(self.agendaatoms, x_keylist)
 
     def add_all_agendaatoms(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
@@ -720,7 +708,6 @@ class BookUnit:
         for insert_party_id in insert_party_ids:
             x_partyunit = after_agenda.get_party(insert_party_id)
             x_agendaatom = agendaatom_shop("agenda_partyunit", atom_insert())
-            x_agendaatom.set_locator("party_id", x_partyunit.party_id)
             x_agendaatom.set_required_arg("party_id", x_partyunit.party_id)
             if x_partyunit.creditor_weight != None:
                 x_agendaatom.set_optional_arg(
@@ -746,7 +733,6 @@ class BookUnit:
                 "agenda_partyunit", after_partyunit, before_partyunit
             ):
                 x_agendaatom = agendaatom_shop("agenda_partyunit", atom_update())
-                x_agendaatom.set_locator("party_id", after_partyunit.party_id)
                 x_agendaatom.set_required_arg("party_id", after_partyunit.party_id)
                 if before_partyunit.creditor_weight != after_partyunit.creditor_weight:
                     x_agendaatom.set_optional_arg(
@@ -765,7 +751,6 @@ class BookUnit:
     def add_agendaatom_partyunit_deletes(self, delete_party_ids: set):
         for delete_party_id in delete_party_ids:
             x_agendaatom = agendaatom_shop("agenda_partyunit", atom_delete())
-            x_agendaatom.set_locator("party_id", delete_party_id)
             x_agendaatom.set_required_arg("party_id", delete_party_id)
             self.set_agendaatom(x_agendaatom)
 
@@ -805,7 +790,6 @@ class BookUnit:
         for insert_group_id in insert_group_ids:
             insert_groupunit = after_agenda.get_groupunit(insert_group_id)
             x_agendaatom = agendaatom_shop("agenda_groupunit", atom_insert())
-            x_agendaatom.set_locator("group_id", insert_groupunit.group_id)
             x_agendaatom.set_required_arg("group_id", insert_groupunit.group_id)
             if insert_groupunit._treasury_partylinks != None:
                 x_agendaatom.set_optional_arg(
@@ -828,7 +812,6 @@ class BookUnit:
                 "agenda_groupunit", before_groupunit, after_groupunit
             ):
                 x_agendaatom = agendaatom_shop("agenda_groupunit", atom_update())
-                x_agendaatom.set_locator("group_id", after_groupunit.group_id)
                 x_agendaatom.set_required_arg("group_id", after_groupunit.group_id)
                 x_agendaatom.set_optional_arg(
                     "_treasury_partylinks",
@@ -874,7 +857,6 @@ class BookUnit:
     ):
         for delete_group_id in delete_group_ids:
             x_agendaatom = agendaatom_shop("agenda_groupunit", atom_delete())
-            x_agendaatom.set_locator("group_id", delete_group_id)
             x_agendaatom.set_required_arg("group_id", delete_group_id)
             self.set_agendaatom(x_agendaatom)
 
@@ -892,8 +874,6 @@ class BookUnit:
         for insert_party_id in insert_partylink_party_ids:
             after_partylink = after_groupunit.get_partylink(insert_party_id)
             x_agendaatom = agendaatom_shop("agenda_group_partylink", atom_insert())
-            x_agendaatom.set_locator("group_id", after_group_id)
-            x_agendaatom.set_locator("party_id", after_partylink.party_id)
             x_agendaatom.set_required_arg("group_id", after_group_id)
             x_agendaatom.set_required_arg("party_id", after_partylink.party_id)
             if after_partylink.creditor_weight != None:
@@ -913,8 +893,6 @@ class BookUnit:
         after_partylink: PartyLink,
     ):
         x_agendaatom = agendaatom_shop("agenda_group_partylink", atom_update())
-        x_agendaatom.set_locator("group_id", group_id)
-        x_agendaatom.set_locator("party_id", after_partylink.party_id)
         x_agendaatom.set_required_arg("group_id", group_id)
         x_agendaatom.set_required_arg("party_id", after_partylink.party_id)
         if after_partylink.creditor_weight != before_partylink.creditor_weight:
@@ -932,8 +910,6 @@ class BookUnit:
     ):
         for delete_party_id in before_party_ids:
             x_agendaatom = agendaatom_shop("agenda_group_partylink", atom_delete())
-            x_agendaatom.set_locator("group_id", before_group_id)
-            x_agendaatom.set_locator("party_id", delete_party_id)
             x_agendaatom.set_required_arg("group_id", before_group_id)
             x_agendaatom.set_required_arg("party_id", delete_party_id)
             self.set_agendaatom(x_agendaatom)
@@ -964,9 +940,8 @@ class BookUnit:
         for insert_idea_road in insert_idea_roads:
             insert_ideaunit = after_agenda.get_idea_obj(insert_idea_road)
             x_agendaatom = agendaatom_shop("agenda_ideaunit", atom_insert())
-            x_agendaatom.set_locator("road", insert_ideaunit.get_road())
-            x_agendaatom.set_required_arg("label", insert_ideaunit._label)
             x_agendaatom.set_required_arg("parent_road", insert_ideaunit._parent_road)
+            x_agendaatom.set_required_arg("label", insert_ideaunit._label)
             x_agendaatom.set_optional_arg("_addin", insert_ideaunit._addin)
             x_agendaatom.set_optional_arg("_begin", insert_ideaunit._begin)
             x_agendaatom.set_optional_arg("_close", insert_ideaunit._close)
@@ -1013,8 +988,10 @@ class BookUnit:
                 "agenda_ideaunit", before_ideaunit, after_ideaunit
             ):
                 x_agendaatom = agendaatom_shop("agenda_ideaunit", atom_update())
-                x_agendaatom.set_locator("road", after_ideaunit.get_road())
-                x_agendaatom.set_required_arg("road", after_ideaunit.get_road())
+                x_agendaatom.set_required_arg(
+                    "parent_road", after_ideaunit._parent_road
+                )
+                x_agendaatom.set_required_arg("label", after_ideaunit._label)
                 if before_ideaunit._addin != after_ideaunit._addin:
                     x_agendaatom.set_optional_arg("_addin", after_ideaunit._addin)
                 if before_ideaunit._begin != after_ideaunit._begin:
@@ -1145,9 +1122,13 @@ class BookUnit:
         self, before_agenda: AgendaUnit, delete_idea_roads: set
     ):
         for delete_idea_road in delete_idea_roads:
+            x_parent_road = get_parent_road(
+                delete_idea_road, before_agenda._road_delimiter
+            )
+            x_label = get_terminus_node(delete_idea_road, before_agenda._road_delimiter)
             x_agendaatom = agendaatom_shop("agenda_ideaunit", atom_delete())
-            x_agendaatom.set_locator("road", delete_idea_road)
-            x_agendaatom.set_required_arg("road", delete_idea_road)
+            x_agendaatom.set_required_arg("parent_road", x_parent_road)
+            x_agendaatom.set_required_arg("label", x_label)
             self.set_agendaatom(x_agendaatom)
 
             delete_ideaunit = before_agenda.get_idea_obj(delete_idea_road)
@@ -1176,8 +1157,6 @@ class BookUnit:
         for insert_reasonunit_base in insert_reasonunit_bases:
             after_reasonunit = after_ideaunit.get_reasonunit(insert_reasonunit_base)
             x_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_insert())
-            x_agendaatom.set_locator("road", after_ideaunit.get_road())
-            x_agendaatom.set_locator("base", after_reasonunit.base)
             x_agendaatom.set_required_arg("road", after_ideaunit.get_road())
             x_agendaatom.set_required_arg("base", after_reasonunit.base)
             if after_reasonunit.suff_idea_active != None:
@@ -1205,8 +1184,6 @@ class BookUnit:
                 "agenda_idea_reasonunit", before_reasonunit, after_reasonunit
             ):
                 x_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_update())
-                x_agendaatom.set_locator("road", before_ideaunit.get_road())
-                x_agendaatom.set_locator("base", after_reasonunit.base)
                 x_agendaatom.set_required_arg("road", before_ideaunit.get_road())
                 x_agendaatom.set_required_arg("base", after_reasonunit.base)
                 if (
@@ -1248,8 +1225,6 @@ class BookUnit:
     ):
         for delete_reasonunit_base in delete_reasonunit_bases:
             x_agendaatom = agendaatom_shop("agenda_idea_reasonunit", atom_delete())
-            x_agendaatom.set_locator("road", before_ideaunit.get_road())
-            x_agendaatom.set_locator("base", delete_reasonunit_base)
             x_agendaatom.set_required_arg("road", before_ideaunit.get_road())
             x_agendaatom.set_required_arg("base", delete_reasonunit_base)
             self.set_agendaatom(x_agendaatom)
@@ -1272,9 +1247,6 @@ class BookUnit:
             x_agendaatom = agendaatom_shop(
                 "agenda_idea_reason_premiseunit", atom_insert()
             )
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("base", after_reasonunit.base)
-            x_agendaatom.set_locator("need", after_premiseunit.need)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("base", after_reasonunit.base)
             x_agendaatom.set_required_arg("need", after_premiseunit.need)
@@ -1302,9 +1274,6 @@ class BookUnit:
                 x_agendaatom = agendaatom_shop(
                     "agenda_idea_reason_premiseunit", atom_update()
                 )
-                x_agendaatom.set_locator("road", idea_road)
-                x_agendaatom.set_locator("base", before_reasonunit.base)
-                x_agendaatom.set_locator("need", after_premiseunit.need)
                 x_agendaatom.set_required_arg("road", idea_road)
                 x_agendaatom.set_required_arg("base", before_reasonunit.base)
                 x_agendaatom.set_required_arg("need", after_premiseunit.need)
@@ -1326,12 +1295,9 @@ class BookUnit:
             x_agendaatom = agendaatom_shop(
                 "agenda_idea_reason_premiseunit", atom_delete()
             )
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("base", reasonunit_base)
-            x_agendaatom.set_locator("need", delete_premise_need)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("base", reasonunit_base)
-            x_agendaatom.set_required_arg("need", delete_premise_needs)
+            x_agendaatom.set_required_arg("need", delete_premise_need)
             self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_idea_suffgroup_insert(
@@ -1339,8 +1305,6 @@ class BookUnit:
     ):
         for insert_suffgroup_group_id in insert_suffgroup_group_ids:
             x_agendaatom = agendaatom_shop("agenda_idea_suffgroup", atom_insert())
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("group_id", insert_suffgroup_group_id)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("group_id", insert_suffgroup_group_id)
             self.set_agendaatom(x_agendaatom)
@@ -1350,8 +1314,6 @@ class BookUnit:
     ):
         for delete_suffgroup_group_id in delete_suffgroup_group_ids:
             x_agendaatom = agendaatom_shop("agenda_idea_suffgroup", atom_delete())
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("group_id", delete_suffgroup_group_id)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("group_id", delete_suffgroup_group_id)
             self.set_agendaatom(x_agendaatom)
@@ -1364,8 +1326,6 @@ class BookUnit:
                 after_balancelink_group_id
             )
             x_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_insert())
-            x_agendaatom.set_locator("road", after_ideaunit.get_road())
-            x_agendaatom.set_locator("group_id", after_balancelink.group_id)
             x_agendaatom.set_required_arg("road", after_ideaunit.get_road())
             x_agendaatom.set_required_arg("group_id", after_balancelink.group_id)
             x_agendaatom.set_optional_arg(
@@ -1393,8 +1353,6 @@ class BookUnit:
                 "agenda_idea_balancelink", before_balancelink, after_balancelink
             ):
                 x_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_update())
-                x_agendaatom.set_locator("road", before_ideaunit.get_road())
-                x_agendaatom.set_locator("group_id", after_balancelink.group_id)
                 x_agendaatom.set_required_arg("road", before_ideaunit.get_road())
                 x_agendaatom.set_required_arg("group_id", after_balancelink.group_id)
                 if (
@@ -1415,8 +1373,6 @@ class BookUnit:
     ):
         for delete_balancelink_group_id in delete_balancelink_group_ids:
             x_agendaatom = agendaatom_shop("agenda_idea_balancelink", atom_delete())
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("group_id", delete_balancelink_group_id)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("group_id", delete_balancelink_group_id)
             self.set_agendaatom(x_agendaatom)
@@ -1427,8 +1383,6 @@ class BookUnit:
         for insert_beliefunit_base in insert_beliefunit_bases:
             insert_beliefunit = ideaunit._beliefunits.get(insert_beliefunit_base)
             x_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_insert())
-            x_agendaatom.set_locator("road", ideaunit.get_road())
-            x_agendaatom.set_locator("base", insert_beliefunit.base)
             x_agendaatom.set_required_arg("road", ideaunit.get_road())
             x_agendaatom.set_required_arg("base", insert_beliefunit.base)
             if insert_beliefunit.pick != None:
@@ -1452,8 +1406,6 @@ class BookUnit:
                 "agenda_idea_beliefunit", before_beliefunit, after_beliefunit
             ):
                 x_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_update())
-                x_agendaatom.set_locator("road", before_ideaunit.get_road())
-                x_agendaatom.set_locator("base", after_beliefunit.base)
                 x_agendaatom.set_required_arg("road", before_ideaunit.get_road())
                 x_agendaatom.set_required_arg("base", after_beliefunit.base)
                 if before_beliefunit.pick != after_beliefunit.pick:
@@ -1469,8 +1421,6 @@ class BookUnit:
     ):
         for delete_beliefunit_base in delete_beliefunit_bases:
             x_agendaatom = agendaatom_shop("agenda_idea_beliefunit", atom_delete())
-            x_agendaatom.set_locator("road", idea_road)
-            x_agendaatom.set_locator("base", delete_beliefunit_base)
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("base", delete_beliefunit_base)
             self.set_agendaatom(x_agendaatom)

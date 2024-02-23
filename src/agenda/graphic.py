@@ -1,4 +1,4 @@
-from src._road.road import get_parent_road_from_road, RoadUnit, is_sub_road
+from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
 from plotly.graph_objects import Figure, Scatter
@@ -9,7 +9,7 @@ def _get_dot_diameter(x_ratio: float):
 
 
 def _get_parent_y(x_idea: IdeaUnit, ideaunit_y_coordinate_dict: dict) -> RoadUnit:
-    parent_road = get_parent_road_from_road(x_idea.get_road())
+    parent_road = get_parent_road(x_idea.get_road())
     return ideaunit_y_coordinate_dict.get(parent_road)
 
 
