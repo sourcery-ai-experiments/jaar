@@ -19,7 +19,7 @@ from src.agenda.examples.agenda_env import (
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assignedunit_shop
-from src.instrument.python import x_is_json, x_get_dict
+from src.instrument.python import x_is_json, get_dict_from_json
 from src.instrument.file import save_file, open_file
 from pytest import raises as pytest_raises
 
@@ -205,7 +205,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
 
     assert x_json != None
     assert True == x_is_json(x_json)
-    agenda_dict = x_get_dict(x_json)
+    agenda_dict = get_dict_from_json(x_json)
 
     assert agenda_dict["_worker_id"] == zia_agenda._worker_id
     assert agenda_dict["_world_id"] == zia_agenda._world_id
@@ -252,7 +252,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     yao_agenda._originunit.set_originlink(yao_text, 1)
 
     # WHEN
-    agenda_dict = x_get_dict(json_x=yao_agenda.get_json())
+    agenda_dict = get_dict_from_json(json_x=yao_agenda.get_json())
 
     # THEN
     _kids = "_kids"

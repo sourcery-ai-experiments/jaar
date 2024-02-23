@@ -9,7 +9,7 @@ from src.agenda.meld import get_meld_weight
 from src.instrument.python import (
     get_empty_dict_if_none,
     get_1_if_None,
-    x_get_dict,
+    get_dict_from_json,
     get_0_if_None,
 )
 from src._road.road import RoadUnit, default_road_delimiter_if_none, validate_roadnode
@@ -169,7 +169,7 @@ class GroupUnit(GroupCore):
 
 # class GroupUnitsshop:
 def get_from_json(groupunits_json: str) -> dict[GroupID:GroupUnit]:
-    groupunits_dict = x_get_dict(json_x=groupunits_json)
+    groupunits_dict = get_dict_from_json(json_x=groupunits_json)
     return get_from_dict(x_dict=groupunits_dict)
 
 
@@ -259,7 +259,7 @@ class BalanceLink(GroupCore):
 
 # class BalanceLinksshop:
 def balancelinks_get_from_json(balancelinks_json: str) -> dict[GroupID, BalanceLink]:
-    balancelinks_dict = x_get_dict(json_x=balancelinks_json)
+    balancelinks_dict = get_dict_from_json(json_x=balancelinks_json)
     return balancelinks_get_from_dict(x_dict=balancelinks_dict)
 
 

@@ -6,7 +6,7 @@ from src.econ.examples.econ_env_kit import (
 )
 from src.instrument.sqlite import get_db_tables, get_db_columns
 from src.instrument.file import open_file
-from src.instrument.python import get_nested_value, x_get_dict
+from src.instrument.python import get_nested_value, get_dict_from_json
 
 
 def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
@@ -40,7 +40,7 @@ def test_econ_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # THEN
     # grab config.json
     config_text = open_file(dest_dir="src/econ", file_name="treasury_db_config.json")
-    config_dict = x_get_dict(config_text)
+    config_dict = get_dict_from_json(config_text)
     tables_dict = get_nested_value(config_dict, ["tables"])
 
     assert check_table_column_existence(tables_dict, x_econ)

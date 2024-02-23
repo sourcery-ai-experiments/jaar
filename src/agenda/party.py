@@ -1,6 +1,6 @@
 from src._road.road import PartyID, default_road_delimiter_if_none, validate_roadnode
 from dataclasses import dataclass
-from src.instrument.python import get_1_if_None, x_get_dict, get_0_if_None
+from src.instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
 
 class InvalidPartyException(Exception):
@@ -179,7 +179,7 @@ class PartyUnit(PartyCore):
 
 # class PartyUnitsshop:
 def partyunits_get_from_json(partyunits_json: str) -> dict[str:PartyUnit]:
-    partyunits_dict = x_get_dict(json_x=partyunits_json)
+    partyunits_dict = get_dict_from_json(json_x=partyunits_json)
     return partyunits_get_from_dict(x_dict=partyunits_dict)
 
 
@@ -327,7 +327,7 @@ class PartyLink(PartyCore):
 
 # class PartyLinkshop:
 def partylinks_get_from_json(partylinks_json: str) -> dict[str:PartyLink]:
-    partylinks_dict = x_get_dict(json_x=partylinks_json)
+    partylinks_dict = get_dict_from_json(json_x=partylinks_json)
     return partylinks_get_from_dict(x_dict=partylinks_dict)
 
 

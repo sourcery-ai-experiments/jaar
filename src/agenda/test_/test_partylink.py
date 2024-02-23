@@ -3,7 +3,7 @@ from src.agenda.party import (
     partylink_shop,
     partylinks_get_from_json,
 )
-from src.instrument.python import x_is_json, x_get_json
+from src.instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 
@@ -128,7 +128,7 @@ def test_partylink_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     yao_json_dict = {
         yao_text: {"party_id": yao_text, "creditor_weight": 12, "debtor_weight": 19}
     }
-    yao_json_text = x_get_json(dict_x=yao_json_dict)
+    yao_json_text = get_json_from_dict(dict_x=yao_json_dict)
     assert x_is_json(json_x=yao_json_text)
 
     # WHEN

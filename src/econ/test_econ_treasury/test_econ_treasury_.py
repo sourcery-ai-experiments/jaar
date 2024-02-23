@@ -84,7 +84,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory
     assert os_path.exists(x_econ.get_treasury_db_path()) == False
 
 
-def test_EconUnit_get_treasury_db_conn_CreatesTreasuryDBIfItDoesNotExist(
+def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ

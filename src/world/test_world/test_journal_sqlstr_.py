@@ -16,9 +16,10 @@ def test_get_road_ref_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS road_ref (
-  road VARCHAR(MAX) NOT NULL
+  road VARCHAR(255) NOT NULL
 , delimiter VARCHAR(255) NOT NULL
 , UNIQUE(road, delimiter)
+)
 ;"""
     assert example_sqlstr == get_road_ref_table_create_sqlstr()
 
@@ -67,11 +68,15 @@ def test_get_atom_hx_table_create_sqlstr_ReturnsCorrectStr():
     generated_sqlstr = get_atom_hx_table_create_sqlstr()
 
     # THEN
-    example_sqlstr = """
+    begin_sqlstr = """
 CREATE TABLE IF NOT EXISTS atom_hx (
-, person_id VARCHAR(255) NOT NULL"""
+  person_id VARCHAR(255) NOT NULL"""
+    end_sqlstr = """)
+;"""
 
-    assert generated_sqlstr.find(example_sqlstr) == 0
+    assert generated_sqlstr.find(begin_sqlstr) == 0
+    assert generated_sqlstr.find(end_sqlstr) > 0
+    assert generated_sqlstr.find(end_sqlstr) == 6258
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
@@ -119,12 +124,18 @@ def test_get_atom_curr_table_create_sqlstr_ReturnsCorrectStr():
     generated_sqlstr = get_atom_curr_table_create_sqlstr()
 
     # THEN
-    example_sqlstr = """
+    begin_sqlstr = """
 CREATE TABLE IF NOT EXISTS atom_curr (
-, person_id VARCHAR(255) NOT NULL
+  person_id VARCHAR(255) NOT NULL
 , atom_hx_row_id INT NOT NULL"""
 
-    assert generated_sqlstr.find(example_sqlstr) == 0
+    assert generated_sqlstr.find(begin_sqlstr) == 0
+    end_sqlstr = """)
+;"""
+
+    assert generated_sqlstr.find(begin_sqlstr) == 0
+    assert generated_sqlstr.find(end_sqlstr) > 0
+    assert generated_sqlstr.find(end_sqlstr) == 6290
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )

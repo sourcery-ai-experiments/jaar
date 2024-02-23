@@ -3,12 +3,14 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
+    get_test_world_id,
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
-
 from src.world.person import personunit_shop
+from src.instrument.python import get_dict_from_json, get_nested_value
 from src.instrument.file import delete_dir, save_file, open_file
+from src.instrument.sqlite import get_db_tables, get_db_columns, check_connection
 from os import path as os_path
 from pytest import raises as pytest_raises
 
@@ -67,16 +69,16 @@ def test_WorldUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
     assert open_file(music_world._world_dir, file_name=db_file) == x_file_text
 
     # # WHEN
-    # x_econ._create_treasury_db(overwrite=True)
+    # music_world._create_journal_db(overwrite=True)
     # # THEN
-    # assert open_file(x_econ.econ_dir, file_name=db_file) != x_file_text
+    # assert open_file(music_world._world_dir, file_name=db_file) != x_file_text
 
 
 def test_WorldUnit_create_journal_db_CanCreateInMemory(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
 
     music_world._journal_db = None
@@ -89,3 +91,60 @@ def test_WorldUnit_create_journal_db_CanCreateInMemory(worlds_dir_setup_cleanup)
     # THEN
     assert music_world._journal_db != None
     assert os_path.exists(music_world.get_journal_db_path()) == False
+
+
+def test_WorldUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN create World
+    x_world = WorldUnit(get_test_world_id(), get_test_worlds_dir())
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        check_connection(x_world.get_journal_conn())
+    assert str(excinfo.value) == "unable to open database file"
+
+    # WHEN
+    x_world._set_world_dirs(in_memory_journal=True)
+
+    # THEN
+    assert check_connection(x_world.get_journal_conn())
+
+
+def check_table_column_existence(tables_dict: dict, x_world: WorldUnit) -> bool:
+    print("huh")
+    with x_world.get_journal_conn() as treasury_conn:
+        db_tables = get_db_tables(treasury_conn)
+        db_tables_columns = get_db_columns(treasury_conn)
+
+    # for table_name, table_dict in tables_dict.items():
+    for table_name in tables_dict:
+        print(f"Table: {table_name}")
+        if db_tables.get(table_name) is None:
+            return False
+
+        # db_columns = set(db_tables_columns.get(table_name).keys())
+        # config_columns = set(table_dict.get("columns").keys())
+        # diff_columns = db_columns.symmetric_difference(config_columns)
+        # print(f"Table: {table_name} Column differences: {diff_columns}")
+
+        # if diff_columns:
+        #     return False
+
+    return True
+
+
+def test_world_set_world_dirs_CorrectlyCreatesDBTables(worlds_dir_setup_cleanup):
+    # GIVEN create world
+    x_world = worldunit_shop(get_test_world_id(), get_test_worlds_dir())
+
+    # WHEN
+    x_world._set_world_dirs(in_memory_journal=True)
+
+    # THEN
+    # grab config.json
+    config_text = open_file(dest_dir="src/world", file_name="journal_db_check.json")
+    config_dict = get_dict_from_json(config_text)
+    tables_dict = get_nested_value(config_dict, ["tables"])
+    print(f"{tables_dict=}")
+
+    assert check_table_column_existence(tables_dict, x_world)

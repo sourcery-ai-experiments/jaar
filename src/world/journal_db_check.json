@@ -1,0 +1,20 @@
+{
+    "tables": {
+        "atom_curr": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "atom_hx": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "road_ref": {
+            "columns": {
+                "delimiter": {},
+                "road": {}
+            }
+        }
+    }
+}

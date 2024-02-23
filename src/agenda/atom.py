@@ -25,8 +25,8 @@ from src.agenda.agenda import AgendaUnit
 from src.agenda.examples.agenda_env import get_codespace_agenda_dir
 from src.instrument.python import (
     get_empty_dict_if_none,
-    x_get_json,
-    x_get_dict,
+    get_json_from_dict,
+    get_dict_from_json,
     place_obj_in_dict,
     get_nested_value,
     get_all_nondictionary_objs,
@@ -62,7 +62,7 @@ def get_atom_config_file_name() -> str:
 
 
 def get_atom_config_dict() -> dict:
-    return x_get_dict(
+    return get_dict_from_json(
         open_file(get_codespace_agenda_dir(), get_atom_config_file_name())
     )
 
@@ -136,7 +136,7 @@ def save_atom_config_file(atom_config_dict):
     save_file(
         dest_dir=get_codespace_agenda_dir(),
         file_name=get_atom_config_file_name(),
-        file_text=x_get_json(atom_config_dict),
+        file_text=get_json_from_dict(atom_config_dict),
     )
 
 

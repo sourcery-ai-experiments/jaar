@@ -11,7 +11,7 @@ from os import path as os_path
 def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
     # GIVEN
     oregon_world = worldunit_shop(
-        "Oregon", get_test_worlds_dir(), in_memory_journal_db=True
+        "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     assert oregon_world._dealunits == {}
 
@@ -28,7 +28,7 @@ def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
 def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     oregon_world = worldunit_shop(
-        "Oregon", get_test_worlds_dir(), in_memory_journal_db=True
+        "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
 
@@ -42,7 +42,7 @@ def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     oregon_world = worldunit_shop(
-        "Oregon", get_test_worlds_dir(), in_memory_journal_db=True
+        "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     static_yao_sue_uid = 1
     assert oregon_world.dealunit_exists(static_yao_sue_uid) == False
@@ -58,7 +58,7 @@ def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
     # GIVEN
     oregon_world = worldunit_shop(
-        "Oregon", get_test_worlds_dir(), in_memory_journal_db=True
+        "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
     assert oregon_world.dealunit_exists(yao_sue_uid)
@@ -75,7 +75,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # ):
 #     # GIVEN requester and requestee role_agendas does not exist
 #     w1_text = "w1"
-#     world = worldunit_shop(w1_text, get_test_worlds_dir(), in_memory_journal_db=True)
+#     world = worldunit_shop(w1_text, get_test_worlds_dir(), in_memory_journal=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit(yao_text)
@@ -125,7 +125,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # def test_WorldUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_role_agenda(
 #     worlds_dir_setup_cleanup,
 # ):
-#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal_db=True)
+#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit(yao_text)
@@ -250,7 +250,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 
 
 # def test_WorldUnit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
-#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal_db=True)
+#     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal=True)
 #     yao_text = "Yao"
 #     world.add_personunit(yao_text)
 #     yao_person = world.get_personunit(yao_text)
@@ -348,7 +348,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # # def test_WorldUnit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
 # #     worlds_dir_setup_cleanup,
 # # ):
-# #     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal_db=True)
+# #     world = worldunit_shop("w1", get_test_worlds_dir(), in_memory_journal=True)
 # #     yao_text = "Yao"
 # #     world.add_personunit(yao_text)
 # #     yao_person = world.get_personunit(yao_text)

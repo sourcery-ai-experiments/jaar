@@ -18,9 +18,10 @@ from sqlite3 import Connection
 def get_road_ref_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS road_ref (
-  road VARCHAR(MAX) NOT NULL
+  road VARCHAR(255) NOT NULL
 , delimiter VARCHAR(255) NOT NULL
 , UNIQUE(road, delimiter)
+)
 ;"""
 
 
@@ -47,13 +48,16 @@ def get_atom_hx_table_create_sqlstr() -> str:
     """Create table that hold atom_hx."""
     x_str = f"""
 CREATE TABLE IF NOT EXISTS {atom_hx_table_name()} (
-, person_id VARCHAR(255) NOT NULL"""
+  person_id VARCHAR(255) NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
         if x_value == "TEXT":
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""
 
+    x_str = f"""{x_str}
+)
+;"""
     return x_str
 
 
@@ -65,7 +69,7 @@ def get_atom_curr_table_create_sqlstr() -> str:
     """Create table that holds atom current."""
     x_str = f"""
 CREATE TABLE IF NOT EXISTS {atom_curr_table_name()} (
-, person_id VARCHAR(255) NOT NULL
+  person_id VARCHAR(255) NOT NULL
 , {atom_hx_table_name()}_row_id INT NOT NULL"""
 
     for x_key, x_value in get_atom_columns_build().items():
@@ -73,6 +77,9 @@ CREATE TABLE IF NOT EXISTS {atom_curr_table_name()} (
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""
 
+    x_str = f"""{x_str}
+)
+;"""
     return x_str
 
 

@@ -45,7 +45,7 @@ def place_obj_in_dict(x_dict: dict, x_keylist: list[any], x_obj: any):
 
 def x_is_json(json_x: str) -> bool:
     try:
-        x_get_dict(json_x)
+        get_dict_from_json(json_x)
     except ValueError as e:
         return False
     return True
@@ -108,9 +108,9 @@ def get_all_nondictionary_objs(x_dict: dict) -> dict[str : list[any]]:
     return output_dict
 
 
-def x_get_json(dict_x: dict) -> str:
+def get_json_from_dict(dict_x: dict) -> str:
     return json_dumps(obj=dict_x)
 
 
-def x_get_dict(json_x: str) -> dict[str:]:
+def get_dict_from_json(json_x: str) -> dict[str:]:
     return json_loads(json_x)

@@ -65,8 +65,8 @@ from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.instrument.python import (
-    x_get_json,
-    x_get_dict,
+    get_json_from_dict,
+    get_dict_from_json,
     get_1_if_None,
     get_0_if_None,
     get_False_if_None,
@@ -1939,7 +1939,7 @@ class AgendaUnit:
 
     def get_json(self) -> str:
         x_dict = self.get_dict()
-        return x_get_json(dict_x=x_dict)
+        return get_json_from_dict(dict_x=x_dict)
 
     def set_time_hreg_ideas(self, c400_count: int):
         x_hregidea = HregIdea(self._road_delimiter)
@@ -2223,7 +2223,7 @@ def agendaunit_shop(
 
 
 def get_from_json(x_agenda_json: str) -> AgendaUnit:
-    return get_from_dict(x_get_dict(x_agenda_json))
+    return get_from_dict(get_dict_from_json(x_agenda_json))
 
 
 def get_from_dict(agenda_dict: dict) -> AgendaUnit:

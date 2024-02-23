@@ -17,7 +17,7 @@ from src._road.road import (
     validate_roadnode,
     default_road_delimiter_if_none,
 )
-from src.instrument.python import x_is_json, x_get_json
+from src.instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 
@@ -509,7 +509,7 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     print(f"{teacher_dict.get(_treasury_partylinks_text)=}")
     groups_dict = {teacher_text: teacher_dict}
 
-    teachers_json = x_get_json(dict_x=groups_dict)
+    teachers_json = get_json_from_dict(dict_x=groups_dict)
     print(f"{teachers_json.find(_treasury_partylinks_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
@@ -618,7 +618,7 @@ def test_balancelinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     teacher_dict = teacher_balancelink.get_dict()
     balancelinks_dict = {teacher_balancelink.group_id: teacher_dict}
 
-    teachers_json = x_get_json(dict_x=balancelinks_dict)
+    teachers_json = get_json_from_dict(dict_x=balancelinks_dict)
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 

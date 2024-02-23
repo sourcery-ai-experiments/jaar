@@ -32,7 +32,7 @@ def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
 
     # WHEN
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
 
     # THEN
@@ -55,7 +55,7 @@ def test_worldunit_shop_ReturnsWorldUnitWith_road_delimiter(worlds_dir_setup_cle
     music_world = worldunit_shop(
         world_id=music_text,
         worlds_dir=get_test_worlds_dir(),
-        in_memory_journal_db=True,
+        in_memory_journal=True,
         _road_delimiter=slash_text,
     )
 
@@ -102,7 +102,7 @@ def test_worldunit_shop_SetsWorldsDirs(worlds_dir_setup_cleanup):
 
     # WHEN
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
 
     # THEN
@@ -115,7 +115,7 @@ def test_WorldUnit__set_person_in_memory_CorrectlySetsPerson(worlds_dir_setup_cl
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     assert music_world._personunits == {}
 
@@ -136,7 +136,7 @@ def test_WorldUnit_personunit_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     assert music_world._personunits == {}
 
@@ -158,7 +158,7 @@ def test_WorldUnit_add_personunit_CorrectlySetsPerson(worlds_dir_setup_cleanup):
         music_text,
         get_test_worlds_dir(),
         _road_delimiter=slash_text,
-        in_memory_journal_db=True,
+        in_memory_journal=True,
     )
     luca_text = "Luca"
     luca_person_dir = f"{music_world._persons_dir}/{luca_text}"
@@ -189,7 +189,7 @@ def test_WorldUnit_add_personunit_RaisesErrorIfPersonExists(worlds_dir_setup_cle
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
     luca_person_dir = f"{music_world._persons_dir}/{luca_text}"
@@ -213,7 +213,7 @@ def test_WorldUnit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cl
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
     assert music_world.personunit_exists(luca_text) == False
@@ -239,7 +239,7 @@ def test_WorldUnit_get_personunit_ReturnsPerson(
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
     luca_person_dir = f"{music_world._persons_dir}/{luca_text}"
@@ -265,7 +265,7 @@ def test_WorldUnit_get_personunit_ReturnsNone(
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal_db=True
+        world_id=music_text, worlds_dir=get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
 
@@ -280,7 +280,7 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        music_text, get_test_worlds_dir(), in_memory_journal_db=True
+        music_text, get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
     music_world.add_personunit(luca_text)
@@ -304,7 +304,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
-        music_text, get_test_worlds_dir(), in_memory_journal_db=True
+        music_text, get_test_worlds_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
     todd_text = "Todd"

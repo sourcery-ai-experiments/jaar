@@ -1,20 +1,11 @@
-from src._road.road import (
-    default_road_delimiter_if_none,
-    HealerID,
-    ProblemID,
-    PersonID,
-    RoadUnit,
-)
-from src.agenda.agenda import (
-    agendaunit_shop,
-    AgendaUnit,
-    get_from_json as get_agenda_from_json,
-)
+from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit
+from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
 from src.world.deal import DealUnit
 from src.world.person import PersonUnit, personunit_shop
+from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src.instrument.python import get_empty_dict_if_none
-from src.instrument.file import set_dir, open_file
+from src.instrument.file import set_dir, open_file, delete_dir
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
@@ -61,14 +52,14 @@ class WorldUnit:
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
 
-    def _set_world_dirs(self, in_memory_journal_db: bool = None):
+    def _set_world_dirs(self, in_memory_journal: bool = None):
         self._world_dir = f"{self.worlds_dir}/{self.world_id}"
         self._persons_dir = f"{self._world_dir}/persons"
         self._deals_dir = f"{self._world_dir}/deals"
         set_dir(x_path=self._world_dir)
         set_dir(x_path=self._persons_dir)
         set_dir(x_path=self._deals_dir)
-        self._create_journal_db(in_memory=in_memory_journal_db)
+        self._create_journal_db(in_memory=in_memory_journal)
 
     def get_journal_db_path(self) -> str:
         return f"{self.worlds_dir}/{self.world_id}/journal.db"
@@ -76,19 +67,32 @@ class WorldUnit:
     def _create_journal_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
-        # if overwrite:
-        #     self._delete_treasury()
+        journal_file_new = False
+        if overwrite:
+            journal_file_new = True
+            self._delete_journal()
 
         if in_memory:
+            if self._journal_db is None:
+                journal_file_new = True
             self._journal_db = sqlite3_connect(":memory:")
         else:
             sqlite3_connect(self.get_journal_db_path())
 
-        journal_file_new = True
-        # if treasury_file_new:
-        #     with self.get_treasury_conn() as treasury_conn:
-        #         for sqlstr in get_create_table_if_not_exist_sqlstrs():
-        #             treasury_conn.execute(sqlstr)
+        if journal_file_new:
+            with self.get_journal_conn() as journal_conn:
+                for sqlstr in get_create_table_if_not_exist_sqlstrs():
+                    journal_conn.execute(sqlstr)
+
+    def _delete_journal(self):
+        self._journal_db = None
+        delete_dir(dir=self.get_journal_db_path())
+
+    def get_journal_conn(self):
+        if self._journal_db is None:
+            return sqlite3_connect(self.get_journal_db_path())
+        else:
+            return self._journal_db
 
     def personunit_exists(self, person_id: PersonID):
         return self._personunits.get(person_id) != None
@@ -208,7 +212,7 @@ class WorldUnit:
 def worldunit_shop(
     world_id: WorldID,
     worlds_dir: str,
-    in_memory_journal_db: bool = None,
+    in_memory_journal: bool = None,
     _road_delimiter: str = None,
 ) -> WorldUnit:
     world_x = WorldUnit(
@@ -218,6 +222,6 @@ def worldunit_shop(
         _dealunits=get_empty_dict_if_none(None),
     )
     world_x.set_max_deal_uid()
-    world_x._set_world_dirs(in_memory_journal_db=in_memory_journal_db)
+    world_x._set_world_dirs(in_memory_journal=in_memory_journal)
     world_x._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return world_x
