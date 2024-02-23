@@ -57,6 +57,19 @@ def check_every_crud_dict_has_element(atom_config_dict, atom_order_text):
                     f"Missing from {category} {atom_delete()} {category_delete.get(atom_order_text)=}"
                 )
                 return False
+
+        treasury_only_text = "treasury_only"
+        if category_dict.get(treasury_only_text) is None:
+            print(f"{category=} missing {treasury_only_text}")
+            return False
+
+        # if category_dict.get(treasury_only_text) == 4:  # not in [True, False]:
+        print(f"{category_dict.get(treasury_only_text)=}")
+        if category_dict.get(treasury_only_text) not in [True, False]:
+            print(
+                f"{category=} {treasury_only_text} value '{category_dict.get(treasury_only_text)}' not acceptable"
+            )
+            return False
     return True
 
 

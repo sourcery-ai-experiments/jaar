@@ -1,5 +1,6 @@
 {
     "agenda_group_partylink": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 25,
             "description_elements": []
@@ -34,6 +35,7 @@
         }
     },
     "agenda_groupunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 27,
             "description_elements": []
@@ -60,6 +62,7 @@
         }
     },
     "agenda_idea_balancelink": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 23,
             "description_elements": []
@@ -94,6 +97,7 @@
         }
     },
     "agenda_idea_beliefunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 20,
             "description_elements": []
@@ -132,6 +136,7 @@
         }
     },
     "agenda_idea_healerhold": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 22,
             "description_elements": []
@@ -153,6 +158,7 @@
         }
     },
     "agenda_idea_reason_premiseunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 18,
             "description_elements": []
@@ -195,6 +201,7 @@
         }
     },
     "agenda_idea_reasonunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 19,
             "description_elements": []
@@ -225,6 +232,7 @@
         }
     },
     "agenda_idea_suffgroup": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 21,
             "description_elements": []
@@ -246,6 +254,7 @@
         }
     },
     "agenda_ideaunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 24,
             "description_elements": []
@@ -320,6 +329,7 @@
         }
     },
     "agenda_partyunit": {
+        "treasury_only": false,
         "DELETE": {
             "atom_order": 26,
             "description_elements": []
@@ -354,6 +364,7 @@
         }
     },
     "agendaunit": {
+        "treasury_only": false,
         "optional_args": {
             "_auto_output_job_to_forum": {
                 "python_type": "bool",
