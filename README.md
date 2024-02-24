@@ -3,7 +3,7 @@
 
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-<!-- TODO: Find a way to autopopulate the below modeled after the borb library
+<!-- TODO: Find out how to autopopulate the below modeled after the borb library
 [![Corpus Coverage : 100.0%](https://img.shields.io/badge/corpus%20coverage-100.0%25-green)]()
 [![Public Method Documentation : 100%](https://img.shields.io/badge/public%20method%20documentation-100%25-green)]()
 [![Number of Tests : 615](https://img.shields.io/badge/number%20of%20tests-615-green)]()

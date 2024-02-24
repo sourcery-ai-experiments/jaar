@@ -159,12 +159,12 @@ def get_agenda_3CleanNodesRandomWeights(_worker_id: str = None) -> AgendaUnit:
     casa_road = x_agenda.make_l1_road(casa_text)
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
-    hallway_text = "clean hallway"
+    nursery_text = "clean nursery"
     cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), promise=True)
     bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), promise=True)
-    hallway_idea = ideaunit_shop(hallway_text, _weight=randrange(1, 50), promise=True)
+    nursery_idea = ideaunit_shop(nursery_text, _weight=randrange(1, 50), promise=True)
     x_agenda.add_idea(cookery_idea, parent_road=casa_road)
     x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
-    x_agenda.add_idea(hallway_idea, parent_road=casa_road)
+    x_agenda.add_idea(nursery_idea, parent_road=casa_road)
     x_agenda.set_agenda_metrics()
     return x_agenda

@@ -141,11 +141,11 @@ class PremiseStatusFinderException(Exception):
 
 @dataclass
 class PremiseStatusFinder:
-    premise_open: float  # always within 0 and divisor, can be more than premise_nigh
-    premise_nigh: float  # always within 0 and divisor, can be less than premise_open
-    premise_divisor: float  # always greater than zero
-    belief_open_full: float  # always less than belief nigh
-    belief_nigh_full: float  # always less than belief nigh
+    premise_open: float  # within 0 and divisor, can be more than premise_nigh
+    premise_nigh: float  # within 0 and divisor, can be less than premise_open
+    premise_divisor: float  # greater than zero
+    belief_open_full: float  # less than belief nigh
+    belief_nigh_full: float  # less than belief nigh
 
     def check_attr(self):
         if None in (

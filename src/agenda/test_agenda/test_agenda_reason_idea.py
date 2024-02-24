@@ -647,7 +647,7 @@ def test_AgendaUnit_set_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_trav
     assert x_agenda._rational
 
     # WHEN
-    # hack agenda to set _max_tree_traverse = 1 (not allowed, should always be 2 or more)
+    # hack agenda to set _max_tree_traverse = 1 (not allowed, should be 2 or more)
     x_agenda._max_tree_traverse = 1
     x_agenda.set_agenda_metrics()
 

@@ -84,7 +84,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     texas_econ = yao_person.get_econunit(texas_text)
 #     texas_forum_dir = texas_econ.get_forum_dir()
 
-#     highway_wantunit = create_wantunit(
+#     highwaay_wantunit = create_wantunit(
 #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix="flying in 737s",
 #         positive="Do not fly",
@@ -95,8 +95,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     )
 #     tim_text = "Tim"
 #     xio_text = "Xio"
-#     highway_requestunit = create_requestunit(
-#         wantunit=highway_wantunit, requestee_party_id=tim_text, requester_person_id=xio_text
+#     highwaay_requestunit = create_requestunit(
+#         wantunit=highwaay_wantunit, requestee_party_id=tim_text, requester_person_id=xio_text
 #     )
 #     assert world.get_personunit(tim_text) is None
 #     assert world.get_personunit(xio_text) is None
@@ -108,7 +108,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     assert os_path.exists(forum_yao_file_path) is False
 
 #     # WHEN
-#     world.apply_requestunit(highway_requestunit)
+#     world.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
 #     assert world.get_personunit(tim_text) != None
@@ -140,7 +140,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     healthy_text = "healthy"
 #     boiling_text = "boiling"
 
-#     highway_wantunit = create_wantunit(
+#     highwaay_wantunit = create_wantunit(
 #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
@@ -152,15 +152,15 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     fix_weight = 7
-#     highway_requestunit = create_requestunit(
-#         wantunit=highway_wantunit,
+#     highwaay_requestunit = create_requestunit(
+#         wantunit=highwaay_wantunit,
 #         requestee_party_id=tim_text,
 #         requester_party_id=xio_text,
 #         fix_weight=fix_weight,
 #     )
 
 #     # WHEN
-#     world.apply_requestunit(highway_requestunit)
+#     world.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
 #     xio_role = texas_econ.get_clerkunit(xio_text).get_role()
@@ -265,7 +265,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     healthy_text = "healthy"
 #     boiling_text = "boiling"
 
-#     highway_wantunit = create_wantunit(
+#     highwaay_wantunit = create_wantunit(
 #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
@@ -278,8 +278,8 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     xio_text = "Xio"
 #     environmentalist_text = "Environmentalist"
 #     fix_weight = 7
-#     highway_requestunit = create_requestunit(
-#         wantunit=highway_wantunit,
+#     highwaay_requestunit = create_requestunit(
+#         wantunit=highwaay_wantunit,
 #         requestee_party_id=tim_text,
 #         requestee_group=environmentalist_text,
 #         requester_person_id=xio_text,
@@ -287,7 +287,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     )
 
 #     # WHEN
-#     world.apply_requestunit(highway_requestunit)
+#     world.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
 #     xio_role = texas_econ.get_clerkunit(xio_text).get_role()

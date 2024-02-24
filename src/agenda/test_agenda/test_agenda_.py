@@ -139,7 +139,7 @@ def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
     assert mail_idea._task == True
 
 
-def test_AgendaUnit_ideaoot_uid_isAlwaysEqualTo1():
+def test_AgendaUnit_ideaoot_uid_isEqualTo1():
     # GIVEN
     zia_text = "Zia"
 

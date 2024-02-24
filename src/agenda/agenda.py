@@ -239,7 +239,7 @@ class AgendaUnit:
 
         # tree_metrics = self.get_tree_metrics()
         # while roads_to_evaluate != [] and count_x <= tree_metrics.node_count:
-        # changed because count_x might be wrong way to measure
+        # changed because count_x might be wrong thing to measure
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
