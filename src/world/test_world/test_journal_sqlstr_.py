@@ -4,11 +4,13 @@ from src.world.journal_sqlstr import (
     get_atom_book_link_table_create_sqlstr,
     get_atom_hx_table_create_sqlstr,
     get_atom_hx_table_insert_sqlstr,
-    get_atom_curr_table_create_sqlstr,
+    get_atom_mstr_table_create_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
     get_book_deal_link_table_create_sqlstr,
     get_book_table_create_sqlstr,
     get_deal_table_create_sqlstr,
+    get_deal_person_link_table_create_sqlstr,
+    get_person_mstr_table_create_sqlstr,
     get_road_ref_table_create_sqlstr,
     get_road_ref_table_single_insert_sqlstr,
     get_road_ref_table_row_id_select_sqlstr,
@@ -36,7 +38,7 @@ CREATE TABLE atom_book_link
   atom_rowid INT NOT NULL
 , book_rowid INT NOT NULL
 , UNIQUE(atom_rowid, book_rowid)
-, CONSTRAINT atom_fk FOREIGN KEY (atom_rowid) REFERENCES atom_curr (rowid)
+, CONSTRAINT atom_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
 , CONSTRAINT book_fk FOREIGN KEY (book_rowid) REFERENCES book_mstr (rowid)
 )
 ;"""
@@ -68,6 +70,33 @@ CREATE TABLE book_deal_link
 )
 ;"""
     assert example_sqlstr == get_book_deal_link_table_create_sqlstr()
+
+
+def test_get_deal_person_link_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN / THEN
+    example_sqlstr = """
+CREATE TABLE deal_person_link
+(
+  deal_rowid INT NOT NULL
+, person_rowid INT NOT NULL
+, UNIQUE(deal_rowid, person_rowid)
+, CONSTRAINT book_fk FOREIGN KEY (deal_rowid) REFERENCES deal_mstr (rowid)
+, CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
+)
+;"""
+    assert example_sqlstr == get_deal_person_link_table_create_sqlstr()
+
+
+def test_get_person_mstr_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN / THEN
+    example_sqlstr = """
+CREATE TABLE person_mstr
+(
+  person_id VARCHAR(255) NOT NULL
+, UNIQUE(person_id)
+)
+;"""
+    assert example_sqlstr == get_person_mstr_table_create_sqlstr()
 
 
 def test_get_road_ref_table_create_sqlstr_ReturnsCorrectStr():
@@ -177,13 +206,13 @@ VALUES (
     assert get_atom_hx_table_insert_sqlstr(update_disc_agendaatom) == example_sqlstr
 
 
-def test_get_atom_curr_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_atom_mstr_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_atom_curr_table_create_sqlstr()
+    generated_sqlstr = get_atom_mstr_table_create_sqlstr()
 
     # THEN
     begin_sqlstr = """
-CREATE TABLE IF NOT EXISTS atom_curr (
+CREATE TABLE IF NOT EXISTS atom_mstr (
   person_id VARCHAR(255) NOT NULL
 , atom_hx_row_id INT NOT NULL"""
 
@@ -203,6 +232,6 @@ CREATE TABLE IF NOT EXISTS atom_curr (
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():
     # GIVEN / WHEN / THEN
-    assert len(get_create_table_if_not_exist_sqlstrs()) == 8
+    assert len(get_create_table_if_not_exist_sqlstrs()) == 9
 
     # SELECT name FROM my_db.sqlite_master WHERE type='table

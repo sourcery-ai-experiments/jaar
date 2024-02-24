@@ -1,36 +1,29 @@
 {
     "tables": {
         "atom_book_link": {
-            "columns": {
-                "person_id": {}
-            }
+            "columns": {}
         },
-        "atom_curr": {
-            "columns": {
-                "person_id": {}
-            }
+        "atom_mstr": {
+            "columns": {}
         },
         "atom_hx": {
-            "columns": {
-                "person_id": {}
-            }
+            "columns": {}
         },
         "book_deal_link": {
-            "columns": {
-                "person_id": {}
-            }
+            "columns": {}
         },
         "book_mstr": {
-            "columns": {
-                "person_id": {}
-            }
+            "columns": {}
         },
         "deal_mstr": {
+            "columns": {}
+        },
+        "deal_person_link": {
             "columns": {
                 "person_id": {}
             }
         },
-        "deal_person_link": {
+        "person_mstr": {
             "columns": {
                 "person_id": {}
             }

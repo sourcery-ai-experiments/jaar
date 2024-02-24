@@ -7,7 +7,7 @@ from src.agenda.atom import (
     atom_delete,
     atom_insert,
     agendaatom_shop,
-    atom_curr_table_name,
+    atom_mstr_table_name,
     atom_hx_table_name,
     get_agendaatom_from_rowdata,
 )

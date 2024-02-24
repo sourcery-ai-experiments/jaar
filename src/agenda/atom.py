@@ -53,8 +53,8 @@ def atom_hx_table_name() -> str:
     return "atom_hx"
 
 
-def atom_curr_table_name() -> str:
-    return "atom_curr"
+def atom_mstr_table_name() -> str:
+    return "atom_mstr"
 
 
 def get_atom_config_file_name() -> str:
