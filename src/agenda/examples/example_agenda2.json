@@ -1,5 +1,4 @@
 {
-    "_worker_id": "Bob",
     "_groups": {
         ",ACME DevOps": {
             "_party_mirror": false,
@@ -82,6 +81,32 @@
                 }
             },
             "group_id": ",ACME General"
+        },
+        ",appreciates US DOLLAR": {
+            "_party_mirror": false,
+            "_partys": {
+                "Bob302": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Bob302"
+                },
+                "Perrison": {
+                    "creditor_weight": 5,
+                    "debtor_weight": 1,
+                    "party_id": "Perrison"
+                },
+                "Prashant": {
+                    "creditor_weight": 2,
+                    "debtor_weight": 1,
+                    "party_id": "Prashant"
+                },
+                "Renee Elise Goldsberry": {
+                    "creditor_weight": 1,
+                    "debtor_weight": 1,
+                    "party_id": "Renee Elise Goldsberry"
+                }
+            },
+            "group_id": ",appreciates US DOLLAR"
         },
         ",Climate Change": {
             "_party_mirror": false,
@@ -272,32 +297,6 @@
                 }
             },
             "group_id": ",hurt by us dollar"
-        },
-        ",appreciates US DOLLAR": {
-            "_party_mirror": false,
-            "_partys": {
-                "Bob302": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Bob302"
-                },
-                "Perrison": {
-                    "creditor_weight": 5,
-                    "debtor_weight": 1,
-                    "party_id": "Perrison"
-                },
-                "Prashant": {
-                    "creditor_weight": 2,
-                    "debtor_weight": 1,
-                    "party_id": "Prashant"
-                },
-                "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
-                    "debtor_weight": 1,
-                    "party_id": "Renee Elise Goldsberry"
-                }
-            },
-            "group_id": ",appreciates US DOLLAR"
         },
         ",OceanVista Apt": {
             "_party_mirror": false,
@@ -2317,472 +2316,6 @@
                         "_weight": 1,
                         "promise": false
                     },
-                    "Financial Ops": {
-                        "_is_expanded": false,
-                        "_kids": {
-                            "be reponsible for rent": {
-                                "_balancelinks": {
-                                    ",Family": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": ",Family"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "be reponsible for rent",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
-                                                "divisor": null,
-                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
-                                                "nigh": 1064041020.0,
-                                                "open": 1064041020.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 45,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "be responsible for expenses card": {
-                                "_balancelinks": {
-                                    ",Family": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": ",Family"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "be responsible for expenses card",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
-                                                "divisor": null,
-                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
-                                                "nigh": 1064041020.0,
-                                                "open": 1064041020.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 31,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "be responsible for utilities bills": {
-                                "_balancelinks": {
-                                    "Perrison": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": "Perrison"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "be responsible for utilities bills",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
-                                                "divisor": null,
-                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
-                                                "nigh": 1064041020.0,
-                                                "open": 1064041020.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 37,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "set aside a little bucks for fun the week": {
-                                "_balancelinks": {
-                                    ",Family": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": ",Family"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "set aside a little bucks for fun the week",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
-                                                "divisor": null,
-                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
-                                                "nigh": 1064041020.0,
-                                                "open": 1064041020.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 75,
-                                "_weight": 1,
-                                "promise": true
-                            }
-                        },
-                        "_label": "Financial Ops",
-                        "_meld_strategy": "default",
-                        "_uid": 148,
-                        "_weight": 1,
-                        "promise": false
-                    },
-                    "Housing": {
-                        "_balancelinks": {
-                            ",OceanVista Apt": {
-                                "creditor_weight": 1.0,
-                                "debtor_weight": 1,
-                                "group_id": ",OceanVista Apt"
-                            }
-                        },
-                        "_is_expanded": false,
-                        "_kids": {
-                            "Apartment": {
-                                "_is_expanded": true,
-                                "_kids": {
-                                    "bathroom #2": {
-                                        "_is_expanded": true,
-                                        "_label": "bathroom #2",
-                                        "_meld_strategy": "default",
-                                        "_uid": 196,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "bedroom #1": {
-                                        "_is_expanded": true,
-                                        "_kids": {
-                                            "big bathroom": {
-                                                "_is_expanded": true,
-                                                "_label": "big bathroom",
-                                                "_meld_strategy": "default",
-                                                "_uid": 195,
-                                                "_weight": 1,
-                                                "promise": false
-                                            },
-                                            "closet": {
-                                                "_is_expanded": true,
-                                                "_label": "closet",
-                                                "_meld_strategy": "default",
-                                                "_uid": 194,
-                                                "_weight": 1,
-                                                "promise": false
-                                            }
-                                        },
-                                        "_label": "bedroom #1",
-                                        "_meld_strategy": "default",
-                                        "_uid": 191,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "bedroom #2": {
-                                        "_is_expanded": true,
-                                        "_kids": {
-                                            "bed area": {
-                                                "_is_expanded": true,
-                                                "_kids": {
-                                                    "heater maintenance": {
-                                                        "_balancelinks": {
-                                                            "Norberto": {
-                                                                "creditor_weight": 1.0,
-                                                                "debtor_weight": 1,
-                                                                "group_id": "Norberto"
-                                                            }
-                                                        },
-                                                        "_is_expanded": true,
-                                                        "_label": "heater maintenance",
-                                                        "_meld_strategy": "default",
-                                                        "_uid": 198,
-                                                        "_weight": 1,
-                                                        "promise": false
-                                                    }
-                                                },
-                                                "_label": "bed area",
-                                                "_meld_strategy": "default",
-                                                "_uid": 197,
-                                                "_weight": 1,
-                                                "promise": false
-                                            },
-                                            "closet": {
-                                                "_is_expanded": true,
-                                                "_label": "closet",
-                                                "_meld_strategy": "default",
-                                                "_uid": 193,
-                                                "_weight": 1,
-                                                "promise": false
-                                            }
-                                        },
-                                        "_label": "bedroom #2",
-                                        "_meld_strategy": "default",
-                                        "_uid": 192,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "cookery": {
-                                        "_is_expanded": true,
-                                        "_label": "cookery",
-                                        "_meld_strategy": "default",
-                                        "_uid": 189,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "dining area": {
-                                        "_is_expanded": true,
-                                        "_label": "dining area",
-                                        "_meld_strategy": "default",
-                                        "_uid": 190,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "nursery": {
-                                        "_is_expanded": true,
-                                        "_label": "nursery",
-                                        "_meld_strategy": "default",
-                                        "_uid": 188,
-                                        "_weight": 1,
-                                        "promise": false
-                                    },
-                                    "maintenance": {
-                                        "_is_expanded": true,
-                                        "_label": "maintenance",
-                                        "_meld_strategy": "default",
-                                        "_uid": 187,
-                                        "_weight": 1,
-                                        "promise": false
-                                    }
-                                },
-                                "_label": "Apartment",
-                                "_meld_strategy": "default",
-                                "_uid": 181,
-                                "_weight": 1,
-                                "promise": false
-                            },
-                            "Bike Garage": {
-                                "_is_expanded": true,
-                                "_label": "Bike Garage",
-                                "_meld_strategy": "default",
-                                "_uid": 185,
-                                "_weight": 1,
-                                "promise": false
-                            },
-                            "Bike Gym": {
-                                "_is_expanded": true,
-                                "_label": "Bike Gym",
-                                "_meld_strategy": "default",
-                                "_uid": 184,
-                                "_weight": 1,
-                                "promise": false
-                            },
-                            "Playing in nurserys": {
-                                "_is_expanded": true,
-                                "_label": "Playing in nurserys",
-                                "_meld_strategy": "default",
-                                "_uid": 186,
-                                "_weight": 1,
-                                "promise": false
-                            },
-                            "Pool": {
-                                "_is_expanded": true,
-                                "_label": "Pool",
-                                "_meld_strategy": "default",
-                                "_uid": 182,
-                                "_weight": 1,
-                                "promise": false
-                            },
-                            "Weight Lifting Gym": {
-                                "_is_expanded": true,
-                                "_label": "Weight Lifting Gym",
-                                "_meld_strategy": "default",
-                                "_uid": 183,
-                                "_weight": 1,
-                                "promise": false
-                            }
-                        },
-                        "_label": "Housing",
-                        "_meld_strategy": "default",
-                        "_uid": 180,
-                        "_weight": 1,
-                        "promise": false
-                    },
-                    "keep up with friends": {
-                        "_is_expanded": true,
-                        "_label": "keep up with friends",
-                        "_meld_strategy": "default",
-                        "_reasonunits": {
-                            "A,Internet": {
-                                "base": "A,Internet",
-                                "premises": {
-                                    "A,Internet,Faceboook": {
-                                        "divisor": null,
-                                        "need": "A,Internet,Faceboook",
-                                        "open": null
-                                    }
-                                }
-                            }
-                        },
-                        "_uid": 220,
-                        "_weight": 1,
-                        "promise": false
-                    },
-                    "responsible for kids": {
-                        "_is_expanded": false,
-                        "_kids": {
-                            "clip oldest nails": {
-                                "_balancelinks": {
-                                    "America": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": "America"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "clip oldest nails",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,Nation-States": {
-                                        "base": "A,Nation-States",
-                                        "premises": {
-                                            "A,Nation-States,USA,Portland OR": {
-                                                "divisor": null,
-                                                "need": "A,Nation-States,USA,Portland OR",
-                                                "open": null
-                                            }
-                                        }
-                                    },
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime": {
-                                                "divisor": 10080.0,
-                                                "need": "A,time,jajatime",
-                                                "nigh": 5340.0,
-                                                "open": 5340.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 23,
-                                "_weight": 1,
-                                "promise": true
-                            },
-                            "get rid of toy buy new toy": {
-                                "_balancelinks": {
-                                    ",Family": {
-                                        "creditor_weight": 1.0,
-                                        "debtor_weight": 1,
-                                        "group_id": ",Family"
-                                    }
-                                },
-                                "_is_expanded": true,
-                                "_label": "get rid of toy buy new toy",
-                                "_meld_strategy": "default",
-                                "_reasonunits": {
-                                    "A,Nation-States": {
-                                        "base": "A,Nation-States",
-                                        "premises": {
-                                            "A,Nation-States,USA,Portland OR": {
-                                                "divisor": null,
-                                                "need": "A,Nation-States,USA,Portland OR",
-                                                "open": null
-                                            }
-                                        }
-                                    },
-                                    "A,time,jajatime": {
-                                        "base": "A,time,jajatime",
-                                        "premises": {
-                                            "A,time,jajatime": {
-                                                "divisor": 60480.0,
-                                                "need": "A,time,jajatime",
-                                                "nigh": 840.0,
-                                                "open": 840.0
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 43,
-                                "_weight": 1,
-                                "promise": true
-                            }
-                        },
-                        "_label": "responsible for kids",
-                        "_meld_strategy": "default",
-                        "_reasonunits": {
-                            "A,Nation-States": {
-                                "base": "A,Nation-States",
-                                "premises": {
-                                    "A,Nation-States,USA,Portland OR": {
-                                        "divisor": null,
-                                        "need": "A,Nation-States,USA,Portland OR",
-                                        "open": null
-                                    }
-                                }
-                            }
-                        },
-                        "_uid": 144,
-                        "_weight": 1,
-                        "promise": false
-                    },
-                    "say double hi to birds": {
-                        "_is_expanded": true,
-                        "_label": "say double hi to birds",
-                        "_meld_strategy": "default",
-                        "_reasonunits": {
-                            "A,time,jajatime": {
-                                "base": "A,time,jajatime",
-                                "premises": {
-                                    "A,time,jajatime,day": {
-                                        "divisor": 1440.0,
-                                        "need": "A,time,jajatime,day",
-                                        "nigh": 480.0,
-                                        "open": 480.0
-                                    }
-                                }
-                            }
-                        },
-                        "_reest": false,
-                        "_uid": null,
-                        "_weight": 25.0,
-                        "promise": true
-                    },
-                    "say hi to birds": {
-                        "_balancelinks": {
-                            ",Family": {
-                                "creditor_weight": 1.0,
-                                "debtor_weight": 1,
-                                "group_id": ",Family"
-                            }
-                        },
-                        "_is_expanded": true,
-                        "_label": "say hi to birds",
-                        "_meld_strategy": "default",
-                        "_reasonunits": {
-                            "A,time,jajatime": {
-                                "base": "A,time,jajatime",
-                                "premises": {
-                                    "A,time,jajatime": {
-                                        "divisor": 1440.0,
-                                        "need": "A,time,jajatime",
-                                        "nigh": 480.0,
-                                        "open": 480.0
-                                    }
-                                }
-                            }
-                        },
-                        "_uid": 7,
-                        "_weight": 1.0,
-                        "promise": true
-                    },
                     "exercise": {
                         "_is_expanded": false,
                         "_kids": {
@@ -3415,6 +2948,472 @@
                         "_uid": 147,
                         "_weight": 1,
                         "promise": false
+                    },
+                    "Financial Ops": {
+                        "_is_expanded": false,
+                        "_kids": {
+                            "be reponsible for rent": {
+                                "_balancelinks": {
+                                    ",Family": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": ",Family"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "be reponsible for rent",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                                "divisor": null,
+                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                                "nigh": 1064041020.0,
+                                                "open": 1064041020.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 45,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "be responsible for expenses card": {
+                                "_balancelinks": {
+                                    ",Family": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": ",Family"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "be responsible for expenses card",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                                "divisor": null,
+                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                                "nigh": 1064041020.0,
+                                                "open": 1064041020.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 31,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "be responsible for utilities bills": {
+                                "_balancelinks": {
+                                    "Perrison": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": "Perrison"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "be responsible for utilities bills",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                                "divisor": null,
+                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                                "nigh": 1064041020.0,
+                                                "open": 1064041020.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 37,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "set aside a little bucks for fun the week": {
+                                "_balancelinks": {
+                                    ",Family": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": ",Family"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "set aside a little bucks for fun the week",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am": {
+                                                "divisor": null,
+                                                "need": "A,time,jajatime,x2,monthly 1st business day,2023 Feb 9am",
+                                                "nigh": 1064041020.0,
+                                                "open": 1064041020.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 75,
+                                "_weight": 1,
+                                "promise": true
+                            }
+                        },
+                        "_label": "Financial Ops",
+                        "_meld_strategy": "default",
+                        "_uid": 148,
+                        "_weight": 1,
+                        "promise": false
+                    },
+                    "Housing": {
+                        "_balancelinks": {
+                            ",OceanVista Apt": {
+                                "creditor_weight": 1.0,
+                                "debtor_weight": 1,
+                                "group_id": ",OceanVista Apt"
+                            }
+                        },
+                        "_is_expanded": false,
+                        "_kids": {
+                            "Apartment": {
+                                "_is_expanded": true,
+                                "_kids": {
+                                    "bathroom #2": {
+                                        "_is_expanded": true,
+                                        "_label": "bathroom #2",
+                                        "_meld_strategy": "default",
+                                        "_uid": 196,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "bedroom #1": {
+                                        "_is_expanded": true,
+                                        "_kids": {
+                                            "big bathroom": {
+                                                "_is_expanded": true,
+                                                "_label": "big bathroom",
+                                                "_meld_strategy": "default",
+                                                "_uid": 195,
+                                                "_weight": 1,
+                                                "promise": false
+                                            },
+                                            "closet": {
+                                                "_is_expanded": true,
+                                                "_label": "closet",
+                                                "_meld_strategy": "default",
+                                                "_uid": 194,
+                                                "_weight": 1,
+                                                "promise": false
+                                            }
+                                        },
+                                        "_label": "bedroom #1",
+                                        "_meld_strategy": "default",
+                                        "_uid": 191,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "bedroom #2": {
+                                        "_is_expanded": true,
+                                        "_kids": {
+                                            "bed area": {
+                                                "_is_expanded": true,
+                                                "_kids": {
+                                                    "heater maintenance": {
+                                                        "_balancelinks": {
+                                                            "Norberto": {
+                                                                "creditor_weight": 1.0,
+                                                                "debtor_weight": 1,
+                                                                "group_id": "Norberto"
+                                                            }
+                                                        },
+                                                        "_is_expanded": true,
+                                                        "_label": "heater maintenance",
+                                                        "_meld_strategy": "default",
+                                                        "_uid": 198,
+                                                        "_weight": 1,
+                                                        "promise": false
+                                                    }
+                                                },
+                                                "_label": "bed area",
+                                                "_meld_strategy": "default",
+                                                "_uid": 197,
+                                                "_weight": 1,
+                                                "promise": false
+                                            },
+                                            "closet": {
+                                                "_is_expanded": true,
+                                                "_label": "closet",
+                                                "_meld_strategy": "default",
+                                                "_uid": 193,
+                                                "_weight": 1,
+                                                "promise": false
+                                            }
+                                        },
+                                        "_label": "bedroom #2",
+                                        "_meld_strategy": "default",
+                                        "_uid": 192,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "cookery": {
+                                        "_is_expanded": true,
+                                        "_label": "cookery",
+                                        "_meld_strategy": "default",
+                                        "_uid": 189,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "dining area": {
+                                        "_is_expanded": true,
+                                        "_label": "dining area",
+                                        "_meld_strategy": "default",
+                                        "_uid": 190,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "maintenance": {
+                                        "_is_expanded": true,
+                                        "_label": "maintenance",
+                                        "_meld_strategy": "default",
+                                        "_uid": 187,
+                                        "_weight": 1,
+                                        "promise": false
+                                    },
+                                    "nursery": {
+                                        "_is_expanded": true,
+                                        "_label": "nursery",
+                                        "_meld_strategy": "default",
+                                        "_uid": 188,
+                                        "_weight": 1,
+                                        "promise": false
+                                    }
+                                },
+                                "_label": "Apartment",
+                                "_meld_strategy": "default",
+                                "_uid": 181,
+                                "_weight": 1,
+                                "promise": false
+                            },
+                            "Bike Garage": {
+                                "_is_expanded": true,
+                                "_label": "Bike Garage",
+                                "_meld_strategy": "default",
+                                "_uid": 185,
+                                "_weight": 1,
+                                "promise": false
+                            },
+                            "Bike Gym": {
+                                "_is_expanded": true,
+                                "_label": "Bike Gym",
+                                "_meld_strategy": "default",
+                                "_uid": 184,
+                                "_weight": 1,
+                                "promise": false
+                            },
+                            "Playing in nurserys": {
+                                "_is_expanded": true,
+                                "_label": "Playing in nurserys",
+                                "_meld_strategy": "default",
+                                "_uid": 186,
+                                "_weight": 1,
+                                "promise": false
+                            },
+                            "Pool": {
+                                "_is_expanded": true,
+                                "_label": "Pool",
+                                "_meld_strategy": "default",
+                                "_uid": 182,
+                                "_weight": 1,
+                                "promise": false
+                            },
+                            "Weight Lifting Gym": {
+                                "_is_expanded": true,
+                                "_label": "Weight Lifting Gym",
+                                "_meld_strategy": "default",
+                                "_uid": 183,
+                                "_weight": 1,
+                                "promise": false
+                            }
+                        },
+                        "_label": "Housing",
+                        "_meld_strategy": "default",
+                        "_uid": 180,
+                        "_weight": 1,
+                        "promise": false
+                    },
+                    "keep up with friends": {
+                        "_is_expanded": true,
+                        "_label": "keep up with friends",
+                        "_meld_strategy": "default",
+                        "_reasonunits": {
+                            "A,Internet": {
+                                "base": "A,Internet",
+                                "premises": {
+                                    "A,Internet,Faceboook": {
+                                        "divisor": null,
+                                        "need": "A,Internet,Faceboook",
+                                        "open": null
+                                    }
+                                }
+                            }
+                        },
+                        "_uid": 220,
+                        "_weight": 1,
+                        "promise": false
+                    },
+                    "responsible for kids": {
+                        "_is_expanded": false,
+                        "_kids": {
+                            "clip oldest nails": {
+                                "_balancelinks": {
+                                    "America": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": "America"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "clip oldest nails",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,Nation-States": {
+                                        "base": "A,Nation-States",
+                                        "premises": {
+                                            "A,Nation-States,USA,Portland OR": {
+                                                "divisor": null,
+                                                "need": "A,Nation-States,USA,Portland OR",
+                                                "open": null
+                                            }
+                                        }
+                                    },
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime": {
+                                                "divisor": 10080.0,
+                                                "need": "A,time,jajatime",
+                                                "nigh": 5340.0,
+                                                "open": 5340.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 23,
+                                "_weight": 1,
+                                "promise": true
+                            },
+                            "get rid of toy buy new toy": {
+                                "_balancelinks": {
+                                    ",Family": {
+                                        "creditor_weight": 1.0,
+                                        "debtor_weight": 1,
+                                        "group_id": ",Family"
+                                    }
+                                },
+                                "_is_expanded": true,
+                                "_label": "get rid of toy buy new toy",
+                                "_meld_strategy": "default",
+                                "_reasonunits": {
+                                    "A,Nation-States": {
+                                        "base": "A,Nation-States",
+                                        "premises": {
+                                            "A,Nation-States,USA,Portland OR": {
+                                                "divisor": null,
+                                                "need": "A,Nation-States,USA,Portland OR",
+                                                "open": null
+                                            }
+                                        }
+                                    },
+                                    "A,time,jajatime": {
+                                        "base": "A,time,jajatime",
+                                        "premises": {
+                                            "A,time,jajatime": {
+                                                "divisor": 60480.0,
+                                                "need": "A,time,jajatime",
+                                                "nigh": 840.0,
+                                                "open": 840.0
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 43,
+                                "_weight": 1,
+                                "promise": true
+                            }
+                        },
+                        "_label": "responsible for kids",
+                        "_meld_strategy": "default",
+                        "_reasonunits": {
+                            "A,Nation-States": {
+                                "base": "A,Nation-States",
+                                "premises": {
+                                    "A,Nation-States,USA,Portland OR": {
+                                        "divisor": null,
+                                        "need": "A,Nation-States,USA,Portland OR",
+                                        "open": null
+                                    }
+                                }
+                            }
+                        },
+                        "_uid": 144,
+                        "_weight": 1,
+                        "promise": false
+                    },
+                    "say double hi to birds": {
+                        "_is_expanded": true,
+                        "_label": "say double hi to birds",
+                        "_meld_strategy": "default",
+                        "_reasonunits": {
+                            "A,time,jajatime": {
+                                "base": "A,time,jajatime",
+                                "premises": {
+                                    "A,time,jajatime,day": {
+                                        "divisor": 1440.0,
+                                        "need": "A,time,jajatime,day",
+                                        "nigh": 480.0,
+                                        "open": 480.0
+                                    }
+                                }
+                            }
+                        },
+                        "_reest": false,
+                        "_uid": null,
+                        "_weight": 25.0,
+                        "promise": true
+                    },
+                    "say hi to birds": {
+                        "_balancelinks": {
+                            ",Family": {
+                                "creditor_weight": 1.0,
+                                "debtor_weight": 1,
+                                "group_id": ",Family"
+                            }
+                        },
+                        "_is_expanded": true,
+                        "_label": "say hi to birds",
+                        "_meld_strategy": "default",
+                        "_reasonunits": {
+                            "A,time,jajatime": {
+                                "base": "A,time,jajatime",
+                                "premises": {
+                                    "A,time,jajatime": {
+                                        "divisor": 1440.0,
+                                        "need": "A,time,jajatime",
+                                        "nigh": 480.0,
+                                        "open": 480.0
+                                    }
+                                }
+                            }
+                        },
+                        "_uid": 7,
+                        "_weight": 1.0,
+                        "promise": true
                     }
                 },
                 "_label": "casa",
@@ -6767,5 +6766,6 @@
         }
     },
     "_weight": 1,
+    "_worker_id": "Bob",
     "_world_id": "A"
 }
