@@ -1,11 +1,36 @@
 {
     "tables": {
+        "atom_book_link": {
+            "columns": {
+                "person_id": {}
+            }
+        },
         "atom_curr": {
             "columns": {
                 "person_id": {}
             }
         },
         "atom_hx": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "book_deal_link": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "book_mstr": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "deal_mstr": {
+            "columns": {
+                "person_id": {}
+            }
+        },
+        "deal_person_link": {
             "columns": {
                 "person_id": {}
             }
