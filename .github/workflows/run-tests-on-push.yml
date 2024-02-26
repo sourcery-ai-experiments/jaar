@@ -13,7 +13,7 @@ jobs:
       - name: Install Dependencies
         run: python -m pip install --upgrade pip
         run: python -m pip install pytest
-        run: python -m pip install plotly
+        #run: python -m pip install plotly
         run: python -m pip install pytest-cov
         run: python -m pip install pyqt5
       - name: Execute tests and generate report
