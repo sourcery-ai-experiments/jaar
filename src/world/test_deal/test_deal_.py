@@ -12,7 +12,6 @@ def test_DealUnit_exists():
     assert x_dealunit._author is None
     assert x_dealunit._signers is None
     assert x_dealunit._like is None
-    assert x_dealunit._topicunits is None
 
 
 def test_dealunit_shop_ReturnsCorrectObjGivenEmptyArgs():
@@ -26,7 +25,6 @@ def test_dealunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     assert farm_dealunit._author == bob_text
     assert farm_dealunit._signers == set()
     assert farm_dealunit._like == bookunit_shop()
-    assert farm_dealunit._topicunits == {}
 
 
 def test_dealunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
@@ -41,13 +39,11 @@ def test_dealunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
         _author=bob_text,
         _signers=x_signors,
         _like=None,
-        _topicunits=None,
     )
 
     # THEN
     assert farm_dealunit._author == bob_text
     assert farm_dealunit._signers == x_signors
-    assert farm_dealunit._topicunits == {}
 
 
 # def test_DealUnit_get_member_attr_CorrectlyRaisesError():

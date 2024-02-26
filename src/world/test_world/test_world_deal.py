@@ -4,7 +4,9 @@ from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
-from src.world.examples.example_deals import get_no_topiclinks_yao_sue_dealunit
+from src.world.examples.example_deals import (
+    yao_sue_dealunit as example_yao_sue_dealunit,
+)
 from os import path as os_path
 
 
@@ -16,12 +18,11 @@ def test_WorldUnit_set_dealunit_CorrectSetsAttr(worlds_dir_setup_cleanup):
     assert oregon_world._dealunits == {}
 
     # WHEN
-    yao_sue_dealunit = get_no_topiclinks_yao_sue_dealunit()
-    yao_sue_uid = oregon_world.set_dealunit(x_dealunit=yao_sue_dealunit)
+    yao_sue_uid = oregon_world.set_dealunit(x_dealunit=example_yao_sue_dealunit())
 
     # THEN
     assert oregon_world._dealunits != {}
-    assert oregon_world._dealunits == {1: yao_sue_dealunit}
+    assert oregon_world._dealunits == {1: example_yao_sue_dealunit()}
     assert yao_sue_uid == 1
 
 
@@ -30,13 +31,13 @@ def test_WorldUnit_get_dealunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     oregon_world = worldunit_shop(
         "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
-    yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+    yao_sue_uid = oregon_world.set_dealunit(example_yao_sue_dealunit())
 
     # WHEN
     yao_sue_dealunit = oregon_world.get_dealunit(yao_sue_uid)
 
     # THEN
-    assert yao_sue_dealunit == get_no_topiclinks_yao_sue_dealunit()
+    assert yao_sue_dealunit == example_yao_sue_dealunit()
 
 
 def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
@@ -48,7 +49,7 @@ def test_WorldUnit_dealunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert oregon_world.dealunit_exists(static_yao_sue_uid) == False
 
     # WHEN
-    gen_yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+    gen_yao_sue_uid = oregon_world.set_dealunit(example_yao_sue_dealunit())
     assert static_yao_sue_uid == gen_yao_sue_uid
 
     # THEN
@@ -60,7 +61,7 @@ def test_WorldUnit_del_dealunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
     oregon_world = worldunit_shop(
         "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
-    yao_sue_uid = oregon_world.set_dealunit(get_no_topiclinks_yao_sue_dealunit())
+    yao_sue_uid = oregon_world.set_dealunit(example_yao_sue_dealunit())
     assert oregon_world.dealunit_exists(yao_sue_uid)
 
     # WHEN
