@@ -32,18 +32,18 @@ def test_dealunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     bob_text = "Bob"
     tim_text = "Tim"
     yao_text = "Yao"
-    x_signors = {bob_text, tim_text, yao_text}
+    x_signers = {bob_text, tim_text, yao_text}
 
     # WHEN
     farm_dealunit = dealunit_shop(
         _author=bob_text,
-        _signers=x_signors,
+        _signers=x_signers,
         _like=None,
     )
 
     # THEN
     assert farm_dealunit._author == bob_text
-    assert farm_dealunit._signers == x_signors
+    assert farm_dealunit._signers == x_signers
 
 
 # def test_DealUnit_get_member_attr_CorrectlyRaisesError():
