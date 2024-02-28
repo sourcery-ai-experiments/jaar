@@ -20,9 +20,9 @@ def test_WorldUnit_exists(worlds_dir_setup_cleanup):
     assert music_world._persons_dir is None
     assert music_world._journal_db is None
     assert music_world._personunits is None
-    assert music_world._deals_dir is None
-    assert music_world._dealunits is None
-    assert music_world._max_deal_uid is None
+    assert music_world._gifts_dir is None
+    assert music_world._giftunits is None
+    assert music_world._max_gift_uid is None
     assert music_world._road_delimiter is None
 
 
@@ -40,9 +40,9 @@ def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
     assert music_world.worlds_dir == get_test_worlds_dir()
     assert music_world._persons_dir != None
     assert music_world._personunits == {}
-    assert music_world._deals_dir != None
-    assert music_world._dealunits == {}
-    assert music_world._max_deal_uid == 0
+    assert music_world._gifts_dir != None
+    assert music_world._giftunits == {}
+    assert music_world._max_gift_uid == 0
     assert music_world._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -69,17 +69,17 @@ def test_WorldUnit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     music_world = WorldUnit(world_id=music_text, worlds_dir=get_test_worlds_dir())
     x_world_dir = f"{get_test_worlds_dir()}/{music_text}"
     x_persons_dir = f"{x_world_dir}/persons"
-    x_deals_dir = f"{x_world_dir}/deals"
+    x_gifts_dir = f"{x_world_dir}/gifts"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_world_dir}/{journal_file_name}"
 
     assert music_world._world_dir is None
     assert music_world._persons_dir is None
-    assert music_world._deals_dir is None
+    assert music_world._gifts_dir is None
     assert os_path.exists(x_world_dir) is False
     assert os_path.isdir(x_world_dir) is False
     assert os_path.exists(x_persons_dir) is False
-    assert os_path.exists(x_deals_dir) is False
+    assert os_path.exists(x_gifts_dir) is False
     assert os_path.exists(journal_file_path) is False
 
     # WHEN
@@ -88,11 +88,11 @@ def test_WorldUnit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):
     # THEN
     assert music_world._world_dir == x_world_dir
     assert music_world._persons_dir == x_persons_dir
-    assert music_world._deals_dir == x_deals_dir
+    assert music_world._gifts_dir == x_gifts_dir
     assert os_path.exists(x_world_dir)
     assert os_path.isdir(x_world_dir)
     assert os_path.exists(x_persons_dir)
-    assert os_path.exists(x_deals_dir)
+    assert os_path.exists(x_gifts_dir)
     assert os_path.exists(journal_file_path)
 
 

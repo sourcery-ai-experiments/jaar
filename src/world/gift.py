@@ -4,7 +4,7 @@ from src.instrument.python import get_empty_dict_if_none
 from dataclasses import dataclass
 
 
-class DealMetricsException(Exception):
+class GiftMetricsException(Exception):
     pass
 
 
@@ -17,13 +17,13 @@ class get_member_attr_Exception(Exception):
 
 
 @dataclass
-class DealUnit:
+class GiftUnit:
     _author: PersonID = None
     _signers: set[PersonID] = None
     _like: BookUnit = None
 
 
-def dealunit_shop(
+def giftunit_shop(
     _author: PersonID,
     _signers: set[PersonID] = None,
     _like: BookUnit = None,
@@ -33,7 +33,7 @@ def dealunit_shop(
     if _like is None:
         _like = bookunit_shop()
 
-    return DealUnit(
+    return GiftUnit(
         _author=_author,
         _signers=_signers,
         _like=_like,

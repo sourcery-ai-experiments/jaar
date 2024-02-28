@@ -1,7 +1,7 @@
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
-from src.world.deal import DealUnit
+from src.world.gift import GiftUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src.instrument.python import get_empty_dict_if_none
@@ -26,28 +26,28 @@ class WorldUnit:
     _persons_dir: str = None
     _journal_db: str = None
     _personunits: dict[PersonID:PersonUnit] = None
-    _deals_dir: str = None
-    _dealunits: dict[PersonID:PersonUnit] = None
-    _max_deal_uid: int = None
+    _gifts_dir: str = None
+    _giftunits: dict[PersonID:PersonUnit] = None
+    _max_gift_uid: int = None
     _road_delimiter: str = None
 
-    def del_dealunit(self, dealunit_uid: int):
-        self._dealunits.pop(dealunit_uid)
+    def del_giftunit(self, giftunit_uid: int):
+        self._giftunits.pop(giftunit_uid)
 
-    def dealunit_exists(self, dealunit_uid: int) -> bool:
-        return self.get_dealunit(dealunit_uid) != None
+    def giftunit_exists(self, giftunit_uid: int) -> bool:
+        return self.get_giftunit(giftunit_uid) != None
 
-    def get_dealunit(self, dealunit_uid: int) -> DealUnit:
-        return self._dealunits.get(dealunit_uid)
+    def get_giftunit(self, giftunit_uid: int) -> GiftUnit:
+        return self._giftunits.get(giftunit_uid)
 
-    def set_dealunit(self, x_dealunit: DealUnit):
-        new_uid = self._max_deal_uid + 1
-        self._dealunits[new_uid] = x_dealunit
-        self.set_max_deal_uid(new_uid)
+    def set_giftunit(self, x_giftunit: GiftUnit):
+        new_uid = self._max_gift_uid + 1
+        self._giftunits[new_uid] = x_giftunit
+        self.set_max_gift_uid(new_uid)
         return new_uid
 
-    def set_max_deal_uid(self, new_uid: int = None):
-        self._max_deal_uid = 0 if self._max_deal_uid is None else new_uid
+    def set_max_gift_uid(self, new_uid: int = None):
+        self._max_gift_uid = 0 if self._max_gift_uid is None else new_uid
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -55,10 +55,10 @@ class WorldUnit:
     def _set_world_dirs(self, in_memory_journal: bool = None):
         self._world_dir = f"{self.worlds_dir}/{self.world_id}"
         self._persons_dir = f"{self._world_dir}/persons"
-        self._deals_dir = f"{self._world_dir}/deals"
+        self._gifts_dir = f"{self._world_dir}/gifts"
         set_dir(x_path=self._world_dir)
         set_dir(x_path=self._persons_dir)
-        set_dir(x_path=self._deals_dir)
+        set_dir(x_path=self._gifts_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
     def get_journal_db_path(self) -> str:
@@ -219,9 +219,9 @@ def worldunit_shop(
         world_id=world_id,
         worlds_dir=worlds_dir,
         _personunits=get_empty_dict_if_none(None),
-        _dealunits=get_empty_dict_if_none(None),
+        _giftunits=get_empty_dict_if_none(None),
     )
-    world_x.set_max_deal_uid()
+    world_x.set_max_gift_uid()
     world_x._set_world_dirs(in_memory_journal=in_memory_journal)
     world_x._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return world_x
