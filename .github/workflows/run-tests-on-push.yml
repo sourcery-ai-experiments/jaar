@@ -21,7 +21,7 @@ jobs:
       - name: Execute tests and generate report
         #The current issue apears to be caused by a permissions issue, so this is a lazy fix to see if the workflow won't error out.
         run: |
-          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --cov=com --cov-report=xml --cov-report=html
+          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules
           
       #TODO: 
         #create dir for test results
