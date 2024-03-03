@@ -334,7 +334,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     luca_gut_agenda.add_idea(elpaso_idea, texas_road)
     todd_gut_agenda.add_idea(dallas_idea, texas_road)
     todd_gut_agenda.add_idea(elpaso_idea, texas_road)
-    # display_agenda(luca_gut_agenda.set_agenda_metrics(), mode="Econ").show()
+    # display_ideatree(luca_gut_agenda.set_agenda_metrics(), mode="Econ").show()
     luca_person._save_gut_file(luca_gut_agenda)
     todd_person._save_gut_file(todd_gut_agenda)
     luca_person.create_person_econunits()

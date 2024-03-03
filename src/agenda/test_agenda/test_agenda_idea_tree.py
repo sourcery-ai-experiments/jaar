@@ -6,7 +6,7 @@ from src.agenda.party import PartyID
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.group import balanceline_shop, balancelink_shop
-from src.agenda.graphic import display_agenda
+from src.agenda.graphic import display_ideatree
 from pytest import raises as pytest_raises
 
 

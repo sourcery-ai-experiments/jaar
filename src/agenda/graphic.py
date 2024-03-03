@@ -1,7 +1,12 @@
 from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
-from plotly.graph_objects import Figure, Scatter
+from plotly.graph_objects import (
+    Figure as plotly_Figure,
+    Scatter as plotly_Scatter,
+    Table as plotly_Table,
+)
+from pandas import DataFrame
 
 
 def _get_dot_diameter(x_ratio: float):
@@ -51,7 +56,7 @@ def _add_individual_trace(
     mode: str,
 ):
     trace_list.append(
-        Scatter(
+        plotly_Scatter(
             x=[kid_idea._level - 1, kid_idea._level],
             y=[parent_y, current_y],
             marker_size=_get_dot_diameter(kid_idea._agenda_importance),
@@ -95,7 +100,7 @@ def _add_ideaunit_traces(
         prev_road = x_idea.get_road()
 
 
-def _update_layout_fig(x_fig: Figure, mode: str, x_agenda: AgendaUnit):
+def _update_layout_fig(x_fig: plotly_Figure, mode: str, x_agenda: AgendaUnit):
     x_title = "Tree with lines Layout"
     if mode == "Task":
         x_title = "Idea Tree with task ideas in Red."
@@ -108,10 +113,10 @@ def _update_layout_fig(x_fig: Figure, mode: str, x_agenda: AgendaUnit):
     )
 
 
-def display_agenda(x_agenda: AgendaUnit, mode: str = None) -> Figure:
+def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     """Mode can be None, Task, Econ"""
 
-    x_fig = Figure()
+    x_fig = plotly_Figure()
     current_y = 0
     trace_list = []
     anno_list = []
@@ -130,3 +135,58 @@ def display_agenda(x_agenda: AgendaUnit, mode: str = None) -> Figure:
         )
 
     return x_fig
+
+
+def display_party_graph(x_agenda: AgendaUnit):
+    header_list = [
+        "party_id",
+        "party_creditor_pool",
+        "creditor_weight",
+        "creditor_relative_weight",
+        "party_debtor_pool",
+        "debtor_weight",
+        "debtor_relative_weight",
+    ]
+    party_creditor_pool_list = []
+    party_debtor_pool_list = []
+    party_id_list = []
+    creditor_weight_list = []
+    debtor_weight_list = []
+    creditor_relative_weight_list = []
+    debtor_relative_weight_list = []
+    for x_party in x_agenda._partys.values():
+        party_creditor_pool_list.append(x_agenda._party_creditor_pool)
+        party_debtor_pool_list.append(x_agenda._party_debtor_pool)
+        party_id_list.append(x_party.party_id)
+        creditor_weight_list.append(x_party.creditor_weight)
+        debtor_weight_list.append(x_party.debtor_weight)
+        creditor_relative_weight_list.append(
+            x_party.creditor_weight / x_agenda._party_creditor_pool
+        )
+        debtor_relative_weight_list.append(
+            x_party.debtor_weight / x_agenda._party_debtor_pool
+        )
+
+    fig = plotly_Figure(
+        data=[
+            plotly_Table(
+                header=dict(values=header_list),
+                cells=dict(
+                    values=[
+                        party_id_list,
+                        party_creditor_pool_list,
+                        creditor_weight_list,
+                        creditor_relative_weight_list,
+                        party_debtor_pool_list,
+                        debtor_weight_list,
+                        debtor_relative_weight_list,
+                    ]
+                ),
+            )
+        ]
+    )
+    fig_title = f"AgentID '{x_agenda._worker_id}', gut partys metrics"
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
+    fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
+    fig.show()

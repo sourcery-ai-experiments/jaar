@@ -1,6 +1,6 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
-from src.agenda.graphic import display_agenda
+from src.agenda.graphic import display_ideatree
 from src.econ.clerk import clerkunit_shop
 from src.econ.econ import treasury_db_filename
 from src.world.person import PersonUnit, personunit_shop
@@ -163,7 +163,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cl
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
 
     dallas_dir = sue_person._create_econ_dir(dallas_road)
@@ -208,7 +208,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
@@ -253,7 +253,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     print(f"{dallas_dir=}")
@@ -288,7 +288,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
@@ -326,7 +326,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
@@ -369,7 +369,7 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
-    # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)

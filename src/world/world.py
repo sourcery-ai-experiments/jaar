@@ -208,6 +208,13 @@ class WorldUnit:
         person_clerkunit.save_role_agenda(person_role)
         person_clerkunit.save_refreshed_job_to_forum()
 
+    # def _display_gut_party_graph(self, x_person_id: PersonID):
+    #     x_personunit = self.get_personunit(x_person_id)
+    #     x_gut_agenda = x_personunit.get_gut_file_agenda()
+
+    # def display_person_kpi_graph(self, x_person_id: PersonID):
+    #     pass
+
 
 def worldunit_shop(
     world_id: WorldID,

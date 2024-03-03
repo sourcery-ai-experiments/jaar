@@ -91,7 +91,7 @@ def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAge
     # sue_gut_agenda.add_idea(dallas_idea, texas_road)
     # sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # # sue_gut_agenda.set_agenda_metrics()
-    # # display_agenda(sue_gut_agenda, mode="Econ").show()
+    # # display_ideatree(sue_gut_agenda, mode="Econ").show()
     # sue_person._save_gut_file(sue_gut_agenda)
     # sue_person.create_person_econunits()
     # dallas_econ = sue_person.get_econ(dallas_road)

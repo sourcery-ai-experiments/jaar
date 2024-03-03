@@ -3,7 +3,7 @@ from src.agenda.reason_idea import (
     premisestatusfinder_shop,
 )
 from pytest import raises as pytest_raises
-from plotly.graph_objects import Figure as go_figure, Scatter as go_Scatter
+from plotly.graph_objects import Figure as plotly_figure, Scatter as plotly_Scatter
 from dataclasses import dataclass
 
 
@@ -154,7 +154,7 @@ def test_PremiseStatusFinder_AbbrevationMethodsReturnCorrectObjs():
 
 # instrument for PremiseStatusFinder tests
 def add_trace(
-    fig: go_figure,
+    fig: plotly_figure,
     x_int: int,
     x_end: int,
     y_int: int,
@@ -165,14 +165,14 @@ def add_trace(
     wanted_text: str = "",
     wanted_status_text: str = "",
     premise_divisor: float = 0,
-) -> go_figure:
+) -> plotly_figure:
     if x_end is None:
         x_end = x_int
     if x_color is None:
         x_color = "Black"
     x_marker_size = 12 if x_color == "Blue" else 10
     fig.add_trace(
-        go_Scatter(
+        plotly_Scatter(
             x=[x_int, x_end],
             y=[y_int, y_int],
             marker_size=x_marker_size,
@@ -192,7 +192,7 @@ def add_trace(
 
 # instrument for PremiseStatusFinder tests
 def add_traces(
-    fig: go_figure,
+    fig: plotly_figure,
     x_pbsd: PremiseStatusFinder,
     y_int: int,
     showlegend: bool = False,
@@ -200,7 +200,7 @@ def add_traces(
     wanted_text: str = "",
     wanted_status_text: str = "",
     premise_divisor: float = 1,
-) -> go_figure:
+) -> plotly_figure:
     belief_text = "BeliefUnit Remainder range"
     premise_text = "Premise Range"
     blue_text = "Blue"
@@ -248,7 +248,7 @@ def show_x(
     wanted_active: bool,
     wanted_task_status: bool,
     x_pbsd: PremiseStatusFinder,
-    fig: go_figure,
+    fig: plotly_figure,
     trace_y: float,
     case_text: str,
     showlegend: bool = False,
@@ -266,8 +266,8 @@ def show_x(
 
 
 # instrument for PremiseStatusFinder tests
-def get_fig(pd: float) -> go_figure:
-    fig = go_figure()
+def get_fig(pd: float) -> plotly_figure:
+    fig = plotly_figure()
     add_trace(
         fig=fig,
         x_int=0.0,

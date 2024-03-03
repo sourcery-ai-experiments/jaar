@@ -4,7 +4,8 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.agenda.graphic import display_agenda
+from src.agenda.agenda import agendaunit_shop
+from src.agenda.graphic import display_ideatree, display_party_graph
 
 
 def test_display_ideatree_GivenAgenda():
@@ -19,7 +20,7 @@ def test_display_ideatree_GivenAgenda():
     print(f"Agenda {a_agenda._world_id}: Nodes ({len(a_agenda._idea_dict)})")
 
     # WHEN
-    x_fig = display_agenda(a_agenda)
+    x_fig = display_ideatree(a_agenda)
 
     # THEN
     # show_figure = True
@@ -39,9 +40,30 @@ def test_display_ideatree_GivenAgenda_shows_Tasks():
     print(f"Agenda {a_agenda._world_id}: Nodes ({len(a_agenda._idea_dict)})")
 
     # WHEN
-    x_fig = display_agenda(a_agenda, mode="Task")
+    x_fig = display_ideatree(a_agenda, mode="Task")
 
     # THEN
     # show_figure = True
     # if show_figure:
     #     x_fig.show()
+
+
+def test_display_party_graph_DisplaysCorrectInfo():
+    # GIVEN
+    luca_agenda = agendaunit_shop()
+    luca_agenda.set_party_creditor_pool(500)
+    luca_agenda.set_party_debtor_pool(400)
+    todd_text = "Todd"
+    todd_creditor_weight = 66
+    todd_debtor_weight = 77
+    luca_agenda.add_partyunit(todd_text, todd_creditor_weight, todd_debtor_weight)
+    sue_text = "Sue"
+    sue_creditor_weight = 434
+    sue_debtor_weight = 323
+    luca_agenda.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+
+    # WHEN
+    display_party_graph(luca_agenda)
+
+    # THEN
+    assert 1 == 2
