@@ -148,7 +148,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def startTimer(self):
         self.timer.stop()
         if self.cb_update_now_repeat.checkState() == 2:
-            curr_time_frame = str(self.update_now_time_frame.currentText())
+            curr_time_frame = str(self.update_now_time.currentText())
             curr_time_sec = 60
             curr_time_millisec = curr_time_sec * 1000
             self.timer.start(curr_time_millisec)

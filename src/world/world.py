@@ -5,7 +5,7 @@ from src.world.gift import GiftUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src.instrument.python import get_empty_dict_if_none
-from src.instrument.file import set_dir, open_file, delete_dir
+from src.instrument.file import set_dir, open_file, delete_dir, dir_files
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
@@ -123,6 +123,10 @@ class WorldUnit:
                 f"add_personunit fail: {x_personunit.person_id} already exists"
             )
         return self.get_personunit(person_id)
+
+    def get_person_paths(self):
+        x_dict = dir_files(self._persons_dir, include_dirs=True, include_files=False)
+        return {f"{self._persons_dir}/{x_person}" for x_person in x_dict.keys()}
 
     def get_personunit(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)

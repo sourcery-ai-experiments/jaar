@@ -690,7 +690,8 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
 
 def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_weight_sum_correct_IsFalse():
     # GIVEN
-    yao_agenda = agendaunit_shop("Yao")
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -712,7 +713,7 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_we
         yao_agenda.set_agenda_metrics()
     assert (
         str(excinfo.value)
-        == f"is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={x_int}. partyunits_creditor_weight_sum={yao_agenda.get_partyunits_creditor_weight_sum()}"
+        == f"'{yao_text}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={x_int}. partyunits_creditor_weight_sum={yao_agenda.get_partyunits_creditor_weight_sum()}"
     )
 
     # WHEN / THEN
@@ -738,7 +739,8 @@ def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_creditor_poolWhen
 
 def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weight_sum_correct_IsFalse():
     # GIVEN
-    yao_agenda = agendaunit_shop("Yao")
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -760,7 +762,7 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weig
         yao_agenda.set_agenda_metrics()
     assert (
         str(excinfo.value)
-        == f"is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={x_int}. partyunits_debtor_weight_sum={yao_agenda.get_partyunits_debtor_weight_sum()}"
+        == f"'{yao_text}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={x_int}. partyunits_debtor_weight_sum={yao_agenda.get_partyunits_debtor_weight_sum()}"
     )
 
     # WHEN / THEN

@@ -86,7 +86,7 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     texas_forum_dir = texas_econ.get_forum_dir()
 
 #     highwaay_wantunit = create_wantunit(
-#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix="flying in 737s",
 #         positive="Do not fly",
 #         negative="Continue flying",
@@ -142,7 +142,7 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     boiling_text = "boiling"
 
 #     highwaay_wantunit = create_wantunit(
-#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
@@ -267,7 +267,7 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     boiling_text = "boiling"
 
 #     highwaay_wantunit = create_wantunit(
-#         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
+#         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
 #         negative=yesfly_text,
@@ -358,7 +358,7 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 # #     texas_econ = yao_person.get_econunit(texas_text)
 
 # #     fly_wantunit = create_wantunit(
-# #         econdeletemeaddress=econdeletemeaddress_shop("war", yao_text, texas_text),
+# #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 # #         fix="flying in 737s",
 # #         positive="Do not fly",
 # #         negative="Continue flying",

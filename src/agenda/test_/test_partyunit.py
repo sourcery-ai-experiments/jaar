@@ -469,6 +469,78 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
+def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
+    # GIVEN
+    bob_text = "Bob"
+    bob_treasury_due_paid = 0.55
+    bob_treasury_due_diff = 0.66
+    depotlink_type = "assignment"
+    bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
+    bob_partyunit._treasury_due_paid = bob_treasury_due_paid
+    bob_partyunit._treasury_due_diff = bob_treasury_due_diff
+    bob_creditor_live = False
+    bob_debtor_live = True
+    bob_partyunit._creditor_live = bob_creditor_live
+    bob_partyunit._debtor_live = bob_debtor_live
+
+    bob_creditor_weight = 13
+    bob_debtor_weight = 17
+    bob_partyunit.creditor_weight = bob_creditor_weight
+    bob_partyunit.debtor_weight = bob_debtor_weight
+
+    bob_treasury_credit_score = 7000
+    bob_treasury_voice_rank = 898
+    bob_treasury_voice_hx_lowest_rank = 740
+    bob_partyunit._treasury_credit_score = bob_treasury_credit_score
+    bob_partyunit._treasury_voice_rank = bob_treasury_voice_rank
+    bob_partyunit._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
+
+    bob_agenda_credit = 55
+    bob_agenda_debt = 47
+    bob_agenda_intent_credit = 51
+    bob_agenda_intent_debt = 67
+    bob_agenda_intent_ratio_credit = 71
+    bob_agenda_intent_ratio_debt = 73
+    bob_output_agenda_meld_order = 79
+
+    bob_partyunit._agenda_credit = bob_agenda_credit
+    bob_partyunit._agenda_debt = bob_agenda_debt
+    bob_partyunit._agenda_intent_credit = bob_agenda_intent_credit
+    bob_partyunit._agenda_intent_debt = bob_agenda_intent_debt
+    bob_partyunit._agenda_intent_ratio_credit = bob_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_debt = bob_agenda_intent_ratio_debt
+    bob_partyunit._output_agenda_meld_order = bob_output_agenda_meld_order
+
+    print(f"{bob_text}")
+
+    # WHEN
+    x_dict = bob_partyunit.get_dict(all_attrs=True)
+
+    # THEN
+    print(f"{x_dict=}")
+    assert x_dict != None
+    assert x_dict == {
+        "party_id": bob_text,
+        "creditor_weight": bob_creditor_weight,
+        "debtor_weight": bob_debtor_weight,
+        "_agenda_credit": bob_agenda_credit,
+        "_agenda_debt": bob_agenda_debt,
+        "_agenda_intent_credit": bob_agenda_intent_credit,
+        "_agenda_intent_debt": bob_agenda_intent_debt,
+        "_agenda_intent_ratio_credit": bob_agenda_intent_ratio_credit,
+        "_agenda_intent_ratio_debt": bob_agenda_intent_ratio_debt,
+        "_creditor_live": bob_creditor_live,
+        "_debtor_live": bob_debtor_live,
+        "_output_agenda_meld_order": bob_output_agenda_meld_order,
+        "_treasury_due_paid": bob_treasury_due_paid,
+        "_treasury_due_diff": bob_treasury_due_diff,
+        "_treasury_credit_score": bob_treasury_credit_score,
+        "_treasury_voice_rank": bob_treasury_voice_rank,
+        "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
+        "depotlink_type": depotlink_type,
+    }
+
+
 def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteData():
     # GIVEN
     yao_text = "Yao"

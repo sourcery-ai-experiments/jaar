@@ -101,8 +101,8 @@ class PartyUnit(PartyCore):
         ):
             self._treasury_voice_hx_lowest_rank = self._treasury_voice_rank
 
-    def get_dict(self) -> dict[str:str]:
-        return {
+    def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
+        x_dict = {
             "party_id": self.party_id,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
@@ -115,6 +115,15 @@ class PartyUnit(PartyCore):
             "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
             "depotlink_type": self.depotlink_type,
         }
+        if all_attrs:
+            x_dict["_agenda_credit"] = self._agenda_credit
+            x_dict["_agenda_debt"] = self._agenda_debt
+            x_dict["_agenda_intent_credit"] = self._agenda_intent_credit
+            x_dict["_agenda_intent_debt"] = self._agenda_intent_debt
+            x_dict["_agenda_intent_ratio_credit"] = self._agenda_intent_ratio_credit
+            x_dict["_agenda_intent_ratio_debt"] = self._agenda_intent_ratio_debt
+            x_dict["_output_agenda_meld_order"] = self._output_agenda_meld_order
+        return x_dict
 
     def get_creditor_weight(self):
         return get_1_if_None(self.creditor_weight)

@@ -1,12 +1,12 @@
 from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
+from src.agenda.report import get_agenda_partyunits_dataframe
 from plotly.graph_objects import (
     Figure as plotly_Figure,
     Scatter as plotly_Scatter,
     Table as plotly_Table,
 )
-from pandas import DataFrame
 
 
 def _get_dot_diameter(x_ratio: float):
@@ -137,56 +137,47 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     return x_fig
 
 
-def display_party_graph(x_agenda: AgendaUnit):
-    header_list = [
+def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
+    column_header_list = [
         "party_id",
-        "party_creditor_pool",
+        "_party_creditor_pool",
         "creditor_weight",
-        "creditor_relative_weight",
-        "party_debtor_pool",
+        "_party_debtor_pool",
         "debtor_weight",
-        "debtor_relative_weight",
+        "_agenda_credit",
+        "_agenda_debt",
+        "_agenda_intent_credit",
+        "_agenda_intent_debt",
     ]
-    party_creditor_pool_list = []
-    party_debtor_pool_list = []
-    party_id_list = []
-    creditor_weight_list = []
-    debtor_weight_list = []
-    creditor_relative_weight_list = []
-    debtor_relative_weight_list = []
-    for x_party in x_agenda._partys.values():
-        party_creditor_pool_list.append(x_agenda._party_creditor_pool)
-        party_debtor_pool_list.append(x_agenda._party_debtor_pool)
-        party_id_list.append(x_party.party_id)
-        creditor_weight_list.append(x_party.creditor_weight)
-        debtor_weight_list.append(x_party.debtor_weight)
-        creditor_relative_weight_list.append(
-            x_party.creditor_weight / x_agenda._party_creditor_pool
-        )
-        debtor_relative_weight_list.append(
-            x_party.debtor_weight / x_agenda._party_debtor_pool
-        )
-
-    fig = plotly_Figure(
-        data=[
-            plotly_Table(
-                header=dict(values=header_list),
-                cells=dict(
-                    values=[
-                        party_id_list,
-                        party_creditor_pool_list,
-                        creditor_weight_list,
-                        creditor_relative_weight_list,
-                        party_debtor_pool_list,
-                        debtor_weight_list,
-                        debtor_relative_weight_list,
-                    ]
-                ),
-            )
-        ]
+    df = get_agenda_partyunits_dataframe(x_agenda)
+    df.insert(1, "_party_creditor_pool", x_agenda._party_creditor_pool)
+    df.insert(4, "_party_debtor_pool", x_agenda._party_debtor_pool)
+    header_dict = dict(
+        values=column_header_list, fill_color="paleturquoise", align="left"
     )
-    fig_title = f"AgentID '{x_agenda._worker_id}', gut partys metrics"
+    x_table = plotly_Table(
+        header=header_dict,
+        cells=dict(
+            values=[
+                df.party_id,
+                df._party_creditor_pool,
+                df.creditor_weight,
+                df._party_debtor_pool,
+                df.debtor_weight,
+                df._agenda_credit,
+                df._agenda_debt,
+                df._agenda_intent_credit,
+                df._agenda_intent_debt,
+            ],
+            fill_color="lavender",
+            align="left",
+        ),
+    )
+
+    fig = plotly_Figure(data=[x_table])
+    fig_title = f"WorkerID '{x_agenda._worker_id}', gut partys metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
-    fig.show()
+
+    return fig

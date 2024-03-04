@@ -601,7 +601,7 @@
      <string>Day:</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="update_now_time_frame">
+   <widget class="QComboBox" name="update_now_time">
     <property name="geometry">
      <rect>
       <x>280</x>

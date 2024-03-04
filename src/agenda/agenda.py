@@ -1850,11 +1850,11 @@ class AgendaUnit:
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
             raise PartyunitsCreditorDebtorSumException(
-                f"is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
+                f"'{self._worker_id}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
             )
         if self.is_partyunits_debtor_weight_sum_correct() == False:
             raise PartyunitsCreditorDebtorSumException(
-                f"is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
+                f"'{self._worker_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
             )
         self._reset_groupunits_agenda_credit_debt()
         self._reset_groupunits_agenda_credit_debt()
@@ -1902,11 +1902,11 @@ class AgendaUnit:
                 x_dict[belief_road] = belief_obj.get_dict()
         return x_dict
 
-    def get_partys_dict(self) -> dict[str:str]:
+    def get_partys_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {}
         if self._partys != None:
             for party_id, party_obj in self._partys.items():
-                x_dict[party_id] = party_obj.get_dict()
+                x_dict[party_id] = party_obj.get_dict(all_attrs)
         return x_dict
 
     def get_groupunits_dict(self) -> dict[str:str]:

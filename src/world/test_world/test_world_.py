@@ -233,9 +233,7 @@ def test_WorldUnit__set_person_in_memory_CorrectlyCreatesObj(worlds_dir_setup_cl
     assert music_world._personunits.get(luca_text) == luca_person_obj
 
 
-def test_WorldUnit_get_personunit_ReturnsPerson(
-    worlds_dir_setup_cleanup,
-):
+def test_WorldUnit_get_personunit_ReturnsPerson(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
@@ -259,9 +257,7 @@ def test_WorldUnit_get_personunit_ReturnsPerson(
     assert luca_gotten_obj == luca_person_obj
 
 
-def test_WorldUnit_get_personunit_ReturnsNone(
-    worlds_dir_setup_cleanup,
-):
+def test_WorldUnit_get_personunit_ReturnsNone(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_world = worldunit_shop(
@@ -370,3 +366,25 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     # THEN
     assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) != None
     assert luca_dallas_todd_clerk.open_role_file().get_party(luca_text) != None
+
+
+def test_WorldUnit_get_person_paths_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_world = worldunit_shop("music", get_test_worlds_dir(), in_memory_journal=True)
+    luca_text = "Luca"
+    todd_text = "Todd"
+    sue_text = "Sue"
+    music_world.add_personunit(luca_text)
+    music_world.add_personunit(todd_text)
+    music_world.add_personunit(sue_text)
+    assert len(music_world._personunits) == 3
+    music_world._personunits.pop(sue_text)
+    assert len(music_world._personunits) == 2
+
+    # WHEN
+    music_all_persons = music_world.get_person_paths()
+
+    # THEN
+    assert f"{music_world._persons_dir}/{luca_text}" in music_all_persons
+    assert f"{music_world._persons_dir}/{todd_text}" in music_all_persons
+    assert f"{music_world._persons_dir}/{sue_text}" in music_all_persons

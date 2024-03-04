@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.graphic import display_ideatree, display_party_graph
+from src.agenda.graphic import display_ideatree, get_agenda_partys_plotly_fig
 
 
 def test_display_ideatree_GivenAgenda():
@@ -48,7 +48,7 @@ def test_display_ideatree_GivenAgenda_shows_Tasks():
     #     x_fig.show()
 
 
-def test_display_party_graph_DisplaysCorrectInfo():
+def test_get_agenda_partys_plotly_fig_DisplaysCorrectInfo():
     # GIVEN
     luca_agenda = agendaunit_shop()
     luca_agenda.set_party_creditor_pool(500)
@@ -63,7 +63,9 @@ def test_display_party_graph_DisplaysCorrectInfo():
     luca_agenda.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
 
     # WHEN
-    display_party_graph(luca_agenda)
+    x_fig = get_agenda_partys_plotly_fig(luca_agenda)
 
     # THEN
-    assert 1 == 2
+    # show_figure = True
+    # if show_figure:
+    #   x_fig.show()
