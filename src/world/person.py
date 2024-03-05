@@ -50,6 +50,14 @@ class Invalid_life_Exception(Exception):
     pass
 
 
+def get_gut_file_name() -> str:
+    return "gut"
+
+
+def get_life_file_name() -> str:
+    return "life"
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None

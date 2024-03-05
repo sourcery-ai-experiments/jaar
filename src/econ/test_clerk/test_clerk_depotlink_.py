@@ -41,9 +41,7 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     )
 
 
-def test_clerkunit_set_depotlink_CorrectlySetsrolePartys(
-    clerk_dir_setup_cleanup,
-):
+def test_clerkunit_set_depotlink_CorrectlySetsrolePartys(clerk_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_clerkunit_dir()

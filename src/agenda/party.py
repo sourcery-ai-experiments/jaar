@@ -58,9 +58,9 @@ class PartyUnit(PartyCore):
             )
         self.depotlink_type = depotlink_type
         if creditor_weight != None:
-            self.creditor_weight = creditor_weight
+            self.set_creditor_weight(creditor_weight)
         if debtor_weight != None:
-            self.debtor_weight = debtor_weight
+            self.set_debtor_weight(debtor_weight)
 
     def del_depotlink_type(self):
         self.depotlink_type = None
@@ -124,6 +124,12 @@ class PartyUnit(PartyCore):
             x_dict["_agenda_intent_ratio_debt"] = self._agenda_intent_ratio_debt
             x_dict["_output_agenda_meld_order"] = self._output_agenda_meld_order
         return x_dict
+
+    def set_creditor_weight(self, creditor_weight: int):
+        self.creditor_weight = creditor_weight
+
+    def set_debtor_weight(self, debtor_weight: int):
+        self.debtor_weight = debtor_weight
 
     def get_creditor_weight(self):
         return get_1_if_None(self.creditor_weight)

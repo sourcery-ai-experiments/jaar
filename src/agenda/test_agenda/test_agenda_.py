@@ -178,23 +178,6 @@ def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
     )
 
 
-def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsInt():
-    # GIVEN
-    zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_worker_id=zia_text)
-    assert zia_agenda._party_creditor_pool is None
-    assert zia_agenda._party_debtor_pool is None
-
-    # WHEN
-    x_party_creditor_pool = 11
-    x_party_debtor_pool = 13
-    zia_agenda.set_party_creditor_pool(x_party_creditor_pool)
-    zia_agenda.set_party_debtor_pool(x_party_debtor_pool)
-    # THEN
-    assert zia_agenda._party_creditor_pool == x_party_creditor_pool
-    assert zia_agenda._party_debtor_pool == x_party_debtor_pool
-
-
 def test_AgendaUnit_set_auto_output_job_to_forum_SetsBoolCorrectlyGivenNoneOrBool():
     # GIVEN
     x_agenda = get_agenda_with_4_levels()

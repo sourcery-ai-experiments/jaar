@@ -132,11 +132,27 @@ class AgendaUnit:
     _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
 
-    def set_party_creditor_pool(self, x_party_creditor_pool: int):
-        self._party_creditor_pool = x_party_creditor_pool
+    def set_party_creditor_pool(
+        self, new_party_creditor_pool: int, update_partys_creditor_weight: bool = False
+    ):
+        if update_partys_creditor_weight:
+            old_party_creditor_pool = self.get_partyunits_creditor_weight_sum()
+            if old_party_creditor_pool != 0:
+                x_ratio = new_party_creditor_pool / old_party_creditor_pool
+                for x_party in self._partys.values():
+                    x_party.set_creditor_weight(x_party.creditor_weight * x_ratio)
+        self._party_creditor_pool = new_party_creditor_pool
 
-    def set_party_debtor_pool(self, x_party_debtor_pool: int):
-        self._party_debtor_pool = x_party_debtor_pool
+    def set_party_debtor_pool(
+        self, new_party_debtor_pool: int, update_partys_debtor_weight: bool = False
+    ):
+        if update_partys_debtor_weight:
+            old_party_debtor_pool = self.get_partyunits_debtor_weight_sum()
+            if old_party_debtor_pool != 0:
+                x_ratio = new_party_debtor_pool / old_party_debtor_pool
+                for x_party in self._partys.values():
+                    x_party.set_debtor_weight(x_party.debtor_weight * x_ratio)
+        self._party_debtor_pool = new_party_debtor_pool
 
     def make_road(
         self,

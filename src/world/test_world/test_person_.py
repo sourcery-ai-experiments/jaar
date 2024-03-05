@@ -1,6 +1,11 @@
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
-from src.world.person import PersonUnit, personunit_shop
+from src.world.person import (
+    PersonUnit,
+    personunit_shop,
+    get_gut_file_name,
+    get_life_file_name,
+)
 from pytest import raises as pytest_raises
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
@@ -9,6 +14,14 @@ from src.world.examples.world_env_kit import (
 )
 from os.path import exists as os_path_exists
 from src.instrument.file import open_file, save_file
+
+
+def test_get_gut_file_name():
+    assert get_gut_file_name() == "gut"
+
+
+def test_get_life_file_name():
+    assert get_life_file_name() == "life"
 
 
 def test_PersonUnit_exists():
@@ -56,9 +69,9 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.worlds_dir == get_test_worlds_dir()
     assert x_person.persons_dir == f"{x_person.world_dir}/persons"
     assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
-    assert x_person._gut_file_name == "gut.json"
+    assert x_person._gut_file_name == f"{get_gut_file_name()}.json"
     assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
-    assert x_person._life_file_name == "life.json"
+    assert x_person._life_file_name == f"{get_life_file_name()}.json"
     assert x_person._life_path == f"{x_person.person_dir}/{x_person._life_file_name}"
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
 
@@ -96,10 +109,10 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person.persons_dir == f"{sue_person.world_dir}/persons"
     assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
     assert sue_person._econs_dir == f"{sue_person.person_dir}/econs"
-    assert sue_person._gut_file_name == "gut.json"
+    assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._life_file_name == "life.json"
+    assert sue_person._life_file_name == f"{get_life_file_name()}.json"
     sue_life_file_path = f"{sue_person.person_dir}/{sue_person._life_file_name}"
     assert sue_person._life_path == sue_life_file_path
     assert sue_person._econ_objs == {}
@@ -121,10 +134,10 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters()
     assert sue_person.world_dir == f"{sue_person.worlds_dir}/{sue_person.world_id}"
     assert sue_person.persons_dir == f"{sue_person.world_dir}/persons"
     assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
-    assert sue_person._gut_file_name == "gut.json"
+    assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._life_file_name == "life.json"
+    assert sue_person._life_file_name == f"{get_life_file_name()}.json"
     sue_life_file_path = f"{sue_person.person_dir}/{sue_person._life_file_name}"
     assert sue_person._life_path == sue_life_file_path
     assert sue_person._road_delimiter == slash_text
@@ -136,7 +149,7 @@ def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup)
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_gut_file_name = "gut.json"
+    sue_gut_file_name = f"{get_gut_file_name()}.json"
     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
     print(f"{sue_gut_path=}")
     assert os_path_exists(sue_gut_path) == False
@@ -176,7 +189,7 @@ def test_PersonUnit_save_gut_file_CorrectlySavesFile(
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_gut_file_name = "gut.json"
+    sue_gut_file_name = f"{get_gut_file_name()}.json"
     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
     print(f"{gut_file_text=}")
     gut_agenda = agenda_get_from_json(gut_file_text)
@@ -286,7 +299,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_gut_file_name = "gut.json"
+    sue_gut_file_name = f"{get_gut_file_name()}.json"
     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
     print(f"{gut_file_text=}")
     gut_agenda = agenda_get_from_json(gut_file_text)
@@ -300,7 +313,7 @@ def test_PersonUnit_life_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_life_file_name = "life.json"
+    sue_life_file_name = f"{get_life_file_name()}.json"
     sue_life_path = f"{sue_person_dir}/{sue_life_file_name}"
     print(f"{sue_life_path=}")
     assert os_path_exists(sue_life_path) == False
@@ -340,7 +353,7 @@ def test_PersonUnit_save_life_file_CorrectlySavesFile(
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_life_file_name = "life.json"
+    sue_life_file_name = f"{get_life_file_name()}.json"
     life_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_life_file_name)
     print(f"{life_file_text=}")
     life_agenda = agenda_get_from_json(life_file_text)
@@ -450,7 +463,7 @@ def test_PersonUnit_create_life_file_if_does_not_exist_CorrectlyDoesNotOverwrite
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_life_file_name = "life.json"
+    sue_life_file_name = f"{get_life_file_name()}.json"
     life_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_life_file_name)
     print(f"{life_file_text=}")
     life_agenda = agenda_get_from_json(life_file_text)

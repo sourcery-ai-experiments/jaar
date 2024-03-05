@@ -6,14 +6,10 @@ from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
-from src.world.person import personunit_shop
-from src.instrument.file import open_file
 from os.path import exists as os_path_exists
 
 
-def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereAreNoSourceAgendas(
-    worlds_dir_setup_cleanup,
-):
+def test_WorldUnit_generate_life_agenda_SetsLifeAgendaFile(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "Music"
     music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
@@ -34,9 +30,7 @@ def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereAreNoSourceAge
     assert luca_life == example_agenda
 
 
-def test_WorldUnit_generate_life_agenda_ReturnsRegeneratedObj(
-    worlds_dir_setup_cleanup,
-):
+def test_WorldUnit_generate_life_agenda_ReturnsRegeneratedObj(worlds_dir_setup_cleanup):
     # GIVEN
     music_world = worldunit_shop("music", get_test_worlds_dir(), True)
     luca_text = "Luca"
@@ -54,15 +48,14 @@ def test_WorldUnit_generate_life_agenda_ReturnsRegeneratedObj(
     assert after_luca_agenda.get_party(bob_text) is None
 
 
-def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAgenda(
-    worlds_dir_setup_cleanup,
-):
+def test_WorldUnit_generate_life_agenda_SetsCorrectFile(worlds_dir_setup_cleanup):
     # GIVEN
     music_world = worldunit_shop("music", get_test_worlds_dir(), True)
 
     bob_text = "Bob"
     bob_person = music_world.add_personunit(bob_text)
-    assert music_world.generate_life_agenda(bob_text).get_party(bob_text) is None
+    after_bob_life_agenda = music_world.generate_life_agenda(bob_text)
+    assert after_bob_life_agenda.get_party(bob_text) is None
 
     # WHEN
     bob_gut_agenda = bob_person.get_gut_file_agenda()
@@ -75,32 +68,52 @@ def test_WorldUnit_generate_life_agenda_ReturnsCorrectObjWhenThereIsTwoSourceAge
     bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_gut_agenda.add_idea(elpaso_idea, texas_road)
     bob_person._save_gut_file(bob_gut_agenda)
+    after_bob_life_agenda = music_world.generate_life_agenda(bob_text)
 
     # THEN
-    assert music_world.generate_life_agenda(bob_text).get_party(bob_text) != None
+    assert after_bob_life_agenda.get_party(bob_text) != None
 
-    # sue_text = "Sue"
-    # sue_person = music_world.add_personunit(sue_text)
-    # dallas_text = "dallas"
-    # dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    # dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    # sue_gut_agenda = sue_person.get_gut_file_agenda()
-    # sue_gut_agenda.add_partyunit(sue_text)
-    # sue_gut_agenda.add_partyunit(bob_text)
-    # sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    # sue_gut_agenda.add_idea(dallas_idea, texas_road)
-    # sue_gut_agenda.add_idea(elpaso_idea, texas_road)
-    # # sue_gut_agenda.set_agenda_metrics()
-    # # display_ideatree(sue_gut_agenda, mode="Econ").show()
-    # sue_person._save_gut_file(sue_gut_agenda)
-    # sue_person.create_person_econunits()
-    # dallas_econ = sue_person.get_econ(dallas_road)
-    # dallas_econ.create_new_clerkunit(sue_text)
-    # dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    # assert dallas_sue_clerk.get_role().get_party(bob_text) is None
-    # # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
 
-    # # WHEN
-    # sue_life_agenda = music_world.generate_life_agenda(sue_text)
+def test_WorldUnit_generate_all_life_agendas_SetsCorrectFiles(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_world = worldunit_shop("music", get_test_worlds_dir(), True)
 
-    # # THEN
+    bob_text = "Bob"
+    sue_text = "Sue"
+    bob_person = music_world.add_personunit(bob_text)
+    sue_person = music_world.add_personunit(sue_text)
+    bob_gut_agenda = music_world.generate_life_agenda(bob_text)
+    sue_gut_agenda = music_world.generate_life_agenda(sue_text)
+
+    texas_text = "Texas"
+    texas_road = bob_gut_agenda.make_l1_road(texas_text)
+    elpaso_text = "el paso"
+    elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
+
+    bob_gut_agenda = bob_person.get_gut_file_agenda()
+    bob_gut_agenda.add_partyunit(bob_text)
+    bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_gut_agenda.add_idea(elpaso_idea, texas_road)
+    bob_person._save_gut_file(bob_gut_agenda)
+
+    sue_gut_agenda = sue_person.get_gut_file_agenda()
+    sue_gut_agenda.add_partyunit(sue_text)
+    sue_gut_agenda.add_partyunit(bob_text)
+    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
+    sue_person._save_gut_file(sue_gut_agenda)
+
+    before_bob_life_agenda = music_world.get_life_file_agenda(bob_text)
+    before_sue_life_agenda = music_world.get_life_file_agenda(sue_text)
+    assert before_bob_life_agenda.get_party(bob_text) is None
+    assert before_sue_life_agenda.get_party(sue_text) is None
+
+    # WHEN
+    music_world.generate_all_life_agendas()
+
+    # THEN
+    after_bob_life_agenda = music_world.get_life_file_agenda(bob_text)
+    after_sue_life_agenda = music_world.get_life_file_agenda(sue_text)
+    assert after_bob_life_agenda.get_party(bob_text) != None
+    assert after_sue_life_agenda.get_party(sue_text) != None

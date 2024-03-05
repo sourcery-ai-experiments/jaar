@@ -124,9 +124,13 @@ class WorldUnit:
             )
         return self.get_personunit(person_id)
 
+    def _get_person_ids(self) -> set:
+        persons = dir_files(self._persons_dir, include_dirs=True, include_files=False)
+        return set(persons.keys())
+
     def get_person_paths(self):
-        x_dict = dir_files(self._persons_dir, include_dirs=True, include_files=False)
-        return {f"{self._persons_dir}/{x_person}" for x_person in x_dict.keys()}
+        x_person_ids = self._get_person_ids()
+        return {f"{self._persons_dir}/{x_person_id}" for x_person_id in x_person_ids}
 
     def get_personunit(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
@@ -197,6 +201,11 @@ class WorldUnit:
                 x_life.meld(x_job)
         x_personunit._save_life_file(x_life)
         return self.get_life_file_agenda(person_id)
+
+    def generate_all_life_agendas(self):
+        for x_person_id in self._get_person_ids():
+            self.generate_life_agenda(x_person_id)
+            print(f"{x_person_id=}")
 
     def get_life_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)
