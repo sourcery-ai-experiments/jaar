@@ -1,4 +1,5 @@
 from src._road.road import PartyID, default_road_delimiter_if_none, validate_roadnode
+from src._road.finance import default_planck_if_none
 from dataclasses import dataclass
 from src.instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
@@ -15,6 +16,7 @@ class InvalidDepotLinkException(Exception):
 class PartyCore:
     party_id: PartyID = None
     _road_delimiter: str = None
+    _planck: float = None
 
     def set_party_id(self, x_party_id: PartyID):
         self.party_id = validate_roadnode(x_party_id, self._road_delimiter)
@@ -39,6 +41,9 @@ class PartyUnit(PartyCore):
     _treasury_credit_score: float = None
     _treasury_voice_rank: int = None
     _treasury_voice_hx_lowest_rank: int = None
+
+    def set_planck(self, x_planck: float):
+        self._planck = x_planck
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -268,6 +273,7 @@ def partyunit_shop(
     # _treasury_due_diff: float = None,
     depotlink_type: str = None,
     _road_delimiter: str = None,
+    _planck: float = None,
 ) -> PartyUnit:
     x_partyunit = PartyUnit(
         creditor_weight=get_1_if_None(creditor_weight),
@@ -283,6 +289,7 @@ def partyunit_shop(
         _treasury_due_paid=None,
         _treasury_due_diff=None,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _planck=default_planck_if_none(_planck),
     )
     x_partyunit.set_party_id(x_party_id=party_id)
     if depotlink_type != None:

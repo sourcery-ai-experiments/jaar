@@ -1,7 +1,7 @@
-from src._road.road import validate_roadnode, default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none
+from src._road.finance import default_planck_if_none
 from src.agenda.party import (
     PartyUnit,
-    PartyID,
     partyunit_shop,
     partyunits_get_from_json,
     get_default_depotlink_type,
@@ -12,16 +12,16 @@ from pytest import raises as pytest_raises
 
 def test_PartyUnit_exists():
     # GIVEN
-    bob_party_id = "Bob"
+    bob_text = "Bob"
 
     # WHEN
-    bob_partyunit = PartyUnit(party_id=bob_party_id)
+    bob_partyunit = PartyUnit(bob_text)
 
     # THEN
-    print(f"{bob_party_id}")
+    print(f"{bob_text}")
     assert bob_partyunit != None
     assert bob_partyunit.party_id != None
-    assert bob_partyunit.party_id == bob_party_id
+    assert bob_partyunit.party_id == bob_text
     assert bob_partyunit.creditor_weight is None
     assert bob_partyunit.debtor_weight is None
     assert bob_partyunit.depotlink_type is None
@@ -38,6 +38,7 @@ def test_PartyUnit_exists():
     assert bob_partyunit._treasury_voice_hx_lowest_rank is None
     assert bob_partyunit._output_agenda_meld_order is None
     assert bob_partyunit._road_delimiter is None
+    assert bob_partyunit._planck is None
 
 
 def test_PartyUnit_set_party_id_CorrectlySetsAttr():
@@ -45,11 +46,11 @@ def test_PartyUnit_set_party_id_CorrectlySetsAttr():
     x_partyunit = PartyUnit()
 
     # WHEN
-    bob_party_id = "Bob"
-    x_partyunit.set_party_id(bob_party_id)
+    bob_text = "Bob"
+    x_partyunit.set_party_id(bob_text)
 
     # THEN
-    assert x_partyunit.party_id == bob_party_id
+    assert x_partyunit.party_id == bob_text
 
 
 def test_PartyUnit_set_party_id_RaisesErrorIfParameterContains_road_delimiter():
@@ -81,24 +82,47 @@ def test_partyunit_shop_CorrectlySetsAttributes():
     assert todd_partyunit._agenda_intent_ratio_credit == 0
     assert todd_partyunit._agenda_intent_ratio_debt == 0
     assert todd_partyunit._road_delimiter == default_road_delimiter_if_none()
+    assert todd_partyunit._planck == default_planck_if_none()
 
 
 def test_partyunit_shop_CorrectlySetsAttributes_road_delimiter():
-    # WHEN
-    todd_text = "Todd"
+    # GIVEN
     slash_text = "/"
 
     # WHEN
-    todd_partyunit = partyunit_shop(party_id=todd_text, _road_delimiter=slash_text)
+    todd_partyunit = partyunit_shop("Todd", _road_delimiter=slash_text)
 
     # THEN
     assert todd_partyunit._road_delimiter == slash_text
 
 
+def test_partyunit_shop_CorrectlySetsAttributes_planck():
+    # GIVEN
+    plank_float = 00.45
+
+    # WHEN
+    todd_partyunit = partyunit_shop("Todd", _planck=plank_float)
+
+    # THEN
+    assert todd_partyunit._planck == plank_float
+
+
+def test_PartyUnit_set_planck_CorrectlySetsAttribute():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    assert bob_partyunit._planck == 1
+
+    # WHEN
+    x_planck = 5
+    bob_partyunit.set_planck(x_planck)
+
+    # THEN
+    assert bob_partyunit._planck == x_planck
+
+
 def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     assert bob_partyunit._output_agenda_meld_order is None
 
     # WHEN
@@ -111,8 +135,7 @@ def test_PartyUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
 
 def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     x_output_agenda_meld_order = 5
     bob_partyunit.set_output_agenda_meld_order(x_output_agenda_meld_order)
     assert bob_partyunit._output_agenda_meld_order == x_output_agenda_meld_order
@@ -124,10 +147,33 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     assert bob_partyunit._output_agenda_meld_order is None
 
 
+def test_PartyUnit_set_creditor_weight_CorrectlySetsAttribute():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+
+    # WHEN
+    x_creditor_weight = 23
+    bob_partyunit.set_creditor_weight(x_creditor_weight)
+
+    # THEN
+    assert bob_partyunit.creditor_weight == x_creditor_weight
+
+
+def test_PartyUnit_set_debtor_weight_CorrectlySetsAttribute():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+
+    # WHEN
+    x_debtor_weight = 23
+    bob_partyunit.set_debtor_weight(x_debtor_weight)
+
+    # THEN
+    assert bob_partyunit.debtor_weight == x_debtor_weight
+
+
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -143,10 +189,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id, creditor_weight=45, debtor_weight=56
-    )
+    bob_partyunit = partyunit_shop("Bob", creditor_weight=45, debtor_weight=56)
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -162,8 +205,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStarting
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
     depotlink_type_x = "assignment"
@@ -179,10 +221,7 @@ def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStarti
 
 def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(
-        party_id=bob_party_id, creditor_weight=45, debtor_weight=56
-    )
+    bob_partyunit = partyunit_shop("Bob", creditor_weight=45, debtor_weight=56)
     depotlink_type_x = "assignment"
     bob_partyunit.set_depotlink_type(depotlink_type=depotlink_type_x)
     assert bob_partyunit.depotlink_type == depotlink_type_x
@@ -201,8 +240,7 @@ def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
 def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
     # GIVEN
     unacceptable_type_text = "unacceptable"
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -220,8 +258,7 @@ def test_get_default_depotlink_type_ReturnsCorrectObj():
 
 def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     bob_partyunit._agenda_credit = 0.27
     bob_partyunit._agenda_debt = 0.37
     bob_partyunit._agenda_intent_credit = 0.41
@@ -249,8 +286,7 @@ def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
 
 def test_PartyUnit_add_agenda_credit_debt_SetsAttrCorrectly():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     bob_partyunit._agenda_credit = 0.4106
     bob_partyunit._agenda_debt = 0.1106
     bob_partyunit._agenda_intent_credit = 0.41
@@ -275,8 +311,7 @@ def test_PartyUnit_add_agenda_credit_debt_SetsAttrCorrectly():
 
 def test_PartyUnit_set_agenda_intent_ratio_credit_debt_SetsAttrCorrectly():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(bob_party_id, creditor_weight=15, debtor_weight=7)
+    bob_partyunit = partyunit_shop("Bob", creditor_weight=15, debtor_weight=7)
     bob_partyunit._agenda_credit = 0.4106
     bob_partyunit._agenda_debt = 0.1106
     bob_partyunit._agenda_intent_credit = 0.041
@@ -313,11 +348,10 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_SetsAttrCorrectly():
 
 def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
     # GIVEN
-    bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
-    bob_partyunit = partyunit_shop(party_id=bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     assert bob_partyunit._agenda_intent_ratio_credit == 0.077
@@ -351,10 +385,9 @@ def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
 
 def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
-    bob_party_id = "Bob"
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
-    bob_partyunit = partyunit_shop(bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     x_due_paid = 0.2
@@ -394,8 +427,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 
 def test_PartyUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     # GIVEN
-    bob_party_id = "Bob"
-    bob_partyunit = partyunit_shop(bob_party_id)
+    bob_partyunit = partyunit_shop("Bob")
     bob_partyunit._agenda_intent_ratio_credit = 0.355
     bob_partyunit._agenda_intent_ratio_debt = 0.066
     x_treasury_credit_score = 900

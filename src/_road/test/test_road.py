@@ -386,7 +386,7 @@ def test_road_create_road_ReturnsCorrectObj():
     assert roses_road == create_road(roses_road, None)
 
 
-def test_raodnode_exists():
+def test_Roadnode_exists():
     # GIVEN
     empty_text = ""
 
@@ -397,15 +397,15 @@ def test_raodnode_exists():
     assert new_obj == empty_text
 
 
-def test_raodnode_is_node_ReturnsCorrectBool():
+def test_Roadnode_is_node_ReturnsCorrectBool():
     # WHEN / THEN
-    x_raodnode = RoadNode("")
-    assert x_raodnode.is_node()
+    x_roadnode = RoadNode("")
+    assert x_roadnode.is_node()
 
     # WHEN / THEN
     x_s = default_road_delimiter_if_none()
-    x_raodnode = RoadNode(f"casa{x_s}kitchen")
-    assert x_raodnode.is_node() == False
+    x_roadnode = RoadNode(f"casa{x_s}kitchen")
+    assert x_roadnode.is_node() == False
 
 
 def test_get_diff_road_ReturnsCorrectObj():
