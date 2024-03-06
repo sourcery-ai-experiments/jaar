@@ -126,6 +126,23 @@ def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsAttrsWhenWeightsNotDivi
     )
 
 
+def test_AgendaUnit_set_party_creditor_pool_SetAttrWhenEmpty_correct_planck_issues_IsTrue():
+    # GIVEN
+    zia_agenda = agendaunit_shop("Zia")
+
+    # WHEN
+    new_sum = 5000
+    zia_agenda.set_party_creditor_pool(
+        new_party_creditor_pool=new_sum,
+        update_partys_creditor_weight=True,
+        correct_planck_issues=True,
+    )
+
+    # THEN
+    assert zia_agenda._party_creditor_pool == new_sum
+    assert zia_agenda.get_partyunits_creditor_weight_sum() == 0
+
+
 def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsTrue():
     # GIVEN
     yao_text = "Yao"
@@ -252,6 +269,23 @@ def test_AgendaUnit_set_party_debtor_pool_CorrectlyChanges_partys_debtor_weight(
     assert zia_agenda.get_party(yao_text).debtor_weight == new_yao_debtor_weight
     assert zia_agenda.get_party(wei_text).debtor_weight == new_wei_debtor_weight
     assert zia_agenda.get_party(zia_text).debtor_weight == new_zia_debtor_weight
+
+
+def test_AgendaUnit_set_party_debtor_pool_SetAttrWhenEmpty_correct_planck_issues_IsTrue():
+    # GIVEN
+    zia_agenda = agendaunit_shop("Zia")
+
+    # WHEN
+    new_sum = 5000
+    zia_agenda.set_party_debtor_pool(
+        new_party_debtor_pool=new_sum,
+        update_partys_debtor_weight=True,
+        correct_planck_issues=True,
+    )
+
+    # THEN
+    assert zia_agenda._party_debtor_pool == new_sum
+    assert zia_agenda.get_partyunits_debtor_weight_sum() == 0
 
 
 def test_AgendaUnit_set_party_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsFalse():

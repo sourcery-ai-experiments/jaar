@@ -177,33 +177,33 @@ def _delete_and_set_ex5():
     x_p.create_new_clerkunit(clerk_id=ag_4._worker_id)
     x_p.create_new_clerkunit(clerk_id=ag_5._worker_id)
 
-    x_p.set_clerk_depotlink(ag_1._worker_id, ag_2._worker_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_1._worker_id, ag_3._worker_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_1._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_1._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_2._worker_id, "blind_trust", 3, 301)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_3._worker_id, "blind_trust", 7, 701)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_4._worker_id, "blind_trust", 4, 401)
+    x_p.set_clerk_depotlink(ag_1._worker_id, ag_5._worker_id, "blind_trust", 5, 501)
 
-    x_p.set_clerk_depotlink(ag_2._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_2._worker_id, ag_3._worker_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_2._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_1._worker_id, "blind_trust", 3, 301)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_3._worker_id, "blind_trust", 7, 701)
+    x_p.set_clerk_depotlink(ag_2._worker_id, ag_4._worker_id, "blind_trust", 4, 401)
     x_agenda = example_get_agenda_3CleanNodesRandomWeights()
     x_p.set_clerk_depotlink(
-        ag_2._worker_id, ag_5._worker_id, "ignore", 5, 5.1, x_agenda
+        ag_2._worker_id, ag_5._worker_id, "ignore", 5, 501, x_agenda
     )
 
-    x_p.set_clerk_depotlink(ag_3._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_3._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_3._worker_id, ag_4._worker_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_3._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_1._worker_id, "blind_trust", 3, 301)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_2._worker_id, "blind_trust", 7, 701)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_4._worker_id, "blind_trust", 4, 401)
+    x_p.set_clerk_depotlink(ag_3._worker_id, ag_5._worker_id, "blind_trust", 5, 501)
 
-    x_p.set_clerk_depotlink(ag_4._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_4._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_4._worker_id, ag_3._worker_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_4._worker_id, ag_5._worker_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_1._worker_id, "blind_trust", 3, 301)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_2._worker_id, "blind_trust", 7, 701)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_3._worker_id, "blind_trust", 4, 401)
+    x_p.set_clerk_depotlink(ag_4._worker_id, ag_5._worker_id, "blind_trust", 5, 501)
 
-    x_p.set_clerk_depotlink(ag_5._worker_id, ag_1._worker_id, "blind_trust", 3, 3.1)
-    x_p.set_clerk_depotlink(ag_5._worker_id, ag_2._worker_id, "blind_trust", 7, 7.1)
-    x_p.set_clerk_depotlink(ag_5._worker_id, ag_3._worker_id, "blind_trust", 4, 4.1)
-    x_p.set_clerk_depotlink(ag_5._worker_id, ag_4._worker_id, "blind_trust", 5, 5.1)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_1._worker_id, "blind_trust", 3, 301)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_2._worker_id, "blind_trust", 7, 701)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_3._worker_id, "blind_trust", 4, 401)
+    x_p.set_clerk_depotlink(ag_5._worker_id, ag_4._worker_id, "blind_trust", 5, 501)
 
     x_p.save_clerkunit_file(clerk_id=ag_1._worker_id)
     x_p.save_clerkunit_file(clerk_id=ag_2._worker_id)

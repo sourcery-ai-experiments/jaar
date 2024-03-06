@@ -63,6 +63,18 @@ class ClerkUnit:
         debtor_weight: float = None,
     ):
         self.set_role_if_empty()
+        if creditor_weight != None:
+            x_agenda.set_party_creditor_pool(
+                new_party_creditor_pool=creditor_weight,
+                update_partys_creditor_weight=True,
+                correct_planck_issues=True,
+            )
+        if debtor_weight != None:
+            x_agenda.set_party_debtor_pool(
+                new_party_debtor_pool=debtor_weight,
+                update_partys_debtor_weight=True,
+                correct_planck_issues=True,
+            )
         self.save_agenda_to_depot(x_agenda)
         self._set_depotlink(
             x_agenda._worker_id, depotlink_type, creditor_weight, debtor_weight

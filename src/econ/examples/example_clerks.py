@@ -126,13 +126,13 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
 
 
 def get_clerkunit_2agenda(env_dir, econ_id) -> ClerkUnit:
-    yao_text = "Xio"
-    yao_clerkunit = clerkunit_shop(yao_text, env_dir, econ_id)
-    yao_clerkunit.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
-    yao_clerkunit.set_depot_agenda(
+    xio_text = "Xio"
+    xio_clerkunit = clerkunit_shop(xio_text, env_dir, econ_id)
+    xio_clerkunit.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
+    xio_clerkunit.set_depot_agenda(
         get_Jnode2node_agenda(), depotlink_type="blind_trust"
     )
-    return yao_clerkunit
+    return xio_clerkunit
 
 
 def get_agenda_2CleanNodesRandomWeights(_worker_id: str = None) -> AgendaUnit:

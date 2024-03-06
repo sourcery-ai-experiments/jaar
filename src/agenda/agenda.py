@@ -168,15 +168,16 @@ class AgendaUnit:
             missing_creditor_weight = (
                 self._party_creditor_pool - self.get_partyunits_creditor_weight_sum()
             )
-            partyunits = list(self._partys.values())
-            # partys_count = len(self._partys)
-            # planck_count = missing_creditor_weight / self._planck
-            # if planck_count <= partys_count:
-            for _ in range(0, missing_creditor_weight, self._planck):
-                x_partyunit = partyunits.pop()
-                x_partyunit.set_creditor_weight(
-                    x_partyunit.creditor_weight + self._planck
-                )
+            if len(self._partys) > 0:
+                partyunits = list(self._partys.values())
+                # partys_count = len(self._partys)
+                # planck_count = missing_creditor_weight / self._planck
+                # if planck_count <= partys_count:
+                for _ in range(0, missing_creditor_weight, self._planck):
+                    x_partyunit = partyunits.pop()
+                    x_partyunit.set_creditor_weight(
+                        x_partyunit.creditor_weight + self._planck
+                    )
 
     def set_party_debtor_pool(
         self,
@@ -207,13 +208,16 @@ class AgendaUnit:
             missing_debtor_weight = (
                 self._party_debtor_pool - self.get_partyunits_debtor_weight_sum()
             )
-            partyunits = list(self._partys.values())
-            # partys_count = len(self._partys)
-            # planck_count = missing_debtor_weight / self._planck
-            # if planck_count <= partys_count:
-            for _ in range(0, missing_debtor_weight, self._planck):
-                x_partyunit = partyunits.pop()
-                x_partyunit.set_debtor_weight(x_partyunit.debtor_weight + self._planck)
+            if len(self._partys) > 0:
+                partyunits = list(self._partys.values())
+                # partys_count = len(self._partys)
+                # planck_count = missing_debtor_weight / self._planck
+                # if planck_count <= partys_count:
+                for _ in range(0, missing_debtor_weight, self._planck):
+                    x_partyunit = partyunits.pop()
+                    x_partyunit.set_debtor_weight(
+                        x_partyunit.debtor_weight + self._planck
+                    )
 
     def make_road(
         self,
