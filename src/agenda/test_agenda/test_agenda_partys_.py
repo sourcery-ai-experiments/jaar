@@ -45,9 +45,10 @@ def test_examples_agenda_v001_has_partys():
     assert len(yao_agenda._partys) == 22
 
 
-def test_AgendaUnit_set_party_CorrectlySetsPartys_v1():
+def test_AgendaUnit_set_party_CorrectlySets_partys_groups():
     # GIVEN
-    yao_agenda = agendaunit_shop("Yao")
+    x_planck = 0.5
+    yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
     yao_agenda.set_agenda_metrics()
     assert len(yao_agenda._partys) == 0
     assert len(yao_agenda._groups) == 0
@@ -61,6 +62,7 @@ def test_AgendaUnit_set_party_CorrectlySetsPartys_v1():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
 
     # THEN
+    assert yao_agenda._partys.get(rico_text)._planck == x_planck
     assert len(yao_agenda._partys) == 3
     assert len(yao_agenda._groups) == 3
     assert yao_agenda._groups["rico"]._party_mirror == True
@@ -81,9 +83,10 @@ def test_AgendaUnit_set_party_CorrectlySetsPartys_v1():
     assert len(yao_agenda._idearoot._balancelinks) == 3
 
 
-def test_AgendaUnit_set_party_CorrectlySetsPartys_v2():
+def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
     # GIVEN
-    yao_agenda = agendaunit_shop("Yao")
+    x_planck = 0.5
+    yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -101,6 +104,7 @@ def test_AgendaUnit_set_party_CorrectlySetsPartys_v2():
     assert yao_agenda._partys.get(patr_text).creditor_weight == 17
     assert yao_agenda._partys.get(carm_text).debtor_weight == 5
     assert yao_agenda._partys.get(patr_text).depotlink_type == assign_text
+    assert yao_agenda._partys.get(patr_text)._planck == x_planck
 
 
 def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_GroupUnit():

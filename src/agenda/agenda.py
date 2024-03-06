@@ -20,6 +20,7 @@ from src._road.road import (
     HealerID,
     is_roadunit_convertible_to_path,
 )
+from src._road.finance import get_planck_valid, default_planck_if_none
 from src.agenda.meld import (
     get_meld_weight,
     MeldStrategy,
@@ -106,6 +107,10 @@ class Exception_econs_justified(Exception):
     pass
 
 
+class _planck_RatioException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _world_id: str = None
@@ -116,6 +121,7 @@ class AgendaUnit:
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
     _road_delimiter: str = None
+    _planck: float = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
     _auto_output_job_to_forum: bool = None
@@ -133,26 +139,81 @@ class AgendaUnit:
     # set_agenda_metrics Calculated field end
 
     def set_party_creditor_pool(
-        self, new_party_creditor_pool: int, update_partys_creditor_weight: bool = False
+        self,
+        new_party_creditor_pool: int,
+        update_partys_creditor_weight: bool = False,
+        correct_planck_issues: bool = False,
     ):
+        if (new_party_creditor_pool / self._planck).is_integer() == False:
+            raise _planck_RatioException(
+                f"Agenda '{self._worker_id}' cannot set _party_creditor_pool='{new_party_creditor_pool}'. It is not divisible by planck '{self._planck}'"
+            )
+
         if update_partys_creditor_weight:
             old_party_creditor_pool = self.get_partyunits_creditor_weight_sum()
             if old_party_creditor_pool != 0:
                 x_ratio = new_party_creditor_pool / old_party_creditor_pool
                 for x_party in self._partys.values():
-                    x_party.set_creditor_weight(x_party.creditor_weight * x_ratio)
+                    new_party_creditor_weight = get_planck_valid(
+                        num=x_party.creditor_weight * x_ratio, planck=x_party._planck
+                    )
+                    x_party.set_creditor_weight(new_party_creditor_weight)
+
         self._party_creditor_pool = new_party_creditor_pool
+        if correct_planck_issues:
+            self._correct_any_creditor_planck_issues()
+
+    def _correct_any_creditor_planck_issues(self):
+        if self.get_partyunits_creditor_weight_sum() != self._party_creditor_pool:
+            missing_creditor_weight = (
+                self._party_creditor_pool - self.get_partyunits_creditor_weight_sum()
+            )
+            partyunits = list(self._partys.values())
+            # partys_count = len(self._partys)
+            # planck_count = missing_creditor_weight / self._planck
+            # if planck_count <= partys_count:
+            for _ in range(0, missing_creditor_weight, self._planck):
+                x_partyunit = partyunits.pop()
+                x_partyunit.set_creditor_weight(
+                    x_partyunit.creditor_weight + self._planck
+                )
 
     def set_party_debtor_pool(
-        self, new_party_debtor_pool: int, update_partys_debtor_weight: bool = False
+        self,
+        new_party_debtor_pool: int,
+        update_partys_debtor_weight: bool = False,
+        correct_planck_issues: bool = False,
     ):
+        if (new_party_debtor_pool / self._planck).is_integer() == False:
+            raise _planck_RatioException(
+                f"Agenda '{self._worker_id}' cannot set _party_debtor_pool='{new_party_debtor_pool}'. It is not divisible by planck '{self._planck}'"
+            )
+
         if update_partys_debtor_weight:
             old_party_debtor_pool = self.get_partyunits_debtor_weight_sum()
             if old_party_debtor_pool != 0:
                 x_ratio = new_party_debtor_pool / old_party_debtor_pool
                 for x_party in self._partys.values():
-                    x_party.set_debtor_weight(x_party.debtor_weight * x_ratio)
+                    new_party_debtor_weight = get_planck_valid(
+                        num=x_party.debtor_weight * x_ratio, planck=x_party._planck
+                    )
+                    x_party.set_debtor_weight(new_party_debtor_weight)
         self._party_debtor_pool = new_party_debtor_pool
+        if correct_planck_issues:
+            self._correct_any_debtor_planck_issues()
+
+    def _correct_any_debtor_planck_issues(self):
+        if self.get_partyunits_debtor_weight_sum() != self._party_debtor_pool:
+            missing_debtor_weight = (
+                self._party_debtor_pool - self.get_partyunits_debtor_weight_sum()
+            )
+            partyunits = list(self._partys.values())
+            # partys_count = len(self._partys)
+            # planck_count = missing_debtor_weight / self._planck
+            # if planck_count <= partys_count:
+            for _ in range(0, missing_debtor_weight, self._planck):
+                x_partyunit = partyunits.pop()
+                x_partyunit.set_debtor_weight(x_partyunit.debtor_weight + self._planck)
 
     def make_road(
         self,
@@ -558,11 +619,12 @@ class AgendaUnit:
         # future: if party is new check existance of group with party party_id
         if partyunit._road_delimiter != self._road_delimiter:
             partyunit._road_delimiter = self._road_delimiter
+        if partyunit._planck != self._planck:
+            partyunit._planck = self._planck
         self._partys[partyunit.party_id] = partyunit
 
-        existing_group = None
         try:
-            existing_group = self._groups[partyunit.party_id]
+            self._groups[partyunit.party_id]
         except KeyError:
             partylink = partylink_shop(
                 party_id=PartyID(partyunit.party_id), creditor_weight=1, debtor_weight=1
@@ -2203,6 +2265,7 @@ def agendaunit_shop(
     _weight: float = None,
     _auto_output_job_to_forum: bool = None,
     _road_delimiter: str = None,
+    _planck: float = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
     if _worker_id is None:
@@ -2223,6 +2286,7 @@ def agendaunit_shop(
         _econ_dict=get_empty_dict_if_none(None),
         _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _planck=default_planck_if_none(_planck),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _econs_justified=get_False_if_None(),
         _econs_buildable=get_False_if_None(),
