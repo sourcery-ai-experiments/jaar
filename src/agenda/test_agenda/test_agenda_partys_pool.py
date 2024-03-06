@@ -34,7 +34,7 @@ def test_AgendaUnit_set_party_creditor_pool_CorrectlyChanges_partys_creditor_wei
     assert zia_agenda.get_party(zia_text).creditor_weight == zia_creditor_weight
 
     # WHEN
-    new_ratio = 0.5
+    new_ratio = 2
     new_sum = x_sum * new_ratio
     zia_agenda.set_party_creditor_pool(new_sum, update_partys_creditor_weight=True)
 
@@ -96,7 +96,7 @@ def test_AgendaUnit_set_party_debtor_pool_CorrectlyChanges_partys_debtor_weight(
     assert zia_agenda.get_party(zia_text).debtor_weight == zia_debtor_weight
 
     # WHEN
-    new_ratio = 0.5
+    new_ratio = 2
     new_sum = x_sum * new_ratio
     zia_agenda.set_party_debtor_pool(new_sum, update_partys_debtor_weight=True)
 

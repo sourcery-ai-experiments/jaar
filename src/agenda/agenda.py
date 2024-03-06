@@ -626,9 +626,9 @@ class AgendaUnit:
             raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
         x_partyunit = self.get_party(party_id)
         if creditor_weight != None:
-            x_partyunit.creditor_weight = creditor_weight
+            x_partyunit.set_creditor_weight(creditor_weight)
         if debtor_weight != None:
-            x_partyunit.debtor_weight = debtor_weight
+            x_partyunit.set_debtor_weight(debtor_weight)
         if depotlink_type != None:
             x_partyunit.set_depotlink_type(depotlink_type)
         self.set_partyunit(x_partyunit)

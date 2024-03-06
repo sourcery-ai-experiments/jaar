@@ -159,6 +159,24 @@ def test_PartyUnit_set_creditor_weight_CorrectlySetsAttribute():
     assert bob_partyunit.creditor_weight == x_creditor_weight
 
 
+def test_PartyUnit_set_creditor_weight_RaisesErrorWhen_creditor_weight_IsNotMultiple():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    x_creditor_weight = 23
+    bob_partyunit.set_creditor_weight(x_creditor_weight)
+    assert bob_partyunit._planck == 1
+    assert bob_partyunit.creditor_weight == x_creditor_weight
+
+    # WHEN
+    new_creditor_weight = 13.5
+    with pytest_raises(Exception) as excinfo:
+        bob_partyunit.set_creditor_weight(new_creditor_weight)
+    assert (
+        str(excinfo.value)
+        == f"'{new_creditor_weight}' is not divisible by planck '{bob_partyunit._planck}'"
+    )
+
+
 def test_PartyUnit_set_debtor_weight_CorrectlySetsAttribute():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
@@ -169,6 +187,24 @@ def test_PartyUnit_set_debtor_weight_CorrectlySetsAttribute():
 
     # THEN
     assert bob_partyunit.debtor_weight == x_debtor_weight
+
+
+def test_PartyUnit_set_debtor_weight_RaisesErrorWhen_debtor_weight_IsNotMultiple():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    x_debtor_weight = 23
+    bob_partyunit.set_debtor_weight(x_debtor_weight)
+    assert bob_partyunit._planck == 1
+    assert bob_partyunit.debtor_weight == x_debtor_weight
+
+    # WHEN
+    new_debtor_weight = 13.5
+    with pytest_raises(Exception) as excinfo:
+        bob_partyunit.set_debtor_weight(new_debtor_weight)
+    assert (
+        str(excinfo.value)
+        == f"'{new_debtor_weight}' is not divisible by planck '{bob_partyunit._planck}'"
+    )
 
 
 def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
@@ -469,8 +505,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
-    bob_partyunit.creditor_weight = bob_creditor_weight
-    bob_partyunit.debtor_weight = bob_debtor_weight
+    bob_partyunit.set_creditor_weight(bob_creditor_weight)
+    bob_partyunit.set_debtor_weight(bob_debtor_weight)
 
     bob_treasury_credit_score = 7000
     bob_treasury_voice_rank = 898
@@ -517,8 +553,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
-    bob_partyunit.creditor_weight = bob_creditor_weight
-    bob_partyunit.debtor_weight = bob_debtor_weight
+    bob_partyunit.set_creditor_weight(bob_creditor_weight)
+    bob_partyunit.set_debtor_weight(bob_debtor_weight)
 
     bob_treasury_credit_score = 7000
     bob_treasury_voice_rank = 898

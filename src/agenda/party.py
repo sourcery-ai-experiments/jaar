@@ -12,6 +12,10 @@ class InvalidDepotLinkException(Exception):
     pass
 
 
+class _planck_RatioException(Exception):
+    pass
+
+
 @dataclass
 class PartyCore:
     party_id: PartyID = None
@@ -131,9 +135,17 @@ class PartyUnit(PartyCore):
         return x_dict
 
     def set_creditor_weight(self, creditor_weight: int):
+        if (creditor_weight / self._planck).is_integer() == False:
+            raise _planck_RatioException(
+                f"'{creditor_weight}' is not divisible by planck '{self._planck}'"
+            )
         self.creditor_weight = creditor_weight
 
     def set_debtor_weight(self, debtor_weight: int):
+        if (debtor_weight / self._planck).is_integer() == False:
+            raise _planck_RatioException(
+                f"'{debtor_weight}' is not divisible by planck '{self._planck}'"
+            )
         self.debtor_weight = debtor_weight
 
     def get_creditor_weight(self):
