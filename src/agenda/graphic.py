@@ -123,6 +123,7 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     current_y = 0
     trace_list = []
     anno_list = []
+    print(f"{x_agenda._worker_id=}")
     _add_ideaunit_traces(trace_list, anno_list, x_agenda, current_y, mode=mode)
     _update_layout_fig(x_fig, mode, x_agenda=x_agenda)
     while trace_list:

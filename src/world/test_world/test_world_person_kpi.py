@@ -3,8 +3,16 @@ from src.world.report import (
     get_world_guts_partys_plotly_fig,
     get_world_lifes_partys_dataframe,
     get_world_lifes_partys_plotly_fig,
+    get_world_guts_intent_dataframe,
+    get_world_guts_intent_plotly_fig,
+    get_world_lifes_intent_dataframe,
+    get_world_lifes_intent_plotly_fig,
 )
-from src.world.examples.example_worlds import create_example_world2
+from src.world.examples.example_worlds import (
+    create_example_world2,
+    create_example_world3,
+    create_example_world4,
+)
 from src.world.examples.world_env_kit import worlds_dir_setup_cleanup
 
 
@@ -104,6 +112,80 @@ def test_get_world_lifes_partys_plotly_fig_DisplaysCorrectInfo(
 
     # WHEN
     x_fig = get_world_lifes_partys_plotly_fig(music_world)
+
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     x_fig.show()
+    # assert 1 == 2
+
+
+def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_world = create_example_world3()
+
+    # WHEN
+    x_df = get_world_guts_intent_dataframe(music_world)
+
+    # THEN
+    partyunit_colums = {
+        "worker_id",
+        "agenda_importance",
+        "_label",
+        "_parent_road",
+    }
+    print(f"{set(x_df.columns)=}")
+    print(x_df)
+
+    assert set(x_df.columns) == partyunit_colums
+    assert x_df.shape[0] == 8
+
+
+def test_get_world_guts_intent_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_world = create_example_world3()
+
+    # WHEN
+    x_fig = get_world_guts_intent_plotly_fig(music_world)
+
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     x_fig.show()
+
+
+def test_get_world_lifes_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_world = create_example_world4()
+    music_world.generate_all_life_agendas()
+
+    # WHEN
+    x_df = get_world_lifes_intent_dataframe(music_world)
+
+    # THEN
+    partyunit_colums = {
+        "worker_id",
+        "agenda_importance",
+        "_label",
+        "_parent_road",
+    }
+    print(f"{set(x_df.columns)=}")
+    print(x_df)
+
+    assert set(x_df.columns) == partyunit_colums
+    assert x_df.shape[0] == 8
+    assert 1 == 2
+
+
+def test_get_world_lifes_intent_plotly_fig_DisplaysCorrectInfo(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    music_world = create_example_world3()
+    music_world.generate_all_life_agendas()
+
+    # WHEN
+    x_fig = get_world_lifes_intent_plotly_fig(music_world)
 
     # # THEN
     # show_figure = True
