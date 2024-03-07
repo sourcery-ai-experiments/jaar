@@ -128,7 +128,7 @@ def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
     x_df = get_world_guts_intent_dataframe(music_world)
 
     # THEN
-    partyunit_colums = {
+    intent_colums = {
         "worker_id",
         "agenda_importance",
         "_label",
@@ -137,7 +137,7 @@ def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
     print(f"{set(x_df.columns)=}")
     print(x_df)
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == intent_colums
     assert x_df.shape[0] == 8
 
 
@@ -163,7 +163,7 @@ def test_get_world_lifes_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cle
     x_df = get_world_lifes_intent_dataframe(music_world)
 
     # THEN
-    partyunit_colums = {
+    intent_colums = {
         "worker_id",
         "agenda_importance",
         "_label",
@@ -172,16 +172,15 @@ def test_get_world_lifes_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cle
     print(f"{set(x_df.columns)=}")
     print(x_df)
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == intent_colums
     assert x_df.shape[0] == 8
-    assert 1 == 2
 
 
 def test_get_world_lifes_intent_plotly_fig_DisplaysCorrectInfo(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
-    music_world = create_example_world3()
+    music_world = create_example_world4()
     music_world.generate_all_life_agendas()
 
     # WHEN

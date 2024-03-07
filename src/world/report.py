@@ -210,13 +210,9 @@ def get_world_lifes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.worker_id,
-                df.party_id,
-                df.creditor_weight,
-                df.debtor_weight,
-                df._agenda_credit,
-                df._agenda_debt,
-                df._agenda_intent_credit,
-                df._agenda_intent_debt,
+                df.agenda_importance,
+                df._label,
+                df._parent_road,
             ],
             fill_color="lavender",
             align="left",
