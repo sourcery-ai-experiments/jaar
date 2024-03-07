@@ -79,13 +79,16 @@ def get_world_lifes_partys_dataframe(x_world: WorldUnit) -> DataFrame:
             open_file(person_path, f"{get_life_file_name()}.json")
         )
         life_agenda.set_agenda_metrics()
-        df = get_agenda_partyunits_dataframe(life_agenda)
-        df.insert(0, "worker_id", life_agenda._worker_id)
-        life_dfs.append(df)
+        print(f"life {life_agenda._worker_id=} {len(life_agenda._idea_dict)=}")
+        life_df = get_agenda_partyunits_dataframe(life_agenda)
+        print(life_df)
+        life_df.insert(0, "worker_id", life_agenda._worker_id)
+        life_dfs.append(life_df)
     return pandas_concat(life_dfs, ignore_index=True)
 
 
 def get_world_lifes_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
+    x_world.generate_all_life_agendas()
     column_header_list = [
         "worker_id",
         "party_id",
@@ -97,6 +100,8 @@ def get_world_lifes_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         "_agenda_intent_debt",
     ]
     df = get_world_lifes_partys_dataframe(x_world)
+
+    print(df.head)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )

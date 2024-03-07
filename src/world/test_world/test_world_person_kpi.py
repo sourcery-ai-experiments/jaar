@@ -104,8 +104,8 @@ def test_get_world_lifes_partys_plotly_fig_DisplaysCorrectInfo(
     # WHEN
     x_fig = get_world_lifes_partys_plotly_fig(music_world)
 
-    # THEN
-    show_figure = True
-    if show_figure:
-        x_fig.show()
-    assert 1 == 2
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     x_fig.show()
+    # assert 1 == 2

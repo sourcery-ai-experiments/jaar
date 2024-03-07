@@ -205,7 +205,6 @@ class WorldUnit:
     def generate_all_life_agendas(self):
         for x_person_id in self._get_person_ids():
             self.generate_life_agenda(x_person_id)
-            print(f"{x_person_id=}")
 
     def get_life_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)

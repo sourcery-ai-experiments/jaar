@@ -66,6 +66,33 @@ def test_AgendaUnit_meld_PartyUnits():
     assert bob1_agenda.get_party(zia_text) != None
 
 
+def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_partyunit = partyunit_shop(party_id=yao_text)
+
+    bob_text = "Bob"
+    bob1_agenda = agendaunit_shop(bob_text)
+    bob1_agenda.set_partyunit(yao_partyunit)
+
+    bob2_agenda = agendaunit_shop(bob_text)
+    bob2_agenda.set_partyunit(yao_partyunit)
+    zia_text = "Zia"
+    zia_partyunit = partyunit_shop(party_id=zia_text)
+    bob2_agenda.set_partyunit(zia_partyunit)
+    assert len(bob1_agenda._partys) == 1
+    assert bob1_agenda.get_party(yao_text) != None
+    assert bob1_agenda.get_party(zia_text) is None
+
+    # WHEN
+    bob1_agenda.meld(other_agenda=bob2_agenda, ignore_partyunits=True)
+
+    # THEN
+    assert len(bob1_agenda._partys) == 1
+    assert bob1_agenda.get_party(yao_text) != None
+    assert bob1_agenda.get_party(zia_text) is None
+
+
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
     # GIVEN
     run_text = ",runners"

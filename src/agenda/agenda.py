@@ -2123,9 +2123,12 @@ class AgendaUnit:
     def set_meld_strategy(self, x_meld_strategy: MeldStrategy):
         self._meld_strategy = validate_meld_strategy(x_meld_strategy)
 
-    def meld(self, other_agenda, party_weight: float = None):
+    def meld(
+        self, other_agenda, party_weight: float = None, ignore_partyunits: bool = False
+    ):
         self._meld_groups(other_agenda)
-        self._meld_partys(other_agenda)
+        if not ignore_partyunits:
+            self._meld_partys(other_agenda)
         self._meld_ideas(other_agenda, party_weight)
         self._meld_beliefs(other_agenda)
         self._weight = get_meld_weight(
