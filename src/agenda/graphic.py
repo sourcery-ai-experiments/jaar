@@ -1,7 +1,10 @@
 from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
-from src.agenda.report import get_agenda_partyunits_dataframe
+from src.agenda.report import (
+    get_agenda_partyunits_dataframe,
+    get_agenda_intent_dataframe,
+)
 from plotly.graph_objects import (
     Figure as plotly_Figure,
     Scatter as plotly_Scatter,
@@ -175,7 +178,41 @@ def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"WorkerID '{x_agenda._worker_id}', gut partys metrics"
+    fig_title = f"WorkerID '{x_agenda._worker_id}' agenda partys metrics"
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
+    fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
+
+    return fig
+
+
+def get_agenda_intent_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
+    column_header_list = [
+        "worker_id",
+        "agenda_importance",
+        "_label",
+        "_parent_road",
+    ]
+    df = get_agenda_intent_dataframe(x_agenda)
+    header_dict = dict(
+        values=column_header_list, fill_color="paleturquoise", align="left"
+    )
+    x_table = plotly_Table(
+        header=header_dict,
+        cells=dict(
+            values=[
+                df.worker_id,
+                df.agenda_importance,
+                df._label,
+                df._parent_road,
+            ],
+            fill_color="lavender",
+            align="left",
+        ),
+    )
+
+    fig = plotly_Figure(data=[x_table])
+    fig_title = f"WorkerID '{x_agenda._worker_id}' agenda intent"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

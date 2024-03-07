@@ -1,3 +1,4 @@
+from src._road.road import RoadUnit
 from src.agenda.agenda import AgendaUnit
 from pandas import DataFrame
 
@@ -6,3 +7,19 @@ def get_agenda_partyunits_dataframe(x_agenda: AgendaUnit) -> DataFrame:
     x_agenda.set_agenda_metrics()
     x_partyunits_list = list(x_agenda.get_partys_dict(all_attrs=True).values())
     return DataFrame(x_partyunits_list)
+
+
+def get_agenda_intent_dataframe(
+    x_agenda: AgendaUnit, base: RoadUnit = None
+) -> DataFrame:
+    intent_dict = x_agenda.get_intent_dict(base=base)
+    x_idea_list = []
+    for x_idea in intent_dict.values():
+        idea_dict = {
+            "worker_id": x_agenda._worker_id,
+            "agenda_importance": x_idea._agenda_importance,
+            "_label": x_idea._label,
+            "_parent_road": x_idea._parent_road,
+        }
+        x_idea_list.append(idea_dict)
+    return DataFrame(x_idea_list)

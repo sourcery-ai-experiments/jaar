@@ -1,11 +1,16 @@
 from src.agenda.examples.example_agendas import (
+    agenda_v001_with_large_intent,
     get_agenda_with_4_levels,
     get_agenda_assignment_laundry_example1,
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.graphic import display_ideatree, get_agenda_partys_plotly_fig
+from src.agenda.graphic import (
+    display_ideatree,
+    get_agenda_partys_plotly_fig,
+    get_agenda_intent_plotly_fig,
+)
 
 
 def test_display_ideatree_GivenAgenda():
@@ -69,3 +74,19 @@ def test_get_agenda_partys_plotly_fig_DisplaysCorrectInfo():
     # show_figure = True
     # if show_figure:
     #   x_fig.show()
+
+
+def test_get_agenda_intent_plotly_fig_DisplaysCorrectInfo():
+    # GIVEN
+    yao_agenda = agenda_v001_with_large_intent()
+    week_text = "weekdays"
+    week_road = yao_agenda.make_l1_road(week_text)
+    assert len(yao_agenda.get_intent_dict()) == 63
+
+    # WHEN
+    x_fig = get_agenda_intent_plotly_fig(yao_agenda)
+
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     x_fig.show()
