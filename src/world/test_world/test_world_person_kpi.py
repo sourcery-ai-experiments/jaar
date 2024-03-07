@@ -133,6 +133,12 @@ def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
@@ -168,6 +174,12 @@ def test_get_world_lifes_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cle
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)

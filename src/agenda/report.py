@@ -37,7 +37,18 @@ def get_agenda_intent_dataframe(
     intent_dict = x_agenda.get_intent_dict(base=base)
     if intent_dict == {}:
         return DataFrame(
-            columns=["worker_id", "agenda_importance", "_label", "_parent_road"]
+            columns=[
+                "worker_id",
+                "agenda_importance",
+                "_label",
+                "_parent_road",
+                "_begin",
+                "_close",
+                "_addin",
+                "_denom",
+                "_numor",
+                "_reest",
+            ]
         )
     x_idea_list = []
     for x_idea in intent_dict.values():
@@ -46,6 +57,12 @@ def get_agenda_intent_dataframe(
             "agenda_importance": x_idea._agenda_importance,
             "_label": x_idea._label,
             "_parent_road": x_idea._parent_road,
+            "_begin": x_idea._begin,
+            "_close": x_idea._close,
+            "_addin": x_idea._addin,
+            "_denom": x_idea._denom,
+            "_numor": x_idea._numor,
+            "_reest": x_idea._reest,
         }
         x_idea_list.append(idea_dict)
     return DataFrame(x_idea_list)

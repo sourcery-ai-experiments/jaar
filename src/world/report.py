@@ -151,6 +151,12 @@ def get_world_guts_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     ]
     df = get_world_guts_intent_dataframe(x_world)
     header_dict = dict(
@@ -164,6 +170,12 @@ def get_world_guts_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
                 df.agenda_importance,
                 df._label,
                 df._parent_road,
+                df._begin,
+                df._close,
+                df._addin,
+                df._denom,
+                df._numor,
+                df._reest,
             ],
             fill_color="lavender",
             align="left",
@@ -200,6 +212,12 @@ def get_world_lifes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     ]
     df = get_world_lifes_intent_dataframe(x_world)
     header_dict = dict(
@@ -213,6 +231,12 @@ def get_world_lifes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
                 df.agenda_importance,
                 df._label,
                 df._parent_road,
+                df._begin,
+                df._close,
+                df._addin,
+                df._denom,
+                df._numor,
+                df._reest,
             ],
             fill_color="lavender",
             align="left",

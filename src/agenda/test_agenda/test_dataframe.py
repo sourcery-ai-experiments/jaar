@@ -107,6 +107,12 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectDataFrame():
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     }
     print(f"{set(x_df.columns)=}")
 
@@ -129,6 +135,12 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectEmptyDataFrame():
         "agenda_importance",
         "_label",
         "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
     }
     print(f"{set(x_df.columns)=}")
 
