@@ -100,6 +100,7 @@ def test_get_world_lifes_partys_plotly_fig_DisplaysCorrectInfo(
 ):
     # GIVEN
     music_world = create_example_world2()
+    music_world.generate_all_life_agendas()
 
     # WHEN
     x_fig = get_world_lifes_partys_plotly_fig(music_world)
