@@ -16,6 +16,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
+from src.agenda.atom import AgendaAtom
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
@@ -26,6 +27,7 @@ from src.instrument.file import (
     get_all_dirs_with_file,
     get_parts_dir,
     delete_dir,
+    dir_files,
 )
 from dataclasses import dataclass
 from plotly.express import treemap, Constant
@@ -66,6 +68,7 @@ class PersonUnit:
     persons_dir: str = None
     person_dir: str = None
     _econs_dir: str = None
+    _atoms_dir: str = None
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
@@ -85,6 +88,7 @@ class PersonUnit:
         self.persons_dir = f"{self.world_dir}/persons"
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
         self._econs_dir = f"{self.person_dir}/econs"
+        self._atoms_dir = f"{self.person_dir}/atoms"
         if self._gut_file_name is None:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
@@ -167,6 +171,32 @@ class PersonUnit:
 
     def load_life_file(self):
         self._life_obj = self.get_life_file_agenda()
+
+    def _save_valid_atom_file(self, x_atom: AgendaAtom, filename: int):
+        save_file(self._atoms_dir, f"{filename}.json", x_atom.get_json())
+
+    def atom_file_exists(self, filename: int) -> bool:
+        return os_path_exists(f"{self._atoms_dir}/{filename}.json")
+
+    def _delete_atom_file(self, filename: int):
+        delete_dir(f"{self._atoms_dir}/{filename}.json")
+
+    def _get_max_atom_filename(self) -> int:
+        if os_path_exists(self._atoms_dir):
+            atom_filenames = dir_files(
+                dir_path=self._atoms_dir, delete_extensions=True, include_files=True
+            ).keys()
+            atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
+            return max(atom_file_numbers)
+        else:
+            return 0
+
+    def _get_next_atom_filename(self) -> str:
+        return f"{self._get_max_atom_filename()+1}.json"
+
+    def save_atom_file(self, x_atom: AgendaAtom):
+        x_filename = self._get_max_atom_filename() + 1
+        self._save_valid_atom_file(x_atom, x_filename)
 
     def get_rootpart_of_econ_dir(self):
         return "idearoot"

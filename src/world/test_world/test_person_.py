@@ -35,6 +35,7 @@ def test_PersonUnit_exists():
     assert x_person.persons_dir is None
     assert x_person.person_dir is None
     assert x_person._econs_dir is None
+    assert x_person._atoms_dir is None
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
@@ -58,6 +59,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._life_file_name is None
     assert x_person._life_path is None
     assert x_person._econs_dir is None
+    assert x_person._atoms_dir is None
 
     # GIVEN
     yao_text = "Yao"
@@ -74,6 +76,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._life_file_name == f"{get_life_file_name()}.json"
     assert x_person._life_path == f"{x_person.person_dir}/{x_person._life_file_name}"
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
+    assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter():

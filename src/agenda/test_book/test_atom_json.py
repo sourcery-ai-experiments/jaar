@@ -12,7 +12,7 @@ from src.agenda.atom import (
     get_mog,
     set_mog,
     get_atom_columns_build,
-    get_from_json as get_agendaatom_from_json,
+    get_from_json as agendaatom_get_from_json,
 )
 from src.instrument.python import x_is_json
 
@@ -78,7 +78,7 @@ def test_AgendaAtom_get_json_ReturnsCorrectObj():
     assert x_is_json(atom_json)
 
 
-def test_get_agendaatom_from_json_ReturnsCorrectObj():
+def test_agendaatom_get_from_json_ReturnsCorrectObj():
     # GIVEN
     sports_text = "sports"
     sports_road = create_road("a", sports_text)
@@ -101,7 +101,7 @@ def test_get_agendaatom_from_json_ReturnsCorrectObj():
     atom_json = gen_agendaatom.get_json()
 
     # WHEN
-    json_agendaatom = get_agendaatom_from_json(atom_json)
+    json_agendaatom = agendaatom_get_from_json(atom_json)
 
     # THEN
     assert json_agendaatom.category == gen_agendaatom.category
