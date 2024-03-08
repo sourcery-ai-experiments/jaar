@@ -30,6 +30,8 @@ from src.instrument.python import (
     place_obj_in_dict,
     get_nested_value,
     get_all_nondictionary_objs,
+    json_dumps,
+    json_loads,
 )
 from src.instrument.sqlite import create_insert_sqlstr, RowData
 from src.instrument.file import open_file, save_file
@@ -313,6 +315,9 @@ class AgendaAtom:
             "optional_args": optional_args_dict,
         }
 
+    def get_json(self) -> str:
+        return json_dumps(self.get_dict())
+
 
 def agendaatom_shop(
     category: str,
@@ -327,6 +332,18 @@ def agendaatom_shop(
             required_args=get_empty_dict_if_none(required_args),
             optional_args=get_empty_dict_if_none(optional_args),
         )
+
+
+def get_from_json(x_str: str) -> AgendaAtom:
+    x_dict = json_loads(x_str)
+    x_agendaatom = agendaatom_shop(
+        category=x_dict["category"], crud_text=x_dict["crud_text"]
+    )
+    for x_key, x_value in x_dict["required_args"].items():
+        x_agendaatom.set_required_arg(x_key, x_value)
+    for x_key, x_value in x_dict["optional_args"].items():
+        x_agendaatom.set_optional_arg(x_key, x_value)
+    return x_agendaatom
 
 
 def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom):
