@@ -127,3 +127,24 @@ def get_row_count_sqlstr(table_name: str) -> str:
 
 def get_row_count(db_conn: Connection, table_name: str) -> str:
     return get_single_result(db_conn, get_row_count_sqlstr(table_name))
+
+
+def check_table_column_existence(tables_dict: dict, db_conn: Connection) -> bool:
+    db_tables = get_db_tables(db_conn)
+    db_tables_columns = get_db_columns(db_conn)
+
+    # for table_name, table_dict in tables_dict.items():
+    for table_name in tables_dict:
+        print(f"Table: {table_name}")
+        if db_tables.get(table_name) is None:
+            return False
+
+        # db_columns = set(db_tables_columns.get(table_name).keys())
+        # config_columns = set(table_dict.get("columns").keys())
+        # diff_columns = db_columns.symmetric_difference(config_columns)
+        # print(f"Table: {table_name} Column differences: {diff_columns}")
+
+        # if diff_columns:
+        #     return False
+
+    return True

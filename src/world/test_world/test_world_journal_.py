@@ -10,7 +10,12 @@ from src.world.examples.world_env_kit import (
 from src.world.person import personunit_shop
 from src.instrument.python import get_dict_from_json, get_nested_value
 from src.instrument.file import delete_dir, save_file, open_file
-from src.instrument.sqlite import get_db_tables, get_db_columns, check_connection
+from src.instrument.sqlite import (
+    get_db_tables,
+    get_db_columns,
+    check_connection,
+    check_table_column_existence,
+)
 from os import path as os_path
 from pytest import raises as pytest_raises
 
@@ -110,29 +115,6 @@ def test_WorldUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(
     assert check_connection(x_world.get_journal_conn())
 
 
-def check_table_column_existence(tables_dict: dict, x_world: WorldUnit) -> bool:
-    print("huh")
-    with x_world.get_journal_conn() as treasury_conn:
-        db_tables = get_db_tables(treasury_conn)
-        db_tables_columns = get_db_columns(treasury_conn)
-
-    # for table_name, table_dict in tables_dict.items():
-    for table_name in tables_dict:
-        print(f"Table: {table_name}")
-        if db_tables.get(table_name) is None:
-            return False
-
-        # db_columns = set(db_tables_columns.get(table_name).keys())
-        # config_columns = set(table_dict.get("columns").keys())
-        # diff_columns = db_columns.symmetric_difference(config_columns)
-        # print(f"Table: {table_name} Column differences: {diff_columns}")
-
-        # if diff_columns:
-        #     return False
-
-    return True
-
-
 def test_world_set_world_dirs_CorrectlyCreatesDBTables(worlds_dir_setup_cleanup):
     # GIVEN create world
     x_world = worldunit_shop(get_test_world_id(), get_test_worlds_dir())
@@ -147,4 +129,5 @@ def test_world_set_world_dirs_CorrectlyCreatesDBTables(worlds_dir_setup_cleanup)
     tables_dict = get_nested_value(config_dict, ["tables"])
     print(f"{tables_dict=}")
 
-    assert check_table_column_existence(tables_dict, x_world)
+    with x_world.get_journal_conn() as journal_conn:
+        assert check_table_column_existence(tables_dict, journal_conn)

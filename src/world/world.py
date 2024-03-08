@@ -88,7 +88,7 @@ class WorldUnit:
         self._journal_db = None
         delete_dir(dir=self.get_journal_db_path())
 
-    def get_journal_conn(self):
+    def get_journal_conn(self) -> Connection:
         if self._journal_db is None:
             return sqlite3_connect(self.get_journal_db_path())
         else:
