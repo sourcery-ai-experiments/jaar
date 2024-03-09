@@ -7,7 +7,7 @@ from src._road.road import (
     get_root_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_econ_root_roadnode,
+    get_default_world_id_roadnode,
     get_all_road_nodes,
     get_forefather_roads,
     create_road,
@@ -2278,7 +2278,7 @@ def agendaunit_shop(
     if _worker_id is None:
         _worker_id = ""
     if _world_id is None:
-        _world_id = get_default_econ_root_roadnode()
+        _world_id = get_default_world_id_roadnode()
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
 

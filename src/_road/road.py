@@ -14,6 +14,10 @@ class RoadNode(str):
         return self.find(default_road_delimiter_if_none(delimiter)) == -1
 
 
+class WorldID(RoadNode):  # Created to help track the concept
+    pass
+
+
 class PersonID(RoadNode):  # Created to help track the concept
     """Must be node thus not include road delimiter"""
 
@@ -211,7 +215,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_econ_root_roadnode() -> EconID:
+def get_default_world_id_roadnode() -> WorldID:
     return "A"
 
 

@@ -7,7 +7,7 @@ from src.agenda.reason_idea import (
     beliefunits_get_from_dict,
 )
 from src._road.road import (
-    get_default_econ_root_roadnode as root_label,
+    get_default_world_id_roadnode as root_label,
     create_road,
 )
 from pytest import raises as pytest_raises

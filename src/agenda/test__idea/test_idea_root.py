@@ -1,5 +1,5 @@
 from src.agenda.idea import ideaunit_shop
-from src._road.road import get_default_econ_root_roadnode as root_label
+from src._road.road import get_default_world_id_roadnode as root_label
 from pytest import raises as pytest_raises
 
 
@@ -15,7 +15,7 @@ def test_ideaunit_shop_With_root_ReturnsCorrectObj():
     assert x_idearoot._root == True
 
 
-def test_IdeaUnit_set_idea_label_get_default_econ_root_roadnode_DoesNotRaisesError():
+def test_IdeaUnit_set_idea_label_get_default_world_id_roadnode_DoesNotRaisesError():
     # GIVEN
     x_idearoot = ideaunit_shop(_root=True)
 

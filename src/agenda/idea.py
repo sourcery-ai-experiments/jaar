@@ -3,7 +3,7 @@ from src._road.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_default_econ_root_roadnode as root_label,
+    get_default_world_id_roadnode as root_label,
     create_road as road_create_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,

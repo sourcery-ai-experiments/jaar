@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     premises_get_from_dict,
 )
 from src._road.road import (
-    get_default_econ_root_roadnode as root_label,
+    get_default_world_id_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
     find_replace_road_key_dict,

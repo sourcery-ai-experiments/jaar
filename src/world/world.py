@@ -1,4 +1,4 @@
-from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit
+from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, WorldID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
 from src.world.gift import GiftUnit
@@ -11,10 +11,6 @@ from sqlite3 import connect as sqlite3_connect, Connection
 
 
 class PersonExistsException(Exception):
-    pass
-
-
-class WorldID(str):  # Created to help track the concept
     pass
 
 

@@ -21,7 +21,7 @@ from src._road.road import (
     road_validate,
     get_ancestor_roads,
     get_forefather_roads,
-    get_default_econ_root_roadnode as root_label,
+    get_default_world_id_roadnode as root_label,
     create_road_from_nodes,
     create_road,
     get_diff_road,
@@ -342,7 +342,7 @@ def test_road_get_forefather_roads_ReturnsAncestorRoadUnitsWithoutSource():
     assert x_roads == texas_forefather_roads
 
 
-def test_road_get_default_econ_root_roadnode_ReturnsCorrectObj():
+def test_road_get_default_world_id_roadnode_ReturnsCorrectObj():
     assert root_label() == "A"
 
 
