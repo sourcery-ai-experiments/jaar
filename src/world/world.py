@@ -1,3 +1,4 @@
+from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, WorldID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit, EconID
@@ -26,6 +27,7 @@ class WorldUnit:
     _giftunits: dict[PersonID:PersonUnit] = None
     _max_gift_uid: int = None
     _road_delimiter: str = None
+    _planck: float = None
 
     def del_giftunit(self, giftunit_uid: int):
         self._giftunits.pop(giftunit_uid)
@@ -229,14 +231,16 @@ def worldunit_shop(
     worlds_dir: str,
     in_memory_journal: bool = None,
     _road_delimiter: str = None,
+    _planck: float = None,
 ) -> WorldUnit:
     world_x = WorldUnit(
         world_id=world_id,
         worlds_dir=worlds_dir,
         _personunits=get_empty_dict_if_none(None),
         _giftunits=get_empty_dict_if_none(None),
+        _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _planck=default_planck_if_none(_planck),
     )
     world_x.set_max_gift_uid()
     world_x._set_world_dirs(in_memory_journal=in_memory_journal)
-    world_x._road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return world_x

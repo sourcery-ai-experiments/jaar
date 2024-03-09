@@ -1,4 +1,5 @@
 from src._road.road import default_road_delimiter_if_none
+from src._road.finance import default_planck_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
 from src.world.person import (
     PersonUnit,
@@ -44,6 +45,7 @@ def test_PersonUnit_exists():
     assert x_person._life_path is None
     assert x_person._econ_objs is None
     assert x_person._road_delimiter is None
+    assert x_person._planck is None
 
 
 def test_PersonUnit_set_person_id_CorrectlySetsAttr():
@@ -120,15 +122,19 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person._life_path == sue_life_file_path
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
+    assert sue_person._planck == default_planck_if_none()
 
 
 def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters():
     # GIVEN
     sue_text = "Sue"
     slash_text = "/"
+    two_int = 2
 
     # WHEN
-    sue_person = personunit_shop(person_id=sue_text, _road_delimiter=slash_text)
+    sue_person = personunit_shop(
+        person_id=sue_text, _road_delimiter=slash_text, _planck=two_int
+    )
 
     # THEN
     assert sue_person.person_id == sue_text
@@ -144,6 +150,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters()
     sue_life_file_path = f"{sue_person.person_dir}/{sue_person._life_file_name}"
     assert sue_person._life_path == sue_life_file_path
     assert sue_person._road_delimiter == slash_text
+    assert sue_person._planck == two_int
 
 
 def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
@@ -484,6 +491,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.persons_dir) is False
     assert os_path_exists(sue_person.person_dir) is False
     assert os_path_exists(sue_person._econs_dir) is False
+    assert os_path_exists(sue_person._atoms_dir) is False
     assert os_path_exists(sue_person._gut_path) is False
     assert os_path_exists(sue_person._life_path) is False
 
@@ -495,5 +503,6 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.persons_dir)
     assert os_path_exists(sue_person.person_dir)
     assert os_path_exists(sue_person._econs_dir)
+    assert os_path_exists(sue_person._atoms_dir)
     assert os_path_exists(sue_person._gut_path)
     assert os_path_exists(sue_person._life_path)

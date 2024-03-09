@@ -2,7 +2,7 @@ from src.agenda.atom import atom_hx_table_name
 from src.instrument.sqlite import check_table_column_existence
 from src.world.journal_sqlstr import get_atom_hx_table_insert_sqlstr
 from src.world.world import worldunit_shop
-from src.world.examples.example_atoms import get_beliefunit_atom_example_01
+from src.world.examples.example_atoms import get_atom_example_beliefunit_knee
 from src.world.examples.world_env_kit import (
     get_test_world_id,
     get_test_worlds_dir,
@@ -24,7 +24,7 @@ from pytest import raises as pytest_raises
 #     #     assert get_row_count(journal_conn, atom_hx_table_name()) == 0
 
 #     # WHEN
-#     x_atom = get_beliefunit_atom_example_01()
+#     x_atom = get_atom_example_beliefunit_knee()
 #     # with music_world.get_journal_conn() as treasury_conn:
 #     #     treasury_conn.execute(get_atom_hx_table_insert_sqlstr(x_atom))
 

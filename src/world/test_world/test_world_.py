@@ -1,3 +1,4 @@
+from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
@@ -24,6 +25,7 @@ def test_WorldUnit_exists(worlds_dir_setup_cleanup):
     assert music_world._giftunits is None
     assert music_world._max_gift_uid is None
     assert music_world._road_delimiter is None
+    assert music_world._planck is None
 
 
 def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
@@ -44,12 +46,14 @@ def test_worldunit_shop_ReturnsWorldUnit(worlds_dir_setup_cleanup):
     assert music_world._giftunits == {}
     assert music_world._max_gift_uid == 0
     assert music_world._road_delimiter == default_road_delimiter_if_none()
+    assert music_world._planck == default_planck_if_none()
 
 
 def test_worldunit_shop_ReturnsWorldUnitWith_road_delimiter(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
+    three_int = 3
 
     # WHEN
     music_world = worldunit_shop(
@@ -57,10 +61,12 @@ def test_worldunit_shop_ReturnsWorldUnitWith_road_delimiter(worlds_dir_setup_cle
         worlds_dir=get_test_worlds_dir(),
         in_memory_journal=True,
         _road_delimiter=slash_text,
+        _planck=three_int,
     )
 
     # THEN
     assert music_world._road_delimiter == slash_text
+    assert music_world._planck == three_int
 
 
 def test_WorldUnit__set_world_dirs_SetsPersonDir(worlds_dir_setup_cleanup):

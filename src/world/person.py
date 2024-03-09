@@ -1,3 +1,4 @@
+from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
     PersonID,
@@ -16,7 +17,11 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agenda_get_from_json,
 )
-from src.agenda.atom import AgendaAtom
+from src.agenda.atom import (
+    AgendaAtom,
+    get_from_json as agendaatom_get_from_json,
+    change_agenda_with_agendaatom,
+)
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
@@ -77,6 +82,7 @@ class PersonUnit:
     _life_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
+    _planck: float = None
 
     def set_person_id(self, x_person_id: PersonID):
         self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
@@ -103,6 +109,7 @@ class PersonUnit:
         set_dir(self.persons_dir)
         set_dir(self.person_dir)
         set_dir(self._econs_dir)
+        set_dir(self._atoms_dir)
         self.create_gut_file_if_does_not_exist()
         self.create_life_file_if_does_not_exist()
 
@@ -197,6 +204,21 @@ class PersonUnit:
     def save_atom_file(self, x_atom: AgendaAtom):
         x_filename = self._get_max_atom_filename() + 1
         self._save_valid_atom_file(x_atom, x_filename)
+
+    def _get_agenda_from_atom_files(self) -> AgendaUnit:
+        x_agenda = agendaunit_shop(_worker_id=self.person_id, _world_id=self.world_id)
+        x_atom_files = dir_files(
+            self._atoms_dir,
+            delete_extensions=True,
+            include_dirs=False,
+            include_files=True,
+        )
+        print(f"{x_atom_files=}")
+        for x_int, x_json in x_atom_files.items():
+            x_atom = agendaatom_get_from_json(x_json)
+            print(f"{x_atom=}")
+            change_agenda_with_agendaatom(x_agenda, x_atom)
+        return x_agenda
 
     def get_rootpart_of_econ_dir(self):
         return "idearoot"
@@ -327,12 +349,14 @@ def personunit_shop(
     worlds_dir: str = None,
     _econ_objs: dict[RoadUnit:EconUnit] = None,
     _road_delimiter: str = None,
+    _planck: float = None,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
         world_id=world_id,
         worlds_dir=worlds_dir,
         _econ_objs=get_empty_dict_if_none(_econ_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
+        _planck=default_planck_if_none(_planck),
     )
     x_personunit.set_person_id(person_id)
     return x_personunit
