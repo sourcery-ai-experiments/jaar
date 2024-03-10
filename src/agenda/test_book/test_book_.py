@@ -17,6 +17,7 @@ def test_BookUnit_exists():
 
     # THEN
     assert x_bookunit.agendaatoms is None
+    assert x_bookunit._agenda_build_validated is None
 
 
 def test_bookunit_shop_ReturnsCorrectObj():
@@ -25,6 +26,7 @@ def test_bookunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert ex1_bookunit.agendaatoms == {}
+    assert ex1_bookunit._agenda_build_validated == False
 
 
 def test_BookUnit_set_agendaatom_CorrectlySets_AgendaUnitSimpleAttrs():
@@ -237,3 +239,39 @@ def test_BookUnit_get_atom_order_agendaatom_dict_ReturnsCorrectObj():
     print(f"{sue_atom_order_dict.get(atom_update())=}")
     assert len(sue_atom_order_dict.get(atom_update())) == 1
     assert len(sue_atom_order_dict.get(atom_delete())) == 1
+
+
+def test_BookUnit_agenda_build_validate_CorrectlySetsTrue():
+    # GIVEN
+    ex1_bookunit = get_bookunit_example1()
+    # assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
+    # assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
+    # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+
+    # # WHEN
+    # sue_atom_order_dict = ex1_bookunit.get_atom_order_agendaatom_dict()
+
+    # # THEN
+    # assert len(sue_atom_order_dict) == 2
+    # print(f"{sue_atom_order_dict.keys()=}")
+    # print(f"{sue_atom_order_dict.get(atom_update())=}")
+    # assert len(sue_atom_order_dict.get(atom_update())) == 1
+    # assert len(sue_atom_order_dict.get(atom_delete())) == 1
+
+
+def test_BookUnit_agenda_build_validate_CorrectlySetsFalse():
+    # GIVEN
+    ex1_bookunit = get_bookunit_example1()
+    # assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
+    # assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
+    # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+
+    # # WHEN
+    # sue_atom_order_dict = ex1_bookunit.get_atom_order_agendaatom_dict()
+
+    # # THEN
+    # assert len(sue_atom_order_dict) == 2
+    # print(f"{sue_atom_order_dict.keys()=}")
+    # print(f"{sue_atom_order_dict.get(atom_update())=}")
+    # assert len(sue_atom_order_dict.get(atom_update())) == 1
+    # assert len(sue_atom_order_dict.get(atom_delete())) == 1

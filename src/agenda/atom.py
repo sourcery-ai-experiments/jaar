@@ -643,6 +643,7 @@ def get_agendaatom_from_rowdata(x_rowdata: RowData) -> AgendaAtom:
 @dataclass
 class BookUnit:
     agendaatoms: dict[str : dict[str:any]] = None
+    _agenda_build_validated: bool = None
 
     def get_atom_order_agendaatom_dict(self) -> dict[int:AgendaAtom]:
         return get_all_nondictionary_objs(self.agendaatoms)
@@ -1467,4 +1468,7 @@ class BookUnit:
 
 
 def bookunit_shop(agendaatoms: dict[str:str] = None):
-    return BookUnit(agendaatoms=get_empty_dict_if_none(agendaatoms))
+    return BookUnit(
+        agendaatoms=get_empty_dict_if_none(agendaatoms),
+        _agenda_build_validated=False,
+    )

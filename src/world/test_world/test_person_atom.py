@@ -11,6 +11,7 @@ from pytest import raises as pytest_raises
 from src.world.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
+    get_atom_example_ideaunit_ball,
     get_atom_example_ideaunit_knee,
 )
 from src.world.examples.world_env_kit import (
@@ -37,10 +38,13 @@ def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cle
     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json") == False
 
     # WHEN
-    yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), one_int)
+    atom_num = yao_person._save_valid_atom_file(
+        get_atom_example_beliefunit_knee(), one_int
+    )
 
     # THEN
     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json")
+    assert atom_num == one_int
 
 
 def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
@@ -114,12 +118,15 @@ def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
 
     # WHEN
-    yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+    atom_num1 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
 
     # THEN
     assert yao_person._get_max_atom_filename() != ten_int
     assert yao_person._get_max_atom_filename() == eleven_int
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
+    assert atom_num1 == eleven_int
+    atom_num2 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+    assert atom_num2 == 12
 
 
 def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
@@ -160,16 +167,28 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
     sports_road = yao_agenda.make_l1_road(sports_text)
 
     assert yao_agenda.idea_exists(sports_road)
-    # ball_idea = yao_agenda.get_idea_obj(sports_road)
-    # assert ball_idea._label == ball_text
-    # assert ball_idea._parent_road == sports_road
 
-    # knee_text = "knee"
-    # knee_road = yao_agenda.make_road(sports_road, knee_text)
-    # knee_begin = 1
-    # knee_close = 71
-    # knee_open = 7
-    # knee_nigh = 23
 
-    # assert ball_idea._begin == knee_begin
-    # assert ball_idea._close == knee_close
+def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    # save atom files
+    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.world_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.world_id))
+    yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.world_id))
+
+    # WHEN
+    yao_agenda = yao_person._get_agenda_from_atom_files()
+
+    # THEN
+    assert yao_agenda._worker_id == yao_text
+    assert yao_agenda._world_id == yao_person.world_id
+    assert yao_agenda._road_delimiter == yao_person._road_delimiter
+    sports_text = "sports"
+    sports_road = yao_agenda.make_l1_road(sports_text)
+
+    assert yao_agenda.idea_exists(sports_road)

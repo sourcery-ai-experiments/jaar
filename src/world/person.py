@@ -179,8 +179,9 @@ class PersonUnit:
     def load_life_file(self):
         self._life_obj = self.get_life_file_agenda()
 
-    def _save_valid_atom_file(self, x_atom: AgendaAtom, filename: int):
-        save_file(self._atoms_dir, f"{filename}.json", x_atom.get_json())
+    def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
+        save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
+        return file_number
 
     def atom_file_exists(self, filename: int) -> bool:
         return os_path_exists(f"{self._atoms_dir}/{filename}.json")
@@ -203,7 +204,7 @@ class PersonUnit:
 
     def save_atom_file(self, x_atom: AgendaAtom):
         x_filename = self._get_max_atom_filename() + 1
-        self._save_valid_atom_file(x_atom, x_filename)
+        return self._save_valid_atom_file(x_atom, x_filename)
 
     def _get_agenda_from_atom_files(self) -> AgendaUnit:
         x_agenda = agendaunit_shop(_worker_id=self.person_id, _world_id=self.world_id)
@@ -213,10 +214,8 @@ class PersonUnit:
             include_dirs=False,
             include_files=True,
         )
-        print(f"{x_atom_files=}")
         for x_int, x_json in x_atom_files.items():
             x_atom = agendaatom_get_from_json(x_json)
-            print(f"{x_atom=}")
             change_agenda_with_agendaatom(x_agenda, x_atom)
         return x_agenda
 
