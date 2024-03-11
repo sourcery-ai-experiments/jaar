@@ -160,6 +160,62 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
     )
 
 
+def test_BookUnit_get_crud_agendaatoms_list_ReturnsCorrectObj():
+    # GIVEN
+    ex1_bookunit = get_bookunit_example1()
+    assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
+    assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
+    assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+
+    # WHEN
+    sue_atom_order_dict = ex1_bookunit.get_crud_agendaatoms_list()
+
+    # THEN
+    assert len(sue_atom_order_dict) == 2
+    print(f"{sue_atom_order_dict.keys()=}")
+    # print(f"{sue_atom_order_dict.get(atom_update())=}")
+    assert len(sue_atom_order_dict.get(atom_update())) == 1
+    assert len(sue_atom_order_dict.get(atom_delete())) == 1
+    # for crud_text, atom_list in sue_atom_order_dict.items():
+    #     print(f"{crud_text=}")
+    #     print(f"{len(atom_list)=}")
+    #     for x_atom in atom_list:
+    #         print(f"{x_atom.category=}")
+
+
+def test_BookUnit_get_agendaatoms_list_ReturnsCorrectObj():
+    # GIVEN
+    ex1_bookunit = get_bookunit_example1()
+    update_dict = ex1_bookunit.agendaatoms.get(atom_update())
+    assert len(update_dict.keys()) == 1
+    print(f"{update_dict.keys()=}")
+    assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
+    delete_dict = ex1_bookunit.agendaatoms.get(atom_delete())
+    assert len(delete_dict.keys()) == 1
+
+    # WHEN
+    sue_atoms_list = ex1_bookunit.get_agendaatoms_list()
+
+    # THEN
+    assert len(sue_atoms_list) == 2
+    assert sue_atoms_list[0] == update_dict.get("agendaunit")
+    z_atom = sue_atoms_list[1]
+    z_atom._crud_cache = None
+    print(f"{z_atom=}")
+    print(delete_dict.get("agenda_partyunit").keys())
+    carmen_partyunit_delete = delete_dict.get("agenda_partyunit").get("Carmen")
+    assert sue_atoms_list[1] == carmen_partyunit_delete
+    # print(f"{sue_atom_order_dict.keys()=}")
+    # # print(f"{sue_atom_order_dict.get(atom_update())=}")
+    # assert len(sue_atom_order_dict.get(atom_update())) == 1
+    # assert len(sue_atom_order_dict.get(atom_delete())) == 1
+    # for crud_text, atom_list in sue_atom_order_dict.items():
+    #     print(f"{crud_text=}")
+    #     print(f"{len(atom_list)=}")
+    #     for x_atom in atom_list:
+    #         print(f"{x_atom.category=}")
+
+
 # def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_max_tree_traverse():
 #     # GIVEN
 #     ex1_bookunit = bookunit_shop(get_sue_road())
@@ -223,22 +279,36 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
 #     assert x_agendaatom == ex1_bookunit.agendaatoms.get(atom_update()).get(x_attribute)
 
 
-def test_BookUnit_get_atom_order_agendaatom_dict_ReturnsCorrectObj():
+def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj():
     # GIVEN
     ex1_bookunit = get_bookunit_example1()
-    assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
-    assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
-    assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+    agendaunit_text = "agendaunit"
+    agenda_partyunit_text = "agenda_partyunit"
+    update_dict = ex1_bookunit.agendaatoms.get(atom_update())
+    assert len(update_dict.keys()) == 1
+    assert update_dict.get(agendaunit_text) != None
+    print(f"atom_order 28 {ex1_bookunit.agendaatoms.get(atom_update()).keys()=}")
+    delete_dict = ex1_bookunit.agendaatoms.get(atom_delete())
+    assert len(delete_dict.keys()) == 1
+    assert delete_dict.get(agenda_partyunit_text) != None
+    print(f"atom_order 26 {ex1_bookunit.agendaatoms.get(atom_delete()).keys()=}")
 
     # WHEN
-    sue_atom_order_dict = ex1_bookunit.get_atom_order_agendaatom_dict()
+    sue_atom_order_list = ex1_bookunit.get_sorted_agendaatoms()
 
     # THEN
-    assert len(sue_atom_order_dict) == 2
-    print(f"{sue_atom_order_dict.keys()=}")
-    print(f"{sue_atom_order_dict.get(atom_update())=}")
-    assert len(sue_atom_order_dict.get(atom_update())) == 1
-    assert len(sue_atom_order_dict.get(atom_delete())) == 1
+    assert len(sue_atom_order_list) == 2
+    print(delete_dict.get("agenda_partyunit").keys())
+    carmen_partyunit_delete = delete_dict.get("agenda_partyunit").get("Carmen")
+    # for agendaatom in sue_atom_order_list:
+    #     print(f"{agendaatom.atom_order=}")
+    assert sue_atom_order_list[0] == carmen_partyunit_delete
+    assert sue_atom_order_list[1] == update_dict.get(agendaunit_text)
+    # for crud_text, atom_list in sue_atom_order_dict.items():
+    #     print(f"{crud_text=}")
+    #     print(f"{len(atom_list)=}")
+    #     for x_atom in atom_list:
+    #         print(f"{x_atom.category=}")
 
 
 def test_BookUnit_agenda_build_validate_CorrectlySetsTrue():
@@ -249,7 +319,7 @@ def test_BookUnit_agenda_build_validate_CorrectlySetsTrue():
     # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
 
     # # WHEN
-    # sue_atom_order_dict = ex1_bookunit.get_atom_order_agendaatom_dict()
+    # sue_atom_order_dict = ex1_bookunit.get_sorted_agendaatoms()
 
     # # THEN
     # assert len(sue_atom_order_dict) == 2
@@ -267,7 +337,7 @@ def test_BookUnit_agenda_build_validate_CorrectlySetsFalse():
     # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
 
     # # WHEN
-    # sue_atom_order_dict = ex1_bookunit.get_atom_order_agendaatom_dict()
+    # sue_atom_order_dict = ex1_bookunit.get_sorted_agendaatoms()
 
     # # THEN
     # assert len(sue_atom_order_dict) == 2

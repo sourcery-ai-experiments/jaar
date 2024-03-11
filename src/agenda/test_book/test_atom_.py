@@ -8,7 +8,7 @@ from src.agenda.atom import (
     category_ref,
     is_category_ref,
     get_atom_config_dict,
-    get_mog,
+    get_atom_order,
     set_mog,
     get_atom_columns_build,
 )
@@ -127,35 +127,39 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     # set_mog("groupunit", atom_delete(), mog, 27)
     # set_mog("agendaunit", atom_update(), mog, 28)
 
-    assert 0 == get_mog("agenda_partyunit", atom_insert(), mog, 0)
-    assert 1 == get_mog("agenda_group_partylink", atom_insert(), mog, 1)
-    assert 2 == get_mog("agenda_groupunit", atom_insert(), mog, 2)
-    assert 3 == get_mog("agenda_ideaunit", atom_insert(), mog, 3)
-    assert 4 == get_mog("agenda_idea_balancelink", atom_insert(), mog, 4)
-    assert 5 == get_mog("agenda_idea_suffgroup", atom_insert(), mog, 5)
-    assert 6 == get_mog("agenda_idea_healerhold", atom_insert(), mog, 6)
-    assert 7 == get_mog("agenda_idea_beliefunit", atom_insert(), mog, 7)
-    assert 8 == get_mog("agenda_idea_reasonunit", atom_insert(), mog, 8)
-    assert 9 == get_mog("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
-    assert 10 == get_mog("agenda_partyunit", atom_update(), mog, 10)
-    assert 11 == get_mog("agenda_groupunit", atom_update(), mog, 11)
-    assert 12 == get_mog("agenda_group_partylink", atom_update(), mog, 12)
-    assert 13 == get_mog("agenda_ideaunit", atom_update(), mog, 13)
-    assert 14 == get_mog("agenda_idea_balancelink", atom_update(), mog, 14)
-    assert 15 == get_mog("agenda_idea_beliefunit", atom_update(), mog, 15)
-    assert 16 == get_mog("agenda_idea_reason_premiseunit", atom_update(), mog, 16)
-    assert 17 == get_mog("agenda_idea_reasonunit", atom_update(), mog, 17)
-    assert 18 == get_mog("agenda_idea_reason_premiseunit", atom_delete(), mog, 18)
-    assert 19 == get_mog("agenda_idea_reasonunit", atom_delete(), mog, 19)
-    assert 20 == get_mog("agenda_idea_beliefunit", atom_delete(), mog, 20)
-    assert 21 == get_mog("agenda_idea_suffgroup", atom_delete(), mog, 21)
-    assert 22 == get_mog("agenda_idea_healerhold", atom_delete(), mog, 22)
-    assert 23 == get_mog("agenda_idea_balancelink", atom_delete(), mog, 23)
-    assert 24 == get_mog("agenda_ideaunit", atom_delete(), mog, 24)
-    assert 25 == get_mog("agenda_group_partylink", atom_delete(), mog, 25)
-    assert 26 == get_mog("agenda_partyunit", atom_delete(), mog, 26)
-    assert 27 == get_mog("agenda_groupunit", atom_delete(), mog, 27)
-    assert 28 == get_mog("agendaunit", atom_update(), mog, 28)
+    assert 0 == get_atom_order("agenda_partyunit", atom_insert(), mog, 0)
+    assert 1 == get_atom_order("agenda_group_partylink", atom_insert(), mog, 1)
+    assert 2 == get_atom_order("agenda_groupunit", atom_insert(), mog, 2)
+    assert 3 == get_atom_order("agenda_ideaunit", atom_insert(), mog, 3)
+    assert 4 == get_atom_order("agenda_idea_balancelink", atom_insert(), mog, 4)
+    assert 5 == get_atom_order("agenda_idea_suffgroup", atom_insert(), mog, 5)
+    assert 6 == get_atom_order("agenda_idea_healerhold", atom_insert(), mog, 6)
+    assert 7 == get_atom_order("agenda_idea_beliefunit", atom_insert(), mog, 7)
+    assert 8 == get_atom_order("agenda_idea_reasonunit", atom_insert(), mog, 8)
+    assert 9 == get_atom_order("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
+    assert 10 == get_atom_order("agenda_partyunit", atom_update(), mog, 10)
+    assert 11 == get_atom_order("agenda_groupunit", atom_update(), mog, 11)
+    assert 12 == get_atom_order("agenda_group_partylink", atom_update(), mog, 12)
+    assert 13 == get_atom_order("agenda_ideaunit", atom_update(), mog, 13)
+    assert 14 == get_atom_order("agenda_idea_balancelink", atom_update(), mog, 14)
+    assert 15 == get_atom_order("agenda_idea_beliefunit", atom_update(), mog, 15)
+    assert 16 == get_atom_order(
+        "agenda_idea_reason_premiseunit", atom_update(), mog, 16
+    )
+    assert 17 == get_atom_order("agenda_idea_reasonunit", atom_update(), mog, 17)
+    assert 18 == get_atom_order(
+        "agenda_idea_reason_premiseunit", atom_delete(), mog, 18
+    )
+    assert 19 == get_atom_order("agenda_idea_reasonunit", atom_delete(), mog, 19)
+    assert 20 == get_atom_order("agenda_idea_beliefunit", atom_delete(), mog, 20)
+    assert 21 == get_atom_order("agenda_idea_suffgroup", atom_delete(), mog, 21)
+    assert 22 == get_atom_order("agenda_idea_healerhold", atom_delete(), mog, 22)
+    assert 23 == get_atom_order("agenda_idea_balancelink", atom_delete(), mog, 23)
+    assert 24 == get_atom_order("agenda_ideaunit", atom_delete(), mog, 24)
+    assert 25 == get_atom_order("agenda_group_partylink", atom_delete(), mog, 25)
+    assert 26 == get_atom_order("agenda_partyunit", atom_delete(), mog, 26)
+    assert 27 == get_atom_order("agenda_groupunit", atom_delete(), mog, 27)
+    assert 28 == get_atom_order("agendaunit", atom_update(), mog, 28)
 
 
 def _every_category_dict_has_arg_elements(category_dict: dict) -> bool:

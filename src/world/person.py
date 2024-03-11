@@ -2,12 +2,10 @@ from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
     PersonID,
-    EconID,
     validate_roadnode,
     RoadUnit,
     RoadNode,
     get_all_road_nodes,
-    get_terminus_node,
     change_road,
     create_road_from_nodes,
 )
@@ -35,10 +33,7 @@ from src.instrument.file import (
     dir_files,
 )
 from dataclasses import dataclass
-from plotly.express import treemap, Constant
-from pandas import DataFrame
-from numpy import average
-from os.path import exists as os_path_exists, isdir as os_path_isdir
+from os.path import exists as os_path_exists
 
 
 class InvalidEconException(Exception):
@@ -292,54 +287,6 @@ class PersonUnit:
 
     def set_person_econunits_role(self):
         self.set_econunits_role(self.get_gut_file_agenda())
-
-    # def popup_visualization(
-    #     self, econlink_by_problem: bool = False, show_fig: bool = True
-    # ):
-    #     if econlink_by_problem:
-    #         # grab all econlink data
-    #         el_data = []
-
-    #         for x_problemunit in self.get_problemunits().values():
-    #                 el_data.extend(
-    #                     [
-    #                         self.person_id,
-    #                         x_problemunit.problem_id,
-    #                         x_problemunit.weight,
-    #                         x_.healer_id,
-    #                         x_.weight,
-    #                         x_econlink.econ_id,
-    #                         x_econlink.weight,
-    #                     ]
-    #                     for x_econlink in x_._econlinks.values()
-    #                 )
-    #         # initialize list of lists
-
-    #         # Create the pandas DataFrame
-    #         df = DataFrame(
-    #             el_data,
-    #             columns=[
-    #                 "PersonID",
-    #                 "ProblemID",
-    #                 "Problem Weight",
-    #                 "HealerID",
-    #                 "Healer Weight",
-    #                 "EconID",
-    #                 "Econ Weight",
-    #             ],
-    #         )
-    #         fig = treemap(
-    #             df,
-    #             path=[Constant("PersonID"), "ProblemID", "HealerID", "EconID"],
-    #             values="Econ Weight",
-    #             # color="liftExp",
-    #             # hover_data=["iso_alpha"],
-    #             # color_continuous_scale="RdBu",
-    #             # color_continuous_midpoint=average(df["Econ Weight"], weights=df["pop"]),
-    #         )
-    #         fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
-    #         if show_fig:
-    #             fig.show()
 
 
 def personunit_shop(

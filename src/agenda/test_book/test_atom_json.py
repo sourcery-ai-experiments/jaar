@@ -9,7 +9,7 @@ from src.agenda.atom import (
     category_ref,
     is_category_ref,
     get_atom_config_dict,
-    get_mog,
+    get_atom_order,
     set_mog,
     get_atom_columns_build,
     get_from_json as agendaatom_get_from_json,

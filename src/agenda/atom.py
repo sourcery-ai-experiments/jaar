@@ -39,15 +39,19 @@ from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
 
 
-def atom_update() -> str:
+class CRUD_command(str):
+    pass
+
+
+def atom_update() -> CRUD_command:
     return "UPDATE"
 
 
-def atom_insert() -> str:
+def atom_insert() -> CRUD_command:
     return "INSERT"
 
 
-def atom_delete() -> str:
+def atom_delete() -> CRUD_command:
     return "DELETE"
 
 
@@ -150,7 +154,7 @@ def is_category_ref(category_text: str) -> bool:
     return category_text in category_ref()
 
 
-def get_mog(
+def get_atom_order(
     category: str,
     crud_text: str,
     atom_order_text: str,
@@ -236,7 +240,7 @@ class AgendaAtom:
         return x_list
 
     def set_atom_order(self):
-        self.atom_order = get_mog(
+        self.atom_order = get_atom_order(
             category=self.category,
             crud_text=self.crud_text,
             atom_order_text="atom_order",
@@ -642,15 +646,25 @@ def get_agendaatom_from_rowdata(x_rowdata: RowData) -> AgendaAtom:
 
 @dataclass
 class BookUnit:
-    agendaatoms: dict[str : dict[str:any]] = None
+    agendaatoms: dict[CRUD_command : dict[str:AgendaAtom]] = None
     _agenda_build_validated: bool = None
 
-    def get_atom_order_agendaatom_dict(self) -> dict[int:AgendaAtom]:
+    def get_crud_agendaatoms_list(self) -> dict[CRUD_command : list[AgendaAtom]]:
         return get_all_nondictionary_objs(self.agendaatoms)
+
+    def get_agendaatoms_list(self) -> list[AgendaAtom]:
+        atoms_list = []
+        for crud_dict in self.get_crud_agendaatoms_list().values():
+            atoms_list.extend(iter(crud_dict))
+        return atoms_list
+
+    def get_sorted_agendaatoms(self) -> list[AgendaAtom]:
+        agendaatoms_list = self.get_agendaatoms_list()
+        return sorted(agendaatoms_list, key=lambda x: int(x.atom_order))
 
     def get_after_agenda(self, before_agenda: AgendaUnit):
         after_agenda = copy_deepcopy(before_agenda)
-        agendaatoms_by_order = self.get_atom_order_agendaatom_dict()
+        agendaatoms_by_order = self.get_crud_agendaatoms_list()
 
         for x_atom_order_int in sorted(agendaatoms_by_order.keys()):
             agendaatoms_list = agendaatoms_by_order.get(x_atom_order_int)
