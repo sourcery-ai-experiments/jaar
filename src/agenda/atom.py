@@ -1480,6 +1480,15 @@ class BookUnit:
             x_agendaatom.set_required_arg("base", delete_beliefunit_base)
             self.set_agendaatom(x_agendaatom)
 
+    def get_dict(self, x_count: int = None) -> dict[int:str]:
+        if x_count is None:
+            x_count = 0
+        x_dict = {}
+        for x_atom in self.get_sorted_agendaatoms():
+            x_dict[x_count] = x_atom
+            x_count += 1
+        return x_dict
+
 
 def bookunit_shop(agendaatoms: dict[str:str] = None):
     return BookUnit(
