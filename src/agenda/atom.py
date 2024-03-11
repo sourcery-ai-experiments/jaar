@@ -21,7 +21,7 @@ from src.agenda.group import (
     BalanceLink,
 )
 from src.agenda.idea import ideaunit_shop, IdeaUnit
-from src.agenda.agenda import AgendaUnit
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.agenda.examples.agenda_env import get_codespace_agenda_dir
 from src.instrument.python import (
     get_empty_dict_if_none,
@@ -662,15 +662,15 @@ class BookUnit:
         agendaatoms_list = self.get_agendaatoms_list()
         return sorted(agendaatoms_list, key=lambda x: int(x.atom_order))
 
-    def get_after_agenda(self, before_agenda: AgendaUnit):
-        after_agenda = copy_deepcopy(before_agenda)
+    def get_edited_agenda(self, before_agenda: AgendaUnit):
+        edit_agenda = copy_deepcopy(before_agenda)
         agendaatoms_by_order = self.get_crud_agendaatoms_list()
 
         for x_atom_order_int in sorted(agendaatoms_by_order.keys()):
             agendaatoms_list = agendaatoms_by_order.get(x_atom_order_int)
             for x_agendaatom in agendaatoms_list:
-                change_agenda_with_agendaatom(after_agenda, x_agendaatom)
-        return after_agenda
+                change_agenda_with_agendaatom(edit_agenda, x_agendaatom)
+        return edit_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):
         if x_agendaatom.is_valid() == False:
@@ -1486,3 +1486,17 @@ def bookunit_shop(agendaatoms: dict[str:str] = None):
         agendaatoms=get_empty_dict_if_none(agendaatoms),
         _agenda_build_validated=False,
     )
+
+
+def validate_agenda_build_from_book(x_book: BookUnit, x_agenda: AgendaUnit = None):
+    if x_agenda is None:
+        x_agenda = agendaunit_shop()
+
+    x_agenda = x_book.get_edited_agenda(x_agenda)
+
+    try:
+        x_agenda.set_agenda_metrics()
+    except Exception:
+        return False
+
+    return True

@@ -2,11 +2,13 @@ from src.agenda.party import partyunit_shop
 from src.agenda.atom import (
     BookUnit,
     bookunit_shop,
+    validate_agenda_build_from_book,
     agendaatom_shop,
     atom_update,
     atom_insert,
     atom_delete,
 )
+from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_books import get_bookunit_example1
 from pytest import raises as pytest_raises
 
@@ -311,37 +313,86 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj():
     #         print(f"{x_atom.category=}")
 
 
-def test_BookUnit_agenda_build_validate_CorrectlySetsTrue():
+def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenNoAgenda():
     # GIVEN
-    ex1_bookunit = get_bookunit_example1()
-    # assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
-    # assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
-    # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+    sue_bookunit = bookunit_shop()
 
-    # # WHEN
-    # sue_atom_order_dict = ex1_bookunit.get_sorted_agendaatoms()
+    agendaunit_text = "agendaunit"
+    x_agendaatom = agendaatom_shop(agendaunit_text, atom_update())
+    x_attribute = "_party_creditor_pool"
+    x_agendaatom.set_optional_arg(x_attribute, 100)
+    sue_bookunit.set_agendaatom(x_agendaatom)
 
-    # # THEN
-    # assert len(sue_atom_order_dict) == 2
-    # print(f"{sue_atom_order_dict.keys()=}")
-    # print(f"{sue_atom_order_dict.get(atom_update())=}")
-    # assert len(sue_atom_order_dict.get(atom_update())) == 1
-    # assert len(sue_atom_order_dict.get(atom_delete())) == 1
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", carm_text)
+    x_agendaatom.set_arg("creditor_weight", 70)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # WHEN/THEN
+    assert validate_agenda_build_from_book(sue_bookunit) == False
+
+    # WHEN
+    rico_text = "Rico"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", rico_text)
+    x_agendaatom.set_arg("creditor_weight", 30)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # THEN
+    assert validate_agenda_build_from_book(sue_bookunit)
+
+    # WHEN
+    bob_text = "Bob"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", bob_text)
+    x_agendaatom.set_arg("creditor_weight", 35)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # THEN
+    assert validate_agenda_build_from_book(sue_bookunit) == False
 
 
-def test_BookUnit_agenda_build_validate_CorrectlySetsFalse():
+def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenAgenda():
     # GIVEN
-    ex1_bookunit = get_bookunit_example1()
-    # assert len(ex1_bookunit.agendaatoms.get(atom_update()).keys()) == 1
-    # assert ex1_bookunit.agendaatoms.get(atom_insert()) is None
-    # assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.set_party_creditor_pool(100)
 
-    # # WHEN
-    # sue_atom_order_dict = ex1_bookunit.get_sorted_agendaatoms()
+    sue_bookunit = bookunit_shop()
 
-    # # THEN
-    # assert len(sue_atom_order_dict) == 2
-    # print(f"{sue_atom_order_dict.keys()=}")
-    # print(f"{sue_atom_order_dict.get(atom_update())=}")
-    # assert len(sue_atom_order_dict.get(atom_update())) == 1
-    # assert len(sue_atom_order_dict.get(atom_delete())) == 1
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", carm_text)
+    x_agendaatom.set_arg("creditor_weight", 70)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # WHEN/THEN
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.set_party_creditor_pool(100)
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) == False
+
+    # WHEN
+    rico_text = "Rico"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", rico_text)
+    x_agendaatom.set_arg("creditor_weight", 30)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # THEN
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.set_party_creditor_pool(100)
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda)
+
+    # WHEN
+    bob_text = "Bob"
+    x_agendaatom = agendaatom_shop(category, atom_insert())
+    x_agendaatom.set_arg("party_id", bob_text)
+    x_agendaatom.set_arg("creditor_weight", 35)
+    sue_bookunit.set_agendaatom(x_agendaatom)
+
+    # THEN
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.set_party_creditor_pool(100)
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) == False
