@@ -16,62 +16,6 @@ from pytest import raises as pytest_raises
 from sqlite3 import connect as sqlite3_connect
 
 
-def test_AgendaAtom_get_description_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
-    # WHEN
-    new2_value = 66
-    category = "agendaunit"
-    opt_arg2 = "_max_tree_traverse"
-    x_agendaatom = agendaatom_shop(category, atom_update())
-    x_agendaatom.set_optional_arg(opt_arg2, new2_value)
-    # THEN
-    assert (
-        x_agendaatom.get_description()
-        == f"Agenda's maximum number of Agenda output evaluations changed to {new2_value}."
-    )
-
-    # WHEN
-    new5_value = "override"
-    opt_arg5 = "_meld_strategy"
-    x_agendaatom = agendaatom_shop(category, atom_update())
-    x_agendaatom.set_optional_arg(opt_arg5, new5_value)
-    # THEN
-    assert (
-        x_agendaatom.get_description()
-        == f"Agenda's Meld Strategy changed to {new5_value}."
-    )
-
-    # WHEN
-    new3_value = 77
-    opt_arg3 = "_party_creditor_pool"
-    x_agendaatom = agendaatom_shop(category, atom_update())
-    x_agendaatom.set_optional_arg(opt_arg3, new3_value)
-    # THEN
-    assert (
-        x_agendaatom.get_description()
-        == f"Agenda's creditor pool limit changed to {new3_value}."
-    )
-
-    # WHEN
-    new4_value = 88
-    opt_arg4 = "_party_debtor_pool"
-    x_agendaatom = agendaatom_shop(category, atom_update())
-    x_agendaatom.set_optional_arg(opt_arg4, new4_value)
-    # THEN
-    assert (
-        x_agendaatom.get_description()
-        == f"Agenda's debtor pool limit changed to {new4_value}."
-    )
-
-    # GIVEN
-    new1_value = 55
-    opt_arg1 = "_weight"
-    # WHEN
-    x_agendaatom = agendaatom_shop(category, atom_update())
-    x_agendaatom.set_optional_arg(opt_arg1, new1_value)
-    # THEN
-    assert x_agendaatom.get_description() == f"Agenda's weight changed to {new1_value}."
-
-
 def test_AgendaAtom_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     # WHEN
     sports_text = "sports"

@@ -92,9 +92,9 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
 
     # WHEN / THEN
     assert check_every_crud_dict_has_element(get_atom_config_dict(), atom_order_text)
-    assert check_every_crud_dict_has_element(
-        get_atom_config_dict(), description_elements_text
-    )
+    # assert check_every_crud_dict_has_element(
+    #     get_atom_config_dict(), description_elements_text
+    # )
     mog = atom_order_text
     # # Simple script for editing atom_config.json
     # set_mog("agenda_partyunit", atom_insert(), mog, 0)

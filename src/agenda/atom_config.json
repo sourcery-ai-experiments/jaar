@@ -2,12 +2,10 @@
     "agenda_group_partylink": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 25,
-            "description_elements": []
+            "atom_order": 25
         },
         "INSERT": {
-            "atom_order": 1,
-            "description_elements": []
+            "atom_order": 1
         },
         "optional_args": {
             "creditor_weight": {
@@ -31,19 +29,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 12,
-            "description_elements": []
+            "atom_order": 12
         }
     },
     "agenda_groupunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 27,
-            "description_elements": []
+            "atom_order": 27
         },
         "INSERT": {
-            "atom_order": 2,
-            "description_elements": []
+            "atom_order": 2
         },
         "optional_args": {
             "_treasury_partylinks": {
@@ -59,19 +54,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 11,
-            "description_elements": []
+            "atom_order": 11
         }
     },
     "agenda_idea_balancelink": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 23,
-            "description_elements": []
+            "atom_order": 23
         },
         "INSERT": {
-            "atom_order": 4,
-            "description_elements": []
+            "atom_order": 4
         },
         "optional_args": {
             "creditor_weight": {
@@ -95,19 +87,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 14,
-            "description_elements": []
+            "atom_order": 14
         }
     },
     "agenda_idea_beliefunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 20,
-            "description_elements": []
+            "atom_order": 20
         },
         "INSERT": {
-            "atom_order": 7,
-            "description_elements": []
+            "atom_order": 7
         },
         "optional_args": {
             "nigh": {
@@ -135,19 +124,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 15,
-            "description_elements": []
+            "atom_order": 15
         }
     },
     "agenda_idea_healerhold": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 22,
-            "description_elements": []
+            "atom_order": 22
         },
         "INSERT": {
-            "atom_order": 6,
-            "description_elements": []
+            "atom_order": 6
         },
         "optional_args": {},
         "required_args": {
@@ -165,12 +151,10 @@
     "agenda_idea_reason_premiseunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 18,
-            "description_elements": []
+            "atom_order": 18
         },
         "INSERT": {
-            "atom_order": 9,
-            "description_elements": []
+            "atom_order": 9
         },
         "optional_args": {
             "divisor": {
@@ -202,19 +186,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 16,
-            "description_elements": []
+            "atom_order": 16
         }
     },
     "agenda_idea_reasonunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 19,
-            "description_elements": []
+            "atom_order": 19
         },
         "INSERT": {
-            "atom_order": 8,
-            "description_elements": []
+            "atom_order": 8
         },
         "optional_args": {
             "suff_idea_active": {
@@ -234,19 +215,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 17,
-            "description_elements": []
+            "atom_order": 17
         }
     },
     "agenda_idea_suffgroup": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 21,
-            "description_elements": []
+            "atom_order": 21
         },
         "INSERT": {
-            "atom_order": 5,
-            "description_elements": []
+            "atom_order": 5
         },
         "optional_args": {},
         "required_args": {
@@ -264,12 +242,10 @@
     "agenda_ideaunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 24,
-            "description_elements": []
+            "atom_order": 24
         },
         "INSERT": {
-            "atom_order": 3,
-            "description_elements": []
+            "atom_order": 3
         },
         "optional_args": {
             "_addin": {
@@ -333,19 +309,16 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 13,
-            "description_elements": []
+            "atom_order": 13
         }
     },
     "agenda_partyunit": {
         "calculated_attrs": {},
         "DELETE": {
-            "atom_order": 26,
-            "description_elements": []
+            "atom_order": 26
         },
         "INSERT": {
-            "atom_order": 0,
-            "description_elements": []
+            "atom_order": 0
         },
         "optional_args": {
             "creditor_weight": {
@@ -369,8 +342,7 @@
         },
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 10,
-            "description_elements": []
+            "atom_order": 10
         }
     },
     "agendaunit": {
@@ -408,34 +380,7 @@
         "required_args": {},
         "treasury_only": false,
         "UPDATE": {
-            "atom_order": 28,
-            "description_elements": [
-                {
-                    "arg": "_max_tree_traverse",
-                    "preceding text": "Agenda's maximum number of Agenda output evaluations changed to ",
-                    "proceding text": "."
-                },
-                {
-                    "arg": "_meld_strategy",
-                    "preceding text": "Agenda's Meld Strategy changed to ",
-                    "proceding text": "."
-                },
-                {
-                    "arg": "_party_creditor_pool",
-                    "preceding text": "Agenda's creditor pool limit changed to ",
-                    "proceding text": "."
-                },
-                {
-                    "arg": "_party_debtor_pool",
-                    "preceding text": "Agenda's debtor pool limit changed to ",
-                    "proceding text": "."
-                },
-                {
-                    "arg": "_weight",
-                    "preceding text": "Agenda's weight changed to ",
-                    "proceding text": "."
-                }
-            ]
+            "atom_order": 28
         }
     },
     "calendar": {

@@ -958,24 +958,32 @@ def add_agendaunit_legible_list(
     legible_list: list[str], x_atom: AgendaAtom, x_agenda: AgendaUnit
 ):
     optional_args = x_atom.optional_args
-    print(f"{optional_args=}")
     x_atom._crud_cache = None
-    print(f"{x_atom=}")
     _weight_text = "_weight"
+    _max_tree_traverse_text = "_max_tree_traverse"
+    _meld_strategy_text = "_meld_strategy"
     _money_desc_text = "_money_desc"
-    agendaunit_money_desc = optional_args.get(_money_desc_text)
     _party_creditor_pool_text = "_party_creditor_pool"
-    _party_creditor_pool_value = optional_args.get(_party_creditor_pool_text)
     _party_debtor_pool_text = "_party_debtor_pool"
+
+    _max_tree_traverse_value = optional_args.get(_max_tree_traverse_text)
+    _meld_strategy_value = optional_args.get(_meld_strategy_text)
+    _money_desc_value = optional_args.get(_money_desc_text)
+    _party_creditor_pool_value = optional_args.get(_party_creditor_pool_text)
     _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
-    if optional_args.get(_weight_text) != None:
-        agendaunit_weight = optional_args.get(_weight_text)
+    _weight_value = optional_args.get(_weight_text)
+
+    if _max_tree_traverse_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s agenda weight was changed to {agendaunit_weight}"
+            f"{x_agenda._worker_id}'s maximum number of Agenda output evaluations changed to {_max_tree_traverse_value}"
         )
-    if agendaunit_money_desc != None:
+    if _meld_strategy_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s money is now called '{agendaunit_money_desc}'"
+            f"{x_agenda._worker_id}'s Meld strategy changed to '{_meld_strategy_value}'"
+        )
+    if _money_desc_value != None:
+        legible_list.append(
+            f"{x_agenda._worker_id}'s money is now called '{_money_desc_value}'"
         )
     if (
         _party_creditor_pool_value != None
@@ -992,4 +1000,8 @@ def add_agendaunit_legible_list(
     elif _party_debtor_pool_value != None:
         legible_list.append(
             f"{x_agenda._money_desc} debtor pool is now {_party_debtor_pool_value}"
+        )
+    if _weight_value != None:
+        legible_list.append(
+            f"{x_agenda._worker_id}'s agenda weight was changed to {_weight_value}"
         )
