@@ -388,6 +388,10 @@
                 "python_type": "bool",
                 "sqlite_datatype": "TEXT"
             },
+            "_money_desc": {
+                "python_type": "str",
+                "sqlite_datatype": "TEXT"
+            },
             "_party_creditor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"

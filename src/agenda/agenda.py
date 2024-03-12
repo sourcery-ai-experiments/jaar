@@ -122,6 +122,7 @@ class AgendaUnit:
     _max_tree_traverse: int = None
     _road_delimiter: str = None
     _planck: float = None
+    _money_desc: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
     _auto_output_job_to_forum: bool = None
@@ -137,6 +138,9 @@ class AgendaUnit:
     _econs_buildable: bool = None
     _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
+
+    def set_money_desc(self, x_money_desc: str):
+        self._money_desc = x_money_desc
 
     def set_party_creditor_pool(
         self,

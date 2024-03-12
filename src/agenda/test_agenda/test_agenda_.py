@@ -33,6 +33,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._healers_dict is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._planck is None
+    assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy is None
@@ -73,6 +74,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._healers_dict == {}
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._planck == five_planck
+    assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._meld_strategy == override_meld_strategy
@@ -310,3 +312,16 @@ def test_AgendaUnit_set_meld_strategy_RaisesErrorWithIneligible_meld_strategy():
     with pytest_raises(Exception) as excinfo:
         noa_agenda.set_meld_strategy(bad_override_text)
     assert str(excinfo.value) == f"'{bad_override_text}' is ineligible meld_strategy."
+
+
+def test_AgendaUnit_set_money_desc_SetsAttrCorrectly():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    noa_money_desc = "Folos"
+    assert noa_agenda._money_desc != noa_money_desc
+
+    # WHEN
+    noa_agenda.set_money_desc(noa_money_desc)
+
+    # THEN
+    assert noa_agenda._money_desc == noa_money_desc
