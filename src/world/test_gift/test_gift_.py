@@ -1,10 +1,10 @@
-from src._road.road import create_road_from_nodes as roadnodes
-from src.agenda.atom import bookunit_shop
+from src.agenda.book import bookunit_shop
 from src.world.gift import GiftUnit, giftunit_shop
 from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
+from src.instrument.python import x_is_json
 from pytest import raises as pytest_raises
 
 
@@ -32,7 +32,7 @@ def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     assert farm_giftunit._book_start == 0
 
 
-def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
+def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # GIVEN
     bob_text = "Bob"
     bob_bookunit = get_bookunit_carm_example()
@@ -129,6 +129,20 @@ def test_GiftUnit_set_bookunit_SetsAttribute():
     assert farm_giftunit._bookunit == farm_bookunit
 
 
+def test_GiftUnit_set_book_start_SetsAttribute():
+    # GIVEN
+    bob_text = "Bob"
+    farm_giftunit = giftunit_shop(bob_text)
+    assert farm_giftunit._book_start == 0
+
+    # WHEN
+    farm_book_start = 11
+    farm_giftunit.set_book_start(farm_book_start)
+
+    # THEN
+    assert farm_giftunit._book_start == farm_book_start
+
+
 def test_GiftUnit_agendaatom_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
@@ -166,7 +180,7 @@ def test_GiftUnit_del_bookunit_SetsAttribute():
     assert farm_giftunit._bookunit == bookunit_shop()
 
 
-def test_GiftUnit_get_dict_ReturnsCorrectObj_Simple():
+def test_GiftUnit_get_step_dict_ReturnsCorrectObj_Simple():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -176,7 +190,7 @@ def test_GiftUnit_get_dict_ReturnsCorrectObj_Simple():
     farm_giftunit.set_giftee(yao_text)
 
     # WHEN
-    x_dict = farm_giftunit.get_dict()
+    x_dict = farm_giftunit.get_step_dict()
 
     # THEN
     gifter_text = "gifter"
@@ -192,23 +206,23 @@ def test_GiftUnit_get_dict_ReturnsCorrectObj_Simple():
 
     book_text = "book"
     assert x_dict.get(book_text) != None
-    assert x_dict.get(book_text) == bookunit_shop().get_dict()
+    assert x_dict.get(book_text) == bookunit_shop().get_ordered_agendaatoms()
     assert x_dict.get(book_text) == {}
 
 
-def test_GiftUnit_get_dict_ReturnsCorrectObj_WithBookPopulated():
+def test_GiftUnit_get_step_dict_ReturnsCorrectObj_WithBookPopulated():
     # GIVEN
     bob_text = "Bob"
     carm_bookunit = get_bookunit_carm_example()
     farm_giftunit = giftunit_shop(bob_text, _bookunit=carm_bookunit)
 
     # WHEN
-    x_dict = farm_giftunit.get_dict()
+    x_dict = farm_giftunit.get_step_dict()
 
     # THEN
     book_text = "book"
     assert x_dict.get(book_text) != None
-    assert x_dict.get(book_text) == carm_bookunit.get_dict()
+    assert x_dict.get(book_text) == carm_bookunit.get_ordered_agendaatoms()
     carm_agendaatoms_dict = x_dict.get(book_text)
     print(f"{len(carm_bookunit.get_sorted_agendaatoms())=}")
     print(f"{carm_agendaatoms_dict.keys()=}")
@@ -218,7 +232,7 @@ def test_GiftUnit_get_dict_ReturnsCorrectObj_WithBookPopulated():
     assert carm_agendaatoms_dict.get(1) != None
 
 
-def test_GiftUnit_get_dict_ReturnsCorrectObj_book_start():
+def test_GiftUnit_get_step_dict_ReturnsCorrectObj_book_start():
     # GIVEN
     bob_text = "Bob"
     carm_bookunit = get_bookunit_carm_example()
@@ -228,12 +242,14 @@ def test_GiftUnit_get_dict_ReturnsCorrectObj_book_start():
     )
 
     # WHEN
-    x_dict = farm_giftunit.get_dict()
+    x_dict = farm_giftunit.get_step_dict()
 
     # THEN
     book_text = "book"
     assert x_dict.get(book_text) != None
-    assert x_dict.get(book_text) == carm_bookunit.get_dict(farm_book_start)
+    assert x_dict.get(book_text) == carm_bookunit.get_ordered_agendaatoms(
+        farm_book_start
+    )
     carm_agendaatoms_dict = x_dict.get(book_text)
     print(f"{len(carm_bookunit.get_sorted_agendaatoms())=}")
     print(f"{carm_agendaatoms_dict.keys()=}")
@@ -241,3 +257,102 @@ def test_GiftUnit_get_dict_ReturnsCorrectObj_book_start():
     assert carm_agendaatoms_dict.get(farm_book_start + 2) is None
     assert carm_agendaatoms_dict.get(farm_book_start + 0) != None
     assert carm_agendaatoms_dict.get(farm_book_start + 1) != None
+
+
+def test_GiftUnit_get_book_min_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    tim_text = "Tim"
+    yao_text = "Yao"
+    carm_bookunit = get_bookunit_carm_example()
+    farm_book_start = 7
+    farm_giftunit = giftunit_shop(bob_text)
+    farm_giftunit.set_bookunit(carm_bookunit)
+    farm_giftunit.set_book_start(farm_book_start)
+    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_giftee(yao_text)
+    farm_dict = farm_giftunit.get_step_dict()
+
+    # WHEN
+    farm_book_min = farm_giftunit.get_book_min(farm_dict)
+    # THEN
+    assert farm_book_min == farm_book_start
+    assert farm_book_min == 7
+
+
+def test_GiftUnit_get_book_max_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    tim_text = "Tim"
+    yao_text = "Yao"
+    carm_bookunit = get_bookunit_carm_example()
+    farm_book_start = 7
+    farm_giftunit = giftunit_shop(bob_text)
+    farm_giftunit.set_bookunit(carm_bookunit)
+    farm_giftunit.set_book_start(farm_book_start)
+    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_giftee(yao_text)
+    farm_dict = farm_giftunit.get_step_dict()
+
+    # WHEN
+    farm_book_min = farm_giftunit.get_book_max(farm_dict)
+    # THEN
+    assert farm_book_min == farm_book_start + 1
+    assert farm_book_min == 8
+
+
+def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    tim_text = "Tim"
+    yao_text = "Yao"
+    carm_bookunit = get_bookunit_carm_example()
+    farm_book_start = 7
+    farm_giftunit = giftunit_shop(bob_text)
+    farm_giftunit.set_bookunit(carm_bookunit)
+    farm_giftunit.set_book_start(farm_book_start)
+    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_giftee(yao_text)
+
+    # WHEN
+    x_dict = farm_giftunit.get_bookmetric_dict()
+
+    # THEN
+    gifter_text = "gifter"
+    assert x_dict.get(gifter_text) != None
+    assert x_dict.get(gifter_text) == bob_text
+
+    giftees_text = "giftees"
+    assert x_dict.get(giftees_text) != None
+    giftees_dict = x_dict.get(giftees_text)
+    assert giftees_dict.get(bob_text) is None
+    assert giftees_dict.get(tim_text) != None
+    assert giftees_dict.get(yao_text) != None
+
+    book_min_text = "book_min"
+    assert x_dict.get(book_min_text) != None
+    assert x_dict.get(book_min_text) == 7
+
+    book_max_text = "book_max"
+    assert x_dict.get(book_max_text) != None
+    assert x_dict.get(book_max_text) == 8
+
+
+def test_GiftUnit_get_bookmetric_json_ReturnsCorrectObj():
+    # GIVEN
+    bob_text = "Bob"
+    tim_text = "Tim"
+    yao_text = "Yao"
+    carm_bookunit = get_bookunit_carm_example()
+    farm_book_start = 7
+    farm_giftunit = giftunit_shop(bob_text)
+    farm_giftunit.set_bookunit(carm_bookunit)
+    farm_giftunit.set_book_start(farm_book_start)
+    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_giftee(yao_text)
+
+    # WHEN
+    farm_json = farm_giftunit.get_bookmetric_json()
+
+    # THEN
+    assert x_is_json(farm_json)

@@ -1,5 +1,5 @@
 from src.agenda.party import partyunit_shop
-from src.agenda.atom import (
+from src.agenda.book import (
     BookUnit,
     bookunit_shop,
     validate_agenda_build_from_book,
@@ -10,6 +10,7 @@ from src.agenda.atom import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_books import get_bookunit_example1
+from src.instrument.python import x_is_json
 from pytest import raises as pytest_raises
 
 
@@ -398,7 +399,7 @@ def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenAgenda():
     assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) == False
 
 
-def test_BookUnit_get_dict_ReturnsCorrectObj_GivenNoStartingNumber():
+def test_BookUnit_get_ordered_agendaatoms_ReturnsCorrectObj_GivenNoStartingNumber():
     # GIVEN
     sue_bookunit = bookunit_shop()
     agendaunit_text = "agendaunit"
@@ -424,7 +425,7 @@ def test_BookUnit_get_dict_ReturnsCorrectObj_GivenNoStartingNumber():
     assert validate_agenda_build_from_book(sue_bookunit, sue_agenda)
 
     # WHEN
-    bookunit_dict = sue_bookunit.get_dict()
+    bookunit_dict = sue_bookunit.get_ordered_agendaatoms()
 
     # THEN
     # book_carm = bookunit_dict.get(0)
@@ -441,7 +442,7 @@ def test_BookUnit_get_dict_ReturnsCorrectObj_GivenNoStartingNumber():
     assert bookunit_dict.get(2) == pool_agendaatom
 
 
-def test_BookUnit_get_dict_ReturnsCorrectObj_GivenStartingNumber():
+def test_BookUnit_get_ordered_agendaatoms_ReturnsCorrectObj_GivenStartingNumber():
     # GIVEN
     sue_bookunit = bookunit_shop()
     agendaunit_text = "agendaunit"
@@ -467,7 +468,7 @@ def test_BookUnit_get_dict_ReturnsCorrectObj_GivenStartingNumber():
     assert validate_agenda_build_from_book(sue_bookunit, sue_agenda)
 
     # WHEN
-    bookunit_dict = sue_bookunit.get_dict(5)
+    bookunit_dict = sue_bookunit.get_ordered_agendaatoms(5)
 
     # THEN
     # book_carm = bookunit_dict.get(0)
@@ -482,6 +483,77 @@ def test_BookUnit_get_dict_ReturnsCorrectObj_GivenStartingNumber():
     assert bookunit_dict.get(5) == carm_agendaatom
     assert bookunit_dict.get(6) == rico_agendaatom
     assert bookunit_dict.get(7) == pool_agendaatom
+
+
+def test_BookUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
+    # GIVEN
+    sue_bookunit = bookunit_shop()
+    agendaunit_text = "agendaunit"
+    pool_agendaatom = agendaatom_shop(agendaunit_text, atom_update())
+    pool_attribute = "_party_creditor_pool"
+    pool_agendaatom.set_optional_arg(pool_attribute, 100)
+    sue_bookunit.set_agendaatom(pool_agendaatom)
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    carm_agendaatom = agendaatom_shop(category, atom_insert())
+    carm_agendaatom.set_arg("party_id", carm_text)
+    carm_agendaatom.set_arg("creditor_weight", 70)
+    sue_bookunit.set_agendaatom(carm_agendaatom)
+    sue_agenda = agendaunit_shop("Sue")
+    sue_agenda.set_party_creditor_pool(100)
+    rico_text = "Rico"
+    rico_agendaatom = agendaatom_shop(category, atom_insert())
+    rico_agendaatom.set_arg("party_id", rico_text)
+    rico_agendaatom.set_arg("creditor_weight", 30)
+    sue_bookunit.set_agendaatom(rico_agendaatom)
+
+    sue_agenda = agendaunit_shop("Sue")
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda)
+
+    # WHEN
+    bookunit_dict = sue_bookunit.get_ordered_dict(5)
+
+    # THEN
+    # book_carm = bookunit_dict.get(0)
+    # book_rico = bookunit_dict.get(1)
+    # book_pool = bookunit_dict.get(2)
+    # book_carm._crud_cache = None
+    # book_rico._crud_cache = None
+    # book_pool._crud_cache = None
+    # assert book_carm == carm_agendaatom
+    # assert book_rico == rico_agendaatom
+    # assert book_pool == pool_agendaatom
+    assert bookunit_dict.get(5) == carm_agendaatom.get_dict()
+    assert bookunit_dict.get(6) == rico_agendaatom.get_dict()
+    assert bookunit_dict.get(7) == pool_agendaatom.get_dict()
+
+
+def test_BookUnit_get_json_ReturnsCorrectObj():
+    # GIVEN
+    sue_bookunit = bookunit_shop()
+    agendaunit_text = "agendaunit"
+    pool_agendaatom = agendaatom_shop(agendaunit_text, atom_update())
+    pool_attribute = "_party_creditor_pool"
+    pool_agendaatom.set_optional_arg(pool_attribute, 100)
+    sue_bookunit.set_agendaatom(pool_agendaatom)
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    carm_agendaatom = agendaatom_shop(category, atom_insert())
+    carm_agendaatom.set_arg("party_id", carm_text)
+    carm_agendaatom.set_arg("creditor_weight", 70)
+    sue_bookunit.set_agendaatom(carm_agendaatom)
+    rico_text = "Rico"
+    rico_agendaatom = agendaatom_shop(category, atom_insert())
+    rico_agendaatom.set_arg("party_id", rico_text)
+    rico_agendaatom.set_arg("creditor_weight", 30)
+    sue_bookunit.set_agendaatom(rico_agendaatom)
+
+    # WHEN
+    book_start_int = 5
+    bookunit_json = sue_bookunit.get_json(book_start_int)
+
+    # THEN
+    assert x_is_json(bookunit_json)
 
 
 def test_BookUnit_agendaatom_exists_ReturnsCorrectObj():

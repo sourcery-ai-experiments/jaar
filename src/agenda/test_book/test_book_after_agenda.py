@@ -7,12 +7,12 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.atom import (
-    bookunit_shop,
     atom_update,
     atom_delete,
     atom_insert,
     agendaatom_shop,
 )
+from src.agenda.book import bookunit_shop
 from src.agenda.examples.example_books import get_bookunit_example1
 
 

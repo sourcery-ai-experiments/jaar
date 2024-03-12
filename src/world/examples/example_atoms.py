@@ -5,9 +5,8 @@ from src.agenda.atom import (
     atom_insert,
     atom_update,
     AgendaAtom,
-    bookunit_shop,
-    BookUnit,
 )
+from src.agenda.book import bookunit_shop, BookUnit
 from src.world.world import WorldID
 
 
