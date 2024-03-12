@@ -1,5 +1,13 @@
 from src._road.road import create_road, get_default_world_id_roadnode
-from src.agenda.atom import agendaatom_shop, atom_insert, AgendaAtom
+from src.agenda.atom import (
+    agendaatom_shop,
+    atom_delete,
+    atom_insert,
+    atom_update,
+    AgendaAtom,
+    bookunit_shop,
+    BookUnit,
+)
 from src.world.world import WorldID
 
 
@@ -74,3 +82,20 @@ def get_atom_example_beliefunit_knee(world_id: WorldID = None) -> AgendaAtom:
     insert_beliefunit_agendaatom.set_optional_arg(open_text, knee_open)
     insert_beliefunit_agendaatom.set_optional_arg(nigh_text, knee_nigh)
     return insert_beliefunit_agendaatom
+
+
+def get_bookunit_carm_example() -> BookUnit:
+    sue_bookunit = bookunit_shop()
+
+    agendaunit_text = "agendaunit"
+    pool_agendaatom = agendaatom_shop(agendaunit_text, atom_update())
+    pool_attribute = "_party_creditor_pool"
+    pool_agendaatom.set_optional_arg(pool_attribute, 77)
+    sue_bookunit.set_agendaatom(pool_agendaatom)
+
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    carm_agendaatom = agendaatom_shop(category, atom_delete())
+    carm_agendaatom.set_required_arg("party_id", carm_text)
+    sue_bookunit.set_agendaatom(carm_agendaatom)
+    return sue_bookunit

@@ -482,3 +482,22 @@ def test_BookUnit_get_dict_ReturnsCorrectObj_GivenStartingNumber():
     assert bookunit_dict.get(5) == carm_agendaatom
     assert bookunit_dict.get(6) == rico_agendaatom
     assert bookunit_dict.get(7) == pool_agendaatom
+
+
+def test_BookUnit_agendaatom_exists_ReturnsCorrectObj():
+    # GIVEN
+    farm_bookunit = bookunit_shop()
+
+    # WHEN / THEN
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    carm_agendaatom = agendaatom_shop(category, atom_insert())
+    carm_agendaatom.set_arg("party_id", carm_text)
+    carm_agendaatom.set_arg("creditor_weight", 70)
+    assert farm_bookunit.agendaatom_exists(carm_agendaatom) == False
+
+    # WHEN
+    farm_bookunit.set_agendaatom(carm_agendaatom)
+
+    # THEN
+    assert farm_bookunit.agendaatom_exists(carm_agendaatom)

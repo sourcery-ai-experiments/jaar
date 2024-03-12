@@ -688,6 +688,26 @@ class BookUnit:
         ]
         place_obj_in_dict(self.agendaatoms, x_keylist, x_agendaatom)
 
+    def agendaatom_exists(self, x_agendaatom: AgendaAtom) -> bool:
+        if x_agendaatom.is_valid() == False:
+            raise InvalidAgendaAtomException(
+                f"""'{x_agendaatom.category}' {x_agendaatom.crud_text} AgendaAtom is invalid
+                {x_agendaatom.is_required_args_valid()=}
+                {x_agendaatom.is_optional_args_valid()=}"""
+            )
+
+        x_agendaatom.set_atom_order()
+        x_keylist = [
+            x_agendaatom.crud_text,
+            x_agendaatom.category,
+            *list(x_agendaatom.required_args.values()),
+        ]
+        try:
+            nested_agendaatom = get_nested_value(self.agendaatoms, x_keylist)
+        except Exception:
+            return False
+        return nested_agendaatom == x_agendaatom
+
     def add_agendaatom(
         self,
         category: str,

@@ -1,6 +1,10 @@
 from src._road.road import RoadUnit, PersonRoad, PersonID
-from src.agenda.atom import BookUnit, bookunit_shop
-from src.instrument.python import get_empty_dict_if_none
+from src.agenda.atom import BookUnit, bookunit_shop, AgendaAtom
+from src.instrument.python import (
+    get_empty_dict_if_none,
+    get_0_if_None,
+    get_empty_set_if_none,
+)
 from dataclasses import dataclass
 
 
@@ -18,23 +22,49 @@ class get_member_attr_Exception(Exception):
 
 @dataclass
 class GiftUnit:
-    _author: PersonID = None
-    _signers: set[PersonID] = None
-    _like: BookUnit = None
+    _gifter: PersonID = None
+    _giftees: set[PersonID] = None
+    _bookunit: BookUnit = None
+    _book_start: int = None
+
+    def set_giftee(self, x_giftee: PersonID):
+        self._giftees.add(x_giftee)
+
+    def giftee_exists(self, x_giftee: PersonID) -> bool:
+        return x_giftee in self._giftees
+
+    def del_giftee(self, x_giftee: PersonID):
+        self._giftees.remove(x_giftee)
+
+    def set_bookunit(self, x_bookunit: BookUnit):
+        self._bookunit = x_bookunit
+
+    def del_bookunit(self):
+        self._bookunit = bookunit_shop()
+
+    def agendaatom_exists(self, x_agendaatom: AgendaAtom):
+        return self._bookunit.agendaatom_exists(x_agendaatom)
+
+    def get_dict(self):
+        giftees_dict = {x_giftee: 1 for x_giftee in self._giftees}
+        return {
+            "gifter": self._gifter,
+            "giftees": giftees_dict,
+            "book": self._bookunit.get_dict(self._book_start),
+        }
 
 
 def giftunit_shop(
-    _author: PersonID,
-    _signers: set[PersonID] = None,
-    _like: BookUnit = None,
+    _gifter: PersonID,
+    _giftees: set[PersonID] = None,
+    _bookunit: BookUnit = None,
+    _book_start: int = None,
 ):
-    if _signers is None:
-        _signers = set()
-    if _like is None:
-        _like = bookunit_shop()
+    # _book_start = get_0_if_None(_book_start)
+    _giftees = get_empty_set_if_none(_giftees)
+    if _bookunit is None:
+        _bookunit = bookunit_shop()
 
     return GiftUnit(
-        _author=_author,
-        _signers=_signers,
-        _like=_like,
+        _gifter=_gifter, _giftees=_giftees, _bookunit=_bookunit, _book_start=_book_start
     )
