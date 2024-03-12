@@ -932,3 +932,64 @@ def validate_agenda_build_from_book(x_book: BookUnit, x_agenda: AgendaUnit = Non
         return False
 
     return True
+
+
+def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
+    x_list = []
+    insert_dict = x_book.agendaatoms.get(atom_insert())
+    update_dict = x_book.agendaatoms.get(atom_update())
+    delete_dict = x_book.agendaatoms.get(atom_delete())
+
+    # if insert_dict != None:
+    #     pass
+    if update_dict != None:
+        print(f"{update_dict.keys()=}")
+        agendaunit_text = "agendaunit"
+        if update_dict.get(agendaunit_text) != None:
+            x_atom = update_dict.get(agendaunit_text)
+            add_agendaunit_legible_list(x_list, x_atom, x_agenda)
+    # if delete_dict != None:
+    #     pass
+
+    return x_list
+
+
+def add_agendaunit_legible_list(
+    legible_list: list[str], x_atom: AgendaAtom, x_agenda: AgendaUnit
+):
+    optional_args = x_atom.optional_args
+    print(f"{optional_args=}")
+    x_atom._crud_cache = None
+    print(f"{x_atom=}")
+    _weight_text = "_weight"
+    _money_desc_text = "_money_desc"
+    agendaunit_money_desc = optional_args.get(_money_desc_text)
+    _party_creditor_pool_text = "_party_creditor_pool"
+    _party_creditor_pool_value = optional_args.get(_party_creditor_pool_text)
+    _party_debtor_pool_text = "_party_debtor_pool"
+    _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
+    if optional_args.get(_weight_text) != None:
+        agendaunit_weight = optional_args.get(_weight_text)
+        legible_list.append(
+            f"{x_agenda._worker_id}'s agenda weight was changed to {agendaunit_weight}"
+        )
+    if agendaunit_money_desc != None:
+        legible_list.append(
+            f"{x_agenda._worker_id}'s money is now called '{agendaunit_money_desc}'"
+        )
+    if (
+        _party_creditor_pool_value != None
+        and _party_debtor_pool_value != None
+        and _party_creditor_pool_value == _party_debtor_pool_value
+    ):
+        legible_list.append(
+            f"{x_agenda._money_desc} total pool is now {_party_creditor_pool_value}"
+        )
+    elif _party_creditor_pool_value != None:
+        legible_list.append(
+            f"{x_agenda._money_desc} creditor pool is now {_party_creditor_pool_value}"
+        )
+    elif _party_debtor_pool_value != None:
+        legible_list.append(
+            f"{x_agenda._money_desc} debtor pool is now {_party_debtor_pool_value}"
+        )
