@@ -136,20 +136,33 @@ class BookUnit:
     ):
         if optional_args_different("agendaunit", before_agenda, after_agenda):
             x_agendaatom = agendaatom_shop("agendaunit", atom_update())
-            x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
-            x_agendaatom.set_optional_arg(
-                "_max_tree_traverse", after_agenda._max_tree_traverse
-            )
-            x_agendaatom.set_optional_arg(
-                "_party_creditor_pool", after_agenda._party_creditor_pool
-            )
-            x_agendaatom.set_optional_arg(
-                "_party_debtor_pool", after_agenda._party_debtor_pool
-            )
-            x_agendaatom.set_optional_arg(
-                "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
-            )
-            x_agendaatom.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
+            if (
+                before_agenda._auto_output_job_to_forum
+                != after_agenda._auto_output_job_to_forum
+            ):
+                x_agendaatom.set_optional_arg(
+                    "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
+                )
+            if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
+                x_agendaatom.set_optional_arg(
+                    "_max_tree_traverse", after_agenda._max_tree_traverse
+                )
+            if before_agenda._meld_strategy != after_agenda._meld_strategy:
+                x_agendaatom.set_optional_arg(
+                    "_meld_strategy", after_agenda._meld_strategy
+                )
+            if before_agenda._money_desc != after_agenda._money_desc:
+                x_agendaatom.set_optional_arg("_money_desc", after_agenda._money_desc)
+            if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
+                x_agendaatom.set_optional_arg(
+                    "_party_creditor_pool", after_agenda._party_creditor_pool
+                )
+            if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
+                x_agendaatom.set_optional_arg(
+                    "_party_debtor_pool", after_agenda._party_debtor_pool
+                )
+            if before_agenda._weight != after_agenda._weight:
+                x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
             self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_partyunits(
