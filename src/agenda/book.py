@@ -973,6 +973,10 @@ def add_agendaunit_legible_list(
     _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
     _weight_value = optional_args.get(_weight_text)
 
+    x_money_desc = x_agenda._money_desc
+    if x_money_desc is None:
+        x_money_desc = f"{x_agenda._worker_id}'s money"
+
     if _max_tree_traverse_value != None:
         legible_list.append(
             f"{x_agenda._worker_id}'s maximum number of Agenda output evaluations changed to {_max_tree_traverse_value}"
@@ -991,15 +995,15 @@ def add_agendaunit_legible_list(
         and _party_creditor_pool_value == _party_debtor_pool_value
     ):
         legible_list.append(
-            f"{x_agenda._money_desc} total pool is now {_party_creditor_pool_value}"
+            f"{x_money_desc} total pool is now {_party_creditor_pool_value}"
         )
     elif _party_creditor_pool_value != None:
         legible_list.append(
-            f"{x_agenda._money_desc} creditor pool is now {_party_creditor_pool_value}"
+            f"{x_money_desc} creditor pool is now {_party_creditor_pool_value}"
         )
     elif _party_debtor_pool_value != None:
         legible_list.append(
-            f"{x_agenda._money_desc} debtor pool is now {_party_debtor_pool_value}"
+            f"{x_money_desc} debtor pool is now {_party_debtor_pool_value}"
         )
     if _weight_value != None:
         legible_list.append(

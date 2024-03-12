@@ -85,6 +85,30 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool():
     assert legible_list[0] == x_str
 
 
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_With_money_desc_None():
+    # GIVEN
+    category = "agendaunit"
+    party_creditor_pool_text = "_party_creditor_pool"
+    party_creditor_pool_int = 71
+    agenda_party_creditor_pool_agendaatom = agendaatom_shop(category, atom_update())
+    agenda_party_creditor_pool_agendaatom.set_arg(
+        party_creditor_pool_text, party_creditor_pool_int
+    )
+
+    agenda_party_creditor_pool_agendaatom._crud_cache = None
+    print(f"{agenda_party_creditor_pool_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(agenda_party_creditor_pool_agendaatom)
+    sue_agenda = agendaunit_shop("Sue")
+
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
+
+    # THEN
+    x_str = f"{sue_agenda._worker_id}'s money creditor pool is now {party_creditor_pool_int}"
+    assert legible_list[0] == x_str
+
+
 def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_debtor_pool():
     # GIVEN
     category = "agendaunit"
