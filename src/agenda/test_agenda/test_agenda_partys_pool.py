@@ -373,3 +373,24 @@ def test_AgendaUnit_set_party_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     assert (
         zia_agenda.get_partyunits_debtor_weight_sum() == zia_agenda._party_debtor_pool
     )
+
+
+def test_AgendaUnit_set_party_pool_CorrectlySetsAttrs():
+    # GIVEN
+    zia_text = "Zia"
+    old_party_creditor_pool = 77
+    old_party_debtor_pool = 88
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(zia_text)
+    zia_agenda.set_party_creditor_pool(old_party_creditor_pool)
+    zia_agenda.set_party_debtor_pool(old_party_debtor_pool)
+    assert zia_agenda._party_creditor_pool == old_party_creditor_pool
+    assert zia_agenda._party_debtor_pool == old_party_debtor_pool
+
+    # WHEN
+    new_party_pool = 200
+    zia_agenda.set_party_pool(new_party_pool)
+
+    # THEN
+    assert zia_agenda._party_creditor_pool == new_party_pool
+    assert zia_agenda._party_debtor_pool == new_party_pool

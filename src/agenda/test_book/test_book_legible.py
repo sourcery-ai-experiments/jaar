@@ -26,10 +26,10 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_weight():
     category = "agendaunit"
     weight_text = "_weight"
     weight_int = 55
-    agenda_weight_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_weight_agendaatom.set_arg(weight_text, weight_int)
+    weight_agendaatom = agendaatom_shop(category, atom_update())
+    weight_agendaatom.set_arg(weight_text, weight_int)
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_weight_agendaatom)
+    x_bookunit.set_agendaatom(weight_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
@@ -64,15 +64,15 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool():
     category = "agendaunit"
     party_creditor_pool_text = "_party_creditor_pool"
     party_creditor_pool_int = 71
-    agenda_party_creditor_pool_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_party_creditor_pool_agendaatom.set_arg(
+    party_creditor_pool_agendaatom = agendaatom_shop(category, atom_update())
+    party_creditor_pool_agendaatom.set_arg(
         party_creditor_pool_text, party_creditor_pool_int
     )
 
-    agenda_party_creditor_pool_agendaatom._crud_cache = None
-    print(f"{agenda_party_creditor_pool_agendaatom=}")
+    party_creditor_pool_agendaatom._crud_cache = None
+    print(f"{party_creditor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_party_creditor_pool_agendaatom)
+    x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
     sue_money_desc = "dragon coins"
     sue_agenda.set_money_desc(sue_money_desc)
@@ -90,15 +90,15 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Wit
     category = "agendaunit"
     party_creditor_pool_text = "_party_creditor_pool"
     party_creditor_pool_int = 71
-    agenda_party_creditor_pool_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_party_creditor_pool_agendaatom.set_arg(
+    party_creditor_pool_agendaatom = agendaatom_shop(category, atom_update())
+    party_creditor_pool_agendaatom.set_arg(
         party_creditor_pool_text, party_creditor_pool_int
     )
 
-    agenda_party_creditor_pool_agendaatom._crud_cache = None
-    print(f"{agenda_party_creditor_pool_agendaatom=}")
+    party_creditor_pool_agendaatom._crud_cache = None
+    print(f"{party_creditor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_party_creditor_pool_agendaatom)
+    x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
@@ -114,15 +114,13 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_debtor_pool():
     category = "agendaunit"
     party_debtor_pool_text = "_party_debtor_pool"
     party_debtor_pool_int = 78
-    agenda_party_debtor_pool_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_party_debtor_pool_agendaatom.set_arg(
-        party_debtor_pool_text, party_debtor_pool_int
-    )
+    party_debtor_pool_agendaatom = agendaatom_shop(category, atom_update())
+    party_debtor_pool_agendaatom.set_arg(party_debtor_pool_text, party_debtor_pool_int)
 
-    agenda_party_debtor_pool_agendaatom._crud_cache = None
-    print(f"{agenda_party_debtor_pool_agendaatom=}")
+    party_debtor_pool_agendaatom._crud_cache = None
+    print(f"{party_debtor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_party_debtor_pool_agendaatom)
+    x_bookunit.set_agendaatom(party_debtor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
     sue_money_desc = "dragon coins"
     sue_agenda.set_money_desc(sue_money_desc)
@@ -164,15 +162,13 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_max_tree_traverse():
     category = "agendaunit"
     max_tree_traverse_text = "_max_tree_traverse"
     max_tree_traverse_int = 71
-    agenda_max_tree_traverse_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_max_tree_traverse_agendaatom.set_arg(
-        max_tree_traverse_text, max_tree_traverse_int
-    )
+    max_tree_traverse_agendaatom = agendaatom_shop(category, atom_update())
+    max_tree_traverse_agendaatom.set_arg(max_tree_traverse_text, max_tree_traverse_int)
 
-    agenda_max_tree_traverse_agendaatom._crud_cache = None
-    print(f"{agenda_max_tree_traverse_agendaatom=}")
+    max_tree_traverse_agendaatom._crud_cache = None
+    print(f"{max_tree_traverse_agendaatom=}")
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_max_tree_traverse_agendaatom)
+    x_bookunit.set_agendaatom(max_tree_traverse_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
@@ -188,13 +184,13 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_meld_strategy():
     category = "agendaunit"
     meld_strategy_text = "_meld_strategy"
     meld_strategy_value = "override"
-    agenda_meld_strategy_agendaatom = agendaatom_shop(category, atom_update())
-    agenda_meld_strategy_agendaatom.set_arg(meld_strategy_text, meld_strategy_value)
+    meld_strategy_agendaatom = agendaatom_shop(category, atom_update())
+    meld_strategy_agendaatom.set_arg(meld_strategy_text, meld_strategy_value)
 
-    agenda_meld_strategy_agendaatom._crud_cache = None
-    print(f"{agenda_meld_strategy_agendaatom=}")
+    meld_strategy_agendaatom._crud_cache = None
+    print(f"{meld_strategy_agendaatom=}")
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(agenda_meld_strategy_agendaatom)
+    x_bookunit.set_agendaatom(meld_strategy_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
@@ -204,4 +200,62 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_meld_strategy():
     x_str = (
         f"{sue_agenda._worker_id}'s Meld strategy changed to '{meld_strategy_value}'"
     )
+    assert legible_list[0] == x_str
+
+
+def test_create_legible_list_ReturnsObj_partyunit_INSERT():
+    # GIVEN
+    category = "agenda_partyunit"
+    party_id_text = "party_id"
+    creditor_weight_text = "creditor_weight"
+    debtor_weight_text = "debtor_weight"
+    creditor_weight_value = 81
+    debtor_weight_value = 43
+    rico_text = "Rico"
+    rico_agendaatom = agendaatom_shop(category, atom_insert())
+    rico_agendaatom.set_arg(party_id_text, rico_text)
+    rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
+    rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
+    rico_agendaatom._crud_cache = None
+    # print(f"{rico_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(rico_agendaatom)
+    sue_agenda = agendaunit_shop("Sue")
+    sue_money_desc = "dragon coins"
+    sue_agenda.set_money_desc(sue_money_desc)
+
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
+
+    # THEN
+    x_str = f"{rico_text} was added with {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt"
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
+
+
+def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
+    # GIVEN
+    category = "agenda_partyunit"
+    party_id_text = "party_id"
+    creditor_weight_text = "creditor_weight"
+    debtor_weight_text = "debtor_weight"
+    creditor_weight_value = 81
+    debtor_weight_value = 43
+    rico_text = "Rico"
+    rico_agendaatom = agendaatom_shop(category, atom_insert())
+    rico_agendaatom.set_arg(party_id_text, rico_text)
+    rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
+    rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
+    rico_agendaatom._crud_cache = None
+    # print(f"{rico_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(rico_agendaatom)
+    sue_agenda = agendaunit_shop("Sue")
+
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
+
+    # THEN
+    x_str = f"{rico_text} was added with {creditor_weight_value} money credit and {debtor_weight_value} money debt"
+    print(f"{x_str=}")
     assert legible_list[0] == x_str

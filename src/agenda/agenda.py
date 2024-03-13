@@ -142,6 +142,18 @@ class AgendaUnit:
     def set_money_desc(self, x_money_desc: str):
         self._money_desc = x_money_desc
 
+    def set_party_pool(self, x_party_pool: int):
+        self.set_party_creditor_pool(
+            new_party_creditor_pool=x_party_pool,
+            update_partys_creditor_weight=True,
+            correct_planck_issues=True,
+        )
+        self.set_party_debtor_pool(
+            new_party_debtor_pool=x_party_pool,
+            update_partys_debtor_weight=True,
+            correct_planck_issues=True,
+        )
+
     def set_party_creditor_pool(
         self,
         new_party_creditor_pool: int,
