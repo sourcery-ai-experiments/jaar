@@ -1064,93 +1064,93 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
 
     if agenda_ideaunit_insert_dict != None:
         add_agenda_ideaunit_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_ideaunit_insert_dict, x_agenda
         )
     if agenda_ideaunit_update_dict != None:
         add_agenda_ideaunit_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_ideaunit_update_dict, x_agenda
         )
     if agenda_ideaunit_delete_dict != None:
         add_agenda_ideaunit_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_ideaunit_delete_dict, x_agenda
         )
 
     if agenda_idea_balancelink_insert_dict != None:
         add_agenda_idea_balancelink_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_balancelink_insert_dict, x_agenda
         )
     if agenda_idea_balancelink_update_dict != None:
         add_agenda_idea_balancelink_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_balancelink_update_dict, x_agenda
         )
     if agenda_idea_balancelink_delete_dict != None:
         add_agenda_idea_balancelink_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_balancelink_delete_dict, x_agenda
         )
 
     if agenda_idea_reasonunit_insert_dict != None:
         add_agenda_idea_reasonunit_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_reasonunit_insert_dict, x_agenda
         )
     if agenda_idea_reasonunit_update_dict != None:
         add_agenda_idea_reasonunit_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_reasonunit_update_dict, x_agenda
         )
     if agenda_idea_reasonunit_delete_dict != None:
         add_agenda_idea_reasonunit_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_reasonunit_delete_dict, x_agenda
         )
 
     if agenda_idea_reason_premiseunit_insert_dict != None:
         add_agenda_reason_premiseunit_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_reason_premiseunit_insert_dict, x_agenda
         )
     if agenda_idea_reason_premiseunit_update_dict != None:
         add_agenda_reason_premiseunit_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_reason_premiseunit_update_dict, x_agenda
         )
     if agenda_idea_reason_premiseunit_delete_dict != None:
         add_agenda_reason_premiseunit_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_reason_premiseunit_delete_dict, x_agenda
         )
 
     if agenda_idea_suffgroup_insert_dict != None:
         add_agenda_idea_suffgroup_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_suffgroup_insert_dict, x_agenda
         )
     if agenda_idea_suffgroup_update_dict != None:
         add_agenda_idea_suffgroup_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_suffgroup_update_dict, x_agenda
         )
     if agenda_idea_suffgroup_delete_dict != None:
         add_agenda_idea_suffgroup_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_suffgroup_delete_dict, x_agenda
         )
 
     if agenda_idea_healerhold_insert_dict != None:
         add_agenda_idea_healerhold_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_healerhold_insert_dict, x_agenda
         )
     if agenda_idea_healerhold_update_dict != None:
         add_agenda_idea_healerhold_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_healerhold_update_dict, x_agenda
         )
     if agenda_idea_healerhold_delete_dict != None:
         add_agenda_idea_healerhold_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_healerhold_delete_dict, x_agenda
         )
 
     if agenda_idea_beliefunit_insert_dict != None:
         add_agenda_idea_beliefunit_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
+            leg_list, agenda_idea_beliefunit_insert_dict, x_agenda
         )
     if agenda_idea_beliefunit_update_dict != None:
         add_agenda_idea_beliefunit_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
+            leg_list, agenda_idea_beliefunit_update_dict, x_agenda
         )
     if agenda_idea_beliefunit_delete_dict != None:
         add_agenda_idea_beliefunit_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
+            leg_list, agenda_idea_beliefunit_delete_dict, x_agenda
         )
 
     return leg_list
@@ -1341,126 +1341,254 @@ def add_agenda_group_partylink_delete_to_legible_list(
 
 
 def add_agenda_ideaunit_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], ideaunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    label_text = "label"
+    parent_road_text = "parent_road"
+    _addin_text = "_addin"
+    _begin_text = "_begin"
+    _close_text = "_close"
+    _denom_text = "_denom"
+    _meld_strategy_text = "_meld_strategy"
+    _numeric_road_text = "_numeric_road"
+    _numor_text = "_numor"
+    _problem_bool_text = "_problem_bool"
+    _range_source_road_text = "_range_source_road"
+    _reest_text = "_reest"
+    _weight_text = "_weight"
+    promise_text = "promise"
+    for parent_road_dict in ideaunit_insert_dict.values():
+        for ideaunit_atom in parent_road_dict.values():
+            label_value = ideaunit_atom.get_value(label_text)
+            parent_road_value = ideaunit_atom.get_value(parent_road_text)
+            _addin_value = ideaunit_atom.get_value(_addin_text)
+            _begin_value = ideaunit_atom.get_value(_begin_text)
+            _close_value = ideaunit_atom.get_value(_close_text)
+            _denom_value = ideaunit_atom.get_value(_denom_text)
+            _meld_strategy_value = ideaunit_atom.get_value(_meld_strategy_text)
+            _numeric_road_value = ideaunit_atom.get_value(_numeric_road_text)
+            _numor_value = ideaunit_atom.get_value(_numor_text)
+            _problem_bool_value = ideaunit_atom.get_value(_problem_bool_text)
+            _range_source_road_value = ideaunit_atom.get_value(_range_source_road_text)
+            _reest_value = ideaunit_atom.get_value(_reest_text)
+            _weight_value = ideaunit_atom.get_value(_weight_text)
+            promise_value = ideaunit_atom.get_value(promise_text)
+            x_str = (
+                f"Created Idea '{label_value}' with parent_road {parent_road_value}. "
+            )
+            if _addin_value != None:
+                x_str += f"_addin={_addin_value}."
+            if _begin_value != None:
+                x_str += f"_begin={_begin_value}."
+            if _close_value != None:
+                x_str += f"_close={_close_value}."
+            if _denom_value != None:
+                x_str += f"_denom={_denom_value}."
+            if _meld_strategy_value != None:
+                x_str += f"_meld_strategy={_meld_strategy_value}."
+            if _numeric_road_value != None:
+                x_str += f"_numeric_road={_numeric_road_value}."
+            if _numor_value != None:
+                x_str += f"_numor={_numor_value}."
+            if _problem_bool_value != None:
+                x_str += f"_problem_bool={_problem_bool_value}."
+            if _range_source_road_value != None:
+                x_str += f"_range_source_road={_range_source_road_value}."
+            if _reest_value != None:
+                x_str += f"_reest={_reest_value}."
+            if _weight_value != None:
+                x_str += f"_weight={_weight_value}."
+            if promise_value != None:
+                x_str += f"promise={promise_value}."
+
+        legible_list.append(x_str)
 
 
 def add_agenda_ideaunit_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], ideaunit_update_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    label_text = "label"
+    parent_road_text = "parent_road"
+    _addin_text = "_addin"
+    _begin_text = "_begin"
+    _close_text = "_close"
+    _denom_text = "_denom"
+    _meld_strategy_text = "_meld_strategy"
+    _numeric_road_text = "_numeric_road"
+    _numor_text = "_numor"
+    _problem_bool_text = "_problem_bool"
+    _range_source_road_text = "_range_source_road"
+    _reest_text = "_reest"
+    _weight_text = "_weight"
+    promise_text = "promise"
+    for parent_road_dict in ideaunit_update_dict.values():
+        for ideaunit_atom in parent_road_dict.values():
+            label_value = ideaunit_atom.get_value(label_text)
+            parent_road_value = ideaunit_atom.get_value(parent_road_text)
+            _addin_value = ideaunit_atom.get_value(_addin_text)
+            _begin_value = ideaunit_atom.get_value(_begin_text)
+            _close_value = ideaunit_atom.get_value(_close_text)
+            _denom_value = ideaunit_atom.get_value(_denom_text)
+            _meld_strategy_value = ideaunit_atom.get_value(_meld_strategy_text)
+            _numeric_road_value = ideaunit_atom.get_value(_numeric_road_text)
+            _numor_value = ideaunit_atom.get_value(_numor_text)
+            _problem_bool_value = ideaunit_atom.get_value(_problem_bool_text)
+            _range_source_road_value = ideaunit_atom.get_value(_range_source_road_text)
+            _reest_value = ideaunit_atom.get_value(_reest_text)
+            _weight_value = ideaunit_atom.get_value(_weight_text)
+            promise_value = ideaunit_atom.get_value(promise_text)
+            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} changed these attributes: "
+            if _addin_value != None:
+                x_str += f"_addin={_addin_value}."
+            if _begin_value != None:
+                x_str += f"_begin={_begin_value}."
+            if _close_value != None:
+                x_str += f"_close={_close_value}."
+            if _denom_value != None:
+                x_str += f"_denom={_denom_value}."
+            if _meld_strategy_value != None:
+                x_str += f"_meld_strategy={_meld_strategy_value}."
+            if _numeric_road_value != None:
+                x_str += f"_numeric_road={_numeric_road_value}."
+            if _numor_value != None:
+                x_str += f"_numor={_numor_value}."
+            if _problem_bool_value != None:
+                x_str += f"_problem_bool={_problem_bool_value}."
+            if _range_source_road_value != None:
+                x_str += f"_range_source_road={_range_source_road_value}."
+            if _reest_value != None:
+                x_str += f"_reest={_reest_value}."
+            if _weight_value != None:
+                x_str += f"_weight={_weight_value}."
+            if promise_value != None:
+                x_str += f"promise={promise_value}."
+
+        legible_list.append(x_str)
 
 
 def add_agenda_ideaunit_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], ideaunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    label_text = "label"
+    parent_road_text = "parent_road"
+    for parent_road_dict in ideaunit_delete_dict.values():
+        for ideaunit_atom in parent_road_dict.values():
+            label_value = ideaunit_atom.get_value(label_text)
+            parent_road_value = ideaunit_atom.get_value(parent_road_text)
+            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} was deleted."
+
+        legible_list.append(x_str)
 
 
 def add_agenda_idea_balancelink_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_balancelink_insert_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_balancelink_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_balancelink_update_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_balancelink_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_balancelink_delete_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_reasonunit_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_reasonunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_reasonunit_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_reasonunit_update_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_reasonunit_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_reasonunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_reason_premiseunit_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str],
+    idea_reason_premiseunit_insert_dict: dict,
+    x_agenda: AgendaUnit,
 ):
     pass
 
 
 def add_agenda_reason_premiseunit_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str],
+    idea_reason_premiseunit_update_dict: dict,
+    x_agenda: AgendaUnit,
 ):
     pass
 
 
 def add_agenda_reason_premiseunit_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str],
+    idea_reason_premiseunit_delete_dict: dict,
+    x_agenda: AgendaUnit,
 ):
     pass
 
 
 def add_agenda_idea_suffgroup_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_suffgroup_insert_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_suffgroup_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_suffgroup_update_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_suffgroup_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_suffgroup_delete_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_healerhold_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_healerhold_insert_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_healerhold_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_healerhold_update_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_healerhold_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_healerhold_delete_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_beliefunit_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_beliefunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_beliefunit_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_beliefunit_update_dict: dict, x_agenda: AgendaUnit
 ):
     pass
 
 
 def add_agenda_idea_beliefunit_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+    legible_list: list[str], idea_beliefunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
     pass
