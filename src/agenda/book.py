@@ -1401,7 +1401,7 @@ def add_agenda_ideaunit_insert_to_legible_list(
             if promise_value != None:
                 x_str += f"promise={promise_value}."
 
-        legible_list.append(x_str)
+            legible_list.append(x_str)
 
 
 def add_agenda_ideaunit_update_to_legible_list(
@@ -1463,7 +1463,7 @@ def add_agenda_ideaunit_update_to_legible_list(
             if promise_value != None:
                 x_str += f"promise={promise_value}."
 
-        legible_list.append(x_str)
+            legible_list.append(x_str)
 
 
 def add_agenda_ideaunit_delete_to_legible_list(
@@ -1476,26 +1476,49 @@ def add_agenda_ideaunit_delete_to_legible_list(
             label_value = ideaunit_atom.get_value(label_text)
             parent_road_value = ideaunit_atom.get_value(parent_road_text)
             x_str = f"Idea '{label_value}' with parent_road {parent_road_value} was deleted."
-
-        legible_list.append(x_str)
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_balancelink_insert_to_legible_list(
     legible_list: list[str], idea_balancelink_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_balancelink_insert_dict.values():
+        for idea_balancelink_atom in road_dict.values():
+            group_id_value = idea_balancelink_atom.get_value("group_id")
+            road_value = idea_balancelink_atom.get_value("road")
+            creditor_weight_value = idea_balancelink_atom.get_value("creditor_weight")
+            debtor_weight_value = idea_balancelink_atom.get_value("debtor_weight")
+            x_str = f"Balancelink created for group {group_id_value} for idea '{road_value}' with creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_balancelink_update_to_legible_list(
     legible_list: list[str], idea_balancelink_update_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_balancelink_update_dict.values():
+        for idea_balancelink_atom in road_dict.values():
+            group_id_value = idea_balancelink_atom.get_value("group_id")
+            road_value = idea_balancelink_atom.get_value("road")
+            creditor_weight_value = idea_balancelink_atom.get_value("creditor_weight")
+            debtor_weight_value = idea_balancelink_atom.get_value("debtor_weight")
+            if creditor_weight_value != None and debtor_weight_value != None:
+                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+            elif creditor_weight_value != None and debtor_weight_value is None:
+                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
+            elif creditor_weight_value is None and debtor_weight_value != None:
+                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_balancelink_delete_to_legible_list(
     legible_list: list[str], idea_balancelink_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_balancelink_delete_dict.values():
+        for idea_balancelink_atom in road_dict.values():
+            group_id_value = idea_balancelink_atom.get_value("group_id")
+            road_value = idea_balancelink_atom.get_value("road")
+            x_str = f"Balancelink for group {group_id_value}, idea '{road_value}' has been deleted."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_reasonunit_insert_to_legible_list(

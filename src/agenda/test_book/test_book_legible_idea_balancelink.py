@@ -3,169 +3,152 @@ from src.agenda.book import bookunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-# def test_create_legible_list_ReturnsObj_partyunit_INSERT():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     creditor_weight_text = "creditor_weight"
-#     debtor_weight_text = "debtor_weight"
-#     creditor_weight_value = 81
-#     debtor_weight_value = 43
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_insert())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-#     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-#     sue_money_desc = "dragon coins"
-#     sue_agenda.set_money_desc(sue_money_desc)
+def test_create_legible_list_ReturnsObj_idea_balancelink_INSERT():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    category = "agenda_idea_balancelink"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    group_id_text = "group_id"
+    group_id_value = f"{sue_agenda._road_delimiter}Swimmers"
+    creditor_weight_text = "creditor_weight"
+    debtor_weight_text = "debtor_weight"
+    creditor_weight_value = 81
+    debtor_weight_value = 43
+    swim_agendaatom = agendaatom_shop(category, atom_insert())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(group_id_text, group_id_value)
+    swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
+    swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
+    # swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
 
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
 
-#     # THEN
-#     x_str = f"{rico_text} was added with {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt"
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
-
-
-# def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     creditor_weight_text = "creditor_weight"
-#     debtor_weight_text = "debtor_weight"
-#     creditor_weight_value = 81
-#     debtor_weight_value = 43
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_insert())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-#     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
-
-#     # THEN
-#     x_str = f"{rico_text} was added with {creditor_weight_value} money credit and {debtor_weight_value} money debt"
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
+    # THEN
+    x_str = f"Balancelink created for group {group_id_value} for idea '{road_value}' with creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
 
 
-# def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight_debtor_weight():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     creditor_weight_text = "creditor_weight"
-#     debtor_weight_text = "debtor_weight"
-#     creditor_weight_value = 81
-#     debtor_weight_value = 43
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_update())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-#     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-#     sue_money_desc = "dragon coins"
-#     sue_agenda.set_money_desc(sue_money_desc)
+def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight_debtor_weight():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
 
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
+    category = "agenda_idea_balancelink"
+    group_id_text = "group_id"
+    group_id_value = f"{sue_agenda._road_delimiter}Swimmers"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    creditor_weight_text = "creditor_weight"
+    debtor_weight_text = "debtor_weight"
+    creditor_weight_value = 81
+    debtor_weight_value = 43
+    swim_agendaatom = agendaatom_shop(category, atom_update())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(group_id_text, group_id_value)
+    swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
+    swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
+    swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
 
-#     # THEN
-#     x_str = f"{rico_text} now has {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt."
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
 
-
-# def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     creditor_weight_text = "creditor_weight"
-#     creditor_weight_value = 81
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_update())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-#     sue_money_desc = "dragon coins"
-#     sue_agenda.set_money_desc(sue_money_desc)
-
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
-
-#     # THEN
-#     x_str = (
-#         f"{rico_text} now has {creditor_weight_value} {sue_agenda._money_desc} credit."
-#     )
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
+    # THEN
+    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
 
 
-# def test_create_legible_list_ReturnsObj_partyunit_UPDATE_debtor_weight():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     debtor_weight_text = "debtor_weight"
-#     debtor_weight_value = 43
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_update())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-#     sue_money_desc = "dragon coins"
-#     sue_agenda.set_money_desc(sue_money_desc)
+def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    category = "agenda_idea_balancelink"
+    group_id_text = "group_id"
+    group_id_value = f"{sue_agenda._road_delimiter}Swimmers"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    creditor_weight_text = "creditor_weight"
+    creditor_weight_value = 81
+    swim_agendaatom = agendaatom_shop(category, atom_update())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(group_id_text, group_id_value)
+    swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
+    swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
 
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
 
-#     # THEN
-#     x_str = f"{rico_text} now has {debtor_weight_value} {sue_agenda._money_desc} debt."
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
+    # THEN
+    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
 
 
-# def test_create_legible_list_ReturnsObj_partyunit_DELETE():
-#     # GIVEN
-#     category = "agenda_partyunit"
-#     party_id_text = "party_id"
-#     rico_text = "Rico"
-#     rico_agendaatom = agendaatom_shop(category, atom_delete())
-#     rico_agendaatom.set_arg(party_id_text, rico_text)
-#     rico_agendaatom._crud_cache = None
-#     # print(f"{rico_agendaatom=}")
-#     x_bookunit = bookunit_shop()
-#     x_bookunit.set_agendaatom(rico_agendaatom)
-#     sue_agenda = agendaunit_shop("Sue")
-#     sue_money_desc = "dragon coins"
-#     sue_agenda.set_money_desc(sue_money_desc)
+def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_debtor_weight():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    category = "agenda_idea_balancelink"
+    group_id_text = "group_id"
+    group_id_value = f"{sue_agenda._road_delimiter}Swimmers"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    debtor_weight_text = "debtor_weight"
+    debtor_weight_value = 81
+    swim_agendaatom = agendaatom_shop(category, atom_update())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(group_id_text, group_id_value)
+    swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
+    swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
 
-#     # WHEN
-#     legible_list = create_legible_list(x_bookunit, sue_agenda)
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
 
-#     # THEN
-#     x_str = f"{rico_text} was removed from {sue_agenda._money_desc} partys."
-#     print(f"{x_str=}")
-#     assert legible_list[0] == x_str
+    # THEN
+    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
+
+
+def test_create_legible_list_ReturnsObj_idea_balancelink_DELETE():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    category = "agenda_idea_balancelink"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    group_id_text = "group_id"
+    group_id_value = f"{sue_agenda._road_delimiter}Swimmers"
+    swim_agendaatom = agendaatom_shop(category, atom_delete())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(group_id_text, group_id_value)
+    # swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
+
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
+
+    # THEN
+    x_str = (
+        f"Balancelink for group {group_id_value}, idea '{road_value}' has been deleted."
+    )
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
