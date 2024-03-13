@@ -1020,36 +1020,140 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
     x_list = [atom_delete(), "agenda_idea_beliefunit"]
     agenda_idea_beliefunit_delete_dict = get_leg_obj(atoms_dict, x_list)
 
-    x_list = []
+    leg_list = []
     if agendaunit_atom != None:
-        add_agendaunit_legible_list(x_list, agendaunit_atom, x_agenda)
+        add_agendaunit_legible_list(leg_list, agendaunit_atom, x_agenda)
     if partyunit_insert_dict != None:
         add_agenda_partyunit_insert_to_legible_list(
-            x_list, partyunit_insert_dict, x_agenda
+            leg_list, partyunit_insert_dict, x_agenda
         )
     if partyunit_update_dict != None:
         add_agenda_partyunit_update_to_legible_list(
-            x_list, partyunit_update_dict, x_agenda
+            leg_list, partyunit_update_dict, x_agenda
         )
     if partyunit_delete_dict != None:
         add_agenda_partyunit_delete_to_legible_list(
-            x_list, partyunit_delete_dict, x_agenda
+            leg_list, partyunit_delete_dict, x_agenda
         )
 
     if groupunit_insert_dict != None:
         add_agenda_groupunit_insert_to_legible_list(
-            x_list, groupunit_insert_dict, x_agenda
+            leg_list, groupunit_insert_dict, x_agenda
         )
     if groupunit_update_dict != None:
         add_agenda_groupunit_update_to_legible_list(
-            x_list, groupunit_update_dict, x_agenda
+            leg_list, groupunit_update_dict, x_agenda
         )
     if groupunit_delete_dict != None:
         add_agenda_groupunit_delete_to_legible_list(
-            x_list, groupunit_delete_dict, x_agenda
+            leg_list, groupunit_delete_dict, x_agenda
         )
 
-    return x_list
+    if group_partylink_insert_dict != None:
+        add_agenda_group_partylink_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if group_partylink_update_dict != None:
+        add_agenda_group_partylink_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if group_partylink_delete_dict != None:
+        add_agenda_group_partylink_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_ideaunit_insert_dict != None:
+        add_agenda_ideaunit_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_ideaunit_update_dict != None:
+        add_agenda_ideaunit_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_ideaunit_delete_dict != None:
+        add_agenda_ideaunit_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_balancelink_insert_dict != None:
+        add_agenda_idea_balancelink_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_balancelink_update_dict != None:
+        add_agenda_idea_balancelink_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_balancelink_delete_dict != None:
+        add_agenda_idea_balancelink_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_reasonunit_insert_dict != None:
+        add_agenda_idea_reasonunit_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_reasonunit_update_dict != None:
+        add_agenda_idea_reasonunit_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_reasonunit_delete_dict != None:
+        add_agenda_idea_reasonunit_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_reason_premiseunit_insert_dict != None:
+        add_agenda_reason_premiseunit_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_reason_premiseunit_update_dict != None:
+        add_agenda_reason_premiseunit_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_reason_premiseunit_delete_dict != None:
+        add_agenda_reason_premiseunit_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_suffgroup_insert_dict != None:
+        add_agenda_idea_suffgroup_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_suffgroup_update_dict != None:
+        add_agenda_idea_suffgroup_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_suffgroup_delete_dict != None:
+        add_agenda_idea_suffgroup_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_healerhold_insert_dict != None:
+        add_agenda_idea_healerhold_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_healerhold_update_dict != None:
+        add_agenda_idea_healerhold_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_healerhold_delete_dict != None:
+        add_agenda_idea_healerhold_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    if agenda_idea_beliefunit_insert_dict != None:
+        add_agenda_idea_beliefunit_insert_to_legible_list(
+            leg_list, group_partylink_insert_dict, x_agenda
+        )
+    if agenda_idea_beliefunit_update_dict != None:
+        add_agenda_idea_beliefunit_update_to_legible_list(
+            leg_list, group_partylink_update_dict, x_agenda
+        )
+    if agenda_idea_beliefunit_delete_dict != None:
+        add_agenda_idea_beliefunit_delete_to_legible_list(
+            leg_list, group_partylink_delete_dict, x_agenda
+        )
+
+    return leg_list
 
 
 def add_agendaunit_legible_list(
@@ -1192,3 +1296,171 @@ def add_agenda_groupunit_delete_to_legible_list(
         group_id = groupunit_atom.get_value("group_id")
         x_str = f"The group '{group_id}' was deleted."
         legible_list.append(x_str)
+
+
+def add_agenda_group_partylink_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    for group_partylink_dict in group_partylink_insert_dict.values():
+        for group_partylink_atom in group_partylink_dict.values():
+            group_id = group_partylink_atom.get_value("group_id")
+            party_id = group_partylink_atom.get_value("party_id")
+            creditor_weight_value = group_partylink_atom.get_value("creditor_weight")
+            debtor_weight_value = group_partylink_atom.get_value("debtor_weight")
+            x_str = f"Group '{group_id}' has new member {party_id} with group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
+            legible_list.append(x_str)
+
+
+def add_agenda_group_partylink_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    for group_partylink_dict in group_partylink_update_dict.values():
+        for group_partylink_atom in group_partylink_dict.values():
+            group_id = group_partylink_atom.get_value("group_id")
+            party_id = group_partylink_atom.get_value("party_id")
+            creditor_weight_value = group_partylink_atom.get_value("creditor_weight")
+            debtor_weight_value = group_partylink_atom.get_value("debtor_weight")
+            if creditor_weight_value != None and debtor_weight_value != None:
+                x_str = f"Group '{group_id}' member {party_id} has new group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
+            elif creditor_weight_value != None and debtor_weight_value is None:
+                x_str = f"Group '{group_id}' member {party_id} has new group_credit={creditor_weight_value}."
+            elif creditor_weight_value is None and debtor_weight_value != None:
+                x_str = f"Group '{group_id}' member {party_id} has new group_debt={debtor_weight_value}."
+            legible_list.append(x_str)
+
+
+def add_agenda_group_partylink_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    for group_partylink_dict in group_partylink_delete_dict.values():
+        for group_partylink_atom in group_partylink_dict.values():
+            group_id = group_partylink_atom.get_value("group_id")
+            party_id = group_partylink_atom.get_value("party_id")
+            x_str = f"Group '{group_id}' no longer has member {party_id}."
+            legible_list.append(x_str)
+
+
+def add_agenda_ideaunit_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_ideaunit_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_ideaunit_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_balancelink_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_balancelink_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_balancelink_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_reasonunit_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_reasonunit_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_reasonunit_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_reason_premiseunit_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_reason_premiseunit_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_reason_premiseunit_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_suffgroup_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_suffgroup_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_suffgroup_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_healerhold_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_healerhold_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_healerhold_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_beliefunit_insert_to_legible_list(
+    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_beliefunit_update_to_legible_list(
+    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_idea_beliefunit_delete_to_legible_list(
+    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+):
+    pass
