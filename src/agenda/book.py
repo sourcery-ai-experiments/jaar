@@ -952,19 +952,30 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
     insert_dict = x_book.agendaatoms.get(atom_insert())
     update_dict = x_book.agendaatoms.get(atom_update())
     delete_dict = x_book.agendaatoms.get(atom_delete())
+    agenda_partyunit_text = "agenda_partyunit"
 
     if insert_dict != None:
-        agenda_partyunit_text = "agenda_partyunit"
         if insert_dict.get(agenda_partyunit_text) != None:
             partyunit_dict = insert_dict.get(agenda_partyunit_text)
-            add_agenda_partyunit_legible_list(x_list, partyunit_dict, x_agenda)
+            add_agenda_partyunit_insert_to_legible_list(
+                x_list, partyunit_dict, x_agenda
+            )
     if update_dict != None:
+        if update_dict.get(agenda_partyunit_text) != None:
+            partyunit_dict = update_dict.get(agenda_partyunit_text)
+            add_agenda_partyunit_update_to_legible_list(
+                x_list, partyunit_dict, x_agenda
+            )
         agendaunit_text = "agendaunit"
         if update_dict.get(agendaunit_text) != None:
             x_atom = update_dict.get(agendaunit_text)
             add_agendaunit_legible_list(x_list, x_atom, x_agenda)
-    # if delete_dict != None:
-    #     pass
+    if delete_dict != None:
+        if delete_dict.get(agenda_partyunit_text) != None:
+            partyunit_dict = delete_dict.get(agenda_partyunit_text)
+            add_agenda_partyunit_delete_to_legible_list(
+                x_list, partyunit_dict, x_agenda
+            )
 
     return x_list
 
@@ -1026,7 +1037,7 @@ def add_agendaunit_legible_list(
         )
 
 
-def add_agenda_partyunit_legible_list(
+def add_agenda_partyunit_insert_to_legible_list(
     legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
     x_money_desc = x_agenda._money_desc
@@ -1037,4 +1048,35 @@ def add_agenda_partyunit_legible_list(
         creditor_weight_value = partyunit_atom.get_value("creditor_weight")
         debtor_weight_value = partyunit_atom.get_value("debtor_weight")
         x_str = f"{party_id} was added with {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt"
+        legible_list.append(x_str)
+
+
+def add_agenda_partyunit_update_to_legible_list(
+    legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
+):
+    x_money_desc = x_agenda._money_desc
+    if x_money_desc is None:
+        x_money_desc = "money"
+    for partyunit_atom in partyunit_dict.values():
+        party_id = partyunit_atom.get_value("party_id")
+        creditor_weight_value = partyunit_atom.get_value("creditor_weight")
+        debtor_weight_value = partyunit_atom.get_value("debtor_weight")
+        if creditor_weight_value != None and debtor_weight_value != None:
+            x_str = f"{party_id} now has {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt."
+        elif creditor_weight_value != None and debtor_weight_value is None:
+            x_str = f"{party_id} now has {creditor_weight_value} {x_money_desc} credit."
+        elif creditor_weight_value is None and debtor_weight_value != None:
+            x_str = f"{party_id} now has {debtor_weight_value} {x_money_desc} debt."
+        legible_list.append(x_str)
+
+
+def add_agenda_partyunit_delete_to_legible_list(
+    legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
+):
+    x_money_desc = x_agenda._money_desc
+    if x_money_desc is None:
+        x_money_desc = "money"
+    for partyunit_atom in partyunit_dict.values():
+        party_id = partyunit_atom.get_value("party_id")
+        x_str = f"{party_id} was removed from {x_money_desc} partys."
         legible_list.append(x_str)
