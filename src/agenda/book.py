@@ -1529,7 +1529,11 @@ def add_agenda_idea_reasonunit_insert_to_legible_list(
             road_value = idea_reasonunit_atom.get_value("road")
             base_value = idea_reasonunit_atom.get_value("base")
             suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
-            x_str = f"ReasonUnit created for idea '{road_value}' with base '{base_value}'. suff_idea_active={suff_idea_active_value}."
+            x_str = (
+                f"ReasonUnit created for idea '{road_value}' with base '{base_value}'."
+            )
+            if suff_idea_active_value != None:
+                x_str += f" suff_idea_active={suff_idea_active_value}."
             legible_list.append(x_str)
 
 
@@ -1564,7 +1568,29 @@ def add_agenda_reason_premiseunit_insert_to_legible_list(
     idea_reason_premiseunit_insert_dict: dict,
     x_agenda: AgendaUnit,
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    need_text = "need"
+    divisor_text = "divisor"
+    nigh_text = "nigh"
+    open_text = "open"
+    for road_dict in idea_reason_premiseunit_insert_dict.values():
+        for base_dict in road_dict.values():
+            for idea_reason_premiseunit_atom in base_dict.values():
+                road_value = idea_reason_premiseunit_atom.get_value(road_text)
+                base_value = idea_reason_premiseunit_atom.get_value(base_text)
+                need_value = idea_reason_premiseunit_atom.get_value(need_text)
+                divisor_value = idea_reason_premiseunit_atom.get_value(divisor_text)
+                nigh_value = idea_reason_premiseunit_atom.get_value(nigh_text)
+                open_value = idea_reason_premiseunit_atom.get_value(open_text)
+                x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for idea '{road_value}'."
+                if open_value != None:
+                    x_str += f" Open={open_value}."
+                if nigh_value != None:
+                    x_str += f" Nigh={nigh_value}."
+                if divisor_value != None:
+                    x_str += f" Divisor={divisor_value}."
+                legible_list.append(x_str)
 
 
 def add_agenda_reason_premiseunit_update_to_legible_list(
@@ -1572,7 +1598,29 @@ def add_agenda_reason_premiseunit_update_to_legible_list(
     idea_reason_premiseunit_update_dict: dict,
     x_agenda: AgendaUnit,
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    need_text = "need"
+    divisor_text = "divisor"
+    nigh_text = "nigh"
+    open_text = "open"
+    for road_dict in idea_reason_premiseunit_update_dict.values():
+        for base_dict in road_dict.values():
+            for idea_reason_premiseunit_atom in base_dict.values():
+                road_value = idea_reason_premiseunit_atom.get_value(road_text)
+                base_value = idea_reason_premiseunit_atom.get_value(base_text)
+                need_value = idea_reason_premiseunit_atom.get_value(need_text)
+                divisor_value = idea_reason_premiseunit_atom.get_value(divisor_text)
+                nigh_value = idea_reason_premiseunit_atom.get_value(nigh_text)
+                open_value = idea_reason_premiseunit_atom.get_value(open_text)
+                x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for idea '{road_value}'."
+                if open_value != None:
+                    x_str += f" Open={open_value}."
+                if nigh_value != None:
+                    x_str += f" Nigh={nigh_value}."
+                if divisor_value != None:
+                    x_str += f" Divisor={divisor_value}."
+                legible_list.append(x_str)
 
 
 def add_agenda_reason_premiseunit_delete_to_legible_list(
@@ -1580,7 +1628,17 @@ def add_agenda_reason_premiseunit_delete_to_legible_list(
     idea_reason_premiseunit_delete_dict: dict,
     x_agenda: AgendaUnit,
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    need_text = "need"
+    for road_dict in idea_reason_premiseunit_delete_dict.values():
+        for base_dict in road_dict.values():
+            for idea_reason_premiseunit_atom in base_dict.values():
+                road_value = idea_reason_premiseunit_atom.get_value(road_text)
+                base_value = idea_reason_premiseunit_atom.get_value(base_text)
+                need_value = idea_reason_premiseunit_atom.get_value(need_text)
+                x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for idea '{road_value}'."
+                legible_list.append(x_str)
 
 
 def add_agenda_idea_suffgroup_insert_to_legible_list(

@@ -3,7 +3,7 @@ from src.agenda.book import bookunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT():
+def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT_With_suff_idea_active():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_idea_reasonunit"
@@ -28,6 +28,32 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT():
 
     # THEN
     x_str = f"ReasonUnit created for idea '{road_value}' with base '{base_value}'. suff_idea_active={suff_idea_active_value}."
+    print(f"{x_str=}")
+    assert legible_list[0] == x_str
+
+
+def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT_Without_suff_idea_active():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    category = "agenda_idea_reasonunit"
+    road_text = "road"
+    casa_road = sue_agenda.make_l1_road("casa")
+    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    base_text = "base"
+    base_value = f"{sue_agenda._road_delimiter}Swimmers"
+    swim_agendaatom = agendaatom_shop(category, atom_insert())
+    swim_agendaatom.set_arg(road_text, road_value)
+    swim_agendaatom.set_arg(base_text, base_value)
+    # swim_agendaatom._crud_cache = None
+    # print(f"{swim_agendaatom=}")
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(swim_agendaatom)
+
+    # WHEN
+    legible_list = create_legible_list(x_bookunit, sue_agenda)
+
+    # THEN
+    x_str = f"ReasonUnit created for idea '{road_value}' with base '{base_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
