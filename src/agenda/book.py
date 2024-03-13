@@ -1524,19 +1524,39 @@ def add_agenda_idea_balancelink_delete_to_legible_list(
 def add_agenda_idea_reasonunit_insert_to_legible_list(
     legible_list: list[str], idea_reasonunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_reasonunit_insert_dict.values():
+        for idea_reasonunit_atom in road_dict.values():
+            road_value = idea_reasonunit_atom.get_value("road")
+            base_value = idea_reasonunit_atom.get_value("base")
+            suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
+            x_str = f"ReasonUnit created for idea '{road_value}' with base '{base_value}'. suff_idea_active={suff_idea_active_value}."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_reasonunit_update_to_legible_list(
     legible_list: list[str], idea_reasonunit_update_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_reasonunit_update_dict.values():
+        for idea_reasonunit_atom in road_dict.values():
+            road_value = idea_reasonunit_atom.get_value("road")
+            base_value = idea_reasonunit_atom.get_value("base")
+            suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
+            if suff_idea_active_value != None:
+                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' changed with suff_idea_active={suff_idea_active_value}."
+            elif suff_idea_active_value is None:
+                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' and no longer checks base active mode."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_reasonunit_delete_to_legible_list(
     legible_list: list[str], idea_reasonunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_reasonunit_delete_dict.values():
+        for idea_reasonunit_atom in road_dict.values():
+            road_value = idea_reasonunit_atom.get_value("road")
+            base_value = idea_reasonunit_atom.get_value("base")
+            x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' has been deleted."
+            legible_list.append(x_str)
 
 
 def add_agenda_reason_premiseunit_insert_to_legible_list(
