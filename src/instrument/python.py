@@ -55,13 +55,24 @@ class NestedValueException(Exception):
     pass
 
 
-def get_nested_value(x_dict: dict, x_keylist: list) -> any:
+def get_nested_value(
+    x_dict: dict, x_keylist: list, if_missing_return_None: bool = False
+) -> any:
+    if not if_missing_return_None:
+        return _sub_get_nested_value(x_dict, x_keylist)
+    try:
+        return _sub_get_nested_value(x_dict, x_keylist)
+    except Exception:
+        return None
+
+
+def _sub_get_nested_value(x_dict: dict, x_keylist: list) -> any:
     last_key = x_keylist.pop(-1)
     temp_dict = x_dict
     x_count = 0
     for x_key in x_keylist:
         if temp_dict.get(x_key) is None:
-            print(f"{x_keylist=} {last_key=}")
+            # pprint(f"{x_keylist=} {last_key=}")
             raise NestedValueException(f"'{x_key}' failed at level {x_count}.")
         x_count += 1
         temp_dict = temp_dict.get(x_key)

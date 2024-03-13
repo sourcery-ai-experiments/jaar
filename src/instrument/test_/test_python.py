@@ -135,3 +135,49 @@ def test_get_nested_value_RaisesReadableException():
     with pytest_raises(Exception) as excinfo:
         get_nested_value(y_dict, [sports_text, swim_text, day_text])
     assert str(excinfo.value) == f"'{swim_text}' failed at level 1."
+
+
+def test_get_nested_value_ReturnsNoneWhen_if_missing_return_None_True():
+    y_dict = {}
+    sports_text = "sports"
+    run_text = "running"
+    run_list = [sports_text, run_text]
+    fun_text = "fun running"
+    fun_list = [sports_text, run_text, fun_text]
+    fun_obj = "weird"
+    # print(f"{run_list=} {fun_list=}")
+    mount_text = "mountains"
+    mount_list = [sports_text, run_text, mount_text]
+    mount_obj = "hard"
+
+    frank_text = "franklin mountain"
+    day_text = "day"
+    night_text = "night"
+    day_list = [sports_text, run_text, frank_text, day_text]
+    day_obj = "is hot"
+    night_list = [sports_text, run_text, frank_text, night_text]
+    night_obj = "is cool"
+
+    place_obj_in_dict(x_dict=y_dict, x_keylist=fun_list, x_obj=fun_obj)
+    place_obj_in_dict(x_dict=y_dict, x_keylist=mount_list, x_obj=mount_obj)
+    place_obj_in_dict(x_dict=y_dict, x_keylist=day_list, x_obj=day_obj)
+    place_obj_in_dict(x_dict=y_dict, x_keylist=night_list, x_obj=night_obj)
+    assert get_nested_value(y_dict, day_list, if_missing_return_None=True) == day_obj
+
+    # WHEN / THEN
+    swim_text = "swim"
+    assert get_nested_value(y_dict, [swim_text], if_missing_return_None=True) is None
+
+    # WHEN / THEN
+    swim_text = "swim"
+    x_value = get_nested_value(
+        y_dict, [sports_text, swim_text], if_missing_return_None=True
+    )
+    assert x_value is None
+
+    # WHEN / THEN
+    swim_text = "swim"
+    x_value = get_nested_value(
+        y_dict, [sports_text, swim_text, day_text], if_missing_return_None=True
+    )
+    assert x_value is None

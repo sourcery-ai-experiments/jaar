@@ -134,36 +134,35 @@ class BookUnit:
     def add_agendaatoms_agendaunit_simple_attrs(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        if optional_args_different("agendaunit", before_agenda, after_agenda):
-            x_agendaatom = agendaatom_shop("agendaunit", atom_update())
-            if (
-                before_agenda._auto_output_job_to_forum
-                != after_agenda._auto_output_job_to_forum
-            ):
-                x_agendaatom.set_optional_arg(
-                    "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
-                )
-            if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
-                x_agendaatom.set_optional_arg(
-                    "_max_tree_traverse", after_agenda._max_tree_traverse
-                )
-            if before_agenda._meld_strategy != after_agenda._meld_strategy:
-                x_agendaatom.set_optional_arg(
-                    "_meld_strategy", after_agenda._meld_strategy
-                )
-            if before_agenda._money_desc != after_agenda._money_desc:
-                x_agendaatom.set_optional_arg("_money_desc", after_agenda._money_desc)
-            if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
-                x_agendaatom.set_optional_arg(
-                    "_party_creditor_pool", after_agenda._party_creditor_pool
-                )
-            if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
-                x_agendaatom.set_optional_arg(
-                    "_party_debtor_pool", after_agenda._party_debtor_pool
-                )
-            if before_agenda._weight != after_agenda._weight:
-                x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
-            self.set_agendaatom(x_agendaatom)
+        if not optional_args_different("agendaunit", before_agenda, after_agenda):
+            return
+        x_agendaatom = agendaatom_shop("agendaunit", atom_update())
+        if (
+            before_agenda._auto_output_job_to_forum
+            != after_agenda._auto_output_job_to_forum
+        ):
+            x_agendaatom.set_optional_arg(
+                "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
+            )
+        if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
+            x_agendaatom.set_optional_arg(
+                "_max_tree_traverse", after_agenda._max_tree_traverse
+            )
+        if before_agenda._meld_strategy != after_agenda._meld_strategy:
+            x_agendaatom.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
+        if before_agenda._money_desc != after_agenda._money_desc:
+            x_agendaatom.set_optional_arg("_money_desc", after_agenda._money_desc)
+        if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
+            x_agendaatom.set_optional_arg(
+                "_party_creditor_pool", after_agenda._party_creditor_pool
+            )
+        if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
+            x_agendaatom.set_optional_arg(
+                "_party_debtor_pool", after_agenda._party_debtor_pool
+            )
+        if before_agenda._weight != after_agenda._weight:
+            x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
+        self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_partyunits(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
@@ -947,35 +946,103 @@ def validate_agenda_build_from_book(x_book: BookUnit, x_agenda: AgendaUnit = Non
     return True
 
 
-def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
-    x_list = []
-    insert_dict = x_book.agendaatoms.get(atom_insert())
-    update_dict = x_book.agendaatoms.get(atom_update())
-    delete_dict = x_book.agendaatoms.get(atom_delete())
-    agenda_partyunit_text = "agenda_partyunit"
+def get_leg_obj(x_dict: dict, x_keylist) -> any:
+    return get_nested_value(
+        x_dict=x_dict, x_keylist=x_keylist, if_missing_return_None=True
+    )
 
-    if insert_dict != None:
-        if insert_dict.get(agenda_partyunit_text) != None:
-            partyunit_dict = insert_dict.get(agenda_partyunit_text)
-            add_agenda_partyunit_insert_to_legible_list(
-                x_list, partyunit_dict, x_agenda
-            )
-    if update_dict != None:
-        if update_dict.get(agenda_partyunit_text) != None:
-            partyunit_dict = update_dict.get(agenda_partyunit_text)
-            add_agenda_partyunit_update_to_legible_list(
-                x_list, partyunit_dict, x_agenda
-            )
-        agendaunit_text = "agendaunit"
-        if update_dict.get(agendaunit_text) != None:
-            x_atom = update_dict.get(agendaunit_text)
-            add_agendaunit_legible_list(x_list, x_atom, x_agenda)
-    if delete_dict != None:
-        if delete_dict.get(agenda_partyunit_text) != None:
-            partyunit_dict = delete_dict.get(agenda_partyunit_text)
-            add_agenda_partyunit_delete_to_legible_list(
-                x_list, partyunit_dict, x_agenda
-            )
+
+def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
+    atoms_dict = x_book.agendaatoms
+    agendaunit_atom = get_leg_obj(atoms_dict, [atom_update(), "agendaunit"])
+
+    partyunit_insert_dict = get_leg_obj(atoms_dict, [atom_insert(), "agenda_partyunit"])
+    partyunit_update_dict = get_leg_obj(atoms_dict, [atom_update(), "agenda_partyunit"])
+    partyunit_delete_dict = get_leg_obj(atoms_dict, [atom_delete(), "agenda_partyunit"])
+
+    groupunit_insert_dict = get_leg_obj(atoms_dict, [atom_insert(), "agenda_groupunit"])
+    groupunit_update_dict = get_leg_obj(atoms_dict, [atom_update(), "agenda_groupunit"])
+    groupunit_delete_dict = get_leg_obj(atoms_dict, [atom_delete(), "agenda_groupunit"])
+
+    x_list = [atom_insert(), "agenda_group_partylink"]
+    group_partylink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_group_partylink"]
+    group_partylink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_group_partylink"]
+    group_partylink_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_ideaunit"]
+    agenda_ideaunit_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_ideaunit"]
+    agenda_ideaunit_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_ideaunit"]
+    agenda_ideaunit_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_balancelink"]
+    agenda_idea_balancelink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_balancelink"]
+    agenda_idea_balancelink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_balancelink"]
+    agenda_idea_balancelink_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_reasonunit"]
+    agenda_idea_reasonunit_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_reasonunit"]
+    agenda_idea_reasonunit_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_reasonunit"]
+    agenda_idea_reasonunit_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_reason_premiseunit"]
+    agenda_idea_reason_premiseunit_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_reason_premiseunit"]
+    agenda_idea_reason_premiseunit_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_reason_premiseunit"]
+    agenda_idea_reason_premiseunit_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_suffgroup"]
+    agenda_idea_suffgroup_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_suffgroup"]
+    agenda_idea_suffgroup_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_suffgroup"]
+    agenda_idea_suffgroup_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_healerhold"]
+    agenda_idea_healerhold_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_healerhold"]
+    agenda_idea_healerhold_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_healerhold"]
+    agenda_idea_healerhold_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = [atom_insert(), "agenda_idea_beliefunit"]
+    agenda_idea_beliefunit_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "agenda_idea_beliefunit"]
+    agenda_idea_beliefunit_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "agenda_idea_beliefunit"]
+    agenda_idea_beliefunit_delete_dict = get_leg_obj(atoms_dict, x_list)
+
+    x_list = []
+    if agendaunit_atom != None:
+        add_agendaunit_legible_list(x_list, agendaunit_atom, x_agenda)
+    if partyunit_insert_dict != None:
+        add_agenda_partyunit_insert_to_legible_list(
+            x_list, partyunit_insert_dict, x_agenda
+        )
+    if groupunit_insert_dict != None:
+        add_agenda_groupunit_insert_to_legible_list(
+            x_list, groupunit_insert_dict, x_agenda
+        )
+    if partyunit_update_dict != None:
+        add_agenda_partyunit_update_to_legible_list(
+            x_list, partyunit_update_dict, x_agenda
+        )
+    if groupunit_update_dict != None:
+        add_agenda_groupunit_update_to_legible_list(
+            x_list, groupunit_update_dict, x_agenda
+        )
+    if partyunit_delete_dict != None:
+        add_agenda_partyunit_delete_to_legible_list(
+            x_list, partyunit_delete_dict, x_agenda
+        )
 
     return x_list
 
@@ -1080,3 +1147,15 @@ def add_agenda_partyunit_delete_to_legible_list(
         party_id = partyunit_atom.get_value("party_id")
         x_str = f"{party_id} was removed from {x_money_desc} partys."
         legible_list.append(x_str)
+
+
+def add_agenda_groupunit_insert_to_legible_list(
+    legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
+):
+    pass
+
+
+def add_agenda_groupunit_update_to_legible_list(
+    legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
+):
+    pass
