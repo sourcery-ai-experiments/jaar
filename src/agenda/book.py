@@ -1676,16 +1676,59 @@ def add_agenda_idea_healerhold_delete_to_legible_list(
 def add_agenda_idea_beliefunit_insert_to_legible_list(
     legible_list: list[str], idea_beliefunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    pick_text = "pick"
+    nigh_text = "nigh"
+    open_text = "open"
+    for road_dict in idea_beliefunit_insert_dict.values():
+        for idea_beliefunit_atom in road_dict.values():
+            road_value = idea_beliefunit_atom.get_value(road_text)
+            base_value = idea_beliefunit_atom.get_value(base_text)
+            pick_value = idea_beliefunit_atom.get_value(pick_text)
+            nigh_value = idea_beliefunit_atom.get_value(nigh_text)
+            open_value = idea_beliefunit_atom.get_value(open_text)
+            x_str = f"BeliefUnit '{pick_value}' created for base '{base_value}' for idea '{road_value}'."
+            if open_value != None:
+                x_str += f" Open={open_value}."
+            if nigh_value != None:
+                x_str += f" Nigh={nigh_value}."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_beliefunit_update_to_legible_list(
     legible_list: list[str], idea_beliefunit_update_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    pick_text = "pick"
+    nigh_text = "nigh"
+    open_text = "open"
+    for road_dict in idea_beliefunit_update_dict.values():
+        for idea_beliefunit_atom in road_dict.values():
+            road_value = idea_beliefunit_atom.get_value(road_text)
+            base_value = idea_beliefunit_atom.get_value(base_text)
+            pick_value = idea_beliefunit_atom.get_value(pick_text)
+            nigh_value = idea_beliefunit_atom.get_value(nigh_text)
+            open_value = idea_beliefunit_atom.get_value(open_text)
+            x_str = f"BeliefUnit '{pick_value}' updated for base '{base_value}' for idea '{road_value}'."
+            if open_value != None:
+                x_str += f" Open={open_value}."
+            if nigh_value != None:
+                x_str += f" Nigh={nigh_value}."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_beliefunit_delete_to_legible_list(
     legible_list: list[str], idea_beliefunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    road_text = "road"
+    base_text = "base"
+    pick_text = "pick"
+    for road_dict in idea_beliefunit_delete_dict.values():
+        for idea_beliefunit_atom in road_dict.values():
+            road_value = idea_beliefunit_atom.get_value(road_text)
+            base_value = idea_beliefunit_atom.get_value(base_text)
+            pick_value = idea_beliefunit_atom.get_value(pick_text)
+            x_str = f"BeliefUnit '{pick_value}' deleted from base '{base_value}' for idea '{road_value}'."
+            legible_list.append(x_str)
