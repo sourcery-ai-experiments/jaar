@@ -48,14 +48,14 @@ class EconID(RoadNode):  # Created to help track the concept
     pass
 
 
-class WorkerID(HealerID):
-    """A RoadNode used to identify a AgendaUnit's worker_id"""
+class OwnerID(HealerID):
+    """A RoadNode used to identify a AgendaUnit's owner_id"""
 
     pass
 
 
-class PartyID(WorkerID):  # Created to help track the concept
-    """Every PartyID object is WorkerID, must follow WorkerID format."""
+class PartyID(OwnerID):  # Created to help track the concept
+    """Every PartyID object is OwnerID, must follow OwnerID format."""
 
     pass
 

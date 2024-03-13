@@ -1068,19 +1068,19 @@ def add_agendaunit_legible_list(
 
     x_money_desc = x_agenda._money_desc
     if x_money_desc is None:
-        x_money_desc = f"{x_agenda._worker_id}'s money"
+        x_money_desc = f"{x_agenda._owner_id}'s money"
 
     if _max_tree_traverse_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s maximum number of Agenda output evaluations changed to {_max_tree_traverse_value}"
+            f"{x_agenda._owner_id}'s maximum number of Agenda output evaluations changed to {_max_tree_traverse_value}"
         )
     if _meld_strategy_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s Meld strategy changed to '{_meld_strategy_value}'"
+            f"{x_agenda._owner_id}'s Meld strategy changed to '{_meld_strategy_value}'"
         )
     if _money_desc_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s money is now called '{_money_desc_value}'"
+            f"{x_agenda._owner_id}'s money is now called '{_money_desc_value}'"
         )
     if (
         _party_creditor_pool_value != None
@@ -1100,7 +1100,7 @@ def add_agendaunit_legible_list(
         )
     if _weight_value != None:
         legible_list.append(
-            f"{x_agenda._worker_id}'s agenda weight was changed to {_weight_value}"
+            f"{x_agenda._owner_id}'s agenda weight was changed to {_weight_value}"
         )
 
 

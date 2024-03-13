@@ -36,11 +36,11 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=ava_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=ava_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=elu_text))
     x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
 
@@ -51,11 +51,11 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     assert x_agendatreasuryunits.get(tom_text) != None
     assert x_agendatreasuryunits.get(ava_text) != None
     assert x_agendatreasuryunits.get(elu_text) != None
-    assert x_agendatreasuryunits.get(sal_text).worker_id == sal_text
-    assert x_agendatreasuryunits.get(bob_text).worker_id == bob_text
-    assert x_agendatreasuryunits.get(tom_text).worker_id == tom_text
-    assert x_agendatreasuryunits.get(ava_text).worker_id == ava_text
-    assert x_agendatreasuryunits.get(elu_text).worker_id == elu_text
+    assert x_agendatreasuryunits.get(sal_text).owner_id == sal_text
+    assert x_agendatreasuryunits.get(bob_text).owner_id == bob_text
+    assert x_agendatreasuryunits.get(tom_text).owner_id == tom_text
+    assert x_agendatreasuryunits.get(ava_text).owner_id == ava_text
+    assert x_agendatreasuryunits.get(elu_text).owner_id == elu_text
     print(f"{x_agendatreasuryunits.get(sal_text)=}")
     print(f"{x_agendatreasuryunits.get(bob_text)=}")
     print(f"{x_agendatreasuryunits.get(tom_text)=}")
@@ -81,11 +81,11 @@ def test_econ_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     x_econ.save_job_agenda_to_forum(sal_agenda)
     x_econ.save_job_agenda_to_forum(bob_agenda)
     x_econ.save_job_agenda_to_forum(tom_agenda)

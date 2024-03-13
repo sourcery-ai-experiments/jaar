@@ -61,7 +61,7 @@ def agenda_v002() -> AgendaUnit:
 
 
 def get_agenda_with_4_levels() -> AgendaUnit:
-    sue_agenda = agendaunit_shop(_worker_id="Sue", _weight=10)
+    sue_agenda = agendaunit_shop(_owner_id="Sue", _weight=10)
     # print(f"{sue_agenda._auto_output_job_to_forum=}")
 
     gig = "gig"
@@ -234,7 +234,7 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
 
 
 def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
-    bob_agenda = agendaunit_shop(_worker_id="Bob", _weight=10)
+    bob_agenda = agendaunit_shop(_owner_id="Bob", _weight=10)
     ced_min_label = "CE0_minutes"
     ced_minutes = ideaunit_shop(ced_min_label)
     ced_road = bob_agenda.make_l1_road(ced_min_label)
@@ -266,7 +266,7 @@ def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
 
 
 def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
-    zia_agenda = agendaunit_shop(_worker_id="Zia", _weight=10)
+    zia_agenda = agendaunit_shop(_owner_id="Zia", _weight=10)
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
     idea_kid_shave = ideaunit_shop(shave_text, _weight=30, promise=True)
@@ -298,7 +298,7 @@ def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
 
 
 def get_agenda_base_time_example() -> AgendaUnit:
-    sue_agenda = agendaunit_shop(_worker_id="Sue")
+    sue_agenda = agendaunit_shop(_owner_id="Sue")
     sue_agenda.add_l1_idea(ideaunit_shop("gig"))
     return sue_agenda
 
@@ -316,7 +316,7 @@ def get_agenda_irrational_example() -> AgendaUnit:
     # 1. hatter_agenda._irrational == True
     # 2. hatter_agenda._tree_traverse_count = hatter_agenda._max_tree_traverse
 
-    hatter_agenda = agendaunit_shop(_worker_id="Mad Hatter", _weight=10)
+    hatter_agenda = agendaunit_shop(_owner_id="Mad Hatter", _weight=10)
     hatter_agenda.set_max_tree_traverse(3)
 
     egg_text = "egg first"
@@ -375,7 +375,7 @@ def get_assignment_agenda_example1():
 
 def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amos_text = "Amos"
-    amos_agenda = agendaunit_shop(_worker_id=amos_text)
+    amos_agenda = agendaunit_shop(_owner_id=amos_text)
     cali_text = "Cali"
     amos_agenda.add_partyunit(amos_text)
     amos_agenda.add_partyunit(cali_text)

@@ -616,7 +616,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyChangesBalanceLinks():
     swim_groupunit = groupunit_shop(group_id=swim_text)
     x_agenda.set_groupunit(swim_groupunit)
     outdoor_text = "outdoors"
-    outdoor_road = x_agenda.make_road(x_agenda._worker_id, outdoor_text)
+    outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
     x_agenda.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)
@@ -657,7 +657,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldsBalanceLinesBalanceLin
     x_agenda.set_groupunit(jog_groupunit)
 
     outdoor_text = "outdoors"
-    outdoor_road = x_agenda.make_road(x_agenda._worker_id, outdoor_text)
+    outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
     x_agenda.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)

@@ -123,7 +123,7 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     current_y = 0
     trace_list = []
     anno_list = []
-    print(f"{x_agenda._worker_id=}")
+    print(f"{x_agenda._owner_id=}")
     _add_ideaunit_traces(trace_list, anno_list, x_agenda, current_y, mode=mode)
     _update_layout_fig(x_fig, mode, x_agenda=x_agenda)
     while trace_list:
@@ -179,7 +179,7 @@ def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"WorkerID '{x_agenda._worker_id}' agenda partys metrics"
+    fig_title = f"OwnerID '{x_agenda._owner_id}' agenda partys metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -189,7 +189,7 @@ def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
 
 def get_agenda_intent_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     column_header_list = [
-        "worker_id",
+        "owner_id",
         "agenda_importance",
         "_label",
         "_parent_road",
@@ -202,7 +202,7 @@ def get_agenda_intent_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
         header=header_dict,
         cells=dict(
             values=[
-                df.worker_id,
+                df.owner_id,
                 df.agenda_importance,
                 df._label,
                 df._parent_road,
@@ -213,7 +213,7 @@ def get_agenda_intent_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"WorkerID '{x_agenda._worker_id}' agenda intent"
+    fig_title = f"OwnerID '{x_agenda._owner_id}' agenda intent"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

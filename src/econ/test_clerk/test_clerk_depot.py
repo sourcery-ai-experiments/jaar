@@ -41,7 +41,7 @@ def test_clerkunit_set_depot_agenda_CorrectlySets_creditor_pool(
     yao_clerkunit.set_depot_agenda(zia_agenda, assignment_text)
     before_zia_agenda = yao_clerkunit.open_depot_agenda(zia_text)
     assert before_zia_agenda._party_creditor_pool == zia_party_creditor_pool
-    print(f"{zia_agenda._worker_id=}")
+    print(f"{zia_agenda._owner_id=}")
     print(f"{zia_agenda._party_creditor_pool=}")
 
     # WHEN
@@ -70,7 +70,7 @@ def test_clerkunit_set_depot_agenda_CorrectlySets_debtor_pool(
     yao_clerkunit.set_depot_agenda(zia_agenda, assignment_text)
     before_zia_agenda = yao_clerkunit.open_depot_agenda(zia_text)
     assert before_zia_agenda._party_debtor_pool == zia_party_debtor_pool
-    print(f"{zia_agenda._worker_id=}")
+    print(f"{zia_agenda._owner_id=}")
     print(f"{zia_agenda._party_debtor_pool=}")
 
     # WHEN

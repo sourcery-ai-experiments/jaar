@@ -54,7 +54,7 @@ def test_AgendaUnit_set_party_creditor_pool_CorrectlyChanges_partys_creditor_wei
     yao_creditor_weight = 73
     wei_creditor_weight = 79
     zia_creditor_weight = 83
-    zia_agenda = agendaunit_shop(_worker_id=zia_text)
+    zia_agenda = agendaunit_shop(_owner_id=zia_text)
     zia_agenda.add_partyunit(yao_text, creditor_weight=yao_creditor_weight)
     zia_agenda.add_partyunit(wei_text, creditor_weight=wei_creditor_weight)
     zia_agenda.add_partyunit(zia_text, creditor_weight=zia_creditor_weight)
@@ -189,7 +189,7 @@ def test_AgendaUnit_set_party_creditor_pool_CorrectlySetsAttrsWhenWeightsNotDivi
 def test_AgendaUnit_set_party_debtor_pool_CorrectlySetsInt():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_worker_id=zia_text)
+    zia_agenda = agendaunit_shop(_owner_id=zia_text)
     assert zia_agenda._party_debtor_pool is None
 
     # WHEN
@@ -202,7 +202,7 @@ def test_AgendaUnit_set_party_debtor_pool_CorrectlySetsInt():
 def test_AgendaUnit_set_party_debtor_pool_CorrectlySets_partys_debtor_weightWithEmpty_partys():
     # GIVEN
     zia_text = "Zia"
-    zia_agenda = agendaunit_shop(_worker_id=zia_text)
+    zia_agenda = agendaunit_shop(_owner_id=zia_text)
 
     # WHEN
     x_party_debtor_pool = 77
@@ -245,7 +245,7 @@ def test_AgendaUnit_set_party_debtor_pool_CorrectlyChanges_partys_debtor_weight(
     yao_debtor_weight = 73
     wei_debtor_weight = 79
     zia_debtor_weight = 83
-    zia_agenda = agendaunit_shop(_worker_id=zia_text)
+    zia_agenda = agendaunit_shop(_owner_id=zia_text)
     zia_agenda.add_partyunit(yao_text, debtor_weight=yao_debtor_weight)
     zia_agenda.add_partyunit(wei_text, debtor_weight=wei_debtor_weight)
     zia_agenda.add_partyunit(zia_text, debtor_weight=zia_debtor_weight)

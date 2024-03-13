@@ -18,7 +18,7 @@ def get_agenda_partyunit_table_treasurying_attr_set_count_sqlstr():
     # SELECT COUNT(*)
     # FROM agenda_partyunit
     # WHERE _treasury_due_paid IS NOT NULL
-    #     AND worker_id = {cash_master}
+    #     AND owner_id = {cash_master}
     # """
     return """
 SELECT COUNT(*) 
@@ -38,16 +38,16 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     tom_text = "Tom"
     sal_text = "Sal"
 
-    sal_agentunit = agendaunit_shop(_worker_id=sal_text)
+    sal_agentunit = agendaunit_shop(_owner_id=sal_text)
     sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1)
     sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3)
     x_econ.save_job_agenda_to_forum(sal_agentunit)
 
-    bob_agentunit = agendaunit_shop(_worker_id=bob_text)
+    bob_agentunit = agendaunit_shop(_owner_id=bob_text)
     bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
 
-    tom_agentunit = agendaunit_shop(_worker_id=tom_text)
+    tom_agentunit = agendaunit_shop(_owner_id=tom_text)
     tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(tom_agentunit)
 
@@ -66,23 +66,23 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     )
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 4
     with x_econ.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+        river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
 
     block_0 = river_blocks.get(0)
     block_1 = river_blocks.get(1)
-    assert block_1.src_worker_id == sal_text and block_1.dst_worker_id == tom_text
+    assert block_1.src_owner_id == sal_text and block_1.dst_owner_id == tom_text
     assert block_1.river_tree_level == 1
     assert block_1.cash_start == 0.25
     assert block_1.cash_close == 1
     assert block_1.parent_block_num is None
     block_2 = river_blocks.get(2)
     block_3 = river_blocks.get(3)
-    assert block_3.src_worker_id == tom_text and block_3.dst_worker_id == sal_text
+    assert block_3.src_owner_id == tom_text and block_3.dst_owner_id == sal_text
     assert block_3.river_tree_level == 2
     assert block_3.parent_block_num == 1
 
@@ -115,22 +115,22 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     tom_text = "Tom"
     ava_text = "Ava"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     x_econ.save_job_agenda_to_forum(ava_agenda)
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -148,12 +148,12 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     )
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 6
     with x_econ.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+        river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -190,26 +190,26 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(elu_agenda)
 
@@ -229,12 +229,12 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     )
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 40
     # with x_econ.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -271,26 +271,26 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(elu_agenda)
@@ -311,12 +311,12 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     )
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 40
     # with x_econ.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -356,26 +356,26 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(elu_agenda)
@@ -397,11 +397,11 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
 
     # WHEN
     mbc = 13
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=mbc)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=mbc)
 
     # THEN
     # with x_econ.get_treasury_conn() as treasury_conn:
-    #     river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+    #     river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -422,26 +422,26 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(elu_agenda)
@@ -462,12 +462,12 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     )
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
     assert get_single_result(x_econ.get_treasury_conn(), river_block_count_sqlstr) == 40
     with x_econ.get_treasury_conn() as treasury_conn:
-        river_blocks = get_river_block_dict(treasury_conn, cash_worker_id=sal_text)
+        river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
     # for river_block in river_blocks.values():
     #     print(f"{river_block=}")
 
@@ -508,26 +508,26 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda = agendaunit_shop(_owner_id=sal_text)
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(sal_agenda)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(elu_agenda)
@@ -535,7 +535,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
     x_econ.refresh_treasury_job_agendas_data()
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=100)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
 
     # THEN
     count_range_fails_sql = """
@@ -552,7 +552,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
         , river_tree_level
         , lag(river_tree_level) OVER (ORDER BY cash_start, cash_close) AS prev_parent_river_tree_level
         FROM river_block rt1
-        --  WHERE dst_worker_id = 'sal' and cash_master = dst_worker_id
+        --  WHERE dst_owner_id = 'sal' and cash_master = dst_owner_id
         ORDER BY rt1.cash_start, rt1.cash_close
     ) x
     WHERE x.prev_diff <> 0
@@ -577,34 +577,34 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda_src = agendaunit_shop(_worker_id=sal_text)
+    sal_agenda_src = agendaunit_shop(_owner_id=sal_text)
     sal_agenda_src.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
     sal_agenda_src.add_partyunit(party_id=tom_text, creditor_weight=2, debtor_weight=1)
     sal_agenda_src.add_partyunit(party_id=ava_text, creditor_weight=2, debtor_weight=2)
     x_econ.save_job_agenda_to_forum(sal_agenda_src)
 
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agenda)
 
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text)
     x_econ.save_job_agenda_to_forum(tom_agenda)
 
-    ava_agenda = agendaunit_shop(_worker_id=ava_text)
+    ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    elu_agenda = agendaunit_shop(_worker_id=elu_text)
+    elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=8)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
     x_econ.save_job_agenda_to_forum(elu_agenda)
 
     x_econ.refresh_treasury_job_agendas_data()
-    sal_agenda_before = x_econ.get_job_agenda_file(worker_id=sal_text)
+    sal_agenda_before = x_econ.get_job_agenda_file(owner_id=sal_text)
 
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text, max_blocks_count=100)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
     assert len(sal_agenda_before._partys) == 3
     print(f"{len(sal_agenda_before._partys)=}")
     bob_party = sal_agenda_before._partys.get(bob_text)
@@ -624,19 +624,19 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert ava_party._treasury_voice_hx_lowest_rank is None
 
     # WHEN
-    x_econ.set_credit_flow_for_agenda(worker_id=sal_text)
+    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
 
     # THEN
-    sal_partytreasuryunits = x_econ.get_partytreasuryunits(worker_id=sal_text)
+    sal_partytreasuryunits = x_econ.get_partytreasuryunits(owner_id=sal_text)
     assert len(sal_partytreasuryunits) == 2
     bob_partytreasury = sal_partytreasuryunits.get(bob_text)
     tom_partytreasury = sal_partytreasuryunits.get(tom_text)
-    assert bob_partytreasury.due_worker_id == bob_text
-    assert tom_partytreasury.due_worker_id == tom_text
+    assert bob_partytreasury.due_owner_id == bob_text
+    assert tom_partytreasury.due_owner_id == tom_text
     assert bob_partytreasury.cash_master == sal_text
     assert tom_partytreasury.cash_master == sal_text
 
-    sal_agenda_after = x_econ.get_job_agenda_file(worker_id=sal_text)
+    sal_agenda_after = x_econ.get_job_agenda_file(owner_id=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)
@@ -651,14 +651,14 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     # for partytreasury_uid, sal_partytreasuryunit in sal_partytreasuryunits.items():
     #     print(f"{partytreasury_uid=} {sal_partytreasuryunit=}")
     #     assert sal_partytreasuryunit.cash_master == sal_text
-    #     assert sal_partytreasuryunit.due_worker_id in [bob_text, tom_text, elu_text]
-    #     x_partyunit = sal_agenda_after._partys.get(sal_partytreasuryunit.due_worker_id)
+    #     assert sal_partytreasuryunit.due_owner_id in [bob_text, tom_text, elu_text]
+    #     x_partyunit = sal_agenda_after._partys.get(sal_partytreasuryunit.due_owner_id)
     #     if x_partyunit != None:
     #         # print(
-    #         #     f"{sal_partytreasuryunit.cash_master=} {sal_partytreasuryunit.due_worker_id=} {x_partyunit.party_id=} due_total: {sal_partytreasuryunit.due_total} _Due_ Paid: {x_partyunit._treasury_due_paid}"
+    #         #     f"{sal_partytreasuryunit.cash_master=} {sal_partytreasuryunit.due_owner_id=} {x_partyunit.party_id=} due_total: {sal_partytreasuryunit.due_total} _Due_ Paid: {x_partyunit._treasury_due_paid}"
     #         # )
     #         # print(
-    #         #     f"{sal_partytreasuryunit.cash_master=} {sal_partytreasuryunit.due_worker_id=} {x_partyunit.party_id=} due_diff:  {sal_partytreasuryunit.due_diff} _Due_ Paid: {x_partyunit._treasury_due_diff}"
+    #         #     f"{sal_partytreasuryunit.cash_master=} {sal_partytreasuryunit.due_owner_id=} {x_partyunit.party_id=} due_diff:  {sal_partytreasuryunit.due_diff} _Due_ Paid: {x_partyunit._treasury_due_diff}"
     #         # )
     #         assert sal_partytreasuryunit.due_total == x_partyunit._treasury_due_paid
     #         assert sal_partytreasuryunit.due_diff == x_partyunit._treasury_due_diff

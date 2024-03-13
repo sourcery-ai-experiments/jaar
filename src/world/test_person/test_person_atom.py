@@ -5,7 +5,7 @@ from src.world.person import (
     PersonUnit,
     personunit_shop,
     get_gut_file_name,
-    get_life_file_name,
+    get_outcome_file_name,
 )
 from pytest import raises as pytest_raises
 from src.world.examples.example_atoms import (
@@ -27,8 +27,8 @@ def test_get_gut_file_name():
     assert get_gut_file_name() == "gut"
 
 
-def test_get_life_file_name():
-    assert get_life_file_name() == "life"
+def test_get_outcome_file_name():
+    assert get_outcome_file_name() == "outcome"
 
 
 def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
@@ -141,7 +141,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
     yao_agenda = yao_person._get_agenda_from_atom_files()
 
     # THEN
-    assert yao_agenda._worker_id == yao_text
+    assert yao_agenda._owner_id == yao_text
     assert yao_agenda._world_id == yao_person.world_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     assert yao_agenda._planck == yao_person._planck
@@ -160,7 +160,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
     yao_agenda = yao_person._get_agenda_from_atom_files()
 
     # THEN
-    assert yao_agenda._worker_id == yao_text
+    assert yao_agenda._owner_id == yao_text
     assert yao_agenda._world_id == yao_person.world_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     sports_text = "sports"
@@ -185,7 +185,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit
     yao_agenda = yao_person._get_agenda_from_atom_files()
 
     # THEN
-    assert yao_agenda._worker_id == yao_text
+    assert yao_agenda._owner_id == yao_text
     assert yao_agenda._world_id == yao_person.world_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     sports_text = "sports"

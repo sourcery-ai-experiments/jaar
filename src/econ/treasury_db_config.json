@@ -2,7 +2,7 @@
     "tables": {
         "agenda_groupunit": {
             "columns": {
-                "worker_id": {},
+                "owner_id": {},
                 "groupunit_group_id": {},
                 "treasury_partylinks": {}
             }
@@ -10,14 +10,14 @@
         },
         "agenda_idea_beliefunit": {
             "columns": {
-                "worker_id": {},
+                "owner_id": {},
                 "base": {},
                 "pick": {}
             }
         },
         "agenda_ideaunit": {
             "columns": {
-                "worker_id": {},
+                "owner_id": {},
                 "idea_road": {}
             }
         },
@@ -36,19 +36,19 @@
                 "_treasury_due_paid": {},
                 "_treasury_voice_hx_lowest_rank": {},
                 "_treasury_voice_rank": {},
-                "worker_id": {},
+                "owner_id": {},
                 "party_id": {}
             }
         },
         "agendaunit": {
             "columns": {
-                "worker_id": {},
+                "owner_id": {},
                 "rational": {}
             }
         },
         "calendar": {
             "columns": {
-                "worker_id": {},
+                "owner_id": {},
                 "intent_idea_road": {},
                 "intent_weight": {},
                 "report_date_range_cease": {},
@@ -68,10 +68,10 @@
                 "cash_close": {},
                 "cash_master": {},
                 "cash_start": {},
-                "dst_worker_id": {},
+                "dst_owner_id": {},
                 "parent_block_num": {},
                 "river_tree_level": {},
-                "src_worker_id": {}
+                "src_owner_id": {}
             }
         },
         "river_circle": {
@@ -80,7 +80,7 @@
                 "curr_close": {},
                 "curr_start": {},
                 "cash_master": {},
-                "dst_worker_id": {}
+                "dst_owner_id": {}
             }
         },
         "river_reach": {
@@ -89,7 +89,7 @@
                 "reach_curr_close": {},
                 "reach_curr_start": {},
                 "set_num": {},
-                "src_worker_id": {}
+                "src_owner_id": {}
             }
         }
     }

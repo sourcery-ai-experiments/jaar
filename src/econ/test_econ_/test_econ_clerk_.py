@@ -105,13 +105,13 @@ def test_EconUnit_add_clerkunit_SetsAttr(env_dir_setup_cleanup):
     assert x_econ.get_clerkunit(clerk_id=bob_text) is None
 
     # WHEN
-    x_econ.add_clerkunit(worker_id=bob_text)
+    x_econ.add_clerkunit(owner_id=bob_text)
 
     # THEN
     assert x_econ._clerkunits != {}
     print(f"{bob_file_path=}")
     bob_static_clerkunit = clerkunit_shop(
-        worker_id=bob_text,
+        owner_id=bob_text,
         env_dir=get_test_econ_dir(),
         econ_id=get_temp_env_econ_id(),
     )
@@ -120,8 +120,8 @@ def test_EconUnit_add_clerkunit_SetsAttr(env_dir_setup_cleanup):
     assert bob_gen_clerkunit._role != None
     assert bob_static_clerkunit._role != None
     assert bob_gen_clerkunit == bob_static_clerkunit
-    print(f"{   bob_gen_clerkunit._role._worker_id=}")
-    print(f"{bob_static_clerkunit._role._worker_id=}")
+    print(f"{   bob_gen_clerkunit._role._owner_id=}")
+    print(f"{bob_static_clerkunit._role._owner_id=}")
     assert bob_gen_clerkunit._role == bob_static_clerkunit._role
     assert os_path.exists(bob_dir)
     assert os_path.exists(bob_file_path)
@@ -138,5 +138,5 @@ def test_EconUnit_clerkunit_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     assert x_econ.clerkunit_exists(clerk_id=bob_text) == False
 
     # WHEN / THEN
-    x_econ.add_clerkunit(worker_id=bob_text)
+    x_econ.add_clerkunit(owner_id=bob_text)
     assert x_econ.clerkunit_exists(clerk_id=bob_text)

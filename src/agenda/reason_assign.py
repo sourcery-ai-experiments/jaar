@@ -44,7 +44,7 @@ def create_assignedunit(suffgroup: GroupID):
 @dataclass
 class AssignedHeir:
     _suffgroups: dict[GroupID:GroupID]
-    _worker_id_assigned: bool
+    _owner_id_assigned: bool
 
     def _get_all_partys(
         self,
@@ -61,16 +61,16 @@ class AssignedHeir:
     ) -> dict[GroupID:GroupUnit]:
         return self._get_all_partys(agenda_groups, self._suffgroups)
 
-    def set_worker_id_assigned(
-        self, agenda_groups: dict[GroupID:GroupUnit], agenda_worker_id: PartyID
+    def set_owner_id_assigned(
+        self, agenda_groups: dict[GroupID:GroupUnit], agenda_owner_id: PartyID
     ):
-        self._worker_id_assigned = False
+        self._owner_id_assigned = False
         if self._suffgroups == {}:
-            self._worker_id_assigned = True
+            self._owner_id_assigned = True
         else:
             all_suff_partys_x = self._get_all_suff_partys(agenda_groups)
-            if all_suff_partys_x.get(agenda_worker_id) != None:
-                self._worker_id_assigned = True
+            if all_suff_partys_x.get(agenda_owner_id) != None:
+                self._owner_id_assigned = True
 
     def set_suffgroups(
         self,
@@ -118,16 +118,14 @@ class AssignedHeir:
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupID:GroupID] = None, _worker_id_assigned: bool = None
+    _suffgroups: dict[GroupID:GroupID] = None, _owner_id_assigned: bool = None
 ) -> AssignedHeir:
     if _suffgroups is None:
         _suffgroups = {}
-    if _worker_id_assigned is None:
-        _worker_id_assigned = False
+    if _owner_id_assigned is None:
+        _owner_id_assigned = False
 
-    return AssignedHeir(
-        _suffgroups=_suffgroups, _worker_id_assigned=_worker_id_assigned
-    )
+    return AssignedHeir(_suffgroups=_suffgroups, _owner_id_assigned=_owner_id_assigned)
 
     # def meld(self, other_reason):
     #     for premise_x in other_reason.premises.values():

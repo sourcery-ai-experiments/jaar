@@ -156,8 +156,8 @@ class WorldUnit:
         gut_agenda: AgendaUnit,
     ):
         x_econ = healer_person.get_econ(econ_road)
-        x_econ.create_new_clerkunit(gut_agenda._worker_id)
-        x_clerk = x_econ.get_clerkunit(gut_agenda._worker_id)
+        x_econ.create_new_clerkunit(gut_agenda._owner_id)
+        x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
         x_clerk.save_role_agenda(gut_agenda)
 
     def add_econ_connection(
@@ -182,8 +182,8 @@ class WorldUnit:
         if x_econ.clerkunit_exists(clerk_person_id) == False:
             x_econ.add_clerkunit(clerk_person_id)
 
-    def generate_life_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_life = agendaunit_shop(person_id, self.world_id)
+    def generate_outcome_agenda(self, person_id: PersonID) -> AgendaUnit:
+        x_outcome = agendaunit_shop(person_id, self.world_id)
         x_personunit = self.get_personunit(person_id)
         x_gut = x_personunit.get_gut_file_agenda()
         x_gut.set_agenda_metrics()
@@ -196,17 +196,17 @@ class WorldUnit:
                 x_clerk = x_econ.get_clerkunit(person_id)
                 x_clerk.save_refreshed_job_to_forum()
                 x_job = x_econ.get_job_agenda_file(person_id)
-                x_life.meld(x_job)
-        x_personunit._save_life_file(x_life)
-        return self.get_life_file_agenda(person_id)
+                x_outcome.meld(x_job)
+        x_personunit._save_outcome_file(x_outcome)
+        return self.get_outcome_file_agenda(person_id)
 
-    def generate_all_life_agendas(self):
+    def generate_all_outcome_agendas(self):
         for x_person_id in self._get_person_ids():
-            self.generate_life_agenda(x_person_id)
+            self.generate_outcome_agenda(x_person_id)
 
-    def get_life_file_agenda(self, person_id: PersonID) -> AgendaUnit:
+    def get_outcome_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)
-        return x_personunit.get_life_file_agenda()
+        return x_personunit.get_outcome_file_agenda()
 
     def _set_partyunit(
         self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

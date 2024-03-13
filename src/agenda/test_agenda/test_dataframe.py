@@ -103,7 +103,7 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectDataFrame():
 
     # THEN
     partyunit_colums = {
-        "worker_id",
+        "owner_id",
         "agenda_importance",
         "_label",
         "_parent_road",
@@ -131,7 +131,7 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectEmptyDataFrame():
 
     # THEN
     partyunit_colums = {
-        "worker_id",
+        "owner_id",
         "agenda_importance",
         "_label",
         "_parent_road",

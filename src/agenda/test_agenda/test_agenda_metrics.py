@@ -204,9 +204,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     gig_text = "gig"
     gig_road = sue_agenda.make_l1_road(gig_text)
     gig_idea = sue_agenda.get_idea_obj(gig_road)
-    print(f"{sue_agenda._worker_id=} {len(gig_idea._reasonunits)=}")
+    print(f"{sue_agenda._owner_id=} {len(gig_idea._reasonunits)=}")
     # print(f"{gig_idea._reasonunits=}")
-    print(f"{sue_agenda._worker_id=} {len(sue_agenda._idearoot._beliefunits)=}")
+    print(f"{sue_agenda._owner_id=} {len(sue_agenda._idearoot._beliefunits)=}")
     # print(f"{sue_agenda._idearoot._beliefunits=}")
 
     sue_agenda.set_agenda_metrics()
@@ -510,14 +510,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsData_agenda_v001():
     inter_road = yao_agenda.make_l1_road(inter_text)
     yao_agenda.set_belief(base=inter_road, pick=inter_road)
     assert yao_agenda != None
-    # print(f"{yao_agenda._worker_id=}")
+    # print(f"{yao_agenda._owner_id=}")
     # print(f"{len(yao_agenda._idearoot._kids)=}")
     ulty_text = "Ultimate Frisbee"
     ulty_road = yao_agenda.make_l1_road(ulty_text)
 
     # if yao_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
     assert yao_agenda._idearoot._kids[ulty_text]._reasonunits != None
-    assert yao_agenda._worker_id != None
+    assert yao_agenda._owner_id != None
 
     # for belief in yao_agenda._idearoot._beliefunits.values():
     #     print(f"{belief=}")

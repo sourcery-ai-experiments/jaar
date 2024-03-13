@@ -27,7 +27,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_weight():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._worker_id}'s agenda weight was changed to {weight_int}"
+    x_str = f"{sue_agenda._owner_id}'s agenda weight was changed to {weight_int}"
     assert legible_list[0] == x_str
 
 
@@ -46,7 +46,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_money_desc():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._worker_id}'s money is now called '{sue_money_desc}'"
+    x_str = f"{sue_agenda._owner_id}'s money is now called '{sue_money_desc}'"
     assert legible_list[0] == x_str
 
 
@@ -96,7 +96,9 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Wit
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._worker_id}'s money creditor pool is now {party_creditor_pool_int}"
+    x_str = (
+        f"{sue_agenda._owner_id}'s money creditor pool is now {party_creditor_pool_int}"
+    )
     assert legible_list[0] == x_str
 
 
@@ -166,7 +168,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_max_tree_traverse():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._worker_id}'s maximum number of Agenda output evaluations changed to {max_tree_traverse_int}"
+    x_str = f"{sue_agenda._owner_id}'s maximum number of Agenda output evaluations changed to {max_tree_traverse_int}"
     assert legible_list[0] == x_str
 
 
@@ -188,7 +190,5 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_meld_strategy():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = (
-        f"{sue_agenda._worker_id}'s Meld strategy changed to '{meld_strategy_value}'"
-    )
+    x_str = f"{sue_agenda._owner_id}'s Meld strategy changed to '{meld_strategy_value}'"
     assert legible_list[0] == x_str

@@ -56,7 +56,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     # THEN
     assert agenda_dict != None
     assert str(type(agenda_dict)) == "<class 'dict'>"
-    assert agenda_dict["_worker_id"] == x_agenda._worker_id
+    assert agenda_dict["_owner_id"] == x_agenda._owner_id
     assert agenda_dict["_world_id"] == x_agenda._world_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
@@ -207,7 +207,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert True == x_is_json(x_json)
     agenda_dict = get_dict_from_json(x_json)
 
-    assert agenda_dict["_worker_id"] == zia_agenda._worker_id
+    assert agenda_dict["_owner_id"] == zia_agenda._owner_id
     assert agenda_dict["_world_id"] == zia_agenda._world_id
     assert agenda_dict["_weight"] == zia_agenda._weight
     assert agenda_dict["_meld_strategy"] == zia_agenda._meld_strategy
@@ -256,7 +256,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
 
     # THEN
     _kids = "_kids"
-    assert agenda_dict["_worker_id"] == yao_agenda._worker_id
+    assert agenda_dict["_owner_id"] == yao_agenda._owner_id
     assert agenda_dict["_world_id"] == yao_agenda._world_id
     assert agenda_dict["_weight"] == yao_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
@@ -365,8 +365,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 
     # THEN
     assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
-    assert json_agenda._worker_id != None
-    assert json_agenda._worker_id == zia_agenda._worker_id
+    assert json_agenda._owner_id != None
+    assert json_agenda._owner_id == zia_agenda._owner_id
     assert json_agenda._world_id == zia_agenda._world_id
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == zia_agenda._max_tree_traverse
@@ -460,28 +460,28 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     x1_agenda = example_agendas_agenda_v001()
     x2_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     x3_agenda = example_agendas_get_agenda_base_time_example()
-    print(f"{x1_agenda._worker_id}")
-    print(f"{x2_agenda._worker_id}")
-    print(f"{x3_agenda._worker_id}")
+    print(f"{x1_agenda._owner_id}")
+    print(f"{x2_agenda._owner_id}")
+    print(f"{x3_agenda._owner_id}")
 
     cn_dict_of_dicts = {
-        x1_agenda._worker_id: x1_agenda.get_dict(),
-        x2_agenda._worker_id: x2_agenda.get_dict(),
-        x3_agenda._worker_id: x3_agenda.get_dict(),
+        x1_agenda._owner_id: x1_agenda.get_dict(),
+        x2_agenda._owner_id: x2_agenda.get_dict(),
+        x3_agenda._owner_id: x3_agenda.get_dict(),
     }
 
     # WHEN
     ccn_dict_of_obj = get_dict_of_agenda_from_dict(cn_dict_of_dicts)
 
     # THEN
-    assert ccn_dict_of_obj.get(x1_agenda._worker_id) != None
-    assert ccn_dict_of_obj.get(x2_agenda._worker_id) != None
-    assert ccn_dict_of_obj.get(x3_agenda._worker_id) != None
-    cc1_idea_root = ccn_dict_of_obj.get(x1_agenda._worker_id)._idearoot
+    assert ccn_dict_of_obj.get(x1_agenda._owner_id) != None
+    assert ccn_dict_of_obj.get(x2_agenda._owner_id) != None
+    assert ccn_dict_of_obj.get(x3_agenda._owner_id) != None
+    cc1_idea_root = ccn_dict_of_obj.get(x1_agenda._owner_id)._idearoot
     assert cc1_idea_root._originunit == x1_agenda._idearoot._originunit
-    assert ccn_dict_of_obj.get(x1_agenda._worker_id)._idea_dict == x1_agenda._idea_dict
-    assert ccn_dict_of_obj.get(x1_agenda._worker_id) == x1_agenda
-    ccn2_agenda = ccn_dict_of_obj.get(x2_agenda._worker_id)
+    assert ccn_dict_of_obj.get(x1_agenda._owner_id)._idea_dict == x1_agenda._idea_dict
+    assert ccn_dict_of_obj.get(x1_agenda._owner_id) == x1_agenda
+    ccn2_agenda = ccn_dict_of_obj.get(x2_agenda._owner_id)
     assert ccn2_agenda._idearoot._label == x2_agenda._idearoot._label
     assert ccn2_agenda._idearoot._parent_road == x2_agenda._idearoot._parent_road
     shave_road = ccn2_agenda.make_l1_road("shave")
@@ -493,6 +493,6 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     print(f"{x2_agenda._idea_dict.keys()=}")
     assert ccn2_agenda._idea_dict == x2_agenda._idea_dict
     assert ccn2_agenda == x2_agenda
-    ccn_agenda3 = ccn_dict_of_obj.get(x3_agenda._worker_id)
+    ccn_agenda3 = ccn_dict_of_obj.get(x3_agenda._owner_id)
     x3_agenda.set_agenda_metrics()
     assert ccn_agenda3 == x3_agenda

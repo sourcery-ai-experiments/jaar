@@ -5,7 +5,7 @@ from src._road.road import (
     ProblemID,
     HealerID,
     EconID,
-    WorkerID,
+    OwnerID,
     PartyID,
     RoadUnit,
     EconRoad,
@@ -567,16 +567,16 @@ def test_EconID_exists():
     assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Econ"
 
 
-def test_WorkerID_exists():
+def test_OwnerID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_worker_id = WorkerID(bob_text)
+    bob_owner_id = OwnerID(bob_text)
     # THEN
-    assert bob_worker_id == bob_text
+    assert bob_owner_id == bob_text
     assert (
-        inspect_getdoc(bob_worker_id)
-        == "A RoadNode used to identify a AgendaUnit's worker_id"
+        inspect_getdoc(bob_owner_id)
+        == "A RoadNode used to identify a AgendaUnit's owner_id"
     )
 
 
@@ -589,7 +589,7 @@ def test_PartyID_exists():
     assert bob_party_id == bob_text
     assert (
         inspect_getdoc(bob_party_id)
-        == "Every PartyID object is WorkerID, must follow WorkerID format."
+        == "Every PartyID object is OwnerID, must follow OwnerID format."
     )
 
 

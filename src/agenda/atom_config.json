@@ -430,7 +430,7 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "worker_id": {
+            "owner_id": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             }
@@ -456,7 +456,7 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "dst_worker_id": {
+            "dst_owner_id": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -468,7 +468,7 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "src_worker_id": {
+            "src_owner_id": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             }
@@ -482,7 +482,7 @@
             "circle_num": {},
             "curr_close": {},
             "curr_start": {},
-            "dst_worker_id": {}
+            "dst_owner_id": {}
         },
         "treasury_only": true
     },
@@ -493,7 +493,7 @@
             "reach_curr_close": {},
             "reach_curr_start": {},
             "set_num": {},
-            "src_worker_id": {}
+            "src_owner_id": {}
         },
         "treasury_only": true
     }

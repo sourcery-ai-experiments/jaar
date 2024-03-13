@@ -13,14 +13,14 @@ def test_AgendaUnit_meld_BaseScenario():
     bob1_agenda = agendaunit_shop(bob_text)
     bob2_agenda = agendaunit_shop(bob_text)
     assert bob1_agenda
-    assert bob1_agenda._worker_id == bob_text
+    assert bob1_agenda._owner_id == bob_text
 
     # WHEN
     bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
     assert bob1_agenda
-    assert bob1_agenda._worker_id == bob_text
+    assert bob1_agenda._owner_id == bob_text
 
 
 def test_AgendaUnit_meld_WeightDoesNotCombine():
@@ -409,7 +409,7 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
 
     assert len(bob_idearoot._beliefunits) == 2
     assert len(bob_idearoot._beliefunits) == len(yao_idearoot._beliefunits)
-    assert bob_agenda._worker_id != yao_agenda._worker_id
+    assert bob_agenda._owner_id != yao_agenda._owner_id
     print(f"{len(bob_agenda._groups.items())=}")
     # for bob_agenda_group_key, bob_agenda_group_obj in bob_agenda._groups.items():
     #     print(f"{bob_agenda_group_key=}")

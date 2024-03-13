@@ -21,9 +21,9 @@ from pytest import raises as pytest_raises
 #     clerk_dir_setup_cleanup,
 # ):
 #     # GIVEN
-#     lai_worker_id = "Lai"
+#     lai_owner_id = "Lai"
 #     env_dir = get_temp_clerkunit_dir()
-#     lai_agenda = clerkunit_shop(worker_id=lai_worker_id, env_dir=env_dir)
+#     lai_agenda = clerkunit_shop(owner_id=lai_owner_id, env_dir=env_dir)
 #     lai_role_file_name = lai_agenda._role_file_name
 #     with pytest_raises(Exception) as excinfo:
 #         open_file(lai_agenda._clerkunit_dir, lai_role_file_name)
@@ -48,7 +48,7 @@ def test_ClerkUnitopen_role_file_WhenStartingAgendaFileDoesNotExists(
     tim_text = "Tim"
     env_dir = get_temp_clerkunit_dir()
     econ_id_text = get_temp_econ_id()
-    x_clerk = clerkunit_shop(worker_id=tim_text, env_dir=env_dir, econ_id=econ_id_text)
+    x_clerk = clerkunit_shop(owner_id=tim_text, env_dir=env_dir, econ_id=econ_id_text)
 
     # WHEN
     role_agenda = x_clerk.open_role_file()
@@ -56,7 +56,7 @@ def test_ClerkUnitopen_role_file_WhenStartingAgendaFileDoesNotExists(
     assert role_agenda._world_id == econ_id_text
 
     # THEN
-    x_agenda = agendaunit_shop(_worker_id=tim_text)
+    x_agenda = agendaunit_shop(_owner_id=tim_text)
     x_agenda.set_world_id(get_temp_econ_id())
     x_agenda.set_agenda_metrics()
     # x_idearoot = ideaunit_shop(_root=True, _label=gio_text, _parent_road="")
@@ -81,13 +81,13 @@ def test_ClerkUnit_save_role_agenda_rolePersonIDMustBeHealer(
     env_dir = get_temp_clerkunit_dir()
     x_clerk = clerkunit_shop(gio_text, env_dir, get_temp_econ_id())
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    assert x_agenda._worker_id != gio_text
+    assert x_agenda._owner_id != gio_text
 
     # WHEN
     x_clerk.save_role_agenda(x_agenda=x_agenda)
 
     # THEN
-    assert x_clerk.open_role_file()._worker_id == x_clerk._clerk_id
+    assert x_clerk.open_role_file()._owner_id == x_clerk._clerk_id
 
 
 def test_ClerkUnit_open_role_file_WhenStartingAgendaFileExists(
@@ -104,7 +104,7 @@ def test_ClerkUnit_open_role_file_WhenStartingAgendaFileExists(
 
     # THEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_worker_id(new_worker_id=gio_text)
+    x_agenda.set_owner_id(new_owner_id=gio_text)
     x_agenda.set_agenda_metrics()
 
     assert role_agenda._idearoot._kids == x_agenda._idearoot._kids
@@ -112,7 +112,7 @@ def test_ClerkUnit_open_role_file_WhenStartingAgendaFileExists(
     assert role_agenda._idearoot._beliefunits == {}
     assert role_agenda._partys == {}
     assert role_agenda._groups == {}
-    assert role_agenda._worker_id == x_clerk._clerk_id
+    assert role_agenda._owner_id == x_clerk._clerk_id
 
 
 def test_ClerkUnit_erase_role_agenda_file_DeletesFileCorrectly(
@@ -147,14 +147,14 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     x_clerk = clerkunit_shop(clerk_id, env_dir, get_temp_econ_id())
     x_clerk.create_core_dir_and_files()
     x_agenda = example_get_2node_agenda()
-    src_worker_id = x_agenda._worker_id
+    src_owner_id = x_agenda._owner_id
     assert count_files(x_clerk._agendas_digest_dir) == 0
 
     # WHEN
-    x_clerk.save_agenda_to_digest(x_agenda, src_worker_id=src_worker_id)
+    x_clerk.save_agenda_to_digest(x_agenda, src_owner_id=src_owner_id)
 
     # THEN
-    x_agenda_file_name = f"{x_agenda._worker_id}.json"
+    x_agenda_file_name = f"{x_agenda._owner_id}.json"
     digest_file_path = f"{x_clerk._agendas_digest_dir}/{x_agenda_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -163,7 +163,7 @@ def test_clerkunit_save_agenda_to_digest_SavesFileCorrectly(
     assert count_files(x_clerk._agendas_digest_dir) == 1
     digest_x_agenda_json = open_file(
         dest_dir=x_clerk._agendas_digest_dir,
-        file_name=f"{src_worker_id}.json",
+        file_name=f"{src_owner_id}.json",
     )
     assert digest_x_agenda_json == x_agenda.get_json()
 
@@ -177,7 +177,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_agenda = clerkunit_shop(sue_text, env_dir, get_temp_econ_id())
     sue_agenda.create_core_dir_and_files()
     x_agenda = example_get_2node_agenda()
-    src_worker_id = x_agenda._worker_id
+    src_owner_id = x_agenda._owner_id
     assert count_files(sue_agenda._agendas_digest_dir) == 0
     print(f"{x_agenda._world_id=}")
 
@@ -185,7 +185,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     sue_agenda.set_depot_agenda(x_agenda=x_agenda, depotlink_type="blind_trust")
 
     # THEN
-    x_agenda_file_name = f"{x_agenda._worker_id}.json"
+    x_agenda_file_name = f"{x_agenda._owner_id}.json"
     digest_file_path = f"{sue_agenda._agendas_digest_dir}/{x_agenda_file_name}"
     print(f"Saving to {digest_file_path=}")
     assert os_path.exists(digest_file_path)
@@ -194,7 +194,7 @@ def test_presonunit__set_depotlink_CorrectlySets_blind_trust_DigestAgenda(
     assert count_files(sue_agenda._agendas_digest_dir) == 1
     digest_x_agenda_json = open_file(
         dest_dir=sue_agenda._agendas_digest_dir,
-        file_name=f"{src_worker_id}.json",
+        file_name=f"{src_owner_id}.json",
     )
     assert digest_x_agenda_json == x_agenda.get_json()
 
@@ -208,15 +208,15 @@ def test_ClerkUnit_get_remelded_output_agenda_withEmptyDigestDict(
     x_clerk.create_core_dir_and_files()
     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._worker_id == clerk_id_x
+    assert x_agenda_output_before._owner_id == clerk_id_x
     assert x_agenda_output_before._idearoot._label == get_temp_econ_id()
-    # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_worker_id="digested1"))
+    # x_clerk.set_digested_agenda(agenda_x=agendaunit_shop(_owner_id="digested1"))
 
     # WHEN
     sx_output_after = x_clerk.get_remelded_output_agenda()
 
     # THEN
-    x_agenda = agendaunit_shop(_worker_id=clerk_id_x, _weight=0.0)
+    x_agenda = agendaunit_shop(_owner_id=clerk_id_x, _weight=0.0)
     x_agenda.set_world_id(get_temp_econ_id())
     x_agenda._idearoot._parent_road = ""
     x_agenda.set_agenda_metrics()
@@ -238,7 +238,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
     yao_clerk.create_core_dir_and_files()
     x_agenda_output_before = yao_clerk.get_remelded_output_agenda()
     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
-    assert x_agenda_output_before._worker_id == yao_text
+    assert x_agenda_output_before._owner_id == yao_text
     assert x_agenda_output_before._idearoot._label == get_temp_econ_id()
     input_agenda = example_get_2node_agenda()
     input_agenda.meld(input_agenda)
@@ -266,14 +266,14 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
     assert new_output_agenda._idearoot._kids == input_agenda._idearoot._kids
     assert sx_idearoot._kids_total_weight == input_idearoot._kids_total_weight
     assert sx_idearoot == input_idearoot
-    assert new_output_agenda._worker_id != input_agenda._worker_id
+    assert new_output_agenda._owner_id != input_agenda._owner_id
     assert new_output_agenda != input_agenda
 
 
 # def test_ClerkUnit_set_digested_agenda_with2Groups(clerk_dir_setup_cleanup):
 #     # GIVEN
 #     env_dir = get_temp_clerkunit_dir()
-#     x_clerk = clerkunit_shop(worker_id="test8", env_dir=env_dir)
+#     x_clerk = clerkunit_shop(owner_id="test8", env_dir=env_dir)
 #     x_agenda_output_before = x_clerk.get_remelded_output_agenda()
 #     assert str(type(x_agenda_output_before)).find(".agenda.AgendaUnit'>")
 #     assert x_agenda_output_before._groups == {}
@@ -282,12 +282,12 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 
 #     src1 = "test1"
 #     src1_road = f"{src1}"
-#     s1 = agendaunit_shop(_worker_id=src1)
+#     s1 = agendaunit_shop(_owner_id=src1)
 
 #     ceci_text = "Ceci"
-#     s1.set_partyunit(partyunit=PartyUnit(worker_id=ceci_text))
+#     s1.set_partyunit(partyunit=PartyUnit(owner_id=ceci_text))
 #     swim_text = "swimmers"
-#     swim_group = BraUnit(worker_id=swim_text)
+#     swim_group = BraUnit(owner_id=swim_text)
 #     swim_group.set_partylink(partylink=partylink_shop(party_id=ceci_text))
 #     s1.set_groupunit(y_groupunit=swim_group)
 
@@ -296,13 +296,13 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     s1.add_idea(ideaunit_shop(yaya_text), parent_road=src1_road)
 #     s1.set_belief(base=yaya_road, belief=yaya_road)
 
-#     assert s1._groups.get(swim_text).worker_id == swim_text
-#     assert s1._partys.get(ceci_text).worker_id == ceci_text
+#     assert s1._groups.get(swim_text).owner_id == swim_text
+#     assert s1._partys.get(ceci_text).owner_id == ceci_text
 #     assert s1._idearoot._label == src1
 #     assert s1._beliefs.get(yaya_road).base == yaya_road
 
 #     # WHEN
-#     x_clerk.set_single_digested_agenda(_worker_id="test1", digest_agenda_x=s1)
+#     x_clerk.set_single_digested_agenda(_owner_id="test1", digest_agenda_x=s1)
 #     new_output_agenda = x_clerk.get_remelded_output_agenda()
 
 #     # THEN
@@ -331,7 +331,7 @@ def test_ClerkUnit_role_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
     yao_originunit = originunit_shop()
     yao_originunit.set_originlink(party_id=yao_text, weight=role_origin_weight)
     role_agenda_x = example_get_7nodeJRoot_agenda()
-    role_agenda_x.set_worker_id(yao_text)
+    role_agenda_x.set_owner_id(yao_text)
 
     assert role_agenda_x._idearoot._originunit == originunit_shop()
     assert role_agenda_x._idearoot._originunit != yao_originunit

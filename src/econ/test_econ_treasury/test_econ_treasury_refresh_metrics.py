@@ -43,7 +43,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMem
     bob_text = "Bob"
     tom_text = "Tom"
 
-    bob_agentunit = agendaunit_shop(_worker_id=bob_text)
+    bob_agentunit = agendaunit_shop(_owner_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
     x_econ.refresh_treasury_job_agendas_data()
@@ -67,7 +67,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
     bob_text = "Bob"
     tom_text = "Tom"
 
-    bob_agentunit = agendaunit_shop(_worker_id=bob_text)
+    bob_agentunit = agendaunit_shop(_owner_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
     x_econ.refresh_treasury_job_agendas_data()
@@ -93,25 +93,25 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable
     sal_text = "Sal"
     elu_text = "Elu"
 
-    bob_agentunit = agendaunit_shop(_worker_id=bob_text)
+    bob_agentunit = agendaunit_shop(_owner_id=bob_text)
     bob_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     bob_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
     x_econ.save_job_agenda_to_forum(bob_agentunit)
 
-    sal_agentunit = agendaunit_shop(_worker_id=sal_text)
+    sal_agentunit = agendaunit_shop(_owner_id=sal_text)
     sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1, debtor_weight=4)
     sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3, debtor_weight=1)
     sal_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
     x_econ.save_job_agenda_to_forum(sal_agentunit)
 
-    tom_agentunit = agendaunit_shop(_worker_id=tom_text)
+    tom_agentunit = agendaunit_shop(_owner_id=tom_text)
     tom_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1, debtor_weight=4)
     tom_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
     x_econ.save_job_agenda_to_forum(tom_agentunit)
 
-    elu_agentunit = agendaunit_shop(_worker_id=elu_text)
+    elu_agentunit = agendaunit_shop(_owner_id=elu_text)
     elu_agentunit.add_partyunit(party_id=bob_text, creditor_weight=3, debtor_weight=1)
     elu_agentunit.add_partyunit(party_id=tom_text, creditor_weight=1, debtor_weight=4)
     elu_agentunit.add_partyunit(party_id=elu_text, creditor_weight=1, debtor_weight=4)
@@ -139,10 +139,10 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=elu_text))
 
     agenda_count_sqlstrs = get_row_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
@@ -166,10 +166,10 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=bob_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=tom_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=sal_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_worker_id=elu_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=bob_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=tom_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=sal_text))
+    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=elu_text))
 
     agenda_count_sqlstrs = get_row_count_sqlstr("agendaunit")
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 0
@@ -191,8 +191,8 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupu
     bob_text = "Bob"
     tom_text = "Tom"
     elu_text = "Elu"
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)
@@ -260,8 +260,8 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     x_econ.save_job_agenda_to_forum(tom_agenda)
     x_econ.save_job_agenda_to_forum(ava_agenda)
 
-    x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
-    e1_sal_agenda = x_econ.get_job_agenda_file(worker_id=sal_text)
+    x_econ.set_agenda_treasury_attrs(x_owner_id=sal_text)
+    e1_sal_agenda = x_econ.get_job_agenda_file(owner_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
@@ -270,10 +270,10 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
     x_econ.save_job_agenda_to_forum(sal_agenda)
-    x_econ.set_agenda_treasury_attrs(x_worker_id=sal_text)
+    x_econ.set_agenda_treasury_attrs(x_owner_id=sal_text)
 
     # THEN
-    e1_sal_agenda = x_econ.get_job_agenda_file(worker_id=sal_text)
+    e1_sal_agenda = x_econ.get_job_agenda_file(owner_id=sal_text)
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
@@ -291,7 +291,7 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     # WHEN
     resources_road = create_road(get_temp_env_econ_id(), "resources")
     water_road = create_road(resources_road, "water")
-    water_agenda_ideaunit = IdeaCatalog(worker_id=bob_text, idea_road=water_road)
+    water_agenda_ideaunit = IdeaCatalog(owner_id=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_agenda_ideaunit_table_insert_sqlstr(water_agenda_ideaunit)
     with x_econ.get_treasury_conn() as treasury_conn:
         print(water_insert_sqlstr)
@@ -314,9 +314,9 @@ def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
-    bob_agenda.set_worker_id(new_worker_id=bob_text)
-    tim_agenda.set_worker_id(new_worker_id=tim_text)
-    sal_agenda.set_worker_id(new_worker_id=sal_text)
+    bob_agenda.set_owner_id(new_owner_id=bob_text)
+    tim_agenda.set_owner_id(new_owner_id=tim_text)
+    sal_agenda.set_owner_id(new_owner_id=sal_text)
     x_econ.save_job_agenda_to_forum(bob_agenda)
     x_econ.save_job_agenda_to_forum(tim_agenda)
     x_econ.save_job_agenda_to_forum(sal_agenda)
@@ -347,10 +347,10 @@ def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
     elu_agenda = get_6node_agenda()
-    bob_agenda.set_worker_id(new_worker_id=bob_text)
-    tim_agenda.set_worker_id(new_worker_id=tim_text)
-    sal_agenda.set_worker_id(new_worker_id=sal_text)
-    elu_agenda.set_worker_id(new_worker_id=elu_text)
+    bob_agenda.set_owner_id(new_owner_id=bob_text)
+    tim_agenda.set_owner_id(new_owner_id=tim_text)
+    sal_agenda.set_owner_id(new_owner_id=sal_text)
+    elu_agenda.set_owner_id(new_owner_id=elu_text)
     x_econ.save_job_agenda_to_forum(bob_agenda)
     x_econ.save_job_agenda_to_forum(tim_agenda)
     x_econ.save_job_agenda_to_forum(sal_agenda)
@@ -386,7 +386,7 @@ def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesT
     # WHEN
     weather_road = create_road(get_temp_env_econ_id(), "weather")
     weather_rain = BeliefCatalog(
-        worker_id=bob_text,
+        owner_id=bob_text,
         base=weather_road,
         pick=create_road(weather_road, "rain"),
     )
@@ -413,9 +413,9 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     bob_agenda = get_3node_agenda()
     tim_agenda = get_6node_agenda()
     sal_agenda = get_agenda_3CleanNodesRandomWeights()
-    bob_agenda.set_worker_id(new_worker_id=bob_text)
-    tim_agenda.set_worker_id(new_worker_id=tim_text)
-    sal_agenda.set_worker_id(new_worker_id=sal_text)
+    bob_agenda.set_owner_id(new_owner_id=bob_text)
+    tim_agenda.set_owner_id(new_owner_id=tim_text)
+    sal_agenda.set_owner_id(new_owner_id=sal_text)
     c_text = "C"
     c_road = tim_agenda.make_l1_road(c_text)
     f_text = "F"
@@ -470,7 +470,7 @@ def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01
 
     # WHEN
     bob_group_x = GroupUnitCatalog(
-        worker_id=bob_text,
+        owner_id=bob_text,
         groupunit_group_id="US Dollar",
         treasury_partylinks=create_road(get_temp_env_econ_id(), "USA"),
     )
@@ -492,8 +492,8 @@ def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     bob_text = "Bob"
     tom_text = "Tom"
     elu_text = "Elu"
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
-    tom_agenda = agendaunit_shop(_worker_id=tom_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
+    tom_agenda = agendaunit_shop(_owner_id=tom_text)
     bob_agenda.add_partyunit(party_id=tom_text)
     tom_agenda.add_partyunit(party_id=bob_text)
     tom_agenda.add_partyunit(party_id=elu_text)

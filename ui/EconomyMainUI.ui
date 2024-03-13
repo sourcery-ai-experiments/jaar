@@ -39,7 +39,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="worker_ids_table">
+   <widget class="QTableWidget" name="owner_ids_table">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -55,7 +55,7 @@
     </property>
     <column>
      <property name="text">
-      <string>worker_ids</string>
+      <string>owner_ids</string>
      </property>
     </column>
     <column>
@@ -247,7 +247,7 @@
      <string>Delete</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="agenda_worker_id">
+   <widget class="QLineEdit" name="agenda_owner_id">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -262,7 +262,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="worker_id_update_button">
+   <widget class="QPushButton" name="owner_id_update_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -277,10 +277,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Change worker_id PID</string>
+     <string>Change owner_id PID</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="worker_id_insert_button">
+   <widget class="QPushButton" name="owner_id_insert_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -295,10 +295,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Add new worker_id</string>
+     <string>Add new owner_id</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="worker_id_delete_button">
+   <widget class="QPushButton" name="owner_id_delete_button">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -313,7 +313,7 @@
      </font>
     </property>
     <property name="text">
-     <string>delete worker_id</string>
+     <string>delete owner_id</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="clerk_id">
@@ -436,7 +436,7 @@
      <string>Edit </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="worker_id_edit_button">
+   <widget class="QPushButton" name="owner_id_edit_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -451,7 +451,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit worker_id</string>
+     <string>Edit owner_id</string>
     </property>
    </widget>
    <widget class="QPushButton" name="depotlink_edit_button">
@@ -488,7 +488,7 @@
     </property>
     <column>
      <property name="text">
-      <string>worker_ids Agenda</string>
+      <string>owner_ids Agenda</string>
      </property>
     </column>
     <column>
@@ -518,7 +518,7 @@
     </property>
     <column>
      <property name="text">
-      <string>worker_ids Partys</string>
+      <string>owner_ids Partys</string>
      </property>
     </column>
     <column>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>worker_ids Groups</string>
+      <string>owner_ids Groups</string>
      </property>
     </column>
     <column>
@@ -578,7 +578,7 @@
     </property>
     <column>
      <property name="text">
-      <string>worker_id Ideas</string>
+      <string>owner_id Ideas</string>
      </property>
     </column>
     <column>

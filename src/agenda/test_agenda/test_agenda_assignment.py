@@ -14,11 +14,11 @@ from src.agenda.examples.example_agendas import (
 def test_agendaunit_get_assignment_ReturnsAgenda():
     # GIVEN
     jes_text = "jessi"
-    jes1_agenda = agendaunit_shop(_worker_id=jes_text)
+    jes1_agenda = agendaunit_shop(_owner_id=jes_text)
 
     # WHEN
     bob_text = "Bob"
-    agenda_x = agendaunit_shop(_worker_id=jes_text)
+    agenda_x = agendaunit_shop(_owner_id=jes_text)
     assignor_known_partys_x = {}
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
@@ -43,7 +43,7 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
 
     # WHEN
     bob_text = "Bob"
-    y_agenda = agendaunit_shop(_worker_id=noa_text)
+    y_agenda = agendaunit_shop(_owner_id=noa_text)
     x_agenda = agendaunit_shop()
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
@@ -60,7 +60,7 @@ def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
 def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     # GIVEN
     jes_text = "Jessi"
-    jes_agenda = agendaunit_shop(_worker_id=jes_text)
+    jes_agenda = agendaunit_shop(_owner_id=jes_text)
     jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
@@ -77,7 +77,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
 
-    empty_agenda = agendaunit_shop(_worker_id=jes_text)
+    empty_agenda = agendaunit_shop(_owner_id=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
 
     # THEN
@@ -91,7 +91,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
 def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     # GIVEN
     jes_text = "Jessi"
-    jes_agenda = agendaunit_shop(_worker_id=jes_text)
+    jes_agenda = agendaunit_shop(_owner_id=jes_text)
     jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
@@ -124,7 +124,7 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
 
-    empty_agenda = agendaunit_shop(_worker_id=jes_text)
+    empty_agenda = agendaunit_shop(_owner_id=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
 
     # THEN
@@ -220,7 +220,7 @@ def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
 
 def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     # GIVEN
-    neo_agenda = agendaunit_shop(_worker_id="Neo")
+    neo_agenda = agendaunit_shop(_owner_id="Neo")
     casa_text = "casa"
     casa_road = neo_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
@@ -316,7 +316,7 @@ def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseAndDescendents():
 def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_worker_id=yao_text)
+    yao_agenda = agendaunit_shop(_owner_id=yao_text)
     gig_text = "gig"
     gig_road = yao_agenda.make_l1_road(gig_text)
     yao_agenda.add_l1_idea(ideaunit_shop(gig_text))
@@ -349,7 +349,7 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
 def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_worker_id=yao_text)
+    yao_agenda = agendaunit_shop(_owner_id=yao_text)
     min_range_text = "a_minute_range"
     min_range_road = yao_agenda.make_l1_road(min_range_text)
     min_range_idea = ideaunit_shop(min_range_text, _begin=0, _close=2880)
@@ -386,7 +386,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     # TODO figure out if this test is necessary
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_worker_id=yao_text)
+    yao_agenda = agendaunit_shop(_owner_id=yao_text)
     casa_text = "casa"
     casa_road = yao_agenda.make_l1_road(casa_text)
     yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
@@ -394,7 +394,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
 
     # WHEN
     bob_text = "Bob"
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
     relevant_roads = {
         yao_agenda._world_id: "descendant",
         casa_road: "An ex",
@@ -411,7 +411,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
 def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(_worker_id=yao_text)
+    yao_agenda = agendaunit_shop(_owner_id=yao_text)
 
     casa_text = "casa"
     casa_road = yao_agenda.make_l1_road(casa_text)
@@ -430,7 +430,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     print(f"{list(yao_agenda._idearoot._beliefunits.keys())=}")
 
     bob_text = "Bob"
-    bob_agenda = agendaunit_shop(_worker_id=bob_text)
+    bob_agenda = agendaunit_shop(_owner_id=bob_text)
 
     yao_agenda.set_agenda_metrics()
     bob_agenda.set_agenda_metrics()
@@ -475,7 +475,7 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
 
     # WHEN
     assignment_x = x_agenda.get_assignment(
-        agenda_x=agendaunit_shop(_worker_id=bob_text),
+        agenda_x=agendaunit_shop(_owner_id=bob_text),
         assignor_partys={bob_text: -1},
         assignor_party_id=bob_text,
     )
@@ -507,12 +507,12 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     # WHEN
     cali_text = "Cali"
-    cali_agenda = agendaunit_shop(_worker_id=cali_text)
+    cali_agenda = agendaunit_shop(_owner_id=cali_text)
     cali_agenda.set_world_id(world_id_text)
     print(f"{cali_agenda._world_id=} {cali_agenda._idea_dict.keys()=}")
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
-        assignor_partys={cali_text: -1, amer_agenda._worker_id: -1},
+        assignor_partys={cali_text: -1, amer_agenda._owner_id: -1},
         assignor_party_id=cali_text,
     )
 

@@ -6766,6 +6766,6 @@
         }
     },
     "_weight": 1,
-    "_worker_id": "Bob",
+    "_owner_id": "Bob",
     "_world_id": "A"
 }

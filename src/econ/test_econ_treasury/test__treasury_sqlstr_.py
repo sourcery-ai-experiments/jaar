@@ -17,9 +17,9 @@ from src.instrument.sqlite import sqlite_text
 
 def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
     # GIVEN
-    bob_worker_id = "Bob"
+    bob_owner_id = "Bob"
     bob_rational = False
-    bob_agenda = agendaunit_shop(_worker_id=bob_worker_id)
+    bob_agenda = agendaunit_shop(_owner_id=bob_owner_id)
     bob_agenda._rational = bob_rational
 
     # WHEN
@@ -29,7 +29,7 @@ def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
 UPDATE agendaunit
 SET rational = {sqlite_text(bob_rational)}
-WHERE worker_id = '{bob_worker_id}'
+WHERE owner_id = '{bob_owner_id}'
 ;
 """
     assert gen_sqlstr == example_sqlstr
@@ -42,7 +42,7 @@ def test_get_agendaunits_select_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = """
 SELECT 
-  worker_id
+  owner_id
 , rational
 FROM agendaunit
 ;
@@ -64,14 +64,14 @@ SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{bob_text}' 
-        AND block.dst_worker_id=block.cash_master
-        AND block.src_worker_id = agenda_partyunit.party_id
+        AND block.dst_owner_id=block.cash_master
+        AND block.src_owner_id = agenda_partyunit.party_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_partyunit.worker_id='{bob_text}' 
-        AND agenda_partyunit.party_id = block.dst_worker_id
+    WHERE agenda_partyunit.owner_id='{bob_text}' 
+        AND agenda_partyunit.party_id = block.dst_owner_id
 )
 ;
 """
@@ -87,8 +87,8 @@ def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
     SELECT 
     block.cash_master
-    , block.src_worker_id src
-    , block.dst_worker_id dst
+    , block.src_owner_id src
+    , block.dst_owner_id dst
     , CASE 
         WHEN block.cash_start < circle.curr_start 
             AND block.cash_close > circle.curr_start
@@ -134,10 +134,10 @@ def test_get_river_reach_table_touch_select_sqlstr_ReturnsCorrectStr():
             AND block.cash_start < circle.curr_close
             AND block.cash_close > circle.curr_close)
     WHERE block.cash_master = '{bob_text}'
-        AND block.src_worker_id != block.cash_master
+        AND block.src_owner_id != block.cash_master
     ORDER BY 
-    block.src_worker_id
-    , block.dst_worker_id
+    block.src_owner_id
+    , block.dst_owner_id
     , block.cash_start
     , block.cash_close
 """
@@ -291,12 +291,12 @@ def test_get_river_reach_table_create_sqlstr_ReturnsCorrectStr():
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS river_reach (
   cash_master VARCHAR(255) NOT NULL
-, src_worker_id VARCHAR(255) NOT NULL
+, src_owner_id VARCHAR(255) NOT NULL
 , set_num INT NOT NULL
 , reach_curr_start FLOAT NOT NULL
 , reach_curr_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(worker_id)
-, FOREIGN KEY(src_worker_id) REFERENCES agendaunit(worker_id)
+, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
 )
 ;
 """
@@ -308,7 +308,7 @@ def test_get_river_reach_table_insert_sqlstr_ReturnsCorrectStr():
     select_example_sqlstr = """
 SELECT 
   'Yao' cash_master
-, 'Sue' src_worker_id
+, 'Sue' src_owner_id
 , 4 set_num
 , 0.78 reach_curr_start
 , 0.89 reach_curr_close
@@ -319,7 +319,7 @@ SELECT
 
     # THEN
     example_sqlstr = f"""
-INSERT INTO river_reach (cash_master, src_worker_id, set_num, reach_curr_start, reach_curr_close)
+INSERT INTO river_reach (cash_master, src_owner_id, set_num, reach_curr_start, reach_curr_close)
 {select_example_sqlstr}
 ;
 """
@@ -335,11 +335,11 @@ def test_get_river_score_select_sqlstr_ReturnsCorrectStr():
     example_sqlstr = f"""
 SELECT 
   cash_master
-, src_worker_id
+, src_owner_id
 , SUM(reach_curr_close - reach_curr_start) range_sum
 FROM river_reach
 WHERE cash_master = '{yao_text}'
-GROUP BY cash_master, src_worker_id
+GROUP BY cash_master, src_owner_id
 ORDER BY range_sum DESC
 ;
 """
@@ -353,7 +353,7 @@ def test_get_agenda_partyunit_table_create_sqlstr_ReturnsCorrectStr():
     # THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS agenda_partyunit (
-  worker_id VARCHAR(255) NOT NULL 
+  owner_id VARCHAR(255) NOT NULL 
 , party_id VARCHAR(255) NOT NULL
 , _agenda_credit FLOAT
 , _agenda_debt FLOAT
@@ -368,9 +368,9 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _treasury_credit_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
-, FOREIGN KEY(worker_id) REFERENCES agendaunit(worker_id)
-, FOREIGN KEY(party_id) REFERENCES agendaunit(worker_id)
-, UNIQUE(worker_id, party_id)
+, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(party_id) REFERENCES agendaunit(owner_id)
+, UNIQUE(owner_id, party_id)
 )
 ;
 """
@@ -388,10 +388,10 @@ UPDATE agenda_partyunit
 SET _treasury_credit_score = (
     SELECT SUM(reach_curr_close - reach_curr_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = agenda_partyunit.worker_id
-        AND reach.src_worker_id = agenda_partyunit.party_id
+    WHERE reach.cash_master = agenda_partyunit.owner_id
+        AND reach.src_owner_id = agenda_partyunit.party_id
     )
-WHERE agenda_partyunit.worker_id = '{yao_text}'
+WHERE agenda_partyunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
@@ -414,11 +414,11 @@ SET _treasury_voice_rank =
         SELECT p2.party_id
         , row_number() over (order by p2._treasury_credit_score DESC) rn
         FROM agenda_partyunit p2
-        WHERE p2.worker_id = '{yao_text}'
+        WHERE p2.owner_id = '{yao_text}'
     ) p3
-    WHERE p3.party_id = agenda_partyunit.party_id AND agenda_partyunit.worker_id = '{yao_text}'
+    WHERE p3.party_id = agenda_partyunit.party_id AND agenda_partyunit.owner_id = '{yao_text}'
     )
-WHERE agenda_partyunit.worker_id = '{yao_text}'
+WHERE agenda_partyunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr

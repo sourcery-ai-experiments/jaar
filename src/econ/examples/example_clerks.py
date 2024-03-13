@@ -26,7 +26,7 @@ def get_2node_agenda(world_id: EconID = None) -> AgendaUnit:
         world_id = get_temp_econ_id()
     a_text = "A"
     b_text = "B"
-    x_agenda = agendaunit_shop(_worker_id=a_text)
+    x_agenda = agendaunit_shop(_owner_id=a_text)
     x_agenda.set_world_id(world_id)
     idea_b = ideaunit_shop(b_text)
     x_agenda.add_idea(idea_b, parent_road=get_temp_econ_id())
@@ -135,9 +135,9 @@ def get_clerkunit_2agenda(env_dir, econ_id) -> ClerkUnit:
     return xio_clerkunit
 
 
-def get_agenda_2CleanNodesRandomWeights(_worker_id: str = None) -> AgendaUnit:
-    worker_id = _worker_id if _worker_id != None else "ernie"
-    x_agenda = agendaunit_shop(worker_id)
+def get_agenda_2CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
+    owner_id = _owner_id if _owner_id != None else "ernie"
+    x_agenda = agendaunit_shop(owner_id)
     casa_text = "casa"
     x_agenda.add_l1_idea(ideaunit_shop(casa_text))
     casa_road = x_agenda.make_l1_road(casa_text)
@@ -151,9 +151,9 @@ def get_agenda_2CleanNodesRandomWeights(_worker_id: str = None) -> AgendaUnit:
     return x_agenda
 
 
-def get_agenda_3CleanNodesRandomWeights(_worker_id: str = None) -> AgendaUnit:
-    worker_id = _worker_id if _worker_id != None else "ernie"
-    x_agenda = agendaunit_shop(worker_id)
+def get_agenda_3CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
+    owner_id = _owner_id if _owner_id != None else "ernie"
+    x_agenda = agendaunit_shop(owner_id)
     casa_text = "casa"
     x_agenda.add_l1_idea(ideaunit_shop(casa_text))
     casa_road = x_agenda.make_l1_road(casa_text)

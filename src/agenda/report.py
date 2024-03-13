@@ -38,7 +38,7 @@ def get_agenda_intent_dataframe(
     if intent_dict == {}:
         return DataFrame(
             columns=[
-                "worker_id",
+                "owner_id",
                 "agenda_importance",
                 "_label",
                 "_parent_road",
@@ -53,7 +53,7 @@ def get_agenda_intent_dataframe(
     x_idea_list = []
     for x_idea in intent_dict.values():
         idea_dict = {
-            "worker_id": x_agenda._worker_id,
+            "owner_id": x_agenda._owner_id,
             "agenda_importance": x_idea._agenda_importance,
             "_label": x_idea._label,
             "_parent_road": x_idea._parent_road,

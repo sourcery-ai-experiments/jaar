@@ -30,7 +30,7 @@ def test_CalendarReport_Exists():
 
     # WHEN
     x_calendarreport = CalendarReport(
-        worker_id=bob_text,
+        owner_id=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -58,7 +58,7 @@ def test_CalendarReport_CalculationMethodsReturnCorrectObj():
     x_intent_max_count_task = 11
     x_intent_max_count_state = 7
     x_calendarreport = CalendarReport(
-        worker_id=bob_text,
+        owner_id=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -94,7 +94,7 @@ def test_CalendarIntentUnit_exists():
     x_intent_weight = 0.5
     x_task = True
     x_calendarreport = CalendarReport(
-        worker_id=bob_text,
+        owner_id=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -147,7 +147,7 @@ def test_econ_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
 
     # WHEN
     x_calendarreport = CalendarReport(
-        worker_id=bob_text,
+        owner_id=bob_text,
         time_road=x_time_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -206,7 +206,7 @@ def test_econ_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError()
         x_econ.insert_intent_into_treasury(amos_agenda, x_calendarreport)
     assert (
         str(excinfo.value)
-        == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._worker_id}'."
+        == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._owner_id}'."
     )
 
 
@@ -230,7 +230,7 @@ def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     x_intent_max_count_state = 7
     # WHEN
     x_calendarreport = CalendarReport(
-        worker_id=bob_agenda._worker_id,
+        owner_id=bob_agenda._owner_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -247,7 +247,7 @@ def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     new_interval_count = 3
     # WHEN
     x_calendarreport = CalendarReport(
-        worker_id=bob_agenda._worker_id,
+        owner_id=bob_agenda._owner_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=new_interval_count,
