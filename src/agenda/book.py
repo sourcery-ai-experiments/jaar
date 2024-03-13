@@ -1006,8 +1006,6 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
 
     x_list = [atom_insert(), "agenda_idea_healerhold"]
     agenda_idea_healerhold_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "agenda_idea_healerhold"]
-    agenda_idea_healerhold_update_dict = get_leg_obj(atoms_dict, x_list)
     x_list = [atom_delete(), "agenda_idea_healerhold"]
     agenda_idea_healerhold_delete_dict = get_leg_obj(atoms_dict, x_list)
 
@@ -1124,10 +1122,6 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
     if agenda_idea_healerhold_insert_dict != None:
         add_agenda_idea_healerhold_insert_to_legible_list(
             leg_list, agenda_idea_healerhold_insert_dict, x_agenda
-        )
-    if agenda_idea_healerhold_update_dict != None:
-        add_agenda_idea_healerhold_update_to_legible_list(
-            leg_list, agenda_idea_healerhold_update_dict, x_agenda
         )
     if agenda_idea_healerhold_delete_dict != None:
         add_agenda_idea_healerhold_delete_to_legible_list(
@@ -1660,19 +1654,23 @@ def add_agenda_idea_suffgroup_delete_to_legible_list(
 def add_agenda_idea_healerhold_insert_to_legible_list(
     legible_list: list[str], idea_healerhold_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
-
-
-def add_agenda_idea_healerhold_update_to_legible_list(
-    legible_list: list[str], idea_healerhold_update_dict: dict, x_agenda: AgendaUnit
-):
-    pass
+    for road_dict in idea_healerhold_insert_dict.values():
+        for idea_healerhold_atom in road_dict.values():
+            group_id_value = idea_healerhold_atom.get_value("group_id")
+            road_value = idea_healerhold_atom.get_value("road")
+            x_str = f"Healerhold '{group_id_value}' created for idea '{road_value}'."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_healerhold_delete_to_legible_list(
     legible_list: list[str], idea_healerhold_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    pass
+    for road_dict in idea_healerhold_delete_dict.values():
+        for idea_healerhold_atom in road_dict.values():
+            group_id_value = idea_healerhold_atom.get_value("group_id")
+            road_value = idea_healerhold_atom.get_value("road")
+            x_str = f"Healerhold '{group_id_value}' deleted for idea '{road_value}'."
+            legible_list.append(x_str)
 
 
 def add_agenda_idea_beliefunit_insert_to_legible_list(
