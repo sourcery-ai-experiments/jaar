@@ -9,7 +9,7 @@ from src.world.examples.world_env_kit import (
 from os.path import exists as os_path_exists
 
 
-def test_WorldUnit_generate_life_agenda_SetsLifeAgendaFile(worlds_dir_setup_cleanup):
+def test_WorldUnit_generate_life_agenda_Sets_life_A.gendaFile(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "Music"
     music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)

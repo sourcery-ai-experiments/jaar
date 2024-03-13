@@ -1257,9 +1257,9 @@
                                                             "A,Nation-States": {
                                                                 "base": "A,Nation-States",
                                                                 "premises": {
-                                                                    "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden": {
+                                                                    "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor gaarden": {
                                                                         "divisor": null,
-                                                                        "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor garden",
+                                                                        "need": "A,Nation-States,USA,Portland OR,Downtown,Apartment Building,10th floor gaarden",
                                                                         "open": null
                                                                     }
                                                                 }
@@ -4034,9 +4034,9 @@
                                             "Apartment Building": {
                                                 "_is_expanded": true,
                                                 "_kids": {
-                                                    "10th floor garden": {
+                                                    "10th floor gaarden": {
                                                         "_is_expanded": true,
-                                                        "_label": "10th floor garden",
+                                                        "_label": "10th floor gaarden",
                                                         "_meld_strategy": "default",
                                                         "_uid": 246,
                                                         "_weight": 1,
