@@ -1027,21 +1027,26 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
         add_agenda_partyunit_insert_to_legible_list(
             x_list, partyunit_insert_dict, x_agenda
         )
-    if groupunit_insert_dict != None:
-        add_agenda_groupunit_insert_to_legible_list(
-            x_list, groupunit_insert_dict, x_agenda
-        )
     if partyunit_update_dict != None:
         add_agenda_partyunit_update_to_legible_list(
             x_list, partyunit_update_dict, x_agenda
+        )
+    if partyunit_delete_dict != None:
+        add_agenda_partyunit_delete_to_legible_list(
+            x_list, partyunit_delete_dict, x_agenda
+        )
+
+    if groupunit_insert_dict != None:
+        add_agenda_groupunit_insert_to_legible_list(
+            x_list, groupunit_insert_dict, x_agenda
         )
     if groupunit_update_dict != None:
         add_agenda_groupunit_update_to_legible_list(
             x_list, groupunit_update_dict, x_agenda
         )
-    if partyunit_delete_dict != None:
-        add_agenda_partyunit_delete_to_legible_list(
-            x_list, partyunit_delete_dict, x_agenda
+    if groupunit_delete_dict != None:
+        add_agenda_groupunit_delete_to_legible_list(
+            x_list, groupunit_delete_dict, x_agenda
         )
 
     return x_list
@@ -1152,10 +1157,38 @@ def add_agenda_partyunit_delete_to_legible_list(
 def add_agenda_groupunit_insert_to_legible_list(
     legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    pass
+    for groupunit_atom in groupunit_dict.values():
+        group_id = groupunit_atom.get_value("group_id")
+        _treasury_partylinks_value = groupunit_atom.get_value("_treasury_partylinks")
+        x_str = f"The group '{group_id}' was created"
+        if _treasury_partylinks_value != None:
+            x_str += f" and has _treasury_partylinks={_treasury_partylinks_value}"
+        x_str += "."
+        legible_list.append(x_str)
 
 
 def add_agenda_groupunit_update_to_legible_list(
     legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    pass
+    for groupunit_atom in groupunit_dict.values():
+        group_id = groupunit_atom.get_value("group_id")
+        _treasury_partylinks_value = groupunit_atom.get_value("_treasury_partylinks")
+        x_str = f"The group '{group_id}'"
+        if _treasury_partylinks_value != None:
+            x_str += f" now has _treasury_partylinks={_treasury_partylinks_value}"
+        elif _treasury_partylinks_value is None:
+            x_str += " no longer has _treasury_partylinks"
+        x_str += "."
+        legible_list.append(x_str)
+
+
+def add_agenda_groupunit_delete_to_legible_list(
+    legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
+):
+    x_money_desc = x_agenda._money_desc
+    if x_money_desc is None:
+        x_money_desc = "money"
+    for groupunit_atom in groupunit_dict.values():
+        group_id = groupunit_atom.get_value("group_id")
+        x_str = f"The group '{group_id}' was deleted."
+        legible_list.append(x_str)
