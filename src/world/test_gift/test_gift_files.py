@@ -5,7 +5,38 @@ from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
+from src.world.examples.world_env_kit import (
+    get_test_worlds_dir,
+    get_test_world_id,
+    worlds_dir_setup_cleanup,
+)
 from pytest import raises as pytest_raises
+
+
+# def test_GiftUnit_save_bookmetric_file_SavesCorrectFile(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     sue_text = "Sue"
+#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+#     sue_persons_dir = f"{sue_world_dir}/persons"
+#     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
+#     sue_gut_file_name = f"{get_gut_file_name()}.json"
+#     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
+#     print(f"{sue_gut_path=}")
+#     assert os_path_exists(sue_gut_path) == False
+#     sue_person = personunit_shop(person_id=sue_text)
+#     assert os_path_exists(sue_gut_path) == False
+#     assert sue_person.gut_file_exists() == False
+
+#     # WHEN
+#     save_file(
+#         dest_dir=sue_person.person_dir,
+#         file_name=sue_person._gut_file_name,
+#         file_text=agendaunit_shop(sue_text).get_json(),
+#     )
+
+#     # THEN
+#     assert os_path_exists(sue_gut_path)
+#     assert sue_person.gut_file_exists()
 
 
 # def test_GiftUnit_exists():

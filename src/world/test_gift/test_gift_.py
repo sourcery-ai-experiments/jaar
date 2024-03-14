@@ -259,7 +259,7 @@ def test_GiftUnit_get_step_dict_ReturnsCorrectObj_book_start():
     assert carm_agendaatoms_dict.get(farm_book_start + 1) != None
 
 
-def test_GiftUnit_get_book_min_ReturnsCorrectObj():
+def test_GiftUnit_get_book_atom_numbers_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -274,31 +274,9 @@ def test_GiftUnit_get_book_min_ReturnsCorrectObj():
     farm_dict = farm_giftunit.get_step_dict()
 
     # WHEN
-    farm_book_min = farm_giftunit.get_book_min(farm_dict)
+    farm_book_atom_numbers = farm_giftunit.get_book_atom_numbers(farm_dict)
     # THEN
-    assert farm_book_min == farm_book_start
-    assert farm_book_min == 7
-
-
-def test_GiftUnit_get_book_max_ReturnsCorrectObj():
-    # GIVEN
-    bob_text = "Bob"
-    tim_text = "Tim"
-    yao_text = "Yao"
-    carm_bookunit = get_bookunit_carm_example()
-    farm_book_start = 7
-    farm_giftunit = giftunit_shop(bob_text)
-    farm_giftunit.set_bookunit(carm_bookunit)
-    farm_giftunit.set_book_start(farm_book_start)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
-    farm_dict = farm_giftunit.get_step_dict()
-
-    # WHEN
-    farm_book_min = farm_giftunit.get_book_max(farm_dict)
-    # THEN
-    assert farm_book_min == farm_book_start + 1
-    assert farm_book_min == 8
+    assert farm_book_atom_numbers == [farm_book_start, farm_book_start + 1]
 
 
 def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
@@ -329,13 +307,14 @@ def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
     assert giftees_dict.get(tim_text) != None
     assert giftees_dict.get(yao_text) != None
 
-    book_min_text = "book_min"
-    assert x_dict.get(book_min_text) != None
-    assert x_dict.get(book_min_text) == 7
+    book_atom_numbers_text = "book_atom_numbers"
+    assert x_dict.get(book_atom_numbers_text) != None
+    assert x_dict.get(book_atom_numbers_text) == [7, 8]
 
+    book_min_text = "book_min"
+    assert x_dict.get(book_min_text) is None
     book_max_text = "book_max"
-    assert x_dict.get(book_max_text) != None
-    assert x_dict.get(book_max_text) == 8
+    assert x_dict.get(book_max_text) is None
 
 
 def test_GiftUnit_get_bookmetric_json_ReturnsCorrectObj():

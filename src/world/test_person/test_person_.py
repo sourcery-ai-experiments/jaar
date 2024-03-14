@@ -37,6 +37,7 @@ def test_PersonUnit_exists():
     assert x_person.person_dir is None
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
+    assert x_person._gifts_dir is None
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
@@ -62,6 +63,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._outcome_path is None
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
+    assert x_person._gifts_dir is None
 
     # GIVEN
     yao_text = "Yao"
@@ -81,6 +83,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     )
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
     assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
+    assert x_person._gifts_dir == f"{x_person.person_dir}/gifts"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter():
@@ -502,6 +505,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.person_dir) is False
     assert os_path_exists(sue_person._econs_dir) is False
     assert os_path_exists(sue_person._atoms_dir) is False
+    assert os_path_exists(sue_person._gifts_dir) is False
     assert os_path_exists(sue_person._gut_path) is False
     assert os_path_exists(sue_person._outcome_path) is False
 
@@ -514,5 +518,6 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person.person_dir)
     assert os_path_exists(sue_person._econs_dir)
     assert os_path_exists(sue_person._atoms_dir)
+    assert os_path_exists(sue_person._gifts_dir)
     assert os_path_exists(sue_person._gut_path)
     assert os_path_exists(sue_person._outcome_path)

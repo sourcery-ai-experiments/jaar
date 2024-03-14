@@ -69,6 +69,7 @@ class PersonUnit:
     person_dir: str = None
     _econs_dir: str = None
     _atoms_dir: str = None
+    _gifts_dir: str = None
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
@@ -90,6 +91,7 @@ class PersonUnit:
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
         self._econs_dir = f"{self.person_dir}/econs"
         self._atoms_dir = f"{self.person_dir}/atoms"
+        self._gifts_dir = f"{self.person_dir}/gifts"
         if self._gut_file_name is None:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
@@ -105,6 +107,7 @@ class PersonUnit:
         set_dir(self.person_dir)
         set_dir(self._econs_dir)
         set_dir(self._atoms_dir)
+        set_dir(self._gifts_dir)
         self.create_gut_file_if_does_not_exist()
         self.create_outcome_file_if_does_not_exist()
 

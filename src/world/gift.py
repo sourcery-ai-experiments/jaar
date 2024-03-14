@@ -57,23 +57,16 @@ class GiftUnit:
             "book": self._bookunit.get_ordered_agendaatoms(self._book_start),
         }
 
-    def get_book_min(self, giftunit_dict: dict[str:]) -> int:
+    def get_book_atom_numbers(self, giftunit_dict: dict[str:]) -> int:
         book_dict = giftunit_dict.get("book")
-        book_keys = set(book_dict.keys())
-        return min(book_keys)
-
-    def get_book_max(self, giftunit_dict: dict[str:]) -> int:
-        book_dict = giftunit_dict.get("book")
-        book_keys = set(book_dict.keys())
-        return max(book_keys)
+        return list(book_dict.keys())
 
     def get_bookmetric_dict(self) -> dict:
         x_dict = self.get_step_dict()
         return {
             "gifter": x_dict.get("gifter"),
             "giftees": x_dict.get("giftees"),
-            "book_min": self.get_book_min(x_dict),
-            "book_max": self.get_book_max(x_dict),
+            "book_atom_numbers": self.get_book_atom_numbers(x_dict),
         }
 
     def get_bookmetric_json(self) -> str:
