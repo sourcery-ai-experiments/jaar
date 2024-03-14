@@ -6,6 +6,7 @@ from src.instrument.python import (
     get_0_if_None,
     get_empty_set_if_none,
     get_json_from_dict,
+    get_dict_from_json,
 )
 from src.instrument.file import save_file, open_file
 from dataclasses import dataclass
@@ -80,7 +81,7 @@ class GiftUnit:
         return get_json_from_dict(self.get_bookmetric_dict())
 
     def _get_num_filename(self, x_number: int) -> str:
-        return f"{x_number}.json"
+        return get_json_filename(x_number)
 
     def _save_atom_file(self, atom_number: int, x_atom: AgendaAtom):
         save_file(
@@ -118,6 +119,13 @@ class GiftUnit:
         self._save_gift_file()
         self._save_atom_files()
 
+    def _create_bookunit_from_atom_files(self, atom_number_list: list) -> BookUnit:
+        x_bookunit = bookunit_shop()
+        for atom_number in atom_number_list:
+            x_agendaatom = self._open_atom_file(atom_number)
+            x_bookunit.set_agendaatom(x_agendaatom)
+        self._bookunit = x_bookunit
+
 
 def giftunit_shop(
     _gifter: PersonID,
@@ -148,13 +156,20 @@ def giftunit_shop(
     return x_giftunit
 
 
-def giftunit_get_from_dict(x_dict: dict[str:str]) -> GiftUnit:
-    x_gifter = x_dict.get("gifter")
-    x_giftees = set(x_dict.get("giftees").keys())
-    x_book_atom_numbers = set(x_dict.get("book_atom_numbers"))
-    x_giftunit = giftunit_shop(x_gifter, x_giftees)
-    print(f"{x_book_atom_numbers=}")
-    for x_atom_number in x_book_atom_numbers:
-        print(f"{x_atom_number=}")
+def get_json_filename(filename_without_extention) -> str:
+    return f"{filename_without_extention}.json"
 
+
+def create_giftunit_from_files(
+    gifts_dir: str,
+    gift_id: str,
+    atoms_dir: str,
+) -> GiftUnit:
+    gift_filename = get_json_filename(gift_id)
+    gift_dict = get_dict_from_json(open_file(gifts_dir, gift_filename))
+    x_gifter = gift_dict.get("gifter")
+    x_giftees = set(gift_dict.get("giftees").keys())
+    x_giftunit = giftunit_shop(x_gifter, gift_id, x_giftees, _atoms_dir=atoms_dir)
+    book_atom_numbers_list = gift_dict.get("book_atom_numbers")
+    x_giftunit._create_bookunit_from_atom_files(book_atom_numbers_list)
     return x_giftunit

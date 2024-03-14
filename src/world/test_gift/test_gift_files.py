@@ -1,9 +1,10 @@
 from src._road.road import create_road_from_nodes as roadnodes
 from src.agenda.book import bookunit_shop
-from src.world.gift import GiftUnit, giftunit_shop, giftunit_get_from_dict
+from src.world.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,
+    get_atom_example_ideaunit_ball,
     get_bookunit_carm_example,
 )
 from src.world.examples.world_env_kit import (
@@ -198,7 +199,7 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(worlds_dir_setup_cleanup):
     assert farm_giftunit.atom_file_exists(five_int)
 
 
-def test_giftunit_get_from_dict_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_GiftUnit_create_bookunit_from_atom_files_SetsAttr(worlds_dir_setup_cleanup):
     # GIVEN
     x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     x_persons_dir = f"{x_world_dir}/persons"
@@ -206,304 +207,65 @@ def test_giftunit_get_from_dict_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
 
-    tim_text = "Tim"
-    yao_text = "Yao"
-    farm_book_start = 4
-    src_farm_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
-    src_farm_giftunit.set_book_start(farm_book_start)
-    src_farm_giftunit.set_giftee(tim_text)
-    src_farm_giftunit.set_giftee(yao_text)
+    sue_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
     four_int = 4
     five_int = 5
+    nine_int = 9
     four_atom = get_atom_example_ideaunit_sports()
     five_atom = get_atom_example_ideaunit_knee()
-    src_farm_giftunit._bookunit.set_agendaatom(four_atom)
-    src_farm_giftunit._bookunit.set_agendaatom(five_atom)
-    src_farm_giftunit._save_atom_file(four_int, four_atom)
-    src_farm_giftunit._save_atom_file(five_int, five_atom)
+    nine_atom = get_atom_example_ideaunit_ball()
+    sue_giftunit._save_atom_file(four_int, four_atom)
+    sue_giftunit._save_atom_file(five_int, five_atom)
+    sue_giftunit._save_atom_file(nine_int, nine_atom)
+    assert sue_giftunit._bookunit == bookunit_shop()
 
-    assert 1 == 2
-    # # WHEN
-    # farm_dict = src_farm_giftunit.get_bookmetric_dict()
-    # built_farm_giftunit = giftunit_get_from_dict(farm_dict)
+    # WHEN
+    atoms_list = [four_int, five_int, nine_int]
+    sue_giftunit._create_bookunit_from_atom_files(atoms_list)
 
-    # # THEN
-    # assert src_farm_giftunit._gifter == built_farm_giftunit._gifter
-    # assert src_farm_giftunit._giftees == built_farm_giftunit._giftees
-    # assert src_farm_giftunit._bookunit == built_farm_giftunit._bookunit
-
-
-# def test_GiftUnit_save_bookmetric_file_SavesCorrectFile(worlds_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-#     sue_persons_dir = f"{sue_world_dir}/persons"
-#     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-#     sue_gut_file_name = f"{get_gut_file_name()}.json"
-#     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
-#     print(f"{sue_gut_path=}")
-#     assert os_path_exists(sue_gut_path) == False
-#     sue_person = personunit_shop(person_id=sue_text)
-#     assert os_path_exists(sue_gut_path) == False
-#     assert sue_person.gut_file_exists() == False
-
-#     # WHEN
-#     save_file(
-#         dest_dir=sue_person.person_dir,
-#         file_name=sue_person._gut_file_name,
-#         file_text=agendaunit_shop(sue_text).get_json(),
-#     )
-
-#     # THEN
-#     assert os_path_exists(sue_gut_path)
-#     assert sue_person.gut_file_exists()
+    # THEN
+    static_bookunit = bookunit_shop()
+    static_bookunit.set_agendaatom(four_atom)
+    static_bookunit.set_agendaatom(five_atom)
+    static_bookunit.set_agendaatom(nine_atom)
+    assert sue_giftunit._bookunit != bookunit_shop()
+    assert sue_giftunit._bookunit == static_bookunit
 
 
-# def test_GiftUnit_exists():
-#     # GIVEN / WHEN
-#     x_giftunit = GiftUnit()
+def test_create_giftunit_from_files_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_gifts_dir = f"{sue_person_dir}/gifts"
 
-#     # THEN
-#     assert x_giftunit._gifter is None
-#     assert x_giftunit._giftees is None
-#     assert x_giftunit._bookunit is None
-#     assert x_giftunit._book_start is None
+    tim_text = "Tim"
+    yao_text = "Yao"
+    sue_book_start = 4
+    src_sue_giftunit = giftunit_shop(
+        sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
+    )
+    src_sue_giftunit.set_book_start(sue_book_start)
+    src_sue_giftunit.set_giftee(tim_text)
+    src_sue_giftunit.set_giftee(yao_text)
+    sports_atom = get_atom_example_ideaunit_sports()
+    knee_atom = get_atom_example_ideaunit_knee()
+    ball_atom = get_atom_example_ideaunit_ball()
+    src_sue_giftunit._bookunit.set_agendaatom(sports_atom)
+    src_sue_giftunit._bookunit.set_agendaatom(knee_atom)
+    src_sue_giftunit._bookunit.set_agendaatom(ball_atom)
+    src_sue_giftunit.save_files()
 
+    # WHEN
+    new_sue_giftunit = create_giftunit_from_files(
+        gifts_dir=sue_gifts_dir,
+        gift_id=src_sue_giftunit._gift_id,
+        atoms_dir=sue_atoms_dir,
+    )
 
-# def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
-#     # GIVEN
-#     bob_text = "Bob"
-
-#     # WHEN
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-
-#     # THEN
-#     assert farm_giftunit._gifter == bob_text
-#     assert farm_giftunit._bookunit == bookunit_shop()
-#     assert farm_giftunit._book_start == 0
-
-
-# def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
-#     # GIVEN
-#     bob_text = "Bob"
-#     bob_bookunit = get_bookunit_carm_example()
-#     bob_book_start = 6
-
-#     # WHEN
-#     farm_giftunit = giftunit_shop(
-#         bob_text, _bookunit=bob_bookunit, _book_start=bob_book_start
-#     )
-
-#     # THEN
-#     assert farm_giftunit._gifter == bob_text
-#     assert farm_giftunit._bookunit == bob_bookunit
-#     assert farm_giftunit._book_start == bob_book_start
-
-
-# def test_giftunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
-#     # GIVEN
-#     bob_text = "Bob"
-#     tim_text = "Tim"
-#     yao_text = "Yao"
-#     x_giftees = {bob_text, tim_text, yao_text}
-
-#     # WHEN
-#     farm_giftunit = giftunit_shop(_gifter=bob_text, _giftees=x_giftees)
-
-#     # THEN
-#     assert farm_giftunit._gifter == bob_text
-#     assert farm_giftunit._giftees == x_giftees
-
-
-# def test_GiftUnit_set_giftee_SetsAttribute():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     tim_text = "Tim"
-#     assert farm_giftunit._giftees == set()
-#     assert tim_text not in farm_giftunit._giftees
-
-#     # WHEN
-#     farm_giftunit.set_giftee(tim_text)
-
-#     # THEN
-#     assert tim_text in farm_giftunit._giftees
-
-
-# def test_GiftUnit_giftee_exists_ReturnsCorrectObj():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     tim_text = "Tim"
-#     assert farm_giftunit._giftees == set()
-#     assert tim_text not in farm_giftunit._giftees
-
-#     # WHEN / THEN
-#     assert farm_giftunit.giftee_exists(tim_text) == False
-
-#     # WHEN / THEN
-#     farm_giftunit.set_giftee(tim_text)
-#     assert farm_giftunit.giftee_exists(tim_text)
-
-
-# def test_GiftUnit_del_giftee_SetsAttribute():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     tim_text = "Tim"
-#     yao_text = "Yao"
-#     farm_giftunit.set_giftee(tim_text)
-#     farm_giftunit.set_giftee(yao_text)
-#     assert farm_giftunit.giftee_exists(tim_text)
-#     assert farm_giftunit.giftee_exists(yao_text)
-
-#     # WHEN
-#     farm_giftunit.del_giftee(yao_text)
-
-#     # THEN
-#     assert farm_giftunit.giftee_exists(tim_text)
-#     assert farm_giftunit.giftee_exists(yao_text) == False
-
-
-# def test_GiftUnit_set_bookunit_SetsAttribute():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     assert farm_giftunit._bookunit == bookunit_shop()
-
-#     # WHEN
-#     farm_bookunit = bookunit_shop()
-#     farm_bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
-#     farm_giftunit.set_bookunit(farm_bookunit)
-
-#     # THEN
-#     assert farm_giftunit._bookunit == farm_bookunit
-
-
-# def test_GiftUnit_agendaatom_exists_ReturnsCorrectObj():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_bookunit = bookunit_shop()
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     farm_giftunit.set_bookunit(farm_bookunit)
-
-#     # WHEN
-#     sports_agendaatom = get_atom_example_ideaunit_sports()
-
-#     # THEN
-#     assert farm_giftunit.agendaatom_exists(sports_agendaatom) == False
-
-#     # WHEN
-#     farm_bookunit.set_agendaatom(sports_agendaatom)
-#     farm_giftunit.set_bookunit(farm_bookunit)
-
-#     # THEN
-#     assert farm_giftunit.agendaatom_exists(sports_agendaatom)
-
-
-# def test_GiftUnit_del_bookunit_SetsAttribute():
-#     # GIVEN
-#     bob_text = "Bob"
-#     farm_bookunit = bookunit_shop()
-#     farm_bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
-#     farm_giftunit = giftunit_shop(_gifter=bob_text, _bookunit=farm_bookunit)
-#     assert farm_giftunit._bookunit != bookunit_shop()
-#     assert farm_giftunit._bookunit == farm_bookunit
-
-#     # WHEN
-#     farm_giftunit.del_bookunit()
-
-#     # THEN
-#     assert farm_giftunit._bookunit == bookunit_shop()
-
-
-# def test_GiftUnit_get_dict_ReturnsCorrectObj_Simple():
-#     # GIVEN
-#     bob_text = "Bob"
-#     tim_text = "Tim"
-#     yao_text = "Yao"
-#     farm_giftunit = giftunit_shop(_gifter=bob_text)
-#     farm_giftunit.set_giftee(tim_text)
-#     farm_giftunit.set_giftee(yao_text)
-
-#     # WHEN
-#     x_dict = farm_giftunit.get_dict()
-
-#     # THEN
-#     gifter_text = "gifter"
-#     assert x_dict.get(gifter_text) != None
-#     assert x_dict.get(gifter_text) == bob_text
-
-#     giftees_text = "giftees"
-#     assert x_dict.get(giftees_text) != None
-#     giftees_dict = x_dict.get(giftees_text)
-#     assert giftees_dict.get(bob_text) is None
-#     assert giftees_dict.get(tim_text) != None
-#     assert giftees_dict.get(yao_text) != None
-
-#     book_text = "book"
-#     assert x_dict.get(book_text) != None
-#     assert x_dict.get(book_text) == bookunit_shop().get_dict()
-#     assert x_dict.get(book_text) == {}
-
-
-# def test_GiftUnit_get_dict_ReturnsCorrectObj_WithBookPopulated():
-#     # GIVEN
-#     bob_text = "Bob"
-#     carm_bookunit = get_bookunit_carm_example()
-#     farm_giftunit = giftunit_shop(bob_text, _bookunit=carm_bookunit)
-
-#     # WHEN
-#     x_dict = farm_giftunit.get_dict()
-
-#     # THEN
-#     book_text = "book"
-#     assert x_dict.get(book_text) != None
-#     assert x_dict.get(book_text) == carm_bookunit.get_dict()
-#     carm_agendaatoms_dict = x_dict.get(book_text)
-#     print(f"{len(carm_bookunit.get_sorted_agendaatoms())=}")
-#     print(f"{carm_agendaatoms_dict.keys()=}")
-#     # print(f"{carm_agendaatoms_dict.get(0)=}")
-#     assert carm_agendaatoms_dict.get(2) is None
-#     assert carm_agendaatoms_dict.get(0) != None
-#     assert carm_agendaatoms_dict.get(1) != None
-
-
-# def test_GiftUnit_get_dict_ReturnsCorrectObj_book_start():
-#     # GIVEN
-#     bob_text = "Bob"
-#     carm_bookunit = get_bookunit_carm_example()
-#     farm_book_start = 7
-#     farm_giftunit = giftunit_shop(
-#         bob_text, _bookunit=carm_bookunit, _book_start=farm_book_start
-#     )
-
-#     # WHEN
-#     x_dict = farm_giftunit.get_dict()
-
-#     # THEN
-#     book_text = "book"
-#     assert x_dict.get(book_text) != None
-#     assert x_dict.get(book_text) == carm_bookunit.get_dict(farm_book_start)
-#     carm_agendaatoms_dict = x_dict.get(book_text)
-#     print(f"{len(carm_bookunit.get_sorted_agendaatoms())=}")
-#     print(f"{carm_agendaatoms_dict.keys()=}")
-#     # print(f"{carm_agendaatoms_dict.get(0)=}")
-#     assert carm_agendaatoms_dict.get(farm_book_start + 2) is None
-#     assert carm_agendaatoms_dict.get(farm_book_start + 0) != None
-#     assert carm_agendaatoms_dict.get(farm_book_start + 1) != None
-
-
-# def test_GiftUnit__ReturnsCorrectObj_book_start(worlds_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-#     sue_persons_dir = f"{sue_world_dir}/persons"
-#     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-#     sue_gut_file_name = f"{get_gut_file_name()}.json"
-#     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
-#     print(f"{sue_gut_path=}")
-#     assert os_path_exists(sue_gut_path) == False
-#     sue_person = personunit_shop(person_id=sue_text)
-#     assert os_path_exists(sue_gut_path) == False
-#     assert sue_person.gut_file_exists() == False
+    # THEN
+    assert src_sue_giftunit._gifter == new_sue_giftunit._gifter
+    assert src_sue_giftunit._giftees == new_sue_giftunit._giftees
+    assert src_sue_giftunit._bookunit == new_sue_giftunit._bookunit
