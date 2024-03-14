@@ -48,7 +48,7 @@ class Invalid_gut_Exception(Exception):
     pass
 
 
-class Invalid_outcome_Exception(Exception):
+class Invalid_live_Exception(Exception):
     pass
 
 
@@ -56,8 +56,8 @@ def get_gut_file_name() -> str:
     return "gut"
 
 
-def get_outcome_file_name() -> str:
-    return "outcome"
+def get_live_file_name() -> str:
+    return "live"
 
 
 @dataclass
@@ -73,9 +73,9 @@ class PersonUnit:
     _gut_obj: AgendaUnit = None
     _gut_file_name: str = None
     _gut_path: str = None
-    _outcome_obj: AgendaUnit = None
-    _outcome_file_name: str = None
-    _outcome_path: str = None
+    _live_obj: AgendaUnit = None
+    _live_file_name: str = None
+    _live_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
@@ -96,10 +96,10 @@ class PersonUnit:
             self._gut_file_name = "gut.json"
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
-        if self._outcome_file_name is None:
-            self._outcome_file_name = "outcome.json"
-        if self._outcome_path is None:
-            self._outcome_path = f"{self.person_dir}/{self._outcome_file_name}"
+        if self._live_file_name is None:
+            self._live_file_name = "live.json"
+        if self._live_path is None:
+            self._live_path = f"{self.person_dir}/{self._live_file_name}"
 
     def create_core_dir_and_files(self):
         set_dir(self.world_dir)
@@ -109,7 +109,7 @@ class PersonUnit:
         set_dir(self._atoms_dir)
         set_dir(self._gifts_dir)
         self.create_gut_file_if_does_not_exist()
-        self.create_outcome_file_if_does_not_exist()
+        self.create_live_file_if_does_not_exist()
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
@@ -121,9 +121,9 @@ class PersonUnit:
                 )
             )
 
-    def create_outcome_file_if_does_not_exist(self):
-        if self.outcome_file_exists() == False:
-            self._save_outcome_file(
+    def create_live_file_if_does_not_exist(self):
+        if self.live_file_exists() == False:
+            self._save_live_file(
                 agendaunit_shop(
                     _owner_id=self.person_id,
                     _world_id=self.world_id,
@@ -134,8 +134,8 @@ class PersonUnit:
     def gut_file_exists(self) -> bool:
         return os_path_exists(self._gut_path)
 
-    def outcome_file_exists(self) -> bool:
-        return os_path_exists(self._outcome_path)
+    def live_file_exists(self) -> bool:
+        return os_path_exists(self._live_path)
 
     def _save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
@@ -150,15 +150,15 @@ class PersonUnit:
                 replace=replace,
             )
 
-    def _save_outcome_file(self, x_agenda: AgendaUnit, replace: bool = True):
+    def _save_live_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
-            raise Invalid_outcome_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s outcome agenda."
+            raise Invalid_live_Exception(
+                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s live agenda."
             )
         if replace in {True, False}:
             save_file(
                 dest_dir=self.person_dir,
-                file_name=self._outcome_file_name,
+                file_name=self._live_file_name,
                 file_text=x_agenda.get_json(),
                 replace=replace,
             )
@@ -167,17 +167,15 @@ class PersonUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
         return agenda_get_from_json(gut_json)
 
-    def get_outcome_file_agenda(self) -> AgendaUnit:
-        outcome_json = open_file(
-            dest_dir=self.person_dir, file_name=self._outcome_file_name
-        )
-        return agenda_get_from_json(outcome_json)
+    def get_live_file_agenda(self) -> AgendaUnit:
+        live_json = open_file(dest_dir=self.person_dir, file_name=self._live_file_name)
+        return agenda_get_from_json(live_json)
 
     def load_gut_file(self):
         self._gut_obj = self.get_gut_file_agenda()
 
-    def load_outcome_file(self):
-        self._outcome_obj = self.get_outcome_file_agenda()
+    def load_live_file(self):
+        self._live_obj = self.get_live_file_agenda()
 
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())

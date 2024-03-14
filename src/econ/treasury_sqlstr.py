@@ -599,8 +599,8 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _agenda_intent_debt FLOAT
 , _agenda_intent_ratio_credit FLOAT
 , _agenda_intent_ratio_debt FLOAT
-, _creditor_live INT
-, _debtor_live INT
+, _creditor_operational INT
+, _debtor_operational INT
 , _treasury_due_paid FLOAT
 , _treasury_due_diff FLOAT
 , _treasury_credit_score FLOAT
@@ -687,8 +687,8 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_debt
 , _agenda_intent_ratio_credit
 , _agenda_intent_ratio_debt
-, _creditor_live
-, _debtor_live
+, _creditor_operational
+, _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
 , _treasury_credit_score
@@ -704,8 +704,8 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_debt)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_partyunit._creditor_live)}
-, {sqlite_bool(x_partyunit._debtor_live)}
+, {sqlite_bool(x_partyunit._creditor_operational)}
+, {sqlite_bool(x_partyunit._debtor_operational)}
 , {sqlite_null(x_partyunit._treasury_due_paid)}
 , {sqlite_null(x_partyunit._treasury_due_diff)}
 , {sqlite_null(x_partyunit._treasury_credit_score)}
@@ -734,8 +734,8 @@ SELECT
 , _agenda_intent_debt
 , _agenda_intent_ratio_credit
 , _agenda_intent_ratio_debt
-, _creditor_live
-, _debtor_live
+, _creditor_operational
+, _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
 , _treasury_credit_score
@@ -758,8 +758,8 @@ WHERE owner_id = '{payer_owner_id}'
             _agenda_intent_debt=row[5],
             _agenda_intent_ratio_credit=row[6],
             _agenda_intent_ratio_debt=row[7],
-            _creditor_live=row[8],
-            _debtor_live=row[9],
+            _creditor_operational=row[8],
+            _debtor_operational=row[9],
             _treasury_due_paid=row[10],
             _treasury_due_diff=row[11],
             _treasury_credit_score=row[12],
@@ -1083,8 +1083,8 @@ INSERT INTO agenda_partyunit (
 , _agenda_intent_debt
 , _agenda_intent_ratio_credit
 , _agenda_intent_ratio_debt
-, _creditor_live
-, _debtor_live
+, _creditor_operational
+, _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
 , _treasury_credit_score
@@ -1100,8 +1100,8 @@ VALUES (
 , {sqlite_null(x_partyunit._agenda_intent_debt)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_partyunit._creditor_live)}
-, {sqlite_bool(x_partyunit._debtor_live)}
+, {sqlite_bool(x_partyunit._creditor_operational)}
+, {sqlite_bool(x_partyunit._debtor_operational)}
 , {sqlite_null(x_partyunit._treasury_due_paid)}
 , {sqlite_null(x_partyunit._treasury_due_diff)}
 , {sqlite_null(x_partyunit._treasury_credit_score)}

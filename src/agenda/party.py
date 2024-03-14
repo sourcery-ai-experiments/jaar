@@ -37,8 +37,8 @@ class PartyUnit(PartyCore):
     _agenda_intent_debt: float = None
     _agenda_intent_ratio_credit: float = None
     _agenda_intent_ratio_debt: float = None
-    _creditor_live: bool = None
-    _debtor_live: bool = None
+    _creditor_operational: bool = None
+    _debtor_operational: bool = None
     _treasury_due_paid: float = None
     _treasury_due_diff: float = None
     _output_agenda_meld_order: int = None
@@ -115,8 +115,8 @@ class PartyUnit(PartyCore):
             "party_id": self.party_id,
             "creditor_weight": self.creditor_weight,
             "debtor_weight": self.debtor_weight,
-            "_creditor_live": self._creditor_live,
-            "_debtor_live": self._debtor_live,
+            "_creditor_operational": self._creditor_operational,
+            "_debtor_operational": self._debtor_operational,
             "_treasury_due_paid": self._treasury_due_paid,
             "_treasury_due_diff": self._treasury_due_diff,
             "_treasury_credit_score": self._treasury_credit_score,
@@ -254,8 +254,8 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
             party_id=partyunits_dict["party_id"],
             creditor_weight=partyunits_dict["creditor_weight"],
             debtor_weight=partyunits_dict["debtor_weight"],
-            _creditor_live=partyunits_dict["_creditor_live"],
-            _debtor_live=partyunits_dict["_debtor_live"],
+            _creditor_operational=partyunits_dict["_creditor_operational"],
+            _debtor_operational=partyunits_dict["_debtor_operational"],
             depotlink_type=depotlink_type,
         )
         x_partyunit.set_treasurying_data(
@@ -273,8 +273,8 @@ def partyunit_shop(
     party_id: PartyID,
     creditor_weight: int = None,
     debtor_weight: int = None,
-    _creditor_live: bool = None,
-    _debtor_live: bool = None,
+    _creditor_operational: bool = None,
+    _debtor_operational: bool = None,
     # _agenda_credit: float = None,
     # _agenda_debt: float = None,
     # _agenda_intent_credit: float = None,
@@ -290,8 +290,8 @@ def partyunit_shop(
     x_partyunit = PartyUnit(
         creditor_weight=get_1_if_None(creditor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
-        _creditor_live=_creditor_live,
-        _debtor_live=_debtor_live,
+        _creditor_operational=_creditor_operational,
+        _debtor_operational=_debtor_operational,
         _agenda_credit=get_0_if_None(),
         _agenda_debt=get_0_if_None(),
         _agenda_intent_credit=get_0_if_None(),
@@ -402,8 +402,8 @@ def partylink_shop(
 @dataclass
 class PartyUnitExternalMetrics:
     internal_party_id: PartyID = None
-    creditor_live: bool = None
-    debtor_live: bool = None
+    creditor_operational: bool = None
+    debtor_operational: bool = None
 
 
 def get_depotlink_types() -> dict[str:str]:

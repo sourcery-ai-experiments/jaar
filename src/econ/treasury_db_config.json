@@ -2,23 +2,22 @@
     "tables": {
         "agenda_groupunit": {
             "columns": {
-                "owner_id": {},
                 "groupunit_group_id": {},
+                "owner_id": {},
                 "treasury_partylinks": {}
             }
-            
         },
         "agenda_idea_beliefunit": {
             "columns": {
-                "owner_id": {},
                 "base": {},
+                "owner_id": {},
                 "pick": {}
             }
         },
         "agenda_ideaunit": {
             "columns": {
-                "owner_id": {},
-                "idea_road": {}
+                "idea_road": {},
+                "owner_id": {}
             }
         },
         "agenda_partyunit": {
@@ -29,8 +28,8 @@
                 "_agenda_intent_debt": {},
                 "_agenda_intent_ratio_credit": {},
                 "_agenda_intent_ratio_debt": {},
-                "_creditor_live": {},
-                "_debtor_live": {},
+                "_creditor_operational": {},
+                "_debtor_operational": {},
                 "_treasury_credit_score": {},
                 "_treasury_due_diff": {},
                 "_treasury_due_paid": {},
@@ -48,9 +47,9 @@
         },
         "calendar": {
             "columns": {
-                "owner_id": {},
                 "intent_idea_road": {},
                 "intent_weight": {},
+                "owner_id": {},
                 "report_date_range_cease": {},
                 "report_date_range_start": {},
                 "report_interval_intent_state_max_count": {},
@@ -76,10 +75,10 @@
         },
         "river_circle": {
             "columns": {
+                "cash_master": {},
                 "circle_num": {},
                 "curr_close": {},
                 "curr_start": {},
-                "cash_master": {},
                 "dst_owner_id": {}
             }
         },

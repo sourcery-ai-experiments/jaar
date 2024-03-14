@@ -4,7 +4,7 @@ from src.agenda.report import (
     get_agenda_intent_dataframe,
 )
 from src.instrument.file import open_file
-from src.world.person import get_gut_file_name, get_outcome_file_name
+from src.world.person import get_gut_file_name, get_live_file_name
 from src.world.world import WorldUnit
 from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import (
@@ -72,23 +72,23 @@ def get_world_guts_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     return fig
 
 
-def get_world_outcomes_partys_dataframe(x_world: WorldUnit) -> DataFrame:
+def get_world_lives_partys_dataframe(x_world: WorldUnit) -> DataFrame:
     # get list of all person paths
     person_paths = x_world.get_person_paths()
-    # for all persons get outcome
-    outcome_dfs = []
+    # for all persons get live
+    live_dfs = []
     for person_path in person_paths:
-        outcome_agenda = agenda_get_from_json(
-            open_file(person_path, f"{get_outcome_file_name()}.json")
+        live_agenda = agenda_get_from_json(
+            open_file(person_path, f"{get_live_file_name()}.json")
         )
-        outcome_agenda.set_agenda_metrics()
-        outcome_df = get_agenda_partyunits_dataframe(outcome_agenda)
-        outcome_df.insert(0, "owner_id", outcome_agenda._owner_id)
-        outcome_dfs.append(outcome_df)
-    return pandas_concat(outcome_dfs, ignore_index=True)
+        live_agenda.set_agenda_metrics()
+        live_df = get_agenda_partyunits_dataframe(live_agenda)
+        live_df.insert(0, "owner_id", live_agenda._owner_id)
+        live_dfs.append(live_df)
+    return pandas_concat(live_dfs, ignore_index=True)
 
 
-def get_world_outcomes_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
+def get_world_lives_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "party_id",
@@ -99,7 +99,7 @@ def get_world_outcomes_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         "_agenda_intent_credit",
         "_agenda_intent_debt",
     ]
-    df = get_world_outcomes_partys_dataframe(x_world)
+    df = get_world_lives_partys_dataframe(x_world)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -122,7 +122,7 @@ def get_world_outcomes_partys_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"World '{x_world.world_id}', outcome partys metrics"
+    fig_title = f"World '{x_world.world_id}', live partys metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -191,22 +191,22 @@ def get_world_guts_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     return fig
 
 
-def get_world_outcomes_intent_dataframe(x_world: WorldUnit) -> DataFrame:
+def get_world_lives_intent_dataframe(x_world: WorldUnit) -> DataFrame:
     # get list of all person paths
     person_paths = x_world.get_person_paths()
-    # for all persons get outcome
-    outcome_dfs = []
+    # for all persons get live
+    live_dfs = []
     for person_path in person_paths:
-        outcome_agenda = agenda_get_from_json(
-            open_file(person_path, f"{get_outcome_file_name()}.json")
+        live_agenda = agenda_get_from_json(
+            open_file(person_path, f"{get_live_file_name()}.json")
         )
-        outcome_agenda.set_agenda_metrics()
-        outcome_df = get_agenda_intent_dataframe(outcome_agenda)
-        outcome_dfs.append(outcome_df)
-    return pandas_concat(outcome_dfs, ignore_index=True)
+        live_agenda.set_agenda_metrics()
+        live_df = get_agenda_intent_dataframe(live_agenda)
+        live_dfs.append(live_df)
+    return pandas_concat(live_dfs, ignore_index=True)
 
 
-def get_world_outcomes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
+def get_world_lives_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "agenda_importance",
@@ -219,7 +219,7 @@ def get_world_outcomes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_world_outcomes_intent_dataframe(x_world)
+    df = get_world_lives_intent_dataframe(x_world)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -244,7 +244,7 @@ def get_world_outcomes_intent_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"World '{x_world.world_id}', outcome intent metrics"
+    fig_title = f"World '{x_world.world_id}', live intent metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

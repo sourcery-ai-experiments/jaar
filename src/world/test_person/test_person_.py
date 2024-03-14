@@ -5,7 +5,7 @@ from src.world.person import (
     PersonUnit,
     personunit_shop,
     get_gut_file_name,
-    get_outcome_file_name,
+    get_live_file_name,
 )
 from pytest import raises as pytest_raises
 from src.world.examples.world_env_kit import (
@@ -21,8 +21,8 @@ def test_get_gut_file_name():
     assert get_gut_file_name() == "gut"
 
 
-def test_get_outcome_file_name():
-    assert get_outcome_file_name() == "outcome"
+def test_get_live_file_name():
+    assert get_live_file_name() == "live"
 
 
 def test_PersonUnit_exists():
@@ -41,9 +41,9 @@ def test_PersonUnit_exists():
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
-    assert x_person._outcome_obj is None
-    assert x_person._outcome_file_name is None
-    assert x_person._outcome_path is None
+    assert x_person._live_obj is None
+    assert x_person._live_file_name is None
+    assert x_person._live_path is None
     assert x_person._econ_objs is None
     assert x_person._road_delimiter is None
     assert x_person._planck is None
@@ -59,8 +59,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
-    assert x_person._outcome_file_name is None
-    assert x_person._outcome_path is None
+    assert x_person._live_file_name is None
+    assert x_person._live_path is None
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
     assert x_person._gifts_dir is None
@@ -77,10 +77,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
     assert x_person._gut_file_name == f"{get_gut_file_name()}.json"
     assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
-    assert x_person._outcome_file_name == f"{get_outcome_file_name()}.json"
-    assert (
-        x_person._outcome_path == f"{x_person.person_dir}/{x_person._outcome_file_name}"
-    )
+    assert x_person._live_file_name == f"{get_live_file_name()}.json"
+    assert x_person._live_path == f"{x_person.person_dir}/{x_person._live_file_name}"
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
     assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
     assert x_person._gifts_dir == f"{x_person.person_dir}/gifts"
@@ -122,9 +120,9 @@ def test_personunit_shop_ReturnsCorrectPersonUnit():
     assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._outcome_file_name == f"{get_outcome_file_name()}.json"
-    sue_outcome_file_path = f"{sue_person.person_dir}/{sue_person._outcome_file_name}"
-    assert sue_person._outcome_path == sue_outcome_file_path
+    assert sue_person._live_file_name == f"{get_live_file_name()}.json"
+    sue_live_file_path = f"{sue_person.person_dir}/{sue_person._live_file_name}"
+    assert sue_person._live_path == sue_live_file_path
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
     assert sue_person._planck == default_planck_if_none()
@@ -151,9 +149,9 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters()
     assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
     assert sue_person._gut_path == sue_gut_file_path
-    assert sue_person._outcome_file_name == f"{get_outcome_file_name()}.json"
-    sue_outcome_file_path = f"{sue_person.person_dir}/{sue_person._outcome_file_name}"
-    assert sue_person._outcome_path == sue_outcome_file_path
+    assert sue_person._live_file_name == f"{get_live_file_name()}.json"
+    sue_live_file_path = f"{sue_person.person_dir}/{sue_person._live_file_name}"
+    assert sue_person._live_path == sue_live_file_path
     assert sue_person._road_delimiter == slash_text
     assert sue_person._planck == two_int
 
@@ -223,7 +221,7 @@ def test_PersonUnit_save_gut_file_CorrectlySavesFile(
     assert gut_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnit_save_gut_file_RaisesErrorWhenAgenda_outcome_id_IsWrong(
+def test_PersonUnit_save_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -322,94 +320,90 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
     assert gut_agenda._owner_id == sue_text
 
 
-def test_PersonUnit_outcome_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
+def test_PersonUnit_live_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_outcome_file_name = f"{get_outcome_file_name()}.json"
-    sue_outcome_path = f"{sue_person_dir}/{sue_outcome_file_name}"
-    print(f"{sue_outcome_path=}")
-    assert os_path_exists(sue_outcome_path) == False
+    sue_live_file_name = f"{get_live_file_name()}.json"
+    sue_live_path = f"{sue_person_dir}/{sue_live_file_name}"
+    print(f"{sue_live_path=}")
+    assert os_path_exists(sue_live_path) == False
     sue_person = personunit_shop(person_id=sue_text)
-    assert os_path_exists(sue_outcome_path) == False
-    assert sue_person.outcome_file_exists() == False
+    assert os_path_exists(sue_live_path) == False
+    assert sue_person.live_file_exists() == False
 
     # WHEN
     save_file(
         dest_dir=sue_person.person_dir,
-        file_name=sue_person._outcome_file_name,
+        file_name=sue_person._live_file_name,
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
     # THEN
-    assert os_path_exists(sue_outcome_path)
-    assert sue_person.outcome_file_exists()
+    assert os_path_exists(sue_live_path)
+    assert sue_person.live_file_exists()
 
 
-def test_PersonUnit_save_outcome_file_CorrectlySavesFile(
+def test_PersonUnit_save_live_file_CorrectlySavesFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    assert sue_person.outcome_file_exists() == False
+    assert sue_person.live_file_exists() == False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_outcome_file(sue_agenda)
+    sue_person._save_live_file(sue_agenda)
 
     # THEN
-    assert sue_person.outcome_file_exists()
+    assert sue_person.live_file_exists()
 
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_outcome_file_name = f"{get_outcome_file_name()}.json"
-    outcome_file_text = open_file(
-        dest_dir=sue_person_dir, file_name=sue_outcome_file_name
-    )
-    print(f"{outcome_file_text=}")
-    outcome_agenda = agenda_get_from_json(outcome_file_text)
-    assert outcome_agenda.get_party(bob_text) != None
+    sue_live_file_name = f"{get_live_file_name()}.json"
+    live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
+    print(f"{live_file_text=}")
+    live_agenda = agenda_get_from_json(live_file_text)
+    assert live_agenda.get_party(bob_text) != None
 
     # # WHEN
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    sue_person._save_outcome_file(sue2_agenda)
+    sue_person._save_live_file(sue2_agenda)
 
     # THEN
-    outcome_file_text = open_file(
-        dest_dir=sue_person_dir, file_name=sue_outcome_file_name
-    )
-    print(f"{outcome_file_text=}")
-    outcome_agenda = agenda_get_from_json(outcome_file_text)
-    assert outcome_agenda.get_party(zia_text) != None
+    live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
+    print(f"{live_file_text=}")
+    live_agenda = agenda_get_from_json(live_file_text)
+    assert live_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnit_save_outcome_file_RaisesErrorWhenAgenda_outcome_id_IsWrong(
+def test_PersonUnit_save_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    assert sue_person.outcome_file_exists() == False
+    assert sue_person.live_file_exists() == False
 
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_person._save_outcome_file(agendaunit_shop(yao_text))
+        sue_person._save_live_file(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s outcome agenda."
+        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live agenda."
     )
 
 
-def test_PersonUnit_load_outcome_file_CorrectlyLoads_outcome_obj(
+def test_PersonUnit_load_live_file_CorrectlyLoads_live_obj(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -418,80 +412,78 @@ def test_PersonUnit_load_outcome_file_CorrectlyLoads_outcome_obj(
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_outcome_file(sue_agenda)
-    assert sue_person._outcome_obj is None
+    sue_person._save_live_file(sue_agenda)
+    assert sue_person._live_obj is None
 
     # WHEN
-    sue_person.load_outcome_file()
+    sue_person.load_live_file()
 
     # THEN
-    assert sue_person._outcome_obj != None
-    assert sue_person._outcome_obj.get_party(bob_text) != None
-    assert sue_person._outcome_obj.get_party("Zia") is None
+    assert sue_person._live_obj != None
+    assert sue_person._live_obj.get_party(bob_text) != None
+    assert sue_person._live_obj.get_party("Zia") is None
 
 
-def test_PersonUnit_create_outcome_file_if_does_not_exist_CorrectlySavesFile(
+def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlySavesFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    assert sue_person.outcome_file_exists() == False
+    assert sue_person.live_file_exists() == False
 
     # WHEN
-    sue_person.create_outcome_file_if_does_not_exist()
+    sue_person.create_live_file_if_does_not_exist()
 
     # THEN
-    outcome_agenda = sue_person.get_outcome_file_agenda()
-    assert outcome_agenda._world_id == get_test_world_id()
-    assert outcome_agenda._owner_id == sue_text
+    live_agenda = sue_person.get_live_file_agenda()
+    assert live_agenda._world_id == get_test_world_id()
+    assert live_agenda._owner_id == sue_text
     bob_text = "Bob"
-    assert outcome_agenda.get_party(bob_text) is None
+    assert live_agenda.get_party(bob_text) is None
 
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    sue_person._save_outcome_file(sue_agenda)
-    outcome_agenda = sue_person.get_outcome_file_agenda()
-    assert outcome_agenda.get_party(bob_text)
+    sue_person._save_live_file(sue_agenda)
+    live_agenda = sue_person.get_live_file_agenda()
+    assert live_agenda.get_party(bob_text)
 
     # WHEN
-    sue_person.create_outcome_file_if_does_not_exist()
+    sue_person.create_live_file_if_does_not_exist()
 
     # THEN
-    outcome_agenda = sue_person.get_outcome_file_agenda()
-    assert outcome_agenda.get_party(bob_text)
+    live_agenda = sue_person.get_live_file_agenda()
+    assert live_agenda.get_party(bob_text)
 
 
-def test_PersonUnit_create_outcome_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
+def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_person = personunit_shop(person_id=sue_text)
-    assert sue_person.outcome_file_exists() == False
+    assert sue_person.live_file_exists() == False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person.create_outcome_file_if_does_not_exist()
+    sue_person.create_live_file_if_does_not_exist()
 
     # THEN
-    assert sue_person.outcome_file_exists()
+    assert sue_person.live_file_exists()
 
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
     sue_persons_dir = f"{sue_world_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_outcome_file_name = f"{get_outcome_file_name()}.json"
-    outcome_file_text = open_file(
-        dest_dir=sue_person_dir, file_name=sue_outcome_file_name
-    )
-    print(f"{outcome_file_text=}")
-    outcome_agenda = agenda_get_from_json(outcome_file_text)
-    assert outcome_agenda._world_id == get_test_world_id()
-    assert outcome_agenda._owner_id == sue_text
+    sue_live_file_name = f"{get_live_file_name()}.json"
+    live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
+    print(f"{live_file_text=}")
+    live_agenda = agenda_get_from_json(live_file_text)
+    assert live_agenda._world_id == get_test_world_id()
+    assert live_agenda._owner_id == sue_text
 
 
 def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
@@ -507,7 +499,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person._atoms_dir) is False
     assert os_path_exists(sue_person._gifts_dir) is False
     assert os_path_exists(sue_person._gut_path) is False
-    assert os_path_exists(sue_person._outcome_path) is False
+    assert os_path_exists(sue_person._live_path) is False
 
     # WHEN
     sue_person.create_core_dir_and_files()
@@ -520,4 +512,4 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person._atoms_dir)
     assert os_path_exists(sue_person._gifts_dir)
     assert os_path_exists(sue_person._gut_path)
-    assert os_path_exists(sue_person._outcome_path)
+    assert os_path_exists(sue_person._live_path)

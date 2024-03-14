@@ -296,8 +296,8 @@ class AgendaUnit:
         self, external_metrics: PartyUnitExternalMetrics
     ):
         party_x = self.get_party(external_metrics.internal_party_id)
-        party_x._creditor_live = external_metrics.creditor_live
-        party_x._debtor_live = external_metrics.debtor_live
+        party_x._creditor_operational = external_metrics.creditor_operational
+        party_x._debtor_operational = external_metrics.debtor_operational
         # self.set_partyunit(partyunit=party_x)
 
     def set_max_tree_traverse(self, int_x: int):

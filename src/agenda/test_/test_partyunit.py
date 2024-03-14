@@ -29,8 +29,8 @@ def test_PartyUnit_exists():
     assert bob_partyunit._agenda_debt is None
     assert bob_partyunit._agenda_intent_credit is None
     assert bob_partyunit._agenda_intent_debt is None
-    assert bob_partyunit._creditor_live is None
-    assert bob_partyunit._debtor_live is None
+    assert bob_partyunit._creditor_operational is None
+    assert bob_partyunit._debtor_operational is None
     assert bob_partyunit._treasury_due_paid is None
     assert bob_partyunit._treasury_due_diff is None
     assert bob_partyunit._treasury_credit_score is None
@@ -498,10 +498,10 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
-    bob_creditor_live = False
-    bob_debtor_live = True
-    bob_partyunit._creditor_live = bob_creditor_live
-    bob_partyunit._debtor_live = bob_debtor_live
+    bob_creditor_operational = False
+    bob_debtor_operational = True
+    bob_partyunit._creditor_operational = bob_creditor_operational
+    bob_partyunit._debtor_operational = bob_debtor_operational
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
@@ -526,8 +526,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "party_id": bob_text,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
-        "_creditor_live": bob_creditor_live,
-        "_debtor_live": bob_debtor_live,
+        "_creditor_operational": bob_creditor_operational,
+        "_debtor_operational": bob_debtor_operational,
         "_treasury_due_paid": bob_treasury_due_paid,
         "_treasury_due_diff": bob_treasury_due_diff,
         "_treasury_credit_score": bob_treasury_credit_score,
@@ -546,10 +546,10 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
-    bob_creditor_live = False
-    bob_debtor_live = True
-    bob_partyunit._creditor_live = bob_creditor_live
-    bob_partyunit._debtor_live = bob_debtor_live
+    bob_creditor_operational = False
+    bob_debtor_operational = True
+    bob_partyunit._creditor_operational = bob_creditor_operational
+    bob_partyunit._debtor_operational = bob_debtor_operational
 
     bob_creditor_weight = 13
     bob_debtor_weight = 17
@@ -597,8 +597,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "_agenda_intent_debt": bob_agenda_intent_debt,
         "_agenda_intent_ratio_credit": bob_agenda_intent_ratio_credit,
         "_agenda_intent_ratio_debt": bob_agenda_intent_ratio_debt,
-        "_creditor_live": bob_creditor_live,
-        "_debtor_live": bob_debtor_live,
+        "_creditor_operational": bob_creditor_operational,
+        "_debtor_operational": bob_debtor_operational,
         "_output_agenda_meld_order": bob_output_agenda_meld_order,
         "_treasury_due_paid": bob_treasury_due_paid,
         "_treasury_due_diff": bob_treasury_due_diff,
@@ -614,8 +614,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     yao_text = "Yao"
     yao_creditor_weight = 13
     yao_debtor_weight = 17
-    yao_creditor_live = False
-    yao_debtor_live = True
+    yao_creditor_operational = False
+    yao_debtor_operational = True
     yao_treasury_due_paid = 0.55
     yao_treasury_due_diff = 0.66
     yao_depotlink_type = "assignment"
@@ -627,8 +627,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
             "party_id": yao_text,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
-            "_creditor_live": yao_creditor_live,
-            "_debtor_live": yao_debtor_live,
+            "_creditor_operational": yao_creditor_operational,
+            "_debtor_operational": yao_debtor_operational,
             "_treasury_due_paid": yao_treasury_due_paid,
             "_treasury_due_diff": yao_treasury_due_diff,
             "_treasury_credit_score": yao_treasury_credit_score,
@@ -650,8 +650,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     assert yao_partyunit.party_id == yao_text
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
-    assert yao_partyunit._creditor_live == yao_creditor_live
-    assert yao_partyunit._debtor_live == yao_debtor_live
+    assert yao_partyunit._creditor_operational == yao_creditor_operational
+    assert yao_partyunit._debtor_operational == yao_debtor_operational
     assert yao_partyunit._treasury_due_paid == yao_treasury_due_paid
     assert yao_partyunit._treasury_due_diff == yao_treasury_due_diff
     assert yao_partyunit._treasury_credit_score == yao_treasury_credit_score

@@ -35,8 +35,8 @@ def test_econ_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     tim_partyunit = partyunit_shop(
         party_id=tim_text,
-        _creditor_live=True,
-        _debtor_live=False,
+        _creditor_operational=True,
+        _debtor_operational=False,
     )
     tim_partyunit._agenda_credit = 0.9
     tim_partyunit._agenda_debt = 0.8
@@ -80,8 +80,8 @@ def test_econ_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01
     assert tim_ledger._agenda_intent_debt == 0.6
     assert tim_ledger._agenda_intent_ratio_credit == 0.5
     assert tim_ledger._agenda_intent_ratio_debt == 0.4
-    assert tim_ledger._creditor_live
-    assert tim_ledger._debtor_live == False
+    assert tim_ledger._creditor_operational
+    assert tim_ledger._debtor_operational == False
     assert tim_ledger._treasury_due_paid == tim_due_paid
     assert tim_ledger._treasury_credit_score == tim_credit_score
     assert tim_ledger._treasury_voice_rank == tim_voice_rank
@@ -162,7 +162,9 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     bob_text = "Bob"
     sal_text = "Sal"
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    sal_partyunit = partyunit_shop(sal_text, _creditor_live=True, _debtor_live=False)
+    sal_partyunit = partyunit_shop(
+        sal_text, _creditor_operational=True, _debtor_operational=False
+    )
     sal_partyunit._agenda_credit = 0.9
     sal_partyunit._agenda_debt = 0.8
     sal_partyunit._agenda_intent_credit = 0.7
@@ -175,7 +177,9 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     )
 
     tim_text = "Tim"
-    tim_partyunit = partyunit_shop(tim_text, _creditor_live=True, _debtor_live=False)
+    tim_partyunit = partyunit_shop(
+        tim_text, _creditor_operational=True, _debtor_operational=False
+    )
     tim_partyunit._agenda_credit = 0.012
     tim_partyunit._agenda_debt = 0.017
     tim_partyunit._agenda_intent_credit = 0.077
@@ -274,8 +278,8 @@ def test_RiverLedgerUnit_Exists():
         _agenda_intent_debt=0.15,
         _agenda_intent_ratio_credit=0.5,
         _agenda_intent_ratio_debt=0.12,
-        _creditor_live=True,
-        _debtor_live=True,
+        _creditor_operational=True,
+        _debtor_operational=True,
     )
     x2_partydbunit = PartyDBUnit(
         owner_id=bob_text,
@@ -286,8 +290,8 @@ def test_RiverLedgerUnit_Exists():
         _agenda_intent_debt=0.0715,
         _agenda_intent_ratio_credit=0.00995,
         _agenda_intent_ratio_debt=0.00012,
-        _creditor_live=True,
-        _debtor_live=True,
+        _creditor_operational=True,
+        _debtor_operational=True,
     )
     x_partyview_dict = {
         x1_partydbunit.party_id: x1_partydbunit,
@@ -409,7 +413,9 @@ def test_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPop
     sal_text = "Sal"
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    tom_partyunit = partyunit_shop(tom_text, _creditor_live=True, _debtor_live=False)
+    tom_partyunit = partyunit_shop(
+        tom_text, _creditor_operational=True, _debtor_operational=False
+    )
     tom_partyunit._agenda_credit = 0.9
     tom_partyunit._agenda_debt = 0.8
     tom_partyunit._agenda_intent_credit = 0.7
@@ -420,7 +426,9 @@ def test_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPop
     insert_sqlstr_tom = get_agenda_partyunit_table_insert_sqlstr(
         bob_agenda, tom_partyunit
     )
-    sal_partyunit = partyunit_shop(sal_text, _creditor_live=True, _debtor_live=False)
+    sal_partyunit = partyunit_shop(
+        sal_text, _creditor_operational=True, _debtor_operational=False
+    )
     sal_partyunit._agenda_credit = 0.9
     sal_partyunit._agenda_debt = 0.8
     sal_partyunit._agenda_intent_credit = 0.7

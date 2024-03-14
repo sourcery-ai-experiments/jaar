@@ -1,12 +1,12 @@
 from src.world.report import (
     get_world_guts_partys_dataframe,
     get_world_guts_partys_plotly_fig,
-    get_world_outcomes_partys_dataframe,
-    get_world_outcomes_partys_plotly_fig,
+    get_world_lives_partys_dataframe,
+    get_world_lives_partys_plotly_fig,
     get_world_guts_intent_dataframe,
     get_world_guts_intent_plotly_fig,
-    get_world_outcomes_intent_dataframe,
-    get_world_outcomes_intent_plotly_fig,
+    get_world_lives_intent_dataframe,
+    get_world_lives_intent_plotly_fig,
 )
 from src.world.examples.example_worlds import (
     create_example_world2,
@@ -35,8 +35,8 @@ def test_get_world_guts_partys_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
         "_agenda_intent_debt",
         "_agenda_intent_ratio_credit",
         "_agenda_intent_ratio_debt",
-        "_creditor_live",
-        "_debtor_live",
+        "_creditor_operational",
+        "_debtor_operational",
         "_treasury_due_paid",
         "_treasury_due_diff",
         "_output_agenda_meld_order",
@@ -66,15 +66,15 @@ def test_get_world_guts_partys_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_c
     # assert 1 == 2
 
 
-def test_get_world_outcomes_partys_dataframe_ReturnsCorrectObj(
+def test_get_world_lives_partys_dataframe_ReturnsCorrectObj(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_world = create_example_world2()
-    music_world.generate_all_outcome_agendas()
+    music_world.generate_all_live_agendas()
 
     # WHEN
-    x_df = get_world_outcomes_partys_dataframe(music_world)
+    x_df = get_world_lives_partys_dataframe(music_world)
 
     # THEN
     partyunit_colums = {
@@ -88,8 +88,8 @@ def test_get_world_outcomes_partys_dataframe_ReturnsCorrectObj(
         "_agenda_intent_debt",
         "_agenda_intent_ratio_credit",
         "_agenda_intent_ratio_debt",
-        "_creditor_live",
-        "_debtor_live",
+        "_creditor_operational",
+        "_debtor_operational",
         "_treasury_due_paid",
         "_treasury_due_diff",
         "_output_agenda_meld_order",
@@ -105,15 +105,15 @@ def test_get_world_outcomes_partys_dataframe_ReturnsCorrectObj(
     assert x_df.shape[0] == 8
 
 
-def test_get_world_outcomes_partys_plotly_fig_DisplaysCorrectInfo(
+def test_get_world_lives_partys_plotly_fig_DisplaysCorrectInfo(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_world = create_example_world2()
-    music_world.generate_all_outcome_agendas()
+    music_world.generate_all_live_agendas()
 
     # WHEN
-    x_fig = get_world_outcomes_partys_plotly_fig(music_world)
+    x_fig = get_world_lives_partys_plotly_fig(music_world)
 
     # # THEN
     # show_figure = True
@@ -162,15 +162,15 @@ def test_get_world_guts_intent_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_c
     #     x_fig.show()
 
 
-def test_get_world_outcomes_intent_dataframe_ReturnsCorrectObj(
+def test_get_world_lives_intent_dataframe_ReturnsCorrectObj(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_world = create_example_world4()
-    music_world.generate_all_outcome_agendas()
+    music_world.generate_all_live_agendas()
 
     # WHEN
-    x_df = get_world_outcomes_intent_dataframe(music_world)
+    x_df = get_world_lives_intent_dataframe(music_world)
 
     # THEN
     intent_colums = {
@@ -192,15 +192,15 @@ def test_get_world_outcomes_intent_dataframe_ReturnsCorrectObj(
     assert x_df.shape[0] == 8
 
 
-def test_get_world_outcomes_intent_plotly_fig_DisplaysCorrectInfo(
+def test_get_world_lives_intent_plotly_fig_DisplaysCorrectInfo(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     music_world = create_example_world4()
-    music_world.generate_all_outcome_agendas()
+    music_world.generate_all_live_agendas()
 
     # WHEN
-    x_fig = get_world_outcomes_intent_plotly_fig(music_world)
+    x_fig = get_world_lives_intent_plotly_fig(music_world)
 
     # # THEN
     # show_figure = True

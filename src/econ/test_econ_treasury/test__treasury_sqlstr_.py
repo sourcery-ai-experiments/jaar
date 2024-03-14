@@ -361,8 +361,8 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _agenda_intent_debt FLOAT
 , _agenda_intent_ratio_credit FLOAT
 , _agenda_intent_ratio_debt FLOAT
-, _creditor_live INT
-, _debtor_live INT
+, _creditor_operational INT
+, _debtor_operational INT
 , _treasury_due_paid FLOAT
 , _treasury_due_diff FLOAT
 , _treasury_credit_score FLOAT

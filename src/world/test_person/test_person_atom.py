@@ -5,7 +5,7 @@ from src.world.person import (
     PersonUnit,
     personunit_shop,
     get_gut_file_name,
-    get_outcome_file_name,
+    get_live_file_name,
 )
 from pytest import raises as pytest_raises
 from src.world.examples.example_atoms import (
@@ -27,8 +27,8 @@ def test_get_gut_file_name():
     assert get_gut_file_name() == "gut"
 
 
-def test_get_outcome_file_name():
-    assert get_outcome_file_name() == "outcome"
+def test_get_live_file_name():
+    assert get_live_file_name() == "live"
 
 
 def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):

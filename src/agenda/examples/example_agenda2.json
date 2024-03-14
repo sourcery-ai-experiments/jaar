@@ -6609,163 +6609,163 @@
         "_uid": 1,
         "_weight": 1
     },
+    "_owner_id": "Bob",
     "_partys": {
         "A a ron Jones": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "A a ron Jones"
         },
         "America": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "America"
         },
         "Anna": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Anna"
         },
         "Benjamin Stoddert": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Benjamin Stoddert"
         },
         "Bob302": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Bob302"
         },
         "Charles Lee": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Charles Lee"
         },
         "Ernesto Chavez": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jacque Chirac"
         },
         "Jane Randolph": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jane Randolph"
         },
         "Maria Reynolds": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Maria Reynolds"
         },
         "Martha Doubs": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Martha Doubs"
         },
         "Mikayla": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Mikayla"
         },
         "Norberto": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Norberto"
         },
         "Perrison": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Perrison"
         },
         "Philipa": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Philipa"
         },
         "Prashant": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Sam zamora"
         },
         "Shadwell Harris": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Shadwell Harris"
         },
         "Thomas OSU": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Thomas OSU"
         },
         "Travis Fox": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Travis Fox"
         },
         "WIlliam Wallace": {
-            "_creditor_live": null,
-            "_debtor_live": null,
+            "_creditor_operational": null,
+            "_debtor_operational": null,
             "creditor_weight": 1,
             "debtor_weight": 1,
             "party_id": "WIlliam Wallace"
         }
     },
     "_weight": 1,
-    "_owner_id": "Bob",
     "_world_id": "A"
 }
