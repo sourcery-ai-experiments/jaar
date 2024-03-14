@@ -49,8 +49,8 @@ def get_atom_example_ideaunit_knee(world_id: WorldID = None) -> AgendaAtom:
     x_category = "agenda_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
-    begin_text = "begin"
-    close_text = "close"
+    begin_text = "_begin"
+    close_text = "_close"
     insert_ideaunit_agendaatom = agendaatom_shop(x_category, atom_insert())
     insert_ideaunit_agendaatom.set_required_arg(label_text, knee_text)
     insert_ideaunit_agendaatom.set_required_arg(parent_road_text, sports_road)

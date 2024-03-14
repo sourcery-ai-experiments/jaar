@@ -1,8 +1,9 @@
 from src._road.road import create_road_from_nodes as roadnodes
 from src.agenda.book import bookunit_shop
-from src.world.gift import GiftUnit, giftunit_shop
+from src.world.gift import GiftUnit, giftunit_shop, giftunit_get_from_dict
 from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
+    get_atom_example_ideaunit_knee,
     get_bookunit_carm_example,
 )
 from src.world.examples.world_env_kit import (
@@ -10,7 +11,164 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
+from src.instrument.file import open_file
 from pytest import raises as pytest_raises
+from os.path import exists as os_path_exists
+
+
+def test_GiftUnit_save_atom_file_SavesCorrectFile(worlds_dir_setup_cleanup):
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    two_int = 2
+    six_int = 6
+    two_filename = f"{two_int}.json"
+    six_filename = f"{six_int}.json"
+    sue_atom2_path = f"{sue_atoms_dir}/{two_filename}"
+    sue_atom6_path = f"{sue_atoms_dir}/{six_filename}"
+    print(f"{sue_atom2_path=}")
+    print(f"{sue_atom6_path=}")
+    farm_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
+    assert os_path_exists(sue_atom2_path) == False
+    assert os_path_exists(sue_atom6_path) == False
+
+    # WHEN
+    sports_atom = get_atom_example_ideaunit_sports()
+    farm_giftunit._save_atom_file(two_int, sports_atom)
+
+    # THEN
+    assert os_path_exists(sue_atom2_path)
+    assert os_path_exists(sue_atom6_path) == False
+    two_file_json = open_file(sue_atoms_dir, two_filename)
+    assert two_file_json == sports_atom.get_json()
+
+
+def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    two_int = 2
+    six_int = 6
+    two_filename = f"{two_int}.json"
+    six_filename = f"{six_int}.json"
+    sue_atom2_path = f"{sue_atoms_dir}/{two_filename}"
+    sue_atom6_path = f"{sue_atoms_dir}/{six_filename}"
+    print(f"{sue_atom2_path=}")
+    print(f"{sue_atom6_path=}")
+    farm_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
+    assert os_path_exists(sue_atom2_path) == False
+    assert farm_giftunit.atom_file_exists(two_int) == False
+
+    # WHEN
+    sports_atom = get_atom_example_ideaunit_sports()
+    farm_giftunit._save_atom_file(two_int, sports_atom)
+
+    # THEN
+    assert farm_giftunit.atom_file_exists(two_int)
+
+
+def test_GiftUnit_open_atom_file_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    two_int = 2
+    six_int = 6
+    two_filename = f"{two_int}.json"
+    six_filename = f"{six_int}.json"
+    sue_atom2_path = f"{sue_atoms_dir}/{two_filename}"
+    sue_atom6_path = f"{sue_atoms_dir}/{six_filename}"
+    print(f"{sue_atom2_path=}")
+    print(f"{sue_atom6_path=}")
+    farm_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
+    sports_atom = get_atom_example_ideaunit_sports()
+    farm_giftunit._save_atom_file(two_int, sports_atom)
+    assert farm_giftunit.atom_file_exists(two_int)
+
+    # WHEN
+    file_atom = farm_giftunit._open_atom_file(two_int)
+
+    # THEN
+    assert file_atom == sports_atom
+
+
+def test_GiftUnit_save_files_CorrectlySavesFiles():
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_gifts_dir = f"{sue_person_dir}/gifts"
+
+    tim_text = "Tim"
+    yao_text = "Yao"
+    farm_book_start = 4
+    farm_giftunit = giftunit_shop(
+        sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
+    )
+    farm_giftunit.set_book_start(farm_book_start)
+    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_giftee(yao_text)
+    four_int = 4
+    five_int = 5
+    four_atom = get_atom_example_ideaunit_sports()
+    five_atom = get_atom_example_ideaunit_knee()
+    farm_giftunit._bookunit.set_agendaatom(four_atom)
+    farm_giftunit._bookunit.set_agendaatom(five_atom)
+    assert farm_giftunit.gift_file_exists() == False
+    assert farm_giftunit.atom_file_exists(four_int) == False
+    assert farm_giftunit.atom_file_exists(five_int) == False
+
+    # WHEN
+    farm_dict = farm_giftunit.get_bookmetric_dict()
+
+    # THEN
+    assert farm_giftunit.gift_file_exists()
+    assert farm_giftunit.atom_file_exists(four_int)
+    assert farm_giftunit.atom_file_exists(five_int)
+
+
+def test_giftunit_get_from_dict_ReturnsCorrectObj():
+    # GIVEN
+    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    x_persons_dir = f"{x_world_dir}/persons"
+    sue_text = "Sue"
+    sue_person_dir = f"{x_persons_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_person_dir}/atoms"
+
+    tim_text = "Tim"
+    yao_text = "Yao"
+    farm_book_start = 4
+    src_farm_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
+    src_farm_giftunit.set_book_start(farm_book_start)
+    src_farm_giftunit.set_giftee(tim_text)
+    src_farm_giftunit.set_giftee(yao_text)
+    four_int = 4
+    five_int = 5
+    four_atom = get_atom_example_ideaunit_sports()
+    five_atom = get_atom_example_ideaunit_knee()
+    src_farm_giftunit._bookunit.set_agendaatom(four_atom)
+    src_farm_giftunit._bookunit.set_agendaatom(five_atom)
+    src_farm_giftunit._save_atom_file(four_int, four_atom)
+    src_farm_giftunit._save_atom_file(five_int, five_atom)
+
+    # WHEN
+    farm_dict = src_farm_giftunit.get_bookmetric_dict()
+    built_farm_giftunit = giftunit_get_from_dict(farm_dict)
+
+    # THEN
+    assert src_farm_giftunit._gifter == built_farm_giftunit._gifter
+    assert src_farm_giftunit._giftees == built_farm_giftunit._giftees
+    assert src_farm_giftunit._bookunit == built_farm_giftunit._bookunit
 
 
 # def test_GiftUnit_save_bookmetric_file_SavesCorrectFile(worlds_dir_setup_cleanup):
