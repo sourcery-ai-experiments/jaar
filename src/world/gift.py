@@ -27,6 +27,7 @@ class get_member_attr_Exception(Exception):
 @dataclass
 class GiftUnit:
     _gifter: PersonID = None
+    _gift_id: int = None
     _giftees: set[PersonID] = None
     _bookunit: BookUnit = None
     _book_start: int = None
@@ -78,26 +79,49 @@ class GiftUnit:
     def get_bookmetric_json(self) -> str:
         return get_json_from_dict(self.get_bookmetric_dict())
 
-    def _get_atom_filename(self, atom_number: int) -> str:
-        return f"{atom_number}.json"
+    def _get_num_filename(self, x_number: int) -> str:
+        return f"{x_number}.json"
 
     def _save_atom_file(self, atom_number: int, x_atom: AgendaAtom):
         save_file(
-            self._atoms_dir, self._get_atom_filename(atom_number), x_atom.get_json()
+            self._atoms_dir, self._get_num_filename(atom_number), x_atom.get_json()
         )
 
     def atom_file_exists(self, atom_number: int) -> bool:
         return os_path_exists(
-            f"{self._atoms_dir}/{self._get_atom_filename(atom_number)}"
+            f"{self._atoms_dir}/{self._get_num_filename(atom_number)}"
         )
 
     def _open_atom_file(self, atom_number: int) -> AgendaAtom:
-        x_json = open_file(self._atoms_dir, self._get_atom_filename(atom_number))
+        x_json = open_file(self._atoms_dir, self._get_num_filename(atom_number))
         return agendaatom_get_from_json(x_json)
+
+    def _save_gift_file(self):
+        save_file(
+            self._gifts_dir,
+            self._get_num_filename(self._gift_id),
+            file_text=self.get_bookmetric_json(),
+        )
+
+    def gift_file_exists(self) -> bool:
+        return os_path_exists(
+            f"{self._gifts_dir}/{self._get_num_filename(self._gift_id)}"
+        )
+
+    def _save_atom_files(self):
+        step_dict = self.get_step_dict()
+        ordered_agendaatoms = step_dict.get("book")
+        for order_int, agendaatom in ordered_agendaatoms.items():
+            self._save_atom_file(order_int, agendaatom)
+
+    def save_files(self):
+        self._save_gift_file()
+        self._save_atom_files()
 
 
 def giftunit_shop(
     _gifter: PersonID,
+    _gift_id: int = None,
     _giftees: set[PersonID] = None,
     _bookunit: BookUnit = None,
     _book_start: int = None,
@@ -106,12 +130,14 @@ def giftunit_shop(
     _atoms_dir: str = None,
 ):
     # _book_start = get_0_if_None(_book_start)
+    _gift_id = get_0_if_None(_gift_id)
     _giftees = get_empty_set_if_none(_giftees)
     if _bookunit is None:
         _bookunit = bookunit_shop()
 
     x_giftunit = GiftUnit(
         _gifter=_gifter,
+        _gift_id=_gift_id,
         _giftees=_giftees,
         _bookunit=_bookunit,
         _person_dir=_person_dir,

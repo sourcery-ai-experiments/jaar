@@ -13,6 +13,7 @@ def test_GiftUnit_exists():
     x_giftunit = GiftUnit()
 
     # THEN
+    assert x_giftunit._gift_id is None
     assert x_giftunit._gifter is None
     assert x_giftunit._giftees is None
     assert x_giftunit._bookunit is None
@@ -30,7 +31,9 @@ def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     farm_giftunit = giftunit_shop(_gifter=bob_text)
 
     # THEN
+    assert farm_giftunit._gift_id == 0
     assert farm_giftunit._gifter == bob_text
+    assert farm_giftunit._giftees == set()
     assert farm_giftunit._bookunit == bookunit_shop()
     assert farm_giftunit._book_start == 0
     assert farm_giftunit._person_dir is None
@@ -41,6 +44,8 @@ def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
 def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # GIVEN
     bob_text = "Bob"
+    bob_gift_id = 13
+    bob_giftees = {"Sue", "Yao"}
     bob_bookunit = get_bookunit_carm_example()
     bob_book_start = 6
     bob_person_dir = "exampletext5"
@@ -50,6 +55,8 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # WHEN
     farm_giftunit = giftunit_shop(
         bob_text,
+        _gift_id=bob_gift_id,
+        _giftees=bob_giftees,
         _bookunit=bob_bookunit,
         _book_start=bob_book_start,
         _person_dir=bob_person_dir,
@@ -59,6 +66,8 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
 
     # THEN
     assert farm_giftunit._gifter == bob_text
+    assert farm_giftunit._gift_id == bob_gift_id
+    assert farm_giftunit._giftees == bob_giftees
     assert farm_giftunit._bookunit == bob_bookunit
     assert farm_giftunit._book_start == bob_book_start
     assert farm_giftunit._person_dir == bob_person_dir
