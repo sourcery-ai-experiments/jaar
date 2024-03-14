@@ -52,7 +52,32 @@ def test_WorldUnit_generate_outcome_agenda_ReturnsRegeneratedObj(
     assert after_luca_agenda.get_party(bob_text) is None
 
 
-def test_WorldUnit_generate_outcome_agenda_SetsCorrectFile(worlds_dir_setup_cleanup):
+def test_WorldUnit_generate_outcome_agenda_SetsCorrectFileWithout_healerhold(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    music_world = worldunit_shop("music", get_test_worlds_dir(), True)
+    bob_text = "Bob"
+    bob_person = music_world.add_personunit(bob_text)
+    before_bob_outcome_agenda = music_world.generate_outcome_agenda(bob_text)
+    sue_text = "Sue"
+    assert before_bob_outcome_agenda.get_party(sue_text) is None
+
+    # WHEN
+    bob_gut_agenda = bob_person.get_gut_file_agenda()
+    bob_gut_agenda.add_partyunit(sue_text)
+    bob_person._save_gut_file(bob_gut_agenda)
+
+    # WHEN
+    after_bob_outcome_agenda = music_world.generate_outcome_agenda(bob_text)
+
+    # THEN
+    assert after_bob_outcome_agenda.get_party(sue_text) != None
+
+
+def test_WorldUnit_generate_outcome_agenda_SetsCorrectFileWith_healerhold(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     music_world = worldunit_shop("music", get_test_worlds_dir(), True)
 

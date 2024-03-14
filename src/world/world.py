@@ -9,6 +9,7 @@ from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import set_dir, open_file, delete_dir, dir_files
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
+from copy import deepcopy as copy_deepcopy
 
 
 class PersonExistsException(Exception):
@@ -183,10 +184,12 @@ class WorldUnit:
             x_econ.add_clerkunit(clerk_person_id)
 
     def generate_outcome_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_outcome = agendaunit_shop(person_id, self.world_id)
         x_personunit = self.get_personunit(person_id)
         x_gut = x_personunit.get_gut_file_agenda()
         x_gut.set_agenda_metrics()
+
+        x_outcome = agendaunit_shop(person_id, self.world_id)
+        x_outcome_deepcopy = copy_deepcopy(x_outcome)
         for healer_id, healer_dict in x_gut._healers_dict.items():
             healer_person = self.get_personunit(healer_id)
             healer_person.create_person_econunits()
@@ -197,6 +200,10 @@ class WorldUnit:
                 x_clerk.save_refreshed_job_to_forum()
                 x_job = x_econ.get_job_agenda_file(person_id)
                 x_outcome.meld(x_job)
+
+        # if outcome_agenda has not changed st outcome agenda to gut
+        if x_outcome == x_outcome_deepcopy:
+            x_outcome = x_gut
         x_personunit._save_outcome_file(x_outcome)
         return self.get_outcome_file_agenda(person_id)
 
