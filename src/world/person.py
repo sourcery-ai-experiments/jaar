@@ -93,11 +93,11 @@ class PersonUnit:
         self._atoms_dir = f"{self.person_dir}/atoms"
         self._gifts_dir = f"{self.person_dir}/gifts"
         if self._gut_file_name is None:
-            self._gut_file_name = "gut.json"
+            self._gut_file_name = f"{get_gut_file_name()}.json"
         if self._gut_path is None:
             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
         if self._live_file_name is None:
-            self._live_file_name = "live.json"
+            self._live_file_name = f"{get_live_file_name()}.json"
         if self._live_path is None:
             self._live_path = f"{self.person_dir}/{self._live_file_name}"
 

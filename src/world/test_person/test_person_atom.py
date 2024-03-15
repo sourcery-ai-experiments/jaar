@@ -1,13 +1,4 @@
-from src._road.road import default_road_delimiter_if_none
-from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
-from src.agenda.atom import agendaatom_shop, get_from_json as agendaatom_get_from_json
-from src.world.person import (
-    PersonUnit,
-    personunit_shop,
-    get_gut_file_name,
-    get_live_file_name,
-)
-from pytest import raises as pytest_raises
+from src.world.person import personunit_shop
 from src.world.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
@@ -20,15 +11,6 @@ from src.world.examples.world_env_kit import (
     worlds_dir_setup_cleanup,
 )
 from os.path import exists as os_path_exists
-from src.instrument.file import open_file, save_file, dir_files
-
-
-def test_get_gut_file_name():
-    assert get_gut_file_name() == "gut"
-
-
-def test_get_live_file_name():
-    assert get_live_file_name() == "live"
 
 
 def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
