@@ -350,16 +350,16 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
 
-def test_PersonUnit_build_agenda_ReturnsObjGivenOnlyLastGiftNumber(
-    worlds_dir_setup_cleanup,
-):
-    assert 1 == 2
+# def test_PersonUnit_build_agenda_ReturnsObjGivenOnlyLastGiftNumber(
+#     worlds_dir_setup_cleanup,
+# ):
+#     assert 1 == 2
 
 
-def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
-    worlds_dir_setup_cleanup,
-):
-    assert 1 == 2
+# def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
+#     worlds_dir_setup_cleanup,
+# ):
+#     assert 1 == 2
 
 
 # def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
