@@ -40,20 +40,20 @@ def test_WorldUnit_get_giftunit_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert yao_sue_giftunit == example_yao_sue_giftunit()
 
 
-def test_WorldUnit_giftunit_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_WorldUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     oregon_world = worldunit_shop(
         "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     static_yao_sue_uid = 1
-    assert oregon_world.giftunit_exists(static_yao_sue_uid) == False
+    assert oregon_world.giftunit_file_exists(static_yao_sue_uid) == False
 
     # WHEN
     gen_yao_sue_uid = oregon_world.set_giftunit(example_yao_sue_giftunit())
     assert static_yao_sue_uid == gen_yao_sue_uid
 
     # THEN
-    assert oregon_world.giftunit_exists(static_yao_sue_uid)
+    assert oregon_world.giftunit_file_exists(static_yao_sue_uid)
 
 
 def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
@@ -62,13 +62,13 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
         "Oregon", get_test_worlds_dir(), in_memory_journal=True
     )
     yao_sue_uid = oregon_world.set_giftunit(example_yao_sue_giftunit())
-    assert oregon_world.giftunit_exists(yao_sue_uid)
+    assert oregon_world.giftunit_file_exists(yao_sue_uid)
 
     # WHEN
     oregon_world.del_giftunit(yao_sue_uid)
 
     # THEN
-    assert oregon_world.giftunit_exists(yao_sue_uid) == False
+    assert oregon_world.giftunit_file_exists(yao_sue_uid) == False
 
 
 # def test_WorldUnit_apply_requestunit_CorrectlyCreates_role_agendas(

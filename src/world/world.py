@@ -33,7 +33,7 @@ class WorldUnit:
     def del_giftunit(self, giftunit_uid: int):
         self._giftunits.pop(giftunit_uid)
 
-    def giftunit_exists(self, giftunit_uid: int) -> bool:
+    def giftunit_file_exists(self, giftunit_uid: int) -> bool:
         return self.get_giftunit(giftunit_uid) != None
 
     def get_giftunit(self, giftunit_uid: int) -> GiftUnit:

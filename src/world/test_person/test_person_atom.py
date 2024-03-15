@@ -58,7 +58,9 @@ def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_clean
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json") == False
 
 
-def test_PersonUnit_get_max_atom_filename_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     yao_person = personunit_shop("Yao")
     ten_int = 10
@@ -66,28 +68,33 @@ def test_PersonUnit_get_max_atom_filename_ReturnsCorrectObj(worlds_dir_setup_cle
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
-    assert yao_person._get_max_atom_filename() == ten_int
+    assert yao_person._get_max_atom_file_number() == ten_int
 
 
-def test_PersonUnit_get_max_atom_filename_ReturnsCorrectObjWhenDirIsEmpty(
+def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     yao_person = personunit_shop("Yao")
 
     # WHEN / THEN
-    assert yao_person._get_max_atom_filename() == 0
+    assert yao_person._get_max_atom_file_number() is None
 
 
-def test_PersonUnit_get_next_atom_filename_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     yao_person = personunit_shop("Yao")
+    # WHEN / THEN
+    assert yao_person._get_next_atom_file_number() == 0
+
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
-    assert yao_person._get_next_atom_filename() == "11.json"
+    assert yao_person._get_next_atom_file_number() == 11
 
 
 def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
@@ -95,7 +102,7 @@ def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     yao_person = personunit_shop("Yao")
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-    assert yao_person._get_max_atom_filename() == ten_int
+    assert yao_person._get_max_atom_file_number() == ten_int
     eleven_int = ten_int + 1
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
 
@@ -103,8 +110,8 @@ def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     atom_num1 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
 
     # THEN
-    assert yao_person._get_max_atom_filename() != ten_int
-    assert yao_person._get_max_atom_filename() == eleven_int
+    assert yao_person._get_max_atom_file_number() != ten_int
+    assert yao_person._get_max_atom_file_number() == eleven_int
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
     assert atom_num1 == eleven_int
     atom_num2 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())

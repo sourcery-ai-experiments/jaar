@@ -9,7 +9,6 @@ from src._road.road import (
     change_road,
     create_road_from_nodes,
 )
-from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -21,6 +20,13 @@ from src.agenda.atom import (
     change_agenda_with_agendaatom,
 )
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
+from src.world.gift import (
+    GiftUnit,
+    giftunit_shop,
+    get_json_filename as giftunit_get_json_filename,
+    create_giftunit_from_files,
+)
+from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.instrument.python import get_empty_dict_if_none
 from src.instrument.file import (
     save_file,
@@ -49,6 +55,14 @@ class Invalid_gut_Exception(Exception):
 
 
 class Invalid_live_Exception(Exception):
+    pass
+
+
+class SaveGiftFileException(Exception):
+    pass
+
+
+class GiftFileMissingException(Exception):
     pass
 
 
@@ -177,6 +191,64 @@ class PersonUnit:
     def load_live_file(self):
         self._live_obj = self.get_live_file_agenda()
 
+    def giftunit_file_exists(self, gift_id: int) -> bool:
+        gift_filename = giftunit_get_json_filename(gift_id)
+        return os_path_exists(f"{self._gifts_dir}/{gift_filename}")
+
+    def get_max_gift_file_number(self) -> int:
+        if os_path_exists(self._gifts_dir):
+            gift_filenames = dir_files(
+                dir_path=self._gifts_dir, delete_extensions=True, include_files=True
+            ).keys()
+            gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
+            return max(gift_file_numbers)
+        else:
+            return None
+
+    def get_next_gift_file_number(self) -> int:
+        max_file_number = self.get_max_gift_file_number()
+        return 0 if max_file_number is None else max_file_number + 1
+
+    def save_giftunit_file(self, x_gift: GiftUnit, replace: bool = True):
+        if x_gift._atoms_dir != self._atoms_dir:
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {self._atoms_dir}."
+            )
+        if x_gift._gifts_dir != self._gifts_dir:
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self._gifts_dir}."
+            )
+        if x_gift._gifter != self.person_id:
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit._gifter is incorrect: {x_gift._gifter}. It must be {self.person_id}."
+            )
+        gift_filename = giftunit_get_json_filename(x_gift._gift_id)
+        if not replace and self.giftunit_file_exists(x_gift._gift_id):
+            raise SaveGiftFileException(
+                f"GiftUnit file {gift_filename} already exists and cannot be saved over."
+            )
+        x_gift.save_files()
+
+    def get_new_giftunit(self) -> GiftUnit:
+        return giftunit_shop(
+            _gifter=self.person_id,
+            _gift_id=self.get_next_gift_file_number(),
+            _atoms_dir=self._atoms_dir,
+            _gifts_dir=self._gifts_dir,
+        )
+
+    def get_giftunit(self, file_number: int) -> GiftUnit:
+        if self.giftunit_file_exists(file_number) == False:
+            raise GiftFileMissingException(
+                f"GiftUnit file_number {file_number} does not exist."
+            )
+        return create_giftunit_from_files(
+            gifts_dir=self._gifts_dir, gift_id=file_number, atoms_dir=self._atoms_dir
+        )
+
+    def del_giftunit_file(self, file_number: int):
+        delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
+
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
         return file_number
@@ -187,7 +259,7 @@ class PersonUnit:
     def _delete_atom_file(self, filename: int):
         delete_dir(f"{self._atoms_dir}/{filename}.json")
 
-    def _get_max_atom_filename(self) -> int:
+    def _get_max_atom_file_number(self) -> int:
         if os_path_exists(self._atoms_dir):
             atom_filenames = dir_files(
                 dir_path=self._atoms_dir, delete_extensions=True, include_files=True
@@ -195,13 +267,14 @@ class PersonUnit:
             atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
             return max(atom_file_numbers)
         else:
-            return 0
+            return None
 
-    def _get_next_atom_filename(self) -> str:
-        return f"{self._get_max_atom_filename()+1}.json"
+    def _get_next_atom_file_number(self) -> str:
+        max_file_number = self._get_max_atom_file_number()
+        return 0 if max_file_number is None else max_file_number + 1
 
     def save_atom_file(self, x_atom: AgendaAtom):
-        x_filename = self._get_max_atom_filename() + 1
+        x_filename = self._get_next_atom_file_number()
         return self._save_valid_atom_file(x_atom, x_filename)
 
     def _get_agenda_from_atom_files(self) -> AgendaUnit:
