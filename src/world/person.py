@@ -196,14 +196,13 @@ class PersonUnit:
         return os_path_exists(f"{self._gifts_dir}/{gift_filename}")
 
     def get_max_gift_file_number(self) -> int:
-        if os_path_exists(self._gifts_dir):
-            gift_filenames = dir_files(
-                dir_path=self._gifts_dir, delete_extensions=True, include_files=True
-            ).keys()
-            gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
-            return max(gift_file_numbers)
-        else:
+        if not os_path_exists(self._gifts_dir):
             return None
+        gift_filenames = dir_files(
+            dir_path=self._gifts_dir, delete_extensions=True, include_files=True
+        ).keys()
+        gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
+        return max(gift_file_numbers, default=None)
 
     def get_next_gift_file_number(self) -> int:
         max_file_number = self.get_max_gift_file_number()
@@ -260,14 +259,13 @@ class PersonUnit:
         delete_dir(f"{self._atoms_dir}/{filename}.json")
 
     def _get_max_atom_file_number(self) -> int:
-        if os_path_exists(self._atoms_dir):
-            atom_filenames = dir_files(
-                dir_path=self._atoms_dir, delete_extensions=True, include_files=True
-            ).keys()
-            atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
-            return max(atom_file_numbers)
-        else:
+        if not os_path_exists(self._atoms_dir):
             return None
+        atom_filenames = dir_files(
+            dir_path=self._atoms_dir, delete_extensions=True, include_files=True
+        ).keys()
+        atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
+        return max(atom_file_numbers, default=None)
 
     def _get_next_atom_file_number(self) -> str:
         max_file_number = self._get_max_atom_file_number()
@@ -381,6 +379,7 @@ def personunit_shop(
         _planck=default_planck_if_none(_planck),
     )
     x_personunit.set_person_id(person_id)
+    x_personunit.create_core_dir_and_files()
     return x_personunit
 
 

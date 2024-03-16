@@ -9,7 +9,7 @@ from src.world.examples.world_env_kit import worlds_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj():
+def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -269,9 +269,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 
-def test_PersonUnit_set_econunit_role_CorrectlySetsrole(
-    worlds_dir_setup_cleanup,
-):
+def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -303,9 +301,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(
     assert sue_clerk.get_role().get_party(bob_text) != None
 
 
-def test_PersonUnit_set_econunits_role_CorrectlySetsroles(
-    worlds_dir_setup_cleanup,
-):
+def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
