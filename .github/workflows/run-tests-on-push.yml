@@ -19,10 +19,20 @@ jobs:
           python -m pip install pytest-cov
           python -m pip install pyqt5
       - name: Execute tests and generate report
-        #The current issue apears to be caused by a permissions issue, so this is a lazy fix to see if the workflow won't error out.
+        id: pytest
         run: |
-          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules
-          
-      #TODO: 
-        #create dir for test results
-        #merge decison based on pass/fail
+          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
+      - name: If All Tests Pass, Merge
+        if: ${{ steps.pytest.conclusion == 'success' }}
+        #nothing more to do (?), merge branch into master
+      - name: If ANY Test Fails, Open Tickets
+        if: ${{ steps.pytest.conclusion == 'failure' }}
+        run: |
+          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
+          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
+          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+
+      #TODO:
+        #clip portion of test results with failure messages
+        #open new issue
+        #dump failure text into issue, add some other details
