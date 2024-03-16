@@ -21,6 +21,7 @@ from src.world.examples.world_env_kit import (
 from src.instrument.file import open_file, dir_files
 from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
+from copy import deepcopy as copy_deepcopy
 
 
 def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
@@ -412,7 +413,9 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
 
-def test_PersonUnit_CanCreateAndChange3Giftunits(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_giftunit_file_CanCreateAndChange3Giftunits(
+    worlds_dir_setup_cleanup,
+):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -427,6 +430,29 @@ def test_PersonUnit_CanCreateAndChange3Giftunits(worlds_dir_setup_cleanup):
     # THEN
     assert len(dir_files(sue_person._gifts_dir)) == 3
     assert len(dir_files(sue_person._atoms_dir)) == 9
+
+
+def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    sue2_giftunit = sue_2atomunits_giftunit()
+    sue2_giftunit._atoms_dir = f"{sue_person.person_dir}/swimming"
+    sue2_giftunit._gifts_dir = f"{sue_person.person_dir}/swimming"
+    sue2_giftunit._gifter = "Bob"
+    sue2_giftunit._gift_id = sue_person.get_next_gift_file_number() - 5
+    prev_sue2_giftunit = copy_deepcopy(sue2_giftunit)
+
+    # WHEN
+    valid_giftunit = sue_person.save_giftunit_file(
+        sue2_giftunit, change_invalid_attrs=True
+    )
+
+    # THEN
+    assert valid_giftunit._gifts_dir != prev_sue2_giftunit._gifts_dir
+    assert valid_giftunit._gifts_dir == sue_person._gifts_dir
+    assert valid_giftunit._atoms_dir == sue_person._atoms_dir
+    assert valid_giftunit._gift_id != prev_sue2_giftunit._gift_id
 
 
 # def test_PersonUnit_build_agenda_ReturnsObjGivenOnlyLastGiftNumber(

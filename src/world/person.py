@@ -210,7 +210,7 @@ class PersonUnit:
 
     def save_giftunit_file(
         self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = False
-    ):
+    ) -> GiftUnit:
         if change_invalid_attrs:
             x_gift = self.get_valid_giftunit(x_gift)
 
@@ -232,6 +232,7 @@ class PersonUnit:
                 f"GiftUnit file {gift_filename} already exists and cannot be saved over."
             )
         x_gift.save_files()
+        return x_gift
 
     def get_new_giftunit(self) -> GiftUnit:
         return giftunit_shop(
