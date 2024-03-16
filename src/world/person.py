@@ -208,7 +208,12 @@ class PersonUnit:
         max_file_number = self.get_max_gift_file_number()
         return 0 if max_file_number is None else max_file_number + 1
 
-    def save_giftunit_file(self, x_gift: GiftUnit, replace: bool = True):
+    def save_giftunit_file(
+        self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = False
+    ):
+        if change_invalid_attrs:
+            x_gift = self.get_valid_giftunit(x_gift)
+
         if x_gift._atoms_dir != self._atoms_dir:
             raise SaveGiftFileException(
                 f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {self._atoms_dir}."
@@ -235,6 +240,19 @@ class PersonUnit:
             _atoms_dir=self._atoms_dir,
             _gifts_dir=self._gifts_dir,
         )
+
+    def get_valid_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
+        if x_giftunit._atoms_dir != self._atoms_dir:
+            x_giftunit._atoms_dir = self._atoms_dir
+        if x_giftunit._gifts_dir != self._gifts_dir:
+            x_giftunit._gifts_dir = self._gifts_dir
+        if x_giftunit._gift_id != self.get_next_gift_file_number():
+            x_giftunit._gift_id = self.get_next_gift_file_number()
+        if x_giftunit._gifter != self.person_id:
+            x_giftunit._gifter = self.person_id
+        if x_giftunit._book_start != self._get_next_atom_file_number():
+            x_giftunit._book_start = self._get_next_atom_file_number()
+        return x_giftunit
 
     def get_giftunit(self, file_number: int) -> GiftUnit:
         if self.giftunit_file_exists(file_number) == False:

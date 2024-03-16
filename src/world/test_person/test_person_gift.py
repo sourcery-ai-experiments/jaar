@@ -192,6 +192,64 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     )
 
 
+def test_PersonUnit_get_valid_giftunit_ReturnsObjWithAttributesFixed(
+    worlds_dir_setup_cleanup,
+):
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    two_int = 2
+    two_filename = get_json_filename(two_int)
+    sue_gift2_path = f"{sue_person._gifts_dir}/{two_filename}"
+    print(f"{sue_gift2_path=}")
+
+    # WHEN
+    invalid_sue_giftunit = giftunit_shop(
+        _gifter="Bob",
+        _gift_id=sue_person.get_next_gift_file_number() - 5,
+        _atoms_dir=f"{sue_person.person_dir}/swimming",
+        _gifts_dir=f"{sue_person.person_dir}/swimming",
+    )
+    valid_giftunit = sue_person.get_valid_giftunit(invalid_sue_giftunit)
+
+    # THEN
+    assert valid_giftunit._atoms_dir == sue_person._atoms_dir
+    assert valid_giftunit._gifts_dir == sue_person._gifts_dir
+    assert valid_giftunit._gift_id == sue_person.get_next_gift_file_number()
+    correct_sue_giftunit = giftunit_shop(
+        _gifter=sue_text,
+        _gift_id=sue_person.get_next_gift_file_number(),
+        _atoms_dir=sue_person._atoms_dir,
+        _gifts_dir=sue_person._gifts_dir,
+    )
+    assert valid_giftunit == correct_sue_giftunit
+
+
+def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTrue(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    next_int = sue_person.get_next_gift_file_number()
+    next_filename = get_json_filename(next_int)
+    sue_gift2_path = f"{sue_person._gifts_dir}/{next_filename}"
+    print(f"{sue_gift2_path=}")
+    assert os_path_exists(sue_gift2_path) == False
+
+    # WHEN
+    invalid_sue_giftunit = giftunit_shop(
+        _gifter="Bob",
+        _gift_id=sue_person.get_next_gift_file_number() - 5,
+        _atoms_dir=f"{sue_person.person_dir}/swimming",
+        _gifts_dir=f"{sue_person.person_dir}/swimming",
+    )
+    sue_person.save_giftunit_file(invalid_sue_giftunit, change_invalid_attrs=True)
+
+    # THEN
+    assert os_path_exists(sue_gift2_path)
+    two_file_json = open_file(sue_person._gifts_dir, next_filename)
+
+
 def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
     worlds_dir_setup_cleanup,
 ):
@@ -354,39 +412,21 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
 
-# def test_PersonUnit_CanCreateAndChange3Giftunits(
-#     worlds_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     sue_text = "Sue"
-#     sue_person = personunit_shop(person_id=sue_text)
-#     x_gift_id = 6
-#     six_filename = get_json_filename(x_gift_id)
-#     sue_giftunit = giftunit_shop(
-#         _gifter=sue_text,
-#         _gift_id=x_gift_id,
-#         _atoms_dir=sue_person._atoms_dir,
-#         _gifts_dir=sue_person._gifts_dir,
-#     )
-#     sue_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
-#     atom0_filename = sue_giftunit._get_num_filename(0)
-#     sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
-#     sue_atom0_path = f"{sue_person._atoms_dir}/{atom0_filename}"
-#     assert os_path_exists(sue_gift6_path) == False
-#     assert os_path_exists(sue_atom0_path) == False
+def test_PersonUnit_CanCreateAndChange3Giftunits(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    assert len(dir_files(sue_person._gifts_dir)) == 0
+    assert len(dir_files(sue_person._atoms_dir)) == 0
 
-#     sue_person.save_giftunit_file(sue_giftunit)
+    # WHEN
+    sue_person.save_giftunit_file(sue_2atomunits_giftunit(), change_invalid_attrs=True)
+    sue_person.save_giftunit_file(sue_3atomunits_giftunit(), change_invalid_attrs=True)
+    sue_person.save_giftunit_file(sue_4atomunits_giftunit(), change_invalid_attrs=True)
 
-#     print(f"{dir_files(sue_person._atoms_dir)}")
-#     assert os_path_exists(sue_gift6_path)
-#     assert os_path_exists(sue_atom0_path)
-
-#     # WHEN
-#     sue_person.del_giftunit_file(sue_giftunit._gift_id)
-
-#     # THEN
-#     assert os_path_exists(sue_gift6_path) == False
-#     assert os_path_exists(sue_atom0_path)
+    # THEN
+    assert len(dir_files(sue_person._gifts_dir)) == 3
+    assert len(dir_files(sue_person._atoms_dir)) == 9
 
 
 # def test_PersonUnit_build_agenda_ReturnsObjGivenOnlyLastGiftNumber(
