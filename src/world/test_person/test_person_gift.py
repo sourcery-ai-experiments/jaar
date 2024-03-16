@@ -6,7 +6,12 @@ from src.world.gift import (
     get_json_filename,
 )
 from src.world.examples.example_atoms import get_atom_example_ideaunit_knee
-from src.world.examples.example_gifts import get_sue_giftunit
+from src.world.examples.example_gifts import (
+    get_sue_giftunit,
+    sue_2atomunits_giftunit,
+    sue_3atomunits_giftunit,
+    sue_4atomunits_giftunit,
+)
 from src.world.person import personunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
@@ -350,9 +355,46 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
 
+# def test_PersonUnit_CanCreateAndChange3Giftunits(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     sue_text = "Sue"
+#     sue_person = personunit_shop(person_id=sue_text)
+#     sue_person.create_core_dir_and_files()
+#     x_gift_id = 6
+#     six_filename = get_json_filename(x_gift_id)
+#     sue_giftunit = giftunit_shop(
+#         _gifter=sue_text,
+#         _gift_id=x_gift_id,
+#         _atoms_dir=sue_person._atoms_dir,
+#         _gifts_dir=sue_person._gifts_dir,
+#     )
+#     sue_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
+#     atom0_filename = sue_giftunit._get_num_filename(0)
+#     sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
+#     sue_atom0_path = f"{sue_person._atoms_dir}/{atom0_filename}"
+#     assert os_path_exists(sue_gift6_path) == False
+#     assert os_path_exists(sue_atom0_path) == False
+
+#     sue_person.save_giftunit_file(sue_giftunit)
+
+#     print(f"{dir_files(sue_person._atoms_dir)}")
+#     assert os_path_exists(sue_gift6_path)
+#     assert os_path_exists(sue_atom0_path)
+
+#     # WHEN
+#     sue_person.del_giftunit_file(sue_giftunit._gift_id)
+
+#     # THEN
+#     assert os_path_exists(sue_gift6_path) == False
+#     assert os_path_exists(sue_atom0_path)
+
+
 # def test_PersonUnit_build_agenda_ReturnsObjGivenOnlyLastGiftNumber(
 #     worlds_dir_setup_cleanup,
 # ):
+
 #     assert 1 == 2
 
 
