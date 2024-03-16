@@ -24,6 +24,7 @@ jobs:
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
       - name: If All Tests Pass, Merge
         if: ${{ steps.pytest.conclusion == 'success' }}
+        run:
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open Tickets
         if: ${{ steps.pytest.conclusion == 'failure' }}
