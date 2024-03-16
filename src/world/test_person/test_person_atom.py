@@ -124,7 +124,6 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
-    yao_person.create_core_dir_and_files()
 
     # WHEN
     yao_agenda = yao_person._get_agenda_from_atom_files()

@@ -39,7 +39,6 @@ def test_PersonUnit_create_econ_dir_CreatesDir(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     assert os_path_exists(sue_person._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
@@ -60,7 +59,6 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     pound_text = "#"
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text, _road_delimiter=pound_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     texas_text = "Texas"
     texas_road = sue_gut_agenda.make_l1_road(texas_text)
@@ -93,7 +91,6 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -123,7 +120,6 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     texas_text = "Tex/as"
@@ -148,7 +144,6 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cl
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -193,7 +188,6 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -242,7 +236,6 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -273,7 +266,6 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -305,7 +297,6 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_clean
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -348,7 +339,6 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     sue_gut_agenda = sue_person.get_gut_file_agenda()
     sue_gut_agenda.add_partyunit(sue_text)
     bob_text = "Bob"

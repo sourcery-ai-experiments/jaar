@@ -325,7 +325,6 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_person.create_core_dir_and_files()
     x_gift_id = 6
     six_filename = get_json_filename(x_gift_id)
     sue_giftunit = giftunit_shop(
@@ -361,7 +360,6 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
 #     # GIVEN
 #     sue_text = "Sue"
 #     sue_person = personunit_shop(person_id=sue_text)
-#     sue_person.create_core_dir_and_files()
 #     x_gift_id = 6
 #     six_filename = get_json_filename(x_gift_id)
 #     sue_giftunit = giftunit_shop(
@@ -508,7 +506,6 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
 #     # GIVEN
 #     yao_text = "Yao"
 #     yao_person = personunit_shop(yao_text)
-#     yao_person.create_core_dir_and_files()
 
 #     # WHEN
 #     yao_agenda = yao_person._get_agenda_from_atom_files()
