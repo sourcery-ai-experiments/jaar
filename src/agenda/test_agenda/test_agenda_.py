@@ -19,24 +19,28 @@ def test_AgendaUnit_Exists():
     x_agenda = AgendaUnit()
 
     assert x_agenda
-    assert x_agenda._owner_id is None
     assert x_agenda._world_id is None
+    assert x_agenda._owner_id is None
     assert x_agenda._weight is None
-    assert x_agenda._max_tree_traverse is None
-    assert x_agenda._tree_traverse_count is None
-    assert x_agenda._rational is None
-    assert x_agenda._originunit is None
-    assert x_agenda._auto_output_job_to_forum is None
+    assert x_agenda._partys is None
+    assert x_agenda._groups is None
     assert x_agenda._idearoot is None
-    assert x_agenda._idea_dict is None
-    assert x_agenda._econ_dict is None
-    assert x_agenda._healers_dict is None
+    assert x_agenda._max_tree_traverse is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._planck is None
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
+    assert x_agenda._auto_output_job_to_forum is None
+    assert x_agenda._last_gift_id is None
     assert x_agenda._meld_strategy is None
+    assert x_agenda._originunit is None
+
+    assert x_agenda._idea_dict is None
+    assert x_agenda._econ_dict is None
+    assert x_agenda._healers_dict is None
+    assert x_agenda._tree_traverse_count is None
+    assert x_agenda._rational is None
     assert x_agenda._econs_justified is None
     assert x_agenda._econs_buildable is None
     assert x_agenda._sum_healerhold_importance is None
@@ -63,21 +67,25 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._owner_id == noa_text
     assert x_agenda._world_id == iowa_world_id
     assert x_agenda._weight == 1
-    assert x_agenda._max_tree_traverse == 3
-    assert x_agenda._tree_traverse_count is None
-    assert x_agenda._rational == False
-    assert x_agenda._originunit == originunit_shop()
-    assert x_agenda._auto_output_job_to_forum == False
+    assert x_agenda._partys == {}
+    assert x_agenda._groups == {}
     assert x_agenda._idearoot != None
-    assert x_agenda._idea_dict == {}
-    assert x_agenda._econ_dict == {}
-    assert x_agenda._healers_dict == {}
+    assert x_agenda._max_tree_traverse == 3
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._planck == five_planck
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
+    assert x_agenda._auto_output_job_to_forum == False
+    assert x_agenda._last_gift_id is None
     assert x_agenda._meld_strategy == override_meld_strategy
+    assert x_agenda._originunit == originunit_shop()
+
+    assert x_agenda._idea_dict == {}
+    assert x_agenda._econ_dict == {}
+    assert x_agenda._healers_dict == {}
+    assert x_agenda._tree_traverse_count is None
+    assert x_agenda._rational == False
     assert x_agenda._econs_justified == False
     assert x_agenda._econs_buildable == False
     assert x_agenda._sum_healerhold_importance == False
@@ -325,3 +333,47 @@ def test_AgendaUnit_set_money_desc_SetsAttrCorrectly():
 
     # THEN
     assert noa_agenda._money_desc == noa_money_desc
+
+
+def test_AgendaUnit_set_last_gift_id_SetsAttrCorrectly():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    assert noa_agenda._last_gift_id is None
+
+    # WHEN
+    x_last_gift_id = 89
+    noa_agenda.set_last_gift_id(x_last_gift_id)
+
+    # THEN
+    assert noa_agenda._last_gift_id == x_last_gift_id
+
+
+def test_AgendaUnit_set_last_gift_id_RaisesError():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    old_last_gift_id = 89
+    noa_agenda.set_last_gift_id(old_last_gift_id)
+
+    # WHEN / THEN
+    new_last_gift_id = 72
+    assert new_last_gift_id < old_last_gift_id
+    with pytest_raises(Exception) as excinfo:
+        noa_agenda.set_last_gift_id(new_last_gift_id)
+    assert (
+        str(excinfo.value)
+        == f"Cannot set _last_gift_id to {new_last_gift_id} because it is less than {old_last_gift_id}."
+    )
+
+
+def test_AgendaUnit_del_last_gift_id_SetsAttrCorrectly():
+    # GIVEN
+    noa_agenda = agendaunit_shop("Noa", "Texas")
+    old_last_gift_id = 89
+    noa_agenda.set_last_gift_id(old_last_gift_id)
+    assert noa_agenda._last_gift_id != None
+
+    # WHEN
+    noa_agenda.del_last_gift_id()
+
+    # WHEN
+    assert noa_agenda._last_gift_id is None

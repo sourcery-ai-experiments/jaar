@@ -49,6 +49,8 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda.set_party_debtor_pool(x_party_debtor_pool)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
+    x_last_gift_id = 77
+    x_agenda.set_last_gift_id(x_last_gift_id)
 
     # WHEN
     agenda_dict = x_agenda.get_dict()
@@ -69,6 +71,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
+    assert agenda_dict["_last_gift_id"] == x_agenda._last_gift_id
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_partys"]) != 12
     assert len(agenda_dict["_groups"]) == 12
@@ -217,6 +220,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_party_debtor_pool"]
     assert str(excinfo.value) == "'_party_debtor_pool'"
+    with pytest_raises(Exception) as excinfo:
+        agenda_dict["_last_gift_id"]
 
     x_idearoot = zia_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -318,6 +323,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_party_debtor_pool = 2
     zia_agenda.set_party_creditor_pool(zia_party_creditor_pool)
     zia_agenda.set_party_debtor_pool(zia_party_debtor_pool)
+    zia_last_gift_id = 73
+    zia_agenda.set_last_gift_id(zia_last_gift_id)
 
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
@@ -378,6 +385,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._party_debtor_pool == zia_party_debtor_pool
     assert json_agenda._meld_strategy == zia_agenda._meld_strategy
     assert json_agenda._meld_strategy == override_text
+    assert json_agenda._last_gift_id == zia_agenda._last_gift_id
+    assert json_agenda._last_gift_id == zia_last_gift_id
     print(f"{json_agenda._groups.keys()=}")
     print(f"{zia_agenda._groups.keys()=}")
     assert json_agenda._groups == zia_agenda._groups

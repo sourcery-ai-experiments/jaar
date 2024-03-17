@@ -111,10 +111,15 @@ class _planck_RatioException(Exception):
     pass
 
 
+class _last_gift_idException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _world_id: str = None
     _owner_id: OwnerID = None
+    _last_gift_id: int = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupID:GroupUnit] = None
@@ -138,6 +143,16 @@ class AgendaUnit:
     _econs_buildable: bool = None
     _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
+
+    def del_last_gift_id(self):
+        self._last_gift_id = None
+
+    def set_last_gift_id(self, x_last_gift_id: int):
+        if self._last_gift_id != None and x_last_gift_id < self._last_gift_id:
+            raise _last_gift_idException(
+                f"Cannot set _last_gift_id to {x_last_gift_id} because it is less than {self._last_gift_id}."
+            )
+        self._last_gift_id = x_last_gift_id
 
     def set_money_desc(self, x_money_desc: str):
         self._money_desc = x_money_desc
@@ -2033,6 +2048,9 @@ class AgendaUnit:
             x_dict["_party_debtor_pool"] = self._party_debtor_pool
         if self._meld_strategy != get_meld_default():
             x_dict["_meld_strategy"] = self._meld_strategy
+        if self._last_gift_id != None:
+            x_dict["_last_gift_id"] = self._last_gift_id
+
         return x_dict
 
     def get_json(self) -> str:
@@ -2355,6 +2373,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         x_agenda._meld_strategy = get_obj_from_agenda_dict(
             agenda_dict, "_meld_strategy"
         )
+    x_agenda._last_gift_id = get_obj_from_agenda_dict(agenda_dict, "_last_gift_id")
     for x_partyunit in get_obj_from_agenda_dict(agenda_dict, "_partys").values():
         x_agenda.set_partyunit(x_partyunit)
     for x_groupunit in get_obj_from_agenda_dict(agenda_dict, "_groups").values():
