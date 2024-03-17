@@ -19,7 +19,6 @@ def test_create_legible_list_ReturnsObj_idea_beliefunit_INSERT_WithOutNumericArg
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
     swim_agendaatom.set_arg(pick_text, pick_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -55,7 +54,6 @@ def test_create_legible_list_ReturnsObj_idea_beliefunit_INSERT_WithNumericArgs()
     swim_agendaatom.set_arg(pick_text, pick_value)
     swim_agendaatom.set_arg(nigh_text, nigh_value)
     swim_agendaatom.set_arg(open_text, open_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -85,7 +83,6 @@ def test_create_legible_list_ReturnsObj_idea_beliefunit_UPDATE_WithOutNumericArg
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
     swim_agendaatom.set_arg(pick_text, pick_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -121,7 +118,6 @@ def test_create_legible_list_ReturnsObj_idea_beliefunit_UPDATE_WithNumericArgs()
     swim_agendaatom.set_arg(pick_text, pick_value)
     swim_agendaatom.set_arg(nigh_text, nigh_value)
     swim_agendaatom.set_arg(open_text, open_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -151,7 +147,6 @@ def test_create_legible_list_ReturnsObj_idea_beliefunit_DELETE():
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
     swim_agendaatom.set_arg(pick_text, pick_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)

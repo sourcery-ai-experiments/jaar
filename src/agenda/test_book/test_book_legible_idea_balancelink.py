@@ -21,7 +21,6 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_INSERT():
     swim_agendaatom.set_arg(group_id_text, group_id_value)
     swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -54,7 +53,6 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight_
     swim_agendaatom.set_arg(group_id_text, group_id_value)
     swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -83,7 +81,6 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight(
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(group_id_text, group_id_value)
     swim_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-    swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -112,7 +109,6 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_debtor_weight():
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(group_id_text, group_id_value)
     swim_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -138,7 +134,6 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_DELETE():
     swim_agendaatom = agendaatom_shop(category, atom_delete())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(group_id_text, group_id_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)

@@ -1148,7 +1148,6 @@ def add_agendaunit_legible_list(
     legible_list: list[str], x_atom: AgendaAtom, x_agenda: AgendaUnit
 ):
     optional_args = x_atom.optional_args
-    x_atom._crud_cache = None
     _weight_text = "_weight"
     _max_tree_traverse_text = "_max_tree_traverse"
     _meld_strategy_text = "_meld_strategy"

@@ -16,7 +16,6 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -46,7 +45,6 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -74,7 +72,6 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight_debtor_
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -101,7 +98,6 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight():
     rico_agendaatom = agendaatom_shop(category, atom_update())
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -130,7 +126,6 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_debtor_weight():
     rico_agendaatom = agendaatom_shop(category, atom_update())
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -154,7 +149,6 @@ def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     rico_text = "Rico"
     rico_agendaatom = agendaatom_shop(category, atom_delete())
     rico_agendaatom.set_arg(party_id_text, rico_text)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)

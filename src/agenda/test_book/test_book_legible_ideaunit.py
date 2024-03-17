@@ -50,7 +50,6 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     clean_agendaatom.set_arg(_reest_text, _reest_value)
     clean_agendaatom.set_arg(_weight_text, _weight_value)
     clean_agendaatom.set_arg(promise_text, promise_value)
-    # rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(clean_agendaatom)
@@ -111,7 +110,6 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
     clean_agendaatom.set_arg(_reest_text, _reest_value)
     clean_agendaatom.set_arg(_weight_text, _weight_value)
     clean_agendaatom.set_arg(promise_text, promise_value)
-    # rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(clean_agendaatom)
@@ -136,7 +134,6 @@ def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     clean_agendaatom = agendaatom_shop(category, atom_delete())
     clean_agendaatom.set_arg(label_text, label_value)
     clean_agendaatom.set_arg(parent_road_text, parent_road_value)
-    # rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(clean_agendaatom)

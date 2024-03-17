@@ -60,7 +60,6 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool():
         party_creditor_pool_text, party_creditor_pool_int
     )
 
-    party_creditor_pool_agendaatom._crud_cache = None
     print(f"{party_creditor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
@@ -86,7 +85,6 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Wit
         party_creditor_pool_text, party_creditor_pool_int
     )
 
-    party_creditor_pool_agendaatom._crud_cache = None
     print(f"{party_creditor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
@@ -110,7 +108,6 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_debtor_pool():
     party_debtor_pool_agendaatom = agendaatom_shop(category, atom_update())
     party_debtor_pool_agendaatom.set_arg(party_debtor_pool_text, party_debtor_pool_int)
 
-    party_debtor_pool_agendaatom._crud_cache = None
     print(f"{party_debtor_pool_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_debtor_pool_agendaatom)
@@ -158,7 +155,6 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_max_tree_traverse():
     max_tree_traverse_agendaatom = agendaatom_shop(category, atom_update())
     max_tree_traverse_agendaatom.set_arg(max_tree_traverse_text, max_tree_traverse_int)
 
-    max_tree_traverse_agendaatom._crud_cache = None
     print(f"{max_tree_traverse_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(max_tree_traverse_agendaatom)
@@ -180,7 +176,6 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_meld_strategy():
     meld_strategy_agendaatom = agendaatom_shop(category, atom_update())
     meld_strategy_agendaatom.set_arg(meld_strategy_text, meld_strategy_value)
 
-    meld_strategy_agendaatom._crud_cache = None
     print(f"{meld_strategy_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(meld_strategy_agendaatom)

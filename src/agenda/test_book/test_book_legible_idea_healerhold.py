@@ -15,7 +15,6 @@ def test_create_legible_list_ReturnsObj_idea_healerhold_INSERT():
     swim_agendaatom = agendaatom_shop(category, atom_insert())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(group_id_text, group_id_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -41,7 +40,6 @@ def test_create_legible_list_ReturnsObj_idea_healerhold_DELETE():
     swim_agendaatom = agendaatom_shop(category, atom_delete())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(group_id_text, group_id_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)

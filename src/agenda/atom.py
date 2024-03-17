@@ -166,7 +166,6 @@ class AgendaAtom:
     required_args: dict[str:str] = None
     optional_args: dict[str:str] = None
     atom_order: int = None
-    _crud_cache: str = None
 
     def get_insert_sqlstr(self) -> str:
         if self.is_valid() == False:
@@ -237,9 +236,7 @@ class AgendaAtom:
         self.optional_args[x_key] = x_value
 
     def _get_category_dict(self) -> dict:
-        if self._crud_cache is None:
-            self._crud_cache = get_atom_config_dict()
-        return self._crud_cache.get(self.category)
+        return get_atom_config_dict().get(self.category)
 
     def _get_crud_dict(self) -> dict:
         return self._get_category_dict().get(self.crud_text)

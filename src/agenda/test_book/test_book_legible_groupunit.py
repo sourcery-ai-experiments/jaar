@@ -13,7 +13,6 @@ def test_create_legible_list_ReturnsObj_groupunit_INSERT_Without_treasury_partyl
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     swim_agendaatom = agendaatom_shop(category, atom_insert())
     swim_agendaatom.set_arg(group_id_text, swim_text)
-    # swim_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -39,7 +38,6 @@ def test_create_legible_list_ReturnsObj_groupunit_INSERT_With_treasury_partylink
     swim_agendaatom = agendaatom_shop(category, atom_insert())
     swim_agendaatom.set_arg(group_id_text, swim_text)
     swim_agendaatom.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # swim_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -65,7 +63,6 @@ def test_create_legible_list_ReturnsObj_groupunit_UPDATE_With_treasury_partylink
     swim_agendaatom = agendaatom_shop(category, atom_update())
     swim_agendaatom.set_arg(group_id_text, swim_text)
     swim_agendaatom.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # swim_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -91,7 +88,6 @@ def test_create_legible_list_ReturnsObj_groupunit_UPDATE_With_treasury_partylink
     swim_agendaatom = agendaatom_shop(category, atom_update())
     swim_agendaatom.set_arg(group_id_text, swim_text)
     swim_agendaatom.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # swim_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -114,7 +110,6 @@ def test_create_legible_list_ReturnsObj_groupunit_DELETE():
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     swim_agendaatom = agendaatom_shop(category, atom_delete())
     swim_agendaatom.set_arg(group_id_text, swim_text)
-    # swim_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -145,7 +140,6 @@ def test_create_legible_list_ReturnsObj_group_partylink_INSERT():
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -176,7 +170,6 @@ def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight_d
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -204,7 +197,6 @@ def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight()
     rico_agendaatom.set_arg(group_id_text, swim_text)
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(creditor_weight_text, creditor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -232,7 +224,6 @@ def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_debtor_weight():
     rico_agendaatom.set_arg(group_id_text, swim_text)
     rico_agendaatom.set_arg(party_id_text, rico_text)
     rico_agendaatom.set_arg(debtor_weight_text, debtor_weight_value)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
@@ -257,7 +248,6 @@ def test_create_legible_list_ReturnsObj_group_partylink_DELETE():
     rico_agendaatom = agendaatom_shop(category, atom_delete())
     rico_agendaatom.set_arg(group_id_text, swim_text)
     rico_agendaatom.set_arg(party_id_text, rico_text)
-    rico_agendaatom._crud_cache = None
     # print(f"{rico_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)

@@ -203,7 +203,6 @@ def test_BookUnit_get_agendaatoms_list_ReturnsCorrectObj():
     assert len(sue_atoms_list) == 2
     assert sue_atoms_list[0] == update_dict.get("agendaunit")
     z_atom = sue_atoms_list[1]
-    z_atom._crud_cache = None
     print(f"{z_atom=}")
     print(delete_dict.get("agenda_partyunit").keys())
     carmen_partyunit_delete = delete_dict.get("agenda_partyunit").get("Carmen")
@@ -431,9 +430,6 @@ def test_BookUnit_get_ordered_agendaatoms_ReturnsCorrectObj_GivenNoStartingNumbe
     # book_carm = bookunit_dict.get(0)
     # book_rico = bookunit_dict.get(1)
     # book_pool = bookunit_dict.get(2)
-    # book_carm._crud_cache = None
-    # book_rico._crud_cache = None
-    # book_pool._crud_cache = None
     # assert book_carm == carm_agendaatom
     # assert book_rico == rico_agendaatom
     # assert book_pool == pool_agendaatom
@@ -474,9 +470,6 @@ def test_BookUnit_get_ordered_agendaatoms_ReturnsCorrectObj_GivenStartingNumber(
     # book_carm = bookunit_dict.get(0)
     # book_rico = bookunit_dict.get(1)
     # book_pool = bookunit_dict.get(2)
-    # book_carm._crud_cache = None
-    # book_rico._crud_cache = None
-    # book_pool._crud_cache = None
     # assert book_carm == carm_agendaatom
     # assert book_rico == rico_agendaatom
     # assert book_pool == pool_agendaatom
@@ -517,9 +510,6 @@ def test_BookUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
     # book_carm = bookunit_dict.get(0)
     # book_rico = bookunit_dict.get(1)
     # book_pool = bookunit_dict.get(2)
-    # book_carm._crud_cache = None
-    # book_rico._crud_cache = None
-    # book_pool._crud_cache = None
     # assert book_carm == carm_agendaatom
     # assert book_rico == rico_agendaatom
     # assert book_pool == pool_agendaatom

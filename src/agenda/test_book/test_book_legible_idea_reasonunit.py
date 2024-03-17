@@ -18,7 +18,6 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT_With_suff_idea_ac
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
     swim_agendaatom.set_arg(suff_idea_active_text, suff_idea_active_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -44,7 +43,6 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_INSERT_Without_suff_idea
     swim_agendaatom = agendaatom_shop(category, atom_insert())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -73,7 +71,6 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_UPDATE_suff_idea_active_
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
     swim_agendaatom.set_arg(suff_idea_active_text, suff_idea_active_value)
-    swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -99,7 +96,6 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_UPDATE_suff_idea_active_
     swim_agendaatom = agendaatom_shop(category, atom_update())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
-    swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
@@ -125,7 +121,6 @@ def test_create_legible_list_ReturnsObj_idea_reasonunit_DELETE():
     swim_agendaatom = agendaatom_shop(category, atom_delete())
     swim_agendaatom.set_arg(road_text, road_value)
     swim_agendaatom.set_arg(base_text, base_value)
-    # swim_agendaatom._crud_cache = None
     # print(f"{swim_agendaatom=}")
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(swim_agendaatom)
