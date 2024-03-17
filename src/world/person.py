@@ -209,7 +209,7 @@ class PersonUnit:
         return 0 if max_file_number is None else max_file_number + 1
 
     def save_giftunit_file(
-        self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = False
+        self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = True
     ) -> GiftUnit:
         if change_invalid_attrs:
             x_gift = self.get_valid_giftunit(x_gift)

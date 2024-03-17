@@ -32,9 +32,9 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
     two_filename = get_json_filename(two_int)
     six_filename = get_json_filename(six_int)
     sue_gift2_path = f"{sue_person._gifts_dir}/{two_filename}"
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     print(f"{sue_gift2_path=}")
-    print(f"{sue_gift6_path=}")
+    print(f"{sue_gift0_path=}")
     x_gift_id = two_int
     sue_giftunit = giftunit_shop(
         _gifter=sue_text,
@@ -43,14 +43,14 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
         _gifts_dir=sue_person._gifts_dir,
     )
     assert os_path_exists(sue_gift2_path) == False
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
 
     # WHEN
-    sue_person.save_giftunit_file(sue_giftunit)
+    sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
 
     # THEN
     assert os_path_exists(sue_gift2_path)
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
     two_file_json = open_file(sue_person._gifts_dir, two_filename)
     assert two_file_json == sue_giftunit.get_bookmetric_json()
 
@@ -62,8 +62,8 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
     sue_person = personunit_shop(person_id=sue_text)
     x_gift_id = 6
     six_filename = get_json_filename(x_gift_id)
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
-    print(f"{sue_gift6_path=}")
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
+    print(f"{sue_gift0_path=}")
     sue_giftunit = giftunit_shop(
         _gifter=sue_text,
         _gift_id=x_gift_id,
@@ -73,7 +73,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_giftunit_file(sue_giftunit)
+        sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {sue_giftunit._atoms_dir}. It must be {sue_person._atoms_dir}."
@@ -87,8 +87,8 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
     sue_person = personunit_shop(person_id=sue_text)
     x_gift_id = 6
     six_filename = get_json_filename(x_gift_id)
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
-    print(f"{sue_gift6_path=}")
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
+    print(f"{sue_gift0_path=}")
     sue_giftunit = giftunit_shop(
         _gifter=sue_text,
         _gift_id=x_gift_id,
@@ -98,7 +98,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_giftunit_file(sue_giftunit)
+        sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {sue_giftunit._gifts_dir}. It must be {sue_person._gifts_dir}."
@@ -113,7 +113,7 @@ def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_clea
     two_filename = get_json_filename(x_gift_id)
     six_filename = get_json_filename(six_int)
     sue_gift2_path = f"{sue_person._gifts_dir}/{two_filename}"
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     print(f"{sue_gift2_path=}")
     sue_giftunit = giftunit_shop(
         _gifter=sue_person.person_id,
@@ -122,16 +122,16 @@ def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_clea
         _gifts_dir=sue_person._gifts_dir,
     )
     assert os_path_exists(sue_gift2_path) == False
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
     assert sue_person.giftunit_file_exists(x_gift_id) == False
     assert sue_person.giftunit_file_exists(six_int) == False
 
     # WHEN
-    sue_person.save_giftunit_file(sue_giftunit)
+    sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
 
     # THEN
     assert os_path_exists(sue_gift2_path)
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
     assert sue_person.giftunit_file_exists(x_gift_id)
     assert sue_person.giftunit_file_exists(six_int) == False
     two_file_json = open_file(sue_person._gifts_dir, two_filename)
@@ -145,8 +145,8 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifter_IsWrong(
     sue_person = personunit_shop(person_id=sue_text)
     x_gift_id = 6
     six_filename = get_json_filename(x_gift_id)
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
-    print(f"{sue_gift6_path=}")
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
+    print(f"{sue_gift0_path=}")
     bob_text = "Bob"
     sue_giftunit = giftunit_shop(
         _gifter=bob_text,
@@ -157,7 +157,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifter_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_giftunit_file(sue_giftunit)
+        sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._gifter is incorrect: {sue_giftunit._gifter}. It must be {sue_person.person_id}."
@@ -170,7 +170,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    x_gift_id = 6
+    x_gift_id = 0
     six_filename = get_json_filename(x_gift_id)
     sue_giftunit = giftunit_shop(
         _gifter=sue_text,
@@ -178,15 +178,17 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
     )
-    sue_person.save_giftunit_file(sue_giftunit)
+    saved_giftunit = sue_person.save_giftunit_file(sue_giftunit)
 
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
-    print(f"{sue_gift6_path=}")
-    assert os_path_exists(sue_gift6_path)
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
+    print(f"{sue_gift0_path=}")
+    assert os_path_exists(sue_gift0_path)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_giftunit_file(sue_giftunit, replace=False)
+        sue_person.save_giftunit_file(
+            saved_giftunit, replace=False, change_invalid_attrs=False
+        )
     assert (
         str(excinfo.value)
         == f"GiftUnit file {six_filename} already exists and cannot be saved over."
@@ -244,7 +246,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
     )
-    sue_person.save_giftunit_file(invalid_sue_giftunit, change_invalid_attrs=True)
+    sue_person.save_giftunit_file(invalid_sue_giftunit)
 
     # THEN
     assert os_path_exists(sue_gift2_path)
@@ -276,8 +278,8 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
     )
-    sue_person.save_giftunit_file(sue6_giftunit)
-    sue_person.save_giftunit_file(sue2_giftunit)
+    sue_person.save_giftunit_file(sue6_giftunit, change_invalid_attrs=False)
+    sue_person.save_giftunit_file(sue2_giftunit, change_invalid_attrs=False)
 
     # WHEN / THEN
     assert sue_person.get_max_gift_file_number() == six_int
@@ -394,22 +396,22 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     )
     sue_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
     atom0_filename = sue_giftunit._get_num_filename(0)
-    sue_gift6_path = f"{sue_person._gifts_dir}/{six_filename}"
+    sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     sue_atom0_path = f"{sue_person._atoms_dir}/{atom0_filename}"
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
     assert os_path_exists(sue_atom0_path) == False
 
-    sue_person.save_giftunit_file(sue_giftunit)
+    sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
 
     print(f"{dir_files(sue_person._atoms_dir)}")
-    assert os_path_exists(sue_gift6_path)
+    assert os_path_exists(sue_gift0_path)
     assert os_path_exists(sue_atom0_path)
 
     # WHEN
     sue_person.del_giftunit_file(sue_giftunit._gift_id)
 
     # THEN
-    assert os_path_exists(sue_gift6_path) == False
+    assert os_path_exists(sue_gift0_path) == False
     assert os_path_exists(sue_atom0_path)
 
 
@@ -423,9 +425,9 @@ def test_PersonUnit_save_giftunit_file_CanCreateAndChange3Giftunits(
     assert len(dir_files(sue_person._atoms_dir)) == 0
 
     # WHEN
-    sue_person.save_giftunit_file(sue_2atomunits_giftunit(), change_invalid_attrs=True)
-    sue_person.save_giftunit_file(sue_3atomunits_giftunit(), change_invalid_attrs=True)
-    sue_person.save_giftunit_file(sue_4atomunits_giftunit(), change_invalid_attrs=True)
+    sue_person.save_giftunit_file(sue_2atomunits_giftunit())
+    sue_person.save_giftunit_file(sue_3atomunits_giftunit())
+    sue_person.save_giftunit_file(sue_4atomunits_giftunit())
 
     # THEN
     assert len(dir_files(sue_person._gifts_dir)) == 3
@@ -444,9 +446,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     prev_sue2_giftunit = copy_deepcopy(sue2_giftunit)
 
     # WHEN
-    valid_giftunit = sue_person.save_giftunit_file(
-        sue2_giftunit, change_invalid_attrs=True
-    )
+    valid_giftunit = sue_person.save_giftunit_file(sue2_giftunit)
 
     # THEN
     assert valid_giftunit._gifts_dir != prev_sue2_giftunit._gifts_dir
