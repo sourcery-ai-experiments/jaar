@@ -28,19 +28,19 @@ def print_agendaatom_keys(x_bookunit: BookUnit):
 
 def get_delete_agendaatom_list(x_bookunit: BookUnit) -> list:
     return get_empty_list_if_None(
-        x_bookunit.get_crud_agendaatoms_list().get(atom_delete())
+        x_bookunit._get_crud_agendaatoms_list().get(atom_delete())
     )
 
 
 def get_insert_agendaatom_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_bookunit.get_crud_agendaatoms_list().get(atom_insert())
+        x_bookunit._get_crud_agendaatoms_list().get(atom_insert())
     )
 
 
 def get_update_agendaatom_list(x_bookunit: BookUnit):
     return get_empty_list_if_None(
-        x_bookunit.get_crud_agendaatoms_list().get(atom_update())
+        x_bookunit._get_crud_agendaatoms_list().get(atom_update())
     )
 
 

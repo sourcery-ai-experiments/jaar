@@ -1,6 +1,7 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
+    get_default_world_id_roadnode,
     PersonID,
     validate_roadnode,
     RoadUnit,
@@ -267,6 +268,14 @@ class PersonUnit:
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
 
+    def _get_agenda_from_gift_files(self, x_agenda: AgendaUnit) -> AgendaUnit:
+        # get list of all gift files
+        gift_ints = dir_files(self._gifts_dir, delete_extensions=True).keys()
+        for gift_int in gift_ints:
+            x_gift = self.get_giftunit(gift_int)
+            x_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+        return x_agenda
+
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
         return file_number
@@ -296,12 +305,7 @@ class PersonUnit:
 
     def _get_agenda_from_atom_files(self) -> AgendaUnit:
         x_agenda = agendaunit_shop(_owner_id=self.person_id, _world_id=self.world_id)
-        x_atom_files = dir_files(
-            self._atoms_dir,
-            delete_extensions=True,
-            include_dirs=False,
-            include_files=True,
-        )
+        x_atom_files = dir_files(self._atoms_dir, delete_extensions=True)
         for x_int, x_json in x_atom_files.items():
             x_atom = agendaatom_get_from_json(x_json)
             change_agenda_with_agendaatom(x_agenda, x_atom)

@@ -1,4 +1,4 @@
-from src._road.road import create_road, get_default_world_id_roadnode
+from src._road.road import create_road
 from src.agenda.atom import (
     agendaatom_shop,
     atom_delete,
@@ -8,11 +8,12 @@ from src.agenda.atom import (
 )
 from src.agenda.book import bookunit_shop, BookUnit
 from src.world.world import WorldID
+from src.world.examples.world_env_kit import get_test_world_id
 
 
 def get_atom_example_ideaunit_sports(world_id: WorldID = None) -> AgendaAtom:
     if world_id is None:
-        world_id = get_default_world_id_roadnode()
+        world_id = get_test_world_id()
     sports_text = "sports"
     x_category = "agenda_ideaunit"
     label_text = "label"
@@ -25,7 +26,7 @@ def get_atom_example_ideaunit_sports(world_id: WorldID = None) -> AgendaAtom:
 
 def get_atom_example_ideaunit_ball(world_id: WorldID = None) -> AgendaAtom:
     if world_id is None:
-        world_id = get_default_world_id_roadnode()
+        world_id = get_test_world_id()
     sports_text = "sports"
     sports_road = create_road(world_id, sports_text)
     ball_text = "basketball"
@@ -40,7 +41,7 @@ def get_atom_example_ideaunit_ball(world_id: WorldID = None) -> AgendaAtom:
 
 def get_atom_example_ideaunit_knee(world_id: WorldID = None) -> AgendaAtom:
     if world_id is None:
-        world_id = get_default_world_id_roadnode()
+        world_id = get_test_world_id()
     sports_text = "sports"
     sports_road = create_road(world_id, sports_text)
     knee_text = "knee"
@@ -61,7 +62,7 @@ def get_atom_example_ideaunit_knee(world_id: WorldID = None) -> AgendaAtom:
 
 def get_atom_example_beliefunit_knee(world_id: WorldID = None) -> AgendaAtom:
     if world_id is None:
-        world_id = get_default_world_id_roadnode()
+        world_id = get_test_world_id()
     sports_text = "sports"
     sports_road = create_road(world_id, sports_text)
     ball_text = "basketball"

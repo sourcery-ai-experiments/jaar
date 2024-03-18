@@ -16,6 +16,19 @@ def get_sue_giftunit() -> GiftUnit:
     return giftunit_shop(_gifter="Sue", _gift_id=37, _giftees=set("Yao"))
 
 
+def sue_1atomunits_giftunit() -> GiftUnit:
+    x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=53, _giftees=set("Yao"))
+    x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
+    return x_giftunit
+
+
+def sue_2atomunits_giftunit() -> GiftUnit:
+    x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=53, _giftees=set("Yao"))
+    x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
+    x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
+    return x_giftunit
+
+
 def sue_3atomunits_giftunit() -> GiftUnit:
     x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=37, _giftees=set("Yao"))
     x_giftunit._bookunit.set_agendaatom(get_atom_example_beliefunit_knee())
@@ -28,13 +41,6 @@ def sue_4atomunits_giftunit() -> GiftUnit:
     x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=47, _giftees=set("Yao"))
     x_giftunit._bookunit.set_agendaatom(get_atom_example_beliefunit_knee())
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_ball())
-    x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
-    x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
-    return x_giftunit
-
-
-def sue_2atomunits_giftunit() -> GiftUnit:
-    x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=53, _giftees=set("Yao"))
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
     return x_giftunit

@@ -43,27 +43,41 @@ class BookUnit:
     agendaatoms: dict[CRUD_command : dict[str:AgendaAtom]] = None
     _agenda_build_validated: bool = None
 
-    def get_crud_agendaatoms_list(self) -> dict[CRUD_command : list[AgendaAtom]]:
+    def _get_crud_agendaatoms_list(self) -> dict[CRUD_command : list[AgendaAtom]]:
         return get_all_nondictionary_objs(self.agendaatoms)
 
-    def get_agendaatoms_list(self) -> list[AgendaAtom]:
+    def get_category_sorted_agendaatoms_list(self) -> list[AgendaAtom]:
         atoms_list = []
-        for crud_dict in self.get_crud_agendaatoms_list().values():
-            atoms_list.extend(iter(crud_dict))
-        return atoms_list
+        for crud_list in self._get_crud_agendaatoms_list().values():
+            atoms_list.extend(iter(crud_list))
+
+        atom_order_key_dict = {}
+        for x_atom in atoms_list:
+            atom_order_list = atom_order_key_dict.get(x_atom.atom_order)
+            if atom_order_list is None:
+                atom_order_key_dict[x_atom.atom_order] = [x_atom]
+            else:
+                atom_order_list.append(x_atom)
+
+        ordered_list = []
+        for x_list in atom_order_key_dict.values():
+            if x_list[0].required_args.get("parent_road") != None:
+                x_list = sorted(
+                    x_list, key=lambda x: x.required_args.get("parent_road")
+                )
+            if x_list[0].required_args.get("road") != None:
+                x_list = sorted(x_list, key=lambda x: x.required_args.get("road"))
+            ordered_list.extend(x_list)
+        return ordered_list
 
     def get_sorted_agendaatoms(self) -> list[AgendaAtom]:
-        agendaatoms_list = self.get_agendaatoms_list()
-        return sorted(agendaatoms_list, key=lambda x: int(x.atom_order))
+        agendaatoms_list = self.get_category_sorted_agendaatoms_list()
+        return sorted(agendaatoms_list, key=lambda x: x.atom_order)
 
     def get_edited_agenda(self, before_agenda: AgendaUnit):
         edit_agenda = copy_deepcopy(before_agenda)
-        agendaatoms_by_order = self.get_crud_agendaatoms_list()
-
-        for x_atom_order_int in sorted(agendaatoms_by_order.keys()):
-            agendaatoms_list = agendaatoms_by_order.get(x_atom_order_int)
-            for x_agendaatom in agendaatoms_list:
-                change_agenda_with_agendaatom(edit_agenda, x_agendaatom)
+        for x_agendaatom in self.get_sorted_agendaatoms():
+            change_agenda_with_agendaatom(edit_agenda, x_agendaatom)
         return edit_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):

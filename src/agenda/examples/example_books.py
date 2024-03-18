@@ -1,6 +1,7 @@
 from src.agenda.atom import (
     atom_delete,
     atom_update,
+    atom_insert,
     agendaatom_shop,
 )
 from src.agenda.book import BookUnit, bookunit_shop

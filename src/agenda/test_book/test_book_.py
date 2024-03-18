@@ -1,3 +1,4 @@
+from src._road.road import create_road, get_default_world_id_roadnode as root_label
 from src.agenda.party import partyunit_shop
 from src.agenda.book import (
     BookUnit,
@@ -171,7 +172,7 @@ def test_BookUnit_get_crud_agendaatoms_list_ReturnsCorrectObj():
     assert len(ex1_bookunit.agendaatoms.get(atom_delete()).keys()) == 1
 
     # WHEN
-    sue_atom_order_dict = ex1_bookunit.get_crud_agendaatoms_list()
+    sue_atom_order_dict = ex1_bookunit._get_crud_agendaatoms_list()
 
     # THEN
     assert len(sue_atom_order_dict) == 2
@@ -186,7 +187,7 @@ def test_BookUnit_get_crud_agendaatoms_list_ReturnsCorrectObj():
     #         print(f"{x_atom.category=}")
 
 
-def test_BookUnit_get_agendaatoms_list_ReturnsCorrectObj():
+def test_BookUnit_get_category_sorted_agendaatoms_list_ReturnsCorrectObj():
     # GIVEN
     ex1_bookunit = get_bookunit_example1()
     update_dict = ex1_bookunit.agendaatoms.get(atom_update())
@@ -197,7 +198,7 @@ def test_BookUnit_get_agendaatoms_list_ReturnsCorrectObj():
     assert len(delete_dict.keys()) == 1
 
     # WHEN
-    sue_atoms_list = ex1_bookunit.get_agendaatoms_list()
+    sue_atoms_list = ex1_bookunit.get_category_sorted_agendaatoms_list()
 
     # THEN
     assert len(sue_atoms_list) == 2
@@ -306,6 +307,78 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj():
     #     print(f"{agendaatom.atom_order=}")
     assert sue_atom_order_list[0] == carmen_partyunit_delete
     assert sue_atom_order_list[1] == update_dict.get(agendaunit_text)
+    # for crud_text, atom_list in sue_atom_order_dict.items():
+    #     print(f"{crud_text=}")
+    #     print(f"{len(atom_list)=}")
+    #     for x_atom in atom_list:
+    #         print(f"{x_atom.category=}")
+
+
+def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_IdeaUnitsSorted():
+    # GIVEN
+    x_world_id = root_label()
+    sports_text = "sports"
+    sports_road = create_road(x_world_id, sports_text)
+    knee_text = "knee"
+    x_category = "agenda_ideaunit"
+    label_text = "label"
+    parent_road_text = "parent_road"
+    sports_insert_ideaunit_agendaatom = agendaatom_shop(x_category, atom_insert())
+    sports_insert_ideaunit_agendaatom.set_required_arg(label_text, sports_text)
+    sports_insert_ideaunit_agendaatom.set_required_arg(parent_road_text, x_world_id)
+    knee_insert_ideaunit_agendaatom = agendaatom_shop(x_category, atom_insert())
+    knee_insert_ideaunit_agendaatom.set_required_arg(label_text, knee_text)
+    knee_insert_ideaunit_agendaatom.set_required_arg(parent_road_text, sports_road)
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(knee_insert_ideaunit_agendaatom)
+    x_bookunit.set_agendaatom(sports_insert_ideaunit_agendaatom)
+
+    # WHEN
+    x_atom_order_list = x_bookunit.get_sorted_agendaatoms()
+
+    # THEN
+    assert len(x_atom_order_list) == 2
+    for agendaatom in x_atom_order_list:
+        print(f"{agendaatom.required_args=}")
+    assert x_atom_order_list[0] == sports_insert_ideaunit_agendaatom
+    assert x_atom_order_list[1] == knee_insert_ideaunit_agendaatom
+    # for crud_text, atom_list in sue_atom_order_dict.items():
+    #     print(f"{crud_text=}")
+    #     print(f"{len(atom_list)=}")
+    #     for x_atom in atom_list:
+    #         print(f"{x_atom.category=}")
+
+
+def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_Road_Sorted():
+    # GIVEN
+    x_world_id = root_label()
+    sports_text = "sports"
+    sports_road = create_road(x_world_id, sports_text)
+    knee_text = "knee"
+    knee_road = create_road(sports_road, knee_text)
+    x_category = "agenda_idea_balancelink"
+    road_text = "road"
+    group_id_text = "group_id"
+    swimmers_text = ",Swimmers"
+    sports_balancelink_agendaatom = agendaatom_shop(x_category, atom_insert())
+    sports_balancelink_agendaatom.set_required_arg(group_id_text, swimmers_text)
+    sports_balancelink_agendaatom.set_required_arg(road_text, sports_road)
+    knee_balancelink_agendaatom = agendaatom_shop(x_category, atom_insert())
+    knee_balancelink_agendaatom.set_required_arg(group_id_text, swimmers_text)
+    knee_balancelink_agendaatom.set_required_arg(road_text, knee_road)
+    x_bookunit = bookunit_shop()
+    x_bookunit.set_agendaatom(knee_balancelink_agendaatom)
+    x_bookunit.set_agendaatom(sports_balancelink_agendaatom)
+
+    # WHEN
+    x_atom_order_list = x_bookunit.get_sorted_agendaatoms()
+
+    # THEN
+    assert len(x_atom_order_list) == 2
+    for agendaatom in x_atom_order_list:
+        print(f"{agendaatom.required_args=}")
+    assert x_atom_order_list[0] == sports_balancelink_agendaatom
+    assert x_atom_order_list[1] == knee_balancelink_agendaatom
     # for crud_text, atom_list in sue_atom_order_dict.items():
     #     print(f"{crud_text=}")
     #     print(f"{len(atom_list)=}")
