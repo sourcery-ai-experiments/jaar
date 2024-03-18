@@ -268,18 +268,23 @@ class PersonUnit:
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
 
-    def _get_agenda_from_gift_files(self, x_agenda: AgendaUnit) -> AgendaUnit:
-        # get list of all gift files
-        gift_ints = dir_files(self._gifts_dir, delete_extensions=True).keys()
-        for gift_int in gift_ints:
-            x_gift = self.get_giftunit(int(gift_int))
-            x_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
-            x_agenda.set_last_gift_id(int(gift_int))
-        return x_agenda
+    def _get_gift_files(self) -> dict[int:str]:
+        return dir_files(self._gifts_dir, delete_extensions=True)
 
-    def apply_new_giftunits_to_gut(self):
+    def _apply_new_giftunits_agenda(self, x_gut_agenda: AgendaUnit) -> AgendaUnit:
+        gut_agenda_last_gift_id = self.get_gut_file_agenda()._last_gift_id
+        gift_filenames = self._get_gift_files().keys()
+        gift_ints = [int(x_filename) for x_filename in gift_filenames]
+        for gift_int in gift_ints:
+            if gut_agenda_last_gift_id is None or gift_int > gut_agenda_last_gift_id:
+                x_gift = self.get_giftunit(gift_int)
+                x_gut_agenda = x_gift._bookunit.get_edited_agenda(x_gut_agenda)
+                x_gut_agenda.set_last_gift_id(gift_int)
+        return x_gut_agenda
+
+    def update_gut_from_gifts(self):
         gut_agenda = self.get_gut_file_agenda()
-        new_gut_agenda = self._get_agenda_from_gift_files(gut_agenda)
+        new_gut_agenda = self._apply_new_giftunits_agenda(gut_agenda)
         self._save_gut_file(new_gut_agenda)
 
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):

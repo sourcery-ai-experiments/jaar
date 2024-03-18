@@ -99,3 +99,26 @@ def get_bookunit_carm_example() -> BookUnit:
     carm_agendaatom.set_required_arg("party_id", carm_text)
     sue_bookunit.set_agendaatom(carm_agendaatom)
     return sue_bookunit
+
+
+def get_bookunit_insert_partys_example() -> BookUnit:
+    sue_bookunit = bookunit_shop()
+
+    agendaunit_text = "agendaunit"
+    pool_agendaatom = agendaatom_shop(agendaunit_text, atom_update())
+    pool_attribute = "_party_creditor_pool"
+    pool_agendaatom.set_optional_arg(pool_attribute, 77)
+    sue_bookunit.set_agendaatom(pool_agendaatom)
+
+    category = "agenda_partyunit"
+    carm_text = "Carmen"
+    carm_agendaatom = agendaatom_shop(category, atom_insert())
+    carm_agendaatom.set_arg("party_id", carm_text)
+    carm_agendaatom.set_arg("creditor_weight", 50)
+    sue_bookunit.set_agendaatom(carm_agendaatom)
+    rico_text = "Rico"
+    rico_agendaatom = agendaatom_shop(category, atom_insert())
+    rico_agendaatom.set_arg("party_id", rico_text)
+    rico_agendaatom.set_arg("creditor_weight", 27)
+    sue_bookunit.set_agendaatom(rico_agendaatom)
+    return sue_bookunit
