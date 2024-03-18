@@ -272,9 +272,15 @@ class PersonUnit:
         # get list of all gift files
         gift_ints = dir_files(self._gifts_dir, delete_extensions=True).keys()
         for gift_int in gift_ints:
-            x_gift = self.get_giftunit(gift_int)
+            x_gift = self.get_giftunit(int(gift_int))
             x_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+            x_agenda.set_last_gift_id(int(gift_int))
         return x_agenda
+
+    def apply_new_giftunits_to_gut(self):
+        gut_agenda = self.get_gut_file_agenda()
+        new_gut_agenda = self._get_agenda_from_gift_files(gut_agenda)
+        self._save_gut_file(new_gut_agenda)
 
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())

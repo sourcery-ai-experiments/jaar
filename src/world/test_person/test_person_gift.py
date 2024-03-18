@@ -524,6 +524,51 @@ def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_
     assert new_agenda.idea_exists(knee_road)
 
 
+def test_PersonUnit_apply_new_giftunits_to_gut_DoesNotChangeGut(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(sue_text)
+    old_gut_agenda = sue_person.get_gut_file_agenda()
+
+    # WHEN
+    sue_person.apply_new_giftunits_to_gut()
+
+    # THEN
+    new_gut_agenda = sue_person.get_gut_file_agenda()
+    assert new_gut_agenda == old_gut_agenda
+    assert new_gut_agenda._last_gift_id is None
+
+
+def test_PersonUnit_apply_new_giftunits_to_gut_ChangesWith1GiftUnit(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(sue_text)
+    sue_person.save_giftunit_file(sue_2atomunits_giftunit())
+    # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
+    # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
+    gut_agenda = sue_person.get_gut_file_agenda()
+    print(f"{gut_agenda._world_id=}")
+    sports_text = "sports"
+    sports_road = gut_agenda.make_l1_road(sports_text)
+    knee_text = "knee"
+    knee_road = gut_agenda.make_road(sports_road, knee_text)
+    old_gut_agenda = sue_person.get_gut_file_agenda()
+
+    # WHEN
+    sue_person.apply_new_giftunits_to_gut()
+
+    # THEN
+    new_gut_file = sue_person.get_gut_file_agenda()
+    assert new_gut_file != old_gut_agenda
+    assert new_gut_file._last_gift_id == 0
+    assert new_gut_file.idea_exists(knee_road)
+    assert new_gut_file.idea_exists(sports_road)
+
+
 # def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
 #     worlds_dir_setup_cleanup,
 # ):
