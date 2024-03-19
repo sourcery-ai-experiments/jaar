@@ -287,16 +287,6 @@ class PersonUnit:
         new_gut_agenda = self._apply_new_giftunits_agenda(gut_agenda)
         self._save_gut_file(new_gut_agenda)
 
-    def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
-        save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
-        return file_number
-
-    def atom_file_exists(self, filename: int) -> bool:
-        return os_path_exists(f"{self._atoms_dir}/{filename}.json")
-
-    def _delete_atom_file(self, filename: int):
-        delete_dir(f"{self._atoms_dir}/{filename}.json")
-
     def _get_max_atom_file_number(self) -> int:
         if not os_path_exists(self._atoms_dir):
             return None
@@ -309,18 +299,6 @@ class PersonUnit:
     def _get_next_atom_file_number(self) -> str:
         max_file_number = self._get_max_atom_file_number()
         return 0 if max_file_number is None else max_file_number + 1
-
-    def save_atom_file(self, x_atom: AgendaAtom):
-        x_filename = self._get_next_atom_file_number()
-        return self._save_valid_atom_file(x_atom, x_filename)
-
-    def _get_agenda_from_atom_files(self) -> AgendaUnit:
-        x_agenda = agendaunit_shop(_owner_id=self.person_id, _world_id=self.world_id)
-        x_atom_files = dir_files(self._atoms_dir, delete_extensions=True)
-        for x_int, x_json in x_atom_files.items():
-            x_atom = agendaatom_get_from_json(x_json)
-            change_agenda_with_agendaatom(x_agenda, x_atom)
-        return x_agenda
 
     def get_rootpart_of_econ_dir(self):
         return "idearoot"
