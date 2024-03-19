@@ -17,7 +17,7 @@ from src._road.road import (
     is_string_in_road,
     OwnerID,
     PartyID,
-    HealerID,
+    LeaderID,
     is_roadunit_convertible_to_path,
 )
 from src._road.finance import get_planck_valid, default_planck_if_none
@@ -43,7 +43,7 @@ from src.agenda.group import (
     groupunit_shop,
     balancelink_shop,
 )
-from src.agenda.healer import HealerHold
+from src.agenda.leader import LeaderUnit
 from src.agenda.reason_idea import (
     BeliefCore,
     BeliefUnit,
@@ -136,12 +136,12 @@ class AgendaUnit:
     # set_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _econ_dict: dict[RoadUnit:IdeaUnit] = None
-    _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
+    _leaders_dict: dict[LeaderID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
     _econs_justified: bool = None
     _econs_buildable: bool = None
-    _sum_healerhold_importance: bool = None
+    _sum_leaderunit_importance: bool = None
     # set_agenda_metrics Calculated field end
 
     def del_last_gift_id(self):
@@ -1422,7 +1422,7 @@ class AgendaUnit:
         reason_del_premise_need: RoadUnit = None,
         reason_suff_idea_active: str = None,
         assignedunit: AssignedUnit = None,
-        healerhold: HealerHold = None,
+        leaderunit: LeaderUnit = None,
         begin: float = None,
         close: float = None,
         addin: float = None,
@@ -1442,11 +1442,11 @@ class AgendaUnit:
         meld_strategy: MeldStrategy = None,
         problem_bool: bool = None,
     ):
-        if healerhold != None:
-            for x_group_id in healerhold._group_ids:
+        if leaderunit != None:
+            for x_group_id in leaderunit._group_ids:
                 if self._groups.get(x_group_id) is None:
                     raise Exception(
-                        f"Idea cannot edit healerhold because group_id '{x_group_id}' does not exist as group in Agenda"
+                        f"Idea cannot edit leaderunit because group_id '{x_group_id}' does not exist as group in Agenda"
                     )
 
         x_ideaattrfilter = ideaattrfilter_shop(
@@ -1462,7 +1462,7 @@ class AgendaUnit:
             reason_del_premise_need=reason_del_premise_need,
             reason_suff_idea_active=reason_suff_idea_active,
             assignedunit=assignedunit,
-            healerhold=healerhold,
+            leaderunit=leaderunit,
             begin=begin,
             close=close,
             addin=addin,
@@ -1719,7 +1719,7 @@ class AgendaUnit:
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         econ_justified_by_problem = True
-        healerhold_count = 0
+        leaderunit_count = 0
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
@@ -1751,14 +1751,14 @@ class AgendaUnit:
             x_idea_obj._all_party_credit = group_everyone
             x_idea_obj._all_party_debt = group_everyone
 
-            if x_idea_obj._healerhold.any_group_id_exists():
+            if x_idea_obj._leaderunit.any_group_id_exists():
                 econ_justified_by_problem = False
-                healerhold_count += 1
-                self._sum_healerhold_importance += x_idea_obj._agenda_importance
+                leaderunit_count += 1
+                self._sum_leaderunit_importance += x_idea_obj._agenda_importance
             if x_idea_obj._problem_bool:
                 econ_justified_by_problem = True
 
-        if econ_justified_by_problem == False or healerhold_count > 1:
+        if econ_justified_by_problem == False or leaderunit_count > 1:
             if econ_exceptions:
                 raise Exception_econs_justified(
                     f"IdeaUnit '{road}' cannot sponsor ancestor econs."
@@ -1852,9 +1852,9 @@ class AgendaUnit:
     def _clear_agenda_base_metrics(self):
         self._econs_justified = True
         self._econs_buildable = False
-        self._sum_healerhold_importance = 0
+        self._sum_leaderunit_importance = 0
         self._econ_dict = {}
-        self._healers_dict = {}
+        self._leaders_dict = {}
 
     def set_agenda_metrics(self, econ_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
@@ -1867,7 +1867,7 @@ class AgendaUnit:
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
-        self._after_all_tree_traverses_set_healerhold_importance()
+        self._after_all_tree_traverses_set_leaderunit_importance()
 
     def _execute_tree_traverse(self, econ_exceptions: bool = False):
         self._pre_tree_traverse_credit_debt_reset()
@@ -1922,36 +1922,36 @@ class AgendaUnit:
         self._distribute_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
 
-    def _after_all_tree_traverses_set_healerhold_importance(self):
+    def _after_all_tree_traverses_set_leaderunit_importance(self):
         self._set_econ_dict()
-        self._healers_dict = self._get_healers_dict()
+        self._leaders_dict = self._get_leaders_dict()
         self._econs_buildable = self._get_econs_buildable()
 
     def _set_econ_dict(self):
         if self._econs_justified == False:
-            self._sum_healerhold_importance = 0
+            self._sum_leaderunit_importance = 0
         for x_idea in self._idea_dict.values():
-            if self._sum_healerhold_importance == 0:
-                x_idea._healerhold_importance = 0
+            if self._sum_leaderunit_importance == 0:
+                x_idea._leaderunit_importance = 0
             else:
-                x_idea._healerhold_importance = (
-                    x_idea._agenda_importance / self._sum_healerhold_importance
+                x_idea._leaderunit_importance = (
+                    x_idea._agenda_importance / self._sum_leaderunit_importance
                 )
-            if self._econs_justified and x_idea._healerhold.any_group_id_exists():
+            if self._econs_justified and x_idea._leaderunit.any_group_id_exists():
                 self._econ_dict[x_idea.get_road()] = x_idea
 
-    def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
-        _healers_dict = {}
+    def _get_leaders_dict(self) -> dict[LeaderID : dict[RoadUnit:IdeaUnit]]:
+        _leaders_dict = {}
         for x_econ_road, x_econ_idea in self._econ_dict.items():
-            for x_group_id in x_econ_idea._healerhold._group_ids:
+            for x_group_id in x_econ_idea._leaderunit._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
-                    if _healers_dict.get(x_party_id) is None:
-                        _healers_dict[x_party_id] = {x_econ_road: x_econ_idea}
+                    if _leaders_dict.get(x_party_id) is None:
+                        _leaders_dict[x_party_id] = {x_econ_road: x_econ_idea}
                     else:
-                        healer_dict = _healers_dict.get(x_party_id)
-                        healer_dict[x_econ_road] = x_econ_idea
-        return _healers_dict
+                        leader_dict = _leaders_dict.get(x_party_id)
+                        leader_dict[x_econ_road] = x_econ_idea
+        return _leaders_dict
 
     def _get_econs_buildable(self) -> bool:
         return all(
@@ -2325,13 +2325,13 @@ def agendaunit_shop(
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _econ_dict=get_empty_dict_if_none(None),
-        _healers_dict=get_empty_dict_if_none(None),
+        _leaders_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _econs_justified=get_False_if_None(),
         _econs_buildable=get_False_if_None(),
-        _sum_healerhold_importance=get_0_if_None(),
+        _sum_leaderunit_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_world_id=x_agenda._world_id
@@ -2402,7 +2402,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
         _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
         _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
-        _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
+        _leaderunit=get_obj_from_idea_dict(idearoot_dict, "_leaderunit"),
         _beliefunits=get_obj_from_idea_dict(idearoot_dict, "_beliefunits"),
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
@@ -2442,7 +2442,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _problem_bool=get_obj_from_idea_dict(idea_dict, "_problem_bool"),
             _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
-            _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
+            _leaderunit=get_obj_from_idea_dict(idea_dict, "_leaderunit"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
             _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
             _beliefunits=get_obj_from_idea_dict(idea_dict, "_beliefunits"),

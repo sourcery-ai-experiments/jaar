@@ -141,22 +141,22 @@ class WorldUnit:
     def set_all_econunits_contract(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()
-        for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit(healer_id)
-            for econ_idea in healer_dict.values():
+        for leader_id, leader_dict in x_gut._leaders_dict.items():
+            leader_person = self.get_personunit(leader_id)
+            for econ_idea in leader_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_person=healer_person,
+                    leader_person=leader_person,
                     econ_road=econ_idea.get_road(),
                     gut_agenda=x_gut,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_person: PersonID,
+        leader_person: PersonID,
         econ_road: RoadUnit,
         gut_agenda: AgendaUnit,
     ):
-        x_econ = healer_person.get_econ(econ_road)
+        x_econ = leader_person.get_econ(econ_road)
         x_econ.create_new_clerkunit(gut_agenda._owner_id)
         x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
         x_clerk.save_role_agenda(gut_agenda)
@@ -190,11 +190,11 @@ class WorldUnit:
 
         x_live = agendaunit_shop(person_id, self.world_id)
         x_live_deepcopy = copy_deepcopy(x_live)
-        for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit(healer_id)
-            healer_person.create_person_econunits()
-            for econ_idea in healer_dict.values():
-                x_econ = healer_person.get_econ(econ_idea.get_road())
+        for leader_id, leader_dict in x_gut._leaders_dict.items():
+            leader_person = self.get_personunit(leader_id)
+            leader_person.create_person_econunits()
+            for econ_idea in leader_dict.values():
+                x_econ = leader_person.get_econ(econ_idea.get_road())
                 x_econ.create_new_clerkunit(person_id)
                 x_clerk = x_econ.get_clerkunit(person_id)
                 x_clerk.save_refreshed_job_to_forum()

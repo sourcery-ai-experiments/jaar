@@ -30,8 +30,8 @@ class ProblemID(RoadNode):  # Created to help track the concept
     pass
 
 
-class HealerID(PersonID):
-    """A RoadNode used to identify a Problem's Healer"""
+class LeaderID(PersonID):
+    """A RoadNode used to identify a Problem's Leader"""
 
     pass
 
@@ -43,12 +43,12 @@ class ClerkID(PersonID):
 
 
 class EconID(RoadNode):  # Created to help track the concept
-    """A RoadNode used to identify a Healer's Econ"""
+    """A RoadNode used to identify a Leader's Econ"""
 
     pass
 
 
-class OwnerID(HealerID):
+class OwnerID(LeaderID):
     """A RoadNode used to identify a AgendaUnit's owner_id"""
 
     pass
