@@ -115,6 +115,10 @@ class _last_gift_idException(Exception):
     pass
 
 
+class LeaderGroupException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _world_id: str = None
@@ -1445,7 +1449,7 @@ class AgendaUnit:
         if leaderunit != None:
             for x_group_id in leaderunit._group_ids:
                 if self._groups.get(x_group_id) is None:
-                    raise Exception(
+                    raise LeaderGroupException(
                         f"Idea cannot edit leaderunit because group_id '{x_group_id}' does not exist as group in Agenda"
                     )
 
