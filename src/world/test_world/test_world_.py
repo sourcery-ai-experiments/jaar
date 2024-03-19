@@ -1,6 +1,6 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
@@ -325,12 +325,12 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     todd_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = luca_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({luca_text, todd_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_leaderunit = leaderunit_shop({luca_text, todd_text})
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=dallas_leaderunit)
     elpaso_text = "el paso"
     elpaso_road = luca_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({luca_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_leaderunit = leaderunit_shop({luca_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=elpaso_leaderunit)
 
     luca_gut_agenda.add_idea(dallas_idea, texas_road)
     luca_gut_agenda.add_idea(elpaso_idea, texas_road)

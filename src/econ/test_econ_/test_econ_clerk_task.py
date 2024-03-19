@@ -10,7 +10,7 @@ from src.econ.examples.example_clerks import (
 )
 
 
-def test_EconUnit_ChangingOneHealersBeliefChangesAnotherAgenda(env_dir_setup_cleanup):
+def test_EconUnit_ChangingOneLeadersBeliefChangesAnotherAgenda(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     amer_text = "Amer"

@@ -67,8 +67,8 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
     assert bob_clerkadmin._role_file_name != None
     assert bob_clerkadmin._role_file_path != None
 
-    healers_drectory_folder = "clerkunits"
-    x_clerkunits_dir = f"{env_dir}/{healers_drectory_folder}"
+    leaders_drectory_folder = "clerkunits"
+    x_clerkunits_dir = f"{env_dir}/{leaders_drectory_folder}"
     x_clerkunit_dir = f"{x_clerkunits_dir}/{bob_text}"
     x_forum_file_name = f"{bob_text}.json"
     x_role_file_name = "role_agenda.json"
@@ -97,7 +97,7 @@ def test_ClerkUnit_set_clerkunit_dirs_CorrectSetsClerkUnitAttribute():
 def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     clerk_dir_setup_cleanup,
 ):
-    # GIVEN create healer
+    # GIVEN create leader
     jul_text = "julian"
     env_dir = get_temp_clerkunit_dir()
     jul_clerkunit = ClerkUnit(
@@ -134,7 +134,7 @@ def test_ClerkUnit_create_core_dir_and_files_CreatesDirsAndFiles(
 def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_roleAgenda(
     clerk_dir_setup_cleanup,
 ):
-    # GIVEN create healer
+    # GIVEN create leader
     jul_text = "julian"
     env_dir = get_temp_clerkunit_dir()
     jul_clerkunit = clerkunit_shop(jul_text, env_dir, get_temp_econ_id())
@@ -159,7 +159,7 @@ def test_ClerkUnit_create_core_dir_and_files_DoesNotOverWrite_roleAgenda(
 
 
 def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
-    # GIVEN create healer
+    # GIVEN create leader
     env_dir = get_temp_clerkunit_dir()
 
     old_bob_text = "Bob"
@@ -168,7 +168,7 @@ def test_ClerkUnit_set_clerk_id_SetsCorrectAttrs(clerk_dir_setup_cleanup):
     jul_clerkunit.set_clerkunit_dirs()
     jul_clerkunit.create_core_dir_and_files(x_agenda)
     old_clerkunit_dir = jul_clerkunit._clerkunit_dir
-    # old_clerkunit_dir = f"{env_dir}/clerkunits/{old_healer_text}"
+    # old_clerkunit_dir = f"{env_dir}/clerkunits/{old_leader_text}"
     print(f"{jul_clerkunit._clerkunit_dir}")
     clerkunits_text = "clerkunits"
     clerkunits_dir = f"{env_dir}/clerkunits"

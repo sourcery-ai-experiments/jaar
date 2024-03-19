@@ -3,7 +3,7 @@ from src._road.road import (
     PersonID,
     PersonRoad,
     ProblemID,
-    HealerID,
+    LeaderID,
     EconID,
     OwnerID,
     PartyID,
@@ -544,16 +544,16 @@ def test_ProblemID_exists():
     )
 
 
-def test_HealerID_exists():
+def test_LeaderID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_healer_id = HealerID(bob_text)
+    bob_leader_id = LeaderID(bob_text)
     # THEN
-    assert bob_healer_id == bob_text
+    assert bob_leader_id == bob_text
     assert (
-        inspect_getdoc(bob_healer_id)
-        == "A RoadNode used to identify a Problem's Healer"
+        inspect_getdoc(bob_leader_id)
+        == "A RoadNode used to identify a Problem's Leader"
     )
 
 
@@ -564,7 +564,7 @@ def test_EconID_exists():
     bob_world_id = EconID(bob_text)
     # THEN
     assert bob_world_id == bob_text
-    assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Econ"
+    assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Leader's Econ"
 
 
 def test_OwnerID_exists():
@@ -596,7 +596,7 @@ def test_PartyID_exists():
 def test_PersonRoad_Exists():
     # GIVEN
     problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
-    bob_road = create_road(problem1_road, HealerID("Bob"))
+    bob_road = create_road(problem1_road, LeaderID("Bob"))
     texas_road = create_road(bob_road, EconID("texas"))
     sports_road = create_road(texas_road, "sports")
 

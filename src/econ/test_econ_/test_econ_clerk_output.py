@@ -29,8 +29,8 @@ def test_EconUnit_get_refreshed_job_ReturnsCorrectAgendaObjScenario1(
         xia_text, input_agenda._owner_id, depotlink_type="blind_trust"
     )
     x_econ.save_clerkunit_file(clerk_id=xia_text)
-    xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    # print(f"{xia_healer._role._partys.keys()=}")
+    xia_leader = x_econ.get_clerkunit(clerk_id=xia_text)
+    # print(f"{xia_leader._role._partys.keys()=}")
 
     # WHEN
     output_agenda = x_econ.get_refreshed_job(clerk_id=xia_text)
@@ -105,8 +105,8 @@ def test_EconUnit_get_refreshed_job_ReturnsCorrectAgendaObjScenario2(
     x_econ.set_clerk_depotlink(xia_text, x1_agenda._owner_id, "blind_trust")
     x_econ.set_clerk_depotlink(xia_text, x2_agenda._owner_id, "blind_trust")
     x_econ.save_clerkunit_file(clerk_id=xia_text)
-    xia_healer = x_econ.get_clerkunit(clerk_id=xia_text)
-    print(f"{xia_healer._role._partys.keys()=}")
+    xia_leader = x_econ.get_clerkunit(clerk_id=xia_text)
+    print(f"{xia_leader._role._partys.keys()=}")
 
     # WHEN
     output_agenda = x_econ.get_refreshed_job(clerk_id=xia_text)
@@ -153,7 +153,7 @@ def test_ClerkUnit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
     econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(econ_id=econ_id, econ_dir=env_dir)
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    # ux = clerkunit_shop(owner_id=healer1_text, env_dir=env_dir)
+    # ux = clerkunit_shop(owner_id=leader1_text, env_dir=env_dir)
 
     ernie_text = "ernie"
     jessi_text = "jessi"

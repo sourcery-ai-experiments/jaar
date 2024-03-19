@@ -73,7 +73,7 @@ def test_ClerkUnitopen_role_file_WhenStartingAgendaFileDoesNotExists(
     assert list(role_agenda._groups.keys()) == [tim_text]
 
 
-def test_ClerkUnit_save_role_agenda_rolePersonIDMustBeHealer(
+def test_ClerkUnit_save_role_agenda_rolePersonIDMustBeLeader(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -321,7 +321,7 @@ def test_ClerkUnit_get_remelded_output_agenda_with1DigestedAgenda(
 #     assert new_output_agenda != s1
 
 
-def test_ClerkUnit_role_agenda_CorrectlysHasOriginLinksWithHealerAsSource(
+def test_ClerkUnit_role_agenda_CorrectlysHasOriginLinksWithLeaderAsSource(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN

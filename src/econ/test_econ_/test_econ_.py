@@ -6,7 +6,7 @@ from src.econ.econ import (
     econunit_shop,
     get_temp_env_person_id,
     get_temp_env_problem_id,
-    get_temp_env_healer_id,
+    get_temp_env_leader_id,
     get_temp_env_econ_id,
 )
 from src.econ.examples.econ_env_kit import (
@@ -322,7 +322,7 @@ def test_EconUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     bob_text = "Bob"
     econ_road_with_woot = create_road(x_econ.econ_id, bob_text)
     econ_road_wo_root = bob_text
-    # healer_list_wo_root = get_all_road_nodes(econ_road_wo_root)
+    # leader_list_wo_root = get_all_road_nodes(econ_road_wo_root)
     bloomers_text = "bloomers"
     bloomers_road_with_root = create_road(econ_road_with_woot, bloomers_text)
     bloomers_road_wo_root = create_road(econ_road_wo_root, bloomers_text)

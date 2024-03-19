@@ -1,4 +1,4 @@
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.econ.clerk import clerkunit_shop
@@ -99,8 +99,8 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_gut_agenda.add_idea(ideaunit_shop(dallas_text), texas_road)
-    sue_gut_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
-    sue_gut_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.edit_idea_attr(texas_road, leaderunit=leaderunit_shop({sue_text}))
+    sue_gut_agenda.edit_idea_attr(dallas_road, leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.set_agenda_metrics()
     assert sue_gut_agenda._econs_justified == False
     sue_person._save_gut_file(sue_gut_agenda)
@@ -125,7 +125,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     texas_text = "Tex/as"
     texas_road = sue_gut_agenda.make_l1_road(texas_text)
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_gut_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
+    sue_gut_agenda.edit_idea_attr(texas_road, leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.set_agenda_metrics()
     assert sue_gut_agenda._econs_justified
     assert sue_gut_agenda._econs_buildable == False
@@ -153,8 +153,8 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cl
     elpaso_text = "el paso"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
     elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
@@ -197,8 +197,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     elpaso_text = "el paso"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
     elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
@@ -219,7 +219,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     assert sue_person._econ_objs.get(elpaso_road) != None
 
     # WHEN
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     sue_person._save_gut_file(sue_gut_agenda)
@@ -243,7 +243,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
@@ -275,7 +275,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     sue_gut_agenda.set_agenda_metrics()
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
@@ -306,11 +306,11 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_clean
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     elpaso_text = "el paso"
     elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
@@ -348,11 +348,11 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = sue_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(dallas_idea, texas_road)
     elpaso_text = "el paso"
     elpaso_road = sue_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({sue_text}))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
     # sue_gut_agenda.set_agenda_metrics()
     # display_ideatree(sue_gut_agenda, mode="Econ").show()

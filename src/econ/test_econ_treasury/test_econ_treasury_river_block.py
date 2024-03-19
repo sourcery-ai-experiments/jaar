@@ -26,7 +26,7 @@ from src.econ.treasury_sqlstr import (
 def test_econ_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -155,7 +155,7 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
 
 
 def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -224,7 +224,7 @@ def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
 def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
 
     bob_text = "Bob"
@@ -405,7 +405,7 @@ def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryin
 def test_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
 
     bob_text = "Bob"

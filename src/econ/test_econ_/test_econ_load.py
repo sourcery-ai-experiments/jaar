@@ -6,7 +6,7 @@ from src.econ.econ import (
     econunit_shop,
     get_temp_env_person_id,
     get_temp_env_problem_id,
-    get_temp_env_healer_id,
+    get_temp_env_leader_id,
     get_temp_env_econ_id,
 )
 from src.econ.examples.econ_env_kit import (

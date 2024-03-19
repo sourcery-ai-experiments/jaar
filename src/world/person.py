@@ -338,7 +338,7 @@ class PersonUnit:
                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_buildable' is False."
             )
 
-        x_person_econs = x_gut_agenda._healers_dict.get(self.person_id)
+        x_person_econs = x_gut_agenda._leaders_dict.get(self.person_id)
         x_person_econs = get_empty_dict_if_none(x_person_econs)
         self._econ_objs = {}
         for econ_idea in x_person_econs.values():
@@ -393,11 +393,3 @@ def personunit_shop(
     x_personunit.set_person_id(person_id)
     x_personunit.create_core_dir_and_files()
     return x_personunit
-
-
-def get_from_json(x_person_json: str) -> PersonUnit:
-    return None
-
-
-def get_from_dict(person_dict: dict) -> PersonUnit:
-    return None

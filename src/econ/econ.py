@@ -3,7 +3,7 @@ from src._road.road import (
     create_road,
     default_road_delimiter_if_none,
     OwnerID,
-    HealerID,
+    LeaderID,
     PersonID,
     PartyID,
     EconID,
@@ -64,8 +64,8 @@ def get_temp_env_econ_id():
     return "ex_econ04"
 
 
-def get_temp_env_healer_id():
-    return "ex_healer04"
+def get_temp_env_leader_id():
+    return "ex_leader04"
 
 
 def get_temp_env_person_id():
@@ -88,7 +88,7 @@ def treasury_db_filename() -> str:
 class EconUnit:
     econ_id: EconID = None
     econ_dir: str = None
-    _manager_person_id: HealerID = None
+    _manager_person_id: LeaderID = None
     _clerkunits: dict[str:ClerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None
@@ -563,7 +563,7 @@ class EconUnit:
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         x_clerkunit.del_depot_agenda(owner_id=agendaunit_owner_id)
 
-    # Healer output_agenda
+    # Leader output_agenda
     def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         return x_clerkunit.get_remelded_output_agenda()
