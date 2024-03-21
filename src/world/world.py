@@ -142,25 +142,28 @@ class WorldUnit:
         x_person = self.get_personunit(x_agenda._owner_id)
         return x_person._save_gut_file(x_agenda)
 
-    def set_all_econunits_contract(self, person_id: PersonID):
+    def set_all_econunit_role_agendas(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()
         for leader_id, leader_dict in x_gut._leaders_dict.items():
             leader_person = self.get_personunit(leader_id)
             for econ_idea in leader_dict.values():
-                self._set_person_econunits_agent_contract(
+                self._set_person_econunit_role_agenda(
                     leader_person=leader_person,
                     econ_road=econ_idea.get_road(),
                     gut_agenda=x_gut,
                 )
 
-    def _set_person_econunits_agent_contract(
+    def _set_person_econunit_role_agenda(
         self,
-        leader_person: PersonID,
+        leader_person: PersonUnit,
         econ_road: RoadUnit,
         gut_agenda: AgendaUnit,
     ):
         x_econ = leader_person.get_econ(econ_road)
+        if x_econ is None:
+            leader_person.create_person_econunits()
+            x_econ = leader_person.get_econ(econ_road)
         x_econ.create_new_clerkunit(gut_agenda._owner_id)
         x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
         x_clerk.save_role_agenda(gut_agenda)
@@ -210,6 +213,10 @@ class WorldUnit:
             x_live = x_gut
         x_personunit._save_live_file(x_live)
         return self.get_live_file_agenda(person_id)
+
+    def load_all_role_agendas(self):
+        for x_person_id in self._get_person_ids():
+            self.set_all_econunit_role_agendas(x_person_id)
 
     def generate_all_live_agendas(self):
         for x_person_id in self._get_person_ids():

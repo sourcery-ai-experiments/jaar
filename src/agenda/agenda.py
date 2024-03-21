@@ -1137,9 +1137,14 @@ class AgendaUnit:
         idea_kid._road_delimiter = self._road_delimiter
         if idea_kid._agenda_world_id != self._world_id:
             idea_kid._agenda_world_id = self._world_id
+        idea_kid.set_parent_road(parent_road=parent_road)
         if not create_missing_ideas_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
-        idea_kid.set_parent_road(parent_road=parent_road)
+            for x_group_id in idea_kid._leaderunit._group_ids:
+                if self.get_groupunit(x_group_id) is None:
+                    raise InvalidAgendaException(
+                        f"Idea {idea_kid.get_road()} cannot be saved because _leaderunit._group_ids contains {x_group_id} which does not exist for agenda."
+                    )
 
         # create any missing ideas
         if not create_missing_ancestors and self.idea_exists(parent_road) == False:

@@ -635,7 +635,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenThereAr
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleIdeaUnit_leaderunit_any_group_id_exists_IsTrue():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.add_l1_idea(ideaunit_shop("Texas", _leaderunit=leaderunit_shop({"Yao"})))
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_leaderunit = leaderunit_shop({yao_text})
+    sue_agenda.add_l1_idea(ideaunit_shop("Iowa", _leaderunit=yao_leaderunit))
     assert sue_agenda._econs_justified == False
 
     # WHEN
@@ -689,7 +692,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsL
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    yao_leaderunit = leaderunit_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_leaderunit = leaderunit_shop({yao_text})
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _leaderunit=yao_leaderunit))
     sue_agenda.add_idea(ideaunit_shop("El Paso", _problem_bool=True), texas_road)
     assert sue_agenda._econs_justified == False
@@ -706,7 +711,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowP
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
-    yao_leaderunit = leaderunit_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_leaderunit = leaderunit_shop({yao_text})
     texas_idea = ideaunit_shop(texas_text, _leaderunit=yao_leaderunit)
     sue_agenda.add_l1_idea(texas_idea)
     elpaso_idea = ideaunit_shop("El Paso", _problem_bool=True)
@@ -725,7 +732,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowP
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheSameLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    yao_leaderunit = leaderunit_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_leaderunit = leaderunit_shop({yao_text})
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
     texas_idea = ideaunit_shop(
@@ -748,7 +757,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEcon
 def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_econs_justified_IsFalse():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    yao_leaderunit = leaderunit_shop({"Yao"})
+    yao_text = "Yao"
+    sue_agenda.add_partyunit(yao_text)
+    yao_leaderunit = leaderunit_shop({yao_text})
     texas_text = "Texas"
     texas_road = sue_agenda.make_l1_road(texas_text)
     texas_idea = ideaunit_shop(
