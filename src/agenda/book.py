@@ -454,6 +454,9 @@ class BookUnit:
             x_agendaatom.set_optional_arg("_reest", insert_ideaunit._reest)
             x_agendaatom.set_optional_arg("_weight", insert_ideaunit._weight)
             x_agendaatom.set_optional_arg("promise", insert_ideaunit.promise)
+            x_agendaatom.set_optional_arg(
+                "_problem_bool", insert_ideaunit._problem_bool
+            )
             self.set_agendaatom(x_agendaatom)
 
             self.add_agendaatom_idea_beliefunit_inserts(
@@ -471,6 +474,10 @@ class BookUnit:
             self.add_agendaatom_idea_suffgroup_insert(
                 idea_road=insert_idea_road,
                 insert_suffgroup_group_ids=insert_ideaunit._assignedunit._suffgroups.keys(),
+            )
+            self.add_agendaatom_idea_leaderunit_insert(
+                idea_road=insert_idea_road,
+                insert_leaderunit_group_ids=insert_ideaunit._leaderunit._group_ids,
             )
 
     def add_agendaatom_idea_updates(
@@ -610,6 +617,23 @@ class BookUnit:
                 idea_road=idea_road,
                 delete_suffgroup_group_ids=before_suffgroups_group_ids.difference(
                     after_suffgroups_group_ids
+                ),
+            )
+
+            # insert / delete leaderunit group_ids
+            before_leaderunit_group_ids = before_ideaunit._leaderunit._group_ids
+            after_leaderunit_group_ids = after_ideaunit._leaderunit._group_ids
+
+            self.add_agendaatom_idea_leaderunit_insert(
+                idea_road=idea_road,
+                insert_leaderunit_group_ids=after_leaderunit_group_ids.difference(
+                    before_leaderunit_group_ids
+                ),
+            )
+            self.add_agendaatom_idea_leaderunit_deletes(
+                idea_road=idea_road,
+                delete_leaderunit_group_ids=before_leaderunit_group_ids.difference(
+                    after_leaderunit_group_ids
                 ),
             )
 
@@ -811,6 +835,24 @@ class BookUnit:
             x_agendaatom = agendaatom_shop("agenda_idea_suffgroup", atom_delete())
             x_agendaatom.set_required_arg("road", idea_road)
             x_agendaatom.set_required_arg("group_id", delete_suffgroup_group_id)
+            self.set_agendaatom(x_agendaatom)
+
+    def add_agendaatom_idea_leaderunit_insert(
+        self, idea_road: RoadUnit, insert_leaderunit_group_ids: set
+    ):
+        for insert_leaderunit_group_id in insert_leaderunit_group_ids:
+            x_agendaatom = agendaatom_shop("agenda_idea_leaderunit", atom_insert())
+            x_agendaatom.set_required_arg("road", idea_road)
+            x_agendaatom.set_required_arg("group_id", insert_leaderunit_group_id)
+            self.set_agendaatom(x_agendaatom)
+
+    def add_agendaatom_idea_leaderunit_deletes(
+        self, idea_road: RoadUnit, delete_leaderunit_group_ids: set
+    ):
+        for delete_leaderunit_group_id in delete_leaderunit_group_ids:
+            x_agendaatom = agendaatom_shop("agenda_idea_leaderunit", atom_delete())
+            x_agendaatom.set_required_arg("road", idea_road)
+            x_agendaatom.set_required_arg("group_id", delete_leaderunit_group_id)
             self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_idea_balancelink_inserts(
@@ -1155,7 +1197,7 @@ def create_legible_list(x_book: BookUnit, x_agenda: AgendaUnit) -> list[str]:
             leg_list, agenda_idea_beliefunit_delete_dict, x_agenda
         )
 
-    return leg_list
+    return sorted(leg_list)
 
 
 def add_agendaunit_legible_list(
@@ -1224,7 +1266,7 @@ def add_agenda_partyunit_insert_to_legible_list(
         party_id = partyunit_atom.get_value("party_id")
         creditor_weight_value = partyunit_atom.get_value("creditor_weight")
         debtor_weight_value = partyunit_atom.get_value("debtor_weight")
-        x_str = f"{party_id} was added with {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt"
+        x_str = f"Added {party_id} with {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt"
         legible_list.append(x_str)
 
 
@@ -1374,9 +1416,10 @@ def add_agenda_ideaunit_insert_to_legible_list(
             _reest_value = ideaunit_atom.get_value(_reest_text)
             _weight_value = ideaunit_atom.get_value(_weight_text)
             promise_value = ideaunit_atom.get_value(promise_text)
-            x_str = (
-                f"Created Idea '{label_value}' with parent_road {parent_road_value}. "
-            )
+            if _problem_bool_value:
+                x_str = f"Created '{parent_road_value},{label_value}' as Problem"
+            else:
+                x_str = f"Created '{parent_road_value},{label_value}'"
             if _addin_value != None:
                 x_str += f"_addin={_addin_value}."
             if _begin_value != None:
@@ -1385,22 +1428,20 @@ def add_agenda_ideaunit_insert_to_legible_list(
                 x_str += f"_close={_close_value}."
             if _denom_value != None:
                 x_str += f"_denom={_denom_value}."
-            if _meld_strategy_value != None:
+            if _meld_strategy_value not in [None, "default"]:
                 x_str += f"_meld_strategy={_meld_strategy_value}."
             if _numeric_road_value != None:
                 x_str += f"_numeric_road={_numeric_road_value}."
             if _numor_value != None:
                 x_str += f"_numor={_numor_value}."
-            if _problem_bool_value != None:
-                x_str += f"_problem_bool={_problem_bool_value}."
             if _range_source_road_value != None:
                 x_str += f"_range_source_road={_range_source_road_value}."
             if _reest_value != None:
                 x_str += f"_reest={_reest_value}."
-            if _weight_value != None:
+            if _weight_value not in [None, 1]:
                 x_str += f"_weight={_weight_value}."
-            if promise_value != None:
-                x_str += f"promise={promise_value}."
+            if promise_value not in [None, False]:
+                x_str += " as promised task."
 
             legible_list.append(x_str)
 
@@ -1649,7 +1690,7 @@ def add_agenda_idea_suffgroup_insert_to_legible_list(
         for idea_suffgroup_atom in road_dict.values():
             group_id_value = idea_suffgroup_atom.get_value("group_id")
             road_value = idea_suffgroup_atom.get_value("road")
-            x_str = f"Suffgroup '{group_id_value}' created for idea '{road_value}'."
+            x_str = f"Created '{road_value}' responsible group '{group_id_value}'."
             legible_list.append(x_str)
 
 
@@ -1671,7 +1712,7 @@ def add_agenda_idea_leaderunit_insert_to_legible_list(
         for idea_leaderunit_atom in road_dict.values():
             group_id_value = idea_leaderunit_atom.get_value("group_id")
             road_value = idea_leaderunit_atom.get_value("road")
-            x_str = f"Leaderhold '{group_id_value}' created for idea '{road_value}'."
+            x_str = f"Created '{road_value}' leader '{group_id_value}'."
             legible_list.append(x_str)
 
 
@@ -1682,7 +1723,7 @@ def add_agenda_idea_leaderunit_delete_to_legible_list(
         for idea_leaderunit_atom in road_dict.values():
             group_id_value = idea_leaderunit_atom.get_value("group_id")
             road_value = idea_leaderunit_atom.get_value("road")
-            x_str = f"Leaderhold '{group_id_value}' deleted for idea '{road_value}'."
+            x_str = f"LeaderUnit '{group_id_value}' deleted for idea '{road_value}'."
             legible_list.append(x_str)
 
 

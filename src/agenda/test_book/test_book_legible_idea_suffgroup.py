@@ -23,7 +23,7 @@ def test_create_legible_list_ReturnsObj_idea_suffgroup_INSERT():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Suffgroup '{group_id_value}' created for idea '{road_value}'."
+    x_str = f"Created '{road_value}' responsible group '{group_id_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
