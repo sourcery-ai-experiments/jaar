@@ -321,7 +321,7 @@ def test_WorldUnit_save_person_gut_SavesFilesCorrectly(worlds_dir_setup_cleanup)
     assert after_luca_gut.get_party(bob_text) != None
 
 
-def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
+def test_WorldUnit_set_all_econunit_role_agendas_CorrectlySetsroles(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -379,7 +379,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     assert luca_dallas_luca_clerk.open_role_file().get_party(todd_text) is None
 
     # WHEN
-    music_world.set_all_econunits_contract(luca_text)
+    music_world.set_all_econunit_role_agendas(luca_text)
 
     # THEN
     assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) is None
@@ -388,7 +388,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     assert luca_dallas_luca_clerk.open_role_file().get_party(todd_text) != None
 
     # WHEN
-    music_world.set_all_econunits_contract(todd_text)
+    music_world.set_all_econunit_role_agendas(todd_text)
 
     # THEN
     assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) != None
