@@ -281,9 +281,7 @@ def test_WorldUnit_get_personunit_ReturnsNone(worlds_dir_setup_cleanup):
 def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
-    music_world = worldunit_shop(
-        music_text, get_test_worlds_dir(), in_memory_journal=True
-    )
+    music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
     luca_text = "Luca"
     music_world.add_personunit(luca_text)
     luca_person = music_world.get_personunit(luca_text)
@@ -298,6 +296,29 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # THEN
     assert gen_luca_gut != None
     assert gen_luca_gut.get_party(bob_text) != None
+
+
+def test_WorldUnit_save_person_gut_SavesFilesCorrectly(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_text = "music"
+    music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
+    luca_text = "Luca"
+    music_world.add_personunit(luca_text)
+    luca_person = music_world.get_personunit(luca_text)
+    bob_text = "Bob"
+    luca_gut = luca_person.get_gut_file_agenda()
+    luca_gut.add_partyunit(bob_text)
+    before_luca_gut = music_world.get_person_gut(luca_text)
+    assert before_luca_gut != None
+    assert before_luca_gut.get_party(bob_text) is None
+
+    # WHEN
+    music_world.save_gut_file(luca_gut)
+
+    # THEN
+    after_luca_gut = music_world.get_person_gut(luca_text)
+    assert after_luca_gut != None
+    assert after_luca_gut.get_party(bob_text) != None
 
 
 def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(

@@ -138,6 +138,10 @@ class WorldUnit:
         x_person = self.get_personunit(person_id)
         return x_person.get_gut_file_agenda()
 
+    def save_gut_file(self, x_agenda: AgendaUnit):
+        x_person = self.get_personunit(x_agenda._owner_id)
+        return x_person._save_gut_file(x_agenda)
+
     def set_all_econunits_contract(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()

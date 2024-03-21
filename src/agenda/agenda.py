@@ -115,6 +115,10 @@ class _last_gift_idException(Exception):
     pass
 
 
+class LeaderGroupException(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _world_id: str = None
@@ -1163,6 +1167,7 @@ class AgendaUnit:
                 self.edit_idea_attr(road=kid_road, weight=weight_sum)
 
         if create_missing_ideas_groups:
+            self._create_missing_leaderunit_partys(leaderunit=idea_kid._leaderunit)
             self._create_missing_ideas(road=kid_road)
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
@@ -1187,12 +1192,17 @@ class AgendaUnit:
         return x_idea
 
     def _create_missing_groups_partys(self, balancelinks: dict[GroupID:BalanceLink]):
-        for balancelink_x in balancelinks.values():
-            if self.get_groupunit(balancelink_x.group_id) is None:
+        for x_balancelink in balancelinks.values():
+            if self.get_groupunit(x_balancelink.group_id) is None:
                 groupunit_x = groupunit_shop(
-                    group_id=balancelink_x.group_id, _partys={}
+                    group_id=x_balancelink.group_id, _partys={}
                 )
                 self.set_groupunit(y_groupunit=groupunit_x)
+
+    def _create_missing_leaderunit_partys(self, leaderunit: LeaderUnit):
+        for x_group_id in leaderunit._group_ids:
+            if self.get_groupunit(x_group_id) is None:
+                self.add_partyunit(x_group_id)
 
     def _create_missing_ideas(self, road):
         self.set_agenda_metrics()
@@ -1445,7 +1455,7 @@ class AgendaUnit:
         if leaderunit != None:
             for x_group_id in leaderunit._group_ids:
                 if self._groups.get(x_group_id) is None:
-                    raise Exception(
+                    raise LeaderGroupException(
                         f"Idea cannot edit leaderunit because group_id '{x_group_id}' does not exist as group in Agenda"
                     )
 
