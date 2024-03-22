@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
+from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.instrument.file import count_files, open_file
 from src.econ.clerk import clerkunit_shop
 from src.econ.examples.example_clerks import (
@@ -15,11 +15,33 @@ from src.econ.examples.clerk_env_kit import (
 )
 from src.econ.examples.econ_env_kit import get_temp_env_econ_id
 from src.econ.econ import econunit_shop
-from os import path as os_path
+from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 
 
-def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
+def test_ClerkUnit_open_job_agenda_ReturnsEmptyAgendaIfNoFileExists(
+    clerk_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_temp_clerkunit_dir()
+    econ_id = get_temp_env_econ_id()
+    x_econ = econunit_shop(econ_id=econ_id, econ_dir=env_dir)
+    yao_text = "Yao"
+    x_econ.create_new_clerkunit(clerk_id=yao_text)
+    yao_clerkunit = x_econ.get_clerkunit(clerk_id=yao_text)
+    ernie_text = "ernie"
+    ernie_filename = f"{ernie_text}.json"
+    assert os_path_exists(f"{x_econ.get_forum_dir()}/{ernie_filename}") == False
+
+    # WHEN
+    ernie_agendaunit = yao_clerkunit.open_job_agenda(ernie_text)
+
+    # THEN
+    assert ernie_agendaunit == agendaunit_shop()
+    assert os_path_exists(f"{x_econ.get_forum_dir()}/{ernie_filename}") == False
+
+
+def test_ClerkUnit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -41,7 +63,7 @@ def test_clerkunit_set_depotlink_RaisesErrorWhenAgendaDoesNotExist(
     )
 
 
-def test_clerkunit_set_depotlink_CorrectlySetsrolePartys(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_depotlink_CorrectlySetsrolePartys(clerk_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     env_dir = get_temp_clerkunit_dir()
@@ -59,7 +81,27 @@ def test_clerkunit_set_depotlink_CorrectlySetsrolePartys(clerk_dir_setup_cleanup
     assert yao_ux._role.get_party(sue_text).depotlink_type is None
 
 
-def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup):
+# def test_ClerkUnit_set_partyunit_depotlink_CorrectlySetsrolePartysWhen_depotlink_type_IsNone(
+#     clerk_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     yao_text = "Yao"
+#     env_dir = get_temp_clerkunit_dir()
+#     yao_ux = clerkunit_shop(yao_text, env_dir, get_temp_econ_id())
+#     yao_ux.set_role_if_empty()
+#     sue_text = "Sue"
+#     create_agenda_file(yao_ux._agendas_depot_dir, sue_text)
+#     assert list(yao_ux._role._partys.keys()) == [yao_text]
+
+#     # WHEN
+#     yao_ux._set_partyunit_depotlink(sue_text)
+
+#     # THEN
+#     assert list(yao_ux._role._partys.keys()) == [yao_text, sue_text]
+#     assert yao_ux._role.get_party(sue_text).depotlink_type is None
+
+
+def test_ClerkUnit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup):
     # GIVEN
     amer_agenda = get_amer_assign_ex()
     print(f"{len(amer_agenda._idea_dict)=}")
@@ -70,7 +112,7 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     cali_ux.save_agenda_to_depot(amer_agenda)
     assert cali_ux.get_role().get_party(amer_agenda._owner_id) is None
     amer_digest_path = f"{cali_ux._agendas_digest_dir}/{amer_agenda._owner_id}.json"
-    assert os_path.exists(amer_digest_path) is False
+    assert os_path_exists(amer_digest_path) is False
 
     # WHEN
     assignment_text = "assignment"
@@ -83,8 +125,8 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
         cali_ux.get_role().get_party(amer_agenda._owner_id).depotlink_type
         == assignment_text
     )
-    assert os_path.exists(amer_digest_path)
-    digest_agenda = agenda_get_from_json(
+    assert os_path_exists(amer_digest_path)
+    digest_agenda = agendaunit_get_from_json(
         open_file(
             dest_dir=cali_ux._agendas_digest_dir,
             file_name=f"{amer_agenda._owner_id}.json",
@@ -97,7 +139,7 @@ def test_clerkunit_set_depotlink_CorrectlySetsAssignment(clerk_dir_setup_cleanup
     assert digest_agenda._owner_id == cali_text
 
 
-def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup):
+def test_ClerkUnit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup):
     # GIVEN
     bob_text = "Bob"
     env_dir = get_temp_clerkunit_dir()
@@ -117,7 +159,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesObj(clerk_dir_setup_cleanup)
     assert bob_agenda._role.get_party(yao_text).depotlink_type is None
 
 
-def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
+def test_ClerkUnit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -139,7 +181,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDeletesBlindTrustFile(
     assert count_files(dir_path=bob_agenda._agendas_digest_dir) == 0
 
 
-def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
+def test_ClerkUnit_set_depot_agenda_SavesFileCorrectly(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -160,7 +202,7 @@ def test_clerkunit_set_depot_agenda_SavesFileCorrectly(
     assert count_files(bob_agenda._agendas_depot_dir) == 1
 
 
-def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
+def test_ClerkUnit_delete_ignore_depotlink_CorrectlyDeletesObj(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -183,7 +225,7 @@ def test_clerkunit_delete_ignore_depotlink_CorrectlyDeletesObj(
     assert bob_agenda._role.get_party(yao_text).depotlink_type is None
 
 
-def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
+def test_ClerkUnit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -207,7 +249,7 @@ def test_clerkunit_del_depot_agenda_CorrectlyDoesNotDeletesIgnoreFile(
     assert count_files(dir_path=bob_agenda._agendas_ignore_dir) == 1
 
 
-def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
+def test_ClerkUnit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN
@@ -234,7 +276,7 @@ def test_clerkunit_set_ignore_agenda_file_CorrectlyUpdatesIgnoreFile(
     assert count_files(dir_path=bob_ux._agendas_ignore_dir) == 1
 
 
-def test_clerkunit_refresh_depotlinks_CorrectlyPullsAllForumAgendas(
+def test_ClerkUnit_refresh_depot_agendas_CorrectlyPullsAllForumAgendas(
     clerk_dir_setup_cleanup,
 ):
     # GIVEN

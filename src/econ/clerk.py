@@ -45,9 +45,7 @@ class ClerkUnit:
     def refresh_depot_agendas(self):
         for party_x in self._role._partys.values():
             if party_x.party_id != self._clerk_id:
-                party_agenda = agendaunit_get_from_json(
-                    x_agenda_json=self.open_job_agenda(party_x.party_id)
-                )
+                party_agenda = self.open_job_agenda(party_x.party_id)
                 self.set_depot_agenda(
                     x_agenda=party_agenda,
                     depotlink_type=party_x.depotlink_type,
@@ -266,9 +264,13 @@ class ClerkUnit:
         file_name = self._job_file_name
         self._save_agenda_to_path(x_agenda, dest_dir, file_name)
 
-    def open_job_agenda(self, owner_id: PersonID) -> str:
-        file_name_x = f"{owner_id}.json"
-        return open_file(self._forum_dir, file_name_x)
+    def open_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
+        try:
+            file_name_x = f"{owner_id}.json"
+            x_agenda_json = open_file(self._forum_dir, file_name_x)
+            return agendaunit_get_from_json(x_agenda_json)
+        except Exception:
+            return agendaunit_shop()
 
     def open_depot_agenda(self, owner_id: PersonID) -> AgendaUnit:
         file_name_x = f"{owner_id}.json"
