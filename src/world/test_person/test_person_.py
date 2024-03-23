@@ -38,6 +38,8 @@ def test_PersonUnit_exists():
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
     assert x_person._gifts_dir is None
+    assert x_person._cycle_logs_dir is None
+    assert x_person._save_cycle_logs is None
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
@@ -64,6 +66,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
     assert x_person._gifts_dir is None
+    assert x_person._cycle_logs_dir is None
+    assert x_person._save_cycle_logs is None
 
     # GIVEN
     yao_text = "Yao"
@@ -82,6 +86,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
     assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
     assert x_person._gifts_dir == f"{x_person.person_dir}/gifts"
+    assert x_person._cycle_logs_dir == f"{x_person.person_dir}/cycle_logs"
+    assert x_person._save_cycle_logs is None
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
@@ -125,6 +131,8 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
     assert sue_person._live_file_name == f"{get_live_file_name()}.json"
     sue_live_file_path = f"{sue_person.person_dir}/{sue_person._live_file_name}"
     assert sue_person._live_path == sue_live_file_path
+    assert sue_person._cycle_logs_dir != None
+    assert sue_person._save_cycle_logs == False
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
     assert sue_person._planck == default_planck_if_none()
