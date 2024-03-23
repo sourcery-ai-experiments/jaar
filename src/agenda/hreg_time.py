@@ -58,7 +58,7 @@ class HregTimeIdeaSource:
         list_x.append(YB(mn=1, md=1, rr=st, n="years"))
 
         list_x += self._get_time_hreg_years(local_root=rt, jajatime=jaja)
-        list_x += self._get_time_hreg_cycle400(local_root=rt, multipler=m)
+        list_x += self._get_time_hreg_pattern400(local_root=rt, multipler=m)
         list_x += self._get_time_hreg_4year_noleap(local_root=rt, multipler=m)
         list_x += self._get_time_hreg_4year_withleap(local_root=rt, multipler=m)
         list_x += self._get_time_hreg_365year(local_root=rt, multipler=m)
@@ -141,7 +141,7 @@ class HregTimeIdeaSource:
         hreg_list.append(YB(b=0 * m, c=1 * m, rr=week_road, n=get_Sat()))
         return hreg_list
 
-    def _get_time_hreg_cycle400(self, local_root: str, multipler: int):
+    def _get_time_hreg_pattern400(self, local_root: str, multipler: int):
         m = multipler
         tech = get_c400()
         nr_400 = self.roxd(self.get_jajatime_road(local_root), tech)
@@ -744,7 +744,7 @@ def get_Sat():
 
 
 def get_c400():
-    return "400 year cycle"
+    return "400 year pattern"
 
 
 def get_c400s():
