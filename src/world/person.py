@@ -91,6 +91,8 @@ class PersonUnit:
     _live_obj: AgendaUnit = None
     _live_file_name: str = None
     _live_path: str = None
+    _cycle_logs_dir: str = None
+    _save_cycle_logs: bool = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
@@ -107,6 +109,7 @@ class PersonUnit:
         self._econs_dir = f"{self.person_dir}/econs"
         self._atoms_dir = f"{self.person_dir}/atoms"
         self._gifts_dir = f"{self.person_dir}/gifts"
+        self._cycle_logs_dir = f"{self.person_dir}/cycle_logs"
         if self._gut_file_name is None:
             self._gut_file_name = f"{get_gut_file_name()}.json"
         if self._gut_path is None:
@@ -389,6 +392,7 @@ def personunit_shop(
         _econ_objs=get_empty_dict_if_none(_econ_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
+        _save_cycle_logs=False,
     )
     x_personunit.set_person_id(person_id)
     x_personunit.create_core_dir_and_files()
