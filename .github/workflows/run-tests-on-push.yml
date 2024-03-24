@@ -3,8 +3,11 @@ on: push
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     permissions:
       issues: write
+=======
+>>>>>>> b034bf4 (#120 see if github actions work)
     steps:
       - uses: actions/checkout@v4 #there are different versions of the actions/checkout action
       - name: Set up Python
@@ -24,6 +27,7 @@ jobs:
         id: pytest
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
+<<<<<<< HEAD
           echo "EXIT_CODE=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
           TEST_SUMMARY_START=$(cat testresults | grep FAILURES)
           TEST_SUMMARY_END=$(cat testresults | grep "summary info")
@@ -78,6 +82,19 @@ jobs:
           #info about the branch/attempted job
           #information to make an informative title
           #to paste the details of the failure to the issue.
+=======
+      - name: If All Tests Pass, Merge
+        if: ${{ steps.pytest.conclusion == 'success' }}
+        run: 
+          echo "Hello"
+        #nothing more to do (?), merge branch into master
+      - name: If ANY Test Fails, Open Tickets
+        if: ${{ steps.pytest.conclusion == 'failure' }}
+        run: |
+          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
+          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
+          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+>>>>>>> b034bf4 (#120 see if github actions work)
 
       #TODO:
         #clip portion of test results with failure messages
