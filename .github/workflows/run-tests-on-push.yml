@@ -22,20 +22,20 @@ jobs:
         id: pytest
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
-          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
-          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
-          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
-          echo "FAIL_LOG=$(cat failure_log)"
       - name: If All Tests Pass, Merge
         if: ${{ steps.pytest.conclusion == 'success' }}
         run: 
-          echo "Hello"
+          echo "Passed"
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open Tickets
         if: ${{ steps.pytest.conclusion == 'failure' }}
         run: |
-          echo ${{steps.version.outputs.FAIL_LOG}}
-
+         echo "Failed" 
+        #echo ${{steps.version.outputs.FAIL_LOG}}
+        #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
+        #  TEST_SUMMARY_END = $(cat testresults | grep "summary info")
+        #  sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+        #  echo "FAIL_LOG=$(cat failure_log)"
         #ok
         #what do I want/need to do here?
         #Breathe.
