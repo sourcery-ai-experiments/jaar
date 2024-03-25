@@ -22,14 +22,14 @@ jobs:
         id: pytest
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
-          echo $? >> $EXIT_CODE
+          echo "EXIT_CODE=$?" >> "$GITHUB_OUTPUT"
       - name: If All Tests Pass, Merge
-        if: ${{ $EXIT_CODE == 0 }}
+        if: ${{ steps.pytest.outputs.EXIT_CODE == 0 }}
         run: 
           echo "${{ steps.pytest.conclusion }}"
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open Tickets
-        if: ${{ $EXIT_CODE != 0 }}
+        if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
         run: |
          echo "${{ steps.pytest.conclusion }}" 
         #echo ${{steps.version.outputs.FAIL_LOG}}
