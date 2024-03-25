@@ -1,0 +1,53 @@
+name: run-tests-on-push
+on: push
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 #there are different versions of the actions/checkout action
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install pandas
+          python -m pip install plotly
+          python -m pip install pytest-cov
+          python -m pip install pyqt5
+      - name: Execute tests and generate report
+        id: pytest
+        run: |
+          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
+          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
+          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
+          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+          echo "FAIL_LOG=$(cat failure_log)"
+      - name: If All Tests Pass, Merge
+        if: ${{ steps.pytest.conclusion == 'success' }}
+        run: 
+          echo "Hello"
+        #nothing more to do (?), merge branch into master
+      - name: If ANY Test Fails, Open Tickets
+        if: ${{ steps.pytest.conclusion == 'failure' }}
+        run: |
+          echo ${{steps.version.outputs.FAIL_LOG}}
+
+        #ok
+        #what do I want/need to do here?
+        #Breathe.
+        #I want to open an issue based on the failure of the workflow.
+        #I presumably have captured the failure log text, now I just need to open an action
+        #I will need
+          #credentials of the gh repo
+          #info about the branch/attempted job
+          #information to make an informative title
+          #to paste the details of the failure to the issue.
+
+      #TODO:
+        #clip portion of test results with failure messages
+        #open new issue
+        #dump failure text into issue, add some other details
