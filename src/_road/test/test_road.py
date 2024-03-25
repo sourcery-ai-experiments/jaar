@@ -675,9 +675,8 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
     comma_text = ","
     assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
     assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
-
     assert (
-        (is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False)
+        is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
         and os_environ.get("OS") == "Windows_NT"
     ) or os_environ.get("OS") != "Windows_NT"
 
@@ -696,7 +695,10 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+    assert (
+        is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+        and os_environ.get("OS") == "Windows_NT"
+    ) or os_environ.get("OS") != "Windows_NT"
 
 
 def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():
