@@ -24,7 +24,7 @@ jobs:
         id: pytest
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
-        #  echo "EXIT_CODE=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          echo "EXIT_CODE=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
         #  TEST_SUMMARY_START=$(cat testresults | grep FAILURES)
         #  TEST_SUMMARY_END=$(cat testresults | grep "summary info")
         #  sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
