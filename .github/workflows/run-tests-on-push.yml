@@ -41,7 +41,7 @@ jobs:
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
         run: |
           FAILURE_LOG=${{ steps.pytest.outputs.FAIL_LOG }}
-          echo "$FAILURE_LOG"
+        #  echo "$FAILURE_LOG"
         #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
         #echo ${{steps.version.outputs.FAIL_LOG}}
         #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
