@@ -279,6 +279,7 @@ class PersonUnit:
         gut_agenda_last_gift_id = copy_deepcopy(x_gut_agenda._last_gift_id)
         gift_filenames = self._get_gift_files().keys()
         gift_ints = [int(x_filename) for x_filename in gift_filenames]
+        gift_ints.sort()
         for gift_int in gift_ints:
             if gut_agenda_last_gift_id is None or gift_int > gut_agenda_last_gift_id:
                 x_gift = self.get_giftunit(gift_int)
