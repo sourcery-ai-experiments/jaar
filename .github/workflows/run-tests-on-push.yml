@@ -40,7 +40,7 @@ jobs:
       - name: If ANY Test Fails, Open Tickets
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
         run: |
-         echo "${{ steps.pytest.outputs.FAIL_LOG }}" 
+         echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
         #echo ${{steps.version.outputs.FAIL_LOG}}
         #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
         #  TEST_SUMMARY_END = $(cat testresults | grep "summary info")
