@@ -591,6 +591,7 @@ def test_PersonUnit_update_gut_from_gifts_ChangesWith2GiftUnit(
     assert old_gut_agenda.idea_exists(sports_road) == False
     assert old_gut_agenda.get_party(carm_text) is None
     assert old_gut_agenda._party_creditor_pool is None
+    # print(f"{dir_files(sue_person._gifts_dir).keys()=}")
 
     # WHEN
     sue_person.update_gut_from_gifts()

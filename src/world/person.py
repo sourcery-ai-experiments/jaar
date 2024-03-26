@@ -41,6 +41,7 @@ from src.instrument.file import (
 )
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
+from copy import deepcopy as copy_deepcopy
 
 
 class InvalidEconException(Exception):
@@ -275,7 +276,7 @@ class PersonUnit:
         return dir_files(self._gifts_dir, delete_extensions=True)
 
     def _apply_new_giftunits_agenda(self, x_gut_agenda: AgendaUnit) -> AgendaUnit:
-        gut_agenda_last_gift_id = self.get_gut_file_agenda()._last_gift_id
+        gut_agenda_last_gift_id = copy_deepcopy(x_gut_agenda._last_gift_id)
         gift_filenames = self._get_gift_files().keys()
         gift_ints = [int(x_filename) for x_filename in gift_filenames]
         for gift_int in gift_ints:
