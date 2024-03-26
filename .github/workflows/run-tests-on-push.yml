@@ -26,6 +26,7 @@ jobs:
           TEST_SUMMARY_START=$(cat testresults | grep FAILURES)
           TEST_SUMMARY_END=$(cat testresults | grep "summary info")
           sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+          echo "FAIL_LOG=$(cat failure_log)" >> "$GITHUB_OUTPUT"
       - name: If All Tests Pass, Merge
         if: ${{ steps.pytest.outputs.EXIT_CODE == 0 }}
         run: 
@@ -42,7 +43,6 @@ jobs:
         #  echo "FAIL_LOG=$(cat failure_log)"
 
         #TEST_SUMMARY_END=$(cat testresults | grep "summary info")
-        #  sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
         #  echo "FAIL_LOG=$(cat failure_log)" >> "$GITHUB_OUTPUT"
         
         
