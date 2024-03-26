@@ -41,6 +41,7 @@ from src.instrument.file import (
 )
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
+from copy import deepcopy as copy_deepcopy
 
 
 class InvalidEconException(Exception):
@@ -91,6 +92,8 @@ class PersonUnit:
     _live_obj: AgendaUnit = None
     _live_file_name: str = None
     _live_path: str = None
+    _cycle_logs_dir: str = None
+    _save_cycle_logs: bool = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
@@ -107,6 +110,7 @@ class PersonUnit:
         self._econs_dir = f"{self.person_dir}/econs"
         self._atoms_dir = f"{self.person_dir}/atoms"
         self._gifts_dir = f"{self.person_dir}/gifts"
+        self._cycle_logs_dir = f"{self.person_dir}/cycle_logs"
         if self._gut_file_name is None:
             self._gut_file_name = f"{get_gut_file_name()}.json"
         if self._gut_path is None:
@@ -272,9 +276,10 @@ class PersonUnit:
         return dir_files(self._gifts_dir, delete_extensions=True)
 
     def _apply_new_giftunits_agenda(self, x_gut_agenda: AgendaUnit) -> AgendaUnit:
-        gut_agenda_last_gift_id = self.get_gut_file_agenda()._last_gift_id
+        gut_agenda_last_gift_id = copy_deepcopy(x_gut_agenda._last_gift_id)
         gift_filenames = self._get_gift_files().keys()
         gift_ints = [int(x_filename) for x_filename in gift_filenames]
+        gift_ints.sort()
         for gift_int in gift_ints:
             if gut_agenda_last_gift_id is None or gift_int > gut_agenda_last_gift_id:
                 x_gift = self.get_giftunit(gift_int)
@@ -389,6 +394,7 @@ def personunit_shop(
         _econ_objs=get_empty_dict_if_none(_econ_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
+        _save_cycle_logs=False,
     )
     x_personunit.set_person_id(person_id)
     x_personunit.create_core_dir_and_files()

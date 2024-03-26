@@ -459,7 +459,7 @@ class AgendaUnit:
     def get_time_c400_from_min(self, min: int) -> int:
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
-        c400_road = self.make_road(tech_road, "400 year cycle")
+        c400_road = self.make_road(tech_road, "400 year pattern")
         c400_idea = self.get_idea_obj(c400_road)
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
@@ -480,7 +480,7 @@ class AgendaUnit:
         ):  # 96 year and 100 year ideas
             yr4_1461_road = self.make_road(tech_road, "4year with leap")
             yr4_1461_idea = self.get_idea_obj(yr4_1461_road)
-            yr4_cycles = int(cXXXyr_min / yr4_1461_idea._close)
+            yr4_patterns = int(cXXXyr_min / yr4_1461_idea._close)
             cXyr_min = cXXXyr_min % yr4_1461_idea._close
             yr1_idea = yr4_1461_idea.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[
                 0
@@ -488,7 +488,7 @@ class AgendaUnit:
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
             yr4_1460_road = self.make_road(tech_road, "4year wo leap")
             yr4_1460_idea = self.get_idea_obj(yr4_1460_road)
-            yr4_cycles = 0
+            yr4_patterns = 0
             yr1_idea = yr4_1460_idea.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460_idea._close
 
@@ -496,7 +496,7 @@ class AgendaUnit:
         yr1_idea_begin = int(yr1_idea._label.split("-")[0]) - 1
 
         c100_4_96y_begin = int(c100_4_96y._label.split("-")[0])
-        year_num = c100_4_96y_begin + (4 * yr4_cycles) + yr1_idea_begin
+        year_num = c100_4_96y_begin + (4 * yr4_patterns) + yr1_idea_begin
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):

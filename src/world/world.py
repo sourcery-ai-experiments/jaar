@@ -208,6 +208,8 @@ class WorldUnit:
                 x_job = x_econ.get_job_agenda_file(person_id)
                 x_live.meld(x_job)
 
+        # brnach check
+
         # if live_agenda has not changed st live agenda to gut
         if x_live == x_live_deepcopy:
             x_live = x_gut

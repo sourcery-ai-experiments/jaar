@@ -305,7 +305,7 @@ def test_GiftUnit_get_book_atom_numbers_ReturnsCorrectObj():
     assert farm_book_atom_numbers == [farm_book_start, farm_book_start + 1]
 
 
-def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
+def test_GiftUnit_get_giftmetric_dict_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -319,7 +319,7 @@ def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
     farm_giftunit.set_giftee(yao_text)
 
     # WHEN
-    x_dict = farm_giftunit.get_bookmetric_dict()
+    x_dict = farm_giftunit.get_giftmetric_dict()
 
     # THEN
     gifter_text = "gifter"
