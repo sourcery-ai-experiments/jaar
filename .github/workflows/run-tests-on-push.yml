@@ -39,6 +39,19 @@ jobs:
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open A Ticket
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{github.token}}
+          title: Github Workflow/Merge Failed.
+          body: |
+            ### Context
+            [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codebase](https://github.com/${{ github.repository }}/tree/${{ github.sha }})
+            Workflow name - `${{ github.workflow }}`
+            Job -           `${{ github.job }}`
+            status -        `${{ job.status }}`
+            Log -           
+          assignees: jschalk
         run: |
           echo ${{ steps.pytest.outputs.FAILURE_LOG }}
         #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
