@@ -39,6 +39,8 @@ jobs:
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open A Ticket
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
+        permissions:
+          issues: write
         uses: dacbd/create-issue-action@main
         with:
           token: ${{github.token}}
