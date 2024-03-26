@@ -35,11 +35,14 @@ jobs:
           F_LOG=$(cat failure_log)
           FAIL_LOG=$(echo "$F_LOG")
           echo "FAILURE_LOG="$FAIL_LOG"" >> "$GITHUB_OUTPUT"
-        #  echo "--START LOG ECHO--"
-        #  cat failure_log
-        #  echo "--END LOG ECHO--"
       - name: If All Tests Pass, Merge
         if: ${{ steps.pytest.outputs.EXIT_CODE == 0 }}
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          target_branch: main
+          message: ${{ github.run_id }} tests passed.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         run: 
           echo "${{ steps.pytest.outputs.EXIT_CODE }}"
         #nothing more to do (?), merge branch into master
@@ -56,8 +59,9 @@ jobs:
             Workflow name - `${{ github.workflow }}`
             Job -           `${{ github.job }}`
             status -        `${{ job.status }}`
-            Log -           
+            Log -           `${{ steps.pytest.outputs.FAILURE_LOG }}`
           assignees: jschalk
+<<<<<<< HEAD
         #run: |
         #  echo ${{ steps.pytest.outputs.FAILURE_LOG }}
         #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
@@ -96,7 +100,9 @@ jobs:
           sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
 >>>>>>> b034bf4 (#120 see if github actions work)
 
+=======
+>>>>>>> 6a7abb9 (Added Merge Logic.)
       #TODO:
-        #clip portion of test results with failure messages
-        #open new issue
+        #clip portion of test results with failure messages [DONE]
+        #open new issue [DONE]
         #dump failure text into issue, add some other details
