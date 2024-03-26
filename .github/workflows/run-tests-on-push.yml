@@ -52,8 +52,8 @@ jobs:
             status -        `${{ job.status }}`
             Log -           
           assignees: jschalk
-        run: |
-          echo ${{ steps.pytest.outputs.FAILURE_LOG }}
+        #run: |
+        #  echo ${{ steps.pytest.outputs.FAILURE_LOG }}
         #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
         #echo ${{steps.version.outputs.FAIL_LOG}}
         #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
