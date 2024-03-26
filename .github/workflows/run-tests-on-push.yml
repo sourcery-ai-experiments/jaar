@@ -3,6 +3,8 @@ on: push
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - uses: actions/checkout@v4 #there are different versions of the actions/checkout action
       - name: Set up Python
@@ -39,8 +41,6 @@ jobs:
         #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open A Ticket
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
-        permissions:
-          issues: write
         uses: dacbd/create-issue-action@main
         with:
           token: ${{github.token}}
