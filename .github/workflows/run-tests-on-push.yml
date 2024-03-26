@@ -23,15 +23,15 @@ jobs:
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
           echo "EXIT_CODE=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
-          
           TEST_SUMMARY_START=$(cat testresults | grep FAILURES)
           TEST_SUMMARY_END=$(cat testresults | grep "summary info")
           sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
           F_LOG=$(cat failure_log)
           echo "FAIL_LOG=$(echo "$F_LOG")" >> "$GITHUB_OUTPUT"
-          echo "--START LOG ECHO--"
-          cat failure_log
-          echo "--END LOG ECHO--"
+          
+        #  echo "--START LOG ECHO--"
+        #  cat failure_log
+        #  echo "--END LOG ECHO--"
       - name: If All Tests Pass, Merge
         if: ${{ steps.pytest.outputs.EXIT_CODE == 0 }}
         run: 
