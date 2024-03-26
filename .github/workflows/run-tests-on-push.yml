@@ -37,10 +37,11 @@ jobs:
         run: 
           echo "${{ steps.pytest.outputs.EXIT_CODE }}"
         #nothing more to do (?), merge branch into master
-      - name: If ANY Test Fails, Open Tickets
+      - name: If ANY Test Fails, Open A Ticket
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
         run: |
-         echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
+          echo "Fail condition."
+        #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
         #echo ${{steps.version.outputs.FAIL_LOG}}
         #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
         #  TEST_SUMMARY_END = $(cat testresults | grep "summary info")
