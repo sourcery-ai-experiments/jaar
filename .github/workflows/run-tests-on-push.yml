@@ -3,11 +3,8 @@ on: push
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-<<<<<<< HEAD
     permissions:
       issues: write
-=======
->>>>>>> b034bf4 (#120 see if github actions work)
     steps:
       - uses: actions/checkout@v4 #there are different versions of the actions/checkout action
       - name: Set up Python
@@ -27,7 +24,6 @@ jobs:
         id: pytest
         run: |
           python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
-<<<<<<< HEAD
           echo "EXIT_CODE=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
           TEST_SUMMARY_START=$(cat testresults | grep FAILURES)
           TEST_SUMMARY_END=$(cat testresults | grep "summary info")
@@ -43,9 +39,6 @@ jobs:
           target_branch: main
           message: ${{ github.run_id }} tests passed.
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        run: 
-          echo "${{ steps.pytest.outputs.EXIT_CODE }}"
-        #nothing more to do (?), merge branch into master
       - name: If ANY Test Fails, Open A Ticket
         if: ${{ steps.pytest.outputs.EXIT_CODE != 0 }}
         uses: dacbd/create-issue-action@main
@@ -61,47 +54,6 @@ jobs:
             status -        `${{ job.status }}`
             Log -           `${{ steps.pytest.outputs.FAILURE_LOG }}`
           assignees: jschalk
-<<<<<<< HEAD
-        #run: |
-        #  echo ${{ steps.pytest.outputs.FAILURE_LOG }}
-        #  echo ""${{ steps.pytest.outputs.FAIL_LOG }}"" 
-        #echo ${{steps.version.outputs.FAIL_LOG}}
-        #  TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
-        #  TEST_SUMMARY_END = $(cat testresults | grep "summary info")
-        #  sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
-        #  echo "FAIL_LOG=$(cat failure_log)"
-
-        #TEST_SUMMARY_END=$(cat testresults | grep "summary info")
-        #  echo "FAIL_LOG=$(cat failure_log)" >> "$GITHUB_OUTPUT"
-        
-        
-        
-        #ok
-        #what do I want/need to do here?
-        #Breathe.
-        #I want to open an issue based on the failure of the workflow.
-        #I presumably have captured the failure log text, now I just need to open an action
-        #I will need
-          #credentials of the gh repo
-          #info about the branch/attempted job
-          #information to make an informative title
-          #to paste the details of the failure to the issue.
-=======
-      - name: If All Tests Pass, Merge
-        if: ${{ steps.pytest.conclusion == 'success' }}
-        run: 
-          echo "Hello"
-        #nothing more to do (?), merge branch into master
-      - name: If ANY Test Fails, Open Tickets
-        if: ${{ steps.pytest.conclusion == 'failure' }}
-        run: |
-          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
-          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
-          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
->>>>>>> b034bf4 (#120 see if github actions work)
-
-=======
->>>>>>> 6a7abb9 (Added Merge Logic.)
       #TODO:
         #clip portion of test results with failure messages [DONE]
         #open new issue [DONE]
