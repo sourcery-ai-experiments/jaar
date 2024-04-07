@@ -115,6 +115,10 @@ class _last_gift_idException(Exception):
     pass
 
 
+class healerhold_group_id_Exception(Exception):
+    pass
+
+
 @dataclass
 class AgendaUnit:
     _world_id: str = None
@@ -1445,7 +1449,7 @@ class AgendaUnit:
         if healerhold != None:
             for x_group_id in healerhold._group_ids:
                 if self._groups.get(x_group_id) is None:
-                    raise Exception(
+                    raise healerhold_group_id_Exception(
                         f"Idea cannot edit healerhold because group_id '{x_group_id}' does not exist as group in Agenda"
                     )
 
