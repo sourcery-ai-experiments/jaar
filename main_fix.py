@@ -21,8 +21,6 @@ from src.econ.examples.econ_env_kit import (
     change_econ_id_example_econ,
     get_test_econ_dir,
 )
-
-from src.agenda.party import get_depotlink_types
 from src.instrument.file import open_file, dir_files
 from ui.pyqt_func import agenda_importance_diplay
 
@@ -42,11 +40,11 @@ class MainApp(QApplication):
         self.main_window.open_editmain.connect(self.editmain_show)
 
     def editmain_show(self):
-        if self.main_window.ignore_agenda_x is None:
+        if self.main_window.iggnore_agenda_x is None:
             self.main_window.role = self.main_window.x_clerk.open_role_file()
             self.editmain_view.agenda_x = self.main_window.role
         else:
-            self.editmain_view.agenda_x = self.main_window.ignore_agenda_x
+            self.editmain_view.agenda_x = self.main_window.iggnore_agenda_x
         self.editmain_view.refresh_all()
         self.editmain_view.show()
 
@@ -81,23 +79,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_forum_and_reload_srcs_button.clicked.connect(
             self.set_forum_and_reload_srcs
         )
-        self.ignores_table.itemClicked.connect(self.ignores_table_select)
-        self.open_ignore_button.clicked.connect(self.open_editmain)
-        self.save_ignore_button.clicked.connect(self.ignore_agenda_file_update)
-        self.ignores_table.setHidden(True)
-        self.show_ignores_button.clicked.connect(self.show_ignores_table)
+        self.iggnores_table.itemClicked.connect(self.iggnores_table_select)
+        self.open_iggnore_button.clicked.connect(self.open_editmain)
+        self.save_iggnore_button.clicked.connect(self.iggnore_agenda_file_update)
+        self.iggnores_table.setHidden(True)
+        self.show_iggnores_button.clicked.connect(self.show_iggnores_table)
         self.show_digests_button.clicked.connect(self.show_digests_table)
         self.role_open_button.clicked.connect(self.open_editmain)
         self.role_save_button.clicked.connect(self.save_role)
 
-        self.depotlink_insert_button.clicked.connect(self.depotlink_insert)
-        self.depotlink_update_button.clicked.connect(self.depotlink_update)
-        self.depotlink_delete_button.clicked.connect(self.depotlink_delete)
-        self.depotlinks_table.itemClicked.connect(self.depotlinks_table_select)
+        self.deiepotlink_insert_button.clicked.connect(self.deiepotlink_insert)
+        self.deiepotlink_update_button.clicked.connect(self.deiepotlink_update)
+        self.deiepotlink_delete_button.clicked.connect(self.deiepotlink_delete)
+        self.deiepotlinks_table.itemClicked.connect(self.deiepotlinks_table_select)
 
         self.x_clerk = None
         self.econ_x = None
-        self.ignore_agenda_x = None
+        self.iggnore_agenda_x = None
         setup_test_example_environment()
         first_env = "ex5"
         self.econ_x = econunit_shop(econ_id=first_env, econ_dir=get_test_econ_dir())
@@ -142,7 +140,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             selected_agenda = self.agendas_table.item(
                 self.agendas_table.currentRow(), 0
             ).text()
-            self.depotlink_pid.setText(f"{selected_owner_id} - {selected_agenda}")
+            self.deiepotlink_pid.setText(f"{selected_owner_id} - {selected_agenda}")
 
     def owner_ids_table_select(self):
         x_clerk_id = self.owner_ids_table.item(
@@ -156,39 +154,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.clerk_id.setText(self.x_clerk._clerk_id)
         self.refresh_owner_id()
 
-    def depotlinks_table_select(self):
-        self.depotlink_pid.setText(
-            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 0).text()
+    def deiepotlinks_table_select(self):
+        self.deiepotlink_pid.setText(
+            self.deiepotlinks_table.item(self.deiepotlinks_table.currentRow(), 0).text()
         )
-        self.depotlink_type_combo.setCurrentText(
-            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 1).text()
+        self.deiepotlink_type_combo.setCurrentText(
+            self.deiepotlinks_table.item(self.deiepotlinks_table.currentRow(), 1).text()
         )
-        self.depotlink_weight.setText(
-            self.depotlinks_table.item(self.depotlinks_table.currentRow(), 2).text()
+        self.deiepotlink_weight.setText(
+            self.deiepotlinks_table.item(self.deiepotlinks_table.currentRow(), 2).text()
         )
 
-    def ignores_table_select(self):
-        ignore_agenda_owner_id = self.ignores_table.item(
-            self.ignores_table.currentRow(), 0
+    def iggnores_table_select(self):
+        iggnore_agenda_owner_id = self.iggnores_table.item(
+            self.iggnores_table.currentRow(), 0
         ).text()
-        # self.ignore_agenda_x = self.econ_x.get_job_agenda(
-        self.ignore_agenda_x = self.econ_x.get_agenda_from_ignores_dir(
-            clerk_id=self.x_clerk.pid, _owner_id=ignore_agenda_owner_id
+        # self.iggnore_agenda_x = self.econ_x.get_job_agenda(
+        self.iggnore_agenda_x = self.econ_x.get_agenda_from_iggnores_dir(
+            clerk_id=self.x_clerk.pid, _owner_id=iggnore_agenda_owner_id
         )
-        self.edit_agenda = self.ignore_agenda_x
+        self.edit_agenda = self.iggnore_agenda_x
 
-    def ignore_agenda_file_update(self):
-        self.econ_x.set_ignore_agenda_file(
-            clerk_id=self.x_clerk.pid, agenda_obj=self.ignore_agenda_x
+    def iggnore_agenda_file_update(self):
+        self.econ_x.set_iggnore_agenda_file(
+            clerk_id=self.x_clerk.pid, agenda_obj=self.iggnore_agenda_x
         )
         self.refresh_owner_id()
 
-    def show_ignores_table(self):
-        self.ignores_table.setHidden(False)
+    def show_iggnores_table(self):
+        self.iggnores_table.setHidden(False)
         self.digests_table.setHidden(True)
 
     def show_digests_table(self):
-        self.ignores_table.setHidden(True)
+        self.iggnores_table.setHidden(True)
         self.digests_table.setHidden(False)
 
     def econ_insert(self):
@@ -255,7 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.refresh_owner_ids()
 
-    def depotlink_insert(self):
+    def deiepotlink_insert(self):
         agenda_owner_id = self.agendas_table.item(
             self.agendas_table.currentRow(), 0
         ).text()
@@ -265,30 +263,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 file_name=f"{agenda_owner_id}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
-            self.x_clerk.set_depot_agenda(
-                agenda_x=agenda_x,
-                depotlink_type=self.depotlink_type_combo.currentText(),
-                depotlink_weight=self.depotlink_weight.text(),
-            )
+            self.x_clerk.set_depot_agenda(agenda_x=agenda_x)
             self.econ_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
         self.refresh_owner_id()
 
-    def depotlink_update(self):
+    def deiepotlink_update(self):
         clerk_id_x = self.x_clerk.pid
-        self.econ_x.update_depotlink(
+        self.econ_x.update_deiepotlink(
             clerk_id=clerk_id_x,
-            party_id=self.depotlink_pid.text(),
-            depotlink_type=self.depotlink_type_combo.currentText(),
-            creditor_weight=self.depotlink_weight.text(),
-            debtor_weight=self.depotlink_weight.text(),
+            party_id=self.deiepotlink_pid.text(),
+            deiepotlink_type=self.deiepotlink_type_combo.currentText(),
+            creditor_weight=self.deiepotlink_weight.text(),
+            debtor_weight=self.deiepotlink_weight.text(),
         )
         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_owner_id()
 
-    def depotlink_delete(self):
+    def deiepotlink_delete(self):
         clerk_id_x = self.x_clerk.pid
-        self.econ_x.del_depotlink(
-            clerk_id=clerk_id_x, agendaunit_owner_id=self.depotlink_pid.text()
+        self.econ_x.del_deiepotlink(
+            clerk_id=clerk_id_x, agendaunit_owner_id=self.deiepotlink_pid.text()
         )
         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
         self.refresh_owner_id()
@@ -305,19 +299,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         return owner_ids_owner_id_list
 
-    def get_depotlink_list(self):
-        depotlinks_list = []
+    def get_deiepotlink_list(self):
+        deiepotlinks_list = []
         if self.x_clerk != None:
             cl_dir = self.x_clerk._agendas_depot_dir
             clerkunit_files = dir_files(cl_dir)
-            # for cl_val in self.x_clerk._depotlinks.values():
+            # for cl_val in self.x_clerk._deiepotlinks.values():
             for cl_filename in clerkunit_files:
                 print(f"{cl_dir=} {cl_filename=}")
                 agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
                 cl_val = get_agenda_from_json(agenda_json)
-                depotlink_row = [cl_val._owner_id, "", ""]
-                depotlinks_list.append(depotlink_row)
-        return depotlinks_list
+                deiepotlink_row = [cl_val._owner_id, "", ""]
+                deiepotlinks_list.append(deiepotlink_row)
+        return deiepotlinks_list
 
     def get_digests_list(self):
         x_list = []
@@ -331,11 +325,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x_list.extend([file] for file in digest_file_list)
         return x_list
 
-    def get_ignores_list(self):
+    def get_iggnores_list(self):
         x_list = []
         if self.x_clerk != None:
             digest_file_list = dir_files(
-                dir_path=self.x_clerk._agendas_ignore_dir,
+                dir_path=self.x_clerk._agendas_iggnore_dir,
                 delete_extensions=True,
                 include_dirs=False,
                 include_files=True,
@@ -432,33 +426,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.owner_ids_table, ["owner_ids Table"], self.get_clerk_id_list()
         )
 
-    def _sub_refresh_depotlinks_table(self):
-        depotlink_types = list(get_depotlink_types())
-        depotlink_types.insert(0, "")
-        self.depotlink_type_combo.clear()
-        self.depotlink_type_combo.addItems(depotlink_types)
-        self.depotlink_type_combo.setCurrentText("")
+    def _sub_refresh_deiepotlinks_table(self):
+        deiepotlink_types = list(get_deiepotlink_types())
+        deiepotlink_types.insert(0, "")
+        self.deiepotlink_type_combo.clear()
+        self.deiepotlink_type_combo.addItems(deiepotlink_types)
+        self.deiepotlink_type_combo.setCurrentText("")
         column_header = ""
         if self.x_clerk is None:
             column_header = "Agendalinks Table"
         elif self.x_clerk != None:
             column_header = f"'{self.x_clerk._clerk_id}' agendas"
         self.refresh_x(
-            self.depotlinks_table,
+            self.deiepotlinks_table,
             [column_header, "Link Type", "Weight"],
-            self.get_depotlink_list(),
+            self.get_deiepotlink_list(),
         )
 
     def _sub_refresh_digests_table(self):
         self.refresh_x(self.digests_table, ["digests_table"], self.get_digests_list())
 
-    def _sub_refresh_ignores_table(self):
-        ignores_list = self.get_ignores_list()
-        if len(ignores_list) >= 0:
+    def _sub_refresh_iggnores_table(self):
+        iggnores_list = self.get_iggnores_list()
+        if len(iggnores_list) >= 0:
             column_headers = [
-                f"Ignores Table ({len(ignores_list)})",
+                f"iggnores Table ({len(iggnores_list)})",
             ]
-        self.refresh_x(self.ignores_table, column_headers, ignores_list)
+        self.refresh_x(self.iggnores_table, column_headers, iggnores_list)
 
     def _sub_refresh_p_ideas_table(self):
         p_ideas_list = self.get_p_ideas_list()
@@ -552,9 +546,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_owner_id()
 
     def refresh_owner_id(self):
-        self._sub_refresh_depotlinks_table()
+        self._sub_refresh_deiepotlinks_table()
         self._sub_refresh_digests_table()
-        self._sub_refresh_ignores_table()
+        self._sub_refresh_iggnores_table()
         self.owner_id_output_agenda = None
         if self.x_clerk != None:
             self.owner_id_output_agenda = self.x_clerk.get_remelded_output_agenda()
