@@ -1,11 +1,6 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
-from src.agenda.party import (
-    PartyUnit,
-    partyunit_shop,
-    partyunits_get_from_json,
-    get_default_depotlink_type,
-)
+from src.agenda.party import PartyUnit, partyunit_shop, partyunits_get_from_json
 from src.instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
@@ -24,7 +19,6 @@ def test_PartyUnit_exists():
     assert bob_partyunit.party_id == bob_text
     assert bob_partyunit.creditor_weight is None
     assert bob_partyunit.debtor_weight is None
-    assert bob_partyunit.depotlink_type is None
     assert bob_partyunit._agenda_credit is None
     assert bob_partyunit._agenda_debt is None
     assert bob_partyunit._agenda_intent_credit is None
@@ -207,89 +201,40 @@ def test_PartyUnit_set_debtor_weight_RaisesErrorWhen_debtor_weight_IsNotMultiple
     )
 
 
-def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeNoNulls():
+def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeNoNulls():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
-    depotlink_type_x = "assignment"
-    bob_partyunit.set_depotlink_type(
-        depotlink_type=depotlink_type_x, creditor_weight=23, debtor_weight=34
-    )
+    bob_partyunit.set_creditor_debtor_weight(creditor_weight=23, debtor_weight=34)
 
     # THEN
-    assert bob_partyunit.depotlink_type == depotlink_type_x
     assert bob_partyunit.creditor_weight == 23
     assert bob_partyunit.debtor_weight == 34
 
 
-def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndStartingValues():
+def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob", creditor_weight=45, debtor_weight=56)
 
     # WHEN
-    depotlink_type_x = "assignment"
-    bob_partyunit.set_depotlink_type(
-        depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
-    )
+    bob_partyunit.set_creditor_debtor_weight(creditor_weight=None, debtor_weight=None)
 
     # THEN
-    assert bob_partyunit.depotlink_type == depotlink_type_x
     assert bob_partyunit.creditor_weight == 45
     assert bob_partyunit.debtor_weight == 56
 
 
-def test_PartyUnit_set_depotlink_type_CorrectlySetsAttributeWithNullsAndNoStartingValues():
+def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
-    depotlink_type_x = "assignment"
-    bob_partyunit.set_depotlink_type(
-        depotlink_type=depotlink_type_x, creditor_weight=None, debtor_weight=None
-    )
+    bob_partyunit.set_creditor_debtor_weight(creditor_weight=None, debtor_weight=None)
 
     # THEN
-    assert bob_partyunit.depotlink_type == depotlink_type_x
     assert bob_partyunit.creditor_weight == 1
     assert bob_partyunit.debtor_weight == 1
-
-
-def test_PartyUnit_del_depotlink_type_CorrectlySetsAttributeToNone():
-    # GIVEN
-    bob_partyunit = partyunit_shop("Bob", creditor_weight=45, debtor_weight=56)
-    depotlink_type_x = "assignment"
-    bob_partyunit.set_depotlink_type(depotlink_type=depotlink_type_x)
-    assert bob_partyunit.depotlink_type == depotlink_type_x
-    assert bob_partyunit.creditor_weight == 45
-    assert bob_partyunit.debtor_weight == 56
-
-    # WHEN
-    bob_partyunit.del_depotlink_type()
-
-    # THEN
-    assert bob_partyunit.depotlink_type is None
-    assert bob_partyunit.creditor_weight == 45
-    assert bob_partyunit.debtor_weight == 56
-
-
-def test_PartyUnit_set_depotlink_type_raisesErrorIfByTypeIsEntered():
-    # GIVEN
-    unacceptable_type_text = "unacceptable"
-    bob_partyunit = partyunit_shop("Bob")
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        bob_partyunit.set_depotlink_type(depotlink_type=unacceptable_type_text)
-    assert (
-        str(excinfo.value)
-        == f"PartyUnit '{bob_partyunit.party_id}' cannot have type '{unacceptable_type_text}'."
-    )
-
-
-def test_get_default_depotlink_type_ReturnsCorrectObj():
-    # GIVEN / WHEN
-    assert get_default_depotlink_type() == "assignment"
 
 
 def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
@@ -494,8 +439,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_text = "Bob"
     bob_treasury_due_paid = 0.55
     bob_treasury_due_diff = 0.66
-    depotlink_type = "assignment"
-    bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
+    bob_partyunit = partyunit_shop(bob_text)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
     bob_creditor_operational = False
@@ -533,7 +477,6 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
         "_treasury_credit_score": bob_treasury_credit_score,
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
-        "depotlink_type": depotlink_type,
     }
 
 
@@ -542,8 +485,7 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     bob_text = "Bob"
     bob_treasury_due_paid = 0.55
     bob_treasury_due_diff = 0.66
-    depotlink_type = "assignment"
-    bob_partyunit = partyunit_shop(bob_text, depotlink_type=depotlink_type)
+    bob_partyunit = partyunit_shop(bob_text)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
     bob_creditor_operational = False
@@ -605,7 +547,6 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "_treasury_credit_score": bob_treasury_credit_score,
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
-        "depotlink_type": depotlink_type,
     }
 
 
@@ -618,7 +559,6 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     yao_debtor_operational = True
     yao_treasury_due_paid = 0.55
     yao_treasury_due_diff = 0.66
-    yao_depotlink_type = "assignment"
     yao_treasury_credit_score = 7000
     yao_treasury_voice_rank = 898
     yao_treasury_voice_hx_lowest_rank = 740
@@ -634,7 +574,6 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
             "_treasury_credit_score": yao_treasury_credit_score,
             "_treasury_voice_rank": yao_treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": yao_treasury_voice_hx_lowest_rank,
-            "depotlink_type": yao_depotlink_type,
         }
     }
     yao_json_text = get_json_from_dict(dict_x=yao_json_dict)
@@ -660,7 +599,6 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
         yao_partyunit._treasury_voice_hx_lowest_rank
         == yao_treasury_voice_hx_lowest_rank
     )
-    assert yao_partyunit.depotlink_type == yao_depotlink_type
 
 
 def test_PartyUnit_meld_RaiseSameparty_idException():

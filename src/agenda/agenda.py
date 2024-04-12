@@ -640,17 +640,12 @@ class AgendaUnit:
         self._partys.pop(party_id)
 
     def add_partyunit(
-        self,
-        party_id: PartyID,
-        creditor_weight: int = None,
-        debtor_weight: int = None,
-        depotlink_type: str = None,
+        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
     ):
         partyunit = partyunit_shop(
             party_id=party_id,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
-            depotlink_type=depotlink_type,
         )
         self.set_partyunit(partyunit=partyunit)
 
@@ -717,11 +712,7 @@ class AgendaUnit:
         self.del_partyunit(party_id=old_party_id)
 
     def edit_partyunit(
-        self,
-        party_id: PartyID,
-        creditor_weight: int = None,
-        debtor_weight: int = None,
-        depotlink_type: str = None,
+        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
     ):
         if self._partys.get(party_id) is None:
             raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
@@ -730,8 +721,6 @@ class AgendaUnit:
             x_partyunit.set_creditor_weight(creditor_weight)
         if debtor_weight != None:
             x_partyunit.set_debtor_weight(debtor_weight)
-        if depotlink_type != None:
-            x_partyunit.set_depotlink_type(depotlink_type)
         self.set_partyunit(x_partyunit)
 
     def get_party(self, party_id: PartyID) -> PartyUnit:
@@ -745,9 +734,6 @@ class AgendaUnit:
         return [
             party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
-
-    def get_partys_depotlink_count(self) -> int:
-        return sum(party_x.depotlink_type != None for party_x in self._partys.values())
 
     def set_groupunit(
         self,
@@ -2230,7 +2216,7 @@ class AgendaUnit:
         agenda_x,
         assignor_partys: dict[PartyID:PartyUnit],
         assignor_party_id: PartyID,
-    ):
+    ) -> any:
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
         self._set_assignment_groups(agenda_x)

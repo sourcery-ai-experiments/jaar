@@ -24,7 +24,6 @@ def get_agenda_partyunits_dataframe(x_agenda: AgendaUnit) -> DataFrame:
                 "_treasury_credit_score",
                 "_treasury_voice_rank",
                 "_treasury_voice_hx_lowest_rank",
-                "depotlink_type",
             ]
         )
     x_partyunits_list = list(x_agenda.get_partys_dict(all_attrs=True).values())

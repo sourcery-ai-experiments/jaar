@@ -74,13 +74,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     rico_text = "Rico"
     rico_creditor_weight = 33
     rico_debtor_weight = 44
-    rico_depotlink_type = "assignment"
-    after_sue_agenda.add_partyunit(
-        rico_text,
-        creditor_weight=rico_creditor_weight,
-        debtor_weight=rico_debtor_weight,
-        depotlink_type=rico_depotlink_type,
-    )
+    after_sue_agenda.add_partyunit(rico_text, rico_creditor_weight, rico_debtor_weight)
 
     # WHEN
     sue_bookunit = bookunit_shop()
@@ -94,7 +88,6 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     assert rico_agendaatom.get_value("party_id") == rico_text
     assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
     assert rico_agendaatom.get_value("debtor_weight") == rico_debtor_weight
-    assert rico_agendaatom.get_value("depotlink_type") == rico_depotlink_type
 
     print(f"{get_agendaatom_total_count(sue_bookunit)=}")
     assert get_agendaatom_total_count(sue_bookunit) == 1
@@ -136,13 +129,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
     before_sue_agenda.add_partyunit(rico_text)
     rico_creditor_weight = 33
     rico_debtor_weight = 44
-    rico_depotlink_type = "assignment"
-    after_sue_agenda.add_partyunit(
-        rico_text,
-        creditor_weight=rico_creditor_weight,
-        debtor_weight=rico_debtor_weight,
-        depotlink_type=rico_depotlink_type,
-    )
+    after_sue_agenda.add_partyunit(rico_text, rico_creditor_weight, rico_debtor_weight)
 
     # WHEN
     sue_bookunit = bookunit_shop()
@@ -154,7 +141,6 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
     assert rico_agendaatom.get_value("party_id") == rico_text
     assert rico_agendaatom.get_value("creditor_weight") == rico_creditor_weight
     assert rico_agendaatom.get_value("debtor_weight") == rico_debtor_weight
-    assert rico_agendaatom.get_value("depotlink_type") == rico_depotlink_type
 
     print(f"{get_agendaatom_total_count(sue_bookunit)=}")
     assert get_agendaatom_total_count(sue_bookunit) == 1

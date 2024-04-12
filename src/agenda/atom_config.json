@@ -328,10 +328,6 @@
             "debtor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
-            },
-            "depotlink_type": {
-                "python_type": "str",
-                "sqlite_datatype": "TEXT"
             }
         },
         "required_args": {

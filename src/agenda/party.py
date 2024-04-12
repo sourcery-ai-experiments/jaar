@@ -8,10 +8,6 @@ class InvalidPartyException(Exception):
     pass
 
 
-class InvalidDepotLinkException(Exception):
-    pass
-
-
 class _planck_RatioException(Exception):
     pass
 
@@ -30,7 +26,6 @@ class PartyCore:
 class PartyUnit(PartyCore):
     creditor_weight: int = None
     debtor_weight: int = None
-    depotlink_type: str = None
     _agenda_credit: float = None
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
@@ -55,24 +50,15 @@ class PartyUnit(PartyCore):
     def set_output_agenda_meld_order(self, _output_agenda_meld_order: int):
         self._output_agenda_meld_order = _output_agenda_meld_order
 
-    def set_depotlink_type(
+    def set_creditor_debtor_weight(
         self,
-        depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
-        if depotlink_type not in (list(get_depotlink_types())):
-            raise InvalidDepotLinkException(
-                f"PartyUnit '{self.party_id}' cannot have type '{depotlink_type}'."
-            )
-        self.depotlink_type = depotlink_type
         if creditor_weight != None:
             self.set_creditor_weight(creditor_weight)
         if debtor_weight != None:
             self.set_debtor_weight(debtor_weight)
-
-    def del_depotlink_type(self):
-        self.depotlink_type = None
 
     def clear_treasurying_data(self):
         self._treasury_due_paid = None
@@ -122,7 +108,6 @@ class PartyUnit(PartyCore):
             "_treasury_credit_score": self._treasury_credit_score,
             "_treasury_voice_rank": self._treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
-            "depotlink_type": self.depotlink_type,
         }
         if all_attrs:
             x_dict["_agenda_credit"] = self._agenda_credit
@@ -245,18 +230,12 @@ def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
         except KeyError:
             _treasury_voice_hx_lowest_rank = None
 
-        try:
-            depotlink_type = partyunits_dict["depotlink_type"]
-        except KeyError:
-            depotlink_type = None
-
         x_partyunit = partyunit_shop(
             party_id=partyunits_dict["party_id"],
             creditor_weight=partyunits_dict["creditor_weight"],
             debtor_weight=partyunits_dict["debtor_weight"],
             _creditor_operational=partyunits_dict["_creditor_operational"],
             _debtor_operational=partyunits_dict["_debtor_operational"],
-            depotlink_type=depotlink_type,
         )
         x_partyunit.set_treasurying_data(
             due_paid=_treasury_due_paid,
@@ -283,7 +262,6 @@ def partyunit_shop(
     # _agenda_intent_ratio_debt: float = None,
     # _treasury_due_paid: float = None,
     # _treasury_due_diff: float = None,
-    depotlink_type: str = None,
     _road_delimiter: str = None,
     _planck: float = None,
 ) -> PartyUnit:
@@ -304,8 +282,6 @@ def partyunit_shop(
         _planck=default_planck_if_none(_planck),
     )
     x_partyunit.set_party_id(x_party_id=party_id)
-    if depotlink_type != None:
-        x_partyunit.set_depotlink_type(depotlink_type=depotlink_type)
     return x_partyunit
 
 
@@ -404,15 +380,3 @@ class PartyUnitExternalMetrics:
     internal_party_id: PartyID = None
     creditor_operational: bool = None
     debtor_operational: bool = None
-
-
-def get_depotlink_types() -> dict[str:str]:
-    return {
-        "blind_trust": "blind_trust",
-        "ignore": "ignore",
-        "assignment": "assignment",
-    }
-
-
-def get_default_depotlink_type() -> str:
-    return get_depotlink_types().get("assignment")

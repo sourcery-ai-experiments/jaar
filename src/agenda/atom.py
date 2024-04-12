@@ -529,7 +529,6 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
             party_id=xs.get_value("party_id"),
             creditor_weight=xs.get_value("creditor_weight"),
             debtor_weight=xs.get_value("debtor_weight"),
-            depotlink_type=xs.get_value("depotlink_type"),
         )
     elif xs.category == "agenda_partyunit" and xs.crud_text == atom_insert():
         x_agenda.set_partyunit(
@@ -537,7 +536,6 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
                 party_id=xs.get_value("party_id"),
                 creditor_weight=xs.get_value("creditor_weight"),
                 debtor_weight=xs.get_value("debtor_weight"),
-                depotlink_type=xs.get_value("depotlink_type"),
             )
         )
 
@@ -587,10 +585,8 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj.divisor != y_obj.divisor
         )
     elif category == "agenda_partyunit":
-        return (
-            (x_obj.creditor_weight != y_obj.creditor_weight)
-            or (x_obj.debtor_weight != y_obj.debtor_weight)
-            or (x_obj.depotlink_type != y_obj.depotlink_type)
+        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
+            x_obj.debtor_weight != y_obj.debtor_weight
         )
 
 
