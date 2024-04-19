@@ -72,12 +72,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.owner_id_update_button.clicked.connect(self.owner_id_update_pid)
         self.owner_id_delete_button.clicked.connect(self.owner_id_delete)
         self.owner_ids_table.itemClicked.connect(self.owner_ids_table_select)
-        self.reload_forum_job_agendas_button.clicked.connect(
-            self.reload_forum_job_agendas
+        self.reload_jobs_job_agendas_button.clicked.connect(
+            self.reload_jobs_job_agendas
         )
-        self.set_job_agenda_button.clicked.connect(self.save_output_agenda_to_forum)
-        self.set_forum_and_reload_srcs_button.clicked.connect(
-            self.set_forum_and_reload_srcs
+        self.set_job_agenda_button.clicked.connect(self.save_output_agenda_to_jobs)
+        self.set_jobs_and_reload_srcs_button.clicked.connect(
+            self.set_jobs_and_reload_srcs
         )
         self.iggnores_table.itemClicked.connect(self.iggnores_table_select)
         self.open_iggnore_button.clicked.connect(self.open_editmain)
@@ -109,17 +109,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.x_clerk.save_role_agenda(self.role)
         self.refresh_owner_id()
 
-    def reload_forum_job_agendas(self):
+    def reload_jobs_job_agendas(self):
         if self.econ_x != None:
             self.econ_x.reload_all_clerkunits_job_agendas()
 
-    def set_forum_and_reload_srcs(self):
-        self.save_output_agenda_to_forum()
-        self.reload_forum_job_agendas()
+    def set_jobs_and_reload_srcs(self):
+        self.save_output_agenda_to_jobs()
+        self.reload_jobs_job_agendas()
 
-    def save_output_agenda_to_forum(self):
+    def save_output_agenda_to_jobs(self):
         if self.x_clerk != None:
-            self.x_clerk.save_output_agenda_to_forum()
+            self.x_clerk.save_output_agenda_to_jobs()
         self.refresh_econ()
 
     def econ_load_from_file(self):
@@ -206,7 +206,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
 
     def agenda_insert(self):
-        self.econ_x.save_job_agenda_to_forum(
+        self.econ_x.save_job_agenda_to_jobs(
             agenda_x=agendaunit_shop(_owner_id=self.agenda_owner_id.text())
         )
         self.refresh_econ()
@@ -259,7 +259,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ).text()
         if self.x_clerk != None:
             agenda_json = open_file(
-                dest_dir=self.x_clerk._forum_dir,
+                dest_dir=self.x_clerk._jobs_dir,
                 file_name=f"{agenda_owner_id}.json",
             )
             agenda_x = get_agenda_from_json(agenda_json)
@@ -288,7 +288,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_owner_id()
 
     def get_agenda_owner_id_list(self):
-        return [[file_name] for file_name in dir_files(self.econ_x.get_forum_dir())]
+        return [[file_name] for file_name in dir_files(self.econ_x.get_jobs_dir())]
 
     def get_clerk_id_list(self):
         owner_ids_owner_id_list = []
@@ -561,7 +561,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_econ(self):
         self.refresh_x(
             self.agendas_table,
-            ["Econ Forum Agendas"],
+            ["Econ jobs Agendas"],
             self.get_agenda_owner_id_list(),
         )
         self.refresh_owner_ids()
