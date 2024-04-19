@@ -151,13 +151,6 @@ class BookUnit:
         if not optional_args_different("agendaunit", before_agenda, after_agenda):
             return
         x_agendaatom = agendaatom_shop("agendaunit", atom_update())
-        if (
-            before_agenda._auto_output_job_to_forum
-            != after_agenda._auto_output_job_to_forum
-        ):
-            x_agendaatom.set_optional_arg(
-                "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
-            )
         if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
             x_agendaatom.set_optional_arg(
                 "_max_tree_traverse", after_agenda._max_tree_traverse

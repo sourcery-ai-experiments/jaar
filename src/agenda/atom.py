@@ -544,7 +544,6 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
     if category == "agendaunit":
         return (
             x_obj._weight != y_obj._weight
-            or x_obj._auto_output_job_to_forum != y_obj._auto_output_job_to_forum
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
             or x_obj._party_creditor_pool != y_obj._party_creditor_pool

@@ -344,10 +344,6 @@
     "agendaunit": {
         "calculated_attrs": {},
         "optional_args": {
-            "_auto_output_job_to_forum": {
-                "python_type": "bool",
-                "sqlite_datatype": "INTEGER"
-            },
             "_max_tree_traverse": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"

@@ -157,14 +157,12 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_updat
     x_money_desc = "dragon coins"
     x_party_creditor_pool = 77
     x_party_debtor_pool = 88
-    x_auto_output_job_to_forum = True
     after_sue_agenda._weight = x_agendaUnit_weight
     after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
     after_sue_agenda.set_money_desc(x_money_desc)
     after_sue_agenda.set_party_creditor_pool(x_party_creditor_pool)
     after_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
-    after_sue_agenda._set_auto_output_job_to_forum(x_auto_output_job_to_forum)
 
     # WHEN
     sue_bookunit = bookunit_shop()
@@ -173,10 +171,6 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_updat
     # THEN
     x_keylist = [atom_update(), "agendaunit"]
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert (
-        rico_agendaatom.get_value("_auto_output_job_to_forum")
-        == x_auto_output_job_to_forum
-    )
     assert rico_agendaatom.get_value("_max_tree_traverse") == x_max_tree_traverse
     assert rico_agendaatom.get_value("_meld_strategy") == x_meld_strategy
     assert rico_agendaatom.get_value("_money_desc") == x_money_desc
