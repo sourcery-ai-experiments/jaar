@@ -197,8 +197,8 @@ class WorldUnit:
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.create_new_clerkunit(person_id)
                 x_clerk = x_econ.get_clerkunit(person_id)
-                x_clerk.save_refreshed_job_to_forum()
-                x_job = x_econ.get_job_agenda_file(person_id)
+                x_clerk.save_refreshed_job_to_jobs()
+                x_job = x_econ.get_file_in_jobs(person_id)
                 x_live.meld(x_job)
 
         # if live_agenda has not changed st live agenda to gut
@@ -223,7 +223,7 @@ class WorldUnit:
         person_role = person_clerkunit.get_role()
         person_role.add_partyunit(party_id)
         person_clerkunit.save_role_agenda(person_role)
-        person_clerkunit.save_refreshed_job_to_forum()
+        person_clerkunit.save_refreshed_job_to_jobs()
 
     # def _display_gut_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit(x_person_id)

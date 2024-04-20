@@ -25,10 +25,10 @@ from src.econ.econ import EconUnit
 #     # set basket status to "bare"
 #     role_x = yao_clerk.get_role().set_belief(base=basket_road, pick=b_bare_road)
 #     yao_clerk.set_role(role_x)
-#     # save belief change to forum
-#     yao_clerk.save_refreshed_job_to_forum()
-#     # print(f"{x_econ.get_job_agenda_file(yao_text)._idearoot._beliefunits.keys()=}")
-#     yao_output = x_econ.get_job_agenda_file(yao_text)
+#     # save belief change to jobs
+#     yao_clerk.save_refreshed_job_to_jobs()
+#     # print(f"{x_econ.get_file_in_jobs(yao_text)._idearoot._beliefunits.keys()=}")
+#     yao_output = x_econ.get_file_in_jobs(yao_text)
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
@@ -46,13 +46,13 @@ from src.econ.econ import EconUnit
 #     # set basket status to "full"
 #     yao_clerk.get_role().set_belief(base=basket_road, pick=b_full_road)
 #     yao_clerk.set_role()
-#     yao_clerk.save_refreshed_job_to_forum()
+#     yao_clerk.save_refreshed_job_to_jobs()
 
 #     cali_clerk.refresh_depot_agendas()
 #     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-#     # new_forum_yao = x_econ.get_job_agenda_file(yao_text)
-#     # a_basket_belief = new_forum_yao._idearoot._beliefunits.get(basket_road)
+#     # new_jobs_yao = x_econ.get_file_in_jobs(yao_text)
+#     # a_basket_belief = new_jobs_yao._idearoot._beliefunits.get(basket_road)
 #     # print(f"Yao after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
 #     # THEN

@@ -36,11 +36,11 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=sal_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=bob_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=tom_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=ava_text))
-    x_econ.save_job_agenda_to_forum(agendaunit_shop(_owner_id=elu_text))
+    x_econ.save_file_to_jobs(agendaunit_shop(_owner_id=sal_text))
+    x_econ.save_file_to_jobs(agendaunit_shop(_owner_id=bob_text))
+    x_econ.save_file_to_jobs(agendaunit_shop(_owner_id=tom_text))
+    x_econ.save_file_to_jobs(agendaunit_shop(_owner_id=ava_text))
+    x_econ.save_file_to_jobs(agendaunit_shop(_owner_id=elu_text))
     x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
 
@@ -86,11 +86,11 @@ def test_econ_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
-    x_econ.save_job_agenda_to_forum(sal_agenda)
-    x_econ.save_job_agenda_to_forum(bob_agenda)
-    x_econ.save_job_agenda_to_forum(tom_agenda)
-    x_econ.save_job_agenda_to_forum(ava_agenda)
-    x_econ.save_job_agenda_to_forum(elu_agenda)
+    x_econ.save_file_to_jobs(sal_agenda)
+    x_econ.save_file_to_jobs(bob_agenda)
+    x_econ.save_file_to_jobs(tom_agenda)
+    x_econ.save_file_to_jobs(ava_agenda)
+    x_econ.save_file_to_jobs(elu_agenda)
     x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
     assert x_agendatreasuryunits.get(sal_text).rational is None

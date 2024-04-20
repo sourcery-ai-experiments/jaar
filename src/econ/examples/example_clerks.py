@@ -126,12 +126,16 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
 
 
 def get_clerkunit_2agenda(env_dir, econ_id) -> ClerkUnit:
+    a_agenda = get_1node_agenda()
+    j_agenda = get_Jnode2node_agenda()
     xio_text = "Xio"
     xio_clerkunit = clerkunit_shop(xio_text, env_dir, econ_id)
-    xio_clerkunit.set_depot_agenda(get_1node_agenda(), depotlink_type="blind_trust")
-    xio_clerkunit.set_depot_agenda(
-        get_Jnode2node_agenda(), depotlink_type="blind_trust"
-    )
+    xio_role = xio_clerkunit.get_role()
+    xio_role.add_partyunit(a_agenda._owner_id)
+    xio_role.add_partyunit(j_agenda._owner_id)
+    xio_clerkunit.save_role_agenda(xio_role)
+    xio_clerkunit._set_depot_agenda(a_agenda)
+    xio_clerkunit._set_depot_agenda(j_agenda)
     return xio_clerkunit
 
 

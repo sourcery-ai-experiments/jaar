@@ -83,7 +83,7 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     texas_text = "Texas"
 #     yao_person.set_econunit(texas_text)
 #     texas_econ = yao_person.get_econunit(texas_text)
-#     texas_forum_dir = texas_econ.get_forum_dir()
+#     texas_jobs_dir = texas_econ.get_jobs_dir()
 
 #     highwaay_wantunit = create_wantunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
@@ -101,12 +101,12 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     )
 #     assert world.get_personunit(tim_text) is None
 #     assert world.get_personunit(xio_text) is None
-#     forum_tim_file_path = f"{texas_forum_dir}/{tim_text}.json"
-#     forum_xio_file_path = f"{texas_forum_dir}/{xio_text}.json"
-#     forum_yao_file_path = f"{texas_forum_dir}/{yao_text}.json"
-#     assert os_path.exists(forum_tim_file_path) is False
-#     assert os_path.exists(forum_xio_file_path) is False
-#     assert os_path.exists(forum_yao_file_path) is False
+#     jobs_tim_file_path = f"{texas_jobs_dir}/{tim_text}.json"
+#     jobs_xio_file_path = f"{texas_jobs_dir}/{xio_text}.json"
+#     jobs_yao_file_path = f"{texas_jobs_dir}/{yao_text}.json"
+#     assert os_path.exists(jobs_tim_file_path) is False
+#     assert os_path.exists(jobs_xio_file_path) is False
+#     assert os_path.exists(jobs_yao_file_path) is False
 
 #     # WHEN
 #     world.apply_requestunit(highwaay_requestunit)
@@ -114,10 +114,10 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     # THEN
 #     assert world.get_personunit(tim_text) != None
 #     assert world.get_personunit(xio_text) != None
-#     print(f"{forum_tim_file_path=}")
-#     assert os_path.exists(forum_tim_file_path)
-#     assert os_path.exists(forum_xio_file_path)
-#     assert os_path.exists(forum_yao_file_path)
+#     print(f"{jobs_tim_file_path=}")
+#     assert os_path.exists(jobs_tim_file_path)
+#     assert os_path.exists(jobs_xio_file_path)
+#     assert os_path.exists(jobs_yao_file_path)
 #     assert texas_econ.get_clerkunit(tim_text).get_role() != None
 #     assert texas_econ.get_clerkunit(xio_text).get_role() != None
 #     assert texas_econ.get_clerkunit(yao_text).get_role() != None
@@ -244,10 +244,10 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     tim_role = texas_econ.get_clerkunit(tim_text).get_role()
 #     assert tim_role.get_party(xio_text) != None
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
-#     # check tim forum
-#     tim_forum = texas_econ.get_job_agenda(tim_text)
-#     assert len(tim_forum.get_intent_dict()) == 1
-#     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
+#     # check tim jobs
+#     tim_jobs = texas_econ.get_job_agenda(tim_text)
+#     assert len(tim_jobs.get_intent_dict()) == 1
+#     assert tim_jobs.get_intent_dict()[0].get_road() == no_fly_road
 
 
 # def test_WorldUnit_apply_requestunit_CorrectlyAppliesGroup(worlds_dir_setup_cleanup):
@@ -340,10 +340,10 @@ def test_WorldUnit_del_giftunit_CorrectChangesAttr(worlds_dir_setup_cleanup):
 #     tim_role = texas_econ.get_clerkunit(tim_text).get_role()
 #     assert tim_role.get_party(xio_text) != None
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
-#     # check tim forum
-#     tim_forum = texas_econ.get_job_agenda(tim_text)
-#     assert len(tim_forum.get_intent_dict()) == 1
-#     assert tim_forum.get_intent_dict()[0].get_road() == no_fly_road
+#     # check tim jobs
+#     tim_jobs = texas_econ.get_job_agenda(tim_text)
+#     assert len(tim_jobs.get_intent_dict()) == 1
+#     assert tim_jobs.get_intent_dict()[0].get_road() == no_fly_road
 
 
 # # def test_WorldUnit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(

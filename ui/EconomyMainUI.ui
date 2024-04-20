@@ -833,10 +833,10 @@
      </font>
     </property>
     <property name="text">
-     <string>output_agenda to forum_dir</string>
+     <string>output_agenda to jobs_dir</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="reload_forum_job_agendas_button">
+   <widget class="QPushButton" name="reload_jobs_job_agendas_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -854,7 +854,7 @@
      <string>refresh_job_agendas</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="set_forum_and_reload_srcs_button">
+   <widget class="QPushButton" name="set_jobs_and_reload_srcs_button">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -869,7 +869,7 @@
      </font>
     </property>
     <property name="text">
-     <string>dest2forum and refresh</string>
+     <string>dest2jobs and refresh</string>
     </property>
    </widget>
    <widget class="QPushButton" name="role_open_button">

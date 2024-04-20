@@ -122,7 +122,7 @@ def test_econ_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234
     x_econ.set_voice_ranks(yao_text, sort_order=descretional_text)
 
     # THEN
-    yao_job_agenda = x_econ.get_job_agenda_file(yao_text)
+    yao_job_agenda = x_econ.get_file_in_jobs(yao_text)
     ava_partyunit = yao_job_agenda.get_party(ava_text)
     bob_partyunit = yao_job_agenda.get_party(bob_text)
     cal_partyunit = yao_job_agenda.get_party(cal_text)

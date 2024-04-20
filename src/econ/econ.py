@@ -109,11 +109,10 @@ class EconUnit:
         )
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
-        agendas_dir = self.get_forum_dir()
-        clerkunits_dir = self.get_clerkunits_dir()
         set_dir(x_path=self.get_object_root_dir())
-        set_dir(x_path=agendas_dir)
-        set_dir(x_path=clerkunits_dir)
+        set_dir(x_path=self.get_guts_dir())
+        set_dir(x_path=self.get_jobs_dir())
+        set_dir(x_path=self.get_clerkunits_dir())
         self._create_main_file_if_null(x_dir=self.get_object_root_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
@@ -128,10 +127,10 @@ class EconUnit:
             for count_x, x_partyunit in enumerate(x_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             x_clerk.set_role(x_role)
-            x_clerk.save_refreshed_job_to_forum()
+            x_clerk.save_refreshed_job_to_jobs()
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.get_job_agenda_file(x_owner_id)
+        x_agenda = self.get_file_in_jobs(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -144,7 +143,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_job_agenda_to_forum(x_agenda)
+        self.save_file_to_jobs(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -255,11 +254,11 @@ class EconUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.get_job_agenda_file(owner_id=owner_id)
+            x_agenda = self.get_file_in_jobs(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_job_agenda_to_forum(x_agenda)
+            self.save_file_to_jobs(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -273,8 +272,8 @@ class EconUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.get_forum_dir_file_names_list():
-            agenda_json = open_file(self.get_forum_dir(), file_name)
+        for file_name in self.get_jobs_dir_file_names_list():
+            agenda_json = open_file(self.get_jobs_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
@@ -381,12 +380,11 @@ class EconUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, owner_id: OwnerID, _auto_output_job_to_forum: bool = None):
+    def add_clerkunit(self, role: AgendaUnit):
         x_clerkunit = clerkunit_shop(
-            owner_id=owner_id,
+            role=role,
             env_dir=self.get_object_root_dir(),
             econ_id=self.econ_id,
-            _auto_output_job_to_forum=_auto_output_job_to_forum,
         )
         self.set_clerkunit(clerkunit=x_clerkunit)
 
@@ -424,144 +422,89 @@ class EconUnit:
         delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
 
     def full_setup_clerkunit(self, owner_id: OwnerID):
-        self.add_clerkunit(owner_id, _auto_output_job_to_forum=True)
+        self.add_clerkunit(owner_id)
         requestee_clerkunit = self.get_clerkunit(owner_id)
         requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_job_to_forum()
+        requestee_clerkunit.save_refreshed_job_to_jobs()
 
-    # forum dir management
-    def get_forum_dir(self):
-        return f"{self.get_object_root_dir()}/forum"
+    # guts dir management
+    def get_guts_dir(self):
+        return f"{self.get_object_root_dir()}/guts"
 
-    def get_ignores_dir(self, clerk_id: ClerkID):
-        per_x = self.get_clerkunit(clerk_id)
-        return per_x._agendas_ignore_dir
-
-    def get_job_agenda_file(self, owner_id: str) -> AgendaUnit:
-        return get_agenda_from_json(
-            open_file(dest_dir=self.get_forum_dir(), file_name=f"{owner_id}.json")
-        )
-
-    def get_agenda_from_ignores_dir(
-        self, clerk_id: ClerkID, _owner_id: OwnerID
-    ) -> AgendaUnit:
-        return get_agenda_from_json(
-            open_file(
-                dest_dir=self.get_ignores_dir(clerk_id=clerk_id),
-                file_name=f"{_owner_id}.json",
-            )
-        )
-
-    def set_ignore_agenda_file(self, clerk_id: ClerkID, agenda_obj: AgendaUnit):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.set_ignore_agenda_file(
-            agendaunit=agenda_obj, src_owner_id=agenda_obj._owner_id
-        )
-
-    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
-        x_agenda = self.get_job_agenda_file(owner_id=old_owner_id)
-        x_agenda.set_owner_id(new_owner_id=new_owner_id)
-        self.save_job_agenda_to_forum(x_agenda)
-        self.del_job_agenda(x_owner_id=old_owner_id)
-
-    def del_job_agenda(self, x_owner_id: str):
-        delete_dir(f"{self.get_forum_dir()}/{x_owner_id}.json")
-
-    def save_job_agenda_to_forum(self, x_agenda: AgendaUnit):
+    def save_file_to_guts(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.econ_id)
         save_file(
-            dest_dir=self.get_forum_dir(),
+            dest_dir=self.get_guts_dir(),
             file_name=f"{x_agenda._owner_id}.json",
             file_text=x_agenda.get_json(),
         )
+
+    def get_file_in_guts(self, owner_id: str) -> AgendaUnit:
+        return get_agenda_from_json(open_file(self.get_guts_dir(), f"{owner_id}.json"))
+
+    def delete_file_in_guts(self, x_owner_id: str):
+        delete_dir(f"{self.get_guts_dir()}/{x_owner_id}.json")
+
+    # jobs dir management
+    def get_jobs_dir(self):
+        return f"{self.get_object_root_dir()}/jobs"
+
+    def save_file_to_jobs(self, x_agenda: AgendaUnit):
+        x_agenda.set_world_id(world_id=self.econ_id)
+        save_file(
+            dest_dir=self.get_jobs_dir(),
+            file_name=f"{x_agenda._owner_id}.json",
+            file_text=x_agenda.get_json(),
+        )
+
+    def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
+        return get_agenda_from_json(open_file(self.get_jobs_dir(), f"{owner_id}.json"))
+
+    def delete_file_in_jobs(self, x_owner_id: str):
+        delete_dir(f"{self.get_jobs_dir()}/{x_owner_id}.json")
+
+    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
+        x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
+        x_agenda.set_owner_id(new_owner_id=new_owner_id)
+        self.save_file_to_jobs(x_agenda)
+        self.delete_file_in_jobs(x_owner_id=old_owner_id)
 
     def reload_all_clerkunits_job_agendas(self):
         for x_clerkunit in self._clerkunits.values():
             x_clerkunit.refresh_depot_agendas()
 
-    def get_forum_dir_file_names_list(self):
-        return list(dir_files(dir_path=self.get_forum_dir()).keys())
+    def get_jobs_dir_file_names_list(self):
+        return list(dir_files(dir_path=self.get_jobs_dir()).keys())
 
     # agendas_dir to owner_id_agendas_dir management
     def _clerkunit_set_depot_agenda(
         self,
         clerkunit: ClerkUnit,
         agendaunit: AgendaUnit,
-        depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
-        ignore_agenda: AgendaUnit = None,
     ):
         clerkunit.set_depot_agenda(
             x_agenda=agendaunit,
-            depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-        if depotlink_type == "ignore" and ignore_agenda != None:
-            clerkunit.set_ignore_agenda_file(
-                agendaunit=ignore_agenda, src_owner_id=agendaunit._owner_id
-            )
 
-    def set_clerk_depotlink(
+    def set_clerk_depot_item(
         self,
         clerk_id: ClerkID,
         agenda_owner_id: str,
-        depotlink_type: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-        ignore_agenda: AgendaUnit = None,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_job_agenda_file(owner_id=agenda_owner_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-            ignore_agenda=ignore_agenda,
-        )
-
-    def create_depotlink_to_generated_agenda(
-        self,
-        clerk_id: ClerkID,
-        owner_id: str,
-        depotlink_type: str,
         creditor_weight: float = None,
         debtor_weight: float = None,
     ):
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = agendaunit_shop(_owner_id=owner_id)
+        x_agenda = self.get_file_in_jobs(owner_id=agenda_owner_id)
         self._clerkunit_set_depot_agenda(
             clerkunit=x_clerkunit,
             agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
         )
-
-    def update_depotlink(
-        self,
-        clerk_id: ClerkID,
-        party_id: PartyID,
-        depotlink_type: str,
-        creditor_weight: str,
-        debtor_weight: str,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_job_agenda(_owner_id=party_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
-
-    def del_depotlink(self, clerk_id: ClerkID, agendaunit_owner_id: OwnerID):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.del_depot_agenda(owner_id=agendaunit_owner_id)
 
     # Healer output_agenda
     def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:

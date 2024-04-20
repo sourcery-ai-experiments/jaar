@@ -43,7 +43,6 @@ def test_get_world_guts_partys_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "depotlink_type",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
@@ -96,7 +95,6 @@ def test_get_world_lives_partys_dataframe_ReturnsCorrectObj(
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "depotlink_type",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
