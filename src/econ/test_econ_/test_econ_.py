@@ -360,11 +360,11 @@ def test_EconUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     x_econ_id = get_temp_env_econ_id()
     x_econ = econunit_shop(x_econ_id, econ_dir=get_test_econ_dir())
     bob_text = "Bob"
-    econ_road_with_woot = create_road(x_econ.econ_id, bob_text)
+    econ_road_with_root = create_road(x_econ.econ_id, bob_text)
     econ_road_wo_root = bob_text
     # healer_list_wo_root = get_all_road_nodes(econ_road_wo_root)
     bloomers_text = "bloomers"
-    bloomers_road_with_root = create_road(econ_road_with_woot, bloomers_text)
+    bloomers_road_with_root = create_road(econ_road_with_root, bloomers_text)
     bloomers_road_wo_root = create_road(econ_road_wo_root, bloomers_text)
     # bloomers_list_wo_root = get_all_road_nodes(bloomers_road_wo_root)
     roses_text = "roses"
@@ -374,6 +374,6 @@ def test_EconUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert x_econ.econ_id == x_econ.build_econ_road()
-    assert econ_road_with_woot == x_econ.build_econ_road(econ_road_wo_root)
+    assert econ_road_with_root == x_econ.build_econ_road(econ_road_wo_root)
     assert bloomers_road_with_root == x_econ.build_econ_road(bloomers_road_wo_root)
     assert roses_road_with_root == x_econ.build_econ_road(roses_road_wo_root)

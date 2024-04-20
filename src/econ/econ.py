@@ -427,6 +427,9 @@ class EconUnit:
         requestee_clerkunit.create_core_dir_and_files()
         requestee_clerkunit.save_refreshed_job_to_jobs()
 
+    def get_owner_file_name(self, x_owner_id: str) -> str:
+        return f"{x_owner_id}.json"
+
     # guts dir management
     def get_guts_dir(self):
         return f"{self.get_object_root_dir()}/guts"
@@ -435,7 +438,7 @@ class EconUnit:
         x_agenda.set_world_id(world_id=self.econ_id)
         save_file(
             dest_dir=self.get_guts_dir(),
-            file_name=f"{x_agenda._owner_id}.json",
+            file_name=self.get_owner_file_name(x_agenda._owner_id),
             file_text=x_agenda.get_json(),
         )
 
@@ -443,7 +446,7 @@ class EconUnit:
         return get_agenda_from_json(open_file(self.get_guts_dir(), f"{owner_id}.json"))
 
     def delete_file_in_guts(self, x_owner_id: str):
-        delete_dir(f"{self.get_guts_dir()}/{x_owner_id}.json")
+        delete_dir(f"{self.get_guts_dir()}/{self.get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
@@ -453,15 +456,17 @@ class EconUnit:
         x_agenda.set_world_id(world_id=self.econ_id)
         save_file(
             dest_dir=self.get_jobs_dir(),
-            file_name=f"{x_agenda._owner_id}.json",
+            file_name=self.get_owner_file_name(x_agenda._owner_id),
             file_text=x_agenda.get_json(),
         )
 
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
-        return get_agenda_from_json(open_file(self.get_jobs_dir(), f"{owner_id}.json"))
+        return get_agenda_from_json(
+            open_file(self.get_jobs_dir(), self.get_owner_file_name(owner_id))
+        )
 
     def delete_file_in_jobs(self, x_owner_id: str):
-        delete_dir(f"{self.get_jobs_dir()}/{x_owner_id}.json")
+        delete_dir(f"{self.get_jobs_dir()}/{self.get_owner_file_name(x_owner_id)}")
 
     def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
         x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
