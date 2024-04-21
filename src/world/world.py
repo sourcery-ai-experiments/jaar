@@ -157,7 +157,7 @@ class WorldUnit:
         gut_agenda: AgendaUnit,
     ):
         x_econ = healer_person.get_econ(econ_road)
-        x_econ.create_new_clerkunit(gut_agenda._owner_id)
+        x_econ.create_clerkunit(gut_agenda._owner_id)
         x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
         x_clerk.save_role_agenda(gut_agenda)
 
@@ -195,7 +195,7 @@ class WorldUnit:
             healer_person.create_person_econunits()
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
-                x_econ.create_new_clerkunit(person_id)
+                x_econ.create_clerkunit(person_id)
                 x_clerk = x_econ.get_clerkunit(person_id)
                 x_clerk.save_refreshed_job_to_jobs()
                 x_job = x_econ.get_file_in_jobs(person_id)

@@ -236,7 +236,7 @@
 #     econ_id = get_temp_env_econ_id()
 #     sx = econunit_shop(econ_id=econ_id, econ_dir=env_dir)
 #     yao_text = "Yao"
-#     sx.create_new_clerkunit(clerk_id=yao_text)
+#     sx.create_clerkunit(clerk_id=yao_text)
 #     yao_agenda = sx.get_clerkunit(clerk_id=yao_text)
 #     assert len(yao_agenda.get_remelded_output_agenda().get_idea_dict()) == 1
 

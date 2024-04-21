@@ -80,6 +80,10 @@ class IntentBaseDoesNotExistException(Exception):
     pass
 
 
+class ClerkUnitdoesnotexist(Exception):
+    pass
+
+
 def treasury_db_filename() -> str:
     return "treasury.db"
 
@@ -367,69 +371,6 @@ class EconUnit:
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
 
-    # ClerkUnit management
-    def get_clerkunits_dir(self):
-        return f"{self.get_object_root_dir()}/clerkunits"
-
-    def get_clerkunit_dir_paths_list(self):
-        return list(
-            dir_files(
-                dir_path=self.get_clerkunits_dir(),
-                delete_extensions=False,
-                include_dirs=True,
-            ).keys()
-        )
-
-    def add_clerkunit(self, role: AgendaUnit):
-        x_clerkunit = clerkunit_shop(
-            role=role,
-            env_dir=self.get_object_root_dir(),
-            econ_id=self.econ_id,
-        )
-        self.set_clerkunit(clerkunit=x_clerkunit)
-
-    def clerkunit_exists(self, clerk_id: ClerkID):
-        return self._clerkunits.get(clerk_id) != None
-
-    def create_new_clerkunit(self, clerk_id: ClerkID):
-        x_clerkunit = clerkunit_shop(clerk_id, self.get_object_root_dir(), self.econ_id)
-        x_clerkunit.create_core_dir_and_files()
-        self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
-
-    def get_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
-        return self._clerkunits.get(clerk_id)
-
-    def set_clerkunit(self, clerkunit: ClerkUnit):
-        self._clerkunits[clerkunit._clerk_id] = clerkunit
-        self.save_clerkunit_file(clerk_id=clerkunit._clerk_id)
-
-    def save_clerkunit_file(self, clerk_id: ClerkID):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.save_role_agenda(x_clerkunit.get_role())
-
-    def change_clerkunit_clerk_id(self, old_clerk_id: ClerkID, new_clerk_id: ClerkID):
-        clerk_x = self.get_clerkunit(clerk_id=old_clerk_id)
-        old_clerkunit_dir = clerk_x._clerkunit_dir
-        clerk_x.set_clerk_id(new_clerk_id=new_clerk_id)
-        self.set_clerkunit(clerk_x)
-        delete_dir(old_clerkunit_dir)
-        self.del_clerkunit_from_econ(clerk_id=old_clerk_id)
-
-    def del_clerkunit_from_econ(self, clerk_id: ClerkID):
-        self._clerkunits.pop(clerk_id)
-
-    def del_clerkunit_dir(self, clerk_id: ClerkID):
-        delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
-
-    def full_setup_clerkunit(self, owner_id: OwnerID):
-        self.add_clerkunit(owner_id)
-        requestee_clerkunit = self.get_clerkunit(owner_id)
-        requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_job_to_jobs()
-
-    def get_owner_file_name(self, x_owner_id: str) -> str:
-        return f"{x_owner_id}.json"
-
     # guts dir management
     def get_guts_dir(self):
         return f"{self.get_object_root_dir()}/guts"
@@ -443,7 +384,8 @@ class EconUnit:
         )
 
     def get_file_in_guts(self, owner_id: str) -> AgendaUnit:
-        return get_agenda_from_json(open_file(self.get_guts_dir(), f"{owner_id}.json"))
+        gut_file_name = self.get_owner_file_name(owner_id)
+        return get_agenda_from_json(open_file(self.get_guts_dir(), gut_file_name))
 
     def delete_file_in_guts(self, x_owner_id: str):
         delete_dir(f"{self.get_guts_dir()}/{self.get_owner_file_name(x_owner_id)}")
@@ -480,6 +422,43 @@ class EconUnit:
 
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
+
+    # ClerkUnit management
+    def get_clerkunits_dir(self):
+        return f"{self.get_object_root_dir()}/clerkunits"
+
+    def get_clerkunit_dir_paths_list(self):
+        return list(
+            dir_files(
+                dir_path=self.get_clerkunits_dir(),
+                delete_extensions=False,
+                include_dirs=True,
+            ).keys()
+        )
+
+    def clerkunit_exists(self, clerk_id: ClerkID):
+        return self._clerkunits.get(clerk_id) != None
+
+    def create_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
+        x_gut = self.get_file_in_guts(clerk_id)
+        x_clerkunit = clerkunit_shop(x_gut, self.get_object_root_dir(), self.econ_id)
+        x_clerkunit.create_core_dir_and_files()
+        self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
+        return self.get_clerkunit(clerk_id)
+
+    def get_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
+        x_clerkunit = self._clerkunits.get(clerk_id)
+        if x_clerkunit is None:
+            raise ClerkUnitdoesnotexist(
+                f"ClerkUnit '{clerk_id}' does not exist in memory."
+            )
+        return x_clerkunit
+
+    def delete_clerkunit(self, clerk_id: ClerkID):
+        self._clerkunits.pop(clerk_id)
+
+    def get_owner_file_name(self, x_owner_id: str) -> str:
+        return f"{x_owner_id}.json"
 
     # agendas_dir to owner_id_agendas_dir management
     def _clerkunit_set_depot_agenda(

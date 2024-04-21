@@ -374,7 +374,7 @@ class PersonUnit:
     def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
         x_econ = self.get_econ(econ_road)
         if x_econ.clerkunit_exists(role._owner_id) == False:
-            x_econ.create_new_clerkunit(role._owner_id)
+            x_econ.create_clerkunit(role._owner_id)
         x_clerkunit = x_econ.get_clerkunit(role._owner_id)
         x_clerkunit.set_role(role)
 

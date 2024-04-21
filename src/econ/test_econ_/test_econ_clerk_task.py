@@ -14,7 +14,7 @@
 #     # GIVEN
 #     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
 #     amer_text = "Amer"
-#     x_econ.create_new_clerkunit(clerk_id=amer_text)
+#     x_econ.create_clerkunit(clerk_id=amer_text)
 #     amer_clerk = x_econ.get_clerkunit(clerk_id=amer_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
 #     laundry_agenda.set_world_id(x_econ.econ_id)
@@ -40,7 +40,7 @@
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
-#     x_econ.create_new_clerkunit(clerk_id=cali_text)
+#     x_econ.create_clerkunit(clerk_id=cali_text)
 #     cali_clerk = x_econ.get_clerkunit(clerk_id=cali_text)
 #     cali_clerk.set_depot_agenda(amer_output)
 #     old_cali_agenda = x_econ.get_refreshed_job(cali_text)
@@ -80,8 +80,8 @@
 #     x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
 #     amer_text = "Amer"
 #     beto_text = "Beto"
-#     x_econ.create_new_clerkunit(clerk_id=amer_text)
-#     x_econ.create_new_clerkunit(clerk_id=beto_text)
+#     x_econ.create_clerkunit(clerk_id=amer_text)
+#     x_econ.create_clerkunit(clerk_id=beto_text)
 #     amer_clerk = x_econ.get_clerkunit(clerk_id=amer_text)
 #     beto_clerk = x_econ.get_clerkunit(clerk_id=beto_text)
 #     # print(f"{beto_clerk=}")
@@ -111,7 +111,7 @@
 #     beto_output = x_econ.get_refreshed_job(beto_text)
 
 #     cali_text = "Cali"
-#     x_econ.create_new_clerkunit(cali_text)
+#     x_econ.create_clerkunit(cali_text)
 #     cali_kichen = x_econ.get_clerkunit(cali_text)
 #     cali_kichen.set_depot_agenda(beto_output)
 #     cali_kichen.set_depot_agenda(amer_output)

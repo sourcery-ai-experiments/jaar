@@ -282,7 +282,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
+    dallas_econ.create_clerkunit(sue_text)
     sue_clerk = dallas_econ.get_clerkunit(sue_text)
     assert sue_clerk.get_role().get_party(bob_text) is None
 
@@ -317,7 +317,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_clean
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
+    dallas_econ.create_clerkunit(sue_text)
     dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
     assert dallas_sue_clerk.get_role().get_party(bob_text) is None
     # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
@@ -328,7 +328,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_clean
     # THEN
     assert dallas_sue_clerk.get_role().get_party(bob_text) != None
     elpaso_econ = sue_person.get_econ(elpaso_road)
-    elpaso_econ.create_new_clerkunit(sue_text)
+    elpaso_econ.create_clerkunit(sue_text)
     elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
     assert elpaso_sue_clerk.get_role().get_party(bob_text) != None
 
@@ -359,7 +359,7 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
+    dallas_econ.create_clerkunit(sue_text)
     dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
     assert dallas_sue_clerk.get_role().get_party(bob_text) is None
     # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
@@ -370,6 +370,6 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     # THEN
     assert dallas_sue_clerk.get_role().get_party(bob_text) != None
     elpaso_econ = sue_person.get_econ(elpaso_road)
-    elpaso_econ.create_new_clerkunit(sue_text)
+    elpaso_econ.create_clerkunit(sue_text)
     elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
     assert elpaso_sue_clerk.get_role().get_party(bob_text) != None

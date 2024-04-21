@@ -5,7 +5,7 @@ from src.econ.econ import EconUnit
 
 # def get_econ_WithLaundryTaskMeldFromOneClerkToAnother(x_econ: EconUnit):
 #     yao_text = "Yao"
-#     x_econ.create_new_clerkunit(clerk_id=yao_text)
+#     x_econ.create_clerkunit(clerk_id=yao_text)
 #     yao_clerk = x_econ.get_clerkunit(clerk_id=yao_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
 #     laundry_agenda.set_world_id(x_econ.econ_id)
@@ -32,7 +32,7 @@ from src.econ.econ import EconUnit
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
-#     x_econ.create_new_clerkunit(clerk_id=cali_text)
+#     x_econ.create_clerkunit(clerk_id=cali_text)
 #     cali_clerk = x_econ.get_clerkunit(clerk_id=cali_text)
 #     cali_clerk.set_depot_agenda(yao_output, "assignment")
 #     old_cali_agenda = x_econ.get_job_agenda(cali_text)

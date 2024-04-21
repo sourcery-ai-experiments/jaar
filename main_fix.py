@@ -149,7 +149,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._owner_id_load(clerk_id=x_clerk_id)
 
     def _owner_id_load(self, clerk_id: str):
-        self.econ_x.create_new_clerkunit(clerk_id=clerk_id)
+        self.econ_x.create_clerkunit(clerk_id=clerk_id)
         self.x_clerk = self.econ_x._clerkunits.get(clerk_id)
         self.clerk_id.setText(self.x_clerk._clerk_id)
         self.refresh_owner_id()
@@ -231,7 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refresh_econ()
 
     def owner_id_insert(self):
-        self.econ_x.create_new_clerkunit(clerk_id=self.clerk_id.text())
+        self.econ_x.create_clerkunit(clerk_id=self.clerk_id.text())
         self.refresh_owner_ids()
 
     def owner_id_update_pid(self):
@@ -246,7 +246,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.refresh_owner_ids()
 
     def owner_id_delete(self):
-        self.econ_x.del_clerkunit_dir(
+        self.econ_x.delete_clerkunit(
             clerk_id=self.owner_ids_table.item(
                 self.owner_ids_table.currentRow(), 0
             ).text()

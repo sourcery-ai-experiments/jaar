@@ -92,7 +92,7 @@ def _delete_and_set_ex3():
     # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w1", env_dir=x_econ.get_object_root_dir()))
     # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w2", env_dir=x_econ.get_object_root_dir()))
     xia_text = "Xia"
-    x_econ.create_new_clerkunit(clerk_id=xia_text)
+    x_econ.create_clerkunit(clerk_id=xia_text)
     bob_text = example_agenda_v002._owner_id
     x_econ.set_clerk_depot_item(xia_text, agenda_owner_id=bob_text)
     # w1_obj = x_econ.get_clerkunit(clerk_id=w1_text)
@@ -118,7 +118,7 @@ def _delete_and_set_ex3():
     # print(f"{x_econ._clerkunits.get(w1_text).get_json=}")
 
     w2_text = "w2"
-    x_econ.create_new_clerkunit(clerk_id=w2_text)
+    x_econ.create_clerkunit(clerk_id=w2_text)
     # , env_dir=x_econ.get_object_root_dir())
     x_econ.save_clerkunit_file(clerk_id=w2_text)
 
@@ -159,11 +159,11 @@ def _delete_and_set_ex5():
     x_p.save_file_to_jobs(ag_4)
     x_p.save_file_to_jobs(ag_5)
 
-    x_p.create_new_clerkunit(clerk_id=ag_1._owner_id)
-    x_p.create_new_clerkunit(clerk_id=ag_2._owner_id)
-    x_p.create_new_clerkunit(clerk_id=ag_3._owner_id)
-    x_p.create_new_clerkunit(clerk_id=ag_4._owner_id)
-    x_p.create_new_clerkunit(clerk_id=ag_5._owner_id)
+    x_p.create_clerkunit(clerk_id=ag_1._owner_id)
+    x_p.create_clerkunit(clerk_id=ag_2._owner_id)
+    x_p.create_clerkunit(clerk_id=ag_3._owner_id)
+    x_p.create_clerkunit(clerk_id=ag_4._owner_id)
+    x_p.create_clerkunit(clerk_id=ag_5._owner_id)
 
     x_p.set_clerk_depot_item(ag_1._owner_id, ag_2._owner_id, 3, 301)
     x_p.set_clerk_depot_item(ag_1._owner_id, ag_3._owner_id, 7, 701)
