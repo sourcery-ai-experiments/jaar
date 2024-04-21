@@ -1,4 +1,4 @@
-from src._road.road import RoadUnit, PersonRoad, PersonID
+from src._road.road import RoadUnit, PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
 from src.instrument.python import (

@@ -1,15 +1,10 @@
 from src._road.road import (
     RoadNode,
     PersonID,
-    PersonRoad,
-    ProblemID,
     HealerID,
-    EconID,
     OwnerID,
     PartyID,
     RoadUnit,
-    EconRoad,
-    AgendaRoad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -514,36 +509,6 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
     )
 
 
-def test_EconRoad_Exists():
-    # GIVEN
-    texas_text = "texas"
-
-    # WHEN
-    texas_econroad = EconRoad(texas_text)
-
-    # THEN
-    assert texas_econroad != None
-    assert texas_econroad == texas_text
-    assert (
-        inspect_getdoc(texas_econroad)
-        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-PersonID
-AgendaRoad"""
-    )
-
-
-def test_ProblemID_exists():
-    # GIVEN
-    empty_str = ""
-    # WHEN
-    x_road = ProblemID(empty_str)
-    # THEN
-    assert x_road == empty_str
-    assert (
-        inspect_getdoc(x_road) == "A RoadNode used to identify a PersonUnit's Problem"
-    )
-
-
 def test_HealerID_exists():
     # GIVEN
     bob_text = "Bob"
@@ -555,16 +520,6 @@ def test_HealerID_exists():
         inspect_getdoc(bob_healer_id)
         == "A RoadNode used to identify a Problem's Healer"
     )
-
-
-def test_EconID_exists():
-    # GIVEN
-    bob_text = "Bob"
-    # WHEN
-    bob_world_id = EconID(bob_text)
-    # THEN
-    assert bob_world_id == bob_text
-    assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Healer's Econ"
 
 
 def test_OwnerID_exists():
@@ -590,46 +545,6 @@ def test_PartyID_exists():
     assert (
         inspect_getdoc(bob_party_id)
         == "Every PartyID object is OwnerID, must follow OwnerID format."
-    )
-
-
-def test_PersonRoad_Exists():
-    # GIVEN
-    problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
-    bob_road = create_road(problem1_road, HealerID("Bob"))
-    texas_road = create_road(bob_road, EconID("texas"))
-    sports_road = create_road(texas_road, "sports")
-
-    # WHEN
-    sports_personroad = PersonRoad(sports_road)
-
-    # THEN
-    assert sports_personroad != None
-    assert sports_personroad == sports_road
-    assert (
-        inspect_getdoc(sports_personroad)
-        == """RodeUnit with nodes seperated by WorldUnit._road_delimiter:
-PersonID (Must Exist)
-RoadUnit"""
-    )
-
-
-def test_AgendaRoad_Exists():
-    # GIVEN
-    texas_road = create_road("Bob", "texas")
-    sports_road = create_road(texas_road, "sports")
-    yao_agendaroad = create_road(texas_road, "Yao")
-
-    # WHEN
-    yao_agendaroad = AgendaRoad(sports_road)
-
-    # THEN
-    assert yao_agendaroad != None
-    assert yao_agendaroad == sports_road
-    assert (
-        inspect_getdoc(yao_agendaroad)
-        == """RodeUnit with nodes seperated by Agenda._road_delimiter that
-starts with WorldID"""
     )
 
 

@@ -7,7 +7,7 @@ from src._road.road import (
     create_road as road_create_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
-    EconID,
+    WorldID,
 )
 from src.agenda.meld import get_meld_default
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
@@ -230,7 +230,7 @@ class IdeaUnit:
     _parent_road: RoadUnit = None
     _root: bool = None
     _kids: dict = None
-    _agenda_world_id: EconID = None
+    _agenda_world_id: WorldID = None
     _uid: int = None  # Calculated field?
     _balancelinks: dict[GroupID:BalanceLink] = None
     _balanceheirs: dict[GroupID:BalanceHeir] = None  # Calculated field
@@ -1114,7 +1114,7 @@ def ideaunit_shop(
     _originunit: OriginUnit = None,
     _meld_strategy: str = None,
     _root: bool = None,
-    _agenda_world_id: EconID = None,
+    _agenda_world_id: WorldID = None,
     _problem_bool: bool = None,
     # Calculated fields
     _level: int = None,

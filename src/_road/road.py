@@ -24,12 +24,6 @@ class PersonID(RoadNode):  # Created to help track the concept
     pass
 
 
-class ProblemID(RoadNode):  # Created to help track the concept
-    """A RoadNode used to identify a PersonUnit's Problem"""
-
-    pass
-
-
 class HealerID(PersonID):
     """A RoadNode used to identify a Problem's Healer"""
 
@@ -38,12 +32,6 @@ class HealerID(PersonID):
 
 class ClerkID(PersonID):
     """A RoadNode used to identify a ClerkUnit's user"""
-
-    pass
-
-
-class EconID(RoadNode):  # Created to help track the concept
-    """A RoadNode used to identify a Healer's Econ"""
 
     pass
 
@@ -62,29 +50,6 @@ class PartyID(OwnerID):  # Created to help track the concept
 
 class RoadUnit(str):
     """A string presentation of a tree path. RoadNodes are seperated by road delimiter"""
-
-    pass
-
-
-class PersonRoad(RoadUnit):
-    """RodeUnit with nodes seperated by WorldUnit._road_delimiter:
-    PersonID (Must Exist)
-    RoadUnit"""
-
-    pass
-
-
-class EconRoad(RoadUnit):
-    """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-    PersonID
-    AgendaRoad"""
-
-    pass
-
-
-class AgendaRoad(RoadUnit):
-    """RodeUnit with nodes seperated by Agenda._road_delimiter that
-    starts with WorldID"""
 
     pass
 

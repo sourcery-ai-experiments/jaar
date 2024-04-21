@@ -1,54 +1,99 @@
-# from src._road.road import default_road_delimiter_if_none
-# from src.agenda.agenda import agendaunit_shop
-# from src.instrument.file import delete_dir
-# from src.econ.clerk import clerkunit_shop, ClerkUnit
-# from src.econ.examples.clerk_env_kit import (
-#     clerk_dir_setup_cleanup,
-#     get_temp_clerkunit_dir,
-#     get_temp_econ_id,
-# )
-# from os import path as os_path
+from src._road.road import default_road_delimiter_if_none
+from src.agenda.agenda import agendaunit_shop
+from src.instrument.file import delete_dir
+from src.econ.clerk import clerkunit_shop, ClerkUnit
+from src.econ.econ import get_econ_jobs_dir, get_econ_guts_dir
+from src.econ.examples.clerk_env_kit import (
+    clerk_dir_setup_cleanup,
+    get_temp_clerkunit_dir,
+    get_temp_econ_id,
+)
+from os import path as os_path
 
 
-# def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
-#     # GIVEN / WHEN
-#     x_clerk = ClerkUnit()
+def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
+    # GIVEN / WHEN
+    x_clerk = ClerkUnit()
 
-#     # GIVEN
-#     assert x_clerk != None
-#     assert x_clerk._role is None
-#     assert x_clerk._clerk_id is None
-#     assert x_clerk._env_dir is None
-#     assert x_clerk._econ_id is None
-#     assert x_clerk._clerkunit_dir is None
-#     assert x_clerk._clerkunits_dir is None
-#     assert x_clerk._role_file_name is None
-#     assert x_clerk._role_file_path is None
-#     assert x_clerk._job_file_name is None
-#     assert x_clerk._job_file_path is None
-#     assert x_clerk._jobs_file_name is None
-#     assert x_clerk._jobs_dir is None
-#     assert x_clerk._agendas_depot_dir is None
-#     assert x_clerk._agendas_digest_dir is None
-#     assert x_clerk._road_delimiter is None
+    # GIVEN
+    assert x_clerk != None
+    assert x_clerk._clerk_id is None
+    assert x_clerk._env_dir is None
+    assert x_clerk._guts_dir is None
+    assert x_clerk._jobs_dir is None
+    assert x_clerk._role_file_path is None
+    assert x_clerk._road_delimiter is None
+    assert x_clerk._role is None
+    assert x_clerk._roll is None
 
 
-# def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_role = agendaunit_shop(yao_text)
+def test_ClerkUnit_set_clerk_id_SetsArribute(clerk_dir_setup_cleanup):
+    # GIVEN
+    x_clerk = ClerkUnit()
+    assert x_clerk._clerk_id is None
 
-#     # WHEN
-#     x_clerk = clerkunit_shop(yao_role, get_temp_clerkunit_dir(), get_temp_econ_id())
+    # WHEN
+    tim_text = "Tim"
+    x_clerk.set_clerk_id(tim_text)
 
-#     # GIVEN
-#     assert x_clerk._clerk_id != None
-#     assert x_clerk._clerk_id == yao_text
-#     assert x_clerk._econ_id != None
-#     assert x_clerk._econ_id == get_temp_econ_id()
-#     assert x_clerk._road_delimiter == yao_role._road_delimiter
-#     assert x_clerk._role != None
-#     assert x_clerk._role._world_id == yao_role._world_id
+    # THEN
+    assert x_clerk._clerk_id == tim_text
+
+
+def test_ClerkUnit_set_env_dir_SetsArribute(clerk_dir_setup_cleanup):
+    # GIVEN
+    x_clerk = ClerkUnit()
+    assert x_clerk._env_dir is None
+
+    # WHEN
+    x_dir = get_temp_clerkunit_dir()
+    x_clerk.set_env_dir(x_dir)
+
+    # THEN
+    assert x_clerk._env_dir == x_dir
+
+
+def test_ClerkUnit_set_road_delimiter_SetsArribute(clerk_dir_setup_cleanup):
+    # GIVEN
+    x_clerk = ClerkUnit()
+    assert x_clerk._road_delimiter is None
+
+    # WHEN
+    slash_text = "/"
+    x_clerk.set_road_delimiter(slash_text)
+
+    # THEN
+    assert x_clerk._road_delimiter == slash_text
+
+
+def test_ClerkUnit_set_clerkunit_dirs_SetsArributes(clerk_dir_setup_cleanup):
+    # GIVEN
+    x_clerk = ClerkUnit()
+    tim_text = "Tim"
+    x_clerk.set_clerk_id(tim_text)
+    x_dir = get_temp_clerkunit_dir()
+    x_clerk.set_env_dir(x_dir)
+
+    # WHEN
+    x_clerk.set_clerkunit_dirs()
+
+    # THEN
+    assert x_clerk._guts_dir == get_econ_guts_dir(x_dir)
+    assert x_clerk._jobs_dir == get_econ_jobs_dir(x_dir)
+
+
+def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "Yao"
+
+    # WHEN
+    x_clerk = clerkunit_shop(yao_text, get_temp_clerkunit_dir())
+
+    # GIVEN
+    assert x_clerk._clerk_id != None
+    assert x_clerk._clerk_id == yao_text
+    assert x_clerk._env_dir == get_temp_clerkunit_dir()
+    assert x_clerk._role is None
 
 
 # # def test_clerkunit_auto_output_job_to_jobs_SavesAgendaTojobsDirWhenTrue(

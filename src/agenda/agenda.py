@@ -18,6 +18,7 @@ from src._road.road import (
     OwnerID,
     PartyID,
     HealerID,
+    WorldID,
     is_roadunit_convertible_to_path,
 )
 from src._road.finance import get_planck_valid, default_planck_if_none
@@ -60,7 +61,6 @@ from src.agenda.idea import (
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
-    EconID,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
@@ -121,7 +121,7 @@ class healerhold_group_id_Exception(Exception):
 
 @dataclass
 class AgendaUnit:
-    _world_id: str = None
+    _world_id: WorldID = None
     _owner_id: OwnerID = None
     _last_gift_id: int = None
     _weight: float = None
@@ -2284,7 +2284,7 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _owner_id: OwnerID = None,
-    _world_id: EconID = None,
+    _world_id: WorldID = None,
     _weight: float = None,
     _road_delimiter: str = None,
     _planck: float = None,

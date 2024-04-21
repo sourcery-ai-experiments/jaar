@@ -4,7 +4,7 @@ from src.econ.econ import (
     set_treasury_partytreasuryunits_to_agenda_partyunits,
 )
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_econ_id,
+    get_temp_env_world_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -27,7 +27,7 @@ def test_econ_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -156,7 +156,7 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
 
 def test_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -225,7 +225,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     bob_text = "Bob"
     tim_text = "Tim"
@@ -406,7 +406,7 @@ def test_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPop
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     bob_text = "Bob"
     tom_text = "Tom"

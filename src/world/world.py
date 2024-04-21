@@ -1,7 +1,7 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, WorldID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
-from src.econ.econ import EconUnit, EconID
+from src.econ.econ import EconUnit
 from src.world.gift import GiftUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
@@ -160,28 +160,6 @@ class WorldUnit:
         x_econ.create_clerkunit(gut_agenda._owner_id)
         x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
         x_clerk.save_role_agenda(gut_agenda)
-
-    def add_econ_connection(
-        self,
-        treasurer_person_id: PersonID,
-        econ_id: EconID,
-        clerk_person_id: PersonID,
-    ):
-        if self.personunit_exists(treasurer_person_id) == False:
-            self.add_personunit(treasurer_person_id)
-        x_personunit = self.get_personunit(treasurer_person_id)
-
-        if x_personunit.econunit_exists(econ_id) == False:
-            x_personunit.set_econunit(econ_id)
-        x_econ = x_personunit.get_econunit(econ_id)
-
-        if self.personunit_exists(clerk_person_id) == False:
-            self.add_personunit(clerk_person_id)
-
-        if x_econ.clerkunit_exists(treasurer_person_id) == False:
-            x_econ.add_clerkunit(treasurer_person_id)
-        if x_econ.clerkunit_exists(clerk_person_id) == False:
-            x_econ.add_clerkunit(clerk_person_id)
 
     def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)

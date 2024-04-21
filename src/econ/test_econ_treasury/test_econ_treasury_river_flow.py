@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_econ_id,
+    get_temp_env_world_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -32,7 +32,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -108,7 +108,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -182,7 +182,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -263,7 +263,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -348,7 +348,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -414,7 +414,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -500,7 +500,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -569,7 +569,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"

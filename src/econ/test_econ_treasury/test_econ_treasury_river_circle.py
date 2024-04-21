@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_econ_id,
+    get_temp_env_world_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -16,7 +16,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -55,7 +55,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"

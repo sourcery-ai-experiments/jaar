@@ -870,7 +870,7 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
     assert new_premises_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_ChangeEconIDScenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Change_world_id_Scenario():
     # GIVEN
     old_world_id = "El Paso"
     casa_text = "casa"

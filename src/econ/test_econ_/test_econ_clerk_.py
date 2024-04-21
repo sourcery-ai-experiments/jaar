@@ -3,7 +3,7 @@ from src.econ.econ import econunit_shop
 from src.econ.clerk import clerkunit_shop
 from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
-    get_temp_env_econ_id,
+    get_temp_env_world_id,
     env_dir_setup_cleanup,
     get_test_econ_dir,
 )
@@ -13,8 +13,8 @@ from pytest import raises as pytest_raises
 
 def test_EconUnit_create_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
-    print(f"create env '{get_temp_env_econ_id()}' directories.")
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    print(f"create env '{get_temp_env_world_id()}' directories.")
     yao_text = "Yao"
     yao_dir = f"{x_econ.get_clerkunits_dir()}/{yao_text}"
     yao_agenda = agendaunit_shop(yao_text)
@@ -35,7 +35,7 @@ def test_EconUnit_create_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
 def test_EconUnit_clerkunit_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.save_file_to_guts(agendaunit_shop(yao_text))
     assert x_econ.clerkunit_exists(yao_text) == False
 
@@ -49,7 +49,7 @@ def test_EconUnit_clerkunit_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_delete_clerkunit_DeletesCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.save_file_to_guts(agendaunit_shop(yao_text))
     yao_dir = f"{x_econ.get_clerkunits_dir()}/{yao_text}"
     assert os_path.exists(yao_dir) == False
@@ -69,7 +69,7 @@ def test_EconUnit_delete_clerkunit_DeletesCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_get_clerkunit_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.save_file_to_guts(agendaunit_shop(yao_text))
     x_econ.create_clerkunit(clerk_id=yao_text)
     assert x_econ.clerkunit_exists(yao_text)
@@ -84,7 +84,7 @@ def test_EconUnit_get_clerkunit_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_get_clerkunit_RaisesCorrectError(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     assert x_econ.clerkunit_exists(yao_text) == False
 
     # WHEN / THEN
@@ -95,7 +95,7 @@ def test_EconUnit_get_clerkunit_RaisesCorrectError(env_dir_setup_cleanup):
 
 def test_EconUnit_create_clerkunit_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     yao_text = "Yao"
     x_econ.save_file_to_guts(agendaunit_shop(yao_text))
 

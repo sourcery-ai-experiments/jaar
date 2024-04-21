@@ -1,4 +1,4 @@
-from src.agenda.idea import ideaunit_shop, IdeaAttrFilter, IdeaUnit, EconID
+from src.agenda.idea import ideaunit_shop, IdeaAttrFilter, IdeaUnit
 from src.agenda.group import BalanceLink, GroupID, balancelink_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,

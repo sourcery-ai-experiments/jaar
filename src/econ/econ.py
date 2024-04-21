@@ -6,7 +6,7 @@ from src._road.road import (
     HealerID,
     PersonID,
     PartyID,
-    EconID,
+    WorldID,
     validate_roadnode,
 )
 from src.agenda.agenda import (
@@ -23,7 +23,13 @@ from src.instrument.file import (
     dir_files,
 )
 from src.instrument.python import get_empty_dict_if_none
-from src.econ.clerk import ClerkUnit, clerkunit_shop, ClerkID
+from src.econ.clerk import (
+    ClerkUnit,
+    clerkunit_shop,
+    ClerkID,
+    get_econ_guts_dir,
+    get_econ_jobs_dir,
+)
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.econ.treasury_sqlstr import (
@@ -60,7 +66,7 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def get_temp_env_econ_id():
+def get_temp_env_world_id():
     return "ex_econ04"
 
 
@@ -90,7 +96,7 @@ def treasury_db_filename() -> str:
 
 @dataclass
 class EconUnit:
-    econ_id: EconID = None
+    world_id: WorldID = None
     econ_dir: str = None
     _manager_person_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
@@ -98,8 +104,8 @@ class EconUnit:
     _road_delimiter: str = None
 
     # Admin
-    def set_econ_id(self, econ_id: str):
-        self.econ_id = validate_roadnode(econ_id, self._road_delimiter)
+    def set_world_id(self, world_id: str):
+        self.world_id = validate_roadnode(world_id, self._road_delimiter)
 
     def get_object_root_dir(self):
         return self.econ_dir
@@ -373,10 +379,10 @@ class EconUnit:
 
     # guts dir management
     def get_guts_dir(self):
-        return f"{self.get_object_root_dir()}/guts"
+        return get_econ_guts_dir(self.get_object_root_dir())
 
     def save_file_to_guts(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.econ_id)
+        x_agenda.set_world_id(world_id=self.world_id)
         save_file(
             dest_dir=self.get_guts_dir(),
             file_name=self.get_owner_file_name(x_agenda._owner_id),
@@ -392,10 +398,10 @@ class EconUnit:
 
     # jobs dir management
     def get_jobs_dir(self):
-        return f"{self.get_object_root_dir()}/jobs"
+        return get_econ_jobs_dir(self.get_object_root_dir())
 
     def save_file_to_jobs(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.econ_id)
+        x_agenda.set_world_id(world_id=self.world_id)
         save_file(
             dest_dir=self.get_jobs_dir(),
             file_name=self.get_owner_file_name(x_agenda._owner_id),
@@ -441,7 +447,7 @@ class EconUnit:
 
     def create_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
         x_gut = self.get_file_in_guts(clerk_id)
-        x_clerkunit = clerkunit_shop(x_gut, self.get_object_root_dir(), self.econ_id)
+        x_clerkunit = clerkunit_shop(x_gut, self.get_object_root_dir())
         x_clerkunit.create_core_dir_and_files()
         self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
         return self.get_clerkunit(clerk_id)
@@ -497,10 +503,10 @@ class EconUnit:
 
     def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
         if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.econ_id
+            return self.world_id
         else:
             return create_road(
-                parent_road=self.econ_id,
+                parent_road=self.world_id,
                 terminus_node=road_wo_econ_root,
                 delimiter=self._road_delimiter,
             )
@@ -542,7 +548,7 @@ class EconUnit:
 
 
 def econunit_shop(
-    econ_id: EconID,
+    world_id: WorldID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
     _clerkunits: dict[OwnerID:ClerkUnit] = None,
@@ -552,7 +558,7 @@ def econunit_shop(
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
-        econ_dir = f"/{econ_id}"
+        econ_dir = f"/{world_id}"
     econ_x = EconUnit(
         econ_dir=econ_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
@@ -560,7 +566,7 @@ def econunit_shop(
     if _manager_person_id is None:
         _manager_person_id = get_temp_env_person_id()
     econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_econ_id(econ_id=econ_id)
+    econ_x.set_world_id(world_id=world_id)
     econ_x._manager_person_id = _manager_person_id
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x
