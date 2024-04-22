@@ -29,6 +29,9 @@ from src.econ.clerk import (
     ClerkID,
     get_econ_guts_dir,
     get_econ_jobs_dir,
+    save_file_to_guts,
+    save_file_to_jobs,
+    get_owner_file_name,
 )
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -383,18 +386,14 @@ class EconUnit:
 
     def save_file_to_guts(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.world_id)
-        save_file(
-            dest_dir=self.get_guts_dir(),
-            file_name=self.get_owner_file_name(x_agenda._owner_id),
-            file_text=x_agenda.get_json(),
-        )
+        save_file_to_guts(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_guts(self, owner_id: str) -> AgendaUnit:
-        gut_file_name = self.get_owner_file_name(owner_id)
+        gut_file_name = get_owner_file_name(owner_id)
         return get_agenda_from_json(open_file(self.get_guts_dir(), gut_file_name))
 
     def delete_file_in_guts(self, x_owner_id: str):
-        delete_dir(f"{self.get_guts_dir()}/{self.get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_guts_dir()}/{get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
@@ -402,19 +401,15 @@ class EconUnit:
 
     def save_file_to_jobs(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.world_id)
-        save_file(
-            dest_dir=self.get_jobs_dir(),
-            file_name=self.get_owner_file_name(x_agenda._owner_id),
-            file_text=x_agenda.get_json(),
-        )
+        save_file_to_jobs(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
         return get_agenda_from_json(
-            open_file(self.get_jobs_dir(), self.get_owner_file_name(owner_id))
+            open_file(self.get_jobs_dir(), get_owner_file_name(owner_id))
         )
 
     def delete_file_in_jobs(self, x_owner_id: str):
-        delete_dir(f"{self.get_jobs_dir()}/{self.get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
     def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
         x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
@@ -446,9 +441,7 @@ class EconUnit:
         return self._clerkunits.get(clerk_id) != None
 
     def create_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
-        x_gut = self.get_file_in_guts(clerk_id)
-        x_clerkunit = clerkunit_shop(x_gut, self.get_object_root_dir())
-        x_clerkunit.create_core_dir_and_files()
+        x_clerkunit = clerkunit_shop(clerk_id, self.econ_dir)
         self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
         return self.get_clerkunit(clerk_id)
 
@@ -462,9 +455,6 @@ class EconUnit:
 
     def delete_clerkunit(self, clerk_id: ClerkID):
         self._clerkunits.pop(clerk_id)
-
-    def get_owner_file_name(self, x_owner_id: str) -> str:
-        return f"{x_owner_id}.json"
 
     # agendas_dir to owner_id_agendas_dir management
     def _clerkunit_set_depot_agenda(

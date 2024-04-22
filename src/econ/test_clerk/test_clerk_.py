@@ -3,22 +3,22 @@ from src.agenda.agenda import agendaunit_shop
 from src.instrument.file import delete_dir
 from src.econ.clerk import clerkunit_shop, ClerkUnit
 from src.econ.econ import get_econ_jobs_dir, get_econ_guts_dir
-from src.econ.examples.clerk_env_kit import (
-    clerk_dir_setup_cleanup,
-    get_temp_clerkunit_dir,
-    get_temp_econ_id,
+from src.econ.examples.econ_env_kit import (
+    env_dir_setup_cleanup,
+    get_test_econ_dir,
+    get_temp_env_world_id,
 )
 from os import path as os_path
 
 
-def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
+def test_ClerkUnit_exists():
     # GIVEN / WHEN
     x_clerk = ClerkUnit()
 
     # GIVEN
     assert x_clerk != None
     assert x_clerk._clerk_id is None
-    assert x_clerk._env_dir is None
+    assert x_clerk._econ_dir is None
     assert x_clerk._guts_dir is None
     assert x_clerk._jobs_dir is None
     assert x_clerk._role_file_path is None
@@ -27,7 +27,7 @@ def test_ClerkUnit_exists(clerk_dir_setup_cleanup):
     assert x_clerk._roll is None
 
 
-def test_ClerkUnit_set_clerk_id_SetsArribute(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_clerk_id_SetsArribute():
     # GIVEN
     x_clerk = ClerkUnit()
     assert x_clerk._clerk_id is None
@@ -40,20 +40,20 @@ def test_ClerkUnit_set_clerk_id_SetsArribute(clerk_dir_setup_cleanup):
     assert x_clerk._clerk_id == tim_text
 
 
-def test_ClerkUnit_set_env_dir_SetsArribute(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_econ_dir_SetsArribute():
     # GIVEN
     x_clerk = ClerkUnit()
-    assert x_clerk._env_dir is None
+    assert x_clerk._econ_dir is None
 
     # WHEN
-    x_dir = get_temp_clerkunit_dir()
-    x_clerk.set_env_dir(x_dir)
+    x_dir = get_test_econ_dir()
+    x_clerk.set_econ_dir(x_dir)
 
     # THEN
-    assert x_clerk._env_dir == x_dir
+    assert x_clerk._econ_dir == x_dir
 
 
-def test_ClerkUnit_set_road_delimiter_SetsArribute(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_road_delimiter_SetsArribute():
     # GIVEN
     x_clerk = ClerkUnit()
     assert x_clerk._road_delimiter is None
@@ -66,38 +66,38 @@ def test_ClerkUnit_set_road_delimiter_SetsArribute(clerk_dir_setup_cleanup):
     assert x_clerk._road_delimiter == slash_text
 
 
-def test_ClerkUnit_set_clerkunit_dirs_SetsArributes(clerk_dir_setup_cleanup):
+def test_ClerkUnit_set_clerkunit_dirs_SetsArributes():
     # GIVEN
     x_clerk = ClerkUnit()
     tim_text = "Tim"
     x_clerk.set_clerk_id(tim_text)
-    x_dir = get_temp_clerkunit_dir()
-    x_clerk.set_env_dir(x_dir)
+    x_dir = get_test_econ_dir()
+    x_clerk.set_econ_dir(x_dir)
 
     # WHEN
-    x_clerk.set_clerkunit_dirs()
+    x_clerk._set_clerkunit_dirs()
 
     # THEN
     assert x_clerk._guts_dir == get_econ_guts_dir(x_dir)
     assert x_clerk._jobs_dir == get_econ_jobs_dir(x_dir)
 
 
-def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
+def test_clerkunit_shop_CorrectlyLoads(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
 
     # WHEN
-    x_clerk = clerkunit_shop(yao_text, get_temp_clerkunit_dir())
+    x_clerk = clerkunit_shop(yao_text, get_test_econ_dir())
 
     # GIVEN
     assert x_clerk._clerk_id != None
     assert x_clerk._clerk_id == yao_text
-    assert x_clerk._env_dir == get_temp_clerkunit_dir()
+    assert x_clerk._econ_dir == get_test_econ_dir()
     assert x_clerk._role is None
 
 
 # # def test_clerkunit_auto_output_job_to_jobs_SavesAgendaTojobsDirWhenTrue(
-# #     clerk_dir_setup_cleanup,
+# #     env_dir_setup_cleanup,
 # # ):
 # #     # GIVEN
 # #     env_dir = get_temp_clerkunit_dir()
@@ -121,7 +121,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # # def test_clerkunit_auto_output_job_to_jobs_DoesNotSaveAgendaTojobsDirWhenFalse(
-# #     clerk_dir_setup_cleanup,
+# #     env_dir_setup_cleanup,
 # # ):
 # #     # GIVEN
 # #     env_dir = get_temp_clerkunit_dir()
@@ -143,17 +143,17 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # def test_clerkunit_get_role_createsEmptyAgendaWhenFileDoesNotExist(
-#     clerk_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     slash_text = "/"
 #     tim_clerk = ClerkUnit(
 #         _clerk_id="Tim",
-#         _env_dir=get_temp_clerkunit_dir(),
+#         _econ_dir=get_temp_clerkunit_dir(),
 #         _econ_id=get_temp_econ_id(),
 #         _road_delimiter=slash_text,
 #     )
-#     tim_clerk.set_env_dir(
+#     tim_clerk.set_econ_dir(
 #         env_dir=get_temp_clerkunit_dir(),
 #         clerk_id="Tim",
 #         econ_id=get_temp_econ_id(),
@@ -177,7 +177,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # def test_clerkunit_get_role_getsMemoryAgendaIfExists(
-#     clerk_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     tim_text = "Tim"
@@ -207,7 +207,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # def test_clerkunit_set_role_savesroleAgendaSet_role_None(
-#     clerk_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     tim_text = "Tim"
@@ -231,7 +231,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # def test_clerkunit_set_role_savesGivenAgendaSet_role_None(
-#     clerk_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     tim_text = "Tim"
@@ -276,7 +276,7 @@ def test_clerkunit_shop_exists(clerk_dir_setup_cleanup):
 
 
 # def test_clerkunit_set_role_if_emtpy_DoesNotReplace_role(
-#     clerk_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     tim_text = "Tim"

@@ -111,7 +111,7 @@
 
 #     # WHEN
 #     x_agenda = example_get_7nodeJRootWithH_agenda()
-#     jul_clerkunit.create_core_dir_and_files(x_agenda)
+
 
 #     # THEN check agendas src directory created
 #     print(f"Checking {jul_clerkunit._clerkunits_dir=}")
@@ -133,7 +133,6 @@
 #     jul_clerkunit = clerkunit_shop(jul_text, env_dir, get_temp_econ_id())
 #     jul_clerkunit.set_clerkunit_dirs()
 #     x_agenda = example_get_7nodeJRootWithH_agenda()
-#     jul_clerkunit.create_core_dir_and_files(x_agenda)
 #     assert os_path_exists(jul_clerkunit._role_file_path)
 #     # jul_cx = agenda_get_from_json(open_file(jul_clerkunit._role_file_path))
 #     ex1 = "teesting text"
@@ -145,7 +144,7 @@
 #     assert open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._role_file_name) == ex1
 
 #     # WHEN
-#     jul_clerkunit.create_core_dir_and_files(x_agenda)
+
 
 #     # THEN
 #     assert open_file(jul_clerkunit._clerkunit_dir, jul_clerkunit._role_file_name) == ex1
@@ -159,7 +158,7 @@
 #     jul_clerkunit = clerkunit_shop(old_bob_text, env_dir, get_temp_econ_id())
 #     x_agenda = example_get_7nodeJRootWithH_agenda()
 #     jul_clerkunit.set_clerkunit_dirs()
-#     jul_clerkunit.create_core_dir_and_files(x_agenda)
+
 #     old_clerkunit_dir = jul_clerkunit._clerkunit_dir
 #     # old_clerkunit_dir = f"{env_dir}/clerkunits/{old_healer_text}"
 #     print(f"{jul_clerkunit._clerkunit_dir}")

@@ -95,7 +95,7 @@
 #     cali_clerkunit = clerkunit_shop(
 #         cali_text, get_temp_clerkunit_dir(), get_temp_econ_id()
 #     )
-#     cali_clerkunit.create_core_dir_and_files()
+#     cali_clerkunit.create_core_dir_aand_files()
 #     cali_clerkunit.set_role_if_empty()
 #     cali_clerkunit._save_agenda_to_depot(amer_agenda)
 #     assert cali_clerkunit.get_role().get_party(amer_agenda._owner_id) is None
