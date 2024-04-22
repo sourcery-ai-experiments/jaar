@@ -8,7 +8,9 @@ from src.econ.examples.econ_env_kit import (
 from src.econ.treasury_sqlstr import get_agendatreasuryunits_dict
 
 
-def test_econ_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_cleanup):
+def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
+    env_dir_setup_cleanup,
+):
     # GIVEN
     world_id = get_temp_env_world_id()
     x_econ = econunit_shop(world_id, get_test_econ_dir())
@@ -22,7 +24,7 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectEmptyObj(env_dir_setup_clea
     assert len(x_agendatreasuryunits) == 0
 
 
-def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
+def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
     # GIVEN
     world_id = get_temp_env_world_id()
     x_econ = econunit_shop(world_id, get_test_econ_dir())
@@ -68,7 +70,7 @@ def test_econ_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_clean
     assert x_agendatreasuryunits.get(elu_text).rational is None
 
 
-def test_econ_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
+def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN

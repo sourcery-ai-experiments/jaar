@@ -33,7 +33,7 @@ from src.econ.examples.example_clerks import (
 from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -59,7 +59,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMem
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -85,7 +85,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 1
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable01(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -133,7 +133,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable
     assert get_single_result(x_econ.get_treasury_conn(), partyunit_count_sqlstr) == 12
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -162,7 +162,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -191,7 +191,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     assert get_single_result(x_econ.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupunit(
+def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupunit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -221,7 +221,7 @@ def test_econ_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupu
     assert get_single_result(x_econ.get_treasury_conn(), sqlstr) == 3
 
 
-def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
+def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -291,7 +291,7 @@ def test_econ_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
-def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_EconUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -315,7 +315,7 @@ def test_econ_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 1
 
 
-def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
+def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -348,7 +348,7 @@ def test_econ_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
         assert get_agenda_ideaunit_row_count(treasury_conn, sal_text) == 5
 
 
-def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+def test_EconUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
@@ -386,7 +386,7 @@ def test_econ_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup)
     assert len(get_agenda_ideaunit_dict(x_econ.get_treasury_conn(), ex_road)) == 4
 
 
-def test_econ_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -471,7 +471,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
         assert get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text) == 1
 
 
-def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_EconUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
@@ -497,7 +497,7 @@ def test_econ_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01
     assert get_agenda_groupunit_row_count(treasury_conn, bob_text) == 1
 
 
-def test_get_agenda_groupunit_dict_ReturnsGroupUnitData(
+def test_EconUnit_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN

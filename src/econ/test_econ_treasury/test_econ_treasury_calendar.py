@@ -122,7 +122,7 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.task == x_task
 
 
-def test_econ_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
+def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -183,7 +183,7 @@ def test_econ_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
 
 
-def test_econ_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
+def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
     # GIVEN
     # A agenda that has 1 intent item
     world_id = get_temp_env_world_id()
@@ -210,7 +210,7 @@ def test_econ_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError()
     )
 
 
-def test_econ_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
+def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A agenda that has 1 intent item
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())

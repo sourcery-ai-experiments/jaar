@@ -28,7 +28,7 @@ WHERE _treasury_due_paid IS NOT NULL
 """
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable01(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -104,7 +104,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     assert river_sal_due_tom.due_total == 0.75
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable03(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable03(
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
@@ -178,7 +178,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     assert river_sal_due_tom.due_total == 0.7
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable04(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable04(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
@@ -259,7 +259,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     assert river_sal_due_tom.due_total == 0.7
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable05_v1(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable05_v1(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -344,7 +344,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     assert round(river_sal_due_tom.due_total, 15) == 0.7
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -410,7 +410,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     )
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable05(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTable05(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -496,7 +496,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunitTabl
     assert round(river_sal_due_tom.due_total, 15) == 0.7
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
@@ -564,7 +564,7 @@ def test_econ_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRange(
         assert get_single_result(treasury_conn, count_range_fails_sql) == 0
 
 
-def test_econ_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
+def test_EconUnit_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     env_dir_setup_cleanup,
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""

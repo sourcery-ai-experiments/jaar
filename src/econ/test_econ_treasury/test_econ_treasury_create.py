@@ -30,7 +30,7 @@ def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
     return True
 
 
-def test_econ_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
+def test_EconUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create econ
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 

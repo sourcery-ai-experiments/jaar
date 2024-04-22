@@ -83,7 +83,7 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     delete_dir(temp_dir)
 
 
-def test_econ_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
+def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
     env_dir_setup_cleanup,
 ):
     # GIVEN
