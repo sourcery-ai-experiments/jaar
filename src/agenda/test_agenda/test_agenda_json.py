@@ -427,17 +427,53 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     # GIVEN
     slash_delimiter = "/"
-    a_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
-    assert a_bob_agenda._road_delimiter != default_road_delimiter_if_none()
+    before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
+    assert before_bob_agenda._road_delimiter != default_road_delimiter_if_none()
 
     # WHEN
-    bob_json = a_bob_agenda.get_json()
-    b_bob_agenda = agenda_get_from_json(bob_json)
+    bob_json = before_bob_agenda.get_json()
+    after_bob_agenda = agenda_get_from_json(bob_json)
 
     # THEN
-    assert b_bob_agenda._road_delimiter != default_road_delimiter_if_none()
-    assert b_bob_agenda._road_delimiter == slash_delimiter
-    assert b_bob_agenda._road_delimiter == a_bob_agenda._road_delimiter
+    assert after_bob_agenda._road_delimiter != default_road_delimiter_if_none()
+    assert after_bob_agenda._road_delimiter == slash_delimiter
+    assert after_bob_agenda._road_delimiter == before_bob_agenda._road_delimiter
+
+
+def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample():
+    # GIVEN
+    slash_delimiter = "/"
+    before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
+    bob_text = ",Bob"
+    before_bob_agenda.add_partyunit(bob_text)
+    assert before_bob_agenda.get_party(bob_text) != None
+
+    # WHEN
+    bob_json = before_bob_agenda.get_json()
+    after_bob_agenda = agenda_get_from_json(bob_json)
+
+    # THEN
+    after_bob_partyunit = after_bob_agenda.get_party(bob_text)
+    assert after_bob_partyunit._road_delimiter == slash_delimiter
+
+
+def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_GroupExample():
+    # GIVEN
+    slash_delimiter = "/"
+    before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
+    swimmers_text = f"{slash_delimiter}Swimmers"
+    before_bob_agenda.set_groupunit(
+        groupunit_shop(swimmers_text, _road_delimiter=slash_delimiter)
+    )
+    assert before_bob_agenda.get_groupunit(swimmers_text) != None
+
+    # WHEN
+    bob_json = before_bob_agenda.get_json()
+    after_bob_agenda = agenda_get_from_json(bob_json)
+
+    # THEN
+    after_bob_groupunit = after_bob_agenda.get_groupunit(swimmers_text)
+    assert after_bob_groupunit._road_delimiter == slash_delimiter
 
 
 def test_agenda_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():

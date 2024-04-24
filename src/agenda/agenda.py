@@ -645,6 +645,7 @@ class AgendaUnit:
             party_id=party_id,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
+            _road_delimiter=self._road_delimiter,
         )
         self.set_partyunit(partyunit=partyunit)
 
@@ -664,7 +665,10 @@ class AgendaUnit:
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                partyunit.party_id, _party_mirror=True, _partys=partylinks
+                partyunit.party_id,
+                _party_mirror=True,
+                _partys=partylinks,
+                _road_delimiter=self._road_delimiter,
             )
             self.set_groupunit(y_groupunit=group_unit)
 
@@ -741,6 +745,8 @@ class AgendaUnit:
         replace: bool = True,
         add_partylinks: bool = None,
     ):
+        if y_groupunit._road_delimiter != self._road_delimiter:
+            y_groupunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
         if add_partylinks is None:
@@ -2351,10 +2357,13 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
             agenda_dict, "_meld_strategy"
         )
     x_agenda._last_gift_id = get_obj_from_agenda_dict(agenda_dict, "_last_gift_id")
-    for x_partyunit in get_obj_from_agenda_dict(agenda_dict, "_partys").values():
+    for x_partyunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_partys", _road_delimiter=x_agenda._road_delimiter
+    ).values():
         x_agenda.set_partyunit(x_partyunit)
-    print(f"{x_agenda._road_delimiter=}")
-    for x_groupunit in get_obj_from_agenda_dict(agenda_dict, "_groups").values():
+    for x_groupunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_groups", _road_delimiter=x_agenda._road_delimiter
+    ).values():
         x_agenda.set_groupunit(x_groupunit)
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
@@ -2432,7 +2441,9 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
         x_agenda.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 
 
-def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
+def get_obj_from_agenda_dict(
+    x_dict: dict[str:], dict_key: str, _road_delimiter: str = None
+) -> any:
     if dict_key == "_originunit":
         return (
             originunit_get_from_dict(x_dict[dict_key])
@@ -2441,15 +2452,15 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key == "_partys":
         return (
-            partyunits_get_from_dict(x_dict[dict_key])
+            partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else partyunits_get_from_dict(x_dict[dict_key])
+            else partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_groups":
         return (
-            get_groupunits_from_dict(x_dict[dict_key])
+            get_groupunits_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else get_groupunits_from_dict(x_dict[dict_key])
+            else get_groupunits_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_max_tree_traverse":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
