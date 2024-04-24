@@ -186,7 +186,6 @@ def get_groupunits_from_dict(
 def get_groupunit_from_dict(
     groupunit_dict: dict, _road_delimiter: str = None
 ) -> GroupUnit:
-    _road_delimiter = default_road_delimiter_if_none(_road_delimiter)
     return groupunit_shop(
         group_id=groupunit_dict["group_id"],
         _party_mirror=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirror"),

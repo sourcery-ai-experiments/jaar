@@ -1,6 +1,12 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
-from src.agenda.party import PartyUnit, partyunit_shop, partyunits_get_from_json
+from src.agenda.party import (
+    PartyUnit,
+    partyunit_shop,
+    partyunits_get_from_json,
+    partyunit_get_from_dict,
+    partyunits_get_from_dict,
+)
 from src.instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
@@ -548,6 +554,37 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
     }
+
+
+def test_partyunit_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
+    # GIVEN
+    yao_text = ",Yao"
+    slash_text = "/"
+    before_yao_partyunit = partyunit_shop(yao_text, _road_delimiter=slash_text)
+    yao_dict = before_yao_partyunit.get_dict()
+
+    # WHEN
+    after_yao_partyunit = partyunit_get_from_dict(yao_dict, slash_text)
+
+    # THEN
+    assert before_yao_partyunit == after_yao_partyunit
+    assert after_yao_partyunit._road_delimiter == slash_text
+
+
+def test_partyunits_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
+    # GIVEN
+    yao_text = ",Yao"
+    slash_text = "/"
+    yao_partyunit = partyunit_shop(yao_text, _road_delimiter=slash_text)
+    yao_dict = yao_partyunit.get_dict()
+    x_partyunits_dict = {yao_text: yao_dict}
+
+    # WHEN
+    x_partyunits_objs = partyunits_get_from_dict(x_partyunits_dict, slash_text)
+
+    # THEN
+    assert x_partyunits_objs.get(yao_text) == yao_partyunit
+    assert x_partyunits_objs.get(yao_text)._road_delimiter == slash_text
 
 
 def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteData():

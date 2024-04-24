@@ -200,52 +200,60 @@ def partyunits_get_from_json(partyunits_json: str) -> dict[str:PartyUnit]:
     return partyunits_get_from_dict(x_dict=partyunits_dict)
 
 
-def partyunits_get_from_dict(x_dict: dict) -> dict[str:PartyUnit]:
+def partyunits_get_from_dict(
+    x_dict: dict, _road_delimiter: str = None
+) -> dict[str:PartyUnit]:
     partyunits = {}
-    for partyunits_dict in x_dict.values():
-        try:
-            _treasury_due_paid = partyunits_dict["_treasury_due_paid"]
-        except KeyError:
-            _treasury_due_paid = None
-
-        try:
-            _treasury_due_diff = partyunits_dict["_treasury_due_diff"]
-        except KeyError:
-            _treasury_due_diff = None
-
-        try:
-            _treasury_credit_score = partyunits_dict["_treasury_credit_score"]
-        except KeyError:
-            _treasury_credit_score = None
-
-        try:
-            _treasury_voice_rank = partyunits_dict["_treasury_voice_rank"]
-        except KeyError:
-            _treasury_voice_rank = None
-
-        try:
-            _treasury_voice_hx_lowest_rank = partyunits_dict[
-                "_treasury_voice_hx_lowest_rank"
-            ]
-        except KeyError:
-            _treasury_voice_hx_lowest_rank = None
-
-        x_partyunit = partyunit_shop(
-            party_id=partyunits_dict["party_id"],
-            creditor_weight=partyunits_dict["creditor_weight"],
-            debtor_weight=partyunits_dict["debtor_weight"],
-            _creditor_operational=partyunits_dict["_creditor_operational"],
-            _debtor_operational=partyunits_dict["_debtor_operational"],
-        )
-        x_partyunit.set_treasurying_data(
-            due_paid=_treasury_due_paid,
-            due_diff=_treasury_due_diff,
-            credit_score=_treasury_credit_score,
-            voice_rank=_treasury_voice_rank,
-        )
-        x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
+    for partyunit_dict in x_dict.values():
+        x_partyunit = partyunit_get_from_dict(partyunit_dict, _road_delimiter)
         partyunits[x_partyunit.party_id] = x_partyunit
     return partyunits
+
+
+def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> PartyUnit:
+    try:
+        _treasury_due_paid = partyunit_dict["_treasury_due_paid"]
+    except KeyError:
+        _treasury_due_paid = None
+
+    try:
+        _treasury_due_diff = partyunit_dict["_treasury_due_diff"]
+    except KeyError:
+        _treasury_due_diff = None
+
+    try:
+        _treasury_credit_score = partyunit_dict["_treasury_credit_score"]
+    except KeyError:
+        _treasury_credit_score = None
+
+    try:
+        _treasury_voice_rank = partyunit_dict["_treasury_voice_rank"]
+    except KeyError:
+        _treasury_voice_rank = None
+
+    try:
+        _treasury_voice_hx_lowest_rank = partyunit_dict[
+            "_treasury_voice_hx_lowest_rank"
+        ]
+    except KeyError:
+        _treasury_voice_hx_lowest_rank = None
+
+    x_partyunit = partyunit_shop(
+        party_id=partyunit_dict["party_id"],
+        creditor_weight=partyunit_dict["creditor_weight"],
+        debtor_weight=partyunit_dict["debtor_weight"],
+        _creditor_operational=partyunit_dict["_creditor_operational"],
+        _debtor_operational=partyunit_dict["_debtor_operational"],
+        _road_delimiter=_road_delimiter,
+    )
+    x_partyunit.set_treasurying_data(
+        due_paid=_treasury_due_paid,
+        due_diff=_treasury_due_diff,
+        credit_score=_treasury_credit_score,
+        voice_rank=_treasury_voice_rank,
+    )
+    x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
+    return x_partyunit
 
 
 def partyunit_shop(
