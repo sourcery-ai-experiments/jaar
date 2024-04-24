@@ -3650,7 +3650,7 @@
                         "_weight": 1,
                         "promise": true
                     },
-                    "listening": {
+                    "being receptive": {
                         "_is_expanded": true,
                         "_kids": {
                             "Ernesto Chavez": {
@@ -3696,7 +3696,7 @@
                                 "_weight": 4.0,
                                 "promise": false
                             },
-                            "listening to Aaron": {
+                            "being receptive to Aaron": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
                                         "creditor_weight": 1.0,
@@ -3788,7 +3788,7 @@
                                         "promise": true
                                     }
                                 },
-                                "_label": "listening to Aaron",
+                                "_label": "being receptive to Aaron",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
@@ -3807,7 +3807,7 @@
                                 "promise": false
                             }
                         },
-                        "_label": "listening",
+                        "_label": "being receptive",
                         "_meld_strategy": "default",
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
