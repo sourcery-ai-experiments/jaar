@@ -40,7 +40,7 @@ from src.agenda.group import (
     BalanceLink,
     GroupID,
     GroupUnit,
-    get_from_dict as groupunits_get_from_dict,
+    get_groupunits_from_dict,
     groupunit_shop,
     balancelink_shop,
 )
@@ -2353,6 +2353,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._last_gift_id = get_obj_from_agenda_dict(agenda_dict, "_last_gift_id")
     for x_partyunit in get_obj_from_agenda_dict(agenda_dict, "_partys").values():
         x_agenda.set_partyunit(x_partyunit)
+    print(f"{x_agenda._road_delimiter=}")
     for x_groupunit in get_obj_from_agenda_dict(agenda_dict, "_groups").values():
         x_agenda.set_groupunit(x_groupunit)
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
@@ -2446,9 +2447,9 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key == "_groups":
         return (
-            groupunits_get_from_dict(x_dict[dict_key])
+            get_groupunits_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else groupunits_get_from_dict(x_dict[dict_key])
+            else get_groupunits_from_dict(x_dict[dict_key])
         )
     elif dict_key == "_max_tree_traverse":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else 20

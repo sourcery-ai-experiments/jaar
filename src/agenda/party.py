@@ -342,6 +342,8 @@ def partylinks_get_from_json(partylinks_json: str) -> dict[str:PartyLink]:
 
 
 def partylinks_get_from_dict(x_dict: dict) -> dict[str:PartyLink]:
+    if x_dict is None:
+        x_dict = {}
     partylinks = {}
     for partylinks_dict in x_dict.values():
         x_party = partylink_shop(

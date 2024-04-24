@@ -170,27 +170,37 @@ class GroupUnit(GroupCore):
 # class GroupUnitsshop:
 def get_from_json(groupunits_json: str) -> dict[GroupID:GroupUnit]:
     groupunits_dict = get_dict_from_json(json_x=groupunits_json)
-    return get_from_dict(x_dict=groupunits_dict)
+    return get_groupunits_from_dict(x_dict=groupunits_dict)
 
 
-def get_from_dict(x_dict: dict) -> dict[GroupID:GroupUnit]:
+def get_groupunits_from_dict(
+    x_dict: dict, _road_delimiter: str = None
+) -> dict[GroupID:GroupUnit]:
     groupunits = {}
     for groupunit_dict in x_dict.values():
-        x_group = groupunit_shop(
-            group_id=groupunit_dict["group_id"],
-            _party_mirror=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirror"),
-            _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
-            _treasury_partylinks=get_obj_from_groupunit_dict(
-                groupunit_dict, "_treasury_partylinks"
-            ),
-        )
+        x_group = get_groupunit_from_dict(groupunit_dict, _road_delimiter)
         groupunits[x_group.group_id] = x_group
     return groupunits
 
 
+def get_groupunit_from_dict(
+    groupunit_dict: dict, _road_delimiter: str = None
+) -> GroupUnit:
+    _road_delimiter = default_road_delimiter_if_none(_road_delimiter)
+    return groupunit_shop(
+        group_id=groupunit_dict["group_id"],
+        _party_mirror=get_obj_from_groupunit_dict(groupunit_dict, "_party_mirror"),
+        _partys=get_obj_from_groupunit_dict(groupunit_dict, "_partys"),
+        _treasury_partylinks=get_obj_from_groupunit_dict(
+            groupunit_dict, "_treasury_partylinks"
+        ),
+        _road_delimiter=_road_delimiter,
+    )
+
+
 def get_obj_from_groupunit_dict(x_dict: dict[str:], dict_key: str) -> any:
     if dict_key == "_partys":
-        return partylinks_get_from_dict(x_dict[dict_key])
+        return partylinks_get_from_dict(x_dict.get(dict_key))
     elif dict_key in {"_party_mirror"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:

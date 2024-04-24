@@ -1,8 +1,5 @@
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
-from src.agenda.group import GroupID, groupunit_shop
-from src.agenda.party import partylink_shop
-from src.agenda.agenda import agendaunit_shop
-from pytest import raises as pytest_raises
+from src.agenda.group import GroupID
 
 
 def test_HealerHold_exists():
