@@ -1095,7 +1095,7 @@ class AgendaUnit:
     def add_l1_idea(
         self,
         idea_kid: IdeaUnit,
-        create_missing_ideas_groups: bool = None,
+        create_missing_ideas_and_groups: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
@@ -1103,7 +1103,7 @@ class AgendaUnit:
         self.add_idea(
             idea_kid=idea_kid,
             parent_road=self._world_id,
-            create_missing_ideas_groups=create_missing_ideas_groups,
+            create_missing_ideas_and_groups=create_missing_ideas_and_groups,
             adoptees=adoptees,
             bundling=bundling,
             create_missing_ancestors=create_missing_ancestors,
@@ -1113,7 +1113,7 @@ class AgendaUnit:
         self,
         idea_kid: IdeaUnit,
         parent_road: RoadUnit,
-        create_missing_ideas_groups: bool = None,
+        create_missing_ideas_and_groups: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
@@ -1128,7 +1128,7 @@ class AgendaUnit:
         idea_kid._road_delimiter = self._road_delimiter
         if idea_kid._agenda_world_id != self._world_id:
             idea_kid._agenda_world_id = self._world_id
-        if not create_missing_ideas_groups:
+        if not create_missing_ideas_and_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
         idea_kid.set_parent_road(parent_road=parent_road)
 
@@ -1138,6 +1138,8 @@ class AgendaUnit:
                 f"add_idea failed because '{parent_road}' idea does not exist."
             )
         parent_road_idea = self.get_idea_obj(parent_road, create_missing_ancestors)
+        if parent_road_idea._root == False:
+            parent_road_idea
         parent_road_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(parent_road, idea_kid._label)
@@ -1157,7 +1159,7 @@ class AgendaUnit:
             if bundling:
                 self.edit_idea_attr(road=kid_road, weight=weight_sum)
 
-        if create_missing_ideas_groups:
+        if create_missing_ideas_and_groups:
             self._create_missing_ideas(road=kid_road)
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
@@ -2139,7 +2141,7 @@ class AgendaUnit:
         self.add_idea(
             idea_kid=idea_kid,
             parent_road=self.make_road(idea_kid._parent_road),
-            create_missing_ideas_groups=True,
+            create_missing_ideas_and_groups=True,
         )
 
     def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:

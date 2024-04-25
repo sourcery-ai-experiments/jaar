@@ -232,7 +232,7 @@ def test_AgendaUnit_add_idea_creates_reasons_ideas():
     sue_agenda.add_idea(
         idea_kid=clean_cookery_idea,
         parent_road=new_idea_parent_road,
-        create_missing_ideas_groups=True,
+        create_missing_ideas_and_groups=True,
     )
     sue_agenda.set_agenda_metrics()
 
