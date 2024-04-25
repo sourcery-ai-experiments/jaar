@@ -419,7 +419,8 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
                 promise=xs.get_value("promise"),
             ),
             parent_road=xs.get_value("parent_road"),
-            create_missing_ideas_and_groups=False,
+            create_missing_ideas=False,
+            create_missing_groups=False,
             create_missing_ancestors=False,
         )
     elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_delete():

@@ -708,7 +708,7 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     assert x_agenda.get_groupunit(family_text) is None
 
     # WHEN
-    x_agenda.add_l1_idea(clean_cookery_idea, create_missing_ideas_and_groups=True)
+    x_agenda.add_l1_idea(clean_cookery_idea, create_missing_groups=True)
 
     # THEN
     assert len(x_agenda._groups) == 1
@@ -773,7 +773,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # WHEN
     x_agenda = agendaunit_shop(noa_text)
     x_agenda.add_partyunit(party_id=xia_text)
-    x_agenda.add_l1_idea(x1_agenda_swim_idea, create_missing_ideas_and_groups=False)
+    x_agenda.add_l1_idea(x1_agenda_swim_idea, create_missing_ideas=False)
 
     # THEN
     x_agenda_swim_idea = x_agenda.get_idea_obj(swim_road)
@@ -810,7 +810,7 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     bob_agenda.add_idea(
         idea_kid=clean_cookery_idea,
         parent_road=new_idea_parent_road,
-        create_missing_ideas_and_groups=True,
+        create_missing_groups=True,
     )
 
     # THEN
