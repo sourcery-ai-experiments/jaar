@@ -1,3 +1,4 @@
+from src._road.road import get_ancestor_roads
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
 from copy import deepcopy as copy_deepcopy
@@ -44,8 +45,29 @@ def listen_to_agendaunit(listener: AgendaUnit, listened: AgendaUnit) -> AgendaUn
         planck=listener._planck,
     )
 
-    for x_ideaunit in ingest_list:
-        print(f"{x_ideaunit._weight=}")
-        listener.add_idea(x_ideaunit, x_ideaunit._parent_road)
+    for ingested_ideaunit in ingest_list:
+        replace_weight_list = []
+        add_to_weight_list = []
+        ancestor_roads = get_ancestor_roads(ingested_ideaunit._parent_road)
+        for ancestor_road in ancestor_roads:
+            if ancestor_road != ingested_ideaunit._agenda_world_id:
+                try:
+                    listener.get_idea_obj(ancestor_road)
+                    add_to_weight_list.append(ancestor_road)
+                except Exception:
+                    replace_weight_list.append(ancestor_road)
+
+        listener.add_idea(
+            idea_kid=ingested_ideaunit,
+            parent_road=ingested_ideaunit._parent_road,
+            create_missing_ideas_and_groups=True,
+            create_missing_ancestors=True,
+        )
+
+        for idea_road in replace_weight_list:
+            listener.edit_idea_attr(idea_road, weight=ingested_ideaunit._weight)
+        for idea_road in add_to_weight_list:
+            x_ideaunit = listener.get_idea_obj(idea_road)
+            x_ideaunit._weight += ingested_ideaunit._weight
 
     return listener

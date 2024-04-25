@@ -217,15 +217,55 @@ def test_listen_to_agendaunit_ReturnsLevel2TaskAgenda():
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
-    # assert len(zia_agendaunit.get_intent_dict()) == 0
-    # zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
-    # zia_yao_agendaunit.set_owner_id(yao_text)
-    # assert len(zia_yao_agendaunit.get_intent_dict()) == 1
-    # print(f"{zia_yao_agendaunit.get_intent_dict()=}")
 
-    # # WHEN
-    # after_yao_agendaunit = listen_to_agendaunit(yao_agendaunit, zia_agendaunit)
+def test_listen_to_agendaunit_Returns2IntentIdeasLevel2TaskAgenda():
+    # GIVEN
+    yao_text = "Yao"
+    before_yao_agendaunit = agendaunit_shop(yao_text)
+    yao_debtor_weight = 55
+    before_yao_agendaunit.set_party_pool(yao_debtor_weight)
+    zia_text = "Zia"
+    zia_agendaunit = agendaunit_shop(zia_text)
+    zia_agendaunit.add_partyunit(yao_text)
+    clean_text = "clean"
+    cook_text = "cook"
+    fly_text = "fly"
+    yao_clean_ideaunit = ideaunit_shop(clean_text, promise=True)
+    yao_clean_ideaunit._assignedunit.set_suffgroup(yao_text)
+    yao_cook_ideaunit = ideaunit_shop(cook_text, promise=True)
+    yao_cook_ideaunit._assignedunit.set_suffgroup(yao_text)
+    yao_fly_ideaunit = ideaunit_shop(fly_text, promise=True)
+    yao_fly_ideaunit._assignedunit.set_suffgroup(yao_text)
+    casa_road = zia_agendaunit.make_l1_road("casa")
+    fly_road = zia_agendaunit.make_l1_road(fly_text)
+    zia_agendaunit.add_idea(yao_clean_ideaunit, casa_road)
+    zia_agendaunit.add_idea(yao_cook_ideaunit, casa_road)
+    zia_agendaunit.add_l1_idea(yao_fly_ideaunit)
+    assert len(zia_agendaunit.get_intent_dict()) == 0
+    zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
+    zia_yao_agendaunit.set_owner_id(yao_text)
+    assert len(zia_yao_agendaunit.get_intent_dict()) == 3
 
-    # # THEN
-    # assert after_yao_agendaunit == yao_agendaunit
-    # assert len(after_yao_agendaunit.get_intent_dict()) == 1
+    # WHEN
+    after_yao_agendaunit = listen_to_agendaunit(before_yao_agendaunit, zia_agendaunit)
+
+    # THEN
+    clean_road = zia_agendaunit.make_road(casa_road, clean_text)
+    cook_road = zia_agendaunit.make_road(casa_road, cook_text)
+    after_cook_ideaunit = after_yao_agendaunit.get_idea_obj(cook_road)
+    after_clean_ideaunit = after_yao_agendaunit.get_idea_obj(clean_road)
+    after_casa_ideaunit = after_yao_agendaunit.get_idea_obj(casa_road)
+    after_fly_ideaunit = after_yao_agendaunit.get_idea_obj(fly_road)
+    print(f"{after_clean_ideaunit._weight=}")
+    assert after_clean_ideaunit._weight != yao_clean_ideaunit._weight
+    assert after_clean_ideaunit._weight == 13
+    print(f"{after_cook_ideaunit._weight=}")
+    assert after_cook_ideaunit._weight != yao_cook_ideaunit._weight
+    assert after_cook_ideaunit._weight == 14
+    print(f"{after_casa_ideaunit._weight=}")
+    assert after_casa_ideaunit._weight != 1
+    assert after_casa_ideaunit._weight == 27
+    assert after_yao_agendaunit == before_yao_agendaunit
+    assert len(after_yao_agendaunit.get_intent_dict()) == 3
+    assert after_fly_ideaunit._weight != 1
+    assert after_fly_ideaunit._weight == 28
