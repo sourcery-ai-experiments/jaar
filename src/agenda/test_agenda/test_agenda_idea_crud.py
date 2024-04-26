@@ -204,7 +204,7 @@ def test_AgendaUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
     assert sue_agenda.get_level_count(level=3) == 3
 
 
-def test_AgendaUnit_add_idea_creates_reasons_ideas():
+def test_AgendaUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
     sue_agenda.set_agenda_metrics()
@@ -232,7 +232,7 @@ def test_AgendaUnit_add_idea_creates_reasons_ideas():
     sue_agenda.add_idea(
         idea_kid=clean_cookery_idea,
         parent_road=new_idea_parent_road,
-        create_missing_ideas_groups=True,
+        create_missing_ideas=True,
     )
     sue_agenda.set_agenda_metrics()
 

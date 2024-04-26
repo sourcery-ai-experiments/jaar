@@ -4333,10 +4333,10 @@
                         "_weight": 1,
                         "promise": true
                     },
-                    "listening": {
+                    "being receptive": {
                         "_is_expanded": false,
                         "_kids": {
-                            "listening to David": {
+                            "being receptive to David": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
                                         "creditor_weight": 1.0,
@@ -4441,7 +4441,7 @@
                                         "promise": true
                                     }
                                 },
-                                "_label": "listening to David",
+                                "_label": "being receptive to David",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
@@ -4461,7 +4461,7 @@
                                 "promise": false
                             }
                         },
-                        "_label": "listening",
+                        "_label": "being receptive",
                         "_meld_strategy": "default",
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {

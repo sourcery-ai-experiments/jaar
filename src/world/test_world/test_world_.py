@@ -2,6 +2,7 @@ from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
+from src.econ.clerk import get_owner_file_name
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
@@ -10,6 +11,7 @@ from src.world.examples.world_env_kit import (
 
 from src.world.person import personunit_shop
 from os import path as os_path
+from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 
 
@@ -364,35 +366,36 @@ def test_WorldUnit_set_all_econunit_role_agendas_CorrectlySetsroles(
     todd_person.create_person_econunits()
     luca_dallas_econ = luca_person.get_econ(dallas_road)
     todd_dallas_econ = todd_person.get_econ(dallas_road)
-    luca_dallas_econ.create_new_clerkunit(luca_text)
-    luca_dallas_econ.create_new_clerkunit(todd_text)
-    todd_dallas_econ.create_new_clerkunit(luca_text)
-    todd_dallas_econ.create_new_clerkunit(todd_text)
-    luca_dallas_luca_clerk = luca_dallas_econ.get_clerkunit(luca_text)
-    luca_dallas_todd_clerk = luca_dallas_econ.get_clerkunit(todd_text)
-    todd_dallas_luca_clerk = todd_dallas_econ.get_clerkunit(luca_text)
-    todd_dallas_todd_clerk = todd_dallas_econ.get_clerkunit(todd_text)
-    print(f"{luca_dallas_todd_clerk.get_role()._partys.keys()=}")
-    assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) is None
-    assert todd_dallas_luca_clerk.open_role_file().get_party(todd_text) is None
-    assert luca_dallas_todd_clerk.open_role_file().get_party(luca_text) is None
-    assert luca_dallas_luca_clerk.open_role_file().get_party(todd_text) is None
+    luca_file_name = get_owner_file_name(luca_text)
+    todd_file_name = get_owner_file_name(todd_text)
+    luca_roles_dir = luca_dallas_econ.get_roles_dir()
+    todd_roles_dir = todd_dallas_econ.get_roles_dir()
+    luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
+    luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
+    todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
+    todd_dallas_todd_role_file_path = f"{todd_roles_dir}/{todd_file_name}"
+    assert os_path_exists(luca_dallas_luca_role_file_path) == False
+    assert os_path_exists(luca_dallas_todd_role_file_path) == False
+    assert os_path_exists(todd_dallas_luca_role_file_path) == False
+    assert os_path_exists(todd_dallas_todd_role_file_path) == False
 
     # WHEN
     music_world.set_all_econunit_role_agendas(luca_text)
 
     # THEN
-    assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) is None
-    assert luca_dallas_todd_clerk.open_role_file().get_party(luca_text) is None
-    assert todd_dallas_luca_clerk.open_role_file().get_party(todd_text) != None
-    assert luca_dallas_luca_clerk.open_role_file().get_party(todd_text) != None
+    assert os_path_exists(luca_dallas_luca_role_file_path)
+    assert os_path_exists(luca_dallas_todd_role_file_path) == False
+    assert os_path_exists(todd_dallas_luca_role_file_path)
+    assert os_path_exists(todd_dallas_todd_role_file_path) == False
 
     # WHEN
     music_world.set_all_econunit_role_agendas(todd_text)
 
     # THEN
-    assert todd_dallas_todd_clerk.open_role_file().get_party(luca_text) != None
-    assert luca_dallas_todd_clerk.open_role_file().get_party(luca_text) != None
+    assert os_path_exists(luca_dallas_luca_role_file_path)
+    assert os_path_exists(luca_dallas_todd_role_file_path)
+    assert os_path_exists(todd_dallas_luca_role_file_path)
+    assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
 def test_WorldUnit_get_person_paths_ReturnsCorrectObj(worlds_dir_setup_cleanup):

@@ -1,7 +1,7 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, WorldID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
-from src.econ.econ import EconUnit, EconID
+from src.econ.econ import EconUnit
 from src.world.gift import GiftUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
@@ -156,39 +156,12 @@ class WorldUnit:
 
     def _set_person_econunit_role_agenda(
         self,
-        leader_person: PersonUnit,
+        healer_person: PersonUnit,
         econ_road: RoadUnit,
         gut_agenda: AgendaUnit,
     ):
-        x_econ = leader_person.get_econ(econ_road)
-        if x_econ is None:
-            leader_person.create_person_econunits()
-            x_econ = leader_person.get_econ(econ_road)
-        x_econ.create_new_clerkunit(gut_agenda._owner_id)
-        x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
-        x_clerk.save_role_agenda(gut_agenda)
-
-    def add_econ_connection(
-        self,
-        treasurer_person_id: PersonID,
-        econ_id: EconID,
-        clerk_person_id: PersonID,
-    ):
-        if self.personunit_exists(treasurer_person_id) == False:
-            self.add_personunit(treasurer_person_id)
-        x_personunit = self.get_personunit(treasurer_person_id)
-
-        if x_personunit.econunit_exists(econ_id) == False:
-            x_personunit.set_econunit(econ_id)
-        x_econ = x_personunit.get_econunit(econ_id)
-
-        if self.personunit_exists(clerk_person_id) == False:
-            self.add_personunit(clerk_person_id)
-
-        if x_econ.clerkunit_exists(treasurer_person_id) == False:
-            x_econ.add_clerkunit(treasurer_person_id)
-        if x_econ.clerkunit_exists(clerk_person_id) == False:
-            x_econ.add_clerkunit(clerk_person_id)
+        x_econ = healer_person.get_econ(econ_road)
+        x_econ.save_file_to_roles(gut_agenda)
 
     def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)
@@ -197,15 +170,14 @@ class WorldUnit:
 
         x_live = agendaunit_shop(person_id, self.world_id)
         x_live_deepcopy = copy_deepcopy(x_live)
-        for leader_id, leader_dict in x_gut._leaders_dict.items():
-            leader_person = self.get_personunit(leader_id)
-            leader_person.create_person_econunits()
-            for econ_idea in leader_dict.values():
-                x_econ = leader_person.get_econ(econ_idea.get_road())
-                x_econ.create_new_clerkunit(person_id)
-                x_clerk = x_econ.get_clerkunit(person_id)
-                x_clerk.save_refreshed_job_to_forum()
-                x_job = x_econ.get_job_agenda_file(person_id)
+        for healer_id, healer_dict in x_gut._healers_dict.items():
+            healer_person = self.get_personunit(healer_id)
+            healer_person.create_person_econunits()
+            for econ_idea in healer_dict.values():
+                x_econ = healer_person.get_econ(econ_idea.get_road())
+                x_econ.save_file_to_roles(x_gut)
+                x_econ.create_clerkunit(person_id)
+                x_job = x_econ.get_file_in_jobs(person_id)
                 x_live.meld(x_job)
 
         # brnach check
@@ -236,7 +208,7 @@ class WorldUnit:
         person_role = person_clerkunit.get_role()
         person_role.add_partyunit(party_id)
         person_clerkunit.save_role_agenda(person_role)
-        person_clerkunit.save_refreshed_job_to_forum()
+        person_clerkunit.save_refreshed_job_to_jobs()
 
     # def _display_gut_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit(x_person_id)

@@ -173,7 +173,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     # WHEN
     noa2_agenda = agendaunit_shop("Noa")
     noa2_agenda.add_partyunit(party_id=xia_text)
-    noa2_agenda.add_l1_idea(noa1_agenda_swim_idea, create_missing_ideas_groups=False)
+    noa2_agenda.add_l1_idea(noa1_agenda_swim_idea, create_missing_groups=False)
 
     # THEN
     noa2_agenda_swim_idea = noa2_agenda.get_idea_obj(swim_road)

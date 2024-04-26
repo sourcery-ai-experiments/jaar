@@ -1,15 +1,10 @@
 from src._road.road import (
     RoadNode,
     PersonID,
-    PersonRoad,
-    ProblemID,
-    LeaderID,
-    EconID,
+    HealerID,
     OwnerID,
     PartyID,
     RoadUnit,
-    EconRoad,
-    AgendaRoad,
     change_road,
     is_sub_road,
     get_all_road_nodes,
@@ -35,7 +30,6 @@ from src._road.road import (
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
 from inspect import getdoc as inspect_getdoc
-from os import environ as os_environ
 
 
 def test_RoadNode_exists():
@@ -515,57 +509,17 @@ def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaises
     )
 
 
-def test_EconRoad_Exists():
-    # GIVEN
-    texas_text = "texas"
-
-    # WHEN
-    texas_econroad = EconRoad(texas_text)
-
-    # THEN
-    assert texas_econroad != None
-    assert texas_econroad == texas_text
-    assert (
-        inspect_getdoc(texas_econroad)
-        == """RodeUnit with node and road seperated by WorldUnit._road_delimiter:
-PersonID
-AgendaRoad"""
-    )
-
-
-def test_ProblemID_exists():
-    # GIVEN
-    empty_str = ""
-    # WHEN
-    x_road = ProblemID(empty_str)
-    # THEN
-    assert x_road == empty_str
-    assert (
-        inspect_getdoc(x_road) == "A RoadNode used to identify a PersonUnit's Problem"
-    )
-
-
-def test_LeaderID_exists():
+def test_HealerID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_leader_id = LeaderID(bob_text)
+    bob_healer_id = HealerID(bob_text)
     # THEN
-    assert bob_leader_id == bob_text
+    assert bob_healer_id == bob_text
     assert (
-        inspect_getdoc(bob_leader_id)
-        == "A RoadNode used to identify a Problem's Leader"
+        inspect_getdoc(bob_healer_id)
+        == "A RoadNode used to identify a Problem's Healer"
     )
-
-
-def test_EconID_exists():
-    # GIVEN
-    bob_text = "Bob"
-    # WHEN
-    bob_world_id = EconID(bob_text)
-    # THEN
-    assert bob_world_id == bob_text
-    assert inspect_getdoc(bob_world_id) == "A RoadNode used to identify a Leader's Econ"
 
 
 def test_OwnerID_exists():
@@ -591,46 +545,6 @@ def test_PartyID_exists():
     assert (
         inspect_getdoc(bob_party_id)
         == "Every PartyID object is OwnerID, must follow OwnerID format."
-    )
-
-
-def test_PersonRoad_Exists():
-    # GIVEN
-    problem1_road = create_road(PersonID("Tim"), ProblemID("problem1"))
-    bob_road = create_road(problem1_road, LeaderID("Bob"))
-    texas_road = create_road(bob_road, EconID("texas"))
-    sports_road = create_road(texas_road, "sports")
-
-    # WHEN
-    sports_personroad = PersonRoad(sports_road)
-
-    # THEN
-    assert sports_personroad != None
-    assert sports_personroad == sports_road
-    assert (
-        inspect_getdoc(sports_personroad)
-        == """RodeUnit with nodes seperated by WorldUnit._road_delimiter:
-PersonID (Must Exist)
-RoadUnit"""
-    )
-
-
-def test_AgendaRoad_Exists():
-    # GIVEN
-    texas_road = create_road("Bob", "texas")
-    sports_road = create_road(texas_road, "sports")
-    yao_agendaroad = create_road(texas_road, "Yao")
-
-    # WHEN
-    yao_agendaroad = AgendaRoad(sports_road)
-
-    # THEN
-    assert yao_agendaroad != None
-    assert yao_agendaroad == sports_road
-    assert (
-        inspect_getdoc(yao_agendaroad)
-        == """RodeUnit with nodes seperated by Agenda._road_delimiter that
-starts with WorldID"""
     )
 
 
@@ -675,10 +589,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
     comma_text = ","
     assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
     assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
-    assert (
-        is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
-        and os_environ.get("OS") == "Windows_NT"
-    ) or os_environ.get("OS") != "Windows_NT"
+    assert is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
 
 
 def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter():
@@ -695,10 +606,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
-    assert (
-        is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
-        and os_environ.get("OS") == "Windows_NT"
-    ) or os_environ.get("OS") != "Windows_NT"
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
 
 
 def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():

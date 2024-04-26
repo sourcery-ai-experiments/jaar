@@ -135,12 +135,7 @@ def test_BookUnit_add_agendaatom_CorrectlySets_AgendaUnit_partyunits():
     bob_text = "Bob"
     bob_creditor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(
-        bob_text,
-        bob_creditor_weight,
-        bob_debtor_weight,
-        depotlink_type="assignment",
-    )
+    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
     party_id_text = "party_id"
     cw_text = "creditor_weight"
     dw_text = "debtor_weight"

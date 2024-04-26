@@ -10,6 +10,8 @@ from src.agenda.group import (
     balancelinks_get_from_json,
     balanceheir_shop,
     get_from_json as groupunits_get_from_json,
+    get_groupunit_from_dict,
+    get_groupunits_from_dict,
 )
 from src._road.road import (
     get_default_world_id_roadnode as root_label,
@@ -489,6 +491,21 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
+def test_groupunit_get_from_dict_CorrectlyReturnsGroupUnitWith_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    teacher_text = f"{slash_text}teachers"
+    before_teacher_groupunit = groupunit_shop(teacher_text, _road_delimiter=slash_text)
+    teacher_dict = before_teacher_groupunit.get_dict()
+
+    # WHEN
+    print(f"{teacher_dict=}")
+    after_teacher_groupunit = get_groupunit_from_dict(teacher_dict, slash_text)
+
+    # THEN
+    assert after_teacher_groupunit == before_teacher_groupunit
+
+
 def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     sue_text = "Sue"
@@ -525,6 +542,26 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     print(f"{teachers_obj_check_dict.get(treasury_partylinks_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
+
+
+def test_GroupUnit_get_groupunits_from_dict_ReturnsCorrectObjWith_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    teacher_text = f"{slash_text}teachers"
+    teacher_groupunit = groupunit_shop(teacher_text, _road_delimiter=slash_text)
+    teacher_dict = teacher_groupunit.get_dict()
+
+    teacher_dict = teacher_groupunit.get_dict()
+    groupunits_dict = {teacher_text: teacher_dict}
+
+    # WHEN
+    x_groupunits = get_groupunits_from_dict(groupunits_dict, slash_text)
+
+    # THEN
+    assert x_groupunits != None
+    teachers_obj_check_dict = {teacher_groupunit.group_id: teacher_groupunit}
+    print(f"{teachers_obj_check_dict=}")
+    assert x_groupunits == teachers_obj_check_dict
 
 
 def test_BalanceLink_exists():

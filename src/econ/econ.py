@@ -6,7 +6,7 @@ from src._road.road import (
     LeaderID,
     PersonID,
     PartyID,
-    EconID,
+    WorldID,
     validate_roadnode,
 )
 from src.agenda.agenda import (
@@ -23,7 +23,18 @@ from src.instrument.file import (
     dir_files,
 )
 from src.instrument.python import get_empty_dict_if_none
-from src.econ.clerk import ClerkUnit, clerkunit_shop, ClerkID
+from src.econ.clerk import (
+    ClerkUnit,
+    clerkunit_shop,
+    ClerkID,
+    get_econ_roles_dir,
+    get_econ_jobs_dir,
+    save_file_to_roles,
+    save_file_to_jobs,
+    get_file_in_roles,
+    get_file_in_jobs,
+    get_owner_file_name,
+)
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.econ.treasury_sqlstr import (
@@ -60,7 +71,7 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def get_temp_env_econ_id():
+def get_temp_env_world_id():
     return "ex_econ04"
 
 
@@ -80,13 +91,17 @@ class IntentBaseDoesNotExistException(Exception):
     pass
 
 
+class ClerkUnitdoesnotexist(Exception):
+    pass
+
+
 def treasury_db_filename() -> str:
     return "treasury.db"
 
 
 @dataclass
 class EconUnit:
-    econ_id: EconID = None
+    world_id: WorldID = None
     econ_dir: str = None
     _manager_person_id: LeaderID = None
     _clerkunits: dict[str:ClerkUnit] = None
@@ -94,8 +109,8 @@ class EconUnit:
     _road_delimiter: str = None
 
     # Admin
-    def set_econ_id(self, econ_id: str):
-        self.econ_id = validate_roadnode(econ_id, self._road_delimiter)
+    def set_world_id(self, world_id: str):
+        self.world_id = validate_roadnode(world_id, self._road_delimiter)
 
     def get_object_root_dir(self):
         return self.econ_dir
@@ -109,11 +124,10 @@ class EconUnit:
         )
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
-        agendas_dir = self.get_forum_dir()
-        clerkunits_dir = self.get_clerkunits_dir()
         set_dir(x_path=self.get_object_root_dir())
-        set_dir(x_path=agendas_dir)
-        set_dir(x_path=clerkunits_dir)
+        set_dir(x_path=self.get_roles_dir())
+        set_dir(x_path=self.get_jobs_dir())
+        set_dir(x_path=self.get_clerkunits_dir())
         self._create_main_file_if_null(x_dir=self.get_object_root_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
@@ -121,17 +135,15 @@ class EconUnit:
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
     # treasurying
-    def set_voice_ranks(self, owner_id: OwnerID, sort_order: str):
-        if sort_order == "descretional":
-            x_clerk = self.get_clerkunit(owner_id)
-            x_role = x_clerk.get_role()
-            for count_x, x_partyunit in enumerate(x_role._partys.values()):
+    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+        if sort_order == "descending":
+            owner_role = self.get_file_in_roles(owner_id)
+            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            x_clerk.set_role(x_role)
-            x_clerk.save_refreshed_job_to_forum()
+            save_file_to_roles(self.econ_dir, owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.get_job_agenda_file(x_owner_id)
+        x_agenda = self.get_file_in_jobs(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -144,7 +156,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_job_agenda_to_forum(x_agenda)
+        self.save_file_to_jobs(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -255,11 +267,11 @@ class EconUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.get_job_agenda_file(owner_id=owner_id)
+            x_agenda = self.get_file_in_jobs(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_job_agenda_to_forum(x_agenda)
+            self.save_file_to_jobs(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -273,8 +285,8 @@ class EconUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.get_forum_dir_file_names_list():
-            agenda_json = open_file(self.get_forum_dir(), file_name)
+        for file_name in self.get_jobs_dir_file_names_list():
+            agenda_json = open_file(self.get_jobs_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.set_agenda_metrics()
 
@@ -368,6 +380,43 @@ class EconUnit:
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
 
+    # roles dir management
+    def get_roles_dir(self):
+        return get_econ_roles_dir(self.get_object_root_dir())
+
+    def save_file_to_roles(self, x_agenda: AgendaUnit):
+        x_agenda.set_world_id(world_id=self.world_id)
+        save_file_to_roles(self.get_object_root_dir(), x_agenda)
+
+    def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
+        return get_file_in_roles(self.get_object_root_dir(), owner_id)
+
+    def delete_file_in_roles(self, x_owner_id: PersonID):
+        delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
+
+    # jobs dir management
+    def get_jobs_dir(self):
+        return get_econ_jobs_dir(self.get_object_root_dir())
+
+    def save_file_to_jobs(self, x_agenda: AgendaUnit):
+        x_agenda.set_world_id(world_id=self.world_id)
+        save_file_to_jobs(self.get_object_root_dir(), x_agenda)
+
+    def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
+        return get_file_in_jobs(self.get_object_root_dir(), owner_id)
+
+    def delete_file_in_jobs(self, x_owner_id: PersonID):
+        delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
+
+    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
+        x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
+        x_agenda.set_owner_id(new_owner_id=new_owner_id)
+        self.save_file_to_jobs(x_agenda)
+        self.delete_file_in_jobs(x_owner_id=old_owner_id)
+
+    def get_jobs_dir_file_names_list(self):
+        return list(dir_files(dir_path=self.get_jobs_dir()).keys())
+
     # ClerkUnit management
     def get_clerkunits_dir(self):
         return f"{self.get_object_root_dir()}/clerkunits"
@@ -381,199 +430,36 @@ class EconUnit:
             ).keys()
         )
 
-    def add_clerkunit(self, owner_id: OwnerID, _auto_output_job_to_forum: bool = None):
-        x_clerkunit = clerkunit_shop(
-            owner_id=owner_id,
-            env_dir=self.get_object_root_dir(),
-            econ_id=self.econ_id,
-            _auto_output_job_to_forum=_auto_output_job_to_forum,
-        )
-        self.set_clerkunit(clerkunit=x_clerkunit)
-
     def clerkunit_exists(self, clerk_id: ClerkID):
         return self._clerkunits.get(clerk_id) != None
 
-    def create_new_clerkunit(self, clerk_id: ClerkID):
-        x_clerkunit = clerkunit_shop(clerk_id, self.get_object_root_dir(), self.econ_id)
-        x_clerkunit.create_core_dir_and_files()
+    def create_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
+        x_clerkunit = clerkunit_shop(clerk_id, self.econ_dir)
         self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
+        return self.get_clerkunit(clerk_id)
 
     def get_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
-        return self._clerkunits.get(clerk_id)
+        x_clerkunit = self._clerkunits.get(clerk_id)
+        if x_clerkunit is None:
+            raise ClerkUnitdoesnotexist(
+                f"ClerkUnit '{clerk_id}' does not exist in memory."
+            )
+        return x_clerkunit
 
-    def set_clerkunit(self, clerkunit: ClerkUnit):
-        self._clerkunits[clerkunit._clerk_id] = clerkunit
-        self.save_clerkunit_file(clerk_id=clerkunit._clerk_id)
-
-    def save_clerkunit_file(self, clerk_id: ClerkID):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.save_role_agenda(x_clerkunit.get_role())
-
-    def change_clerkunit_clerk_id(self, old_clerk_id: ClerkID, new_clerk_id: ClerkID):
-        clerk_x = self.get_clerkunit(clerk_id=old_clerk_id)
-        old_clerkunit_dir = clerk_x._clerkunit_dir
-        clerk_x.set_clerk_id(new_clerk_id=new_clerk_id)
-        self.set_clerkunit(clerk_x)
-        delete_dir(old_clerkunit_dir)
-        self.del_clerkunit_from_econ(clerk_id=old_clerk_id)
-
-    def del_clerkunit_from_econ(self, clerk_id: ClerkID):
+    def delete_clerkunit(self, clerk_id: ClerkID):
         self._clerkunits.pop(clerk_id)
 
-    def del_clerkunit_dir(self, clerk_id: ClerkID):
-        delete_dir(f"{self.get_clerkunits_dir()}/{clerk_id}")
-
-    def full_setup_clerkunit(self, owner_id: OwnerID):
-        self.add_clerkunit(owner_id, _auto_output_job_to_forum=True)
-        requestee_clerkunit = self.get_clerkunit(owner_id)
-        requestee_clerkunit.create_core_dir_and_files()
-        requestee_clerkunit.save_refreshed_job_to_forum()
-
-    # forum dir management
-    def get_forum_dir(self):
-        return f"{self.get_object_root_dir()}/forum"
-
-    def get_ignores_dir(self, clerk_id: ClerkID):
-        per_x = self.get_clerkunit(clerk_id)
-        return per_x._agendas_ignore_dir
-
-    def get_job_agenda_file(self, owner_id: str) -> AgendaUnit:
-        return get_agenda_from_json(
-            open_file(dest_dir=self.get_forum_dir(), file_name=f"{owner_id}.json")
-        )
-
-    def get_agenda_from_ignores_dir(
-        self, clerk_id: ClerkID, _owner_id: OwnerID
-    ) -> AgendaUnit:
-        return get_agenda_from_json(
-            open_file(
-                dest_dir=self.get_ignores_dir(clerk_id=clerk_id),
-                file_name=f"{_owner_id}.json",
-            )
-        )
-
-    def set_ignore_agenda_file(self, clerk_id: ClerkID, agenda_obj: AgendaUnit):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.set_ignore_agenda_file(
-            agendaunit=agenda_obj, src_owner_id=agenda_obj._owner_id
-        )
-
-    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
-        x_agenda = self.get_job_agenda_file(owner_id=old_owner_id)
-        x_agenda.set_owner_id(new_owner_id=new_owner_id)
-        self.save_job_agenda_to_forum(x_agenda)
-        self.del_job_agenda(x_owner_id=old_owner_id)
-
-    def del_job_agenda(self, x_owner_id: str):
-        delete_dir(f"{self.get_forum_dir()}/{x_owner_id}.json")
-
-    def save_job_agenda_to_forum(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.econ_id)
-        save_file(
-            dest_dir=self.get_forum_dir(),
-            file_name=f"{x_agenda._owner_id}.json",
-            file_text=x_agenda.get_json(),
-        )
-
-    def reload_all_clerkunits_job_agendas(self):
-        for x_clerkunit in self._clerkunits.values():
-            x_clerkunit.refresh_depot_agendas()
-
-    def get_forum_dir_file_names_list(self):
-        return list(dir_files(dir_path=self.get_forum_dir()).keys())
-
-    # agendas_dir to owner_id_agendas_dir management
-    def _clerkunit_set_depot_agenda(
-        self,
-        clerkunit: ClerkUnit,
-        agendaunit: AgendaUnit,
-        depotlink_type: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-        ignore_agenda: AgendaUnit = None,
-    ):
-        clerkunit.set_depot_agenda(
-            x_agenda=agendaunit,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
-        if depotlink_type == "ignore" and ignore_agenda != None:
-            clerkunit.set_ignore_agenda_file(
-                agendaunit=ignore_agenda, src_owner_id=agendaunit._owner_id
-            )
-
-    def set_clerk_depotlink(
-        self,
-        clerk_id: ClerkID,
-        agenda_owner_id: str,
-        depotlink_type: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-        ignore_agenda: AgendaUnit = None,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_job_agenda_file(owner_id=agenda_owner_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-            ignore_agenda=ignore_agenda,
-        )
-
-    def create_depotlink_to_generated_agenda(
-        self,
-        clerk_id: ClerkID,
-        owner_id: str,
-        depotlink_type: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = agendaunit_shop(_owner_id=owner_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
-
-    def update_depotlink(
-        self,
-        clerk_id: ClerkID,
-        party_id: PartyID,
-        depotlink_type: str,
-        creditor_weight: str,
-        debtor_weight: str,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_job_agenda(_owner_id=party_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            depotlink_type=depotlink_type,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
-
-    def del_depotlink(self, clerk_id: ClerkID, agendaunit_owner_id: OwnerID):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_clerkunit.del_depot_agenda(owner_id=agendaunit_owner_id)
-
-    # Leader output_agenda
+    # Healer output_agenda
     def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:
         x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
         return x_clerkunit.get_remelded_output_agenda()
 
     def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
         if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.econ_id
+            return self.world_id
         else:
             return create_road(
-                parent_road=self.econ_id,
+                parent_road=self.world_id,
                 terminus_node=road_wo_econ_root,
                 delimiter=self._road_delimiter,
             )
@@ -615,7 +501,7 @@ class EconUnit:
 
 
 def econunit_shop(
-    econ_id: EconID,
+    world_id: WorldID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
     _clerkunits: dict[OwnerID:ClerkUnit] = None,
@@ -625,7 +511,7 @@ def econunit_shop(
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
-        econ_dir = f"/{econ_id}"
+        econ_dir = f"/{world_id}"
     econ_x = EconUnit(
         econ_dir=econ_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
@@ -633,7 +519,7 @@ def econunit_shop(
     if _manager_person_id is None:
         _manager_person_id = get_temp_env_person_id()
     econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_econ_id(econ_id=econ_id)
+    econ_x.set_world_id(world_id=world_id)
     econ_x._manager_person_id = _manager_person_id
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x

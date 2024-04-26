@@ -17,7 +17,8 @@ from src._road.road import (
     is_string_in_road,
     OwnerID,
     PartyID,
-    LeaderID,
+    HealerID,
+    WorldID,
     is_roadunit_convertible_to_path,
 )
 from src._road.finance import get_planck_valid, default_planck_if_none
@@ -39,11 +40,11 @@ from src.agenda.group import (
     BalanceLink,
     GroupID,
     GroupUnit,
-    get_from_dict as groupunits_get_from_dict,
+    get_groupunits_from_dict,
     groupunit_shop,
     balancelink_shop,
 )
-from src.agenda.leader import LeaderUnit
+from src.agenda.healer import HealerHold
 from src.agenda.reason_idea import (
     BeliefCore,
     BeliefUnit,
@@ -60,7 +61,6 @@ from src.agenda.idea import (
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
-    EconID,
 )
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
@@ -115,13 +115,13 @@ class _last_gift_idException(Exception):
     pass
 
 
-class LeaderGroupException(Exception):
+class healerhold_group_id_Exception(Exception):
     pass
 
 
 @dataclass
 class AgendaUnit:
-    _world_id: str = None
+    _world_id: WorldID = None
     _owner_id: OwnerID = None
     _last_gift_id: int = None
     _weight: float = None
@@ -134,18 +134,17 @@ class AgendaUnit:
     _money_desc: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
-    _auto_output_job_to_forum: bool = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # created by ClerkUnit process
     # set_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _econ_dict: dict[RoadUnit:IdeaUnit] = None
-    _leaders_dict: dict[LeaderID : dict[RoadUnit:IdeaUnit]] = None
+    _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
     _econs_justified: bool = None
     _econs_buildable: bool = None
-    _sum_leaderunit_importance: bool = None
+    _sum_healerhold_importance: bool = None
     # set_agenda_metrics Calculated field end
 
     def del_last_gift_id(self):
@@ -459,7 +458,7 @@ class AgendaUnit:
     def get_time_c400_from_min(self, min: int) -> int:
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
-        c400_road = self.make_road(tech_road, "400 year pattern")
+        c400_road = self.make_road(tech_road, "400 year cycle")
         c400_idea = self.get_idea_obj(c400_road)
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
@@ -480,7 +479,7 @@ class AgendaUnit:
         ):  # 96 year and 100 year ideas
             yr4_1461_road = self.make_road(tech_road, "4year with leap")
             yr4_1461_idea = self.get_idea_obj(yr4_1461_road)
-            yr4_patterns = int(cXXXyr_min / yr4_1461_idea._close)
+            yr4_cycles = int(cXXXyr_min / yr4_1461_idea._close)
             cXyr_min = cXXXyr_min % yr4_1461_idea._close
             yr1_idea = yr4_1461_idea.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[
                 0
@@ -488,7 +487,7 @@ class AgendaUnit:
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
             yr4_1460_road = self.make_road(tech_road, "4year wo leap")
             yr4_1460_idea = self.get_idea_obj(yr4_1460_road)
-            yr4_patterns = 0
+            yr4_cycles = 0
             yr1_idea = yr4_1460_idea.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460_idea._close
 
@@ -496,7 +495,7 @@ class AgendaUnit:
         yr1_idea_begin = int(yr1_idea._label.split("-")[0]) - 1
 
         c100_4_96y_begin = int(c100_4_96y._label.split("-")[0])
-        year_num = c100_4_96y_begin + (4 * yr4_patterns) + yr1_idea_begin
+        year_num = c100_4_96y_begin + (4 * yr4_cycles) + yr1_idea_begin
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
@@ -640,17 +639,13 @@ class AgendaUnit:
         self._partys.pop(party_id)
 
     def add_partyunit(
-        self,
-        party_id: PartyID,
-        creditor_weight: int = None,
-        debtor_weight: int = None,
-        depotlink_type: str = None,
+        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
     ):
         partyunit = partyunit_shop(
             party_id=party_id,
             creditor_weight=creditor_weight,
             debtor_weight=debtor_weight,
-            depotlink_type=depotlink_type,
+            _road_delimiter=self._road_delimiter,
         )
         self.set_partyunit(partyunit=partyunit)
 
@@ -670,7 +665,10 @@ class AgendaUnit:
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
-                partyunit.party_id, _party_mirror=True, _partys=partylinks
+                partyunit.party_id,
+                _party_mirror=True,
+                _partys=partylinks,
+                _road_delimiter=self._road_delimiter,
             )
             self.set_groupunit(y_groupunit=group_unit)
 
@@ -717,11 +715,7 @@ class AgendaUnit:
         self.del_partyunit(party_id=old_party_id)
 
     def edit_partyunit(
-        self,
-        party_id: PartyID,
-        creditor_weight: int = None,
-        debtor_weight: int = None,
-        depotlink_type: str = None,
+        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
     ):
         if self._partys.get(party_id) is None:
             raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
@@ -730,8 +724,6 @@ class AgendaUnit:
             x_partyunit.set_creditor_weight(creditor_weight)
         if debtor_weight != None:
             x_partyunit.set_debtor_weight(debtor_weight)
-        if depotlink_type != None:
-            x_partyunit.set_depotlink_type(depotlink_type)
         self.set_partyunit(x_partyunit)
 
     def get_party(self, party_id: PartyID) -> PartyUnit:
@@ -746,9 +738,6 @@ class AgendaUnit:
             party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
 
-    def get_partys_depotlink_count(self) -> int:
-        return sum(party_x.depotlink_type != None for party_x in self._partys.values())
-
     def set_groupunit(
         self,
         y_groupunit: GroupUnit,
@@ -756,6 +745,8 @@ class AgendaUnit:
         replace: bool = True,
         add_partylinks: bool = None,
     ):
+        if y_groupunit._road_delimiter != self._road_delimiter:
+            y_groupunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
         if add_partylinks is None:
@@ -1104,7 +1095,8 @@ class AgendaUnit:
     def add_l1_idea(
         self,
         idea_kid: IdeaUnit,
-        create_missing_ideas_groups: bool = None,
+        create_missing_ideas: bool = None,
+        create_missing_groups: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
@@ -1112,7 +1104,8 @@ class AgendaUnit:
         self.add_idea(
             idea_kid=idea_kid,
             parent_road=self._world_id,
-            create_missing_ideas_groups=create_missing_ideas_groups,
+            create_missing_ideas=create_missing_ideas,
+            create_missing_groups=create_missing_groups,
             adoptees=adoptees,
             bundling=bundling,
             create_missing_ancestors=create_missing_ancestors,
@@ -1122,7 +1115,8 @@ class AgendaUnit:
         self,
         idea_kid: IdeaUnit,
         parent_road: RoadUnit,
-        create_missing_ideas_groups: bool = None,
+        create_missing_groups: bool = None,
+        create_missing_ideas: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
@@ -1137,14 +1131,9 @@ class AgendaUnit:
         idea_kid._road_delimiter = self._road_delimiter
         if idea_kid._agenda_world_id != self._world_id:
             idea_kid._agenda_world_id = self._world_id
-        idea_kid.set_parent_road(parent_road=parent_road)
-        if not create_missing_ideas_groups:
+        if not create_missing_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
-            for x_group_id in idea_kid._leaderunit._group_ids:
-                if self.get_groupunit(x_group_id) is None:
-                    raise InvalidAgendaException(
-                        f"Idea {idea_kid.get_road()} cannot be saved because _leaderunit._group_ids contains {x_group_id} which does not exist for agenda."
-                    )
+        idea_kid.set_parent_road(parent_road=parent_road)
 
         # create any missing ideas
         if not create_missing_ancestors and self.idea_exists(parent_road) == False:
@@ -1152,6 +1141,8 @@ class AgendaUnit:
                 f"add_idea failed because '{parent_road}' idea does not exist."
             )
         parent_road_idea = self.get_idea_obj(parent_road, create_missing_ancestors)
+        if parent_road_idea._root == False:
+            parent_road_idea
         parent_road_idea.add_kid(idea_kid)
 
         kid_road = self.make_road(parent_road, idea_kid._label)
@@ -1171,9 +1162,9 @@ class AgendaUnit:
             if bundling:
                 self.edit_idea_attr(road=kid_road, weight=weight_sum)
 
-        if create_missing_ideas_groups:
-            self._create_missing_leaderunit_partys(leaderunit=idea_kid._leaderunit)
+        if create_missing_ideas:
             self._create_missing_ideas(road=kid_road)
+        if create_missing_groups:
             self._create_missing_groups_partys(balancelinks=idea_kid._balancelinks)
 
     def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
@@ -1197,17 +1188,12 @@ class AgendaUnit:
         return x_idea
 
     def _create_missing_groups_partys(self, balancelinks: dict[GroupID:BalanceLink]):
-        for x_balancelink in balancelinks.values():
-            if self.get_groupunit(x_balancelink.group_id) is None:
+        for balancelink_x in balancelinks.values():
+            if self.get_groupunit(balancelink_x.group_id) is None:
                 groupunit_x = groupunit_shop(
-                    group_id=x_balancelink.group_id, _partys={}
+                    group_id=balancelink_x.group_id, _partys={}
                 )
                 self.set_groupunit(y_groupunit=groupunit_x)
-
-    def _create_missing_leaderunit_partys(self, leaderunit: LeaderUnit):
-        for x_group_id in leaderunit._group_ids:
-            if self.get_groupunit(x_group_id) is None:
-                self.add_partyunit(x_group_id)
 
     def _create_missing_ideas(self, road):
         self.set_agenda_metrics()
@@ -1437,7 +1423,7 @@ class AgendaUnit:
         reason_del_premise_need: RoadUnit = None,
         reason_suff_idea_active: str = None,
         assignedunit: AssignedUnit = None,
-        leaderunit: LeaderUnit = None,
+        healerhold: HealerHold = None,
         begin: float = None,
         close: float = None,
         addin: float = None,
@@ -1457,11 +1443,11 @@ class AgendaUnit:
         meld_strategy: MeldStrategy = None,
         problem_bool: bool = None,
     ):
-        if leaderunit != None:
-            for x_group_id in leaderunit._group_ids:
+        if healerhold != None:
+            for x_group_id in healerhold._group_ids:
                 if self._groups.get(x_group_id) is None:
-                    raise LeaderGroupException(
-                        f"Idea cannot edit leaderunit because group_id '{x_group_id}' does not exist as group in Agenda"
+                    raise healerhold_group_id_Exception(
+                        f"Idea cannot edit healerhold because group_id '{x_group_id}' does not exist as group in Agenda"
                     )
 
         x_ideaattrfilter = ideaattrfilter_shop(
@@ -1477,7 +1463,7 @@ class AgendaUnit:
             reason_del_premise_need=reason_del_premise_need,
             reason_suff_idea_active=reason_suff_idea_active,
             assignedunit=assignedunit,
-            leaderunit=leaderunit,
+            healerhold=healerhold,
             begin=begin,
             close=close,
             addin=addin,
@@ -1734,7 +1720,7 @@ class AgendaUnit:
         group_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         econ_justified_by_problem = True
-        leaderunit_count = 0
+        healerhold_count = 0
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
@@ -1766,14 +1752,14 @@ class AgendaUnit:
             x_idea_obj._all_party_credit = group_everyone
             x_idea_obj._all_party_debt = group_everyone
 
-            if x_idea_obj._leaderunit.any_group_id_exists():
+            if x_idea_obj._healerhold.any_group_id_exists():
                 econ_justified_by_problem = False
-                leaderunit_count += 1
-                self._sum_leaderunit_importance += x_idea_obj._agenda_importance
+                healerhold_count += 1
+                self._sum_healerhold_importance += x_idea_obj._agenda_importance
             if x_idea_obj._problem_bool:
                 econ_justified_by_problem = True
 
-        if econ_justified_by_problem == False or leaderunit_count > 1:
+        if econ_justified_by_problem == False or healerhold_count > 1:
             if econ_exceptions:
                 raise Exception_econs_justified(
                     f"IdeaUnit '{road}' cannot sponsor ancestor econs."
@@ -1867,9 +1853,9 @@ class AgendaUnit:
     def _clear_agenda_base_metrics(self):
         self._econs_justified = True
         self._econs_buildable = False
-        self._sum_leaderunit_importance = 0
+        self._sum_healerhold_importance = 0
         self._econ_dict = {}
-        self._leaders_dict = {}
+        self._healers_dict = {}
 
     def set_agenda_metrics(self, econ_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
@@ -1882,7 +1868,7 @@ class AgendaUnit:
             self._check_if_any_idea_active_has_changed()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
-        self._after_all_tree_traverses_set_leaderunit_importance()
+        self._after_all_tree_traverses_set_healerhold_importance()
 
     def _execute_tree_traverse(self, econ_exceptions: bool = False):
         self._pre_tree_traverse_credit_debt_reset()
@@ -1937,36 +1923,36 @@ class AgendaUnit:
         self._distribute_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
 
-    def _after_all_tree_traverses_set_leaderunit_importance(self):
+    def _after_all_tree_traverses_set_healerhold_importance(self):
         self._set_econ_dict()
-        self._leaders_dict = self._get_leaders_dict()
+        self._healers_dict = self._get_healers_dict()
         self._econs_buildable = self._get_econs_buildable()
 
     def _set_econ_dict(self):
         if self._econs_justified == False:
-            self._sum_leaderunit_importance = 0
+            self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
-            if self._sum_leaderunit_importance == 0:
-                x_idea._leaderunit_importance = 0
+            if self._sum_healerhold_importance == 0:
+                x_idea._healerhold_importance = 0
             else:
-                x_idea._leaderunit_importance = (
-                    x_idea._agenda_importance / self._sum_leaderunit_importance
+                x_idea._healerhold_importance = (
+                    x_idea._agenda_importance / self._sum_healerhold_importance
                 )
-            if self._econs_justified and x_idea._leaderunit.any_group_id_exists():
+            if self._econs_justified and x_idea._healerhold.any_group_id_exists():
                 self._econ_dict[x_idea.get_road()] = x_idea
 
-    def _get_leaders_dict(self) -> dict[LeaderID : dict[RoadUnit:IdeaUnit]]:
-        _leaders_dict = {}
+    def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
+        _healers_dict = {}
         for x_econ_road, x_econ_idea in self._econ_dict.items():
-            for x_group_id in x_econ_idea._leaderunit._group_ids:
+            for x_group_id in x_econ_idea._healerhold._group_ids:
                 x_groupunit = self.get_groupunit(x_group_id)
                 for x_party_id in x_groupunit._partys.keys():
-                    if _leaders_dict.get(x_party_id) is None:
-                        _leaders_dict[x_party_id] = {x_econ_road: x_econ_idea}
+                    if _healers_dict.get(x_party_id) is None:
+                        _healers_dict[x_party_id] = {x_econ_road: x_econ_idea}
                     else:
-                        leader_dict = _leaders_dict.get(x_party_id)
-                        leader_dict[x_econ_road] = x_econ_idea
-        return _leaders_dict
+                        healer_dict = _healers_dict.get(x_party_id)
+                        healer_dict[x_econ_road] = x_econ_idea
+        return _healers_dict
 
     def _get_econs_buildable(self) -> bool:
         return all(
@@ -2053,7 +2039,6 @@ class AgendaUnit:
             "_owner_id": self._owner_id,
             "_world_id": self._world_id,
             "_max_tree_traverse": self._max_tree_traverse,
-            "_auto_output_job_to_forum": self._auto_output_job_to_forum,
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
@@ -2160,7 +2145,8 @@ class AgendaUnit:
         self.add_idea(
             idea_kid=idea_kid,
             parent_road=self.make_road(idea_kid._parent_road),
-            create_missing_ideas_groups=True,
+            create_missing_groups=True,
+            create_missing_ideas=True,
         )
 
     def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:
@@ -2241,7 +2227,7 @@ class AgendaUnit:
         agenda_x,
         assignor_partys: dict[PartyID:PartyUnit],
         assignor_party_id: PartyID,
-    ):
+    ) -> any:
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
         self._set_assignment_groups(agenda_x)
@@ -2308,18 +2294,11 @@ class AgendaUnit:
             if (x_idea.assignor_in(assignor_groups) and x_idea.promise)
         }
 
-    def _set_auto_output_job_to_forum(self, bool_x: bool):
-        if bool_x is None and self._auto_output_job_to_forum is None:
-            self._auto_output_job_to_forum = False
-        elif bool_x is not None or not self._auto_output_job_to_forum:
-            self._auto_output_job_to_forum = bool_x is not None and bool_x
-
 
 def agendaunit_shop(
     _owner_id: OwnerID = None,
-    _world_id: EconID = None,
+    _world_id: WorldID = None,
     _weight: float = None,
-    _auto_output_job_to_forum: bool = None,
     _road_delimiter: str = None,
     _planck: float = None,
     _meld_strategy: MeldStrategy = None,
@@ -2334,19 +2313,18 @@ def agendaunit_shop(
     x_agenda = AgendaUnit(
         _owner_id=_owner_id,
         _weight=get_1_if_None(_weight),
-        _auto_output_job_to_forum=get_False_if_None(_auto_output_job_to_forum),
         _world_id=_world_id,
         _partys=get_empty_dict_if_none(None),
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _econ_dict=get_empty_dict_if_none(None),
-        _leaders_dict=get_empty_dict_if_none(None),
+        _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _econs_justified=get_False_if_None(),
         _econs_buildable=get_False_if_None(),
-        _sum_leaderunit_importance=get_0_if_None(),
+        _sum_healerhold_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_world_id=x_agenda._world_id
@@ -2366,9 +2344,6 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda = agendaunit_shop()
     x_agenda.set_owner_id(get_obj_from_agenda_dict(agenda_dict, "_owner_id"))
     x_agenda._weight = get_obj_from_agenda_dict(agenda_dict, "_weight")
-    x_agenda._auto_output_job_to_forum = get_obj_from_agenda_dict(
-        agenda_dict, "_auto_output_job_to_forum"
-    )
     x_agenda.set_max_tree_traverse(
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
@@ -2389,9 +2364,13 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
             agenda_dict, "_meld_strategy"
         )
     x_agenda._last_gift_id = get_obj_from_agenda_dict(agenda_dict, "_last_gift_id")
-    for x_partyunit in get_obj_from_agenda_dict(agenda_dict, "_partys").values():
+    for x_partyunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_partys", _road_delimiter=x_agenda._road_delimiter
+    ).values():
         x_agenda.set_partyunit(x_partyunit)
-    for x_groupunit in get_obj_from_agenda_dict(agenda_dict, "_groups").values():
+    for x_groupunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_groups", _road_delimiter=x_agenda._road_delimiter
+    ).values():
         x_agenda.set_groupunit(x_groupunit)
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
@@ -2417,7 +2396,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
         _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
         _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
-        _leaderunit=get_obj_from_idea_dict(idearoot_dict, "_leaderunit"),
+        _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
         _beliefunits=get_obj_from_idea_dict(idearoot_dict, "_beliefunits"),
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
@@ -2457,7 +2436,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _problem_bool=get_obj_from_idea_dict(idea_dict, "_problem_bool"),
             _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
-            _leaderunit=get_obj_from_idea_dict(idea_dict, "_leaderunit"),
+            _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
             _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
             _beliefunits=get_obj_from_idea_dict(idea_dict, "_beliefunits"),
@@ -2469,7 +2448,9 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
         x_agenda.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 
 
-def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
+def get_obj_from_agenda_dict(
+    x_dict: dict[str:], dict_key: str, _road_delimiter: str = None
+) -> any:
     if dict_key == "_originunit":
         return (
             originunit_get_from_dict(x_dict[dict_key])
@@ -2478,20 +2459,18 @@ def get_obj_from_agenda_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key == "_partys":
         return (
-            partyunits_get_from_dict(x_dict[dict_key])
+            partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else partyunits_get_from_dict(x_dict[dict_key])
+            else partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_groups":
         return (
-            groupunits_get_from_dict(x_dict[dict_key])
+            get_groupunits_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else groupunits_get_from_dict(x_dict[dict_key])
+            else get_groupunits_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_max_tree_traverse":
         return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
-    elif dict_key == "_auto_output_job_to_forum":
-        return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None
 

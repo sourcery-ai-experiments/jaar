@@ -31,7 +31,6 @@ def test_AgendaUnit_Exists():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._auto_output_job_to_forum is None
     assert x_agenda._last_gift_id is None
     assert x_agenda._meld_strategy is None
     assert x_agenda._originunit is None
@@ -76,7 +75,6 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._auto_output_job_to_forum == False
     assert x_agenda._last_gift_id is None
     assert x_agenda._meld_strategy == override_meld_strategy
     assert x_agenda._originunit == originunit_shop()
@@ -194,58 +192,11 @@ def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
     )
 
 
-def test_AgendaUnit_set_auto_output_job_to_forum_SetsBoolCorrectlyGivenNoneOrBool():
-    # GIVEN
-    x_agenda = get_agenda_with_4_levels()
-
-    # WHEN / THEN
-    assert x_agenda._auto_output_job_to_forum == False
-    x_agenda._set_auto_output_job_to_forum(None)
-    assert x_agenda._auto_output_job_to_forum == False
-
-    # WHEN / THEN
-    assert x_agenda._auto_output_job_to_forum == False
-    x_agenda._set_auto_output_job_to_forum(True)
-    assert x_agenda._auto_output_job_to_forum
-
-    # WHEN / THEN
-    assert x_agenda._auto_output_job_to_forum
-    x_agenda._set_auto_output_job_to_forum(True)
-    assert x_agenda._auto_output_job_to_forum
-
-    # WHEN / THEN
-    assert x_agenda._auto_output_job_to_forum
-    x_agenda._set_auto_output_job_to_forum(None)
-    assert x_agenda._auto_output_job_to_forum
-
-    # WHEN / THEN
-    assert x_agenda._auto_output_job_to_forum
-    x_agenda._set_auto_output_job_to_forum(False)
-    assert x_agenda._auto_output_job_to_forum == False
-
-    # WHEN / THEN
-    x_agenda._auto_output_job_to_forum = None
-    assert x_agenda._auto_output_job_to_forum is None
-    x_agenda._set_auto_output_job_to_forum(None)
-    assert x_agenda._auto_output_job_to_forum == False
-
-
-def test_AgendaUnit_shop_CorrectlySetsGiven_auto_output_job_to_forum():
-    # GIVEN
-
-    # WHEN
-    noa_text = "Noa"
-    x_agenda = agendaunit_shop(_owner_id=noa_text, _auto_output_job_to_forum=True)
-
-    # THEN
-    assert x_agenda._auto_output_job_to_forum == True
-
-
 def test_AgendaUnit_set_world_id_CorrectlySetsAttr():
     # GIVEN
     world_id_text = "Sun"
     noa_text = "Noa"
-    x_agenda = agendaunit_shop(_owner_id=noa_text, _auto_output_job_to_forum=True)
+    x_agenda = agendaunit_shop(_owner_id=noa_text)
     assert x_agenda._world_id == root_label()
 
     # WHEN
@@ -263,7 +214,6 @@ def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
     x_agenda = agendaunit_shop(
         _owner_id=noa_text,
         _world_id=world_id_text,
-        _auto_output_job_to_forum=True,
         _road_delimiter=slash_road_delimiter,
     )
     assert x_agenda._road_delimiter == slash_road_delimiter
@@ -284,7 +234,6 @@ def test_AgendaUnit_make_road_ReturnsCorrectObj():
     x_agenda = agendaunit_shop(
         _owner_id=noa_text,
         _world_id=world_id_text,
-        _auto_output_job_to_forum=True,
         _road_delimiter=slash_road_delimiter,
     )
     gig_text = "gig"

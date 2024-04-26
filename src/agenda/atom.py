@@ -419,7 +419,8 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
                 promise=xs.get_value("promise"),
             ),
             parent_road=xs.get_value("parent_road"),
-            create_missing_ideas_groups=False,
+            create_missing_ideas=False,
+            create_missing_groups=False,
             create_missing_ancestors=False,
         )
     elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_delete():
@@ -529,7 +530,6 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
             party_id=xs.get_value("party_id"),
             creditor_weight=xs.get_value("creditor_weight"),
             debtor_weight=xs.get_value("debtor_weight"),
-            depotlink_type=xs.get_value("depotlink_type"),
         )
     elif xs.category == "agenda_partyunit" and xs.crud_text == atom_insert():
         x_agenda.set_partyunit(
@@ -537,7 +537,6 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
                 party_id=xs.get_value("party_id"),
                 creditor_weight=xs.get_value("creditor_weight"),
                 debtor_weight=xs.get_value("debtor_weight"),
-                depotlink_type=xs.get_value("depotlink_type"),
             )
         )
 
@@ -546,7 +545,6 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
     if category == "agendaunit":
         return (
             x_obj._weight != y_obj._weight
-            or x_obj._auto_output_job_to_forum != y_obj._auto_output_job_to_forum
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
             or x_obj._party_creditor_pool != y_obj._party_creditor_pool
@@ -587,10 +585,8 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj.divisor != y_obj.divisor
         )
     elif category == "agenda_partyunit":
-        return (
-            (x_obj.creditor_weight != y_obj.creditor_weight)
-            or (x_obj.debtor_weight != y_obj.debtor_weight)
-            or (x_obj.depotlink_type != y_obj.depotlink_type)
+        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
+            x_obj.debtor_weight != y_obj.debtor_weight
         )
 
 

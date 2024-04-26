@@ -5,10 +5,10 @@ from src.econ.econ import EconUnit
 
 # def get_econ_WithLaundryTaskMeldFromOneClerkToAnother(x_econ: EconUnit):
 #     yao_text = "Yao"
-#     x_econ.create_new_clerkunit(clerk_id=yao_text)
+#     x_econ.create_clerkunit(clerk_id=yao_text)
 #     yao_clerk = x_econ.get_clerkunit(clerk_id=yao_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
-#     laundry_agenda.set_world_id(x_econ.econ_id)
+#     laundry_agenda.set_world_id(x_econ.world_id)
 #     print(f"{laundry_agenda._owner_id=}")
 #     yao_clerk.set_role(laundry_agenda)
 
@@ -25,14 +25,14 @@ from src.econ.econ import EconUnit
 #     # set basket status to "bare"
 #     role_x = yao_clerk.get_role().set_belief(base=basket_road, pick=b_bare_road)
 #     yao_clerk.set_role(role_x)
-#     # save belief change to forum
-#     yao_clerk.save_refreshed_job_to_forum()
-#     # print(f"{x_econ.get_job_agenda_file(yao_text)._idearoot._beliefunits.keys()=}")
-#     yao_output = x_econ.get_job_agenda_file(yao_text)
+#     # save belief change to jobs
+#     yao_clerk.save_refreshed_job_to_jobs()
+#     # print(f"{x_econ.get_file_in_jobs(yao_text)._idearoot._beliefunits.keys()=}")
+#     yao_output = x_econ.get_file_in_jobs(yao_text)
 
 #     # create assignment for Cali
 #     cali_text = "Cali"
-#     x_econ.create_new_clerkunit(clerk_id=cali_text)
+#     x_econ.create_clerkunit(clerk_id=cali_text)
 #     cali_clerk = x_econ.get_clerkunit(clerk_id=cali_text)
 #     cali_clerk.set_depot_agenda(yao_output, "assignment")
 #     old_cali_agenda = x_econ.get_job_agenda(cali_text)
@@ -46,13 +46,13 @@ from src.econ.econ import EconUnit
 #     # set basket status to "full"
 #     yao_clerk.get_role().set_belief(base=basket_road, pick=b_full_road)
 #     yao_clerk.set_role()
-#     yao_clerk.save_refreshed_job_to_forum()
+#     yao_clerk.save_refreshed_job_to_jobs()
 
 #     cali_clerk.refresh_depot_agendas()
 #     new_cali_agenda = cali_clerk.get_remelded_output_agenda()
 
-#     # new_forum_yao = x_econ.get_job_agenda_file(yao_text)
-#     # a_basket_belief = new_forum_yao._idearoot._beliefunits.get(basket_road)
+#     # new_jobs_yao = x_econ.get_file_in_jobs(yao_text)
+#     # a_basket_belief = new_jobs_yao._idearoot._beliefunits.get(basket_road)
 #     # print(f"Yao after when {a_basket_belief.base=} {a_basket_belief.pick=}")
 
 #     # THEN

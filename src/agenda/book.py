@@ -151,13 +151,6 @@ class BookUnit:
         if not optional_args_different("agendaunit", before_agenda, after_agenda):
             return
         x_agendaatom = agendaatom_shop("agendaunit", atom_update())
-        if (
-            before_agenda._auto_output_job_to_forum
-            != after_agenda._auto_output_job_to_forum
-        ):
-            x_agendaatom.set_optional_arg(
-                "_auto_output_job_to_forum", after_agenda._auto_output_job_to_forum
-            )
         if before_agenda._max_tree_traverse != after_agenda._max_tree_traverse:
             x_agendaatom.set_optional_arg(
                 "_max_tree_traverse", after_agenda._max_tree_traverse
@@ -212,10 +205,6 @@ class BookUnit:
                 x_agendaatom.set_optional_arg(
                     "debtor_weight", x_partyunit.debtor_weight
                 )
-            if x_partyunit.depotlink_type != None:
-                x_agendaatom.set_optional_arg(
-                    "depotlink_type", x_partyunit.depotlink_type
-                )
             self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_partyunit_updates(
@@ -236,10 +225,6 @@ class BookUnit:
                 if before_partyunit.debtor_weight != after_partyunit.debtor_weight:
                     x_agendaatom.set_optional_arg(
                         "debtor_weight", after_partyunit.debtor_weight
-                    )
-                if before_partyunit.depotlink_type != after_partyunit.depotlink_type:
-                    x_agendaatom.set_optional_arg(
-                        "depotlink_type", after_partyunit.depotlink_type
                     )
                 self.set_agendaatom(x_agendaatom)
 

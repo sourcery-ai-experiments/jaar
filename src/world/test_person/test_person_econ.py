@@ -1,7 +1,7 @@
 from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
-from src.econ.clerk import clerkunit_shop
+from src.econ.clerk import get_file_in_roles, save_file_to_roles, get_owner_file_name
 from src.econ.econ import treasury_db_filename
 from src.world.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
@@ -79,7 +79,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     assert sue_person._econ_objs != {}
     assert sue_person._econ_objs.get(dallas_road) != None
     dallas_econunit = sue_person._econ_objs.get(dallas_road)
-    assert dallas_econunit.econ_id == sue_person.world_id
+    assert dallas_econunit.world_id == sue_person.world_id
     assert dallas_econunit.econ_dir == dallas_dir
     assert dallas_econunit._manager_person_id == sue_text
     assert dallas_econunit._road_delimiter == sue_person._road_delimiter
@@ -258,11 +258,11 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.econ_id == sue_person.world_id
+    assert dallas_econ.world_id == sue_person.world_id
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 
-def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup):
+def test_PersonUnit_set_econunit_role_CorrectlySets_role(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -281,19 +281,20 @@ def test_PersonUnit_set_econunit_role_CorrectlySetsrole(worlds_dir_setup_cleanup
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
+    print(f"{sue_person._econ_objs.keys()=}")
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
-    sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert sue_clerk.get_role().get_party(bob_text) is None
+    sue_file_name = get_owner_file_name(sue_text)
+    sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    assert os_path_exists(sue_role_file_path) == False
 
     # WHEN
     sue_person.set_econunit_role(dallas_road, sue_gut_agenda)
 
     # THEN
-    assert sue_clerk.get_role().get_party(bob_text) != None
+    assert os_path_exists(sue_role_file_path)
 
 
-def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_cleanup):
+def test_PersonUnit_set_econunits_role_CorrectlySets_roles(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -316,21 +317,20 @@ def test_PersonUnit_set_econunits_role_CorrectlySetsroles(worlds_dir_setup_clean
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
+    sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
-    dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_role().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
+    dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    elpaso_econ = sue_person.get_econ(elpaso_road)
+    elpaso_sue_role_file_path = f"{elpaso_econ.get_roles_dir()}/{sue_file_name}"
+    assert os_path_exists(dallas_sue_role_file_path) == False
+    assert os_path_exists(elpaso_sue_role_file_path) == False
 
     # WHEN
     sue_person.set_econunits_role(sue_gut_agenda)
 
     # THEN
-    assert dallas_sue_clerk.get_role().get_party(bob_text) != None
-    elpaso_econ = sue_person.get_econ(elpaso_road)
-    elpaso_econ.create_new_clerkunit(sue_text)
-    elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_role().get_party(bob_text) != None
+    assert os_path_exists(dallas_sue_role_file_path)
+    assert os_path_exists(elpaso_sue_role_file_path)
 
 
 def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
@@ -358,18 +358,17 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     # display_ideatree(sue_gut_agenda, mode="Econ").show()
     sue_person._save_gut_file(sue_gut_agenda)
     sue_person.create_person_econunits()
+    sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)
-    dallas_econ.create_new_clerkunit(sue_text)
-    dallas_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert dallas_sue_clerk.get_role().get_party(bob_text) is None
-    # assert elpaso_sue_clerk.get_role().get_party(bob_text) is None
+    dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    elpaso_econ = sue_person.get_econ(elpaso_road)
+    elpaso_sue_role_file_path = f"{elpaso_econ.get_roles_dir()}/{sue_file_name}"
+    assert os_path_exists(dallas_sue_role_file_path) == False
+    assert os_path_exists(elpaso_sue_role_file_path) == False
 
     # WHEN
     sue_person.set_person_econunits_role()
 
     # THEN
-    assert dallas_sue_clerk.get_role().get_party(bob_text) != None
-    elpaso_econ = sue_person.get_econ(elpaso_road)
-    elpaso_econ.create_new_clerkunit(sue_text)
-    elpaso_sue_clerk = dallas_econ.get_clerkunit(sue_text)
-    assert elpaso_sue_clerk.get_role().get_party(bob_text) != None
+    assert os_path_exists(dallas_sue_role_file_path)
+    assert os_path_exists(elpaso_sue_role_file_path)

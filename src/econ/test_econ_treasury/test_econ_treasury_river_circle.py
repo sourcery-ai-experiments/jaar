@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_econ_id,
+    get_temp_env_world_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -15,8 +15,8 @@ from src.econ.treasury_sqlstr import (
 def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -28,12 +28,12 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_agenda_to_forum(sal_agenda)
+    x_econ.save_file_to_jobs(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_file_to_jobs(bob_agenda)
 
     x_econ.refresh_treasury_job_agendas_data()
     x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
@@ -54,8 +54,8 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Leaders, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_econ_id(), get_test_econ_dir())
+    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -67,25 +67,25 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_agenda_to_forum(sal_agenda)
+    x_econ.save_file_to_jobs(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_agenda_to_forum(bob_agenda)
+    x_econ.save_file_to_jobs(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_econ.save_job_agenda_to_forum(tom_agenda)
+    x_econ.save_file_to_jobs(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_econ.save_job_agenda_to_forum(ava_agenda)
+    x_econ.save_file_to_jobs(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_econ.save_job_agenda_to_forum(elu_agenda)
+    x_econ.save_file_to_jobs(elu_agenda)
 
     x_econ.refresh_treasury_job_agendas_data()
     x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)

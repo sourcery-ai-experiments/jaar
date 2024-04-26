@@ -48,7 +48,6 @@ def test_get_agenda_partyunits_dataframe_ReturnsCorrectDataFrame():
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "depotlink_type",
     }
     print(f"{set(x_df.columns)=}")
 
@@ -82,7 +81,6 @@ def test_get_agenda_partyunits_dataframe_ReturnsCorrectEmptyDataFrame():
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "depotlink_type",
     }
     print(f"{set(x_df.columns)=}")
 

@@ -202,8 +202,8 @@ def test_get_atom_columns_build_ReturnsCorrectObj():
     atom_columns = get_atom_columns_build()
 
     # THEN
-    assert len(atom_columns) == 114
-    assert atom_columns.get("agendaunit_UPDATE__auto_output_job_to_forum") == "INTEGER"
+    assert len(atom_columns) == 111
+    assert atom_columns.get("agendaunit_UPDATE__party_creditor_pool") == "INTEGER"
     # print(f"{atom_columns.keys()=}")
 
 

@@ -90,12 +90,11 @@ def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    assign_text = "assignment"
 
     # WHEN
     yao_agenda.add_partyunit(rico_text, creditor_weight=13, debtor_weight=8)
     yao_agenda.add_partyunit(carm_text, debtor_weight=5)
-    yao_agenda.add_partyunit(patr_text, creditor_weight=17, depotlink_type=assign_text)
+    yao_agenda.add_partyunit(patr_text, creditor_weight=17)
 
     # THEN
     assert len(yao_agenda._partys) == 3
@@ -103,7 +102,6 @@ def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
     assert yao_agenda.get_groupunit(rico_text)._party_mirror == True
     assert yao_agenda._partys.get(patr_text).creditor_weight == 17
     assert yao_agenda._partys.get(carm_text).debtor_weight == 5
-    assert yao_agenda._partys.get(patr_text).depotlink_type == assign_text
     assert yao_agenda._partys.get(patr_text)._planck == x_planck
 
 
@@ -153,19 +151,16 @@ def test_AgendaUnit_edit_party_CorrectlyUpdatesObj():
     rico_text = "rico"
     old_rico_creditor_weight = 55
     old_rico_debtor_weight = 66
-    rico_depotlink_type = "assignment"
     yao_agenda.set_partyunit(
         partyunit_shop(
             rico_text,
             old_rico_creditor_weight,
             old_rico_debtor_weight,
-            depotlink_type=rico_depotlink_type,
         )
     )
     rico_partyunit = yao_agenda.get_party(rico_text)
     assert rico_partyunit.creditor_weight == old_rico_creditor_weight
     assert rico_partyunit.debtor_weight == old_rico_debtor_weight
-    assert rico_partyunit.depotlink_type == rico_depotlink_type
 
     # WHEN
     new_rico_creditor_weight = 22
@@ -174,13 +169,11 @@ def test_AgendaUnit_edit_party_CorrectlyUpdatesObj():
         party_id=rico_text,
         creditor_weight=new_rico_creditor_weight,
         debtor_weight=new_rico_debtor_weight,
-        depotlink_type=None,
     )
 
     # THEN
     assert rico_partyunit.creditor_weight == new_rico_creditor_weight
     assert rico_partyunit.debtor_weight == new_rico_debtor_weight
-    assert rico_partyunit.depotlink_type == rico_depotlink_type
 
 
 def test_AgendaUnit_get_party_ReturnsCorrectObj():
@@ -198,36 +191,6 @@ def test_AgendaUnit_get_party_ReturnsCorrectObj():
     # THEN
     assert rico_party == yao_agenda._partys.get(rico_text)
     assert carm_party == yao_agenda._partys.get(carm_text)
-
-
-def test_AgendaUnit_get_partys_depotlink_count_GetsCorrectCount():
-    # GIVEN
-    sue_text = "Sue"
-    sue_agenda = agendaunit_shop(_owner_id=sue_text)
-    assign_text = "assignment"
-
-    # WHEN
-    rico_text = "rico"
-    carm_text = "carmen"
-    sue_agenda.add_partyunit(rico_text)
-    sue_agenda.add_partyunit(carm_text)
-    # THEN
-    assert len(sue_agenda._partys) == 2
-    assert sue_agenda.get_partys_depotlink_count() == 0
-
-    # WHEN
-    patr_text = "patrick"
-    sue_agenda.add_partyunit(patr_text, depotlink_type=assign_text)
-    # THEN
-    assert len(sue_agenda._partys) == 3
-    assert sue_agenda.get_partys_depotlink_count() == 1
-
-    # WHEN
-    rico_party = sue_agenda.get_party(rico_text)
-    rico_party.set_depotlink_type(assign_text)
-    # THEN
-    assert len(sue_agenda._partys) == 3
-    assert sue_agenda.get_partys_depotlink_count() == 2
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt():

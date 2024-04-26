@@ -538,8 +538,6 @@ class ReasonCore:
             raise InvalidReasonException(
                 f"Meld fail: reason={other_reason.base} is different {self.base=}"
             )
-
-        # TODO get rid of this return self
         return self
 
 
