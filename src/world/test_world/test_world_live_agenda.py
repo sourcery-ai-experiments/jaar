@@ -1,4 +1,4 @@
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.world.world import worldunit_shop
@@ -52,7 +52,7 @@ def test_WorldUnit_generate_live_agenda_ReturnsRegeneratedObj(
     assert after_luca_agenda.get_party(bob_text) is None
 
 
-def test_WorldUnit_generate_live_agenda_SetsCorrectFileWithout_healerhold(
+def test_WorldUnit_generate_live_agenda_SetsCorrectFileWithout_leaderunit(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -75,7 +75,7 @@ def test_WorldUnit_generate_live_agenda_SetsCorrectFileWithout_healerhold(
     assert after_bob_live_agenda.get_party(sue_text) != None
 
 
-def test_WorldUnit_generate_live_agenda_SetsCorrectFileWith_healerhold(
+def test_WorldUnit_generate_live_agenda_SetsCorrectFileWith_leaderunit(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -93,7 +93,7 @@ def test_WorldUnit_generate_live_agenda_SetsCorrectFileWith_healerhold(
     texas_road = bob_gut_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
     elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({bob_text}))
     bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_gut_agenda.add_idea(elpaso_idea, texas_road)
     bob_person._save_gut_file(bob_gut_agenda)
@@ -101,6 +101,42 @@ def test_WorldUnit_generate_live_agenda_SetsCorrectFileWith_healerhold(
 
     # THEN
     assert after_bob_live_agenda.get_party(bob_text) != None
+
+
+def test_WorldUnit_load_all_role_agendas_SetsCorrectFiles(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    music_world = worldunit_shop("music", get_test_worlds_dir(), True)
+
+    bob_text = "Bob"
+    bob_person = music_world.add_personunit(bob_text)
+    bob_gut_agenda = music_world.get_person_gut(bob_text)
+
+    bob_leaderunit = leaderunit_shop({bob_text})
+    texas_text = "Texas"
+    texas_road = bob_gut_agenda.make_l1_road(texas_text)
+    texas_idea = ideaunit_shop(texas_text, _problem_bool=True)
+    elpaso_text = "el paso"
+    elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=bob_leaderunit)
+    bob_gut_agenda.add_partyunit(bob_text)
+    bob_gut_agenda.add_l1_idea(texas_idea)
+    bob_gut_agenda.add_idea(elpaso_idea, texas_road)
+    bob_person._save_gut_file(bob_gut_agenda)
+
+    bob_person.create_person_econunits()
+    elpaso_econ = bob_person.get_econ(elpaso_road)
+    elpaso_econ.create_new_clerkunit(bob_text)
+    bob_clerkunit = elpaso_econ.get_clerkunit(bob_text)
+    bob_gut_agenda.set_agenda_metrics()
+    assert bob_gut_agenda != bob_clerkunit.open_role_file()
+
+    # WHEN
+    music_world.load_all_role_agendas()
+
+    # THEN
+    assert bob_gut_agenda == bob_clerkunit.open_role_file()
 
 
 def test_WorldUnit_generate_all_live_agendas_SetsCorrectFiles(
@@ -113,14 +149,14 @@ def test_WorldUnit_generate_all_live_agendas_SetsCorrectFiles(
     sue_text = "Sue"
     bob_person = music_world.add_personunit(bob_text)
     sue_person = music_world.add_personunit(sue_text)
-    bob_gut_agenda = music_world.generate_live_agenda(bob_text)
-    sue_gut_agenda = music_world.generate_live_agenda(sue_text)
+    bob_gut_agenda = music_world.get_person_gut(bob_text)
+    sue_gut_agenda = music_world.get_person_gut(sue_text)
 
     texas_text = "Texas"
     texas_road = bob_gut_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
     elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=leaderunit_shop({bob_text}))
 
     bob_gut_agenda = bob_person.get_gut_file_agenda()
     bob_gut_agenda.add_partyunit(bob_text)

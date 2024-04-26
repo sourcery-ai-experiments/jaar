@@ -1,5 +1,5 @@
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.world.world import WorldUnit, worldunit_shop
@@ -30,12 +30,12 @@ def create_example_world1() -> WorldUnit:
     yao_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({yao_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_leaderunit = leaderunit_shop({yao_text})
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=dallas_leaderunit)
     elpaso_text = "el paso"
     elpaso_road = yao_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_leaderunit = leaderunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=elpaso_leaderunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -44,7 +44,7 @@ def create_example_world1() -> WorldUnit:
     yao_person.create_person_econunits()
 
     # WHEN
-    music_world.set_all_econunits_contract(yao_text)
+    music_world.set_all_econunit_role_agendas(yao_text)
 
     return music_world
 
@@ -84,12 +84,12 @@ def create_example_world2() -> WorldUnit:
     zia_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_leaderunit = leaderunit_shop({yao_text, zia_text})
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=dallas_leaderunit)
     elpaso_text = "el paso"
     elpaso_road = yao_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_leaderunit = leaderunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=elpaso_leaderunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -114,9 +114,9 @@ def create_example_world2() -> WorldUnit:
     # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
     # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
     # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    music_world.set_all_econunits_contract(yao_text)
-    music_world.set_all_econunits_contract(wei_text)
-    music_world.set_all_econunits_contract(zia_text)
+    music_world.set_all_econunit_role_agendas(yao_text)
+    music_world.set_all_econunit_role_agendas(wei_text)
+    music_world.set_all_econunit_role_agendas(zia_text)
 
     return music_world
 
@@ -224,11 +224,11 @@ def create_example_world4() -> WorldUnit:
     wei_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     zia_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_leaderunit = leaderunit_shop({yao_text, zia_text})
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=dallas_leaderunit)
     elpaso_text = "el paso"
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_leaderunit = leaderunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=elpaso_leaderunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -253,8 +253,8 @@ def create_example_world4() -> WorldUnit:
     # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
     # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
     # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    music_world.set_all_econunits_contract(yao_text)
-    music_world.set_all_econunits_contract(wei_text)
-    music_world.set_all_econunits_contract(zia_text)
+    music_world.set_all_econunit_role_agendas(yao_text)
+    music_world.set_all_econunit_role_agendas(wei_text)
+    music_world.set_all_econunit_role_agendas(zia_text)
 
     return music_world

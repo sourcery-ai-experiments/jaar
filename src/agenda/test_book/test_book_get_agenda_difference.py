@@ -1,6 +1,7 @@
 from src.agenda.group import balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
@@ -1197,6 +1198,76 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete()
     x_keylist = [
         atom_delete(),
         "agenda_idea_suffgroup",
+        ball_road,
+        rico_text,
+    ]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("group_id") == rico_text
+    assert get_agendaatom_total_count(sue_bookunit) == 1
+
+
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_leaderunit_insert():
+    # GIVEN
+    sue_text = "Sue"
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+
+    after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+    after_ball_ideaunit = after_sue_agendaunit.get_idea_obj(ball_road)
+    after_ball_ideaunit._leaderunit = leaderunit_shop({rico_text})
+
+    # WHEN
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+
+    # THEN
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    x_keylist = [
+        atom_insert(),
+        "agenda_idea_leaderunit",
+        ball_road,
+        rico_text,
+    ]
+    ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
+    assert ball_agendaatom.get_value("road") == ball_road
+    assert ball_agendaatom.get_value("group_id") == rico_text
+    assert get_agendaatom_total_count(sue_bookunit) == 1
+
+
+def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_leaderunit_delete():
+    # GIVEN
+    sue_text = "Sue"
+    before_sue_agendaunit = agendaunit_shop(sue_text)
+    rico_text = "Rico"
+    before_sue_agendaunit.add_partyunit(rico_text)
+    sports_text = "sports"
+    sports_road = before_sue_agendaunit.make_l1_road(sports_text)
+    ball_text = "basketball"
+    ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
+    before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
+    before_ball_ideaunit = before_sue_agendaunit.get_idea_obj(ball_road)
+    before_ball_ideaunit._leaderunit = leaderunit_shop({rico_text})
+
+    after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
+    after_ball_ideaunit = after_sue_agendaunit.get_idea_obj(ball_road)
+    after_ball_ideaunit._leaderunit = leaderunit_shop()
+
+    # WHEN
+    sue_bookunit = bookunit_shop()
+    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+
+    # THEN
+    print(f"{print_agendaatom_keys(sue_bookunit)=}")
+    x_keylist = [
+        atom_delete(),
+        "agenda_idea_leaderunit",
         ball_road,
         rico_text,
     ]

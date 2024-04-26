@@ -143,3 +143,4 @@ src/econ/examples/econs/ex7
 src/econ/examples/econs/river_env/
 main_cli_app.py
 main_cli_app2.py
+src/world/examples/cli2/

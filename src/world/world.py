@@ -138,19 +138,23 @@ class WorldUnit:
         x_person = self.get_personunit(person_id)
         return x_person.get_gut_file_agenda()
 
-    def set_all_econunits_contract(self, person_id: PersonID):
+    def save_gut_file(self, x_agenda: AgendaUnit):
+        x_person = self.get_personunit(x_agenda._owner_id)
+        return x_person._save_gut_file(x_agenda)
+
+    def set_all_econunit_role_agendas(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()
-        for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit(healer_id)
-            for econ_idea in healer_dict.values():
-                self._set_person_econunits_agent_contract(
-                    healer_person=healer_person,
+        for leader_id, leader_dict in x_gut._leaders_dict.items():
+            leader_person = self.get_personunit(leader_id)
+            for econ_idea in leader_dict.values():
+                self._set_person_econunit_role_agenda(
+                    leader_person=leader_person,
                     econ_road=econ_idea.get_road(),
                     gut_agenda=x_gut,
                 )
 
-    def _set_person_econunits_agent_contract(
+    def _set_person_econunit_role_agenda(
         self,
         healer_person: PersonUnit,
         econ_road: RoadUnit,
@@ -176,11 +180,17 @@ class WorldUnit:
                 x_job = x_econ.get_file_in_jobs(person_id)
                 x_live.meld(x_job)
 
+        # brnach check
+
         # if live_agenda has not changed st live agenda to gut
         if x_live == x_live_deepcopy:
             x_live = x_gut
         x_personunit._save_live_file(x_live)
         return self.get_live_file_agenda(person_id)
+
+    def load_all_role_agendas(self):
+        for x_person_id in self._get_person_ids():
+            self.set_all_econunit_role_agendas(x_person_id)
 
     def generate_all_live_agendas(self):
         for x_person_id in self._get_person_ids():

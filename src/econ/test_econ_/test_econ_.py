@@ -362,7 +362,7 @@ def test_EconUnit_get_road_ReturnsCorrectObj(env_dir_setup_cleanup):
     bob_text = "Bob"
     econ_road_with_root = create_road(x_econ.world_id, bob_text)
     econ_road_wo_root = bob_text
-    # healer_list_wo_root = get_all_road_nodes(econ_road_wo_root)
+    # leader_list_wo_root = get_all_road_nodes(econ_road_wo_root)
     bloomers_text = "bloomers"
     bloomers_road_with_root = create_road(econ_road_with_root, bloomers_text)
     bloomers_road_wo_root = create_road(econ_road_wo_root, bloomers_text)

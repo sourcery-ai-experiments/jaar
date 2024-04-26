@@ -69,7 +69,7 @@ class GiftUnit:
         book_dict = giftunit_dict.get("book")
         return list(book_dict.keys())
 
-    def get_bookmetric_dict(self) -> dict:
+    def get_giftmetric_dict(self) -> dict:
         x_dict = self.get_step_dict()
         return {
             "gifter": x_dict.get("gifter"),
@@ -78,7 +78,7 @@ class GiftUnit:
         }
 
     def get_bookmetric_json(self) -> str:
-        return get_json_from_dict(self.get_bookmetric_dict())
+        return get_json_from_dict(self.get_giftmetric_dict())
 
     def _get_num_filename(self, x_number: int) -> str:
         return get_json_filename(x_number)

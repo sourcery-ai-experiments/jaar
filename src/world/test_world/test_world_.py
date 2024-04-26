@@ -1,6 +1,6 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.clerk import get_owner_file_name
 from src.world.world import WorldUnit, worldunit_shop
@@ -283,9 +283,7 @@ def test_WorldUnit_get_personunit_ReturnsNone(worlds_dir_setup_cleanup):
 def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
-    music_world = worldunit_shop(
-        music_text, get_test_worlds_dir(), in_memory_journal=True
-    )
+    music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
     luca_text = "Luca"
     music_world.add_personunit(luca_text)
     luca_person = music_world.get_personunit(luca_text)
@@ -302,7 +300,30 @@ def test_WorldUnit_get_person_gut_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert gen_luca_gut.get_party(bob_text) != None
 
 
-def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
+def test_WorldUnit_save_person_gut_SavesFilesCorrectly(worlds_dir_setup_cleanup):
+    # GIVEN
+    music_text = "music"
+    music_world = worldunit_shop(music_text, get_test_worlds_dir(), True)
+    luca_text = "Luca"
+    music_world.add_personunit(luca_text)
+    luca_person = music_world.get_personunit(luca_text)
+    bob_text = "Bob"
+    luca_gut = luca_person.get_gut_file_agenda()
+    luca_gut.add_partyunit(bob_text)
+    before_luca_gut = music_world.get_person_gut(luca_text)
+    assert before_luca_gut != None
+    assert before_luca_gut.get_party(bob_text) is None
+
+    # WHEN
+    music_world.save_gut_file(luca_gut)
+
+    # THEN
+    after_luca_gut = music_world.get_person_gut(luca_text)
+    assert after_luca_gut != None
+    assert after_luca_gut.get_party(bob_text) != None
+
+
+def test_WorldUnit_set_all_econunit_role_agendas_CorrectlySetsroles(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -327,12 +348,12 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     todd_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = luca_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({luca_text, todd_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_leaderunit = leaderunit_shop({luca_text, todd_text})
+    dallas_idea = ideaunit_shop(dallas_text, _leaderunit=dallas_leaderunit)
     elpaso_text = "el paso"
     elpaso_road = luca_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({luca_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_leaderunit = leaderunit_shop({luca_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _leaderunit=elpaso_leaderunit)
 
     luca_gut_agenda.add_idea(dallas_idea, texas_road)
     luca_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -359,7 +380,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) == False
 
     # WHEN
-    music_world.set_all_econunits_contract(luca_text)
+    music_world.set_all_econunit_role_agendas(luca_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)
@@ -368,7 +389,7 @@ def test_WorldUnit_set_all_econunits_contract_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) == False
 
     # WHEN
-    music_world.set_all_econunits_contract(todd_text)
+    music_world.set_all_econunit_role_agendas(todd_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)

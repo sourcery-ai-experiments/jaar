@@ -4,7 +4,7 @@ from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_ball,
     get_atom_example_ideaunit_knee,
     get_atom_example_ideaunit_sports,
-    get_bookunit_carm_example,
+    get_bookunit_insert_partys_example,
 )
 
 
@@ -43,4 +43,10 @@ def sue_4atomunits_giftunit() -> GiftUnit:
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_ball())
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
     x_giftunit._bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
+    return x_giftunit
+
+
+def sue_carm_party_giftunit() -> GiftUnit:
+    x_giftunit = giftunit_shop(_gifter="Sue", _gift_id=47, _giftees=set("Yao"))
+    x_giftunit.set_bookunit(get_bookunit_insert_partys_example())
     return x_giftunit

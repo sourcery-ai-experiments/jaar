@@ -3,7 +3,7 @@ from src._road.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src.agenda.healer import healerhold_shop
+from src.agenda.leader import leaderunit_shop
 from src.agenda.group import GroupID, balancelink_shop, balanceheir_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
@@ -43,7 +43,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._beliefheirs is None
     assert x_ideaunit._beliefunits is None
     assert x_ideaunit._meld_strategy is None
-    assert x_ideaunit._healerhold is None
+    assert x_ideaunit._leaderunit is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
     assert x_ideaunit._active_hx is None
@@ -58,7 +58,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
     assert x_ideaunit._agenda_world_id is None
-    assert x_ideaunit._healerhold_importance is None
+    assert x_ideaunit._leaderunit_importance is None
 
 
 def test_ideaunit_shop_NoParametersReturnsCorrectObj():
@@ -91,7 +91,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._beliefheirs == {}
     assert x_ideaunit._beliefunits == {}
     assert x_ideaunit._meld_strategy == "default"
-    assert x_ideaunit._healerhold == healerhold_shop()
+    assert x_ideaunit._leaderunit == leaderunit_shop()
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
     assert x_ideaunit._active_hx == {}
@@ -106,19 +106,19 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
     assert x_ideaunit._agenda_world_id == root_label()
-    assert x_ideaunit._healerhold_importance == 0
+    assert x_ideaunit._leaderunit_importance == 0
 
 
 def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():
     # GIVEN
-    x_healerhold = healerhold_shop({"Sue", "Yao"})
+    x_leaderunit = leaderunit_shop({"Sue", "Yao"})
     x_problem_bool = True
 
     # WHEN
-    x_ideaunit = ideaunit_shop(_healerhold=x_healerhold, _problem_bool=x_problem_bool)
+    x_ideaunit = ideaunit_shop(_leaderunit=x_leaderunit, _problem_bool=x_problem_bool)
 
     # THEN
-    assert x_ideaunit._healerhold == x_healerhold
+    assert x_ideaunit._leaderunit == x_leaderunit
     assert x_ideaunit._problem_bool == x_problem_bool
 
 
@@ -409,24 +409,24 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({}, field_text) == {}
 
 
-def test_get_obj_from_idea_dict_ReturnsCorrect_HealerHold():
+def test_get_obj_from_idea_dict_ReturnsCorrect_LeaderUnit():
     # GIVEN
     # WHEN / THEN
-    healerhold_key = "_healerhold"
-    assert get_obj_from_idea_dict({}, healerhold_key) == healerhold_shop()
+    leaderunit_key = "_leaderunit"
+    assert get_obj_from_idea_dict({}, leaderunit_key) == leaderunit_shop()
 
     # WHEN
     sue_text = "Sue"
     jim_text = "Jim"
-    healerhold_dict = {"healerhold_group_ids": [sue_text, jim_text]}
-    ideaunit_dict = {healerhold_key: healerhold_dict}
+    leaderunit_dict = {"leaderunit_group_ids": [sue_text, jim_text]}
+    ideaunit_dict = {leaderunit_key: leaderunit_dict}
 
     # THEN
-    static_healerhold = healerhold_shop()
-    static_healerhold.set_group_id(x_group_id=sue_text)
-    static_healerhold.set_group_id(x_group_id=jim_text)
-    assert get_obj_from_idea_dict(ideaunit_dict, healerhold_key) != None
-    assert get_obj_from_idea_dict(ideaunit_dict, healerhold_key) == static_healerhold
+    static_leaderunit = leaderunit_shop()
+    static_leaderunit.set_group_id(x_group_id=sue_text)
+    static_leaderunit.set_group_id(x_group_id=jim_text)
+    assert get_obj_from_idea_dict(ideaunit_dict, leaderunit_key) != None
+    assert get_obj_from_idea_dict(ideaunit_dict, leaderunit_key) == static_leaderunit
 
 
 def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
@@ -493,7 +493,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     sue_text = "Sue"
     yao_text = "Yao"
     sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
-    yao_healerhold = healerhold_shop({yao_text})
+    yao_leaderunit = leaderunit_shop({yao_text})
     gig_text = "gig"
     gig_road = create_road(root_label(), gig_text)
     x_problem_bool = True
@@ -507,7 +507,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _reasonunits=x1_reasonunits,
         _reasonheirs=x1_reasonheirs,
         _assignedunit=sue_assignedunit,
-        _healerhold=yao_healerhold,
+        _leaderunit=yao_leaderunit,
         _active=True,
         _range_source_road="test123",
         promise=True,
@@ -543,7 +543,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert gig_dict["_balancelinks"] == gig_idea.get_balancelinks_dict()
     assert gig_dict["_balancelinks"] == x1_balancelinks
     assert gig_dict["_assignedunit"] == sue_assignedunit.get_dict()
-    assert gig_dict["_healerhold"] == yao_healerhold.get_dict()
+    assert gig_dict["_leaderunit"] == yao_leaderunit.get_dict()
     assert gig_dict["_originunit"] == gig_idea.get_originunit_dict()
     assert gig_dict["_weight"] == gig_idea._weight
     assert gig_dict["_label"] == gig_idea._label
@@ -632,7 +632,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert gig_idea._beliefunits == {}
     assert gig_idea._balancelinks == {}
     assert gig_idea._assignedunit == assignedunit_shop()
-    assert gig_idea._healerhold == healerhold_shop()
+    assert gig_idea._leaderunit == leaderunit_shop()
     assert gig_idea._originunit == originunit_shop()
     assert gig_idea._kids == {}
 
@@ -646,7 +646,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert gig_dict.get("_beliefunits") is None
     assert gig_dict.get("_balancelinks") is None
     assert gig_dict.get("_assignedunit") is None
-    assert gig_dict.get("_healerhold") is None
+    assert gig_dict.get("_leaderunit") is None
     assert gig_dict.get("_originunit") is None
     assert gig_dict.get("_kids") is None
 
