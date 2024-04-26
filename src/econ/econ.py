@@ -414,10 +414,6 @@ class EconUnit:
         self.save_file_to_jobs(x_agenda)
         self.delete_file_in_jobs(x_owner_id=old_owner_id)
 
-    def reload_all_clerkunits_job_agendas(self):
-        for x_clerkunit in self._clerkunits.values():
-            x_clerkunit.refresh_depot_agendas()
-
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
 
@@ -452,36 +448,6 @@ class EconUnit:
 
     def delete_clerkunit(self, clerk_id: ClerkID):
         self._clerkunits.pop(clerk_id)
-
-    # agendas_dir to owner_id_agendas_dir management
-    def _clerkunit_set_depot_agenda(
-        self,
-        clerkunit: ClerkUnit,
-        agendaunit: AgendaUnit,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        clerkunit.set_depot_agenda(
-            x_agenda=agendaunit,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
-
-    def set_clerk_depot_item(
-        self,
-        clerk_id: ClerkID,
-        agenda_owner_id: str,
-        creditor_weight: float = None,
-        debtor_weight: float = None,
-    ):
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        x_agenda = self.get_file_in_jobs(owner_id=agenda_owner_id)
-        self._clerkunit_set_depot_agenda(
-            clerkunit=x_clerkunit,
-            agendaunit=x_agenda,
-            creditor_weight=creditor_weight,
-            debtor_weight=debtor_weight,
-        )
 
     # Healer output_agenda
     def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:

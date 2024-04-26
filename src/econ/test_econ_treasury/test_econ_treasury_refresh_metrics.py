@@ -420,7 +420,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
-    # TODO create 3 agendas with varying numbers of beliefs
+    # create 3 agendas with varying numbers of beliefs
     bob_text = "Bob"
     sal_text = "Sal"
     tim_text = "Tim"
