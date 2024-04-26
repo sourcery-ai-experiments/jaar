@@ -126,9 +126,15 @@ class ClerkUnit:
 
     def _listen_to_roll(self):  # sourcery skip: use-contextlib-suppress
         for x_partyunit in self._roll.values():
-            file_path = f"{self._jobs_dir}/{get_owner_file_name(x_partyunit.party_id)}"
-            if os_path_exists(file_path):
+            party_id = x_partyunit.party_id
+            gut_file_path = f"{self._guts_dir}/{get_owner_file_name(party_id)}"
+            job_file_path = f"{self._jobs_dir}/{get_owner_file_name(party_id)}"
+
+            if os_path_exists(job_file_path) and party_id != self._role._owner_id:
                 jefe_agenda = get_file_in_jobs(self._econ_dir, x_partyunit.party_id)
+                listen_to_jefe(self._job, jefe_agenda)
+            elif os_path_exists(gut_file_path) and party_id == self._role._owner_id:
+                jefe_agenda = get_file_in_guts(self._econ_dir, x_partyunit.party_id)
                 listen_to_jefe(self._job, jefe_agenda)
 
 
@@ -144,4 +150,5 @@ def clerkunit_shop(
         x_clerk._set_role()
         x_clerk._set_roll()
         x_clerk._set_empty_job()
+        save_file_to_jobs(x_clerk._econ_dir, x_clerk._job)
     return x_clerk
