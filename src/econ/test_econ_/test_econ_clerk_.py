@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.clerk import clerkunit_shop
+from src.econ.clerk import clerkunit_shop, get_owner_file_name
 from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     get_temp_env_world_id,
@@ -8,6 +8,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
 )
 from os import path as os_path
+from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 
 
@@ -87,9 +88,12 @@ def test_EconUnit_create_clerkunit_ReturnsObj(env_dir_setup_cleanup):
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     yao_text = "Yao"
     x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"
+    assert os_path_exists(yao_job_file_path) == False
 
     # WHEN
     yao_clerkunit = x_econ.create_clerkunit(clerk_id=yao_text)
 
     # THEN
     assert yao_clerkunit != None
+    assert os_path_exists(yao_job_file_path)

@@ -135,14 +135,12 @@ class EconUnit:
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
     # treasurying
-    def set_voice_ranks(self, owner_id: OwnerID, sort_order: str):
-        if sort_order == "descretional":
-            x_clerk = self.get_clerkunit(owner_id)
-            x_role = x_clerk.get_role()
-            for count_x, x_partyunit in enumerate(x_role._partys.values()):
+    def set_gut_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+        if sort_order == "descending":
+            owner_role = self.get_file_in_guts(owner_id)
+            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            x_clerk.set_role(x_role)
-            x_clerk.save_refreshed_job_to_jobs()
+            save_file_to_guts(self.econ_dir, owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
         x_agenda = self.get_file_in_jobs(x_owner_id)
@@ -390,10 +388,10 @@ class EconUnit:
         x_agenda.set_world_id(world_id=self.world_id)
         save_file_to_guts(self.get_object_root_dir(), x_agenda)
 
-    def get_file_in_guts(self, owner_id: str) -> AgendaUnit:
+    def get_file_in_guts(self, owner_id: PersonID) -> AgendaUnit:
         return get_file_in_guts(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_guts(self, x_owner_id: str):
+    def delete_file_in_guts(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_guts_dir()}/{get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
@@ -407,7 +405,7 @@ class EconUnit:
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
         return get_file_in_jobs(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_jobs(self, x_owner_id: str):
+    def delete_file_in_jobs(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
     def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
