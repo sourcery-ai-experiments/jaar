@@ -34,17 +34,17 @@ def get_owner_file_name(x_owner_id: str) -> str:
     return f"{x_owner_id}.json"
 
 
-def get_econ_guts_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/guts"
+def get_econ_roles_dir(x_econ_dir: str) -> str:
+    return f"{x_econ_dir}/roles"
 
 
 def get_econ_jobs_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/jobs"
 
 
-def save_file_to_guts(x_econ_dir: str, x_agenda: AgendaUnit):
+def save_file_to_roles(x_econ_dir: str, x_agenda: AgendaUnit):
     save_file(
-        dest_dir=get_econ_guts_dir(x_econ_dir),
+        dest_dir=get_econ_roles_dir(x_econ_dir),
         file_name=get_owner_file_name(x_agenda._owner_id),
         file_text=x_agenda.get_json(),
     )
@@ -60,16 +60,16 @@ def save_file_to_jobs(x_econ_dir: str, x_agenda: AgendaUnit):
     )
 
 
-def get_file_in_guts(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
-    gut_file_name = get_owner_file_name(owner_id)
-    gut_dir = get_econ_guts_dir(x_econ_dir)
+def get_file_in_roles(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
+    role_file_name = get_owner_file_name(owner_id)
+    role_dir = get_econ_roles_dir(x_econ_dir)
     try:
-        gut_file_text = open_file(gut_dir, gut_file_name)
+        role_file_text = open_file(role_dir, role_file_name)
     except:
         raise RoleAgendaFileException(
-            f"Role agenda file '{gut_file_name}' does not exist."
+            f"Role agenda file '{role_file_name}' does not exist."
         )
-    return agendaunit_get_from_json(gut_file_text)
+    return agendaunit_get_from_json(role_file_text)
 
 
 def get_file_in_jobs(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
@@ -82,7 +82,7 @@ def get_file_in_jobs(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
 class ClerkUnit:
     _clerk_id: ClerkID = None
     _econ_dir: str = None
-    _guts_dir: str = None
+    _roles_dir: str = None
     _jobs_dir: str = None
     _role_file_path: str = None
     # _road_delimiter: str = None
@@ -97,7 +97,7 @@ class ClerkUnit:
         self._econ_dir = x_econ_dir
 
     def _set_role(self):
-        self._role = get_file_in_guts(self._econ_dir, self._clerk_id)
+        self._role = get_file_in_roles(self._econ_dir, self._clerk_id)
 
     def _set_roll(self):
         self._roll = {}
@@ -121,20 +121,20 @@ class ClerkUnit:
             self._job.set_party_debtor_pool(self._role._party_debtor_pool)
 
     def _set_clerkunit_dirs(self):
-        self._guts_dir = get_econ_guts_dir(self._econ_dir)
+        self._roles_dir = get_econ_roles_dir(self._econ_dir)
         self._jobs_dir = get_econ_jobs_dir(self._econ_dir)
 
     def _listen_to_roll(self):  # sourcery skip: use-contextlib-suppress
         for x_partyunit in self._roll.values():
             party_id = x_partyunit.party_id
-            gut_file_path = f"{self._guts_dir}/{get_owner_file_name(party_id)}"
+            role_file_path = f"{self._roles_dir}/{get_owner_file_name(party_id)}"
             job_file_path = f"{self._jobs_dir}/{get_owner_file_name(party_id)}"
 
             if os_path_exists(job_file_path) and party_id != self._role._owner_id:
                 jefe_agenda = get_file_in_jobs(self._econ_dir, x_partyunit.party_id)
                 listen_to_jefe(self._job, jefe_agenda)
-            elif os_path_exists(gut_file_path) and party_id == self._role._owner_id:
-                jefe_agenda = get_file_in_guts(self._econ_dir, x_partyunit.party_id)
+            elif os_path_exists(role_file_path) and party_id == self._role._owner_id:
+                jefe_agenda = get_file_in_roles(self._econ_dir, x_partyunit.party_id)
                 listen_to_jefe(self._job, jefe_agenda)
 
 

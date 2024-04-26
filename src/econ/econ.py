@@ -27,11 +27,11 @@ from src.econ.clerk import (
     ClerkUnit,
     clerkunit_shop,
     ClerkID,
-    get_econ_guts_dir,
+    get_econ_roles_dir,
     get_econ_jobs_dir,
-    save_file_to_guts,
+    save_file_to_roles,
     save_file_to_jobs,
-    get_file_in_guts,
+    get_file_in_roles,
     get_file_in_jobs,
     get_owner_file_name,
 )
@@ -125,7 +125,7 @@ class EconUnit:
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
         set_dir(x_path=self.get_object_root_dir())
-        set_dir(x_path=self.get_guts_dir())
+        set_dir(x_path=self.get_roles_dir())
         set_dir(x_path=self.get_jobs_dir())
         set_dir(x_path=self.get_clerkunits_dir())
         self._create_main_file_if_null(x_dir=self.get_object_root_dir())
@@ -135,12 +135,12 @@ class EconUnit:
         self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
 
     # treasurying
-    def set_gut_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.get_file_in_guts(owner_id)
+            owner_role = self.get_file_in_roles(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            save_file_to_guts(self.econ_dir, owner_role)
+            save_file_to_roles(self.econ_dir, owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
         x_agenda = self.get_file_in_jobs(x_owner_id)
@@ -380,19 +380,19 @@ class EconUnit:
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
 
-    # guts dir management
-    def get_guts_dir(self):
-        return get_econ_guts_dir(self.get_object_root_dir())
+    # roles dir management
+    def get_roles_dir(self):
+        return get_econ_roles_dir(self.get_object_root_dir())
 
-    def save_file_to_guts(self, x_agenda: AgendaUnit):
+    def save_file_to_roles(self, x_agenda: AgendaUnit):
         x_agenda.set_world_id(world_id=self.world_id)
-        save_file_to_guts(self.get_object_root_dir(), x_agenda)
+        save_file_to_roles(self.get_object_root_dir(), x_agenda)
 
-    def get_file_in_guts(self, owner_id: PersonID) -> AgendaUnit:
-        return get_file_in_guts(self.get_object_root_dir(), owner_id)
+    def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
+        return get_file_in_roles(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_guts(self, x_owner_id: PersonID):
-        delete_dir(f"{self.get_guts_dir()}/{get_owner_file_name(x_owner_id)}")
+    def delete_file_in_roles(self, x_owner_id: PersonID):
+        delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):

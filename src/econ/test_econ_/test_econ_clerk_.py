@@ -17,7 +17,7 @@ def test_EconUnit_create_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     print(f"create env '{get_temp_env_world_id()}' directories.")
     yao_text = "Yao"
-    x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     assert x_econ._clerkunits.get(yao_text) is None
 
     # WHEN
@@ -31,7 +31,7 @@ def test_EconUnit_clerkunit_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
-    x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     assert x_econ.clerkunit_exists(yao_text) == False
 
     # WHEN
@@ -45,7 +45,7 @@ def test_EconUnit_delete_clerkunit_DeletesCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
-    x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     x_econ.create_clerkunit(clerk_id=yao_text)
     assert x_econ.clerkunit_exists(yao_text)
 
@@ -60,7 +60,7 @@ def test_EconUnit_get_clerkunit_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
-    x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     x_econ.create_clerkunit(clerk_id=yao_text)
     assert x_econ.clerkunit_exists(yao_text)
 
@@ -87,7 +87,7 @@ def test_EconUnit_create_clerkunit_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
     yao_text = "Yao"
-    x_econ.save_file_to_guts(agendaunit_shop(yao_text))
+    x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"
     assert os_path_exists(yao_job_file_path) == False
 

@@ -7,7 +7,7 @@ from src.instrument.file import (
     save_file,
     delete_dir,
 )
-from src.econ.econ import econunit_shop, save_file_to_guts
+from src.econ.econ import econunit_shop, save_file_to_roles
 from src.econ.examples.econ_env_kit import (
     get_temp_env_world_id,
     get_test_econ_dir,
@@ -95,34 +95,34 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     elu_text = "Elu"
 
     yao_text = "Yao"
-    yao_gut0_agenda = agendaunit_shop(_owner_id=yao_text)
-    yao_gut0_agenda.set_partyunit(partyunit_shop(ava_text))
-    yao_gut0_agenda.set_partyunit(partyunit_shop(bob_text))
-    yao_gut0_agenda.set_partyunit(partyunit_shop(cal_text))
-    yao_gut0_agenda.set_partyunit(partyunit_shop(dom_text))
-    yao_gut0_agenda.set_partyunit(partyunit_shop(elu_text))
-    save_file_to_guts(x_econ.econ_dir, yao_gut0_agenda)
+    yao_role0_agenda = agendaunit_shop(_owner_id=yao_text)
+    yao_role0_agenda.set_partyunit(partyunit_shop(ava_text))
+    yao_role0_agenda.set_partyunit(partyunit_shop(bob_text))
+    yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
+    yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
+    yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
+    save_file_to_roles(x_econ.econ_dir, yao_role0_agenda)
     x_econ.create_clerkunit(yao_text)
-    yao_gut1_agenda = x_econ.get_file_in_guts(yao_text)
-    assert yao_gut1_agenda.get_party(ava_text)._treasury_voice_rank is None
-    assert yao_gut1_agenda.get_party(bob_text)._treasury_voice_rank is None
-    assert yao_gut1_agenda.get_party(cal_text)._treasury_voice_rank is None
-    assert yao_gut1_agenda.get_party(dom_text)._treasury_voice_rank is None
-    assert yao_gut1_agenda.get_party(elu_text)._treasury_voice_rank is None
+    yao_role1_agenda = x_econ.get_file_in_roles(yao_text)
+    assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_party(bob_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_party(cal_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_party(dom_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_party(elu_text)._treasury_voice_rank is None
 
     # WHEN
     descending_text = "descending"
-    x_econ.set_gut_voice_ranks(yao_text, sort_order=descending_text)
+    x_econ.set_role_voice_ranks(yao_text, sort_order=descending_text)
 
     # THEN
-    yao_gut2_agenda = x_econ.get_file_in_guts(yao_text)
-    assert yao_gut2_agenda.get_party(ava_text)._treasury_voice_rank != None
-    assert yao_gut2_agenda.get_party(bob_text)._treasury_voice_rank != None
-    assert yao_gut2_agenda.get_party(cal_text)._treasury_voice_rank != None
-    assert yao_gut2_agenda.get_party(dom_text)._treasury_voice_rank != None
-    assert yao_gut2_agenda.get_party(elu_text)._treasury_voice_rank != None
-    assert yao_gut2_agenda.get_party(ava_text)._treasury_voice_rank == 0
-    assert yao_gut2_agenda.get_party(bob_text)._treasury_voice_rank == 1
-    assert yao_gut2_agenda.get_party(cal_text)._treasury_voice_rank == 2
-    assert yao_gut2_agenda.get_party(dom_text)._treasury_voice_rank == 3
-    assert yao_gut2_agenda.get_party(elu_text)._treasury_voice_rank == 4
+    yao_role2_agenda = x_econ.get_file_in_roles(yao_text)
+    assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_party(dom_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_party(elu_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank == 0
+    assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank == 1
+    assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank == 2
+    assert yao_role2_agenda.get_party(dom_text)._treasury_voice_rank == 3
+    assert yao_role2_agenda.get_party(elu_text)._treasury_voice_rank == 4

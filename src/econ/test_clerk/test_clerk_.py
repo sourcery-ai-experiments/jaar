@@ -7,11 +7,11 @@ from src.instrument.file import dir_files
 from src.econ.clerk import (
     clerkunit_shop,
     ClerkUnit,
-    save_file_to_guts,
+    save_file_to_roles,
     save_file_to_jobs,
     get_owner_file_name,
 )
-from src.econ.econ import get_econ_jobs_dir, get_econ_guts_dir
+from src.econ.econ import get_econ_jobs_dir, get_econ_roles_dir
 from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
     get_test_econ_dir,
@@ -30,7 +30,7 @@ def test_ClerkUnit_exists():
     assert x_clerk != None
     assert x_clerk._clerk_id is None
     assert x_clerk._econ_dir is None
-    assert x_clerk._guts_dir is None
+    assert x_clerk._roles_dir is None
     assert x_clerk._jobs_dir is None
     assert x_clerk._role_file_path is None
     # assert x_clerk._road_delimiter is None
@@ -90,7 +90,7 @@ def test_ClerkUnit_set_clerkunit_dirs_SetsArributes():
     x_clerk._set_clerkunit_dirs()
 
     # THEN
-    assert x_clerk._guts_dir == get_econ_guts_dir(x_dir)
+    assert x_clerk._roles_dir == get_econ_roles_dir(x_dir)
     assert x_clerk._jobs_dir == get_econ_jobs_dir(x_dir)
 
 
@@ -114,7 +114,7 @@ def test_ClerkUnit_set_role_SetsArributesWhenFileExists(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
-    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    save_file_to_roles(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     assert yao_clerk._role is None
 
@@ -149,7 +149,7 @@ def test_ClerkUnit_set_roll_SetsArribute(env_dir_setup_cleanup):
     zia_debtor_weight = 41
     yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_agenda.set_agenda_metrics()
-    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    save_file_to_roles(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     yao_clerk._set_role()
     assert yao_clerk._roll == {}
@@ -177,7 +177,7 @@ def test_ClerkUnit_set_roll_SetsArributeIgnoresZero_debtor_weight(
     yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_agenda.add_partyunit(wei_text, wei_creditor_weight, wei_debtor_weight)
     yao_agenda.set_agenda_metrics()
-    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    save_file_to_roles(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     yao_clerk._set_role()
     assert yao_clerk._roll == {}
@@ -208,7 +208,7 @@ def test_ClerkUnit_set_empty_job_SetsArributeEmptyAgendaUnit(env_dir_setup_clean
     yao_agenda.set_groupunit(swim_group)
     yao_agenda.set_party_creditor_pool(zia_creditor_pool, True)
     yao_agenda.set_party_debtor_pool(zia_debtor_pool, True)
-    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    save_file_to_roles(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     yao_clerk._set_role()
     assert yao_clerk._job is None
@@ -242,7 +242,7 @@ def test_ClerkUnit_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     zia_pool = 87
     yao_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_agendaunit.set_party_pool(zia_pool)
-    save_file_to_guts(get_test_econ_dir(), yao_agendaunit)
+    save_file_to_roles(get_test_econ_dir(), yao_agendaunit)
 
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -286,7 +286,7 @@ def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup)
     yao_agendaunit.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_pool = 87
     yao_agendaunit.set_party_pool(yao_pool)
-    save_file_to_guts(get_test_econ_dir(), yao_agendaunit)
+    save_file_to_roles(get_test_econ_dir(), yao_agendaunit)
 
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -351,24 +351,24 @@ def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup)
     assert len(yao_clerk._job.get_intent_dict()) == 2
 
 
-def test_ClerkUnit_listen_to_roll_ListensToOwner_gut_AndNotOwner_job(
+def test_ClerkUnit_listen_to_roll_ListensToOwner_role_AndNotOwner_job(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_gut_agendaunit = agendaunit_shop(yao_text)
+    yao_role_agendaunit = agendaunit_shop(yao_text)
     yao_text = "Yao"
     yao_creditor_weight = 57
     yao_debtor_weight = 51
-    yao_gut_agendaunit.add_partyunit(yao_text, yao_creditor_weight, yao_debtor_weight)
+    yao_role_agendaunit.add_partyunit(yao_text, yao_creditor_weight, yao_debtor_weight)
     zia_text = "Zia"
     zia_creditor_weight = 47
     zia_debtor_weight = 41
-    yao_gut_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_pool = 87
-    yao_gut_agendaunit.set_party_pool(yao_pool)
-    # save yao without task to guts
-    save_file_to_guts(get_test_econ_dir(), yao_gut_agendaunit)
+    yao_role_agendaunit.set_party_pool(yao_pool)
+    # save yao without task to roles
+    save_file_to_roles(get_test_econ_dir(), yao_role_agendaunit)
 
     # Save Zia to jobs
     zia_text = "Zia"
@@ -386,7 +386,7 @@ def test_ClerkUnit_listen_to_roll_ListensToOwner_gut_AndNotOwner_job(
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
     save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
 
-    # save yao with task to guts
+    # save yao with task to roles
     yao_job_agendaunit = agendaunit_shop(yao_text)
     yao_job_agendaunit.set_max_tree_traverse(5)
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
@@ -419,7 +419,7 @@ def test_clerkunit_shop_CreatesEmptyJob(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
     yao_agenda.set_agenda_metrics()
-    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    save_file_to_roles(get_test_econ_dir(), yao_agenda)
     yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"
     assert os_path_exists(yao_job_file_path) == False
 
