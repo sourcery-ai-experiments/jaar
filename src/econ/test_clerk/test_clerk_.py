@@ -3,7 +3,7 @@ from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.instrument.file import delete_dir
+from src.instrument.file import dir_files
 from src.econ.clerk import (
     clerkunit_shop,
     ClerkUnit,
@@ -105,7 +105,7 @@ def test_clerkunit_shop_DoesNotCreateJob(env_dir_setup_cleanup):
     assert yao_clerk._clerk_id == yao_text
     assert yao_clerk._econ_dir == get_test_econ_dir()
     assert yao_clerk._role is None
-    assert yao_clerk._roll == []
+    assert yao_clerk._roll == {}
     assert yao_clerk._job is None
 
 
@@ -151,14 +151,43 @@ def test_ClerkUnit_set_roll_SetsArribute(env_dir_setup_cleanup):
     save_file_to_guts(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     yao_clerk._set_role()
-    assert yao_clerk._roll == []
+    assert yao_clerk._roll == {}
 
     # WHEN
     yao_clerk._set_roll()
 
     # THEN
-    assert yao_clerk._roll != [(zia_text, zia_creditor_weight)]
-    assert yao_clerk._roll == [(zia_text, zia_debtor_weight)]
+    zia_partyunit = yao_agenda.get_party(zia_text)
+    assert yao_clerk._roll == {zia_text: zia_partyunit}
+
+
+def test_ClerkUnit_set_roll_SetsArributeIgnoresZero_debtor_weight(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    wei_text = "Wei"
+    wei_creditor_weight = 67
+    wei_debtor_weight = 0
+    yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_agenda.add_partyunit(wei_text, wei_creditor_weight, wei_debtor_weight)
+    yao_agenda.set_agenda_metrics()
+    save_file_to_guts(get_test_econ_dir(), yao_agenda)
+    yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
+    yao_clerk._set_role()
+    assert yao_clerk._roll == {}
+
+    # WHEN
+    yao_clerk._set_roll()
+
+    # THEN
+    # assert yao_clerk._roll != {zia_text: zia_partyunit}
+    zia_partyunit = yao_agenda.get_party(zia_text)
+    assert yao_clerk._roll == {zia_text: zia_partyunit}
 
 
 def test_ClerkUnit_set_empty_job_SetsArributeEmptyAgendaUnit(env_dir_setup_cleanup):
@@ -181,7 +210,7 @@ def test_ClerkUnit_set_empty_job_SetsArributeEmptyAgendaUnit(env_dir_setup_clean
     save_file_to_guts(get_test_econ_dir(), yao_agenda)
     yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
     yao_clerk._set_role()
-    assert yao_clerk._roll == []
+    assert yao_clerk._job is None
 
     # WHEN
     yao_clerk._set_empty_job()
@@ -202,6 +231,125 @@ def test_ClerkUnit_set_empty_job_SetsArributeEmptyAgendaUnit(env_dir_setup_clean
     assert len(yao_clerk._job._idea_dict) == 1
 
 
+def test_ClerkUnit_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "Yao"
+    yao_agendaunit = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    zia_pool = 87
+    yao_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_agendaunit.set_party_pool(zia_pool)
+    save_file_to_guts(get_test_econ_dir(), yao_agendaunit)
+
+    zia_text = "Zia"
+    zia_agendaunit = agendaunit_shop(zia_text)
+    clean_text = "clean"
+    cook_text = "cook"
+    clean_road = zia_agendaunit.make_l1_road(clean_text)
+    cook_road = zia_agendaunit.make_l1_road(cook_text)
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
+    clean_ideaunit._assignedunit.set_suffgroup(yao_text)
+    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
+    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
+
+    yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
+    yao_clerk._set_role()
+    yao_clerk._set_roll()
+    yao_clerk._set_empty_job()
+    assert len(yao_clerk._job.get_intent_dict()) == 0
+
+    # WHEN
+    yao_clerk._listen_to_roll()
+
+    # THEN
+    assert len(yao_clerk._job.get_intent_dict()) == 2
+
+
+def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "Yao"
+    yao_agendaunit = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    sue_text = "Sue"
+    sue_creditor_weight = 57
+    sue_debtor_weight = 51
+    yao_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_agendaunit.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_pool = 87
+    yao_agendaunit.set_party_pool(yao_pool)
+    save_file_to_guts(get_test_econ_dir(), yao_agendaunit)
+
+    zia_text = "Zia"
+    zia_agendaunit = agendaunit_shop(zia_text)
+    clean_text = "clean"
+    cook_text = "cook"
+    clean_road = zia_agendaunit.make_l1_road(clean_text)
+    cook_road = zia_agendaunit.make_l1_road(cook_text)
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
+    clean_ideaunit._assignedunit.set_suffgroup(yao_text)
+    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
+    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
+
+    sue_agendaunit = agendaunit_shop(sue_text)
+    sue_agendaunit.set_max_tree_traverse(5)
+    zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
+    vaccum_text = "Vaccum"
+    vaccum_road = sue_agendaunit.make_l1_road(vaccum_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, promise=True))
+    vaccum_ideaunit = sue_agendaunit.get_idea_obj(vaccum_road)
+    vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
+
+    egg_text = "egg first"
+    egg_road = sue_agendaunit.make_l1_road(egg_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(egg_text))
+    chicken_text = "chicken first"
+    chicken_road = sue_agendaunit.make_l1_road(chicken_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(chicken_text))
+    # set egg promise is True when chicken first is False
+    sue_agendaunit.edit_idea_attr(
+        road=egg_road,
+        promise=True,
+        reason_base=chicken_road,
+        reason_suff_idea_active=True,
+    )
+    # set chick promise is True when egg first is False
+    sue_agendaunit.edit_idea_attr(
+        road=chicken_road,
+        promise=True,
+        reason_base=egg_road,
+        reason_suff_idea_active=False,
+    )
+    save_file_to_jobs(get_test_econ_dir(), sue_agendaunit)
+
+    yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
+    yao_clerk._set_role()
+    yao_clerk._set_roll()
+    yao_clerk._set_empty_job()
+    # print(f"{yao_clerk._jobs_dir=}")
+    # print(f"{dir_files(yao_clerk._jobs_dir).keys()=}")
+
+    assert len(yao_clerk._job.get_intent_dict()) == 0
+
+    # WHEN
+    yao_clerk._listen_to_roll()
+
+    # THEN irrational agenda is ignored
+    assert len(yao_clerk._job.get_intent_dict()) != 3
+    assert len(yao_clerk._job.get_intent_dict()) == 2
+
+
 def test_clerkunit_shop_CreatesEmptyJob(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
@@ -218,54 +366,8 @@ def test_clerkunit_shop_CreatesEmptyJob(env_dir_setup_cleanup):
     assert yao_clerk._econ_dir == get_test_econ_dir()
     assert yao_clerk._role._idea_dict == yao_agenda._idea_dict
     assert yao_clerk._role == yao_agenda
-    assert yao_clerk._roll == []
+    assert yao_clerk._roll == {}
     assert yao_clerk._job.get_dict() == yao_agenda.get_dict()
-
-
-# # def test_clerkunit_auto_output_job_to_jobs_SavesAgendaTojobsDirWhenTrue(
-# #     env_dir_setup_cleanup,
-# # ):
-# #     # GIVEN
-# #     env_dir = get_temp_clerkunit_dir()
-# #     x_world_id = get_temp_econ_id()
-# #     tim_text = "Tim"
-# #     tim_agenda = agendaunit_shop(tim_text, x_world_id, _auto_output_job_to_jobs=True)
-# #     jobs_text = "jobs"
-# #     jobs_file_name = f"{tim_agenda._owner_id}.json"
-# #     jobs_file_path = f"{get_temp_clerkunit_dir()}/{jobs_text}/{jobs_file_name}"
-# #     print(f"{jobs_file_path=}")
-# #     # jobs_file_path = f"src/econ/examples/ex_env/agendas/{jobs_file_name}"
-# #     x_clerk = clerkunit_shop(tim_text, env_dir, x_econ_id)
-# #     x_clerk.create_core_dir_and_files()
-# #     assert os_path.exists(jobs_file_path) is False
-
-# #     # WHEN
-# #     x_clerk._set_depot_agenda(tim_agenda)
-
-# #     # THEN
-# #     assert os_path.exists(jobs_file_path)
-
-
-# # def test_clerkunit_auto_output_job_to_jobs_DoesNotSaveAgendaTojobsDirWhenFalse(
-# #     env_dir_setup_cleanup,
-# # ):
-# #     # GIVEN
-# #     env_dir = get_temp_clerkunit_dir()
-# #     x_econ_id = get_temp_econ_id()
-# #     tim_text = "Tim"
-# #     jobs_file_name = f"{tim_text}.json"
-# #     jobs_file_path = f"{get_temp_clerkunit_dir()}/agendas/{jobs_file_name}"
-# #     print(f"{jobs_file_path=}")
-# #     # jobs_file_path = f"src/econ/examples/ex_env/agendas/{jobs_file_name}"
-# #     x_clerk = clerkunit_shop(tim_text, env_dir, x_econ_id, False)
-# #     x_clerk.create_core_dir_and_files()
-# #     assert os_path.exists(jobs_file_path) is False
-
-# #     # WHEN
-# #     x_clerk._set_depot_agenda(agendaunit_shop(tim_text))
-
-# #     # THEN
-# #     assert os_path.exists(jobs_file_path) is False
 
 
 # def test_clerkunit_get_role_createsEmptyAgendaWhenFileDoesNotExist(

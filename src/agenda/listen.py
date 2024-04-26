@@ -18,6 +18,7 @@ def _get_planck_scaled_weight(
 def _distribute_ingest(
     x_list: list[IdeaUnit], nonallocated_ingest: float, planck: float
 ):
+    # TODO very slow needs to be optimized
     if x_list:
         x_count = 0
         while nonallocated_ingest > 0:
@@ -25,9 +26,11 @@ def _distribute_ingest(
             x_ideaunit._weight += planck
             nonallocated_ingest -= planck
             x_count += 1
+            if x_count == len(x_list):
+                x_count = 0
 
 
-def get_ingested_action_items(
+def _get_ingested_ideaunit_list(
     item_list: list[IdeaUnit], debtor_amount: float, planck: float
 ) -> list[IdeaUnit]:
     x_list = []
@@ -49,32 +52,38 @@ def listen_to_jefe(listener: AgendaUnit, jefe: AgendaUnit) -> AgendaUnit:
         raise Missing_party_debtor_poolException(
             "Listening process is not possible without debtor pool."
         )
-    perspective_agendaunit = copy_deepcopy(jefe)
-    # look at things from jefe's prespective
-    perspective_agendaunit.set_owner_id(listener._owner_id)
-    intent_list = list(perspective_agendaunit.get_intent_dict().values())
-    ingest_list = get_ingested_action_items(
-        item_list=intent_list,
-        debtor_amount=listener._party_debtor_pool,
-        planck=listener._planck,
-    )
-
-    for ingested_ideaunit in ingest_list:
-        replace_weight_list, add_to_weight_list = _create_weight_replace_and_add_lists(
-            listener, ingested_ideaunit.get_road()
+    if jefe._rational:
+        perspective_agendaunit = copy_deepcopy(jefe)
+        # look at things from jefe's prespective
+        perspective_agendaunit.set_owner_id(listener._owner_id)
+        intent_list = list(perspective_agendaunit.get_intent_dict().values())
+        ingest_list = _get_ingested_ideaunit_list(
+            item_list=intent_list,
+            debtor_amount=listener._party_debtor_pool,
+            planck=listener._planck,
         )
 
-        # if listener.idea_exists(ingested_ideaunit.get_road()) == False:
-        listener.add_idea(
-            idea_kid=ingested_ideaunit,
-            parent_road=ingested_ideaunit._parent_road,
-            create_missing_ideas_and_groups=True,
-            create_missing_ancestors=True,
-        )
+        for ingested_ideaunit in ingest_list:
+            replace_weight_list, add_to_weight_list = (
+                _create_weight_replace_and_add_lists(
+                    listener, ingested_ideaunit.get_road()
+                )
+            )
 
-        _add_and_replace_ideaunit_weights(
-            listener, replace_weight_list, add_to_weight_list, ingested_ideaunit._weight
-        )
+            if listener.idea_exists(ingested_ideaunit.get_road()) == False:
+                listener.add_idea(
+                    idea_kid=ingested_ideaunit,
+                    parent_road=ingested_ideaunit._parent_road,
+                    create_missing_ideas=True,
+                    create_missing_ancestors=True,
+                )
+
+            _add_and_replace_ideaunit_weights(
+                listener,
+                replace_weight_list,
+                add_to_weight_list,
+                ingested_ideaunit._weight,
+            )
 
     return listener
 

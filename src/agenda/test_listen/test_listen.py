@@ -1,11 +1,11 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.listen import listen_to_jefe, get_ingested_action_items
+from src.agenda.listen import listen_to_jefe, _get_ingested_ideaunit_list
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 
 
-def test_get_ingested_action_items_ReturnsCorrectList_v1():
+def test_get_ingested_ideaunit_list_ReturnsCorrectList_v1():
     # GIVEN
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -16,7 +16,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v1():
     assert len(zia_agendaunit.get_intent_dict()) == 1
 
     # WHEN
-    ingested_list = get_ingested_action_items(
+    ingested_list = _get_ingested_ideaunit_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
         planck=zia_planck,
@@ -30,7 +30,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v1():
     assert ingested_list[0]._weight == zia_debtor_pool
 
 
-def test_get_ingested_action_items_ReturnsCorrectList_v2():
+def test_get_ingested_ideaunit_list_ReturnsCorrectList_v2():
     # GIVEN
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -43,7 +43,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v2():
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
-    ingested_list = get_ingested_action_items(
+    ingested_list = _get_ingested_ideaunit_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
         planck=zia_planck,
@@ -61,7 +61,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v2():
     assert ingested_list == [cook_ideaunit, clean_ideaunit]
 
 
-def test_get_ingested_action_items_ReturnsCorrectList_v3():
+def test_get_ingested_ideaunit_list_ReturnsCorrectList_v3():
     # GIVEN
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -74,7 +74,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v3():
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
-    ingested_list = get_ingested_action_items(
+    ingested_list = _get_ingested_ideaunit_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
         planck=zia_planck,
@@ -90,7 +90,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v3():
     assert ingested_list[1]._weight == 8.0
 
 
-def test_get_ingested_action_items_ReturnsCorrectList_v4():
+def test_get_ingested_ideaunit_list_ReturnsCorrectList_v4():
     # GIVEN
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -103,7 +103,7 @@ def test_get_ingested_action_items_ReturnsCorrectList_v4():
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
-    ingested_list = get_ingested_action_items(
+    ingested_list = _get_ingested_ideaunit_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
         planck=zia_planck,

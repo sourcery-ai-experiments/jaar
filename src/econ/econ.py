@@ -31,6 +31,8 @@ from src.econ.clerk import (
     get_econ_jobs_dir,
     save_file_to_guts,
     save_file_to_jobs,
+    get_file_in_guts,
+    get_file_in_jobs,
     get_owner_file_name,
 )
 from dataclasses import dataclass
@@ -389,8 +391,7 @@ class EconUnit:
         save_file_to_guts(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_guts(self, owner_id: str) -> AgendaUnit:
-        gut_file_name = get_owner_file_name(owner_id)
-        return get_agenda_from_json(open_file(self.get_guts_dir(), gut_file_name))
+        return get_file_in_guts(self.get_object_root_dir(), owner_id)
 
     def delete_file_in_guts(self, x_owner_id: str):
         delete_dir(f"{self.get_guts_dir()}/{get_owner_file_name(x_owner_id)}")
@@ -404,9 +405,7 @@ class EconUnit:
         save_file_to_jobs(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
-        return get_agenda_from_json(
-            open_file(self.get_jobs_dir(), get_owner_file_name(owner_id))
-        )
+        return get_file_in_jobs(self.get_object_root_dir(), owner_id)
 
     def delete_file_in_jobs(self, x_owner_id: str):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")

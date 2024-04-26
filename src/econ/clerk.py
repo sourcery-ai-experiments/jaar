@@ -7,12 +7,15 @@ from src.agenda.agenda import (
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
 )
+from src.agenda.listen import listen_to_jefe
 from src.instrument.file import (
     set_dir,
     save_file,
     open_file,
     delete_dir,
     rename_dir as x_func_rename_dir,
+    dir_files,
+    os_path_exists,
 )
 from src._road.road import default_road_delimiter_if_none
 from dataclasses import dataclass
@@ -48,6 +51,8 @@ def save_file_to_guts(x_econ_dir: str, x_agenda: AgendaUnit):
 
 
 def save_file_to_jobs(x_econ_dir: str, x_agenda: AgendaUnit):
+    # print(f"save file...{x_agenda._owner_id=}")
+    # print(f"save file...{x_agenda.get_json()=}")
     save_file(
         dest_dir=get_econ_jobs_dir(x_econ_dir),
         file_name=get_owner_file_name(x_agenda._owner_id),
@@ -95,8 +100,10 @@ class ClerkUnit:
         self._role = get_file_in_guts(self._econ_dir, self._clerk_id)
 
     def _set_roll(self):
+        self._roll = {}
         for x_partyunit in self._role._partys.values():
-            self._roll.append((x_partyunit.party_id, x_partyunit.debtor_weight))
+            if x_partyunit.debtor_weight != 0:
+                self._roll[x_partyunit.party_id] = x_partyunit
 
     def _set_empty_job(self):
         self._job = agendaunit_shop(
@@ -113,12 +120,23 @@ class ClerkUnit:
         if self._role._party_debtor_pool != None:
             self._job.set_party_debtor_pool(self._role._party_debtor_pool)
 
+    def _set_clerkunit_dirs(self):
+        self._guts_dir = get_econ_guts_dir(self._econ_dir)
+        self._jobs_dir = get_econ_jobs_dir(self._econ_dir)
+
+    def _listen_to_roll(self):  # sourcery skip: use-contextlib-suppress
+        for x_partyunit in self._roll.values():
+            file_path = f"{self._jobs_dir}/{get_owner_file_name(x_partyunit.party_id)}"
+            if os_path_exists(file_path):
+                jefe_agenda = get_file_in_jobs(self._econ_dir, x_partyunit.party_id)
+                listen_to_jefe(self._job, jefe_agenda)
+
 
 def clerkunit_shop(
     clerk_id: PersonID, env_dir: str, create_job: bool = True
 ) -> ClerkUnit:
     x_clerk = ClerkUnit()
-    x_clerk._roll = []
+    x_clerk._roll = {}
     x_clerk.set_econ_dir(x_econ_dir=env_dir)
     x_clerk.set_clerk_id(x_clerk_id=clerk_id)
     x_clerk._set_clerkunit_dirs()
