@@ -124,7 +124,7 @@ class ClerkUnit:
         self._roles_dir = get_econ_roles_dir(self._econ_dir)
         self._jobs_dir = get_econ_jobs_dir(self._econ_dir)
 
-    def _listen_to_roll(self):  # sourcery skip: use-contextlib-suppress
+    def _listen_to_roll(self):
         for x_partyunit in self._roll.values():
             party_id = x_partyunit.party_id
             role_file_path = f"{self._roles_dir}/{get_owner_file_name(party_id)}"
