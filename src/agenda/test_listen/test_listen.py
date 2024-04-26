@@ -292,12 +292,14 @@ def test_listen_to_jefe_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlread
     casa_road = zia_agendaunit.make_l1_road("casa")
     dish_road = zia_agendaunit.make_road(casa_road, dish_text)
     fly_road = zia_agendaunit.make_l1_road(fly_text)
-    before_yao_agendaunit.add_idea(yao_dish_ideaunit, casa_road)
-    # before_yao_agendaunit.edit_idea_attr(dish_road, weight=999)
+    before_yao_dish_ideaunit = ideaunit_shop(dish_text, promise=True)
+    before_yao_dish_ideaunit._assignedunit.set_suffgroup(yao_text)
+    before_yao_agendaunit.add_idea(before_yao_dish_ideaunit, casa_road)
+    before_yao_agendaunit.edit_idea_attr(dish_road, weight=1000)
     zia_agendaunit.add_idea(yao_dish_ideaunit, casa_road)
     zia_agendaunit.add_idea(yao_cook_ideaunit, casa_road)
     zia_agendaunit.add_l1_idea(yao_fly_ideaunit)
-    assert len(zia_agendaunit.get_intent_dict()) == 1
+    assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
     zia_yao_agendaunit.set_owner_id(yao_text)
     assert len(zia_yao_agendaunit.get_intent_dict()) == 3
@@ -313,7 +315,7 @@ def test_listen_to_jefe_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlread
     after_fly_ideaunit = after_yao_agendaunit.get_idea_obj(fly_road)
     print(f"{after_dish_ideaunit._weight=}")
     assert after_dish_ideaunit._weight != yao_dish_ideaunit._weight
-    assert after_dish_ideaunit._weight == 28
+    assert after_dish_ideaunit._weight == 1014
     print(f"{after_cook_ideaunit._weight=}")
     assert after_cook_ideaunit._weight != yao_cook_ideaunit._weight
     assert after_cook_ideaunit._weight == 13
