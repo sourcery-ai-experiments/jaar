@@ -329,7 +329,7 @@ class PersonUnit:
     def _create_econunit(self, econ_roadunit: RoadUnit):
         x_econ_path = self._create_econ_dir(econ_roadunit)
         x_econunit = econunit_shop(
-            econ_id=self.world_id,
+            world_id=self.world_id,
             econ_dir=x_econ_path,
             _manager_person_id=self.person_id,
             _road_delimiter=self._road_delimiter,
@@ -373,10 +373,7 @@ class PersonUnit:
 
     def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
         x_econ = self.get_econ(econ_road)
-        if x_econ.clerkunit_exists(role._owner_id) == False:
-            x_econ.create_clerkunit(role._owner_id)
-        x_clerkunit = x_econ.get_clerkunit(role._owner_id)
-        x_clerkunit.set_role(role)
+        x_econ.save_file_to_roles(role)
 
     def set_econunits_role(self, role: AgendaUnit):
         for x_econ_road in self._econ_objs.keys():

@@ -152,14 +152,12 @@ class WorldUnit:
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_person: PersonID,
+        healer_person: PersonUnit,
         econ_road: RoadUnit,
         gut_agenda: AgendaUnit,
     ):
         x_econ = healer_person.get_econ(econ_road)
-        x_econ.create_clerkunit(gut_agenda._owner_id)
-        x_clerk = x_econ.get_clerkunit(gut_agenda._owner_id)
-        x_clerk.save_role_agenda(gut_agenda)
+        x_econ.save_file_to_roles(gut_agenda)
 
     def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit(person_id)
@@ -173,9 +171,8 @@ class WorldUnit:
             healer_person.create_person_econunits()
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
+                x_econ.save_file_to_roles(x_gut)
                 x_econ.create_clerkunit(person_id)
-                x_clerk = x_econ.get_clerkunit(person_id)
-                x_clerk.save_refreshed_job_to_jobs()
                 x_job = x_econ.get_file_in_jobs(person_id)
                 x_live.meld(x_job)
 

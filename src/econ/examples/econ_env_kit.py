@@ -68,65 +68,63 @@ def create_example_econs_list():
 
 
 def setup_test_example_environment():
-    _delete_and_set_ex3()
+    # _delete_and_set_ex3()
     _delete_and_set_ex4()
-    _delete_and_set_ex5()
+    # _delete_and_set_ex5()
     _delete_and_set_ex6()
 
 
-def _delete_and_set_ex3():
-    x_world_id = "ex3"
-    ex3_dir = f"{get_test_econs_dir()}/{x_world_id}"
-    x_econ = econunit_shop(world_id=x_world_id, econ_dir=ex3_dir)
-    delete_dir(x_econ.get_object_root_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.save_file_to_jobs(example_get_1node_agenda())
-    x_econ.save_file_to_jobs(
-        example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
-    )
-    example_agenda_v001 = example_agendas_agenda_v001()
-    example_agenda_v002 = example_agendas_agenda_v002()
-    x_econ.save_file_to_jobs(example_agenda_v001)
-    x_econ.save_file_to_jobs(example_agenda_v002)
+# def _delete_and_set_ex3():
+#     ex3_id = "ex3"
+#     ex3_dir = f"{get_test_econs_dir()}/{ex3_id}"
+#     x_econ = econunit_shop(world_id=ex3_id, econ_dir=ex3_dir)
+#     delete_dir(x_econ.get_object_root_dir())
+#     x_econ.set_econ_dirs(in_memory_treasury=True)
+#     x_econ.save_file_to_jobs(example_get_1node_agenda())
+#     x_econ.save_file_to_jobs(
+#         example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
+#     )
+#     example_agenda_v001 = example_agendas_agenda_v001()
+#     example_agenda_v002 = example_agendas_agenda_v002()
+#     x_econ.save_file_to_jobs(example_agenda_v001)
+#     x_econ.save_file_to_jobs(example_agenda_v002)
 
-    # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w1", env_dir=x_econ.get_object_root_dir()))
-    # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w2", env_dir=x_econ.get_object_root_dir()))
-    xia_text = "Xia"
-    x_econ.create_clerkunit(clerk_id=xia_text)
-    bob_text = example_agenda_v002._owner_id
-    x_econ.set_clerk_depot_item(xia_text, agenda_owner_id=bob_text)
-    # w1_obj = x_econ.get_clerkunit(clerk_id=w1_text)
+#     # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w1", env_dir=x_econ.get_object_root_dir()))
+#     # x_econ.set_owner_id(x_clerk=clerkunit_shop(owner_id="w2", env_dir=x_econ.get_object_root_dir()))
+#     xia_text = "Xia"
+#     x_econ.create_clerkunit(clerk_id=xia_text)
+#     bob_text = example_agenda_v002._owner_id
 
-    bob_text = "bob wurld"
-    create_agenda_file_for_econs(x_econ.get_object_root_dir(), bob_text)
-    # print(f"create agenda_list {w1_text=}")
-    x_econ.set_clerk_depot_item(clerk_id=xia_text, owner_id=bob_text)
-    land_text = "tim wurld"
-    create_agenda_file_for_econs(
-        econ_dir=x_econ.get_object_root_dir(), owner_id=land_text
-    )
-    x_econ.set_clerk_depot_item(clerk_id=xia_text, owner_id=land_text)
-    # x_econ.set_clerk_depot_item(clerk_id=w1_text, owner_id="test9")
-    # x_econ.set_clerk_depot_item(clerk_id=w1_text, owner_id="Bobs agenda")
-    x_econ.save_clerkunit_file(clerk_id=xia_text)
-    # print(f"WHAT WHAT {x_econ.get_object_root_dir()}")
-    # print(f"WHAT WHAT {x_econ.get_object_root_dir()}/clerkunits/w1/w1.json")
-    # file_text = open_file(
-    #     dest_dir=f"{x_econ.get_object_root_dir}/clerkunits/w1", file_name="w1.json"
-    # )
-    # print(f"{file_text=}")
-    # print(f"{x_econ._clerkunits.get(w1_text).get_json=}")
+#     bob_text = "bob wurld"
+#     create_agenda_file_for_econs(x_econ.get_object_root_dir(), bob_text)
+#     # print(f"create agenda_list {w1_text=}")
+#     x_econ.set_clerk_depot_item(clerk_id=xia_text, owner_id=bob_text)
+#     land_text = "tim wurld"
+#     create_agenda_file_for_econs(
+#         econ_dir=x_econ.get_object_root_dir(), owner_id=land_text
+#     )
+#     x_econ.set_clerk_depot_item(clerk_id=xia_text, owner_id=land_text)
+#     # x_econ.set_clerk_depot_item(clerk_id=w1_text, owner_id="test9")
+#     # x_econ.set_clerk_depot_item(clerk_id=w1_text, owner_id="Bobs agenda")
+#     x_econ.save_clerkunit_file(clerk_id=xia_text)
+#     # print(f"WHAT WHAT {x_econ.get_object_root_dir()}")
+#     # print(f"WHAT WHAT {x_econ.get_object_root_dir()}/clerkunits/w1/w1.json")
+#     # file_text = open_file(
+#     #     dest_dir=f"{x_econ.get_object_root_dir}/clerkunits/w1", file_name="w1.json"
+#     # )
+#     # print(f"{file_text=}")
+#     # print(f"{x_econ._clerkunits.get(w1_text).get_json=}")
 
-    w2_text = "w2"
-    x_econ.create_clerkunit(clerk_id=w2_text)
-    # , env_dir=x_econ.get_object_root_dir())
-    x_econ.save_clerkunit_file(clerk_id=w2_text)
+#     w2_text = "w2"
+#     x_econ.create_clerkunit(clerk_id=w2_text)
+#     # , env_dir=x_econ.get_object_root_dir())
+#     x_econ.save_clerkunit_file(clerk_id=w2_text)
 
 
 def _delete_and_set_ex4():
-    x_world_id = "ex4"
-    ex4_dir = f"{get_test_econs_dir()}/{x_world_id}"
-    x_econ = econunit_shop(x_world_id, econ_dir=ex4_dir)
+    ex4_id = "ex4"
+    ex4_dir = f"{get_test_econs_dir()}/{ex4_id}"
+    x_econ = econunit_shop(ex4_id, econ_dir=ex4_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_file_to_jobs(example_get_7nodeJRootWithH_agenda())
@@ -135,74 +133,74 @@ def _delete_and_set_ex4():
     x_econ.save_file_to_jobs(example_agendas_get_agenda_x1_3levels_1reason_1beliefs())
 
 
-def _delete_and_set_ex5():
-    x_world_id = "ex5"
-    ex5_dir = f"{get_test_econs_dir()}/{x_world_id}"
-    x_p = econunit_shop(x_world_id, econ_dir=ex5_dir)
-    delete_dir(x_p.get_object_root_dir())
-    x_p.set_econ_dirs(in_memory_treasury=True)
+# def _delete_and_set_ex5():
+#     ex5_id = "ex5"
+#     ex5_dir = f"{get_test_econs_dir()}/{ex5_id}"
+#     x_p = econunit_shop(ex5_id, econ_dir=ex5_dir)
+#     delete_dir(x_p.get_object_root_dir())
+#     x_p.set_econ_dirs(in_memory_treasury=True)
 
-    # ethical code ernie
-    # ethical code steve
-    # ethical code Jessica
-    # ethical code Francine
-    # ethical code Clayenda
-    ag_1 = example_get_agenda_2CleanNodesRandomWeights("ernie")
-    ag_2 = example_get_agenda_2CleanNodesRandomWeights("steve")
-    ag_3 = example_get_agenda_2CleanNodesRandomWeights("jessica")
-    ag_4 = example_get_agenda_2CleanNodesRandomWeights("francine")
-    ag_5 = example_get_agenda_2CleanNodesRandomWeights("clay")
+#     # ethical code ernie
+#     # ethical code steve
+#     # ethical code Jessica
+#     # ethical code Francine
+#     # ethical code Clayenda
+#     ag_1 = example_get_agenda_2CleanNodesRandomWeights("ernie")
+#     ag_2 = example_get_agenda_2CleanNodesRandomWeights("steve")
+#     ag_3 = example_get_agenda_2CleanNodesRandomWeights("jessica")
+#     ag_4 = example_get_agenda_2CleanNodesRandomWeights("francine")
+#     ag_5 = example_get_agenda_2CleanNodesRandomWeights("clay")
 
-    x_p.save_file_to_jobs(ag_1)
-    x_p.save_file_to_jobs(ag_2)
-    x_p.save_file_to_jobs(ag_3)
-    x_p.save_file_to_jobs(ag_4)
-    x_p.save_file_to_jobs(ag_5)
+#     x_p.save_file_to_jobs(ag_1)
+#     x_p.save_file_to_jobs(ag_2)
+#     x_p.save_file_to_jobs(ag_3)
+#     x_p.save_file_to_jobs(ag_4)
+#     x_p.save_file_to_jobs(ag_5)
 
-    x_p.create_clerkunit(clerk_id=ag_1._owner_id)
-    x_p.create_clerkunit(clerk_id=ag_2._owner_id)
-    x_p.create_clerkunit(clerk_id=ag_3._owner_id)
-    x_p.create_clerkunit(clerk_id=ag_4._owner_id)
-    x_p.create_clerkunit(clerk_id=ag_5._owner_id)
+#     x_p.create_clerkunit(clerk_id=ag_1._owner_id)
+#     x_p.create_clerkunit(clerk_id=ag_2._owner_id)
+#     x_p.create_clerkunit(clerk_id=ag_3._owner_id)
+#     x_p.create_clerkunit(clerk_id=ag_4._owner_id)
+#     x_p.create_clerkunit(clerk_id=ag_5._owner_id)
 
-    x_p.set_clerk_depot_item(ag_1._owner_id, ag_2._owner_id, 3, 301)
-    x_p.set_clerk_depot_item(ag_1._owner_id, ag_3._owner_id, 7, 701)
-    x_p.set_clerk_depot_item(ag_1._owner_id, ag_4._owner_id, 4, 401)
-    x_p.set_clerk_depot_item(ag_1._owner_id, ag_5._owner_id, 5, 501)
+#     x_p.set_clerk_depot_item(ag_1._owner_id, ag_2._owner_id, 3, 301)
+#     x_p.set_clerk_depot_item(ag_1._owner_id, ag_3._owner_id, 7, 701)
+#     x_p.set_clerk_depot_item(ag_1._owner_id, ag_4._owner_id, 4, 401)
+#     x_p.set_clerk_depot_item(ag_1._owner_id, ag_5._owner_id, 5, 501)
 
-    x_p.set_clerk_depot_item(ag_2._owner_id, ag_1._owner_id, 3, 301)
-    x_p.set_clerk_depot_item(ag_2._owner_id, ag_3._owner_id, 7, 701)
-    x_p.set_clerk_depot_item(ag_2._owner_id, ag_4._owner_id, 4, 401)
-    x_agenda = example_get_agenda_3CleanNodesRandomWeights()
-    x_p.set_clerk_depot_item(ag_2._owner_id, ag_5._owner_id, 5, 501, x_agenda)
+#     x_p.set_clerk_depot_item(ag_2._owner_id, ag_1._owner_id, 3, 301)
+#     x_p.set_clerk_depot_item(ag_2._owner_id, ag_3._owner_id, 7, 701)
+#     x_p.set_clerk_depot_item(ag_2._owner_id, ag_4._owner_id, 4, 401)
+#     x_agenda = example_get_agenda_3CleanNodesRandomWeights()
+#     x_p.set_clerk_depot_item(ag_2._owner_id, ag_5._owner_id, 5, 501, x_agenda)
 
-    x_p.set_clerk_depot_item(ag_3._owner_id, ag_1._owner_id, 3, 301)
-    x_p.set_clerk_depot_item(ag_3._owner_id, ag_2._owner_id, 7, 701)
-    x_p.set_clerk_depot_item(ag_3._owner_id, ag_4._owner_id, 4, 401)
-    x_p.set_clerk_depot_item(ag_3._owner_id, ag_5._owner_id, 5, 501)
+#     x_p.set_clerk_depot_item(ag_3._owner_id, ag_1._owner_id, 3, 301)
+#     x_p.set_clerk_depot_item(ag_3._owner_id, ag_2._owner_id, 7, 701)
+#     x_p.set_clerk_depot_item(ag_3._owner_id, ag_4._owner_id, 4, 401)
+#     x_p.set_clerk_depot_item(ag_3._owner_id, ag_5._owner_id, 5, 501)
 
-    x_p.set_clerk_depot_item(ag_4._owner_id, ag_1._owner_id, 3, 301)
-    x_p.set_clerk_depot_item(ag_4._owner_id, ag_2._owner_id, 7, 701)
-    x_p.set_clerk_depot_item(ag_4._owner_id, ag_3._owner_id, 4, 401)
-    x_p.set_clerk_depot_item(ag_4._owner_id, ag_5._owner_id, 5, 501)
+#     x_p.set_clerk_depot_item(ag_4._owner_id, ag_1._owner_id, 3, 301)
+#     x_p.set_clerk_depot_item(ag_4._owner_id, ag_2._owner_id, 7, 701)
+#     x_p.set_clerk_depot_item(ag_4._owner_id, ag_3._owner_id, 4, 401)
+#     x_p.set_clerk_depot_item(ag_4._owner_id, ag_5._owner_id, 5, 501)
 
-    x_p.set_clerk_depot_item(ag_5._owner_id, ag_1._owner_id, 3, 301)
-    x_p.set_clerk_depot_item(ag_5._owner_id, ag_2._owner_id, 7, 701)
-    x_p.set_clerk_depot_item(ag_5._owner_id, ag_3._owner_id, 4, 401)
-    x_p.set_clerk_depot_item(ag_5._owner_id, ag_4._owner_id, 5, 501)
+#     x_p.set_clerk_depot_item(ag_5._owner_id, ag_1._owner_id, 3, 301)
+#     x_p.set_clerk_depot_item(ag_5._owner_id, ag_2._owner_id, 7, 701)
+#     x_p.set_clerk_depot_item(ag_5._owner_id, ag_3._owner_id, 4, 401)
+#     x_p.set_clerk_depot_item(ag_5._owner_id, ag_4._owner_id, 5, 501)
 
-    x_p.save_clerkunit_file(clerk_id=ag_1._owner_id)
-    x_p.save_clerkunit_file(clerk_id=ag_2._owner_id)
-    x_p.save_clerkunit_file(clerk_id=ag_3._owner_id)
-    x_p.save_clerkunit_file(clerk_id=ag_4._owner_id)
-    x_p.save_clerkunit_file(clerk_id=ag_5._owner_id)
+#     x_p.save_clerkunit_file(clerk_id=ag_1._owner_id)
+#     x_p.save_clerkunit_file(clerk_id=ag_2._owner_id)
+#     x_p.save_clerkunit_file(clerk_id=ag_3._owner_id)
+#     x_p.save_clerkunit_file(clerk_id=ag_4._owner_id)
+#     x_p.save_clerkunit_file(clerk_id=ag_5._owner_id)
 
 
-def _delete_and_set_ex6(x_world_id: str = None):
-    if x_world_id is None:
-        x_world_id = "ex6"
-    ex6_dir = f"{get_test_econs_dir()}/{x_world_id}"
-    x_econ = econunit_shop(x_world_id, econ_dir=ex6_dir)
+def _delete_and_set_ex6(ex6_id: str = None):
+    if ex6_id is None:
+        ex6_id = "ex6"
+    ex6_dir = f"{get_test_econs_dir()}/{ex6_id}"
+    x_econ = econunit_shop(ex6_id, econ_dir=ex6_dir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
