@@ -1,5 +1,5 @@
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
+from src.agenda.healer import healerunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (

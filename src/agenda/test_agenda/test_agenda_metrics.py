@@ -2,7 +2,7 @@ from src.agenda.graphic import display_ideatree
 from src.agenda.party import partyunit_shop
 from src.agenda.group import GroupID, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.healer import healerhold_shop
+from src.agenda.healer import healerunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels_and_2reasons,
     get_agenda_with7amCleanTableReason,
@@ -829,21 +829,21 @@ def test_AgendaUnit_set_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_v
     assert from_list_get_active(road=mat_road, idea_dict=yao_agenda._idea_dict)
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_importance():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySetsEmpty_sum_healerunit_importance():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    assert sue_agenda._sum_healerhold_importance == 0
+    assert sue_agenda._sum_healerunit_importance == 0
     assert sue_agenda._econ_dict == {}
 
     # WHEN
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._sum_healerhold_importance == 0
+    assert sue_agenda._sum_healerunit_importance == 0
     assert sue_agenda._econ_dict == {}
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance():
+def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerunit_importance():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit("Sue")
@@ -851,36 +851,36 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance()
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
-    sue_healerhold = healerhold_shop({"Sue"})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_healerunit = healerunit_shop({"Sue"})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerunit=sue_healerunit)
     oregon_idea = sue_agenda.get_idea_obj(oregon_road)
     print(f"{oregon_idea._agenda_importance=}")
-    assert sue_agenda._sum_healerhold_importance == 0
-    assert oregon_idea._healerhold_importance == 0
+    assert sue_agenda._sum_healerunit_importance == 0
+    assert oregon_idea._healerunit_importance == 0
 
     # WHEN
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._sum_healerhold_importance == 0.038461538461538464
-    assert oregon_idea._healerhold_importance == 1
+    assert sue_agenda._sum_healerunit_importance == 0.038461538461538464
+    assert oregon_idea._healerunit_importance == 1
 
     # WHEN
     week_road = sue_agenda.make_l1_road("weekdays")
     sue_agenda.edit_idea_attr(week_road, problem_bool=True)
     mon_road = sue_agenda.make_road(week_road, "Monday")
-    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(mon_road, healerunit=sue_healerunit)
     mon_idea = sue_agenda.get_idea_obj(mon_road)
     # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
     sue_agenda.set_agenda_metrics()
     # THEN
-    assert sue_agenda._sum_healerhold_importance != 0.038461538461538464
-    assert sue_agenda._sum_healerhold_importance == 0.06923076923076923
-    assert oregon_idea._healerhold_importance == 0.5555555555555556
-    assert mon_idea._healerhold_importance == 0.4444444444444444
+    assert sue_agenda._sum_healerunit_importance != 0.038461538461538464
+    assert sue_agenda._sum_healerunit_importance == 0.06923076923076923
+    assert oregon_idea._healerunit_importance == 0.5555555555555556
+    assert mon_idea._healerunit_importance == 0.4444444444444444
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
-    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(tue_road, healerunit=sue_healerunit)
     tue_idea = sue_agenda.get_idea_obj(tue_road)
     # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
     # sat_road = sue_agenda.make_road(week_road, "Saturday")
@@ -889,14 +889,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance()
     sue_agenda.set_agenda_metrics()
 
     # THEN
-    assert sue_agenda._sum_healerhold_importance != 0.06923076923076923
-    assert sue_agenda._sum_healerhold_importance == 0.1
-    assert oregon_idea._healerhold_importance == 0.38461538461538464
-    assert mon_idea._healerhold_importance == 0.3076923076923077
-    assert tue_idea._healerhold_importance == 0.3076923076923077
+    assert sue_agenda._sum_healerunit_importance != 0.06923076923076923
+    assert sue_agenda._sum_healerunit_importance == 0.1
+    assert oregon_idea._healerunit_importance == 0.38461538461538464
+    assert mon_idea._healerunit_importance == 0.3076923076923077
+    assert tue_idea._healerunit_importance == 0.3076923076923077
 
     # WHEN
-    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(week_road, healerunit=sue_healerunit)
     week_idea = sue_agenda.get_idea_obj(week_road)
     print(
         f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
@@ -904,10 +904,10 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_sum_healerhold_importance()
     sue_agenda.set_agenda_metrics()
     # THEN
     # display_ideatree(sue_agenda, "Econ").show()
-    assert sue_agenda._sum_healerhold_importance == 0
-    assert oregon_idea._healerhold_importance == 0
-    assert mon_idea._healerhold_importance == 0
-    assert tue_idea._healerhold_importance == 0
+    assert sue_agenda._sum_healerunit_importance == 0
+    assert oregon_idea._healerunit_importance == 0
+    assert mon_idea._healerunit_importance == 0
+    assert tue_idea._healerunit_importance == 0
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
@@ -918,8 +918,8 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
-    sue_healerhold = healerhold_shop({"Sue"})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_healerunit = healerunit_shop({"Sue"})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerunit=sue_healerunit)
     assert len(sue_agenda._econ_dict) == 0
     assert sue_agenda._econ_dict.get(oregon_road) is None
 
@@ -933,7 +933,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
     week_road = sue_agenda.make_l1_road("weekdays")
     sue_agenda.edit_idea_attr(week_road, problem_bool=True)
     mon_road = sue_agenda.make_road(week_road, "Monday")
-    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(mon_road, healerunit=sue_healerunit)
     # mon_idea = sue_agenda.get_idea_obj(mon_road)
     # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
     sue_agenda.set_agenda_metrics()
@@ -944,7 +944,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
-    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(tue_road, healerunit=sue_healerunit)
     # tue_idea = sue_agenda.get_idea_obj(tue_road)
     # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
     # sat_road = sue_agenda.make_road(week_road, "Saturday")
@@ -959,7 +959,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econ_dict_v1():
     assert sue_agenda._econ_dict.get(tue_road) != None
 
     # WHEN
-    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
+    sue_agenda.edit_idea_attr(week_road, healerunit=sue_healerunit)
     week_idea = sue_agenda.get_idea_obj(week_road)
     print(
         f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
@@ -989,12 +989,12 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_healers_dict():
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
-    sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_healerunit = healerunit_shop({sue_text})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerunit=sue_healerunit)
 
     week_road = sue_agenda.make_l1_road("weekdays")
-    bob_healerhold = healerhold_shop({bob_text})
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+    bob_healerunit = healerunit_shop({bob_text})
+    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerunit=bob_healerunit)
     assert sue_agenda._healers_dict == {}
 
     # WHEN
@@ -1026,12 +1026,12 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_buildable_True():
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
-    sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_healerunit = healerunit_shop({sue_text})
+    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerunit=sue_healerunit)
 
     week_road = sue_agenda.make_l1_road("weekdays")
-    bob_healerhold = healerhold_shop({bob_text})
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+    bob_healerunit = healerunit_shop({bob_text})
+    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerunit=bob_healerunit)
 
     # WHEN
     sue_agenda.set_agenda_metrics()
@@ -1060,8 +1060,8 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_buildable_False():
     bend_text = "Be/nd"
     bend_road = sue_agenda.make_road(oregon_road, bend_text)
     sue_agenda.add_idea(ideaunit_shop(bend_text), oregon_road)
-    sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(bend_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_healerunit = healerunit_shop({sue_text})
+    sue_agenda.edit_idea_attr(bend_road, problem_bool=True, healerunit=sue_healerunit)
     assert sue_agenda._econs_buildable
 
     # WHEN

@@ -40,9 +40,9 @@ def _get_color_for_ideaunit_trace(x_ideaunit: IdeaUnit, mode: str) -> str:
     elif mode == "Task":
         return "Red" if x_ideaunit.promise else "Pink"
     elif mode == "Econ":
-        if x_ideaunit._problem_bool and x_ideaunit._healerhold.any_group_id_exists():
+        if x_ideaunit._problem_bool and x_ideaunit._healerunit.any_group_id_exists():
             return "Purple"
-        elif x_ideaunit._healerhold.any_group_id_exists():
+        elif x_ideaunit._healerunit.any_group_id_exists():
             return "Blue"
         elif x_ideaunit._problem_bool:
             return "Red"
@@ -108,7 +108,7 @@ def _update_layout_fig(x_fig: plotly_Figure, mode: str, x_agenda: AgendaUnit):
     if mode == "Task":
         x_title = "Idea Tree with task ideas in Red."
     x_title += f" (Items: {len(x_agenda._idea_dict)})"
-    x_title += f" (_sum_healerhold_importance: {x_agenda._sum_healerhold_importance})"
+    x_title += f" (_sum_healerunit_importance: {x_agenda._sum_healerunit_importance})"
     x_title += f" (_econs_justified: {x_agenda._econs_justified})"
     x_fig.update_layout(
         title_text=x_title,

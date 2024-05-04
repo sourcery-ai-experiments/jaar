@@ -1,5 +1,5 @@
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
+from src.agenda.healer import healerunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.world.world import WorldUnit, worldunit_shop
@@ -30,12 +30,12 @@ def create_example_world1() -> WorldUnit:
     yao_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({yao_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_healerunit = healerunit_shop({yao_text})
+    dallas_idea = ideaunit_shop(dallas_text, _healerunit=dallas_healerunit)
     elpaso_text = "el paso"
     elpaso_road = yao_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_healerunit = healerunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerunit=elpaso_healerunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -84,12 +84,12 @@ def create_example_world2() -> WorldUnit:
     zia_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_gut_agenda.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_healerunit = healerunit_shop({yao_text, zia_text})
+    dallas_idea = ideaunit_shop(dallas_text, _healerunit=dallas_healerunit)
     elpaso_text = "el paso"
     elpaso_road = yao_gut_agenda.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_healerunit = healerunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerunit=elpaso_healerunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
@@ -224,11 +224,11 @@ def create_example_world4() -> WorldUnit:
     wei_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     zia_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_healerunit = healerunit_shop({yao_text, zia_text})
+    dallas_idea = ideaunit_shop(dallas_text, _healerunit=dallas_healerunit)
     elpaso_text = "el paso"
-    elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_healerunit = healerunit_shop({yao_text})
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerunit=elpaso_healerunit)
 
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)

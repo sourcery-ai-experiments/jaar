@@ -10,7 +10,7 @@ from src._road.road import (
     WorldID,
 )
 from src.agenda.meld import get_meld_default
-from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
+from src.agenda.healer import HealerUnit, healerunit_shop, healerunit_get_from_dict
 from src.agenda.reason_assign import (
     AssignedUnit,
     AssignedHeir,
@@ -81,7 +81,7 @@ class IdeaAttrFilter:
     reason_del_premise_need: RoadUnit = None
     reason_suff_idea_active: str = None
     assignedunit: AssignedUnit = None
-    healerhold: HealerHold = None
+    healerunit: HealerUnit = None
     begin: float = None
     close: float = None
     addin: float = None
@@ -165,7 +165,7 @@ def ideaattrfilter_shop(
     reason_del_premise_need: RoadUnit = None,
     reason_suff_idea_active: str = None,
     assignedunit: AssignedUnit = None,
-    healerhold: HealerHold = None,
+    healerunit: HealerUnit = None,
     begin: float = None,
     close: float = None,
     addin: float = None,
@@ -198,7 +198,7 @@ def ideaattrfilter_shop(
         reason_del_premise_need=reason_del_premise_need,
         reason_suff_idea_active=reason_suff_idea_active,
         assignedunit=assignedunit,
-        healerhold=healerhold,
+        healerunit=healerunit,
         begin=begin,
         close=close,
         addin=addin,
@@ -241,7 +241,7 @@ class IdeaUnit:
     _assignedheir: AssignedHeir = None  # Calculated field
     _beliefunits: dict[RoadUnit:BeliefUnit] = None
     _beliefheirs: dict[RoadUnit:BeliefHeir] = None  # Calculated field
-    _healerhold: HealerHold = None
+    _healerunit: HealerUnit = None
     _begin: float = None
     _close: float = None
     _addin: float = None
@@ -270,7 +270,7 @@ class IdeaUnit:
     _sibling_total_weight: int = None
     _active_hx: dict[int:bool] = None
     _road_delimiter: str = None
-    _healerhold_importance: float = None
+    _healerunit_importance: float = None
 
     def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
@@ -726,8 +726,8 @@ class IdeaUnit:
             )
         if idea_attr.assignedunit != None:
             self._assignedunit = idea_attr.assignedunit
-        if idea_attr.healerhold != None:
-            self._healerhold = idea_attr.healerhold
+        if idea_attr.healerunit != None:
+            self._healerunit = idea_attr.healerunit
         if idea_attr.begin != None:
             self._begin = idea_attr.begin
         if idea_attr.close != None:
@@ -1010,8 +1010,8 @@ class IdeaUnit:
             x_dict["_reasonunits"] = self.get_reasonunits_dict()
         if self._assignedunit not in [None, assignedunit_shop()]:
             x_dict["_assignedunit"] = self.get_assignedunit_dict()
-        if self._healerhold not in [None, healerhold_shop()]:
-            x_dict["_healerhold"] = self._healerhold.get_dict()
+        if self._healerunit not in [None, healerunit_shop()]:
+            x_dict["_healerunit"] = self._healerunit.get_dict()
         if self._balancelinks not in [{}, None]:
             x_dict["_balancelinks"] = self.get_balancelinks_dict()
         if self._originunit not in [None, originunit_shop()]:
@@ -1093,15 +1093,10 @@ def ideaunit_shop(
     _kids: dict = None,
     _weight: int = 1,
     _balancelinks: dict[GroupID:BalanceLink] = None,
-    _balanceheirs: dict[GroupID:BalanceHeir] = None,  # Calculated field
-    _balancelines: dict[GroupID:BalanceLink] = None,  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None,
-    _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
-    _assignedheir: AssignedHeir = None,  # Calculated field
     _beliefunits: dict[BeliefUnit] = None,
-    _beliefheirs: dict[BeliefHeir] = None,  # Calculated field
-    _healerhold: HealerHold = None,
+    _healerunit: HealerUnit = None,
     _begin: float = None,
     _close: float = None,
     _addin: float = None,
@@ -1116,30 +1111,15 @@ def ideaunit_shop(
     _root: bool = None,
     _agenda_world_id: WorldID = None,
     _problem_bool: bool = None,
-    # Calculated fields
-    _level: int = None,
-    _kids_total_weight: int = None,
-    _agenda_importance: float = None,
-    _agenda_coin_onset: float = None,
-    _agenda_coin_cease: float = None,
-    _task: bool = None,
-    _active: bool = None,
-    _ancestor_promise_count: int = None,
-    _descendant_promise_count: int = None,
-    _all_party_credit: bool = None,
-    _all_party_debt: bool = None,
-    _is_expanded: bool = True,
-    _sibling_total_weight: int = None,
-    _active_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
-    _healerhold_importance: float = None,
+    _is_expanded: bool = True,
 ) -> IdeaUnit:
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
     if _agenda_world_id is None:
         _agenda_world_id = root_label()
-    if _healerhold is None:
-        _healerhold = healerhold_shop()
+    if _healerunit is None:
+        _healerunit = healerunit_shop()
 
     x_ideakid = IdeaUnit(
         _label=None,
@@ -1148,15 +1128,14 @@ def ideaunit_shop(
         _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
         _balancelinks=get_empty_dict_if_none(_balancelinks),
-        _balanceheirs=get_empty_dict_if_none(_balanceheirs),
-        _balancelines=get_empty_dict_if_none(_balancelines),
+        _balanceheirs=get_empty_dict_if_none(),
+        _balancelines=get_empty_dict_if_none(),
         _reasonunits=get_empty_dict_if_none(_reasonunits),
-        _reasonheirs=get_empty_dict_if_none(_reasonheirs),
+        _reasonheirs=get_empty_dict_if_none(),
         _assignedunit=_assignedunit,
-        _assignedheir=_assignedheir,
         _beliefunits=get_empty_dict_if_none(_beliefunits),
-        _beliefheirs=get_empty_dict_if_none(_beliefheirs),
-        _healerhold=_healerhold,
+        _beliefheirs=get_empty_dict_if_none(),
+        _healerunit=_healerunit,
         _begin=_begin,
         _close=_close,
         _addin=_addin,
@@ -1171,23 +1150,12 @@ def ideaunit_shop(
         _meld_strategy=_meld_strategy,
         _root=get_False_if_None(_root),
         _agenda_world_id=_agenda_world_id,
-        # Calculated fields
-        _level=_level,
-        _kids_total_weight=get_0_if_None(_kids_total_weight),
-        _agenda_importance=_agenda_importance,
-        _agenda_coin_onset=_agenda_coin_onset,
-        _agenda_coin_cease=_agenda_coin_cease,
-        _task=_task,
-        _active=_active,
-        _ancestor_promise_count=_ancestor_promise_count,
-        _descendant_promise_count=_descendant_promise_count,
-        _all_party_credit=_all_party_credit,
-        _all_party_debt=_all_party_debt,
-        _is_expanded=_is_expanded,
-        _sibling_total_weight=_sibling_total_weight,
-        _active_hx=get_empty_dict_if_none(_active_hx),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-        _healerhold_importance=get_0_if_None(_healerhold_importance),
+        _is_expanded=_is_expanded,
+        # Calculated fields
+        _kids_total_weight=get_0_if_None(),
+        _active_hx=get_empty_dict_if_none(),
+        _healerunit_importance=get_0_if_None(),
     )
     if x_ideakid._root:
         x_ideakid.set_idea_label(_label=_agenda_world_id)
@@ -1215,11 +1183,11 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
             if x_dict.get(dict_key) != None
             else assignedunit_shop()
         )
-    elif dict_key == "_healerhold":
+    elif dict_key == "_healerunit":
         return (
-            healerhold_get_from_dict(x_dict[dict_key])
+            healerunit_get_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else healerhold_shop()
+            else healerunit_shop()
         )
     elif dict_key == "_originunit":
         return (

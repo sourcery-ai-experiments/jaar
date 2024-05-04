@@ -1,6 +1,6 @@
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.idea import ideaunit_shop
-from src.agenda.healer import healerhold_shop
+from src.agenda.healer import healerunit_shop
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
@@ -133,7 +133,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_assignedunit():
     assert idearoot_dict["_assignedunit"] == {"_suffgroups": {run_text: run_text}}
 
 
-def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
+def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerunit():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
     yao_text = "Yao"
@@ -142,16 +142,16 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     run_groupunit = groupunit_shop(run_text)
     run_groupunit.set_partylink(partylink_shop(yao_text))
     tom_agenda.set_groupunit(run_groupunit)
-    run_healerhold = healerhold_shop()
-    run_healerhold.set_group_id(x_group_id=run_text)
-    tom_agenda.edit_idea_attr(road=tom_agenda._world_id, healerhold=run_healerhold)
+    run_healerunit = healerunit_shop()
+    run_healerunit.set_group_id(x_group_id=run_text)
+    tom_agenda.edit_idea_attr(road=tom_agenda._world_id, healerunit=run_healerunit)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
     idearoot_dict = agenda_dict.get("_idearoot")
 
     # THEN
-    assert idearoot_dict["_healerhold"] == run_healerhold.get_dict()
+    assert idearoot_dict["_healerunit"] == run_healerunit.get_dict()
 
 
 def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
@@ -193,8 +193,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     run_groupunit = groupunit_shop(run_text)
     run_groupunit.set_partylink(partylink_shop(yao_text))
     zia_agenda.set_groupunit(run_groupunit)
-    run_healerhold = healerhold_shop({run_text})
-    zia_agenda.edit_idea_attr(road=zia_agenda._world_id, healerhold=run_healerhold)
+    run_healerunit = healerunit_shop({run_text})
+    zia_agenda.edit_idea_attr(road=zia_agenda._world_id, healerunit=run_healerunit)
     zia_agenda.edit_idea_attr(road=zia_agenda._world_id, problem_bool=True)
 
     # WHEN
@@ -231,10 +231,10 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     print(f"{shave_beliefunits=}")
     assert len(shave_beliefunits) == 1
     assert len(shave_beliefunits) == len(x_idearoot._kids[shave_text]._beliefunits)
-    idearoot_healerhold = idearoot_dict["_healerhold"]
-    print(f"{idearoot_healerhold=}")
-    assert len(idearoot_healerhold) == 1
-    assert x_idearoot._healerhold.any_group_id_exists()
+    idearoot_healerunit = idearoot_dict["_healerunit"]
+    print(f"{idearoot_healerunit=}")
+    assert len(idearoot_healerunit) == 1
+    assert x_idearoot._healerunit.any_group_id_exists()
     assert x_idearoot._problem_bool
 
 
@@ -352,9 +352,9 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda.edit_idea_attr(
         zia_agenda._world_id, balancelink=balancelink_shop(sue_text)
     )
-    # add healerhold to shave ideaunit
-    run_healerhold = healerhold_shop({run_text})
-    zia_agenda.edit_idea_attr(shave_road, healerhold=run_healerhold)
+    # add healerunit to shave ideaunit
+    run_healerunit = healerunit_shop({run_text})
+    zia_agenda.edit_idea_attr(shave_road, healerunit=run_healerunit)
 
     yao_text = "Yao"
     zia_agenda._originunit.set_originlink(yao_text, 1)
@@ -413,8 +413,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_shave_idea._assignedunit == zia_shave_idea._assignedunit
     assert json_shave_idea._assignedunit == tim_assignedunit
     assert json_shave_idea._originunit == zia_shave_idea._originunit
-    print(f"{json_shave_idea._healerhold=}")
-    assert json_shave_idea._healerhold == zia_shave_idea._healerhold
+    print(f"{json_shave_idea._healerunit=}")
+    assert json_shave_idea._healerunit == zia_shave_idea._healerunit
     assert len(json_shave_idea._balancelinks) == 2
     assert len(json_shave_idea._beliefunits) == 1
     assert zia_shave_idea._problem_bool

@@ -395,11 +395,13 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
 
     # WHEN
     bob_agenda.meld(yao_agenda)
+    print(f"{bob_agenda._idearoot._level=}")
     bob_agenda.get_tree_metrics()
 
     # THEN
     print(f"After  {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")
     print(f"After    {yao_family_bl._agenda_debt=} {yao_idearoot._kids_total_weight=}")
+    print(f"{yao_idearoot._level=}")
     assert bob_agenda._weight == yao_agenda._weight
     assert bob_idearoot._kids == yao_idearoot._kids
     assert bob_idearoot._uid == yao_idearoot._uid
