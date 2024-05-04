@@ -13,11 +13,10 @@ from pytest import raises as pytest_raises
 
 
 def test_AgendaUnit_Exists():
-    # GIVEN
-
-    # WHEN
+    # GIVEN / WHEN
     x_agenda = AgendaUnit()
 
+    # THEN
     assert x_agenda
     assert x_agenda._world_id is None
     assert x_agenda._owner_id is None
