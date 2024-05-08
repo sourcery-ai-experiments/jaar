@@ -1,0 +1,40 @@
+name: run-tests-on-push
+on: push
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 #there are different versions of the actions/checkout action
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install pandas
+          python -m pip install plotly
+          python -m pip install pytest-cov
+          python -m pip install pyqt5
+      - name: Execute tests and generate report
+        id: pytest
+        run: |
+          python -m pytest --junitxml="junit/test-results_`date '+%Y-%m-%d_%T'`.xml" --doctest-modules | tee testresults
+      - name: If All Tests Pass, Merge
+        if: ${{ steps.pytest.conclusion == 'success' }}
+        run: 
+          echo "Hello"
+        #nothing more to do (?), merge branch into master
+      - name: If ANY Test Fails, Open Tickets
+        if: ${{ steps.pytest.conclusion == 'failure' }}
+        run: |
+          TEST_SUMMARY_START = $(cat testresults | grep FAILURES)
+          TEST_SUMMARY_END = $(cat testresults | grep "summary info")
+          sed -n "/$TEST_SUMMARY_START/,/$TEST_SUMMARY_END/p" testresults > failure_log
+
+      #TODO:
+        #clip portion of test results with failure messages
+        #open new issue
+        #dump failure text into issue, add some other details
