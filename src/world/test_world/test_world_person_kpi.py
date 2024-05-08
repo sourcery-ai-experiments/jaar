@@ -1,4 +1,4 @@
-from src.world.report import (
+from src.world.world_report import (
     get_world_guts_partys_dataframe,
     get_world_guts_partys_plotly_fig,
     get_world_lives_partys_dataframe,
