@@ -1,7 +1,8 @@
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, WorldID
-from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
+
+# from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
 from src.econ.clerk import clerkunit_shop, ClerkUnit
-from src.econ.examples.econ_env_kit import get_temp_env_world_id
+from src.econ.econ import get_temp_env_world_id
 
 from random import randrange
 

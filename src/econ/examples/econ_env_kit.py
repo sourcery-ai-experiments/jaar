@@ -1,17 +1,17 @@
 # from lw.agenda import AgendaUnit
 from src.agenda.agenda import agendaunit_shop
 from src.instrument.file import (
-    set_dir,
+    # set_dir,
     delete_dir,
     copy_dir,
     save_file,
-    open_file,
+    # open_file,
     dir_files,
 )
 from src.agenda.examples.example_agendas import (
-    agenda_v001 as example_agendas_agenda_v001,
-    agenda_v002 as example_agendas_agenda_v002,
-    get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
+    # agenda_v001 as example_agendas_agenda_v001,
+    # agenda_v002 as example_agendas_agenda_v002,
+    # get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
@@ -22,10 +22,9 @@ from src.econ.econ import (
     get_temp_env_world_id,
 )
 from src.econ.examples.example_clerks import (
-    get_1node_agenda as example_get_1node_agenda,
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
-    get_agenda_2CleanNodesRandomWeights as example_get_agenda_2CleanNodesRandomWeights,
-    get_agenda_3CleanNodesRandomWeights as example_get_agenda_3CleanNodesRandomWeights,
+    # get_agenda_2CleanNodesRandomWeights as example_get_agenda_2CleanNodesRandomWeights,
+    # get_agenda_3CleanNodesRandomWeights as example_get_agenda_3CleanNodesRandomWeights,
 )
 from os import rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
