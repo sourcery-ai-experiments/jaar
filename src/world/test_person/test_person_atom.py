@@ -10,6 +10,7 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
+from src.instrument.file import dir_files as file_dir_files
 from os.path import exists as os_path_exists
 
 
@@ -168,6 +169,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit
     yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.world_id))
     yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.world_id))
     yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.world_id))
+    print(f"{file_dir_files(yao_person._atoms_dir).keys()=}")
 
     # WHEN
     yao_agenda = yao_person._get_agenda_from_atom_files()

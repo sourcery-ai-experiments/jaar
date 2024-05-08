@@ -306,8 +306,11 @@ class PersonUnit:
     def _get_agenda_from_atom_files(self) -> AgendaUnit:
         x_agenda = agendaunit_shop(_owner_id=self.person_id, _world_id=self.world_id)
         x_atom_files = dir_files(self._atoms_dir, delete_extensions=True)
-        for x_int, x_json in x_atom_files.items():
-            x_atom = agendaatom_get_from_json(x_json)
+        sorted_atom_filenames = sorted(list(x_atom_files.keys()))
+
+        for x_atom_filename in sorted_atom_filenames:
+            x_file_text = x_atom_files.get(x_atom_filename)
+            x_atom = agendaatom_get_from_json(x_file_text)
             change_agenda_with_agendaatom(x_agenda, x_atom)
         return x_agenda
 
