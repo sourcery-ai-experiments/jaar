@@ -511,7 +511,7 @@ def econunit_shop(
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
-        econ_dir = f"/{world_id}"
+        econ_dir = f".{world_id}"
     econ_x = EconUnit(
         econ_dir=econ_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
