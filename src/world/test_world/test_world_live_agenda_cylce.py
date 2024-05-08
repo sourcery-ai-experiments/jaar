@@ -41,7 +41,7 @@ def test_WorldUnit_generate_live_agenda_ReturnsRegeneratedObj(worlds_dir_setup_c
     bob_text = "Bob"
     before_luca_agenda.add_partyunit(bob_text)
     # save a incorrect live file
-    luca_person._save_live_file(before_luca_agenda)
+    luca_person.save_live_file(before_luca_agenda)
     assert luca_person.get_live_file_agenda().get_party(bob_text) != None
 
     # WHEN
@@ -65,7 +65,7 @@ def test_WorldUnit_generate_live_agenda_SetsCorrectFileWithout_healerunit(
     # WHEN
     bob_gut_agenda = bob_person.get_gut_file_agenda()
     bob_gut_agenda.add_partyunit(sue_text)
-    bob_person._save_gut_file(bob_gut_agenda)
+    bob_person.save_gut_file(bob_gut_agenda)
 
     # WHEN
     after_bob_live_agenda = music_world.generate_live_agenda(bob_text)
@@ -95,7 +95,7 @@ def test_WorldUnit_generate_live_agenda_SetsCorrectFileWith_healerunit(
     elpaso_idea = ideaunit_shop(elpaso_text, _healerunit=healerunit_shop({bob_text}))
     bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_gut_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person._save_gut_file(bob_gut_agenda)
+    bob_person.save_gut_file(bob_gut_agenda)
     after_bob_live_agenda = music_world.generate_live_agenda(bob_text)
 
     # THEN
@@ -123,7 +123,7 @@ def test_WorldUnit_generate_all_live_agendas_SetsCorrectFiles(worlds_dir_setup_c
     bob_gut_agenda.add_partyunit(bob_text)
     bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_gut_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person._save_gut_file(bob_gut_agenda)
+    bob_person.save_gut_file(bob_gut_agenda)
 
     #
     sue_gut_agenda = sue_person.get_gut_file_agenda()
@@ -131,7 +131,7 @@ def test_WorldUnit_generate_all_live_agendas_SetsCorrectFiles(worlds_dir_setup_c
     sue_gut_agenda.add_partyunit(bob_text)
     sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_gut_agenda.add_idea(elpaso_idea, texas_road)
-    sue_person._save_gut_file(sue_gut_agenda)
+    sue_person.save_gut_file(sue_gut_agenda)
 
     before_bob_live_agenda = music_world.get_live_file_agenda(bob_text)
     before_sue_live_agenda = music_world.get_live_file_agenda(sue_text)
