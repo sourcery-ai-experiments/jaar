@@ -128,7 +128,7 @@ class PersonUnit:
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
-            self._save_gut_file(
+            self.save_gut_file(
                 agendaunit_shop(
                     _owner_id=self.person_id,
                     _world_id=self.world_id,
@@ -152,7 +152,7 @@ class PersonUnit:
     def live_file_exists(self) -> bool:
         return os_path_exists(self._live_path)
 
-    def _save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
+    def save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
             raise Invalid_gut_Exception(
                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s gut agenda."

@@ -174,7 +174,9 @@ class WorldUnit:
                 x_econ.save_file_to_roles(x_gut)
                 x_econ.create_clerkunit(person_id)
                 x_job = x_econ.get_file_in_jobs(person_id)
+                x_job.set_agenda_metrics()
                 x_live.meld(x_job)
+                x_live.set_agenda_metrics
 
         # if live_agenda has not changed st live agenda to gut
         if x_live == x_live_deepcopy:

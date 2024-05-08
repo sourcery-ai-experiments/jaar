@@ -1,16 +1,13 @@
-from src._road.road import default_road_delimiter_if_none
+# from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
-from src.agenda.graphic import display_ideatree
+
+# from src.agenda.graphic import display_ideatree
 from src.world.world import WorldUnit, worldunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
     worlds_dir_setup_cleanup,
 )
-
-from src.world.person import personunit_shop
-from os import path as os_path
-from pytest import raises as pytest_raises
 
 
 def create_example_world1() -> WorldUnit:
@@ -40,7 +37,7 @@ def create_example_world1() -> WorldUnit:
     yao_gut_agenda.add_idea(dallas_idea, texas_road)
     yao_gut_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_gut_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person._save_gut_file(yao_gut_agenda)
+    yao_person.save_gut_file(yao_gut_agenda)
     yao_person.create_person_econunits()
 
     # WHEN
@@ -98,9 +95,9 @@ def create_example_world2() -> WorldUnit:
     zia_gut_agenda.add_idea(dallas_idea, texas_road)
     zia_gut_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_gut_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person._save_gut_file(yao_gut_agenda)
-    wei_person._save_gut_file(wei_gut_agenda)
-    zia_person._save_gut_file(zia_gut_agenda)
+    yao_person.save_gut_file(yao_gut_agenda)
+    wei_person.save_gut_file(wei_gut_agenda)
+    zia_person.save_gut_file(zia_gut_agenda)
     yao_person.create_person_econunits()
     wei_person.create_person_econunits()
     zia_person.create_person_econunits()
@@ -158,9 +155,9 @@ def create_example_world3() -> WorldUnit:
     zia_gut_agenda.add_idea(ideaunit_shop(hall_text, promise=True), clean_road)
 
     # display_ideatree(yao_gut_agenda, mode="Econ").show()
-    yao_person._save_gut_file(yao_gut_agenda)
-    wei_person._save_gut_file(wei_gut_agenda)
-    zia_person._save_gut_file(zia_gut_agenda)
+    yao_person.save_gut_file(yao_gut_agenda)
+    wei_person.save_gut_file(wei_gut_agenda)
+    zia_person.save_gut_file(zia_gut_agenda)
 
     return music_world
 
@@ -224,9 +221,11 @@ def create_example_world4() -> WorldUnit:
     wei_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     zia_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
+    dallas_road = yao_gut_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({yao_text, zia_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
+    elpaso_road = yao_gut_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({yao_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
@@ -237,24 +236,39 @@ def create_example_world4() -> WorldUnit:
     zia_gut_agenda.add_idea(dallas_idea, texas_road)
     zia_gut_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_gut_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person._save_gut_file(yao_gut_agenda)
-    wei_person._save_gut_file(wei_gut_agenda)
-    zia_person._save_gut_file(zia_gut_agenda)
-    yao_person.create_person_econunits()
-    wei_person.create_person_econunits()
-    zia_person.create_person_econunits()
+    yao_person.save_gut_file(yao_gut_agenda)
+    wei_person.save_gut_file(wei_gut_agenda)
+    zia_person.save_gut_file(zia_gut_agenda)
+    # yao_person.create_person_econunits()
+    # wei_person.create_person_econunits()
+    # zia_person.create_person_econunits()
     # yao_dallas_econ = yao_person.get_econ(dallas_road)
     # zia_dallas_econ = zia_person.get_econ(dallas_road)
+    # yao_elpaso_econ = yao_person.get_econ(elpaso_road)
+    # yao_dallas_econ.save_file_to_roles(yao_gut_agenda)
+    # yao_dallas_econ.save_file_to_roles(wei_gut_agenda)
+    # yao_dallas_econ.save_file_to_roles(zia_gut_agenda)
+    # zia_dallas_econ.save_file_to_roles(yao_gut_agenda)
+    # zia_dallas_econ.save_file_to_roles(wei_gut_agenda)
+    # zia_dallas_econ.save_file_to_roles(zia_gut_agenda)
+    # yao_elpaso_econ.save_file_to_roles(yao_gut_agenda)
+    # yao_elpaso_econ.save_file_to_roles(wei_gut_agenda)
+    # yao_elpaso_econ.save_file_to_roles(zia_gut_agenda)
     # yao_dallas_econ.create_clerkunit(yao_text)
+    # yao_dallas_econ.create_clerkunit(wei_text)
     # yao_dallas_econ.create_clerkunit(zia_text)
-    # zia_dallas_econ.create_clerkunit(yao_text)
-    # zia_dallas_econ.create_clerkunit(zia_text)
-    # yao_dallas_yao_clerk = yao_dallas_econ.get_clerkunit(yao_text)
-    # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
-    # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
-    # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    music_world.set_all_econunits_contract(yao_text)
-    music_world.set_all_econunits_contract(wei_text)
-    music_world.set_all_econunits_contract(zia_text)
+    # zia_dallas_econ.create_clerkunit(wei_text)
+    # yao_elpaso_econ.create_clerkunit(zia_text)
+    # # yao_dallas_econ.create_clerkunit(yao_text)
+    # # yao_dallas_econ.create_clerkunit(zia_text)
+    # # zia_dallas_econ.create_clerkunit(yao_text)
+    # # zia_dallas_econ.create_clerkunit(zia_text)
+    # # yao_dallas_yao_clerk = yao_dallas_econ.get_clerkunit(yao_text)
+    # # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
+    # # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
+    # # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
+    # music_world.set_all_econunits_role(yao_text)
+    # music_world.set_all_econunits_role(wei_text)
+    # music_world.set_all_econunits_role(zia_text)
 
     return music_world
