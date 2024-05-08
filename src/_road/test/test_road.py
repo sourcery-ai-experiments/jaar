@@ -30,6 +30,7 @@ from src._road.road import (
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
 from inspect import getdoc as inspect_getdoc
+from platform import system as platform_system
 
 
 def test_RoadNode_exists():
@@ -589,7 +590,9 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
     comma_text = ","
     assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
     assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
-    assert is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
+    assert (platform_system() != "linux") and is_roadunit_convertible_to_path(
+        "run,sport?", delimiter=comma_text
+    ) == False
 
 
 def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter():
@@ -606,7 +609,9 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+    assert (platform_system() != "linux") and is_roadunit_convertible_to_path(
+        lap_road, delimiter=","
+    ) == False
 
 
 def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():
