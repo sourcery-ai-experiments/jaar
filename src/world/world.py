@@ -138,23 +138,19 @@ class WorldUnit:
         x_person = self.get_personunit(person_id)
         return x_person.get_gut_file_agenda()
 
-    def save_gut_file(self, x_agenda: AgendaUnit):
-        x_person = self.get_personunit(x_agenda._owner_id)
-        return x_person._save_gut_file(x_agenda)
-
-    def set_all_econunit_role_agendas(self, person_id: PersonID):
+    def set_all_econunits_role(self, person_id: PersonID):
         x_gut = self.get_person_gut(person_id)
         x_gut.set_agenda_metrics()
-        for leader_id, leader_dict in x_gut._leaders_dict.items():
-            leader_person = self.get_personunit(leader_id)
-            for econ_idea in leader_dict.values():
-                self._set_person_econunit_role_agenda(
-                    leader_person=leader_person,
+        for healer_id, healer_dict in x_gut._healers_dict.items():
+            healer_person = self.get_personunit(healer_id)
+            for econ_idea in healer_dict.values():
+                self._set_person_econunits_agent_role(
+                    healer_person=healer_person,
                     econ_road=econ_idea.get_road(),
                     gut_agenda=x_gut,
                 )
 
-    def _set_person_econunit_role_agenda(
+    def _set_person_econunits_agent_role(
         self,
         healer_person: PersonUnit,
         econ_road: RoadUnit,
@@ -178,14 +174,16 @@ class WorldUnit:
                 x_econ.save_file_to_roles(x_gut)
                 x_econ.create_clerkunit(person_id)
                 x_job = x_econ.get_file_in_jobs(person_id)
+                x_job.set_agenda_metrics()
                 x_live.meld(x_job)
+                x_live.set_agenda_metrics()
 
         # brnach check
 
         # if live_agenda has not changed st live agenda to gut
         if x_live == x_live_deepcopy:
             x_live = x_gut
-        x_personunit._save_live_file(x_live)
+        x_personunit.save_live_file(x_live)
         return self.get_live_file_agenda(person_id)
 
     def load_all_role_agendas(self):
@@ -209,13 +207,6 @@ class WorldUnit:
         person_role.add_partyunit(party_id)
         person_clerkunit.save_role_agenda(person_role)
         person_clerkunit.save_refreshed_job_to_jobs()
-
-    # def _display_gut_party_graph(self, x_person_id: PersonID):
-    #     x_personunit = self.get_personunit(x_person_id)
-    #     x_gut_agenda = x_personunit.get_gut_file_agenda()
-
-    # def display_person_kpi_graph(self, x_person_id: PersonID):
-    #     pass
 
 
 def worldunit_shop(

@@ -3,7 +3,7 @@ from src._road.road import (
     create_road,
     default_road_delimiter_if_none,
 )
-from src.agenda.leader import leaderunit_shop
+from src.agenda.healer import healerunit_shop
 from src.agenda.group import GroupID, balancelink_shop, balanceheir_shop
 from src.agenda.reason_idea import (
     reasonunit_shop,
@@ -43,7 +43,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._beliefheirs is None
     assert x_ideaunit._beliefunits is None
     assert x_ideaunit._meld_strategy is None
-    assert x_ideaunit._leaderunit is None
+    assert x_ideaunit._healerunit is None
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight is None
     assert x_ideaunit._active_hx is None
@@ -58,7 +58,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
     assert x_ideaunit._agenda_world_id is None
-    assert x_ideaunit._leaderunit_importance is None
+    assert x_ideaunit._healerunit_importance is None
 
 
 def test_ideaunit_shop_NoParametersReturnsCorrectObj():
@@ -91,7 +91,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._beliefheirs == {}
     assert x_ideaunit._beliefunits == {}
     assert x_ideaunit._meld_strategy == "default"
-    assert x_ideaunit._leaderunit == leaderunit_shop()
+    assert x_ideaunit._healerunit == healerunit_shop()
     assert x_ideaunit._level is None
     assert x_ideaunit._kids_total_weight == 0
     assert x_ideaunit._active_hx == {}
@@ -106,19 +106,19 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
     assert x_ideaunit._agenda_world_id == root_label()
-    assert x_ideaunit._leaderunit_importance == 0
+    assert x_ideaunit._healerunit_importance == 0
 
 
 def test_ideaunit_shop_NonNoneParametersReturnsCorrectObj():
     # GIVEN
-    x_leaderunit = leaderunit_shop({"Sue", "Yao"})
+    x_healerunit = healerunit_shop({"Sue", "Yao"})
     x_problem_bool = True
 
     # WHEN
-    x_ideaunit = ideaunit_shop(_leaderunit=x_leaderunit, _problem_bool=x_problem_bool)
+    x_ideaunit = ideaunit_shop(_healerunit=x_healerunit, _problem_bool=x_problem_bool)
 
     # THEN
-    assert x_ideaunit._leaderunit == x_leaderunit
+    assert x_ideaunit._healerunit == x_healerunit
     assert x_ideaunit._problem_bool == x_problem_bool
 
 
@@ -225,7 +225,8 @@ def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithVa
 
     # WHEN
     sport_text = "sport"
-    sport_idea = ideaunit_shop(_label=sport_text, _balanceheirs=group_links)
+    sport_idea = ideaunit_shop(_label=sport_text)
+    sport_idea._balanceheirs = group_links
 
     # THEN
     assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
@@ -314,7 +315,8 @@ def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromSelf():
 def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(_label=ball_text, _descendant_promise_count=55)
+    ball_idea = ideaunit_shop(_label=ball_text)
+    ball_idea._descendant_promise_count = 55
     assert ball_idea._descendant_promise_count == 55
 
     # WHEN
@@ -327,7 +329,8 @@ def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
 def test_IdeaUnit_add_to_descendant_promise_count_CorrectlyAdds():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(_label=ball_text, _descendant_promise_count=55)
+    ball_idea = ideaunit_shop(_label=ball_text)
+    ball_idea._descendant_promise_count = 55
     ball_idea.clear_descendant_promise_count()
     assert ball_idea._descendant_promise_count is None
 
@@ -347,9 +350,9 @@ def test_IdeaUnit_add_to_descendant_promise_count_CorrectlyAdds():
 def test_IdeaUnit_clear_all_party_credit_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(
-        _label=ball_text, _all_party_credit=55, _all_party_debt=33
-    )
+    ball_idea = ideaunit_shop(_label=ball_text)
+    ball_idea._all_party_credit = 55
+    ball_idea._all_party_debt = 33
     assert ball_idea._all_party_credit == 55
     assert ball_idea._all_party_debt == 33
 
@@ -409,24 +412,24 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({}, field_text) == {}
 
 
-def test_get_obj_from_idea_dict_ReturnsCorrect_LeaderUnit():
+def test_get_obj_from_idea_dict_ReturnsCorrect_HealerUnit():
     # GIVEN
     # WHEN / THEN
-    leaderunit_key = "_leaderunit"
-    assert get_obj_from_idea_dict({}, leaderunit_key) == leaderunit_shop()
+    healerunit_key = "_healerunit"
+    assert get_obj_from_idea_dict({}, healerunit_key) == healerunit_shop()
 
     # WHEN
     sue_text = "Sue"
     jim_text = "Jim"
-    leaderunit_dict = {"leaderunit_group_ids": [sue_text, jim_text]}
-    ideaunit_dict = {leaderunit_key: leaderunit_dict}
+    healerunit_dict = {"healerunit_group_ids": [sue_text, jim_text]}
+    ideaunit_dict = {healerunit_key: healerunit_dict}
 
     # THEN
-    static_leaderunit = leaderunit_shop()
-    static_leaderunit.set_group_id(x_group_id=sue_text)
-    static_leaderunit.set_group_id(x_group_id=jim_text)
-    assert get_obj_from_idea_dict(ideaunit_dict, leaderunit_key) != None
-    assert get_obj_from_idea_dict(ideaunit_dict, leaderunit_key) == static_leaderunit
+    static_healerunit = healerunit_shop()
+    static_healerunit.set_group_id(x_group_id=sue_text)
+    static_healerunit.set_group_id(x_group_id=jim_text)
+    assert get_obj_from_idea_dict(ideaunit_dict, healerunit_key) != None
+    assert get_obj_from_idea_dict(ideaunit_dict, healerunit_key) == static_healerunit
 
 
 def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
@@ -493,7 +496,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     sue_text = "Sue"
     yao_text = "Yao"
     sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
-    yao_leaderunit = leaderunit_shop({yao_text})
+    yao_healerunit = healerunit_shop({yao_text})
     gig_text = "gig"
     gig_road = create_road(root_label(), gig_text)
     x_problem_bool = True
@@ -503,16 +506,16 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
         _label=gig_text,
-        _level=1,
         _reasonunits=x1_reasonunits,
-        _reasonheirs=x1_reasonheirs,
         _assignedunit=sue_assignedunit,
-        _leaderunit=yao_leaderunit,
-        _active=True,
+        _healerunit=yao_healerunit,
         _range_source_road="test123",
         promise=True,
         _problem_bool=x_problem_bool,
     )
+    gig_idea._level = 1
+    gig_idea._reasonheirs = x1_reasonheirs
+    gig_idea._active = True
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     gig_idea.set_beliefunit(beliefunit=beliefunit_x)
     gig_idea._originunit.set_originlink(party_id="Ray", weight=None)
@@ -543,7 +546,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert gig_dict["_balancelinks"] == gig_idea.get_balancelinks_dict()
     assert gig_dict["_balancelinks"] == x1_balancelinks
     assert gig_dict["_assignedunit"] == sue_assignedunit.get_dict()
-    assert gig_dict["_leaderunit"] == yao_leaderunit.get_dict()
+    assert gig_dict["_healerunit"] == yao_healerunit.get_dict()
     assert gig_dict["_originunit"] == gig_idea.get_originunit_dict()
     assert gig_dict["_weight"] == gig_idea._weight
     assert gig_dict["_label"] == gig_idea._label
@@ -632,7 +635,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert gig_idea._beliefunits == {}
     assert gig_idea._balancelinks == {}
     assert gig_idea._assignedunit == assignedunit_shop()
-    assert gig_idea._leaderunit == leaderunit_shop()
+    assert gig_idea._healerunit == healerunit_shop()
     assert gig_idea._originunit == originunit_shop()
     assert gig_idea._kids == {}
 
@@ -646,7 +649,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert gig_dict.get("_beliefunits") is None
     assert gig_dict.get("_balancelinks") is None
     assert gig_dict.get("_assignedunit") is None
-    assert gig_dict.get("_leaderunit") is None
+    assert gig_dict.get("_healerunit") is None
     assert gig_dict.get("_originunit") is None
     assert gig_dict.get("_kids") is None
 
