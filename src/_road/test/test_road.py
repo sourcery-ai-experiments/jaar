@@ -590,7 +590,8 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
     comma_text = ","
     assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
     assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
-    assert (platform_system() != "Linux") and is_roadunit_convertible_to_path(
+    print(f"{platform_system()=}")
+    assert (platform_system() == "Windows") and is_roadunit_convertible_to_path(
         "run,sport?", delimiter=comma_text
     ) == False
 
@@ -609,7 +610,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
     assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
-    assert (platform_system() != "Linux") and is_roadunit_convertible_to_path(
+    assert (platform_system() == "Windows") and is_roadunit_convertible_to_path(
         lap_road, delimiter=","
     ) == False
 
