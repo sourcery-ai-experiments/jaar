@@ -3,7 +3,7 @@ from src._road.road import (
     create_road,
     default_road_delimiter_if_none,
     OwnerID,
-    LeaderID,
+    HealerID,
     PersonID,
     PartyID,
     WorldID,
@@ -75,8 +75,8 @@ def get_temp_env_world_id():
     return "ex_econ04"
 
 
-def get_temp_env_leader_id():
-    return "ex_leader04"
+def get_temp_env_healer_id():
+    return "ex_healer04"
 
 
 def get_temp_env_person_id():
@@ -103,7 +103,7 @@ def treasury_db_filename() -> str:
 class EconUnit:
     world_id: WorldID = None
     econ_dir: str = None
-    _manager_person_id: LeaderID = None
+    _manager_person_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None

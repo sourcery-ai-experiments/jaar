@@ -27,7 +27,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Added {rico_text} with {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt"
+    x_str = f"{rico_text} was added with {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt"
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -54,7 +54,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Added {rico_text} with {creditor_weight_value} money credit and {debtor_weight_value} money debt"
+    x_str = f"{rico_text} was added with {creditor_weight_value} money credit and {debtor_weight_value} money debt"
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 

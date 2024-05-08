@@ -14,7 +14,7 @@ def test_time_get_time_min_from_dt_ReturnsCorrectObj():
     assert kia_agenda.get_time_min_from_dt(dt=datetime(1200, 1, 1, 0, 0)) == 631139040
 
 
-def test_get_time_400YearPattern_from_min_ReturnsCorrectObj():
+def test_get_time_400YearCycle_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop("Kia")
     kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_c400_from_min(min=0)[0] == 0
@@ -173,12 +173,12 @@ def test_get_time_():
 #     assert weekday.get_kid("Saturday"] != None
 
 
-# def test_time_hreg_set_CorrectlyCreates400YearPatternCount():
+# def test_time_hreg_set_CorrectlyCreates400YearCycleCount():
 #     x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
 #     x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
-#     timetech_label = "400 year pattern"
+#     timetech_label = "400 year cycle"
 #     timetech_road = x_agenda.make_l1_road("hreg,{timetech_label}"
 #     print(f"{timetech_road=}")
 #     timetech = x_agenda.get_idea_obj(timetech_road)
@@ -187,12 +187,12 @@ def test_get_time_():
 #     assert timetech._close == c400_count
 
 
-# def test_time_hreg_set_CorrectlyCreates400YearPatternYears():
+# def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
 #     h_x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
 #     h_x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
-#     hy400_label = "pattern400year_years"
+#     hy400_label = "cycle400year_years"
 #     hy400_road = x_agenda.make_l1_road("hreg,{hy400_label}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_x_agenda.get_idea_obj(hy400_road)
@@ -265,12 +265,12 @@ def test_get_time_():
 #     assert hy400c3c196ry_idea.divisor == 4
 
 
-# def test_time_hreg_set_CorrectlyCreates400YearPatternYears():
+# def test_time_hreg_set_CorrectlyCreates400YearCycleYears():
 #     h_x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
 #     h_x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
-#     hy400_label = "pattern400year_days"
+#     hy400_label = "cycle400year_days"
 #     hy400_road = x_agenda.make_l1_road("hreg,{hy400_label}"
 #     print(f"{hy400_road=}")
 #     hy400_idea = h_x_agenda.get_idea_obj(hy400_road)

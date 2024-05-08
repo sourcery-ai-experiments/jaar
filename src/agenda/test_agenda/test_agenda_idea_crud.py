@@ -1,4 +1,4 @@
-from src.agenda.healer import healerunit_shop
+from src.agenda.healer import healerhold_shop
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop, beliefunit_shop
@@ -508,17 +508,17 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda.edit_idea_attr(road=gig_road, range_source_road=end_road)
     assert sue_agenda._idearoot._kids[gig_text]._range_source_road == end_road
 
-    # _healerunit:
-    sue_agenda._idearoot._kids[gig_text]._healerunit = "fun3rol"
-    src_healerunit = sue_agenda._idearoot._kids[gig_text]._healerunit
-    assert src_healerunit == "fun3rol"
+    # _healerhold:
+    sue_agenda._idearoot._kids[gig_text]._healerhold = "fun3rol"
+    src_healerhold = sue_agenda._idearoot._kids[gig_text]._healerhold
+    assert src_healerhold == "fun3rol"
     sue_text = "Sue"
     yao_text = "Yao"
-    x_healerunit = healerunit_shop({sue_text, yao_text})
+    x_healerhold = healerhold_shop({sue_text, yao_text})
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(yao_text)
-    sue_agenda.edit_idea_attr(road=gig_road, healerunit=x_healerunit)
-    assert sue_agenda._idearoot._kids[gig_text]._healerunit == x_healerunit
+    sue_agenda.edit_idea_attr(road=gig_road, healerhold=x_healerhold)
+    assert sue_agenda._idearoot._kids[gig_text]._healerhold == x_healerhold
 
     # _problem_bool: bool
     sue_agenda._idearoot._kids[gig_text]._problem_bool = "fun3rol"
@@ -651,7 +651,7 @@ def test_AgendaUnit_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeT
     assert gig_idea3._addin == 0
 
 
-def test_AgendaUnit_edit_idea_attr_RaisesErrorWhen_healerunit_group_ids_DoNotExist():
+def test_AgendaUnit_edit_idea_attr_RaisesErrorWhen_healerhold_group_ids_DoNotExist():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     gig_text = "gig"
@@ -668,12 +668,12 @@ def test_AgendaUnit_edit_idea_attr_RaisesErrorWhen_healerunit_group_ids_DoNotExi
 
     # WHEN / THEN
     sue_text = "Sue"
-    x_healerunit = healerunit_shop({sue_text})
+    x_healerhold = healerhold_shop({sue_text})
     with pytest_raises(Exception) as excinfo:
-        yao_agenda.edit_idea_attr(road=gig_road, healerunit=x_healerunit)
+        yao_agenda.edit_idea_attr(road=gig_road, healerhold=x_healerhold)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit healerunit because group_id '{sue_text}' does not exist as group in Agenda"
+        == f"Idea cannot edit healerhold because group_id '{sue_text}' does not exist as group in Agenda"
     )
 
 

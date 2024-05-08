@@ -38,8 +38,6 @@ def test_PersonUnit_exists():
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
     assert x_person._gifts_dir is None
-    assert x_person._cycle_logs_dir is None
-    assert x_person._save_cycle_logs is None
     assert x_person._gut_obj is None
     assert x_person._gut_file_name is None
     assert x_person._gut_path is None
@@ -66,8 +64,6 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._econs_dir is None
     assert x_person._atoms_dir is None
     assert x_person._gifts_dir is None
-    assert x_person._cycle_logs_dir is None
-    assert x_person._save_cycle_logs is None
 
     # GIVEN
     yao_text = "Yao"
@@ -86,8 +82,6 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
     assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
     assert x_person._gifts_dir == f"{x_person.person_dir}/gifts"
-    assert x_person._cycle_logs_dir == f"{x_person.person_dir}/cycle_logs"
-    assert x_person._save_cycle_logs is None
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
@@ -109,7 +103,7 @@ def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimite
 def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    x_worlds_dir = f"{get_test_worlds_dir()}/worlds1"
+    x_worlds_dir = "/worlds1"
     x_world_id = "froopiland"
 
     # WHEN
@@ -131,8 +125,6 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
     assert sue_person._live_file_name == f"{get_live_file_name()}.json"
     sue_live_file_path = f"{sue_person.person_dir}/{sue_person._live_file_name}"
     assert sue_person._live_path == sue_live_file_path
-    assert sue_person._cycle_logs_dir != None
-    assert sue_person._save_cycle_logs == False
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
     assert sue_person._planck == default_planck_if_none()
@@ -197,7 +189,7 @@ def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup)
     assert sue_person.gut_file_exists()
 
 
-def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
@@ -220,7 +212,7 @@ def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     assert sue_person.gut_file_exists() == False
 
     # WHEN
-    sue_person.save_gut_file(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
 
     # THEN
     assert sue_person.gut_file_exists()
@@ -235,7 +227,7 @@ def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    sue_person.save_gut_file(sue2_agenda)
+    sue_person._save_gut_file(sue2_agenda)
 
     # THEN
     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
@@ -244,7 +236,7 @@ def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     assert gut_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnitsave_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
+def test_PersonUnit_save_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -254,7 +246,7 @@ def test_PersonUnitsave_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_gut_file(agendaunit_shop(yao_text))
+        sue_person._save_gut_file(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s gut agenda."
@@ -268,7 +260,7 @@ def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanu
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_gut_file(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
     assert sue_person._gut_obj is None
 
     # WHEN
@@ -303,7 +295,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlySavesFile(
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_gut_file(sue_agenda)
+    sue_person._save_gut_file(sue_agenda)
     gut_agenda = sue_person.get_gut_file_agenda()
     assert gut_agenda.get_party(bob_text)
 
@@ -374,7 +366,7 @@ def test_PersonUnit_live_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     assert sue_person.live_file_exists()
 
 
-def test_PersonUnitsave_live_file_CorrectlySavesFile(
+def test_PersonUnit_save_live_file_CorrectlySavesFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -388,7 +380,7 @@ def test_PersonUnitsave_live_file_CorrectlySavesFile(
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_live_file(sue_agenda)
+    sue_person._save_live_file(sue_agenda)
 
     # THEN
     assert sue_person.live_file_exists()
@@ -406,7 +398,7 @@ def test_PersonUnitsave_live_file_CorrectlySavesFile(
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    sue_person.save_live_file(sue2_agenda)
+    sue_person._save_live_file(sue2_agenda)
 
     # THEN
     live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
@@ -415,7 +407,7 @@ def test_PersonUnitsave_live_file_CorrectlySavesFile(
     assert live_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnitsave_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
+def test_PersonUnit_save_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -425,7 +417,7 @@ def test_PersonUnitsave_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_live_file(agendaunit_shop(yao_text))
+        sue_person._save_live_file(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live agenda."
@@ -441,7 +433,7 @@ def test_PersonUnit_load_live_file_CorrectlyLoads_live_obj(
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_live_file(sue_agenda)
+    sue_person._save_live_file(sue_agenda)
     assert sue_person._live_obj is None
 
     # WHEN
@@ -476,7 +468,7 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlySavesFile(
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_live_file(sue_agenda)
+    sue_person._save_live_file(sue_agenda)
     live_agenda = sue_person.get_live_file_agenda()
     assert live_agenda.get_party(bob_text)
 

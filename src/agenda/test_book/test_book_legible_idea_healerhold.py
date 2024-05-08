@@ -3,10 +3,10 @@ from src.agenda.book import bookunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_idea_suffgroup_INSERT():
+def test_create_legible_list_ReturnsObj_idea_healerhold_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_suffgroup"
+    category = "agenda_idea_healerhold"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -23,15 +23,15 @@ def test_create_legible_list_ReturnsObj_idea_suffgroup_INSERT():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Suffgroup '{group_id_value}' created for idea '{road_value}'."
+    x_str = f"Healerhold '{group_id_value}' created for idea '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_idea_suffgroup_DELETE():
+def test_create_legible_list_ReturnsObj_idea_healerhold_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_suffgroup"
+    category = "agenda_idea_healerhold"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -48,6 +48,6 @@ def test_create_legible_list_ReturnsObj_idea_suffgroup_DELETE():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Suffgroup '{group_id_value}' deleted for idea '{road_value}'."
+    x_str = f"Healerhold '{group_id_value}' deleted for idea '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

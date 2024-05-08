@@ -51,6 +51,8 @@ def save_file_to_roles(x_econ_dir: str, x_agenda: AgendaUnit):
 
 
 def save_file_to_jobs(x_econ_dir: str, x_agenda: AgendaUnit):
+    # print(f"save file...{x_agenda._owner_id=}")
+    # print(f"save file...{x_agenda.get_json()=}")
     save_file(
         dest_dir=get_econ_jobs_dir(x_econ_dir),
         file_name=get_owner_file_name(x_agenda._owner_id),
@@ -148,7 +150,5 @@ def clerkunit_shop(
         x_clerk._set_role()
         x_clerk._set_roll()
         x_clerk._set_empty_job()
-        if x_clerk._role._party_debtor_pool != None:
-            x_clerk._listen_to_roll()
         save_file_to_jobs(x_clerk._econ_dir, x_clerk._job)
     return x_clerk

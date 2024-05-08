@@ -25,7 +25,7 @@ def test_atom_config_HasCorrect_category():
         "agenda_idea_reasonunit",
         "agenda_idea_reason_premiseunit",
         "agenda_idea_suffgroup",
-        "agenda_idea_healerunit",
+        "agenda_idea_healerhold",
         "agenda_idea_beliefunit",
         "calendar",
         "river_block",
@@ -103,7 +103,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     # set_mog("agenda_ideaunit", atom_insert(), mog, 3)
     # set_mog("agenda_idea_balancelink", atom_insert(), mog, 4)
     # set_mog("agenda_idea_suffgroup", atom_insert(), mog, 5)
-    # set_mog("agenda_idea_healerunit", atom_insert(), mog, 6)
+    # set_mog("agenda_idea_healerhold", atom_insert(), mog, 6)
     # set_mog("agenda_idea_beliefunit", atom_insert(), mog, 7)
     # set_mog("agenda_idea_reasonunit", atom_insert(), mog, 8)
     # set_mog("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
@@ -119,7 +119,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     # set_mog("agenda_idea_reasonunit", atom_delete(), mog, 19)
     # set_mog("agenda_idea_beliefunit", atom_delete(), mog, 20)
     # set_mog("agenda_idea_suffgroup", atom_delete(), mog, 21)
-    # set_mog("agenda_idea_healerunit", atom_delete(), mog, 22)
+    # set_mog("agenda_idea_healerhold", atom_delete(), mog, 22)
     # set_mog("agenda_idea_balancelink", atom_delete(), mog, 23)
     # set_mog("agenda_ideaunit", atom_delete(), mog, 24)
     # set_mog("agenda_group_partylink", atom_delete(), mog, 25)
@@ -133,7 +133,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     assert 3 == get_atom_order("agenda_ideaunit", atom_insert(), mog, 3)
     assert 4 == get_atom_order("agenda_idea_balancelink", atom_insert(), mog, 4)
     assert 5 == get_atom_order("agenda_idea_suffgroup", atom_insert(), mog, 5)
-    assert 6 == get_atom_order("agenda_idea_healerunit", atom_insert(), mog, 6)
+    assert 6 == get_atom_order("agenda_idea_healerhold", atom_insert(), mog, 6)
     assert 7 == get_atom_order("agenda_idea_beliefunit", atom_insert(), mog, 7)
     assert 8 == get_atom_order("agenda_idea_reasonunit", atom_insert(), mog, 8)
     assert 9 == get_atom_order("agenda_idea_reason_premiseunit", atom_insert(), mog, 9)
@@ -153,7 +153,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasBookOrderGroup():
     assert 19 == get_atom_order("agenda_idea_reasonunit", atom_delete(), mog, 19)
     assert 20 == get_atom_order("agenda_idea_beliefunit", atom_delete(), mog, 20)
     assert 21 == get_atom_order("agenda_idea_suffgroup", atom_delete(), mog, 21)
-    assert 22 == get_atom_order("agenda_idea_healerunit", atom_delete(), mog, 22)
+    assert 22 == get_atom_order("agenda_idea_healerhold", atom_delete(), mog, 22)
     assert 23 == get_atom_order("agenda_idea_balancelink", atom_delete(), mog, 23)
     assert 24 == get_atom_order("agenda_ideaunit", atom_delete(), mog, 24)
     assert 25 == get_atom_order("agenda_group_partylink", atom_delete(), mog, 25)

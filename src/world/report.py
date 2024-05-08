@@ -1,5 +1,5 @@
 from src.agenda.agenda import get_from_json as agenda_get_from_json
-from src.agenda.report_agenda import (
+from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
 )

@@ -2,7 +2,7 @@ from json import loads as json_loads, dumps as json_dumps
 from copy import deepcopy as copy_deepcopy
 
 
-def get_empty_dict_if_none(x_dict: dict = None) -> dict:
+def get_empty_dict_if_none(x_dict: dict) -> dict:
     return {} if x_dict is None else x_dict
 
 

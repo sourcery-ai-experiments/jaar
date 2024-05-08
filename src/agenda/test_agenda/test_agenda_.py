@@ -13,10 +13,11 @@ from pytest import raises as pytest_raises
 
 
 def test_AgendaUnit_Exists():
-    # GIVEN / WHEN
+    # GIVEN
+
+    # WHEN
     x_agenda = AgendaUnit()
 
-    # THEN
     assert x_agenda
     assert x_agenda._world_id is None
     assert x_agenda._owner_id is None
@@ -36,12 +37,12 @@ def test_AgendaUnit_Exists():
 
     assert x_agenda._idea_dict is None
     assert x_agenda._econ_dict is None
-    assert x_agenda._leaders_dict is None
+    assert x_agenda._healers_dict is None
     assert x_agenda._tree_traverse_count is None
     assert x_agenda._rational is None
     assert x_agenda._econs_justified is None
     assert x_agenda._econs_buildable is None
-    assert x_agenda._sum_healerunit_importance is None
+    assert x_agenda._sum_healerhold_importance is None
     assert str(type(x_agenda._idearoot)).find("None") == 8
 
 
@@ -80,12 +81,12 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
 
     assert x_agenda._idea_dict == {}
     assert x_agenda._econ_dict == {}
-    assert x_agenda._leaders_dict == {}
+    assert x_agenda._healers_dict == {}
     assert x_agenda._tree_traverse_count is None
     assert x_agenda._rational == False
     assert x_agenda._econs_justified == False
     assert x_agenda._econs_buildable == False
-    assert x_agenda._sum_healerunit_importance == False
+    assert x_agenda._sum_healerhold_importance == False
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 

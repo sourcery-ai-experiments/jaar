@@ -6,7 +6,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.report_agenda import (
+from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
 )

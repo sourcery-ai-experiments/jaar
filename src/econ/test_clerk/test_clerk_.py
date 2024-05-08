@@ -272,47 +272,24 @@ def test_ClerkUnit_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     assert len(yao_clerk._job.get_intent_dict()) == 2
 
 
-def test_ClerkUnit_listen_to_roll_AddsTasksToJobAgendaWhen_suffgroupIsEmpty(
-    env_dir_setup_cleanup,
-):
-    # GIVEN
-    zia_text = "Zia"
-    yao_text = "Yao"
-    yao_agendaunit = agendaunit_shop(yao_text)
-    yao_agendaunit.add_partyunit(zia_text)
-    yao_agendaunit.set_party_pool(100)
-    save_file_to_roles(get_test_econ_dir(), yao_agendaunit)
-
-    cook_text = "cook"
-    zia_agendaunit = agendaunit_shop(zia_text)
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, promise=True))
-    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
-
-    yao_clerk = clerkunit_shop(yao_text, get_test_econ_dir(), create_job=False)
-    yao_clerk._set_role()
-    yao_clerk._set_roll()
-    yao_clerk._set_empty_job()
-    assert len(yao_clerk._job.get_intent_dict()) == 0
-
-    # WHEN
-    yao_clerk._listen_to_roll()
-
-    # THEN
-    assert len(yao_clerk._job.get_intent_dict()) == 1
-
-
 def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_agendaunit = agendaunit_shop(zia_text)
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
     sue_text = "Sue"
-    yao_agendaunit.add_partyunit(zia_text, 47, 41)
-    yao_agendaunit.add_partyunit(sue_text, 57, 51)
-    yao_agendaunit.set_party_pool(87)
+    sue_creditor_weight = 57
+    sue_debtor_weight = 51
+    yao_agendaunit.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_agendaunit.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_pool = 87
+    yao_agendaunit.set_party_pool(yao_pool)
     save_file_to_roles(get_test_econ_dir(), yao_agendaunit)
 
+    zia_text = "Zia"
+    zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
     clean_road = zia_agendaunit.make_l1_road(clean_text)

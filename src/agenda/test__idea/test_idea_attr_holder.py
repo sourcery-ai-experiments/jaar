@@ -1,4 +1,4 @@
-from src.agenda.healer import healerunit_shop
+from src.agenda.healer import healerhold_shop
 from src.agenda.idea import IdeaAttrFilter, ideaattrfilter_shop
 from pytest import raises as pytest_raise
 
@@ -17,7 +17,7 @@ def test_IdeaAttrFilter_Exists():
     assert new_obj.reason_del_premise_need is None
     assert new_obj.reason_suff_idea_active is None
     assert new_obj.assignedunit is None
-    assert new_obj.healerunit is None
+    assert new_obj.healerhold is None
     assert new_obj.begin is None
     assert new_obj.close is None
     assert new_obj.addin is None
@@ -63,10 +63,10 @@ def test_IdeaAttrFilter_CorrectlyCalculatesPremiseRanges():
 
 def test_ideaattrfilter_shop_ReturnsCorrectObj():
     # Given
-    sue_healerunit = healerunit_shop({"Sue", "Yim"})
+    sue_healerhold = healerhold_shop({"Sue", "Yim"})
 
     # WHEN
-    x_ideaattrfilter = ideaattrfilter_shop(healerunit=sue_healerunit)
+    x_ideaattrfilter = ideaattrfilter_shop(healerhold=sue_healerhold)
 
     # THEN
-    assert x_ideaattrfilter.healerunit == sue_healerunit
+    assert x_ideaattrfilter.healerhold == sue_healerhold

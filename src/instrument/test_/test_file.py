@@ -16,7 +16,6 @@ from src.agenda.examples.agenda_env import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from os import environ as os_environ
 
 
 def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
@@ -262,12 +261,8 @@ def test_is_path_valid_ReturnsCorrectObj():
     assert is_path_valid("run")
     assert is_path_valid("run/trail")
     assert is_path_valid("run/,trail")
-    assert (
-        is_path_valid("trail?") == False and os_environ.get("OS") == "Windows_NT"
-    ) or os_environ.get("OS") != "Windows_NT"
-    assert (
-        is_path_valid("run/trail?") == False and os_environ.get("OS") == "Windows_NT"
-    ) or os_environ.get("OS") != "Windows_NT"
+    assert is_path_valid("trail?") == False
+    assert is_path_valid("run/trail?") == False
     assert is_path_valid("run//trail////")
 
 
@@ -281,10 +276,7 @@ def test_is_path_existent_or_creatable_ReturnsCorrectObj():
     # GIVE / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_existent_or_creatable("run")
-    assert (
-        is_path_existent_or_creatable("run/trail?") == False
-        and os_environ.get("OS") == "Windows_NT"
-    ) or os_environ.get("OS") != "Windows_NT"
+    assert is_path_existent_or_creatable("run/trail?") == False
     assert is_path_existent_or_creatable("run///trail")
 
 

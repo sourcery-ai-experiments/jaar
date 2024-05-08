@@ -12,7 +12,6 @@ from src.world.examples.example_gifts import (
     sue_2atomunits_giftunit,
     sue_3atomunits_giftunit,
     sue_4atomunits_giftunit,
-    sue_carm_party_giftunit,
 )
 from src.world.person import personunit_shop
 from src.world.examples.world_env_kit import (
@@ -457,7 +456,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     assert valid_giftunit._gift_id != prev_sue2_giftunit._gift_id
 
 
-def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_NoChange(
+def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_NoChange(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -467,13 +466,13 @@ def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_NoChange(
     gut_agenda._last_gift_id is None
 
     # WHEN
-    new_agenda = sue_person._apply_new_giftunits_agenda(gut_agenda)
+    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
 
     # THEN
     assert new_agenda == gut_agenda
 
 
-def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
+def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_1atom(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -491,14 +490,14 @@ def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_WithSingleGiftChanges_
     assert gut_agenda.idea_exists(sports_road) == False
 
     # WHEN
-    new_agenda = sue_person._apply_new_giftunits_agenda(gut_agenda)
+    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
 
     # THEN
     assert new_agenda != gut_agenda
     assert new_agenda.idea_exists(sports_road)
 
 
-def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
+def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_2atoms(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -517,7 +516,7 @@ def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_WithSingleGiftChanges_
     assert gut_agenda.idea_exists(knee_road) == False
 
     # WHEN
-    new_agenda = sue_person._apply_new_giftunits_agenda(gut_agenda)
+    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
 
     # THEN
     assert new_agenda != gut_agenda
@@ -525,117 +524,169 @@ def test_PersonUnit_apply_new_giftunits_agenda_ReturnsObj_WithSingleGiftChanges_
     assert new_agenda.idea_exists(knee_road)
 
 
-def test_PersonUnit_update_gut_from_gifts_DoesNotChangeGut(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(sue_text)
-    old_gut_agenda = sue_person.get_gut_file_agenda()
-
-    # WHEN
-    sue_person.update_gut_from_gifts()
-
-    # THEN
-    new_gut_agenda = sue_person.get_gut_file_agenda()
-    assert new_gut_agenda == old_gut_agenda
-    assert new_gut_agenda._last_gift_id is None
+# def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
+#     worlds_dir_setup_cleanup,
+# ):
+#     assert 1 == 2
 
 
-def test_PersonUnit_update_gut_from_gifts_ChangesWith1GiftUnit(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(sue_text)
-    sue_person.save_giftunit_file(sue_2atomunits_giftunit())
-    # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
-    # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._world_id=}")
-    sports_text = "sports"
-    sports_road = gut_agenda.make_l1_road(sports_text)
-    knee_text = "knee"
-    knee_road = gut_agenda.make_road(sports_road, knee_text)
-    old_gut_agenda = sue_person.get_gut_file_agenda()
+# def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     one_int = 1
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json") == False
 
-    # WHEN
-    sue_person.update_gut_from_gifts()
+#     # WHEN
+#     atom_num = yao_person._save_valid_atom_file(
+#         get_atom_example_beliefunit_knee(), one_int
+#     )
 
-    # THEN
-    new_gut_file = sue_person.get_gut_file_agenda()
-    assert new_gut_file != old_gut_agenda
-    assert new_gut_file._last_gift_id == 0
-    assert new_gut_file.idea_exists(knee_road)
-    assert new_gut_file.idea_exists(sports_road)
+#     # THEN
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json")
+#     assert atom_num == one_int
 
 
-def test_PersonUnit_update_gut_from_gifts_ChangesWith2GiftUnit(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(sue_text)
-    sue_person.save_giftunit_file(sue_carm_party_giftunit())
-    sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._world_id=}")
-    sports_text = "sports"
-    sports_road = gut_agenda.make_l1_road(sports_text)
-    knee_text = "knee"
-    knee_road = gut_agenda.make_road(sports_road, knee_text)
-    carm_text = "Carmen"
-    old_gut_agenda = sue_person.get_gut_file_agenda()
-    assert old_gut_agenda._last_gift_id is None
-    assert old_gut_agenda.idea_exists(knee_road) == False
-    assert old_gut_agenda.idea_exists(sports_road) == False
-    assert old_gut_agenda.get_party(carm_text) is None
-    assert old_gut_agenda._party_creditor_pool is None
-    # print(f"{dir_files(sue_person._gifts_dir).keys()=}")
+# def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     five_int = 5
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json") == False
+#     assert yao_person.atom_file_exists(five_int) == False
 
-    # WHEN
-    sue_person.update_gut_from_gifts()
+#     # WHEN
+#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), five_int)
 
-    # THEN
-    new_gut_agenda = sue_person.get_gut_file_agenda()
-    assert new_gut_agenda != old_gut_agenda
-    assert new_gut_agenda._last_gift_id == 1
-    assert new_gut_agenda.idea_exists(knee_road)
-    assert new_gut_agenda.idea_exists(sports_road)
-    assert new_gut_agenda.get_party(carm_text) != None
-    assert new_gut_agenda._party_creditor_pool == 77
+#     # THEN
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json")
+#     assert yao_person.atom_file_exists(five_int)
 
 
-def test_PersonUnit_update_gut_from_gifts_2GiftUnitsWithOneAlreadyApplied(
-    worlds_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(sue_text)
-    first_gut_agenda = sue_person.get_gut_file_agenda()
-    sports_text = "sports"
-    sports_road = first_gut_agenda.make_l1_road(sports_text)
-    knee_text = "knee"
-    knee_road = first_gut_agenda.make_road(sports_road, knee_text)
-    carm_text = "Carmen"
-    assert first_gut_agenda._last_gift_id is None
-    assert first_gut_agenda.idea_exists(knee_road) == False
-    assert first_gut_agenda.idea_exists(sports_road) == False
-    assert first_gut_agenda.get_party(carm_text) is None
-    assert first_gut_agenda._party_creditor_pool is None
+# def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     ten_int = 10
+#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
 
-    # WHEN
-    sue_person.save_giftunit_file(sue_carm_party_giftunit())
-    sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    first_gut_agenda.set_last_gift_id(0)
-    sue_person._save_gut_file(first_gut_agenda)
-    sue_person.update_gut_from_gifts()
+#     # WHEN
+#     yao_person._delete_atom_file(ten_int)
 
-    # THEN
-    second_gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{first_gut_agenda._world_id=}")
-    assert second_gut_agenda._last_gift_id == 1
-    assert second_gut_agenda.idea_exists(knee_road)
-    assert second_gut_agenda.idea_exists(sports_road)
-    assert second_gut_agenda.get_party(carm_text) is None
-    assert second_gut_agenda._party_creditor_pool is None
+#     # THEN
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json") == False
+
+
+# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     ten_int = 10
+#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
+
+#     # WHEN / THEN
+#     assert yao_person._get_max_atom_file_number() == ten_int
+
+
+# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+
+#     # WHEN / THEN
+#     assert yao_person._get_max_atom_file_number() == 0
+
+
+# def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     ten_int = 10
+#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
+
+#     # WHEN / THEN
+#     assert yao_person._get_next_atom_file_number() == "11.json"
+
+
+# def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+#     # GIVEN
+#     yao_person = personunit_shop("Yao")
+#     ten_int = 10
+#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
+#     assert yao_person._get_max_atom_file_number() == ten_int
+#     eleven_int = ten_int + 1
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
+
+#     # WHEN
+#     atom_num1 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+
+#     # THEN
+#     assert yao_person._get_max_atom_file_number() != ten_int
+#     assert yao_person._get_max_atom_file_number() == eleven_int
+#     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
+#     assert atom_num1 == eleven_int
+#     atom_num2 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+#     assert atom_num2 == 12
+
+
+# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     yao_text = "Yao"
+#     yao_person = personunit_shop(yao_text)
+
+#     # WHEN
+#     yao_agenda = yao_person._get_agenda_from_atom_files()
+
+#     # THEN
+#     assert yao_agenda._owner_id == yao_text
+#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
+#     assert yao_agenda._planck == yao_person._planck
+
+
+# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     yao_text = "Yao"
+#     yao_person = personunit_shop(yao_text)
+#     # save atom files
+#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
+
+#     # WHEN
+#     yao_agenda = yao_person._get_agenda_from_atom_files()
+
+#     # THEN
+#     assert yao_agenda._owner_id == yao_text
+#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
+#     sports_text = "sports"
+#     sports_road = yao_agenda.make_l1_road(sports_text)
+
+#     assert yao_agenda.idea_exists(sports_road)
+
+
+# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
+#     worlds_dir_setup_cleanup,
+# ):
+#     # GIVEN
+#     yao_text = "Yao"
+#     yao_person = personunit_shop(yao_text)
+#     # save atom files
+#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.world_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.world_id))
+#     yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.world_id))
+
+#     # WHEN
+#     yao_agenda = yao_person._get_agenda_from_atom_files()
+
+#     # THEN
+#     assert yao_agenda._owner_id == yao_text
+#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
+#     sports_text = "sports"
+#     sports_road = yao_agenda.make_l1_road(sports_text)
+
+#     assert yao_agenda.idea_exists(sports_road)

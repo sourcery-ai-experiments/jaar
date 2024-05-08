@@ -41,7 +41,6 @@ from src.instrument.file import (
 )
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
-from copy import deepcopy as copy_deepcopy
 
 
 class InvalidEconException(Exception):
@@ -92,8 +91,6 @@ class PersonUnit:
     _live_obj: AgendaUnit = None
     _live_file_name: str = None
     _live_path: str = None
-    _cycle_logs_dir: str = None
-    _save_cycle_logs: bool = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
@@ -110,7 +107,6 @@ class PersonUnit:
         self._econs_dir = f"{self.person_dir}/econs"
         self._atoms_dir = f"{self.person_dir}/atoms"
         self._gifts_dir = f"{self.person_dir}/gifts"
-        self._cycle_logs_dir = f"{self.person_dir}/cycle_logs"
         if self._gut_file_name is None:
             self._gut_file_name = f"{get_gut_file_name()}.json"
         if self._gut_path is None:
@@ -132,7 +128,7 @@ class PersonUnit:
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
-            self.save_gut_file(
+            self._save_gut_file(
                 agendaunit_shop(
                     _owner_id=self.person_id,
                     _world_id=self.world_id,
@@ -142,7 +138,7 @@ class PersonUnit:
 
     def create_live_file_if_does_not_exist(self):
         if self.live_file_exists() == False:
-            self.save_live_file(
+            self._save_live_file(
                 agendaunit_shop(
                     _owner_id=self.person_id,
                     _world_id=self.world_id,
@@ -156,7 +152,7 @@ class PersonUnit:
     def live_file_exists(self) -> bool:
         return os_path_exists(self._live_path)
 
-    def save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
+    def _save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
             raise Invalid_gut_Exception(
                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s gut agenda."
@@ -169,7 +165,7 @@ class PersonUnit:
                 replace=replace,
             )
 
-    def save_live_file(self, x_agenda: AgendaUnit, replace: bool = True):
+    def _save_live_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
             raise Invalid_live_Exception(
                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s live agenda."
@@ -272,25 +268,23 @@ class PersonUnit:
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
 
-    def _get_gift_files(self) -> dict[int:str]:
-        return dir_files(self._gifts_dir, delete_extensions=True)
-
-    def _apply_new_giftunits_agenda(self, x_gut_agenda: AgendaUnit) -> AgendaUnit:
-        gut_agenda_last_gift_id = copy_deepcopy(x_gut_agenda._last_gift_id)
-        gift_filenames = self._get_gift_files().keys()
-        gift_ints = [int(x_filename) for x_filename in gift_filenames]
-        gift_ints.sort()
+    def _get_agenda_from_gift_files(self, x_agenda: AgendaUnit) -> AgendaUnit:
+        # get list of all gift files
+        gift_ints = dir_files(self._gifts_dir, delete_extensions=True).keys()
         for gift_int in gift_ints:
-            if gut_agenda_last_gift_id is None or gift_int > gut_agenda_last_gift_id:
-                x_gift = self.get_giftunit(gift_int)
-                x_gut_agenda = x_gift._bookunit.get_edited_agenda(x_gut_agenda)
-                x_gut_agenda.set_last_gift_id(gift_int)
-        return x_gut_agenda
+            x_gift = self.get_giftunit(gift_int)
+            x_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+        return x_agenda
 
-    def update_gut_from_gifts(self):
-        gut_agenda = self.get_gut_file_agenda()
-        new_gut_agenda = self._apply_new_giftunits_agenda(gut_agenda)
-        self._save_gut_file(new_gut_agenda)
+    def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
+        save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
+        return file_number
+
+    def atom_file_exists(self, filename: int) -> bool:
+        return os_path_exists(f"{self._atoms_dir}/{filename}.json")
+
+    def _delete_atom_file(self, filename: int):
+        delete_dir(f"{self._atoms_dir}/{filename}.json")
 
     def _get_max_atom_file_number(self) -> int:
         if not os_path_exists(self._atoms_dir):
@@ -304,6 +298,18 @@ class PersonUnit:
     def _get_next_atom_file_number(self) -> str:
         max_file_number = self._get_max_atom_file_number()
         return 0 if max_file_number is None else max_file_number + 1
+
+    def save_atom_file(self, x_atom: AgendaAtom):
+        x_filename = self._get_next_atom_file_number()
+        return self._save_valid_atom_file(x_atom, x_filename)
+
+    def _get_agenda_from_atom_files(self) -> AgendaUnit:
+        x_agenda = agendaunit_shop(_owner_id=self.person_id, _world_id=self.world_id)
+        x_atom_files = dir_files(self._atoms_dir, delete_extensions=True)
+        for x_int, x_json in x_atom_files.items():
+            x_atom = agendaatom_get_from_json(x_json)
+            change_agenda_with_agendaatom(x_agenda, x_atom)
+        return x_agenda
 
     def get_rootpart_of_econ_dir(self):
         return "idearoot"
@@ -343,7 +349,7 @@ class PersonUnit:
                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_buildable' is False."
             )
 
-        x_person_econs = x_gut_agenda._leaders_dict.get(self.person_id)
+        x_person_econs = x_gut_agenda._healers_dict.get(self.person_id)
         x_person_econs = get_empty_dict_if_none(x_person_econs)
         self._econ_objs = {}
         for econ_idea in x_person_econs.values():
@@ -391,8 +397,15 @@ def personunit_shop(
         _econ_objs=get_empty_dict_if_none(_econ_objs),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
-        _save_cycle_logs=False,
     )
     x_personunit.set_person_id(person_id)
     x_personunit.create_core_dir_and_files()
     return x_personunit
+
+
+def get_from_json(x_person_json: str) -> PersonUnit:
+    return None
+
+
+def get_from_dict(person_dict: dict) -> PersonUnit:
+    return None
