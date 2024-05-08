@@ -103,7 +103,7 @@ def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimite
 def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    x_worlds_dir = "/worlds1"
+    x_worlds_dir = get_test_worlds_dir()
     x_world_id = "froopiland"
 
     # WHEN
