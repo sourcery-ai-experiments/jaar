@@ -7,7 +7,7 @@ from src.agenda.agenda import (
     partyunit_shop,
     get_from_json as agendaunit_get_from_json,
 )
-from src.agenda.listen import listen_to_jefe
+from src.agenda.listen import listen_to_listenee
 from src.instrument.file import (
     set_dir,
     save_file,
@@ -129,11 +129,13 @@ class ClerkUnit:
             job_file_path = f"{self._jobs_dir}/{get_owner_file_name(party_id)}"
 
             if os_path_exists(job_file_path) and party_id != self._role._owner_id:
-                jefe_agenda = get_file_in_jobs(self._econ_dir, x_partyunit.party_id)
-                listen_to_jefe(self._job, jefe_agenda)
+                listenee_agenda = get_file_in_jobs(self._econ_dir, x_partyunit.party_id)
+                listen_to_listenee(self._job, listenee_agenda)
             elif os_path_exists(role_file_path) and party_id == self._role._owner_id:
-                jefe_agenda = get_file_in_roles(self._econ_dir, x_partyunit.party_id)
-                listen_to_jefe(self._job, jefe_agenda)
+                listenee_agenda = get_file_in_roles(
+                    self._econ_dir, x_partyunit.party_id
+                )
+                listen_to_listenee(self._job, listenee_agenda)
 
 
 def clerkunit_shop(
