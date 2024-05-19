@@ -10,6 +10,7 @@ from src._road.road import (
     change_road,
     create_road_from_nodes,
 )
+from src.agenda.group import GroupID
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -20,6 +21,7 @@ from src.agenda.atom import (
     get_from_json as agendaatom_get_from_json,
     change_agenda_with_agendaatom,
 )
+from src.agenda.promise import create_promise
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.world.gift import (
     GiftUnit,
@@ -164,6 +166,11 @@ class PersonUnit:
                 file_text=x_agenda.get_json(),
                 replace=replace,
             )
+            print(f"saved gut {self.person_dir=} {self._gut_file_name=}")
+            clean_road = x_agenda.make_l1_road("clean")
+            if x_agenda.idea_exists(clean_road):
+                clean_idea = x_agenda.get_idea_obj(clean_road)
+                print(f"saved gut {clean_idea._assignedunit._suffgroups=}")
 
     def _save_live_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
@@ -180,6 +187,7 @@ class PersonUnit:
 
     def get_gut_file_agenda(self) -> AgendaUnit:
         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
+        print(f"open  gut {self.person_dir=} {self._gut_file_name=}")
         return agenda_get_from_json(gut_json)
 
     def get_live_file_agenda(self) -> AgendaUnit:
@@ -384,6 +392,17 @@ class PersonUnit:
 
     def set_person_econunits_role(self):
         self.set_econunits_role(self.get_gut_file_agenda())
+
+    def add_promise(self, promise_road: RoadUnit, x_suffgroup: GroupID = None):
+        gut_agenda = self.get_gut_file_agenda()
+        create_promise(gut_agenda, promise_road, x_suffgroup)
+        self.save_gut_file(gut_agenda)
+
+        clean_road = gut_agenda.make_l1_road("clean")
+        saved_gut = self.get_gut_file_agenda()
+        if saved_gut.idea_exists(clean_road):
+            clean_idea = saved_gut.get_idea_obj(clean_road)
+            print(f"open  gut {clean_idea._assignedunit._suffgroups=}")
 
 
 def personunit_shop(

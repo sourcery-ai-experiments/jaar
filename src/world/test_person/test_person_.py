@@ -539,3 +539,43 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person._gifts_dir)
     assert os_path_exists(sue_person._gut_path)
     assert os_path_exists(sue_person._live_path)
+
+
+def test_PersonUnit_add_promise_SetsGutAgendaPromise(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    old_sue_gut = sue_person.get_gut_file_agenda()
+    clean_text = "clean"
+    clean_road = old_sue_gut.make_l1_road(clean_text)
+    assert old_sue_gut.idea_exists(clean_road) == False
+
+    # WHEN
+    sue_person.add_promise(clean_road)
+
+    # THEN
+    new_sue_gut = sue_person.get_gut_file_agenda()
+    assert new_sue_gut.idea_exists(clean_road)
+
+
+def test_PersonUnit_add_promise_SetsGutAgendaPromiseIdea_suffgroup(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    old_sue_gut = sue_person.get_gut_file_agenda()
+    clean_text = "clean"
+    clean_road = old_sue_gut.make_l1_road(clean_text)
+    assert old_sue_gut.idea_exists(clean_road) == False
+
+    # WHEN
+    bob_text = "Bob"
+    sue_person.add_promise(clean_road, x_suffgroup=bob_text)
+
+    # THEN
+    new_sue_gut = sue_person.get_gut_file_agenda()
+    assert new_sue_gut.idea_exists(clean_road)
+    clean_idea = new_sue_gut.get_idea_obj(clean_road)
+    print(f"{clean_idea._assignedunit._suffgroups=}")
+    assert clean_idea._assignedunit.suffgroup_exists(bob_text)

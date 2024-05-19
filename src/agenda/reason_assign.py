@@ -21,6 +21,9 @@ class AssignedUnit:
     def set_suffgroup(self, group_id: GroupID):
         self._suffgroups[group_id] = -1
 
+    def suffgroup_exists(self, group_id: GroupID):
+        return self._suffgroups.get(group_id) != None
+
     def del_suffgroup(self, group_id: GroupID):
         self._suffgroups.pop(group_id)
 

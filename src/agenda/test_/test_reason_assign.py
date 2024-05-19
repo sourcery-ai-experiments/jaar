@@ -85,6 +85,19 @@ def test_AssignedUnit_set_suffgroup_CorrectlySets_suffgroups_v1():
     assert len(assignedunit_x._suffgroups) == 1
 
 
+def test_AssignedUnit_suffgroup_exists_ReturnsCorrectObj():
+    # GIVEN
+    assignedunit_x = assignedunit_shop(_suffgroups={})
+    jim_text = "Jim"
+    assert assignedunit_x.suffgroup_exists(jim_text) == False
+
+    # WHEN
+    assignedunit_x.set_suffgroup(group_id=jim_text)
+
+    # THEN
+    assert assignedunit_x.suffgroup_exists(jim_text)
+
+
 def test_AssignedUnit_del_suffgroup_CorrectlyDeletes_suffgroups_v1():
     # GIVEN
     assignedunit_x = assignedunit_shop(_suffgroups={})
