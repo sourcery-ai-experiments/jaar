@@ -35,7 +35,7 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     x_econ._create_treasury_db()
     assert os_path.exists(x_econ.get_treasury_db_path())
 
-    # Given
+    # GIVEN
     x_file_text = "Texas Dallas ElPaso"
     db_file = treasury_db_filename()
     save_file(x_econ.econ_dir, file_name=db_file, file_text=x_file_text, replace=True)

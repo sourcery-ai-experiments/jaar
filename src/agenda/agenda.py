@@ -349,7 +349,7 @@ class AgendaUnit:
         to_evaluate_hx_dict = {}
         for road_x in roads:
             to_evaluate_list.append(road_x)
-            to_evaluate_hx_dict[road_x] = "given"
+            to_evaluate_hx_dict[road_x] = "to_evaluate"
         evaluated_roads = {}
 
         # tree_metrics = self.get_tree_metrics()

@@ -685,7 +685,7 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario7():
     techweek_road = sue_agenda.make_road(timetech_road, "week")
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
 
-    # WHEN given a minute range that should be Thursday to Monday midnight
+    # WHEN minute range that should be Thursday to Monday midnight
     sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063956960)
     lhu = sue_agenda._get_lemma_beliefunits()
 
@@ -726,7 +726,7 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
     techweek_road = sue_agenda.make_road(timetech_road, "week")
     jajatime_road = sue_agenda.make_road(time_road, "jajatime")
 
-    # WHEN given a minute range that should be Thursday to Monday midnight
+    # WHEN minute range that should be Thursday to Monday midnight
     sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063951200)
     lhu = sue_agenda._get_lemma_beliefunits()
 

@@ -133,7 +133,7 @@ def test_GiftUnit_save_gift_file_SavesCorrectFile(worlds_dir_setup_cleanup):
     print(f"{gift_file_dict=}")
     assert gift_file_dict.get("book_atom_numbers") == []
     assert gift_file_dict.get("gifter") == sue_text
-    assert gift_file_dict.get("giftees") == {}
+    assert gift_file_dict.get("takers") == {}
 
 
 def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
@@ -178,8 +178,8 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(worlds_dir_setup_cleanup):
         sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
     )
     farm_giftunit.set_book_start(farm_book_start)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
     four_int = 4
     five_int = 5
     four_atom = get_atom_example_ideaunit_sports()
@@ -248,8 +248,8 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(worlds_dir_setup_cleanup):
         sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
     )
     src_sue_giftunit.set_book_start(sue_book_start)
-    src_sue_giftunit.set_giftee(tim_text)
-    src_sue_giftunit.set_giftee(yao_text)
+    src_sue_giftunit.set_taker(tim_text)
+    src_sue_giftunit.set_taker(yao_text)
     sports_atom = get_atom_example_ideaunit_sports()
     knee_atom = get_atom_example_ideaunit_knee()
     ball_atom = get_atom_example_ideaunit_ball()
@@ -266,6 +266,6 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     )
 
     # THEN
-    assert src_sue_giftunit._gifter == new_sue_giftunit._gifter
-    assert src_sue_giftunit._giftees == new_sue_giftunit._giftees
+    assert src_sue_giftunit._giver == new_sue_giftunit._giver
+    assert src_sue_giftunit._takers == new_sue_giftunit._takers
     assert src_sue_giftunit._bookunit == new_sue_giftunit._bookunit

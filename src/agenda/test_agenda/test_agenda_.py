@@ -102,7 +102,7 @@ def test_AgendaUnit_shop_ReturnsCorrect_meld_strategy():
 
 
 def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
-    # GIVE/ WHEN
+    # GIVEN / WHEN
     x_agenda = agendaunit_shop()
 
     assert x_agenda._owner_id == ""

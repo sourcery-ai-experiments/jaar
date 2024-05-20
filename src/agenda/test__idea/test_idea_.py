@@ -268,7 +268,7 @@ def test_IdeaUnit_get_balancelinks_weight_sum_ReturnsCorrectObj_NoValues():
     sport_idea.set_balanceheirs_agenda_credit_debt()
 
 
-def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromOutside():
+def test_IdeaUnit_set_reasonheirsCorrectlySourcesFromOutside():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
@@ -289,7 +289,7 @@ def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromOutside():
     assert id(ball_idea._reasonheirs) != id(reasonheirs)
 
 
-def test_IdeaUnit_set_reasonheirsCorrectlyTakesFromSelf():
+def test_IdeaUnit_set_reasonheirsCorrectlySourcesFromSelf():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)

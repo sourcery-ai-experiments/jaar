@@ -224,9 +224,9 @@ class PersonUnit:
             raise SaveGiftFileException(
                 f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self._gifts_dir}."
             )
-        if x_gift._gifter != self.person_id:
+        if x_gift._giver != self.person_id:
             raise SaveGiftFileException(
-                f"GiftUnit file cannot be saved because giftunit._gifter is incorrect: {x_gift._gifter}. It must be {self.person_id}."
+                f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {self.person_id}."
             )
         gift_filename = giftunit_get_json_filename(x_gift._gift_id)
         if not replace and self.giftunit_file_exists(x_gift._gift_id):
@@ -238,7 +238,7 @@ class PersonUnit:
 
     def get_new_giftunit(self) -> GiftUnit:
         return giftunit_shop(
-            _gifter=self.person_id,
+            _giver=self.person_id,
             _gift_id=self.get_next_gift_file_number(),
             _atoms_dir=self._atoms_dir,
             _gifts_dir=self._gifts_dir,
@@ -251,8 +251,8 @@ class PersonUnit:
             x_giftunit._gifts_dir = self._gifts_dir
         if x_giftunit._gift_id != self.get_next_gift_file_number():
             x_giftunit._gift_id = self.get_next_gift_file_number()
-        if x_giftunit._gifter != self.person_id:
-            x_giftunit._gifter = self.person_id
+        if x_giftunit._giver != self.person_id:
+            x_giftunit._giver = self.person_id
         if x_giftunit._book_start != self._get_next_atom_file_number():
             x_giftunit._book_start = self._get_next_atom_file_number()
         return x_giftunit

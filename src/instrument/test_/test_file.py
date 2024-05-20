@@ -258,7 +258,7 @@ def test_get_directory_path_ReturnsCorrectObj():
 
 
 def test_is_path_valid_ReturnsCorrectObj():
-    # GIVE / WHEN / THEN
+    # GIVEN / WHEN / THEN
     assert is_path_valid("run")
     assert is_path_valid("run/trail")
     assert is_path_valid("run/,trail")
@@ -272,13 +272,13 @@ def test_is_path_valid_ReturnsCorrectObj():
 
 
 def test_can_current_user_edit_paths_ReturnsCorrectObj():
-    # GIVE / WHEN / THEN
+    # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert can_current_user_edit_paths()
 
 
 def test_is_path_existent_or_creatable_ReturnsCorrectObj():
-    # GIVE / WHEN / THEN
+    # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_existent_or_creatable("run")
     assert (
@@ -289,7 +289,7 @@ def test_is_path_existent_or_creatable_ReturnsCorrectObj():
 
 
 def test_is_path_probably_creatable_ReturnsCorrectObj():
-    # GIVE / WHEN / THEN
+    # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_probably_creatable("run")
     assert is_path_probably_creatable("run/trail?") == False
@@ -297,7 +297,7 @@ def test_is_path_probably_creatable_ReturnsCorrectObj():
 
 
 def test_is_path_existent_or_probably_creatable_ReturnsCorrectObj():
-    # GIVE / WHEN / THEN
+    # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_existent_or_probably_creatable("run")
     assert is_path_existent_or_probably_creatable("run/trail?") == False

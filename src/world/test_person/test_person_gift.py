@@ -38,7 +38,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
     print(f"{sue_gift0_path=}")
     x_gift_id = two_int
     sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -66,7 +66,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
     sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     print(f"{sue_gift0_path=}")
     sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person.person_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -91,7 +91,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
     sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     print(f"{sue_gift0_path=}")
     sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person.person_dir,
@@ -117,7 +117,7 @@ def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_clea
     sue_gift0_path = f"{sue_person._gifts_dir}/{six_filename}"
     print(f"{sue_gift2_path=}")
     sue_giftunit = giftunit_shop(
-        _gifter=sue_person.person_id,
+        _giver=sue_person.person_id,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -139,7 +139,7 @@ def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_clea
     assert two_file_json == sue_giftunit.get_bookmetric_json()
 
 
-def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifter_IsWrong(
+def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_giver_IsWrong(
     worlds_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -150,7 +150,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifter_IsWrong(
     print(f"{sue_gift0_path=}")
     bob_text = "Bob"
     sue_giftunit = giftunit_shop(
-        _gifter=bob_text,
+        _giver=bob_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -161,7 +161,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifter_IsWrong(
         sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
     assert (
         str(excinfo.value)
-        == f"GiftUnit file cannot be saved because giftunit._gifter is incorrect: {sue_giftunit._gifter}. It must be {sue_person.person_id}."
+        == f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {sue_giftunit._giver}. It must be {sue_person.person_id}."
     )
 
 
@@ -174,7 +174,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     x_gift_id = 0
     six_filename = get_json_filename(x_gift_id)
     sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -208,7 +208,7 @@ def test_PersonUnit_get_valid_giftunit_ReturnsObjWithAttributesFixed(
 
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
-        _gifter="Bob",
+        _giver="Bob",
         _gift_id=sue_person.get_next_gift_file_number() - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
@@ -220,7 +220,7 @@ def test_PersonUnit_get_valid_giftunit_ReturnsObjWithAttributesFixed(
     assert valid_giftunit._gifts_dir == sue_person._gifts_dir
     assert valid_giftunit._gift_id == sue_person.get_next_gift_file_number()
     correct_sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=sue_person.get_next_gift_file_number(),
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -242,7 +242,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
 
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
-        _gifter="Bob",
+        _giver="Bob",
         _gift_id=sue_person.get_next_gift_file_number() - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
@@ -268,13 +268,13 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
     # GIVEN
     six_int = 6
     sue6_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=six_int,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
     )
     sue2_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=2,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -298,10 +298,10 @@ def test_PersonUnit_get_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFil
     sue_giftunit = sue_person.get_new_giftunit()
 
     # THEN
-    assert sue_giftunit._gifter == sue_person.person_id
+    assert sue_giftunit._giver == sue_person.person_id
     assert sue_giftunit._gift_id == 0
     assert sue_giftunit._gift_id == sue_person.get_next_gift_file_number()
-    assert sue_giftunit._giftees == set()
+    assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
 
@@ -322,10 +322,10 @@ def test_PersonUnit_get_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftFiles
     sue_giftunit = sue_person.get_new_giftunit()
 
     # THEN
-    assert sue_giftunit._gifter == sue_person.person_id
+    assert sue_giftunit._giver == sue_person.person_id
     assert sue_giftunit._gift_id == 1
     assert sue_giftunit._gift_id == sue_person.get_next_gift_file_number()
-    assert sue_giftunit._giftees == set()
+    assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
 
@@ -338,11 +338,11 @@ def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
     sue_person = personunit_shop(sue_text)
     yao_text = "yao"
     x0_giftunit = sue_person.get_new_giftunit()
-    x0_giftunit.set_giftee(yao_text)
+    x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(x0_giftunit)
     bob_text = "Bob"
     x1_giftunit = sue_person.get_new_giftunit()
-    x1_giftunit.set_giftee(bob_text)
+    x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(x1_giftunit)
 
     # WHEN
@@ -352,9 +352,9 @@ def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
     # THEN
     assert y0_giftunit != None
     assert y1_giftunit != None
-    assert yao_text in y0_giftunit._giftees
-    assert bob_text not in y0_giftunit._giftees
-    assert bob_text in y1_giftunit._giftees
+    assert yao_text in y0_giftunit._takers
+    assert bob_text not in y0_giftunit._takers
+    assert bob_text in y1_giftunit._takers
 
 
 def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
@@ -365,11 +365,11 @@ def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
     sue_person = personunit_shop(sue_text)
     yao_text = "yao"
     x0_giftunit = sue_person.get_new_giftunit()
-    x0_giftunit.set_giftee(yao_text)
+    x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(x0_giftunit)
     bob_text = "Bob"
     x1_giftunit = sue_person.get_new_giftunit()
-    x1_giftunit.set_giftee(bob_text)
+    x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(x1_giftunit)
 
     # WHEN / THEN
@@ -390,7 +390,7 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     x_gift_id = 6
     six_filename = get_json_filename(x_gift_id)
     sue_giftunit = giftunit_shop(
-        _gifter=sue_text,
+        _giver=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
@@ -442,7 +442,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     sue2_giftunit = sue_2atomunits_giftunit()
     sue2_giftunit._atoms_dir = f"{sue_person.person_dir}/swimming"
     sue2_giftunit._gifts_dir = f"{sue_person.person_dir}/swimming"
-    sue2_giftunit._gifter = "Bob"
+    sue2_giftunit._giver = "Bob"
     sue2_giftunit._gift_id = sue_person.get_next_gift_file_number() - 5
     prev_sue2_giftunit = copy_deepcopy(sue2_giftunit)
 
