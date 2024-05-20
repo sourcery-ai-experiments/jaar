@@ -75,10 +75,10 @@ class BookUnit:
         return sorted(agendaatoms_list, key=lambda x: x.atom_order)
 
     def get_edited_agenda(self, before_agenda: AgendaUnit):
-        edit_agenda = copy_deepcopy(before_agenda)
+        edited_agenda = copy_deepcopy(before_agenda)
         for x_agendaatom in self.get_sorted_agendaatoms():
-            change_agenda_with_agendaatom(edit_agenda, x_agendaatom)
-        return edit_agenda
+            change_agenda_with_agendaatom(edited_agenda, x_agendaatom)
+        return edited_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):
         if x_agendaatom.is_valid() == False:
