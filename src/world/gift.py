@@ -1,8 +1,7 @@
-from src._road.road import RoadUnit, PersonID
+from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
 from src.instrument.python import (
-    get_empty_dict_if_none,
     get_0_if_None,
     get_empty_set_if_none,
     get_json_from_dict,
