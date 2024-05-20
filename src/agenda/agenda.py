@@ -2036,6 +2036,7 @@ class AgendaUnit:
             "_groups": self.get_groupunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
+            "_planck": self._planck,
             "_owner_id": self._owner_id,
             "_world_id": self._world_id,
             "_max_tree_traverse": self._max_tree_traverse,
@@ -2298,9 +2299,9 @@ class AgendaUnit:
 def agendaunit_shop(
     _owner_id: OwnerID = None,
     _world_id: WorldID = None,
-    _weight: float = None,
     _road_delimiter: str = None,
     _planck: float = None,
+    _weight: float = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
     if _owner_id is None:
@@ -2350,6 +2351,9 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda.set_world_id(get_obj_from_agenda_dict(agenda_dict, "_world_id"))
     x_agenda._road_delimiter = default_road_delimiter_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_road_delimiter")
+    )
+    x_agenda._planck = default_planck_if_none(
+        get_obj_from_agenda_dict(agenda_dict, "_planck")
     )
     x_agenda._party_creditor_pool = get_obj_from_agenda_dict(
         agenda_dict, "_party_creditor_pool"

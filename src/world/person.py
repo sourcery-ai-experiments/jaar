@@ -129,23 +129,17 @@ class PersonUnit:
 
     def create_gut_file_if_does_not_exist(self):
         if self.gut_file_exists() == False:
-            self.save_gut_file(
-                agendaunit_shop(
-                    _owner_id=self.person_id,
-                    _world_id=self.world_id,
-                    _road_delimiter=self._road_delimiter,
-                )
+            default_gut_agenda = agendaunit_shop(
+                self.person_id, self.world_id, self._road_delimiter, self._planck
             )
+            self.save_gut_file(default_gut_agenda)
 
     def create_live_file_if_does_not_exist(self):
         if self.live_file_exists() == False:
-            self._save_live_file(
-                agendaunit_shop(
-                    _owner_id=self.person_id,
-                    _world_id=self.world_id,
-                    _road_delimiter=self._road_delimiter,
-                )
+            default_live_agenda = agendaunit_shop(
+                self.person_id, self.world_id, self._road_delimiter, self._planck
             )
+            self._save_live_file(default_live_agenda)
 
     def gut_file_exists(self) -> bool:
         return os_path_exists(self._gut_path)

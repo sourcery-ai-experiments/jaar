@@ -277,7 +277,8 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlySavesFile(
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    seven_int = 7
+    sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
     assert sue_person.gut_file_exists()
     delete_dir(sue_person._gut_path)
     assert sue_person.gut_file_exists() == False
@@ -289,6 +290,7 @@ def test_PersonUnit_create_gut_file_if_does_not_exist_CorrectlySavesFile(
     gut_agenda = sue_person.get_gut_file_agenda()
     assert gut_agenda._world_id == get_test_world_id()
     assert gut_agenda._owner_id == sue_text
+    assert gut_agenda._planck == seven_int
     bob_text = "Bob"
     assert gut_agenda.get_party(bob_text) is None
 
@@ -366,9 +368,7 @@ def test_PersonUnit_live_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     assert sue_person.live_file_exists()
 
 
-def test_PersonUnit_save_live_file_CorrectlySavesFile(
-    worlds_dir_setup_cleanup,
-):
+def test_PersonUnit_save_live_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -486,7 +486,8 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlyDoesNotOverwrite
     # GIVEN
     sue_text = "Sue"
     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_planck = 7
+    sue_person = personunit_shop(person_id=sue_text, _planck=sue_planck)
     assert sue_person.live_file_exists()
     delete_dir(sue_person._live_path)
     assert sue_person.live_file_exists() == False
@@ -509,6 +510,7 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlyDoesNotOverwrite
     live_agenda = agenda_get_from_json(live_file_text)
     assert live_agenda._world_id == get_test_world_id()
     assert live_agenda._owner_id == sue_text
+    assert live_agenda._planck == sue_planck
 
 
 def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(

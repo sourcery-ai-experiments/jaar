@@ -185,6 +185,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     zia_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     tiger_world_id = "tiger"
     zia_agenda.set_world_id(tiger_world_id)
+    seven_int = 7
+    zia_agenda._planck = seven_int
     override_text = "override"
     zia_agenda.set_meld_strategy(override_text)
     yao_text = "Yao"
@@ -211,6 +213,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert agenda_dict["_world_id"] == zia_agenda._world_id
     assert agenda_dict["_weight"] == zia_agenda._weight
     assert agenda_dict["_meld_strategy"] == zia_agenda._meld_strategy
+    assert agenda_dict["_planck"] == zia_agenda._planck
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_party_creditor_pool"]
     assert str(excinfo.value) == "'_party_creditor_pool'"
@@ -316,6 +319,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda.set_max_tree_traverse(23)
     tiger_world_id = "tiger"
     zia_agenda.set_world_id(tiger_world_id)
+    zia_planck = 0.5
+    zia_agenda._planck = zia_planck
     zia_party_creditor_pool = 2
     zia_party_debtor_pool = 2
     zia_agenda.set_party_creditor_pool(zia_party_creditor_pool)
@@ -371,6 +376,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._owner_id != None
     assert json_agenda._owner_id == zia_agenda._owner_id
     assert json_agenda._world_id == zia_agenda._world_id
+    assert json_agenda._planck == zia_planck
+    assert json_agenda._planck == zia_agenda._planck
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == zia_agenda._max_tree_traverse
     assert json_agenda._road_delimiter == zia_agenda._road_delimiter
