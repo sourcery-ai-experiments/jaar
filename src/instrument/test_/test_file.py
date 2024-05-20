@@ -10,6 +10,7 @@ from src.instrument.file import (
     is_path_probably_creatable,
     is_path_existent_or_probably_creatable,
     get_all_dirs_with_file,
+    get_integer_filenames,
 )
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
@@ -118,6 +119,75 @@ def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     assert str(excinfo.value) == "'x1.txt'"
     assert files_dict.get(x2_name) == True
     assert len(files_dict) == 1
+
+
+def test_get_integer_filenames_GrabsFileNamesWithIntegers_v0(env_dir_setup_cleanup):
+    # GIVEN
+    env_dir = get_agenda_temp_env_dir()
+    x1_file_name = "1.json"
+    x2_file_name = "2.json"
+    x_file_text = "file text"
+    save_file(env_dir, x1_file_name, x_file_text)
+    save_file(env_dir, x2_file_name, x_file_text)
+
+    # WHEN
+    files_dict = get_integer_filenames(env_dir, 0)
+
+    # THEN
+    assert len(files_dict) == 2
+    assert files_dict == {1, 2}
+
+
+def test_get_integer_filenames_GrabsFileNamesWithIntegersWithCorrectExtension(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_agenda_temp_env_dir()
+    z_file_name = "z.json"
+    x1_file_name = "1.json"
+    x2_file_name = "2.json"
+    txt1_file_name = "1.txt"
+    txt3_file_name = "3.txt"
+    x_file_text = "file text"
+    save_file(env_dir, z_file_name, x_file_text)
+    save_file(env_dir, x1_file_name, x_file_text)
+    save_file(env_dir, x2_file_name, x_file_text)
+    save_file(env_dir, txt1_file_name, x_file_text)
+    save_file(env_dir, txt3_file_name, x_file_text)
+
+    # WHEN
+    files_dict = get_integer_filenames(env_dir, 0)
+
+    # THEN
+    assert len(files_dict) == 2
+    assert files_dict == {1, 2}
+
+    # WHEN / THEN
+    assert get_integer_filenames(env_dir, 0, "txt") == {1, 3}
+
+
+def test_get_integer_filenames_GrabsFileNamesWithIntegersGreaterThanGiven(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_agenda_temp_env_dir()
+    z_file_name = "z.json"
+    x1_file_name = "1.json"
+    x2_file_name = "2.json"
+    x3_file_name = "3.json"
+    txt1_file_name = "1.txt"
+    txt3_file_name = "3.txt"
+    x_file_text = "file text"
+    save_file(env_dir, z_file_name, x_file_text)
+    save_file(env_dir, x1_file_name, x_file_text)
+    save_file(env_dir, x2_file_name, x_file_text)
+    save_file(env_dir, x3_file_name, x_file_text)
+    save_file(env_dir, txt1_file_name, x_file_text)
+    save_file(env_dir, txt3_file_name, x_file_text)
+
+    # WHEN
+    assert get_integer_filenames(env_dir, 2) == {2, 3}
+    assert get_integer_filenames(env_dir, 0, "txt") == {1, 3}
 
 
 def test_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
