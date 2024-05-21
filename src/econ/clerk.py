@@ -7,9 +7,9 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.listen import listen_to_speaker
-from src.instrument.file import save_file, open_file, os_path_exists
+from src.instrument.file import save_file, open_file
 from dataclasses import dataclass
-from os import path as os_path
+from os.path import exists as os_path_exists
 
 
 class InvalidclerkException(Exception):
