@@ -175,7 +175,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     popped_road = ancestor_roads.pop(0)
     if popped_road != road:
         raise ForeFatherException(
-            f"Incorrect road {popped_road} taken out of ancestor_roads."
+            f"Incorrect road {popped_road} from out of ancestor_roads."
         )
     return {a_road: None for a_road in ancestor_roads}
 

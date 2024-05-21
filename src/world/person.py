@@ -1,7 +1,6 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
-    get_default_world_id_roadnode,
     PersonID,
     validate_roadnode,
     RoadUnit,
@@ -10,6 +9,7 @@ from src._road.road import (
     change_road,
     create_road_from_nodes,
 )
+from src.agenda.group import GroupID
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
@@ -20,12 +20,15 @@ from src.agenda.atom import (
     get_from_json as agendaatom_get_from_json,
     change_agenda_with_agendaatom,
 )
+from src.agenda.promise import create_promise
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.world.gift import (
     GiftUnit,
     giftunit_shop,
     get_json_filename as giftunit_get_json_filename,
     create_giftunit_from_files,
+    init_gift_id,
+    get_init_gift_id_if_None,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
 from src.instrument.python import get_empty_dict_if_none
@@ -38,9 +41,11 @@ from src.instrument.file import (
     get_parts_dir,
     delete_dir,
     dir_files,
+    get_integer_filenames,
 )
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
+from copy import deepcopy as copy_deepcopy
 
 
 class InvalidEconException(Exception):
@@ -123,28 +128,62 @@ class PersonUnit:
         set_dir(self._econs_dir)
         set_dir(self._atoms_dir)
         set_dir(self._gifts_dir)
-        self.create_gut_file_if_does_not_exist()
+        self.create_gift_and_gut_files_if_they_do_not_exist()
         self.create_live_file_if_does_not_exist()
 
-    def create_gut_file_if_does_not_exist(self):
-        if self.gut_file_exists() == False:
-            self.save_gut_file(
-                agendaunit_shop(
-                    _owner_id=self.person_id,
-                    _world_id=self.world_id,
-                    _road_delimiter=self._road_delimiter,
-                )
-            )
+    def create_gift_and_gut_files_if_they_do_not_exist(self):
+        gut_file_exists = self.gut_file_exists()
+        gift_file_exists = self.giftunit_file_exists(init_gift_id())
+        if gut_file_exists == False and gift_file_exists == False:
+            self._create_initial_gift_and_gut_files()
+        elif gut_file_exists == False and gift_file_exists:
+            self._create_gut_from_gifts()
+        elif gut_file_exists and gift_file_exists == False:
+            self._create_initial_gift_from_gut()
+
+    def _create_initial_gift_and_gut_files(self):
+        default_gut_agenda = agendaunit_shop(
+            self.person_id, self.world_id, self._road_delimiter, self._planck
+        )
+        x_giftunit = giftunit_shop(
+            _giver=self.person_id,
+            _gift_id=get_init_gift_id_if_None(),
+            _gifts_dir=self._gifts_dir,
+            _atoms_dir=self._atoms_dir,
+        )
+        x_giftunit._bookunit.add_all_different_agendaatoms(
+            before_agenda=self._get_empty_agenda(), after_agenda=default_gut_agenda
+        )
+        x_giftunit.save_files()
+        self._create_gut_from_gifts()
+
+    def _create_initial_gift_from_gut(self):
+        x_giftunit = giftunit_shop(
+            _giver=self.person_id,
+            _gift_id=get_init_gift_id_if_None(),
+            _gifts_dir=self._gifts_dir,
+            _atoms_dir=self._atoms_dir,
+        )
+        x_giftunit._bookunit.add_all_different_agendaatoms(
+            before_agenda=self._get_empty_agenda(),
+            after_agenda=self.get_gut_file_agenda(),
+        )
+        x_giftunit.save_files()
+
+    def _create_gut_from_gifts(self):
+        self.save_gut_file(self._append_gifts_to_agenda(self._get_empty_agenda()))
+
+    def _get_empty_agenda(self) -> AgendaUnit:
+        empty_agenda = agendaunit_shop(self.person_id, self.world_id)
+        empty_agenda._last_gift_id = init_gift_id()
+        return empty_agenda
 
     def create_live_file_if_does_not_exist(self):
         if self.live_file_exists() == False:
-            self._save_live_file(
-                agendaunit_shop(
-                    _owner_id=self.person_id,
-                    _world_id=self.world_id,
-                    _road_delimiter=self._road_delimiter,
-                )
+            default_live_agenda = agendaunit_shop(
+                self.person_id, self.world_id, self._road_delimiter, self._planck
             )
+            self._save_live_file(default_live_agenda)
 
     def gut_file_exists(self) -> bool:
         return os_path_exists(self._gut_path)
@@ -199,21 +238,23 @@ class PersonUnit:
     def get_max_gift_file_number(self) -> int:
         if not os_path_exists(self._gifts_dir):
             return None
-        gift_filenames = dir_files(
-            dir_path=self._gifts_dir, delete_extensions=True, include_files=True
-        ).keys()
+        gift_filenames = dir_files(self._gifts_dir, True, include_files=True).keys()
         gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
         return max(gift_file_numbers, default=None)
 
-    def get_next_gift_file_number(self) -> int:
+    def _get_next_gift_file_number(self) -> int:
         max_file_number = self.get_max_gift_file_number()
-        return 0 if max_file_number is None else max_file_number + 1
+        return (
+            get_init_gift_id_if_None()
+            if max_file_number is None
+            else max_file_number + 1
+        )
 
     def save_giftunit_file(
         self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = True
     ) -> GiftUnit:
         if change_invalid_attrs:
-            x_gift = self.get_valid_giftunit(x_gift)
+            x_gift = self.validate_giftunit(x_gift)
 
         if x_gift._atoms_dir != self._atoms_dir:
             raise SaveGiftFileException(
@@ -223,9 +264,9 @@ class PersonUnit:
             raise SaveGiftFileException(
                 f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self._gifts_dir}."
             )
-        if x_gift._gifter != self.person_id:
+        if x_gift._giver != self.person_id:
             raise SaveGiftFileException(
-                f"GiftUnit file cannot be saved because giftunit._gifter is incorrect: {x_gift._gifter}. It must be {self.person_id}."
+                f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {self.person_id}."
             )
         gift_filename = giftunit_get_json_filename(x_gift._gift_id)
         if not replace and self.giftunit_file_exists(x_gift._gift_id):
@@ -235,23 +276,23 @@ class PersonUnit:
         x_gift.save_files()
         return x_gift
 
-    def get_new_giftunit(self) -> GiftUnit:
+    def _create_new_giftunit(self) -> GiftUnit:
         return giftunit_shop(
-            _gifter=self.person_id,
-            _gift_id=self.get_next_gift_file_number(),
+            _giver=self.person_id,
+            _gift_id=self._get_next_gift_file_number(),
             _atoms_dir=self._atoms_dir,
             _gifts_dir=self._gifts_dir,
         )
 
-    def get_valid_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
+    def validate_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
         if x_giftunit._atoms_dir != self._atoms_dir:
             x_giftunit._atoms_dir = self._atoms_dir
         if x_giftunit._gifts_dir != self._gifts_dir:
             x_giftunit._gifts_dir = self._gifts_dir
-        if x_giftunit._gift_id != self.get_next_gift_file_number():
-            x_giftunit._gift_id = self.get_next_gift_file_number()
-        if x_giftunit._gifter != self.person_id:
-            x_giftunit._gifter = self.person_id
+        if x_giftunit._gift_id != self._get_next_gift_file_number():
+            x_giftunit._gift_id = self._get_next_gift_file_number()
+        if x_giftunit._giver != self.person_id:
+            x_giftunit._giver = self.person_id
         if x_giftunit._book_start != self._get_next_atom_file_number():
             x_giftunit._book_start = self._get_next_atom_file_number()
         return x_giftunit
@@ -268,13 +309,15 @@ class PersonUnit:
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
 
-    def _get_agenda_from_gift_files(self, x_agenda: AgendaUnit) -> AgendaUnit:
-        # get list of all gift files
-        gift_ints = dir_files(self._gifts_dir, delete_extensions=True).keys()
+    def _append_gifts_to_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
+        gift_ints = get_integer_filenames(self._gifts_dir, x_agenda._last_gift_id)
         for gift_int in gift_ints:
             x_gift = self.get_giftunit(gift_int)
-            x_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
-        return x_agenda
+            new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+
+            update_text = "UPDATE"
+            x_agendaunit = x_gift._bookunit.agendaatoms.get(update_text)
+        return new_agenda
 
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
@@ -385,6 +428,28 @@ class PersonUnit:
     def set_person_econunits_role(self):
         self.set_econunits_role(self.get_gut_file_agenda())
 
+    def add_promise_gift(self, promise_road: RoadUnit, x_suffgroup: GroupID = None):
+        gut_agenda = self.get_gut_file_agenda()
+        old_gut_agenda = copy_deepcopy(gut_agenda)
+        create_promise(gut_agenda, promise_road, x_suffgroup)
+        next_giftunit = self._create_new_giftunit()
+        next_giftunit._bookunit.add_all_different_agendaatoms(
+            old_gut_agenda, gut_agenda
+        )
+        next_giftunit.save_files()
+        self.append_gifts_to_gut_file()
+
+    def create_save_giftunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
+        new_giftunit = self._create_new_giftunit()
+        new_giftunit._bookunit.add_all_different_agendaatoms(
+            before_agenda, after_agenda
+        )
+        self.save_giftunit_file(new_giftunit)
+
+    def append_gifts_to_gut_file(self):
+        self.save_gut_file(self._append_gifts_to_agenda(self.get_gut_file_agenda()))
+        return self.get_gut_file_agenda()
+
 
 def personunit_shop(
     person_id: PersonID,
@@ -393,6 +458,7 @@ def personunit_shop(
     _econ_objs: dict[RoadUnit:EconUnit] = None,
     _road_delimiter: str = None,
     _planck: float = None,
+    create_files: bool = True,
 ) -> PersonUnit:
     x_personunit = PersonUnit(
         world_id=world_id,
@@ -402,7 +468,8 @@ def personunit_shop(
         _planck=default_planck_if_none(_planck),
     )
     x_personunit.set_person_id(person_id)
-    x_personunit.create_core_dir_and_files()
+    if create_files:
+        x_personunit.create_core_dir_and_files()
     return x_personunit
 
 

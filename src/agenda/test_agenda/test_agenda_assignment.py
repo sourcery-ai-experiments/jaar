@@ -154,7 +154,7 @@ def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoadUnits():
     gig_road = x_agenda.make_l1_road("gig")
     house_road = x_agenda.make_l1_road("housemanagement")
     table_road = x_agenda.make_road(house_road, "clean table")
-    dish_road = x_agenda.make_road(table_road, "take dishs out")
+    dish_road = x_agenda.make_road(table_road, "remove dishs")
     soap_road = x_agenda.make_road(table_road, "get soap")
     grab_road = x_agenda.make_road(soap_road, "grab soap")
     feed_road = x_agenda.make_l1_road("feed cat")

@@ -250,7 +250,7 @@ def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForSegre
 
 
 def test_PremiseUnitUnit_is_range_or_segregate_ReturnsCorrectBool():
-    # GIVE
+    # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
 

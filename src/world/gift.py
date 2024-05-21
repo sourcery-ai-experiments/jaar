@@ -1,9 +1,7 @@
-from src._road.road import RoadUnit, PersonID
+from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
 from src.instrument.python import (
-    get_empty_dict_if_none,
-    get_0_if_None,
     get_empty_set_if_none,
     get_json_from_dict,
     get_dict_from_json,
@@ -25,25 +23,33 @@ class get_member_attr_Exception(Exception):
     pass
 
 
+def init_gift_id() -> int:
+    return 0
+
+
+def get_init_gift_id_if_None(x_gift_id: int = None) -> int:
+    return init_gift_id() if x_gift_id is None else x_gift_id
+
+
 @dataclass
 class GiftUnit:
-    _gifter: PersonID = None
+    _giver: PersonID = None
     _gift_id: int = None
-    _giftees: set[PersonID] = None
+    _takers: set[PersonID] = None
     _bookunit: BookUnit = None
     _book_start: int = None
     _person_dir: str = None
     _gifts_dir: str = None
     _atoms_dir: str = None
 
-    def set_giftee(self, x_giftee: PersonID):
-        self._giftees.add(x_giftee)
+    def set_taker(self, x_taker: PersonID):
+        self._takers.add(x_taker)
 
-    def giftee_exists(self, x_giftee: PersonID) -> bool:
-        return x_giftee in self._giftees
+    def taker_exists(self, x_taker: PersonID) -> bool:
+        return x_taker in self._takers
 
-    def del_giftee(self, x_giftee: PersonID):
-        self._giftees.remove(x_giftee)
+    def del_taker(self, x_taker: PersonID):
+        self._takers.remove(x_taker)
 
     def set_bookunit(self, x_bookunit: BookUnit):
         self._bookunit = x_bookunit
@@ -52,16 +58,16 @@ class GiftUnit:
         self._bookunit = bookunit_shop()
 
     def set_book_start(self, x_book_start: int):
-        self._book_start = get_0_if_None(x_book_start)
+        self._book_start = get_init_gift_id_if_None(x_book_start)
 
     def agendaatom_exists(self, x_agendaatom: AgendaAtom):
         return self._bookunit.agendaatom_exists(x_agendaatom)
 
     def get_step_dict(self) -> dict[str:]:
-        giftees_dict = {x_giftee: 1 for x_giftee in self._giftees}
+        takers_dict = {x_taker: 1 for x_taker in self._takers}
         return {
-            "gifter": self._gifter,
-            "giftees": giftees_dict,
+            "gifter": self._giver,
+            "takers": takers_dict,
             "book": self._bookunit.get_ordered_agendaatoms(self._book_start),
         }
 
@@ -73,7 +79,7 @@ class GiftUnit:
         x_dict = self.get_step_dict()
         return {
             "gifter": x_dict.get("gifter"),
-            "giftees": x_dict.get("giftees"),
+            "takers": x_dict.get("takers"),
             "book_atom_numbers": self.get_book_atom_numbers(x_dict),
         }
 
@@ -128,9 +134,9 @@ class GiftUnit:
 
 
 def giftunit_shop(
-    _gifter: PersonID,
+    _giver: PersonID,
     _gift_id: int = None,
-    _giftees: set[PersonID] = None,
+    _takers: set[PersonID] = None,
     _bookunit: BookUnit = None,
     _book_start: int = None,
     _person_dir: str = None,
@@ -138,15 +144,15 @@ def giftunit_shop(
     _atoms_dir: str = None,
 ):
     # _book_start = get_0_if_None(_book_start)
-    _gift_id = get_0_if_None(_gift_id)
-    _giftees = get_empty_set_if_none(_giftees)
+    _gift_id = get_init_gift_id_if_None(_gift_id)
+    _takers = get_empty_set_if_none(_takers)
     if _bookunit is None:
         _bookunit = bookunit_shop()
 
     x_giftunit = GiftUnit(
-        _gifter=_gifter,
+        _giver=_giver,
         _gift_id=_gift_id,
-        _giftees=_giftees,
+        _takers=_takers,
         _bookunit=_bookunit,
         _person_dir=_person_dir,
         _gifts_dir=_gifts_dir,
@@ -167,9 +173,9 @@ def create_giftunit_from_files(
 ) -> GiftUnit:
     gift_filename = get_json_filename(gift_id)
     gift_dict = get_dict_from_json(open_file(gifts_dir, gift_filename))
-    x_gifter = gift_dict.get("gifter")
-    x_giftees = set(gift_dict.get("giftees").keys())
-    x_giftunit = giftunit_shop(x_gifter, gift_id, x_giftees, _atoms_dir=atoms_dir)
+    x_giver = gift_dict.get("gifter")
+    x_takers = set(gift_dict.get("takers").keys())
+    x_giftunit = giftunit_shop(x_giver, gift_id, x_takers, _atoms_dir=atoms_dir)
     book_atom_numbers_list = gift_dict.get("book_atom_numbers")
     x_giftunit._create_bookunit_from_atom_files(book_atom_numbers_list)
     return x_giftunit

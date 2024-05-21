@@ -1,5 +1,10 @@
 from src.agenda.book import bookunit_shop
-from src.world.gift import GiftUnit, giftunit_shop
+from src.world.gift import (
+    GiftUnit,
+    giftunit_shop,
+    get_init_gift_id_if_None,
+    init_gift_id,
+)
 from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
@@ -8,14 +13,26 @@ from src.instrument.python import x_is_json
 from pytest import raises as pytest_raises
 
 
+def test_init_gift_id_ReturnsCorrectObj():
+    # GIVEN / WHEN / THEN
+    assert init_gift_id() == 0
+
+
+def test_get_init_gift_id_if_None_ReturnsCorrectObj():
+    # GIVEN / WHEN / THEN
+    assert get_init_gift_id_if_None() == init_gift_id()
+    assert get_init_gift_id_if_None(None) == init_gift_id()
+    assert get_init_gift_id_if_None(1) == 1
+
+
 def test_GiftUnit_exists():
     # GIVEN / WHEN
     x_giftunit = GiftUnit()
 
     # THEN
     assert x_giftunit._gift_id is None
-    assert x_giftunit._gifter is None
-    assert x_giftunit._giftees is None
+    assert x_giftunit._giver is None
+    assert x_giftunit._takers is None
     assert x_giftunit._bookunit is None
     assert x_giftunit._book_start is None
     assert x_giftunit._person_dir is None
@@ -28,12 +45,12 @@ def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     bob_text = "Bob"
 
     # WHEN
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
 
     # THEN
     assert farm_giftunit._gift_id == 0
-    assert farm_giftunit._gifter == bob_text
-    assert farm_giftunit._giftees == set()
+    assert farm_giftunit._giver == bob_text
+    assert farm_giftunit._takers == set()
     assert farm_giftunit._bookunit == bookunit_shop()
     assert farm_giftunit._book_start == 0
     assert farm_giftunit._person_dir is None
@@ -45,7 +62,7 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # GIVEN
     bob_text = "Bob"
     bob_gift_id = 13
-    bob_giftees = {"Sue", "Yao"}
+    bob_takers = {"Sue", "Yao"}
     bob_bookunit = get_bookunit_carm_example()
     bob_book_start = 6
     bob_person_dir = "exampletext5"
@@ -56,7 +73,7 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     farm_giftunit = giftunit_shop(
         bob_text,
         _gift_id=bob_gift_id,
-        _giftees=bob_giftees,
+        _takers=bob_takers,
         _bookunit=bob_bookunit,
         _book_start=bob_book_start,
         _person_dir=bob_person_dir,
@@ -65,9 +82,9 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     )
 
     # THEN
-    assert farm_giftunit._gifter == bob_text
+    assert farm_giftunit._giver == bob_text
     assert farm_giftunit._gift_id == bob_gift_id
-    assert farm_giftunit._giftees == bob_giftees
+    assert farm_giftunit._takers == bob_takers
     assert farm_giftunit._bookunit == bob_bookunit
     assert farm_giftunit._book_start == bob_book_start
     assert farm_giftunit._person_dir == bob_person_dir
@@ -80,70 +97,70 @@ def test_giftunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     bob_text = "Bob"
     tim_text = "Tim"
     yao_text = "Yao"
-    x_giftees = {bob_text, tim_text, yao_text}
+    x_takers = {bob_text, tim_text, yao_text}
 
     # WHEN
-    farm_giftunit = giftunit_shop(_gifter=bob_text, _giftees=x_giftees)
+    farm_giftunit = giftunit_shop(_giver=bob_text, _takers=x_takers)
 
     # THEN
-    assert farm_giftunit._gifter == bob_text
-    assert farm_giftunit._giftees == x_giftees
+    assert farm_giftunit._giver == bob_text
+    assert farm_giftunit._takers == x_takers
 
 
-def test_GiftUnit_set_giftee_SetsAttribute():
+def test_GiftUnit_set_taker_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
     tim_text = "Tim"
-    assert farm_giftunit._giftees == set()
-    assert tim_text not in farm_giftunit._giftees
+    assert farm_giftunit._takers == set()
+    assert tim_text not in farm_giftunit._takers
 
     # WHEN
-    farm_giftunit.set_giftee(tim_text)
+    farm_giftunit.set_taker(tim_text)
 
     # THEN
-    assert tim_text in farm_giftunit._giftees
+    assert tim_text in farm_giftunit._takers
 
 
-def test_GiftUnit_giftee_exists_ReturnsCorrectObj():
+def test_GiftUnit_taker_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
     tim_text = "Tim"
-    assert farm_giftunit._giftees == set()
-    assert tim_text not in farm_giftunit._giftees
+    assert farm_giftunit._takers == set()
+    assert tim_text not in farm_giftunit._takers
 
     # WHEN / THEN
-    assert farm_giftunit.giftee_exists(tim_text) == False
+    assert farm_giftunit.taker_exists(tim_text) == False
 
     # WHEN / THEN
-    farm_giftunit.set_giftee(tim_text)
-    assert farm_giftunit.giftee_exists(tim_text)
+    farm_giftunit.set_taker(tim_text)
+    assert farm_giftunit.taker_exists(tim_text)
 
 
-def test_GiftUnit_del_giftee_SetsAttribute():
+def test_GiftUnit_del_taker_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
     tim_text = "Tim"
     yao_text = "Yao"
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
-    assert farm_giftunit.giftee_exists(tim_text)
-    assert farm_giftunit.giftee_exists(yao_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
+    assert farm_giftunit.taker_exists(tim_text)
+    assert farm_giftunit.taker_exists(yao_text)
 
     # WHEN
-    farm_giftunit.del_giftee(yao_text)
+    farm_giftunit.del_taker(yao_text)
 
     # THEN
-    assert farm_giftunit.giftee_exists(tim_text)
-    assert farm_giftunit.giftee_exists(yao_text) == False
+    assert farm_giftunit.taker_exists(tim_text)
+    assert farm_giftunit.taker_exists(yao_text) == False
 
 
 def test_GiftUnit_set_bookunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
     assert farm_giftunit._bookunit == bookunit_shop()
 
     # WHEN
@@ -173,7 +190,7 @@ def test_GiftUnit_agendaatom_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_bookunit = bookunit_shop()
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
     farm_giftunit.set_bookunit(farm_bookunit)
 
     # WHEN
@@ -195,7 +212,7 @@ def test_GiftUnit_del_bookunit_SetsAttribute():
     bob_text = "Bob"
     farm_bookunit = bookunit_shop()
     farm_bookunit.set_agendaatom(get_atom_example_ideaunit_sports())
-    farm_giftunit = giftunit_shop(_gifter=bob_text, _bookunit=farm_bookunit)
+    farm_giftunit = giftunit_shop(_giver=bob_text, _bookunit=farm_bookunit)
     assert farm_giftunit._bookunit != bookunit_shop()
     assert farm_giftunit._bookunit == farm_bookunit
 
@@ -211,9 +228,9 @@ def test_GiftUnit_get_step_dict_ReturnsCorrectObj_Simple():
     bob_text = "Bob"
     tim_text = "Tim"
     yao_text = "Yao"
-    farm_giftunit = giftunit_shop(_gifter=bob_text)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
+    farm_giftunit = giftunit_shop(_giver=bob_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
 
     # WHEN
     x_dict = farm_giftunit.get_step_dict()
@@ -223,12 +240,12 @@ def test_GiftUnit_get_step_dict_ReturnsCorrectObj_Simple():
     assert x_dict.get(gifter_text) != None
     assert x_dict.get(gifter_text) == bob_text
 
-    giftees_text = "giftees"
-    assert x_dict.get(giftees_text) != None
-    giftees_dict = x_dict.get(giftees_text)
-    assert giftees_dict.get(bob_text) is None
-    assert giftees_dict.get(tim_text) != None
-    assert giftees_dict.get(yao_text) != None
+    takers_text = "takers"
+    assert x_dict.get(takers_text) != None
+    takers_dict = x_dict.get(takers_text)
+    assert takers_dict.get(bob_text) is None
+    assert takers_dict.get(tim_text) != None
+    assert takers_dict.get(yao_text) != None
 
     book_text = "book"
     assert x_dict.get(book_text) != None
@@ -295,8 +312,8 @@ def test_GiftUnit_get_book_atom_numbers_ReturnsCorrectObj():
     farm_giftunit = giftunit_shop(bob_text)
     farm_giftunit.set_bookunit(carm_bookunit)
     farm_giftunit.set_book_start(farm_book_start)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
     farm_dict = farm_giftunit.get_step_dict()
 
     # WHEN
@@ -315,8 +332,8 @@ def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
     farm_giftunit = giftunit_shop(bob_text)
     farm_giftunit.set_bookunit(carm_bookunit)
     farm_giftunit.set_book_start(farm_book_start)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
 
     # WHEN
     x_dict = farm_giftunit.get_bookmetric_dict()
@@ -326,12 +343,12 @@ def test_GiftUnit_get_bookmetric_dict_ReturnsCorrectObj():
     assert x_dict.get(gifter_text) != None
     assert x_dict.get(gifter_text) == bob_text
 
-    giftees_text = "giftees"
-    assert x_dict.get(giftees_text) != None
-    giftees_dict = x_dict.get(giftees_text)
-    assert giftees_dict.get(bob_text) is None
-    assert giftees_dict.get(tim_text) != None
-    assert giftees_dict.get(yao_text) != None
+    takers_text = "takers"
+    assert x_dict.get(takers_text) != None
+    takers_dict = x_dict.get(takers_text)
+    assert takers_dict.get(bob_text) is None
+    assert takers_dict.get(tim_text) != None
+    assert takers_dict.get(yao_text) != None
 
     book_atom_numbers_text = "book_atom_numbers"
     assert x_dict.get(book_atom_numbers_text) != None
@@ -353,8 +370,8 @@ def test_GiftUnit_get_bookmetric_json_ReturnsCorrectObj():
     farm_giftunit = giftunit_shop(bob_text)
     farm_giftunit.set_bookunit(carm_bookunit)
     farm_giftunit.set_book_start(farm_book_start)
-    farm_giftunit.set_giftee(tim_text)
-    farm_giftunit.set_giftee(yao_text)
+    farm_giftunit.set_taker(tim_text)
+    farm_giftunit.set_taker(yao_text)
 
     # WHEN
     farm_json = farm_giftunit.get_bookmetric_json()

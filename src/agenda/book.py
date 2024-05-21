@@ -75,10 +75,10 @@ class BookUnit:
         return sorted(agendaatoms_list, key=lambda x: x.atom_order)
 
     def get_edited_agenda(self, before_agenda: AgendaUnit):
-        edit_agenda = copy_deepcopy(before_agenda)
+        edited_agenda = copy_deepcopy(before_agenda)
         for x_agendaatom in self.get_sorted_agendaatoms():
-            change_agenda_with_agendaatom(edit_agenda, x_agendaatom)
-        return edit_agenda
+            change_agenda_with_agendaatom(edited_agenda, x_agendaatom)
+        return edited_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):
         if x_agendaatom.is_valid() == False:
@@ -137,7 +137,9 @@ class BookUnit:
         x_keylist = [crud_text, category, *required_args]
         return get_nested_value(self.agendaatoms, x_keylist)
 
-    def add_all_agendaatoms(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
+    def add_all_different_agendaatoms(
+        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+    ):
         before_agenda.set_agenda_metrics()
         after_agenda.set_agenda_metrics()
         self.add_agendaatoms_agendaunit_simple_attrs(before_agenda, after_agenda)
@@ -169,6 +171,8 @@ class BookUnit:
             )
         if before_agenda._weight != after_agenda._weight:
             x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
+        if before_agenda._planck != after_agenda._planck:
+            x_agendaatom.set_optional_arg("_planck", after_agenda._planck)
         self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_partyunits(

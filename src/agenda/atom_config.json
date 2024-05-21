@@ -364,6 +364,10 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
+            "_planck": {
+                "python_type": "float",
+                "sqlite_datatype": "REAL"
+            },
             "_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
@@ -383,6 +387,10 @@
                 "sqlite_datatype": "INTEGER"
             },
             "intent_weight": {
+                "python_type": "int",
+                "sqlite_datatype": "INTEGER"
+            },
+            "owner_id": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -419,10 +427,6 @@
                 "sqlite_datatype": "INTEGER"
             },
             "time_close": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "owner_id": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             }

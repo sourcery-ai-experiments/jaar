@@ -7,11 +7,7 @@ from src.instrument.file import open_file
 from src.world.person import get_gut_file_name, get_live_file_name
 from src.world.world import WorldUnit
 from pandas import DataFrame, concat as pandas_concat
-from plotly.graph_objects import (
-    Figure as plotly_Figure,
-    Scatter as plotly_Scatter,
-    Table as plotly_Table,
-)
+from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 
 def get_world_guts_partys_dataframe(x_world: WorldUnit) -> DataFrame:

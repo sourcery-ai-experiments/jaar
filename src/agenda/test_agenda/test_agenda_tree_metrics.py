@@ -102,7 +102,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
             "ACME",
             "ACME Employee Responsiblities",
             "Know Abuse Prevention and Reporting guildlines",
-            "Take Fall 2021 training",
+            "Discharge Fall 2021 training",
         ]
     )
     assert yao_tree_metrics.last_evaluated_promise_idea_road == train_road

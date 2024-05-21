@@ -54,7 +54,6 @@ def copy_dir(src_dir: str, dest_dir: str):
 
 
 def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = None):
-    # print(f"{dest_dir=} {file_name=} {replace=}")
     if replace is None:
         replace = True
 
@@ -114,7 +113,6 @@ def dir_files(
         if os_path_isfile(obj_path) and include_files:
             file_name = obj_name
             file_path = f"{dir_path}/{file_name}"
-            # print(f" {os_path_isdir(file_path)=}")
             file_text = open_file(dest_dir=dir_path, file_name=file_name)
             dict_key = (
                 os_path_splitext(file_name)[0] if delete_extensions else file_name
@@ -126,6 +124,27 @@ def dir_files(
             file_text = True
             dict_x[dict_key] = file_text
     return dict_x
+
+
+def get_integer_filenames(
+    dir_path: str, min_integer: int, file_extension: str = "json"
+):
+    if min_integer is None:
+        min_integer = 0
+
+    x_set = set()
+    for obj_name in os_listdir(dir_path):
+        obj_path = f"{dir_path}/{obj_name}"
+        if os_path_isfile(obj_path):
+            obj_extension = os_path_splitext(obj_name)[1].replace(".", "")
+            filename_without_extension = os_path_splitext(obj_name)[0]
+            if (
+                filename_without_extension.isdigit()
+                and file_extension == obj_extension
+                and int(filename_without_extension) >= min_integer
+            ):
+                x_set.add(int(filename_without_extension))
+    return x_set
 
 
 def rename_dir(src, dst):

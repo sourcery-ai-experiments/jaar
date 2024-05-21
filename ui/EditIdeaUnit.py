@@ -928,7 +928,6 @@ class EditIdeaUnit(qtw0, Ui_Form):
             meld_strategy=None,
         )
         new_idea._set_idea_attr(idea_attr=idea_attr_x)
-        take_parent_children_bool = self.cb_yo_insert_allChildren.checkState() == 2
         new_parent_road = f"{self.x_idea._label}"
         if self.x_idea._parent_road not in ("", None):
             new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"

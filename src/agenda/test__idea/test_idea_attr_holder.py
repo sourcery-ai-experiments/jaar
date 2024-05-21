@@ -62,7 +62,7 @@ def test_IdeaAttrFilter_CorrectlyCalculatesPremiseRanges():
 
 
 def test_ideaattrfilter_shop_ReturnsCorrectObj():
-    # Given
+    # GIVEN
     sue_healerhold = healerhold_shop({"Sue", "Yim"})
 
     # WHEN
