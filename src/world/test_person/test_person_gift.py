@@ -501,7 +501,7 @@ def test_PersonUnit_create_save_giftunit_SaveCorrectObj(worlds_dir_setup_cleanup
     assert os_path_exists(sue_gift3_path)
 
 
-def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_NoChange(
+def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -511,13 +511,13 @@ def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_NoChange(
     gut_agenda._last_gift_id is None
 
     # WHEN
-    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
 
     # THEN
     assert new_agenda == gut_agenda
 
 
-def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
+def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -535,14 +535,14 @@ def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_1ato
     assert gut_agenda.idea_exists(sports_road) == False
 
     # WHEN
-    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
 
     # THEN
     assert new_agenda != gut_agenda
     assert new_agenda.idea_exists(sports_road)
 
 
-def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
+def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -561,7 +561,7 @@ def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_2ato
     assert gut_agenda.idea_exists(knee_road) == False
 
     # WHEN
-    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
 
     # THEN
     assert new_agenda != gut_agenda

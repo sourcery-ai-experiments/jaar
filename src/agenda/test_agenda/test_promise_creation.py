@@ -18,6 +18,12 @@ def test_create_promise_EmptyParametersDoNotChangeAgenda():
     # THEN
     assert sue_agenda == old_sue_agenda
 
+    # WHEN
+    create_promise(x_agenda=sue_agenda, promise_road=None)
+
+    # THEN
+    assert sue_agenda == old_sue_agenda
+
 
 def test_create_promise_CorrectlyAddsPromiseToAgenda():
     # GIVEN

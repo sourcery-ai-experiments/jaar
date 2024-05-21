@@ -128,10 +128,10 @@ class PersonUnit:
         set_dir(self._econs_dir)
         set_dir(self._atoms_dir)
         set_dir(self._gifts_dir)
-        self.create_gift_and_gut_files_if_they_do_not_exist()
+        self.initialize_gift_and_gut_files()
         self.create_live_file_if_does_not_exist()
 
-    def create_gift_and_gut_files_if_they_do_not_exist(self):
+    def initialize_gift_and_gut_files(self):
         gut_file_exists = self.gut_file_exists()
         gift_file_exists = self.giftunit_file_exists(init_gift_id())
         if gut_file_exists == False and gift_file_exists == False:
@@ -171,7 +171,7 @@ class PersonUnit:
         x_giftunit.save_files()
 
     def _create_gut_from_gifts(self):
-        self.save_gut_file(self._append_gifts_to_agenda(self._get_empty_agenda()))
+        self.save_gut_file(self._merge_gifts_into_agenda(self._get_empty_agenda()))
 
     def _get_empty_agenda(self) -> AgendaUnit:
         empty_agenda = agendaunit_shop(self.person_id, self.world_id)
@@ -309,7 +309,7 @@ class PersonUnit:
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
 
-    def _append_gifts_to_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
+    def _merge_gifts_into_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
         gift_ints = get_integer_filenames(self._gifts_dir, x_agenda._last_gift_id)
         for gift_int in gift_ints:
             x_gift = self.get_giftunit(gift_int)
@@ -447,7 +447,7 @@ class PersonUnit:
         self.save_giftunit_file(new_giftunit)
 
     def append_gifts_to_gut_file(self):
-        self.save_gut_file(self._append_gifts_to_agenda(self.get_gut_file_agenda()))
+        self.save_gut_file(self._merge_gifts_into_agenda(self.get_gut_file_agenda()))
         return self.get_gut_file_agenda()
 
 

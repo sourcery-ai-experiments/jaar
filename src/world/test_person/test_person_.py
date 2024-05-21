@@ -269,7 +269,7 @@ def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanu
     assert sue_person._gut_obj.get_party("Zia") is None
 
 
-def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySavesGutFileAndGiftFile(
+def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesGutFileAndGiftFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -284,7 +284,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    sue_person.create_gift_and_gut_files_if_they_do_not_exist()
+    sue_person.initialize_gift_and_gut_files()
 
     # THEN
     gut_agenda = sue_person.get_gut_file_agenda()
@@ -294,7 +294,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path)
 
 
-def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySavesOnlyGutFile(
+def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGutFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -308,7 +308,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path)
 
     # WHEN
-    sue_person.create_gift_and_gut_files_if_they_do_not_exist()
+    sue_person.initialize_gift_and_gut_files()
 
     # THEN
     gut_agenda = sue_person.get_gut_file_agenda()
@@ -318,7 +318,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path)
 
 
-def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySavesOnlyGiftFile(
+def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGiftFile(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -335,7 +335,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    sue_person.create_gift_and_gut_files_if_they_do_not_exist()
+    sue_person.initialize_gift_and_gut_files()
 
     # THEN
     assert sue_gut_agenda._world_id == get_test_world_id()
@@ -345,7 +345,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
     assert os_path_exists(init_gift_file_path)
 
 
-# def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlyDoesNotOverwrite(
+# def test_PersonUnit_initialize_gift_and_gut_files_CorrectlyDoesNotOverwrite(
 #     worlds_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -360,7 +360,7 @@ def test_PersonUnit_create_gift_and_gut_files_if_they_do_not_exist_CorrectlySave
 #     sue_agenda = agendaunit_shop(sue_text)
 #     bob_text = "Bob"
 #     sue_agenda.add_partyunit(bob_text)
-#     sue_person.create_gift_and_gut_files_if_they_do_not_exist()
+#     sue_person.initialize_gift_and_gut_files()
 
 #     # THEN
 #     assert sue_person.gut_file_exists()
