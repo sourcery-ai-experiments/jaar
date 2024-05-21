@@ -1,3 +1,4 @@
+from src._road.road import get_default_world_id_roadnode as root_label
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
 )
@@ -584,7 +585,7 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     # WHEN/THEN
     assert sue_agenda.idea_exists("") == False
     assert sue_agenda.idea_exists(None) == False
-    assert sue_agenda.idea_exists("A")
+    assert sue_agenda.idea_exists(root_label())
     assert sue_agenda.idea_exists(cat_road)
     assert sue_agenda.idea_exists(week_road)
     assert sue_agenda.idea_exists(gig_road)

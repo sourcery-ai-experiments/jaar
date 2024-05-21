@@ -181,7 +181,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
 
 
 def get_default_world_id_roadnode() -> WorldID:
-    return "A"
+    return "ZZ"
 
 
 def create_road_from_nodes(nodes: list[RoadNode], delimiter: str = None) -> RoadUnit:

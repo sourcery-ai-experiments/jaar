@@ -21,7 +21,7 @@ from src._road.road import (
     WorldID,
     is_roadunit_convertible_to_path,
 )
-from src._road.finance import get_planck_valid, default_planck_if_none
+from src._road.finance import trim_planck_excess, default_planck_if_none
 from src.agenda.meld import (
     get_meld_weight,
     MeldStrategy,
@@ -188,7 +188,7 @@ class AgendaUnit:
             if old_party_creditor_pool != 0:
                 x_ratio = new_party_creditor_pool / old_party_creditor_pool
                 for x_party in self._partys.values():
-                    new_party_creditor_weight = get_planck_valid(
+                    new_party_creditor_weight = trim_planck_excess(
                         num=x_party.creditor_weight * x_ratio, planck=x_party._planck
                     )
                     x_party.set_creditor_weight(new_party_creditor_weight)
@@ -229,7 +229,7 @@ class AgendaUnit:
             if old_party_debtor_pool != 0:
                 x_ratio = new_party_debtor_pool / old_party_debtor_pool
                 for x_party in self._partys.values():
-                    new_party_debtor_weight = get_planck_valid(
+                    new_party_debtor_weight = trim_planck_excess(
                         num=x_party.debtor_weight * x_ratio, planck=x_party._planck
                     )
                     x_party.set_debtor_weight(new_party_debtor_weight)

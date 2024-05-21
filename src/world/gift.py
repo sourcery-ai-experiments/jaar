@@ -1,3 +1,4 @@
+from src._road.road import create_road, get_default_world_id_roadnode as root_label
 from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
@@ -29,6 +30,10 @@ def init_gift_id() -> int:
 
 def get_init_gift_id_if_None(x_gift_id: int = None) -> int:
     return init_gift_id() if x_gift_id is None else x_gift_id
+
+
+def get_json_filename(filename_without_extention) -> str:
+    return f"{filename_without_extention}.json"
 
 
 @dataclass
@@ -64,10 +69,9 @@ class GiftUnit:
         return self._bookunit.agendaatom_exists(x_agendaatom)
 
     def get_step_dict(self) -> dict[str:]:
-        takers_dict = {x_taker: 1 for x_taker in self._takers}
         return {
             "gifter": self._giver,
-            "takers": takers_dict,
+            "takers": {x_taker: 1 for x_taker in self._takers},
             "book": self._bookunit.get_ordered_agendaatoms(self._book_start),
         }
 
@@ -90,30 +94,24 @@ class GiftUnit:
         return get_json_filename(x_number)
 
     def _save_atom_file(self, atom_number: int, x_atom: AgendaAtom):
-        save_file(
-            self._atoms_dir, self._get_num_filename(atom_number), x_atom.get_json()
-        )
+        x_filename = self._get_num_filename(atom_number)
+        save_file(self._atoms_dir, x_filename, x_atom.get_json())
 
     def atom_file_exists(self, atom_number: int) -> bool:
-        return os_path_exists(
-            f"{self._atoms_dir}/{self._get_num_filename(atom_number)}"
-        )
+        x_filename = self._get_num_filename(atom_number)
+        return os_path_exists(f"{self._atoms_dir}/{x_filename}")
 
     def _open_atom_file(self, atom_number: int) -> AgendaAtom:
         x_json = open_file(self._atoms_dir, self._get_num_filename(atom_number))
         return agendaatom_get_from_json(x_json)
 
     def _save_gift_file(self):
-        save_file(
-            self._gifts_dir,
-            self._get_num_filename(self._gift_id),
-            file_text=self.get_bookmetric_json(),
-        )
+        x_filename = self._get_num_filename(self._gift_id)
+        save_file(self._gifts_dir, x_filename, self.get_bookmetric_json())
 
     def gift_file_exists(self) -> bool:
-        return os_path_exists(
-            f"{self._gifts_dir}/{self._get_num_filename(self._gift_id)}"
-        )
+        x_filename = self._get_num_filename(self._gift_id)
+        return os_path_exists(f"{self._gifts_dir}/{x_filename}")
 
     def _save_atom_files(self):
         step_dict = self.get_step_dict()
@@ -143,16 +141,12 @@ def giftunit_shop(
     _gifts_dir: str = None,
     _atoms_dir: str = None,
 ):
-    # _book_start = get_0_if_None(_book_start)
-    _gift_id = get_init_gift_id_if_None(_gift_id)
-    _takers = get_empty_set_if_none(_takers)
     if _bookunit is None:
         _bookunit = bookunit_shop()
-
     x_giftunit = GiftUnit(
         _giver=_giver,
-        _gift_id=_gift_id,
-        _takers=_takers,
+        _gift_id=get_init_gift_id_if_None(_gift_id),
+        _takers=get_empty_set_if_none(_takers),
         _bookunit=_bookunit,
         _person_dir=_person_dir,
         _gifts_dir=_gifts_dir,
@@ -160,10 +154,6 @@ def giftunit_shop(
     )
     x_giftunit.set_book_start(_book_start)
     return x_giftunit
-
-
-def get_json_filename(filename_without_extention) -> str:
-    return f"{filename_without_extention}.json"
 
 
 def create_giftunit_from_files(

@@ -97,7 +97,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reasonheir_table.setHidden(self.reasonheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.reason_base_combo.setCurrentText("A,time,jajatime")
+        self.reason_base_combo.setCurrentText(f"{self.x_agenda._world_id},time,jajatime")
 
     def add_hreg_to_agenda(self):
         self.x_agenda.set_time_hreg_ideas(c400_count=7)

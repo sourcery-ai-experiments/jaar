@@ -159,7 +159,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.current_task_road is None:
             self.label_last_label.setText("")
         else:
-            base_x = "A,time,jajatime"
+            base_x = f"{self.x_agenda._world_id},time,jajatime"
             self.x_agenda.set_intent_task_complete(
                 task_road=self.current_task_road, base=base_x
             )

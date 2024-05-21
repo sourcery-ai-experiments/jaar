@@ -1,3 +1,4 @@
+from src._road.road import create_road, get_default_world_id_roadnode as root_label
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with_tuesday_cleaning_task,
@@ -21,7 +22,8 @@ from pytest import raises as pytest_raises
 def test_CalendarReport_Exists():
     # GIVEN
     bob_text = "Bob"
-    x_time_road = "A,time,jajatime"
+    time_road = create_road(root_label(), "time")
+    jaja_road = create_road(time_road, "jajatime")
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
@@ -31,7 +33,7 @@ def test_CalendarReport_Exists():
     # WHEN
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
-        time_road=x_time_road,
+        time_road=jaja_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
@@ -40,7 +42,7 @@ def test_CalendarReport_Exists():
     )
 
     # THEN
-    assert x_calendarreport.time_road == x_time_road
+    assert x_calendarreport.time_road == jaja_road
     assert x_calendarreport.date_range_start == x_date_range_start
     assert x_calendarreport.interval_count == x_interval_count
     assert x_calendarreport.interval_length == x_interval_length
@@ -51,7 +53,8 @@ def test_CalendarReport_Exists():
 def test_CalendarReport_CalculationMethodsReturnCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    x_time_road = "A,time,jajatime"
+    time_road = create_road(root_label(), "time")
+    jaja_road = create_road(time_road, "jajatime")
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
@@ -59,7 +62,7 @@ def test_CalendarReport_CalculationMethodsReturnCorrectObj():
     x_intent_max_count_state = 7
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
-        time_road=x_time_road,
+        time_road=jaja_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
@@ -81,7 +84,8 @@ def test_CalendarReport_CalculationMethodsReturnCorrectObj():
 def test_CalendarIntentUnit_exists():
     # GIVEN
     bob_text = "Bob"
-    x_time_road = "A,time,jajatime"
+    time_road = create_road(root_label(), "time")
+    jaja_road = create_road(time_road, "jajatime")
     x_date_range_start = 1000000600
     # x_date_range_cease = 1000000900
     x_interval_count = 20
@@ -90,12 +94,14 @@ def test_CalendarIntentUnit_exists():
     x_intent_max_count_state = 7
     x_time_begin = 1000000615
     x_time_close = 1000000630
-    x_intent_idea_road = "A,casa,cleaning,clean fridge"
+    casa_road = create_road(root_label(), "casa")
+    clean_road = create_road(casa_road, "cleaning")
+    fridge_road = create_road(clean_road, "clean fridge")
     x_intent_weight = 0.5
     x_task = True
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
-        time_road=x_time_road,
+        time_road=jaja_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
@@ -108,7 +114,7 @@ def test_CalendarIntentUnit_exists():
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=x_intent_idea_road,
+        intent_idea_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )
@@ -117,7 +123,7 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.calendarreport == x_calendarreport
     assert x_calendarintentunit.time_begin == x_time_begin
     assert x_calendarintentunit.time_close == x_time_close
-    assert x_calendarintentunit.intent_idea_road == x_intent_idea_road
+    assert x_calendarintentunit.intent_idea_road == fridge_road
     assert x_calendarintentunit.intent_weight == x_intent_weight
     assert x_calendarintentunit.task == x_task
 
@@ -133,7 +139,8 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
-    x_time_road = "A,time,jajatime"
+    time_road = create_road(root_label(), "time")
+    jaja_road = create_road(time_road, "jajatime")
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
@@ -141,14 +148,16 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
     x_intent_max_count_state = 7
     x_time_begin = 1000000615
     x_time_close = 1000000630
-    x_intent_idea_road = "A,casa,cleaning,clean fridge"
+    casa_road = create_road(root_label(), "casa")
+    clean_road = create_road(casa_road, "cleaning")
+    fridge_road = create_road(clean_road, "clean fridge")
     x_intent_weight = 0.5
     x_task = True
 
     # WHEN
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
-        time_road=x_time_road,
+        time_road=jaja_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
@@ -159,7 +168,7 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=x_intent_idea_road,
+        intent_idea_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )

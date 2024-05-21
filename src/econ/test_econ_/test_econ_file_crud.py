@@ -1,3 +1,4 @@
+from src._road.road import get_default_world_id_roadnode as root_label
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
@@ -130,7 +131,7 @@ def test_EconUnit_save_file_to_jobs_ChangesFile_idearoot(
     x_econ = econunit_shop(x_world_id, econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
-    assert old_x_agenda._idearoot._label == "A"
+    assert old_x_agenda._idearoot._label == root_label()
     assert old_x_agenda._idearoot._label != x_world_id
 
     # WHEN
@@ -138,5 +139,5 @@ def test_EconUnit_save_file_to_jobs_ChangesFile_idearoot(
 
     # THEN
     new_x_agenda = x_econ.get_file_in_jobs(old_x_agenda._owner_id)
-    assert new_x_agenda._idearoot._label != "A"
+    assert new_x_agenda._idearoot._label != root_label()
     assert new_x_agenda._idearoot._label == x_world_id

@@ -380,7 +380,7 @@ def test_AgendaUnit_beliefunits_meld_BeliefsAttributeCorrectlySet():
 def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     # GIVEN
     bob_text = "Bob"
-    bob_agenda = agendaunit_shop(bob_text)
+    bob_agenda = agendaunit_shop(bob_text, "music")
     bob_idearoot = bob_agenda._idearoot
     bob_idearoot._uid = 1
     yao_agenda = agenda_v001()

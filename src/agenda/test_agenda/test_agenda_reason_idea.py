@@ -167,7 +167,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     try:
         gig_idea._reasonheirs[week_road]
     except KeyError as e:
-        assert str(e) == "'A,weekdays'"
+        assert str(e) == f"'{x_agenda._world_id},weekdays'"
 
     x_agenda.set_agenda_metrics()
     # idea_dict = x_agenda.get_idea_dict()

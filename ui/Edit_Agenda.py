@@ -28,7 +28,7 @@ class Edit_Agenda(qw, Ui_Form):
     def select_intent_item(self):
         _road = self.intent_table.item(self.intent_table.currentRow(), 1).text()
         _label = self.intent_table.item(self.intent_table.currentRow(), 0).text()
-        # base_x = "A,time,jajatime"
+        # base_x = f"{self.x_agenda._world_id},time,jajatime"
         base_x = self.belief_base_update_combo.currentText()
         self.x_agenda.set_intent_task_complete(
             task_road=self.x_agenda.make_road(_road, _label), base=base_x

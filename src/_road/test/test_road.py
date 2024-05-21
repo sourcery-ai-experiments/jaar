@@ -339,7 +339,7 @@ def test_road_get_forefather_roads_ReturnsAncestorRoadUnitsWithoutSource():
 
 
 def test_road_get_default_world_id_roadnode_ReturnsCorrectObj():
-    assert root_label() == "A"
+    assert root_label() == "ZZ"
 
 
 def test_road_create_road_from_nodes_ReturnsCorrectObj():
