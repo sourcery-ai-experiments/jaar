@@ -47,14 +47,14 @@ def _get_ingested_ideaunit_list(
     return x_list
 
 
-def listen_to_listenee(listener: AgendaUnit, listenee: AgendaUnit) -> AgendaUnit:
+def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
     if listener._party_debtor_pool is None:
         raise Missing_party_debtor_poolException(
             "Listening process is not possible without debtor pool."
         )
-    if listenee._rational:
-        perspective_agendaunit = copy_deepcopy(listenee)
-        # look at things from listenee's prespective
+    if speaker._rational:
+        perspective_agendaunit = copy_deepcopy(speaker)
+        # look at things from speaker's prespective
         perspective_agendaunit.set_owner_id(listener._owner_id)
         intent_list = list(perspective_agendaunit.get_intent_dict().values())
         ingest_list = _get_ingested_ideaunit_list(

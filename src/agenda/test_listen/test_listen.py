@@ -1,6 +1,6 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.listen import listen_to_listenee, _get_ingested_ideaunit_list
+from src.agenda.listen import listen_to_speaker, _get_ingested_ideaunit_list
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 
@@ -119,7 +119,7 @@ def test_get_ingested_ideaunit_list_ReturnsCorrectList_v4():
     assert ingested_list == [cook_ideaunit, clean_ideaunit]
 
 
-def test_listen_to_listenee_ReturnsUnchangedAgenda():
+def test_listen_to_speaker_ReturnsUnchangedAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
@@ -128,13 +128,13 @@ def test_listen_to_listenee_ReturnsUnchangedAgenda():
     zia_agendaunit = agendaunit_shop(zia_text)
 
     # WHEN
-    after_yao_agendaunit = listen_to_listenee(yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker(yao_agendaunit, zia_agendaunit)
 
     # THEN
     assert after_yao_agendaunit == yao_agendaunit
 
 
-def test_listen_to_listenee_RaisesErrorIfPoolIsNotSet():
+def test_listen_to_speaker_RaisesErrorIfPoolIsNotSet():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
@@ -143,13 +143,13 @@ def test_listen_to_listenee_RaisesErrorIfPoolIsNotSet():
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        listen_to_listenee(yao_agendaunit, zia_agendaunit)
+        listen_to_speaker(yao_agendaunit, zia_agendaunit)
     assert (
         str(excinfo.value) == "Listening process is not possible without debtor pool."
     )
 
 
-def test_listen_to_listenee_ReturnsSingleTaskAgenda():
+def test_listen_to_speaker_ReturnsSingleTaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -169,7 +169,7 @@ def test_listen_to_listenee_ReturnsSingleTaskAgenda():
     print(f"{zia_yao_agendaunit.get_intent_dict()=}")
 
     # WHEN
-    after_yao_agendaunit = listen_to_listenee(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
 
     # THEN
     clean_road = zia_agendaunit.make_l1_road(clean_text)
@@ -181,7 +181,7 @@ def test_listen_to_listenee_ReturnsSingleTaskAgenda():
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
 
-def test_listen_to_listenee_ReturnsLevel2TaskAgenda():
+def test_listen_to_speaker_ReturnsLevel2TaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -202,7 +202,7 @@ def test_listen_to_listenee_ReturnsLevel2TaskAgenda():
     print(f"{zia_yao_agendaunit.get_intent_dict()=}")
 
     # WHEN
-    after_yao_agendaunit = listen_to_listenee(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
 
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
@@ -218,7 +218,7 @@ def test_listen_to_listenee_ReturnsLevel2TaskAgenda():
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
 
-def test_listen_to_listenee_Returns2IntentIdeasLevel2TaskAgenda():
+def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -247,7 +247,7 @@ def test_listen_to_listenee_Returns2IntentIdeasLevel2TaskAgenda():
     assert len(zia_yao_agendaunit.get_intent_dict()) == 3
 
     # WHEN
-    after_yao_agendaunit = listen_to_listenee(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
 
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
@@ -271,7 +271,7 @@ def test_listen_to_listenee_Returns2IntentIdeasLevel2TaskAgenda():
     assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_listenee_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlreadyExists():
+def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlreadyExists():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -305,7 +305,7 @@ def test_listen_to_listenee_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAl
     assert len(zia_yao_agendaunit.get_intent_dict()) == 3
 
     # WHEN
-    after_yao_agendaunit = listen_to_listenee(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
 
     # THEN
     cook_road = zia_agendaunit.make_road(casa_road, cook_text)
