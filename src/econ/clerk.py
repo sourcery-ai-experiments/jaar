@@ -8,8 +8,8 @@ from src.agenda.agenda import (
 )
 from src.agenda.listen import listen_to_speaker
 from src.instrument.file import save_file, open_file
-from dataclasses import dataclass
 from os.path import exists as os_path_exists
+from dataclasses import dataclass
 
 
 class InvalidclerkException(Exception):
