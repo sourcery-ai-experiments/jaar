@@ -4,7 +4,6 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     AgendaUnit,
     agendaunit_shop,
-    get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.listen import listen_to_speaker
 from src.instrument.file import save_file, open_file
