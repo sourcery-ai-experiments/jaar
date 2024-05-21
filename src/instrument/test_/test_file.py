@@ -164,6 +164,7 @@ def test_get_integer_filenames_GrabsFileNamesWithIntegersWithCorrectExtension(
 
     # WHEN / THEN
     assert get_integer_filenames(env_dir, 0, "txt") == {1, 3}
+    assert get_integer_filenames(env_dir, None, "txt") == {1, 3}
 
 
 def test_get_integer_filenames_GrabsFileNamesWithIntegersGreaterThanGiven(

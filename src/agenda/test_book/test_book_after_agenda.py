@@ -56,6 +56,9 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     new5_value = "override"
     new5_arg = "_meld_strategy"
     x_agendaatom.set_optional_arg(new5_arg, new5_value)
+    new6_value = 0.5
+    new6_arg = "_planck"
+    x_agendaatom.set_optional_arg(new6_arg, new6_value)
     sue_bookunit.set_agendaatom(x_agendaatom)
 
     # WHEN
@@ -69,6 +72,8 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     assert after_sue_agendaunit._meld_strategy == new5_value
     assert after_sue_agendaunit._weight == new1_value
     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
+    assert after_sue_agendaunit._planck == new6_value
+    assert after_sue_agendaunit._planck != before_sue_agendaunit._planck
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():

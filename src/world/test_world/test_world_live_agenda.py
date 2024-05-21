@@ -1,6 +1,7 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
+from src.world.gift import init_gift_id
 from src.world.world import worldunit_shop
 from src.world.examples.world_env_kit import (
     get_test_worlds_dir,
@@ -27,8 +28,10 @@ def test_WorldUnit_generate_live_agenda_Sets_live_AgendaFile(
 
     # THEN
     example_agenda = agendaunit_shop(luca_text, music_text)
+    example_agenda._last_gift_id = init_gift_id()
     example_agenda.set_agenda_metrics()
     assert luca_live._world_id == example_agenda._world_id
+    assert luca_live._last_gift_id == example_agenda._last_gift_id
     assert luca_live == example_agenda
 
 

@@ -60,13 +60,13 @@ def test_BookUnit_create_agendaatoms_CorrectHandlesEmptyAgendas():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(sue_agenda, sue_agenda)
+    sue_bookunit.add_all_different_agendaatoms(sue_agenda, sue_agenda)
 
     # THEN
     assert sue_bookunit.agendaatoms == {}
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -78,7 +78,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
     assert len(sue_bookunit.agendaatoms.get(atom_insert()).get("agenda_partyunit")) == 1
@@ -93,7 +93,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_insert():
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_partyunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -107,7 +107,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
     rico_agendaatom = get_nested_value(
@@ -120,7 +120,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_delete():
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_partyunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -133,7 +133,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
     x_keylist = [atom_update(), "agenda_partyunit", rico_text]
@@ -146,18 +146,20 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_partyunit_update():
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_AgendaUnit_simple_attrs_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     x_agendaUnit_weight = 55
+    x_planck = 0.5
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
     x_money_desc = "dragon coins"
     x_party_creditor_pool = 77
     x_party_debtor_pool = 88
     after_sue_agenda._weight = x_agendaUnit_weight
+    after_sue_agenda._planck = x_planck
     after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
     after_sue_agenda.set_money_desc(x_money_desc)
@@ -166,7 +168,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_updat
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agenda, after_sue_agenda)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_agenda, after_sue_agenda)
 
     # THEN
     x_keylist = [atom_update(), "agendaunit"]
@@ -177,12 +179,13 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_AgendaUnit_weight_updat
     assert rico_agendaatom.get_value("_party_creditor_pool") == x_party_creditor_pool
     assert rico_agendaatom.get_value("_party_debtor_pool") == x_party_debtor_pool
     assert rico_agendaatom.get_value("_weight") == x_agendaUnit_weight
+    assert rico_agendaatom.get_value("_planck") == x_planck
 
     print(f"{get_agendaatom_total_count(sue_bookunit)=}")
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_group_partylink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -204,7 +207,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_insert(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [atom_insert(), "agenda_groupunit", run_text]
@@ -229,7 +234,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_insert(
     assert get_agendaatom_total_count(sue_bookunit) == 5
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_group_partylink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -261,7 +266,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_update(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [atom_update(), "agenda_groupunit", run_text]
@@ -282,7 +289,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_update(
     assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_group_partylink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -314,7 +321,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_delete(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_keylist = [atom_delete(), "agenda_groupunit", run_text]
@@ -334,7 +343,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_group_partylink_delete(
     assert get_agendaatom_total_count(sue_bookunit) == 4
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -357,7 +366,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     x_category = "agenda_ideaunit"
@@ -377,7 +388,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_delete():
     assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -414,7 +425,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print_agendaatom_keys(sue_bookunit)
@@ -442,7 +455,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_insert():
     assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -483,7 +496,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print_agendaatom_keys(sue_bookunit)
@@ -506,7 +521,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_update():
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -545,7 +560,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_au, after_sue_agendaunit)
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -558,7 +573,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_delete
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -604,7 +619,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_au)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_au, after_sue_au)
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -621,7 +636,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_insert
     assert get_agendaatom_total_count(sue_bookunit) == 2
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_balancelink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -654,7 +669,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update
     )
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_au, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(before_sue_au, after_sue_agendaunit)
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -668,7 +683,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_balancelink_update
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -707,7 +722,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -722,7 +739,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_update(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -753,7 +770,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -767,7 +786,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_insert(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -798,7 +817,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -811,7 +832,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_beliefunit_delete(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -848,7 +869,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -869,7 +892,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -910,7 +933,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -928,7 +953,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -976,7 +1001,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -997,7 +1024,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reason_premiseunit
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1022,7 +1049,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert(
     )
 
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -1041,7 +1070,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_insert(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1073,7 +1102,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -1092,7 +1123,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_update(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1120,7 +1151,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete(
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -1136,7 +1169,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_reasonunit_delete(
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1154,7 +1187,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert()
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")
@@ -1170,7 +1205,7 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_insert()
     assert get_agendaatom_total_count(sue_bookunit) == 1
 
 
-def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete():
+def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -1190,7 +1225,9 @@ def test_BookUnit_add_all_agendaatoms_Creates_AgendaAtom_idea_suffgroup_delete()
 
     # WHEN
     sue_bookunit = bookunit_shop()
-    sue_bookunit.add_all_agendaatoms(before_sue_agendaunit, after_sue_agendaunit)
+    sue_bookunit.add_all_different_agendaatoms(
+        before_sue_agendaunit, after_sue_agendaunit
+    )
 
     # THEN
     print(f"{print_agendaatom_keys(sue_bookunit)=}")

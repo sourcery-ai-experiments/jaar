@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS atom_hx (
 
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6131
+    assert generated_sqlstr.find(end_sqlstr) == 6169
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
@@ -215,14 +215,11 @@ def test_get_atom_mstr_table_create_sqlstr_ReturnsCorrectStr():
 CREATE TABLE IF NOT EXISTS atom_mstr (
   person_id VARCHAR(255) NOT NULL
 , atom_hx_row_id INT NOT NULL"""
-
-    assert generated_sqlstr.find(begin_sqlstr) == 0
     end_sqlstr = """)
 ;"""
-
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6163
+    assert generated_sqlstr.find(end_sqlstr) == 6201
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )

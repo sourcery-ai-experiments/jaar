@@ -4,6 +4,7 @@ from src.world.gift import (
     giftunit_shop,
     create_giftunit_from_files,
     get_json_filename,
+    init_gift_id,
 )
 from src.world.examples.example_atoms import get_atom_example_ideaunit_knee
 from src.world.examples.example_gifts import (
@@ -19,7 +20,7 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
-from src.instrument.file import open_file, dir_files
+from src.instrument.file import open_file, dir_files, delete_dir, set_dir
 from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 from copy import deepcopy as copy_deepcopy
@@ -171,7 +172,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
-    x_gift_id = 0
+    x_gift_id = 1
     six_filename = get_json_filename(x_gift_id)
     sue_giftunit = giftunit_shop(
         _giver=sue_text,
@@ -196,7 +197,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     )
 
 
-def test_PersonUnit_get_valid_giftunit_ReturnsObjWithAttributesFixed(
+def test_PersonUnit_validate_giftunit_ReturnsObjWithAttributesFixed(
     worlds_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -209,19 +210,19 @@ def test_PersonUnit_get_valid_giftunit_ReturnsObjWithAttributesFixed(
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
         _giver="Bob",
-        _gift_id=sue_person.get_next_gift_file_number() - 5,
+        _gift_id=sue_person._get_next_gift_file_number() - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
     )
-    valid_giftunit = sue_person.get_valid_giftunit(invalid_sue_giftunit)
+    valid_giftunit = sue_person.validate_giftunit(invalid_sue_giftunit)
 
     # THEN
     assert valid_giftunit._atoms_dir == sue_person._atoms_dir
     assert valid_giftunit._gifts_dir == sue_person._gifts_dir
-    assert valid_giftunit._gift_id == sue_person.get_next_gift_file_number()
+    assert valid_giftunit._gift_id == sue_person._get_next_gift_file_number()
     correct_sue_giftunit = giftunit_shop(
         _giver=sue_text,
-        _gift_id=sue_person.get_next_gift_file_number(),
+        _gift_id=sue_person._get_next_gift_file_number(),
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
     )
@@ -234,7 +235,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
-    next_int = sue_person.get_next_gift_file_number()
+    next_int = sue_person._get_next_gift_file_number()
     next_filename = get_json_filename(next_int)
     sue_gift2_path = f"{sue_person._gifts_dir}/{next_filename}"
     print(f"{sue_gift2_path=}")
@@ -243,7 +244,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
         _giver="Bob",
-        _gift_id=sue_person.get_next_gift_file_number() - 5,
+        _gift_id=sue_person._get_next_gift_file_number() - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
     )
@@ -262,8 +263,10 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
     sue_person = personunit_shop(sue_text)
 
     # WHEN / THEN
+    delete_dir(sue_person._gifts_dir)
     assert sue_person.get_max_gift_file_number() is None
-    assert sue_person.get_next_gift_file_number() == 0
+    assert sue_person._get_next_gift_file_number() == init_gift_id()
+    assert sue_person._get_next_gift_file_number() == 0
 
     # GIVEN
     six_int = 6
@@ -284,10 +287,10 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
 
     # WHEN / THEN
     assert sue_person.get_max_gift_file_number() == six_int
-    assert sue_person.get_next_gift_file_number() == 7
+    assert sue_person._get_next_gift_file_number() == 7
 
 
-def test_PersonUnit_get_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFilesExist(
+def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFilesExist(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -295,36 +298,41 @@ def test_PersonUnit_get_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFil
     sue_person = personunit_shop(sue_text)
 
     # WHEN
-    sue_giftunit = sue_person.get_new_giftunit()
+    delete_dir(sue_person._gifts_dir)
+    sue_giftunit = sue_person._create_new_giftunit()
 
     # THEN
     assert sue_giftunit._giver == sue_person.person_id
+    assert sue_giftunit._gift_id == init_gift_id()
     assert sue_giftunit._gift_id == 0
-    assert sue_giftunit._gift_id == sue_person.get_next_gift_file_number()
+    assert sue_giftunit._gift_id == sue_person._get_next_gift_file_number()
     assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
 
 
-def test_PersonUnit_get_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftFilesExist(
+def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftFilesExist(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
+    delete_dir(sue_person._gifts_dir)
+
     zero_giftunit = get_sue_giftunit()
-    zero_giftunit._gift_id = sue_person.get_next_gift_file_number()
+    zero_giftunit._gift_id = sue_person._get_next_gift_file_number()
     zero_giftunit._atoms_dir = sue_person._atoms_dir
     zero_giftunit._gifts_dir = sue_person._gifts_dir
     sue_person.save_giftunit_file(zero_giftunit)
 
     # WHEN
-    sue_giftunit = sue_person.get_new_giftunit()
+    sue_giftunit = sue_person._create_new_giftunit()
 
     # THEN
     assert sue_giftunit._giver == sue_person.person_id
+    assert sue_giftunit._gift_id == init_gift_id() + 1
     assert sue_giftunit._gift_id == 1
-    assert sue_giftunit._gift_id == sue_person.get_next_gift_file_number()
+    assert sue_giftunit._gift_id == sue_person._get_next_gift_file_number()
     assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
@@ -337,11 +345,11 @@ def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     yao_text = "yao"
-    x0_giftunit = sue_person.get_new_giftunit()
+    x0_giftunit = sue_person._create_new_giftunit()
     x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(x0_giftunit)
     bob_text = "Bob"
-    x1_giftunit = sue_person.get_new_giftunit()
+    x1_giftunit = sue_person._create_new_giftunit()
     x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(x1_giftunit)
 
@@ -364,11 +372,11 @@ def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     yao_text = "yao"
-    x0_giftunit = sue_person.get_new_giftunit()
+    x0_giftunit = sue_person._create_new_giftunit()
     x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(x0_giftunit)
     bob_text = "Bob"
-    x1_giftunit = sue_person.get_new_giftunit()
+    x1_giftunit = sue_person._create_new_giftunit()
     x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(x1_giftunit)
 
@@ -422,6 +430,10 @@ def test_PersonUnit_save_giftunit_file_CanCreateAndChange3Giftunits(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
+    delete_dir(sue_person._gifts_dir)
+    delete_dir(sue_person._atoms_dir)
+    set_dir(sue_person._gifts_dir)
+    set_dir(sue_person._atoms_dir)
     assert len(dir_files(sue_person._gifts_dir)) == 0
     assert len(dir_files(sue_person._atoms_dir)) == 0
 
@@ -443,7 +455,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     sue2_giftunit._atoms_dir = f"{sue_person.person_dir}/swimming"
     sue2_giftunit._gifts_dir = f"{sue_person.person_dir}/swimming"
     sue2_giftunit._giver = "Bob"
-    sue2_giftunit._gift_id = sue_person.get_next_gift_file_number() - 5
+    sue2_giftunit._gift_id = sue_person._get_next_gift_file_number() - 5
     prev_sue2_giftunit = copy_deepcopy(sue2_giftunit)
 
     # WHEN
@@ -456,7 +468,40 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     assert valid_giftunit._gift_id != prev_sue2_giftunit._gift_id
 
 
-def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_NoChange(
+def test_PersonUnit_create_save_giftunit_SaveCorrectObj(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(sue_text)
+    two_int = 2
+    three_int = 3
+    two_filename = get_json_filename(two_int)
+    three_filename = get_json_filename(three_int)
+    sue_gift2_path = f"{sue_person._gifts_dir}/{two_filename}"
+    sue_gift3_path = f"{sue_person._gifts_dir}/{three_filename}"
+    print(f"{sue_gift2_path=}")
+    print(f"{sue_gift3_path=}")
+    sue_giftunit = giftunit_shop(
+        _giver=sue_text,
+        _gift_id=two_int,
+        _atoms_dir=sue_person._atoms_dir,
+        _gifts_dir=sue_person._gifts_dir,
+    )
+    sue_person.save_giftunit_file(sue_giftunit, change_invalid_attrs=False)
+    assert os_path_exists(sue_gift2_path)
+    assert os_path_exists(sue_gift3_path) == False
+
+    # WHEN
+    before_agenda = sue_person.get_gut_file_agenda()
+    bob_text = "Bob"
+    after_agenda = copy_deepcopy(before_agenda)
+    after_agenda.add_partyunit(bob_text)
+    sue_person.create_save_giftunit(before_agenda, after_agenda)
+
+    # THEN
+    assert os_path_exists(sue_gift3_path)
+
+
+def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_NoChange(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -466,13 +511,13 @@ def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_NoChange(
     gut_agenda._last_gift_id is None
 
     # WHEN
-    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
+    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
 
     # THEN
     assert new_agenda == gut_agenda
 
 
-def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_1atom(
+def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -490,14 +535,14 @@ def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_
     assert gut_agenda.idea_exists(sports_road) == False
 
     # WHEN
-    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
+    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
 
     # THEN
     assert new_agenda != gut_agenda
     assert new_agenda.idea_exists(sports_road)
 
 
-def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_2atoms(
+def test_PersonUnit_append_gifts_to_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
     worlds_dir_setup_cleanup,
 ):
     # GIVEN
@@ -516,7 +561,32 @@ def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_
     assert gut_agenda.idea_exists(knee_road) == False
 
     # WHEN
-    new_agenda = sue_person._get_agenda_from_gift_files(gut_agenda)
+    new_agenda = sue_person._append_gifts_to_agenda(gut_agenda)
+
+    # THEN
+    assert new_agenda != gut_agenda
+    assert new_agenda.idea_exists(sports_road)
+    assert new_agenda.idea_exists(knee_road)
+
+
+def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(sue_text)
+    sue_person.save_giftunit_file(sue_2atomunits_giftunit())
+    gut_agenda = sue_person.get_gut_file_agenda()
+    print(f"{gut_agenda._world_id=}")
+    sports_text = "sports"
+    sports_road = gut_agenda.make_l1_road(sports_text)
+    knee_text = "knee"
+    knee_road = gut_agenda.make_road(sports_road, knee_text)
+    assert gut_agenda.idea_exists(sports_road) == False
+    assert gut_agenda.idea_exists(knee_road) == False
+
+    # WHEN
+    new_agenda = sue_person.append_gifts_to_gut_file()
 
     # THEN
     assert new_agenda != gut_agenda
@@ -690,3 +760,49 @@ def test_PersonUnit_get_agenda_from_gift_files_ReturnsObj_WithSingleGiftChanges_
 #     sports_road = yao_agenda.make_l1_road(sports_text)
 
 #     assert yao_agenda.idea_exists(sports_road)
+
+
+def test_PersonUnit_add_promise_gift_AddsPromiseGift(worlds_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    old_sue_gut = sue_person.get_gut_file_agenda()
+    clean_text = "clean"
+    clean_road = old_sue_gut.make_l1_road(clean_text)
+    gift_filename = get_json_filename(1)
+    sue_gift_path = f"{sue_person._gifts_dir}/{gift_filename}"
+    print(f"{sue_gift_path=}")
+    assert os_path_exists(sue_gift_path) == False
+    old_sue_gut = sue_person.get_gut_file_agenda()
+    assert old_sue_gut.idea_exists(clean_road) == False
+
+    # WHEN
+    sue_person.add_promise_gift(clean_road)
+
+    # THEN
+    assert os_path_exists(sue_gift_path)
+    new_sue_gut = sue_person.get_gut_file_agenda()
+    assert new_sue_gut.idea_exists(clean_road)
+
+
+def test_PersonUnit_add_promise_gift_SetsGutAgendaPromiseIdea_suffgroup(
+    worlds_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_person = personunit_shop(person_id=sue_text)
+    old_sue_gut = sue_person.get_gut_file_agenda()
+    clean_text = "clean"
+    clean_road = old_sue_gut.make_l1_road(clean_text)
+    assert old_sue_gut.idea_exists(clean_road) == False
+
+    # WHEN
+    bob_text = "Bob"
+    sue_person.add_promise_gift(clean_road, x_suffgroup=bob_text)
+
+    # THEN
+    new_sue_gut = sue_person.get_gut_file_agenda()
+    assert new_sue_gut.idea_exists(clean_road)
+    clean_idea = new_sue_gut.get_idea_obj(clean_road)
+    print(f"{clean_idea._assignedunit._suffgroups=}")
+    assert clean_idea._assignedunit.suffgroup_exists(bob_text)

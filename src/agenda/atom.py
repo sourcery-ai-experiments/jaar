@@ -342,6 +342,9 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
         x_arg = "_weight"
         if xs.get_value(x_arg) != None:
             x_agenda._weight = xs.get_value(x_arg)
+        x_arg = "_planck"
+        if xs.get_value(x_arg) != None:
+            x_agenda._planck = xs.get_value(x_arg)
     elif xs.category == "agenda_groupunit" and xs.crud_text == atom_delete():
         group_id = xs.get_value("group_id")
         x_agenda.del_groupunit(group_id)
@@ -549,6 +552,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._meld_strategy != y_obj._meld_strategy
             or x_obj._party_creditor_pool != y_obj._party_creditor_pool
             or x_obj._party_debtor_pool != y_obj._party_debtor_pool
+            or x_obj._planck != y_obj._planck
         )
     elif category == "agenda_groupunit":
         return x_obj._treasury_partylinks != y_obj._treasury_partylinks

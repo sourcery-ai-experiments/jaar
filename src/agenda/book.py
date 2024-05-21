@@ -137,7 +137,9 @@ class BookUnit:
         x_keylist = [crud_text, category, *required_args]
         return get_nested_value(self.agendaatoms, x_keylist)
 
-    def add_all_agendaatoms(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
+    def add_all_different_agendaatoms(
+        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+    ):
         before_agenda.set_agenda_metrics()
         after_agenda.set_agenda_metrics()
         self.add_agendaatoms_agendaunit_simple_attrs(before_agenda, after_agenda)
@@ -169,6 +171,8 @@ class BookUnit:
             )
         if before_agenda._weight != after_agenda._weight:
             x_agendaatom.set_optional_arg("_weight", after_agenda._weight)
+        if before_agenda._planck != after_agenda._planck:
+            x_agendaatom.set_optional_arg("_planck", after_agenda._planck)
         self.set_agendaatom(x_agendaatom)
 
     def add_agendaatom_partyunits(

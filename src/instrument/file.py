@@ -129,6 +129,9 @@ def dir_files(
 def get_integer_filenames(
     dir_path: str, min_integer: int, file_extension: str = "json"
 ):
+    if min_integer is None:
+        min_integer = 0
+
     x_set = set()
     for obj_name in os_listdir(dir_path):
         obj_path = f"{dir_path}/{obj_name}"

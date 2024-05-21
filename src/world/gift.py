@@ -2,7 +2,6 @@ from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
 from src.instrument.python import (
-    get_0_if_None,
     get_empty_set_if_none,
     get_json_from_dict,
     get_dict_from_json,
@@ -22,6 +21,14 @@ class WantSubRoadUnitException(Exception):
 
 class get_member_attr_Exception(Exception):
     pass
+
+
+def init_gift_id() -> int:
+    return 0
+
+
+def get_init_gift_id_if_None(x_gift_id: int = None) -> int:
+    return init_gift_id() if x_gift_id is None else x_gift_id
 
 
 @dataclass
@@ -51,7 +58,7 @@ class GiftUnit:
         self._bookunit = bookunit_shop()
 
     def set_book_start(self, x_book_start: int):
-        self._book_start = get_0_if_None(x_book_start)
+        self._book_start = get_init_gift_id_if_None(x_book_start)
 
     def agendaatom_exists(self, x_agendaatom: AgendaAtom):
         return self._bookunit.agendaatom_exists(x_agendaatom)
@@ -137,7 +144,7 @@ def giftunit_shop(
     _atoms_dir: str = None,
 ):
     # _book_start = get_0_if_None(_book_start)
-    _gift_id = get_0_if_None(_gift_id)
+    _gift_id = get_init_gift_id_if_None(_gift_id)
     _takers = get_empty_set_if_none(_takers)
     if _bookunit is None:
         _bookunit = bookunit_shop()
