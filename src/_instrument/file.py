@@ -204,7 +204,7 @@ def can_active_user_edit_paths(path: str = None) -> bool:
     path; `False` otherwise.
     """
     # Parent directory of the passed path. If empty, we substitute the active
-    # working directory (CWD) instead.
+    # workinng directory (CWD) instead.
     # dirname = os_path_dirname(path) or os_getcwd()
     dirname = os_getcwd()
     return os_access(dirname, os_W_OK)
@@ -236,7 +236,7 @@ def is_path_probably_creatable(path: str = None) -> bool:
     `False` otherwise.
     """
     # Parent directory of the passed path. If empty, we substitute the active
-    # working directory (CWD) instead.
+    # workinng directory (CWD) instead.
     dirname = os_getcwd() if path is None else os_path_dirname(path) or os_getcwd()
     try:
         # For safety, explicitly close and hence delete this temporary file

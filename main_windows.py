@@ -42,15 +42,15 @@ class MainApp(QApplication):
 
         # create editmain instance
         self.editmain_view = EditMainView()
-        # create slot for making editmain visible
+        # create slot for editmain visibility
         self.main_window.open_editmain.connect(self.editmain_show)
 
         self.edit_intent_view = Edit_Agenda()
-        # create slot for making editmain visible
+        # create slot for editmain visibility
         self.main_window.open_edit_intent.connect(self.edit_intent_show)
 
         self.edittime_view = EditBeliefTime()
-        # create slot for making editmain visible
+        # create slot for editmain visibility
         self.main_window.open_edittime.connect(self.editbelief_show)
         self.edittime_view.root_changes_submitted.connect(self.main_window.refresh_all)
 

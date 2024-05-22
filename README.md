@@ -36,7 +36,7 @@ This is mostly a one man projeect. Femi has really helped.
 
 Future enhancement: `jaar` can be installed using `pip`
 
-<!-- TODO: Get pip install working 
+<!-- TODO: Get pip install to function correctly
 
     pip install jaar
 

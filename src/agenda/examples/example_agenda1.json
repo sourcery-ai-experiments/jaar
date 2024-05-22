@@ -1004,7 +1004,7 @@
                                                 "_weight": 1,
                                                 "promise": true
                                             },
-                                            "dev metric tracking script \"TIMOTHY\"": {
+                                            "dev quantification script \"TIMOTHY\"": {
                                                 "_is_expanded": true,
                                                 "_kids": {
                                                     "MECHANISM2": {
@@ -1040,7 +1040,7 @@
                                                         "promise": false
                                                     }
                                                 },
-                                                "_label": "dev metric tracking script \"TIMOTHY\"",
+                                                "_label": "dev quantification script \"TIMOTHY\"",
                                                 "_meld_strategy": "default",
                                                 "_reasonunits": {
                                                     "music,day_minute": {
@@ -3949,9 +3949,9 @@
                                 "_weight": 1,
                                 "promise": true
                             },
-                            "pciking them up": {
+                            "going to get them": {
                                 "_is_expanded": true,
-                                "_label": "pciking them up",
+                                "_label": "going to get them",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "music,day_minute": {

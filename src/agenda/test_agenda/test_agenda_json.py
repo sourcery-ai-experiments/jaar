@@ -85,21 +85,21 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert idearoot_dict["_weight"] == x_idearoot._weight
     assert len(idearoot_dict[_kids]) == len(x_idearoot._kids)
 
-    # checking an ideakid._range_source_road attribute
+    # check an ideakid._range_source_road attribute
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_obj(month_week_road)
-    print("checking world_id,month_week...range_source_road equal to...")
+    print("check world_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_l1_road("ced_week")
     assert month_week_special_dict == month_week_idea_x._range_source_road
 
-    # checking an ideakid._numeric_road attribute
+    # check an ideakid._numeric_road attribute
     num1_text = "numeric_road_test"
     num1_road = x_agenda.make_l1_road(num1_text)
     num1_idea_x = x_agenda.get_idea_obj(num1_road)
-    print(f"checking {num1_road}...numeric_road equal to...")
+    print(f"check {num1_road}...numeric_road equal to...")
     num1_dict_numeric_road = idearoot_dict[_kids][num1_text][_numeric_road]
     assert num1_dict_numeric_road != None
     assert num1_dict_numeric_road == month_week_road

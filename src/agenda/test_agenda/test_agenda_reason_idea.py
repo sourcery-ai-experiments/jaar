@@ -217,7 +217,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     rla_text = "hp"
     rla_road = a4_agenda.make_road(gig_road, rla_text)
     a4_agenda.add_idea(ideaunit_shop(rla_text), parent_road=rla_road)
-    cost_text = "cost_tracking"
+    cost_text = "cost_quantification"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
     a4_agenda.add_idea(ideaunit_shop(cost_text), parent_road=cost_road)
     a4_agenda.set_agenda_metrics()
@@ -281,7 +281,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     rla_text = "hp"
     rla_road = a4_agenda.make_road(gig_road, rla_text)
     a4_agenda.add_idea(ideaunit_shop(rla_text), parent_road=rla_road)
-    cost_text = "cost_tracking"
+    cost_text = "cost_quantification"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
     a4_agenda.add_idea(ideaunit_shop(cost_text), parent_road=cost_road)
 

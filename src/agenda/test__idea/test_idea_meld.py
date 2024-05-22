@@ -199,7 +199,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     arbitrarily_set_idea_attr(
         idea=x1_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=2)
     )
-    x2_idea = ideaunit_shop("Rocking")
+    x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=default_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=3)
@@ -225,7 +225,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
         idea=x1_idea,
         balancelink=balancelink_shop(group_id=br1, creditor_weight=2, debtor_weight=3),
     )
-    x2_idea = ideaunit_shop("Rocking")
+    x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea,
@@ -253,7 +253,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoGroupsScenario_balancelink():
     )
 
     br2 = "Bears"
-    x2_idea = ideaunit_shop("Rocking")
+    x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea, balancelink=balancelink_shop(group_id=br2, creditor_weight=2)

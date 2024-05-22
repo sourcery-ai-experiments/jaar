@@ -371,7 +371,7 @@ def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
     gig_road = luca_agenda.make_l1_road(gig_text)
     luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     slash_text = "/"
-    home_text = f"home cooking{slash_text}cleaning"
+    home_text = f"home cook{slash_text}clean"
     luca_agenda.add_idea(ideaunit_shop(home_text), parent_road=gig_road)
 
     # WHEN / THEN
@@ -391,7 +391,7 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     gig_text = "gig"
     luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     comma_gig_road = luca_agenda.make_l1_road(gig_text)
-    cook_text = "cook cooking"
+    cook_text = "cook"
     luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_gig_road)
     comma_cook_road = luca_agenda.make_road(comma_gig_road, cook_text)
     cook_idea = luca_agenda.get_idea_obj(comma_cook_road)
@@ -499,7 +499,7 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_numeric_roadAND_range_source
     gig_text = "gig"
     luca_agenda.add_l1_idea(ideaunit_shop(gig_text))
     comma_gig_road = luca_agenda.make_l1_road(gig_text)
-    cook_text = "cook cooking"
+    cook_text = "cook"
     luca_agenda.add_idea(ideaunit_shop(cook_text), parent_road=comma_gig_road)
     comma_cook_road = luca_agenda.make_road(comma_gig_road, cook_text)
 

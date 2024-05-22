@@ -333,8 +333,8 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_IdeaUnitsSorted():
 
     # THEN
     assert len(x_atom_order_list) == 2
-    for agendaatom in x_atom_order_list:
-        print(f"{agendaatom.required_args=}")
+    # for agendaatom in x_atom_order_list:
+    #     print(f"{agendaatom.required_args=}")
     assert x_atom_order_list[0] == sports_insert_ideaunit_agendaatom
     assert x_atom_order_list[1] == knee_insert_ideaunit_agendaatom
     # for crud_text, atom_list in sue_atom_order_dict.items():
@@ -370,8 +370,8 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_Road_Sorted():
 
     # THEN
     assert len(x_atom_order_list) == 2
-    for agendaatom in x_atom_order_list:
-        print(f"{agendaatom.required_args=}")
+    # for agendaatom in x_atom_order_list:
+    #     print(f"{agendaatom.required_args=}")
     assert x_atom_order_list[0] == sports_balancelink_agendaatom
     assert x_atom_order_list[1] == knee_balancelink_agendaatom
     # for crud_text, atom_list in sue_atom_order_dict.items():

@@ -36,7 +36,7 @@
 
 #         # create editmain instance
 #         self.editmain_view = EditMainView()
-#         # create slot for making editmain visible
+#         # create slot for editmain visibility
 #         self.main_window.open_editmain.connect(self.editmain_show)
 
 #     def editmain_show(self):
