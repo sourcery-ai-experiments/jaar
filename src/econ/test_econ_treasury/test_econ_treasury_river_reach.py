@@ -4,7 +4,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
-from src.instrument.sqlite import get_single_result
+from src._instrument.sqlite import get_single_result
 from src.econ.treasury_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
@@ -17,7 +17,7 @@ from src.econ.treasury_sqlstr import (
     get_agenda_partyunit_table_update_credit_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
 )
-from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from sqlite3 import connect as sqlite3_connect
 
 

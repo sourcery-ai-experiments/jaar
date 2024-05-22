@@ -12,7 +12,7 @@ from src.econ.treasury_sqlstr import (
     get_river_reach_table_insert_sqlstr,
     get_river_score_select_sqlstr,
 )
-from src.instrument.sqlite import sqlite_text
+from src._instrument.sqlite import sqlite_text
 
 
 def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():

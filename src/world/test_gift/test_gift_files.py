@@ -12,8 +12,8 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
-from src.instrument.python import get_dict_from_json
-from src.instrument.file import open_file
+from src._instrument.python import get_dict_from_json
+from src._instrument.file import open_file
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 

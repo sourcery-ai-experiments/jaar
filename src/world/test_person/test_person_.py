@@ -15,7 +15,7 @@ from src.world.examples.world_env_kit import (
     worlds_dir_setup_cleanup,
 )
 from os.path import exists as os_path_exists
-from src.instrument.file import open_file, save_file, delete_dir
+from src._instrument.file import open_file, save_file, delete_dir
 
 
 def test_get_gut_file_name():

@@ -10,7 +10,7 @@ from src.world.examples.world_env_kit import (
     get_test_world_id,
     worlds_dir_setup_cleanup,
 )
-from src.instrument.file import dir_files as file_dir_files
+from src._instrument.file import dir_files as file_dir_files
 from os.path import exists as os_path_exists
 
 

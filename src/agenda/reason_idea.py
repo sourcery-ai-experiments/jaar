@@ -7,7 +7,7 @@ from src._road.road import (
     is_heir_road,
     default_road_delimiter_if_none,
 )
-from src.instrument.python import get_empty_dict_if_none
+from src._instrument.python import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
 
 

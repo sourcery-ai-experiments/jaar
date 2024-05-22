@@ -13,7 +13,7 @@ from ui.pyqt_func import (
     str2float as pyqt_func_str2float,
     num2str as pyqt_func_num2str,
 )
-from src.instrument.file import open_file
+from src._instrument.file import open_file
 from sys import exit as sys_exit
 
 # from PyQt5 import QtWidgets as qtw

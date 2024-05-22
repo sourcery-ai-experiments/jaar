@@ -6,7 +6,7 @@ from src.agenda.party import (
     partylink_shop,
 )
 from src.agenda.meld import get_meld_weight
-from src.instrument.python import (
+from src._instrument.python import (
     get_empty_dict_if_none,
     get_1_if_None,
     get_dict_from_json,

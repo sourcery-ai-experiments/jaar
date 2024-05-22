@@ -15,7 +15,7 @@ from src.world.journal_sqlstr import (
     get_road_ref_table_single_insert_sqlstr,
     get_road_ref_table_row_id_select_sqlstr,
 )
-from src.instrument.sqlite import sqlite_text
+from src._instrument.sqlite import sqlite_text
 
 
 def test_get_book_table_create_sqlstr_ReturnsCorrectStr():

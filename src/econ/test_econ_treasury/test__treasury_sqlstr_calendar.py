@@ -6,7 +6,7 @@ from src.econ.treasury_sqlstr import (
     CalendarIntentUnit,
     CalendarReport,
 )
-from src.instrument.sqlite import sqlite_bool
+from src._instrument.sqlite import sqlite_bool
 
 
 def test_get_calendar_table_create_sqlstr_ReturnsCorrectStr():

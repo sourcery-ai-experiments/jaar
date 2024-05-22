@@ -11,7 +11,7 @@ from src.agenda.book import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_books import get_bookunit_example1
-from src.instrument.python import x_is_json
+from src._instrument.python import x_is_json
 from pytest import raises as pytest_raises
 
 

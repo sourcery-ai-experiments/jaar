@@ -11,7 +11,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
-from src.instrument.sqlite import get_single_result
+from src._instrument.sqlite import get_single_result
 from src.econ.treasury_sqlstr import (
     get_agenda_ideaunit_row_count,
     IdeaCatalog,
@@ -30,7 +30,7 @@ from src.econ.examples.example_clerks import (
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
 )
-from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 
 
 def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryInMemory(

@@ -152,7 +152,7 @@ def test_PremiseStatusFinder_AbbrevationMethodsReturnCorrectObjs():
     assert x_pbsd.pd() == x_premise_divisor
 
 
-# instrument for PremiseStatusFinder tests
+# for PremiseStatusFinder tests
 def add_trace(
     fig: plotly_figure,
     x_int: int,
@@ -190,7 +190,7 @@ def add_trace(
     fig.add_annotation(x=-0.1, y=y_int, text=case_text, showarrow=False)
 
 
-# instrument for PremiseStatusFinder tests
+# for PremiseStatusFinder tests
 def add_traces(
     fig: plotly_figure,
     x_pbsd: PremiseStatusFinder,
@@ -243,7 +243,7 @@ def add_traces(
         add_trace(fig, x_pbsd.bo(), x_pbsd.pd(), y_int, belief_text, pink_text, sl)
 
 
-# instrument for PremiseStatusFinder tests
+# for PremiseStatusFinder tests
 def show_x(
     wanted_active: bool,
     wanted_task_status: bool,
@@ -265,7 +265,7 @@ def show_x(
         fig.show()
 
 
-# instrument for PremiseStatusFinder tests
+# for PremiseStatusFinder tests
 def get_fig(pd: float) -> plotly_figure:
     fig = plotly_figure()
     add_trace(

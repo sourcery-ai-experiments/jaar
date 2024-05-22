@@ -1,4 +1,4 @@
-from src.instrument.file import delete_dir
+from src._instrument.file import delete_dir
 from src.econ.econ import econunit_shop, EconUnit, treasury_db_filename
 from os import path as os_path
 from src.econ.examples.econ_env_kit import (
@@ -7,8 +7,8 @@ from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-from src.instrument.file import save_file, open_file
-from src.instrument.sqlite import check_connection
+from src._instrument.file import save_file, open_file
+from src._instrument.sqlite import check_connection
 
 
 def test_EconUnit_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(

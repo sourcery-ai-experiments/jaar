@@ -5,8 +5,8 @@ from src.econ.econ import EconUnit
 from src.world.gift import GiftUnit
 from src.world.person import PersonUnit, personunit_shop
 from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
-from src.instrument.python import get_empty_dict_if_none
-from src.instrument.file import set_dir, delete_dir, dir_files
+from src._instrument.python import get_empty_dict_if_none
+from src._instrument.file import set_dir, delete_dir, dir_files
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from copy import deepcopy as copy_deepcopy

@@ -3,7 +3,7 @@ from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
 )
-from src.instrument.file import open_file
+from src._instrument.file import open_file
 from src.world.person import get_gut_file_name, get_live_file_name
 from src.world.world import WorldUnit
 from pandas import DataFrame, concat as pandas_concat

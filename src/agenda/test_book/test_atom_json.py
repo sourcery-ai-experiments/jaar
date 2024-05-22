@@ -14,7 +14,7 @@ from src.agenda.atom import (
     get_atom_columns_build,
     get_from_json as agendaatom_get_from_json,
 )
-from src.instrument.python import x_is_json
+from src._instrument.python import x_is_json
 
 
 def test_AgendaAtom_get_dict_ReturnsCorrectObj():

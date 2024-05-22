@@ -5,7 +5,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
-from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_river_block_dict,

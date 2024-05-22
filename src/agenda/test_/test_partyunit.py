@@ -7,7 +7,7 @@ from src.agenda.party import (
     partyunit_get_from_dict,
     partyunits_get_from_dict,
 )
-from src.instrument.python import x_is_json, get_json_from_dict
+from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 

@@ -5,13 +5,13 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.examples.agenda_env import get_codespace_agenda_dir
-from src.instrument.python import (
+from src._instrument.python import (
     get_empty_dict_if_none,
     get_json_from_dict,
     get_dict_from_json,
 )
-from src.instrument.sqlite import create_insert_sqlstr, RowData
-from src.instrument.file import open_file, save_file
+from src._instrument.sqlite import create_insert_sqlstr, RowData
+from src._instrument.file import open_file, save_file
 from dataclasses import dataclass
 
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.agenda.reason_idea import ReasonUnit, RoadUnit
 from src.agenda.group import BalanceLink, GroupID
-from src.instrument.python import get_empty_dict_if_none, get_0_if_None
+from src._instrument.python import get_empty_dict_if_none, get_0_if_None
 
 
 @dataclass

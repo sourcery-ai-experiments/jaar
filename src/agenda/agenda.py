@@ -65,7 +65,7 @@ from src.agenda.idea import (
 from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
-from src.instrument.python import (
+from src._instrument.python import (
     get_json_from_dict,
     get_dict_from_json,
     get_1_if_None,
@@ -73,7 +73,7 @@ from src.instrument.python import (
     get_False_if_None,
     get_empty_dict_if_none,
 )
-from src.instrument.file import dir_files, open_file
+from src._instrument.file import dir_files, open_file
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 from datetime import datetime

@@ -17,7 +17,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v002 as example_agendas_agenda_v002,
     yr_elucidation,
 )
-from src.instrument.file import open_file
+from src._instrument.file import open_file
 
 
 def test_get_intent_dict_ReturnsCorrectObj():

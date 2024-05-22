@@ -11,7 +11,7 @@ from src.agenda.atom import (
     atom_hx_table_name,
     get_agendaatom_from_rowdata,
 )
-from src.instrument.sqlite import get_rowdata
+from src._instrument.sqlite import get_rowdata
 from pytest import raises as pytest_raises
 from sqlite3 import connect as sqlite3_connect
 

@@ -13,7 +13,7 @@ from src.agenda.agenda import (
 )
 from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.agenda_env import get_agenda_examples_dir
-from src.instrument.file import open_file
+from src._instrument.file import open_file
 
 
 def agenda_v001() -> AgendaUnit:

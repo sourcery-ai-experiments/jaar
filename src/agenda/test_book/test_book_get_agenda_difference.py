@@ -7,7 +7,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.atom import atom_insert, atom_update, atom_delete
 from src.agenda.book import BookUnit, bookunit_shop
 from src.agenda.examples.example_agendas import get_agenda_with_4_levels
-from src.instrument.python import get_nested_value, get_empty_list_if_None
+from src._instrument.python import get_nested_value, get_empty_list_if_None
 from copy import deepcopy as copy_deepcopy
 
 

@@ -698,40 +698,40 @@ def test_IdeaUnit_get_reasonunit_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    instrument_text = "instrument"
-    clean_idea.set_reasonunit(reasonunit_shop(base=instrument_text))
+    dirty_text = "dirty"
+    clean_idea.set_reasonunit(reasonunit_shop(base=dirty_text))
 
     # WHEN
-    x_reasonunit = clean_idea.get_reasonunit(base=instrument_text)
+    x_reasonunit = clean_idea.get_reasonunit(base=dirty_text)
 
     # THEN
     assert x_reasonunit != None
-    assert x_reasonunit.base == instrument_text
+    assert x_reasonunit.base == dirty_text
 
 
 def test_IdeaUnit_get_reasonheir_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    instrument_text = "instrument"
-    reason_heir_x = reasonheir_shop(base=instrument_text)
+    dirty_text = "dirty"
+    reason_heir_x = reasonheir_shop(base=dirty_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
     clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 
     # WHEN
-    reason_heir_z = clean_idea.get_reasonheir(base=instrument_text)
+    reason_heir_z = clean_idea.get_reasonheir(base=dirty_text)
 
     # THEN
     assert reason_heir_z != None
-    assert reason_heir_z.base == instrument_text
+    assert reason_heir_z.base == dirty_text
 
 
 def test_IdeaUnit_get_reasonheir_ReturnsNone():
     # GIVEN
     clean_text = "clean"
     clean_idea = ideaunit_shop(_label=clean_text)
-    instrument_text = "instrument"
-    reason_heir_x = reasonheir_shop(instrument_text)
+    dirty_text = "dirty"
+    reason_heir_x = reasonheir_shop(dirty_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
     clean_idea.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_idea_dict={})
 

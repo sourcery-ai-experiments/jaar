@@ -3,7 +3,7 @@ from src.agenda.party import (
     partylink_shop,
     partylinks_get_from_json,
 )
-from src.instrument.python import x_is_json, get_json_from_dict
+from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 

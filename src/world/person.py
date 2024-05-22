@@ -31,8 +31,8 @@ from src.world.gift import (
     get_init_gift_id_if_None,
 )
 from src.world.examples.world_env_kit import get_test_worlds_dir, get_test_world_id
-from src.instrument.python import get_empty_dict_if_none
-from src.instrument.file import (
+from src._instrument.python import get_empty_dict_if_none
+from src._instrument.file import (
     save_file,
     open_file,
     set_dir,

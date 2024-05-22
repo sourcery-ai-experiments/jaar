@@ -1,5 +1,5 @@
 from src.agenda.group import GroupID
-from src.instrument.python import get_empty_set_if_none
+from src._instrument.python import get_empty_set_if_none
 from dataclasses import dataclass
 
 

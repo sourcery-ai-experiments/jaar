@@ -25,7 +25,7 @@ from src.agenda.atom import (
     atom_update,
     optional_args_different,
 )
-from src.instrument.python import (
+from src._instrument.python import (
     get_empty_dict_if_none,
     get_json_from_dict,
     get_dict_from_json,

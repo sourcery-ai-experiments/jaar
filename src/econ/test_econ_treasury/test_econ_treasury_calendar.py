@@ -15,7 +15,7 @@ from src.econ.treasury_sqlstr import (
     CalendarIntentUnit,
     CalendarReport,
 )
-from src.instrument.sqlite import get_single_result, get_row_count_sqlstr
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from pytest import raises as pytest_raises
 
 

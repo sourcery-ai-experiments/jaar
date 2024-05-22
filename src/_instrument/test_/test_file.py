@@ -1,4 +1,4 @@
-from src.instrument.file import (
+from src._instrument.file import (
     dir_files,
     save_file,
     open_file,

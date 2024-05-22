@@ -19,8 +19,8 @@ from src.agenda.examples.agenda_env import (
 from src.agenda.group import groupunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.reason_assign import assignedunit_shop
-from src.instrument.python import x_is_json, get_dict_from_json
-from src.instrument.file import save_file, open_file
+from src._instrument.python import x_is_json, get_dict_from_json
+from src._instrument.file import save_file, open_file
 from pytest import raises as pytest_raises
 
 

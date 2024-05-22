@@ -1,4 +1,4 @@
-from src.instrument.sqlite import (
+from src._instrument.sqlite import (
     sqlite_bool,
     sqlite_text,
     sqlite_null,

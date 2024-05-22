@@ -8,9 +8,9 @@ from src.world.examples.world_env_kit import (
     worlds_dir_setup_cleanup,
 )
 from src.world.person import personunit_shop
-from src.instrument.python import get_dict_from_json, get_nested_value
-from src.instrument.file import delete_dir, save_file, open_file
-from src.instrument.sqlite import (
+from src._instrument.python import get_dict_from_json, get_nested_value
+from src._instrument.file import delete_dir, save_file, open_file
+from src._instrument.sqlite import (
     get_db_tables,
     get_db_columns,
     check_connection,

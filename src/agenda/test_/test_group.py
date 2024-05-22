@@ -19,7 +19,7 @@ from src._road.road import (
     validate_roadnode,
     default_road_delimiter_if_none,
 )
-from src.instrument.python import x_is_json, get_json_from_dict
+from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 

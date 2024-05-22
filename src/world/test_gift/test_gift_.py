@@ -9,7 +9,7 @@ from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
-from src.instrument.python import x_is_json
+from src._instrument.python import x_is_json
 from pytest import raises as pytest_raises
 
 

@@ -21,7 +21,7 @@
 #     change_econ_id_example_econ,
 #     get_test_econ_dir,
 # )
-# from src.instrument.file import open_file, dir_files
+# from src._instrument.file import open_file, dir_files
 # from ui.pyqt_func import agenda_importance_diplay
 
 

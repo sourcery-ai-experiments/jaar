@@ -3,7 +3,7 @@ from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.instrument.file import dir_files
+from src._instrument.file import dir_files
 from src.econ.clerk import (
     clerkunit_shop,
     ClerkUnit,
