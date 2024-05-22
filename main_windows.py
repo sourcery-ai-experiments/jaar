@@ -156,14 +156,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.timer.stop()
 
     def set_intent_item_complete(self):
-        if self.current_task_road is None:
+        if self.operating_task_road is None:
             self.label_last_label.setText("")
         else:
             base_x = f"{self.x_agenda._world_id},time,jajatime"
             self.x_agenda.set_intent_task_complete(
-                task_road=self.current_task_road, base=base_x
+                task_road=self.operating_task_road, base=base_x
             )
-        self.label_last_label.setText(self.current_task_road)
+        self.label_last_label.setText(self.operating_task_road)
         self.refresh_all()
 
     def set_belief_time_open_5daysago(self):
@@ -260,7 +260,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         x_agenda_json = self.x_agenda.get_json()
         with open(f"{self.file_path}", "w") as f:
             f.write(x_agenda_json)
-        self.current_file_path_l.setText(self.file_path)
+        self.operating_file_path_l.setText(self.file_path)
         # save_file(
         #     dest_dir=agenda_clerkunit_dir,
         #     file_name=f"{self.x_agenda._world_id}.json",
@@ -270,7 +270,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def load_file(self):
         x_json = ""
         x_json = open_file(dest_dir=self.file_path, file_name=None)
-        self.current_file_path_l.setText(self.file_path)
+        self.operating_file_path_l.setText(self.file_path)
         return x_json
 
     def open_file(self):
@@ -387,13 +387,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_intent_end_data.setText("")
 
         row = 0
-        self.current_task_road = None
+        self.operating_task_road = None
         for intent_item in intent_list:
             if intent_item._task == False:
                 self.populate_intent_table_row(row=row, intent_item=intent_item)
                 row += 1
-            elif intent_item._task == True and self.current_task_road is None:
-                self.current_task_road = self.x_agenda.make_road(
+            elif intent_item._task == True and self.operating_task_road is None:
+                self.operating_task_road = self.x_agenda.make_road(
                     intent_item._parent_road, intent_item._label
                 )
                 self.intent_task_display(intent_item)

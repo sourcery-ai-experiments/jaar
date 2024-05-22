@@ -751,7 +751,7 @@
      <string>Last Complete:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="current_file_path_l">
+   <widget class="QLabel" name="operating_file_path_l">
     <property name="geometry">
      <rect>
       <x>540</x>
