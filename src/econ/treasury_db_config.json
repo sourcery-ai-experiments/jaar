@@ -77,16 +77,16 @@
             "columns": {
                 "cash_master": {},
                 "circle_num": {},
-                "curr_close": {},
-                "curr_start": {},
+                "coin_close": {},
+                "coin_start": {},
                 "dst_owner_id": {}
             }
         },
         "river_reach": {
             "columns": {
                 "cash_master": {},
-                "reach_curr_close": {},
-                "reach_curr_start": {},
+                "reach_coin_close": {},
+                "reach_coin_start": {},
                 "set_num": {},
                 "src_owner_id": {}
             }

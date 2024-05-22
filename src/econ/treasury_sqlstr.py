@@ -17,7 +17,7 @@ def get_river_score_select_sqlstr(cash_master):
 SELECT 
   cash_master
 , src_owner_id
-, SUM(reach_curr_close - reach_curr_start) range_sum
+, SUM(reach_coin_close - reach_coin_start) range_sum
 FROM river_reach
 WHERE cash_master = '{cash_master}'
 GROUP BY cash_master, src_owner_id
@@ -33,7 +33,7 @@ def get_river_reach_table_final_insert_sqlstr(cash_master: PersonID) -> str:
 
 def get_river_reach_table_insert_sqlstr(select_query: str) -> str:
     return f"""
-INSERT INTO river_reach (cash_master, src_owner_id, set_num, reach_curr_start, reach_curr_close)
+INSERT INTO river_reach (cash_master, src_owner_id, set_num, reach_coin_start, reach_coin_close)
 {select_query}
 ;
 """
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS river_reach (
   cash_master VARCHAR(255) NOT NULL
 , src_owner_id VARCHAR(255) NOT NULL
 , set_num INT NOT NULL
-, reach_curr_start FLOAT NOT NULL
-, reach_curr_close FLOAT NOT NULL
+, reach_coin_start FLOAT NOT NULL
+, reach_coin_close FLOAT NOT NULL
 , FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
 , FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
 )
@@ -61,49 +61,49 @@ def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
     , block.src_owner_id src
     , block.dst_owner_id dst
     , CASE 
-        WHEN block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_start
-            AND block.cash_close <= circle.curr_close
-            THEN circle.curr_start --'leftside' 
-        WHEN block.cash_start >= circle.curr_start 
-            AND block.cash_start < circle.curr_close
-            AND block.cash_close > circle.curr_close
+        WHEN block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_start
+            AND block.cash_close <= circle.coin_close
+            THEN circle.coin_start --'leftside' 
+        WHEN block.cash_start >= circle.coin_start 
+            AND block.cash_start < circle.coin_close
+            AND block.cash_close > circle.coin_close
             THEN block.cash_start --'rightside' 
-        WHEN block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_close
-            THEN circle.curr_start --'outside' 
-        WHEN block.cash_start >= circle.curr_start 
-            AND block.cash_close <= circle.curr_close
+        WHEN block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_close
+            THEN circle.coin_start --'outside' 
+        WHEN block.cash_start >= circle.coin_start 
+            AND block.cash_close <= circle.coin_close
             THEN block.cash_start --'inside' 
             END reach_start
     , CASE 
-        WHEN block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_start
-            AND block.cash_close <= circle.curr_close
+        WHEN block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_start
+            AND block.cash_close <= circle.coin_close
             THEN block.cash_close --'leftside' 
-        WHEN block.cash_start >= circle.curr_start 
-            AND block.cash_start < circle.curr_close
-            AND block.cash_close > circle.curr_close
-            THEN circle.curr_close --'rightside' 
-        WHEN block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_close
-            THEN circle.curr_close --'outside' 
-        WHEN block.cash_start >= circle.curr_start 
-            AND block.cash_close <= circle.curr_close
+        WHEN block.cash_start >= circle.coin_start 
+            AND block.cash_start < circle.coin_close
+            AND block.cash_close > circle.coin_close
+            THEN circle.coin_close --'rightside' 
+        WHEN block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_close
+            THEN circle.coin_close --'outside' 
+        WHEN block.cash_start >= circle.coin_start 
+            AND block.cash_close <= circle.coin_close
             THEN block.cash_close --'inside' 
             END reach_close
     FROM river_block block
     JOIN river_circle circle on 
-            (block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_close)
-        OR     (block.cash_start >= circle.curr_start 
-            AND block.cash_close <= circle.curr_close)
-        OR     (block.cash_start < circle.curr_start 
-            AND block.cash_close > circle.curr_start
-            AND block.cash_close <= circle.curr_close)
-        OR     (block.cash_start >= circle.curr_start 
-            AND block.cash_start < circle.curr_close
-            AND block.cash_close > circle.curr_close)
+            (block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_close)
+        OR     (block.cash_start >= circle.coin_start 
+            AND block.cash_close <= circle.coin_close)
+        OR     (block.cash_start < circle.coin_start 
+            AND block.cash_close > circle.coin_start
+            AND block.cash_close <= circle.coin_close)
+        OR     (block.cash_start >= circle.coin_start 
+            AND block.cash_start < circle.coin_close
+            AND block.cash_close > circle.coin_close)
     WHERE block.cash_master = '{cash_master}'
         AND block.src_owner_id != block.cash_master
     ORDER BY 
@@ -116,11 +116,11 @@ def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
 
 def get_river_reach_table_final_select_sqlstr(cash_master: PersonID) -> str:
     return f"""
-WITH reach_inter(curr_mstr, src, dst, reach_start, reach_close) AS (
+WITH reach_inter(coin_mstr, src, dst, reach_start, reach_close) AS (
 {get_river_reach_table_touch_select_sqlstr(cash_master)}
 ),
 reach_order(
-  curr_mstr
+  coin_mstr
 , src
 , prev_src
 , src_step
@@ -131,7 +131,7 @@ reach_order(
 , prev_close
 ) AS (
     SELECT 
-    reach_inter.curr_mstr
+    reach_inter.coin_mstr
     , reach_inter.src
     , IFNULL(
         LAG(reach_inter.src, 1) OVER(ORDER BY 
@@ -189,7 +189,7 @@ reach_order(
     FROM reach_inter
 ) 
 , reach_step (  
-  curr_mstr
+  coin_mstr
 , src
 , prev_src
 , src_step
@@ -201,7 +201,7 @@ reach_order(
 , reach_close
 ) AS (
     SELECT
-    curr_mstr
+    coin_mstr
     , src
     , prev_src
     , src_step
@@ -218,7 +218,7 @@ reach_order(
     FROM reach_order
 )
 , reach_sets_num (  
-  curr_mstr
+  coin_mstr
 , src
 , set_num
 , prev_start
@@ -227,7 +227,7 @@ reach_order(
 , reach_close
 ) AS (
     SELECT
-      curr_mstr
+      coin_mstr
     , src
     , SUM(change_step) OVER (ORDER BY src, reach_start, reach_close) set_num
     , prev_start
@@ -237,13 +237,13 @@ reach_order(
     FROM reach_step
 )
 SELECT 
-  curr_mstr
+  coin_mstr
 , src
 , set_num 
 , MIN(reach_start) reach_start
 , MAX(reach_close) reach_close
 FROM reach_sets_num
-GROUP BY curr_mstr, src, set_num
+GROUP BY coin_mstr, src, set_num
 """
 
 
@@ -383,8 +383,8 @@ CREATE TABLE IF NOT EXISTS river_circle (
   cash_master VARCHAR(255) NOT NULL
 , dst_owner_id VARCHAR(255) NOT NULL
 , circle_num INT NOT NULL
-, curr_start FLOAT NOT NULL
-, curr_close FLOAT NOT NULL
+, coin_start FLOAT NOT NULL
+, coin_close FLOAT NOT NULL
 , FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
 , FOREIGN KEY(dst_owner_id) REFERENCES agendaunit(owner_id)
 )
@@ -409,8 +409,8 @@ INSERT INTO river_circle (
   cash_master
 , dst_owner_id
 , circle_num
-, curr_start
-, curr_close
+, coin_start
+, coin_close
 )
 SELECT 
   cash_master
@@ -444,8 +444,8 @@ class RiverCircleUnit:
     cash_master: str
     dst_owner_id: str
     circle_num: int
-    curr_start: float
-    curr_close: float
+    coin_start: float
+    coin_close: float
 
 
 def get_river_circle_dict(
@@ -456,8 +456,8 @@ SELECT
   cash_master
 , dst_owner_id
 , circle_num
-, curr_start
-, curr_close
+, coin_start
+, coin_close
 FROM river_circle
 WHERE cash_master = '{cash_owner_id}'
 ;
@@ -470,8 +470,8 @@ WHERE cash_master = '{cash_owner_id}'
             cash_master=row[0],
             dst_owner_id=row[1],
             circle_num=row[2],
-            curr_start=row[3],
-            curr_close=row[4],
+            coin_start=row[3],
+            coin_close=row[4],
         )
         dict_x[river_circle_x.circle_num] = river_circle_x
     return dict_x
@@ -642,7 +642,7 @@ def get_agenda_partyunit_table_update_credit_score_sqlstr(
     return f"""
 UPDATE agenda_partyunit
 SET _treasury_credit_score = (
-    SELECT SUM(reach_curr_close - reach_curr_start) range_sum
+    SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
     WHERE reach.cash_master = agenda_partyunit.owner_id
         AND reach.src_owner_id = agenda_partyunit.party_id

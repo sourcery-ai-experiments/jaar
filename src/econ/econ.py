@@ -174,24 +174,24 @@ class EconUnit:
             parent_close = parent_agenda_ledger.cash_cease
 
             # changes in river_block loop
-            curr_onset = parent_agenda_ledger.cash_onset
+            coin_onset = parent_agenda_ledger.cash_onset
             ledgers_count = 0
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
 
-                curr_range = parent_range * x_child_ledger._agenda_intent_ratio_credit
-                curr_close = curr_onset + curr_range
+                coin_range = parent_range * x_child_ledger._agenda_intent_ratio_credit
+                coin_close = coin_onset + coin_range
 
                 # implies last object in dict
-                if ledgers_count == ledgers_len and curr_close != parent_close:
-                    curr_close = parent_close
+                if ledgers_count == ledgers_len and coin_close != parent_close:
+                    coin_close = parent_close
 
                 river_block_x = RiverBlockUnit(
                     cash_owner_id=x_owner_id,
                     src_owner_id=x_child_ledger.owner_id,
                     dst_owner_id=x_child_ledger.party_id,
-                    cash_start=curr_onset,
-                    cash_close=curr_close,
+                    cash_start=coin_onset,
+                    cash_close=coin_close,
                     block_num=blocks_count,
                     parent_block_num=parent_agenda_ledger.block_num,
                     river_tree_level=parent_agenda_ledger.river_tree_level + 1,
@@ -206,8 +206,8 @@ class EconUnit:
                 if blocks_count >= max_blocks_count:
                     break
 
-                # change curr_onset for next
-                curr_onset += curr_range
+                # change coin_onset for next
+                coin_onset += coin_range
 
     def _insert_river_block_grab_river_ledger(
         self, river_block_x: RiverBlockUnit

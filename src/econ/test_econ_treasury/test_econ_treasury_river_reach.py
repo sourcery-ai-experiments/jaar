@@ -35,8 +35,8 @@ SELECT
   'Yao' cash_master
 , 'Sue' src_owner_id
 , 4 set_num
-, 0.78 reach_curr_start
-, 0.89 reach_curr_close
+, 0.78 reach_coin_start
+, 0.89 reach_coin_close
 """
     insert_sqlstr = get_river_reach_table_insert_sqlstr(select_example_sqlstr)
     with x_db as x_conn:
@@ -248,11 +248,11 @@ WHERE owner_id = '{yao_text}'
 # 2. from river_reach_touch select river_reach_intersection:
 #   every row of river_reach_touch with intersection of river_circle and river_block
 # 3. from river_reach_intersection select river_reach_ordered:
-#   every row of river_reach_intersection ordered by src_owner_id, curr_start, curr_close
+#   every row of river_reach_intersection ordered by src_owner_id, coin_start, coin_close
 # 4. from river_reach_ordered select river_reach_stepped:
 #   every row of river_reach_ordered with column identifying sets of src_owner_id/intersecting curr ranges
 # 5. from river_reach_stepped select river_reach_final:
-#   one row for every river_reach_stepped set with min curr_start and max curr_close
+#   one row for every river_reach_stepped set with min coin_start and max coin_close
 
 
 def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
@@ -397,7 +397,7 @@ VALUES ('Sal', 'Sal', 'Ava', 0.0, 0.1, 0, NULL, 1)
 ;
 """
     insert_circle_values_str = """
-INSERT INTO river_circle (cash_master, dst_owner_id, circle_num, curr_start, curr_close)
+INSERT INTO river_circle (cash_master, dst_owner_id, circle_num, coin_start, coin_close)
 VALUES ('Sal', 'Sal', 0, 0.0440126668651765, 0.1)
 , ('Sal', 'Sal', 1, 0.123164561507988, 1.0)
 ;

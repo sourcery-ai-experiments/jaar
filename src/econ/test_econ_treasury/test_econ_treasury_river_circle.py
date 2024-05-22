@@ -116,19 +116,19 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     assert circle_0.cash_master == sal_text
     assert circle_0.dst_owner_id == sal_text
     assert circle_0.circle_num == 0
-    assert circle_0.curr_start == 0.04401266686517654
-    assert circle_0.curr_close == 0.1
+    assert circle_0.coin_start == 0.04401266686517654
+    assert circle_0.coin_close == 0.1
 
     circle_1 = river_circles[1]
     assert circle_1.cash_master == sal_text
     assert circle_1.dst_owner_id == sal_text
     assert circle_1.circle_num == 1
-    assert circle_1.curr_start == 0.12316456150798766
-    assert circle_1.curr_close == 1.0
+    assert circle_1.coin_start == 0.12316456150798766
+    assert circle_1.coin_close == 1.0
 
     # for value in river_circles.values():
     #     assert value.cash_master == sal_text
     #     assert value.dst_owner_id == sal_text
     #     assert value.circle_num in [0, 1]
-    #     assert value.curr_start in [0.12316456150798766, 0.04401266686517654]
-    #     assert value.curr_close in [0.1, 1.0]
+    #     assert value.coin_start in [0.12316456150798766, 0.04401266686517654]
+    #     assert value.coin_close in [0.1, 1.0]
