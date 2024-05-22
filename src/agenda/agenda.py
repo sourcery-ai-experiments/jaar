@@ -1783,7 +1783,7 @@ class AgendaUnit:
             agenda_groupunits=self._groups,
             agenda_owner_id=self._owner_id,
         )
-        x_idearoot.set_agenda_importance(coin_onset_x=0, parent_coin_cease=1)
+        x_idearoot.set_agenda_importance(fund_onset_x=0, parent_fund_cease=1)
         x_idearoot.set_balanceheirs_agenda_credit_debt()
         x_idearoot.set_ancestor_promise_count(0, False)
         x_idearoot.clear_descendant_promise_count()
@@ -1797,8 +1797,8 @@ class AgendaUnit:
     def _set_kids_attributes(
         self,
         idea_kid: IdeaUnit,
-        coin_onset: float,
-        parent_coin_cease: float,
+        fund_onset: float,
+        parent_fund_cease: float,
         parent_idea: IdeaUnit,
         econ_exceptions: bool,
     ):
@@ -1816,9 +1816,9 @@ class AgendaUnit:
         )
         idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
         idea_kid.set_agenda_importance(
-            coin_onset_x=coin_onset,
+            fund_onset_x=fund_onset,
             parent_agenda_importance=parent_idea._agenda_importance,
-            parent_coin_cease=parent_coin_cease,
+            parent_fund_cease=parent_fund_cease,
         )
         idea_kid.set_ancestor_promise_count(
             parent_idea._ancestor_promise_count, parent_idea.promise
@@ -1874,20 +1874,20 @@ class AgendaUnit:
         self._pre_tree_traverse_credit_debt_reset()
         self._set_root_attributes(econ_exceptions)
 
-        coin_onset = self._idearoot._agenda_coin_onset
-        parent_coin_cease = self._idearoot._agenda_coin_cease
+        fund_onset = self._idearoot._agenda_fund_onset
+        parent_fund_cease = self._idearoot._agenda_fund_cease
 
         cache_idea_list = []
         for idea_kid in self._idearoot._kids.values():
             self._set_kids_attributes(
                 idea_kid=idea_kid,
-                coin_onset=coin_onset,
-                parent_coin_cease=parent_coin_cease,
+                fund_onset=fund_onset,
+                parent_fund_cease=parent_fund_cease,
                 parent_idea=self._idearoot,
                 econ_exceptions=econ_exceptions,
             )
             cache_idea_list.append(idea_kid)
-            coin_onset += idea_kid._agenda_importance
+            fund_onset += idea_kid._agenda_importance
 
         # no function recursion, recursion by iterateing over list that can be added to by iterations
         while cache_idea_list != []:
@@ -1896,18 +1896,18 @@ class AgendaUnit:
                 self._idea_dict[parent_idea.get_road()] = parent_idea
 
             if parent_idea._kids != None:
-                coin_onset = parent_idea._agenda_coin_onset
-                parent_coin_cease = parent_idea._agenda_coin_cease
+                fund_onset = parent_idea._agenda_fund_onset
+                parent_fund_cease = parent_idea._agenda_fund_cease
                 for idea_kid in parent_idea._kids.values():
                     self._set_kids_attributes(
                         idea_kid=idea_kid,
-                        coin_onset=coin_onset,
-                        parent_coin_cease=parent_coin_cease,
+                        fund_onset=fund_onset,
+                        parent_fund_cease=parent_fund_cease,
                         parent_idea=parent_idea,
                         econ_exceptions=econ_exceptions,
                     )
                     cache_idea_list.append(idea_kid)
-                    coin_onset += idea_kid._agenda_importance
+                    fund_onset += idea_kid._agenda_importance
 
     def _check_if_any_idea_active_has_changed(self):
         any_idea_active_changed = False

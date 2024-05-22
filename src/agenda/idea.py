@@ -258,8 +258,8 @@ class IdeaUnit:
     _level: int = None
     _kids_total_weight: int = None
     _agenda_importance: float = None
-    _agenda_coin_onset: float = None
-    _agenda_coin_cease: float = None
+    _agenda_fund_onset: float = None
+    _agenda_fund_cease: float = None
     _task: bool = None
     _active: bool = None
     _ancestor_promise_count: int = None
@@ -365,20 +365,20 @@ class IdeaUnit:
 
     def set_agenda_importance(
         self,
-        coin_onset_x: float,
+        fund_onset_x: float,
         parent_agenda_importance: float = None,
-        parent_coin_cease: float = None,
+        parent_fund_cease: float = None,
     ):
         parent_agenda_importance = get_1_if_None(parent_agenda_importance)
         self.set_kids_total_weight()
         self._agenda_importance = None
-        self._agenda_coin_onset = None
-        self._agenda_coin_cease = None
+        self._agenda_fund_onset = None
+        self._agenda_fund_cease = None
         sibling_ratio = self._weight / self._sibling_total_weight
         self._agenda_importance = parent_agenda_importance * sibling_ratio
-        self._agenda_coin_onset = coin_onset_x
-        self._agenda_coin_cease = self._agenda_coin_onset + self._agenda_importance
-        self._agenda_coin_cease = min(self._agenda_coin_cease, parent_coin_cease)
+        self._agenda_fund_onset = fund_onset_x
+        self._agenda_fund_cease = self._agenda_fund_onset + self._agenda_importance
+        self._agenda_fund_cease = min(self._agenda_fund_cease, parent_fund_cease)
         self.set_balanceheirs_agenda_credit_debt()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
@@ -1120,8 +1120,8 @@ def ideaunit_shop(
     _level: int = None,
     _kids_total_weight: int = None,
     _agenda_importance: float = None,
-    _agenda_coin_onset: float = None,
-    _agenda_coin_cease: float = None,
+    _agenda_fund_onset: float = None,
+    _agenda_fund_cease: float = None,
     _task: bool = None,
     _active: bool = None,
     _ancestor_promise_count: int = None,
@@ -1175,8 +1175,8 @@ def ideaunit_shop(
         _level=_level,
         _kids_total_weight=get_0_if_None(_kids_total_weight),
         _agenda_importance=_agenda_importance,
-        _agenda_coin_onset=_agenda_coin_onset,
-        _agenda_coin_cease=_agenda_coin_cease,
+        _agenda_fund_onset=_agenda_fund_onset,
+        _agenda_fund_cease=_agenda_fund_cease,
         _task=_task,
         _active=_active,
         _ancestor_promise_count=_ancestor_promise_count,

@@ -20,7 +20,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -76,7 +76,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight_debtor_
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -102,7 +102,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -130,7 +130,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_debtor_weight():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -153,7 +153,7 @@ def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN

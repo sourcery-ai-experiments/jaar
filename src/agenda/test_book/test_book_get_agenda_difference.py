@@ -155,7 +155,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_AgendaUnit_si
     x_planck = 0.5
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
-    x_money_desc = "dragon coins"
+    x_money_desc = "dragon funds"
     x_party_creditor_pool = 77
     x_party_debtor_pool = 88
     after_sue_agenda._weight = x_agendaUnit_weight

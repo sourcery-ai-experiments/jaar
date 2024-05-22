@@ -310,45 +310,45 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     #         )
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlyClears_agenda_coin():
+def test_AgendaUnit_set_agenda_metrics_CorrectlyClears_agenda_fund():
     # GIVEN
     x_agenda = get_agenda_with7amCleanTableReason()
     gig_road = x_agenda.make_l1_road("gig")
     catt_road = x_agenda.make_l1_road("feed cat")
     week_road = x_agenda.make_l1_road("weekdays")
-    x_agenda._idearoot._agenda_coin_onset = 13
-    x_agenda._idearoot._agenda_coin_cease = 13
-    x_agenda.get_idea_obj(gig_road)._agenda_coin_onset = 13
-    x_agenda.get_idea_obj(gig_road)._agenda_coin_cease = 13
-    x_agenda.get_idea_obj(catt_road)._agenda_coin_onset = 13
-    x_agenda.get_idea_obj(catt_road)._agenda_coin_cease = 13
-    x_agenda.get_idea_obj(week_road)._agenda_coin_onset = 13
-    x_agenda.get_idea_obj(week_road)._agenda_coin_cease = 13
+    x_agenda._idearoot._agenda_fund_onset = 13
+    x_agenda._idearoot._agenda_fund_cease = 13
+    x_agenda.get_idea_obj(gig_road)._agenda_fund_onset = 13
+    x_agenda.get_idea_obj(gig_road)._agenda_fund_cease = 13
+    x_agenda.get_idea_obj(catt_road)._agenda_fund_onset = 13
+    x_agenda.get_idea_obj(catt_road)._agenda_fund_cease = 13
+    x_agenda.get_idea_obj(week_road)._agenda_fund_onset = 13
+    x_agenda.get_idea_obj(week_road)._agenda_fund_cease = 13
 
-    assert x_agenda._idearoot._agenda_coin_onset == 13
-    assert x_agenda._idearoot._agenda_coin_cease == 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_coin_onset == 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_coin_cease == 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_coin_onset == 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_coin_cease == 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_coin_onset == 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_coin_cease == 13
+    assert x_agenda._idearoot._agenda_fund_onset == 13
+    assert x_agenda._idearoot._agenda_fund_cease == 13
+    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_onset == 13
+    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_cease == 13
+    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset == 13
+    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease == 13
+    assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset == 13
+    assert x_agenda.get_idea_obj(week_road)._agenda_fund_cease == 13
 
     # WHEN
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._agenda_coin_onset != 13
-    assert x_agenda._idearoot._agenda_coin_cease != 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_coin_onset != 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_coin_cease != 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_coin_onset != 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_coin_cease != 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_coin_onset != 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_coin_cease != 13
+    assert x_agenda._idearoot._agenda_fund_onset != 13
+    assert x_agenda._idearoot._agenda_fund_cease != 13
+    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_onset != 13
+    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_cease != 13
+    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset != 13
+    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease != 13
+    assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset != 13
+    assert x_agenda.get_idea_obj(week_road)._agenda_fund_cease != 13
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_coin():
+def test_AgendaUnit_set_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_fund():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao", _weight=10)
 
@@ -375,40 +375,40 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_coin()
     coal_idea = ideaunit_shop(coal_text, _weight=30)
     yao_agenda.add_l1_idea(coal_idea)
 
-    assert yao_agenda._idearoot._agenda_coin_onset is None
-    assert yao_agenda._idearoot._agenda_coin_cease is None
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_onset is None
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_cease is None
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_onset is None
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_cease is None
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_onset is None
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_cease is None
+    assert yao_agenda._idearoot._agenda_fund_onset is None
+    assert yao_agenda._idearoot._agenda_fund_cease is None
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_onset is None
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_cease is None
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_onset is None
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_cease is None
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_onset is None
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_cease is None
     lamb_before = yao_agenda.get_idea_obj(road=lamb_road)
-    assert lamb_before._agenda_coin_onset is None
-    assert lamb_before._agenda_coin_cease is None
+    assert lamb_before._agenda_fund_onset is None
+    assert lamb_before._agenda_fund_cease is None
     duck_before = yao_agenda.get_idea_obj(road=duck_road)
-    assert duck_before._agenda_coin_onset is None
-    assert duck_before._agenda_coin_cease is None
+    assert duck_before._agenda_fund_onset is None
+    assert duck_before._agenda_fund_cease is None
 
     # WHEN
     yao_agenda.set_agenda_metrics()
 
     # THEN
-    assert yao_agenda._idearoot._agenda_coin_onset == 0.0
-    assert yao_agenda._idearoot._agenda_coin_cease == 1.0
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_onset == 0.0
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_coin_cease == 0.1
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_onset == 0.1
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_coin_cease == 0.7
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_onset == 0.7
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_coin_cease == 1.0
+    assert yao_agenda._idearoot._agenda_fund_onset == 0.0
+    assert yao_agenda._idearoot._agenda_fund_cease == 1.0
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_onset == 0.0
+    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_cease == 0.1
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_onset == 0.1
+    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_cease == 0.7
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_onset == 0.7
+    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_cease == 1.0
 
     duck_after = yao_agenda.get_idea_obj(road=duck_road)
-    assert duck_after._agenda_coin_onset == 0.1
-    assert duck_after._agenda_coin_cease == 0.5
+    assert duck_after._agenda_fund_onset == 0.1
+    assert duck_after._agenda_fund_cease == 0.5
     lamb_after = yao_agenda.get_idea_obj(road=lamb_road)
-    assert lamb_after._agenda_coin_onset == 0.5
-    assert lamb_after._agenda_coin_cease == 0.7
+    assert lamb_after._agenda_fund_onset == 0.5
+    assert lamb_after._agenda_fund_cease == 0.7
 
 
 def test_AgendaUnit_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():

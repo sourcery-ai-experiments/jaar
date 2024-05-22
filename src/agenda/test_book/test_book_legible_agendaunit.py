@@ -35,7 +35,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_money_desc():
     # GIVEN
     category = "agendaunit"
     _money_desc_text = "_money_desc"
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     _money_desc_agendaatom = agendaatom_shop(category, atom_update())
     _money_desc_agendaatom.set_arg(_money_desc_text, sue_money_desc)
     x_bookunit = bookunit_shop()
@@ -64,7 +64,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -112,7 +112,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_debtor_pool():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_debtor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
@@ -135,7 +135,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Equ
     agendaunit_agendaatom.set_arg(party_debtor_pool_text, party_pool_int)
     x_bookunit.set_agendaatom(agendaunit_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon coins"
+    sue_money_desc = "dragon funds"
     sue_agenda.set_money_desc(sue_money_desc)
 
     # WHEN
