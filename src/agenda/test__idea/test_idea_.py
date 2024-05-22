@@ -796,7 +796,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=0,
         prev_active=None,
-        curr_active=True,
+        now_active=True,
     )
     # THEN
     assert clean_idea._active_hx == {0: True}
@@ -805,7 +805,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=1,
         prev_active=True,
-        curr_active=True,
+        now_active=True,
     )
     # THEN
     assert clean_idea._active_hx == {0: True}
@@ -814,7 +814,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=2,
         prev_active=True,
-        curr_active=False,
+        now_active=False,
     )
     # THEN
     assert clean_idea._active_hx == {0: True, 2: False}
@@ -823,7 +823,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=3,
         prev_active=False,
-        curr_active=False,
+        now_active=False,
     )
     # THEN
     assert clean_idea._active_hx == {0: True, 2: False}
@@ -832,7 +832,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=4,
         prev_active=False,
-        curr_active=True,
+        now_active=True,
     )
     # THEN
     assert clean_idea._active_hx == {0: True, 2: False, 4: True}
@@ -841,7 +841,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     clean_idea.record_active_hx(
         tree_traverse_count=0,
         prev_active=False,
-        curr_active=False,
+        now_active=False,
     )
     # THEN
     assert clean_idea._active_hx == {0: False}

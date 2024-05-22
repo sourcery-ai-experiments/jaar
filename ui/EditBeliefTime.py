@@ -13,11 +13,11 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
 
         self.setupUi(self)
 
-        self.curr_year.addItems(self.listYear())
-        self.curr_month.addItems(self.listMonth())
-        self.curr_monthday.addItems(self.listMonthDay())
-        self.curr_hour.addItems(self.listHour())
-        self.curr_min.addItems(self.listMin())
+        self.now_year.addItems(self.listYear())
+        self.now_month.addItems(self.listMonth())
+        self.now_monthday.addItems(self.listMonthDay())
+        self.now_hour.addItems(self.listHour())
+        self.now_min.addItems(self.listMin())
 
         self.prev_year.addItems(self.listYear())
         self.prev_month.addItems(self.listMonth())
@@ -46,11 +46,11 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
             minute=int(open_minute),
         )
 
-        nigh_month = self.curr_month.currentText()
-        nigh_monthday = self.curr_monthday.currentText()
-        nigh_year = self.curr_year.currentText()
-        nigh_hour = self.curr_hour.currentText()
-        nigh_minute = self.curr_min.currentText()
+        nigh_month = self.now_month.currentText()
+        nigh_monthday = self.now_monthday.currentText()
+        nigh_year = self.now_year.currentText()
+        nigh_hour = self.now_hour.currentText()
+        nigh_minute = self.now_min.currentText()
 
         nigh_dt_x = datetime(
             year=int(nigh_year),
@@ -75,13 +75,11 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         dt_open = self.agenda_x.get_time_dt_from_min(min=minutes_belief.open)
         dt_nigh = self.agenda_x.get_time_dt_from_min(min=minutes_belief.nigh)
 
-        self.curr_hour.setCurrentIndex(self.curr_hour.findText(str(dt_nigh.hour)))
-        self.curr_min.setCurrentIndex(self.curr_min.findText(str(dt_nigh.minute)))
-        self.curr_month.setCurrentIndex(self.curr_month.findText(str(dt_nigh.month)))
-        self.curr_monthday.setCurrentIndex(
-            self.curr_monthday.findText(str(dt_nigh.day))
-        )
-        self.curr_year.setCurrentIndex(self.curr_year.findText(str(dt_nigh.year)))
+        self.now_hour.setCurrentIndex(self.now_hour.findText(str(dt_nigh.hour)))
+        self.now_min.setCurrentIndex(self.now_min.findText(str(dt_nigh.minute)))
+        self.now_month.setCurrentIndex(self.now_month.findText(str(dt_nigh.month)))
+        self.now_monthday.setCurrentIndex(self.now_monthday.findText(str(dt_nigh.day)))
+        self.now_year.setCurrentIndex(self.now_year.findText(str(dt_nigh.year)))
 
         self.prev_hour.setCurrentIndex(self.prev_hour.findText(str(dt_open.hour)))
         self.prev_min.setCurrentIndex(self.prev_min.findText(str(dt_open.minute)))
@@ -112,11 +110,11 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         root_dt_nigh = datetime()
 
         return {
-            "curr_hour": root_dt_open.hour,
-            "curr_min": root_dt_open.minute,
-            "curr_month": root_dt_open.month,
-            "curr_monthday": root_dt_open.day,
-            "curr_year": root_dt_open.year,
+            "now_hour": root_dt_open.hour,
+            "now_min": root_dt_open.minute,
+            "now_month": root_dt_open.month,
+            "now_monthday": root_dt_open.day,
+            "now_year": root_dt_open.year,
             "prev_hour": root_dt_nigh.hour,
             "prev_min": root_dt_nigh.minute,
             "prev_month": root_dt_nigh.month,

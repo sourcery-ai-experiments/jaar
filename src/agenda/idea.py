@@ -289,12 +289,12 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         prev_active: bool,
-        curr_active: bool,
+        now_active: bool,
     ):
         if tree_traverse_count == 0:
-            self._active_hx = {0: curr_active}
-        elif prev_active != curr_active:
-            self._active_hx[tree_traverse_count] = curr_active
+            self._active_hx = {0: now_active}
+        elif prev_active != now_active:
+            self._active_hx[tree_traverse_count] = now_active
 
     def set_beliefheirs(self, beliefs: dict[RoadUnit:BeliefCore]):
         beliefs = get_empty_dict_if_none(x_dict=beliefs)
@@ -353,9 +353,9 @@ class IdeaUnit:
         lemmas_dict: dict[RoadUnit:BeliefUnit],
         missing_beliefs: list[BeliefUnit],
     ):
-        for current_belief in self._beliefunits.values():
+        for active_belief in self._beliefunits.values():
             for lemma_belief in lemmas_dict.values():
-                if lemma_belief.base == current_belief.base:
+                if lemma_belief.base == active_belief.base:
                     self.set_beliefunit(lemma_belief)
 
         for missing_belief in missing_beliefs:
@@ -892,7 +892,7 @@ class IdeaUnit:
         self.record_active_hx(
             tree_traverse_count=tree_traverse_count,
             prev_active=prev_to_now_active,
-            curr_active=self._active,
+            now_active=self._active,
         )
 
     def _set_idea_task(self):
@@ -957,15 +957,15 @@ class IdeaUnit:
             # if agenda_idea_dict != None:
             base_idea = agenda_idea_dict.get(old_reasonheir.base)
             if base_idea != None:
-                new_reasonheir.set_curr_idea_active(bool_x=base_idea._active)
+                new_reasonheir.set_base_idea_active(bool_x=base_idea._active)
 
             self._reasonheirs[new_reasonheir.base] = new_reasonheir
 
     def set_idearoot_inherit_reasonheirs(self):
         self._reasonheirs = {}
-        for curr_reasonunit in self._reasonunits.values():
-            new_reasonheir = reasonheir_shop(curr_reasonunit.base)
-            new_reasonheir.inherit_from_reasonheir(curr_reasonunit)
+        for x_reasonunit in self._reasonunits.values():
+            new_reasonheir = reasonheir_shop(x_reasonunit.base)
+            new_reasonheir.inherit_from_reasonheir(x_reasonunit)
             self._reasonheirs[new_reasonheir.base] = new_reasonheir
 
     def get_reasonheir(self, base: RoadUnit) -> ReasonHeir:

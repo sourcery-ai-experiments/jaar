@@ -232,14 +232,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
         premises={wed.need: wed},
         _status=True,
         _task=False,
-        _curr_idea_active=True,
+        _base_idea_active=True,
     )
     sta_lh = reasonheir_shop(
         base=state_road,
         premises={usa.need: usa},
         _status=True,
         _task=False,
-        _curr_idea_active=True,
+        _base_idea_active=True,
     )
 
     x1_reasonunits = {
@@ -265,9 +265,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     assert gig_idea._active
     assert gig_idea.promise
     # print(f"{gig_idea._reasonheirs=}")
-    curr_reasonheir_state = gig_idea._reasonheirs[state_road]
-    print(f"  {curr_reasonheir_state=}")
-    print(f"  {curr_reasonheir_state._status=}\n")
+    x_reasonheir_state = gig_idea._reasonheirs[state_road]
+    print(f"  {x_reasonheir_state=}")
+    print(f"  {x_reasonheir_state._status=}\n")
     # assert gig_idea._reasonheirs == x1_reasonheirs
 
     assert len(gig_idea._reasonheirs) == len(x1_reasonheirs)
@@ -288,18 +288,18 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     # assert gig_idea._reasonunits == x1_reasonunits
 
     # print("iterate through every idea...")
-    # for curr_idea in idea_dict:
-    #     if str(type(curr_idea)).find(".idea.IdeaUnit'>") > 0:
-    #         assert curr_idea._active != None
+    # for x_idea in idea_dict:
+    #     if str(type(x_idea)).find(".idea.IdeaUnit'>") > 0:
+    #         assert x_idea._active != None
 
     #     # print("")
-    #     # print(f"{curr_idea._label=}")
-    #     # print(f"{len(curr_idea._reasonunits)=}")
+    #     # print(f"{x_idea._label=}")
+    #     # print(f"{len(x_idea._reasonunits)=}")
     #     print(
-    #         f"  {curr_idea._label} iterate through every reasonheir... {len(curr_idea._reasonheirs)=} {curr_idea._label=}"
+    #         f"  {x_idea._label} iterate through every reasonheir... {len(x_idea._reasonheirs)=} {x_idea._label=}"
     #     )
-    #     # print(f"{curr_idea._reasonheirs=}")
-    #     for reason in curr_idea._reasonheirs.values():
+    #     # print(f"{x_idea._reasonheirs=}")
+    #     for reason in x_idea._reasonheirs.values():
     #         assert str(type(reason)).find(".reason.ReasonHeir'>") > 0
     #         print(f"    {reason.base=}")
     #         assert reason._status != None

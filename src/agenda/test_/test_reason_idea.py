@@ -84,7 +84,7 @@ def test_ReasonHeir_clear_CorrectlyClearsField():
     gig_reason.clear_status()
     # THEN
     assert gig_reason._status is None
-    assert gig_reason._curr_idea_active is None
+    assert gig_reason._base_idea_active is None
 
 
 def test_ReasonHeir_set_status_CorrectlySetsStatus():
@@ -147,18 +147,18 @@ def test_ReasonHeir_set_status_EmptyBeliefCorrectlySetsStatus():
     assert wkday_reason._status == False
 
 
-def test_ReasonHeir_set_curr_idea_active_Correctly():
+def test_ReasonHeir_set_base_idea_active_Correctly():
     # GIVEN
     day_text = "day"
     day_road = create_road(root_label(), day_text)
     day_reason = reasonheir_shop(base=day_road)
-    assert day_reason._curr_idea_active is None
+    assert day_reason._base_idea_active is None
 
     # WHEN
-    day_reason.set_curr_idea_active(bool_x=True)
+    day_reason.set_base_idea_active(bool_x=True)
 
     # THEN
-    assert day_reason._curr_idea_active
+    assert day_reason._base_idea_active
 
 
 def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
@@ -166,7 +166,7 @@ def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     week_reason = reasonheir_shop(base=wkday_road, suff_idea_active=True)
-    week_reason.set_curr_idea_active(bool_x=True)
+    week_reason.set_base_idea_active(bool_x=True)
     assert week_reason._status is None
 
     # WHEN
@@ -181,7 +181,7 @@ def test_ReasonHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=False)
-    wkday_reason.set_curr_idea_active(bool_x=False)
+    wkday_reason.set_base_idea_active(bool_x=False)
     assert wkday_reason._status is None
 
     # WHEN
@@ -196,7 +196,7 @@ def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=True)
-    wkday_reason.set_curr_idea_active(bool_x=False)
+    wkday_reason.set_base_idea_active(bool_x=False)
     assert wkday_reason._status is None
 
     # WHEN
@@ -211,7 +211,7 @@ def test_ReasonHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=True)
-    wkday_reason.set_curr_idea_active(bool_x=None)
+    wkday_reason.set_base_idea_active(bool_x=None)
     assert wkday_reason._status is None
 
     # WHEN

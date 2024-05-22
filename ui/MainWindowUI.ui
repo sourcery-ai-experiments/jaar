@@ -92,7 +92,7 @@
      <string>Past:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="root_datetime_curr_l">
+   <widget class="QLabel" name="root_datetime_now_l">
     <property name="geometry">
      <rect>
       <x>30</x>

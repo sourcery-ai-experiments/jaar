@@ -1290,7 +1290,7 @@ class AgendaUnit:
                         sub_road=old_road,
                     ):
                         idea_kid._parent_road = change_road(
-                            current_road=idea_kid._parent_road,
+                            subj_road=idea_kid._parent_road,
                             old_road=old_road,
                             new_road=new_road,
                         )

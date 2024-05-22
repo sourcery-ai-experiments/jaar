@@ -27,7 +27,7 @@ A persons's intent in the community is built by the the weighted intreprtation o
 
 Each intent is saved as a JSON file. 
 
-This is currently a one-man projeect.
+This is mostly a one man projeect. Femi has really helped. 
 
  
 ### 1.0 Installing `jaar`

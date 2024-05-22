@@ -402,10 +402,10 @@ class PersonUnit:
             self._create_econunit(econ_roadunit=econ_idea.get_road())
 
         # delete any
-        curr_treasury_dirs = get_all_dirs_with_file(
+        x_treasury_dirs = get_all_dirs_with_file(
             treasury_db_filename(), self._econs_dir
         )
-        for treasury_dir in curr_treasury_dirs:
+        for treasury_dir in x_treasury_dirs:
             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
             treasury_road = change_road(
                 treasury_road, self.get_rootpart_of_econ_dir(), self.world_id

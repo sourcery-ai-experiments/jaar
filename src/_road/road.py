@@ -59,14 +59,14 @@ def default_road_delimiter_if_none(delimiter: str = None) -> str:
 
 
 def change_road(
-    current_road: RoadUnit, old_road: RoadUnit, new_road: RoadUnit
+    subj_road: RoadUnit, old_road: RoadUnit, new_road: RoadUnit
 ) -> RoadUnit:
-    if current_road is None:
-        return current_road
-    elif is_sub_road(current_road, old_road):
-        return current_road.replace(old_road, new_road, 1)
+    if subj_road is None:
+        return subj_road
+    elif is_sub_road(subj_road, old_road):
+        return subj_road.replace(old_road, new_road, 1)
     else:
-        return current_road
+        return subj_road
 
 
 def is_sub_road(ref_road: RoadUnit, sub_road: RoadUnit) -> bool:
@@ -139,7 +139,7 @@ def road_validate(road: RoadUnit, delimiter: str, root_node: RoadNode) -> RoadUn
     x_root = get_root_node_from_road(road, delimiter)
     return (
         change_road(
-            current_road=road,
+            subj_road=road,
             old_road=x_root,
             new_road=root_node,
         )

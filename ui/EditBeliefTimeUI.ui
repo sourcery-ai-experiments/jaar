@@ -13,7 +13,7 @@
   <property name="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QComboBox" name="curr_year">
+  <widget class="QComboBox" name="now_year">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -101,7 +101,7 @@
     <string>Min</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_month">
+  <widget class="QComboBox" name="now_month">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -111,7 +111,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_monthday">
+  <widget class="QComboBox" name="now_monthday">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -121,7 +121,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_hour">
+  <widget class="QComboBox" name="now_hour">
    <property name="geometry">
     <rect>
      <x>340</x>
@@ -131,7 +131,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="curr_min">
+  <widget class="QComboBox" name="now_min">
    <property name="geometry">
     <rect>
      <x>420</x>
@@ -319,17 +319,17 @@
    </property>
   </widget>
   <zorder>frame_2</zorder>
-  <zorder>curr_year</zorder>
+  <zorder>now_year</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
   <zorder>label_3</zorder>
   <zorder>label_4</zorder>
   <zorder>label_5</zorder>
   <zorder>label_6</zorder>
-  <zorder>curr_month</zorder>
-  <zorder>curr_monthday</zorder>
-  <zorder>curr_hour</zorder>
-  <zorder>curr_min</zorder>
+  <zorder>now_month</zorder>
+  <zorder>now_monthday</zorder>
+  <zorder>now_hour</zorder>
+  <zorder>now_min</zorder>
   <zorder>label_11</zorder>
   <zorder>prev_monthday</zorder>
   <zorder>prev_hour</zorder>

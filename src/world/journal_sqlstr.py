@@ -38,7 +38,7 @@ def get_atom_hx_table_insert_sqlstr(x_atom: AgendaAtom) -> str:
 
 
 def get_atom_mstr_table_create_sqlstr() -> str:
-    """Create table that holds atom current."""
+    """Create table that holds agendaatoms."""
     x_str = f"""
 CREATE TABLE IF NOT EXISTS {atom_mstr_table_name()} (
   person_id VARCHAR(255) NOT NULL

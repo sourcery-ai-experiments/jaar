@@ -5,7 +5,7 @@ from src.instrument.file import (
     count_files,
     get_directory_path,
     is_path_valid,
-    can_current_user_edit_paths,
+    can_active_user_edit_paths,
     is_path_existent_or_creatable,
     is_path_probably_creatable,
     is_path_existent_or_probably_creatable,
@@ -342,10 +342,10 @@ def test_is_path_valid_ReturnsCorrectObj():
     assert is_path_valid("run//trail////")
 
 
-def test_can_current_user_edit_paths_ReturnsCorrectObj():
+def test_can_active_user_edit_paths_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
-    assert can_current_user_edit_paths()
+    assert can_active_user_edit_paths()
 
 
 def test_is_path_existent_or_creatable_ReturnsCorrectObj():

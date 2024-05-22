@@ -155,7 +155,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
         base=week_road,
         premises=premises,
         _status=False,
-        _curr_idea_active=True,
+        _base_idea_active=True,
     )
     print(f"{gig_wk_build_reasonunit.base=}")
     x_agenda.edit_idea_attr(road=gig_road, reason=gig_wk_build_reasonunit)
@@ -209,7 +209,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
         base=week_road,
         premises=premises_x,
         _status=False,
-        _curr_idea_active=True,
+        _base_idea_active=True,
     )
     a4_agenda.edit_idea_attr(road=gig_road, reason=gig_wk_build_reasonunit)
 
@@ -240,8 +240,8 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     )
     assert rla_week_reasonheir._status == gig_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == gig_wk_built_reasonheir._task
-    assert rla_week_reasonheir._curr_idea_active
-    assert rla_week_reasonheir._curr_idea_active != gig_wk_built_reasonheir
+    assert rla_week_reasonheir._base_idea_active
+    assert rla_week_reasonheir._base_idea_active != gig_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
@@ -253,8 +253,8 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     )
     assert cost_week_reasonheir._status == gig_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == gig_wk_built_reasonheir._task
-    assert cost_week_reasonheir._curr_idea_active
-    assert cost_week_reasonheir._curr_idea_active != gig_wk_built_reasonheir
+    assert cost_week_reasonheir._base_idea_active
+    assert cost_week_reasonheir._base_idea_active != gig_wk_built_reasonheir
 
 
 def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
@@ -275,7 +275,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
         base=week_road,
         premises=premises,
         _status=False,
-        _curr_idea_active=True,
+        _base_idea_active=True,
     )
     a4_agenda.edit_idea_attr(road=gig_road, reason=gig_wk_build_reasonunit)
     rla_text = "hp"
@@ -312,8 +312,8 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     )
     assert rla_week_reasonheir._status == gig_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == gig_wk_built_reasonheir._task
-    assert rla_week_reasonheir._curr_idea_active
-    assert rla_week_reasonheir._curr_idea_active != gig_wk_built_reasonheir
+    assert rla_week_reasonheir._base_idea_active
+    assert rla_week_reasonheir._base_idea_active != gig_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
@@ -325,8 +325,8 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     )
     assert cost_week_reasonheir._status == gig_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == gig_wk_built_reasonheir._task
-    assert cost_week_reasonheir._curr_idea_active
-    assert cost_week_reasonheir._curr_idea_active != gig_wk_built_reasonheir
+    assert cost_week_reasonheir._base_idea_active
+    assert cost_week_reasonheir._base_idea_active != gig_wk_built_reasonheir
 
 
 def test_AgendaUnit_ReasonUnits_set_UnCoupledMethod():

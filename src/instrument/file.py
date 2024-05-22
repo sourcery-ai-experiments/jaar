@@ -198,12 +198,12 @@ def is_path_valid(path: str) -> bool:
         return True
 
 
-def can_current_user_edit_paths(path: str = None) -> bool:
+def can_active_user_edit_paths(path: str = None) -> bool:
     """
-    `True` if the current user has sufficient permissions to create the passed
+    `True` if the active user has sufficient permissions to create the passed
     path; `False` otherwise.
     """
-    # Parent directory of the passed path. If empty, we substitute the current
+    # Parent directory of the passed path. If empty, we substitute the active
     # working directory (CWD) instead.
     # dirname = os_path_dirname(path) or os_getcwd()
     dirname = os_getcwd()
@@ -212,15 +212,15 @@ def can_current_user_edit_paths(path: str = None) -> bool:
 
 def is_path_existent_or_creatable(path: str) -> bool:
     """
-    `True` if the passed path is a valid path for the current OS _and_
-    either currently exists or is hypothetically creatable; `False` otherwise.
+    `True` if the passed path is a valid path for the active OS _and_
+    either actively exists or is hypothetically creatable; `False` otherwise.
     This function is guaranteed to _never_ raise exceptions.
     """
     try:
         # To prevent "os" module calls from raising undesirable exceptions on
         # invalid path, is_path_valid() is explicitly called first.
         return is_path_valid(path) and (
-            os_path_exists(path) or can_current_user_edit_paths(path)
+            os_path_exists(path) or can_active_user_edit_paths(path)
         )
     # Report failure on non-fatal filesystem complaints (e.g., connection
     # timeouts, permissions issues) implying this path to be inaccessible. All
@@ -231,11 +231,11 @@ def is_path_existent_or_creatable(path: str) -> bool:
 
 def is_path_probably_creatable(path: str = None) -> bool:
     """
-    `True` if the current user has sufficient permissions to create **siblings**
+    `True` if the active user has sufficient permissions to create **siblings**
     (i.e., arbitrary files in the parent directory) of the passed path;
     `False` otherwise.
     """
-    # Parent directory of the passed path. If empty, we substitute the current
+    # Parent directory of the passed path. If empty, we substitute the active
     # working directory (CWD) instead.
     dirname = os_getcwd() if path is None else os_path_dirname(path) or os_getcwd()
     try:
@@ -245,7 +245,7 @@ def is_path_probably_creatable(path: str = None) -> bool:
             pass
         return True
     # While the exact type of exception raised by the above function depends on
-    # the current version of the Python interpreter, all such types subclass the
+    # the currrent version of the Python interpreter, all such types subclass the
     # following exception superclass.
     except EnvironmentError:
         return False
@@ -253,8 +253,8 @@ def is_path_probably_creatable(path: str = None) -> bool:
 
 def is_path_existent_or_probably_creatable(path: str) -> bool:
     """
-    `True` if the passed path is a valid path on the current OS _and_
-    either currently exists or is hypothetically creatable in a cross-platform
+    `True` if the passed path is a valid path on the active OS _and_
+    either actively exists or is hypothetically creatable in a cross-platform
     manner optimized for POSIX-unfriendly filesystems; `False` otherwise.
     This function is guaranteed to _never_ raise exceptions.
     """

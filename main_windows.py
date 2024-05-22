@@ -148,10 +148,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def startTimer(self):
         self.timer.stop()
         if self.cb_update_now_repeat.checkState() == 2:
-            curr_time_frame = str(self.update_now_time.currentText())
-            curr_time_sec = 60
-            curr_time_millisec = curr_time_sec * 1000
-            self.timer.start(curr_time_millisec)
+            now_time_frame = str(self.update_now_time.currentText())
+            now_time_sec = 60
+            now_time_millisec = now_time_sec * 1000
+            self.timer.start(now_time_millisec)
         else:
             self.timer.stop()
 
@@ -169,7 +169,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_belief_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
         road_minute = f"{self.x_agenda._world_id},time,jajatime"
-        # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
+        # self.root_datetime_now_l.setText(f"Now: {str(now_x)}")
         self.x_agenda.set_belief(
             base=road_minute,
             pick=road_minute,
@@ -213,7 +213,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_belief_time_open_soft(self):
         # now_x = datetime.now()
         # road_minute = f"{self.x_agenda._world_id},time,jajatime"
-        # self.root_datetime_curr_l.setText(f"Now: {str(now_x)}")
+        # self.root_datetime_now_l.setText(f"Now: {str(now_x)}")
         # self.x_agenda.set_belief(
         #     base=road_minute,
         #     pick=road_minute,
@@ -295,7 +295,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.x_agenda._idearoot._beliefunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-        self.root_datetime_curr_l.setText(
+        self.root_datetime_now_l.setText(
             f"Now:  {str(jajatime_nigh)} {week_days[jajatime_nigh.weekday()]}"
         )
         self.root_datetime_prev_l.setText(
@@ -303,7 +303,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def refresh_all(self):
-        self.root_datetime_curr_l.setText("")
+        self.root_datetime_now_l.setText("")
         self.root_datetime_prev_l.setText("")
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()

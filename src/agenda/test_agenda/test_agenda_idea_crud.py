@@ -398,16 +398,16 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     gig_text = "gig"
     gig_road = sue_agenda.make_l1_road(gig_text)
     print(f"{gig_road=}")
-    current_weight = sue_agenda._idearoot._kids[gig_text]._weight
-    assert current_weight == 30
+    old_weight = sue_agenda._idearoot._kids[gig_text]._weight
+    assert old_weight == 30
     sue_agenda.edit_idea_attr(road=gig_road, weight=23)
     new_weight = sue_agenda._idearoot._kids[gig_text]._weight
     assert new_weight == 23
 
     # uid: int = None,
     sue_agenda._idearoot._kids[gig_text]._uid = 34
-    uid_curr = sue_agenda._idearoot._kids[gig_text]._uid
-    assert uid_curr == 34
+    x_uid = sue_agenda._idearoot._kids[gig_text]._uid
+    assert x_uid == 34
     sue_agenda.edit_idea_attr(road=gig_road, uid=23)
     uid_new = sue_agenda._idearoot._kids[gig_text]._uid
     assert uid_new == 23
@@ -415,11 +415,11 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     # begin: float = None,
     # close: float = None,
     sue_agenda._idearoot._kids[gig_text]._begin = 39
-    begin_curr = sue_agenda._idearoot._kids[gig_text]._begin
-    assert begin_curr == 39
+    x_begin = sue_agenda._idearoot._kids[gig_text]._begin
+    assert x_begin == 39
     sue_agenda._idearoot._kids[gig_text]._close = 43
-    close_curr = sue_agenda._idearoot._kids[gig_text]._close
-    assert close_curr == 43
+    x_close = sue_agenda._idearoot._kids[gig_text]._close
+    assert x_close == 43
     sue_agenda.edit_idea_attr(road=gig_road, begin=25, close=29)
     assert sue_agenda._idearoot._kids[gig_text]._begin == 25
     assert sue_agenda._idearoot._kids[gig_text]._close == 29
@@ -442,10 +442,10 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # _descendant_promise_count: int = None,
     sue_agenda._idearoot._kids[gig_text]._descendant_promise_count = 81
-    _descendant_promise_count_curr = sue_agenda._idearoot._kids[
+    x_descendant_promise_count = sue_agenda._idearoot._kids[
         gig_text
     ]._descendant_promise_count
-    assert _descendant_promise_count_curr == 81
+    assert x_descendant_promise_count == 81
     sue_agenda.edit_idea_attr(road=gig_road, descendant_promise_count=67)
     _descendant_promise_count_new = sue_agenda._idearoot._kids[
         gig_text
@@ -454,16 +454,16 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # _all_party_credit: bool = None,
     sue_agenda._idearoot._kids[gig_text]._all_party_credit = 74
-    _all_party_credit_curr = sue_agenda._idearoot._kids[gig_text]._all_party_credit
-    assert _all_party_credit_curr == 74
+    x_all_party_credit = sue_agenda._idearoot._kids[gig_text]._all_party_credit
+    assert x_all_party_credit == 74
     sue_agenda.edit_idea_attr(road=gig_road, all_party_credit=59)
     _all_party_credit_new = sue_agenda._idearoot._kids[gig_text]._all_party_credit
     assert _all_party_credit_new == 59
 
     # _all_party_debt: bool = None,
     sue_agenda._idearoot._kids[gig_text]._all_party_debt = 74
-    _all_party_debt_curr = sue_agenda._idearoot._kids[gig_text]._all_party_debt
-    assert _all_party_debt_curr == 74
+    x_all_party_debt = sue_agenda._idearoot._kids[gig_text]._all_party_debt
+    assert x_all_party_debt == 74
     sue_agenda.edit_idea_attr(road=gig_road, all_party_debt=59)
     _all_party_debt_new = sue_agenda._idearoot._kids[gig_text]._all_party_debt
     assert _all_party_debt_new == 59

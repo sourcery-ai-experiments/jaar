@@ -429,7 +429,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_intent_current">
+  <widget class="QCheckBox" name="cb_yo_now_intent">
    <property name="geometry">
     <rect>
      <x>210</x>

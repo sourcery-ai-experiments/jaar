@@ -588,7 +588,7 @@ def reasonunit_shop(
 class ReasonHeir(ReasonCore):
     _status: bool = None
     _task: bool = None
-    _curr_idea_active: bool = None
+    _base_idea_active: bool = None
 
     def inherit_from_reasonheir(self, x_reasonunit: ReasonUnit):
         x_premises = {}
@@ -622,8 +622,8 @@ class ReasonHeir(ReasonCore):
 
         return x_belief
 
-    def set_curr_idea_active(self, bool_x: bool):
-        self._curr_idea_active = bool_x
+    def set_base_idea_active(self, bool_x: bool):
+        self._base_idea_active = bool_x
 
     def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
         self.clear_status()
@@ -643,8 +643,8 @@ class ReasonHeir(ReasonCore):
         self._status = bool(
             is_a_single_premise_true
             or (
-                self._curr_idea_active != None
-                and self._curr_idea_active == self.suff_idea_active
+                self._base_idea_active != None
+                and self._base_idea_active == self.suff_idea_active
             )
         )
         self._task = True if is_single_task_true else None
@@ -658,7 +658,7 @@ def reasonheir_shop(
     suff_idea_active: bool = None,
     _status: bool = None,
     _task: bool = None,
-    _curr_idea_active: bool = None,
+    _base_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonHeir(
@@ -667,7 +667,7 @@ def reasonheir_shop(
         suff_idea_active=suff_idea_active,
         _status=_status,
         _task=_task,
-        _curr_idea_active=_curr_idea_active,
+        _base_idea_active=_base_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 

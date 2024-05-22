@@ -54,14 +54,14 @@ def _add_individual_trace(
     trace_list: list,
     anno_list: list,
     parent_y,
-    current_y,
+    source_y,
     kid_idea: IdeaUnit,
     mode: str,
 ):
     trace_list.append(
         plotly_Scatter(
             x=[kid_idea._level - 1, kid_idea._level],
-            y=[parent_y, current_y],
+            y=[parent_y, source_y],
             marker_size=_get_dot_diameter(kid_idea._agenda_importance),
             name=kid_idea._label,
             marker_color=_get_color_for_ideaunit_trace(kid_idea, mode=mode),
@@ -70,9 +70,7 @@ def _add_individual_trace(
     anno_list.append(
         dict(
             x=kid_idea._level,
-            y=current_y
-            + (_get_dot_diameter(kid_idea._agenda_importance) / 150)
-            + 0.002,
+            y=source_y + (_get_dot_diameter(kid_idea._agenda_importance) / 150) + 0.002,
             text=kid_idea._label,
             showarrow=False,
         )
@@ -80,26 +78,26 @@ def _add_individual_trace(
 
 
 def _add_ideaunit_traces(
-    trace_list, anno_list, x_agenda: AgendaUnit, current_y: float, mode: str
+    trace_list, anno_list, x_agenda: AgendaUnit, source_y: float, mode: str
 ):
     ideas = [x_agenda._idearoot]
     y_ideaunit_y_coordinate_dict = {None: 0}
     prev_road = x_agenda._idearoot.get_road()
-    current_y = 0
+    source_y = 0
     while ideas != []:
         x_idea = ideas.pop(-1)
         if is_sub_road(x_idea.get_road(), prev_road) == False:
-            current_y -= 1
+            source_y -= 1
         _add_individual_trace(
             trace_list=trace_list,
             anno_list=anno_list,
             parent_y=_get_parent_y(x_idea, y_ideaunit_y_coordinate_dict),
-            current_y=current_y,
+            source_y=source_y,
             kid_idea=x_idea,
             mode=mode,
         )
         ideas.extend(iter(x_idea._kids.values()))
-        y_ideaunit_y_coordinate_dict[x_idea.get_road()] = current_y
+        y_ideaunit_y_coordinate_dict[x_idea.get_road()] = source_y
         prev_road = x_idea.get_road()
 
 
@@ -120,11 +118,11 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     """Mode can be None, Task, Econ"""
 
     x_fig = plotly_Figure()
-    current_y = 0
+    source_y = 0
     trace_list = []
     anno_list = []
     print(f"{x_agenda._owner_id=}")
-    _add_ideaunit_traces(trace_list, anno_list, x_agenda, current_y, mode=mode)
+    _add_ideaunit_traces(trace_list, anno_list, x_agenda, source_y, mode=mode)
     _update_layout_fig(x_fig, mode, x_agenda=x_agenda)
     while trace_list:
         x_trace = trace_list.pop(-1)

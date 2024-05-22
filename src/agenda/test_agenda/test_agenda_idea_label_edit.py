@@ -228,7 +228,7 @@ def test_agenda_edit_idea_label_Changes_beliefunits():
 
 
 def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
-    # GIVEN this should never happen but it's not currently banned
+    # GIVEN this should never happen but best be thorough
     tim_agenda = agendaunit_shop("Tim")
     old_casa_text = "casa"
     old_casa_road = tim_agenda.make_l1_road(old_casa_text)

@@ -542,7 +542,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRa
     SELECT COUNT(*)
     FROM (
         SELECT 
-            rt1.cash_start current_row_start
+            rt1.cash_start x_row_start
         , lag(cash_close) OVER (ORDER BY cash_start, cash_close) AS prev_close
         , lag(cash_close) OVER (ORDER BY cash_start, cash_close) - rt1.cash_start prev_diff
         , rt1.block_num or_block_num
