@@ -39,7 +39,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.submit_node_update.clicked.connect(self.idea_update)
         self.submit_node_delete.clicked.connect(self.idea_delete)
         self.submit_child_insert.clicked.connect(self.idea_insert)
-        self.submit_duty_insert.clicked.connect(self.idea_duty_insert)
+        self.submit_pledge_insert.clicked.connect(self.idea_pledge_insert)
 
         self.cb_rootadmiration.stateChanged.connect(self.refresh_tree)
         self.cb_yo_id.stateChanged.connect(self.refresh_tree)
@@ -871,7 +871,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if self.x_idea._label != self.yo_deescription.toPlainText():
             self.idea_edit_road(idea_road=idea_road)
 
-    def idea_duty_insert(self):
+    def idea_pledge_insert(self):
         new_parent_road = f"{self.x_idea._label}"
         if self.x_idea._parent_road not in ("", None):
             new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"

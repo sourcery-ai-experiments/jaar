@@ -622,9 +622,9 @@ class Ui_Form(object):
         self.reasonheir_table.setHorizontalHeaderItem(9, item)
         item = QtWidgets.QTableWidgetItem()
         self.reasonheir_table.setHorizontalHeaderItem(10, item)
-        self.submit_duty_insert = QtWidgets.QPushButton(Form)
-        self.submit_duty_insert.setGeometry(QtCore.QRect(1190, 800, 171, 26))
-        self.submit_duty_insert.setObjectName("submit_duty_insert")
+        self.submit_pledge_insert = QtWidgets.QPushButton(Form)
+        self.submit_pledge_insert.setGeometry(QtCore.QRect(1190, 800, 171, 26))
+        self.submit_pledge_insert.setObjectName("submit_pledge_insert")
         self.label_39 = QtWidgets.QLabel(Form)
         self.label_39.setGeometry(QtCore.QRect(1110, 400, 311, 21))
         font = QtGui.QFont()
@@ -769,7 +769,7 @@ class Ui_Form(object):
         item.setText(_translate("Form", "Premise_status"))
         item = self.reasonheir_table.horizontalHeaderItem(10)
         item.setText(_translate("Form", "11"))
-        self.submit_duty_insert.setText(_translate("Form", "Add Duty child idea"))
+        self.submit_pledge_insert.setText(_translate("Form", "Add Pledge child idea"))
         self.label_39.setText(
             _translate(
                 "Form",

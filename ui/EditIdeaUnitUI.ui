@@ -1804,7 +1804,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="submit_duty_insert">
+  <widget class="QPushButton" name="submit_pledge_insert">
    <property name="geometry">
     <rect>
      <x>1190</x>
@@ -1814,7 +1814,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Duty child idea</string>
+    <string>Add Pledge child idea</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_39">
