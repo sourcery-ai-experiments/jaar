@@ -24,6 +24,10 @@ class get_member_attr_Exception(Exception):
     pass
 
 
+def get_gifts_folder() -> str:
+    return "gifts"
+
+
 def init_gift_id() -> int:
     return 0
 

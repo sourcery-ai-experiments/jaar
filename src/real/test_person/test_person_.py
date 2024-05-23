@@ -1,7 +1,7 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
-from src.real.gift import init_gift_id
+from src.real.gift import init_gift_id, get_gifts_folder
 from src.real.person import (
     PersonUnit,
     personunit_shop,
@@ -82,7 +82,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     assert x_person._live_path == f"{x_person.person_dir}/{x_person._live_file_name}"
     assert x_person._econs_dir == f"{x_person.person_dir}/econs"
     assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
-    assert x_person._gifts_dir == f"{x_person.person_dir}/gifts"
+    assert x_person._gifts_dir == f"{x_person.person_dir}/{get_gifts_folder()}"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(

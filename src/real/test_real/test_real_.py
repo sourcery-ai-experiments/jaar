@@ -3,6 +3,7 @@ from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.clerk import get_owner_file_name
+from src.real.gift import get_gifts_folder
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -24,8 +25,6 @@ def test_RealUnit_exists(reals_dir_setup_cleanup):
     assert music_real._journal_db is None
     assert music_real._personunits is None
     assert music_real._gifts_dir is None
-    assert music_real._giftunits is None
-    assert music_real._max_gift_uid is None
     assert music_real._road_delimiter is None
     assert music_real._planck is None
 
@@ -45,8 +44,6 @@ def test_realunit_shop_ReturnsRealUnit(reals_dir_setup_cleanup):
     assert music_real._persons_dir != None
     assert music_real._personunits == {}
     assert music_real._gifts_dir != None
-    assert music_real._giftunits == {}
-    assert music_real._max_gift_uid == 0
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._planck == default_planck_if_none()
 
@@ -77,7 +74,7 @@ def test_RealUnit__set_real_dirs_SetsPersonDir(reals_dir_setup_cleanup):
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     x_real_dir = f"{get_test_reals_dir()}/{music_text}"
     x_persons_dir = f"{x_real_dir}/persons"
-    x_gifts_dir = f"{x_real_dir}/gifts"
+    x_gifts_dir = f"{x_real_dir}/{get_gifts_folder()}"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_real_dir}/{journal_file_name}"
 

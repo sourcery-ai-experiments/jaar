@@ -4,6 +4,7 @@ from src.real.gift import (
     giftunit_shop,
     get_init_gift_id_if_None,
     init_gift_id,
+    get_gifts_folder,
 )
 from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
@@ -11,6 +12,11 @@ from src.real.examples.example_atoms import (
 )
 from src._instrument.python import x_is_json
 from pytest import raises as pytest_raises
+
+
+def test_get_gifts_folder_ReturnsCorrectObj():
+    # GIVEN / WHEN / THEN
+    assert get_gifts_folder() == "gifts"
 
 
 def test_init_gift_id_ReturnsCorrectObj():

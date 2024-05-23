@@ -2,7 +2,7 @@ from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
-from src.real.gift import GiftUnit
+from src.real.gift import get_gifts_folder
 from src.real.person import PersonUnit, personunit_shop
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
@@ -25,28 +25,8 @@ class RealUnit:
     _journal_db: str = None
     _personunits: dict[PersonID:PersonUnit] = None
     _gifts_dir: str = None
-    _giftunits: dict[PersonID:PersonUnit] = None
-    _max_gift_uid: int = None
     _road_delimiter: str = None
     _planck: float = None
-
-    def del_giftunit(self, giftunit_uid: int):
-        self._giftunits.pop(giftunit_uid)
-
-    def giftunit_file_exists(self, giftunit_uid: int) -> bool:
-        return self.get_giftunit(giftunit_uid) != None
-
-    def get_giftunit(self, giftunit_uid: int) -> GiftUnit:
-        return self._giftunits.get(giftunit_uid)
-
-    def set_giftunit(self, x_giftunit: GiftUnit):
-        new_uid = self._max_gift_uid + 1
-        self._giftunits[new_uid] = x_giftunit
-        self.set_max_gift_uid(new_uid)
-        return new_uid
-
-    def set_max_gift_uid(self, new_uid: int = None):
-        self._max_gift_uid = 0 if self._max_gift_uid is None else new_uid
 
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
@@ -54,7 +34,7 @@ class RealUnit:
     def _set_real_dirs(self, in_memory_journal: bool = None):
         self._real_dir = f"{self.reals_dir}/{self.real_id}"
         self._persons_dir = f"{self._real_dir}/persons"
-        self._gifts_dir = f"{self._real_dir}/gifts"
+        self._gifts_dir = f"{self._real_dir}/{get_gifts_folder()}"
         set_dir(x_path=self._real_dir)
         set_dir(x_path=self._persons_dir)
         set_dir(x_path=self._gifts_dir)
@@ -221,10 +201,8 @@ def realunit_shop(
         real_id=real_id,
         reals_dir=reals_dir,
         _personunits=get_empty_dict_if_none(None),
-        _giftunits=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
     )
-    real_x.set_max_gift_uid()
     real_x._set_real_dirs(in_memory_journal=in_memory_journal)
     return real_x

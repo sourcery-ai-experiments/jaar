@@ -29,6 +29,7 @@ from src.real.gift import (
     create_giftunit_from_files,
     init_gift_id,
     get_init_gift_id_if_None,
+    get_gifts_folder,
 )
 from src.real.examples.real_env_kit import get_test_reals_dir, get_test_real_id
 from src._instrument.python import get_empty_dict_if_none
@@ -111,7 +112,7 @@ class PersonUnit:
         self.person_dir = f"{self.persons_dir}/{self.person_id}"
         self._econs_dir = f"{self.person_dir}/econs"
         self._atoms_dir = f"{self.person_dir}/atoms"
-        self._gifts_dir = f"{self.person_dir}/gifts"
+        self._gifts_dir = f"{self.person_dir}/{get_gifts_folder()}"
         if self._gut_file_name is None:
             self._gut_file_name = f"{get_gut_file_name()}.json"
         if self._gut_path is None:

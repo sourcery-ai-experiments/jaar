@@ -1,6 +1,6 @@
 from src._road.road import create_road_from_nodes as roadnodes
 from src.agenda.book import bookunit_shop
-from src.real.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
+from src.real.gift import giftunit_shop, create_giftunit_from_files, get_gifts_folder
 from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,
@@ -109,7 +109,7 @@ def test_GiftUnit_save_gift_file_SavesCorrectFile(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_gift_id = 2
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_gifts_dir = f"{sue_person_dir}/gifts"
+    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -142,7 +142,7 @@ def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_gifts_dir = f"{sue_person_dir}/gifts"
+    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -169,7 +169,7 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
-    sue_gifts_dir = f"{sue_person_dir}/gifts"
+    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
 
     tim_text = "Tim"
     yao_text = "Yao"
@@ -239,7 +239,7 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
-    sue_gifts_dir = f"{sue_person_dir}/gifts"
+    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
 
     tim_text = "Tim"
     yao_text = "Yao"
