@@ -77,7 +77,7 @@
 #     texas_econ = yao_person.get_econunit(texas_text)
 #     texas_jobs_dir = texas_econ.get_jobs_dir()
 
-#     highwaay_wantunit = create_wantunit(
+#     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix="flying in 737s",
 #         positive="Do not fly",
@@ -89,7 +89,7 @@
 #     tim_text = "Tim"
 #     xio_text = "Xio"
 #     highwaay_requestunit = create_requestunit(
-#         wantunit=highwaay_wantunit, requestee_party_id=tim_text, requester_person_id=xio_text
+#         needunit=highwaay_needunit, requestee_party_id=tim_text, requester_person_id=xio_text
 #     )
 #     assert system.get_personunit_from_memory(tim_text) is None
 #     assert system.get_personunit_from_memory(xio_text) is None
@@ -133,7 +133,7 @@
 #     healthy_text = "healthy"
 #     boiling_text = "boiling"
 
-#     highwaay_wantunit = create_wantunit(
+#     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
@@ -146,7 +146,7 @@
 #     xio_text = "Xio"
 #     fix_weight = 7
 #     highwaay_requestunit = create_requestunit(
-#         wantunit=highwaay_wantunit,
+#         needunit=highwaay_needunit,
 #         requestee_party_id=tim_text,
 #         requester_party_id=xio_text,
 #         fix_weight=fix_weight,
@@ -258,7 +258,7 @@
 #     healthy_text = "healthy"
 #     boiling_text = "boiling"
 
-#     highwaay_wantunit = create_wantunit(
+#     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 #         fix=flying_text,
 #         positive=no_fly_text,
@@ -272,7 +272,7 @@
 #     environmentalist_text = "Environmentalist"
 #     fix_weight = 7
 #     highwaay_requestunit = create_requestunit(
-#         wantunit=highwaay_wantunit,
+#         needunit=highwaay_needunit,
 #         requestee_party_id=tim_text,
 #         requestee_group=environmentalist_text,
 #         requester_person_id=xio_text,
@@ -349,7 +349,7 @@
 # #     yao_person.set_econunit(texas_text)
 # #     texas_econ = yao_person.get_econunit(texas_text)
 
-# #     fly_wantunit = create_wantunit(
+# #     fly_needunit = create_needunit(
 # #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
 # #         fix="flying in 737s",
 # #         positive="Do not fly",
@@ -362,9 +362,9 @@
 # #     tim_text = "Tim"
 # #     xio_text = "Xio"
 # #     fix_weight = 7
-# #     fly_requestunit = create_requestunit(fly_wantunit, tim_text, xio_text, fix_weight)
-# #     fly_requestunit = create_requestunit(fly_wantunit, tim_text, xio_text, fix_weight)
-# #     fly_requestunit = create_requestunit(fly_wantunit, yao_text, xio_text, fix_weight)
+# #     fly_requestunit = create_requestunit(fly_needunit, tim_text, xio_text, fix_weight)
+# #     fly_requestunit = create_requestunit(fly_needunit, tim_text, xio_text, fix_weight)
+# #     fly_requestunit = create_requestunit(fly_needunit, yao_text, xio_text, fix_weight)
 
 # #     # WHEN
 # #     system.apply_requestunit(fly_requestunit)

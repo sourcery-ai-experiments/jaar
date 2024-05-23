@@ -1,4 +1,3 @@
-from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop
@@ -10,18 +9,6 @@ from src._instrument.python import (
 from src._instrument.file import save_file, open_file
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
-
-
-class GiftMetricsException(Exception):
-    pass
-
-
-class WantSubRoadUnitException(Exception):
-    pass
-
-
-class get_member_attr_Exception(Exception):
-    pass
 
 
 def get_gifts_folder() -> str:
