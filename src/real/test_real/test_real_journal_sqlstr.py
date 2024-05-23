@@ -13,7 +13,7 @@ from os import path as os_path
 from pytest import raises as pytest_raises
 
 
-# def test_RealUnit_get_atom_hx_table_insert_sqlstr_CorrectlyWorksInDatabase(
+# def test_RealUnit_get_atom_hx_table_insert_sqlstr_CorrectlyInsertsIntoDatabase(
 #     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN

@@ -142,14 +142,14 @@ class RealUnit:
         x_econ = healer_person.get_econ(econ_road)
         x_econ.save_file_to_roles(duty_agenda)
 
-    # live agenda management
-    def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
+    # work agenda management
+    def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
         x_duty = x_personunit.get_duty_file_agenda()
         x_duty.set_agenda_metrics()
 
-        x_live = agendaunit_shop(person_id, self.real_id)
-        x_live_deepcopy = copy_deepcopy(x_live)
+        x_work = agendaunit_shop(person_id, self.real_id)
+        x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
             healer_person.create_person_econunits()
@@ -159,22 +159,22 @@ class RealUnit:
                 x_econ.create_clerkunit(person_id)
                 x_job = x_econ.get_file_in_jobs(person_id)
                 x_job.set_agenda_metrics()
-                x_live.meld(x_job)
-                x_live.set_agenda_metrics
+                x_work.meld(x_job)
+                x_work.set_agenda_metrics
 
-        # if live_agenda has not changed st live agenda to duty
-        if x_live == x_live_deepcopy:
-            x_live = x_duty
-        x_personunit._save_live_file(x_live)
-        return self.get_live_file_agenda(person_id)
+        # if work_agenda has not changed st work agenda to duty
+        if x_work == x_work_deepcopy:
+            x_work = x_duty
+        x_personunit._save_work_file(x_work)
+        return self.get_work_file_agenda(person_id)
 
-    def generate_all_live_agendas(self):
+    def generate_all_work_agendas(self):
         for x_person_id in self._get_person_folder_names():
-            self.generate_live_agenda(x_person_id)
+            self.generate_work_agenda(x_person_id)
 
-    def get_live_file_agenda(self, person_id: PersonID) -> AgendaUnit:
+    def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        return x_personunit.get_live_file_agenda()
+        return x_personunit.get_work_file_agenda()
 
     def _set_partyunit(
         self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

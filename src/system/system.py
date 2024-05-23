@@ -61,7 +61,7 @@
 #     pass
 
 
-# class Invalid_live_Exception(Exception):
+# class Invalid_work_Exception(Exception):
 #     pass
 
 
@@ -77,8 +77,8 @@
 #     return "duty"
 
 
-# def get_live_file_name() -> str:
-#     return "live"
+# def get_work_file_name() -> str:
+#     return "work"
 
 
 # @dataclass
@@ -93,9 +93,9 @@
 #     _duty_obj: AgendaUnit = None
 #     _duty_file_name: str = None
 #     _duty_path: str = None
-#     _live_obj: AgendaUnit = None
-#     _live_file_name: str = None
-#     _live_path: str = None
+#     _work_obj: AgendaUnit = None
+#     _work_file_name: str = None
+#     _work_path: str = None
 #     _econ_objs: dict[RoadUnit:EconUnit] = None
 #     _road_delimiter: str = None
 #     _planck: float = None
@@ -115,10 +115,10 @@
 #             self._duty_file_name = f"{get_duty_file_name()}.json"
 #         if self._duty_path is None:
 #             self._duty_path = f"{self.person_dir}/{self._duty_file_name}"
-#         if self._live_file_name is None:
-#             self._live_file_name = f"{get_live_file_name()}.json"
-#         if self._live_path is None:
-#             self._live_path = f"{self.person_dir}/{self._live_file_name}"
+#         if self._work_file_name is None:
+#             self._work_file_name = f"{get_work_file_name()}.json"
+#         if self._work_path is None:
+#             self._work_path = f"{self.person_dir}/{self._work_file_name}"
 
 #     def create_core_dir_and_files(self):
 #         set_dir(self.real_dir)
@@ -127,7 +127,7 @@
 #         set_dir(self._econs_dir)
 #         set_dir(self._atoms_dir)
 #         self.initialize_gift_and_duty_files()
-#         self.create_live_file_if_does_not_exist()
+#         self.create_work_file_if_does_not_exist()
 
 #     def initialize_gift_and_duty_files(self):
 #         duty_file_exists = self.duty_file_exists()
@@ -176,18 +176,18 @@
 #         empty_agenda._last_gift_id = init_gift_id()
 #         return empty_agenda
 
-#     def create_live_file_if_does_not_exist(self):
-#         if self.live_file_exists() == False:
-#             default_live_agenda = agendaunit_shop(
+#     def create_work_file_if_does_not_exist(self):
+#         if self.work_file_exists() == False:
+#             default_work_agenda = agendaunit_shop(
 #                 self.person_id, self.real_id, self._road_delimiter, self._planck
 #             )
-#             self._save_live_file(default_live_agenda)
+#             self._save_work_file(default_work_agenda)
 
 #     def duty_file_exists(self) -> bool:
 #         return os_path_exists(self._duty_path)
 
-#     def live_file_exists(self) -> bool:
-#         return os_path_exists(self._live_path)
+#     def work_file_exists(self) -> bool:
+#         return os_path_exists(self._work_path)
 
 #     def save_duty_file(self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
@@ -202,15 +202,15 @@
 #                 replace=replace,
 #             )
 
-#     def _save_live_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def _save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
-#             raise Invalid_live_Exception(
-#                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s live agenda."
+#             raise Invalid_work_Exception(
+#                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
 #             )
 #         if replace in {True, False}:
 #             save_file(
 #                 dest_dir=self.person_dir,
-#                 file_name=self._live_file_name,
+#                 file_name=self._work_file_name,
 #                 file_text=x_agenda.get_json(),
 #                 replace=replace,
 #             )
@@ -219,15 +219,15 @@
 #         duty_json = open_file(dest_dir=self.person_dir, file_name=self._duty_file_name)
 #         return agenda_get_from_json(duty_json)
 
-#     def get_live_file_agenda(self) -> AgendaUnit:
-#         live_json = open_file(dest_dir=self.person_dir, file_name=self._live_file_name)
-#         return agenda_get_from_json(live_json)
+#     def get_work_file_agenda(self) -> AgendaUnit:
+#         work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
+#         return agenda_get_from_json(work_json)
 
 #     def load_duty_file(self):
 #         self._duty_obj = self.get_duty_file_agenda()
 
-#     def load_live_file(self):
-#         self._live_obj = self.get_live_file_agenda()
+#     def load_work_file(self):
+#         self._work_obj = self.get_work_file_agenda()
 
 #     def giftunit_file_exists(self, gift_id: int) -> bool:
 #         gift_filename = giftunit_get_json_filename(gift_id)
