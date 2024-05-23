@@ -21,7 +21,12 @@ from src.agenda.atom import (
     change_agenda_with_agendaatom,
 )
 from src.agenda.promise import create_promise
-from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
+from src.econ.econ import (
+    EconUnit,
+    econunit_shop,
+    treasury_db_filename,
+    get_rootpart_of_econ_dir,
+)
 from src.real.gift import (
     GiftUnit,
     giftunit_shop,
@@ -358,16 +363,11 @@ class PersonUnit:
             change_agenda_with_agendaatom(x_agenda, x_atom)
         return x_agenda
 
-    def get_rootpart_of_econ_dir(self):
-        return "idearoot"
-
     def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
         return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-        x_roadunit = change_road(
-            x_roadunit, self.real_id, self.get_rootpart_of_econ_dir()
-        )
+        x_roadunit = change_road(x_roadunit, self.real_id, get_rootpart_of_econ_dir())
         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
         x_econ_path = self._get_person_econ_dir(road_nodes)
         set_dir(x_econ_path)
@@ -409,7 +409,7 @@ class PersonUnit:
         for treasury_dir in x_treasury_dirs:
             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
             treasury_road = change_road(
-                treasury_road, self.get_rootpart_of_econ_dir(), self.real_id
+                treasury_road, get_rootpart_of_econ_dir(), self.real_id
             )
             if x_person_econs.get(treasury_road) is None:
                 dir_to_delete = f"{self._econs_dir}/{treasury_dir}"

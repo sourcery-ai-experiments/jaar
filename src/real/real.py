@@ -28,9 +28,7 @@ class RealUnit:
     _road_delimiter: str = None
     _planck: float = None
 
-    def _get_person_dir(self, person_id):
-        return f"{self._persons_dir}/{person_id}"
-
+    # directory setup
     def _set_real_dirs(self, in_memory_journal: bool = None):
         self._real_dir = f"{self.reals_dir}/{self.real_id}"
         self._persons_dir = f"{self._real_dir}/persons"
@@ -40,6 +38,18 @@ class RealUnit:
         set_dir(x_path=self._gifts_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
+    def _get_person_dir(self, person_id):
+        return f"{self._persons_dir}/{person_id}"
+
+    def _get_person_folder_names(self) -> set:
+        persons = dir_files(self._persons_dir, include_dirs=True, include_files=False)
+        return set(persons.keys())
+
+    def get_person_paths(self):
+        x_person_ids = self._get_person_folder_names()
+        return {f"{self._persons_dir}/{x_person_id}" for x_person_id in x_person_ids}
+
+    # database
     def get_journal_db_path(self) -> str:
         return f"{self.reals_dir}/{self.real_id}/journal.db"
 
@@ -73,11 +83,12 @@ class RealUnit:
         else:
             return self._journal_db
 
-    def personunit_exists(self, person_id: PersonID):
-        return self._personunits.get(person_id) != None
-
-    def _set_person_in_memory(self, personunit: PersonUnit):
+    # person management
+    def _set_personunit_in_memory(self, personunit: PersonUnit):
         self._personunits[personunit.person_id] = personunit
+
+    def personunit_exists_in_memory(self, person_id: PersonID):
+        return self._personunits.get(person_id) != None
 
     def add_personunit(
         self,
@@ -93,36 +104,28 @@ class RealUnit:
         )
         x_personunit.create_core_dir_and_files()
         if (
-            self.personunit_exists(x_personunit.person_id) == False
+            self.personunit_exists_in_memory(x_personunit.person_id) == False
             and not replace_personunit
         ):
-            self._set_person_in_memory(x_personunit)
+            self._set_personunit_in_memory(x_personunit)
         elif replace_alert:
             raise PersonExistsException(
                 f"add_personunit fail: {x_personunit.person_id} already exists"
             )
-        return self.get_personunit(person_id)
+        return self.get_personunit_from_memory(person_id)
 
-    def _get_person_ids(self) -> set:
-        persons = dir_files(self._persons_dir, include_dirs=True, include_files=False)
-        return set(persons.keys())
-
-    def get_person_paths(self):
-        x_person_ids = self._get_person_ids()
-        return {f"{self._persons_dir}/{x_person_id}" for x_person_id in x_person_ids}
-
-    def get_personunit(self, person_id: PersonID) -> PersonUnit:
+    def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
-    def get_person_gut(self, person_id: PersonID) -> AgendaUnit:
-        x_person = self.get_personunit(person_id)
+    def get_person_gut_from_file(self, person_id: PersonID) -> AgendaUnit:
+        x_person = self.get_personunit_from_memory(person_id)
         return x_person.get_gut_file_agenda()
 
-    def set_all_econunits_contract(self, person_id: PersonID):
-        x_gut = self.get_person_gut(person_id)
+    def set_person_econunits_dirs(self, person_id: PersonID):
+        x_gut = self.get_person_gut_from_file(person_id)
         x_gut.set_agenda_metrics()
         for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit(healer_id)
+            healer_person = self.get_personunit_from_memory(healer_id)
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
                     healer_person=healer_person,
@@ -139,15 +142,16 @@ class RealUnit:
         x_econ = healer_person.get_econ(econ_road)
         x_econ.save_file_to_roles(gut_agenda)
 
+    # live agenda management
     def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_personunit = self.get_personunit(person_id)
+        x_personunit = self.get_personunit_from_memory(person_id)
         x_gut = x_personunit.get_gut_file_agenda()
         x_gut.set_agenda_metrics()
 
         x_live = agendaunit_shop(person_id, self.real_id)
         x_live_deepcopy = copy_deepcopy(x_live)
         for healer_id, healer_dict in x_gut._healers_dict.items():
-            healer_person = self.get_personunit(healer_id)
+            healer_person = self.get_personunit_from_memory(healer_id)
             healer_person.create_person_econunits()
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
@@ -165,11 +169,11 @@ class RealUnit:
         return self.get_live_file_agenda(person_id)
 
     def generate_all_live_agendas(self):
-        for x_person_id in self._get_person_ids():
+        for x_person_id in self._get_person_folder_names():
             self.generate_live_agenda(x_person_id)
 
     def get_live_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_personunit = self.get_personunit(person_id)
+        x_personunit = self.get_personunit_from_memory(person_id)
         return x_personunit.get_live_file_agenda()
 
     def _set_partyunit(
@@ -183,7 +187,7 @@ class RealUnit:
         person_clerkunit.save_refreshed_job_to_jobs()
 
     # def _display_gut_party_graph(self, x_person_id: PersonID):
-    #     x_personunit = self.get_personunit(x_person_id)
+    #     x_personunit = self.get_personunit_from_memory(x_person_id)
     #     x_gut_agenda = x_personunit.get_gut_file_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):

@@ -26,7 +26,7 @@ def test_get_live_file_name():
     assert get_live_file_name() == "live"
 
 
-def test_PersonUnit_exists():
+def test_personunit_exists_in_memory():
     # GIVEN / WHEN
     x_person = PersonUnit()
 

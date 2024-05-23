@@ -41,7 +41,7 @@ def create_example_real1() -> RealUnit:
     yao_person.create_person_econunits()
 
     # WHEN
-    music_real.set_all_econunits_contract(yao_text)
+    music_real.set_person_econunits_dirs(yao_text)
 
     return music_real
 
@@ -111,9 +111,9 @@ def create_example_real2() -> RealUnit:
     # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
     # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
     # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    music_real.set_all_econunits_contract(yao_text)
-    music_real.set_all_econunits_contract(wei_text)
-    music_real.set_all_econunits_contract(zia_text)
+    music_real.set_person_econunits_dirs(yao_text)
+    music_real.set_person_econunits_dirs(wei_text)
+    music_real.set_person_econunits_dirs(zia_text)
 
     return music_real
 

@@ -94,6 +94,10 @@ def treasury_db_filename() -> str:
     return "treasury.db"
 
 
+def get_rootpart_of_econ_dir() -> str:
+    return "idearoot"
+
+
 @dataclass
 class EconUnit:
     real_id: RealID = None

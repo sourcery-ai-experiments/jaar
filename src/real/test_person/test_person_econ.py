@@ -2,7 +2,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.econ.clerk import get_file_in_roles, save_file_to_roles, get_owner_file_name
-from src.econ.econ import treasury_db_filename
+from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
 from src.real.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
@@ -13,11 +13,11 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanu
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    idearoot = "idearoot"
     texas_text = "texas"
     dallas_text = "dallas"
     elpaso_text = "el paso"
     kern_text = "kern"
+    idearoot = get_rootpart_of_econ_dir()
 
     # WHEN
     texas_path = sue_person._get_person_econ_dir([idearoot, texas_text])
@@ -28,7 +28,7 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanu
     )
 
     # THEN
-    idearoot_dir = f"{sue_person._econs_dir}/idearoot"
+    idearoot_dir = f"{sue_person._econs_dir}/{get_rootpart_of_econ_dir()}"
     assert texas_path == f"{idearoot_dir}/{texas_text}"
     assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
     assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
