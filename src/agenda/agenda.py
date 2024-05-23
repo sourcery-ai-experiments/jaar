@@ -7,7 +7,7 @@ from src._road.road import (
     get_root_node_from_road,
     find_replace_road_key_dict,
     get_ancestor_roads,
-    get_default_world_id_roadnode,
+    get_default_real_id_roadnode,
     get_all_road_nodes,
     get_forefather_roads,
     create_road,
@@ -18,7 +18,7 @@ from src._road.road import (
     OwnerID,
     PartyID,
     HealerID,
-    WorldID,
+    RealID,
     is_roadunit_convertible_to_path,
 )
 from src._road.finance import trim_planck_excess, default_planck_if_none
@@ -121,7 +121,7 @@ class healerhold_group_id_Exception(Exception):
 
 @dataclass
 class AgendaUnit:
-    _world_id: WorldID = None
+    _real_id: RealID = None
     _owner_id: OwnerID = None
     _last_gift_id: int = None
     _weight: float = None
@@ -263,10 +263,10 @@ class AgendaUnit:
             terminus_node=terminus_node,
             delimiter=self._road_delimiter,
         )
-        return road_validate(x_road, self._road_delimiter, self._world_id)
+        return road_validate(x_road, self._road_delimiter, self._real_id)
 
     def make_l1_road(self, l1_node: RoadNode):
-        return self.make_road(self._world_id, l1_node)
+        return self.make_road(self._real_id, l1_node)
 
     def set_partys_output_agenda_meld_order(self):
         sort_partys_list = list(self._partys.values())
@@ -299,15 +299,15 @@ class AgendaUnit:
             for x_idea in idea_pointers.values():
                 x_idea.set_road_delimiter(self._road_delimiter)
 
-    def set_world_id(self, world_id: str):
-        old_world_id = copy_deepcopy(self._world_id)
-        self._world_id = world_id
+    def set_real_id(self, real_id: str):
+        old_real_id = copy_deepcopy(self._real_id)
+        self._real_id = real_id
 
         self.set_agenda_metrics()
         for idea_obj in self._idea_dict.values():
-            idea_obj._agenda_world_id = self._world_id
+            idea_obj._agenda_real_id = self._real_id
 
-        self.edit_idea_label(old_road=old_world_id, new_label=self._world_id)
+        self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.set_agenda_metrics()
 
     def set_partyunit_external_metrics(
@@ -855,7 +855,7 @@ class AgendaUnit:
         )
 
     def _is_idea_rangeroot(self, idea_road: RoadUnit) -> bool:
-        if self._world_id == idea_road:
+        if self._real_id == idea_road:
             raise InvalidAgendaException(
                 "its difficult to foresee a scenario where idearoot is rangeroot"
             )
@@ -939,7 +939,7 @@ class AgendaUnit:
 
         self._execute_tree_traverse()
         belief_base_idea = self.get_idea_obj(base)
-        x_idearoot = self.get_idea_obj(self._world_id)
+        x_idearoot = self.get_idea_obj(self._real_id)
         x_open = None
         if nigh != None and open is None:
             x_open = x_idearoot._beliefunits.get(base).open
@@ -1103,7 +1103,7 @@ class AgendaUnit:
     ):
         self.add_idea(
             idea_kid=idea_kid,
-            parent_road=self._world_id,
+            parent_road=self._real_id,
             create_missing_ideas=create_missing_ideas,
             create_missing_groups=create_missing_groups,
             adoptees=adoptees,
@@ -1129,8 +1129,8 @@ class AgendaUnit:
             )
 
         idea_kid._road_delimiter = self._road_delimiter
-        if idea_kid._agenda_world_id != self._world_id:
-            idea_kid._agenda_world_id = self._world_id
+        if idea_kid._agenda_real_id != self._real_id:
+            idea_kid._agenda_real_id = self._real_id
         if not create_missing_groups:
             idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
         idea_kid.set_parent_road(parent_road=parent_road)
@@ -1318,7 +1318,7 @@ class AgendaUnit:
             or x_iaf.reest != None
         ) and len(anc_roads) == 1:
             raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
-        parent_road = self._world_id if len(anc_roads) == 1 else anc_roads[1]
+        parent_road = self._real_id if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
         parent_idea = self.get_idea_obj(parent_road)
@@ -2038,7 +2038,7 @@ class AgendaUnit:
             "_weight": self._weight,
             "_planck": self._planck,
             "_owner_id": self._owner_id,
-            "_world_id": self._world_id,
+            "_real_id": self._real_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
@@ -2186,7 +2186,7 @@ class AgendaUnit:
             o_road = road_validate(
                 self.make_road(o_idea._parent_road, o_idea._label),
                 self._road_delimiter,
-                self._world_id,
+                self._real_id,
             )
             try:
                 main_idea = self.get_idea_obj(o_road)
@@ -2249,7 +2249,7 @@ class AgendaUnit:
             relevant_idea = copy_deepcopy(self.get_idea_obj(relevant_road))
             relevant_idea.find_replace_road(
                 old_road=get_root_node_from_road(relevant_road, self._road_delimiter),
-                new_road=x_agenda._world_id,
+                new_road=x_agenda._real_id,
             )
             relevant_idea.clear_kids()
             x_agenda.add_idea(relevant_idea, parent_road=relevant_idea._parent_road)
@@ -2257,8 +2257,8 @@ class AgendaUnit:
         for afu in self._idearoot._beliefunits.values():
             if relevant_roads.get(afu.base) != None:
                 x_agenda.set_belief(
-                    base=change_road(afu.base, self._world_id, x_agenda._world_id),
-                    pick=change_road(afu.pick, self._world_id, x_agenda._world_id),
+                    base=change_road(afu.base, self._real_id, x_agenda._real_id),
+                    pick=change_road(afu.pick, self._real_id, x_agenda._real_id),
                     open=afu.open,
                     nigh=afu.nigh,
                 )
@@ -2298,7 +2298,7 @@ class AgendaUnit:
 
 def agendaunit_shop(
     _owner_id: OwnerID = None,
-    _world_id: WorldID = None,
+    _real_id: RealID = None,
     _road_delimiter: str = None,
     _planck: float = None,
     _weight: float = None,
@@ -2306,15 +2306,15 @@ def agendaunit_shop(
 ) -> AgendaUnit:
     if _owner_id is None:
         _owner_id = ""
-    if _world_id is None:
-        _world_id = get_default_world_id_roadnode()
+    if _real_id is None:
+        _real_id = get_default_real_id_roadnode()
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
 
     x_agenda = AgendaUnit(
         _owner_id=_owner_id,
         _weight=get_1_if_None(_weight),
-        _world_id=_world_id,
+        _real_id=_real_id,
         _partys=get_empty_dict_if_none(None),
         _groups=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
@@ -2328,7 +2328,7 @@ def agendaunit_shop(
         _sum_healerhold_importance=get_0_if_None(),
     )
     x_agenda._idearoot = ideaunit_shop(
-        _root=True, _uid=1, _level=0, _agenda_world_id=x_agenda._world_id
+        _root=True, _uid=1, _level=0, _agenda_real_id=x_agenda._real_id
     )
     x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
     x_agenda.set_max_tree_traverse(3)
@@ -2348,7 +2348,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda.set_max_tree_traverse(
         get_obj_from_agenda_dict(agenda_dict, "_max_tree_traverse")
     )
-    x_agenda.set_world_id(get_obj_from_agenda_dict(agenda_dict, "_world_id"))
+    x_agenda.set_real_id(get_obj_from_agenda_dict(agenda_dict, "_real_id"))
     x_agenda._road_delimiter = default_road_delimiter_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_road_delimiter")
     )
@@ -2387,7 +2387,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
     idearoot_dict = agenda_dict.get("_idearoot")
     x_agenda._idearoot = ideaunit_shop(
         _root=True,
-        _label=x_agenda._world_id,
+        _label=x_agenda._real_id,
         _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
         _weight=get_obj_from_idea_dict(idearoot_dict, "_weight"),
         _begin=get_obj_from_idea_dict(idearoot_dict, "_begin"),
@@ -2405,7 +2405,7 @@ def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
         _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
         _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
-        _agenda_world_id=x_agenda._world_id,
+        _agenda_real_id=x_agenda._real_id,
     )
     set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
@@ -2415,7 +2415,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
     parent_road_text = "parent_road"
     # for every kid dict, set parent_road in dict, add to to_evaluate_list
     for x_dict in get_obj_from_idea_dict(idearoot_dict, "_kids").values():
-        x_dict[parent_road_text] = x_agenda._world_id
+        x_dict[parent_road_text] = x_agenda._real_id
         to_evaluate_idea_dicts.append(x_dict)
 
     while to_evaluate_idea_dicts != []:
@@ -2447,7 +2447,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
             _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
             _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
-            _agenda_world_id=x_agenda._world_id,
+            _agenda_real_id=x_agenda._real_id,
         )
         x_agenda.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 

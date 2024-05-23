@@ -1,16 +1,16 @@
 from src._road.road import create_road_from_nodes as roadnodes
 from src.agenda.book import bookunit_shop
-from src.world.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
-from src.world.examples.example_atoms import (
+from src.real.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
+from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,
     get_atom_example_ideaunit_ball,
     get_bookunit_carm_example,
 )
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir,
-    get_test_world_id,
-    worlds_dir_setup_cleanup,
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir,
+    get_test_real_id,
+    reals_dir_setup_cleanup,
 )
 from src._instrument.python import get_dict_from_json
 from src._instrument.file import open_file
@@ -18,10 +18,10 @@ from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_GiftUnit_save_atom_file_SavesCorrectFile(worlds_dir_setup_cleanup):
+def test_GiftUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
@@ -48,10 +48,10 @@ def test_GiftUnit_save_atom_file_SavesCorrectFile(worlds_dir_setup_cleanup):
     assert two_file_json == sports_atom.get_json()
 
 
-def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
@@ -75,10 +75,10 @@ def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert farm_giftunit.atom_file_exists(two_int)
 
 
-def test_GiftUnit_open_atom_file_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_GiftUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
@@ -102,10 +102,10 @@ def test_GiftUnit_open_atom_file_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert file_atom == sports_atom
 
 
-def test_GiftUnit_save_gift_file_SavesCorrectFile(worlds_dir_setup_cleanup):
+def test_GiftUnit_save_gift_file_SavesCorrectFile(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_gift_id = 2
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -136,10 +136,10 @@ def test_GiftUnit_save_gift_file_SavesCorrectFile(worlds_dir_setup_cleanup):
     assert gift_file_dict.get("takers") == {}
 
 
-def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_gifts_dir = f"{sue_person_dir}/gifts"
@@ -162,10 +162,10 @@ def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert farm_giftunit.gift_file_exists()
 
 
-def test_GiftUnit_save_files_CorrectlySavesFiles(worlds_dir_setup_cleanup):
+def test_GiftUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
@@ -199,10 +199,10 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(worlds_dir_setup_cleanup):
     assert farm_giftunit.atom_file_exists(five_int)
 
 
-def test_GiftUnit_create_bookunit_from_atom_files_SetsAttr(worlds_dir_setup_cleanup):
+def test_GiftUnit_create_bookunit_from_atom_files_SetsAttr(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"
@@ -232,10 +232,10 @@ def test_GiftUnit_create_bookunit_from_atom_files_SetsAttr(worlds_dir_setup_clea
     assert sue_giftunit._bookunit == static_bookunit
 
 
-def test_create_giftunit_from_files_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_create_giftunit_from_files_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    x_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    x_persons_dir = f"{x_world_dir}/persons"
+    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
     sue_atoms_dir = f"{sue_person_dir}/atoms"

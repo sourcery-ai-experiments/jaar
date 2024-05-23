@@ -1,27 +1,27 @@
-from src.world.world_report import (
-    get_world_guts_partys_dataframe,
-    get_world_guts_partys_plotly_fig,
-    get_world_lives_partys_dataframe,
-    get_world_lives_partys_plotly_fig,
-    get_world_guts_intent_dataframe,
-    get_world_guts_intent_plotly_fig,
-    get_world_lives_intent_dataframe,
-    get_world_lives_intent_plotly_fig,
+from src.real.real_report import (
+    get_real_guts_partys_dataframe,
+    get_real_guts_partys_plotly_fig,
+    get_real_lives_partys_dataframe,
+    get_real_lives_partys_plotly_fig,
+    get_real_guts_intent_dataframe,
+    get_real_guts_intent_plotly_fig,
+    get_real_lives_intent_dataframe,
+    get_real_lives_intent_plotly_fig,
 )
-from src.world.examples.example_worlds import (
-    create_example_world2,
-    create_example_world3,
-    create_example_world4,
+from src.real.examples.example_reals import (
+    create_example_real2,
+    create_example_real3,
+    create_example_real4,
 )
-from src.world.examples.world_env_kit import worlds_dir_setup_cleanup
+from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 
 
-def test_get_world_guts_partys_dataframe_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_get_real_guts_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    music_world = create_example_world2()
+    music_real = create_example_real2()
 
     # WHEN
-    x_df = get_world_guts_partys_dataframe(music_world)
+    x_df = get_real_guts_partys_dataframe(music_real)
 
     # THEN
     partyunit_colums = {
@@ -51,12 +51,12 @@ def test_get_world_guts_partys_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
     assert x_df.shape[0] == 8
 
 
-def test_get_world_guts_partys_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_cleanup):
+def test_get_real_guts_partys_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
     # GIVEN
-    music_world = create_example_world2()
+    music_real = create_example_real2()
 
     # WHEN
-    x_fig = get_world_guts_partys_plotly_fig(music_world)
+    x_fig = get_real_guts_partys_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -65,15 +65,15 @@ def test_get_world_guts_partys_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_c
     # assert 1 == 2
 
 
-def test_get_world_lives_partys_dataframe_ReturnsCorrectObj(
-    worlds_dir_setup_cleanup,
+def test_get_real_lives_partys_dataframe_ReturnsCorrectObj(
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
-    music_world = create_example_world2()
-    music_world.generate_all_live_agendas()
+    music_real = create_example_real2()
+    music_real.generate_all_live_agendas()
 
     # WHEN
-    x_df = get_world_lives_partys_dataframe(music_world)
+    x_df = get_real_lives_partys_dataframe(music_real)
 
     # THEN
     partyunit_colums = {
@@ -103,15 +103,15 @@ def test_get_world_lives_partys_dataframe_ReturnsCorrectObj(
     assert x_df.shape[0] == 8
 
 
-def test_get_world_lives_partys_plotly_fig_DisplaysCorrectInfo(
-    worlds_dir_setup_cleanup,
+def test_get_real_lives_partys_plotly_fig_DisplaysCorrectInfo(
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
-    music_world = create_example_world2()
-    music_world.generate_all_live_agendas()
+    music_real = create_example_real2()
+    music_real.generate_all_live_agendas()
 
     # WHEN
-    x_fig = get_world_lives_partys_plotly_fig(music_world)
+    x_fig = get_real_lives_partys_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -120,12 +120,12 @@ def test_get_world_lives_partys_plotly_fig_DisplaysCorrectInfo(
     # assert 1 == 2
 
 
-def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_get_real_guts_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    music_world = create_example_world3()
+    music_real = create_example_real3()
 
     # WHEN
-    x_df = get_world_guts_intent_dataframe(music_world)
+    x_df = get_real_guts_intent_dataframe(music_real)
 
     # THEN
     intent_colums = {
@@ -147,12 +147,12 @@ def test_get_world_guts_intent_dataframe_ReturnsCorrectObj(worlds_dir_setup_clea
     assert x_df.shape[0] == 8
 
 
-def test_get_world_guts_intent_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_cleanup):
+def test_get_real_guts_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
     # GIVEN
-    music_world = create_example_world3()
+    music_real = create_example_real3()
 
     # WHEN
-    x_fig = get_world_guts_intent_plotly_fig(music_world)
+    x_fig = get_real_guts_intent_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -160,15 +160,15 @@ def test_get_world_guts_intent_plotly_fig_DisplaysCorrectInfo(worlds_dir_setup_c
     #     x_fig.show()
 
 
-def test_get_world_lives_intent_dataframe_ReturnsCorrectObj(
-    worlds_dir_setup_cleanup,
+def test_get_real_lives_intent_dataframe_ReturnsCorrectObj(
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
-    music_world = create_example_world4()
-    music_world.generate_all_live_agendas()
+    music_real = create_example_real4()
+    music_real.generate_all_live_agendas()
 
     # WHEN
-    x_df = get_world_lives_intent_dataframe(music_world)
+    x_df = get_real_lives_intent_dataframe(music_real)
 
     # THEN
     intent_colums = {
@@ -190,15 +190,15 @@ def test_get_world_lives_intent_dataframe_ReturnsCorrectObj(
     assert x_df.shape[0] in [8, 9]
 
 
-def test_get_world_lives_intent_plotly_fig_DisplaysCorrectInfo(
-    worlds_dir_setup_cleanup,
+def test_get_real_lives_intent_plotly_fig_DisplaysCorrectInfo(
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
-    music_world = create_example_world4()
-    music_world.generate_all_live_agendas()
+    music_real = create_example_real4()
+    music_real.generate_all_live_agendas()
 
     # WHEN
-    x_fig = get_world_lives_intent_plotly_fig(music_world)
+    x_fig = get_real_lives_intent_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True

@@ -19,7 +19,7 @@ from src.agenda.examples.example_agendas import (
 from src.econ.econ import (
     EconUnit,
     econunit_shop,
-    get_temp_env_world_id,
+    get_temp_env_real_id,
 )
 from src.econ.examples.example_clerks import (
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
@@ -31,7 +31,7 @@ from pytest import fixture as pytest_fixture
 
 
 def get_test_econ_dir():
-    return f"{get_test_econs_dir()}/{get_temp_env_world_id()}"
+    return f"{get_test_econs_dir()}/{get_temp_env_real_id()}"
 
 
 def get_test_econs_dir():
@@ -76,7 +76,7 @@ def setup_test_example_environment():
 # def _delete_and_set_ex3():
 #     ex3_id = "ex3"
 #     ex3_dir = f"{get_test_econs_dir()}/{ex3_id}"
-#     x_econ = econunit_shop(world_id=ex3_id, econ_dir=ex3_dir)
+#     x_econ = econunit_shop(real_id=ex3_id, econ_dir=ex3_dir)
 #     delete_dir(x_econ.get_object_root_dir())
 #     x_econ.set_econ_dirs(in_memory_treasury=True)
 #     x_econ.save_file_to_jobs(example_get_1node_agenda())
@@ -239,8 +239,8 @@ def _delete_and_set_ex6(ex6_id: str = None):
     return x_econ
 
 
-def create_example_econ(world_id: str):
-    x_econ = econunit_shop(world_id=world_id, econ_dir=get_test_econ_dir())
+def create_example_econ(real_id: str):
+    x_econ = econunit_shop(real_id=real_id, econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
 
@@ -248,13 +248,13 @@ def delete_dir_example_econ(econ_obj: EconUnit):
     delete_dir(econ_obj.get_object_root_dir())
 
 
-def change_world_id_example_econ(econ_obj: EconUnit, new_world_id):
+def change_real_id_example_econ(econ_obj: EconUnit, new_real_id):
     # base_dir = econ_obj.get_object_root_dir()
     base_dir = "src/econ/examples/econs"
-    src_dir = f"{base_dir}/{econ_obj.world_id}"
-    dst_dir = f"{base_dir}/{new_world_id}"
+    src_dir = f"{base_dir}/{econ_obj.real_id}"
+    dst_dir = f"{base_dir}/{new_real_id}"
     os_rename(src=src_dir, dst=dst_dir)
-    econ_obj.set_world_id(world_id=new_world_id)
+    econ_obj.set_real_id(real_id=new_real_id)
     econ_obj.econ_dir = dst_dir
 
 
@@ -262,14 +262,14 @@ class InvalideconCopyException(Exception):
     pass
 
 
-def copy_evaluation_econ(src_world_id: str, dest_world_id: str):
+def copy_evaluation_econ(src_real_id: str, dest_real_id: str):
     base_dir = "src/econ/examples/econs"
-    new_dir = f"{base_dir}/{dest_world_id}"
+    new_dir = f"{base_dir}/{dest_real_id}"
     if os_path.exists(new_dir):
         raise InvalideconCopyException(
             f"Cannot copy econ to '{new_dir}' directory because '{new_dir}' exists."
         )
     # base_dir = econ_obj.get_object_root_dir()
-    src_dir = f"{base_dir}/{src_world_id}"
-    dest_dir = f"{base_dir}/{dest_world_id}"
+    src_dir = f"{base_dir}/{src_real_id}"
+    dest_dir = f"{base_dir}/{dest_real_id}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

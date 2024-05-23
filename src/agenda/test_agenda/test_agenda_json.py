@@ -59,7 +59,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict != None
     assert str(type(agenda_dict)) == "<class 'dict'>"
     assert agenda_dict["_owner_id"] == x_agenda._owner_id
-    assert agenda_dict["_world_id"] == x_agenda._world_id
+    assert agenda_dict["_real_id"] == x_agenda._real_id
     assert agenda_dict["_weight"] == x_agenda._weight
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
@@ -79,7 +79,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_idearoot._label == x_agenda._world_id
+    assert x_idearoot._label == x_agenda._real_id
     assert idearoot_dict["_label"] == x_idearoot._label
     assert idearoot_dict["_weight"] != agenda_weight
     assert idearoot_dict["_weight"] == x_idearoot._weight
@@ -89,7 +89,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
     month_week_idea_x = x_agenda.get_idea_obj(month_week_road)
-    print("check world_id,month_week...range_source_road equal to...")
+    print("check real_id,month_week...range_source_road equal to...")
     month_week_special_dict = idearoot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_l1_road("ced_week")
@@ -122,7 +122,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_assignedunit():
     tom_agenda = agendaunit_shop("Tom")
     x_assignedunit = assignedunit_shop()
     x_assignedunit.set_suffgroup(group_id=run_text)
-    tom_agenda.edit_idea_attr(assignedunit=x_assignedunit, road=tom_agenda._world_id)
+    tom_agenda.edit_idea_attr(assignedunit=x_assignedunit, road=tom_agenda._real_id)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
@@ -144,7 +144,7 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     tom_agenda.set_groupunit(run_groupunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_group_id(x_group_id=run_text)
-    tom_agenda.edit_idea_attr(road=tom_agenda._world_id, healerhold=run_healerhold)
+    tom_agenda.edit_idea_attr(road=tom_agenda._real_id, healerhold=run_healerhold)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
@@ -183,8 +183,8 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
 def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     # GIVEN
     zia_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
-    tiger_world_id = "tiger"
-    zia_agenda.set_world_id(tiger_world_id)
+    tiger_real_id = "tiger"
+    zia_agenda.set_real_id(tiger_real_id)
     seven_int = 7
     zia_agenda._planck = seven_int
     override_text = "override"
@@ -196,8 +196,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     run_groupunit.set_partylink(partylink_shop(yao_text))
     zia_agenda.set_groupunit(run_groupunit)
     run_healerhold = healerhold_shop({run_text})
-    zia_agenda.edit_idea_attr(road=zia_agenda._world_id, healerhold=run_healerhold)
-    zia_agenda.edit_idea_attr(road=zia_agenda._world_id, problem_bool=True)
+    zia_agenda.edit_idea_attr(road=zia_agenda._real_id, healerhold=run_healerhold)
+    zia_agenda.edit_idea_attr(road=zia_agenda._real_id, problem_bool=True)
 
     # WHEN
     x_json = zia_agenda.get_json()
@@ -210,7 +210,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     agenda_dict = get_dict_from_json(x_json)
 
     assert agenda_dict["_owner_id"] == zia_agenda._owner_id
-    assert agenda_dict["_world_id"] == zia_agenda._world_id
+    assert agenda_dict["_real_id"] == zia_agenda._real_id
     assert agenda_dict["_weight"] == zia_agenda._weight
     assert agenda_dict["_meld_strategy"] == zia_agenda._meld_strategy
     assert agenda_dict["_planck"] == zia_agenda._planck
@@ -262,7 +262,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     # THEN
     _kids = "_kids"
     assert agenda_dict["_owner_id"] == yao_agenda._owner_id
-    assert agenda_dict["_world_id"] == yao_agenda._world_id
+    assert agenda_dict["_real_id"] == yao_agenda._real_id
     assert agenda_dict["_weight"] == yao_agenda._weight
     assert agenda_dict["_max_tree_traverse"] == 2
     assert agenda_dict["_max_tree_traverse"] == yao_agenda._max_tree_traverse
@@ -317,8 +317,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # GIVEN
     zia_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     zia_agenda.set_max_tree_traverse(23)
-    tiger_world_id = "tiger"
-    zia_agenda.set_world_id(tiger_world_id)
+    tiger_real_id = "tiger"
+    zia_agenda.set_real_id(tiger_real_id)
     zia_planck = 0.5
     zia_agenda._planck = zia_planck
     zia_party_creditor_pool = 2
@@ -348,14 +348,14 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
 
     run_assignedunit = assignedunit_shop()
     run_assignedunit.set_suffgroup(group_id=run_text)
-    zia_agenda.edit_idea_attr(zia_agenda._world_id, assignedunit=run_assignedunit)
+    zia_agenda.edit_idea_attr(zia_agenda._real_id, assignedunit=run_assignedunit)
     tim_assignedunit = assignedunit_shop()
     tim_assignedunit.set_suffgroup(group_id=tim_text)
     zia_agenda.edit_idea_attr(shave_road, assignedunit=tim_assignedunit)
     zia_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
     zia_agenda.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
     zia_agenda.edit_idea_attr(
-        zia_agenda._world_id, balancelink=balancelink_shop(sue_text)
+        zia_agenda._real_id, balancelink=balancelink_shop(sue_text)
     )
     # add healerhold to shave ideaunit
     run_healerhold = healerhold_shop({run_text})
@@ -375,7 +375,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
     assert json_agenda._owner_id != None
     assert json_agenda._owner_id == zia_agenda._owner_id
-    assert json_agenda._world_id == zia_agenda._world_id
+    assert json_agenda._real_id == zia_agenda._real_id
     assert json_agenda._planck == zia_planck
     assert json_agenda._planck == zia_agenda._planck
     assert json_agenda._max_tree_traverse == 23

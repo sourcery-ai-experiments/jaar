@@ -12,7 +12,7 @@ def test_AgendaUnit_add_idea_RaisesErrorWhen_parent_road_IsInvalid():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
     invalid_rootnode_swim_road = "swimming"
-    assert invalid_rootnode_swim_road != zia_agenda._world_id
+    assert invalid_rootnode_swim_road != zia_agenda._real_id
     gig_text = "gig"
 
     # WHEN/THEN
@@ -88,7 +88,7 @@ def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=1) == 4
 
-    new_idea_parent_road = sue_agenda._world_id
+    new_idea_parent_road = sue_agenda._real_id
 
     # WHEN
     sue_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
@@ -247,13 +247,13 @@ def test_AgendaUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
     assert sue_agenda.get_level_count(level=3) == 4
 
 
-def test_AgendaUnit_add_idea_CorrectlySets_agenda_world_id():
+def test_AgendaUnit_add_idea_CorrectlySets_agenda_real_id():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    agenda_world_id = "Texas"
-    sue_agenda.set_world_id(world_id=agenda_world_id)
+    agenda_real_id = "Texas"
+    sue_agenda.set_real_id(real_id=agenda_real_id)
     sue_agenda.set_agenda_metrics()
-    assert sue_agenda._world_id == agenda_world_id
+    assert sue_agenda._real_id == agenda_real_id
 
     gig_road = sue_agenda.make_l1_road("gig")
     clean_road = sue_agenda.make_road(gig_road, "cleaning")
@@ -265,13 +265,13 @@ def test_AgendaUnit_add_idea_CorrectlySets_agenda_world_id():
 
     # THEN
     cookery_idea = sue_agenda.get_idea_obj(cookery_road)
-    assert cookery_idea._agenda_world_id == agenda_world_id
+    assert cookery_idea._agenda_real_id == agenda_real_id
 
 
 def test_AgendaUnit_del_idea_obj_Level0CannotBeDeleted():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    root_road = sue_agenda._world_id
+    root_road = sue_agenda._real_id
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -322,7 +322,7 @@ def test_AgendaUnit_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
     new_sunday_road = sue_agenda.make_l1_road(sun_text)
     assert sue_agenda.get_idea_obj(road=new_sunday_road)
     new_sunday_idea = sue_agenda.get_idea_obj(road=new_sunday_road)
-    assert new_sunday_idea._parent_road == sue_agenda._world_id
+    assert new_sunday_idea._parent_road == sue_agenda._real_id
 
 
 def test_AgendaUnit_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
@@ -628,7 +628,7 @@ def test_AgendaUnit_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeT
         yao_agenda.edit_idea_attr(road=gig_road, denom=11)
     assert (
         str(excinfo.value)
-        == f"Idea cannot edit numor=1/denom/reest of '{gig_road}' if parent '{yao_agenda._world_id}' or ideaunit._numeric_road does not have begin/close range"
+        == f"Idea cannot edit numor=1/denom/reest of '{gig_road}' if parent '{yao_agenda._real_id}' or ideaunit._numeric_road does not have begin/close range"
     )
 
     # WHEN

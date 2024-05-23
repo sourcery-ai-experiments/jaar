@@ -5,7 +5,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src._road.road import (
-    get_default_world_id_roadnode as root_label,
+    get_default_real_id_roadnode as root_label,
     default_road_delimiter_if_none,
 )
 from src.agenda.origin import originunit_shop
@@ -19,7 +19,7 @@ def test_AgendaUnit_Exists():
     x_agenda = AgendaUnit()
 
     assert x_agenda
-    assert x_agenda._world_id is None
+    assert x_agenda._real_id is None
     assert x_agenda._owner_id is None
     assert x_agenda._weight is None
     assert x_agenda._partys is None
@@ -49,7 +49,7 @@ def test_AgendaUnit_Exists():
 def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     # GIVEN
     noa_text = "Noa"
-    iowa_world_id = "Iowa"
+    iowa_real_id = "Iowa"
     slash_road_delimiter = "/"
     override_meld_strategy = "override"
     five_planck = 5
@@ -57,14 +57,14 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     # WHEN
     x_agenda = agendaunit_shop(
         _owner_id=noa_text,
-        _world_id=iowa_world_id,
+        _real_id=iowa_real_id,
         _road_delimiter=slash_road_delimiter,
         _meld_strategy=override_meld_strategy,
         _planck=five_planck,
     )
     assert x_agenda
     assert x_agenda._owner_id == noa_text
-    assert x_agenda._world_id == iowa_world_id
+    assert x_agenda._real_id == iowa_real_id
     assert x_agenda._weight == 1
     assert x_agenda._partys == {}
     assert x_agenda._groups == {}
@@ -94,9 +94,9 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
 def test_AgendaUnit_shop_ReturnsCorrect_meld_strategy():
     # GIVEN
     noa_text = "Noa"
-    iowa_world_id = "Iowa"
+    iowa_real_id = "Iowa"
     # WHEN
-    x_agenda = agendaunit_shop(noa_text, iowa_world_id)
+    x_agenda = agendaunit_shop(noa_text, iowa_real_id)
     # THEN
     assert x_agenda._meld_strategy == "default"
 
@@ -106,7 +106,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     x_agenda = agendaunit_shop()
 
     assert x_agenda._owner_id == ""
-    assert x_agenda._world_id == root_label()
+    assert x_agenda._real_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
     assert x_agenda._planck == default_planck_if_none()
 
@@ -192,28 +192,28 @@ def test_AgendaUnit_set_max_tree_traverse_CorrectlyRaisesError():
     )
 
 
-def test_AgendaUnit_set_world_id_CorrectlySetsAttr():
+def test_AgendaUnit_set_real_id_CorrectlySetsAttr():
     # GIVEN
-    world_id_text = "Sun"
+    real_id_text = "Sun"
     noa_text = "Noa"
     x_agenda = agendaunit_shop(_owner_id=noa_text)
-    assert x_agenda._world_id == root_label()
+    assert x_agenda._real_id == root_label()
 
     # WHEN
-    x_agenda.set_world_id(world_id=world_id_text)
+    x_agenda.set_real_id(real_id=real_id_text)
 
     # THEN
-    assert x_agenda._world_id == world_id_text
+    assert x_agenda._real_id == real_id_text
 
 
 def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
     # GIVEN
-    world_id_text = "Sun"
+    real_id_text = "Sun"
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _owner_id=noa_text,
-        _world_id=world_id_text,
+        _real_id=real_id_text,
         _road_delimiter=slash_road_delimiter,
     )
     assert x_agenda._road_delimiter == slash_road_delimiter
@@ -228,12 +228,12 @@ def test_AgendaUnit_set_road_delimiter_CorrectlySetsAttr():
 
 def test_AgendaUnit_make_road_ReturnsCorrectObj():
     # GIVEN
-    world_id_text = "Sun"
+    real_id_text = "Sun"
     noa_text = "Noa"
     slash_road_delimiter = "/"
     x_agenda = agendaunit_shop(
         _owner_id=noa_text,
-        _world_id=world_id_text,
+        _real_id=real_id_text,
         _road_delimiter=slash_road_delimiter,
     )
     gig_text = "gig"

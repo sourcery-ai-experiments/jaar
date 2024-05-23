@@ -1,20 +1,20 @@
-from src.world.person import personunit_shop
-from src.world.examples.example_atoms import (
+from src.real.person import personunit_shop
+from src.real.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_ball,
     get_atom_example_ideaunit_knee,
 )
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir,
-    get_test_world_id,
-    worlds_dir_setup_cleanup,
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir,
+    get_test_real_id,
+    reals_dir_setup_cleanup,
 )
 from src._instrument.file import dir_files as file_dir_files
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_person = personunit_shop("Yao")
     one_int = 1
@@ -30,7 +30,7 @@ def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cle
     assert atom_num == one_int
 
 
-def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     yao_person = personunit_shop("Yao")
     five_int = 5
@@ -45,7 +45,7 @@ def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup)
     assert yao_person.atom_file_exists(five_int)
 
 
-def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_cleanup):
+def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_person = personunit_shop("Yao")
     ten_int = 10
@@ -60,7 +60,7 @@ def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_clean
 
 
 def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_person = personunit_shop("Yao")
@@ -73,7 +73,7 @@ def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
 
 
 def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_person = personunit_shop("Yao")
@@ -83,7 +83,7 @@ def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
 
 
 def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_person = personunit_shop("Yao")
@@ -98,7 +98,7 @@ def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(
     assert yao_person._get_next_atom_file_number() == 11
 
 
-def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_person = personunit_shop("Yao")
     ten_int = 10
@@ -120,7 +120,7 @@ def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
 
 
 def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
@@ -131,26 +131,26 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
 
     # THEN
     assert yao_agenda._owner_id == yao_text
-    assert yao_agenda._world_id == yao_person.world_id
+    assert yao_agenda._real_id == yao_person.real_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     assert yao_agenda._planck == yao_person._planck
 
 
 def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
     # save atom files
-    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
 
     # WHEN
     yao_agenda = yao_person._get_agenda_from_atom_files()
 
     # THEN
     assert yao_agenda._owner_id == yao_text
-    assert yao_agenda._world_id == yao_person.world_id
+    assert yao_agenda._real_id == yao_person.real_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)
@@ -159,16 +159,16 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
 
 
 def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
     # save atom files
-    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
-    yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.world_id))
-    yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.world_id))
-    yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.world_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.real_id))
+    yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.real_id))
+    yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.real_id))
     print(f"{file_dir_files(yao_person._atoms_dir).keys()=}")
 
     # WHEN
@@ -176,7 +176,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit
 
     # THEN
     assert yao_agenda._owner_id == yao_text
-    assert yao_agenda._world_id == yao_person.world_id
+    assert yao_agenda._real_id == yao_person.real_id
     assert yao_agenda._road_delimiter == yao_person._road_delimiter
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)

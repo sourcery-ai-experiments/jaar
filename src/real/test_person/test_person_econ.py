@@ -3,13 +3,13 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.econ.clerk import get_file_in_roles, save_file_to_roles, get_owner_file_name
 from src.econ.econ import treasury_db_filename
-from src.world.person import PersonUnit, personunit_shop
+from src.real.person import PersonUnit, personunit_shop
 from pytest import raises as pytest_raises
-from src.world.examples.world_env_kit import worlds_dir_setup_cleanup
+from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -35,7 +35,7 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(worlds_dir_setup_clean
     assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
 
 
-def test_PersonUnit_create_econ_dir_CreatesDir(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -54,7 +54,7 @@ def test_PersonUnit_create_econ_dir_CreatesDir(worlds_dir_setup_cleanup):
     assert os_path_exists(dallas_dir)
 
 
-def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     # GIVEN
     pound_text = "#"
     sue_text = "Sue"
@@ -79,14 +79,14 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(worlds_dir_setup_cleanup):
     assert sue_person._econ_objs != {}
     assert sue_person._econ_objs.get(dallas_road) != None
     dallas_econunit = sue_person._econ_objs.get(dallas_road)
-    assert dallas_econunit.world_id == sue_person.world_id
+    assert dallas_econunit.real_id == sue_person.real_id
     assert dallas_econunit.econ_dir == dallas_dir
     assert dallas_econunit._manager_person_id == sue_text
     assert dallas_econunit._road_delimiter == sue_person._road_delimiter
 
 
 def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -115,7 +115,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
 
 
 def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -140,7 +140,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     )
 
 
-def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -184,7 +184,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(worlds_dir_setup_cl
     assert sue_person._econ_objs.get(elpaso_road) != None
 
 
-def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -232,7 +232,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(worlds_dir_setup_cl
     assert os_path_exists(elpaso_db_path) == False
 
 
-def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -258,11 +258,11 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.world_id == sue_person.world_id
+    assert dallas_econ.real_id == sue_person.real_id
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 
-def test_PersonUnit_set_econunit_role_CorrectlySets_role(worlds_dir_setup_cleanup):
+def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -294,7 +294,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(worlds_dir_setup_cleanu
     assert os_path_exists(sue_role_file_path)
 
 
-def test_PersonUnit_set_econunits_role_CorrectlySets_roles(worlds_dir_setup_cleanup):
+def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -334,7 +334,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(worlds_dir_setup_clea
 
 
 def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"

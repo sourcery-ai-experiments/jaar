@@ -5,7 +5,7 @@ from src._road.road import (
     OwnerID,
     HealerID,
     PersonID,
-    WorldID,
+    RealID,
     validate_roadnode,
 )
 from src.agenda.party import partylink_shop
@@ -66,7 +66,7 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def get_temp_env_world_id():
+def get_temp_env_real_id():
     return "ex_econ04"
 
 
@@ -96,7 +96,7 @@ def treasury_db_filename() -> str:
 
 @dataclass
 class EconUnit:
-    world_id: WorldID = None
+    real_id: RealID = None
     econ_dir: str = None
     _manager_person_id: HealerID = None
     _clerkunits: dict[str:ClerkUnit] = None
@@ -104,8 +104,8 @@ class EconUnit:
     _road_delimiter: str = None
 
     # Admin
-    def set_world_id(self, world_id: str):
-        self.world_id = validate_roadnode(world_id, self._road_delimiter)
+    def set_real_id(self, real_id: str):
+        self.real_id = validate_roadnode(real_id, self._road_delimiter)
 
     def get_object_root_dir(self):
         return self.econ_dir
@@ -380,7 +380,7 @@ class EconUnit:
         return get_econ_roles_dir(self.get_object_root_dir())
 
     def save_file_to_roles(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.world_id)
+        x_agenda.set_real_id(real_id=self.real_id)
         save_file_to_roles(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
@@ -394,7 +394,7 @@ class EconUnit:
         return get_econ_jobs_dir(self.get_object_root_dir())
 
     def save_file_to_jobs(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.world_id)
+        x_agenda.set_real_id(real_id=self.real_id)
         save_file_to_jobs(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
@@ -451,10 +451,10 @@ class EconUnit:
 
     def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
         if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.world_id
+            return self.real_id
         else:
             return create_road(
-                parent_road=self.world_id,
+                parent_road=self.real_id,
                 terminus_node=road_wo_econ_root,
                 delimiter=self._road_delimiter,
             )
@@ -496,7 +496,7 @@ class EconUnit:
 
 
 def econunit_shop(
-    world_id: WorldID,
+    real_id: RealID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
     _clerkunits: dict[OwnerID:ClerkUnit] = None,
@@ -506,7 +506,7 @@ def econunit_shop(
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
-        econ_dir = f"./{world_id}"
+        econ_dir = f"./{real_id}"
     econ_x = EconUnit(
         econ_dir=econ_dir,
         _clerkunits=get_empty_dict_if_none(_clerkunits),
@@ -514,7 +514,7 @@ def econunit_shop(
     if _manager_person_id is None:
         _manager_person_id = get_temp_env_person_id()
     econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_world_id(world_id=world_id)
+    econ_x.set_real_id(real_id=real_id)
     econ_x._manager_person_id = _manager_person_id
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x

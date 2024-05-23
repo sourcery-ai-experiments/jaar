@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     beliefunit_shop as c_beliefunit,
     RoadUnit,
 )
-from src._road.road import get_default_world_id_roadnode as root_label, create_road
+from src._road.road import get_default_real_id_roadnode as root_label, create_road
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from copy import deepcopy
@@ -335,7 +335,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
 
     label1_text = "clean"
     texas_text = "texas"
-    x1_idea = ideaunit_shop(label1_text, _agenda_world_id=texas_text)
+    x1_idea = ideaunit_shop(label1_text, _agenda_real_id=texas_text)
     arbitrarily_set_idea_attr(
         idea=x1_idea,
         uid=x_uid,
@@ -355,7 +355,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     )
 
     label2_text = "cook"
-    x2_idea = ideaunit_shop(label2_text, _agenda_world_id=texas_text)
+    x2_idea = ideaunit_shop(label2_text, _agenda_real_id=texas_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea,
         uid=x_uid,
@@ -392,7 +392,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     assert x1_idea._all_party_credit == x_all_party_credit
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
-    assert x1_idea._agenda_world_id == texas_text
+    assert x1_idea._agenda_real_id == texas_text
 
 
 def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_override():
@@ -407,7 +407,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
 
     label1_text = "clean"
     texas_text = "texas"
-    x1_idea = ideaunit_shop(label1_text, _agenda_world_id=texas_text)
+    x1_idea = ideaunit_shop(label1_text, _agenda_real_id=texas_text)
     arbitrarily_set_idea_attr(
         idea=x1_idea,
         uid=x_uid,
@@ -427,7 +427,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     )
 
     label2_text = "cook"
-    x2_idea = ideaunit_shop(label2_text, _agenda_world_id=texas_text)
+    x2_idea = ideaunit_shop(label2_text, _agenda_real_id=texas_text)
     x2_uid = "uid2xx"
     override_text = "override"
     arbitrarily_set_idea_attr(
@@ -467,7 +467,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     assert x1_idea._all_party_credit == x_all_party_credit
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
-    assert x1_idea._agenda_world_id == texas_text
+    assert x1_idea._agenda_real_id == texas_text
 
 
 def test_IdeaUnit_meld_FailRaisesError_uid():

@@ -9,7 +9,7 @@ from src._instrument.file import (
 )
 from src.econ.econ import econunit_shop, save_file_to_roles
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_world_id,
+    get_temp_env_real_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -87,7 +87,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"

@@ -1,4 +1,4 @@
-from src._road.road import create_road, get_default_world_id_roadnode as root_label
+from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.agenda.party import partyunit_shop
 from src.agenda.book import (
     BookUnit,
@@ -311,16 +311,16 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj():
 
 def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_IdeaUnitsSorted():
     # GIVEN
-    x_world_id = root_label()
+    x_real_id = root_label()
     sports_text = "sports"
-    sports_road = create_road(x_world_id, sports_text)
+    sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
     x_category = "agenda_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     sports_insert_ideaunit_agendaatom = agendaatom_shop(x_category, atom_insert())
     sports_insert_ideaunit_agendaatom.set_required_arg(label_text, sports_text)
-    sports_insert_ideaunit_agendaatom.set_required_arg(parent_road_text, x_world_id)
+    sports_insert_ideaunit_agendaatom.set_required_arg(parent_road_text, x_real_id)
     knee_insert_ideaunit_agendaatom = agendaatom_shop(x_category, atom_insert())
     knee_insert_ideaunit_agendaatom.set_required_arg(label_text, knee_text)
     knee_insert_ideaunit_agendaatom.set_required_arg(parent_road_text, sports_road)
@@ -346,9 +346,9 @@ def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_IdeaUnitsSorted():
 
 def test_BookUnit_get_sorted_agendaatoms_ReturnsCorrectObj_Road_Sorted():
     # GIVEN
-    x_world_id = root_label()
+    x_real_id = root_label()
     sports_text = "sports"
-    sports_road = create_road(x_world_id, sports_text)
+    sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
     knee_road = create_road(sports_road, knee_text)
     x_category = "agenda_idea_balancelink"

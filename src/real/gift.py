@@ -1,4 +1,4 @@
-from src._road.road import create_road, get_default_world_id_roadnode as root_label
+from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src._road.road import PersonID
 from src.agenda.atom import AgendaAtom, get_from_json as agendaatom_get_from_json
 from src.agenda.book import BookUnit, bookunit_shop

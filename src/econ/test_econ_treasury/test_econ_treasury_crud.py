@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_world_id,
+    get_temp_env_real_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -12,8 +12,8 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    world_id = get_temp_env_world_id()
-    x_econ = econunit_shop(world_id, get_test_econ_dir())
+    real_id = get_temp_env_real_id()
+    x_econ = econunit_shop(real_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -26,8 +26,8 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
 
 def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
     # GIVEN
-    world_id = get_temp_env_world_id()
-    x_econ = econunit_shop(world_id, get_test_econ_dir())
+    real_id = get_temp_env_real_id()
+    x_econ = econunit_shop(real_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_econ.get_treasury_conn())) == 0
@@ -74,8 +74,8 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    world_id = get_temp_env_world_id()
-    x_econ = econunit_shop(world_id, get_test_econ_dir())
+    real_id = get_temp_env_real_id()
+    x_econ = econunit_shop(real_id, get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     sal_text = "Sal"

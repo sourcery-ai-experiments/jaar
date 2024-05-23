@@ -1,6 +1,6 @@
 from src.econ.econ import econunit_shop, EconUnit
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_world_id,
+    get_temp_env_real_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -32,7 +32,7 @@ def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
 
 def test_EconUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create econ
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
 
     # WHEN
     x_econ.set_econ_dirs(in_memory_treasury=True)

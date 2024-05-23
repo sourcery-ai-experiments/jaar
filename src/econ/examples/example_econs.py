@@ -8,7 +8,7 @@ from src.econ.econ import EconUnit
 #     x_econ.create_clerkunit(clerk_id=yao_text)
 #     yao_clerk = x_econ.get_clerkunit(clerk_id=yao_text)
 #     laundry_agenda = get_agenda_assignment_laundry_example1()
-#     laundry_agenda.set_world_id(x_econ.world_id)
+#     laundry_agenda.set_real_id(x_econ.real_id)
 #     print(f"{laundry_agenda._owner_id=}")
 #     yao_clerk.set_role(laundry_agenda)
 

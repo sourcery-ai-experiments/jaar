@@ -3,7 +3,7 @@ from src.econ.econ import econunit_shop
 from src.econ.clerk import clerkunit_shop, get_owner_file_name
 from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
-    get_temp_env_world_id,
+    get_temp_env_real_id,
     env_dir_setup_cleanup,
     get_test_econ_dir,
 )
@@ -14,8 +14,8 @@ from pytest import raises as pytest_raises
 
 def test_EconUnit_create_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
-    print(f"create env '{get_temp_env_world_id()}' directories.")
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    print(f"create env '{get_temp_env_real_id()}' directories.")
     yao_text = "Yao"
     x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     assert x_econ._clerkunits.get(yao_text) is None
@@ -30,7 +30,7 @@ def test_EconUnit_create_clerkunit_SetsAttrCorrecty(env_dir_setup_cleanup):
 def test_EconUnit_clerkunit_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     assert x_econ.clerkunit_exists(yao_text) == False
 
@@ -44,7 +44,7 @@ def test_EconUnit_clerkunit_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_delete_clerkunit_DeletesCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     x_econ.create_clerkunit(clerk_id=yao_text)
     assert x_econ.clerkunit_exists(yao_text)
@@ -59,7 +59,7 @@ def test_EconUnit_delete_clerkunit_DeletesCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_get_clerkunit_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     x_econ.create_clerkunit(clerk_id=yao_text)
     assert x_econ.clerkunit_exists(yao_text)
@@ -74,7 +74,7 @@ def test_EconUnit_get_clerkunit_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_EconUnit_get_clerkunit_RaisesCorrectError(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     assert x_econ.clerkunit_exists(yao_text) == False
 
     # WHEN / THEN
@@ -85,7 +85,7 @@ def test_EconUnit_get_clerkunit_RaisesCorrectError(env_dir_setup_cleanup):
 
 def test_EconUnit_create_clerkunit_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_world_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     yao_text = "Yao"
     x_econ.save_file_to_roles(agendaunit_shop(yao_text))
     yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"

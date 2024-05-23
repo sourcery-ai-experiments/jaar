@@ -3,11 +3,11 @@ from src._road.road import (
     RoadUnit,
     RoadNode,
     is_sub_road,
-    get_default_world_id_roadnode as root_label,
+    get_default_real_id_roadnode as root_label,
     create_road as road_create_road,
     default_road_delimiter_if_none,
     replace_road_delimiter,
-    WorldID,
+    RealID,
 )
 from src.agenda.meld import get_meld_default
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
@@ -230,7 +230,7 @@ class IdeaUnit:
     _parent_road: RoadUnit = None
     _root: bool = None
     _kids: dict = None
-    _agenda_world_id: WorldID = None
+    _agenda_real_id: RealID = None
     _uid: int = None  # Calculated field?
     _balancelinks: dict[GroupID:BalanceLink] = None
     _balanceheirs: dict[GroupID:BalanceHeir] = None  # Calculated field
@@ -534,13 +534,13 @@ class IdeaUnit:
         if (
             self._root
             and _label != None
-            and _label != self._agenda_world_id
-            and self._agenda_world_id != None
+            and _label != self._agenda_real_id
+            and self._agenda_real_id != None
         ):
             raise Idea_root_LabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{self._agenda_world_id}'"
+                f"Cannot set idearoot to string other than '{self._agenda_real_id}'"
             )
-        elif self._root and self._agenda_world_id is None:
+        elif self._root and self._agenda_real_id is None:
             self._label = root_label()
         # elif _label != None:
         else:
@@ -1114,7 +1114,7 @@ def ideaunit_shop(
     _originunit: OriginUnit = None,
     _meld_strategy: str = None,
     _root: bool = None,
-    _agenda_world_id: WorldID = None,
+    _agenda_real_id: RealID = None,
     _problem_bool: bool = None,
     # Calculated fields
     _level: int = None,
@@ -1136,8 +1136,8 @@ def ideaunit_shop(
 ) -> IdeaUnit:
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
-    if _agenda_world_id is None:
-        _agenda_world_id = root_label()
+    if _agenda_real_id is None:
+        _agenda_real_id = root_label()
     if _healerhold is None:
         _healerhold = healerhold_shop()
 
@@ -1170,7 +1170,7 @@ def ideaunit_shop(
         _originunit=_originunit,
         _meld_strategy=_meld_strategy,
         _root=get_False_if_None(_root),
-        _agenda_world_id=_agenda_world_id,
+        _agenda_real_id=_agenda_real_id,
         # Calculated fields
         _level=_level,
         _kids_total_weight=get_0_if_None(_kids_total_weight),
@@ -1190,7 +1190,7 @@ def ideaunit_shop(
         _healerhold_importance=get_0_if_None(_healerhold_importance),
     )
     if x_ideakid._root:
-        x_ideakid.set_idea_label(_label=_agenda_world_id)
+        x_ideakid.set_idea_label(_label=_agenda_real_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
     x_ideakid.set_assignedunit_empty_if_null()

@@ -1,10 +1,10 @@
 from src._road.finance import default_planck_if_none
-from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, WorldID
+from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
-from src.world.gift import GiftUnit
-from src.world.person import PersonUnit, personunit_shop
-from src.world.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
+from src.real.gift import GiftUnit
+from src.real.person import PersonUnit, personunit_shop
+from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
 from src._instrument.file import set_dir, delete_dir, dir_files
 from dataclasses import dataclass
@@ -17,10 +17,10 @@ class PersonExistsException(Exception):
 
 
 @dataclass
-class WorldUnit:
-    world_id: WorldID
-    worlds_dir: str
-    _world_dir: str = None
+class RealUnit:
+    real_id: RealID
+    reals_dir: str
+    _real_dir: str = None
     _persons_dir: str = None
     _journal_db: str = None
     _personunits: dict[PersonID:PersonUnit] = None
@@ -51,17 +51,17 @@ class WorldUnit:
     def _get_person_dir(self, person_id):
         return f"{self._persons_dir}/{person_id}"
 
-    def _set_world_dirs(self, in_memory_journal: bool = None):
-        self._world_dir = f"{self.worlds_dir}/{self.world_id}"
-        self._persons_dir = f"{self._world_dir}/persons"
-        self._gifts_dir = f"{self._world_dir}/gifts"
-        set_dir(x_path=self._world_dir)
+    def _set_real_dirs(self, in_memory_journal: bool = None):
+        self._real_dir = f"{self.reals_dir}/{self.real_id}"
+        self._persons_dir = f"{self._real_dir}/persons"
+        self._gifts_dir = f"{self._real_dir}/gifts"
+        set_dir(x_path=self._real_dir)
         set_dir(x_path=self._persons_dir)
         set_dir(x_path=self._gifts_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
     def get_journal_db_path(self) -> str:
-        return f"{self.worlds_dir}/{self.world_id}/journal.db"
+        return f"{self.reals_dir}/{self.real_id}/journal.db"
 
     def _create_journal_db(
         self, in_memory: bool = None, overwrite: bool = None
@@ -107,8 +107,8 @@ class WorldUnit:
     ) -> PersonUnit:
         x_personunit = personunit_shop(
             person_id=person_id,
-            world_id=self.world_id,
-            worlds_dir=self.worlds_dir,
+            real_id=self.real_id,
+            reals_dir=self.reals_dir,
             _road_delimiter=self._road_delimiter,
         )
         x_personunit.create_core_dir_and_files()
@@ -164,7 +164,7 @@ class WorldUnit:
         x_gut = x_personunit.get_gut_file_agenda()
         x_gut.set_agenda_metrics()
 
-        x_live = agendaunit_shop(person_id, self.world_id)
+        x_live = agendaunit_shop(person_id, self.real_id)
         x_live_deepcopy = copy_deepcopy(x_live)
         for healer_id, healer_dict in x_gut._healers_dict.items():
             healer_person = self.get_personunit(healer_id)
@@ -210,21 +210,21 @@ class WorldUnit:
     #     pass
 
 
-def worldunit_shop(
-    world_id: WorldID,
-    worlds_dir: str,
+def realunit_shop(
+    real_id: RealID,
+    reals_dir: str,
     in_memory_journal: bool = None,
     _road_delimiter: str = None,
     _planck: float = None,
-) -> WorldUnit:
-    world_x = WorldUnit(
-        world_id=world_id,
-        worlds_dir=worlds_dir,
+) -> RealUnit:
+    real_x = RealUnit(
+        real_id=real_id,
+        reals_dir=reals_dir,
         _personunits=get_empty_dict_if_none(None),
         _giftunits=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
     )
-    world_x.set_max_gift_uid()
-    world_x._set_world_dirs(in_memory_journal=in_memory_journal)
-    return world_x
+    real_x.set_max_gift_uid()
+    real_x._set_real_dirs(in_memory_journal=in_memory_journal)
+    return real_x

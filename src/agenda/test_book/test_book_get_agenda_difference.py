@@ -440,12 +440,12 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_insert()
     x_keylist = [
         atom_insert(),
         "agenda_ideaunit",
-        after_sue_agendaunit._world_id,
+        after_sue_agendaunit._real_id,
         music_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_value("label") == music_text
-    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._real_id
     assert ball_agendaatom.get_value("_begin") == music_begin
     assert ball_agendaatom.get_value("_close") == music_close
     assert ball_agendaatom.get_value("_meld_strategy") == music_meld_strategy
@@ -506,11 +506,11 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update()
     x_keylist = [
         atom_update(),
         "agenda_ideaunit",
-        after_sue_agendaunit._world_id,
+        after_sue_agendaunit._real_id,
         music_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._real_id
     assert ball_agendaatom.get_value("label") == music_text
     assert ball_agendaatom.get_value("_begin") == after_music_begin
     assert ball_agendaatom.get_value("_close") == after_music_close

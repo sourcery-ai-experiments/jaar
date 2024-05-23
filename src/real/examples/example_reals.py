@@ -3,18 +3,18 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 
 # from src.agenda.graphic import display_ideatree
-from src.world.world import WorldUnit, worldunit_shop
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir,
-    worlds_dir_setup_cleanup,
+from src.real.real import RealUnit, realunit_shop
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir,
+    reals_dir_setup_cleanup,
 )
 
 
-def create_example_world1() -> WorldUnit:
+def create_example_real1() -> RealUnit:
     # GIVEN
-    music_world = worldunit_shop("music", get_test_worlds_dir(), in_memory_journal=True)
+    music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
-    yao_person = music_world.add_personunit(yao_text)
+    yao_person = music_real.add_personunit(yao_text)
     yao_gut_agenda = yao_person.get_gut_file_agenda()
 
     yao_gut_agenda.set_party_creditor_pool(101)
@@ -41,20 +41,20 @@ def create_example_world1() -> WorldUnit:
     yao_person.create_person_econunits()
 
     # WHEN
-    music_world.set_all_econunits_contract(yao_text)
+    music_real.set_all_econunits_contract(yao_text)
 
-    return music_world
+    return music_real
 
 
-def create_example_world2() -> WorldUnit:
+def create_example_real2() -> RealUnit:
     # GIVEN
-    music_world = worldunit_shop("music", get_test_worlds_dir(), in_memory_journal=True)
+    music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_world.add_personunit(yao_text)
-    wei_person = music_world.add_personunit(wei_text)
-    zia_person = music_world.add_personunit(zia_text)
+    yao_person = music_real.add_personunit(yao_text)
+    wei_person = music_real.add_personunit(wei_text)
+    zia_person = music_real.add_personunit(zia_text)
     yao_gut_agenda = yao_person.get_gut_file_agenda()
     wei_gut_agenda = wei_person.get_gut_file_agenda()
     zia_gut_agenda = zia_person.get_gut_file_agenda()
@@ -111,22 +111,22 @@ def create_example_world2() -> WorldUnit:
     # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
     # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
     # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    music_world.set_all_econunits_contract(yao_text)
-    music_world.set_all_econunits_contract(wei_text)
-    music_world.set_all_econunits_contract(zia_text)
+    music_real.set_all_econunits_contract(yao_text)
+    music_real.set_all_econunits_contract(wei_text)
+    music_real.set_all_econunits_contract(zia_text)
 
-    return music_world
+    return music_real
 
 
-def create_example_world3() -> WorldUnit:
+def create_example_real3() -> RealUnit:
     # GIVEN
-    music_world = worldunit_shop("music", get_test_worlds_dir(), in_memory_journal=True)
+    music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_world.add_personunit(yao_text)
-    wei_person = music_world.add_personunit(wei_text)
-    zia_person = music_world.add_personunit(zia_text)
+    yao_person = music_real.add_personunit(yao_text)
+    wei_person = music_real.add_personunit(wei_text)
+    zia_person = music_real.add_personunit(zia_text)
     yao_gut_agenda = yao_person.get_gut_file_agenda()
     wei_gut_agenda = wei_person.get_gut_file_agenda()
     zia_gut_agenda = zia_person.get_gut_file_agenda()
@@ -159,18 +159,18 @@ def create_example_world3() -> WorldUnit:
     wei_person.save_gut_file(wei_gut_agenda)
     zia_person.save_gut_file(zia_gut_agenda)
 
-    return music_world
+    return music_real
 
 
-def create_example_world4() -> WorldUnit:
+def create_example_real4() -> RealUnit:
     # GIVEN
-    music_world = worldunit_shop("music", get_test_worlds_dir(), in_memory_journal=True)
+    music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_world.add_personunit(yao_text)
-    wei_person = music_world.add_personunit(wei_text)
-    zia_person = music_world.add_personunit(zia_text)
+    yao_person = music_real.add_personunit(yao_text)
+    wei_person = music_real.add_personunit(wei_text)
+    zia_person = music_real.add_personunit(zia_text)
     yao_gut_agenda = yao_person.get_gut_file_agenda()
     wei_gut_agenda = wei_person.get_gut_file_agenda()
     zia_gut_agenda = zia_person.get_gut_file_agenda()
@@ -267,8 +267,8 @@ def create_example_world4() -> WorldUnit:
     # # yao_dallas_zia_clerk = yao_dallas_econ.get_clerkunit(zia_text)
     # # zia_dallas_yao_clerk = zia_dallas_econ.get_clerkunit(yao_text)
     # # zia_dallas_zia_clerk = zia_dallas_econ.get_clerkunit(zia_text)
-    # music_world.set_all_econunits_role(yao_text)
-    # music_world.set_all_econunits_role(wei_text)
-    # music_world.set_all_econunits_role(zia_text)
+    # music_real.set_all_econunits_role(yao_text)
+    # music_real.set_all_econunits_role(wei_text)
+    # music_real.set_all_econunits_role(zia_text)
 
-    return music_world
+    return music_real

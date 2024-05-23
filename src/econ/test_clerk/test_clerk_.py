@@ -15,7 +15,7 @@ from src.econ.econ import get_econ_jobs_dir, get_econ_roles_dir
 from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
     get_test_econ_dir,
-    get_temp_env_world_id,
+    get_temp_env_real_id,
 )
 from os import path as os_path
 from os.path import exists as os_path_exists
@@ -218,7 +218,7 @@ def test_ClerkUnit_set_empty_job_SetsArributeEmptyAgendaUnit(env_dir_setup_clean
 
     # THEN
     assert yao_clerk._job._owner_id == yao_agenda._owner_id
-    assert yao_clerk._job._world_id == yao_agenda._world_id
+    assert yao_clerk._job._real_id == yao_agenda._real_id
     assert yao_clerk._job._last_gift_id == yao_agenda._last_gift_id
     assert yao_clerk._job.get_partys_dict() == yao_agenda.get_partys_dict()
     assert yao_clerk._job.get_groupunits_dict() == yao_agenda.get_groupunits_dict()

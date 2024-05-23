@@ -1,24 +1,24 @@
 from src.agenda.book import bookunit_shop
-from src.world.gift import (
+from src.real.gift import (
     GiftUnit,
     giftunit_shop,
     create_giftunit_from_files,
     get_json_filename,
     init_gift_id,
 )
-from src.world.examples.example_atoms import get_atom_example_ideaunit_knee
-from src.world.examples.example_gifts import (
+from src.real.examples.example_atoms import get_atom_example_ideaunit_knee
+from src.real.examples.example_gifts import (
     get_sue_giftunit,
     sue_1atomunits_giftunit,
     sue_2atomunits_giftunit,
     sue_3atomunits_giftunit,
     sue_4atomunits_giftunit,
 )
-from src.world.person import personunit_shop
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir,
-    get_test_world_id,
-    worlds_dir_setup_cleanup,
+from src.real.person import personunit_shop
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir,
+    get_test_real_id,
+    reals_dir_setup_cleanup,
 )
 from src._instrument.file import open_file, dir_files, delete_dir, set_dir
 from os.path import exists as os_path_exists
@@ -26,7 +26,7 @@ from pytest import raises as pytest_raises
 from copy import deepcopy as copy_deepcopy
 
 
-def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_giftunit_file_SaveCorrectObj(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     two_int = 2
@@ -58,7 +58,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj(worlds_dir_setup_cleanup):
 
 
 def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -83,7 +83,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
 
 
 def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -107,7 +107,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
     )
 
 
-def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     x_gift_id = 2
@@ -141,7 +141,7 @@ def test_PersonUnit_giftunit_file_exists_ReturnsCorrectObj(worlds_dir_setup_clea
 
 
 def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_giver_IsWrong(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -167,7 +167,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIfGiftUnit_giver_IsWrong(
 
 
 def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -198,7 +198,7 @@ def test_PersonUnit_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
 
 
 def test_PersonUnit_validate_giftunit_ReturnsObjWithAttributesFixed(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -230,7 +230,7 @@ def test_PersonUnit_validate_giftunit_ReturnsObjWithAttributesFixed(
 
 
 def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTrue(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -256,7 +256,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
 
 
 def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -291,7 +291,7 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
 
 
 def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFilesExist(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -312,7 +312,7 @@ def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGif
 
 
 def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftFilesExist(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -339,7 +339,7 @@ def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftF
 
 
 def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -366,7 +366,7 @@ def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
 
 
 def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -390,7 +390,7 @@ def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
 
 
 def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -425,7 +425,7 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
 
 
 def test_PersonUnit_save_giftunit_file_CanCreateAndChange3Giftunits(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -447,7 +447,7 @@ def test_PersonUnit_save_giftunit_file_CanCreateAndChange3Giftunits(
     assert len(dir_files(sue_person._atoms_dir)) == 9
 
 
-def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_giftunit_file_ReturnsValidObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -468,7 +468,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(worlds_dir_setup_cleanup)
     assert valid_giftunit._gift_id != prev_sue2_giftunit._gift_id
 
 
-def test_PersonUnit_create_save_giftunit_SaveCorrectObj(worlds_dir_setup_cleanup):
+def test_PersonUnit_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
@@ -502,7 +502,7 @@ def test_PersonUnit_create_save_giftunit_SaveCorrectObj(worlds_dir_setup_cleanup
 
 
 def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -518,7 +518,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
 
 
 def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -527,7 +527,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1at
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
     gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._world_id=}")
+    print(f"{gut_agenda._real_id=}")
     sports_text = "sports"
     sports_road = gut_agenda.make_l1_road(sports_text)
     knee_text = "knee"
@@ -543,7 +543,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1at
 
 
 def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -552,7 +552,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2at
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
     gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._world_id=}")
+    print(f"{gut_agenda._real_id=}")
     sports_text = "sports"
     sports_road = gut_agenda.make_l1_road(sports_text)
     knee_text = "knee"
@@ -570,14 +570,14 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2at
 
 
 def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     sue_person.save_giftunit_file(sue_2atomunits_giftunit())
     gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._world_id=}")
+    print(f"{gut_agenda._real_id=}")
     sports_text = "sports"
     sports_road = gut_agenda.make_l1_road(sports_text)
     knee_text = "knee"
@@ -595,12 +595,12 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 
 
 # def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     assert 1 == 2
 
 
-# def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+# def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     one_int = 1
@@ -616,7 +616,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert atom_num == one_int
 
 
-# def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+# def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     five_int = 5
@@ -631,7 +631,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert yao_person.atom_file_exists(five_int)
 
 
-# def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_cleanup):
+# def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     ten_int = 10
@@ -645,7 +645,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json") == False
 
 
-# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     ten_int = 10
@@ -657,7 +657,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 
 
 # def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
@@ -666,7 +666,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert yao_person._get_max_atom_file_number() == 0
 
 
-# def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+# def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     ten_int = 10
@@ -677,7 +677,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert yao_person._get_next_atom_file_number() == "11.json"
 
 
-# def test_PersonUnit_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+# def test_PersonUnit_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
 #     # GIVEN
 #     yao_person = personunit_shop("Yao")
 #     ten_int = 10
@@ -699,7 +699,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 
 
 # def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     yao_text = "Yao"
@@ -710,26 +710,26 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 
 #     # THEN
 #     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._real_id == yao_person.real_id
 #     assert yao_agenda._road_delimiter == yao_person._road_delimiter
 #     assert yao_agenda._planck == yao_person._planck
 
 
 # def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     yao_text = "Yao"
 #     yao_person = personunit_shop(yao_text)
 #     # save atom files
-#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
 
 #     # WHEN
 #     yao_agenda = yao_person._get_agenda_from_atom_files()
 
 #     # THEN
 #     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._real_id == yao_person.real_id
 #     assert yao_agenda._road_delimiter == yao_person._road_delimiter
 #     sports_text = "sports"
 #     sports_road = yao_agenda.make_l1_road(sports_text)
@@ -738,23 +738,23 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 
 
 # def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     yao_text = "Yao"
 #     yao_person = personunit_shop(yao_text)
 #     # save atom files
-#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.world_id))
-#     yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.world_id))
-#     yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.world_id))
-#     yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.world_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.real_id))
+#     yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.real_id))
+#     yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.real_id))
 
 #     # WHEN
 #     yao_agenda = yao_person._get_agenda_from_atom_files()
 
 #     # THEN
 #     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._world_id == yao_person.world_id
+#     assert yao_agenda._real_id == yao_person.real_id
 #     assert yao_agenda._road_delimiter == yao_person._road_delimiter
 #     sports_text = "sports"
 #     sports_road = yao_agenda.make_l1_road(sports_text)
@@ -762,7 +762,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert yao_agenda.idea_exists(sports_road)
 
 
-def test_PersonUnit_add_promise_gift_AddsPromiseGift(worlds_dir_setup_cleanup):
+def test_PersonUnit_add_promise_gift_AddsPromiseGift(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -786,7 +786,7 @@ def test_PersonUnit_add_promise_gift_AddsPromiseGift(worlds_dir_setup_cleanup):
 
 
 def test_PersonUnit_add_promise_gift_SetsGutAgendaPromiseIdea_suffgroup(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"

@@ -98,7 +98,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
     # WHEN/THEN
     train_road = create_road_from_nodes(
         [
-            yao_agenda._world_id,
+            yao_agenda._real_id,
             "ACME",
             "ACME Employee Responsiblities",
             "Know Abuse Prevention and Reporting guildlines",

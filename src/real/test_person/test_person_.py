@@ -1,18 +1,18 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
-from src.world.gift import init_gift_id
-from src.world.person import (
+from src.real.gift import init_gift_id
+from src.real.person import (
     PersonUnit,
     personunit_shop,
     get_gut_file_name,
     get_live_file_name,
 )
 from pytest import raises as pytest_raises
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir,
-    get_test_world_id,
-    worlds_dir_setup_cleanup,
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir,
+    get_test_real_id,
+    reals_dir_setup_cleanup,
 )
 from os.path import exists as os_path_exists
 from src._instrument.file import open_file, save_file, delete_dir
@@ -32,8 +32,8 @@ def test_PersonUnit_exists():
 
     # THEN
     assert x_person.person_id is None
-    assert x_person.world_id is None
-    assert x_person.worlds_dir is None
+    assert x_person.real_id is None
+    assert x_person.reals_dir is None
     assert x_person.persons_dir is None
     assert x_person.person_dir is None
     assert x_person._econs_dir is None
@@ -54,8 +54,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     # GIVEN / WHEN
     x_person = PersonUnit()
     assert x_person.person_id is None
-    assert x_person.world_id is None
-    assert x_person.worlds_dir is None
+    assert x_person.real_id is None
+    assert x_person.reals_dir is None
     assert x_person.persons_dir is None
     assert x_person.person_dir is None
     assert x_person._gut_file_name is None
@@ -72,9 +72,9 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # THEN
     assert x_person.person_id == yao_text
-    assert x_person.world_id == get_test_world_id()
-    assert x_person.worlds_dir == get_test_worlds_dir()
-    assert x_person.persons_dir == f"{x_person.world_dir}/persons"
+    assert x_person.real_id == get_test_real_id()
+    assert x_person.reals_dir == get_test_reals_dir()
+    assert x_person.persons_dir == f"{x_person.real_dir}/persons"
     assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
     assert x_person._gut_file_name == f"{get_gut_file_name()}.json"
     assert x_person._gut_path == f"{x_person.person_dir}/{x_person._gut_file_name}"
@@ -86,7 +86,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     slash_text = "/"
@@ -101,21 +101,21 @@ def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimite
     )
 
 
-def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
+def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    x_worlds_dir = get_test_worlds_dir()
-    x_world_id = "froopiland"
+    x_reals_dir = get_test_reals_dir()
+    x_real_id = "froopiland"
 
     # WHEN
-    sue_person = personunit_shop(sue_text, x_world_id, worlds_dir=x_worlds_dir)
+    sue_person = personunit_shop(sue_text, x_real_id, reals_dir=x_reals_dir)
 
     # THEN
     assert sue_person.person_id == sue_text
-    assert sue_person.world_id == x_world_id
-    assert sue_person.worlds_dir == x_worlds_dir
-    assert sue_person.world_dir == f"{sue_person.worlds_dir}/{sue_person.world_id}"
-    assert sue_person.persons_dir == f"{sue_person.world_dir}/persons"
+    assert sue_person.real_id == x_real_id
+    assert sue_person.reals_dir == x_reals_dir
+    assert sue_person.real_dir == f"{sue_person.reals_dir}/{sue_person.real_id}"
+    assert sue_person.persons_dir == f"{sue_person.real_dir}/persons"
     assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
     assert sue_person._econs_dir == f"{sue_person.person_dir}/econs"
     assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
@@ -129,8 +129,8 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(worlds_dir_setup_cleanup):
     assert sue_person._planck == default_planck_if_none()
 
 
-def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters(
-    worlds_dir_setup_cleanup,
+def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -142,10 +142,10 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters(
 
     # THEN
     assert sue_person.person_id == sue_text
-    assert sue_person.world_id == get_test_world_id()
-    assert sue_person.worlds_dir == get_test_worlds_dir()
-    assert sue_person.world_dir == f"{sue_person.worlds_dir}/{sue_person.world_id}"
-    assert sue_person.persons_dir == f"{sue_person.world_dir}/persons"
+    assert sue_person.real_id == get_test_real_id()
+    assert sue_person.reals_dir == get_test_reals_dir()
+    assert sue_person.real_dir == f"{sue_person.reals_dir}/{sue_person.real_id}"
+    assert sue_person.persons_dir == f"{sue_person.real_dir}/persons"
     assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
     assert sue_person._gut_file_name == f"{get_gut_file_name()}.json"
     sue_gut_file_path = f"{sue_person.person_dir}/{sue_person._gut_file_name}"
@@ -157,11 +157,11 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyWorldParameters(
     assert sue_person._planck == two_int
 
 
-def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
+def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_gut_file_name = f"{get_gut_file_name()}.json"
     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
@@ -186,11 +186,11 @@ def test_PersonUnit_gut_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup)
     assert sue_person.gut_file_exists()
 
 
-def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_PersonUnitsave_gut_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_gut_file_name = f"{get_gut_file_name()}.json"
     sue_gut_path = f"{sue_person_dir}/{sue_gut_file_name}"
@@ -234,7 +234,7 @@ def test_PersonUnitsave_gut_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
 
 
 def test_PersonUnitsave_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -250,7 +250,7 @@ def test_PersonUnitsave_gut_file_RaisesErrorWhenAgenda_live_id_IsWrong(
     )
 
 
-def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanup):
+def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -270,7 +270,7 @@ def test_PersonUnit_load_gut_file_CorrectlyLoads_gut_obj(worlds_dir_setup_cleanu
 
 
 def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesGutFileAndGiftFile(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -288,14 +288,14 @@ def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesGutFileAndGiftFi
 
     # THEN
     gut_agenda = sue_person.get_gut_file_agenda()
-    assert gut_agenda._world_id == get_test_world_id()
+    assert gut_agenda._real_id == get_test_real_id()
     assert gut_agenda._owner_id == sue_text
     assert gut_agenda._planck == seven_int
     assert os_path_exists(init_gift_file_path)
 
 
 def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGutFile(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -312,14 +312,14 @@ def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGutFile(
 
     # THEN
     gut_agenda = sue_person.get_gut_file_agenda()
-    assert gut_agenda._world_id == get_test_world_id()
+    assert gut_agenda._real_id == get_test_real_id()
     assert gut_agenda._owner_id == sue_text
     assert gut_agenda._planck == seven_int
     assert os_path_exists(init_gift_file_path)
 
 
 def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGiftFile(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -338,7 +338,7 @@ def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGiftFile(
     sue_person.initialize_gift_and_gut_files()
 
     # THEN
-    assert sue_gut_agenda._world_id == get_test_world_id()
+    assert sue_gut_agenda._real_id == get_test_real_id()
     assert sue_gut_agenda._owner_id == sue_text
     assert sue_gut_agenda._planck == seven_int
     assert sue_gut_agenda.get_party(bob_text) != None
@@ -346,11 +346,11 @@ def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGiftFile(
 
 
 # def test_PersonUnit_initialize_gift_and_gut_files_CorrectlyDoesNotOverwrite(
-#     worlds_dir_setup_cleanup,
+#     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     sue_text = "Sue"
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+#     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
 #     sue_person = personunit_shop(person_id=sue_text)
 #     assert sue_person.gut_file_exists()
 #     delete_dir(sue_person._gut_path)
@@ -365,22 +365,22 @@ def test_PersonUnit_initialize_gift_and_gut_files_CorrectlySavesOnlyGiftFile(
 #     # THEN
 #     assert sue_person.gut_file_exists()
 
-#     sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-#     sue_persons_dir = f"{sue_world_dir}/persons"
+#     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+#     sue_persons_dir = f"{sue_real_dir}/persons"
 #     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
 #     sue_gut_file_name = f"{get_gut_file_name()}.json"
 #     gut_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_gut_file_name)
 #     print(f"{gut_file_text=}")
 #     gut_agenda = agenda_get_from_json(gut_file_text)
-#     assert gut_agenda._world_id == get_test_world_id()
+#     assert gut_agenda._real_id == get_test_real_id()
 #     assert gut_agenda._owner_id == sue_text
 
 
-def test_PersonUnit_live_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup):
+def test_PersonUnit_live_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_live_file_name = f"{get_live_file_name()}.json"
     sue_live_path = f"{sue_person_dir}/{sue_live_file_name}"
@@ -404,7 +404,7 @@ def test_PersonUnit_live_file_exists_ReturnsCorrectBool(worlds_dir_setup_cleanup
     assert sue_person.live_file_exists()
 
 
-def test_PersonUnit_save_live_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_PersonUnit_save_live_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -421,8 +421,8 @@ def test_PersonUnit_save_live_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     # THEN
     assert sue_person.live_file_exists()
 
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_live_file_name = f"{get_live_file_name()}.json"
     live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
@@ -444,7 +444,7 @@ def test_PersonUnit_save_live_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
 
 
 def test_PersonUnit_save_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -461,7 +461,7 @@ def test_PersonUnit_save_live_file_RaisesErrorWhenAgenda_live_id_IsWrong(
 
 
 def test_PersonUnit_load_live_file_CorrectlyLoads_live_obj(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -482,7 +482,7 @@ def test_PersonUnit_load_live_file_CorrectlyLoads_live_obj(
 
 
 def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlySavesFile(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -496,7 +496,7 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlySavesFile(
 
     # THEN
     live_agenda = sue_person.get_live_file_agenda()
-    assert live_agenda._world_id == get_test_world_id()
+    assert live_agenda._real_id == get_test_real_id()
     assert live_agenda._owner_id == sue_text
     bob_text = "Bob"
     assert live_agenda.get_party(bob_text) is None
@@ -517,11 +517,11 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlySavesFile(
 
 
 def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlyDoesNotOverwrite(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_planck = 7
     sue_person = personunit_shop(person_id=sue_text, _planck=sue_planck)
     assert sue_person.live_file_exists()
@@ -537,26 +537,26 @@ def test_PersonUnit_create_live_file_if_does_not_exist_CorrectlyDoesNotOverwrite
     # THEN
     assert sue_person.live_file_exists()
 
-    sue_world_dir = f"{get_test_worlds_dir()}/{get_test_world_id()}"
-    sue_persons_dir = f"{sue_world_dir}/persons"
+    sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_live_file_name = f"{get_live_file_name()}.json"
     live_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_live_file_name)
     print(f"{live_file_text=}")
     live_agenda = agenda_get_from_json(live_file_text)
-    assert live_agenda._world_id == get_test_world_id()
+    assert live_agenda._real_id == get_test_real_id()
     assert live_agenda._owner_id == sue_text
     assert live_agenda._planck == sue_planck
 
 
 def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    delete_dir(sue_person.world_dir)
-    assert os_path_exists(sue_person.world_dir) is False
+    delete_dir(sue_person.real_dir)
+    assert os_path_exists(sue_person.real_dir) is False
     assert os_path_exists(sue_person.persons_dir) is False
     assert os_path_exists(sue_person.person_dir) is False
     assert os_path_exists(sue_person._econs_dir) is False
@@ -569,7 +569,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     sue_person.create_core_dir_and_files()
 
     # THEN
-    assert os_path_exists(sue_person.world_dir)
+    assert os_path_exists(sue_person.real_dir)
     assert os_path_exists(sue_person.persons_dir)
     assert os_path_exists(sue_person.person_dir)
     assert os_path_exists(sue_person._econs_dir)

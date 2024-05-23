@@ -6,7 +6,7 @@ from src.agenda.reason_idea import (
     premises_get_from_dict,
 )
 from src._road.road import (
-    get_default_world_id_roadnode as root_label,
+    get_default_real_id_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
     find_replace_road_key_dict,
@@ -870,11 +870,11 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
     assert new_premises_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Change_world_id_Scenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Change_real_id_Scenario():
     # GIVEN
-    old_world_id = "El Paso"
+    old_real_id = "El Paso"
     casa_text = "casa"
-    old_casa_road = create_road(old_world_id, casa_text)
+    old_casa_road = create_road(old_real_id, casa_text)
     seasons_text = "seasons"
     old_seasons_road = create_road(old_casa_road, seasons_text)
     old_premise_x = premiseunit_shop(need=old_seasons_road)
@@ -883,8 +883,8 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Change_world
     assert old_premises_x.get(old_seasons_road) == old_premise_x
 
     # WHEN
-    new_world_id = "Austin"
-    new_casa_road = create_road(new_world_id, casa_text)
+    new_real_id = "Austin"
+    new_casa_road = create_road(new_real_id, casa_text)
     new_seasons_road = create_road(new_casa_road, seasons_text)
 
     new_premises_x = find_replace_road_key_dict(

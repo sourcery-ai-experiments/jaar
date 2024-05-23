@@ -1,11 +1,11 @@
 from src.agenda.book import bookunit_shop
-from src.world.gift import (
+from src.real.gift import (
     GiftUnit,
     giftunit_shop,
     get_init_gift_id_if_None,
     init_gift_id,
 )
-from src.world.examples.example_atoms import (
+from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )

@@ -95,7 +95,7 @@ class ClerkUnit:
     def _set_empty_job(self):
         self._job = agendaunit_shop(
             self._role._owner_id,
-            self._role._world_id,
+            self._role._real_id,
             _road_delimiter=self._role._road_delimiter,
         )
         self._job._partys = self._role._partys
