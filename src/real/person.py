@@ -20,7 +20,7 @@ from src.agenda.atom import (
     get_from_json as agendaatom_get_from_json,
     change_agenda_with_agendaatom,
 )
-from src.agenda.promise import create_promise
+from src.agenda.pledge import create_pledge
 from src.econ.econ import (
     EconUnit,
     econunit_shop,
@@ -429,10 +429,10 @@ class PersonUnit:
     def set_person_econunits_role(self):
         self.set_econunits_role(self.get_gut_file_agenda())
 
-    def add_promise_gift(self, promise_road: RoadUnit, x_suffgroup: GroupID = None):
+    def add_pledge_gift(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
         gut_agenda = self.get_gut_file_agenda()
         old_gut_agenda = copy_deepcopy(gut_agenda)
-        create_promise(gut_agenda, promise_road, x_suffgroup)
+        create_pledge(gut_agenda, pledge_road, x_suffgroup)
         next_giftunit = self._create_new_giftunit()
         next_giftunit._bookunit.add_all_different_agendaatoms(
             old_gut_agenda, gut_agenda

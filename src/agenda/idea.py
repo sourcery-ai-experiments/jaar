@@ -90,9 +90,9 @@ class IdeaAttrFilter:
     reest: bool = None
     numeric_road: RoadUnit = None
     range_source_road: float = None
-    promise: bool = None
+    pledge: bool = None
     beliefunit: BeliefUnit = None
-    descendant_promise_count: int = None
+    descendant_pledge_count: int = None
     all_party_credit: bool = None
     all_party_debt: bool = None
     balancelink: BalanceLink = None
@@ -174,9 +174,9 @@ def ideaattrfilter_shop(
     reest: bool = None,
     numeric_road: RoadUnit = None,
     range_source_road: float = None,
-    promise: bool = None,
+    pledge: bool = None,
     beliefunit: BeliefUnit = None,
-    descendant_promise_count: int = None,
+    descendant_pledge_count: int = None,
     all_party_credit: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
@@ -207,9 +207,9 @@ def ideaattrfilter_shop(
         reest=reest,
         numeric_road=numeric_road,
         range_source_road=range_source_road,
-        promise=promise,
+        pledge=pledge,
         beliefunit=beliefunit,
-        descendant_promise_count=descendant_promise_count,
+        descendant_pledge_count=descendant_pledge_count,
         all_party_credit=all_party_credit,
         all_party_debt=all_party_debt,
         balancelink=balancelink,
@@ -250,7 +250,7 @@ class IdeaUnit:
     _reest: bool = None
     _range_source_road: RoadUnit = None
     _numeric_road: RoadUnit = None
-    promise: bool = None
+    pledge: bool = None
     _originunit: OriginUnit = None
     _meld_strategy: str = None
     _problem_bool: bool = None
@@ -262,8 +262,8 @@ class IdeaUnit:
     _agenda_fund_cease: float = None
     _task: bool = None
     _active: bool = None
-    _ancestor_promise_count: int = None
-    _descendant_promise_count: int = None
+    _ancestor_pledge_count: int = None
+    _descendant_pledge_count: int = None
     _all_party_credit: bool = None
     _all_party_debt: bool = None
     _is_expanded: bool = None
@@ -275,9 +275,7 @@ class IdeaUnit:
     def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
         return (
-            self.promise
-            and self._active
-            and self.base_reasonunit_exists(necessary_base)
+            self.pledge and self._active and self.base_reasonunit_exists(necessary_base)
         )
 
     def base_reasonunit_exists(self, necessary_base: RoadUnit = None) -> bool:
@@ -403,16 +401,16 @@ class IdeaUnit:
                 self._parent_road, self._label, delimiter=self._road_delimiter
             )
 
-    def clear_descendant_promise_count(self):
-        self._descendant_promise_count = None
+    def clear_descendant_pledge_count(self):
+        self._descendant_pledge_count = None
 
-    def set_descendant_promise_count_zero_if_null(self):
-        if self._descendant_promise_count is None:
-            self._descendant_promise_count = 0
+    def set_descendant_pledge_count_zero_if_null(self):
+        if self._descendant_pledge_count is None:
+            self._descendant_pledge_count = 0
 
-    def add_to_descendant_promise_count(self, x_int: int):
-        self.set_descendant_promise_count_zero_if_null()
-        self._descendant_promise_count += x_int
+    def add_to_descendant_pledge_count(self, x_int: int):
+        self.set_descendant_pledge_count_zero_if_null()
+        self._descendant_pledge_count += x_int
 
     def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
         descendant_roads = {}
@@ -436,12 +434,12 @@ class IdeaUnit:
         self._all_party_credit = None
         self._all_party_debt = None
 
-    def set_ancestor_promise_count(
-        self, parent_ancestor_promise_count: int, parent_promise: bool
+    def set_ancestor_pledge_count(
+        self, parent_ancestor_pledge_count: int, parent_pledge: bool
     ):
         x_int = 0
-        x_int = 1 if parent_promise else 0
-        self._ancestor_promise_count = parent_ancestor_promise_count + x_int
+        x_int = 1 if parent_pledge else 0
+        self._ancestor_pledge_count = parent_ancestor_pledge_count + x_int
 
     def set_sibling_total_weight(self, parent_kids_total_weight):
         self._sibling_total_weight = parent_kids_total_weight
@@ -676,7 +674,7 @@ class IdeaUnit:
         self._reest = other_idea._reest
         self._range_source_road = other_idea._range_source_road
         self._numeric_road = other_idea._numeric_road
-        self.promise = other_idea.promise
+        self.pledge = other_idea.pledge
         self._is_expanded = other_idea._is_expanded
 
     def _meld_attributes_that_must_be_equal(self, other_idea):
@@ -694,7 +692,7 @@ class IdeaUnit:
                 other_idea._range_source_road,
             ),
             ("_numeric_road", self._numeric_road, other_idea._numeric_road),
-            ("promise", self.promise, other_idea.promise),
+            ("pledge", self.pledge, other_idea.pledge),
             ("_is_expanded", self._is_expanded, other_idea._is_expanded),
         ]
         while to_be_equal_attributes != []:
@@ -744,8 +742,8 @@ class IdeaUnit:
             self._numeric_road = idea_attr.numeric_road
         if idea_attr.range_source_road != None:
             self._range_source_road = idea_attr.range_source_road
-        if idea_attr.descendant_promise_count != None:
-            self._descendant_promise_count = idea_attr.descendant_promise_count
+        if idea_attr.descendant_pledge_count != None:
+            self._descendant_pledge_count = idea_attr.descendant_pledge_count
         if idea_attr.all_party_credit != None:
             self._all_party_credit = idea_attr.all_party_credit
         if idea_attr.all_party_debt != None:
@@ -756,8 +754,8 @@ class IdeaUnit:
             self.del_balancelink(group_id=idea_attr.balancelink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
-        if idea_attr.promise != None:
-            self.promise = idea_attr.promise
+        if idea_attr.pledge != None:
+            self.pledge = idea_attr.pledge
         if idea_attr.meld_strategy != None:
             self._meld_strategy = validate_meld_strategy(idea_attr.meld_strategy)
         if idea_attr.beliefunit != None:
@@ -898,7 +896,7 @@ class IdeaUnit:
     def _set_idea_task(self):
         self._task = False
         if (
-            self.promise
+            self.pledge
             and self._active
             and (self._reasonheirs == {} or self._is_any_reasonheir_task_true())
         ):
@@ -1032,8 +1030,8 @@ class IdeaUnit:
             x_dict["_range_source_road"] = self._range_source_road
         if self._numeric_road != None:
             x_dict["_numeric_road"] = self._numeric_road
-        if self.promise:
-            x_dict["promise"] = self.promise
+        if self.pledge:
+            x_dict["pledge"] = self.pledge
         if self._problem_bool:
             x_dict["_problem_bool"] = self._problem_bool
         if self._beliefunits not in [{}, None]:
@@ -1110,7 +1108,7 @@ def ideaunit_shop(
     _reest: bool = None,
     _range_source_road: RoadUnit = None,
     _numeric_road: RoadUnit = None,
-    promise: bool = None,
+    pledge: bool = None,
     _originunit: OriginUnit = None,
     _meld_strategy: str = None,
     _root: bool = None,
@@ -1124,8 +1122,8 @@ def ideaunit_shop(
     _agenda_fund_cease: float = None,
     _task: bool = None,
     _active: bool = None,
-    _ancestor_promise_count: int = None,
-    _descendant_promise_count: int = None,
+    _ancestor_pledge_count: int = None,
+    _descendant_pledge_count: int = None,
     _all_party_credit: bool = None,
     _all_party_debt: bool = None,
     _is_expanded: bool = True,
@@ -1165,7 +1163,7 @@ def ideaunit_shop(
         _reest=_reest,
         _range_source_road=_range_source_road,
         _numeric_road=_numeric_road,
-        promise=get_False_if_None(promise),
+        pledge=get_False_if_None(pledge),
         _problem_bool=get_False_if_None(_problem_bool),
         _originunit=_originunit,
         _meld_strategy=_meld_strategy,
@@ -1179,8 +1177,8 @@ def ideaunit_shop(
         _agenda_fund_cease=_agenda_fund_cease,
         _task=_task,
         _active=_active,
-        _ancestor_promise_count=_ancestor_promise_count,
-        _descendant_promise_count=_descendant_promise_count,
+        _ancestor_pledge_count=_ancestor_pledge_count,
+        _descendant_pledge_count=_descendant_pledge_count,
         _all_party_credit=_all_party_credit,
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
@@ -1241,7 +1239,7 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
         )
     elif dict_key in {"_kids"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else {}
-    elif dict_key in {"promise", "_problem_bool"}:
+    elif dict_key in {"pledge", "_problem_bool"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     elif dict_key in {"_is_expanded"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else True

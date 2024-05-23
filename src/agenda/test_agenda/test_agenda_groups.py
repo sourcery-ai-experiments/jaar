@@ -698,7 +698,7 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     new_idea_parent_road = x_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
-        _weight=40, _label=clean_cookery_text, promise=True
+        _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"
@@ -789,7 +789,7 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     new_idea_parent_road = bob_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
-        _weight=40, _label=clean_cookery_text, promise=True
+        _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"

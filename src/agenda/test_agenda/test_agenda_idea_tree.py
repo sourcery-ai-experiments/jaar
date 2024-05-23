@@ -74,33 +74,33 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     week_text = "weekdays"
     mon_text = "Monday"
     yrx = x_agenda._idearoot
-    assert yrx._descendant_promise_count is None
+    assert yrx._descendant_pledge_count is None
     assert yrx._all_party_credit is None
     assert yrx._all_party_debt is None
-    assert yrx._kids[gig_text]._descendant_promise_count is None
+    assert yrx._kids[gig_text]._descendant_pledge_count is None
     assert yrx._kids[gig_text]._all_party_credit is None
     assert yrx._kids[gig_text]._all_party_debt is None
-    assert yrx._kids[week_text]._kids[mon_text]._descendant_promise_count is None
+    assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
     assert yrx._kids[week_text]._kids[mon_text]._all_party_credit is None
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt is None
 
-    yrx._descendant_promise_count = -2
+    yrx._descendant_pledge_count = -2
     yrx._all_party_credit = -2
     yrx._all_party_debt = -2
-    yrx._kids[gig_text]._descendant_promise_count = -2
+    yrx._kids[gig_text]._descendant_pledge_count = -2
     yrx._kids[gig_text]._all_party_credit = -2
     yrx._kids[gig_text]._all_party_debt = -2
-    yrx._kids[week_text]._kids[mon_text]._descendant_promise_count = -2
+    yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count = -2
     yrx._kids[week_text]._kids[mon_text]._all_party_credit = -2
     yrx._kids[week_text]._kids[mon_text]._all_party_debt = -2
 
-    assert yrx._descendant_promise_count == -2
+    assert yrx._descendant_pledge_count == -2
     assert yrx._all_party_credit == -2
     assert yrx._all_party_debt == -2
-    assert yrx._kids[gig_text]._descendant_promise_count == -2
+    assert yrx._kids[gig_text]._descendant_pledge_count == -2
     assert yrx._kids[gig_text]._all_party_credit == -2
     assert yrx._kids[gig_text]._all_party_debt == -2
-    assert yrx._kids[week_text]._kids[mon_text]._descendant_promise_count == -2
+    assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == -2
     assert yrx._kids[week_text]._kids[mon_text]._all_party_credit == -2
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt == -2
 
@@ -108,9 +108,9 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert yrx._descendant_promise_count == 2
-    assert yrx._kids[gig_text]._descendant_promise_count == 0
-    assert yrx._kids[week_text]._kids[mon_text]._descendant_promise_count == 0
+    assert yrx._descendant_pledge_count == 2
+    assert yrx._kids[gig_text]._descendant_pledge_count == 0
+    assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
 
     assert yrx._kids[week_text]._kids[mon_text]._all_party_credit == True
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt == True
@@ -162,7 +162,7 @@ def test_AgendaUnit_get_idea_obj_ReturnsIdea():
 def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
     # GIVEN
     tim_agenda = agendaunit_shop(_owner_id="Tim")
-    assert tim_agenda._idearoot._descendant_promise_count is None
+    assert tim_agenda._idearoot._descendant_pledge_count is None
     assert tim_agenda._idearoot._all_party_credit is None
     assert tim_agenda._idearoot._all_party_debt is None
 
@@ -170,7 +170,7 @@ def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes
     tim_agenda.set_agenda_metrics()
 
     # THEN
-    assert tim_agenda._idearoot._descendant_promise_count == 0
+    assert tim_agenda._idearoot._descendant_pledge_count == 0
     assert tim_agenda._idearoot._all_party_credit == True
     assert tim_agenda._idearoot._all_party_debt == True
 
@@ -184,7 +184,7 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     mon_text = "Monday"
 
     email_text = "email"
-    email_idea = ideaunit_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=gig_road)
 
     # idea ",{week_text},Sunday"
@@ -201,19 +201,19 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     # idea ",{nation_text},France"
     # idea ",{nation_text},Brazil"
     # idea ",{nation_text}"
-    # idea "gig"  # , promise=True)
-    # idea feed_text  # , promise=True)
+    # idea "gig"  # , pledge=True)
+    # idea feed_text  # , pledge=True)
     # idea "
 
     # test root status:
     x_idearoot = x_agenda.get_idea_obj(x_agenda._real_id)
-    assert x_idearoot._descendant_promise_count is None
+    assert x_idearoot._descendant_pledge_count is None
     assert x_idearoot._all_party_credit is None
     assert x_idearoot._all_party_debt is None
-    assert x_idearoot._kids[gig_text]._descendant_promise_count is None
+    assert x_idearoot._kids[gig_text]._descendant_pledge_count is None
     assert x_idearoot._kids[gig_text]._all_party_credit is None
     assert x_idearoot._kids[gig_text]._all_party_debt is None
-    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_credit is None
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt is None
 
@@ -221,10 +221,10 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert x_idearoot._descendant_promise_count == 3
-    assert x_idearoot._kids[gig_text]._descendant_promise_count == 1
-    assert x_idearoot._kids[gig_text]._kids[email_text]._descendant_promise_count == 0
-    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_promise_count == 0
+    assert x_idearoot._descendant_pledge_count == 3
+    assert x_idearoot._kids[gig_text]._descendant_pledge_count == 1
+    assert x_idearoot._kids[gig_text]._kids[email_text]._descendant_pledge_count == 0
+    assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
     assert x_idearoot._all_party_credit == True
     assert x_idearoot._all_party_debt == True
     assert x_idearoot._kids[gig_text]._all_party_credit == True
@@ -245,9 +245,9 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2
     sandy_text = "sandy"
 
     gig_road = x_agenda.make_l1_road(gig_text)
-    email_idea = ideaunit_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=gig_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
     x_agenda.add_idea(vaccum_idea, parent_road=gig_road)
 
     x_agenda.add_partyunit(party_id=sandy_text)
@@ -409,9 +409,9 @@ def test_agenda4party_Exists():
     vaccum_text = "vaccum"
     sandy_text = "sandy"
     gig_road = x_agenda.make_l1_road(gig_text)
-    email_idea = ideaunit_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=gig_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
     x_agenda.add_idea(vaccum_idea, parent_road=gig_road)
 
     sandy_party_id = PartyID(sandy_text)
@@ -441,9 +441,9 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     week_text = "weekdays"
     feed_text = "feed cat"
     gig_road = x_agenda.make_l1_road(gig_text)
-    email_idea = ideaunit_shop(_label=email_text, promise=True)
+    email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=gig_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, promise=True)
+    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
     x_agenda.add_idea(vaccum_idea, parent_road=gig_road)
 
     billy_party_id = PartyID("billy")

@@ -237,7 +237,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if f"{type(self.x_idea)}" != "<class 'lw.agenda.AgendaUnit'>":
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.x_idea._close))
-        self.yo_action_cb.setChecked(self.x_idea.promise)
+        self.yo_action_cb.setChecked(self.x_idea.pledge)
         self.yo_task_status.setText(str(self.x_idea._task))
         self.yo_active.setText(str(self.x_idea._active))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
@@ -828,7 +828,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reest=self.yo_reest.checkState() == 2,
             range_source_road=emptystr(self.yo_range_source_road.currentText()),
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
-            promise=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_action_cb.checkState() == 2),
             reason_base=None,
             reason_premise=None,
             reason_premise_open=None,
@@ -838,7 +838,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_del_premise_need=None,
             uid=None,
             reason=None,
-            descendant_promise_count=None,
+            descendant_pledge_count=None,
             all_party_credit=None,
             all_party_debt=None,
             balancelink=None,
@@ -909,7 +909,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.yo_range_source_road.currentText()
             ),
             numeric_road=emptystring_returns_none(self.yo_numeric_road.currentText()),
-            promise=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_action_cb.checkState() == 2),
             uid=None,
             reason=None,
             reason_base=None,
@@ -919,7 +919,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_premise_divisor=None,
             reason_del_premise_base=None,
             reason_del_premise_need=None,
-            descendant_promise_count=None,
+            descendant_pledge_count=None,
             all_party_credit=None,
             all_party_debt=None,
             balancelink=None,

@@ -33,13 +33,13 @@ def arbitrarily_set_idea_attr(
     reest: bool = None,
     numeric_road: RoadUnit = None,
     range_source_road: float = None,
-    descendant_promise_count: int = None,
+    descendant_pledge_count: int = None,
     all_party_credit: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: GroupID = None,
     is_expanded: bool = None,
-    promise: bool = None,
+    pledge: bool = None,
     meld_strategy: str = None,
 ):
     idea_attr = IdeaAttrFilter(
@@ -62,13 +62,13 @@ def arbitrarily_set_idea_attr(
         reest=reest,
         numeric_road=numeric_road,
         range_source_road=range_source_road,
-        descendant_promise_count=descendant_promise_count,
+        descendant_pledge_count=descendant_pledge_count,
         all_party_credit=all_party_credit,
         all_party_debt=all_party_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
-        promise=promise,
+        pledge=pledge,
         meld_strategy=meld_strategy,
     )
 
@@ -348,7 +348,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         reest=6,
         range_source_road=plate_road,
         numeric_road=bowl_road,
-        promise=True,
+        pledge=True,
         all_party_credit=x_all_party_credit,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
@@ -368,7 +368,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         reest=6,
         range_source_road=plate_road,
         numeric_road=bowl_road,
-        promise=True,
+        pledge=True,
         all_party_credit=x_all_party_credit,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
@@ -388,7 +388,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     assert x1_idea._reest == 6
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
-    assert x1_idea.promise == True
+    assert x1_idea.pledge == True
     assert x1_idea._all_party_credit == x_all_party_credit
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
@@ -420,7 +420,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         reest=6,
         range_source_road=plate_road,
         numeric_road=bowl_road,
-        promise=True,
+        pledge=True,
         all_party_credit=x_all_party_credit,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
@@ -442,7 +442,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         reest=66,
         range_source_road=plate_road,
         numeric_road=bowl_road,
-        promise=True,
+        pledge=True,
         all_party_credit=x_all_party_credit,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
@@ -463,7 +463,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     assert x1_idea._reest == 66
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
-    assert x1_idea.promise == True
+    assert x1_idea.pledge == True
     assert x1_idea._all_party_credit == x_all_party_credit
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
@@ -631,11 +631,11 @@ def test_IdeaUnit_meld_FailRaisesError_numeric_road():
 
 
 def test_IdeaUnit_meld_FailRaisesError_action():
-    x_attr = "promise"
+    x_attr = "pledge"
     x_val = True
     casa_text = "casa"
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
-    arbitrarily_set_idea_attr(idea=x1_idea, promise=x_val)
+    arbitrarily_set_idea_attr(idea=x1_idea, pledge=x_val)
     x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
     # WHEN/THEN

@@ -263,7 +263,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     assert gig_idea._label == gig_text
     assert gig_idea._level == 1
     assert gig_idea._active
-    assert gig_idea.promise
+    assert gig_idea.pledge
     # print(f"{gig_idea._reasonheirs=}")
     x_reasonheir_state = gig_idea._reasonheirs[state_road]
     print(f"  {x_reasonheir_state=}")
@@ -481,12 +481,12 @@ def test_get_intent_dict_ReturnsCorrectObj():
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
 
     # WHEN
-    promise_items = sue_agenda.get_intent_dict()
+    pledge_items = sue_agenda.get_intent_dict()
 
     # THEN
-    assert promise_items != None
-    assert len(promise_items) > 0
-    assert len(promise_items) == 1
+    assert pledge_items != None
+    assert len(pledge_items) > 0
+    assert len(pledge_items) == 1
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySetsData_agenda_v001():

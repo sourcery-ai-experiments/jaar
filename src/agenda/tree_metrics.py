@@ -13,7 +13,7 @@ class TreeMetrics:
     uid_max: int = None
     uid_dict: dict[int:int] = None
     all_idea_uids_are_unique: bool = None
-    last_evaluated_promise_idea_road: RoadUnit = None
+    last_evaluated_pledge_idea_road: RoadUnit = None
 
     def evaluate_node(
         self,
@@ -21,19 +21,19 @@ class TreeMetrics:
         reasons: dict[RoadUnit:ReasonUnit],
         balancelinks: dict[GroupID:BalanceLink],
         uid: int,
-        promise: bool,
+        pledge: bool,
         idea_road: RoadUnit,
     ):
         self.node_count += 1
-        self.evaluate_action(promise=promise, idea_road=idea_road)
+        self.evaluate_action(pledge=pledge, idea_road=idea_road)
         self.evaluate_level(level=level)
         self.evaluate_reasonunits(reasons=reasons)
         self.evaluate_balancelinks(balancelinks=balancelinks)
         self.evaluate_uid_max(uid=uid)
 
-    def evaluate_action(self, promise: bool, idea_road: RoadUnit):
-        if promise:
-            self.last_evaluated_promise_idea_road = idea_road
+    def evaluate_action(self, pledge: bool, idea_road: RoadUnit):
+        if pledge:
+            self.last_evaluated_pledge_idea_road = idea_road
 
     def evaluate_level(self, level):
         if self.level_count.get(level) is None:

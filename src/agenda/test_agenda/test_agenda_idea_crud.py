@@ -214,7 +214,7 @@ def test_AgendaUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
     gig_road = sue_agenda.make_l1_road("gig")
     new_idea_parent_road = sue_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
-    clean_cookery_idea = ideaunit_shop(clean_cookery_text, _weight=40, promise=True)
+    clean_cookery_idea = ideaunit_shop(clean_cookery_text, _weight=40, pledge=True)
 
     buildings_text = "buildings"
     buildings_road = sue_agenda.make_l1_road(buildings_text)
@@ -440,17 +440,17 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
         beliefunit_x.base: beliefunit_x
     }
 
-    # _descendant_promise_count: int = None,
-    sue_agenda._idearoot._kids[gig_text]._descendant_promise_count = 81
-    x_descendant_promise_count = sue_agenda._idearoot._kids[
+    # _descendant_pledge_count: int = None,
+    sue_agenda._idearoot._kids[gig_text]._descendant_pledge_count = 81
+    x_descendant_pledge_count = sue_agenda._idearoot._kids[
         gig_text
-    ]._descendant_promise_count
-    assert x_descendant_promise_count == 81
-    sue_agenda.edit_idea_attr(road=gig_road, descendant_promise_count=67)
-    _descendant_promise_count_new = sue_agenda._idearoot._kids[
+    ]._descendant_pledge_count
+    assert x_descendant_pledge_count == 81
+    sue_agenda.edit_idea_attr(road=gig_road, descendant_pledge_count=67)
+    _descendant_pledge_count_new = sue_agenda._idearoot._kids[
         gig_text
-    ]._descendant_promise_count
-    assert _descendant_promise_count_new == 67
+    ]._descendant_pledge_count
+    assert _descendant_pledge_count_new == 67
 
     # _all_party_credit: bool = None,
     sue_agenda._idearoot._kids[gig_text]._all_party_credit = 74
@@ -493,12 +493,12 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_agenda.edit_idea_attr(road=gig_road, is_expanded=True)
     assert sue_agenda._idearoot._kids[gig_text]._is_expanded == True
 
-    # promise: dict = None,
-    sue_agenda._idearoot._kids[gig_text].promise = "funfun3"
-    action = sue_agenda._idearoot._kids[gig_text].promise
+    # pledge: dict = None,
+    sue_agenda._idearoot._kids[gig_text].pledge = "funfun3"
+    action = sue_agenda._idearoot._kids[gig_text].pledge
     assert action == "funfun3"
-    sue_agenda.edit_idea_attr(road=gig_road, promise=True)
-    assert sue_agenda._idearoot._kids[gig_text].promise == True
+    sue_agenda.edit_idea_attr(road=gig_road, pledge=True)
+    assert sue_agenda._idearoot._kids[gig_text].pledge == True
 
     # _range_source_road: dict = None,
     sue_agenda._idearoot._kids[gig_text]._range_source_road = "fun3rol"

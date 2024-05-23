@@ -141,18 +141,18 @@ def create_example_real3() -> RealUnit:
     bath_text = "clean bathroom"
     hall_text = "clean hall"
 
-    yao_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    yao_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
-    yao_gut_agenda.add_idea(ideaunit_shop(hall_text, promise=True), clean_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
     # yao_gut_agenda.set_agenda_metrics()
     # display_ideatree(yao_gut_agenda, mode="Econ").show()
 
-    wei_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    wei_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
+    wei_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    wei_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
 
-    zia_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    zia_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
-    zia_gut_agenda.add_idea(ideaunit_shop(hall_text, promise=True), clean_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
 
     # display_ideatree(yao_gut_agenda, mode="Econ").show()
     yao_person.save_gut_file(yao_gut_agenda)
@@ -185,18 +185,18 @@ def create_example_real4() -> RealUnit:
     bath_text = "clean bathroom"
     hall_text = "clean hall"
 
-    yao_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    yao_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
-    yao_gut_agenda.add_idea(ideaunit_shop(hall_text, promise=True), clean_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
+    yao_gut_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
     # yao_gut_agenda.set_agenda_metrics()
     # display_ideatree(yao_gut_agenda, mode="Econ").show()
 
-    wei_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    wei_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
+    wei_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    wei_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
 
-    zia_gut_agenda.add_idea(ideaunit_shop(clean_text, promise=True), casa_road)
-    zia_gut_agenda.add_idea(ideaunit_shop(bath_text, promise=True), clean_road)
-    zia_gut_agenda.add_idea(ideaunit_shop(hall_text, promise=True), clean_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
+    zia_gut_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
 
     # display_ideatree(yao_gut_agenda, mode="Econ").show()
     yao_gut_agenda.set_party_creditor_pool(101)

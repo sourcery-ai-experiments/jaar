@@ -425,7 +425,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit
     x_meld_strategy = "override"
     x_numeric_road = None
     # x_numor = 10
-    x_promise = True
+    x_pledge = True
     insert_disc_agendaatom = agendaatom_shop("agenda_ideaunit", atom_insert())
     insert_disc_agendaatom.set_required_arg("label", disc_text)
     insert_disc_agendaatom.set_required_arg("parent_road", sports_road)
@@ -436,7 +436,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit
     insert_disc_agendaatom.set_optional_arg("_meld_strategy", x_meld_strategy)
     insert_disc_agendaatom.set_optional_arg("_numeric_road", x_numeric_road)
     # insert_disc_agendaatom.set_optional_arg("_numor", x_numor)
-    insert_disc_agendaatom.set_optional_arg("promise", x_promise)
+    insert_disc_agendaatom.set_optional_arg("pledge", x_pledge)
 
     print(f"{insert_disc_agendaatom=}")
     sue_bookunit = bookunit_shop()
@@ -460,7 +460,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     assert before_sue_agendaunit.get_idea_obj(ball_road)._begin is None
     assert before_sue_agendaunit.get_idea_obj(ball_road)._close is None
     assert before_sue_agendaunit.get_idea_obj(ball_road)._meld_strategy == "default"
-    assert before_sue_agendaunit.get_idea_obj(ball_road).promise == False
+    assert before_sue_agendaunit.get_idea_obj(ball_road).pledge == False
 
     # WHEN
     # x_addin = 140
@@ -469,7 +469,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     # x_denom = 17
     x_meld_strategy = "override"
     # x_numor = 10
-    x_promise = True
+    x_pledge = True
     insert_disc_agendaatom = agendaatom_shop("agenda_ideaunit", atom_update())
     insert_disc_agendaatom.set_required_arg("label", ball_text)
     insert_disc_agendaatom.set_required_arg("parent_road", sports_road)
@@ -479,7 +479,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     # insert_disc_agendaatom.set_optional_arg("_denom", x_denom)
     insert_disc_agendaatom.set_optional_arg("_meld_strategy", x_meld_strategy)
     # insert_disc_agendaatom.set_optional_arg("_numor", x_numor)
-    insert_disc_agendaatom.set_optional_arg("promise", x_promise)
+    insert_disc_agendaatom.set_optional_arg("pledge", x_pledge)
 
     print(f"{insert_disc_agendaatom=}")
     sue_bookunit = bookunit_shop()
@@ -492,7 +492,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     assert (
         after_sue_agendaunit.get_idea_obj(ball_road)._meld_strategy == x_meld_strategy
     )
-    assert after_sue_agendaunit.get_idea_obj(ball_road).promise
+    assert after_sue_agendaunit.get_idea_obj(ball_road).pledge
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_balancelink():

@@ -762,7 +762,7 @@ def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
 #     assert yao_agenda.idea_exists(sports_road)
 
 
-def test_PersonUnit_add_promise_gift_AddsPromiseGift(reals_dir_setup_cleanup):
+def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
@@ -777,7 +777,7 @@ def test_PersonUnit_add_promise_gift_AddsPromiseGift(reals_dir_setup_cleanup):
     assert old_sue_gut.idea_exists(clean_road) == False
 
     # WHEN
-    sue_person.add_promise_gift(clean_road)
+    sue_person.add_pledge_gift(clean_road)
 
     # THEN
     assert os_path_exists(sue_gift_path)
@@ -785,7 +785,7 @@ def test_PersonUnit_add_promise_gift_AddsPromiseGift(reals_dir_setup_cleanup):
     assert new_sue_gut.idea_exists(clean_road)
 
 
-def test_PersonUnit_add_promise_gift_SetsGutAgendaPromiseIdea_suffgroup(
+def test_PersonUnit_add_pledge_gift_SetsGutAgendapledgeIdea_suffgroup(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -798,7 +798,7 @@ def test_PersonUnit_add_promise_gift_SetsGutAgendaPromiseIdea_suffgroup(
 
     # WHEN
     bob_text = "Bob"
-    sue_person.add_promise_gift(clean_road, x_suffgroup=bob_text)
+    sue_person.add_pledge_gift(clean_road, x_suffgroup=bob_text)
 
     # THEN
     new_sue_gut = sue_person.get_gut_file_agenda()

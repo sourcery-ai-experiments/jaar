@@ -121,7 +121,7 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     # for idea in idea_dict:
     #     print(idea._label)
     mail_idea = idea_dict.get(x_agenda.make_l1_road(mail_text))
-    assert mail_idea.promise == True
+    assert mail_idea.pledge == True
     assert mail_idea._task == True
 
     # WHEN
@@ -131,7 +131,7 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     x_agenda.set_agenda_metrics()
 
     # THEN
-    assert mail_idea.promise == True
+    assert mail_idea.pledge == True
     assert mail_idea._task == False
 
 
@@ -143,13 +143,13 @@ def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
     mail_road = x_agenda.make_l1_road("obtain mail")
     idea_dict = x_agenda.get_idea_dict()
     mail_idea = idea_dict.get(mail_road)
-    assert mail_idea.promise == True
+    assert mail_idea.pledge == True
     assert mail_idea._task == False
 
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=95)
     idea_dict = x_agenda.get_idea_dict()
     mail_idea = idea_dict.get(mail_road)
-    assert mail_idea.promise == True
+    assert mail_idea.pledge == True
     assert mail_idea._task == True
 
 

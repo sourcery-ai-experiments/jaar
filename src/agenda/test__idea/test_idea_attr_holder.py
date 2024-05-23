@@ -26,9 +26,9 @@ def test_IdeaAttrFilter_Exists():
     assert new_obj.reest is None
     assert new_obj.numeric_road is None
     assert new_obj.range_source_road is None
-    assert new_obj.promise is None
+    assert new_obj.pledge is None
     assert new_obj.beliefunit is None
-    assert new_obj.descendant_promise_count is None
+    assert new_obj.descendant_pledge_count is None
     assert new_obj.all_party_credit is None
     assert new_obj.all_party_debt is None
     assert new_obj.balancelink is None

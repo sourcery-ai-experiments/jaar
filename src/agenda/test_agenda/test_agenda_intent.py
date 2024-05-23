@@ -127,13 +127,13 @@ def test_get_intent_with_7amItem():
     assert clean_item._label == clean_text
 
 
-def test_get_intent_does_not_return_promise_items_outside_range():
+def test_get_intent_does_not_return_pledge_items_outside_range():
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(zia_text)
     zia_agenda.set_time_hreg_ideas(c400_count=7)
     clean_text = "clean"
     clean_road = zia_agenda.make_l1_road(clean_text)
-    zia_agenda.add_l1_idea(ideaunit_shop(clean_text, promise=True))
+    zia_agenda.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     time_road = zia_agenda.make_l1_road("time")
     jajatime_road = zia_agenda.make_road(time_road, "jajatime")
     jajaday = zia_agenda.make_road(jajatime_road, "day")
@@ -172,7 +172,7 @@ def test_example_agendas_agenda_v001_IntentExists():
     # for idea_kid in x_agenda._idearoot._kids.values():
     #     # print(idea_kid._label)
     #     assert str(type(idea_kid)) != "<class 'str'>"
-    #     assert idea_kid.promise != None
+    #     assert idea_kid.pledge != None
 
     # WHEN
     intent_dict = x_agenda.get_intent_dict()
@@ -180,7 +180,7 @@ def test_example_agendas_agenda_v001_IntentExists():
     # THEN
     assert len(intent_dict) > 0
     assert len(intent_dict) == 17
-    # assert intent_dict[0].promise != None
+    # assert intent_dict[0].pledge != None
     # assert str(type(intent_dict[0])) != "<class 'str'>"
     # assert str(type(intent_dict[9])) != "<class 'str'>"
     # assert str(type(intent_dict[12])) != "<class 'str'>"
@@ -304,7 +304,7 @@ def test_set_intent_task_as_complete_SetsAttrCorrectly_Range():
     day_text = "day"
     day_road = zia_agenda.make_road(time_road, day_text)
 
-    zia_agenda.add_l1_idea(ideaunit_shop(run_text, promise=True))
+    zia_agenda.add_l1_idea(ideaunit_shop(run_text, pledge=True))
     zia_agenda.add_idea(ideaunit_shop(day_text, _begin=0, _close=500), time_road)
     zia_agenda.edit_idea_attr(
         road=run_road,
@@ -345,7 +345,7 @@ def test_set_intent_task_as_complete_SetsAttrCorrectly_Division():
     day_text = "day"
     day_road = zia_agenda.make_road(time_road, day_text)
 
-    zia_agenda.add_l1_idea(ideaunit_shop(run_text, promise=True))
+    zia_agenda.add_l1_idea(ideaunit_shop(run_text, pledge=True))
     zia_agenda.add_idea(ideaunit_shop(day_text, _begin=0, _close=500), time_road)
     zia_agenda.edit_idea_attr(
         road=run_road,
@@ -396,19 +396,19 @@ def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
     veg_road = x_agenda.make_road(body_road, veg_text)
     veg_idea = x_agenda.get_idea_obj(veg_road)
     assert not veg_idea._active
-    assert veg_idea.promise
+    assert veg_idea.pledge
 
     # idea_list = x_agenda.get_idea_dict()
     # action_true_count = 0
     # for idea in idea_list:
     #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
     #         assert idea._active in (True, False)
-    #     assert idea.promise in (True, False)
+    #     assert idea.pledge in (True, False)
     #     # if idea._active == True:
     #     #     print(idea._label)
-    #     if idea.promise == True:
+    #     if idea.pledge == True:
     #         action_true_count += 1
-    #         # if idea.promise == False:
+    #         # if idea.pledge == False:
     #         #     print(f"action is false {idea._label}")
     #         # for reason in idea._reasonunits.values():
     #         #     assert reason._status in (True, False)
@@ -437,12 +437,12 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     jog = "jog"
     veg = "veg"
     lift = "lift"
-    zia_agenda.add_idea(ideaunit_shop(clean, promise=True), parent_road=t_road)
-    zia_agenda.add_idea(ideaunit_shop(run, promise=True), parent_road=t_road)
-    zia_agenda.add_idea(ideaunit_shop(swim, promise=True), parent_road=t_road)
-    zia_agenda.add_idea(ideaunit_shop(jog, promise=True), parent_road=t_road)
-    zia_agenda.add_idea(ideaunit_shop(veg, promise=True), parent_road=t_road)
-    zia_agenda.add_idea(ideaunit_shop(lift, promise=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(clean, pledge=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(run, pledge=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(swim, pledge=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(jog, pledge=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(veg, pledge=True), parent_road=t_road)
+    zia_agenda.add_idea(ideaunit_shop(lift, pledge=True), parent_road=t_road)
     time_text = "time"
     time_road = zia_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
@@ -616,7 +616,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     print(f"{clean_cookery_idea.get_road()=}")
 
     # GIVEN
-    zia_agenda.set_dominate_promise_idea(idea_kid=clean_cookery_idea)
+    zia_agenda.set_dominate_pledge_idea(idea_kid=clean_cookery_idea)
 
     # THEN
     # for idea_kid in zia_agenda._idearoot._kids.keys():
@@ -625,7 +625,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     print(f"{clean_cookery_idea.get_road()=}")
     assert zia_agenda.get_idea_obj(clean_cookery_road) != None
     assert zia_agenda.get_idea_obj(clean_cookery_road)._label == clean_cookery_text
-    assert zia_agenda.get_idea_obj(clean_cookery_road).promise
+    assert zia_agenda.get_idea_obj(clean_cookery_road).pledge
     assert len(zia_agenda.get_idea_obj(clean_cookery_road)._reasonunits) == 2
     assert zia_agenda.get_idea_obj(clean_things_road) != None
     assert zia_agenda.get_idea_obj(cookery_room_road) != None
@@ -714,7 +714,7 @@ def test_intent_IsSetByAssignedUnit_1PartyGroup():
     bob_agenda = agendaunit_shop(bob_text)
     gig_text = "gig"
     gig_road = bob_agenda.make_road(bob_text, gig_text)
-    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, promise=True))
+    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, pledge=True))
     assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "Sue"
@@ -751,7 +751,7 @@ def test_intent_IsSetByAssignedUnit_2PartyGroup():
     bob_agenda.add_partyunit(party_id=bob_text)
     gig_text = "gig"
     gig_road = bob_agenda.make_road(bob_text, gig_text)
-    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, promise=True))
+    bob_agenda.add_l1_idea(ideaunit_shop(gig_text, pledge=True))
 
     sue_text = "Sue"
     bob_agenda.add_partyunit(party_id=sue_text)
@@ -789,7 +789,7 @@ def test_IdeaCore_get_intent_dict_ReturnsCorrectObj_BugFindAndFix_active_Setting
     laundry_text = "do_laundry"
     laundry_road = bob_agenda.make_road(casa_road, laundry_text)
     bob_agenda.add_l1_idea(ideaunit_shop(casa_text))
-    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, pledge=True), casa_road)
     time_road = bob_agenda.make_l1_road("time")
     jajatime_road = bob_agenda.make_road(time_road, "jajatime")
     bob_agenda.edit_idea_attr(

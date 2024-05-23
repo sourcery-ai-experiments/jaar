@@ -417,10 +417,10 @@ class AgendaUnit:
                         road_type="reasonunit_descendant",
                     )
 
-    def all_ideas_relevant_to_promise_idea(self, road: RoadUnit) -> bool:
-        promise_idea_assoc_set = set(self._get_relevant_roads({road}))
+    def all_ideas_relevant_to_pledge_idea(self, road: RoadUnit) -> bool:
+        pledge_idea_assoc_set = set(self._get_relevant_roads({road}))
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
-        return all_ideas_set == all_ideas_set.intersection(promise_idea_assoc_set)
+        return all_ideas_set == all_ideas_set.intersection(pledge_idea_assoc_set)
 
     def _are_all_partys_groups_are_in_idea_kid(self, road: RoadUnit) -> bool:
         idea_kid = self.get_idea_obj(road)
@@ -1024,7 +1024,7 @@ class AgendaUnit:
             reasons=self._idearoot._reasonunits,
             balancelinks=self._idearoot._balancelinks,
             uid=self._idearoot._uid,
-            promise=self._idearoot.promise,
+            pledge=self._idearoot.pledge,
             idea_road=self._idearoot.get_road(),
         )
 
@@ -1044,7 +1044,7 @@ class AgendaUnit:
             reasons=idea_kid._reasonunits,
             balancelinks=idea_kid._balancelinks,
             uid=idea_kid._uid,
-            promise=idea_kid.promise,
+            pledge=idea_kid.pledge,
             idea_road=idea_kid.get_road(),
         )
         x_idea_list.append(idea_kid)
@@ -1432,9 +1432,9 @@ class AgendaUnit:
         reest: bool = None,
         numeric_road: RoadUnit = None,
         range_source_road: float = None,
-        promise: bool = None,
+        pledge: bool = None,
         beliefunit: BeliefUnit = None,
-        descendant_promise_count: int = None,
+        descendant_pledge_count: int = None,
         all_party_credit: bool = None,
         all_party_debt: bool = None,
         balancelink: BalanceLink = None,
@@ -1472,13 +1472,13 @@ class AgendaUnit:
             reest=reest,
             numeric_road=numeric_road,
             range_source_road=range_source_road,
-            descendant_promise_count=descendant_promise_count,
+            descendant_pledge_count=descendant_pledge_count,
             all_party_credit=all_party_credit,
             all_party_debt=all_party_debt,
             balancelink=balancelink,
             balancelink_del=balancelink_del,
             is_expanded=is_expanded,
-            promise=promise,
+            pledge=pledge,
             beliefunit=beliefunit,
             meld_strategy=meld_strategy,
             problem_bool=problem_bool,
@@ -1508,8 +1508,8 @@ class AgendaUnit:
         }
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
-        promise_item = self.get_idea_obj(task_road)
-        promise_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
+        pledge_item = self.get_idea_obj(task_road)
+        pledge_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
 
     def is_partyunits_creditor_weight_sum_correct(self) -> bool:
         x_sum = self.get_partyunits_creditor_weight_sum()
@@ -1726,7 +1726,7 @@ class AgendaUnit:
             youngest_road = ancestor_roads.pop(0)
             # _set_non_root_ancestor_metrics(youngest_road, task_count, group_everyone)
             x_idea_obj = self.get_idea_obj(road=youngest_road)
-            x_idea_obj.add_to_descendant_promise_count(task_count)
+            x_idea_obj.add_to_descendant_pledge_count(task_count)
             if x_idea_obj.is_kidless():
                 x_idea_obj.set_kidless_balancelines()
                 child_balancelines = x_idea_obj._balancelines
@@ -1785,10 +1785,10 @@ class AgendaUnit:
         )
         x_idearoot.set_agenda_importance(fund_onset_x=0, parent_fund_cease=1)
         x_idearoot.set_balanceheirs_agenda_credit_debt()
-        x_idearoot.set_ancestor_promise_count(0, False)
-        x_idearoot.clear_descendant_promise_count()
+        x_idearoot.set_ancestor_pledge_count(0, False)
+        x_idearoot.clear_descendant_pledge_count()
         x_idearoot.clear_all_party_credit_debt()
-        x_idearoot.promise = False
+        x_idearoot.pledge = False
 
         if x_idearoot.is_kidless():
             self._set_ancestors_metrics(self._idearoot.get_road(), econ_exceptions)
@@ -1820,10 +1820,10 @@ class AgendaUnit:
             parent_agenda_importance=parent_idea._agenda_importance,
             parent_fund_cease=parent_fund_cease,
         )
-        idea_kid.set_ancestor_promise_count(
-            parent_idea._ancestor_promise_count, parent_idea.promise
+        idea_kid.set_ancestor_pledge_count(
+            parent_idea._ancestor_pledge_count, parent_idea.pledge
         )
-        idea_kid.clear_descendant_promise_count()
+        idea_kid.clear_descendant_pledge_count()
         idea_kid.clear_all_party_credit_debt()
 
         if idea_kid.is_kidless():
@@ -2125,7 +2125,7 @@ class AgendaUnit:
                     _balancelinks=ykx._balancelinks,
                     _begin=ykx._begin,
                     _close=ykx._close,
-                    promise=ykx.promise,
+                    pledge=ykx.pledge,
                     _task=ykx._task,
                 )
                 agenda4party._idearoot._kids[ykx._label] = y4a_new
@@ -2141,8 +2141,8 @@ class AgendaUnit:
 
         return agenda4party
 
-    def set_dominate_promise_idea(self, idea_kid: IdeaUnit):
-        idea_kid.promise = True
+    def set_dominate_pledge_idea(self, idea_kid: IdeaUnit):
+        idea_kid.pledge = True
         self.add_idea(
             idea_kid=idea_kid,
             parent_road=self.make_road(idea_kid._parent_road),
@@ -2232,10 +2232,8 @@ class AgendaUnit:
         self.set_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
         self._set_assignment_groups(agenda_x)
-        assignor_promises = self._get_assignor_promise_ideas(
-            agenda_x, assignor_party_id
-        )
-        relevant_roads = self._get_relevant_roads(assignor_promises)
+        assignor_pledges = self._get_assignor_pledge_ideas(agenda_x, assignor_party_id)
+        relevant_roads = self._get_relevant_roads(assignor_pledges)
         self._set_assignment_ideas(agenda_x, relevant_roads)
         return agenda_x
 
@@ -2285,14 +2283,14 @@ class AgendaUnit:
                     group_x.set_partylink(partylink_shop(party_id=party_id))
                 agenda_x.set_groupunit(group_x)
 
-    def _get_assignor_promise_ideas(
+    def _get_assignor_pledge_ideas(
         self, agenda_x, assignor_party_id: GroupID
     ) -> dict[RoadUnit:int]:
         assignor_groups = get_party_relevant_groups(agenda_x._groups, assignor_party_id)
         return {
             idea_road: -1
             for idea_road, x_idea in self._idea_dict.items()
-            if (x_idea.assignor_in(assignor_groups) and x_idea.promise)
+            if (x_idea.assignor_in(assignor_groups) and x_idea.pledge)
         }
 
 
@@ -2436,7 +2434,7 @@ def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
             _numor=get_obj_from_idea_dict(idea_dict, "_numor"),
             _denom=get_obj_from_idea_dict(idea_dict, "_denom"),
             _reest=get_obj_from_idea_dict(idea_dict, "_reest"),
-            promise=get_obj_from_idea_dict(idea_dict, "promise"),
+            pledge=get_obj_from_idea_dict(idea_dict, "pledge"),
             _problem_bool=get_obj_from_idea_dict(idea_dict, "_problem_bool"),
             _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),

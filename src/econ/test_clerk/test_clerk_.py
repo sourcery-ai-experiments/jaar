@@ -250,8 +250,8 @@ def test_ClerkUnit_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     cook_text = "cook"
     clean_road = zia_agendaunit.make_l1_road(clean_text)
     cook_road = zia_agendaunit.make_l1_road(cook_text)
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
@@ -294,8 +294,8 @@ def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup)
     cook_text = "cook"
     clean_road = zia_agendaunit.make_l1_road(clean_text)
     cook_road = zia_agendaunit.make_l1_road(cook_text)
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
@@ -308,7 +308,7 @@ def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup)
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     vaccum_text = "Vaccum"
     vaccum_road = sue_agendaunit.make_l1_road(vaccum_text)
-    sue_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, promise=True))
+    sue_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
     vaccum_ideaunit = sue_agendaunit.get_idea_obj(vaccum_road)
     vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
 
@@ -318,17 +318,17 @@ def test_ClerkUnit_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup)
     chicken_text = "chicken first"
     chicken_road = sue_agendaunit.make_l1_road(chicken_text)
     sue_agendaunit.add_l1_idea(ideaunit_shop(chicken_text))
-    # set egg promise is True when chicken first is False
+    # set egg pledge is True when chicken first is False
     sue_agendaunit.edit_idea_attr(
         road=egg_road,
-        promise=True,
+        pledge=True,
         reason_base=chicken_road,
         reason_suff_idea_active=True,
     )
-    # set chick promise is True when egg first is False
+    # set chick pledge is True when egg first is False
     sue_agendaunit.edit_idea_attr(
         road=chicken_road,
-        promise=True,
+        pledge=True,
         reason_base=egg_road,
         reason_suff_idea_active=False,
     )
@@ -377,8 +377,8 @@ def test_ClerkUnit_listen_to_roll_ListensToOwner_role_AndNotOwner_job(
     cook_text = "cook"
     clean_road = zia_agendaunit.make_l1_road(clean_text)
     cook_road = zia_agendaunit.make_l1_road(cook_text)
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
@@ -392,7 +392,7 @@ def test_ClerkUnit_listen_to_roll_ListensToOwner_role_AndNotOwner_job(
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     vaccum_text = "Vaccum"
     vaccum_road = yao_job_agendaunit.make_l1_road(vaccum_text)
-    yao_job_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, promise=True))
+    yao_job_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
     vaccum_ideaunit = yao_job_agendaunit.get_idea_obj(vaccum_road)
     vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
     save_file_to_jobs(get_test_econ_dir(), yao_job_agendaunit)

@@ -141,16 +141,16 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     assert len(hunt_group._partys) == 1
 
 
-def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoadUnits():
+def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
     x_agenda.set_agenda_metrics()
 
     # WHEN
-    assignor_promises = x_agenda._get_assignor_promise_ideas(x_agenda, "any")
+    assignor_pledges = x_agenda._get_assignor_pledge_ideas(x_agenda, "any")
 
     # THEN
-    print(f"{assignor_promises=}")
+    print(f"{assignor_pledges=}")
     gig_road = x_agenda.make_l1_road("gig")
     house_road = x_agenda.make_l1_road("housemanagement")
     table_road = x_agenda.make_road(house_road, "clean table")
@@ -167,7 +167,7 @@ def test_agenda__get_assignor_promise_ideas_ReturnsCorrectIdeaRoadUnits():
         grab_road: -1,
         feed_road: -1,
     }
-    assert assignor_promises == x_dict
+    assert assignor_pledges == x_dict
 
 
 def test_agenda__get_relevant_roads_EmptyRoadUnitReturnsEmpty():
@@ -557,13 +557,13 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     assert cali_assignment._idea_dict.get(laundry_task_road_road) != None
 
     laundry_do_idea = cali_assignment.get_idea_obj(laundry_task_road_road)
-    print(f"{laundry_do_idea.promise=}")
+    print(f"{laundry_do_idea.pledge=}")
     print(f"{laundry_do_idea._reasonunits.keys()=}")
     print(f"{laundry_do_idea._reasonunits.get(basket_road).premises.keys()=}")
     print(f"{laundry_do_idea._beliefheirs=}")
     print(f"{laundry_do_idea._assignedunit=}")
 
-    assert laundry_do_idea.promise == True
+    assert laundry_do_idea.pledge == True
     assert list(laundry_do_idea._reasonunits.keys()) == [basket_road]
     laundry_do_premises = laundry_do_idea._reasonunits.get(basket_road).premises
     assert list(laundry_do_premises.keys()) == [b_full_road, b_smel_road]

@@ -379,7 +379,7 @@ class Ui_MainWindow(object):
         self.root_datetime_now_update.setText(
             _translate("MainWindow", "Update Present DateTime to Now")
         )
-        self.intent_task_complete.setText(_translate("MainWindow", "Complete Promise"))
+        self.intent_task_complete.setText(_translate("MainWindow", "Complete pledge"))
         self.root_datetime_prev_l.setText(_translate("MainWindow", "Past:"))
         self.root_datetime_now_l.setText(_translate("MainWindow", "Now:"))
         self.label_2.setText(_translate("MainWindow", "What is your present?"))
@@ -396,7 +396,7 @@ class Ui_MainWindow(object):
         item = self.completeness_status.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID"))
         item = self.completeness_status.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Promise Kept"))
+        item.setText(_translate("MainWindow", "pledge Kept"))
         item = self.completeness_status.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Root Relative Weight"))
         item = self.completeness_status.horizontalHeaderItem(3)
@@ -463,7 +463,7 @@ class Ui_MainWindow(object):
         item = self.intent_states.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "New Column"))
         self.label_8.setText(
-            _translate("MainWindow", "Things you promised to be right now")
+            _translate("MainWindow", "Things you pledged to be right now")
         )
         self.label_6.setText(_translate("MainWindow", "Belief Base:"))
         self.label_9.setText(_translate("MainWindow", "Belief Belief:"))

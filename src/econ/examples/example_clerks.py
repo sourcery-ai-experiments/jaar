@@ -148,8 +148,8 @@ def get_agenda_2CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     casa_road = x_agenda.make_l1_road(casa_text)
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
-    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), promise=True)
-    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
+    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
     x_agenda.add_idea(cookery_idea, parent_road=casa_road)
     x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
     x_agenda.set_agenda_metrics()
@@ -165,9 +165,9 @@ def get_agenda_3CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     nursery_text = "clean nursery"
-    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), promise=True)
-    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), promise=True)
-    nursery_idea = ideaunit_shop(nursery_text, _weight=randrange(1, 50), promise=True)
+    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
+    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
+    nursery_idea = ideaunit_shop(nursery_text, _weight=randrange(1, 50), pledge=True)
     x_agenda.add_idea(cookery_idea, parent_road=casa_road)
     x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
     x_agenda.add_idea(nursery_idea, parent_road=casa_road)

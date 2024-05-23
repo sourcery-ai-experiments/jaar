@@ -773,6 +773,6 @@ class Ui_Form(object):
         self.label_39.setText(
             _translate(
                 "Form",
-                "Reason Base Agenda Status is Sufficient when Promise status is ",
+                "Reason Base Agenda Status is Sufficient when pledge status is ",
             )
         )

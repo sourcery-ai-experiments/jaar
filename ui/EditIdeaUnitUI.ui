@@ -1832,7 +1832,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Reason Base Agenda Status is Sufficient when Promise status is </string>
+    <string>Reason Base Agenda Status is Sufficient when pledge status is </string>
    </property>
   </widget>
   <widget class="QComboBox" name="reason_suff_active_combo">

@@ -313,7 +313,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_load(self, x_agenda_json: str):
         self.x_agenda = get_from_json(x_agenda_json=x_agenda_json)
-        self.promise_items = self.x_agenda.get_intent_dict()
+        self.pledge_items = self.x_agenda.get_intent_dict()
         self.refresh_all()
 
     def get_beliefs_list(self):

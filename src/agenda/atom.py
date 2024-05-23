@@ -406,7 +406,7 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
             range_source_road=xs.get_value("_range_source_road"),
             reest=xs.get_value("_reest"),
             weight=xs.get_value("_weight"),
-            promise=xs.get_value("promise"),
+            pledge=xs.get_value("pledge"),
         )
     elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_insert():
         x_agenda.add_idea(
@@ -419,7 +419,7 @@ def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom
                 _meld_strategy=xs.get_value("_meld_strategy"),
                 _numeric_road=xs.get_value("_numeric_road"),
                 _numor=xs.get_value("_numor"),
-                promise=xs.get_value("promise"),
+                pledge=xs.get_value("pledge"),
             ),
             parent_road=xs.get_value("parent_road"),
             create_missing_ideas=False,
@@ -572,7 +572,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._range_source_road != y_obj._range_source_road
             or x_obj._reest != y_obj._reest
             or x_obj._weight != y_obj._weight
-            or x_obj.promise != y_obj.promise
+            or x_obj.pledge != y_obj.pledge
         )
     elif category == "agenda_idea_beliefunit":
         return (

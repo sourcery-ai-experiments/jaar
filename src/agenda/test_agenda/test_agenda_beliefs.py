@@ -275,7 +275,7 @@ def test_get_ranged_beliefs():
     sue_agenda.add_l1_idea(time_idea)
 
     clean_text = "clean"
-    clean_idea = ideaunit_shop(clean_text, promise=True)
+    clean_idea = ideaunit_shop(clean_text, pledge=True)
     sue_agenda.add_l1_idea(clean_idea)
     c_road = sue_agenda.make_l1_road(clean_text)
     time_road = sue_agenda.make_l1_road(time_text)
@@ -352,7 +352,7 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario1():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
+    # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 
     time_text = "time"
     sue_agenda.add_l1_idea(ideaunit_shop(time_text, _begin=0, _close=140))
@@ -412,7 +412,7 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario2():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
+    # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
@@ -471,7 +471,7 @@ def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
     sue_agenda = agendaunit_shop("Sue")
     # # the action
     # clean = "clean"
-    # sue_agenda.add_idea(ideaunit_shop(clean, promise=True))
+    # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 
     time_text = "time"
     time_idea = ideaunit_shop(time_text, _begin=0, _close=140)
