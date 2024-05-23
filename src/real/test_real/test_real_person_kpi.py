@@ -1,10 +1,10 @@
 from src.real.real_report import (
-    get_real_guts_partys_dataframe,
-    get_real_guts_partys_plotly_fig,
+    get_real_dutys_partys_dataframe,
+    get_real_dutys_partys_plotly_fig,
     get_real_lives_partys_dataframe,
     get_real_lives_partys_plotly_fig,
-    get_real_guts_intent_dataframe,
-    get_real_guts_intent_plotly_fig,
+    get_real_dutys_intent_dataframe,
+    get_real_dutys_intent_plotly_fig,
     get_real_lives_intent_dataframe,
     get_real_lives_intent_plotly_fig,
 )
@@ -16,12 +16,12 @@ from src.real.examples.example_reals import (
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 
 
-def test_get_real_guts_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_df = get_real_guts_partys_dataframe(music_real)
+    x_df = get_real_dutys_partys_dataframe(music_real)
 
     # THEN
     partyunit_colums = {
@@ -51,12 +51,12 @@ def test_get_real_guts_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanu
     assert x_df.shape[0] == 8
 
 
-def test_get_real_guts_partys_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
+def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_fig = get_real_guts_partys_plotly_fig(music_real)
+    x_fig = get_real_dutys_partys_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -120,12 +120,12 @@ def test_get_real_lives_partys_plotly_fig_DisplaysCorrectInfo(
     # assert 1 == 2
 
 
-def test_get_real_guts_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_real_dutys_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real3()
 
     # WHEN
-    x_df = get_real_guts_intent_dataframe(music_real)
+    x_df = get_real_dutys_intent_dataframe(music_real)
 
     # THEN
     intent_colums = {
@@ -147,12 +147,12 @@ def test_get_real_guts_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanu
     assert x_df.shape[0] == 8
 
 
-def test_get_real_guts_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
+def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real3()
 
     # WHEN
-    x_fig = get_real_guts_intent_plotly_fig(music_real)
+    x_fig = get_real_dutys_intent_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True

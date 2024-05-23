@@ -117,54 +117,54 @@ class RealUnit:
     def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
         return self._personunits.get(person_id)
 
-    def get_person_gut_from_file(self, person_id: PersonID) -> AgendaUnit:
+    def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         x_person = self.get_personunit_from_memory(person_id)
-        return x_person.get_gut_file_agenda()
+        return x_person.get_duty_file_agenda()
 
     def set_person_econunits_dirs(self, person_id: PersonID):
-        x_gut = self.get_person_gut_from_file(person_id)
-        x_gut.set_agenda_metrics()
-        for healer_id, healer_dict in x_gut._healers_dict.items():
+        x_duty = self.get_person_duty_from_file(person_id)
+        x_duty.set_agenda_metrics()
+        for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
                     healer_person=healer_person,
                     econ_road=econ_idea.get_road(),
-                    gut_agenda=x_gut,
+                    duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
         healer_person: PersonUnit,
         econ_road: RoadUnit,
-        gut_agenda: AgendaUnit,
+        duty_agenda: AgendaUnit,
     ):
         x_econ = healer_person.get_econ(econ_road)
-        x_econ.save_file_to_roles(gut_agenda)
+        x_econ.save_file_to_roles(duty_agenda)
 
     # live agenda management
     def generate_live_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_gut = x_personunit.get_gut_file_agenda()
-        x_gut.set_agenda_metrics()
+        x_duty = x_personunit.get_duty_file_agenda()
+        x_duty.set_agenda_metrics()
 
         x_live = agendaunit_shop(person_id, self.real_id)
         x_live_deepcopy = copy_deepcopy(x_live)
-        for healer_id, healer_dict in x_gut._healers_dict.items():
+        for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
             healer_person.create_person_econunits()
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
-                x_econ.save_file_to_roles(x_gut)
+                x_econ.save_file_to_roles(x_duty)
                 x_econ.create_clerkunit(person_id)
                 x_job = x_econ.get_file_in_jobs(person_id)
                 x_job.set_agenda_metrics()
                 x_live.meld(x_job)
                 x_live.set_agenda_metrics
 
-        # if live_agenda has not changed st live agenda to gut
+        # if live_agenda has not changed st live agenda to duty
         if x_live == x_live_deepcopy:
-            x_live = x_gut
+            x_live = x_duty
         x_personunit._save_live_file(x_live)
         return self.get_live_file_agenda(person_id)
 
@@ -186,9 +186,9 @@ class RealUnit:
         person_clerkunit.save_role_agenda(person_role)
         person_clerkunit.save_refreshed_job_to_jobs()
 
-    # def _display_gut_party_graph(self, x_person_id: PersonID):
+    # def _display_duty_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit_from_memory(x_person_id)
-    #     x_gut_agenda = x_personunit.get_gut_file_agenda()
+    #     x_duty_agenda = x_personunit.get_duty_file_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

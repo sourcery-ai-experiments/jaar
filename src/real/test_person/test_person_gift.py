@@ -491,7 +491,7 @@ def test_PersonUnit_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup)
     assert os_path_exists(sue_gift3_path) == False
 
     # WHEN
-    before_agenda = sue_person.get_gut_file_agenda()
+    before_agenda = sue_person.get_duty_file_agenda()
     bob_text = "Bob"
     after_agenda = copy_deepcopy(before_agenda)
     after_agenda.add_partyunit(bob_text)
@@ -507,14 +507,14 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
-    gut_agenda = sue_person.get_gut_file_agenda()
-    gut_agenda._last_gift_id is None
+    duty_agenda = sue_person.get_duty_file_agenda()
+    duty_agenda._last_gift_id is None
 
     # WHEN
-    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(duty_agenda)
 
     # THEN
-    assert new_agenda == gut_agenda
+    assert new_agenda == duty_agenda
 
 
 def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
@@ -526,19 +526,19 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1at
     sue_person.save_giftunit_file(sue_1atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._real_id=}")
+    duty_agenda = sue_person.get_duty_file_agenda()
+    print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
-    sports_road = gut_agenda.make_l1_road(sports_text)
+    sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = gut_agenda.make_road(sports_road, knee_text)
-    assert gut_agenda.idea_exists(sports_road) == False
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
 
     # WHEN
-    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(duty_agenda)
 
     # THEN
-    assert new_agenda != gut_agenda
+    assert new_agenda != duty_agenda
     assert new_agenda.idea_exists(sports_road)
 
 
@@ -551,45 +551,45 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2at
     sue_person.save_giftunit_file(sue_2atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._real_id=}")
+    duty_agenda = sue_person.get_duty_file_agenda()
+    print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
-    sports_road = gut_agenda.make_l1_road(sports_text)
+    sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = gut_agenda.make_road(sports_road, knee_text)
-    assert gut_agenda.idea_exists(sports_road) == False
-    assert gut_agenda.idea_exists(knee_road) == False
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
+    assert duty_agenda.idea_exists(knee_road) == False
 
     # WHEN
-    new_agenda = sue_person._merge_gifts_into_agenda(gut_agenda)
+    new_agenda = sue_person._merge_gifts_into_agenda(duty_agenda)
 
     # THEN
-    assert new_agenda != gut_agenda
+    assert new_agenda != duty_agenda
     assert new_agenda.idea_exists(sports_road)
     assert new_agenda.idea_exists(knee_road)
 
 
-def test_PersonUnit_append_gifts_to_gut_file_AddsGiftsToGutFile(
+def test_PersonUnit_append_gifts_to_duty_file_AddsGiftsToDutyFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     sue_person.save_giftunit_file(sue_2atomunits_giftunit())
-    gut_agenda = sue_person.get_gut_file_agenda()
-    print(f"{gut_agenda._real_id=}")
+    duty_agenda = sue_person.get_duty_file_agenda()
+    print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
-    sports_road = gut_agenda.make_l1_road(sports_text)
+    sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = gut_agenda.make_road(sports_road, knee_text)
-    assert gut_agenda.idea_exists(sports_road) == False
-    assert gut_agenda.idea_exists(knee_road) == False
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
+    assert duty_agenda.idea_exists(knee_road) == False
 
     # WHEN
-    new_agenda = sue_person.append_gifts_to_gut_file()
+    new_agenda = sue_person.append_gifts_to_duty_file()
 
     # THEN
-    assert new_agenda != gut_agenda
+    assert new_agenda != duty_agenda
     assert new_agenda.idea_exists(sports_road)
     assert new_agenda.idea_exists(knee_road)
 
@@ -766,43 +766,43 @@ def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    old_sue_gut = sue_person.get_gut_file_agenda()
+    old_sue_duty = sue_person.get_duty_file_agenda()
     clean_text = "clean"
-    clean_road = old_sue_gut.make_l1_road(clean_text)
+    clean_road = old_sue_duty.make_l1_road(clean_text)
     gift_filename = get_json_filename(1)
     sue_gift_path = f"{sue_person._gifts_dir}/{gift_filename}"
     print(f"{sue_gift_path=}")
     assert os_path_exists(sue_gift_path) == False
-    old_sue_gut = sue_person.get_gut_file_agenda()
-    assert old_sue_gut.idea_exists(clean_road) == False
+    old_sue_duty = sue_person.get_duty_file_agenda()
+    assert old_sue_duty.idea_exists(clean_road) == False
 
     # WHEN
     sue_person.add_pledge_gift(clean_road)
 
     # THEN
     assert os_path_exists(sue_gift_path)
-    new_sue_gut = sue_person.get_gut_file_agenda()
-    assert new_sue_gut.idea_exists(clean_road)
+    new_sue_duty = sue_person.get_duty_file_agenda()
+    assert new_sue_duty.idea_exists(clean_road)
 
 
-def test_PersonUnit_add_pledge_gift_SetsGutAgendapledgeIdea_suffgroup(
+def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    old_sue_gut = sue_person.get_gut_file_agenda()
+    old_sue_duty = sue_person.get_duty_file_agenda()
     clean_text = "clean"
-    clean_road = old_sue_gut.make_l1_road(clean_text)
-    assert old_sue_gut.idea_exists(clean_road) == False
+    clean_road = old_sue_duty.make_l1_road(clean_text)
+    assert old_sue_duty.idea_exists(clean_road) == False
 
     # WHEN
     bob_text = "Bob"
     sue_person.add_pledge_gift(clean_road, x_suffgroup=bob_text)
 
     # THEN
-    new_sue_gut = sue_person.get_gut_file_agenda()
-    assert new_sue_gut.idea_exists(clean_road)
-    clean_idea = new_sue_gut.get_idea_obj(clean_road)
+    new_sue_duty = sue_person.get_duty_file_agenda()
+    assert new_sue_duty.idea_exists(clean_road)
+    clean_idea = new_sue_duty.get_idea_obj(clean_road)
     print(f"{clean_idea._assignedunit._suffgroups=}")
     assert clean_idea._assignedunit.suffgroup_exists(bob_text)

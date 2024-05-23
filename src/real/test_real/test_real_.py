@@ -283,7 +283,7 @@ def test_RealUnit_get_personunit_ReturnsNone(reals_dir_setup_cleanup):
     assert luca_gotten_obj is None
 
 
-def test_RealUnit_get_person_gut_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
@@ -291,16 +291,16 @@ def test_RealUnit_get_person_gut_from_file_ReturnsCorrectObj(reals_dir_setup_cle
     music_real.add_personunit(luca_text)
     luca_person = music_real.get_personunit_from_memory(luca_text)
     bob_text = "Bob"
-    luca_gut = luca_person.get_gut_file_agenda()
-    luca_gut.add_partyunit(bob_text)
-    luca_person.save_gut_file(luca_gut)
+    luca_duty = luca_person.get_duty_file_agenda()
+    luca_duty.add_partyunit(bob_text)
+    luca_person.save_duty_file(luca_duty)
 
     # WHEN
-    gen_luca_gut = music_real.get_person_gut_from_file(luca_text)
+    gen_luca_duty = music_real.get_person_duty_from_file(luca_text)
 
     # THEN
-    assert gen_luca_gut != None
-    assert gen_luca_gut.get_party(bob_text) != None
+    assert gen_luca_duty != None
+    assert gen_luca_duty.get_party(bob_text) != None
 
 
 def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
@@ -313,33 +313,33 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_text = "Todd"
     luca_person = music_real.add_personunit(luca_text)
     todd_person = music_real.add_personunit(todd_text)
-    luca_gut_agenda = luca_person.get_gut_file_agenda()
-    todd_gut_agenda = todd_person.get_gut_file_agenda()
+    luca_duty_agenda = luca_person.get_duty_file_agenda()
+    todd_duty_agenda = todd_person.get_duty_file_agenda()
 
-    luca_gut_agenda.add_partyunit(luca_text)
-    luca_gut_agenda.add_partyunit(todd_text)
-    todd_gut_agenda.add_partyunit(luca_text)
-    todd_gut_agenda.add_partyunit(todd_text)
+    luca_duty_agenda.add_partyunit(luca_text)
+    luca_duty_agenda.add_partyunit(todd_text)
+    todd_duty_agenda.add_partyunit(luca_text)
+    todd_duty_agenda.add_partyunit(todd_text)
     texas_text = "Texas"
-    texas_road = luca_gut_agenda.make_l1_road(texas_text)
-    luca_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    todd_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = luca_duty_agenda.make_l1_road(texas_text)
+    luca_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    todd_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = luca_gut_agenda.make_road(texas_road, dallas_text)
+    dallas_road = luca_duty_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({luca_text, todd_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = luca_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_road = luca_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({luca_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    luca_gut_agenda.add_idea(dallas_idea, texas_road)
-    luca_gut_agenda.add_idea(elpaso_idea, texas_road)
-    todd_gut_agenda.add_idea(dallas_idea, texas_road)
-    todd_gut_agenda.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(luca_gut_agenda.set_agenda_metrics(), mode="Econ").show()
-    luca_person.save_gut_file(luca_gut_agenda)
-    todd_person.save_gut_file(todd_gut_agenda)
+    luca_duty_agenda.add_idea(dallas_idea, texas_road)
+    luca_duty_agenda.add_idea(elpaso_idea, texas_road)
+    todd_duty_agenda.add_idea(dallas_idea, texas_road)
+    todd_duty_agenda.add_idea(elpaso_idea, texas_road)
+    # display_ideatree(luca_duty_agenda.set_agenda_metrics(), mode="Econ").show()
+    luca_person.save_duty_file(luca_duty_agenda)
+    todd_person.save_duty_file(todd_duty_agenda)
     luca_person.create_person_econunits()
     todd_person.create_person_econunits()
     luca_dallas_econ = luca_person.get_econ(dallas_road)

@@ -4,29 +4,29 @@ from src.agenda.report import (
     get_agenda_intent_dataframe,
 )
 from src._instrument.file import open_file
-from src.real.person import get_gut_file_name, get_live_file_name
+from src.real.person import get_duty_file_name, get_live_file_name
 from src.real.real import RealUnit
 from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 
-def get_real_guts_partys_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_dutys_partys_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_paths = x_real.get_person_paths()
-    # for all persons get gut
-    gut_dfs = []
+    # for all persons get duty
+    duty_dfs = []
     for person_path in person_paths:
-        gut_agenda = agenda_get_from_json(
-            open_file(person_path, f"{get_gut_file_name()}.json")
+        duty_agenda = agenda_get_from_json(
+            open_file(person_path, f"{get_duty_file_name()}.json")
         )
-        gut_agenda.set_agenda_metrics()
-        df = get_agenda_partyunits_dataframe(gut_agenda)
-        df.insert(0, "owner_id", gut_agenda._owner_id)
-        gut_dfs.append(df)
-    return pandas_concat(gut_dfs, ignore_index=True)
+        duty_agenda.set_agenda_metrics()
+        df = get_agenda_partyunits_dataframe(duty_agenda)
+        df.insert(0, "owner_id", duty_agenda._owner_id)
+        duty_dfs.append(df)
+    return pandas_concat(duty_dfs, ignore_index=True)
 
 
-def get_real_guts_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_dutys_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "party_id",
@@ -37,7 +37,7 @@ def get_real_guts_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_agenda_intent_credit",
         "_agenda_intent_debt",
     ]
-    df = get_real_guts_partys_dataframe(x_real)
+    df = get_real_dutys_partys_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -60,7 +60,7 @@ def get_real_guts_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', gut partys metrics"
+    fig_title = f"Real '{x_real.real_id}', duty partys metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -126,22 +126,22 @@ def get_real_lives_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_guts_intent_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_dutys_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_paths = x_real.get_person_paths()
-    # for all persons get gut
-    gut_dfs = []
+    # for all persons get duty
+    duty_dfs = []
     for person_path in person_paths:
-        gut_agenda = agenda_get_from_json(
-            open_file(person_path, f"{get_gut_file_name()}.json")
+        duty_agenda = agenda_get_from_json(
+            open_file(person_path, f"{get_duty_file_name()}.json")
         )
-        gut_agenda.set_agenda_metrics()
-        df = get_agenda_intent_dataframe(gut_agenda)
-        gut_dfs.append(df)
-    return pandas_concat(gut_dfs, ignore_index=True)
+        duty_agenda.set_agenda_metrics()
+        df = get_agenda_intent_dataframe(duty_agenda)
+        duty_dfs.append(df)
+    return pandas_concat(duty_dfs, ignore_index=True)
 
 
-def get_real_guts_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "agenda_importance",
@@ -154,7 +154,7 @@ def get_real_guts_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_guts_intent_dataframe(x_real)
+    df = get_real_dutys_intent_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -179,7 +179,7 @@ def get_real_guts_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', gut intent metrics"
+    fig_title = f"Real '{x_real.real_id}', duty intent metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

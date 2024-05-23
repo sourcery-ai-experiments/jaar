@@ -57,7 +57,7 @@
 #     pass
 
 
-# class Invalid_gut_Exception(Exception):
+# class Invalid_duty_Exception(Exception):
 #     pass
 
 
@@ -73,8 +73,8 @@
 #     pass
 
 
-# def get_gut_file_name() -> str:
-#     return "gut"
+# def get_duty_file_name() -> str:
+#     return "duty"
 
 
 # def get_live_file_name() -> str:
@@ -90,9 +90,9 @@
 #     person_dir: str = None
 #     _econs_dir: str = None
 #     _atoms_dir: str = None
-#     _gut_obj: AgendaUnit = None
-#     _gut_file_name: str = None
-#     _gut_path: str = None
+#     _duty_obj: AgendaUnit = None
+#     _duty_file_name: str = None
+#     _duty_path: str = None
 #     _live_obj: AgendaUnit = None
 #     _live_file_name: str = None
 #     _live_path: str = None
@@ -111,10 +111,10 @@
 #         self.person_dir = f"{self.persons_dir}/{self.person_id}"
 #         self._econs_dir = f"{self.person_dir}/econs"
 #         self._atoms_dir = f"{self.person_dir}/atoms"
-#         if self._gut_file_name is None:
-#             self._gut_file_name = f"{get_gut_file_name()}.json"
-#         if self._gut_path is None:
-#             self._gut_path = f"{self.person_dir}/{self._gut_file_name}"
+#         if self._duty_file_name is None:
+#             self._duty_file_name = f"{get_duty_file_name()}.json"
+#         if self._duty_path is None:
+#             self._duty_path = f"{self.person_dir}/{self._duty_file_name}"
 #         if self._live_file_name is None:
 #             self._live_file_name = f"{get_live_file_name()}.json"
 #         if self._live_path is None:
@@ -126,21 +126,21 @@
 #         set_dir(self.person_dir)
 #         set_dir(self._econs_dir)
 #         set_dir(self._atoms_dir)
-#         self.initialize_gift_and_gut_files()
+#         self.initialize_gift_and_duty_files()
 #         self.create_live_file_if_does_not_exist()
 
-#     def initialize_gift_and_gut_files(self):
-#         gut_file_exists = self.gut_file_exists()
+#     def initialize_gift_and_duty_files(self):
+#         duty_file_exists = self.duty_file_exists()
 #         gift_file_exists = self.giftunit_file_exists(init_gift_id())
-#         if gut_file_exists == False and gift_file_exists == False:
-#             self._create_initial_gift_and_gut_files()
-#         elif gut_file_exists == False and gift_file_exists:
-#             self._create_gut_from_gifts()
-#         elif gut_file_exists and gift_file_exists == False:
-#             self._create_initial_gift_from_gut()
+#         if duty_file_exists == False and gift_file_exists == False:
+#             self._create_initial_gift_and_duty_files()
+#         elif duty_file_exists == False and gift_file_exists:
+#             self._create_duty_from_gifts()
+#         elif duty_file_exists and gift_file_exists == False:
+#             self._create_initial_gift_from_duty()
 
-#     def _create_initial_gift_and_gut_files(self):
-#         default_gut_agenda = agendaunit_shop(
+#     def _create_initial_gift_and_duty_files(self):
+#         default_duty_agenda = agendaunit_shop(
 #             self.person_id, self.real_id, self._road_delimiter, self._planck
 #         )
 #         x_giftunit = giftunit_shop(
@@ -150,12 +150,12 @@
 #             _atoms_dir=self._atoms_dir,
 #         )
 #         x_giftunit._bookunit.add_all_different_agendaatoms(
-#             before_agenda=self._get_empty_agenda(), after_agenda=default_gut_agenda
+#             before_agenda=self._get_empty_agenda(), after_agenda=default_duty_agenda
 #         )
 #         x_giftunit.save_files()
-#         self._create_gut_from_gifts()
+#         self._create_duty_from_gifts()
 
-#     def _create_initial_gift_from_gut(self):
+#     def _create_initial_gift_from_duty(self):
 #         x_giftunit = giftunit_shop(
 #             _giver=self.person_id,
 #             _gift_id=get_init_gift_id_if_None(),
@@ -164,12 +164,12 @@
 #         )
 #         x_giftunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(),
-#             after_agenda=self.get_gut_file_agenda(),
+#             after_agenda=self.get_duty_file_agenda(),
 #         )
 #         x_giftunit.save_files()
 
-#     def _create_gut_from_gifts(self):
-#         self.save_gut_file(self._merge_gifts_into_agenda(self._get_empty_agenda()))
+#     def _create_duty_from_gifts(self):
+#         self.save_duty_file(self._merge_gifts_into_agenda(self._get_empty_agenda()))
 
 #     def _get_empty_agenda(self) -> AgendaUnit:
 #         empty_agenda = agendaunit_shop(self.person_id, self.real_id)
@@ -183,21 +183,21 @@
 #             )
 #             self._save_live_file(default_live_agenda)
 
-#     def gut_file_exists(self) -> bool:
-#         return os_path_exists(self._gut_path)
+#     def duty_file_exists(self) -> bool:
+#         return os_path_exists(self._duty_path)
 
 #     def live_file_exists(self) -> bool:
 #         return os_path_exists(self._live_path)
 
-#     def save_gut_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def save_duty_file(self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
-#             raise Invalid_gut_Exception(
-#                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s gut agenda."
+#             raise Invalid_duty_Exception(
+#                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
 #             )
 #         if replace in {True, False}:
 #             save_file(
 #                 dest_dir=self.person_dir,
-#                 file_name=self._gut_file_name,
+#                 file_name=self._duty_file_name,
 #                 file_text=x_agenda.get_json(),
 #                 replace=replace,
 #             )
@@ -215,16 +215,16 @@
 #                 replace=replace,
 #             )
 
-#     def get_gut_file_agenda(self) -> AgendaUnit:
-#         gut_json = open_file(dest_dir=self.person_dir, file_name=self._gut_file_name)
-#         return agenda_get_from_json(gut_json)
+#     def get_duty_file_agenda(self) -> AgendaUnit:
+#         duty_json = open_file(dest_dir=self.person_dir, file_name=self._duty_file_name)
+#         return agenda_get_from_json(duty_json)
 
 #     def get_live_file_agenda(self) -> AgendaUnit:
 #         live_json = open_file(dest_dir=self.person_dir, file_name=self._live_file_name)
 #         return agenda_get_from_json(live_json)
 
-#     def load_gut_file(self):
-#         self._gut_obj = self.get_gut_file_agenda()
+#     def load_duty_file(self):
+#         self._duty_obj = self.get_duty_file_agenda()
 
 #     def load_live_file(self):
 #         self._live_obj = self.get_live_file_agenda()
@@ -382,18 +382,18 @@
 #         self._econ_objs[econ_roadunit] = x_econunit
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
-#         x_gut_agenda = self.get_gut_file_agenda()
-#         x_gut_agenda.set_agenda_metrics(econ_exceptions)
-#         if x_gut_agenda._econs_justified == False:
+#         x_duty_agenda = self.get_duty_file_agenda()
+#         x_duty_agenda.set_agenda_metrics(econ_exceptions)
+#         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
-#                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_justified' is False."
+#                 f"Cannot set '{self.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
 #             )
-#         if x_gut_agenda._econs_buildable == False:
+#         if x_duty_agenda._econs_buildable == False:
 #             raise PersonCreateEconUnitsException(
-#                 f"Cannot set '{self.person_id}' gut agenda econunits because 'AgendaUnit._econs_buildable' is False."
+#                 f"Cannot set '{self.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
 #             )
 
-#         x_person_econs = x_gut_agenda._healers_dict.get(self.person_id)
+#         x_person_econs = x_duty_agenda._healers_dict.get(self.person_id)
 #         x_person_econs = get_empty_dict_if_none(x_person_econs)
 #         self._econ_objs = {}
 #         for econ_idea in x_person_econs.values():
@@ -424,18 +424,18 @@
 #             self.set_econunit_role(x_econ_road, role)
 
 #     def set_person_econunits_role(self):
-#         self.set_econunits_role(self.get_gut_file_agenda())
+#         self.set_econunits_role(self.get_duty_file_agenda())
 
 #     def add_pledge_gift(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-#         gut_agenda = self.get_gut_file_agenda()
-#         old_gut_agenda = copy_deepcopy(gut_agenda)
-#         create_pledge(gut_agenda, pledge_road, x_suffgroup)
+#         duty_agenda = self.get_duty_file_agenda()
+#         old_duty_agenda = copy_deepcopy(duty_agenda)
+#         create_pledge(duty_agenda, pledge_road, x_suffgroup)
 #         next_giftunit = self._create_new_giftunit()
 #         next_giftunit._bookunit.add_all_different_agendaatoms(
-#             old_gut_agenda, gut_agenda
+#             old_duty_agenda, duty_agenda
 #         )
 #         next_giftunit.save_files()
-#         self.append_gifts_to_gut_file()
+#         self.append_gifts_to_duty_file()
 
 #     def create_save_giftunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
 #         new_giftunit = self._create_new_giftunit()
@@ -444,9 +444,9 @@
 #         )
 #         self.save_giftunit_file(new_giftunit)
 
-#     def append_gifts_to_gut_file(self):
-#         self.save_gut_file(self._merge_gifts_into_agenda(self.get_gut_file_agenda()))
-#         return self.get_gut_file_agenda()
+#     def append_gifts_to_duty_file(self):
+#         self.save_duty_file(self._merge_gifts_into_agenda(self.get_duty_file_agenda()))
+#         return self.get_duty_file_agenda()
 
 
 # def personunit_shop(

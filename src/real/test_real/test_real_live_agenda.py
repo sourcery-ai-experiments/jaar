@@ -67,9 +67,9 @@ def test_RealUnit_generate_live_agenda_SetsCorrectFileWithout_healerhold(
     assert before_bob_live_agenda.get_party(sue_text) is None
 
     # WHEN
-    bob_gut_agenda = bob_person.get_gut_file_agenda()
-    bob_gut_agenda.add_partyunit(sue_text)
-    bob_person.save_gut_file(bob_gut_agenda)
+    bob_duty_agenda = bob_person.get_duty_file_agenda()
+    bob_duty_agenda.add_partyunit(sue_text)
+    bob_person.save_duty_file(bob_duty_agenda)
 
     # WHEN
     after_bob_live_agenda = music_real.generate_live_agenda(bob_text)
@@ -90,16 +90,16 @@ def test_RealUnit_generate_live_agenda_SetsCorrectFileWith_healerhold(
     assert after_bob_live_agenda.get_party(bob_text) is None
 
     # WHEN
-    bob_gut_agenda = bob_person.get_gut_file_agenda()
-    bob_gut_agenda.add_partyunit(bob_text)
+    bob_duty_agenda = bob_person.get_duty_file_agenda()
+    bob_duty_agenda.add_partyunit(bob_text)
     texas_text = "Texas"
-    texas_road = bob_gut_agenda.make_l1_road(texas_text)
+    texas_road = bob_duty_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
-    elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
-    bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    bob_gut_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person.save_gut_file(bob_gut_agenda)
+    bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_duty_agenda.add_idea(elpaso_idea, texas_road)
+    bob_person.save_duty_file(bob_duty_agenda)
     after_bob_live_agenda = music_real.generate_live_agenda(bob_text)
 
     # THEN
@@ -116,27 +116,27 @@ def test_RealUnit_generate_all_live_agendas_SetsCorrectFiles(
     sue_text = "Sue"
     bob_person = music_real.add_personunit(bob_text)
     sue_person = music_real.add_personunit(sue_text)
-    bob_gut_agenda = music_real.generate_live_agenda(bob_text)
-    sue_gut_agenda = music_real.generate_live_agenda(sue_text)
+    bob_duty_agenda = music_real.generate_live_agenda(bob_text)
+    sue_duty_agenda = music_real.generate_live_agenda(sue_text)
 
     texas_text = "Texas"
-    texas_road = bob_gut_agenda.make_l1_road(texas_text)
+    texas_road = bob_duty_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
-    elpaso_road = bob_gut_agenda.make_road(texas_road, elpaso_text)
+    elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
-    bob_gut_agenda = bob_person.get_gut_file_agenda()
-    bob_gut_agenda.add_partyunit(bob_text)
-    bob_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    bob_gut_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person.save_gut_file(bob_gut_agenda)
+    bob_duty_agenda = bob_person.get_duty_file_agenda()
+    bob_duty_agenda.add_partyunit(bob_text)
+    bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_duty_agenda.add_idea(elpaso_idea, texas_road)
+    bob_person.save_duty_file(bob_duty_agenda)
 
-    sue_gut_agenda = sue_person.get_gut_file_agenda()
-    sue_gut_agenda.add_partyunit(sue_text)
-    sue_gut_agenda.add_partyunit(bob_text)
-    sue_gut_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_gut_agenda.add_idea(elpaso_idea, texas_road)
-    sue_person.save_gut_file(sue_gut_agenda)
+    sue_duty_agenda = sue_person.get_duty_file_agenda()
+    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_partyunit(bob_text)
+    sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_duty_agenda.add_idea(elpaso_idea, texas_road)
+    sue_person.save_duty_file(sue_duty_agenda)
 
     before_bob_live_agenda = music_real.get_live_file_agenda(bob_text)
     before_sue_live_agenda = music_real.get_live_file_agenda(sue_text)
