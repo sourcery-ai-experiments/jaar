@@ -1,11 +1,7 @@
 from src._road.road import PersonID, PartyID, PersonID
 from src.agenda.party import PartyUnit
-from src.agenda.agenda import (
-    get_from_json as agendaunit_get_from_json,
-    AgendaUnit,
-    agendaunit_shop,
-)
-from src.agenda.listen import listen_to_speaker
+from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
+from src.agenda.listen import listen_to_speaker, create_barren_agenda
 from src._instrument.file import save_file, open_file
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -64,14 +60,9 @@ def get_job_file(
 
 
 def create_job_basis(x_role: AgendaUnit) -> AgendaUnit:
-    x_job = agendaunit_shop(
-        x_role._owner_id,
-        x_role._real_id,
-        _road_delimiter=x_role._road_delimiter,
-    )
+    x_job = create_barren_agenda(x_role, x_owner_id=x_role._owner_id)
     x_job._partys = x_role._partys
     x_job._groups = x_role._groups
-    x_job._planck = x_role._planck
     x_job.set_money_desc(x_role._money_desc)
     if x_role._party_creditor_pool != None:
         x_job.set_party_creditor_pool(x_role._party_creditor_pool)
@@ -91,16 +82,18 @@ def get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
     ]
 
 
-def _listen_to_debtors_roll(econ_dir: str, speaker_role: AgendaUnit) -> AgendaUnit:
-    x_job = create_job_basis(speaker_role)
-    if speaker_role._party_debtor_pool is None:
+def _listen_to_debtors_roll(econ_dir: str, listener_role: AgendaUnit) -> AgendaUnit:
+    x_job = create_job_basis(listener_role)
+    if x_job._party_debtor_pool is None:
         return x_job
 
-    for x_partyunit in x_job._partys.values():
-        if x_partyunit.party_id == speaker_role._owner_id:
-            listen_to_speaker(x_job, speaker_role)
+    for x_partyunit in get_debtors_roll(x_job):
+        if x_partyunit.party_id == x_job._owner_id:
+            listen_to_speaker(x_job, listener_role)
         else:
             speaker_job = get_job_file(econ_dir, x_partyunit.party_id)
+            if speaker_job is None:
+                speaker_job = create_barren_agenda(x_job, x_partyunit.party_id)
             listen_to_speaker(x_job, speaker_job)
     return x_job
 

@@ -2,6 +2,7 @@ from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
+from src.real.gift import get_init_gift_id_if_None
 from src.econ.job_creator import (
     save_role_file,
     save_job_file,
@@ -84,7 +85,7 @@ def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     assert yao_roll == [zia_partyunit]
 
 
-def test_create_job_basis_ReturnsEmptyAgendaUnit():
+def test_create_job_basis_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
     slash_text = "/"
@@ -241,49 +242,48 @@ def test_listen_to_debtors_roll_ProcessesIrrationalAgenda(env_dir_setup_cleanup)
     assert sue_partyunit._irrational_debtor_weight == 51
 
 
-# def test_listen_to_debtors_roll_ProcessesMissingDebtorJobAgenda(env_dir_setup_cleanup):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_role = agendaunit_shop(yao_text)
-#     zia_text = "Zia"
-#     zia_creditor_weight = 47
-#     zia_debtor_weight = 41
-#     sue_text = "Sue"
-#     sue_creditor_weight = 57
-#     sue_debtor_weight = 51
-#     yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-#     yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
-#     yao_pool = 92
-#     yao_role.set_party_pool(yao_pool)
-#     save_role_file(get_test_econ_dir(), yao_role)
+def test_listen_to_debtors_roll_ProcessesMissingDebtorJobAgenda(env_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "Yao"
+    yao_role = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    sue_text = "Sue"
+    zia_creditor_weight = 47
+    sue_creditor_weight = 57
+    zia_debtor_weight = 41
+    sue_debtor_weight = 51
+    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_pool = 92
+    yao_role.set_party_pool(yao_pool)
+    save_role_file(get_test_econ_dir(), yao_role)
 
-#     zia_text = "Zia"
-#     zia_agendaunit = agendaunit_shop(zia_text)
-#     clean_text = "clean"
-#     cook_text = "cook"
-#     clean_road = zia_agendaunit.make_l1_road(clean_text)
-#     cook_road = zia_agendaunit.make_l1_road(cook_text)
-#     zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
-#     zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
-#     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
-#     clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
-#     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
-#     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
-#     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-#     save_job_file(get_test_econ_dir(), zia_agendaunit)
+    zia_agendaunit = agendaunit_shop(zia_text)
+    clean_text = "clean"
+    cook_text = "cook"
+    clean_road = zia_agendaunit.make_l1_road(clean_text)
+    cook_road = zia_agendaunit.make_l1_road(cook_text)
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
+    zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_agendaunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
+    clean_ideaunit._assignedunit.set_suffgroup(yao_text)
+    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
+    save_job_file(get_test_econ_dir(), zia_agendaunit)
 
-#     # WHEN
-#     yao_job = _listen_to_debtors_roll(get_test_econ_dir(), yao_role)
+    # WHEN
+    yao_job = _listen_to_debtors_roll(get_test_econ_dir(), yao_role)
 
-#     # THEN irrational agenda is ignored
-#     assert len(yao_job.get_intent_dict()) != 3
-#     assert len(yao_job.get_intent_dict()) == 2
-#     zia_partyunit = yao_job.get_party(zia_text)
-#     sue_partyunit = yao_job.get_party(sue_text)
-#     print(f"{sue_partyunit.debtor_weight=}")
-#     print(f"{sue_partyunit._irrational_debtor_weight=}")
-#     assert zia_partyunit._irrational_debtor_weight == 0
-#     assert sue_partyunit._irrational_debtor_weight == 51
+    # THEN irrational agenda is ignored
+    assert len(yao_job.get_intent_dict()) != 3
+    assert len(yao_job.get_intent_dict()) == 2
+    zia_partyunit = yao_job.get_party(zia_text)
+    sue_partyunit = yao_job.get_party(sue_text)
+    print(f"{sue_partyunit.debtor_weight=}")
+    print(f"{sue_partyunit._missing_job_debtor_weight=}")
+    assert zia_partyunit._missing_job_debtor_weight == 0
+    assert sue_partyunit._missing_job_debtor_weight == 51
 
 
 def test_listen_to_debtors_roll_ListensToOwner_role_AndNotOwner_job(

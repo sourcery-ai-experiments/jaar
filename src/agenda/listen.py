@@ -1,11 +1,24 @@
-from src._road.road import get_ancestor_roads, RoadUnit, get_root_node_from_road
+from src._road.road import (
+    get_ancestor_roads,
+    RoadUnit,
+    get_root_node_from_road,
+    PersonID,
+)
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from copy import deepcopy as copy_deepcopy
 
 
 class Missing_party_debtor_poolException(Exception):
     pass
+
+
+def create_barren_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
+    barren_agenda = agendaunit_shop(
+        x_owner_id, ref_agenda._real_id, _road_delimiter=ref_agenda._road_delimiter
+    )
+    barren_agenda._planck = ref_agenda._planck
+    return barren_agenda
 
 
 def _get_planck_scaled_weight(
@@ -48,12 +61,18 @@ def get_ingest_list(
 
 
 def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener._party_debtor_pool is None:
+    speaker_partyunit = listener.get_party(speaker._owner_id)
+    if speaker_partyunit is None:
         raise Missing_party_debtor_poolException(
-            "Listening process is not possible without _party_debtor_pool."
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
         )
-    if speaker is None:
-        return None
+
+    speaker_debtor_weight = speaker_partyunit.debtor_weight
+    if listener._party_debtor_pool is None or speaker == create_barren_agenda(
+        speaker, speaker._owner_id
+    ):
+        speaker_partyunit.add_missing_job_debtor_weight(speaker_debtor_weight)
+        return listener
 
     # look at things from speaker's prespective
     perspective_agendaunit = copy_deepcopy(speaker)
@@ -69,29 +88,25 @@ def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
     intent_list = list(perspective_agendaunit.get_intent_dict().values())
     debtor_amount = listener._party_debtor_pool
     ingest_list = get_ingest_list(intent_list, debtor_amount, listener._planck)
-    for ingested_ideaunit in ingest_list:
-        _ingest_single_ideaunit(listener, ingested_ideaunit)
+    for ingest_ideaunit in ingest_list:
+        _ingest_single_ideaunit(listener, ingest_ideaunit)
     return listener
 
 
-def _ingest_single_ideaunit(listener: AgendaUnit, ingested_ideaunit: IdeaUnit):
+def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):
     replace_weight_list, add_to_weight_list = _create_weight_replace_and_add_lists(
-        listener, ingested_ideaunit.get_road()
+        listener, ingest_ideaunit.get_road()
     )
 
-    if listener.idea_exists(ingested_ideaunit.get_road()) == False:
-        listener.add_idea(
-            idea_kid=ingested_ideaunit,
-            parent_road=ingested_ideaunit._parent_road,
-            create_missing_ideas=True,
-            create_missing_ancestors=True,
-        )
+    if listener.idea_exists(ingest_ideaunit.get_road()) == False:
+        x_parent_road = ingest_ideaunit._parent_road
+        listener.add_idea(ingest_ideaunit, x_parent_road, create_missing_ideas=True)
 
     _add_and_replace_ideaunit_weights(
         listener=listener,
         replace_weight_list=replace_weight_list,
         add_to_weight_list=add_to_weight_list,
-        x_weight=ingested_ideaunit._weight,
+        x_weight=ingest_ideaunit._weight,
     )
 
 
