@@ -78,6 +78,8 @@ def create_job_basis(x_role: AgendaUnit) -> AgendaUnit:
     if x_role._party_debtor_pool != None:
         x_job.set_party_debtor_pool(x_role._party_debtor_pool)
     x_job = copy_deepcopy(x_job)
+    for x_partyunit in x_job._partys.values():
+        x_partyunit.reset_job_basis_attrs()
     return x_job
 
 

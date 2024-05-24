@@ -13,11 +13,7 @@ from src.econ.job_creator import (
     _listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
-from src.econ.examples.econ_env_kit import (
-    env_dir_setup_cleanup,
-    get_test_econ_dir,
-    get_temp_env_real_id,
-)
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_test_econ_dir
 from os.path import exists as os_path_exists
 
 
@@ -100,6 +96,11 @@ def test_create_job_basis_ReturnsEmptyAgendaUnit():
     zia_creditor_pool = 87
     zia_debtor_pool = 81
     yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    zia_irrational_debtor_weight = 11
+    zia_missing_job_debtor_weight = 22
+    role_zia_partyunit = yao_role.get_party(zia_text)
+    role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
+    role_zia_partyunit.add_missing_job_debtor_weight(zia_missing_job_debtor_weight)
     swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_group.set_partylink(partylink_shop(zia_text))
     yao_role.set_groupunit(swim_group)
@@ -107,22 +108,25 @@ def test_create_job_basis_ReturnsEmptyAgendaUnit():
     yao_role.set_party_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
-    yao_empty_job = create_job_basis(yao_role)
+    yao_basis_job = create_job_basis(yao_role)
 
     # THEN
-    assert yao_empty_job._owner_id == yao_role._owner_id
-    assert yao_empty_job._real_id == yao_role._real_id
-    assert yao_empty_job._last_gift_id == yao_role._last_gift_id
-    assert yao_empty_job.get_partys_dict() == yao_role.get_partys_dict()
-    assert yao_empty_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
-    assert yao_empty_job._road_delimiter == yao_role._road_delimiter
-    assert yao_empty_job._planck == yao_role._planck
-    assert yao_empty_job._money_desc == yao_role._money_desc
-    assert yao_empty_job._party_creditor_pool == yao_role._party_creditor_pool
-    assert yao_empty_job._party_debtor_pool == yao_role._party_debtor_pool
-    yao_empty_job.set_agenda_metrics()
-    assert len(yao_empty_job._idea_dict) != len(yao_role._idea_dict)
-    assert len(yao_empty_job._idea_dict) == 1
+    assert yao_basis_job._owner_id == yao_role._owner_id
+    assert yao_basis_job._real_id == yao_role._real_id
+    assert yao_basis_job._last_gift_id == yao_role._last_gift_id
+    assert yao_basis_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
+    assert yao_basis_job._road_delimiter == yao_role._road_delimiter
+    assert yao_basis_job._planck == yao_role._planck
+    assert yao_basis_job._money_desc == yao_role._money_desc
+    assert yao_basis_job._party_creditor_pool == yao_role._party_creditor_pool
+    assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
+    yao_basis_job.set_agenda_metrics()
+    assert len(yao_basis_job._idea_dict) != len(yao_role._idea_dict)
+    assert len(yao_basis_job._idea_dict) == 1
+    job_zia_partyunit = yao_basis_job.get_party(zia_text)
+    assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
+    assert job_zia_partyunit._irrational_debtor_weight == 0
+    assert job_zia_partyunit._missing_job_debtor_weight == 0
 
 
 def test_listen_to_debtors_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
