@@ -14,7 +14,7 @@ class RoadNode(str):
         return self.find(default_road_delimiter_if_none(delimiter)) == -1
 
 
-class WorldID(RoadNode):  # Created to help track the concept
+class RealID(RoadNode):  # Created to help track the concept
     pass
 
 
@@ -26,12 +26,6 @@ class PersonID(RoadNode):  # Created to help track the concept
 
 class HealerID(PersonID):
     """A RoadNode used to identify a Problem's Healer"""
-
-    pass
-
-
-class ClerkID(PersonID):
-    """A RoadNode used to identify a ClerkUnit's user"""
 
     pass
 
@@ -180,7 +174,7 @@ def get_forefather_roads(road: RoadUnit) -> dict[RoadUnit]:
     return {a_road: None for a_road in ancestor_roads}
 
 
-def get_default_world_id_roadnode() -> WorldID:
+def get_default_real_id_roadnode() -> RealID:
     return "ZZ"
 
 

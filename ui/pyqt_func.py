@@ -230,7 +230,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
         treenode_l = _get_treenode_l_reason_view(treenode_l, pth)
     elif pth.beliefheir_view_flag and pth.ideaunit._parent_road != "":
         treenode_l = _get_treenode_l_beliefheir_view(treenode_l, pth)
-    elif pth.yo_action_flag and pth.ideaunit.promise:
+    elif pth.yo_action_flag and pth.ideaunit.pledge:
         treenode_l += " (task)" if pth.ideaunit._task else " (state)"
     elif pth.yo_beliefunit_count_flag:
         treenode_l += f" ({len(pth.ideaunit._beliefunits)})"

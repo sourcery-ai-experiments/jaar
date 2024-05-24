@@ -18,8 +18,8 @@
 ## 0.0 About jaar
 
 `jaar` is a python library for listening to the climate of a community. Individual 
-positions are aggregated by a listener into a coherant intent that can include promises 
-of actions and/or promises of states of existence. Listening and acting on it.
+positions are aggregated by a listener into a coherant intent that can include pledges 
+of actions and/or pledges of states of existence. Listening and acting on it.
 
 A persons's intent in the community is built by the the weighted intreprtation of
 1. Other persons intents 
@@ -27,7 +27,7 @@ A persons's intent in the community is built by the the weighted intreprtation o
 
 Each intent is saved as a JSON file. 
 
-This is mostly a one man projeect. Femi has really helped. 
+This is mostly a one man projeect. Femi has significantly helped. 
 
  
 ### 1.0 Installing `jaar`
@@ -64,10 +64,6 @@ base attributes vs reason attributess
 
 <!-- TODO: Add elucidations -->
 EconUnit objects
-
-EconUnit ClerkUnit objects
-
-EconUnit ClerkUnit Agenda objects
 
 EconUnit Treasury objects
 

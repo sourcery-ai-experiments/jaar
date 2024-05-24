@@ -5,7 +5,7 @@ from src._road.road import (
     OwnerID,
     HealerID,
     PersonID,
-    WorldID,
+    RealID,
     validate_roadnode,
 )
 from src.agenda.party import partylink_shop
@@ -17,11 +17,8 @@ from src._instrument.file import (
     open_file,
     dir_files,
 )
-from src._instrument.python import get_empty_dict_if_none
-from src.econ.clerk import (
-    ClerkUnit,
-    clerkunit_shop,
-    ClerkID,
+from src.econ.job_creator import (
+    PersonID,
     get_econ_roles_dir,
     get_econ_jobs_dir,
     save_file_to_roles,
@@ -29,6 +26,7 @@ from src.econ.clerk import (
     get_file_in_roles,
     get_file_in_jobs,
     get_owner_file_name,
+    create_job_file_from_role_file,
 )
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -66,7 +64,7 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def get_temp_env_world_id():
+def get_temp_env_real_id():
     return "ex_econ04"
 
 
@@ -86,43 +84,37 @@ class IntentBaseDoesNotExistException(Exception):
     pass
 
 
-class ClerkUnitdoesnotexist(Exception):
-    pass
-
-
 def treasury_db_filename() -> str:
     return "treasury.db"
 
 
+def get_rootpart_of_econ_dir() -> str:
+    return "idearoot"
+
+
 @dataclass
 class EconUnit:
-    world_id: WorldID = None
+    real_id: RealID = None
     econ_dir: str = None
     _manager_person_id: HealerID = None
-    _clerkunits: dict[str:ClerkUnit] = None
     _treasury_db = None
     _road_delimiter: str = None
 
     # Admin
-    def set_world_id(self, world_id: str):
-        self.world_id = validate_roadnode(world_id, self._road_delimiter)
+    def set_real_id(self, real_id: str):
+        self.real_id = validate_roadnode(real_id, self._road_delimiter)
 
     def get_object_root_dir(self):
         return self.econ_dir
 
     def _create_main_file_if_null(self, x_dir):
         econ_file_name = "econ.json"
-        save_file(
-            dest_dir=x_dir,
-            file_name=econ_file_name,
-            file_text="",
-        )
+        save_file(x_dir, econ_file_name, file_text="")
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
         set_dir(x_path=self.get_object_root_dir())
         set_dir(x_path=self.get_roles_dir())
         set_dir(x_path=self.get_jobs_dir())
-        set_dir(x_path=self.get_clerkunits_dir())
         self._create_main_file_if_null(x_dir=self.get_object_root_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
@@ -380,7 +372,7 @@ class EconUnit:
         return get_econ_roles_dir(self.get_object_root_dir())
 
     def save_file_to_roles(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.world_id)
+        x_agenda.set_real_id(real_id=self.real_id)
         save_file_to_roles(self.get_object_root_dir(), x_agenda)
 
     def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
@@ -394,8 +386,11 @@ class EconUnit:
         return get_econ_jobs_dir(self.get_object_root_dir())
 
     def save_file_to_jobs(self, x_agenda: AgendaUnit):
-        x_agenda.set_world_id(world_id=self.world_id)
+        x_agenda.set_real_id(real_id=self.real_id)
         save_file_to_jobs(self.get_object_root_dir(), x_agenda)
+
+    def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
+        return create_job_file_from_role_file(self.econ_dir, person_id)
 
     def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
         return get_file_in_jobs(self.get_object_root_dir(), owner_id)
@@ -412,49 +407,12 @@ class EconUnit:
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
 
-    # ClerkUnit management
-    def get_clerkunits_dir(self):
-        return f"{self.get_object_root_dir()}/clerkunits"
-
-    def get_clerkunit_dir_paths_list(self):
-        return list(
-            dir_files(
-                dir_path=self.get_clerkunits_dir(),
-                delete_extensions=False,
-                include_dirs=True,
-            ).keys()
-        )
-
-    def clerkunit_exists(self, clerk_id: ClerkID):
-        return self._clerkunits.get(clerk_id) != None
-
-    def create_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
-        x_clerkunit = clerkunit_shop(clerk_id, self.econ_dir)
-        self._clerkunits[x_clerkunit._clerk_id] = x_clerkunit
-        return self.get_clerkunit(clerk_id)
-
-    def get_clerkunit(self, clerk_id: ClerkID) -> ClerkUnit:
-        x_clerkunit = self._clerkunits.get(clerk_id)
-        if x_clerkunit is None:
-            raise ClerkUnitdoesnotexist(
-                f"ClerkUnit '{clerk_id}' does not exist in memory."
-            )
-        return x_clerkunit
-
-    def delete_clerkunit(self, clerk_id: ClerkID):
-        self._clerkunits.pop(clerk_id)
-
-    # Healer output_agenda
-    def get_refreshed_job(self, clerk_id: ClerkID) -> AgendaUnit:
-        x_clerkunit = self.get_clerkunit(clerk_id=clerk_id)
-        return x_clerkunit.get_remelded_output_agenda()
-
     def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
         if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.world_id
+            return self.real_id
         else:
             return create_road(
-                parent_road=self.world_id,
+                parent_road=self.real_id,
                 terminus_node=road_wo_econ_root,
                 delimiter=self._road_delimiter,
             )
@@ -496,25 +454,21 @@ class EconUnit:
 
 
 def econunit_shop(
-    world_id: WorldID,
+    real_id: RealID,
     econ_dir: str = None,
     _manager_person_id: PersonID = None,
-    _clerkunits: dict[OwnerID:ClerkUnit] = None,
     in_memory_treasury: bool = None,
     _road_delimiter: str = None,
 ) -> EconUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
     if econ_dir is None:
-        econ_dir = f"./{world_id}"
-    econ_x = EconUnit(
-        econ_dir=econ_dir,
-        _clerkunits=get_empty_dict_if_none(_clerkunits),
-    )
+        econ_dir = f"./{real_id}"
+    econ_x = EconUnit(econ_dir=econ_dir)
     if _manager_person_id is None:
         _manager_person_id = get_temp_env_person_id()
     econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_world_id(world_id=world_id)
+    econ_x.set_real_id(real_id=real_id)
     econ_x._manager_person_id = _manager_person_id
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x

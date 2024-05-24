@@ -68,7 +68,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Complete Promise</string>
+     <string>Complete pledge</string>
     </property>
    </widget>
    <widget class="QLabel" name="root_datetime_prev_l">
@@ -692,7 +692,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Things you promised to be right now</string>
+     <string>Things you pledged to be right now</string>
     </property>
    </widget>
    <widget class="QPushButton" name="belief_open_5daysago">

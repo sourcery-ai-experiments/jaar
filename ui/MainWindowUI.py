@@ -332,7 +332,7 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "set minutes next midnight")
         )
         self.belief_nigh_now.setText(_translate("MainWindow", "Update nigh to Now"))
-        self.intent_task_complete.setText(_translate("MainWindow", "Complete Promise"))
+        self.intent_task_complete.setText(_translate("MainWindow", "Complete pledge"))
         self.root_datetime_prev_l.setText(_translate("MainWindow", "Past:"))
         self.root_datetime_now_l.setText(_translate("MainWindow", "Now:"))
         self.label_2.setText(_translate("MainWindow", "What is your present?"))
@@ -402,7 +402,7 @@ class Ui_MainWindow(object):
         item = self.intent_states.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "range_source_road"))
         self.label_8.setText(
-            _translate("MainWindow", "Things you promised to be right now")
+            _translate("MainWindow", "Things you pledged to be right now")
         )
         self.belief_open_5daysago.setText(
             _translate("MainWindow", "Set open 5 days ago")

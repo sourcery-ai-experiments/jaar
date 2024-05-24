@@ -257,13 +257,13 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_idea_dict():
     # THEN
     gig_idea = sue_agenda._idea_dict.get(gig_road)
     print(f"\nlook at {gig_idea.get_road()=}")
-    assert gig_idea._parent_road == sue_agenda._world_id
+    assert gig_idea._parent_road == sue_agenda._real_id
     assert gig_idea._kids == {}
     assert gig_idea._weight == 30
     assert gig_idea._label == gig_text
     assert gig_idea._level == 1
     assert gig_idea._active
-    assert gig_idea.promise
+    assert gig_idea.pledge
     # print(f"{gig_idea._reasonheirs=}")
     x_reasonheir_state = gig_idea._reasonheirs[state_road]
     print(f"  {x_reasonheir_state=}")
@@ -481,18 +481,18 @@ def test_get_intent_dict_ReturnsCorrectObj():
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
 
     # WHEN
-    promise_items = sue_agenda.get_intent_dict()
+    pledge_items = sue_agenda.get_intent_dict()
 
     # THEN
-    assert promise_items != None
-    assert len(promise_items) > 0
-    assert len(promise_items) == 1
+    assert pledge_items != None
+    assert len(pledge_items) > 0
+    assert len(pledge_items) == 1
 
 
 def test_AgendaUnit_set_agenda_metrics_CorrectlySetsData_agenda_v001():
     yao_agenda = agenda_v001()
     print(f"{yao_agenda.get_reason_bases()=}")
-    # day_hour = f"{yao_agenda._world_id},day_hour"
+    # day_hour = f"{yao_agenda._real_id},day_hour"
     # yao_agenda.set_belief(base=day_hour, pick=day_hour, open=0, nigh=23)
     day_min_text = "day_minute"
     day_min_road = yao_agenda.make_l1_road(day_min_text)
@@ -606,7 +606,7 @@ def test_AgendaUnit_set_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v0
     }
     mt_reasonunit = reasonunit_shop(week_road, premises=mt_premises)
     mt_reasonheir = reasonheir_shop(week_road, premises=mt_premises, _status=False)
-    x_idearoot = yao_agenda.get_idea_obj(yao_agenda._world_id)
+    x_idearoot = yao_agenda.get_idea_obj(yao_agenda._real_id)
     x_idearoot.set_reasonunit(reason=mt_reasonunit)
     # print(f"{yao_agenda._reasonunits[week_road].base=}")
     # print(f"{yao_agenda._reasonunits[week_road].premises[mon_road].need=}")
@@ -648,11 +648,11 @@ def test_AgendaUnit_set_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v0
 
     # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
 
-    # yao_agenda.set_belief(base=f"{yao_agenda._world_id},weekdays", pick=f"{yao_agenda._world_id},weekdays,Tuesday")
+    # yao_agenda.set_belief(base=f"{yao_agenda._real_id},weekdays", pick=f"{yao_agenda._real_id},weekdays,Tuesday")
     # idea_dict = yao_agenda.get_idea_dict()
     # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
 
-    # yao_agenda.set_belief(base=f"{yao_agenda._world_id},weekdays", pick=f"{yao_agenda._world_id},weekdays,Wednesday")
+    # yao_agenda.set_belief(base=f"{yao_agenda._real_id},weekdays", pick=f"{yao_agenda._real_id},weekdays,Wednesday")
     # idea_dict = yao_agenda.get_idea_dict()
     # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == False
 

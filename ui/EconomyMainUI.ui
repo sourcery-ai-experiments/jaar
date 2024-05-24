@@ -316,7 +316,7 @@
      <string>delete owner_id</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="clerk_id">
+   <widget class="QLineEdit" name="person_id">
     <property name="geometry">
      <rect>
       <x>190</x>

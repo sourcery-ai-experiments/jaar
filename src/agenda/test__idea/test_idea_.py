@@ -1,5 +1,5 @@
 from src._road.road import (
-    get_default_world_id_roadnode as root_label,
+    get_default_real_id_roadnode as root_label,
     create_road,
     default_road_delimiter_if_none,
 )
@@ -34,9 +34,9 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._reest is None
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
-    assert x_ideaunit.promise is None
+    assert x_ideaunit.pledge is None
     assert x_ideaunit._problem_bool is None
-    assert x_ideaunit._descendant_promise_count is None
+    assert x_ideaunit._descendant_pledge_count is None
     assert x_ideaunit._balancelines is None
     assert x_ideaunit._balanceheirs is None
     assert x_ideaunit._is_expanded is None
@@ -57,7 +57,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._originunit is None
     assert x_ideaunit._road_delimiter is None
     assert x_ideaunit._root is None
-    assert x_ideaunit._agenda_world_id is None
+    assert x_ideaunit._agenda_real_id is None
     assert x_ideaunit._healerhold_importance is None
 
 
@@ -81,9 +81,9 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._reest is None
     assert x_ideaunit._numeric_road is None
     assert x_ideaunit._range_source_road is None
-    assert x_ideaunit.promise is False
+    assert x_ideaunit.pledge is False
     assert x_ideaunit._problem_bool is False
-    assert x_ideaunit._descendant_promise_count is None
+    assert x_ideaunit._descendant_pledge_count is None
     assert x_ideaunit._balancelines == {}
     assert x_ideaunit._balancelinks == {}
     assert x_ideaunit._balanceheirs == {}
@@ -105,7 +105,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
     assert x_ideaunit._root == False
-    assert x_ideaunit._agenda_world_id == root_label()
+    assert x_ideaunit._agenda_real_id == root_label()
     assert x_ideaunit._healerhold_importance == 0
 
 
@@ -311,37 +311,37 @@ def test_IdeaUnit_set_reasonheirsCorrectlySourcesFromSelf():
     assert ball_idea._reasonheirs == reasonheirs
 
 
-def test_IdeaUnit_clear_descendant_promise_count_ClearsCorrectly():
+def test_IdeaUnit_clear_descendant_pledge_count_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(_label=ball_text, _descendant_promise_count=55)
-    assert ball_idea._descendant_promise_count == 55
+    ball_idea = ideaunit_shop(_label=ball_text, _descendant_pledge_count=55)
+    assert ball_idea._descendant_pledge_count == 55
 
     # WHEN
-    ball_idea.clear_descendant_promise_count()
+    ball_idea.clear_descendant_pledge_count()
 
     # THEN
-    assert ball_idea._descendant_promise_count is None
+    assert ball_idea._descendant_pledge_count is None
 
 
-def test_IdeaUnit_add_to_descendant_promise_count_CorrectlyAdds():
+def test_IdeaUnit_add_to_descendant_pledge_count_CorrectlyAdds():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(_label=ball_text, _descendant_promise_count=55)
-    ball_idea.clear_descendant_promise_count()
-    assert ball_idea._descendant_promise_count is None
+    ball_idea = ideaunit_shop(_label=ball_text, _descendant_pledge_count=55)
+    ball_idea.clear_descendant_pledge_count()
+    assert ball_idea._descendant_pledge_count is None
 
     # WHEN
-    ball_idea.add_to_descendant_promise_count(44)
+    ball_idea.add_to_descendant_pledge_count(44)
 
     # THEN
-    assert ball_idea._descendant_promise_count == 44
+    assert ball_idea._descendant_pledge_count == 44
 
     # WHEN
-    ball_idea.add_to_descendant_promise_count(33)
+    ball_idea.add_to_descendant_pledge_count(33)
 
     # THEN
-    assert ball_idea._descendant_promise_count == 77
+    assert ball_idea._descendant_pledge_count == 77
 
 
 def test_IdeaUnit_clear_all_party_credit_debt_ClearsCorrectly():
@@ -389,7 +389,7 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     assert get_obj_from_idea_dict({field_text: False}, field_text) == False
 
     # GIVEN
-    field_text = "promise"
+    field_text = "pledge"
     # WHEN / THEN
     assert get_obj_from_idea_dict({field_text: True}, field_text)
     assert get_obj_from_idea_dict({}, field_text) == False
@@ -510,7 +510,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _healerhold=yao_healerhold,
         _active=True,
         _range_source_road="test123",
-        promise=True,
+        pledge=True,
         _problem_bool=x_problem_bool,
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
@@ -554,7 +554,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert gig_dict["_denom"] == gig_idea._denom
     assert gig_dict["_reest"] == gig_idea._reest
     assert gig_dict["_range_source_road"] == gig_idea._range_source_road
-    assert gig_dict["promise"] == gig_idea.promise
+    assert gig_dict["pledge"] == gig_idea.pledge
     assert gig_dict["_problem_bool"] == gig_idea._problem_bool
     assert gig_dict["_problem_bool"] == x_problem_bool
     assert gig_idea._is_expanded
@@ -580,7 +580,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
     gig_idea = ideaunit_shop()
     gig_idea._is_expanded = False
-    gig_idea.promise = True
+    gig_idea.pledge = True
     ignore_text = "ignore"
     gig_idea._meld_strategy = ignore_text
 
@@ -601,7 +601,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     gig_idea.add_kid(ideaunit_shop(rock_text))
 
     assert not gig_idea._is_expanded
-    assert gig_idea.promise
+    assert gig_idea.pledge
     assert gig_idea._meld_strategy != "default"
     assert gig_idea._beliefunits != None
     assert gig_idea._balancelinks != None
@@ -614,7 +614,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
 
     # THEN
     assert gig_dict.get("_is_expanded") == False
-    assert gig_dict.get("promise")
+    assert gig_dict.get("pledge")
     assert gig_dict.get("_meld_strategy") == ignore_text
     assert gig_dict.get("_beliefunits") != None
     assert gig_dict.get("_balancelinks") != None
@@ -627,7 +627,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     gig_idea = ideaunit_shop()
     assert gig_idea._is_expanded
-    assert gig_idea.promise == False
+    assert gig_idea.pledge == False
     assert gig_idea._meld_strategy == "default"
     assert gig_idea._beliefunits == {}
     assert gig_idea._balancelinks == {}
@@ -641,7 +641,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
 
     # THEN
     assert gig_dict.get("_is_expanded") is None
-    assert gig_dict.get("promise") is None
+    assert gig_dict.get("pledge") is None
     assert gig_dict.get("_meld_strategy") is None
     assert gig_dict.get("_beliefunits") is None
     assert gig_dict.get("_balancelinks") is None

@@ -26,7 +26,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assignedunit_x = assignedunit_shop()
 
     tim_agenda = agendaunit_shop("Tim")
-    tim_agenda.edit_idea_attr(assignedunit=assignedunit_x, road=tim_agenda._world_id)
+    tim_agenda.edit_idea_attr(assignedunit=assignedunit_x, road=tim_agenda._real_id)
     assert tim_agenda._idearoot._assignedunit == assignedunit_x
     assert tim_agenda._idearoot._assignedheir is None
 
@@ -127,8 +127,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     gig_road = noa1_agenda.make_l1_road(gig_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._world_id)
-    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
+    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)
@@ -160,8 +160,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     gig_road = noa1_agenda.make_l1_road(gig_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._world_id)
-    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._world_id)
+    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
     swim_assignedunit.set_suffgroup(group_id=zoa_text)

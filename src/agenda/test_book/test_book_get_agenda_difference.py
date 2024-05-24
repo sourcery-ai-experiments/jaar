@@ -410,7 +410,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_insert()
     music_close = 78
     music_meld_strategy = "override"
     music_weight = 55
-    music_promise = True
+    music_pledge = True
     music_road = after_sue_agendaunit.make_l1_road(music_text)
     after_sue_agendaunit.add_l1_idea(
         ideaunit_shop(
@@ -419,7 +419,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_insert()
             _close=music_close,
             _meld_strategy=music_meld_strategy,
             _weight=music_weight,
-            promise=music_promise,
+            pledge=music_pledge,
         )
     )
 
@@ -440,17 +440,17 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_insert()
     x_keylist = [
         atom_insert(),
         "agenda_ideaunit",
-        after_sue_agendaunit._world_id,
+        after_sue_agendaunit._real_id,
         music_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert ball_agendaatom.get_value("label") == music_text
-    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._real_id
     assert ball_agendaatom.get_value("_begin") == music_begin
     assert ball_agendaatom.get_value("_close") == music_close
     assert ball_agendaatom.get_value("_meld_strategy") == music_meld_strategy
     assert ball_agendaatom.get_value("_weight") == music_weight
-    assert ball_agendaatom.get_value("promise") == music_promise
+    assert ball_agendaatom.get_value("pledge") == music_pledge
 
     assert get_agendaatom_total_count(sue_bookunit) == 2
 
@@ -466,7 +466,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update()
     before_music_close = 78
     before_music_meld_strategy = "override"
     before_music_weight = 55
-    before_music_promise = True
+    before_music_pledge = True
     music_road = before_sue_agendaunit.make_l1_road(music_text)
     before_sue_agendaunit.add_l1_idea(
         ideaunit_shop(
@@ -475,7 +475,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update()
             _close=before_music_close,
             _meld_strategy=before_music_meld_strategy,
             _weight=before_music_weight,
-            promise=before_music_promise,
+            pledge=before_music_pledge,
         )
     )
 
@@ -484,14 +484,14 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update()
     after_music_close = 111
     after_music_meld_strategy = "default"
     after_music_weight = 22
-    after_music_promise = False
+    after_music_pledge = False
     after_sue_agendaunit.edit_idea_attr(
         music_road,
         begin=after_music_begin,
         close=after_music_close,
         meld_strategy=after_music_meld_strategy,
         weight=after_music_weight,
-        promise=after_music_promise,
+        pledge=after_music_pledge,
     )
 
     # WHEN
@@ -506,17 +506,17 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_idea_update()
     x_keylist = [
         atom_update(),
         "agenda_ideaunit",
-        after_sue_agendaunit._world_id,
+        after_sue_agendaunit._real_id,
         music_text,
     ]
     ball_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
-    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._world_id
+    assert ball_agendaatom.get_value("parent_road") == after_sue_agendaunit._real_id
     assert ball_agendaatom.get_value("label") == music_text
     assert ball_agendaatom.get_value("_begin") == after_music_begin
     assert ball_agendaatom.get_value("_close") == after_music_close
     assert ball_agendaatom.get_value("_meld_strategy") == after_music_meld_strategy
     assert ball_agendaatom.get_value("_weight") == after_music_weight
-    assert ball_agendaatom.get_value("promise") == after_music_promise
+    assert ball_agendaatom.get_value("pledge") == after_music_pledge
 
     assert get_agendaatom_total_count(sue_bookunit) == 1
 

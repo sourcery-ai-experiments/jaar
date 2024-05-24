@@ -10,7 +10,7 @@ def test_get_ingested_ideaunit_list_ReturnsCorrectList_v1():
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_debtor_pool = 78
     zia_planck = 2
     assert len(zia_agendaunit.get_intent_dict()) == 1
@@ -36,8 +36,8 @@ def test_get_ingested_ideaunit_list_ReturnsCorrectList_v2():
     zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, pledge=True))
     zia_debtor_pool = 32
     zia_planck = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
@@ -67,8 +67,8 @@ def test_get_ingested_ideaunit_list_ReturnsCorrectList_v3():
     zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_debtor_pool = 32
     zia_planck = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
@@ -96,8 +96,8 @@ def test_get_ingested_ideaunit_list_ReturnsCorrectList_v4():
     zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, promise=True))
-    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, promise=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, pledge=True))
     zia_debtor_pool = 32
     zia_planck = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
@@ -159,7 +159,7 @@ def test_listen_to_speaker_ReturnsSingleTaskAgenda():
     zia_agendaunit = agendaunit_shop(zia_text)
     zia_agendaunit.add_partyunit(yao_text)
     clean_text = "clean"
-    yao_clean_ideaunit = ideaunit_shop(clean_text, promise=True)
+    yao_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     yao_clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     zia_agendaunit.add_l1_idea(yao_clean_ideaunit)
     assert len(zia_agendaunit.get_intent_dict()) == 0
@@ -191,7 +191,7 @@ def test_listen_to_speaker_ReturnsLevel2TaskAgenda():
     zia_agendaunit = agendaunit_shop(zia_text)
     zia_agendaunit.add_partyunit(yao_text)
     clean_text = "clean"
-    yao_clean_ideaunit = ideaunit_shop(clean_text, promise=True)
+    yao_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     yao_clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
     zia_agendaunit.add_idea(yao_clean_ideaunit, casa_road)
@@ -230,11 +230,11 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgenda():
     clean_text = "clean"
     cook_text = "cook"
     fly_text = "fly"
-    yao_clean_ideaunit = ideaunit_shop(clean_text, promise=True)
+    yao_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     yao_clean_ideaunit._assignedunit.set_suffgroup(yao_text)
-    yao_cook_ideaunit = ideaunit_shop(cook_text, promise=True)
+    yao_cook_ideaunit = ideaunit_shop(cook_text, pledge=True)
     yao_cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    yao_fly_ideaunit = ideaunit_shop(fly_text, promise=True)
+    yao_fly_ideaunit = ideaunit_shop(fly_text, pledge=True)
     yao_fly_ideaunit._assignedunit.set_suffgroup(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
     fly_road = zia_agendaunit.make_l1_road(fly_text)
@@ -283,16 +283,16 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlr
     dish_text = "dish"
     cook_text = "cook"
     fly_text = "fly"
-    yao_dish_ideaunit = ideaunit_shop(dish_text, promise=True)
+    yao_dish_ideaunit = ideaunit_shop(dish_text, pledge=True)
     yao_dish_ideaunit._assignedunit.set_suffgroup(yao_text)
-    yao_cook_ideaunit = ideaunit_shop(cook_text, promise=True)
+    yao_cook_ideaunit = ideaunit_shop(cook_text, pledge=True)
     yao_cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    yao_fly_ideaunit = ideaunit_shop(fly_text, promise=True)
+    yao_fly_ideaunit = ideaunit_shop(fly_text, pledge=True)
     yao_fly_ideaunit._assignedunit.set_suffgroup(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
     dish_road = zia_agendaunit.make_road(casa_road, dish_text)
     fly_road = zia_agendaunit.make_l1_road(fly_text)
-    before_yao_dish_ideaunit = ideaunit_shop(dish_text, promise=True)
+    before_yao_dish_ideaunit = ideaunit_shop(dish_text, pledge=True)
     before_yao_dish_ideaunit._assignedunit.set_suffgroup(yao_text)
     before_yao_agendaunit.add_idea(before_yao_dish_ideaunit, casa_road)
     before_yao_agendaunit.edit_idea_attr(dish_road, weight=1000)

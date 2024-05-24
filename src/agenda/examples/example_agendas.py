@@ -56,7 +56,7 @@ def agenda_v002() -> AgendaUnit:
             file_name="example_agenda2.json",
         )
     )
-    print(f"{bob_agenda._world_id=} {bob_agenda._road_delimiter=}")
+    print(f"{bob_agenda._real_id=} {bob_agenda._road_delimiter=}")
     return bob_agenda
 
 
@@ -64,11 +64,11 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_owner_id="Sue", _weight=10)
 
     gig = "gig"
-    idea_kid_gig = ideaunit_shop(gig, _weight=30, promise=True)
+    idea_kid_gig = ideaunit_shop(gig, _weight=30, pledge=True)
     sue_agenda.add_l1_idea(idea_kid_gig)
 
     cat = "feed cat"
-    idea_kid_feedcat = ideaunit_shop(cat, _weight=30, promise=True)
+    idea_kid_feedcat = ideaunit_shop(cat, _weight=30, pledge=True)
     sue_agenda.add_l1_idea(idea_kid_feedcat)
 
     week_text = "weekdays"
@@ -204,10 +204,10 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     grab_text = "grab soap"
     grab_road = sue_agenda.make_road(soap_road, grab_text)
     house_idea = ideaunit_shop(house_text)
-    clean_idea = ideaunit_shop(clean_text, promise=True)
-    dish_idea = ideaunit_shop(dish_text, promise=True)
-    soap_idea = ideaunit_shop(soap_text, promise=True)
-    grab_idea = ideaunit_shop(grab_text, promise=True)
+    clean_idea = ideaunit_shop(clean_text, pledge=True)
+    dish_idea = ideaunit_shop(dish_text, pledge=True)
+    soap_idea = ideaunit_shop(soap_text, pledge=True)
+    grab_idea = ideaunit_shop(grab_text, pledge=True)
 
     sue_agenda.add_l1_idea(house_idea)
     sue_agenda.add_idea(clean_idea, house_road)
@@ -239,7 +239,7 @@ def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
     ced_road = bob_agenda.make_l1_road(ced_min_label)
     bob_agenda.add_l1_idea(ced_minutes)
     mail_label = "obtain mail"
-    mail_task = ideaunit_shop(mail_label, promise=True)
+    mail_task = ideaunit_shop(mail_label, pledge=True)
     bob_agenda.add_l1_idea(mail_task)
 
     premise_x = premiseunit_shop(need=ced_road, open=80, nigh=90)
@@ -268,7 +268,7 @@ def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
     zia_agenda = agendaunit_shop(_owner_id="Zia", _weight=10)
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
-    idea_kid_shave = ideaunit_shop(shave_text, _weight=30, promise=True)
+    idea_kid_shave = ideaunit_shop(shave_text, _weight=30, pledge=True)
     zia_agenda.add_l1_idea(idea_kid_shave)
     week_text = "weekdays"
     week_road = zia_agenda.make_l1_road(week_text)
@@ -303,7 +303,7 @@ def get_agenda_base_time_example() -> AgendaUnit:
 
 
 def get_agenda_irrational_example() -> AgendaUnit:
-    # this agenda has no conclusive intent because 2 promise ideas are in contradiction
+    # this agenda has no conclusive intent because 2 pledge ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active == True, egg._active is set to False
@@ -326,18 +326,18 @@ def get_agenda_irrational_example() -> AgendaUnit:
     chicken_road = hatter_agenda.make_l1_road(chicken_text)
     hatter_agenda.add_l1_idea(ideaunit_shop(chicken_text))
 
-    # set egg promise is True when chicken first is False
+    # set egg pledge is True when chicken first is False
     hatter_agenda.edit_idea_attr(
         road=egg_road,
-        promise=True,
+        pledge=True,
         reason_base=chicken_road,
         reason_suff_idea_active=True,
     )
 
-    # set chick promise is True when egg first is False
+    # set chick pledge is True when egg first is False
     hatter_agenda.edit_idea_attr(
         road=chicken_road,
-        promise=True,
+        pledge=True,
         reason_base=egg_road,
         reason_suff_idea_active=False,
     )
@@ -351,7 +351,7 @@ def get_assignment_agenda_example1():
     casa_road = neo_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
     floor_road = neo_agenda.make_road(casa_road, floor_text)
-    floor_idea = ideaunit_shop(floor_text, promise=True)
+    floor_idea = ideaunit_shop(floor_text, pledge=True)
     neo_agenda.add_idea(floor_idea, casa_road)
     neo_agenda.add_l1_idea(ideaunit_shop("unimportant"))
 
@@ -399,7 +399,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amos_agenda.add_idea(ideaunit_shop(b_bare_text), basket_road)
     amos_agenda.add_idea(ideaunit_shop(b_fine_text), basket_road)
     amos_agenda.add_idea(ideaunit_shop(b_half_text), basket_road)
-    amos_agenda.add_idea(ideaunit_shop(do_laundry_text, promise=True), casa_road)
+    amos_agenda.add_idea(ideaunit_shop(do_laundry_text, pledge=True), casa_road)
 
     # laundry requirement
     amos_agenda.edit_idea_attr(
@@ -414,7 +414,7 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     cali_assignunit.set_suffgroup(cali_text)
     amos_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
-    # print(f"{amos_agenda._world_id=}")
+    # print(f"{amos_agenda._real_id=}")
     amos_agenda.set_belief(base=basket_road, pick=b_full_road)
 
     return amos_agenda
@@ -434,7 +434,7 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     jajatime_road = bob_agenda.make_road(bob_agenda.make_l1_road("time"), "jajatime")
     bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, 1064136133)
 
-    bob_agenda.add_idea(ideaunit_shop(laundry_text, promise=True), casa_road)
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, pledge=True), casa_road)
     bob_agenda.edit_idea_attr(
         road=laundry_road,
         reason_base=jajatime_road,
@@ -443,7 +443,7 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
         reason_premise_nigh=5760.0,
         reason_premise_divisor=10080.0,
     )
-    bob_agenda.add_idea(ideaunit_shop(chill_text, promise=True), casa_road)
+    bob_agenda.add_idea(ideaunit_shop(chill_text, pledge=True), casa_road)
     bob_agenda.edit_idea_attr(
         road=chill_road,
         reason_base=jajatime_road,

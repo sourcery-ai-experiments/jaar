@@ -39,7 +39,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.submit_node_update.clicked.connect(self.idea_update)
         self.submit_node_delete.clicked.connect(self.idea_delete)
         self.submit_child_insert.clicked.connect(self.idea_insert)
-        self.submit_duty_insert.clicked.connect(self.idea_duty_insert)
+        self.submit_pledge_insert.clicked.connect(self.idea_pledge_insert)
 
         self.cb_rootadmiration.stateChanged.connect(self.refresh_tree)
         self.cb_yo_id.stateChanged.connect(self.refresh_tree)
@@ -97,7 +97,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reasonheir_table.setHidden(self.reasonheir_table_hidden)
 
     def set_base_to_hregtime(self):
-        self.reason_base_combo.setCurrentText(f"{self.x_agenda._world_id},time,jajatime")
+        self.reason_base_combo.setCurrentText(f"{self.x_agenda._real_id},time,jajatime")
 
     def add_hreg_to_agenda(self):
         self.x_agenda.set_time_hreg_ideas(c400_count=7)
@@ -237,7 +237,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if f"{type(self.x_idea)}" != "<class 'lw.agenda.AgendaUnit'>":
             self.populate_idea_kid_actions()
         self.yo_close.setText(num2str(self.x_idea._close))
-        self.yo_action_cb.setChecked(self.x_idea.promise)
+        self.yo_action_cb.setChecked(self.x_idea.pledge)
         self.yo_task_status.setText(str(self.x_idea._task))
         self.yo_active.setText(str(self.x_idea._active))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
@@ -828,7 +828,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reest=self.yo_reest.checkState() == 2,
             range_source_road=emptystr(self.yo_range_source_road.currentText()),
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
-            promise=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_action_cb.checkState() == 2),
             reason_base=None,
             reason_premise=None,
             reason_premise_open=None,
@@ -838,7 +838,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_del_premise_need=None,
             uid=None,
             reason=None,
-            descendant_promise_count=None,
+            descendant_pledge_count=None,
             all_party_credit=None,
             all_party_debt=None,
             balancelink=None,
@@ -871,7 +871,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if self.x_idea._label != self.yo_deescription.toPlainText():
             self.idea_edit_road(idea_road=idea_road)
 
-    def idea_duty_insert(self):
+    def idea_pledge_insert(self):
         new_parent_road = f"{self.x_idea._label}"
         if self.x_idea._parent_road not in ("", None):
             new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
@@ -909,7 +909,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.yo_range_source_road.currentText()
             ),
             numeric_road=emptystring_returns_none(self.yo_numeric_road.currentText()),
-            promise=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_action_cb.checkState() == 2),
             uid=None,
             reason=None,
             reason_base=None,
@@ -919,7 +919,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_premise_divisor=None,
             reason_del_premise_base=None,
             reason_del_premise_need=None,
-            descendant_promise_count=None,
+            descendant_pledge_count=None,
             all_party_credit=None,
             all_party_debt=None,
             balancelink=None,

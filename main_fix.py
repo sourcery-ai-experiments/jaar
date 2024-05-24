@@ -41,7 +41,7 @@
 
 #     def editmain_show(self):
 #         if self.main_window.iggnore_agenda_x is None:
-#             self.main_window.role = self.main_window.x_clerk.open_role_file()
+#             self.main_window.role = self.main_window.x_FunctionThatBuildsJob.open_role_file()
 #             self.editmain_view.agenda_x = self.main_window.role
 #         else:
 #             self.editmain_view.agenda_x = self.main_window.iggnore_agenda_x
@@ -93,7 +93,7 @@
 #         self.deiepotlink_delete_button.clicked.connect(self.deiepotlink_delete)
 #         self.deiepotlinks_table.itemClicked.connect(self.deiepotlinks_table_select)
 
-#         self.x_clerk = None
+#         self.x_FunctionThatBuildsJob = None
 #         self.econ_x = None
 #         self.iggnore_agenda_x = None
 #         setup_test_example_environment()
@@ -102,24 +102,24 @@
 #         self.refresh_econ()
 #         self.econ_id_combo_refresh()
 #         self.econ_id_combo.setCurrentText(first_env)
-#         self._owner_id_load(clerk_id="ernie")
+#         self._owner_id_load(FunctionThatBuildsJob_id="ernie")
 
 #     def save_role(self):
 #         if self.role != None:
-#             self.x_clerk.save_role_agenda(self.role)
+#             self.x_FunctionThatBuildsJob.save_role_agenda(self.role)
 #         self.refresh_owner_id()
 
 #     def reload_jobs_job_agendas(self):
 #         if self.econ_x != None:
-#             self.econ_x.reload_all_clerkunits_job_agendas()
+#             self.econ_x.reload_all_FunctionThatBuildsJobunits_job_agendas()
 
 #     def set_jobs_and_reload_srcs(self):
 #         self.save_output_agenda_to_jobs()
 #         self.reload_jobs_job_agendas()
 
 #     def save_output_agenda_to_jobs(self):
-#         if self.x_clerk != None:
-#             self.x_clerk.save_output_agenda_to_jobs()
+#         if self.x_FunctionThatBuildsJob != None:
+#             self.x_FunctionThatBuildsJob.save_output_agenda_to_jobs()
 #         self.refresh_econ()
 
 #     def econ_load_from_file(self):
@@ -143,15 +143,15 @@
 #             self.deiepotlink_pid.setText(f"{selected_owner_id} - {selected_agenda}")
 
 #     def owner_ids_table_select(self):
-#         x_clerk_id = self.owner_ids_table.item(
+#         x_FunctionThatBuildsJob_id = self.owner_ids_table.item(
 #             self.owner_ids_table.currentRow(), 0
 #         ).text()
-#         self._owner_id_load(clerk_id=x_clerk_id)
+#         self._owner_id_load(FunctionThatBuildsJob_id=x_FunctionThatBuildsJob_id)
 
-#     def _owner_id_load(self, clerk_id: str):
-#         self.econ_x.create_clerkunit(clerk_id=clerk_id)
-#         self.x_clerk = self.econ_x._clerkunits.get(clerk_id)
-#         self.clerk_id.setText(self.x_clerk._clerk_id)
+#     def _owner_id_load(self, FunctionThatBuildsJob_id: str):
+#         self.econ_x.create_FunctionThatBuildsJobunit(FunctionThatBuildsJob_id=FunctionThatBuildsJob_id)
+#         self.x_FunctionThatBuildsJob = self.econ_x._FunctionThatBuildsJobunits.get(FunctionThatBuildsJob_id)
+#         self.FunctionThatBuildsJob_id.setText(self.x_FunctionThatBuildsJob._FunctionThatBuildsJob_id)
 #         self.refresh_owner_id()
 
 #     def deiepotlinks_table_select(self):
@@ -171,13 +171,13 @@
 #         ).text()
 #         # self.iggnore_agenda_x = self.econ_x.get_job_agenda(
 #         self.iggnore_agenda_x = self.econ_x.get_agenda_from_iggnores_dir(
-#             clerk_id=self.x_clerk.pid, _owner_id=iggnore_agenda_owner_id
+#             FunctionThatBuildsJob_id=self.x_FunctionThatBuildsJob.pid, _owner_id=iggnore_agenda_owner_id
 #         )
 #         self.edit_agenda = self.iggnore_agenda_x
 
 #     def iggnore_agenda_file_update(self):
 #         self.econ_x.set_iggnore_agenda_file(
-#             clerk_id=self.x_clerk.pid, agenda_obj=self.iggnore_agenda_x
+#             FunctionThatBuildsJob_id=self.x_FunctionThatBuildsJob.pid, agenda_obj=self.iggnore_agenda_x
 #         )
 #         self.refresh_owner_id()
 
@@ -231,23 +231,23 @@
 #         self.refresh_econ()
 
 #     def owner_id_insert(self):
-#         self.econ_x.create_clerkunit(clerk_id=self.clerk_id.text())
+#         self.econ_x.create_FunctionThatBuildsJobunit(FunctionThatBuildsJob_id=self.FunctionThatBuildsJob_id.text())
 #         self.refresh_owner_ids()
 
 #     def owner_id_update_pid(self):
 #         currently_selected = self.owner_ids_table.item(
 #             self.owner_ids_table.currentRow(), 0
 #         ).text()
-#         typed_in = self.clerk_id.text()
+#         typed_in = self.FunctionThatBuildsJob_id.text()
 #         if currently_selected != typed_in:
-#             self.econ_x.change_clerkunit_clerk_id(
+#             self.econ_x.change_FunctionThatBuildsJobunit_FunctionThatBuildsJob_id(
 #                 old_label=currently_selected, new_label=typed_in
 #             )
 #             self.refresh_owner_ids()
 
 #     def owner_id_delete(self):
-#         self.econ_x.delete_clerkunit(
-#             clerk_id=self.owner_ids_table.item(
+#         self.econ_x.delete_FunctionThatBuildsJobunit(
+#             FunctionThatBuildsJob_id=self.owner_ids_table.item(
 #                 self.owner_ids_table.currentRow(), 0
 #             ).text()
 #         )
@@ -257,55 +257,55 @@
 #         agenda_owner_id = self.agendas_table.item(
 #             self.agendas_table.currentRow(), 0
 #         ).text()
-#         if self.x_clerk != None:
+#         if self.x_FunctionThatBuildsJob != None:
 #             agenda_json = open_file(
-#                 dest_dir=self.x_clerk._jobs_dir,
+#                 dest_dir=self.x_FunctionThatBuildsJob._jobs_dir,
 #                 file_name=f"{agenda_owner_id}.json",
 #             )
 #             agenda_x = get_agenda_from_json(agenda_json)
-#             self.x_clerk.set_depot_agenda(agenda_x=agenda_x)
-#             self.econ_x.save_clerkunit_file(clerk_id=self.x_clerk.pid)
+#             self.x_FunctionThatBuildsJob.set_depot_agenda(agenda_x=agenda_x)
+#             self.econ_x.save_FunctionThatBuildsJobunit_file(FunctionThatBuildsJob_id=self.x_FunctionThatBuildsJob.pid)
 #         self.refresh_owner_id()
 
 #     def deiepotlink_update(self):
-#         clerk_id_x = self.x_clerk.pid
+#         FunctionThatBuildsJob_id_x = self.x_FunctionThatBuildsJob.pid
 #         self.econ_x.update_deiepotlink(
-#             clerk_id=clerk_id_x,
+#             FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x,
 #             party_id=self.deiepotlink_pid.text(),
 #             deiepotlink_type=self.deiepotlink_type_combo.currentText(),
 #             creditor_weight=self.deiepotlink_weight.text(),
 #             debtor_weight=self.deiepotlink_weight.text(),
 #         )
-#         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
+#         self.econ_x.save_FunctionThatBuildsJobunit_file(FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x)
 #         self.refresh_owner_id()
 
 #     def deiepotlink_delete(self):
-#         clerk_id_x = self.x_clerk.pid
+#         FunctionThatBuildsJob_id_x = self.x_FunctionThatBuildsJob.pid
 #         self.econ_x.del_deiepotlink(
-#             clerk_id=clerk_id_x, agendaunit_owner_id=self.deiepotlink_pid.text()
+#             FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x, agendaunit_owner_id=self.deiepotlink_pid.text()
 #         )
-#         self.econ_x.save_clerkunit_file(clerk_id=clerk_id_x)
+#         self.econ_x.save_FunctionThatBuildsJobunit_file(FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x)
 #         self.refresh_owner_id()
 
 #     def get_agenda_owner_id_list(self):
 #         return [[file_name] for file_name in dir_files(self.econ_x.get_jobs_dir())]
 
-#     def get_clerk_id_list(self):
+#     def get_FunctionThatBuildsJob_id_list(self):
 #         owner_ids_owner_id_list = []
 #         if self.econ_x != None:
 #             owner_ids_owner_id_list.extend(
 #                 [owner_id_dir]
-#                 for owner_id_dir in self.econ_x.get_clerkunit_dir_paths_list()
+#                 for owner_id_dir in self.econ_x.get_FunctionThatBuildsJobunit_dir_paths_list()
 #             )
 #         return owner_ids_owner_id_list
 
 #     def get_deiepotlink_list(self):
 #         deiepotlinks_list = []
-#         if self.x_clerk != None:
-#             cl_dir = self.x_clerk._agendas_depot_dir
-#             clerkunit_files = dir_files(cl_dir)
-#             # for cl_val in self.x_clerk._deiepotlinks.values():
-#             for cl_filename in clerkunit_files:
+#         if self.x_FunctionThatBuildsJob != None:
+#             cl_dir = self.x_FunctionThatBuildsJob._agendas_depot_dir
+#             FunctionThatBuildsJobunit_files = dir_files(cl_dir)
+#             # for cl_val in self.x_FunctionThatBuildsJob._deiepotlinks.values():
+#             for cl_filename in FunctionThatBuildsJobunit_files:
 #                 print(f"{cl_dir=} {cl_filename=}")
 #                 agenda_json = open_file(cl_dir, file_name=f"{cl_filename}")
 #                 cl_val = get_agenda_from_json(agenda_json)
@@ -315,9 +315,9 @@
 
 #     def get_digests_list(self):
 #         x_list = []
-#         if self.x_clerk != None:
+#         if self.x_FunctionThatBuildsJob != None:
 #             digest_file_list = dir_files(
-#                 dir_path=self.x_clerk._agendas_digest_dir,
+#                 dir_path=self.x_FunctionThatBuildsJob._agendas_digest_dir,
 #                 delete_extensions=True,
 #                 include_dirs=False,
 #                 include_files=True,
@@ -327,9 +327,9 @@
 
 #     def get_iggnores_list(self):
 #         x_list = []
-#         if self.x_clerk != None:
+#         if self.x_FunctionThatBuildsJob != None:
 #             digest_file_list = dir_files(
-#                 dir_path=self.x_clerk._agendas_iggnore_dir,
+#                 dir_path=self.x_FunctionThatBuildsJob._agendas_iggnore_dir,
 #                 delete_extensions=True,
 #                 include_dirs=False,
 #                 include_files=True,
@@ -423,7 +423,7 @@
 
 #     def _sub_refresh_agents_table(self):
 #         self.refresh_x(
-#             self.owner_ids_table, ["owner_ids Table"], self.get_clerk_id_list()
+#             self.owner_ids_table, ["owner_ids Table"], self.get_FunctionThatBuildsJob_id_list()
 #         )
 
 #     def _sub_refresh_deiepotlinks_table(self):
@@ -433,10 +433,10 @@
 #         self.deiepotlink_type_combo.addItems(deiepotlink_types)
 #         self.deiepotlink_type_combo.setCurrentText("")
 #         column_header = ""
-#         if self.x_clerk is None:
+#         if self.x_FunctionThatBuildsJob is None:
 #             column_header = "Agendalinks Table"
-#         elif self.x_clerk != None:
-#             column_header = f"'{self.x_clerk._clerk_id}' agendas"
+#         elif self.x_FunctionThatBuildsJob != None:
+#             column_header = f"'{self.x_FunctionThatBuildsJob._FunctionThatBuildsJob_id}' agendas"
 #         self.refresh_x(
 #             self.deiepotlinks_table,
 #             [column_header, "Link Type", "Weight"],
@@ -541,7 +541,7 @@
 #         self.econ_id_combo.addItems(create_example_econs_list())
 
 #     def refresh_owner_ids(self):
-#         self.x_clerk = None
+#         self.x_FunctionThatBuildsJob = None
 #         self._sub_refresh_agents_table()
 #         self.refresh_owner_id()
 
@@ -550,8 +550,8 @@
 #         self._sub_refresh_digests_table()
 #         self._sub_refresh_iggnores_table()
 #         self.owner_id_output_agenda = None
-#         if self.x_clerk != None:
-#             self.owner_id_output_agenda = self.x_clerk.get_remelded_output_agenda()
+#         if self.x_FunctionThatBuildsJob != None:
+#             self.owner_id_output_agenda = self.x_FunctionThatBuildsJob.get_remelded_output_agenda()
 #         self._sub_refresh_p_ideas_table()
 #         self._sub_refresh_p_partys_table()
 #         self._sub_refresh_p_groups_table()

@@ -442,7 +442,7 @@ class BookUnit:
             )
             x_agendaatom.set_optional_arg("_reest", insert_ideaunit._reest)
             x_agendaatom.set_optional_arg("_weight", insert_ideaunit._weight)
-            x_agendaatom.set_optional_arg("promise", insert_ideaunit.promise)
+            x_agendaatom.set_optional_arg("pledge", insert_ideaunit.pledge)
             self.set_agendaatom(x_agendaatom)
 
             self.add_agendaatom_idea_beliefunit_inserts(
@@ -505,8 +505,8 @@ class BookUnit:
                     x_agendaatom.set_optional_arg("_reest", after_ideaunit._reest)
                 if before_ideaunit._weight != after_ideaunit._weight:
                     x_agendaatom.set_optional_arg("_weight", after_ideaunit._weight)
-                if before_ideaunit.promise != after_ideaunit.promise:
-                    x_agendaatom.set_optional_arg("promise", after_ideaunit.promise)
+                if before_ideaunit.pledge != after_ideaunit.pledge:
+                    x_agendaatom.set_optional_arg("pledge", after_ideaunit.pledge)
                 self.set_agendaatom(x_agendaatom)
 
             # insert / update / delete beliefunits
@@ -1346,7 +1346,7 @@ def add_agenda_ideaunit_insert_to_legible_list(
     _range_source_road_text = "_range_source_road"
     _reest_text = "_reest"
     _weight_text = "_weight"
-    promise_text = "promise"
+    pledge_text = "pledge"
     for parent_road_dict in ideaunit_insert_dict.values():
         for ideaunit_atom in parent_road_dict.values():
             label_value = ideaunit_atom.get_value(label_text)
@@ -1362,7 +1362,7 @@ def add_agenda_ideaunit_insert_to_legible_list(
             _range_source_road_value = ideaunit_atom.get_value(_range_source_road_text)
             _reest_value = ideaunit_atom.get_value(_reest_text)
             _weight_value = ideaunit_atom.get_value(_weight_text)
-            promise_value = ideaunit_atom.get_value(promise_text)
+            pledge_value = ideaunit_atom.get_value(pledge_text)
             x_str = (
                 f"Created Idea '{label_value}' with parent_road {parent_road_value}. "
             )
@@ -1388,8 +1388,8 @@ def add_agenda_ideaunit_insert_to_legible_list(
                 x_str += f"_reest={_reest_value}."
             if _weight_value != None:
                 x_str += f"_weight={_weight_value}."
-            if promise_value != None:
-                x_str += f"promise={promise_value}."
+            if pledge_value != None:
+                x_str += f"pledge={pledge_value}."
 
             legible_list.append(x_str)
 
@@ -1410,7 +1410,7 @@ def add_agenda_ideaunit_update_to_legible_list(
     _range_source_road_text = "_range_source_road"
     _reest_text = "_reest"
     _weight_text = "_weight"
-    promise_text = "promise"
+    pledge_text = "pledge"
     for parent_road_dict in ideaunit_update_dict.values():
         for ideaunit_atom in parent_road_dict.values():
             label_value = ideaunit_atom.get_value(label_text)
@@ -1426,7 +1426,7 @@ def add_agenda_ideaunit_update_to_legible_list(
             _range_source_road_value = ideaunit_atom.get_value(_range_source_road_text)
             _reest_value = ideaunit_atom.get_value(_reest_text)
             _weight_value = ideaunit_atom.get_value(_weight_text)
-            promise_value = ideaunit_atom.get_value(promise_text)
+            pledge_value = ideaunit_atom.get_value(pledge_text)
             x_str = f"Idea '{label_value}' with parent_road {parent_road_value} changed these attributes: "
             if _addin_value != None:
                 x_str += f"_addin={_addin_value}."
@@ -1450,8 +1450,8 @@ def add_agenda_ideaunit_update_to_legible_list(
                 x_str += f"_reest={_reest_value}."
             if _weight_value != None:
                 x_str += f"_weight={_weight_value}."
-            if promise_value != None:
-                x_str += f"promise={promise_value}."
+            if pledge_value != None:
+                x_str += f"pledge={pledge_value}."
 
             legible_list.append(x_str)
 

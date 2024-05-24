@@ -87,7 +87,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN
-    assert tree_metrics_before.last_evaluated_promise_idea_road is None
+    assert tree_metrics_before.last_evaluated_pledge_idea_road is None
 
 
 def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
@@ -98,11 +98,11 @@ def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
     # WHEN/THEN
     train_road = create_road_from_nodes(
         [
-            yao_agenda._world_id,
+            yao_agenda._real_id,
             "ACME",
             "ACME Employee Responsiblities",
             "Know Abuse Prevention and Reporting guildlines",
-            "Discharge Fall 2021 training",
+            "Accomplish Fall 2021 training",
         ]
     )
-    assert yao_tree_metrics.last_evaluated_promise_idea_road == train_road
+    assert yao_tree_metrics.last_evaluated_pledge_idea_road == train_road

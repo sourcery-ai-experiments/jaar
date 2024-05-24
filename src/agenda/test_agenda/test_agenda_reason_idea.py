@@ -137,7 +137,7 @@ def test_intent_returned_WhenNoReasonsExist():
 def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    print(f"{x_agenda._world_id=}")
+    print(f"{x_agenda._real_id=}")
     print(f"{x_agenda._idearoot._label=}")
     gig_text = "gig"
     gig_road = x_agenda.make_l1_road(gig_text)
@@ -167,7 +167,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     try:
         gig_idea._reasonheirs[week_road]
     except KeyError as e:
-        assert str(e) == f"'{x_agenda._world_id},weekdays'"
+        assert str(e) == f"'{x_agenda._real_id},weekdays'"
 
     x_agenda.set_agenda_metrics()
     # idea_dict = x_agenda.get_idea_dict()
@@ -442,7 +442,7 @@ def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh
     time_road = x_agenda.make_l1_road(time)
     rus_war = "rus_war"
     rus_war_road = x_agenda.make_road(time_road, rus_war)
-    x_agenda.add_idea(ideaunit_shop(time, _begin=100, _close=2000), x_agenda._world_id)
+    x_agenda.add_idea(ideaunit_shop(time, _begin=100, _close=2000), x_agenda._real_id)
     x_agenda.add_idea(ideaunit_shop(rus_war, _begin=22, _close=34), time_road)
 
     # WHEN
@@ -530,7 +530,7 @@ def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIf
 
     commute_text = "commute to gig"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._world_id)
+    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._real_id)
     x_agenda.set_agenda_metrics()  # set tree metrics
     commute_idea = x_agenda.get_idea_obj(commute_road)
     assert len(commute_idea._reasonunits) == 0
@@ -610,7 +610,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     # 5.2. idea(...,gig).active = False
     commute_text = "commute to gig"
     commute_road = x_agenda.make_l1_road(commute_text)
-    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._world_id)
+    x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._real_id)
     x_agenda.edit_idea_attr(
         road=commute_road,
         reason_base=gig_road,

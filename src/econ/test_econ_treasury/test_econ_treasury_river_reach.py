@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_world_id,
+    get_temp_env_real_id,
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
@@ -261,12 +261,12 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     # ):
     #     # GIVEN
     #     ex7_text = "ex7"
-    #     x_econ = _delete_and_set_ex6(x_world_id=ex7_text)
+    #     x_econ = _delete_and_set_ex6(x_real_id=ex7_text)
     #     sal_text = "Sal"
     #     # x_econ = _delete_and_set_ex6()
     #     # # x_econ.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
-    #     # x_econ = econunit_shop(world_id=ex6_text, econ_dir=get_test_econ_dir())
+    #     # x_econ = econunit_shop(real_id=ex6_text, econ_dir=get_test_econ_dir())
     #     # x_econ.set_road_nodes(sal_text)
     #     # x_econ.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 

@@ -292,7 +292,7 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "promise": {
+            "pledge": {
                 "python_type": "bool",
                 "sqlite_datatype": "INTEGER"
             }

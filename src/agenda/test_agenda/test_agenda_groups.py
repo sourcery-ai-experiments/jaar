@@ -1,4 +1,4 @@
-from src._road.road import get_default_world_id_roadnode
+from src._road.road import get_default_real_id_roadnode
 from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop
@@ -184,8 +184,8 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     idea_dict = sue_agenda.get_idea_dict()
 
     # THEN
-    print(f"{idea_dict.keys()=} {get_default_world_id_roadnode()=}")
-    root_idea = idea_dict.get(get_default_world_id_roadnode())
+    print(f"{idea_dict.keys()=} {get_default_real_id_roadnode()=}")
+    root_idea = idea_dict.get(get_default_real_id_roadnode())
     swim_idea = idea_dict.get(swim_road)
     street_idea = idea_dict.get(sue_agenda.make_road(swim_road, street_text))
 
@@ -275,7 +275,7 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
 
     # THEN
     print(f"{idea_dict.keys()=}")
-    idea_prom = idea_dict.get(get_default_world_id_roadnode())
+    idea_prom = idea_dict.get(get_default_real_id_roadnode())
     assert len(idea_prom._balanceheirs) == 3
 
     bheir_rico = idea_prom._balanceheirs.get(rico_text)
@@ -698,7 +698,7 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     new_idea_parent_road = x_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
-        _weight=40, _label=clean_cookery_text, promise=True
+        _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"
@@ -789,7 +789,7 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     new_idea_parent_road = bob_agenda.make_road(gig_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
-        _weight=40, _label=clean_cookery_text, promise=True
+        _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"
