@@ -9,8 +9,8 @@ from src.econ.job_creator import (
     get_job_file,
     _get_empty_job,
     get_role_file,
-    _get_roll,
-    _listen_to_roll,
+    _get_debtors_roll,
+    _listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
 from src.econ.examples.econ_env_kit import (
@@ -48,7 +48,7 @@ def test_get_job_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
     assert yao_job.get_dict() == yao_job.get_dict()
 
 
-def test_get_roll_ReturnsObj():
+def test_get_debtors_roll_ReturnsObj():
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -59,14 +59,14 @@ def test_get_roll_ReturnsObj():
     yao_role.set_agenda_metrics()
 
     # WHEN
-    yao_roll = _get_roll(yao_role)
+    yao_roll = _get_debtors_roll(yao_role)
 
     # THEN
     zia_partyunit = yao_role.get_party(zia_text)
     assert yao_roll == {zia_text: zia_partyunit}
 
 
-def test_get_roll_ReturnsObjIgnoresZero_debtor_weight():
+def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -81,7 +81,7 @@ def test_get_roll_ReturnsObjIgnoresZero_debtor_weight():
     yao_role.set_agenda_metrics()
 
     # WHEN
-    yao_roll = _get_roll(yao_role)
+    yao_roll = _get_debtors_roll(yao_role)
 
     # THEN
     zia_partyunit = yao_role.get_party(zia_text)
@@ -125,7 +125,7 @@ def test_get_empty_job_ReturnsEmptyAgendaUnit():
     assert len(yao_empty_job._idea_dict) == 1
 
 
-def test_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
+def test_listen_to_debtors_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -155,13 +155,13 @@ def test_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     assert len(before_yao_job.get_intent_dict()) == 0
 
     # WHEN
-    yao_job = _listen_to_roll(get_test_econ_dir(), yao_role)
+    yao_job = _listen_to_debtors_roll(get_test_econ_dir(), yao_role)
 
     # THEN
     assert len(yao_job.get_intent_dict()) == 2
 
 
-def test_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
+def test_listen_to_debtors_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -224,14 +224,16 @@ def test_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
     save_job_file(get_test_econ_dir(), sue_agendaunit)
 
     # WHEN
-    yao_job = _listen_to_roll(get_test_econ_dir(), yao_role)
+    yao_job = _listen_to_debtors_roll(get_test_econ_dir(), yao_role)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3
     assert len(yao_job.get_intent_dict()) == 2
 
 
-def test_listen_to_roll_ListensToOwner_role_AndNotOwner_job(env_dir_setup_cleanup):
+def test_listen_to_debtors_roll_ListensToOwner_role_AndNotOwner_job(
+    env_dir_setup_cleanup,
+):
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -274,7 +276,7 @@ def test_listen_to_roll_ListensToOwner_role_AndNotOwner_job(env_dir_setup_cleanu
     save_job_file(get_test_econ_dir(), yao_job)
 
     # WHEN
-    yao_job = _listen_to_roll(get_test_econ_dir(), yao_role)
+    yao_job = _listen_to_debtors_roll(get_test_econ_dir(), yao_role)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3

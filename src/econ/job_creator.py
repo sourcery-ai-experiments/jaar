@@ -81,7 +81,7 @@ def _get_empty_job(x_role: AgendaUnit) -> AgendaUnit:
     return x_job
 
 
-def _get_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
+def _get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
     return {
         x_partyunit.party_id: x_partyunit
         for x_partyunit in x_role._partys.values()
@@ -89,27 +89,22 @@ def _get_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
     }
 
 
-def _listen_to_roll(econ_dir, x_role: AgendaUnit) -> AgendaUnit:
-    x_job = _get_empty_job(x_role)
-    if x_role._party_debtor_pool is None:
+def _listen_to_debtors_roll(econ_dir, speaker_role: AgendaUnit) -> AgendaUnit:
+    x_job = _get_empty_job(speaker_role)
+    if speaker_role._party_debtor_pool is None:
         return x_job
 
-    x_roll = _get_roll(x_role)
-    for x_partyunit in x_roll.values():
-        party_id = x_partyunit.party_id
-        x_jobs_dir = get_econ_jobs_dir(econ_dir)
-        job_file_path = f"{x_jobs_dir}/{get_owner_file_name(party_id)}"
-
-        if party_id == x_role._owner_id:
-            listen_to_speaker(x_job, speaker=x_role)
-        elif os_path_exists(job_file_path) and party_id != x_role._owner_id:
-            speaker_agenda = get_job_file(econ_dir, x_partyunit.party_id)
-            listen_to_speaker(x_job, speaker_agenda)
+    for x_partyunit in _get_debtors_roll(speaker_role).values():
+        if x_partyunit.party_id == speaker_role._owner_id:
+            listen_to_speaker(x_job, speaker_role)
+        else:
+            speaker_job = get_job_file(econ_dir, x_partyunit.party_id)
+            listen_to_speaker(x_job, speaker_job)
     return x_job
 
 
 def create_job_file_from_role_file(econ_dir, person_id: PersonID):
     x_role = get_role_file(econ_dir, person_id)
-    x_job = _listen_to_roll(econ_dir, x_role)
+    x_job = _listen_to_debtors_roll(econ_dir, x_role)
     save_job_file(econ_dir, x_job)
     return x_job

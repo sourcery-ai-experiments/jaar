@@ -48,12 +48,11 @@ def _get_ingested_ideaunit_list(
 
 
 def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    speaker.set_agenda_metrics()
     if listener._party_debtor_pool is None:
         raise Missing_party_debtor_poolException(
             "Listening process is not possible without _party_debtor_pool."
         )
-    if speaker._rational:
+    if speaker != None and speaker._rational:
         perspective_agendaunit = copy_deepcopy(speaker)
         # look at things from speaker's prespective
         perspective_agendaunit.set_owner_id(listener._owner_id)
