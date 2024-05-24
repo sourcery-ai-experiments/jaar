@@ -25,6 +25,8 @@ def test_PartyUnit_exists():
     assert bob_partyunit.party_id == bob_text
     assert bob_partyunit.creditor_weight is None
     assert bob_partyunit.debtor_weight is None
+    assert bob_partyunit._irrational_debtor_weight is None
+    assert bob_partyunit._missing_job_debtor_weight is None
     assert bob_partyunit._agenda_credit is None
     assert bob_partyunit._agenda_debt is None
     assert bob_partyunit._agenda_intent_credit is None
@@ -75,6 +77,8 @@ def test_partyunit_shop_CorrectlySetsAttributes():
     todd_partyunit = partyunit_shop(party_id=todd_text)
 
     # THEN
+    assert todd_partyunit._irrational_debtor_weight == 0
+    assert todd_partyunit._missing_job_debtor_weight == 0
     assert todd_partyunit._agenda_credit == 0
     assert todd_partyunit._agenda_debt == 0
     assert todd_partyunit._agenda_intent_credit == 0
@@ -241,6 +245,64 @@ def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeWithNullsAnd
     # THEN
     assert bob_partyunit.creditor_weight == 1
     assert bob_partyunit.debtor_weight == 1
+
+
+def test_PartyUnit_add_irrational_debtor_weight_SetsAttrCorrectly():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    assert bob_partyunit._irrational_debtor_weight == 0
+
+    # WHEN
+    bob_int1 = 11
+    bob_partyunit.add_irrational_debtor_weight(bob_int1)
+
+    # THEN
+    assert bob_partyunit._irrational_debtor_weight == bob_int1
+
+    # WHEN
+    bob_int2 = 22
+    bob_partyunit.add_irrational_debtor_weight(bob_int2)
+
+    # THEN
+    assert bob_partyunit._irrational_debtor_weight == bob_int1 + bob_int2
+
+
+def test_PartyUnit_add_missing_job_debtor_weight_SetsAttrCorrectly():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    assert bob_partyunit._missing_job_debtor_weight == 0
+
+    # WHEN
+    bob_int1 = 11
+    bob_partyunit.add_missing_job_debtor_weight(bob_int1)
+
+    # THEN
+    assert bob_partyunit._missing_job_debtor_weight == bob_int1
+
+    # WHEN
+    bob_int2 = 22
+    bob_partyunit.add_missing_job_debtor_weight(bob_int2)
+
+    # THEN
+    assert bob_partyunit._missing_job_debtor_weight == bob_int1 + bob_int2
+
+
+def test_PartyUnit_reset_job_basis_attrs_SetsAttrCorrectly():
+    # GIVEN
+    bob_partyunit = partyunit_shop("Bob")
+    bob_int1 = 11
+    bob_int2 = 22
+    bob_partyunit.add_irrational_debtor_weight(bob_int1)
+    bob_partyunit.add_missing_job_debtor_weight(bob_int2)
+    assert bob_partyunit._irrational_debtor_weight == bob_int1
+    assert bob_partyunit._missing_job_debtor_weight == bob_int2
+
+    # WHEN
+    bob_partyunit.reset_job_basis_attrs()
+
+    # THEN
+    assert bob_partyunit._irrational_debtor_weight == 0
+    assert bob_partyunit._missing_job_debtor_weight == 0
 
 
 def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
@@ -503,6 +565,10 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     bob_debtor_weight = 17
     bob_partyunit.set_creditor_weight(bob_creditor_weight)
     bob_partyunit.set_debtor_weight(bob_debtor_weight)
+    bob_irrational_debtor_weight = 87
+    bob_missing_job_debtor_weight = 97
+    bob_partyunit.add_irrational_debtor_weight(bob_irrational_debtor_weight)
+    bob_partyunit.add_missing_job_debtor_weight(bob_missing_job_debtor_weight)
 
     bob_treasury_credit_score = 7000
     bob_treasury_voice_rank = 898
@@ -539,6 +605,8 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "party_id": bob_text,
         "creditor_weight": bob_creditor_weight,
         "debtor_weight": bob_debtor_weight,
+        "_irrational_debtor_weight": bob_irrational_debtor_weight,
+        "_missing_job_debtor_weight": bob_missing_job_debtor_weight,
         "_agenda_credit": bob_agenda_credit,
         "_agenda_debt": bob_agenda_debt,
         "_agenda_intent_credit": bob_agenda_intent_credit,
@@ -592,6 +660,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     yao_text = "Yao"
     yao_creditor_weight = 13
     yao_debtor_weight = 17
+    yao_irrational_debtor_weight = 87
+    yao_missing_job_debtor_weight = 97
     yao_creditor_operational = False
     yao_debtor_operational = True
     yao_treasury_due_paid = 0.55
@@ -604,6 +674,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
             "party_id": yao_text,
             "creditor_weight": yao_creditor_weight,
             "debtor_weight": yao_debtor_weight,
+            "_irrational_debtor_weight": yao_irrational_debtor_weight,
+            "_missing_job_debtor_weight": yao_missing_job_debtor_weight,
             "_creditor_operational": yao_creditor_operational,
             "_debtor_operational": yao_debtor_operational,
             "_treasury_due_paid": yao_treasury_due_paid,
@@ -626,6 +698,8 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     assert yao_partyunit.party_id == yao_text
     assert yao_partyunit.creditor_weight == yao_creditor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
+    assert yao_partyunit._irrational_debtor_weight == yao_irrational_debtor_weight
+    assert yao_partyunit._missing_job_debtor_weight == yao_missing_job_debtor_weight
     assert yao_partyunit._creditor_operational == yao_creditor_operational
     assert yao_partyunit._debtor_operational == yao_debtor_operational
     assert yao_partyunit._treasury_due_paid == yao_treasury_due_paid
