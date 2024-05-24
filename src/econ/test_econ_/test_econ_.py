@@ -69,7 +69,6 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert os_path.exists(econ_dir)
     assert x_econ._treasury_db != None
     assert x_econ._manager_person_id == sue_text
-    assert x_econ._clerkunits == {}
     assert x_econ._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -87,7 +86,6 @@ def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     # assert os_path.exists(econ_dir)
     assert x_econ._treasury_db != None
     assert x_econ._manager_person_id == get_temp_env_person_id()
-    assert x_econ._clerkunits == {}
     assert x_econ._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -153,7 +151,6 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     econ_dir = f"src/econ/examples/econs/{x_real_id}"
     econ_file_name = "econ.json"
     econ_file_path = f"{econ_dir}/{econ_file_name}"
-    clerkunits_dir = f"{econ_dir}/clerkunits"
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{econ_dir}/{treasury_file_name}"
 
@@ -162,7 +159,6 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(econ_file_path) is False
     assert os_path.exists(x_econ.get_jobs_dir()) is False
     assert os_path.exists(x_econ.get_roles_dir()) is False
-    assert os_path.exists(clerkunits_dir) is False
     assert os_path.exists(treasury_file_path) is False
 
     # WHEN
@@ -174,12 +170,10 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(econ_file_path)
     assert os_path.exists(x_econ.get_jobs_dir())
     assert os_path.exists(x_econ.get_roles_dir())
-    assert os_path.exists(clerkunits_dir)
     assert os_path.exists(treasury_file_path)
     assert x_econ.get_object_root_dir() == econ_dir
     assert x_econ.get_jobs_dir() == x_econ.get_jobs_dir()
     assert x_econ.get_roles_dir() == x_econ.get_roles_dir()
-    assert x_econ.get_clerkunits_dir() == clerkunits_dir
     assert x_econ.get_treasury_db_path() == treasury_file_path
 
 
@@ -195,7 +189,6 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
     old_jobs_dir = f"{old_econ_dir}/{jobs_text}"
     roles_text = "roles"
     old_roles_dir = f"{old_econ_dir}/{roles_text}"
-    old_clerkunits_dir = f"{old_econ_dir}/clerkunits"
 
     new_x_real_id = "ex_env1"
     new_econ_dir = f"src/econ/examples/econs/{new_x_real_id}"
@@ -203,7 +196,6 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
     new_econ_file_path = f"{new_econ_dir}/{new_econ_file_name}"
     new_jobs_dir = f"{new_econ_dir}/{jobs_text}"
     new_roles_dir = f"{new_econ_dir}/{roles_text}"
-    new_clerkunits_dir = f"{new_econ_dir}/clerkunits"
     delete_dir(dir=new_econ_dir)
     print(f"{new_econ_dir=}")
 
@@ -218,20 +210,16 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_econ_file_path)
     assert os_path.exists(old_jobs_dir)
     assert os_path.exists(old_roles_dir)
-    assert os_path.exists(old_clerkunits_dir)
     assert x_econ.get_jobs_dir() == old_jobs_dir
     assert x_econ.get_roles_dir() == old_roles_dir
-    assert x_econ.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_econ_dir) is False
     assert os_path.isdir(new_econ_dir) is False
     assert os_path.exists(new_econ_file_path) is False
     assert os_path.exists(new_jobs_dir) is False
     assert os_path.exists(new_roles_dir) is False
-    assert os_path.exists(new_clerkunits_dir) is False
     assert x_econ.get_jobs_dir() != new_jobs_dir
     assert x_econ.get_roles_dir() != new_roles_dir
-    assert x_econ.get_clerkunits_dir() != new_clerkunits_dir
     assert x_econ.real_id != new_x_real_id
 
     # WHEN
@@ -244,23 +232,19 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
     assert os_path.exists(old_econ_file_path) is False
     assert os_path.exists(old_jobs_dir) is False
     assert os_path.exists(old_roles_dir) is False
-    assert os_path.exists(old_clerkunits_dir) is False
     assert x_econ.real_id == new_x_real_id
     print(f"{x_econ.get_jobs_dir()=}")
     print(f"           {old_jobs_dir=}")
     assert x_econ.get_jobs_dir() != old_jobs_dir
     assert x_econ.get_roles_dir() != old_roles_dir
-    assert x_econ.get_clerkunits_dir() != old_clerkunits_dir
 
     assert os_path.exists(new_econ_dir)
     assert os_path.isdir(new_econ_dir)
     assert os_path.exists(new_econ_file_path)
     assert os_path.exists(new_jobs_dir)
     assert os_path.exists(new_roles_dir)
-    assert os_path.exists(new_clerkunits_dir)
     assert x_econ.get_jobs_dir() == new_jobs_dir
     assert x_econ.get_roles_dir() == new_roles_dir
-    assert x_econ.get_clerkunits_dir() == new_clerkunits_dir
 
     # Undo change to directory
     # delete_dir(dir=old_econ_dir)
@@ -279,7 +263,6 @@ def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     old_jobs_dir = f"{old_econ_dir}/{jobs_text}"
     roles_text = "roles"
     old_roles_dir = f"{old_econ_dir}/{roles_text}"
-    old_clerkunits_dir = f"{old_econ_dir}/clerkunits"
 
     x_econ = econunit_shop(old_x_real_id, get_test_econ_dir())
     x_econ.set_econ_dirs()
@@ -289,10 +272,8 @@ def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(old_econ_file_path)
     assert os_path.exists(old_jobs_dir)
     assert os_path.exists(old_roles_dir)
-    assert os_path.exists(old_clerkunits_dir)
     assert x_econ.get_jobs_dir() == old_jobs_dir
     assert x_econ.get_roles_dir() == old_roles_dir
-    assert x_econ.get_clerkunits_dir() == old_clerkunits_dir
 
     new_x_real_id = "ex_env1"
     new_econ_dir = f"src/econ/examples/econs/{new_x_real_id}"
@@ -300,17 +281,14 @@ def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     new_econ_file_path = f"{new_econ_dir}/{new_econ_file_name}"
     new_jobs_dir = f"{new_econ_dir}/{jobs_text}"
     new_roles_dir = f"{new_econ_dir}/{roles_text}"
-    new_clerkunits_dir = f"{new_econ_dir}/clerkunits"
 
     assert os_path.exists(new_econ_dir) is False
     assert os_path.isdir(new_econ_dir) is False
     assert os_path.exists(new_econ_file_path) is False
     assert os_path.exists(new_jobs_dir) is False
     assert os_path.exists(new_roles_dir) is False
-    assert os_path.exists(new_clerkunits_dir) is False
     assert x_econ.get_jobs_dir() != new_jobs_dir
     assert x_econ.get_roles_dir() != new_roles_dir
-    assert x_econ.get_clerkunits_dir() != new_clerkunits_dir
     assert x_econ.real_id != new_x_real_id
 
     # WHEN
@@ -322,20 +300,16 @@ def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert os_path.exists(old_econ_file_path)
     assert os_path.exists(old_jobs_dir)
     assert os_path.exists(old_roles_dir)
-    assert os_path.exists(old_clerkunits_dir)
     assert x_econ.get_jobs_dir() == old_jobs_dir
     assert x_econ.get_roles_dir() == old_roles_dir
-    assert x_econ.get_clerkunits_dir() == old_clerkunits_dir
 
     assert os_path.exists(new_econ_dir)
     assert os_path.isdir(new_econ_dir)
     assert os_path.exists(new_econ_file_path)
     assert os_path.exists(new_jobs_dir)
     assert os_path.exists(new_roles_dir)
-    assert os_path.exists(new_clerkunits_dir)
     assert x_econ.get_jobs_dir() != new_jobs_dir
     assert x_econ.get_roles_dir() != new_roles_dir
-    assert x_econ.get_clerkunits_dir() != new_clerkunits_dir
     assert x_econ.real_id != new_x_real_id
 
     # Undo change to directory

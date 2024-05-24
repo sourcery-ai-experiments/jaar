@@ -110,9 +110,9 @@
 #     assert os_path.exists(jobs_tim_file_path)
 #     assert os_path.exists(jobs_xio_file_path)
 #     assert os_path.exists(jobs_yao_file_path)
-#     assert texas_econ.get_clerkunit(tim_text).get_role() != None
-#     assert texas_econ.get_clerkunit(xio_text).get_role() != None
-#     assert texas_econ.get_clerkunit(yao_text).get_role() != None
+#     assert texas_econ.create_job_file_from_role_file(tim_text).get_role() != None
+#     assert texas_econ.create_job_file_from_role_file(xio_text).get_role() != None
+#     assert texas_econ.create_job_file_from_role_file(yao_text).get_role() != None
 
 
 # def test_systemUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_role_agenda(
@@ -156,7 +156,7 @@
 #     system.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = texas_econ.get_clerkunit(xio_text).get_role()
+#     xio_role = texas_econ.create_job_file_from_role_file(xio_text).get_role()
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -233,7 +233,7 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = texas_econ.get_clerkunit(tim_text).get_role()
+#     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.get_party(xio_text) != None
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
@@ -283,7 +283,7 @@
 #     system.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = texas_econ.get_clerkunit(xio_text).get_role()
+#     xio_role = texas_econ.create_job_file_from_role_file(xio_text).get_role()
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -329,7 +329,7 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = texas_econ.get_clerkunit(tim_text).get_role()
+#     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.get_party(xio_text) != None
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs

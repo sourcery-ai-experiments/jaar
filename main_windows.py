@@ -261,11 +261,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with open(f"{self.file_path}", "w") as f:
             f.write(x_agenda_json)
         self.operating_file_path_l.setText(self.file_path)
-        # save_file(
-        #     dest_dir=agenda_clerkunit_dir,
-        #     file_name=f"{self.x_agenda._real_id}.json",
-        #     file_text=x_agenda.get_json(),
-        # )
 
     def load_file(self):
         x_json = ""

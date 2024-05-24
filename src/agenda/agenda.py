@@ -135,7 +135,7 @@ class AgendaUnit:
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
-    _originunit: OriginUnit = None  # created by ClerkUnit process
+    _originunit: OriginUnit = None  # In job agendas this shows source
     # set_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _econ_dict: dict[RoadUnit:IdeaUnit] = None

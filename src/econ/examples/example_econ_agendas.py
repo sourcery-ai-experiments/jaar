@@ -1,9 +1,5 @@
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, RealID
-
-# from src.agenda.examples.example_agendas import get_agenda_assignment_laundry_example1
-from src.econ.clerk import clerkunit_shop, ClerkUnit
 from src.econ.econ import get_temp_env_real_id
-
 from random import randrange
 
 
@@ -124,20 +120,6 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda.add_idea(ideaunit_shop("H"), c_road)
     x_agenda.set_agenda_metrics()
     return x_agenda
-
-
-def get_clerkunit_2agenda(env_dir, econ_id) -> ClerkUnit:
-    a_agenda = get_1node_agenda()
-    j_agenda = get_Jnode2node_agenda()
-    xio_text = "Xio"
-    xio_clerkunit = clerkunit_shop(xio_text, env_dir, econ_id)
-    xio_role = xio_clerkunit.get_role()
-    xio_role.add_partyunit(a_agenda._owner_id)
-    xio_role.add_partyunit(j_agenda._owner_id)
-    xio_clerkunit.save_role_agenda(xio_role)
-    xio_clerkunit._set_depot_agenda(a_agenda)
-    xio_clerkunit._set_depot_agenda(j_agenda)
-    return xio_clerkunit
 
 
 def get_agenda_2CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:

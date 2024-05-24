@@ -156,8 +156,7 @@ class RealUnit:
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.save_file_to_roles(x_duty)
-                x_econ.create_clerkunit(person_id)
-                x_job = x_econ.get_file_in_jobs(person_id)
+                x_job = x_econ.create_job_file_from_role_file(person_id)
                 x_job.set_agenda_metrics()
                 x_work.meld(x_job)
                 x_work.set_agenda_metrics
@@ -176,15 +175,11 @@ class RealUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
         return x_personunit.get_work_file_agenda()
 
-    def _set_partyunit(
-        self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
-    ):
-        x_econunit.full_setup_clerkunit(person_id)
-        person_clerkunit = x_econunit.get_clerkunit(person_id)
-        person_role = person_clerkunit.get_role()
-        person_role.add_partyunit(party_id)
-        person_clerkunit.save_role_agenda(person_role)
-        person_clerkunit.save_refreshed_job_to_jobs()
+    # def _set_partyunit(
+    #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
+    # ):
+    #     person_role.add_partyunit(party_id)
+    #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit_from_memory(x_person_id)

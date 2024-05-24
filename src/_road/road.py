@@ -30,12 +30,6 @@ class HealerID(PersonID):
     pass
 
 
-class ClerkID(PersonID):
-    """A RoadNode used to identify a ClerkUnit's user"""
-
-    pass
-
-
 class OwnerID(HealerID):
     """A RoadNode used to identify a AgendaUnit's owner_id"""
 

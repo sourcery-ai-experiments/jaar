@@ -25,7 +25,7 @@ from src.econ.treasury_sqlstr import (
     get_agenda_groupunit_table_insert_sqlstr,
     get_agenda_groupunit_dict,
 )
-from src.econ.examples.example_clerks import (
+from src.econ.examples.example_econ_agendas import (
     get_3node_agenda,
     get_6node_agenda,
     get_agenda_3CleanNodesRandomWeights,
