@@ -212,6 +212,8 @@ class PartyUnit(PartyCore):
 
         self.creditor_weight += other_partyunit.creditor_weight
         self.debtor_weight += other_partyunit.debtor_weight
+        self._irrational_debtor_weight += other_partyunit._irrational_debtor_weight
+        self._missing_job_debtor_weight += other_partyunit._missing_job_debtor_weight
 
 
 # class PartyUnitsshop:

@@ -731,12 +731,23 @@ def test_PartyUnit_meld_RaiseSameparty_idException():
 def test_PartyUnit_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partyunit_shop(
-        party_id=todd_text, creditor_weight=7, debtor_weight=19
-    )
-    todd_party2 = partyunit_shop(party_id=todd_text, creditor_weight=5, debtor_weight=3)
+    todd_party1 = partyunit_shop(todd_text, creditor_weight=7, debtor_weight=19)
+    todd_party2 = partyunit_shop(todd_text, creditor_weight=5, debtor_weight=3)
+
+    todd1_irrational_debtor_weight = 44
+    todd2_irrational_debtor_weight = 33
+    todd_party1.add_irrational_debtor_weight(todd1_irrational_debtor_weight)
+    todd_party2.add_irrational_debtor_weight(todd2_irrational_debtor_weight)
+    todd1_missing_job_debtor_weight = 11
+    todd2_missing_job_debtor_weight = 22
+    todd_party1.add_missing_job_debtor_weight(todd1_missing_job_debtor_weight)
+    todd_party2.add_missing_job_debtor_weight(todd2_missing_job_debtor_weight)
+
+    todd_party2
     assert todd_party1.creditor_weight == 7
     assert todd_party1.debtor_weight == 19
+    assert todd_party1._irrational_debtor_weight == todd1_irrational_debtor_weight
+    assert todd_party1._missing_job_debtor_weight == todd1_missing_job_debtor_weight
 
     # WHEN
     todd_party1.meld(todd_party2)
@@ -744,3 +755,10 @@ def test_PartyUnit_meld_CorrectlySumsWeights():
     # THEN
     assert todd_party1.creditor_weight == 12
     assert todd_party1.debtor_weight == 22
+    assert todd_party1._irrational_debtor_weight != todd1_irrational_debtor_weight
+    assert todd_party1._missing_job_debtor_weight != todd1_missing_job_debtor_weight
+
+    irrational_sum = todd1_irrational_debtor_weight + todd2_irrational_debtor_weight
+    missing_job_sum = todd1_missing_job_debtor_weight + todd2_missing_job_debtor_weight
+    assert todd_party1._irrational_debtor_weight == irrational_sum
+    assert todd_party1._missing_job_debtor_weight == missing_job_sum
