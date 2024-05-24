@@ -145,7 +145,8 @@ def test_listen_to_speaker_RaisesErrorIfPoolIsNotSet():
     with pytest_raises(Exception) as excinfo:
         listen_to_speaker(yao_agendaunit, zia_agendaunit)
     assert (
-        str(excinfo.value) == "Listening process is not possible without debtor pool."
+        str(excinfo.value)
+        == "Listening process is not possible without _party_debtor_pool."
     )
 
 
