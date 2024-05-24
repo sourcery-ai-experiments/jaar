@@ -30,7 +30,7 @@ def _distribute_ingest(
                 x_count = 0
 
 
-def _get_ingested_ideaunit_list(
+def get_ingest_list(
     item_list: list[IdeaUnit], debtor_amount: float, planck: float
 ) -> list[IdeaUnit]:
     x_list = []
@@ -52,23 +52,29 @@ def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
         raise Missing_party_debtor_poolException(
             "Listening process is not possible without _party_debtor_pool."
         )
-    if speaker != None and speaker._rational:
-        perspective_agendaunit = copy_deepcopy(speaker)
-        # look at things from speaker's prespective
-        perspective_agendaunit.set_owner_id(listener._owner_id)
-        intent_list = list(perspective_agendaunit.get_intent_dict().values())
-        ingest_list = _get_ingested_ideaunit_list(
-            item_list=intent_list,
-            debtor_amount=listener._party_debtor_pool,
-            planck=listener._planck,
-        )
+    if speaker is None:
+        return None
 
-        for ingested_ideaunit in ingest_list:
-            _ingest_ideaunit_into_listener(listener, ingested_ideaunit)
+    # look at things from speaker's prespective
+    perspective_agendaunit = copy_deepcopy(speaker)
+    perspective_agendaunit.set_owner_id(listener._owner_id)
+    perspective_agendaunit.set_agenda_metrics()
+
+    if perspective_agendaunit._rational == False:
+        speaker_partyunit = listener.get_party(speaker._owner_id)
+        speaker_debtor_weight = speaker_partyunit.debtor_weight
+        speaker_partyunit.add_irrational_debtor_weight(speaker_debtor_weight)
+        return listener
+
+    intent_list = list(perspective_agendaunit.get_intent_dict().values())
+    debtor_amount = listener._party_debtor_pool
+    ingest_list = get_ingest_list(intent_list, debtor_amount, listener._planck)
+    for ingested_ideaunit in ingest_list:
+        _ingest_single_ideaunit(listener, ingested_ideaunit)
     return listener
 
 
-def _ingest_ideaunit_into_listener(listener: AgendaUnit, ingested_ideaunit: IdeaUnit):
+def _ingest_single_ideaunit(listener: AgendaUnit, ingested_ideaunit: IdeaUnit):
     replace_weight_list, add_to_weight_list = _create_weight_replace_and_add_lists(
         listener, ingested_ideaunit.get_road()
     )

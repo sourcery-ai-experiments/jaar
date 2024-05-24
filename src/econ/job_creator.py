@@ -96,7 +96,7 @@ def _listen_to_debtors_roll(econ_dir: str, speaker_role: AgendaUnit) -> AgendaUn
     if speaker_role._party_debtor_pool is None:
         return x_job
 
-    for x_partyunit in get_debtors_roll(x_job):
+    for x_partyunit in x_job._partys.values():
         if x_partyunit.party_id == speaker_role._owner_id:
             listen_to_speaker(x_job, speaker_role)
         else:
