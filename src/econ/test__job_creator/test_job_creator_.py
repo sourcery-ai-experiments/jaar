@@ -3,12 +3,12 @@ from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.econ.job_creator import (
-    save_file_to_roles,
-    save_file_to_jobs,
+    save_role_file,
+    save_job_file,
     get_owner_file_name,
-    get_file_in_jobs,
+    get_job_file,
     _get_empty_job,
-    get_file_in_roles,
+    get_role_file,
     _get_roll,
     _listen_to_roll,
     create_job_file_from_role_file,
@@ -22,14 +22,14 @@ from src.econ.examples.econ_env_kit import (
 from os.path import exists as os_path_exists
 
 
-def test_get_file_in_roles_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
+def test_get_role_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
-    save_file_to_roles(get_test_econ_dir(), yao_role)
+    save_role_file(get_test_econ_dir(), yao_role)
 
     # WHEN
-    yao_role = get_file_in_roles(get_test_econ_dir(), yao_text)
+    yao_role = get_role_file(get_test_econ_dir(), yao_text)
 
     # THEN
     assert yao_role.get_dict() == yao_role.get_dict()
@@ -136,7 +136,7 @@ def test_listen_to_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
+    save_job_file(get_test_econ_dir(), zia_agendaunit)
 
     before_yao_job = _get_empty_job(yao_role)
     assert len(before_yao_job.get_intent_dict()) == 0
@@ -162,7 +162,7 @@ def test_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
     yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_pool = 87
     yao_role.set_party_pool(yao_pool)
-    save_file_to_roles(get_test_econ_dir(), yao_role)
+    save_role_file(get_test_econ_dir(), yao_role)
 
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
@@ -177,7 +177,7 @@ def test_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
+    save_job_file(get_test_econ_dir(), zia_agendaunit)
 
     sue_agendaunit = agendaunit_shop(sue_text)
     sue_agendaunit.set_max_tree_traverse(5)
@@ -208,7 +208,7 @@ def test_listen_to_roll_IgnoresIrrationalAgenda(env_dir_setup_cleanup):
         reason_base=egg_road,
         reason_suff_idea_active=False,
     )
-    save_file_to_jobs(get_test_econ_dir(), sue_agendaunit)
+    save_job_file(get_test_econ_dir(), sue_agendaunit)
 
     # WHEN
     yao_job = _listen_to_roll(get_test_econ_dir(), yao_role)
@@ -233,7 +233,7 @@ def test_listen_to_roll_ListensToOwner_role_AndNotOwner_job(env_dir_setup_cleanu
     yao_pool = 87
     yao_role.set_party_pool(yao_pool)
     # save yao without task to roles
-    save_file_to_roles(get_test_econ_dir(), yao_role)
+    save_role_file(get_test_econ_dir(), yao_role)
 
     # Save Zia to jobs
     zia_text = "Zia"
@@ -249,7 +249,7 @@ def test_listen_to_roll_ListensToOwner_role_AndNotOwner_job(env_dir_setup_cleanu
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road)
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    save_file_to_jobs(get_test_econ_dir(), zia_agendaunit)
+    save_job_file(get_test_econ_dir(), zia_agendaunit)
 
     # save yao with task to roles
     yao_job = agendaunit_shop(yao_text)
@@ -258,7 +258,7 @@ def test_listen_to_roll_ListensToOwner_role_AndNotOwner_job(env_dir_setup_cleanu
     yao_job.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
     vaccum_ideaunit = yao_job.get_idea_obj(vaccum_road)
     vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
-    save_file_to_jobs(get_test_econ_dir(), yao_job)
+    save_job_file(get_test_econ_dir(), yao_job)
 
     # WHEN
     yao_job = _listen_to_roll(get_test_econ_dir(), yao_role)
@@ -274,7 +274,7 @@ def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     yao_role.set_agenda_metrics()
-    save_file_to_roles(get_test_econ_dir(), yao_role)
+    save_role_file(get_test_econ_dir(), yao_role)
     yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"
     assert os_path_exists(yao_job_file_path) == False
 

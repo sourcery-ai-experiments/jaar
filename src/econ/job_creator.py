@@ -27,7 +27,7 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/jobs"
 
 
-def save_file_to_roles(x_econ_dir: str, x_agenda: AgendaUnit):
+def save_role_file(x_econ_dir: str, x_agenda: AgendaUnit):
     save_file(
         dest_dir=get_econ_roles_dir(x_econ_dir),
         file_name=get_owner_file_name(x_agenda._owner_id),
@@ -35,7 +35,7 @@ def save_file_to_roles(x_econ_dir: str, x_agenda: AgendaUnit):
     )
 
 
-def save_file_to_jobs(x_econ_dir: str, x_agenda: AgendaUnit):
+def save_job_file(x_econ_dir: str, x_agenda: AgendaUnit):
     save_file(
         dest_dir=get_econ_jobs_dir(x_econ_dir),
         file_name=get_owner_file_name(x_agenda._owner_id),
@@ -43,7 +43,7 @@ def save_file_to_jobs(x_econ_dir: str, x_agenda: AgendaUnit):
     )
 
 
-def get_file_in_roles(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
+def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
     role_file_name = get_owner_file_name(owner_id)
     role_dir = get_econ_roles_dir(x_econ_dir)
     try:
@@ -55,7 +55,7 @@ def get_file_in_roles(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
     return agendaunit_get_from_json(role_file_text)
 
 
-def get_file_in_jobs(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
+def get_job_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
     job_file_name = get_owner_file_name(owner_id)
     job_dir = get_econ_jobs_dir(x_econ_dir)
     return agendaunit_get_from_json(open_file(job_dir, job_file_name))
@@ -101,16 +101,16 @@ def _listen_to_roll(econ_dir, x_role: AgendaUnit) -> AgendaUnit:
         job_file_path = f"{x_jobs_dir}/{get_owner_file_name(party_id)}"
 
         if os_path_exists(job_file_path) and party_id != x_role._owner_id:
-            speaker_agenda = get_file_in_jobs(econ_dir, x_partyunit.party_id)
+            speaker_agenda = get_job_file(econ_dir, x_partyunit.party_id)
             listen_to_speaker(x_job, speaker_agenda)
         elif os_path_exists(role_file_path) and party_id == x_role._owner_id:
-            speaker_agenda = get_file_in_roles(econ_dir, x_partyunit.party_id)
+            speaker_agenda = get_role_file(econ_dir, x_partyunit.party_id)
             listen_to_speaker(x_job, speaker_agenda)
     return x_job
 
 
 def create_job_file_from_role_file(econ_dir, person_id: PersonID):
-    x_role = get_file_in_roles(econ_dir, person_id)
+    x_role = get_role_file(econ_dir, person_id)
     x_job = _listen_to_roll(econ_dir, x_role)
-    save_file_to_jobs(econ_dir, x_job)
+    save_job_file(econ_dir, x_job)
     return x_job

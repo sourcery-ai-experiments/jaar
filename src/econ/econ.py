@@ -21,10 +21,10 @@ from src.econ.job_creator import (
     PersonID,
     get_econ_roles_dir,
     get_econ_jobs_dir,
-    save_file_to_roles,
-    save_file_to_jobs,
-    get_file_in_roles,
-    get_file_in_jobs,
+    save_role_file,
+    save_job_file,
+    get_role_file,
+    get_job_file,
     get_owner_file_name,
     create_job_file_from_role_file,
 )
@@ -124,13 +124,13 @@ class EconUnit:
     # treasurying
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.get_file_in_roles(owner_id)
+            owner_role = self.get_role_file(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            save_file_to_roles(self.econ_dir, owner_role)
+            save_role_file(self.econ_dir, owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.get_file_in_jobs(x_owner_id)
+        x_agenda = self.get_job_file(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -143,7 +143,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_file_to_jobs(x_agenda)
+        self.save_job_file(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -254,11 +254,11 @@ class EconUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.get_file_in_jobs(owner_id=owner_id)
+            x_agenda = self.get_job_file(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_file_to_jobs(x_agenda)
+            self.save_job_file(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -371,38 +371,38 @@ class EconUnit:
     def get_roles_dir(self):
         return get_econ_roles_dir(self.get_object_root_dir())
 
-    def save_file_to_roles(self, x_agenda: AgendaUnit):
+    def save_role_file(self, x_agenda: AgendaUnit):
         x_agenda.set_real_id(real_id=self.real_id)
-        save_file_to_roles(self.get_object_root_dir(), x_agenda)
+        save_role_file(self.get_object_root_dir(), x_agenda)
 
-    def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
-        return get_file_in_roles(self.get_object_root_dir(), owner_id)
+    def get_role_file(self, owner_id: PersonID) -> AgendaUnit:
+        return get_role_file(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_roles(self, x_owner_id: PersonID):
+    def delete_role_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
         return get_econ_jobs_dir(self.get_object_root_dir())
 
-    def save_file_to_jobs(self, x_agenda: AgendaUnit):
+    def save_job_file(self, x_agenda: AgendaUnit):
         x_agenda.set_real_id(real_id=self.real_id)
-        save_file_to_jobs(self.get_object_root_dir(), x_agenda)
+        save_job_file(self.get_object_root_dir(), x_agenda)
 
     def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
         return create_job_file_from_role_file(self.econ_dir, person_id)
 
-    def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
-        return get_file_in_jobs(self.get_object_root_dir(), owner_id)
+    def get_job_file(self, owner_id: str) -> AgendaUnit:
+        return get_job_file(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_jobs(self, x_owner_id: PersonID):
+    def delete_job_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
     def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
-        x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
+        x_agenda = self.get_job_file(owner_id=old_owner_id)
         x_agenda.set_owner_id(new_owner_id=new_owner_id)
-        self.save_file_to_jobs(x_agenda)
-        self.delete_file_in_jobs(x_owner_id=old_owner_id)
+        self.save_job_file(x_agenda)
+        self.delete_job_file(x_owner_id=old_owner_id)
 
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())

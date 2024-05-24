@@ -2,8 +2,8 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.econ.job_creator import (
-    get_file_in_roles,
-    save_file_to_roles,
+    get_role_file,
+    save_role_file,
     get_owner_file_name,
 )
 from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir

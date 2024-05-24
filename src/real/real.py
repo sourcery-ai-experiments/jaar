@@ -140,7 +140,7 @@ class RealUnit:
         duty_agenda: AgendaUnit,
     ):
         x_econ = healer_person.get_econ(econ_road)
-        x_econ.save_file_to_roles(duty_agenda)
+        x_econ.save_role_file(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
@@ -155,7 +155,7 @@ class RealUnit:
             healer_person.create_person_econunits()
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
-                x_econ.save_file_to_roles(x_duty)
+                x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
                 x_job.set_agenda_metrics()
                 x_work.meld(x_job)

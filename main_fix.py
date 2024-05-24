@@ -206,7 +206,7 @@
 #         self.refresh_econ()
 
 #     def agenda_insert(self):
-#         self.econ_x.save_file_to_jobs(
+#         self.econ_x.save_job_file(
 #             agenda_x=agendaunit_shop(_owner_id=self.agenda_owner_id.text())
 #         )
 #         self.refresh_econ()
@@ -223,7 +223,7 @@
 #             self.refresh_econ()
 
 #     def agenda_delete(self):
-#         self.econ_x.delete_file_in_jobs(
+#         self.econ_x.delete_job_file(
 #             agenda_x_label=self.agendas_table.item(
 #                 self.agendas_table.currentRow(), 0
 #             ).text()
