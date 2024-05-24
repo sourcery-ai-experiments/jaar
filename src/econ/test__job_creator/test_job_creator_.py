@@ -13,7 +13,6 @@ from src.econ.job_creator import (
     _listen_to_roll,
     create_job_file_from_role_file,
 )
-from src.econ.econ import get_econ_jobs_dir, get_econ_roles_dir
 from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
     get_test_econ_dir,
@@ -25,14 +24,28 @@ from os.path import exists as os_path_exists
 def test_get_role_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_role = agendaunit_shop(yao_text)
-    save_role_file(get_test_econ_dir(), yao_role)
+    save_role_file(get_test_econ_dir(), agendaunit_shop(yao_text))
 
     # WHEN
     yao_role = get_role_file(get_test_econ_dir(), yao_text)
 
     # THEN
     assert yao_role.get_dict() == yao_role.get_dict()
+
+
+def test_get_job_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
+    # GIVEN
+    yao_text = "Yao"
+
+    # WHEN / THEN
+    assert get_job_file(get_test_econ_dir(), yao_text) is None
+
+    # GIVEN
+    save_job_file(get_test_econ_dir(), agendaunit_shop(yao_text))
+    # WHEN
+    yao_job = get_job_file(get_test_econ_dir(), yao_text)
+    # THEN
+    assert yao_job.get_dict() == yao_job.get_dict()
 
 
 def test_get_roll_ReturnsObj():

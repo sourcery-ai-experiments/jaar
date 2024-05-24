@@ -28,19 +28,15 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
 
 
 def save_role_file(x_econ_dir: str, x_agenda: AgendaUnit):
-    save_file(
-        dest_dir=get_econ_roles_dir(x_econ_dir),
-        file_name=get_owner_file_name(x_agenda._owner_id),
-        file_text=x_agenda.get_json(),
-    )
+    x_dest_dir = get_econ_roles_dir(x_econ_dir)
+    x_file_name = get_owner_file_name(x_agenda._owner_id)
+    save_file(x_dest_dir, x_file_name, x_agenda.get_json())
 
 
 def save_job_file(x_econ_dir: str, x_agenda: AgendaUnit):
-    save_file(
-        dest_dir=get_econ_jobs_dir(x_econ_dir),
-        file_name=get_owner_file_name(x_agenda._owner_id),
-        file_text=x_agenda.get_json(),
-    )
+    x_dest_dir = get_econ_jobs_dir(x_econ_dir)
+    x_file_name = get_owner_file_name(x_agenda._owner_id)
+    save_file(x_dest_dir, x_file_name, x_agenda.get_json())
 
 
 def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
@@ -55,10 +51,16 @@ def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
     return agendaunit_get_from_json(role_file_text)
 
 
-def get_job_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
+def get_job_file(
+    x_econ_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
     job_file_name = get_owner_file_name(owner_id)
     job_dir = get_econ_jobs_dir(x_econ_dir)
-    return agendaunit_get_from_json(open_file(job_dir, job_file_name))
+    job_file_path = f"{job_dir}/{job_file_name}"
+    if os_path_exists(job_file_path) or not return_None_if_missing:
+        return agendaunit_get_from_json(open_file(job_dir, job_file_name))
+    else:
+        None
 
 
 def _get_empty_job(x_role: AgendaUnit) -> AgendaUnit:
@@ -95,16 +97,13 @@ def _listen_to_roll(econ_dir, x_role: AgendaUnit) -> AgendaUnit:
     x_roll = _get_roll(x_role)
     for x_partyunit in x_roll.values():
         party_id = x_partyunit.party_id
-        x_roles_dir = get_econ_roles_dir(econ_dir)
         x_jobs_dir = get_econ_jobs_dir(econ_dir)
-        role_file_path = f"{x_roles_dir}/{get_owner_file_name(party_id)}"
         job_file_path = f"{x_jobs_dir}/{get_owner_file_name(party_id)}"
 
-        if os_path_exists(job_file_path) and party_id != x_role._owner_id:
+        if party_id == x_role._owner_id:
+            listen_to_speaker(x_job, speaker=x_role)
+        elif os_path_exists(job_file_path) and party_id != x_role._owner_id:
             speaker_agenda = get_job_file(econ_dir, x_partyunit.party_id)
-            listen_to_speaker(x_job, speaker_agenda)
-        elif os_path_exists(role_file_path) and party_id == x_role._owner_id:
-            speaker_agenda = get_role_file(econ_dir, x_partyunit.party_id)
             listen_to_speaker(x_job, speaker_agenda)
     return x_job
 

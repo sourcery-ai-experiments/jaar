@@ -14,6 +14,7 @@ from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
     env_dir_setup_cleanup,
 )
+from pytest import raises as pytest_raises
 from os import path as os_path
 
 
@@ -37,8 +38,13 @@ def test_EconUnit_get_job_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     y_agenda = example_get_7nodeJRootWithH_agenda()
 
-    # # WHEN / THEN
-    # assert x_econ.get_job_file(y_agenda._owner_id) is None
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        x_econ.get_job_file(y_agenda._owner_id)
+    assert (
+        str(excinfo.value)
+        == "Could not load file src/econ/examples/econs/ex_econ04/jobs/A.json (2, 'No such file or directory')"
+    )
 
     # WHEN
     x_econ.save_job_file(y_agenda)
@@ -103,9 +109,7 @@ def test_EconUnit_save_job_file_ChangesFile_idearoot(env_dir_setup_cleanup):
     assert new_x_agenda._idearoot._label == x_real_id
 
 
-def test_EconUnit_create_job_file_from_role_file_ReturnsCorrectObj(
-    env_dir_setup_cleanup,
-):
+def test_EconUnit_create_job_file_from_role_file_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_id = get_temp_env_real_id()
     x_econ = econunit_shop(x_real_id, econ_dir=get_test_econ_dir())

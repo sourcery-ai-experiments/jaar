@@ -362,7 +362,7 @@ class EconUnit:
 
     def _delete_treasury(self):
         self._treasury_db = None
-        delete_dir(dir=self.get_treasury_db_path())
+        delete_dir(self.get_treasury_db_path())
 
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
@@ -386,23 +386,24 @@ class EconUnit:
         return get_econ_jobs_dir(self.get_object_root_dir())
 
     def save_job_file(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(real_id=self.real_id)
+        x_agenda.set_real_id(self.real_id)
         save_job_file(self.get_object_root_dir(), x_agenda)
 
     def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
         return create_job_file_from_role_file(self.econ_dir, person_id)
 
     def get_job_file(self, owner_id: str) -> AgendaUnit:
-        return get_job_file(self.get_object_root_dir(), owner_id)
+        econ_dir = self.get_object_root_dir()
+        return get_job_file(econ_dir, owner_id, return_None_if_missing=False)
 
     def delete_job_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
     def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
-        x_agenda = self.get_job_file(owner_id=old_owner_id)
-        x_agenda.set_owner_id(new_owner_id=new_owner_id)
+        x_agenda = self.get_job_file(old_owner_id)
+        x_agenda.set_owner_id(new_owner_id)
         self.save_job_file(x_agenda)
-        self.delete_job_file(x_owner_id=old_owner_id)
+        self.delete_job_file(old_owner_id)
 
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
