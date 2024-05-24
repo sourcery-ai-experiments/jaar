@@ -63,7 +63,7 @@ def get_job_file(
         None
 
 
-def _get_empty_job(x_role: AgendaUnit) -> AgendaUnit:
+def create_job_basis(x_role: AgendaUnit) -> AgendaUnit:
     x_job = agendaunit_shop(
         x_role._owner_id,
         x_role._real_id,
@@ -81,20 +81,20 @@ def _get_empty_job(x_role: AgendaUnit) -> AgendaUnit:
     return x_job
 
 
-def _get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
-    return {
-        x_partyunit.party_id: x_partyunit
+def get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
+    return [
+        x_partyunit
         for x_partyunit in x_role._partys.values()
         if x_partyunit.debtor_weight != 0
-    }
+    ]
 
 
-def _listen_to_debtors_roll(econ_dir, speaker_role: AgendaUnit) -> AgendaUnit:
-    x_job = _get_empty_job(speaker_role)
+def _listen_to_debtors_roll(econ_dir: str, speaker_role: AgendaUnit) -> AgendaUnit:
+    x_job = create_job_basis(speaker_role)
     if speaker_role._party_debtor_pool is None:
         return x_job
 
-    for x_partyunit in _get_debtors_roll(speaker_role).values():
+    for x_partyunit in get_debtors_roll(x_job):
         if x_partyunit.party_id == speaker_role._owner_id:
             listen_to_speaker(x_job, speaker_role)
         else:

@@ -98,10 +98,9 @@ def _create_weight_replace_and_add_lists(
     root_road = get_root_node_from_road(x_road)
     for ancestor_road in ancestor_roads:
         if ancestor_road != root_road:
-            try:
-                listener.get_idea_obj(ancestor_road)
+            if listener.idea_exists(ancestor_road):
                 add_to_weight_list.append(ancestor_road)
-            except Exception:
+            else:
                 replace_weight_list.append(ancestor_road)
 
     return replace_weight_list, add_to_weight_list

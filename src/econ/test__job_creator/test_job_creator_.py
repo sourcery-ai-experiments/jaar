@@ -7,9 +7,9 @@ from src.econ.job_creator import (
     save_job_file,
     get_owner_file_name,
     get_job_file,
-    _get_empty_job,
+    create_job_basis,
     get_role_file,
-    _get_debtors_roll,
+    get_debtors_roll,
     _listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
@@ -59,11 +59,11 @@ def test_get_debtors_roll_ReturnsObj():
     yao_role.set_agenda_metrics()
 
     # WHEN
-    yao_roll = _get_debtors_roll(yao_role)
+    yao_roll = get_debtors_roll(yao_role)
 
     # THEN
     zia_partyunit = yao_role.get_party(zia_text)
-    assert yao_roll == {zia_text: zia_partyunit}
+    assert yao_roll == [zia_partyunit]
 
 
 def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
@@ -81,14 +81,14 @@ def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     yao_role.set_agenda_metrics()
 
     # WHEN
-    yao_roll = _get_debtors_roll(yao_role)
+    yao_roll = get_debtors_roll(yao_role)
 
     # THEN
     zia_partyunit = yao_role.get_party(zia_text)
-    assert yao_roll == {zia_text: zia_partyunit}
+    assert yao_roll == [zia_partyunit]
 
 
-def test_get_empty_job_ReturnsEmptyAgendaUnit():
+def test_create_job_basis_ReturnsEmptyAgendaUnit():
     # GIVEN
     yao_text = "Yao"
     slash_text = "/"
@@ -107,7 +107,7 @@ def test_get_empty_job_ReturnsEmptyAgendaUnit():
     yao_role.set_party_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
-    yao_empty_job = _get_empty_job(yao_role)
+    yao_empty_job = create_job_basis(yao_role)
 
     # THEN
     assert yao_empty_job._owner_id == yao_role._owner_id
@@ -151,7 +151,7 @@ def test_listen_to_debtors_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
     save_job_file(get_test_econ_dir(), zia_agendaunit)
 
-    before_yao_job = _get_empty_job(yao_role)
+    before_yao_job = create_job_basis(yao_role)
     assert len(before_yao_job.get_intent_dict()) == 0
 
     # WHEN
