@@ -55,7 +55,37 @@ def test_ChapUnit_Exists():
     assert x_chap._planck is None
 
 
-def test_personunit_exists_in_memory():
+def test_ChapUnit_Exists():
+    # GIVEN
+    x_reals_dir = "src/real/examples"
+    x_real_id = "music"
+    x_person_id = "Sue"
+    x_road_delimiter = "/"
+    x_planck = 3
+
+    # WHEN
+    x_chapunit = chapunit_shop(
+        x_reals_dir, x_real_id, x_person_id, x_road_delimiter, x_planck
+    )
+
+    # THEN
+    assert x_chapunit._road_delimiter == x_road_delimiter
+    assert x_chapunit.real_dir == f"{x_reals_dir}/{x_real_id}"
+    assert x_chapunit.persons_dir == f"{x_chapunit.real_dir}/persons"
+    assert x_chapunit.person_id == x_person_id
+    assert x_chapunit.person_dir == f"{x_chapunit.persons_dir}/{x_person_id}"
+    assert x_chapunit._econs_dir == f"{x_chapunit.person_dir}/econs"
+    assert x_chapunit._atoms_dir == f"{x_chapunit.person_dir}/atoms"
+    assert x_chapunit._gifts_dir == f"{x_chapunit.person_dir}/{get_gifts_folder()}"
+    assert x_chapunit._duty_file_name == f"{get_duty_file_name()}.json"
+    x_duty_path = f"{x_chapunit.person_dir}/{x_chapunit._duty_file_name}"
+    assert x_chapunit._duty_path == x_duty_path
+    assert x_chapunit._work_file_name == f"{get_work_file_name()}.json"
+    x_workpath = f"{x_chapunit.person_dir}/{x_chapunit._work_file_name}"
+    assert x_chapunit._work_path == x_workpath
+
+
+def test_PersonUnit_Exists():
     # GIVEN / WHEN
     x_person = PersonUnit()
 
@@ -97,7 +127,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # GIVEN
     yao_text = "Yao"
-    x_person.set_person_id(yao_text)
+    x_chapunit = chapunit_shop(None, None, yao_text)
+    x_person.set_person_id(x_chapunit)
 
     # THEN
     assert x_person.person_id == yao_text
@@ -216,7 +247,7 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     assert duty_file_exists(chapunit)
 
 
-def test_PersonUnitsave_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
+def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
@@ -264,7 +295,7 @@ def test_PersonUnitsave_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     assert duty_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnitsave_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -606,7 +637,8 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person._work_path) is False
 
     # WHEN
-    sue_person.create_core_dir_and_files()
+    x_chapunit = chapunit_shop(None, None, sue_text)
+    sue_person.create_core_dir_and_files(x_chapunit)
 
     # THEN
     assert os_path_exists(sue_person.real_dir)

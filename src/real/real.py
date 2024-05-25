@@ -3,7 +3,7 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.gift import get_gifts_folder
-from src.real.person import PersonUnit, personunit_shop
+from src.real.person import PersonUnit, personunit_shop, chapunit_shop
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
 from src._instrument.file import set_dir, delete_dir, dir_files
@@ -102,7 +102,10 @@ class RealUnit:
             reals_dir=self.reals_dir,
             _road_delimiter=self._road_delimiter,
         )
-        x_personunit.create_core_dir_and_files()
+        x_chapunit = chapunit_shop(
+            self.reals_dir, self.real_id, person_id, self._road_delimiter
+        )
+        x_personunit.create_core_dir_and_files(x_chapunit)
         if (
             self.personunit_exists_in_memory(x_personunit.person_id) == False
             and not replace_personunit
