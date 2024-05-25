@@ -164,7 +164,7 @@
 #         )
 #         x_giftunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(),
-#             after_agenda=self.get_duty_file_agenda(),
+#             after_agenda=self.get_duty_file_agenda(x_chapunit),
 #         )
 #         x_giftunit.save_files()
 
@@ -224,7 +224,7 @@
 #         return agenda_get_from_json(work_json)
 
 #     def load_duty_file(self):
-#         self._duty_obj = self.get_duty_file_agenda()
+#         self._duty_obj = self.get_duty_file_agenda(x_chapunit)
 
 #     def load_work_file(self):
 #         self._work_obj = self.get_work_file_agenda()
@@ -382,7 +382,7 @@
 #         self._econ_objs[econ_roadunit] = x_econunit
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
-#         x_duty_agenda = self.get_duty_file_agenda()
+#         x_duty_agenda = self.get_duty_file_agenda(x_chapunit)
 #         x_duty_agenda.set_agenda_metrics(econ_exceptions)
 #         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
@@ -424,10 +424,10 @@
 #             self.set_econunit_role(x_econ_road, role)
 
 #     def set_person_econunits_role(self):
-#         self.set_econunits_role(self.get_duty_file_agenda())
+#         self.set_econunits_role(self.get_duty_file_agenda(x_chapunit))
 
 #     def add_pledge_gift(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-#         duty_agenda = self.get_duty_file_agenda()
+#         duty_agenda = self.get_duty_file_agenda(x_chapunit)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
 #         next_giftunit = self._create_new_giftunit()
@@ -445,8 +445,8 @@
 #         self.save_giftunit_file(new_giftunit)
 
 #     def append_gifts_to_duty_file(self):
-#         self.save_duty_file(self._merge_gifts_into_agenda(self.get_duty_file_agenda()))
-#         return self.get_duty_file_agenda()
+#         self.save_duty_file(self._merge_gifts_into_agenda(self.get_duty_file_agenda(x_chapunit)))
+#         return self.get_duty_file_agenda(x_chapunit)
 
 
 # def personunit_shop(

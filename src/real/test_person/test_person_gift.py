@@ -527,7 +527,7 @@ def test_PersonUnit_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup)
     assert os_path_exists(sue_gift3_path) == False
 
     # WHEN
-    before_agenda = sue_person.get_duty_file_agenda()
+    before_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     bob_text = "Bob"
     after_agenda = copy_deepcopy(before_agenda)
     after_agenda.add_partyunit(bob_text)
@@ -544,7 +544,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    duty_agenda = sue_person.get_duty_file_agenda()
+    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     duty_agenda._last_gift_id is None
 
     # WHEN
@@ -564,7 +564,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1at
     sue_person.save_giftunit_file(sue_chapunit, sue_1atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda()
+    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -590,7 +590,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2at
     sue_person.save_giftunit_file(sue_chapunit, sue_2atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda()
+    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -616,7 +616,7 @@ def test_PersonUnit_append_gifts_to_duty_file_AddsGiftsToDutyFile(
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
     sue_person.save_giftunit_file(sue_chapunit, sue_2atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda()
+    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -807,14 +807,14 @@ def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    old_sue_duty = sue_person.get_duty_file_agenda()
+    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
     gift_filename = get_json_filename(1)
     sue_gift_path = f"{sue_person._gifts_dir}/{gift_filename}"
     print(f"{sue_gift_path=}")
     assert os_path_exists(sue_gift_path) == False
-    old_sue_duty = sue_person.get_duty_file_agenda()
+    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
     assert old_sue_duty.idea_exists(clean_road) == False
 
     # WHEN
@@ -822,7 +822,7 @@ def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(sue_gift_path)
-    new_sue_duty = sue_person.get_duty_file_agenda()
+    new_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
     assert new_sue_duty.idea_exists(clean_road)
 
 
@@ -833,7 +833,7 @@ def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    old_sue_duty = sue_person.get_duty_file_agenda()
+    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
     assert old_sue_duty.idea_exists(clean_road) == False
@@ -843,7 +843,7 @@ def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
     sue_person.add_pledge_gift(sue_chapunit, clean_road, x_suffgroup=bob_text)
 
     # THEN
-    new_sue_duty = sue_person.get_duty_file_agenda()
+    new_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
     assert new_sue_duty.idea_exists(clean_road)
     clean_idea = new_sue_duty.get_idea_obj(clean_road)
     print(f"{clean_idea._assignedunit._suffgroups=}")

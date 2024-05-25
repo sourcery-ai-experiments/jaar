@@ -3,7 +3,12 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.gift import get_gifts_folder
-from src.real.person import PersonUnit, personunit_shop, chapunit_shop
+from src.real.person import (
+    PersonUnit,
+    personunit_shop,
+    chapunit_shop,
+    _save_work_file as person_save_work_file,
+)
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
 from src._instrument.file import set_dir, delete_dir, dir_files
@@ -122,7 +127,10 @@ class RealUnit:
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         x_person = self.get_personunit_from_memory(person_id)
-        return x_person.get_duty_file_agenda()
+        x_chapunit = chapunit_shop(
+            self.reals_dir, self.real_id, person_id, self._road_delimiter
+        )
+        return x_person.get_duty_file_agenda(x_chapunit)
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
@@ -148,14 +156,17 @@ class RealUnit:
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_duty = x_personunit.get_duty_file_agenda()
+        x_chapunit = chapunit_shop(
+            self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
+        )
+        x_duty = x_personunit.get_duty_file_agenda(x_chapunit)
         x_duty.set_agenda_metrics()
 
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
-            healer_person.create_person_econunits()
+            healer_person.create_person_econunits(x_chapunit)
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
@@ -167,7 +178,7 @@ class RealUnit:
         # if work_agenda has not changed st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
-        x_personunit._save_work_file(x_work)
+        person_save_work_file(x_chapunit, x_work)
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
