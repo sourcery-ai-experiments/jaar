@@ -197,6 +197,20 @@ def _get_empty_agenda(x_chapunit: ChapUnit) -> AgendaUnit:
     return empty_agenda
 
 
+def save_duty_file(x_chapunit: ChapUnit, x_agenda: AgendaUnit, replace: bool = True):
+    if x_agenda._owner_id != x_chapunit.person_id:
+        raise Invalid_duty_Exception(
+            f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_chapunit.person_id}''s duty agenda."
+        )
+    if replace in {True, False}:
+        save_file(
+            dest_dir=x_chapunit.person_dir,
+            file_name=x_chapunit._duty_file_name,
+            file_text=x_agenda.get_json(),
+            replace=replace,
+        )
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -252,15 +266,18 @@ class PersonUnit:
         elif x_duty_file_exists and gift_file_exists == False:
             self._create_initial_gift_from_duty(x_chapunit)
 
-    def _create_initial_gift_and_duty_files(self, x_chapunit):
+    def _create_initial_gift_and_duty_files(self, x_chapunit: ChapUnit):
         default_duty_agenda = agendaunit_shop(
-            self.person_id, self.real_id, self._road_delimiter, self._planck
+            x_chapunit.person_id,
+            x_chapunit.real_id,
+            x_chapunit._road_delimiter,
+            x_chapunit._planck,
         )
         x_giftunit = giftunit_shop(
-            _giver=self.person_id,
+            _giver=x_chapunit.person_id,
             _gift_id=get_init_gift_id_if_None(),
-            _gifts_dir=self._gifts_dir,
-            _atoms_dir=self._atoms_dir,
+            _gifts_dir=x_chapunit._gifts_dir,
+            _atoms_dir=x_chapunit._atoms_dir,
         )
         x_giftunit._bookunit.add_all_different_agendaatoms(
             before_agenda=_get_empty_agenda(x_chapunit),
@@ -283,25 +300,10 @@ class PersonUnit:
         x_giftunit.save_files()
 
     def _create_duty_from_gifts(self, x_chapunit):
-        self.save_duty_file(
+        save_duty_file(
             x_chapunit,
             self._merge_gifts_into_agenda(x_chapunit, _get_empty_agenda(x_chapunit)),
         )
-
-    def save_duty_file(
-        self, x_chapunit: ChapUnit, x_agenda: AgendaUnit, replace: bool = True
-    ):
-        if x_agenda._owner_id != x_chapunit.person_id:
-            raise Invalid_duty_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_chapunit.person_id}''s duty agenda."
-            )
-        if replace in {True, False}:
-            save_file(
-                dest_dir=x_chapunit.person_dir,
-                file_name=x_chapunit._duty_file_name,
-                file_text=x_agenda.get_json(),
-                replace=replace,
-            )
 
     def get_duty_file_agenda(self, x_chapunit: ChapUnit) -> AgendaUnit:
         duty_json = open_file(
@@ -538,7 +540,7 @@ class PersonUnit:
         self.save_giftunit_file(x_chapunit, new_giftunit)
 
     def append_gifts_to_duty_file(self, x_chapunit):
-        self.save_duty_file(
+        save_duty_file(
             x_chapunit,
             self._merge_gifts_into_agenda(
                 x_chapunit, self.get_duty_file_agenda(x_chapunit)

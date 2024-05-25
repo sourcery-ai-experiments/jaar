@@ -13,6 +13,7 @@ from src.real.person import (
     ChapUnit,
     _save_work_file,
     initialize_work_file,
+    save_duty_file,
 )
 from pytest import raises as pytest_raises
 from src.real.examples.real_env_kit import (
@@ -274,7 +275,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     assert duty_file_exists(sue_chapunit) == False
 
     # WHEN
-    sue_person.save_duty_file(sue_chapunit, sue_agenda)
+    save_duty_file(sue_chapunit, sue_agenda)
 
     # THEN
     assert duty_file_exists(sue_chapunit)
@@ -289,7 +290,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    sue_person.save_duty_file(sue_chapunit, sue2_agenda)
+    save_duty_file(sue_chapunit, sue2_agenda)
 
     # THEN
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
@@ -309,7 +310,7 @@ def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_person.save_duty_file(sue_chapunit, agendaunit_shop(yao_text))
+        save_duty_file(sue_chapunit, agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
@@ -324,7 +325,7 @@ def test_PersonUnit_load_duty_file_CorrectlyLoads_duty_obj(reals_dir_setup_clean
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    sue_person.save_duty_file(sue_chapunit, sue_agenda)
+    save_duty_file(sue_chapunit, sue_agenda)
     assert sue_person._duty_obj is None
 
     # WHEN
@@ -343,7 +344,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     sue_text = "Sue"
     seven_int = 7
     sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_chapunit = chapunit_shop(None, None, sue_text, x_planck=seven_int)
     assert duty_file_exists(sue_chapunit)
     delete_dir(sue_person._duty_path)
     assert duty_file_exists(sue_chapunit) == False
@@ -398,7 +399,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     sue_duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     assert duty_file_exists(sue_chapunit)
     init_gift_file_path = f"{sue_person._gifts_dir}/{init_gift_id()}.json"
     delete_dir(sue_person._gifts_dir)

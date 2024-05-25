@@ -3,7 +3,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 
 # from src.agenda.graphic import display_ideatree
-from src.real.person import chapunit_shop
+from src.real.person import chapunit_shop, save_duty_file
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -40,7 +40,7 @@ def create_example_real1() -> RealUnit:
     yao_duty_agenda.add_idea(dallas_idea, texas_road)
     yao_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person.save_duty_file(yao_chapunit, yao_duty_agenda)
+    save_duty_file(yao_chapunit, yao_duty_agenda)
     yao_person.create_person_econunits(yao_chapunit)
 
     # WHEN
@@ -102,9 +102,9 @@ def create_example_real2() -> RealUnit:
     zia_duty_agenda.add_idea(dallas_idea, texas_road)
     zia_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person.save_duty_file(yao_chapunit, yao_duty_agenda)
-    wei_person.save_duty_file(wei_chapunit, wei_duty_agenda)
-    zia_person.save_duty_file(zia_chapunit, zia_duty_agenda)
+    save_duty_file(yao_chapunit, yao_duty_agenda)
+    save_duty_file(wei_chapunit, wei_duty_agenda)
+    save_duty_file(zia_chapunit, zia_duty_agenda)
     yao_person.create_person_econunits(yao_chapunit)
     wei_person.create_person_econunits(yao_chapunit)
     zia_person.create_person_econunits(yao_chapunit)
@@ -158,9 +158,9 @@ def create_example_real3() -> RealUnit:
     zia_duty_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
 
     # display_ideatree(yao_duty_agenda, mode="Econ").show()
-    yao_person.save_duty_file(yao_chapunit, yao_duty_agenda)
-    wei_person.save_duty_file(wei_chapunit, wei_duty_agenda)
-    zia_person.save_duty_file(zia_chapunit, zia_duty_agenda)
+    save_duty_file(yao_chapunit, yao_duty_agenda)
+    save_duty_file(wei_chapunit, wei_duty_agenda)
+    save_duty_file(zia_chapunit, zia_duty_agenda)
 
     return music_real
 
@@ -243,9 +243,9 @@ def create_example_real4() -> RealUnit:
     zia_duty_agenda.add_idea(dallas_idea, texas_road)
     zia_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
-    yao_person.save_duty_file(yao_chapunit, yao_duty_agenda)
-    wei_person.save_duty_file(wei_chapunit, wei_duty_agenda)
-    zia_person.save_duty_file(zia_chapunit, zia_duty_agenda)
+    save_duty_file(yao_chapunit, yao_duty_agenda)
+    save_duty_file(wei_chapunit, wei_duty_agenda)
+    save_duty_file(zia_chapunit, zia_duty_agenda)
     # yao_person.create_person_econunits(yao_chapunit)
     # wei_person.create_person_econunits(yao_chapunit)
     # zia_person.create_person_econunits(yao_chapunit)

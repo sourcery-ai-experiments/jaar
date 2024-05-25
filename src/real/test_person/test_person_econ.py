@@ -7,7 +7,7 @@ from src.econ.job_creator import (
     get_owner_file_name,
 )
 from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
-from src.real.person import PersonUnit, personunit_shop, chapunit_shop
+from src.real.person import PersonUnit, personunit_shop, chapunit_shop, save_duty_file
 from pytest import raises as pytest_raises
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from os.path import exists as os_path_exists
@@ -109,7 +109,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     sue_duty_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.set_agenda_metrics()
     assert sue_duty_agenda._econs_justified == False
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -136,7 +136,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     sue_duty_agenda.set_agenda_metrics()
     assert sue_duty_agenda._econs_justified
     assert sue_duty_agenda._econs_buildable == False
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -167,7 +167,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
 
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
@@ -212,7 +212,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
@@ -231,7 +231,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.set_agenda_metrics()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
 
     # THEN
@@ -257,7 +257,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     dallas_dir = sue_person._create_econ_dir(dallas_road)
     print(f"{dallas_dir=}")
     assert sue_person._econ_objs == {}
@@ -290,7 +290,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
     print(f"{sue_person._econ_objs.keys()=}")
     dallas_econ = sue_person.get_econ(dallas_road)
@@ -327,7 +327,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     # sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
     sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)
@@ -369,7 +369,7 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     # sue_duty_agenda.set_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
     sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)

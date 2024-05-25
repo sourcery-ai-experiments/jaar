@@ -2,7 +2,11 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.real.gift import init_gift_id
-from src.real.person import chapunit_shop, _save_work_file as person_save_work_file
+from src.real.person import (
+    chapunit_shop,
+    _save_work_file as person_save_work_file,
+    save_duty_file,
+)
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -68,7 +72,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     # WHEN
     bob_duty_agenda = bob_person.get_duty_file_agenda(bob_chapunit)
     bob_duty_agenda.add_partyunit(sue_text)
-    bob_person.save_duty_file(bob_chapunit, bob_duty_agenda)
+    save_duty_file(bob_chapunit, bob_duty_agenda)
 
     # WHEN
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
@@ -99,7 +103,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWith_healerhold(
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person.save_duty_file(bob_chapunit, bob_duty_agenda)
+    save_duty_file(bob_chapunit, bob_duty_agenda)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
     # THEN
@@ -131,14 +135,14 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    bob_person.save_duty_file(bob_chapunit, bob_duty_agenda)
+    save_duty_file(bob_chapunit, bob_duty_agenda)
 
     sue_duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
     sue_duty_agenda.add_partyunit(sue_text)
     sue_duty_agenda.add_partyunit(bob_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    sue_person.save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_chapunit, sue_duty_agenda)
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
