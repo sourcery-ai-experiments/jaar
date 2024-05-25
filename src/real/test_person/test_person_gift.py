@@ -28,6 +28,8 @@ from src.real.person import (
     save_giftunit_file,
     _create_new_giftunit,
     create_save_giftunit,
+    add_pledge_gift,
+    del_giftunit_file,
 )
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -446,7 +448,7 @@ def test_PersonUnit_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
     # WHEN
-    sue_person.del_giftunit_file(sue_giftunit._gift_id)
+    del_giftunit_file(sue_chapunit, sue_giftunit._gift_id)
 
     # THEN
     assert os_path_exists(sue_gift0_path) == False
@@ -647,7 +649,7 @@ def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
     assert old_sue_duty.idea_exists(clean_road) == False
 
     # WHEN
-    sue_person.add_pledge_gift(sue_chapunit, clean_road)
+    add_pledge_gift(sue_chapunit, clean_road)
 
     # THEN
     assert os_path_exists(sue_gift_path)
@@ -669,7 +671,7 @@ def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
 
     # WHEN
     bob_text = "Bob"
-    sue_person.add_pledge_gift(sue_chapunit, clean_road, x_suffgroup=bob_text)
+    add_pledge_gift(sue_chapunit, clean_road, x_suffgroup=bob_text)
 
     # THEN
     new_sue_duty = get_duty_file_agenda(sue_chapunit)

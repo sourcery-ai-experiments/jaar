@@ -407,6 +407,50 @@ def create_save_giftunit(
     save_giftunit_file(x_chapunit, new_giftunit)
 
 
+def add_pledge_gift(x_chapunit, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
+    duty_agenda = get_duty_file_agenda(x_chapunit)
+    old_duty_agenda = copy_deepcopy(duty_agenda)
+    create_pledge(duty_agenda, pledge_road, x_suffgroup)
+    next_giftunit = _create_new_giftunit(x_chapunit)
+    next_giftunit._bookunit.add_all_different_agendaatoms(old_duty_agenda, duty_agenda)
+    next_giftunit.save_files()
+    append_gifts_to_duty_file(x_chapunit)
+
+
+def del_giftunit_file(x_chapunit: ChapUnit, file_number: int):
+    delete_dir(f"{x_chapunit._gifts_dir}/{giftunit_get_json_filename(file_number)}")
+
+
+def _save_valid_atom_file(x_chapunit: ChapUnit, x_atom: AgendaAtom, file_number: int):
+    save_file(x_chapunit._atoms_dir, f"{file_number}.json", x_atom.get_json())
+    return file_number
+
+
+def chap_save_atom_file(x_chapunit: ChapUnit, x_atom: AgendaAtom):
+    x_filename = _get_next_atom_file_number(x_chapunit)
+    return _save_valid_atom_file(x_chapunit, x_atom, x_filename)
+
+
+def chap_atom_file_exists(x_chapunit, filename: int) -> bool:
+    return os_path_exists(f"{x_chapunit._atoms_dir}/{filename}.json")
+
+
+def _delete_atom_file(x_chapunit: ChapUnit, filename: int):
+    delete_dir(f"{x_chapunit._atoms_dir}/{filename}.json")
+
+
+def _get_agenda_from_atom_files(x_chapunit: ChapUnit) -> AgendaUnit:
+    x_agenda = agendaunit_shop(x_chapunit.person_id, x_chapunit.real_id)
+    x_atom_files = dir_files(x_chapunit._atoms_dir, delete_extensions=True)
+    sorted_atom_filenames = sorted(list(x_atom_files.keys()))
+
+    for x_atom_filename in sorted_atom_filenames:
+        x_file_text = x_atom_files.get(x_atom_filename)
+        x_atom = agendaatom_get_from_json(x_file_text)
+        change_agenda_with_agendaatom(x_agenda, x_atom)
+    return x_agenda
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -441,34 +485,6 @@ class PersonUnit:
         self._duty_path = chapunit._duty_path
         self._work_file_name = chapunit._work_file_name
         self._work_path = chapunit._work_path
-
-    def del_giftunit_file(self, file_number: int):
-        delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
-
-    def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
-        save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
-        return file_number
-
-    def atom_file_exists(self, filename: int) -> bool:
-        return os_path_exists(f"{self._atoms_dir}/{filename}.json")
-
-    def _delete_atom_file(self, filename: int):
-        delete_dir(f"{self._atoms_dir}/{filename}.json")
-
-    def save_atom_file(self, x_chapunit: ChapUnit, x_atom: AgendaAtom):
-        x_filename = _get_next_atom_file_number(x_chapunit)
-        return self._save_valid_atom_file(x_atom, x_filename)
-
-    def _get_agenda_from_atom_files(self, x_chapunit: ChapUnit) -> AgendaUnit:
-        x_agenda = agendaunit_shop(x_chapunit.person_id, x_chapunit.real_id)
-        x_atom_files = dir_files(x_chapunit._atoms_dir, delete_extensions=True)
-        sorted_atom_filenames = sorted(list(x_atom_files.keys()))
-
-        for x_atom_filename in sorted_atom_filenames:
-            x_file_text = x_atom_files.get(x_atom_filename)
-            x_atom = agendaatom_get_from_json(x_file_text)
-            change_agenda_with_agendaatom(x_agenda, x_atom)
-        return x_agenda
 
     def _get_person_econ_directorys(
         self, x_chapunit: ChapUnit, x_list: list[RoadNode]
@@ -543,19 +559,6 @@ class PersonUnit:
 
     def set_person_econunits_role(self, x_chapunit):
         self.set_econunits_role(get_duty_file_agenda(x_chapunit))
-
-    def add_pledge_gift(
-        self, x_chapunit, pledge_road: RoadUnit, x_suffgroup: GroupID = None
-    ):
-        duty_agenda = get_duty_file_agenda(x_chapunit)
-        old_duty_agenda = copy_deepcopy(duty_agenda)
-        create_pledge(duty_agenda, pledge_road, x_suffgroup)
-        next_giftunit = _create_new_giftunit(x_chapunit)
-        next_giftunit._bookunit.add_all_different_agendaatoms(
-            old_duty_agenda, duty_agenda
-        )
-        next_giftunit.save_files()
-        append_gifts_to_duty_file(x_chapunit)
 
 
 def personunit_shop(
