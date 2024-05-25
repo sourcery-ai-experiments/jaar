@@ -127,7 +127,7 @@
 #         set_dir(self._econs_dir)
 #         set_dir(self._atoms_dir)
 #         self.initialize_gift_and_duty_files()
-#         self.create_work_file_if_does_not_exist()
+#         self.initialize_work_file()
 
 #     def initialize_gift_and_duty_files(self):
 #         duty_file_exists = self.duty_file_exists()
@@ -176,7 +176,7 @@
 #         empty_agenda._last_gift_id = init_gift_id()
 #         return empty_agenda
 
-#     def create_work_file_if_does_not_exist(self):
+#     def initialize_work_file(self):
 #         if self.work_file_exists() == False:
 #             default_work_agenda = agendaunit_shop(
 #                 self.person_id, self.real_id, self._road_delimiter, self._planck

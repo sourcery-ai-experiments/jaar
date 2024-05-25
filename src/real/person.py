@@ -87,13 +87,41 @@ def get_work_file_name() -> str:
     return "work"
 
 
-def get_person_config(
-    x_reals_dir: str, x_real_id: RealID, x_person_id: PersonID, x_road_delimiter: str
-) -> dict[str:str]:
+@dataclass
+class ChapUnit:
+    person_id: PersonID = None
+    real_dir: str = None
+    reals_dir: str = None
+    real_id: str = None
+    persons_dir: str = None
+    person_dir: str = None
+    _econs_dir: str = None
+    _atoms_dir: str = None
+    _gifts_dir: str = None
+    _duty_obj: AgendaUnit = None
+    _duty_file_name: str = None
+    _duty_path: str = None
+    _work_obj: AgendaUnit = None
+    _work_file_name: str = None
+    _work_path: str = None
+    _econ_objs: dict[RoadUnit:EconUnit] = None
+    _road_delimiter: str = None
+    _planck: float = None
+
+
+def chapunit_shop(
+    x_reals_dir: str,
+    x_real_id: RealID,
+    x_person_id: PersonID,
+    x_road_delimiter: str = None,
+    x_planck: float = None,
+) -> ChapUnit:
+    x_planck = default_planck_if_none(x_planck)
     if x_reals_dir is None:
         x_reals_dir = get_test_reals_dir()
     if x_real_id is None:
         x_real_id = get_test_real_id()
+    x_road_delimiter = default_road_delimiter_if_none(x_road_delimiter)
     x_real_dir = f"{x_reals_dir}/{x_real_id}"
     x_persons_dir = f"{x_real_dir}/persons"
     x_person_id = validate_roadnode(x_person_id, x_road_delimiter)
@@ -106,21 +134,30 @@ def get_person_config(
     x_work_file_name = f"{get_work_file_name()}.json"
     x_work_path = f"{x_person_dir}/{x_work_file_name}"
 
-    return {
-        "person_id": x_person_id,
-        "real_id": x_real_id,
-        "real_dir": x_real_dir,
-        "reals_dir": x_reals_dir,
-        "persons_dir": x_persons_dir,
-        "person_dir": x_person_dir,
-        "_econs_dir": x_econs_dir,
-        "_atoms_dir": x_atoms_dir,
-        "_gifts_dir": x_gifts_dir,
-        "_duty_file_name": x_duty_file_name,
-        "_duty_path": x_duty_path,
-        "_work_file_name": x_work_file_name,
-        "_work_path": x_work_path,
-    }
+    return ChapUnit(
+        person_id=x_person_id,
+        real_id=x_real_id,
+        real_dir=x_real_dir,
+        reals_dir=x_reals_dir,
+        persons_dir=x_persons_dir,
+        person_dir=x_person_dir,
+        _econs_dir=x_econs_dir,
+        _atoms_dir=x_atoms_dir,
+        _gifts_dir=x_gifts_dir,
+        _duty_file_name=x_duty_file_name,
+        _duty_path=x_duty_path,
+        _work_file_name=x_work_file_name,
+        _work_path=x_work_path,
+        _planck=x_planck,
+    )
+
+
+def duty_file_exists(chapunit: ChapUnit) -> bool:
+    return os_path_exists(chapunit._duty_path)
+
+
+def work_file_exists(chapunit: ChapUnit) -> bool:
+    return os_path_exists(chapunit._work_path)
 
 
 @dataclass
@@ -144,41 +181,44 @@ class PersonUnit:
     _planck: float = None
 
     def set_person_id(self, x_person_id: PersonID):
-        x_config = get_person_config(
+        chapunit = chapunit_shop(
             self.reals_dir, self.real_id, x_person_id, self._road_delimiter
         )
-        self.person_id = x_config["person_id"]
-        self.reals_dir = x_config["reals_dir"]
-        self.real_dir = x_config["real_dir"]
-        self.real_id = x_config["real_id"]
-        self.persons_dir = x_config["persons_dir"]
-        self.person_dir = x_config["person_dir"]
-        self._econs_dir = x_config["_econs_dir"]
-        self._atoms_dir = x_config["_atoms_dir"]
-        self._gifts_dir = x_config["_gifts_dir"]
-        self._duty_file_name = x_config["_duty_file_name"]
-        self._duty_path = x_config["_duty_path"]
-        self._work_file_name = x_config["_work_file_name"]
-        self._work_path = x_config["_work_path"]
+        self.person_id = chapunit.person_id
+        self.reals_dir = chapunit.reals_dir
+        self.real_dir = chapunit.real_dir
+        self.real_id = chapunit.real_id
+        self.persons_dir = chapunit.persons_dir
+        self.person_dir = chapunit.person_dir
+        self._econs_dir = chapunit._econs_dir
+        self._atoms_dir = chapunit._atoms_dir
+        self._gifts_dir = chapunit._gifts_dir
+        self._duty_file_name = chapunit._duty_file_name
+        self._duty_path = chapunit._duty_path
+        self._work_file_name = chapunit._work_file_name
+        self._work_path = chapunit._work_path
 
     def create_core_dir_and_files(self):
-        set_dir(self.real_dir)
-        set_dir(self.persons_dir)
-        set_dir(self.person_dir)
-        set_dir(self._econs_dir)
-        set_dir(self._atoms_dir)
-        set_dir(self._gifts_dir)
-        self.initialize_gift_and_duty_files()
-        self.create_work_file_if_does_not_exist()
+        chapunit = chapunit_shop(
+            self.reals_dir, self.real_id, self.person_id, self._road_delimiter
+        )
+        set_dir(chapunit.real_dir)
+        set_dir(chapunit.persons_dir)
+        set_dir(chapunit.person_dir)
+        set_dir(chapunit._econs_dir)
+        set_dir(chapunit._atoms_dir)
+        set_dir(chapunit._gifts_dir)
+        self.initialize_gift_and_duty_files(chapunit)
+        self.initialize_work_file(chapunit)
 
-    def initialize_gift_and_duty_files(self):
-        duty_file_exists = self.duty_file_exists()
+    def initialize_gift_and_duty_files(self, chapunit):
+        x_duty_file_exists = duty_file_exists(chapunit)
         gift_file_exists = self.giftunit_file_exists(init_gift_id())
-        if duty_file_exists == False and gift_file_exists == False:
+        if x_duty_file_exists == False and gift_file_exists == False:
             self._create_initial_gift_and_duty_files()
-        elif duty_file_exists == False and gift_file_exists:
+        elif x_duty_file_exists == False and gift_file_exists:
             self._create_duty_from_gifts()
-        elif duty_file_exists and gift_file_exists == False:
+        elif x_duty_file_exists and gift_file_exists == False:
             self._create_initial_gift_from_duty()
 
     def _create_initial_gift_and_duty_files(self):
@@ -218,18 +258,15 @@ class PersonUnit:
         empty_agenda._last_gift_id = init_gift_id()
         return empty_agenda
 
-    def create_work_file_if_does_not_exist(self):
-        if self.work_file_exists() == False:
+    def initialize_work_file(self, chapunit):
+        if work_file_exists(chapunit) == False:
             default_work_agenda = agendaunit_shop(
-                self.person_id, self.real_id, self._road_delimiter, self._planck
+                chapunit.person_id,
+                chapunit.real_id,
+                chapunit._road_delimiter,
+                chapunit._planck,
             )
             self._save_work_file(default_work_agenda)
-
-    def duty_file_exists(self) -> bool:
-        return os_path_exists(self._duty_path)
-
-    def work_file_exists(self) -> bool:
-        return os_path_exists(self._work_path)
 
     def save_duty_file(self, x_agenda: AgendaUnit, replace: bool = True):
         if x_agenda._owner_id != self.person_id:
