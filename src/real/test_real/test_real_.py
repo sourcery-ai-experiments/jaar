@@ -10,7 +10,12 @@ from src.real.examples.real_env_kit import (
     reals_dir_setup_cleanup,
 )
 
-from src.real.person import personunit_shop, chapunit_shop, save_duty_file
+from src.real.person import (
+    personunit_shop,
+    chapunit_shop,
+    save_duty_file,
+    get_duty_file_agenda,
+)
 from os import path as os_path
 from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
@@ -290,7 +295,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     luca_person = music_real.get_personunit_from_memory(luca_text)
     luca_chapunit = chapunit_shop(None, music_text, luca_text)
     bob_text = "Bob"
-    luca_duty = luca_person.get_duty_file_agenda(luca_chapunit)
+    luca_duty = get_duty_file_agenda(luca_chapunit)
     luca_duty.add_partyunit(bob_text)
     save_duty_file(luca_chapunit, luca_duty)
 
@@ -314,8 +319,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_person = music_real.add_personunit(todd_text)
     luca_chapunit = chapunit_shop(None, music_text, luca_text)
     todd_chapunit = chapunit_shop(None, music_text, todd_text)
-    luca_duty_agenda = luca_person.get_duty_file_agenda(luca_chapunit)
-    todd_duty_agenda = todd_person.get_duty_file_agenda(todd_chapunit)
+    luca_duty_agenda = get_duty_file_agenda(luca_chapunit)
+    todd_duty_agenda = get_duty_file_agenda(todd_chapunit)
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)

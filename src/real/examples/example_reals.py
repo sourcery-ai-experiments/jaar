@@ -3,7 +3,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 
 # from src.agenda.graphic import display_ideatree
-from src.real.person import chapunit_shop, save_duty_file
+from src.real.person import chapunit_shop, save_duty_file, get_duty_file_agenda
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -18,7 +18,7 @@ def create_example_real1() -> RealUnit:
     yao_text = "Yao"
     yao_person = music_real.add_personunit(yao_text)
     yao_chapunit = chapunit_shop(None, music_text, yao_text)
-    yao_duty_agenda = yao_person.get_duty_file_agenda(yao_chapunit)
+    yao_duty_agenda = get_duty_file_agenda(yao_chapunit)
 
     yao_duty_agenda.set_party_creditor_pool(101)
     yao_duty_agenda.set_party_debtor_pool(1000)
@@ -62,9 +62,9 @@ def create_example_real2() -> RealUnit:
     zia_chapunit = chapunit_shop(None, music_text, zia_text)
     wei_person = music_real.add_personunit(wei_text)
     zia_person = music_real.add_personunit(zia_text)
-    yao_duty_agenda = yao_person.get_duty_file_agenda(yao_chapunit)
-    wei_duty_agenda = wei_person.get_duty_file_agenda(wei_chapunit)
-    zia_duty_agenda = zia_person.get_duty_file_agenda(zia_chapunit)
+    yao_duty_agenda = get_duty_file_agenda(yao_chapunit)
+    wei_duty_agenda = get_duty_file_agenda(wei_chapunit)
+    zia_duty_agenda = get_duty_file_agenda(zia_chapunit)
 
     yao_duty_agenda.set_party_creditor_pool(101)
     wei_duty_agenda.set_party_creditor_pool(75)
@@ -130,9 +130,9 @@ def create_example_real3() -> RealUnit:
     yao_chapunit = chapunit_shop(None, music_text, yao_text)
     wei_chapunit = chapunit_shop(None, music_text, wei_text)
     zia_chapunit = chapunit_shop(None, music_text, zia_text)
-    yao_duty_agenda = yao_person.get_duty_file_agenda(yao_chapunit)
-    wei_duty_agenda = wei_person.get_duty_file_agenda(wei_chapunit)
-    zia_duty_agenda = zia_person.get_duty_file_agenda(zia_chapunit)
+    yao_duty_agenda = get_duty_file_agenda(yao_chapunit)
+    wei_duty_agenda = get_duty_file_agenda(wei_chapunit)
+    zia_duty_agenda = get_duty_file_agenda(zia_chapunit)
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)
@@ -178,9 +178,9 @@ def create_example_real4() -> RealUnit:
     yao_chapunit = chapunit_shop(None, music_text, yao_text)
     wei_chapunit = chapunit_shop(None, music_text, wei_text)
     zia_chapunit = chapunit_shop(None, music_text, zia_text)
-    yao_duty_agenda = yao_person.get_duty_file_agenda(yao_chapunit)
-    wei_duty_agenda = wei_person.get_duty_file_agenda(wei_chapunit)
-    zia_duty_agenda = zia_person.get_duty_file_agenda(zia_chapunit)
+    yao_duty_agenda = get_duty_file_agenda(yao_chapunit)
+    wei_duty_agenda = get_duty_file_agenda(wei_chapunit)
+    zia_duty_agenda = get_duty_file_agenda(zia_chapunit)
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)

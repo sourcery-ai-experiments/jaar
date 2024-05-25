@@ -1,4 +1,9 @@
-from src.real.person import personunit_shop
+from src.real.person import (
+    personunit_shop,
+    chapunit_shop,
+    _get_max_atom_file_number,
+    _get_next_atom_file_number,
+)
 from src.real.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
@@ -16,7 +21,9 @@ from os.path import exists as os_path_exists
 
 def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     one_int = 1
     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json") == False
 
@@ -32,7 +39,9 @@ def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_clea
 
 def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     five_int = 5
     assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json") == False
     assert yao_person.atom_file_exists(five_int) == False
@@ -47,7 +56,9 @@ def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
 
 def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
@@ -63,59 +74,71 @@ def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
-    assert yao_person._get_max_atom_file_number() == ten_int
+    assert _get_max_atom_file_number(yao_chapunit) == ten_int
 
 
 def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
 
     # WHEN / THEN
-    assert yao_person._get_max_atom_file_number() is None
+    assert _get_max_atom_file_number(yao_chapunit) is None
 
 
 def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     # WHEN / THEN
-    assert yao_person._get_next_atom_file_number() == 0
+    assert _get_next_atom_file_number(yao_chapunit) == 0
 
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
-    assert yao_person._get_next_atom_file_number() == 11
+    assert _get_next_atom_file_number(yao_chapunit) == 11
 
 
 def test_PersonUnit_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
-    yao_person = personunit_shop("Yao")
+    yao_text = "Yao"
+    yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     ten_int = 10
     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-    assert yao_person._get_max_atom_file_number() == ten_int
+    assert _get_max_atom_file_number(yao_chapunit) == ten_int
     eleven_int = ten_int + 1
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
 
     # WHEN
-    atom_num1 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+    atom_num1 = yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_beliefunit_knee()
+    )
 
     # THEN
-    assert yao_person._get_max_atom_file_number() != ten_int
-    assert yao_person._get_max_atom_file_number() == eleven_int
+    assert _get_max_atom_file_number(yao_chapunit) != ten_int
+    assert _get_max_atom_file_number(yao_chapunit) == eleven_int
     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
     assert atom_num1 == eleven_int
-    atom_num2 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
+    atom_num2 = yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_beliefunit_knee()
+    )
     assert atom_num2 == 12
 
 
@@ -125,9 +148,10 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
 
     # WHEN
-    yao_agenda = yao_person._get_agenda_from_atom_files()
+    yao_agenda = yao_person._get_agenda_from_atom_files(yao_chapunit)
 
     # THEN
     assert yao_agenda._owner_id == yao_text
@@ -142,11 +166,14 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     # save atom files
-    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
+    yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_ideaunit_sports(yao_person.real_id)
+    )
 
     # WHEN
-    yao_agenda = yao_person._get_agenda_from_atom_files()
+    yao_agenda = yao_person._get_agenda_from_atom_files(yao_chapunit)
 
     # THEN
     assert yao_agenda._owner_id == yao_text
@@ -164,15 +191,24 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit
     # GIVEN
     yao_text = "Yao"
     yao_person = personunit_shop(yao_text)
+    yao_chapunit = chapunit_shop(None, None, yao_text)
     # save atom files
-    yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
-    yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.real_id))
-    yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.real_id))
-    yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.real_id))
+    yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_ideaunit_sports(yao_person.real_id)
+    )
+    yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_ideaunit_ball(yao_person.real_id)
+    )
+    yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_ideaunit_knee(yao_person.real_id)
+    )
+    yao_person.save_atom_file(
+        yao_chapunit, get_atom_example_beliefunit_knee(yao_person.real_id)
+    )
     print(f"{file_dir_files(yao_person._atoms_dir).keys()=}")
 
     # WHEN
-    yao_agenda = yao_person._get_agenda_from_atom_files()
+    yao_agenda = yao_person._get_agenda_from_atom_files(yao_chapunit)
 
     # THEN
     assert yao_agenda._owner_id == yao_text

@@ -14,7 +14,14 @@ from src.real.examples.example_gifts import (
     sue_3atomunits_giftunit,
     sue_4atomunits_giftunit,
 )
-from src.real.person import personunit_shop, chapunit_shop, giftunit_file_exists
+from src.real.person import (
+    personunit_shop,
+    chapunit_shop,
+    giftunit_file_exists,
+    get_duty_file_agenda,
+    _get_next_gift_file_number,
+    get_max_gift_file_number,
+)
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,
@@ -218,6 +225,7 @@ def test_PersonUnit_validate_giftunit_ReturnsObjWithAttributesFixed(
 ):
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
+    sue_chapunit = chapunit_shop(None, None, sue_text)
     two_int = 2
     two_filename = get_json_filename(two_int)
     sue_gift2_path = f"{sue_person._gifts_dir}/{two_filename}"
@@ -226,19 +234,19 @@ def test_PersonUnit_validate_giftunit_ReturnsObjWithAttributesFixed(
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
         _giver="Bob",
-        _gift_id=sue_person._get_next_gift_file_number() - 5,
+        _gift_id=_get_next_gift_file_number(sue_chapunit) - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
     )
-    valid_giftunit = sue_person.validate_giftunit(invalid_sue_giftunit)
+    valid_giftunit = sue_person.validate_giftunit(sue_chapunit, invalid_sue_giftunit)
 
     # THEN
     assert valid_giftunit._atoms_dir == sue_person._atoms_dir
     assert valid_giftunit._gifts_dir == sue_person._gifts_dir
-    assert valid_giftunit._gift_id == sue_person._get_next_gift_file_number()
+    assert valid_giftunit._gift_id == _get_next_gift_file_number(sue_chapunit)
     correct_sue_giftunit = giftunit_shop(
         _giver=sue_text,
-        _gift_id=sue_person._get_next_gift_file_number(),
+        _gift_id=_get_next_gift_file_number(sue_chapunit),
         _atoms_dir=sue_person._atoms_dir,
         _gifts_dir=sue_person._gifts_dir,
     )
@@ -252,7 +260,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    next_int = sue_person._get_next_gift_file_number()
+    next_int = _get_next_gift_file_number(sue_chapunit)
     next_filename = get_json_filename(next_int)
     sue_gift2_path = f"{sue_person._gifts_dir}/{next_filename}"
     print(f"{sue_gift2_path=}")
@@ -261,7 +269,7 @@ def test_PersonUnit_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTru
     # WHEN
     invalid_sue_giftunit = giftunit_shop(
         _giver="Bob",
-        _gift_id=sue_person._get_next_gift_file_number() - 5,
+        _gift_id=_get_next_gift_file_number(sue_chapunit) - 5,
         _atoms_dir=f"{sue_person.person_dir}/swimming",
         _gifts_dir=f"{sue_person.person_dir}/swimming",
     )
@@ -282,9 +290,9 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
 
     # WHEN / THEN
     delete_dir(sue_person._gifts_dir)
-    assert sue_person.get_max_gift_file_number() is None
-    assert sue_person._get_next_gift_file_number() == init_gift_id()
-    assert sue_person._get_next_gift_file_number() == 0
+    assert get_max_gift_file_number(sue_chapunit) is None
+    assert _get_next_gift_file_number(sue_chapunit) == init_gift_id()
+    assert _get_next_gift_file_number(sue_chapunit) == 0
 
     # GIVEN
     six_int = 6
@@ -308,8 +316,8 @@ def test_PersonUnit_get_max_gift_file_number_ReturnsCorrectObj(
     )
 
     # WHEN / THEN
-    assert sue_person.get_max_gift_file_number() == six_int
-    assert sue_person._get_next_gift_file_number() == 7
+    assert get_max_gift_file_number(sue_chapunit) == six_int
+    assert _get_next_gift_file_number(sue_chapunit) == 7
 
 
 def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGiftFilesExist(
@@ -322,13 +330,13 @@ def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenNoGif
 
     # WHEN
     delete_dir(sue_person._gifts_dir)
-    sue_giftunit = sue_person._create_new_giftunit()
+    sue_giftunit = sue_person._create_new_giftunit(sue_chapunit)
 
     # THEN
     assert sue_giftunit._giver == sue_person.person_id
     assert sue_giftunit._gift_id == init_gift_id()
     assert sue_giftunit._gift_id == 0
-    assert sue_giftunit._gift_id == sue_person._get_next_gift_file_number()
+    assert sue_giftunit._gift_id == _get_next_gift_file_number(sue_chapunit)
     assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
@@ -344,19 +352,19 @@ def test_PersonUnit__create_new_giftunit_ReturnsObjWithCorrect_gift_id_WhenGiftF
     delete_dir(sue_person._gifts_dir)
 
     zero_giftunit = get_sue_giftunit()
-    zero_giftunit._gift_id = sue_person._get_next_gift_file_number()
+    zero_giftunit._gift_id = _get_next_gift_file_number(sue_chapunit)
     zero_giftunit._atoms_dir = sue_person._atoms_dir
     zero_giftunit._gifts_dir = sue_person._gifts_dir
     sue_person.save_giftunit_file(sue_chapunit, zero_giftunit)
 
     # WHEN
-    sue_giftunit = sue_person._create_new_giftunit()
+    sue_giftunit = sue_person._create_new_giftunit(sue_chapunit)
 
     # THEN
     assert sue_giftunit._giver == sue_person.person_id
     assert sue_giftunit._gift_id == init_gift_id() + 1
     assert sue_giftunit._gift_id == 1
-    assert sue_giftunit._gift_id == sue_person._get_next_gift_file_number()
+    assert sue_giftunit._gift_id == _get_next_gift_file_number(sue_chapunit)
     assert sue_giftunit._takers == set()
     assert sue_giftunit._atoms_dir == sue_person._atoms_dir
     assert sue_giftunit._gifts_dir == sue_person._gifts_dir
@@ -370,11 +378,11 @@ def test_PersonUnit_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
     yao_text = "yao"
-    x0_giftunit = sue_person._create_new_giftunit()
+    x0_giftunit = sue_person._create_new_giftunit(sue_chapunit)
     x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(sue_chapunit, x0_giftunit)
     bob_text = "Bob"
-    x1_giftunit = sue_person._create_new_giftunit()
+    x1_giftunit = sue_person._create_new_giftunit(sue_chapunit)
     x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(sue_chapunit, x1_giftunit)
 
@@ -398,11 +406,11 @@ def test_PersonUnit_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
     yao_text = "yao"
-    x0_giftunit = sue_person._create_new_giftunit()
+    x0_giftunit = sue_person._create_new_giftunit(sue_chapunit)
     x0_giftunit.set_taker(yao_text)
     sue_person.save_giftunit_file(sue_chapunit, x0_giftunit)
     bob_text = "Bob"
-    x1_giftunit = sue_person._create_new_giftunit()
+    x1_giftunit = sue_person._create_new_giftunit(sue_chapunit)
     x1_giftunit.set_taker(bob_text)
     sue_person.save_giftunit_file(sue_chapunit, x1_giftunit)
 
@@ -487,7 +495,7 @@ def test_PersonUnit_save_giftunit_file_ReturnsValidObj(reals_dir_setup_cleanup):
     sue2_giftunit._atoms_dir = f"{sue_person.person_dir}/swimming"
     sue2_giftunit._gifts_dir = f"{sue_person.person_dir}/swimming"
     sue2_giftunit._giver = "Bob"
-    sue2_giftunit._gift_id = sue_person._get_next_gift_file_number() - 5
+    sue2_giftunit._gift_id = _get_next_gift_file_number(sue_chapunit) - 5
     prev_sue2_giftunit = copy_deepcopy(sue2_giftunit)
 
     # WHEN
@@ -527,7 +535,7 @@ def test_PersonUnit_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup)
     assert os_path_exists(sue_gift3_path) == False
 
     # WHEN
-    before_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    before_agenda = get_duty_file_agenda(sue_chapunit)
     bob_text = "Bob"
     after_agenda = copy_deepcopy(before_agenda)
     after_agenda.add_partyunit(bob_text)
@@ -544,7 +552,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_NoChange(
     sue_text = "Sue"
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     duty_agenda._last_gift_id is None
 
     # WHEN
@@ -564,7 +572,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1at
     sue_person.save_giftunit_file(sue_chapunit, sue_1atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -590,7 +598,7 @@ def test_PersonUnit_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2at
     sue_person.save_giftunit_file(sue_chapunit, sue_2atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_3atomunits_giftunit())
     # sue_person.save_giftunit_file(sue_4atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -616,7 +624,7 @@ def test_PersonUnit_append_gifts_to_duty_file_AddsGiftsToDutyFile(
     sue_person = personunit_shop(sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
     sue_person.save_giftunit_file(sue_chapunit, sue_2atomunits_giftunit())
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
     sports_road = duty_agenda.make_l1_road(sports_text)
@@ -634,187 +642,19 @@ def test_PersonUnit_append_gifts_to_duty_file_AddsGiftsToDutyFile(
     assert new_agenda.idea_exists(knee_road)
 
 
-# def test_PersonUnit_build_agenda_ReturnsObjGivenBeginAgendaAndGiftRange(
-#     reals_dir_setup_cleanup,
-# ):
-#     assert 1 == 2
-
-
-# def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     one_int = 1
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json") == False
-
-#     # WHEN
-#     atom_num = yao_person._save_valid_atom_file(
-#         get_atom_example_beliefunit_knee(), one_int
-#     )
-
-#     # THEN
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json")
-#     assert atom_num == one_int
-
-
-# def test_PersonUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     five_int = 5
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json") == False
-#     assert yao_person.atom_file_exists(five_int) == False
-
-#     # WHEN
-#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), five_int)
-
-#     # THEN
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json")
-#     assert yao_person.atom_file_exists(five_int)
-
-
-# def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     ten_int = 10
-#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
-
-#     # WHEN
-#     yao_person._delete_atom_file(ten_int)
-
-#     # THEN
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json") == False
-
-
-# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     ten_int = 10
-#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
-
-#     # WHEN / THEN
-#     assert yao_person._get_max_atom_file_number() == ten_int
-
-
-# def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
-#     reals_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-
-#     # WHEN / THEN
-#     assert yao_person._get_max_atom_file_number() == 0
-
-
-# def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     ten_int = 10
-#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
-
-#     # WHEN / THEN
-#     assert yao_person._get_next_atom_file_number() == "11.json"
-
-
-# def test_PersonUnit_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
-#     # GIVEN
-#     yao_person = personunit_shop("Yao")
-#     ten_int = 10
-#     yao_person._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
-#     assert yao_person._get_max_atom_file_number() == ten_int
-#     eleven_int = ten_int + 1
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
-
-#     # WHEN
-#     atom_num1 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
-
-#     # THEN
-#     assert yao_person._get_max_atom_file_number() != ten_int
-#     assert yao_person._get_max_atom_file_number() == eleven_int
-#     assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
-#     assert atom_num1 == eleven_int
-#     atom_num2 = yao_person.save_atom_file(get_atom_example_beliefunit_knee())
-#     assert atom_num2 == 12
-
-
-# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
-#     reals_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_person = personunit_shop(yao_text)
-
-#     # WHEN
-#     yao_agenda = yao_person._get_agenda_from_atom_files()
-
-#     # THEN
-#     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._real_id == yao_person.real_id
-#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
-#     assert yao_agenda._planck == yao_person._planck
-
-
-# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
-#     reals_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_person = personunit_shop(yao_text)
-#     # save atom files
-#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
-
-#     # WHEN
-#     yao_agenda = yao_person._get_agenda_from_atom_files()
-
-#     # THEN
-#     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._real_id == yao_person.real_id
-#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
-#     sports_text = "sports"
-#     sports_road = yao_agenda.make_l1_road(sports_text)
-
-#     assert yao_agenda.idea_exists(sports_road)
-
-
-# def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
-#     reals_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_person = personunit_shop(yao_text)
-#     # save atom files
-#     yao_person.save_atom_file(get_atom_example_ideaunit_sports(yao_person.real_id))
-#     yao_person.save_atom_file(get_atom_example_ideaunit_ball(yao_person.real_id))
-#     yao_person.save_atom_file(get_atom_example_ideaunit_knee(yao_person.real_id))
-#     yao_person.save_atom_file(get_atom_example_beliefunit_knee(yao_person.real_id))
-
-#     # WHEN
-#     yao_agenda = yao_person._get_agenda_from_atom_files()
-
-#     # THEN
-#     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._real_id == yao_person.real_id
-#     assert yao_agenda._road_delimiter == yao_person._road_delimiter
-#     sports_text = "sports"
-#     sports_road = yao_agenda.make_l1_road(sports_text)
-
-#     assert yao_agenda.idea_exists(sports_road)
-
-
 def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
+    old_sue_duty = get_duty_file_agenda(sue_chapunit)
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
     gift_filename = get_json_filename(1)
     sue_gift_path = f"{sue_person._gifts_dir}/{gift_filename}"
     print(f"{sue_gift_path=}")
     assert os_path_exists(sue_gift_path) == False
-    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
+    old_sue_duty = get_duty_file_agenda(sue_chapunit)
     assert old_sue_duty.idea_exists(clean_road) == False
 
     # WHEN
@@ -822,7 +662,7 @@ def test_PersonUnit_add_pledge_gift_AddspledgeGift(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(sue_gift_path)
-    new_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
+    new_sue_duty = get_duty_file_agenda(sue_chapunit)
     assert new_sue_duty.idea_exists(clean_road)
 
 
@@ -833,7 +673,7 @@ def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    old_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
+    old_sue_duty = get_duty_file_agenda(sue_chapunit)
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
     assert old_sue_duty.idea_exists(clean_road) == False
@@ -843,7 +683,7 @@ def test_PersonUnit_add_pledge_gift_SetsDutyAgendapledgeIdea_suffgroup(
     sue_person.add_pledge_gift(sue_chapunit, clean_road, x_suffgroup=bob_text)
 
     # THEN
-    new_sue_duty = sue_person.get_duty_file_agenda(sue_chapunit)
+    new_sue_duty = get_duty_file_agenda(sue_chapunit)
     assert new_sue_duty.idea_exists(clean_road)
     clean_idea = new_sue_duty.get_idea_obj(clean_road)
     print(f"{clean_idea._assignedunit._suffgroups=}")

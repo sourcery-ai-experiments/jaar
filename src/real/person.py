@@ -211,6 +211,42 @@ def save_duty_file(x_chapunit: ChapUnit, x_agenda: AgendaUnit, replace: bool = T
         )
 
 
+def get_duty_file_agenda(x_chapunit: ChapUnit) -> AgendaUnit:
+    duty_json = open_file(
+        dest_dir=x_chapunit.person_dir, file_name=x_chapunit._duty_file_name
+    )
+    return agenda_get_from_json(duty_json)
+
+
+def get_max_gift_file_number(x_chapunit: ChapUnit) -> int:
+    if not os_path_exists(x_chapunit._gifts_dir):
+        return None
+    gift_filenames = dir_files(x_chapunit._gifts_dir, True, include_files=True).keys()
+    gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
+    return max(gift_file_numbers, default=None)
+
+
+def _get_next_gift_file_number(x_chapunit: ChapUnit) -> int:
+    max_file_number = get_max_gift_file_number(x_chapunit)
+    init_gift_id = get_init_gift_id_if_None()
+    return init_gift_id if max_file_number is None else max_file_number + 1
+
+
+def _get_max_atom_file_number(x_chapunit: ChapUnit) -> int:
+    if not os_path_exists(x_chapunit._atoms_dir):
+        return None
+    atom_filenames = dir_files(
+        dir_path=x_chapunit._atoms_dir, delete_extensions=True, include_files=True
+    ).keys()
+    atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
+    return max(atom_file_numbers, default=None)
+
+
+def _get_next_atom_file_number(x_chapunit: ChapUnit) -> str:
+    max_file_number = _get_max_atom_file_number(x_chapunit)
+    return 0 if max_file_number is None else max_file_number + 1
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -295,7 +331,7 @@ class PersonUnit:
         )
         x_giftunit._bookunit.add_all_different_agendaatoms(
             before_agenda=_get_empty_agenda(x_chapunit),
-            after_agenda=self.get_duty_file_agenda(x_chapunit),
+            after_agenda=get_duty_file_agenda(x_chapunit),
         )
         x_giftunit.save_files()
 
@@ -305,36 +341,15 @@ class PersonUnit:
             self._merge_gifts_into_agenda(x_chapunit, _get_empty_agenda(x_chapunit)),
         )
 
-    def get_duty_file_agenda(self, x_chapunit: ChapUnit) -> AgendaUnit:
-        duty_json = open_file(
-            dest_dir=x_chapunit.person_dir, file_name=x_chapunit._duty_file_name
-        )
-        return agenda_get_from_json(duty_json)
-
     def get_work_file_agenda(self) -> AgendaUnit:
         work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
         return agenda_get_from_json(work_json)
 
     def load_duty_file(self, x_chapunit: ChapUnit):
-        self._duty_obj = self.get_duty_file_agenda(x_chapunit)
+        self._duty_obj = get_duty_file_agenda(x_chapunit)
 
     def load_work_file(self):
         self._work_obj = self.get_work_file_agenda()
-
-    def get_max_gift_file_number(self) -> int:
-        if not os_path_exists(self._gifts_dir):
-            return None
-        gift_filenames = dir_files(self._gifts_dir, True, include_files=True).keys()
-        gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
-        return max(gift_file_numbers, default=None)
-
-    def _get_next_gift_file_number(self) -> int:
-        max_file_number = self.get_max_gift_file_number()
-        return (
-            get_init_gift_id_if_None()
-            if max_file_number is None
-            else max_file_number + 1
-        )
 
     def save_giftunit_file(
         self,
@@ -344,7 +359,7 @@ class PersonUnit:
         change_invalid_attrs: bool = True,
     ) -> GiftUnit:
         if change_invalid_attrs:
-            x_gift = self.validate_giftunit(x_gift)
+            x_gift = self.validate_giftunit(x_chapunit, x_gift)
 
         if x_gift._atoms_dir != self._atoms_dir:
             raise SaveGiftFileException(
@@ -366,25 +381,25 @@ class PersonUnit:
         x_gift.save_files()
         return x_gift
 
-    def _create_new_giftunit(self) -> GiftUnit:
+    def _create_new_giftunit(self, x_chapunit: ChapUnit) -> GiftUnit:
         return giftunit_shop(
-            _giver=self.person_id,
-            _gift_id=self._get_next_gift_file_number(),
-            _atoms_dir=self._atoms_dir,
-            _gifts_dir=self._gifts_dir,
+            _giver=x_chapunit.person_id,
+            _gift_id=_get_next_gift_file_number(x_chapunit),
+            _atoms_dir=x_chapunit._atoms_dir,
+            _gifts_dir=x_chapunit._gifts_dir,
         )
 
-    def validate_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
-        if x_giftunit._atoms_dir != self._atoms_dir:
-            x_giftunit._atoms_dir = self._atoms_dir
-        if x_giftunit._gifts_dir != self._gifts_dir:
-            x_giftunit._gifts_dir = self._gifts_dir
-        if x_giftunit._gift_id != self._get_next_gift_file_number():
-            x_giftunit._gift_id = self._get_next_gift_file_number()
-        if x_giftunit._giver != self.person_id:
-            x_giftunit._giver = self.person_id
-        if x_giftunit._book_start != self._get_next_atom_file_number():
-            x_giftunit._book_start = self._get_next_atom_file_number()
+    def validate_giftunit(self, x_chapunit: ChapUnit, x_giftunit: GiftUnit) -> GiftUnit:
+        if x_giftunit._atoms_dir != x_chapunit._atoms_dir:
+            x_giftunit._atoms_dir = x_chapunit._atoms_dir
+        if x_giftunit._gifts_dir != x_chapunit._gifts_dir:
+            x_giftunit._gifts_dir = x_chapunit._gifts_dir
+        if x_giftunit._gift_id != _get_next_gift_file_number(x_chapunit):
+            x_giftunit._gift_id = _get_next_gift_file_number(x_chapunit)
+        if x_giftunit._giver != x_chapunit.person_id:
+            x_giftunit._giver = x_chapunit.person_id
+        if x_giftunit._book_start != _get_next_atom_file_number(x_chapunit):
+            x_giftunit._book_start = _get_next_atom_file_number(x_chapunit)
         return x_giftunit
 
     def get_giftunit(self, x_chapunit: ChapUnit, file_number: int) -> GiftUnit:
@@ -421,26 +436,13 @@ class PersonUnit:
     def _delete_atom_file(self, filename: int):
         delete_dir(f"{self._atoms_dir}/{filename}.json")
 
-    def _get_max_atom_file_number(self) -> int:
-        if not os_path_exists(self._atoms_dir):
-            return None
-        atom_filenames = dir_files(
-            dir_path=self._atoms_dir, delete_extensions=True, include_files=True
-        ).keys()
-        atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
-        return max(atom_file_numbers, default=None)
-
-    def _get_next_atom_file_number(self) -> str:
-        max_file_number = self._get_max_atom_file_number()
-        return 0 if max_file_number is None else max_file_number + 1
-
-    def save_atom_file(self, x_atom: AgendaAtom):
-        x_filename = self._get_next_atom_file_number()
+    def save_atom_file(self, x_chapunit: ChapUnit, x_atom: AgendaAtom):
+        x_filename = _get_next_atom_file_number(x_chapunit)
         return self._save_valid_atom_file(x_atom, x_filename)
 
-    def _get_agenda_from_atom_files(self) -> AgendaUnit:
-        x_agenda = agendaunit_shop(_owner_id=self.person_id, _real_id=self.real_id)
-        x_atom_files = dir_files(self._atoms_dir, delete_extensions=True)
+    def _get_agenda_from_atom_files(self, x_chapunit: ChapUnit) -> AgendaUnit:
+        x_agenda = agendaunit_shop(x_chapunit.person_id, x_chapunit.real_id)
+        x_atom_files = dir_files(x_chapunit._atoms_dir, delete_extensions=True)
         sorted_atom_filenames = sorted(list(x_atom_files.keys()))
 
         for x_atom_filename in sorted_atom_filenames:
@@ -449,18 +451,24 @@ class PersonUnit:
             change_agenda_with_agendaatom(x_agenda, x_atom)
         return x_agenda
 
-    def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
-        return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
+    def _get_person_econ_directorys(
+        self, x_chapunit: ChapUnit, x_list: list[RoadNode]
+    ) -> str:
+        return f"{x_chapunit._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
-    def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-        x_roadunit = change_road(x_roadunit, self.real_id, get_rootpart_of_econ_dir())
-        road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
-        x_econ_path = self._get_person_econ_dir(road_nodes)
+    def _create_econ_dir(self, x_chapunit: ChapUnit, x_roadunit: RoadUnit) -> str:
+        x_roadunit = change_road(
+            x_roadunit, x_chapunit.real_id, get_rootpart_of_econ_dir()
+        )
+        road_nodes = get_all_road_nodes(
+            x_roadunit, delimiter=x_chapunit._road_delimiter
+        )
+        x_econ_path = self._get_person_econ_directorys(x_chapunit, road_nodes)
         set_dir(x_econ_path)
         return x_econ_path
 
-    def _create_econunit(self, econ_roadunit: RoadUnit):
-        x_econ_path = self._create_econ_dir(econ_roadunit)
+    def _create_econunit(self, x_chapunit: ChapUnit, econ_roadunit: RoadUnit):
+        x_econ_path = self._create_econ_dir(x_chapunit, econ_roadunit)
         x_econunit = econunit_shop(
             real_id=self.real_id,
             econ_dir=x_econ_path,
@@ -473,7 +481,7 @@ class PersonUnit:
     def create_person_econunits(
         self, x_chapunit: ChapUnit, econ_exceptions: bool = True
     ):
-        x_duty_agenda = self.get_duty_file_agenda(x_chapunit)
+        x_duty_agenda = get_duty_file_agenda(x_chapunit)
         x_duty_agenda.set_agenda_metrics(econ_exceptions)
         if x_duty_agenda._econs_justified == False:
             raise PersonCreateEconUnitsException(
@@ -488,7 +496,7 @@ class PersonUnit:
         x_person_econs = get_empty_dict_if_none(x_person_econs)
         self._econ_objs = {}
         for econ_idea in x_person_econs.values():
-            self._create_econunit(econ_roadunit=econ_idea.get_road())
+            self._create_econunit(x_chapunit, econ_roadunit=econ_idea.get_road())
 
         # delete any
         x_treasury_dirs = get_all_dirs_with_file(
@@ -515,15 +523,15 @@ class PersonUnit:
             self.set_econunit_role(x_econ_road, role)
 
     def set_person_econunits_role(self, x_chapunit):
-        self.set_econunits_role(self.get_duty_file_agenda(x_chapunit))
+        self.set_econunits_role(get_duty_file_agenda(x_chapunit))
 
     def add_pledge_gift(
         self, x_chapunit, pledge_road: RoadUnit, x_suffgroup: GroupID = None
     ):
-        duty_agenda = self.get_duty_file_agenda(x_chapunit)
+        duty_agenda = get_duty_file_agenda(x_chapunit)
         old_duty_agenda = copy_deepcopy(duty_agenda)
         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-        next_giftunit = self._create_new_giftunit()
+        next_giftunit = self._create_new_giftunit(x_chapunit)
         next_giftunit._bookunit.add_all_different_agendaatoms(
             old_duty_agenda, duty_agenda
         )
@@ -533,7 +541,7 @@ class PersonUnit:
     def create_save_giftunit(
         self, x_chapunit: ChapUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        new_giftunit = self._create_new_giftunit()
+        new_giftunit = self._create_new_giftunit(x_chapunit)
         new_giftunit._bookunit.add_all_different_agendaatoms(
             before_agenda, after_agenda
         )
@@ -542,11 +550,9 @@ class PersonUnit:
     def append_gifts_to_duty_file(self, x_chapunit):
         save_duty_file(
             x_chapunit,
-            self._merge_gifts_into_agenda(
-                x_chapunit, self.get_duty_file_agenda(x_chapunit)
-            ),
+            self._merge_gifts_into_agenda(x_chapunit, get_duty_file_agenda(x_chapunit)),
         )
-        return self.get_duty_file_agenda(x_chapunit)
+        return get_duty_file_agenda(x_chapunit)
 
 
 def personunit_shop(

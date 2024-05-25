@@ -14,6 +14,7 @@ from src.real.person import (
     _save_work_file,
     initialize_work_file,
     save_duty_file,
+    get_duty_file_agenda,
 )
 from pytest import raises as pytest_raises
 from src.real.examples.real_env_kit import (
@@ -356,7 +357,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     sue_person.initialize_gift_and_duty_files(sue_chapunit)
 
     # THEN
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -381,7 +382,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     sue_person.initialize_gift_and_duty_files(sue_chapunit)
 
     # THEN
-    duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_chapunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -396,7 +397,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     seven_int = 7
     sue_person = personunit_shop(sue_text, _planck=seven_int)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = sue_person.get_duty_file_agenda(sue_chapunit)
+    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
     save_duty_file(sue_chapunit, sue_duty_agenda)

@@ -8,6 +8,7 @@ from src.real.person import (
     personunit_shop,
     chapunit_shop,
     _save_work_file as person_save_work_file,
+    get_duty_file_agenda,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
@@ -130,7 +131,7 @@ class RealUnit:
         x_chapunit = chapunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
-        return x_person.get_duty_file_agenda(x_chapunit)
+        return get_duty_file_agenda(x_chapunit)
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
@@ -159,7 +160,7 @@ class RealUnit:
         x_chapunit = chapunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
-        x_duty = x_personunit.get_duty_file_agenda(x_chapunit)
+        x_duty = get_duty_file_agenda(x_chapunit)
         x_duty.set_agenda_metrics()
 
         x_work = agendaunit_shop(person_id, self.real_id)
@@ -197,7 +198,7 @@ class RealUnit:
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit_from_memory(x_person_id)
-    #     x_duty_agenda = x_personunit.get_duty_file_agenda()
+    #     x_duty_agenda = get_duty_file_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass
