@@ -2,6 +2,7 @@ from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
     PersonID,
+    RealID,
     validate_roadnode,
     RoadUnit,
     RoadNode,
@@ -86,6 +87,42 @@ def get_work_file_name() -> str:
     return "work"
 
 
+def get_person_config(
+    x_reals_dir: str, x_real_id: RealID, x_person_id: PersonID, x_road_delimiter: str
+) -> dict[str:str]:
+    if x_reals_dir is None:
+        x_reals_dir = get_test_reals_dir()
+    if x_real_id is None:
+        x_real_id = get_test_real_id()
+    x_real_dir = f"{x_reals_dir}/{x_real_id}"
+    x_persons_dir = f"{x_real_dir}/persons"
+    x_person_id = validate_roadnode(x_person_id, x_road_delimiter)
+    x_person_dir = f"{x_persons_dir}/{x_person_id}"
+    x_econs_dir = f"{x_person_dir}/econs"
+    x_atoms_dir = f"{x_person_dir}/atoms"
+    x_gifts_dir = f"{x_person_dir}/{get_gifts_folder()}"
+    x_duty_file_name = f"{get_duty_file_name()}.json"
+    x_duty_path = f"{x_person_dir}/{x_duty_file_name}"
+    x_work_file_name = f"{get_work_file_name()}.json"
+    x_work_path = f"{x_person_dir}/{x_work_file_name}"
+
+    return {
+        "person_id": x_person_id,
+        "real_id": x_real_id,
+        "real_dir": x_real_dir,
+        "reals_dir": x_reals_dir,
+        "persons_dir": x_persons_dir,
+        "person_dir": x_person_dir,
+        "_econs_dir": x_econs_dir,
+        "_atoms_dir": x_atoms_dir,
+        "_gifts_dir": x_gifts_dir,
+        "_duty_file_name": x_duty_file_name,
+        "_duty_path": x_duty_path,
+        "_work_file_name": x_work_file_name,
+        "_work_path": x_work_path,
+    }
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -107,25 +144,22 @@ class PersonUnit:
     _planck: float = None
 
     def set_person_id(self, x_person_id: PersonID):
-        self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
-        if self.real_id is None:
-            self.real_id = get_test_real_id()
-        if self.reals_dir is None:
-            self.reals_dir = get_test_reals_dir()
-        self.real_dir = f"{self.reals_dir}/{self.real_id}"
-        self.persons_dir = f"{self.real_dir}/persons"
-        self.person_dir = f"{self.persons_dir}/{self.person_id}"
-        self._econs_dir = f"{self.person_dir}/econs"
-        self._atoms_dir = f"{self.person_dir}/atoms"
-        self._gifts_dir = f"{self.person_dir}/{get_gifts_folder()}"
-        if self._duty_file_name is None:
-            self._duty_file_name = f"{get_duty_file_name()}.json"
-        if self._duty_path is None:
-            self._duty_path = f"{self.person_dir}/{self._duty_file_name}"
-        if self._work_file_name is None:
-            self._work_file_name = f"{get_work_file_name()}.json"
-        if self._work_path is None:
-            self._work_path = f"{self.person_dir}/{self._work_file_name}"
+        x_config = get_person_config(
+            self.reals_dir, self.real_id, x_person_id, self._road_delimiter
+        )
+        self.person_id = x_config["person_id"]
+        self.reals_dir = x_config["reals_dir"]
+        self.real_dir = x_config["real_dir"]
+        self.real_id = x_config["real_id"]
+        self.persons_dir = x_config["persons_dir"]
+        self.person_dir = x_config["person_dir"]
+        self._econs_dir = x_config["_econs_dir"]
+        self._atoms_dir = x_config["_atoms_dir"]
+        self._gifts_dir = x_config["_gifts_dir"]
+        self._duty_file_name = x_config["_duty_file_name"]
+        self._duty_path = x_config["_duty_path"]
+        self._work_file_name = x_config["_work_file_name"]
+        self._work_path = x_config["_work_path"]
 
     def create_core_dir_and_files(self):
         set_dir(self.real_dir)
@@ -472,11 +506,3 @@ def personunit_shop(
     if create_files:
         x_personunit.create_core_dir_and_files()
     return x_personunit
-
-
-def get_from_json(x_person_json: str) -> PersonUnit:
-    return None
-
-
-def get_from_dict(person_dict: dict) -> PersonUnit:
-    return None

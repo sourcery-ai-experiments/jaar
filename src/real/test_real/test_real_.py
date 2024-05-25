@@ -106,9 +106,7 @@ def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):
     music_text = "music"
 
     # WHEN
-    music_real = realunit_shop(
-        real_id=music_text, reals_dir=get_test_reals_dir(), in_memory_journal=True
-    )
+    music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
 
     # THEN
     assert music_real.real_id == music_text
