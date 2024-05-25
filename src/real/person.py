@@ -247,6 +247,166 @@ def _get_next_atom_file_number(x_chapunit: ChapUnit) -> str:
     return 0 if max_file_number is None else max_file_number + 1
 
 
+def _create_initial_gift_from_duty(x_chapunit: ChapUnit):
+    x_giftunit = giftunit_shop(
+        _giver=x_chapunit.person_id,
+        _gift_id=get_init_gift_id_if_None(),
+        _gifts_dir=x_chapunit._gifts_dir,
+        _atoms_dir=x_chapunit._atoms_dir,
+    )
+    x_giftunit._bookunit.add_all_different_agendaatoms(
+        before_agenda=_get_empty_agenda(x_chapunit),
+        after_agenda=get_duty_file_agenda(x_chapunit),
+    )
+    x_giftunit.save_files()
+
+
+def get_giftunit(x_chapunit: ChapUnit, file_number: int) -> GiftUnit:
+    if giftunit_file_exists(x_chapunit, file_number) == False:
+        raise GiftFileMissingException(
+            f"GiftUnit file_number {file_number} does not exist."
+        )
+    x_gifts_dir = x_chapunit._gifts_dir
+    x_atoms_dir = x_chapunit._atoms_dir
+    return create_giftunit_from_files(x_gifts_dir, file_number, x_atoms_dir)
+
+
+def _merge_gifts_into_agenda(x_chapunit: ChapUnit, x_agenda: AgendaUnit) -> AgendaUnit:
+    gift_ints = get_integer_filenames(x_chapunit._gifts_dir, x_agenda._last_gift_id)
+    for gift_int in gift_ints:
+        x_gift = get_giftunit(x_chapunit, gift_int)
+        new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+
+        update_text = "UPDATE"
+        x_gift._bookunit.agendaatoms.get(update_text)
+    return new_agenda
+
+
+def _create_duty_from_gifts(x_chapunit):
+    save_duty_file(
+        x_chapunit,
+        _merge_gifts_into_agenda(x_chapunit, _get_empty_agenda(x_chapunit)),
+    )
+
+
+def _create_initial_gift_and_duty_files(x_chapunit: ChapUnit):
+    default_duty_agenda = agendaunit_shop(
+        x_chapunit.person_id,
+        x_chapunit.real_id,
+        x_chapunit._road_delimiter,
+        x_chapunit._planck,
+    )
+    x_giftunit = giftunit_shop(
+        _giver=x_chapunit.person_id,
+        _gift_id=get_init_gift_id_if_None(),
+        _gifts_dir=x_chapunit._gifts_dir,
+        _atoms_dir=x_chapunit._atoms_dir,
+    )
+    x_giftunit._bookunit.add_all_different_agendaatoms(
+        before_agenda=_get_empty_agenda(x_chapunit),
+        after_agenda=default_duty_agenda,
+    )
+    x_giftunit.save_files()
+    _create_duty_from_gifts(x_chapunit)
+
+
+def initialize_gift_and_duty_files(x_chapunit):
+    x_duty_file_exists = duty_file_exists(x_chapunit)
+    gift_file_exists = giftunit_file_exists(x_chapunit, init_gift_id())
+    if x_duty_file_exists == False and gift_file_exists == False:
+        _create_initial_gift_and_duty_files(x_chapunit)
+    elif x_duty_file_exists == False and gift_file_exists:
+        _create_duty_from_gifts(x_chapunit)
+    elif x_duty_file_exists and gift_file_exists == False:
+        _create_initial_gift_from_duty(x_chapunit)
+
+
+def chap_create_core_dir_and_files(x_chapunit: ChapUnit):
+    set_dir(x_chapunit.real_dir)
+    set_dir(x_chapunit.persons_dir)
+    set_dir(x_chapunit.person_dir)
+    set_dir(x_chapunit._econs_dir)
+    set_dir(x_chapunit._atoms_dir)
+    set_dir(x_chapunit._gifts_dir)
+    initialize_gift_and_duty_files(x_chapunit)
+    initialize_work_file(x_chapunit)
+
+
+def get_work_file_agenda(x_chapunit: ChapUnit) -> AgendaUnit:
+    work_json = open_file(
+        dest_dir=x_chapunit.person_dir, file_name=x_chapunit._work_file_name
+    )
+    return agenda_get_from_json(work_json)
+
+
+def append_gifts_to_duty_file(x_chapunit: ChapUnit) -> AgendaUnit:
+    duty_agenda = get_duty_file_agenda(x_chapunit)
+    duty_agenda = _merge_gifts_into_agenda(x_chapunit, duty_agenda)
+    save_duty_file(x_chapunit, duty_agenda)
+    return get_duty_file_agenda(x_chapunit)
+
+
+def validate_giftunit(x_chapunit: ChapUnit, x_giftunit: GiftUnit) -> GiftUnit:
+    if x_giftunit._atoms_dir != x_chapunit._atoms_dir:
+        x_giftunit._atoms_dir = x_chapunit._atoms_dir
+    if x_giftunit._gifts_dir != x_chapunit._gifts_dir:
+        x_giftunit._gifts_dir = x_chapunit._gifts_dir
+    if x_giftunit._gift_id != _get_next_gift_file_number(x_chapunit):
+        x_giftunit._gift_id = _get_next_gift_file_number(x_chapunit)
+    if x_giftunit._giver != x_chapunit.person_id:
+        x_giftunit._giver = x_chapunit.person_id
+    if x_giftunit._book_start != _get_next_atom_file_number(x_chapunit):
+        x_giftunit._book_start = _get_next_atom_file_number(x_chapunit)
+    return x_giftunit
+
+
+def save_giftunit_file(
+    x_chapunit: ChapUnit,
+    x_gift: GiftUnit,
+    replace: bool = True,
+    change_invalid_attrs: bool = True,
+) -> GiftUnit:
+    if change_invalid_attrs:
+        x_gift = validate_giftunit(x_chapunit, x_gift)
+
+    if x_gift._atoms_dir != x_chapunit._atoms_dir:
+        raise SaveGiftFileException(
+            f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {x_chapunit._atoms_dir}."
+        )
+    if x_gift._gifts_dir != x_chapunit._gifts_dir:
+        raise SaveGiftFileException(
+            f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {x_chapunit._gifts_dir}."
+        )
+    if x_gift._giver != x_chapunit.person_id:
+        raise SaveGiftFileException(
+            f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {x_chapunit.person_id}."
+        )
+    gift_filename = giftunit_get_json_filename(x_gift._gift_id)
+    if not replace and giftunit_file_exists(x_chapunit, x_gift._gift_id):
+        raise SaveGiftFileException(
+            f"GiftUnit file {gift_filename} already exists and cannot be saved over."
+        )
+    x_gift.save_files()
+    return x_gift
+
+
+def _create_new_giftunit(x_chapunit: ChapUnit) -> GiftUnit:
+    return giftunit_shop(
+        _giver=x_chapunit.person_id,
+        _gift_id=_get_next_gift_file_number(x_chapunit),
+        _atoms_dir=x_chapunit._atoms_dir,
+        _gifts_dir=x_chapunit._gifts_dir,
+    )
+
+
+def create_save_giftunit(
+    x_chapunit: ChapUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+):
+    new_giftunit = _create_new_giftunit(x_chapunit)
+    new_giftunit._bookunit.add_all_different_agendaatoms(before_agenda, after_agenda)
+    save_giftunit_file(x_chapunit, new_giftunit)
+
+
 @dataclass
 class PersonUnit:
     person_id: PersonID = None
@@ -282,149 +442,8 @@ class PersonUnit:
         self._work_file_name = chapunit._work_file_name
         self._work_path = chapunit._work_path
 
-    def create_core_dir_and_files(self, x_chapunit: ChapUnit):
-        set_dir(x_chapunit.real_dir)
-        set_dir(x_chapunit.persons_dir)
-        set_dir(x_chapunit.person_dir)
-        set_dir(x_chapunit._econs_dir)
-        set_dir(x_chapunit._atoms_dir)
-        set_dir(x_chapunit._gifts_dir)
-        self.initialize_gift_and_duty_files(x_chapunit)
-        initialize_work_file(x_chapunit)
-
-    def initialize_gift_and_duty_files(self, x_chapunit):
-        x_duty_file_exists = duty_file_exists(x_chapunit)
-        gift_file_exists = giftunit_file_exists(x_chapunit, init_gift_id())
-        if x_duty_file_exists == False and gift_file_exists == False:
-            self._create_initial_gift_and_duty_files(x_chapunit)
-        elif x_duty_file_exists == False and gift_file_exists:
-            self._create_duty_from_gifts(x_chapunit)
-        elif x_duty_file_exists and gift_file_exists == False:
-            self._create_initial_gift_from_duty(x_chapunit)
-
-    def _create_initial_gift_and_duty_files(self, x_chapunit: ChapUnit):
-        default_duty_agenda = agendaunit_shop(
-            x_chapunit.person_id,
-            x_chapunit.real_id,
-            x_chapunit._road_delimiter,
-            x_chapunit._planck,
-        )
-        x_giftunit = giftunit_shop(
-            _giver=x_chapunit.person_id,
-            _gift_id=get_init_gift_id_if_None(),
-            _gifts_dir=x_chapunit._gifts_dir,
-            _atoms_dir=x_chapunit._atoms_dir,
-        )
-        x_giftunit._bookunit.add_all_different_agendaatoms(
-            before_agenda=_get_empty_agenda(x_chapunit),
-            after_agenda=default_duty_agenda,
-        )
-        x_giftunit.save_files()
-        self._create_duty_from_gifts(x_chapunit)
-
-    def _create_initial_gift_from_duty(self, x_chapunit: ChapUnit):
-        x_giftunit = giftunit_shop(
-            _giver=x_chapunit.person_id,
-            _gift_id=get_init_gift_id_if_None(),
-            _gifts_dir=x_chapunit._gifts_dir,
-            _atoms_dir=x_chapunit._atoms_dir,
-        )
-        x_giftunit._bookunit.add_all_different_agendaatoms(
-            before_agenda=_get_empty_agenda(x_chapunit),
-            after_agenda=get_duty_file_agenda(x_chapunit),
-        )
-        x_giftunit.save_files()
-
-    def _create_duty_from_gifts(self, x_chapunit):
-        save_duty_file(
-            x_chapunit,
-            self._merge_gifts_into_agenda(x_chapunit, _get_empty_agenda(x_chapunit)),
-        )
-
-    def get_work_file_agenda(self) -> AgendaUnit:
-        work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
-        return agenda_get_from_json(work_json)
-
-    def load_duty_file(self, x_chapunit: ChapUnit):
-        self._duty_obj = get_duty_file_agenda(x_chapunit)
-
-    def load_work_file(self):
-        self._work_obj = self.get_work_file_agenda()
-
-    def save_giftunit_file(
-        self,
-        x_chapunit: ChapUnit,
-        x_gift: GiftUnit,
-        replace: bool = True,
-        change_invalid_attrs: bool = True,
-    ) -> GiftUnit:
-        if change_invalid_attrs:
-            x_gift = self.validate_giftunit(x_chapunit, x_gift)
-
-        if x_gift._atoms_dir != self._atoms_dir:
-            raise SaveGiftFileException(
-                f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {self._atoms_dir}."
-            )
-        if x_gift._gifts_dir != self._gifts_dir:
-            raise SaveGiftFileException(
-                f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self._gifts_dir}."
-            )
-        if x_gift._giver != self.person_id:
-            raise SaveGiftFileException(
-                f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {self.person_id}."
-            )
-        gift_filename = giftunit_get_json_filename(x_gift._gift_id)
-        if not replace and giftunit_file_exists(x_chapunit, x_gift._gift_id):
-            raise SaveGiftFileException(
-                f"GiftUnit file {gift_filename} already exists and cannot be saved over."
-            )
-        x_gift.save_files()
-        return x_gift
-
-    def _create_new_giftunit(self, x_chapunit: ChapUnit) -> GiftUnit:
-        return giftunit_shop(
-            _giver=x_chapunit.person_id,
-            _gift_id=_get_next_gift_file_number(x_chapunit),
-            _atoms_dir=x_chapunit._atoms_dir,
-            _gifts_dir=x_chapunit._gifts_dir,
-        )
-
-    def validate_giftunit(self, x_chapunit: ChapUnit, x_giftunit: GiftUnit) -> GiftUnit:
-        if x_giftunit._atoms_dir != x_chapunit._atoms_dir:
-            x_giftunit._atoms_dir = x_chapunit._atoms_dir
-        if x_giftunit._gifts_dir != x_chapunit._gifts_dir:
-            x_giftunit._gifts_dir = x_chapunit._gifts_dir
-        if x_giftunit._gift_id != _get_next_gift_file_number(x_chapunit):
-            x_giftunit._gift_id = _get_next_gift_file_number(x_chapunit)
-        if x_giftunit._giver != x_chapunit.person_id:
-            x_giftunit._giver = x_chapunit.person_id
-        if x_giftunit._book_start != _get_next_atom_file_number(x_chapunit):
-            x_giftunit._book_start = _get_next_atom_file_number(x_chapunit)
-        return x_giftunit
-
-    def get_giftunit(self, x_chapunit: ChapUnit, file_number: int) -> GiftUnit:
-        if giftunit_file_exists(x_chapunit, file_number) == False:
-            raise GiftFileMissingException(
-                f"GiftUnit file_number {file_number} does not exist."
-            )
-        return create_giftunit_from_files(
-            gifts_dir=self._gifts_dir, gift_id=file_number, atoms_dir=self._atoms_dir
-        )
-
     def del_giftunit_file(self, file_number: int):
         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
-
-    def _merge_gifts_into_agenda(
-        self, x_chapunit: ChapUnit, x_agenda: AgendaUnit
-    ) -> AgendaUnit:
-        gift_ints = get_integer_filenames(self._gifts_dir, x_agenda._last_gift_id)
-        for gift_int in gift_ints:
-            x_gift = self.get_giftunit(x_chapunit, gift_int)
-            new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
-
-            update_text = "UPDATE"
-            x_agendaunit = x_gift._bookunit.agendaatoms.get(update_text)
-        return new_agenda
 
     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
         save_file(self._atoms_dir, f"{file_number}.json", x_atom.get_json())
@@ -531,28 +550,12 @@ class PersonUnit:
         duty_agenda = get_duty_file_agenda(x_chapunit)
         old_duty_agenda = copy_deepcopy(duty_agenda)
         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-        next_giftunit = self._create_new_giftunit(x_chapunit)
+        next_giftunit = _create_new_giftunit(x_chapunit)
         next_giftunit._bookunit.add_all_different_agendaatoms(
             old_duty_agenda, duty_agenda
         )
         next_giftunit.save_files()
-        self.append_gifts_to_duty_file(x_chapunit)
-
-    def create_save_giftunit(
-        self, x_chapunit: ChapUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-    ):
-        new_giftunit = self._create_new_giftunit(x_chapunit)
-        new_giftunit._bookunit.add_all_different_agendaatoms(
-            before_agenda, after_agenda
-        )
-        self.save_giftunit_file(x_chapunit, new_giftunit)
-
-    def append_gifts_to_duty_file(self, x_chapunit):
-        save_duty_file(
-            x_chapunit,
-            self._merge_gifts_into_agenda(x_chapunit, get_duty_file_agenda(x_chapunit)),
-        )
-        return get_duty_file_agenda(x_chapunit)
+        append_gifts_to_duty_file(x_chapunit)
 
 
 def personunit_shop(
@@ -574,5 +577,5 @@ def personunit_shop(
     x_chapunit = chapunit_shop(reals_dir, real_id, person_id, _road_delimiter, _planck)
     x_personunit.set_person_id(x_chapunit)
     if create_files:
-        x_personunit.create_core_dir_and_files(x_chapunit)
+        chap_create_core_dir_and_files(x_chapunit)
     return x_personunit

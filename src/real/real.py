@@ -9,6 +9,8 @@ from src.real.person import (
     chapunit_shop,
     _save_work_file as person_save_work_file,
     get_duty_file_agenda,
+    chap_create_core_dir_and_files,
+    get_work_file_agenda,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from src._instrument.python import get_empty_dict_if_none
@@ -111,7 +113,7 @@ class RealUnit:
         x_chapunit = chapunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
-        x_personunit.create_core_dir_and_files(x_chapunit)
+        chap_create_core_dir_and_files(x_chapunit)
         if (
             self.personunit_exists_in_memory(x_personunit.person_id) == False
             and not replace_personunit
@@ -127,7 +129,6 @@ class RealUnit:
         return self._personunits.get(person_id)
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        x_person = self.get_personunit_from_memory(person_id)
         x_chapunit = chapunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
@@ -188,7 +189,10 @@ class RealUnit:
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        return x_personunit.get_work_file_agenda()
+        x_chapunit = chapunit_shop(
+            self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
+        )
+        return get_work_file_agenda(x_chapunit)
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

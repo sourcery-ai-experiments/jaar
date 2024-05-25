@@ -7,6 +7,7 @@ from src.real.person import (
     _save_work_file as person_save_work_file,
     save_duty_file,
     get_duty_file_agenda,
+    get_work_file_agenda,
 )
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import (
@@ -45,11 +46,11 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     sue_text = "Sue"
     sue_person = music_real.add_personunit(sue_text)
     sue_chapunit = chapunit_shop(music_real.reals_dir, music_real.real_id, sue_text)
-    before_sue_agenda = sue_person.get_work_file_agenda()
+    before_sue_agenda = get_work_file_agenda(sue_chapunit)
     bob_text = "Bob"
     before_sue_agenda.add_partyunit(bob_text)
     person_save_work_file(sue_chapunit, before_sue_agenda)
-    assert sue_person.get_work_file_agenda().get_party(bob_text) != None
+    assert get_work_file_agenda(sue_chapunit).get_party(bob_text) != None
 
     # WHEN
     after_sue_agenda = music_real.generate_work_agenda(sue_text)

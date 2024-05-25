@@ -15,6 +15,9 @@ from src.real.person import (
     initialize_work_file,
     save_duty_file,
     get_duty_file_agenda,
+    initialize_gift_and_duty_files,
+    chap_create_core_dir_and_files,
+    get_work_file_agenda,
 )
 from pytest import raises as pytest_raises
 from src.real.examples.real_env_kit import (
@@ -318,26 +321,6 @@ def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     )
 
 
-def test_PersonUnit_load_duty_file_CorrectlyLoads_duty_obj(reals_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_agenda = agendaunit_shop(sue_text)
-    bob_text = "Bob"
-    sue_agenda.add_partyunit(bob_text)
-    save_duty_file(sue_chapunit, sue_agenda)
-    assert sue_person._duty_obj is None
-
-    # WHEN
-    sue_person.load_duty_file(sue_chapunit)
-
-    # THEN
-    assert sue_person._duty_obj != None
-    assert sue_person._duty_obj.get_party(bob_text) != None
-    assert sue_person._duty_obj.get_party("Zia") is None
-
-
 def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGiftFile(
     reals_dir_setup_cleanup,
 ):
@@ -354,7 +337,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    sue_person.initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_chapunit)
 
     # THEN
     duty_agenda = get_duty_file_agenda(sue_chapunit)
@@ -379,7 +362,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     assert os_path_exists(init_gift_file_path)
 
     # WHEN
-    sue_person.initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_chapunit)
 
     # THEN
     duty_agenda = get_duty_file_agenda(sue_chapunit)
@@ -407,7 +390,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    sue_person.initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_chapunit)
 
     # THEN
     assert sue_duty_agenda._real_id == get_test_real_id()
@@ -433,7 +416,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     sue_agenda = agendaunit_shop(sue_text)
 #     bob_text = "Bob"
 #     sue_agenda.add_partyunit(bob_text)
-#     sue_person.initialize_gift_and_duty_files()
+#     initialize_gift_and_duty_files()
 
 #     # THEN
 #     assert sue_person.duty_file_exists()
@@ -538,28 +521,6 @@ def test_PersonUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     )
 
 
-def test_PersonUnit_load_work_file_CorrectlyLoads_work_obj(
-    reals_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_agenda = agendaunit_shop(sue_text)
-    bob_text = "Bob"
-    sue_agenda.add_partyunit(bob_text)
-    _save_work_file(sue_chapunit, sue_agenda)
-    assert sue_person._work_obj is None
-
-    # WHEN
-    sue_person.load_work_file()
-
-    # THEN
-    assert sue_person._work_obj != None
-    assert sue_person._work_obj.get_party(bob_text) != None
-    assert sue_person._work_obj.get_party("Zia") is None
-
-
 def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     reals_dir_setup_cleanup,
 ):
@@ -575,7 +536,7 @@ def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     initialize_work_file(sue_chapunit)
 
     # THEN
-    work_agenda = sue_person.get_work_file_agenda()
+    work_agenda = get_work_file_agenda(sue_chapunit)
     assert work_agenda._real_id == get_test_real_id()
     assert work_agenda._owner_id == sue_text
     bob_text = "Bob"
@@ -585,14 +546,14 @@ def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
     _save_work_file(sue_chapunit, sue_agenda)
-    work_agenda = sue_person.get_work_file_agenda()
+    work_agenda = get_work_file_agenda(sue_chapunit)
     assert work_agenda.get_party(bob_text)
 
     # WHEN
     initialize_work_file(sue_chapunit)
 
     # THEN
-    work_agenda = sue_person.get_work_file_agenda()
+    work_agenda = get_work_file_agenda(sue_chapunit)
     assert work_agenda.get_party(bob_text)
 
 
@@ -648,7 +609,7 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_person._work_path) is False
 
     # WHEN
-    sue_person.create_core_dir_and_files(sue_chapunit)
+    chap_create_core_dir_and_files(sue_chapunit)
 
     # THEN
     assert os_path_exists(sue_person.real_dir)

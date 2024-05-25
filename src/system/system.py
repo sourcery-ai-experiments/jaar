@@ -169,7 +169,7 @@
 #         x_giftunit.save_files()
 
 #     def _create_duty_from_gifts(self):
-#         self.save_duty_file(self._merge_gifts_into_agenda(self._get_empty_agenda()))
+#         self.save_duty_file(_merge_gifts_into_agenda(self._get_empty_agenda()))
 
 #     def _get_empty_agenda(self) -> AgendaUnit:
 #         empty_agenda = agendaunit_shop(self.person_id, self.real_id)
@@ -252,7 +252,7 @@
 #         self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = True
 #     ) -> GiftUnit:
 #         if change_invalid_attrs:
-#             x_gift = self.validate_giftunit(x_gift)
+#             x_gift = validate_giftunit(x_gift)
 
 #         if x_gift._atoms_dir != self._atoms_dir:
 #             raise SaveGiftFileException(
@@ -310,7 +310,7 @@
 #     def _merge_gifts_into_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
 #         gift_ints = get_integer_filenames(self._gifts_dir, x_agenda._last_gift_id)
 #         for gift_int in gift_ints:
-#             x_gift = self.get_giftunit(gift_int)
+#             x_gift = get_giftunit(gift_int)
 #             new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
 
 #             update_text = "UPDATE"
@@ -430,7 +430,7 @@
 #         duty_agenda = get_duty_file_agenda(x_chapunit)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-#         next_giftunit = self._create_new_giftunit(x_chapunit)
+#         next_giftunit = _create_new_giftunit(x_chapunit)
 #         next_giftunit._bookunit.add_all_different_agendaatoms(
 #             old_duty_agenda, duty_agenda
 #         )
@@ -438,14 +438,14 @@
 #         self.append_gifts_to_duty_file()
 
 #     def create_save_giftunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-#         new_giftunit = self._create_new_giftunit(x_chapunit)
+#         new_giftunit = _create_new_giftunit(x_chapunit)
 #         new_giftunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda, after_agenda
 #         )
 #         self.save_giftunit_file(new_giftunit)
 
 #     def append_gifts_to_duty_file(self):
-#         self.save_duty_file(self._merge_gifts_into_agenda(get_duty_file_agenda(x_chapunit)))
+#         self.save_duty_file(_merge_gifts_into_agenda(get_duty_file_agenda(x_chapunit)))
 #         return get_duty_file_agenda(x_chapunit)
 
 
