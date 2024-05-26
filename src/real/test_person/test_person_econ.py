@@ -19,7 +19,7 @@ from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_get_person_econ_directorys_ReturnsCorrectObj(
+def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -33,16 +33,14 @@ def test_PersonUnit_get_person_econ_directorys_ReturnsCorrectObj(
     idearoot = get_rootpart_of_econ_dir()
 
     # WHEN
-    texas_path = sue_person._get_person_econ_directorys(
-        sue_chapunit, [idearoot, texas_text]
-    )
-    dallas_path = sue_person._get_person_econ_directorys(
+    texas_path = sue_person._get_person_econ_dir(sue_chapunit, [idearoot, texas_text])
+    dallas_path = sue_person._get_person_econ_dir(
         sue_chapunit, [idearoot, texas_text, dallas_text]
     )
-    elpaso_path = sue_person._get_person_econ_directorys(
+    elpaso_path = sue_person._get_person_econ_dir(
         sue_chapunit, [idearoot, texas_text, elpaso_text]
     )
-    kern_path = sue_person._get_person_econ_directorys(
+    kern_path = sue_person._get_person_econ_dir(
         sue_chapunit, [idearoot, texas_text, elpaso_text, kern_text]
     )
 
@@ -62,7 +60,7 @@ def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     assert os_path_exists(sue_person._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
-    dallas_dir = sue_person._get_person_econ_directorys(sue_chapunit, dallas_list)
+    dallas_dir = sue_person._get_person_econ_dir(sue_chapunit, dallas_list)
     print(f"{dallas_dir=}")
     assert os_path_exists(dallas_dir) == False
 

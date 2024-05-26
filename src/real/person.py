@@ -475,19 +475,14 @@ class PersonUnit:
         self._work_file_name = chapunit._work_file_name
         self._work_path = chapunit._work_path
 
-    def _get_person_econ_directorys(
-        self, x_chapunit: ChapUnit, x_list: list[RoadNode]
-    ) -> str:
+    def _get_person_econ_dir(self, x_chapunit: ChapUnit, x_list: list[RoadNode]) -> str:
         return f"{x_chapunit._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
     def _create_econ_dir(self, x_chapunit: ChapUnit, x_roadunit: RoadUnit) -> str:
-        x_roadunit = change_road(
-            x_roadunit, x_chapunit.real_id, get_rootpart_of_econ_dir()
-        )
-        road_nodes = get_all_road_nodes(
-            x_roadunit, delimiter=x_chapunit._road_delimiter
-        )
-        x_econ_path = self._get_person_econ_directorys(x_chapunit, road_nodes)
+        econ_root = get_rootpart_of_econ_dir()
+        x_roadunit = change_road(x_roadunit, x_chapunit.real_id, econ_root)
+        road_nodes = get_all_road_nodes(x_roadunit, x_chapunit._road_delimiter)
+        x_econ_path = self._get_person_econ_dir(x_chapunit, road_nodes)
         set_dir(x_econ_path)
         return x_econ_path
 
