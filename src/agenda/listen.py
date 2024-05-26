@@ -77,7 +77,7 @@ def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
     # look at things from speaker's prespective
     perspective_agendaunit = copy_deepcopy(speaker)
     perspective_agendaunit.set_owner_id(listener._owner_id)
-    perspective_agendaunit.set_agenda_metrics()
+    perspective_agendaunit.calc_intent()
 
     if perspective_agendaunit._rational == False:
         speaker_partyunit = listener.get_party(speaker._owner_id)

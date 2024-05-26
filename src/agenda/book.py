@@ -140,8 +140,8 @@ class BookUnit:
     def add_all_different_agendaatoms(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        before_agenda.set_agenda_metrics()
-        after_agenda.set_agenda_metrics()
+        before_agenda.calc_intent()
+        after_agenda.calc_intent()
         self.add_agendaatoms_agendaunit_simple_attrs(before_agenda, after_agenda)
         self.add_agendaatom_partyunits(before_agenda, after_agenda)
         self.add_agendaatom_groupunits(before_agenda, after_agenda)
@@ -942,7 +942,7 @@ def validate_agenda_build_from_book(x_book: BookUnit, x_agenda: AgendaUnit = Non
     x_agenda = x_book.get_edited_agenda(x_agenda)
 
     try:
-        x_agenda.set_agenda_metrics()
+        x_agenda.calc_intent()
     except Exception:
         return False
 

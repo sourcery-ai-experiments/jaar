@@ -262,7 +262,7 @@ def test_AgendaUnit_get_idea_list_BeliefHeirCorrectlyDeletesBeliefUnit():
 
     earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
     swim_idea.set_beliefunit(beliefunit=earth_curb)
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
     assert swim_idea._beliefheirs == first_earthdict
     assert swim_idea._beliefunits == {}
 

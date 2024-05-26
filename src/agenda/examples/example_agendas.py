@@ -311,7 +311,7 @@ def get_agenda_irrational_example() -> AgendaUnit:
     # Step 2: if chicken._active == False, egg._active is set to True
     # Step 3: if egg._active == True, chicken._active is set to True
     # Step 4: back to step 0.
-    # after hatter_agenda.set_agenda_metrics these should be true:
+    # after hatter_agenda.calc_intent these should be true:
     # 1. hatter_agenda._irrational == True
     # 2. hatter_agenda._tree_traverse_count = hatter_agenda._max_tree_traverse
 
@@ -458,7 +458,7 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     # )
     # laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
     # # print(f"{laundry_reasonunit.base=} {laundry_premise=}")
-    # bob_agenda.set_agenda_metrics()
+    # bob_agenda.calc_intent()
     # for x_ideaunit in bob_agenda._idea_dict.values():
     #     if x_ideaunit._label in [laundry_text]:
     # print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")

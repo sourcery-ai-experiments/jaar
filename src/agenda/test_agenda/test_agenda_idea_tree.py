@@ -66,7 +66,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     assert not sue_agenda._healers_dict
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
+def test_AgendaUnit_calc_intent_CorrectlyClearsDescendantAttributes():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     # test root status:
@@ -105,7 +105,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyClearsDescendantAttributes():
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt == -2
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert yrx._descendant_pledge_count == 2
@@ -159,7 +159,7 @@ def test_AgendaUnit_get_idea_obj_ReturnsIdea():
     assert str(excinfo.value) == f"get_idea_obj failed. no item at '{wrong_road}'"
 
 
-def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes():
+def test_AgendaUnit_calc_intent_RootOnlyCorrectlySetsDescendantAttributes():
     # GIVEN
     tim_agenda = agendaunit_shop(_owner_id="Tim")
     assert tim_agenda._idearoot._descendant_pledge_count is None
@@ -167,7 +167,7 @@ def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes
     assert tim_agenda._idearoot._all_party_debt is None
 
     # WHEN
-    tim_agenda.set_agenda_metrics()
+    tim_agenda.calc_intent()
 
     # THEN
     assert tim_agenda._idearoot._descendant_pledge_count == 0
@@ -175,7 +175,7 @@ def test_AgendaUnit_set_agenda_metrics_RootOnlyCorrectlySetsDescendantAttributes
     assert tim_agenda._idearoot._all_party_debt == True
 
 
-def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1():
+def test_AgendaUnit_calc_intent_NLevelCorrectlySetsDescendantAttributes_1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     gig_text = "gig"
@@ -218,7 +218,7 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt is None
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert x_idearoot._descendant_pledge_count == 3
@@ -233,7 +233,7 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_1
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
 
 
-def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2():
+def test_AgendaUnit_calc_intent_NLevelCorrectlySetsDescendantAttributes_2():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
@@ -260,7 +260,7 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2
     # print(x_agenda._kids[gig_text]._kids[email_text]._balancelink)
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
     # print(x_agenda._kids[gig_text]._kids[email_text])
     # print(x_agenda._kids[gig_text]._kids[email_text]._balancelink)
 
@@ -286,14 +286,14 @@ def test_AgendaUnit_set_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_2
 def test_AgendaUnit_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
     # idea tree has no balancelinks
     assert x_agenda._idearoot._balancelines == {}
     x_agenda._idearoot._balancelines = {1: "testtest"}
     assert x_agenda._idearoot._balancelines != {}
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert not x_agenda._idearoot._balancelines
@@ -304,16 +304,16 @@ def test_AgendaUnit_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
     gig_idea = x_agenda._idearoot._kids[gig_text]
     gig_idea._balancelines = {1: "testtest"}
     assert gig_idea._balancelines != {}
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert not x_agenda._idearoot._kids[gig_text]._balancelines
 
 
-def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
+def test_AgendaUnit_calc_intent_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
     # idea tree has no balancelinks
     assert x_agenda._idearoot._balancelines == {}
     sandy_text = "sandy"
@@ -326,7 +326,7 @@ def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRootC
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) is None
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert x_agenda._idearoot._balanceheirs.get(sandy_text) != None
@@ -370,10 +370,10 @@ def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRootC
     assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}
 
 
-def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
+def test_AgendaUnit_calc_intent_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
     # idea tree has no balancelinks
     sandy_text = "sandy"
     assert x_agenda._idearoot._balancelines == {}
@@ -385,7 +385,7 @@ def test_AgendaUnit_set_agenda_metrics_TreeTraverseSetsBalanceLineestorFromNonRo
 
     # WHEN
     # idea tree has balancelinks
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_intent()
 
     # THEN
     assert x_agenda._idearoot._balancelines != {}
@@ -559,7 +559,7 @@ def test_AgendaUnit_get_heir_road_list_returnsCorrectList():
 def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
     cat_road = sue_agenda.make_l1_road("feed cat")
     week_road = sue_agenda.make_l1_road("weekdays")
     gig_road = sue_agenda.make_l1_road("gig")
@@ -609,44 +609,44 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     assert sue_agenda.idea_exists(japan_road) == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenAgendaUnitEmpty():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenAgendaUnitEmpty():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenThereAreNotAny():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenThereAreNotAny():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleIdeaUnit_healerhold_any_group_id_exists_IsTrue():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenSingleIdeaUnit_healerhold_any_group_id_exists_IsTrue():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.add_l1_idea(ideaunit_shop("Texas", _healerhold=healerhold_shop({"Yao"})))
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleProblemAndEcon():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenSingleProblemAndEcon():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -658,13 +658,13 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenSingleP
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsLevelAboveProblem():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenEconIsLevelAboveProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_text = "Yao"
@@ -679,13 +679,13 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsL
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsLevelBelowProblem():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenEconIsLevelBelowProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
@@ -696,13 +696,13 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenEconIsL
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified == False
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowProblem():
+def test_AgendaUnit_calc_intent_CorrectlyRaisesErrorWhenEconIsLevelBelowProblem():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     texas_text = "Texas"
@@ -716,14 +716,14 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowP
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        sue_agenda.set_agenda_metrics(econ_exceptions=True)
+        sue_agenda.calc_intent(econ_exceptions=True)
     assert (
         str(excinfo.value)
         == f"IdeaUnit '{elpaso_idea.get_road()}' cannot sponsor ancestor econs."
     )
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheSameLine():
+def test_AgendaUnit_calc_intent_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheSameLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_healerhold = healerhold_shop({"Yao"})
@@ -740,7 +740,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEcon
     assert sue_agenda._econs_justified == False
 
     # WHEN
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
 
     # THEN
     assert sue_agenda._econs_justified == False
@@ -760,7 +760,7 @@ def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_econs_justified_IsFalse():
         "El Paso", _healerhold=yao_healerhold, _problem_bool=True
     )
     sue_agenda.add_idea(elpaso_idea, texas_road)
-    sue_agenda.set_agenda_metrics()
+    sue_agenda.calc_intent()
     assert sue_agenda._econs_justified == False
 
     # WHEN / THEN

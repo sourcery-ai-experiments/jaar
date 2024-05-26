@@ -46,7 +46,7 @@ def test_create_barren_agenda_ReturnsCorrectObj():
     assert yao_barren_job._party_creditor_pool is None
     assert yao_barren_job._party_debtor_pool != yao_role._party_debtor_pool
     assert yao_barren_job._party_debtor_pool is None
-    yao_barren_job.set_agenda_metrics()
+    yao_barren_job.calc_intent()
     assert yao_barren_job._partys == {}
 
 

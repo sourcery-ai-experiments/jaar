@@ -24,7 +24,7 @@ def create_example_real1() -> RealUnit:
     yao_duty_agenda.set_party_debtor_pool(1000)
 
     yao_duty_agenda.add_partyunit(yao_text, 34, 600)
-    yao_duty_agenda.set_agenda_metrics()
+    yao_duty_agenda.calc_intent()
     texas_text = "Texas"
     texas_road = yao_duty_agenda.make_l1_road(texas_text)
     yao_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -39,7 +39,7 @@ def create_example_real1() -> RealUnit:
 
     yao_duty_agenda.add_idea(dallas_idea, texas_road)
     yao_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
+    # display_agenda(yao_duty_agenda.calc_intent(), mode="Econ").show()
     save_duty_file(yao_chapunit, yao_duty_agenda)
     yao_person.create_person_econunits(yao_chapunit)
 
@@ -101,7 +101,7 @@ def create_example_real2() -> RealUnit:
     wei_duty_agenda.add_idea(elpaso_idea, texas_road)
     zia_duty_agenda.add_idea(dallas_idea, texas_road)
     zia_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
+    # display_agenda(yao_duty_agenda.calc_intent(), mode="Econ").show()
     save_duty_file(yao_chapunit, yao_duty_agenda)
     save_duty_file(wei_chapunit, wei_duty_agenda)
     save_duty_file(zia_chapunit, zia_duty_agenda)
@@ -147,7 +147,7 @@ def create_example_real3() -> RealUnit:
     yao_duty_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
     yao_duty_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
     yao_duty_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
-    # yao_duty_agenda.set_agenda_metrics()
+    # yao_duty_agenda.calc_intent()
     # display_ideatree(yao_duty_agenda, mode="Econ").show()
 
     wei_duty_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
@@ -195,7 +195,7 @@ def create_example_real4() -> RealUnit:
     yao_duty_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
     yao_duty_agenda.add_idea(ideaunit_shop(bath_text, pledge=True), clean_road)
     yao_duty_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
-    # yao_duty_agenda.set_agenda_metrics()
+    # yao_duty_agenda.calc_intent()
     # display_ideatree(yao_duty_agenda, mode="Econ").show()
 
     wei_duty_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
@@ -242,7 +242,7 @@ def create_example_real4() -> RealUnit:
     wei_duty_agenda.add_idea(elpaso_idea, texas_road)
     zia_duty_agenda.add_idea(dallas_idea, texas_road)
     zia_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # display_agenda(yao_duty_agenda.set_agenda_metrics(), mode="Econ").show()
+    # display_agenda(yao_duty_agenda.calc_intent(), mode="Econ").show()
     save_duty_file(yao_chapunit, yao_duty_agenda)
     save_duty_file(wei_chapunit, wei_duty_agenda)
     save_duty_file(zia_chapunit, zia_duty_agenda)

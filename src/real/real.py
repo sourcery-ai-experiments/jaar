@@ -136,7 +136,7 @@ class RealUnit:
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
-        x_duty.set_agenda_metrics()
+        x_duty.calc_intent()
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
             for econ_idea in healer_dict.values():
@@ -162,7 +162,7 @@ class RealUnit:
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
         x_duty = get_duty_file_agenda(x_chapunit)
-        x_duty.set_agenda_metrics()
+        x_duty.calc_intent()
 
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
@@ -173,9 +173,9 @@ class RealUnit:
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
-                x_job.set_agenda_metrics()
+                x_job.calc_intent()
                 x_work.meld(x_job)
-                x_work.set_agenda_metrics
+                x_work.calc_intent
 
         # if work_agenda has not changed st work agenda to duty
         if x_work == x_work_deepcopy:

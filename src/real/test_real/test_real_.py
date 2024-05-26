@@ -337,7 +337,7 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     luca_duty_agenda.add_idea(elpaso_idea, texas_road)
     todd_duty_agenda.add_idea(dallas_idea, texas_road)
     todd_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(luca_duty_agenda.set_agenda_metrics(), mode="Econ").show()
+    # display_ideatree(luca_duty_agenda.calc_intent(), mode="Econ").show()
     save_duty_file(luca_chapunit, luca_duty_agenda)
     save_duty_file(todd_chapunit, todd_duty_agenda)
     luca_person.create_person_econunits(luca_chapunit)
