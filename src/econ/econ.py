@@ -275,7 +275,7 @@ class EconUnit:
         for file_name in self.get_jobs_dir_file_names_list():
             agenda_json = open_file(self.get_jobs_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
-            agendaunit_x.calc_intent()
+            agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
             self._treasury_insert_partyunit(agendaunit_x)

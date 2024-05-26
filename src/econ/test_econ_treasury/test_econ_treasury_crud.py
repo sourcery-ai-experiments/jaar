@@ -99,7 +99,7 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     assert x_agendatreasuryunits.get(bob_text).rational is None
 
     # WHEN
-    sal_agenda.calc_intent()
+    sal_agenda.calc_agenda_metrics()
     bob_rational = False
     bob_agenda._rational = bob_rational
     x_econ._treasury_set_agendaunit_attrs(sal_agenda)

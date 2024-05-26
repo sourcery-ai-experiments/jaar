@@ -31,7 +31,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assert tim_agenda._idearoot._assignedheir is None
 
     # WHEN
-    tim_agenda.calc_intent()
+    tim_agenda.calc_agenda_metrics()
 
     # THEN
     assigned_heir_x = assigned_heir_shop()
@@ -58,7 +58,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assert run_idea._assignedheir is None
 
     # WHEN
-    bob_agenda.calc_intent()
+    bob_agenda.calc_agenda_metrics()
 
     # THEN
     assert run_idea._assignedheir != None
@@ -101,7 +101,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assert four_idea._assignedheir is None
 
     # WHEN
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
 
     # THEN
     assigned_heir_x = assigned_heir_shop()

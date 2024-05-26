@@ -127,7 +127,7 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=85)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     assert mail_idea.pledge == True

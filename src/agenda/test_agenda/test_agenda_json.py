@@ -541,5 +541,5 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     assert ccn2_agenda._idea_dict == x2_agenda._idea_dict
     assert ccn2_agenda == x2_agenda
     ccn_agenda3 = ccn_dict_of_obj.get(x3_agenda._owner_id)
-    x3_agenda.calc_intent()
+    x3_agenda.calc_agenda_metrics()
     assert ccn_agenda3 == x3_agenda

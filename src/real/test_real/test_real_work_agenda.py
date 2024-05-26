@@ -34,7 +34,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     # THEN
     example_agenda = agendaunit_shop(sue_text, music_text)
     example_agenda._last_gift_id = init_gift_id()
-    example_agenda.calc_intent()
+    example_agenda.calc_agenda_metrics()
     assert sue_work._real_id == example_agenda._real_id
     assert sue_work._last_gift_id == example_agenda._last_gift_id
     assert sue_work == example_agenda

@@ -6,7 +6,7 @@ from random import randrange
 def get_1node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
     x_agenda.set_real_id(get_temp_env_real_id())
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -14,7 +14,7 @@ def get_Jnode2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
     x_agenda.set_real_id(get_temp_env_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("A"))
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -27,7 +27,7 @@ def get_2node_agenda(real_id: RealID = None) -> AgendaUnit:
     x_agenda.set_real_id(real_id)
     idea_b = ideaunit_shop(b_text)
     x_agenda.add_idea(idea_b, parent_road=get_temp_env_real_id())
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -37,7 +37,7 @@ def get_3node_agenda() -> AgendaUnit:
     x_agenda.set_real_id(get_temp_env_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("B"))
     x_agenda.add_l1_idea(ideaunit_shop("C"))
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -47,7 +47,7 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
     x_agenda.set_real_id(get_temp_env_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("E"))
     x_agenda.add_l1_idea(ideaunit_shop("F"))
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -60,7 +60,7 @@ def get_6node_agenda() -> AgendaUnit:
     x_agenda.add_idea(ideaunit_shop("D"), c_road)
     x_agenda.add_idea(ideaunit_shop("E"), c_road)
     x_agenda.add_idea(ideaunit_shop("F"), c_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -74,7 +74,7 @@ def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda.add_idea(ideaunit_shop("D"), c_road)
     x_agenda.add_idea(ideaunit_shop("E"), c_road)
     x_agenda.add_idea(ideaunit_shop("F"), x_agenda.make_road(c_road, "H"))
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -86,7 +86,7 @@ def get_5nodeHG_agenda() -> AgendaUnit:
     c_road = x_agenda.make_l1_road("C")
     x_agenda.add_idea(ideaunit_shop("H"), c_road)
     x_agenda.add_idea(ideaunit_shop("G"), c_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -102,7 +102,7 @@ def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda.add_idea(ideaunit_shop("D"), c_road)
     x_agenda.add_idea(ideaunit_shop("E"), c_road)
     x_agenda.add_idea(ideaunit_shop("F"), c_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -118,7 +118,7 @@ def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda.add_idea(ideaunit_shop("E"), c_road)
     x_agenda.add_idea(ideaunit_shop("F"), c_road)
     x_agenda.add_idea(ideaunit_shop("H"), c_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -134,7 +134,7 @@ def get_agenda_2CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
     x_agenda.add_idea(cookery_idea, parent_road=casa_road)
     x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
@@ -153,5 +153,5 @@ def get_agenda_3CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     x_agenda.add_idea(cookery_idea, parent_road=casa_road)
     x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
     x_agenda.add_idea(nursery_idea, parent_road=casa_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     return x_agenda

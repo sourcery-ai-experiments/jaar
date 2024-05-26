@@ -121,7 +121,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     sue_duty_agenda.add_idea(ideaunit_shop(dallas_text), texas_road)
     sue_duty_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     assert sue_duty_agenda._econs_justified == False
     save_duty_file(sue_chapunit, sue_duty_agenda)
 
@@ -147,7 +147,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_duty_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     assert sue_duty_agenda._econs_justified
     assert sue_duty_agenda._econs_buildable == False
     save_duty_file(sue_chapunit, sue_duty_agenda)
@@ -179,7 +179,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
 
@@ -224,7 +224,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
@@ -244,7 +244,7 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     # WHEN
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
 
@@ -269,7 +269,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
@@ -302,7 +302,7 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
-    sue_duty_agenda.calc_intent()
+    sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
@@ -339,7 +339,7 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     elpaso_road = sue_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # sue_duty_agenda.calc_intent()
+    # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)
@@ -381,7 +381,7 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     elpaso_road = sue_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    # sue_duty_agenda.calc_intent()
+    # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_chapunit, sue_duty_agenda)
     sue_person.create_person_econunits(sue_chapunit)

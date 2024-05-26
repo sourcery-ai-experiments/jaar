@@ -62,7 +62,7 @@ def test_AgendaUnit_add_l1_idea_CorrectlySetsAttr():
 def test_AgendaUnit_IdeaUnit_kids_CanHaveKids():
     # GIVEN / WHEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     assert sue_agenda._weight == 10
@@ -83,7 +83,7 @@ def test_AgendaUnit_IdeaUnit_kids_CanHaveKids():
 def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=1) == 4
@@ -92,7 +92,7 @@ def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
 
     # WHEN
     sue_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     print(f"{(sue_agenda._owner_id == new_idea_parent_road[0])=}")
@@ -104,14 +104,14 @@ def test_AgendaUnit_add_idea_CanAddKidTo_idearoot():
 def test_AgendaUnit_add_idea_CanAddKidToKidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=2) == 10
 
     # WHEN
     new_idea_parent_road = sue_agenda.make_l1_road("casa")
     sue_agenda.add_idea(ideaunit_shop("new_york"), parent_road=new_idea_parent_road)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     # print(f"{(sue_agenda._owner_id == new_idea_parent_road[0])=}")
@@ -132,7 +132,7 @@ def test_AgendaUnit_add_idea_CanAddKidToKidIdea():
 def test_AgendaUnit_add_idea_CanAddKidToGrandkidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=3) == 2
@@ -141,7 +141,7 @@ def test_AgendaUnit_add_idea_CanAddKidToGrandkidIdea():
 
     # WHEN
     sue_agenda.add_idea(ideaunit_shop("new_idea"), parent_road=new_idea_parent_road)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     print(f"{(sue_agenda._owner_id == new_idea_parent_road[0])=}")
@@ -184,7 +184,7 @@ def test_AgendaUnit_add_idea_CorrectlyAddsIdeaObjWithNonstandard_delimiter():
 def test_AgendaUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=3) == 2
@@ -195,7 +195,7 @@ def test_AgendaUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
 
     # WHEN
     sue_agenda.add_idea(new_idea, parent_road=new_idea_parent_road)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     print(sue_agenda._idearoot._kids["ww2"])
@@ -209,7 +209,7 @@ def test_AgendaUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
 def test_AgendaUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     assert sue_agenda.get_idea_count() == 17
     assert sue_agenda.get_level_count(level=3) == 2
@@ -236,7 +236,7 @@ def test_AgendaUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
         parent_road=new_idea_parent_road,
         create_missing_ideas=True,
     )
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
 
     # THEN
     print(f"{(len(new_idea_parent_road) == 1)=}")
@@ -254,7 +254,7 @@ def test_AgendaUnit_add_idea_CorrectlySets_agenda_real_id():
     sue_agenda = get_agenda_with_4_levels()
     agenda_real_id = "Texas"
     sue_agenda.set_real_id(real_id=agenda_real_id)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
     assert sue_agenda._real_id == agenda_real_id
 
     casa_road = sue_agenda.make_l1_road("casa")
@@ -307,7 +307,7 @@ def test_AgendaUnit_del_idea_obj_Level1CanBeDeleted_ChildrenDeleted():
 def test_AgendaUnit_del_idea_obj_Level1CanBeDeleted_ChildrenInherited():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels()
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Sunday"
@@ -340,7 +340,7 @@ def test_AgendaUnit_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
     usa_oregon_road = sue_agenda.make_road(usa_road, oregon_text)
     states_texas_road = sue_agenda.make_road(states_road, texas_text)
     states_oregon_road = sue_agenda.make_road(states_road, oregon_text)
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
     assert sue_agenda._idea_dict.get(usa_road) != None
     assert sue_agenda._idea_dict.get(usa_texas_road) != None
     assert sue_agenda._idea_dict.get(usa_oregon_road) != None
@@ -351,7 +351,7 @@ def test_AgendaUnit_del_idea_obj_LevelNCanBeDeleted_ChildrenInherited():
     sue_agenda.del_idea_obj(road=usa_road, del_children=False)
 
     # THEN
-    sue_agenda.calc_intent()
+    sue_agenda.calc_agenda_metrics()
     assert sue_agenda._idea_dict.get(states_texas_road) != None
     assert sue_agenda._idea_dict.get(states_oregon_road) != None
     assert sue_agenda._idea_dict.get(usa_texas_road) is None
@@ -725,7 +725,7 @@ def test_AgendaUnit_add_idea_adoptee_CorrectlyAddsAdoptee():
     hike_text = "hike"
     noa_agenda.add_idea(ideaunit_shop(hike_text), parent_road=sports_road)
 
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
     sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
     assert noa_agenda._idea_dict.get(sports_swim_road) != None
@@ -747,7 +747,7 @@ def test_AgendaUnit_add_idea_adoptee_CorrectlyAddsAdoptee():
     # THEN
     summer_idea = noa_agenda.get_idea_obj(summer_road)
     print(f"{summer_idea._kids.keys()=}")
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     assert noa_agenda._idea_dict.get(summer_swim_road) != None
     assert noa_agenda._idea_dict.get(summer_hike_road) != None
     assert noa_agenda._idea_dict.get(sports_swim_road) is None
@@ -769,7 +769,7 @@ def test_AgendaUnit_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdopted
     bball_weight = 7
     noa_agenda.add_idea(ideaunit_shop(bball_text, _weight=bball_weight), sports_road)
 
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
     sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
     sports_bball_road = noa_agenda.make_road(sports_road, bball_text)
@@ -794,7 +794,7 @@ def test_AgendaUnit_add_idea_bundling_SetsNewParentWithWeightEqualToSumOfAdopted
     )
 
     # THEN
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     assert noa_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
     assert noa_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
     assert noa_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
@@ -825,7 +825,7 @@ def test_AgendaUnit_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState(
         ideaunit_shop(bball_text, _weight=bball_weight), parent_road=sports_road
     )
 
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     sports_swim_road = noa_agenda.make_road(sports_road, swim_text)
     sports_hike_road = noa_agenda.make_road(sports_road, hike_text)
     sports_bball_road = noa_agenda.make_road(sports_road, bball_text)
@@ -846,7 +846,7 @@ def test_AgendaUnit_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState(
         adoptees=[swim_text, hike_text],
         bundling=True,
     )
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     assert noa_agenda._idea_dict.get(summer_road)._weight == swim_weight + hike_weight
     assert noa_agenda._idea_dict.get(summer_swim_road)._weight == swim_weight
     assert noa_agenda._idea_dict.get(summer_hike_road)._weight == hike_weight
@@ -860,7 +860,7 @@ def test_AgendaUnit_del_idea_obj_DeletingBundledIdeaReturnsIdeasToOriginalState(
     noa_agenda.del_idea_obj(road=summer_road, del_children=False)
 
     # THEN
-    noa_agenda.calc_intent()
+    noa_agenda.calc_agenda_metrics()
     print(f"{noa_agenda._idea_dict.keys()=}")
     assert noa_agenda._idea_dict.get(sports_swim_road)._weight == swim_weight
     assert noa_agenda._idea_dict.get(sports_hike_road)._weight == hike_weight

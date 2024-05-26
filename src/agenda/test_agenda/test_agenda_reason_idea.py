@@ -125,7 +125,7 @@ def test_intent_returned_WhenNoReasonsExist():
     x_agenda = example_agendas_get_agenda_with_4_levels()
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     casa_road = x_agenda.make_l1_road("casa")
@@ -169,7 +169,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInherited_v1():
     except KeyError as e:
         assert str(e) == f"'{x_agenda._real_id},weekdays'"
 
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     # idea_dict = x_agenda.get_idea_dict()
     # from_list_get_active(road=casa_road, idea_dict=idea_dict)
 
@@ -222,7 +222,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     cost_text = "cost_quantification"
     cost_road = a4_agenda.make_road(rla_road, cost_text)
     a4_agenda.add_idea(ideaunit_shop(cost_text), parent_road=cost_road)
-    a4_agenda.calc_intent()
+    a4_agenda.calc_agenda_metrics()
 
     # THEN
     casa_idea = a4_agenda._idearoot._kids[casa_text]
@@ -298,7 +298,7 @@ def test_AgendaUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     assert cost_idea._reasonheirs == {}
 
     # WHEN
-    a4_agenda.calc_intent()
+    a4_agenda.calc_agenda_metrics()
 
     # THEN
     assert a4_agenda._idearoot._reasonheirs == {}  # casa_wk_built_reasonheir
@@ -535,7 +535,7 @@ def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIf
     commute_text = "commute to casa"
     commute_road = x_agenda.make_l1_road(commute_text)
     x_agenda.add_idea(ideaunit_shop(commute_text), x_agenda._real_id)
-    x_agenda.calc_intent()  # set tree metrics
+    x_agenda.calc_agenda_metrics()  # set tree metrics
     commute_idea = x_agenda.get_idea_obj(commute_road)
     assert len(commute_idea._reasonunits) == 0
 
@@ -605,7 +605,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
         reason_base=weekdays_road,
         reason_premise=thu_road,
     )
-    x_agenda.calc_intent()  # set tree metrics
+    x_agenda.calc_agenda_metrics()  # set tree metrics
     casa_idea = x_agenda.get_idea_obj(casa_road)
     assert casa_idea._active == False
 
@@ -621,12 +621,12 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
         reason_suff_idea_active=True,
     )
     commute_idea = x_agenda.get_idea_obj(commute_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     assert commute_idea._active == False
 
     # Belief: base: (...,weekdays) pick: (...,weekdays,wednesday)
     x_agenda.set_belief(base=weekdays_road, pick=wed_road)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     assert casa_idea._active == False
     assert commute_idea._active == False
@@ -635,25 +635,25 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     print("before changing belief")
     x_agenda.set_belief(base=weekdays_road, pick=thu_road)
     print("after changing belief")
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     assert casa_idea._active == True
 
     # THEN
     assert commute_idea._active == True
 
 
-def test_AgendaUnit_calc_intent_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
+def test_AgendaUnit_calc_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._rational == False
-    # x_agenda.calc_intent()
+    # x_agenda.calc_agenda_metrics()
     x_agenda._rational = True
     assert x_agenda._rational
 
     # WHEN
     # hack agenda to set _max_tree_traverse = 1 (not allowed, should be 2 or more)
     x_agenda._max_tree_traverse = 1
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     assert not x_agenda._rational
@@ -665,7 +665,7 @@ def test_AgendaUnit_tree_traverses_StopWhenNoChangeInStatusIsDetected():
     assert x_agenda._max_tree_traverse != 2
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     # for idea_key in x_agenda._idea_dict.keys():
     #     print(f"{idea_key=}")
 
@@ -676,12 +676,12 @@ def test_AgendaUnit_tree_traverses_StopWhenNoChangeInStatusIsDetected():
 def test_AgendaUnit_tree_traverse_count_CorrectlyCountsTreeTraversesForIrrationalAgendas():
     # GIVEN irrational agenda
     x_agenda = example_agendas_get_agenda_irrational_example()
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     assert x_agenda._tree_traverse_count == 3
 
     # WHEN
     x_agenda.set_max_tree_traverse(int_x=21)
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     assert x_agenda._tree_traverse_count == 21

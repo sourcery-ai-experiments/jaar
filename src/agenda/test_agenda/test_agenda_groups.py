@@ -136,7 +136,7 @@ def test_examples_agenda_v001_HasGroups():
     assert everyone_partys_len == 22
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
     idea_dict = x_agenda._idea_dict
 
     # THEN
@@ -337,7 +337,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     assert len(x_agenda._groups) == 3
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_rico = x_agenda.get_groupunit(rico_text)
@@ -364,7 +364,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     bl_sele = balancelink_shop(group_id=sele_text, creditor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._groups) == 4
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_sele = x_agenda.get_groupunit(sele_text)
@@ -418,7 +418,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImpo
     assert len(x_agenda._groups) == 3
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_rico = x_agenda.get_groupunit(rico_text)
@@ -469,7 +469,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     x_agenda.add_l1_idea(ideaunit_shop("hunt", _weight=3))
 
     # WHEN
-    x_agenda.calc_intent()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
 

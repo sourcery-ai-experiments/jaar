@@ -383,7 +383,7 @@
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
 #         x_duty_agenda = get_duty_file_agenda(x_chapunit)
-#         x_duty_agenda.calc_intent(econ_exceptions)
+#         x_duty_agenda.calc_agenda_metrics(econ_exceptions)
 #         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
 #                 f"Cannot set '{self.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."

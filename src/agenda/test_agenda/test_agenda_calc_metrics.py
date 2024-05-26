@@ -558,7 +558,7 @@ def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
-    zia_agenda.calc_intent()
+    zia_agenda.calc_agenda_metrics()
     assert len(zia_agenda._partys) == 0
     assert len(zia_agenda._groups) == 0
     assert len(zia_agenda._idearoot._kids) == 0

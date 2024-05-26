@@ -136,7 +136,7 @@ class AgendaUnit:
     _party_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # In job agendas this shows source
-    # calc_intent Calculated field begin
+    # calc_agenda_metrics Calculated field begin
     _idea_dict: dict[RoadUnit:IdeaUnit] = None
     _econ_dict: dict[RoadUnit:IdeaUnit] = None
     _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
@@ -145,7 +145,7 @@ class AgendaUnit:
     _econs_justified: bool = None
     _econs_buildable: bool = None
     _sum_healerhold_importance: bool = None
-    # calc_intent Calculated field end
+    # calc_agenda_metrics Calculated field end
 
     def del_last_gift_id(self):
         self._last_gift_id = None
@@ -279,7 +279,7 @@ class AgendaUnit:
             x_partyunit.clear_output_agenda_meld_order()
 
     def set_road_delimiter(self, new_road_delimiter: str):
-        self.calc_intent()
+        self.calc_agenda_metrics()
         if self._road_delimiter != new_road_delimiter:
             for x_idea_road in self._idea_dict.keys():
                 if is_string_in_road(new_road_delimiter, x_idea_road):
@@ -303,12 +303,12 @@ class AgendaUnit:
         old_real_id = copy_deepcopy(self._real_id)
         self._real_id = real_id
 
-        self.calc_intent()
+        self.calc_agenda_metrics()
         for idea_obj in self._idea_dict.values():
             idea_obj._agenda_real_id = self._real_id
 
         self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
-        self.calc_intent()
+        self.calc_agenda_metrics()
 
     def set_partyunit_external_metrics(
         self, external_metrics: PartyUnitExternalMetrics
@@ -327,7 +327,7 @@ class AgendaUnit:
             self._max_tree_traverse = int_x
 
     def get_agenda_sprung_from_single_idea(self, road: RoadUnit) -> any:
-        self.calc_intent()
+        self.calc_agenda_metrics()
         x_idea = self.get_idea_obj(road)
         new_weight = self._weight * x_idea._agenda_importance
         x_agenda = agendaunit_shop(_owner_id=self._idearoot._label, _weight=new_weight)
@@ -337,7 +337,7 @@ class AgendaUnit:
             new_yx = copy_deepcopy(src_yx)
             if new_yx._parent_road != "":
                 x_agenda.add_idea(new_yx, parent_road=new_yx._parent_road)
-            x_agenda.calc_intent()
+            x_agenda.calc_agenda_metrics()
 
         # TODO grab groups
         # TODO grab all group partys
@@ -983,7 +983,7 @@ class AgendaUnit:
                 lemmas_dict, missing_beliefs
             )
 
-        self.calc_intent()
+        self.calc_agenda_metrics()
 
     def get_beliefunits_base_and_belief_list(self) -> list:
         belief_list = list(self._idearoot._beliefunits.values())
@@ -1003,7 +1003,7 @@ class AgendaUnit:
         self._idearoot.del_beliefunit(base)
 
     def get_idea_dict(self, problem: bool = None) -> dict[RoadUnit:IdeaUnit]:
-        self.calc_intent()
+        self.calc_agenda_metrics()
         if not problem:
             return self._idea_dict
         if self._econs_justified == False:
@@ -1196,7 +1196,7 @@ class AgendaUnit:
                 self.set_groupunit(y_groupunit=groupunit_x)
 
     def _create_missing_ideas(self, road):
-        self.calc_intent()
+        self.calc_agenda_metrics()
         posted_idea = self.get_idea_obj(road)
 
         for reason_x in posted_idea._reasonunits.values():
@@ -1224,7 +1224,7 @@ class AgendaUnit:
                 self._shift_idea_kids(x_road=road)
             parent_idea = self.get_idea_obj(parent_road)
             parent_idea.del_kid(get_terminus_node(road, self._road_delimiter))
-        self.calc_intent()
+        self.calc_agenda_metrics()
 
     def _shift_idea_kids(self, x_road: RoadUnit):
         parent_road = get_parent_road(x_road)
@@ -1492,7 +1492,7 @@ class AgendaUnit:
 
         # deleting or setting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
         if balancelink_del != None or balancelink != None:
-            self.calc_intent()
+            self.calc_agenda_metrics()
 
     def get_intent_dict(
         self,
@@ -1500,7 +1500,7 @@ class AgendaUnit:
         intent_enterprise: bool = True,
         intent_state: bool = True,
     ) -> dict[RoadUnit:IdeaUnit]:
-        self.calc_intent()
+        self.calc_agenda_metrics()
         return {
             x_idea.get_road(): x_idea
             for x_idea in self._idea_dict.values()
@@ -1857,7 +1857,7 @@ class AgendaUnit:
         self._econ_dict = {}
         self._healers_dict = {}
 
-    def calc_intent(self, econ_exceptions: bool = False):
+    def calc_agenda_metrics(self, econ_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
         max_count = self._max_tree_traverse
 
@@ -2091,10 +2091,10 @@ class AgendaUnit:
                     numor=yb.mn,
                 )
 
-        self.calc_intent()
+        self.calc_agenda_metrics()
 
     def get_agenda4party(self, party_id: PartyID, beliefs: dict[RoadUnit:BeliefCore]):
-        self.calc_intent()
+        self.calc_agenda_metrics()
         agenda4party = agendaunit_shop(_owner_id=party_id)
         agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
         # get party's partys: partyzone
@@ -2146,7 +2146,7 @@ class AgendaUnit:
         )
 
     def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:
-        self.calc_intent()
+        self.calc_agenda_metrics()
         x_list = list(self._idea_dict.values())
         x_list.pop(0)
         return x_list
@@ -2224,7 +2224,7 @@ class AgendaUnit:
         assignor_partys: dict[PartyID:PartyUnit],
         assignor_party_id: PartyID,
     ) -> any:
-        self.calc_intent()
+        self.calc_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
         self._set_assignment_groups(agenda_x)
         assignor_pledges = self._get_assignor_pledge_ideas(agenda_x, assignor_party_id)
@@ -2372,7 +2372,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
     set_idearoot_from_agenda_dict(x_agenda, agenda_dict)
-    x_agenda.calc_intent()  # clean up tree traverse defined fields
+    x_agenda.calc_agenda_metrics()  # clean up tree traverse defined fields
     return x_agenda
 
 
@@ -2536,7 +2536,7 @@ def get_meld_of_agenda_files(
 ) -> AgendaUnit:
     for x_filename in get_file_names_in_voice_rank_order(primary_agenda, meldees_dir):
         primary_agenda.meld(get_from_json(open_file(meldees_dir, x_filename)))
-    primary_agenda.calc_intent()
+    primary_agenda.calc_agenda_metrics()
     return primary_agenda
 
 
