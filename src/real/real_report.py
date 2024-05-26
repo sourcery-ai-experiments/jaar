@@ -1,4 +1,4 @@
-from src.agenda.agenda import get_from_json as agenda_get_from_json
+from src.agenda.agenda import get_from_json as agendaunit_get_from_json
 from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
@@ -16,7 +16,7 @@ def get_real_dutys_partys_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get duty
     duty_dfs = []
     for person_path in person_paths:
-        duty_agenda = agenda_get_from_json(
+        duty_agenda = agendaunit_get_from_json(
             open_file(person_path, f"{get_duty_file_name()}.json")
         )
         duty_agenda.set_agenda_metrics()
@@ -74,7 +74,7 @@ def get_real_works_partys_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get work
     work_dfs = []
     for person_path in person_paths:
-        work_agenda = agenda_get_from_json(
+        work_agenda = agendaunit_get_from_json(
             open_file(person_path, f"{get_work_file_name()}.json")
         )
         work_agenda.set_agenda_metrics()
@@ -132,7 +132,7 @@ def get_real_dutys_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get duty
     duty_dfs = []
     for person_path in person_paths:
-        duty_agenda = agenda_get_from_json(
+        duty_agenda = agendaunit_get_from_json(
             open_file(person_path, f"{get_duty_file_name()}.json")
         )
         duty_agenda.set_agenda_metrics()
@@ -193,7 +193,7 @@ def get_real_works_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get work
     work_dfs = []
     for person_path in person_paths:
-        work_agenda = agenda_get_from_json(
+        work_agenda = agendaunit_get_from_json(
             open_file(person_path, f"{get_work_file_name()}.json")
         )
         work_agenda.set_agenda_metrics()

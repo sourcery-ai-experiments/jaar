@@ -13,7 +13,7 @@
 # from src.agenda.agenda import (
 #     AgendaUnit,
 #     agendaunit_shop,
-#     get_from_json as agenda_get_from_json,
+#     get_from_json as agendaunit_get_from_json,
 # )
 # from src.agenda.atom import (
 #     AgendaAtom,
@@ -217,11 +217,11 @@
 
 #     def get_duty_file_agenda(self) -> AgendaUnit:
 #         duty_json = open_file(dest_dir=self.person_dir, file_name=self._duty_file_name)
-#         return agenda_get_from_json(duty_json)
+#         return agendaunit_get_from_json(duty_json)
 
 #     def get_work_file_agenda(self) -> AgendaUnit:
 #         work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
-#         return agenda_get_from_json(work_json)
+#         return agendaunit_get_from_json(work_json)
 
 #     def load_duty_file(self):
 #         self._duty_obj = get_duty_file_agenda(x_chapunit)

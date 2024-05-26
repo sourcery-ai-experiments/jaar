@@ -9,7 +9,7 @@ from src.agenda.reason_idea import (
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
-    get_from_json as agenda_get_from_json,
+    get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.agenda_env import get_agenda_examples_dir
@@ -17,7 +17,7 @@ from src._instrument.file import open_file
 
 
 def agenda_v001() -> AgendaUnit:
-    return agenda_get_from_json(
+    return agendaunit_get_from_json(
         open_file(get_agenda_examples_dir(), "example_agenda1.json")
     )
 
@@ -50,7 +50,7 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
 
 
 def agenda_v002() -> AgendaUnit:
-    bob_agenda = agenda_get_from_json(
+    bob_agenda = agendaunit_get_from_json(
         open_file(
             dest_dir=get_agenda_examples_dir(),
             file_name="example_agenda2.json",

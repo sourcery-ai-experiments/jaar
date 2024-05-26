@@ -1,6 +1,6 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
-from src.agenda.agenda import agendaunit_shop, get_from_json as agenda_get_from_json
+from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.real.gift import init_gift_id, get_gifts_folder
 from src.real.person import (
     PersonUnit,
@@ -251,7 +251,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
-    duty_agenda = agenda_get_from_json(duty_file_text)
+    duty_agenda = agendaunit_get_from_json(duty_file_text)
     assert duty_agenda.get_party(bob_text) != None
 
     # WHEN
@@ -263,7 +263,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # THEN
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
-    duty_agenda = agenda_get_from_json(duty_file_text)
+    duty_agenda = agendaunit_get_from_json(duty_file_text)
     assert duty_agenda.get_party(zia_text) != None
 
 
@@ -391,7 +391,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     sue_duty_file_name = f"{get_duty_file_name()}.json"
 #     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
 #     print(f"{duty_file_text=}")
-#     duty_agenda = agenda_get_from_json(duty_file_text)
+#     duty_agenda = agendaunit_get_from_json(duty_file_text)
 #     assert duty_agenda._real_id == get_test_real_id()
 #     assert duty_agenda._owner_id == sue_text
 
@@ -451,7 +451,7 @@ def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_work_file_name = f"{get_work_file_name()}.json"
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
-    work_agenda = agenda_get_from_json(work_file_text)
+    work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda.get_party(bob_text) != None
 
     # # WHEN
@@ -463,7 +463,7 @@ def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # THEN
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
-    work_agenda = agenda_get_from_json(work_file_text)
+    work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda.get_party(zia_text) != None
 
 
@@ -549,7 +549,7 @@ def test_PersonUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_work_file_name = f"{get_work_file_name()}.json"
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
-    work_agenda = agenda_get_from_json(work_file_text)
+    work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda._real_id == get_test_real_id()
     assert work_agenda._owner_id == sue_text
     assert work_agenda._planck == sue_planck

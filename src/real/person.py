@@ -14,12 +14,7 @@ from src.agenda.group import GroupID
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
-    get_from_json as agenda_get_from_json,
-)
-from src.agenda.atom import (
-    AgendaAtom,
-    get_from_json as agendaatom_get_from_json,
-    change_agenda_with_agendaatom,
+    get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
 from src.econ.econ import (
@@ -215,7 +210,12 @@ def get_duty_file_agenda(x_chapunit: ChapUnit) -> AgendaUnit:
     duty_json = open_file(
         dest_dir=x_chapunit.person_dir, file_name=x_chapunit._duty_file_name
     )
-    return agenda_get_from_json(duty_json)
+    return agendaunit_get_from_json(duty_json)
+
+
+def giftunit_file_exists(x_chapunit: ChapUnit, gift_id: int) -> bool:
+    gift_filename = giftunit_get_json_filename(gift_id)
+    return os_path_exists(f"{x_chapunit._gifts_dir}/{gift_filename}")
 
 
 def get_max_gift_file_number(x_chapunit: ChapUnit) -> int:
@@ -230,21 +230,6 @@ def _get_next_gift_file_number(x_chapunit: ChapUnit) -> int:
     max_file_number = get_max_gift_file_number(x_chapunit)
     init_gift_id = get_init_gift_id_if_None()
     return init_gift_id if max_file_number is None else max_file_number + 1
-
-
-def _get_max_atom_file_number(x_chapunit: ChapUnit) -> int:
-    if not os_path_exists(x_chapunit._atoms_dir):
-        return None
-    atom_filenames = dir_files(
-        dir_path=x_chapunit._atoms_dir, delete_extensions=True, include_files=True
-    ).keys()
-    atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
-    return max(atom_file_numbers, default=None)
-
-
-def _get_next_atom_file_number(x_chapunit: ChapUnit) -> str:
-    max_file_number = _get_max_atom_file_number(x_chapunit)
-    return 0 if max_file_number is None else max_file_number + 1
 
 
 def _create_initial_gift_from_duty(x_chapunit: ChapUnit):
@@ -336,7 +321,7 @@ def get_work_file_agenda(x_chapunit: ChapUnit) -> AgendaUnit:
     work_json = open_file(
         dest_dir=x_chapunit.person_dir, file_name=x_chapunit._work_file_name
     )
-    return agenda_get_from_json(work_json)
+    return agendaunit_get_from_json(work_json)
 
 
 def append_gifts_to_duty_file(x_chapunit: ChapUnit) -> AgendaUnit:
@@ -344,6 +329,20 @@ def append_gifts_to_duty_file(x_chapunit: ChapUnit) -> AgendaUnit:
     duty_agenda = _merge_gifts_into_agenda(x_chapunit, duty_agenda)
     save_duty_file(x_chapunit, duty_agenda)
     return get_duty_file_agenda(x_chapunit)
+
+
+def _get_next_atom_file_number(x_chapunit: ChapUnit) -> str:
+    max_file_number = _get_max_atom_file_number(x_chapunit)
+    return 0 if max_file_number is None else max_file_number + 1
+
+
+def _get_max_atom_file_number(x_chapunit: ChapUnit) -> int:
+    if not os_path_exists(x_chapunit._atoms_dir):
+        return None
+    atom_files_dict = dir_files(x_chapunit._atoms_dir, True, include_files=True)
+    atom_filenames = atom_files_dict.keys()
+    atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
+    return max(atom_file_numbers, default=None)
 
 
 def validate_giftunit(x_chapunit: ChapUnit, x_giftunit: GiftUnit) -> GiftUnit:
@@ -419,36 +418,6 @@ def add_pledge_gift(x_chapunit, pledge_road: RoadUnit, x_suffgroup: GroupID = No
 
 def del_giftunit_file(x_chapunit: ChapUnit, file_number: int):
     delete_dir(f"{x_chapunit._gifts_dir}/{giftunit_get_json_filename(file_number)}")
-
-
-def _save_valid_atom_file(x_chapunit: ChapUnit, x_atom: AgendaAtom, file_number: int):
-    save_file(x_chapunit._atoms_dir, f"{file_number}.json", x_atom.get_json())
-    return file_number
-
-
-def chap_save_atom_file(x_chapunit: ChapUnit, x_atom: AgendaAtom):
-    x_filename = _get_next_atom_file_number(x_chapunit)
-    return _save_valid_atom_file(x_chapunit, x_atom, x_filename)
-
-
-def chap_atom_file_exists(x_chapunit, filename: int) -> bool:
-    return os_path_exists(f"{x_chapunit._atoms_dir}/{filename}.json")
-
-
-def _delete_atom_file(x_chapunit: ChapUnit, filename: int):
-    delete_dir(f"{x_chapunit._atoms_dir}/{filename}.json")
-
-
-def _get_agenda_from_atom_files(x_chapunit: ChapUnit) -> AgendaUnit:
-    x_agenda = agendaunit_shop(x_chapunit.person_id, x_chapunit.real_id)
-    x_atom_files = dir_files(x_chapunit._atoms_dir, delete_extensions=True)
-    sorted_atom_filenames = sorted(list(x_atom_files.keys()))
-
-    for x_atom_filename in sorted_atom_filenames:
-        x_file_text = x_atom_files.get(x_atom_filename)
-        x_atom = agendaatom_get_from_json(x_file_text)
-        change_agenda_with_agendaatom(x_agenda, x_atom)
-    return x_agenda
 
 
 @dataclass

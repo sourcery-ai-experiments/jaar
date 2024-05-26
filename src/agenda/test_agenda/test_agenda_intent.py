@@ -376,7 +376,7 @@ def test_set_intent_task_as_complete_SetsAttrCorrectly_Division():
     assert len(zia_agenda.get_intent_dict()) == 0
 
 
-def test_agenda_get_from_json_CorrectlyLoadsActionFromJSON():
+def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     # GIVEN
     file_dir = get_agenda_examples_dir()
     file_name = "example_agenda1.json"
