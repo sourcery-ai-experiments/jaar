@@ -151,7 +151,7 @@ def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
 
     # THEN
     print(f"{assignor_pledges=}")
-    gig_road = x_agenda.make_l1_road("gig")
+    casa_road = x_agenda.make_l1_road("casa")
     house_road = x_agenda.make_l1_road("housemanagement")
     table_road = x_agenda.make_road(house_road, "clean table")
     dish_road = x_agenda.make_road(table_road, "remove dishs")
@@ -160,7 +160,7 @@ def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
     feed_road = x_agenda.make_l1_road("feed cat")
 
     x_dict = {
-        gig_road: -1,
+        casa_road: -1,
         table_road: -1,
         dish_road: -1,
         soap_road: -1,
@@ -317,31 +317,31 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_owner_id=yao_text)
-    gig_text = "gig"
-    gig_road = yao_agenda.make_l1_road(gig_text)
-    yao_agenda.add_l1_idea(ideaunit_shop(gig_text))
-    gig_idea = yao_agenda.get_idea_obj(gig_road)
+    casa_text = "casa"
+    casa_road = yao_agenda.make_l1_road(casa_text)
+    yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
+    casa_idea = yao_agenda.get_idea_obj(casa_road)
     day_text = "day_range"
     day_road = yao_agenda.make_l1_road(day_text)
     day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
     yao_agenda.add_l1_idea(day_idea)
-    yao_agenda.edit_idea_attr(road=gig_road, denom=11, numeric_road=day_road)
-    assert gig_idea._begin == 4
-    print(f"{gig_idea._label=} {gig_idea._begin=} {gig_idea._close=}")
+    yao_agenda.edit_idea_attr(road=casa_road, denom=11, numeric_road=day_road)
+    assert casa_idea._begin == 4
+    print(f"{casa_idea._label=} {casa_idea._begin=} {casa_idea._close=}")
 
     # WHEN
     yao_agenda.calc_intent()
-    roads_dict = {gig_road}
+    roads_dict = {casa_road}
     relevant_roads = yao_agenda._get_relevant_roads(roads_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads.get(gig_road) != None
+    assert relevant_roads.get(casa_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
         yao_agenda._real_id: -1,
-        gig_road: -1,
+        casa_road: -1,
         day_road: -1,
     }
 

@@ -123,11 +123,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa1_agenda.add_partyunit(party_id=xia_text)
     noa1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = noa1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = noa1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(casa_text), parent_road=noa1_agenda._real_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
@@ -156,11 +156,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa1_agenda.add_partyunit(party_id=xia_text)
     noa1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = noa1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = noa1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(casa_text), parent_road=noa1_agenda._real_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)

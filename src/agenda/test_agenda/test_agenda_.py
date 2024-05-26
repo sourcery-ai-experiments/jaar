@@ -236,14 +236,14 @@ def test_AgendaUnit_make_road_ReturnsCorrectObj():
         _real_id=real_id_text,
         _road_delimiter=slash_road_delimiter,
     )
-    gig_text = "gig"
-    v1_gig_road = x_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    v1_casa_road = x_agenda.make_l1_road(casa_text)
 
     # WHEN
-    v2_gig_road = x_agenda.make_l1_road(gig_text)
+    v2_casa_road = x_agenda.make_l1_road(casa_text)
 
     # THEN
-    assert v1_gig_road == v2_gig_road
+    assert v1_casa_road == v2_casa_road
 
 
 def test_AgendaUnit_set_meld_strategy_CorrectlySetsAttr():

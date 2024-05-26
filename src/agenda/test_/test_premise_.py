@@ -16,10 +16,10 @@ from pytest import raises as pytest_raises
 
 def test_PremiseUnit_Exists():
     # GIVEN
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
     email_text = "check email"
-    email_road = create_road(gig_road, email_text)
+    email_road = create_road(casa_road, email_text)
 
     # WHEN
     email_premise = PremiseUnit(need=email_road)
@@ -36,10 +36,10 @@ def test_PremiseUnit_Exists():
 
 def test_premiseunit_shop_ReturnsCorrectObj():
     # GIVEN
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
     email_text = "check email"
-    email_road = create_road(gig_road, email_text)
+    email_road = create_road(casa_road, email_text)
 
     # WHEN
     email_premise = premiseunit_shop(need=email_road)
@@ -50,63 +50,63 @@ def test_premiseunit_shop_ReturnsCorrectObj():
 
 def test_PremiseUnit_clear_status_CorrectlySetsAttrs():
     # WHEN
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
-    gig_premise = premiseunit_shop(need=gig_road)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
+    casa_premise = premiseunit_shop(need=casa_road)
     # THEN
-    assert gig_premise._status is None
+    assert casa_premise._status is None
 
     # GIVEN
-    gig_premise._status = True
-    assert gig_premise._status
+    casa_premise._status = True
+    assert casa_premise._status
 
     # WHEN
-    gig_premise.clear_status()
+    casa_premise.clear_status()
 
     # THEN
-    assert gig_premise._status is None
+    assert casa_premise._status is None
 
 
 def test_PremiseUnit_is_range_CorrectlyIdentifiesRangeStatus():
     # GIVEN
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road, open=1, nigh=3)
+    casa_premise = premiseunit_shop(need=casa_road, open=1, nigh=3)
     # THEN
-    assert gig_premise._is_range() == True
+    assert casa_premise._is_range() == True
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road)
+    casa_premise = premiseunit_shop(need=casa_road)
     # THEN
-    assert gig_premise._is_range() == False
+    assert casa_premise._is_range() == False
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road, divisor=5, open=3, nigh=3)
+    casa_premise = premiseunit_shop(need=casa_road, divisor=5, open=3, nigh=3)
     # THEN
-    assert gig_premise._is_range() == False
+    assert casa_premise._is_range() == False
 
 
 def test_PremiseUnit_is_segregate_CorrectlyIdentifiesSegregateStatus():
     # GIVEN
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road, open=1, nigh=3)
+    casa_premise = premiseunit_shop(need=casa_road, open=1, nigh=3)
     # THEN
-    assert gig_premise._is_segregate() == False
+    assert casa_premise._is_segregate() == False
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road)
+    casa_premise = premiseunit_shop(need=casa_road)
     # THEN
-    assert gig_premise._is_segregate() == False
+    assert casa_premise._is_segregate() == False
 
     # WHEN
-    gig_premise = premiseunit_shop(need=gig_road, divisor=5, open=3, nigh=3)
+    casa_premise = premiseunit_shop(need=casa_road, divisor=5, open=3, nigh=3)
     # THEN
-    assert gig_premise._is_segregate() == True
+    assert casa_premise._is_segregate() == True
 
 
 def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineage():
@@ -685,7 +685,7 @@ def test_PremiseUnit_get_obj_key():
     assert week_premise.get_obj_key() == week_road
 
 
-def test_PremiseUnit_find_replace_road_gigs():
+def test_PremiseUnit_find_replace_road_casas():
     # GIVEN
     old_root_road = root_label()
     weekday_text = "weekday"
@@ -706,7 +706,7 @@ def test_PremiseUnit_find_replace_road_gigs():
     assert sunday_premise.need == new_sunday_road
 
 
-def test_PremiseUnit_meld_gigs():
+def test_PremiseUnit_meld_casas():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)

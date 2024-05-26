@@ -125,10 +125,10 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
     sun_road = sue_agenda.make_road(week_road, sun_text)
 
     # for idea in sue_agenda._idea_dict.values():
-    #     print(f"{gig_road=} {idea.get_road()=}")
-    gig_text = "gig"
-    gig_road = sue_agenda.make_l1_road(gig_text)
-    assert sue_agenda.get_idea_obj(gig_road)._active is None
+    #     print(f"{casa_road=} {idea.get_road()=}")
+    casa_text = "casa"
+    casa_road = sue_agenda.make_l1_road(casa_text)
+    assert sue_agenda.get_idea_obj(casa_road)._active is None
 
     # WHEN
     sue_agenda.set_belief(base=week_road, pick=sun_road)
@@ -139,8 +139,8 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
     assert len(sue_agenda._idea_dict) == 17
 
     # for idea in sue_agenda._idea_dict.values():
-    #     print(f"{gig_road=} {idea.get_road()=}")
-    assert sue_agenda.get_idea_obj(gig_road)._active == False
+    #     print(f"{casa_road=} {idea.get_road()=}")
+    assert sue_agenda.get_idea_obj(casa_road)._active == False
 
 
 def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefChanges():
@@ -150,8 +150,8 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     week_road = sue_agenda.make_l1_road(week_text)
     sun_text = "Wednesday"
     sun_road = sue_agenda.make_road(week_road, sun_text)
-    gig_text = "gig"
-    gig_road = sue_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = sue_agenda.make_l1_road(casa_text)
 
     # WHEN
     sue_agenda.set_belief(base=week_road, pick=sun_road)
@@ -160,7 +160,7 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     sue_agenda.calc_intent()
     assert sue_agenda._idea_dict
     assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(gig_road)._active == False
+    assert sue_agenda._idea_dict.get(casa_road)._active == False
 
     # WHEN
     states_text = "nation-state"
@@ -173,7 +173,7 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     sue_agenda.calc_intent()
     assert sue_agenda._idea_dict
     assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(gig_road)._active
+    assert sue_agenda._idea_dict.get(casa_road)._active
 
     # WHEN
     france_text = "France"
@@ -184,7 +184,7 @@ def test_AgendaUnit_calc_intent_SetsSatiateStatusCorrectlyWhenBeliefChanges():
     sue_agenda.calc_intent()
     assert sue_agenda._idea_dict
     assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(gig_road)._active == False
+    assert sue_agenda._idea_dict.get(casa_road)._active == False
 
 
 def test_AgendaUnit_calc_intent_CorrectlySets_idea_dict():
@@ -201,11 +201,11 @@ def test_AgendaUnit_calc_intent_CorrectlySets_idea_dict():
     sue_agenda.set_belief(base=week_road, pick=wed_road)
     sue_agenda.set_belief(base=state_road, pick=france_road)
 
-    gig_text = "gig"
-    gig_road = sue_agenda.make_l1_road(gig_text)
-    gig_idea = sue_agenda.get_idea_obj(gig_road)
-    print(f"{sue_agenda._owner_id=} {len(gig_idea._reasonunits)=}")
-    # print(f"{gig_idea._reasonunits=}")
+    casa_text = "casa"
+    casa_road = sue_agenda.make_l1_road(casa_text)
+    casa_idea = sue_agenda.get_idea_obj(casa_road)
+    print(f"{sue_agenda._owner_id=} {len(casa_idea._reasonunits)=}")
+    # print(f"{casa_idea._reasonunits=}")
     print(f"{sue_agenda._owner_id=} {len(sue_agenda._idearoot._beliefunits)=}")
     # print(f"{sue_agenda._idearoot._beliefunits=}")
 
@@ -255,25 +255,25 @@ def test_AgendaUnit_calc_intent_CorrectlySets_idea_dict():
     sue_agenda.set_belief(base=state_road, pick=oregon_road)
 
     # THEN
-    gig_idea = sue_agenda._idea_dict.get(gig_road)
-    print(f"\nlook at {gig_idea.get_road()=}")
-    assert gig_idea._parent_road == sue_agenda._real_id
-    assert gig_idea._kids == {}
-    assert gig_idea._weight == 30
-    assert gig_idea._label == gig_text
-    assert gig_idea._level == 1
-    assert gig_idea._active
-    assert gig_idea.pledge
-    # print(f"{gig_idea._reasonheirs=}")
-    x_reasonheir_state = gig_idea._reasonheirs[state_road]
+    casa_idea = sue_agenda._idea_dict.get(casa_road)
+    print(f"\nlook at {casa_idea.get_road()=}")
+    assert casa_idea._parent_road == sue_agenda._real_id
+    assert casa_idea._kids == {}
+    assert casa_idea._weight == 30
+    assert casa_idea._label == casa_text
+    assert casa_idea._level == 1
+    assert casa_idea._active
+    assert casa_idea.pledge
+    # print(f"{casa_idea._reasonheirs=}")
+    x_reasonheir_state = casa_idea._reasonheirs[state_road]
     print(f"  {x_reasonheir_state=}")
     print(f"  {x_reasonheir_state._status=}\n")
-    # assert gig_idea._reasonheirs == x1_reasonheirs
+    # assert casa_idea._reasonheirs == x1_reasonheirs
 
-    assert len(gig_idea._reasonheirs) == len(x1_reasonheirs)
-    week_reasonheir = gig_idea._reasonheirs.get(week_road)
+    assert len(casa_idea._reasonheirs) == len(x1_reasonheirs)
+    week_reasonheir = casa_idea._reasonheirs.get(week_road)
     # usa_premise = week_reasonheir.premises.get(usa_road)
-    print(f"    {gig_idea._label=}")
+    print(f"    {casa_idea._label=}")
     # print(f"    {usa_premise.base=}")
     # print(f"    {usa_premise._task=}")
     # print(f"    {usa_premise._task=}")
@@ -285,7 +285,7 @@ def test_AgendaUnit_calc_intent_CorrectlySets_idea_dict():
     # assert usa_premise._status == w_need._status
     # assert week_reasonheir.premises == week_reasonheir.premises
 
-    # assert gig_idea._reasonunits == x1_reasonunits
+    # assert casa_idea._reasonunits == x1_reasonunits
 
     # print("iterate through every idea...")
     # for x_idea in idea_dict:
@@ -313,13 +313,13 @@ def test_AgendaUnit_calc_intent_CorrectlySets_idea_dict():
 def test_AgendaUnit_calc_intent_CorrectlyClears_agenda_fund():
     # GIVEN
     x_agenda = get_agenda_with7amCleanTableReason()
-    gig_road = x_agenda.make_l1_road("gig")
+    casa_road = x_agenda.make_l1_road("casa")
     catt_road = x_agenda.make_l1_road("feed cat")
     week_road = x_agenda.make_l1_road("weekdays")
     x_agenda._idearoot._agenda_fund_onset = 13
     x_agenda._idearoot._agenda_fund_cease = 13
-    x_agenda.get_idea_obj(gig_road)._agenda_fund_onset = 13
-    x_agenda.get_idea_obj(gig_road)._agenda_fund_cease = 13
+    x_agenda.get_idea_obj(casa_road)._agenda_fund_onset = 13
+    x_agenda.get_idea_obj(casa_road)._agenda_fund_cease = 13
     x_agenda.get_idea_obj(catt_road)._agenda_fund_onset = 13
     x_agenda.get_idea_obj(catt_road)._agenda_fund_cease = 13
     x_agenda.get_idea_obj(week_road)._agenda_fund_onset = 13
@@ -327,8 +327,8 @@ def test_AgendaUnit_calc_intent_CorrectlyClears_agenda_fund():
 
     assert x_agenda._idearoot._agenda_fund_onset == 13
     assert x_agenda._idearoot._agenda_fund_cease == 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_onset == 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_cease == 13
+    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_onset == 13
+    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_cease == 13
     assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset == 13
     assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease == 13
     assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset == 13
@@ -340,8 +340,8 @@ def test_AgendaUnit_calc_intent_CorrectlyClears_agenda_fund():
     # THEN
     assert x_agenda._idearoot._agenda_fund_onset != 13
     assert x_agenda._idearoot._agenda_fund_cease != 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_onset != 13
-    assert x_agenda.get_idea_obj(gig_road)._agenda_fund_cease != 13
+    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_onset != 13
+    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_cease != 13
     assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset != 13
     assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease != 13
     assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset != 13
