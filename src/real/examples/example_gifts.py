@@ -1,4 +1,4 @@
-from src.real.gift import giftunit_shop, GiftUnit
+from src.world.gift import giftunit_shop, GiftUnit
 from src.world.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_ball,

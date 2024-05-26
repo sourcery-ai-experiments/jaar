@@ -23,7 +23,7 @@ from src.econ.econ import (
     treasury_db_filename,
     get_rootpart_of_econ_dir,
 )
-from src.real.gift import (
+from src.world.gift import (
     GiftUnit,
     giftunit_shop,
     get_json_filename as giftunit_get_json_filename,

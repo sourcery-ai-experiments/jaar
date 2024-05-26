@@ -2,7 +2,7 @@ from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.real.gift import get_init_gift_id_if_None
+from src.world.gift import get_init_gift_id_if_None
 from src.econ.job_creator import (
     save_role_file,
     save_job_file,

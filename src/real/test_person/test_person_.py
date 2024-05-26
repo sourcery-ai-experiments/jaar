@@ -1,7 +1,7 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
 from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
-from src.real.gift import init_gift_id, get_gifts_folder
+from src.world.gift import init_gift_id, get_gifts_folder
 from src.real.person import (
     PersonUnit,
     personunit_shop,

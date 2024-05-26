@@ -1,7 +1,7 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.real.gift import init_gift_id
+from src.world.gift import init_gift_id
 from src.real.person import (
     chapunit_shop,
     _save_work_file as person_save_work_file,
