@@ -6,8 +6,8 @@ from src.world.gift import (
     get_json_filename,
     init_gift_id,
 )
-from src.real.examples.example_atoms import get_atom_example_ideaunit_knee
-from src.real.examples.example_gifts import (
+from src.world.examples.example_atoms import get_atom_example_ideaunit_knee
+from src.world.examples.example_gifts import (
     get_sue_giftunit,
     sue_1atomunits_giftunit,
     sue_2atomunits_giftunit,

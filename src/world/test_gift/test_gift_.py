@@ -6,7 +6,7 @@ from src.world.gift import (
     init_gift_id,
     get_gifts_folder,
 )
-from src.real.examples.example_atoms import (
+from src.world.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
