@@ -1859,10 +1859,9 @@ class AgendaUnit:
 
     def calc_intent(self, econ_exceptions: bool = False):
         self._set_tree_traverse_starting_point()
+        max_count = self._max_tree_traverse
 
-        while (
-            not self._rational and self._tree_traverse_count < self._max_tree_traverse
-        ):
+        while not self._rational and self._tree_traverse_count < max_count:
             self._clear_agenda_base_metrics()
             self._execute_tree_traverse(econ_exceptions)
             self._check_if_any_idea_active_has_changed()
@@ -1935,9 +1934,8 @@ class AgendaUnit:
             if self._sum_healerhold_importance == 0:
                 x_idea._healerhold_importance = 0
             else:
-                x_idea._healerhold_importance = (
-                    x_idea._agenda_importance / self._sum_healerhold_importance
-                )
+                x_sum = self._sum_healerhold_importance
+                x_idea._healerhold_importance = x_idea._agenda_importance / x_sum
             if self._econs_justified and x_idea._healerhold.any_group_id_exists():
                 self._econ_dict[x_idea.get_road()] = x_idea
 
@@ -1975,11 +1973,8 @@ class AgendaUnit:
         self._reset_partyunit_agenda_credit_debt()
 
     def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
-        return [
-            idea_road
-            for idea_road in self.get_idea_tree_ordered_road_list()
-            if is_sub_road(idea_road, x_road)
-        ]
+        road_list = self.get_idea_tree_ordered_road_list()
+        return [idea_road for idea_road in road_list if is_sub_road(idea_road, x_road)]
 
     def get_idea_tree_ordered_road_list(
         self, no_range_descendants: bool = False
@@ -2214,7 +2209,7 @@ class AgendaUnit:
         for hx in other_agenda._idearoot._beliefunits.values():
             if self._idearoot._beliefunits.get(hx.base) is None:
                 self.set_belief(
-                    base=hx.base, belief=hx.belief, open=hx.open, nigh=hx.nigh
+                    base=hx.base, pick=hx.belief, open=hx.open, nigh=hx.nigh
                 )
             else:
                 self._idearoot._beliefunits.get(hx.base).meld(hx)
