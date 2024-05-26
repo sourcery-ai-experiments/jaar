@@ -30,7 +30,7 @@ def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_clea
     yao_person = personunit_shop(yao_text)
     yao_chapunit = chapunit_shop(None, None, yao_text)
     one_int = 1
-    assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json") == False
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{one_int}.json") == False
 
     # WHEN
     atom_num = _save_valid_atom_file(
@@ -38,7 +38,7 @@ def test_PersonUnit_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_clea
     )
 
     # THEN
-    assert os_path_exists(f"{yao_person._atoms_dir}/{one_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{one_int}.json")
     assert atom_num == one_int
 
 
@@ -48,14 +48,14 @@ def test_PersonUnit_chap_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_clea
     yao_person = personunit_shop(yao_text)
     yao_chapunit = chapunit_shop(None, None, yao_text)
     five_int = 5
-    assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json") == False
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{five_int}.json") == False
     assert chap_atom_file_exists(yao_chapunit, five_int) == False
 
     # WHEN
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), five_int)
 
     # THEN
-    assert os_path_exists(f"{yao_person._atoms_dir}/{five_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{five_int}.json")
     assert chap_atom_file_exists(yao_chapunit, five_int)
 
 
@@ -66,13 +66,13 @@ def test_PersonUnit_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanu
     yao_chapunit = chapunit_shop(None, None, yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json")
 
     # WHEN
     _delete_atom_file(yao_chapunit, ten_int)
 
     # THEN
-    assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json") == False
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json") == False
 
 
 def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
@@ -84,7 +84,7 @@ def test_PersonUnit_get_max_atom_file_number_ReturnsCorrectObj(
     yao_chapunit = chapunit_shop(None, None, yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
     assert _get_max_atom_file_number(yao_chapunit) == ten_int
@@ -114,7 +114,7 @@ def test_PersonUnit_get_next_atom_file_number_ReturnsCorrectObj(
 
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_person._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json")
 
     # WHEN / THEN
     assert _get_next_atom_file_number(yao_chapunit) == 11
@@ -129,7 +129,7 @@ def test_PersonUnit_chap_save_atom_file_CorrectlySavesFile(reals_dir_setup_clean
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
     assert _get_max_atom_file_number(yao_chapunit) == ten_int
     eleven_int = ten_int + 1
-    assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json") == False
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{eleven_int}.json") == False
 
     # WHEN
     atom_num1 = chap_save_atom_file(yao_chapunit, get_atom_example_beliefunit_knee())
@@ -137,7 +137,7 @@ def test_PersonUnit_chap_save_atom_file_CorrectlySavesFile(reals_dir_setup_clean
     # THEN
     assert _get_max_atom_file_number(yao_chapunit) != ten_int
     assert _get_max_atom_file_number(yao_chapunit) == eleven_int
-    assert os_path_exists(f"{yao_person._atoms_dir}/{eleven_int}.json")
+    assert os_path_exists(f"{yao_chapunit._atoms_dir}/{eleven_int}.json")
     assert atom_num1 == eleven_int
     atom_num2 = chap_save_atom_file(yao_chapunit, get_atom_example_beliefunit_knee())
     assert atom_num2 == 12
@@ -206,7 +206,7 @@ def test_PersonUnit_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit
     chap_save_atom_file(
         yao_chapunit, get_atom_example_beliefunit_knee(yao_person.real_id)
     )
-    print(f"{file_dir_files(yao_person._atoms_dir).keys()=}")
+    print(f"{file_dir_files(yao_chapunit._atoms_dir).keys()=}")
 
     # WHEN
     yao_agenda = _get_agenda_from_atom_files(yao_chapunit)

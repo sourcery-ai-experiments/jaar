@@ -396,7 +396,7 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     assert os_path_exists(elpaso_sue_role_file_path) == False
 
     # WHEN
-    sue_person.set_person_econunits_role(sue_chapunit)
+    sue_person.set_person_econunits_role()
 
     # THEN
     assert os_path_exists(dallas_sue_role_file_path)

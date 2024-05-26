@@ -459,14 +459,10 @@ class PersonUnit:
     persons_dir: str = None
     person_dir: str = None
     _econs_dir: str = None
-    _atoms_dir: str = None
-    _gifts_dir: str = None
     _duty_obj: AgendaUnit = None
     _duty_file_name: str = None
     _duty_path: str = None
     _work_obj: AgendaUnit = None
-    _work_file_name: str = None
-    _work_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
@@ -474,15 +470,8 @@ class PersonUnit:
     def set_person_id(self, chapunit: ChapUnit):
         self.person_id = chapunit.person_id
         self.reals_dir = chapunit.reals_dir
-        self.real_dir = chapunit.real_dir
         self.real_id = chapunit.real_id
-        self.persons_dir = chapunit.persons_dir
-        self.person_dir = chapunit.person_dir
         self._econs_dir = chapunit._econs_dir
-        self._atoms_dir = chapunit._atoms_dir
-        self._gifts_dir = chapunit._gifts_dir
-        self._duty_file_name = chapunit._duty_file_name
-        self._duty_path = chapunit._duty_path
         self._work_file_name = chapunit._work_file_name
         self._work_path = chapunit._work_path
 
@@ -557,8 +546,8 @@ class PersonUnit:
         for x_econ_road in self._econ_objs.keys():
             self.set_econunit_role(x_econ_road, role)
 
-    def set_person_econunits_role(self, x_chapunit):
-        self.set_econunits_role(get_duty_file_agenda(x_chapunit))
+    def set_person_econunits_role(self):
+        self.set_econunits_role(self._duty_obj)
 
 
 def personunit_shop(
@@ -581,4 +570,5 @@ def personunit_shop(
     x_personunit.set_person_id(x_chapunit)
     if create_files:
         chap_create_core_dir_and_files(x_chapunit)
+        x_personunit._duty_obj = get_duty_file_agenda(x_chapunit)
     return x_personunit

@@ -63,15 +63,17 @@ def test_road_is_sub_road_correctlyReturnsBool():
     # WHEN
     casa_text = "casa"
     casa_road = f"{root_label()}{default_road_delimiter_if_none()}{casa_text}"
-    bloomers_text = "bloomers"
-    bloomers_road = f"{casa_road}{default_road_delimiter_if_none()}{bloomers_text}"
-    roses_text = "roses"
-    roses_road = f"{bloomers_road}{default_road_delimiter_if_none()}{roses_text}"
+    cleaning_text = "cleaning"
+    cleaning_road = f"{casa_road}{default_road_delimiter_if_none()}{cleaning_text}"
+    laundrys_text = "laundrys"
+    laundrys_road = f"{cleaning_road}{default_road_delimiter_if_none()}{laundrys_text}"
+    print(f"{cleaning_road=}")
+    print(f"{laundrys_road=}")
 
     # WHEN / THEN
-    assert is_sub_road(bloomers_road, bloomers_road)
-    assert is_sub_road(roses_road, bloomers_road)
-    assert is_sub_road(bloomers_road, roses_road) == False
+    assert is_sub_road(cleaning_road, cleaning_road)
+    assert is_sub_road(laundrys_road, cleaning_road)
+    assert is_sub_road(cleaning_road, laundrys_road) == False
 
 
 def test_road_road_validate_correctlyReturnsRoadUnit():

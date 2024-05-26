@@ -182,9 +182,6 @@ def test_RealUnit_add_personunit_CorrectlySetsPerson(reals_dir_setup_cleanup):
     assert music_real._personunits[luca_text] != None
     print(f"{get_test_reals_dir()=}")
     print(f"      {luca_person_dir=}")
-    music_real_luca_dir = music_real._personunits[luca_text].person_dir
-    print(f"     {music_real_luca_dir=}")
-    assert music_real._personunits[luca_text].person_dir == luca_person_dir
     assert music_real._personunits[luca_text]._road_delimiter == slash_text
     luca_person_obj = personunit_shop(
         person_id=luca_text,
@@ -212,7 +209,6 @@ def test_RealUnit_add_personunit_RaisesErrorIfPersonExists(reals_dir_setup_clean
     )
     music_real.add_personunit(luca_text)
     assert music_real._personunits[luca_text] != None
-    assert music_real._personunits[luca_text].person_dir == luca_person_dir
     assert music_real._personunits[luca_text] == luca_person_obj
 
     # WHEN/THEN
@@ -243,7 +239,6 @@ def test_RealUnit__set_personunit_in_memory_CorrectlyCreatesObj(
 
     # THEN
     assert music_real.personunit_exists_in_memory(luca_text)
-    assert music_real._personunits.get(luca_text).person_dir == luca_person_dir
     assert music_real._personunits.get(luca_text) == luca_person_obj
 
 
@@ -267,7 +262,6 @@ def test_RealUnit_get_personunit_ReturnsPerson(reals_dir_setup_cleanup):
 
     # THEN
     assert luca_gotten_obj != None
-    assert luca_gotten_obj.person_dir == luca_person_dir
     assert luca_gotten_obj == luca_person_obj
 
 

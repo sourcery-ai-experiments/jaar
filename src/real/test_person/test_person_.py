@@ -103,14 +103,8 @@ def test_PersonUnit_Exists():
     assert x_person.persons_dir is None
     assert x_person.person_dir is None
     assert x_person._econs_dir is None
-    assert x_person._atoms_dir is None
-    assert x_person._gifts_dir is None
     assert x_person._duty_obj is None
-    assert x_person._duty_file_name is None
-    assert x_person._duty_path is None
     assert x_person._work_obj is None
-    assert x_person._work_file_name is None
-    assert x_person._work_path is None
     assert x_person._econ_objs is None
     assert x_person._road_delimiter is None
     assert x_person._planck is None
@@ -121,16 +115,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
     x_person = PersonUnit()
     assert x_person.person_id is None
     assert x_person.real_id is None
-    assert x_person.reals_dir is None
-    assert x_person.persons_dir is None
-    assert x_person.person_dir is None
-    assert x_person._duty_file_name is None
-    assert x_person._duty_path is None
-    assert x_person._work_file_name is None
-    assert x_person._work_path is None
     assert x_person._econs_dir is None
-    assert x_person._atoms_dir is None
-    assert x_person._gifts_dir is None
 
     # GIVEN
     yao_text = "Yao"
@@ -139,17 +124,8 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # THEN
     assert x_person.person_id == yao_text
-    assert x_person.real_id == get_test_real_id()
-    assert x_person.reals_dir == get_test_reals_dir()
-    assert x_person.persons_dir == f"{x_person.real_dir}/persons"
-    assert x_person.person_dir == f"{x_person.persons_dir}/{yao_text}"
-    assert x_person._duty_file_name == f"{get_duty_file_name()}.json"
-    assert x_person._duty_path == f"{x_person.person_dir}/{x_person._duty_file_name}"
     assert x_person._work_file_name == f"{get_work_file_name()}.json"
-    assert x_person._work_path == f"{x_person.person_dir}/{x_person._work_file_name}"
-    assert x_person._econs_dir == f"{x_person.person_dir}/econs"
-    assert x_person._atoms_dir == f"{x_person.person_dir}/atoms"
-    assert x_person._gifts_dir == f"{x_person.person_dir}/{get_gifts_folder()}"
+    assert x_person._econs_dir == f"{x_chapunit.person_dir}/econs"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
@@ -178,18 +154,13 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
     sue_person = personunit_shop(sue_text, x_real_id, reals_dir=x_reals_dir)
 
     # THEN
+    sue_chapunit = chapunit_shop(x_reals_dir, x_real_id, sue_text)
     assert sue_person.person_id == sue_text
     assert sue_person.real_id == x_real_id
     assert sue_person.reals_dir == x_reals_dir
-    assert sue_person.real_dir == f"{sue_person.reals_dir}/{sue_person.real_id}"
-    assert sue_person.persons_dir == f"{sue_person.real_dir}/persons"
-    assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
-    assert sue_person._econs_dir == f"{sue_person.person_dir}/econs"
-    assert sue_person._duty_file_name == f"{get_duty_file_name()}.json"
-    sue_duty_file_path = f"{sue_person.person_dir}/{sue_person._duty_file_name}"
-    assert sue_person._duty_path == sue_duty_file_path
+    assert sue_person._econs_dir == f"{sue_chapunit.person_dir}/econs"
     assert sue_person._work_file_name == f"{get_work_file_name()}.json"
-    sue_work_file_path = f"{sue_person.person_dir}/{sue_person._work_file_name}"
+    sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
@@ -206,19 +177,12 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
 
     # WHEN
     sue_person = personunit_shop(sue_text, _road_delimiter=slash_text, _planck=two_int)
+    sue_chapunit = chapunit_shop(None, None, sue_text, slash_text, two_int)
 
     # THEN
     assert sue_person.person_id == sue_text
-    assert sue_person.real_id == get_test_real_id()
-    assert sue_person.reals_dir == get_test_reals_dir()
-    assert sue_person.real_dir == f"{sue_person.reals_dir}/{sue_person.real_id}"
-    assert sue_person.persons_dir == f"{sue_person.real_dir}/persons"
-    assert sue_person.person_dir == f"{sue_person.persons_dir}/{sue_text}"
-    assert sue_person._duty_file_name == f"{get_duty_file_name()}.json"
-    sue_duty_file_path = f"{sue_person.person_dir}/{sue_person._duty_file_name}"
-    assert sue_person._duty_path == sue_duty_file_path
     assert sue_person._work_file_name == f"{get_work_file_name()}.json"
-    sue_work_file_path = f"{sue_person.person_dir}/{sue_person._work_file_name}"
+    sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._road_delimiter == slash_text
     assert sue_person._planck == two_int
@@ -245,8 +209,8 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
 
     # WHEN
     save_file(
-        dest_dir=sue_person.person_dir,
-        file_name=sue_person._duty_file_name,
+        dest_dir=sue_chapunit.person_dir,
+        file_name=sue_chapunit._duty_file_name,
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
@@ -330,10 +294,10 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
     sue_chapunit = chapunit_shop(None, None, sue_text, x_planck=seven_int)
     assert duty_file_exists(sue_chapunit)
-    delete_dir(sue_person._duty_path)
+    delete_dir(sue_chapunit._duty_path)
     assert duty_file_exists(sue_chapunit) == False
-    init_gift_file_path = f"{sue_person._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_person._gifts_dir)
+    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
+    delete_dir(sue_chapunit._gifts_dir)
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
@@ -356,9 +320,9 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
     sue_chapunit = chapunit_shop(None, None, sue_text)
     assert duty_file_exists(sue_chapunit)
-    delete_dir(sue_person._duty_path)
+    delete_dir(sue_chapunit._duty_path)
     assert duty_file_exists(sue_chapunit) == False
-    init_gift_file_path = f"{sue_person._gifts_dir}/{init_gift_id()}.json"
+    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
     assert os_path_exists(init_gift_file_path)
 
     # WHEN
@@ -385,8 +349,8 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     sue_duty_agenda.add_partyunit(bob_text)
     save_duty_file(sue_chapunit, sue_duty_agenda)
     assert duty_file_exists(sue_chapunit)
-    init_gift_file_path = f"{sue_person._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_person._gifts_dir)
+    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
+    delete_dir(sue_chapunit._gifts_dir)
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
@@ -452,8 +416,8 @@ def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
 
     # WHEN
     save_file(
-        dest_dir=sue_person.person_dir,
-        file_name=sue_person._work_file_name,
+        dest_dir=sue_chapunit.person_dir,
+        file_name=sue_chapunit._work_file_name,
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
@@ -596,27 +560,26 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
     sue_chapunit = chapunit_shop(None, None, sue_text)
-    delete_dir(sue_person.real_dir)
-    assert os_path_exists(sue_person.real_dir) is False
-    assert os_path_exists(sue_person.persons_dir) is False
-    assert os_path_exists(sue_person.person_dir) is False
-    assert os_path_exists(sue_person._econs_dir) is False
-    assert os_path_exists(sue_person._atoms_dir) is False
-    assert os_path_exists(sue_person._gifts_dir) is False
-    assert os_path_exists(sue_person._duty_path) is False
-    assert os_path_exists(sue_person._work_path) is False
+    delete_dir(sue_chapunit.real_dir)
+    assert os_path_exists(sue_chapunit.real_dir) is False
+    assert os_path_exists(sue_chapunit.persons_dir) is False
+    assert os_path_exists(sue_chapunit.person_dir) is False
+    assert os_path_exists(sue_chapunit._econs_dir) is False
+    assert os_path_exists(sue_chapunit._atoms_dir) is False
+    assert os_path_exists(sue_chapunit._gifts_dir) is False
+    assert os_path_exists(sue_chapunit._duty_path) is False
+    assert os_path_exists(sue_chapunit._work_path) is False
 
     # WHEN
     chap_create_core_dir_and_files(sue_chapunit)
 
     # THEN
-    assert os_path_exists(sue_person.real_dir)
-    assert os_path_exists(sue_person.persons_dir)
-    assert os_path_exists(sue_person.person_dir)
-    assert os_path_exists(sue_person._econs_dir)
-    assert os_path_exists(sue_person._atoms_dir)
-    assert os_path_exists(sue_person._gifts_dir)
-    assert os_path_exists(sue_person._duty_path)
-    assert os_path_exists(sue_person._work_path)
+    assert os_path_exists(sue_chapunit.real_dir)
+    assert os_path_exists(sue_chapunit.persons_dir)
+    assert os_path_exists(sue_chapunit.person_dir)
+    assert os_path_exists(sue_chapunit._econs_dir)
+    assert os_path_exists(sue_chapunit._atoms_dir)
+    assert os_path_exists(sue_chapunit._gifts_dir)
+    assert os_path_exists(sue_chapunit._duty_path)
+    assert os_path_exists(sue_chapunit._work_path)
