@@ -1,10 +1,13 @@
-from src.agenda.agenda import get_from_json as agendaunit_get_from_json
+from src.agenda.agenda import (
+    get_from_json as agendaunit_get_from_json,
+    duty_str,
+    work_str,
+)
 from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
 )
 from src._instrument.file import open_file
-from src.real.person import get_duty_file_name, get_work_file_name
 from src.real.real import RealUnit
 from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
@@ -17,7 +20,7 @@ def get_real_dutys_partys_dataframe(x_real: RealUnit) -> DataFrame:
     duty_dfs = []
     for person_path in person_paths:
         duty_agenda = agendaunit_get_from_json(
-            open_file(person_path, f"{get_duty_file_name()}.json")
+            open_file(person_path, f"{duty_str()}.json")
         )
         duty_agenda.calc_intent()
         df = get_agenda_partyunits_dataframe(duty_agenda)
@@ -75,7 +78,7 @@ def get_real_works_partys_dataframe(x_real: RealUnit) -> DataFrame:
     work_dfs = []
     for person_path in person_paths:
         work_agenda = agendaunit_get_from_json(
-            open_file(person_path, f"{get_work_file_name()}.json")
+            open_file(person_path, f"{work_str()}.json")
         )
         work_agenda.calc_intent()
         work_df = get_agenda_partyunits_dataframe(work_agenda)
@@ -133,7 +136,7 @@ def get_real_dutys_intent_dataframe(x_real: RealUnit) -> DataFrame:
     duty_dfs = []
     for person_path in person_paths:
         duty_agenda = agendaunit_get_from_json(
-            open_file(person_path, f"{get_duty_file_name()}.json")
+            open_file(person_path, f"{duty_str()}.json")
         )
         duty_agenda.calc_intent()
         df = get_agenda_intent_dataframe(duty_agenda)
@@ -194,7 +197,7 @@ def get_real_works_intent_dataframe(x_real: RealUnit) -> DataFrame:
     work_dfs = []
     for person_path in person_paths:
         work_agenda = agendaunit_get_from_json(
-            open_file(person_path, f"{get_work_file_name()}.json")
+            open_file(person_path, f"{work_str()}.json")
         )
         work_agenda.calc_intent()
         work_df = get_agenda_intent_dataframe(work_agenda)

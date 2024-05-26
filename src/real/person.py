@@ -15,6 +15,8 @@ from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
+    duty_str,
+    work_str,
 )
 from src.agenda.pledge import create_pledge
 from src.econ.econ import (
@@ -74,14 +76,6 @@ class GiftFileMissingException(Exception):
     pass
 
 
-def get_duty_file_name() -> str:
-    return "duty"
-
-
-def get_work_file_name() -> str:
-    return "work"
-
-
 @dataclass
 class ChapUnit:
     person_id: PersonID = None
@@ -124,9 +118,9 @@ def chapunit_shop(
     x_econs_dir = f"{x_person_dir}/econs"
     x_atoms_dir = f"{x_person_dir}/atoms"
     x_gifts_dir = f"{x_person_dir}/{get_gifts_folder()}"
-    x_duty_file_name = f"{get_duty_file_name()}.json"
+    x_duty_file_name = f"{duty_str()}.json"
     x_duty_path = f"{x_person_dir}/{x_duty_file_name}"
-    x_work_file_name = f"{get_work_file_name()}.json"
+    x_work_file_name = f"{work_str()}.json"
     x_work_path = f"{x_person_dir}/{x_work_file_name}"
 
     return ChapUnit(

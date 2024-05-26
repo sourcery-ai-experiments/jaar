@@ -2571,3 +2571,11 @@ def get_party_relevant_groups(
         for group_x in groups_x.values()
         if group_x._partys.get(party_id_x) != None
     }
+
+
+def duty_str() -> str:
+    return "duty"
+
+
+def work_str() -> str:
+    return "work"

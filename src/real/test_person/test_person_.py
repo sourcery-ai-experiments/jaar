@@ -1,12 +1,15 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
-from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
+from src.agenda.agenda import (
+    agendaunit_shop,
+    get_from_json as agendaunit_get_from_json,
+    duty_str,
+    work_str,
+)
 from src.world.gift import init_gift_id, get_gifts_folder
 from src.real.person import (
     PersonUnit,
     personunit_shop,
-    get_duty_file_name,
-    get_work_file_name,
     chapunit_shop,
     duty_file_exists,
     work_file_exists,
@@ -29,12 +32,12 @@ from os.path import exists as os_path_exists
 from src._instrument.file import open_file, save_file, delete_dir
 
 
-def test_get_duty_file_name():
-    assert get_duty_file_name() == "duty"
+def test_duty_str():
+    assert duty_str() == "duty"
 
 
-def test_get_work_file_name():
-    assert get_work_file_name() == "work"
+def test_work_str():
+    assert work_str() == "work"
 
 
 def test_ChapUnit_Exists():
@@ -84,10 +87,10 @@ def test_ChapUnit_Exists():
     assert x_chapunit._econs_dir == f"{x_chapunit.person_dir}/econs"
     assert x_chapunit._atoms_dir == f"{x_chapunit.person_dir}/atoms"
     assert x_chapunit._gifts_dir == f"{x_chapunit.person_dir}/{get_gifts_folder()}"
-    assert x_chapunit._duty_file_name == f"{get_duty_file_name()}.json"
+    assert x_chapunit._duty_file_name == f"{duty_str()}.json"
     x_duty_path = f"{x_chapunit.person_dir}/{x_chapunit._duty_file_name}"
     assert x_chapunit._duty_path == x_duty_path
-    assert x_chapunit._work_file_name == f"{get_work_file_name()}.json"
+    assert x_chapunit._work_file_name == f"{work_str()}.json"
     x_workpath = f"{x_chapunit.person_dir}/{x_chapunit._work_file_name}"
     assert x_chapunit._work_path == x_workpath
 
@@ -124,7 +127,7 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # THEN
     assert x_person.person_id == yao_text
-    assert x_person._work_file_name == f"{get_work_file_name()}.json"
+    assert x_person._work_file_name == f"{work_str()}.json"
     assert x_person._econs_dir == f"{x_chapunit.person_dir}/econs"
 
 
@@ -159,7 +162,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
     assert sue_person.real_id == x_real_id
     assert sue_person.reals_dir == x_reals_dir
     assert sue_person._econs_dir == f"{sue_chapunit.person_dir}/econs"
-    assert sue_person._work_file_name == f"{get_work_file_name()}.json"
+    assert sue_person._work_file_name == f"{work_str()}.json"
     sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._econ_objs == {}
@@ -181,7 +184,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
 
     # THEN
     assert sue_person.person_id == sue_text
-    assert sue_person._work_file_name == f"{get_work_file_name()}.json"
+    assert sue_person._work_file_name == f"{work_str()}.json"
     sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._road_delimiter == slash_text
@@ -194,7 +197,7 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_duty_file_name = f"{get_duty_file_name()}.json"
+    sue_duty_file_name = f"{duty_str()}.json"
     sue_duty_path = f"{sue_person_dir}/{sue_duty_file_name}"
     sue_chapunit = chapunit_shop(None, None, sue_text)
     print(f"{sue_duty_path=}")
@@ -225,7 +228,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_duty_file_name = f"{get_duty_file_name()}.json"
+    sue_duty_file_name = f"{duty_str()}.json"
     sue_duty_path = f"{sue_person_dir}/{sue_duty_file_name}"
 
     # WHEN
@@ -388,7 +391,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
 #     sue_persons_dir = f"{sue_real_dir}/persons"
 #     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-#     sue_duty_file_name = f"{get_duty_file_name()}.json"
+#     sue_duty_file_name = f"{duty_str()}.json"
 #     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
 #     print(f"{duty_file_text=}")
 #     duty_agenda = agendaunit_get_from_json(duty_file_text)
@@ -402,7 +405,7 @@ def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{get_work_file_name()}.json"
+    sue_work_file_name = f"{work_str()}.json"
     sue_work_path = f"{sue_person_dir}/{sue_work_file_name}"
     print(f"{sue_work_path=}")
     assert os_path_exists(sue_work_path) == False
@@ -448,7 +451,7 @@ def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{get_work_file_name()}.json"
+    sue_work_file_name = f"{work_str()}.json"
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
@@ -546,7 +549,7 @@ def test_PersonUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{get_work_file_name()}.json"
+    sue_work_file_name = f"{work_str()}.json"
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
