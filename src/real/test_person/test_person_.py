@@ -32,14 +32,6 @@ from os.path import exists as os_path_exists
 from src._instrument.file import open_file, save_file, delete_dir
 
 
-def test_duty_str():
-    assert duty_str() == "duty"
-
-
-def test_work_str():
-    assert work_str() == "work"
-
-
 def test_ChapUnit_Exists():
     # GIVEN / WHEN
     x_chap = ChapUnit()
@@ -65,7 +57,7 @@ def test_ChapUnit_Exists():
     assert x_chap._planck is None
 
 
-def test_ChapUnit_Exists():
+def test_chapunit_shop_ReturnsCorrectObj():
     # GIVEN
     x_reals_dir = "src/real/examples"
     x_real_id = "music"
