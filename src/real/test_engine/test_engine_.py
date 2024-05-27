@@ -36,7 +36,6 @@ def test_EngineUnit_Exists():
 
     # THEN
     assert x_engine.nook is None
-    assert x_engine._econ_objs is None
 
 
 def test_engineunit_shop_ReturnsCorrectEngineUnit(reals_dir_setup_cleanup):
@@ -49,7 +48,6 @@ def test_engineunit_shop_ReturnsCorrectEngineUnit(reals_dir_setup_cleanup):
     sue_engine = engineunit_shop(nookunit_shop(x_reals_dir, x_real_id, sue_text))
 
     # THEN
-    assert sue_engine._econ_objs == {}
     sue_nookunit = nookunit_shop(x_reals_dir, x_real_id, sue_text)
     assert sue_engine.nook == sue_nookunit
     assert sue_engine.nook._road_delimiter == default_road_delimiter_if_none()
@@ -63,18 +61,12 @@ def test_engineunit_shop_ReturnsCorrectEngineUnitWhenGivenEmptyRealParameters(
     sue_text = "Sue"
     slash_text = "/"
     two_int = 2
+    sue_nookunit = nookunit_shop(None, None, sue_text, slash_text, two_int)
 
     # WHEN
-    sue_nookunit = nookunit_shop(None, None, sue_text, slash_text, two_int)
     sue_engine = engineunit_shop(sue_nookunit)
 
     # THEN
-    sue_work_file_path = (
-        f"{sue_engine.nook.person_dir}/{sue_engine.nook._work_file_name}"
-    )
-    assert sue_engine.nook._work_path == sue_work_file_path
-    assert sue_engine.nook._road_delimiter == slash_text
-    assert sue_engine.nook._planck == two_int
     assert sue_engine.nook == sue_nookunit
 
 
@@ -434,33 +426,3 @@ def test_EngineUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     assert work_agenda._real_id == get_test_real_id()
     assert work_agenda._owner_id == sue_text
     assert work_agenda._planck == sue_planck
-
-
-def test_EngineUnit_create_core_dir_and_files_CreatesDirsAndFiles(
-    reals_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_engine = engineunit_shop(nookunit_shop(None, None, sue_text))
-    delete_dir(sue_engine.nook.real_dir)
-    assert os_path_exists(sue_engine.nook.real_dir) is False
-    assert os_path_exists(sue_engine.nook.persons_dir) is False
-    assert os_path_exists(sue_engine.nook.person_dir) is False
-    assert os_path_exists(sue_engine.nook._econs_dir) is False
-    assert os_path_exists(sue_engine.nook._atoms_dir) is False
-    assert os_path_exists(sue_engine.nook._gifts_dir) is False
-    assert os_path_exists(sue_engine.nook._duty_path) is False
-    assert os_path_exists(sue_engine.nook._work_path) is False
-
-    # WHEN
-    nookunit_create_core_dir_and_files(sue_engine.nook)
-
-    # THEN
-    assert os_path_exists(sue_engine.nook.real_dir)
-    assert os_path_exists(sue_engine.nook.persons_dir)
-    assert os_path_exists(sue_engine.nook.person_dir)
-    assert os_path_exists(sue_engine.nook._econs_dir)
-    assert os_path_exists(sue_engine.nook._atoms_dir)
-    assert os_path_exists(sue_engine.nook._gifts_dir)
-    assert os_path_exists(sue_engine.nook._duty_path)
-    assert os_path_exists(sue_engine.nook._work_path)

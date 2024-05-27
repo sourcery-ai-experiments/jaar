@@ -4,6 +4,7 @@ from src.agenda.idea import ideaunit_shop
 
 # from src.agenda.graphic import display_ideatree
 from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
+from src.real.engine import create_person_econunits
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 
@@ -38,7 +39,7 @@ def create_example_real1() -> RealUnit:
     yao_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_agenda(yao_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     save_duty_file(yao_nookunit, yao_duty_agenda)
-    yao_engine.create_person_econunits(yao_nookunit)
+    create_person_econunits(yao_nookunit)
 
     # WHEN
     music_real.set_person_econunits_dirs(yao_text)
@@ -102,11 +103,11 @@ def create_example_real2() -> RealUnit:
     save_duty_file(yao_nookunit, yao_duty_agenda)
     save_duty_file(wei_nookunit, wei_duty_agenda)
     save_duty_file(zia_nookunit, zia_duty_agenda)
-    yao_engine.create_person_econunits(yao_nookunit)
-    wei_engine.create_person_econunits(yao_nookunit)
-    zia_engine.create_person_econunits(yao_nookunit)
-    # yao_dallas_econ = yao_engine.get_econ(dallas_road)
-    # zia_dallas_econ = zia_engine.get_econ(dallas_road)
+    create_person_econunits(yao_nookunit)
+    create_person_econunits(wei_nookunit)
+    create_person_econunits(zia_nookunit)
+    # yao_dallas_econ = yao_engine.get_econunit(dallas_road)
+    # zia_dallas_econ = zia_engine.get_econunit(dallas_road)
     music_real.set_person_econunits_dirs(yao_text)
     music_real.set_person_econunits_dirs(wei_text)
     music_real.set_person_econunits_dirs(zia_text)
@@ -243,12 +244,12 @@ def create_example_real4() -> RealUnit:
     save_duty_file(yao_nookunit, yao_duty_agenda)
     save_duty_file(wei_nookunit, wei_duty_agenda)
     save_duty_file(zia_nookunit, zia_duty_agenda)
-    # yao_engine.create_person_econunits(yao_nookunit)
-    # wei_engine.create_person_econunits(yao_nookunit)
-    # zia_engine.create_person_econunits(yao_nookunit)
-    # yao_dallas_econ = yao_engine.get_econ(dallas_road)
-    # zia_dallas_econ = zia_engine.get_econ(dallas_road)
-    # yao_elpaso_econ = yao_engine.get_econ(elpaso_road)
+    # create_person_econunits(yao_nookunit)
+    # wei_engine.create_person_econunits()
+    # zia_engine.create_person_econunits()
+    # yao_dallas_econ = yao_engine.get_econunit(dallas_road)
+    # zia_dallas_econ = zia_engine.get_econunit(dallas_road)
+    # yao_elpaso_econ = yao_engine.get_econunit(elpaso_road)
     # yao_dallas_econ.save_role_file(yao_duty_agenda)
     # yao_dallas_econ.save_role_file(wei_duty_agenda)
     # yao_dallas_econ.save_role_file(zia_duty_agenda)

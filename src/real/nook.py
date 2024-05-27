@@ -75,7 +75,6 @@ class NookUnit:
     _duty_path: str = None
     _work_file_name: str = None
     _work_path: str = None
-    _econ_objs: dict[RoadUnit:EconUnit] = None
     _road_delimiter: str = None
     _planck: float = None
 
@@ -206,12 +205,6 @@ def _save_work_file(x_nookunit: NookUnit, x_agenda: AgendaUnit, replace: bool = 
         )
 
 
-def _get_empty_agenda(x_nookunit: NookUnit) -> AgendaUnit:
-    empty_agenda = agendaunit_shop(x_nookunit.person_id, x_nookunit.real_id)
-    empty_agenda._last_gift_id = init_gift_id()
-    return empty_agenda
-
-
 def save_duty_file(x_nookunit: NookUnit, x_agenda: AgendaUnit, replace: bool = True):
     if x_agenda._owner_id != x_nookunit.person_id:
         raise Invalid_duty_Exception(
@@ -227,9 +220,9 @@ def save_duty_file(x_nookunit: NookUnit, x_agenda: AgendaUnit, replace: bool = T
 
 
 def get_duty_file_agenda(x_nookunit: NookUnit) -> AgendaUnit:
-    duty_json = open_file(
-        dest_dir=x_nookunit.person_dir, file_name=x_nookunit._duty_file_name
-    )
+    if duty_file_exists(x_nookunit) == False:
+        save_duty_file(x_nookunit, get_default_duty_agenda(x_nookunit))
+    duty_json = open_file(x_nookunit.person_dir, x_nookunit._duty_file_name)
     return agendaunit_get_from_json(duty_json)
 
 
@@ -260,7 +253,7 @@ def _create_initial_gift_from_duty(x_nookunit: NookUnit):
         _atoms_dir=x_nookunit._atoms_dir,
     )
     x_giftunit._bookunit.add_all_different_agendaatoms(
-        before_agenda=_get_empty_agenda(x_nookunit),
+        before_agenda=get_default_duty_agenda(x_nookunit),
         after_agenda=get_duty_file_agenda(x_nookunit),
     )
     x_giftunit.save_files()
@@ -290,17 +283,22 @@ def _merge_gifts_into_agenda(x_nookunit: NookUnit, x_agenda: AgendaUnit) -> Agen
 def _create_duty_from_gifts(x_nookunit):
     save_duty_file(
         x_nookunit,
-        _merge_gifts_into_agenda(x_nookunit, _get_empty_agenda(x_nookunit)),
+        _merge_gifts_into_agenda(x_nookunit, get_default_duty_agenda(x_nookunit)),
     )
 
 
-def _create_initial_gift_and_duty_files(x_nookunit: NookUnit):
-    default_duty_agenda = agendaunit_shop(
+def get_default_duty_agenda(x_nookunit: NookUnit) -> AgendaUnit:
+    x_agendaunit = agendaunit_shop(
         x_nookunit.person_id,
         x_nookunit.real_id,
         x_nookunit._road_delimiter,
         x_nookunit._planck,
     )
+    x_agendaunit._last_gift_id = init_gift_id()
+    return x_agendaunit
+
+
+def _create_initial_gift_and_duty_files(x_nookunit: NookUnit):
     x_giftunit = giftunit_shop(
         _giver=x_nookunit.person_id,
         _gift_id=get_init_gift_id_if_None(),
@@ -308,8 +306,8 @@ def _create_initial_gift_and_duty_files(x_nookunit: NookUnit):
         _atoms_dir=x_nookunit._atoms_dir,
     )
     x_giftunit._bookunit.add_all_different_agendaatoms(
-        before_agenda=_get_empty_agenda(x_nookunit),
-        after_agenda=default_duty_agenda,
+        before_agenda=get_default_duty_agenda(x_nookunit),
+        after_agenda=get_default_duty_agenda(x_nookunit),
     )
     x_giftunit.save_files()
     _create_duty_from_gifts(x_nookunit)

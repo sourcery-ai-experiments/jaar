@@ -6,10 +6,7 @@ from src._instrument.file import (
     get_parts_dir,
     delete_dir,
 )
-from src._road.finance import default_planck_if_none
 from src._road.road import (
-    default_road_delimiter_if_none,
-    PersonID,
     RoadUnit,
     RoadNode,
     get_all_road_nodes,
@@ -26,7 +23,6 @@ from src.econ.econ import (
 from src.real.nook import (
     NookUnit,
     get_duty_file_agenda,
-    nookunit_shop,
     nookunit_create_core_dir_and_files,
 )
 from dataclasses import dataclass
@@ -40,85 +36,86 @@ class PersonCreateEconUnitsException(Exception):
     pass
 
 
+def _get_econs_roads(x_nookunit: NookUnit) -> dict[RoadUnit:EconUnit]:
+    x_duty_agenda = get_duty_file_agenda(x_nookunit)
+    x_duty_agenda.calc_agenda_metrics()
+    if x_duty_agenda._econs_justified == False:
+        x_str = f"Cannot set '{x_nookunit.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
+        raise PersonCreateEconUnitsException(x_str)
+    if x_duty_agenda._econs_buildable == False:
+        x_str = f"Cannot set '{x_nookunit.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
+        raise PersonCreateEconUnitsException(x_str)
+
+    x_person_econs = x_duty_agenda._healers_dict.get(x_nookunit.person_id)
+    return get_empty_dict_if_none(x_person_econs)
+
+
+def get_econ_path(x_nookunit: NookUnit, x_road: RoadNode) -> str:
+    # econ_root = get_rootpart_of_econ_dir()
+    # x_road = change_road(x_road, x_nookunit.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_nookunit._road_delimiter)
+    return f"{x_nookunit._econs_dir}{get_directory_path(x_list=[*x_list])}"
+
+
+def create_econ_dir(x_nookunit: NookUnit, x_road: RoadUnit) -> str:
+    x_econ_path = get_econ_path(x_nookunit, x_road)
+    set_dir(x_econ_path)
+    return x_econ_path
+
+
+def init_econunit(x_nookunit: NookUnit, econ_road: RoadUnit) -> EconUnit:
+    x_econ_path = create_econ_dir(x_nookunit, econ_road)
+    x_econunit = econunit_shop(
+        real_id=x_nookunit.real_id,
+        econ_dir=x_econ_path,
+        _manager_person_id=x_nookunit.person_id,
+        _road_delimiter=x_nookunit._road_delimiter,
+    )
+    x_econunit.set_econ_dirs()
+    return x_econunit
+
+
+def create_person_econunits(x_nookunit: NookUnit):
+    x_person_econs = _get_econs_roads(x_nookunit)
+    for econ_idea in x_person_econs.values():
+        init_econunit(x_nookunit, econ_idea.get_road())
+
+    db_filename = treasury_db_filename()
+    econs_dir = x_nookunit._econs_dir
+    root_dir = get_rootpart_of_econ_dir()
+    for treasury_dir in get_all_dirs_with_file(db_filename, econs_dir):
+        treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
+        treasury_road = change_road(treasury_road, root_dir, x_nookunit.real_id)
+        if x_person_econs.get(treasury_road) is None:
+            dir_to_delete = f"{x_nookunit._econs_dir}/{treasury_dir}"
+            delete_dir(dir_to_delete)
+
+
+def get_econunit(x_nookunit: NookUnit, econ_road: RoadUnit) -> EconUnit:
+    return init_econunit(x_nookunit, econ_road)
+
+
 @dataclass
 class EngineUnit:
     nook: NookUnit = None
-    _econ_objs: dict[RoadUnit:EconUnit] = None
-
-    def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
-        return f"{self.nook._econs_dir}{get_directory_path(x_list=[*x_list])}"
-
-    def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-        econ_root = get_rootpart_of_econ_dir()
-        x_roadunit = change_road(x_roadunit, self.nook.real_id, econ_root)
-        road_nodes = get_all_road_nodes(x_roadunit, self.nook._road_delimiter)
-        x_econ_path = self._get_person_econ_dir(road_nodes)
-        set_dir(x_econ_path)
-        return x_econ_path
-
-    def _create_econunit(self, econ_roadunit: RoadUnit):
-        x_econ_path = self._create_econ_dir(econ_roadunit)
-        x_econunit = econunit_shop(
-            real_id=self.nook.real_id,
-            econ_dir=x_econ_path,
-            _manager_person_id=self.nook.person_id,
-            _road_delimiter=self.nook._road_delimiter,
-        )
-        x_econunit.set_econ_dirs()
-        self._econ_objs[econ_roadunit] = x_econunit
-
-    def create_person_econunits(self, econ_exceptions: bool = True):
-        x_duty_agenda = get_duty_file_agenda(self.nook)
-        x_duty_agenda.calc_agenda_metrics(econ_exceptions)
-        if x_duty_agenda._econs_justified == False:
-            raise PersonCreateEconUnitsException(
-                f"Cannot set '{self.nook.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
-            )
-        if x_duty_agenda._econs_buildable == False:
-            raise PersonCreateEconUnitsException(
-                f"Cannot set '{self.nook.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
-            )
-
-        x_person_econs = x_duty_agenda._healers_dict.get(self.nook.person_id)
-        x_person_econs = get_empty_dict_if_none(x_person_econs)
-        self._econ_objs = {}
-        for econ_idea in x_person_econs.values():
-            self._create_econunit(econ_roadunit=econ_idea.get_road())
-
-        # delete any
-        x_treasury_dirs = get_all_dirs_with_file(
-            treasury_db_filename(), self.nook._econs_dir
-        )
-        for treasury_dir in x_treasury_dirs:
-            treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
-            treasury_road = change_road(
-                treasury_road, get_rootpart_of_econ_dir(), self.nook.real_id
-            )
-            if x_person_econs.get(treasury_road) is None:
-                dir_to_delete = f"{self.nook._econs_dir}/{treasury_dir}"
-                delete_dir(dir_to_delete)
-
-    def get_econ(self, econ_road: RoadUnit) -> EconUnit:
-        return self._econ_objs.get(econ_road)
 
     def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
-        x_econ = self.get_econ(econ_road)
+        x_nookunit = self.nook
+        x_econ = get_econunit(x_nookunit, econ_road)
         x_econ.save_role_file(role)
 
     def set_econunits_role(self, role: AgendaUnit):
-        for x_econ_road in self._econ_objs.keys():
+        x_nookunit = self.nook
+        for x_econ_road in _get_econs_roads(x_nookunit).keys():
             self.set_econunit_role(x_econ_road, role)
 
     def set_person_econunits_role(self):
-        self.set_econunits_role(get_duty_file_agenda(self.nook))
+        x_nookunit = self.nook
+        self.set_econunits_role(get_duty_file_agenda(x_nookunit))
 
 
-def engineunit_shop(
-    nookunit: NookUnit,
-    _econ_objs: dict[RoadUnit:EconUnit] = None,
-    create_files: bool = True,
-) -> EngineUnit:
-    x_engineunit = EngineUnit(nookunit, _econ_objs=get_empty_dict_if_none(_econ_objs))
+def engineunit_shop(nookunit: NookUnit, create_files: bool = True) -> EngineUnit:
+    x_engineunit = EngineUnit(nookunit)
     if create_files:
         nookunit_create_core_dir_and_files(nookunit)
     return x_engineunit

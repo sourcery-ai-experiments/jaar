@@ -5,7 +5,12 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.gift import get_gifts_folder
-from src.real.engine import EngineUnit, engineunit_shop
+from src.real.engine import (
+    EngineUnit,
+    engineunit_shop,
+    create_person_econunits,
+    get_econunit,
+)
 from src.real.nook import (
     nookunit_shop,
     _save_work_file as person_save_work_file,
@@ -137,20 +142,27 @@ class RealUnit:
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_engine = self.get_engineunit_from_memory(healer_id)
+            healer_nookunit = nookunit_shop(
+                self.reals_dir,
+                self.real_id,
+                healer_id,
+                self._road_delimiter,
+                self._planck,
+            )
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_engine=healer_engine,
+                    healer_nookunit=healer_nookunit,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_engine: EngineUnit,
+        healer_nookunit: EngineUnit,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = healer_engine.get_econ(econ_road)
+        x_econ = get_econunit(healer_nookunit, econ_road)
         x_econ.save_role_file(duty_agenda)
 
     # work agenda management
@@ -166,9 +178,16 @@ class RealUnit:
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_engine = self.get_engineunit_from_memory(healer_id)
-            healer_engine.create_person_econunits(x_nookunit)
+            healer_nookunit = nookunit_shop(
+                self.reals_dir,
+                self.real_id,
+                healer_id,
+                self._road_delimiter,
+                self._planck,
+            )
+            create_person_econunits(healer_nookunit)
             for econ_idea in healer_dict.values():
-                x_econ = healer_engine.get_econ(econ_idea.get_road())
+                x_econ = get_econunit(healer_nookunit, econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
                 x_job.calc_agenda_metrics()

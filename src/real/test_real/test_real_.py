@@ -5,7 +5,7 @@ from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
 from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
 from src.real.gift import get_gifts_folder
-from src.real.engine import engineunit_shop
+from src.real.engine import engineunit_shop, create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 from os import path as os_path
@@ -326,10 +326,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     save_duty_file(luca_nookunit, luca_duty_agenda)
     save_duty_file(todd_nookunit, todd_duty_agenda)
-    luca_engine.create_person_econunits(luca_nookunit)
-    todd_engine.create_person_econunits(todd_nookunit)
-    luca_dallas_econ = luca_engine.get_econ(dallas_road)
-    todd_dallas_econ = todd_engine.get_econ(dallas_road)
+    create_person_econunits(luca_nookunit)
+    create_person_econunits(todd_nookunit)
+    luca_dallas_econ = get_econunit(luca_nookunit, dallas_road)
+    todd_dallas_econ = get_econunit(todd_nookunit, dallas_road)
     luca_file_name = get_owner_file_name(luca_text)
     todd_file_name = get_owner_file_name(todd_text)
     luca_roles_dir = luca_dallas_econ.get_roles_dir()
