@@ -870,27 +870,25 @@ def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario1():
     assert new_premises_x.get(old_seasons_road) is None
 
 
-def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Change_real_id_Scenario():
+def test_road_find_replace_road_key_dict_ReturnsCorrectPremisesUnit_Scenario2():
     # GIVEN
     old_real_id = "El Paso"
     casa_text = "casa"
-    old_casa_road = create_road(old_real_id, casa_text)
     seasons_text = "seasons"
+    old_casa_road = create_road(old_real_id, casa_text)
     old_seasons_road = create_road(old_casa_road, seasons_text)
-    old_premise_x = premiseunit_shop(need=old_seasons_road)
-    old_premises_x = {old_premise_x.need: old_premise_x}
-
-    assert old_premises_x.get(old_seasons_road) == old_premise_x
+    old_premiseunit = premiseunit_shop(need=old_seasons_road)
+    old_premiseunits = {old_premiseunit.need: old_premiseunit}
+    assert old_premiseunits.get(old_seasons_road) == old_premiseunit
 
     # WHEN
     new_real_id = "Austin"
     new_casa_road = create_road(new_real_id, casa_text)
     new_seasons_road = create_road(new_casa_road, seasons_text)
-
-    new_premises_x = find_replace_road_key_dict(
-        dict_x=old_premises_x, old_road=old_seasons_road, new_road=new_seasons_road
+    new_premise_roads = find_replace_road_key_dict(
+        dict_x=old_premiseunits, old_road=old_seasons_road, new_road=new_seasons_road
     )
-    new_premise_x = premiseunit_shop(need=new_seasons_road)
+    new_premiseunit = premiseunit_shop(need=new_seasons_road)
 
-    assert new_premises_x.get(new_seasons_road) == new_premise_x
-    assert new_premises_x.get(old_seasons_road) is None
+    assert new_premise_roads.get(new_seasons_road) == new_premiseunit
+    assert new_premise_roads.get(old_seasons_road) is None

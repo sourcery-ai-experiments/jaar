@@ -5,15 +5,11 @@ from src.agenda.reason_idea import (
     RoadUnit,
     beliefunit_shop,
 )
-from src._road.road import (
-    get_default_real_id_roadnode as root_label,
-    create_road,
-)
-from pytest import raises as pytest_raises
+from src._road.road import get_default_real_id_roadnode as root_label, create_road
 
 
 def test_IdeaUnit_find_replace_road_CorrectlyChanges_parent_road():
-    # GIVEN Idea with _parent_road that will be changed
+    # GIVEN Idea with _parent_road that will be different
     old_casa_text = "casa1"
     old_casa_road = create_road(root_label(), old_casa_text)
     bloomers_text = "bloomers"
@@ -37,7 +33,7 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_parent_road():
 
 
 def test_IdeaUnit_find_replace_road_CorrectlyChanges_range_source_road_numeric_road():
-    # GIVEN Idea with special road and numeric road that will be changed
+    # GIVEN Idea with special road and numeric road that will be different
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
@@ -77,7 +73,7 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_range_source_road_numeric_r
 
 
 def test_IdeaUnit_find_replace_road_CorrectlyChanges_reasonunits():
-    # GIVEN Idea with reason that will be changed
+    # GIVEN Idea with reason that will be different
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
@@ -131,7 +127,7 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_reasonunits():
 
 
 def test_IdeaUnit_find_replace_road_CorrectlyChanges_beliefunits():
-    # GIVEN Idea with beliefunit that will be changed
+    # GIVEN Idea with beliefunit that will be different
     roses_text = "roses"
     old_water_text = "water"
     old_water_road = create_road(root_label(), old_water_text)

@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Manuparty change</string>
+     <string>Manuparty modification</string>
     </property>
    </widget>
    <widget class="QPushButton" name="loubby_button">

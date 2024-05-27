@@ -27,7 +27,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_weight():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._owner_id}'s agenda weight was changed to {weight_int}"
+    x_str = f"{sue_agenda._owner_id}'s agenda weight was transited to {weight_int}"
     assert legible_list[0] == x_str
 
 
@@ -164,7 +164,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_max_tree_traverse():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._owner_id}'s maximum number of Agenda output evaluations changed to {max_tree_traverse_int}"
+    x_str = f"{sue_agenda._owner_id}'s maximum number of Agenda output evaluations transited to {max_tree_traverse_int}"
     assert legible_list[0] == x_str
 
 
@@ -185,5 +185,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_meld_strategy():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._owner_id}'s Meld strategy changed to '{meld_strategy_value}'"
+    x_str = (
+        f"{sue_agenda._owner_id}'s Meld strategy transited to '{meld_strategy_value}'"
+    )
     assert legible_list[0] == x_str

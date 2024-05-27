@@ -1037,7 +1037,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Party '{rico_text}' change to '{carmen_text}' failed since '{carmen_text}' exists."
+        == f"Party '{rico_text}' modify to '{carmen_text}' failed since '{carmen_text}' exists."
     )
 
 
@@ -1201,7 +1201,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Party '{rico_text}' change to '{carmen_text}' failed since non-single group '{carmen_text}' exists."
+        == f"Party '{rico_text}' modify to '{carmen_text}' failed since non-single group '{carmen_text}' exists."
     )
 
 

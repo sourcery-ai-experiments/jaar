@@ -138,7 +138,7 @@ def delete_dir_example_econ(econ_obj: EconUnit):
     delete_dir(econ_obj.get_object_root_dir())
 
 
-def change_real_id_example_econ(econ_obj: EconUnit, new_real_id):
+def modify_real_id_example_econ(econ_obj: EconUnit, new_real_id):
     # base_dir = econ_obj.get_object_root_dir()
     base_dir = "src/econ/examples/econs"
     src_dir = f"{base_dir}/{econ_obj.real_id}"

@@ -6,7 +6,7 @@
 #     RoadUnit,
 #     RoadNode,
 #     get_all_road_nodes,
-#     change_road,
+#     rebuild_road,
 #     create_road_from_nodes,
 # )
 # from src.agenda.group import GroupID
@@ -18,7 +18,7 @@
 # from src.agenda.atom import (
 #     AgendaAtom,
 #     get_from_json as agendaatom_get_from_json,
-#     change_agenda_with_agendaatom,
+#     modify_agenda_with_agendaatom,
 # )
 # from src.agenda.pledge import create_pledge
 # from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
@@ -249,9 +249,9 @@
 #         )
 
 #     def save_giftunit_file(
-#         self, x_gift: GiftUnit, replace: bool = True, change_invalid_attrs: bool = True
+#         self, x_gift: GiftUnit, replace: bool = True, _invalid_attrs: bool = True
 #     ) -> GiftUnit:
-#         if change_invalid_attrs:
+#         if _invalid_attrs:
 #             x_gift = validate_giftunit(x_gift)
 
 #         if x_gift._atoms_dir != self._atoms_dir:
@@ -352,7 +352,7 @@
 #         for x_atom_filename in sorted_atom_filenames:
 #             x_file_text = x_atom_files.get(x_atom_filename)
 #             x_atom = agendaatom_get_from_json(x_file_text)
-#             change_agenda_with_agendaatom(x_agenda, x_atom)
+#             modify_agenda_with_agendaatom(x_agenda, x_atom)
 #         return x_agenda
 
 #     def get_rootpart_of_econ_dir(self):
@@ -362,7 +362,7 @@
 #         return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
 #     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
-#         x_roadunit = change_road(
+#         x_roadunit = rebuild_road(
 #             x_roadunit, self.real_id, self.get_rootpart_of_econ_dir()
 #         )
 #         road_nodes = get_all_road_nodes(x_roadunit, delimiter=self._road_delimiter)
@@ -405,7 +405,7 @@
 #         )
 #         for treasury_dir in x_treasury_dirs:
 #             treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
-#             treasury_road = change_road(
+#             treasury_road = rebuild_road(
 #                 treasury_road, self.get_rootpart_of_econ_dir(), self.real_id
 #             )
 #             if x_person_econs.get(treasury_road) is None:
@@ -447,28 +447,6 @@
 #     def append_gifts_to_duty_file(self):
 #         self.save_duty_file(_merge_gifts_into_agenda(get_duty_file_agenda(x_nookunit)))
 #         return get_duty_file_agenda(x_nookunit)
-
-
-# def engineunit_shop(
-#     person_id: PersonID,
-#     real_id: str = None,
-#     reals_dir: str = None,
-#     _econ_objs: dict[RoadUnit:EconUnit] = None,
-#     _road_delimiter: str = None,
-#     _planck: float = None,
-#     create_files: bool = True,
-# ) -> EngineUnit:
-#     x_engineunit = EngineUnit(
-#         real_id=real_id,
-#         reals_dir=reals_dir,
-#         _econ_objs=get_empty_dict_if_none(_econ_objs),
-#         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-#         _planck=default_planck_if_none(_planck),
-#     )
-#     x_engineunit.set_person_id(person_id)
-#     if create_files:
-#         x_engineunit.create_core_dir_and_files()
-#     return x_engineunit
 
 
 # def get_from_json(x_person_json: str) -> EngineUnit:

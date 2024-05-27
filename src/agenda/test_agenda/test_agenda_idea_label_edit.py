@@ -130,7 +130,7 @@ def test_agenda_set_real_id_CorrectlySetsAttr():
 
 
 def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
-    # GIVEN Idea with kids that will be changed
+    # GIVEN Idea with kids that will be different
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(tim_text)
 
@@ -178,7 +178,7 @@ def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
 
 
 def test_agenda_edit_idea_label_Changes_beliefunits():
-    # GIVEN agenda with beliefunits that will be changed
+    # GIVEN agenda with beliefunits that will be different
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(tim_text)
 
@@ -359,7 +359,7 @@ def test_agenda_edit_idea_label_RaisesErrorIfdelimiterIsInLabel():
         )
     assert (
         str(excinfo.value)
-        == f"Cannot change '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {sue_agenda._road_delimiter}"
+        == f"Cannot modify '{old_weekday_road}' because new_label {new_weekday_text} contains delimiter {sue_agenda._road_delimiter}"
     )
 
 
@@ -381,7 +381,7 @@ def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
         luca_agenda.set_road_delimiter(slash_text)
     assert (
         str(excinfo.value)
-        == f"Cannot change delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
+        == f"Cannot modify delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
     )
 
 

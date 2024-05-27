@@ -164,7 +164,7 @@ class RealUnit:
                 x_work.meld(x_job)
                 x_work.calc_agenda_metrics
 
-        # if work_agenda has not changed st work agenda to duty
+        # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
         person_save_work_file(x_nookunit, x_work)

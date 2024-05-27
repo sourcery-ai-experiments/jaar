@@ -222,7 +222,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     # assert
     # _treasury_partylinks
     # assert group "swimming expert" has 1 party
-    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
+    # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
     # run set_treasury_metrics
     # assert group "swimming expert" has 2 different party
     x_real_id = x_econ.real_id
@@ -265,7 +265,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
 
     # WHEN
-    # change groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()},sports,swimmer"
+    # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()},sports,swimmer"
     sal_swim_road = create_road(sal_sports_road, swim_text)
     swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
     sal_agenda.set_groupunit(y_groupunit=swim_group_unit)

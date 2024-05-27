@@ -5,7 +5,7 @@ from src._road.road import (
     OwnerID,
     PartyID,
     RoadUnit,
-    change_road,
+    rebuild_road,
     is_sub_road,
     get_all_road_nodes,
     get_terminus_node,
@@ -118,7 +118,7 @@ def test_road_create_road_ReturnsCorrectRoadUnitWith_delimiter():
     assert slash_delimiter_rose_road == brackets_road
 
 
-def test_road_change_road_CorrectlyRoadUnit():
+def test_road_rebuild_road_CorrectlyRoadUnit():
     # GIVEN
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
@@ -130,12 +130,12 @@ def test_road_change_road_CorrectlyRoadUnit():
     old_roses_road = create_road(bloomers_road, roses_text)
     new_roses_road = create_road(greenery_road, roses_text)
 
-    print(f"{change_road(old_roses_road, bloomers_road, greenery_road)}")
+    print(f"{rebuild_road(old_roses_road, bloomers_road, greenery_road)}")
 
     # WHEN / THEN
-    assert change_road(bloomers_road, bloomers_road, bloomers_road) == bloomers_road
-    assert change_road(old_roses_road, bloomers_road, greenery_road) == new_roses_road
-    assert change_road(old_roses_road, "random_text", greenery_road) == old_roses_road
+    assert rebuild_road(bloomers_road, bloomers_road, bloomers_road) == bloomers_road
+    assert rebuild_road(old_roses_road, bloomers_road, greenery_road) == new_roses_road
+    assert rebuild_road(old_roses_road, "random_text", greenery_road) == old_roses_road
 
 
 def test_road_get_all_road_nodes_ReturnsRoadNodes():
@@ -260,7 +260,7 @@ class EmptyObj:
     x_road: RoadUnit = ""
 
     def find_replace_road(self, old_road, new_road):
-        self.x_road = change_road(self.x_road, old_road=old_road, new_road=new_road)
+        self.x_road = rebuild_road(self.x_road, old_road=old_road, new_road=new_road)
 
     def get_obj_key(self) -> RoadUnit:
         return self.x_road

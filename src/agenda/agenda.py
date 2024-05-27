@@ -2,7 +2,7 @@ from src._road.road import (
     get_parent_road,
     is_sub_road,
     road_validate,
-    change_road,
+    rebuild_road,
     get_terminus_node,
     get_root_node_from_road,
     find_replace_road_key_dict,
@@ -284,7 +284,7 @@ class AgendaUnit:
             for x_idea_road in self._idea_dict.keys():
                 if is_string_in_road(new_road_delimiter, x_idea_road):
                     raise NewDelimiterException(
-                        f"Cannot change delimiter to '{new_road_delimiter}' because it already exists an idea label '{x_idea_road}'"
+                        f"Cannot modify delimiter to '{new_road_delimiter}' because it already exists an idea label '{x_idea_road}'"
                     )
 
             # Grab pointers to every idea
@@ -293,7 +293,7 @@ class AgendaUnit:
                 for x_idea_road in self._idea_dict.keys()
             }
 
-            # change all road attributes in idea
+            # modify all road attributes in idea
             # old_road_delimiter = copy_deepcopy(self._road_delimiter)
             self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
             for x_idea in idea_pointers.values():
@@ -354,7 +354,7 @@ class AgendaUnit:
 
         # tree_metrics = self.get_tree_metrics()
         # while roads_to_evaluate != [] and count_x <= tree_metrics.node_count:
-        # changed because count_x might be wrong thing to measure
+        # transited because count_x might be wrong thing to measure
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
@@ -685,7 +685,7 @@ class AgendaUnit:
         new_party_id_partyunit = self.get_party(new_party_id)
         if not allow_party_overwite and new_party_id_partyunit != None:
             raise InvalidAgendaException(
-                f"Party '{old_party_id}' change to '{new_party_id}' failed since '{new_party_id}' exists."
+                f"Party '{old_party_id}' modify to '{new_party_id}' failed since '{new_party_id}' exists."
             )
         elif (
             not allow_nonsingle_group_overwrite
@@ -693,7 +693,7 @@ class AgendaUnit:
             and new_party_id_groupunit._party_mirror == False
         ):
             raise InvalidAgendaException(
-                f"Party '{old_party_id}' change to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
+                f"Party '{old_party_id}' modify to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
             )
         elif (
             allow_nonsingle_group_overwrite
@@ -708,7 +708,7 @@ class AgendaUnit:
         self.add_partyunit(
             party_id=new_party_id, creditor_weight=old_party_id_creditor_weight
         )
-        # change all influenced groupunits partylinks
+        # modify all influenced groupunits partylinks
         for old_party_group_id in self.get_party_group_ids(old_party_id):
             old_party_groupunit = self.get_groupunit(old_party_group_id)
             old_party_groupunit._shift_partylink(old_party_id, new_party_id)
@@ -788,7 +788,7 @@ class AgendaUnit:
     ):
         if not allow_group_overwite and self.get_groupunit(new_group_id) != None:
             raise InvalidAgendaException(
-                f"Group '{old_group_id}' change to '{new_group_id}' failed since '{new_group_id}' exists."
+                f"Group '{old_group_id}' modify to '{new_group_id}' failed since '{new_group_id}' exists."
             )
         elif self.get_groupunit(new_group_id) != None:
             old_groupunit = self.get_groupunit(old_group_id)
@@ -1242,7 +1242,7 @@ class AgendaUnit:
     ):
         if self._road_delimiter in new_label:
             raise InvalidLabelException(
-                f"Cannot change '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
+                f"Cannot modify '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
             )
         if self.idea_exists(old_road) == False:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
@@ -1289,7 +1289,7 @@ class AgendaUnit:
                         ref_road=idea_kid._parent_road,
                         sub_road=old_road,
                     ):
-                        idea_kid._parent_road = change_road(
+                        idea_kid._parent_road = rebuild_road(
                             subj_road=idea_kid._parent_road,
                             old_road=old_road,
                             new_road=new_road,
@@ -1864,7 +1864,7 @@ class AgendaUnit:
         while not self._rational and self._tree_traverse_count < max_count:
             self._clear_agenda_base_metrics()
             self._execute_tree_traverse(econ_exceptions)
-            self._check_if_any_idea_active_has_changed()
+            self._check_if_any_idea_active_status_has_altered()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_credit_debt()
         self._after_all_tree_traverses_set_healerhold_importance()
@@ -1908,13 +1908,13 @@ class AgendaUnit:
                     cache_idea_list.append(idea_kid)
                     fund_onset += idea_kid._agenda_importance
 
-    def _check_if_any_idea_active_has_changed(self):
-        any_idea_active_changed = False
+    def _check_if_any_idea_active_status_has_altered(self):
+        any_idea_active_status_has_altered = False
         for idea in self._idea_dict.values():
             if idea._active_hx.get(self._tree_traverse_count) != None:
-                any_idea_active_changed = True
+                any_idea_active_status_has_altered = True
 
-        if any_idea_active_changed == False:
+        if any_idea_active_status_has_altered == False:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):
@@ -2250,8 +2250,8 @@ class AgendaUnit:
         for afu in self._idearoot._beliefunits.values():
             if relevant_roads.get(afu.base) != None:
                 x_agenda.set_belief(
-                    base=change_road(afu.base, self._real_id, x_agenda._real_id),
-                    pick=change_road(afu.pick, self._real_id, x_agenda._real_id),
+                    base=rebuild_road(afu.base, self._real_id, x_agenda._real_id),
+                    pick=rebuild_road(afu.pick, self._real_id, x_agenda._real_id),
                     open=afu.open,
                     nigh=afu.nigh,
                 )

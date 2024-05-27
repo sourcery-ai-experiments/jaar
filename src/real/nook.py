@@ -25,7 +25,7 @@ from src.agenda.agenda import (
 from src.agenda.atom import (
     AgendaAtom,
     get_from_json as agendaatom_get_from_json,
-    change_agenda_with_agendaatom,
+    modify_agenda_with_agendaatom,
 )
 from src.agenda.pledge import create_pledge
 from src.econ.econ import EconUnit
@@ -157,7 +157,7 @@ def _get_agenda_from_atom_files(x_nookunit: NookUnit) -> AgendaUnit:
     for x_atom_filename in sorted_atom_filenames:
         x_file_text = x_atom_files.get(x_atom_filename)
         x_atom = agendaatom_get_from_json(x_file_text)
-        change_agenda_with_agendaatom(x_agenda, x_atom)
+        modify_agenda_with_agendaatom(x_agenda, x_atom)
     return x_agenda
 
 

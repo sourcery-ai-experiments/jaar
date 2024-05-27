@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src._road.road import (
     RoadUnit,
-    change_road,
+    rebuild_road,
     find_replace_road_key_dict,
     replace_road_delimiter,
     is_heir_road,
@@ -46,8 +46,8 @@ class BeliefCore:
             self.nigh = nigh
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
-        self.base = change_road(self.base, old_road, new_road)
-        self.pick = change_road(self.pick, old_road, new_road)
+        self.base = rebuild_road(self.base, old_road, new_road)
+        self.pick = rebuild_road(self.pick, old_road, new_road)
 
     def get_obj_key(self):
         return self.base
@@ -403,7 +403,7 @@ class PremiseUnit:
         )
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
-        self.need = change_road(self.need, old_road, new_road)
+        self.need = rebuild_road(self.need, old_road, new_road)
 
     def meld(self, other_premise):
         if other_premise.need != self.need:
@@ -523,7 +523,7 @@ class ReasonCore:
             raise InvalidReasonException(f"Reason unable to delete premise {e}") from e
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
-        self.base = change_road(self.base, old_road, new_road)
+        self.base = rebuild_road(self.base, old_road, new_road)
         self.premises = find_replace_road_key_dict(
             dict_x=self.premises, old_road=old_road, new_road=new_road
         )

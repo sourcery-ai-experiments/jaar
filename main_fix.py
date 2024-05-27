@@ -18,7 +18,7 @@
 #     setup_test_example_environment,
 #     create_example_econ,
 #     delete_dir_example_econ,
-#     change_econ_id_example_econ,
+#     modification_econ_id_example_econ,
 #     get_test_econ_dir,
 # )
 # from src._instrument.file import open_file, dir_files
@@ -194,7 +194,7 @@
 #         self.econ_id_combo_refresh()
 
 #     def econ_update_pid(self):
-#         change_econ_id_example_econ(
+#         modification_econ_id_example_econ(
 #             econ_obj=self.econ_x, new_party_id=self.econ_id.text()
 #         )
 #         self.econ_id_combo_refresh()
@@ -217,7 +217,7 @@
 #         ).text()
 #         typed_in = self.agenda_owner_id.text()
 #         if currently_selected != typed_in:
-#             self.econ_x.change_job_owner_id(
+#             self.econ_x.modification_job_owner_id(
 #                 old_label=currently_selected, new_label=typed_in
 #             )
 #             self.refresh_econ()
@@ -240,7 +240,7 @@
 #         ).text()
 #         typed_in = self.FunctionThatBuildsJob_id.text()
 #         if currently_selected != typed_in:
-#             self.econ_x.change_FunctionThatBuildsJobunit_FunctionThatBuildsJob_id(
+#             self.econ_x.modification_FunctionThatBuildsJobunit_FunctionThatBuildsJob_id(
 #                 old_label=currently_selected, new_label=typed_in
 #             )
 #             self.refresh_owner_ids()

@@ -10,7 +10,7 @@ from src._road.road import (
     RoadUnit,
     RoadNode,
     get_all_road_nodes,
-    change_road,
+    rebuild_road,
     create_road_from_nodes,
 )
 from src.agenda.agenda import AgendaUnit
@@ -47,7 +47,7 @@ def _get_econs_roads(x_nookunit: NookUnit) -> dict[RoadUnit:EconUnit]:
 
 def get_econ_path(x_nookunit: NookUnit, x_road: RoadNode) -> str:
     # econ_root = get_rootpart_of_econ_dir()
-    # x_road = change_road(x_road, x_nookunit.real_id, econ_root)
+    # x_road = rebuild_road(x_road, x_nookunit.real_id, econ_root)
     x_list = get_all_road_nodes(x_road, x_nookunit._road_delimiter)
     return f"{x_nookunit._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
@@ -80,7 +80,7 @@ def create_person_econunits(x_nookunit: NookUnit):
     root_dir = get_rootpart_of_econ_dir()
     for treasury_dir in get_all_dirs_with_file(db_filename, econs_dir):
         treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
-        treasury_road = change_road(treasury_road, root_dir, x_nookunit.real_id)
+        treasury_road = rebuild_road(treasury_road, root_dir, x_nookunit.real_id)
         if x_person_econs.get(treasury_road) is None:
             dir_to_delete = f"{x_nookunit._econs_dir}/{treasury_dir}"
             delete_dir(dir_to_delete)

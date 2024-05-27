@@ -10,7 +10,7 @@ from src.econ.econ import (
 )
 from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
-    change_real_id_example_econ,
+    modify_real_id_example_econ,
     copy_evaluation_econ,
     env_dir_setup_cleanup,
 )
@@ -177,7 +177,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert x_econ.get_treasury_db_path() == treasury_file_path
 
 
-def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
+def test_modify_real_id_example_econ_CorrectlyChangesDirAndFiles(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -224,7 +224,7 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
 
     # WHEN
     print(f"{new_x_real_id=} {old_x_real_id=}")
-    change_real_id_example_econ(econ_obj=x_econ, new_real_id=new_x_real_id)
+    modify_real_id_example_econ(econ_obj=x_econ, new_real_id=new_x_real_id)
 
     # THEN check agendas src directory created
     assert os_path.exists(old_econ_dir) is False
@@ -246,7 +246,7 @@ def test_change_real_id_example_econ_CorrectlyChangesDirAndFiles(
     assert x_econ.get_jobs_dir() == new_jobs_dir
     assert x_econ.get_roles_dir() == new_roles_dir
 
-    # Undo change to directory
+    # Undo modification to directory
     # delete_dir(dir=old_econ_dir)
     # print(f"{old_econ_dir=}")
     delete_dir(dir=new_econ_dir)
@@ -312,7 +312,7 @@ def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
     assert x_econ.get_roles_dir() != new_roles_dir
     assert x_econ.real_id != new_x_real_id
 
-    # Undo change to directory
+    # Undo modification to directory
     # delete_dir(x_econ.get_object_root_dir())
     # delete_dir(dir=old_econ_dir)
     delete_dir(dir=new_econ_dir)

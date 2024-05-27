@@ -180,7 +180,7 @@ def test_listen_to_speaker_RaisesErrorIfPoolIsNotSet():
     )
 
 
-def test_listen_to_speaker_ReturnsUnchangedAgenda():
+def test_listen_to_speaker_ReturnsSameAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)

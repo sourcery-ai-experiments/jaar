@@ -156,16 +156,16 @@ class EconUnit:
         self._set_partytreasuryunits_circles(owner_id)
 
     def _set_river_blocks(self, x_owner_id: OwnerID, max_blocks_count: int):
-        # changes in river_block loop
+        # Transformations in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_owner_id)]
-        blocks_count = 0  # changes in river_block loop
+        blocks_count = 0  # Transformations in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
             parent_agenda_ledger = general_circle.pop(0)
             ledgers_len = len(parent_agenda_ledger._partyviews.values())
             parent_range = parent_agenda_ledger.get_range()
             parent_close = parent_agenda_ledger.cash_cease
 
-            # changes in river_block loop
+            # Transformations in river_block loop
             coin_onset = parent_agenda_ledger.cash_onset
             ledgers_count = 0
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
@@ -198,7 +198,7 @@ class EconUnit:
                 if blocks_count >= max_blocks_count:
                     break
 
-                # change coin_onset for next
+                # set coin_onset for next loop
                 coin_onset += coin_range
 
     def _insert_river_block_grab_river_ledger(
@@ -223,7 +223,7 @@ class EconUnit:
         default_cash_onset = 0.0
         default_cash_cease = 1.0
         default_root_river_tree_level = 0
-        default_root_block_num = None  # maybe change to 1?
+        default_root_block_num = None  # maybe 1?
         default_root_parent_block_num = None
         root_river_block = RiverBlockUnit(
             cash_owner_id=owner_id,
@@ -399,7 +399,7 @@ class EconUnit:
     def delete_job_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
-    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
+    def modify_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
         x_agenda = self.get_job_file(old_owner_id)
         x_agenda.set_owner_id(new_owner_id)
         self.save_job_file(x_agenda)

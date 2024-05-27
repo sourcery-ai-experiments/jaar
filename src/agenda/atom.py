@@ -323,7 +323,7 @@ def get_from_json(x_str: str) -> AgendaAtom:
     return x_agendaatom
 
 
-def change_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom):
+def modify_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom):
     # sourcery skip: extract-method
     xs = x_agendaatom
     if xs.category == "agendaunit" and xs.crud_text == atom_update():

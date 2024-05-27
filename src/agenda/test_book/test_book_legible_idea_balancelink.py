@@ -61,7 +61,7 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight_
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+    x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -89,7 +89,7 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_creditor_weight(
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
+    x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -117,7 +117,7 @@ def test_create_legible_list_ReturnsObj_idea_balancelink_UPDATE_debtor_weight():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+    x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 

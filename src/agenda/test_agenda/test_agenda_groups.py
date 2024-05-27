@@ -563,7 +563,7 @@ def test_AgendaUnit_edit_Groupunit_group_id_raiseErrorNewPersonIDPreviouslyExist
         )
     assert (
         str(excinfo.value)
-        == f"Group '{swim_text}' change to '{jog_text}' failed since '{jog_text}' exists."
+        == f"Group '{swim_text}' modify to '{jog_text}' failed since '{jog_text}' exists."
     )
 
 

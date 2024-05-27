@@ -69,7 +69,7 @@ def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     assert os_path.exists(a_path) == False
 
 
-def test_EconUnit_change_job_owner_id_ChangesFileName(env_dir_setup_cleanup):
+def test_EconUnit_modify_job_owner_id_ChangesFileName(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
@@ -84,7 +84,7 @@ def test_EconUnit_change_job_owner_id_ChangesFileName(env_dir_setup_cleanup):
     zia_agenda_path = f"{x_econ.get_jobs_dir()}/{zia_owner_id}.json"
     assert os_path.exists(zia_agenda_path) == False
     assert os_path.exists(yao_agenda_path)
-    x_econ.change_job_owner_id(old_owner_id=yao_owner_id, new_owner_id=zia_owner_id)
+    x_econ.modify_job_owner_id(old_owner_id=yao_owner_id, new_owner_id=zia_owner_id)
 
     # THEN
     assert os_path.exists(yao_agenda_path) == False

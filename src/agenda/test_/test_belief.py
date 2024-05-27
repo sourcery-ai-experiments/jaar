@@ -143,7 +143,7 @@ def test_BeliefUnit_find_replace_road_SetsAttrCorrectly():
     assert sunday_belief.pick == new_sunday_road
 
 
-def test_BeliefHeir_IsChangedByBeliefUnit():
+def test_BeliefHeir_IsModifiedByBeliefUnit():
     # GIVEN
     ced_min_text = "ced_minute"
     min_road = create_road(root_label(), ced_min_text)
