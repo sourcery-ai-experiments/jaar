@@ -6,7 +6,7 @@ from src.agenda.agenda import (
     duty_str,
     work_str,
 )
-from src.world.gift import init_gift_id, get_gifts_folder
+from src.real.gift import init_gift_id, get_gifts_folder
 from src.real.person import (
     PersonUnit,
     personunit_shop,

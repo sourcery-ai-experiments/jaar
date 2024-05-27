@@ -1,5 +1,6 @@
-from src.real.person import chapunit_shop, chap_create_core_dir_and_files
-from src.world.z_atom import (
+from src.real.person import (
+    chapunit_shop,
+    chap_create_core_dir_and_files,
     chap_save_atom_file,
     _save_valid_atom_file,
     chap_atom_file_exists,
@@ -8,25 +9,25 @@ from src.world.z_atom import (
     _delete_atom_file,
     _get_agenda_from_atom_files,
 )
-from src.world.examples.example_atoms import (
+from src.real.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_ball,
     get_atom_example_ideaunit_knee,
 )
-from src.world.examples.world_env_kit import (
-    get_test_worlds_dir as worlds_dir,
-    get_test_world_id as world_id,
-    worlds_dir_setup_cleanup,
+from src.real.examples.real_env_kit import (
+    get_test_reals_dir as reals_dir,
+    get_test_real_id as real_id,
+    reals_dir_setup_cleanup,
 )
 from src._instrument.file import dir_files as file_dir_files
 from os.path import exists as os_path_exists
 
 
-def test_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     one_int = 1
     assert os_path_exists(f"{yao_chapunit._atoms_dir}/{one_int}.json") == False
 
@@ -39,10 +40,10 @@ def test_save_valid_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
     assert atom_num == one_int
 
 
-def test_chap_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_chap_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     five_int = 5
     assert os_path_exists(f"{yao_chapunit._atoms_dir}/{five_int}.json") == False
     assert chap_atom_file_exists(yao_chapunit, five_int) == False
@@ -55,10 +56,10 @@ def test_chap_atom_file_exists_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert chap_atom_file_exists(yao_chapunit, five_int)
 
 
-def test_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_cleanup):
+def test_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json")
@@ -70,10 +71,10 @@ def test_delete_atom_file_CorrectlyDeletesFile(worlds_dir_setup_cleanup):
     assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json") == False
 
 
-def test_get_max_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_get_max_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
     assert os_path_exists(f"{yao_chapunit._atoms_dir}/{ten_int}.json")
@@ -83,20 +84,20 @@ def test_get_max_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
 
 
 def test_get_max_atom_file_number_ReturnsCorrectObjWhenDirIsEmpty(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
 
     # WHEN / THEN
     assert _get_max_atom_file_number(yao_chapunit) is None
 
 
-def test_get_next_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
+def test_get_next_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     # WHEN / THEN
     assert _get_next_atom_file_number(yao_chapunit) == 0
 
@@ -108,10 +109,10 @@ def test_get_next_atom_file_number_ReturnsCorrectObj(worlds_dir_setup_cleanup):
     assert _get_next_atom_file_number(yao_chapunit) == 11
 
 
-def test_chap_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
+def test_chap_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_chapunit, get_atom_example_beliefunit_knee(), ten_int)
     assert _get_max_atom_file_number(yao_chapunit) == ten_int
@@ -131,11 +132,11 @@ def test_chap_save_atom_file_CorrectlySavesFile(worlds_dir_setup_cleanup):
 
 
 def test_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     chap_create_core_dir_and_files(yao_chapunit)
 
     # WHEN
@@ -149,11 +150,11 @@ def test_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
 
 
 def test_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
 
     # save atom files
     sports_atom = get_atom_example_ideaunit_sports(yao_chapunit.real_id)
@@ -173,11 +174,11 @@ def test_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
 
 
 def test_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
-    worlds_dir_setup_cleanup,
+    reals_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_chapunit = chapunit_shop(worlds_dir(), world_id(), yao_text)
+    yao_chapunit = chapunit_shop(reals_dir(), real_id(), yao_text)
     chap_create_core_dir_and_files(yao_chapunit)
 
     # save atom files
