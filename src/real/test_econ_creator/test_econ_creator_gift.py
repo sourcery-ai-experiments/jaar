@@ -53,7 +53,7 @@ def test_save_giftunit_file_SaveCorrectObj(reals_dir_setup_cleanup):
     assert os_path_exists(sue_gift0_path) == False
 
     # WHEN
-    save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
 
     # THEN
     assert os_path_exists(sue_gift2_path)
@@ -80,7 +80,7 @@ def test_save_giftunit_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+        save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {sue_giftunit._atoms_dir}. It must be {sue_nookunit._atoms_dir}."
@@ -105,7 +105,7 @@ def test_save_giftunit_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+        save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {sue_giftunit._gifts_dir}. It must be {sue_nookunit._gifts_dir}."
@@ -134,7 +134,7 @@ def test_giftunit_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert giftunit_file_exists(sue_nookunit, six_int) == False
 
     # WHEN
-    save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
 
     # THEN
     assert os_path_exists(sue_gift2_path)
@@ -164,7 +164,7 @@ def test_save_giftunit_file_RaisesErrorIfGiftUnit_giver_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+        save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {sue_giftunit._giver}. It must be {sue_text}."
@@ -195,7 +195,7 @@ def test_save_giftunit_file_RaisesErrorIf_replace_IsFalse(
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         save_giftunit_file(
-            sue_nookunit, saved_giftunit, replace=False, change_invalid_attrs=False
+            sue_nookunit, saved_giftunit, replace=False, correct_invalid_attrs=False
         )
     assert (
         str(excinfo.value)
@@ -235,7 +235,7 @@ def test_validate_giftunit_ReturnsObjWithAttributesFixed(
     assert valid_giftunit == correct_sue_giftunit
 
 
-def test_save_giftunit_file_SaveCorrectObj_change_invalid_attrs_IsTrue(
+def test_save_giftunit_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -288,8 +288,8 @@ def test_get_max_gift_file_number_ReturnsCorrectObj(
         _atoms_dir=sue_nookunit._atoms_dir,
         _gifts_dir=sue_nookunit._gifts_dir,
     )
-    save_giftunit_file(sue_nookunit, sue6_giftunit, change_invalid_attrs=False)
-    save_giftunit_file(sue_nookunit, sue2_giftunit, change_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue6_giftunit, correct_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue2_giftunit, correct_invalid_attrs=False)
 
     # WHEN / THEN
     assert get_max_gift_file_number(sue_nookunit) == six_int
@@ -417,7 +417,7 @@ def test_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path) == False
 
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
 
     print(f"{dir_files(sue_nookunit._atoms_dir)}")
     assert os_path_exists(sue_gift0_path)
@@ -495,7 +495,7 @@ def test_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup):
         _gifts_dir=sue_nookunit._gifts_dir,
     )
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    save_giftunit_file(sue_nookunit, sue_giftunit, change_invalid_attrs=False)
+    save_giftunit_file(sue_nookunit, sue_giftunit, correct_invalid_attrs=False)
     assert os_path_exists(sue_gift2_path)
     assert os_path_exists(sue_gift3_path) == False
 

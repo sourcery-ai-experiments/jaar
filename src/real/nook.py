@@ -381,9 +381,9 @@ def save_giftunit_file(
     x_nookunit: NookUnit,
     x_gift: GiftUnit,
     replace: bool = True,
-    change_invalid_attrs: bool = True,
+    correct_invalid_attrs: bool = True,
 ) -> GiftUnit:
-    if change_invalid_attrs:
+    if correct_invalid_attrs:
         x_gift = validate_giftunit(x_nookunit, x_gift)
 
     if x_gift._atoms_dir != x_nookunit._atoms_dir:
