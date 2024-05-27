@@ -19,7 +19,7 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from copy import deepcopy as copy_deepcopy
 
 
-class PersonExistsException(Exception):
+class EngineExistsException(Exception):
     pass
 
 
@@ -103,15 +103,14 @@ class RealUnit:
         replace_engineunit: bool = False,
         replace_alert: bool = True,
     ) -> EngineUnit:
-        x_engineunit = engineunit_shop(
+        x_nookunit = nookunit_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
-            _road_delimiter=self._road_delimiter,
+            road_delimiter=self._road_delimiter,
+            planck=self._planck,
         )
-        x_nookunit = nookunit_shop(
-            self.reals_dir, self.real_id, person_id, self._road_delimiter
-        )
+        x_engineunit = engineunit_shop(x_nookunit)
         nookunit_create_core_dir_and_files(x_nookunit)
         if (
             self.engineunit_exists_in_memory(x_engineunit.nook.person_id) == False
@@ -119,7 +118,7 @@ class RealUnit:
         ):
             self._set_engineunit_in_memory(x_engineunit)
         elif replace_alert:
-            raise PersonExistsException(
+            raise EngineExistsException(
                 f"add_engineunit fail: {x_engineunit.nook.person_id} already exists"
             )
         return self.get_engineunit_from_memory(person_id)
@@ -137,21 +136,21 @@ class RealUnit:
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_person = self.get_engineunit_from_memory(healer_id)
+            healer_engine = self.get_engineunit_from_memory(healer_id)
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_person=healer_person,
+                    healer_engine=healer_engine,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_person: EngineUnit,
+        healer_engine: EngineUnit,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = healer_person.get_econ(econ_road)
+        x_econ = healer_engine.get_econ(econ_road)
         x_econ.save_role_file(duty_agenda)
 
     # work agenda management
@@ -166,10 +165,10 @@ class RealUnit:
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_person = self.get_engineunit_from_memory(healer_id)
-            healer_person.create_person_econunits(x_nookunit)
+            healer_engine = self.get_engineunit_from_memory(healer_id)
+            healer_engine.create_person_econunits(x_nookunit)
             for econ_idea in healer_dict.values():
-                x_econ = healer_person.get_econ(econ_idea.get_road())
+                x_econ = healer_engine.get_econ(econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
                 x_job.calc_agenda_metrics()

@@ -65,7 +65,7 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(reals_dir_setup_cleanu
     assert music_real._planck == three_int
 
 
-def test_RealUnit__set_real_dirs_SetsPersonDir(reals_dir_setup_cleanup):
+def test_RealUnit__set_real_dirs_SetsEngineDir(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
@@ -111,7 +111,7 @@ def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):
     assert music_real._persons_dir == f"{music_real._real_dir}/persons"
 
 
-def test_RealUnit__set_engineunit_in_memory_CorrectlySetsPerson(
+def test_RealUnit__set_engineunit_in_memory_CorrectlySetsEngine(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -123,13 +123,13 @@ def test_RealUnit__set_engineunit_in_memory_CorrectlySetsPerson(
 
     # WHEN
     luca_text = "Luca"
-    luca_person = engineunit_shop(person_id=luca_text)
-    music_real._set_engineunit_in_memory(engineunit=luca_person)
+    luca_engine = engineunit_shop(nookunit_shop(None, None, luca_text))
+    music_real._set_engineunit_in_memory(engineunit=luca_engine)
 
     # THEN
     assert music_real._engineunits != {}
     assert len(music_real._engineunits) == 1
-    assert music_real._engineunits[luca_text] == luca_person
+    assert music_real._engineunits[luca_text] == luca_engine
     assert music_real._real_dir == f"{get_test_reals_dir()}/{music_text}"
     assert music_real._persons_dir == f"{music_real._real_dir}/persons"
 
@@ -149,19 +149,21 @@ def test_RealUnit_engineunit_exists_in_memory_ReturnsCorrectBool(
     assert music_real.engineunit_exists_in_memory(luca_text) == False
 
     # WHEN / THEN
-    luca_person = engineunit_shop(person_id=luca_text)
-    music_real._set_engineunit_in_memory(engineunit=luca_person)
+    luca_engine = engineunit_shop(nookunit_shop(None, None, luca_text))
+    music_real._set_engineunit_in_memory(engineunit=luca_engine)
     assert music_real.engineunit_exists_in_memory(luca_text)
 
 
-def test_RealUnit_add_engineunit_CorrectlySetsPerson(reals_dir_setup_cleanup):
+def test_RealUnit_add_engineunit_CorrectlySetsEngine(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
+    x_planck = 5
     music_real = realunit_shop(
         music_text,
         get_test_reals_dir(),
         _road_delimiter=slash_text,
+        _planck=x_planck,
         in_memory_journal=True,
     )
     luca_text = "Luca"
@@ -174,39 +176,35 @@ def test_RealUnit_add_engineunit_CorrectlySetsPerson(reals_dir_setup_cleanup):
     assert music_real._engineunits[luca_text] != None
     print(f"{get_test_reals_dir()=}")
     print(f"      {luca_person_dir=}")
-    assert music_real._engineunits[luca_text].nook._road_delimiter == slash_text
-    luca_person_obj = engineunit_shop(
-        person_id=luca_text,
-        real_id=music_text,
+    generated_luca_engine = music_real._engineunits[luca_text]
+    assert generated_luca_engine.nook._road_delimiter == slash_text
+    luca_nookunit = nookunit_shop(
         reals_dir=music_real.reals_dir,
-        _road_delimiter=slash_text,
+        real_id=music_text,
+        person_id=luca_text,
+        road_delimiter=slash_text,
+        planck=x_planck,
     )
-    assert (
-        music_real._engineunits[luca_text].nook.reals_dir
-        == luca_person_obj.nook.reals_dir
-    )
-    assert (
-        music_real._engineunits[luca_text].nook.real_id == luca_person_obj.nook.real_id
-    )
-    assert music_real._engineunits[luca_text] == luca_person_obj
+    assert generated_luca_engine.nook.reals_dir == luca_nookunit.reals_dir
+    assert generated_luca_engine.nook.real_id == luca_nookunit.real_id
+    assert generated_luca_engine.nook._planck == luca_nookunit._planck
+    assert generated_luca_engine.nook == luca_nookunit
+    luca_engine = engineunit_shop(luca_nookunit)
+    assert generated_luca_engine == luca_engine
+    assert generated_luca_engine.nook._road_delimiter == music_real._road_delimiter
+    assert generated_luca_engine.nook._planck == music_real._planck
 
 
-def test_RealUnit_add_engineunit_RaisesErrorIfPersonExists(reals_dir_setup_cleanup):
+def test_RealUnit_add_engineunit_RaisesErrorIfEngineExists(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
-    music_real = realunit_shop(
-        real_id=music_text, reals_dir=get_test_reals_dir(), in_memory_journal=True
-    )
+    music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
-    luca_person_dir = f"{music_real._persons_dir}/{luca_text}"
-    luca_person_obj = engineunit_shop(
-        person_id=luca_text,
-        real_id=music_text,
-        reals_dir=music_real.reals_dir,
-    )
+    luca_nook = nookunit_shop(music_real.reals_dir, music_text, luca_text)
+    luca_engine = engineunit_shop(luca_nook)
     music_real.add_engineunit(luca_text)
     assert music_real._engineunits[luca_text] != None
-    assert music_real._engineunits[luca_text] == luca_person_obj
+    assert music_real._engineunits[luca_text] == luca_engine
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
@@ -226,32 +224,24 @@ def test_RealUnit__set_engineunit_in_memory_CorrectlyCreatesObj(
     assert music_real.engineunit_exists_in_memory(luca_text) == False
 
     # WHEN
-    luca_person_dir = f"{music_real._persons_dir}/{luca_text}"
-    luca_person_obj = engineunit_shop(
-        person_id=luca_text,
-        real_id=music_real.real_id,
-        reals_dir=music_real.reals_dir,
-    )
-    music_real._set_engineunit_in_memory(luca_person_obj)
+    luca_nook = nookunit_shop(music_real.reals_dir, music_text, luca_text)
+    luca_engine = engineunit_shop(luca_nook)
+    music_real._set_engineunit_in_memory(luca_engine)
 
     # THEN
     assert music_real.engineunit_exists_in_memory(luca_text)
-    assert music_real._engineunits.get(luca_text) == luca_person_obj
+    assert music_real._engineunits.get(luca_text) == luca_engine
 
 
-def test_RealUnit_get_engineunit_ReturnsPerson(reals_dir_setup_cleanup):
+def test_RealUnit_get_engineunit_ReturnsEngine(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(
         real_id=music_text, reals_dir=get_test_reals_dir(), in_memory_journal=True
     )
     luca_text = "Luca"
-    luca_person_dir = f"{music_real._persons_dir}/{luca_text}"
-    luca_person_obj = engineunit_shop(
-        person_id=luca_text,
-        real_id=music_real.real_id,
-        reals_dir=music_real.reals_dir,
-    )
+    luca_nook = nookunit_shop(music_real.reals_dir, music_text, luca_text)
+    luca_engine = engineunit_shop(luca_nook)
     music_real.add_engineunit(luca_text)
 
     # WHEN
@@ -259,7 +249,7 @@ def test_RealUnit_get_engineunit_ReturnsPerson(reals_dir_setup_cleanup):
 
     # THEN
     assert luca_gotten_obj != None
-    assert luca_gotten_obj == luca_person_obj
+    assert luca_gotten_obj == luca_engine
 
 
 def test_RealUnit_get_engineunit_ReturnsNone(reals_dir_setup_cleanup):
@@ -283,7 +273,6 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     music_real.add_engineunit(luca_text)
-    luca_person = music_real.get_engineunit_from_memory(luca_text)
     luca_nookunit = nookunit_shop(None, music_text, luca_text)
     bob_text = "Bob"
     luca_duty = get_duty_file_agenda(luca_nookunit)
@@ -306,8 +295,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
-    luca_person = music_real.add_engineunit(luca_text)
-    todd_person = music_real.add_engineunit(todd_text)
+    luca_engine = music_real.add_engineunit(luca_text)
+    todd_engine = music_real.add_engineunit(todd_text)
     luca_nookunit = nookunit_shop(None, music_text, luca_text)
     todd_nookunit = nookunit_shop(None, music_text, todd_text)
     luca_duty_agenda = get_duty_file_agenda(luca_nookunit)
@@ -337,10 +326,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     save_duty_file(luca_nookunit, luca_duty_agenda)
     save_duty_file(todd_nookunit, todd_duty_agenda)
-    luca_person.create_person_econunits(luca_nookunit)
-    todd_person.create_person_econunits(todd_nookunit)
-    luca_dallas_econ = luca_person.get_econ(dallas_road)
-    todd_dallas_econ = todd_person.get_econ(dallas_road)
+    luca_engine.create_person_econunits(luca_nookunit)
+    todd_engine.create_person_econunits(todd_nookunit)
+    luca_dallas_econ = luca_engine.get_econ(dallas_road)
+    todd_dallas_econ = todd_engine.get_econ(dallas_road)
     luca_file_name = get_owner_file_name(luca_text)
     todd_file_name = get_owner_file_name(todd_text)
     luca_roles_dir = luca_dallas_econ.get_roles_dir()

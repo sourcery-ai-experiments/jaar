@@ -71,10 +71,8 @@ class NookUnit:
     _econs_dir: str = None
     _atoms_dir: str = None
     _gifts_dir: str = None
-    _duty_obj: AgendaUnit = None
     _duty_file_name: str = None
     _duty_path: str = None
-    _work_obj: AgendaUnit = None
     _work_file_name: str = None
     _work_path: str = None
     _econ_objs: dict[RoadUnit:EconUnit] = None

@@ -4,6 +4,7 @@ from src.agenda.agenda import duty_str, work_str
 from src.real.nook import NookUnit, nookunit_shop
 from src.real.gift import get_gifts_folder
 from src.real.examples.real_env_kit import get_test_reals_dir, get_test_real_id
+from pytest import raises as pytest_raises
 
 
 def test_NookUnit_Exists():
@@ -20,10 +21,8 @@ def test_NookUnit_Exists():
     assert x_nookunit._econs_dir is None
     assert x_nookunit._atoms_dir is None
     assert x_nookunit._gifts_dir is None
-    assert x_nookunit._duty_obj is None
     assert x_nookunit._duty_file_name is None
     assert x_nookunit._duty_path is None
-    assert x_nookunit._work_obj is None
     assert x_nookunit._work_file_name is None
     assert x_nookunit._work_path is None
     assert x_nookunit._econ_objs is None
@@ -85,3 +84,17 @@ def test_nookunit_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_nookunit._work_path == x_workpath
     assert sue_nookunit._road_delimiter == default_road_delimiter_if_none()
     assert sue_nookunit._planck == default_planck_if_none()
+
+
+def test_NookUnit_RaisesErrorIf_person_id_Contains_road_delimiter():
+    # GIVEN
+    slash_text = "/"
+    bob_text = f"Bob{slash_text}Sue"
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        nookunit_shop(None, None, person_id=bob_text, road_delimiter=slash_text)
+    assert (
+        str(excinfo.value)
+        == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
+    )

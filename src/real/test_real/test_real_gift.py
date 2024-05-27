@@ -73,8 +73,8 @@
 #     real.add_engineunit(yao_text)
 #     yao_person = real.get_engineunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_econunit(texas_text)
-#     texas_econ = yao_person.get_econunit(texas_text)
+#     yao_engine.set_econunit(texas_text)
+#     texas_econ = yao_engine.get_econunit(texas_text)
 #     texas_jobs_dir = texas_econ.get_jobs_dir()
 
 #     highwaay_needunit = create_needunit(
@@ -123,8 +123,8 @@
 #     real.add_engineunit(yao_text)
 #     yao_person = real.get_engineunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_econunit(texas_text)
-#     texas_econ = yao_person.get_econunit(texas_text)
+#     yao_engine.set_econunit(texas_text)
+#     texas_econ = yao_engine.get_econunit(texas_text)
 
 #     flying_text = "flying in 737s"
 #     no_fly_text = "Do not fly"
@@ -248,8 +248,8 @@
 #     real.add_engineunit(yao_text)
 #     yao_person = real.get_engineunit_from_memory(yao_text)
 #     texas_text = "Texas"
-#     yao_person.set_econunit(texas_text)
-#     texas_econ = yao_person.get_econunit(texas_text)
+#     yao_engine.set_econunit(texas_text)
+#     texas_econ = yao_engine.get_econunit(texas_text)
 
 #     flying_text = "flying in 737s"
 #     no_fly_text = "Do not fly"
@@ -346,8 +346,8 @@
 # #     real.add_engineunit(yao_text)
 # #     yao_person = real.get_engineunit_from_memory(yao_text)
 # #     texas_text = "Texas"
-# #     yao_person.set_econunit(texas_text)
-# #     texas_econ = yao_person.get_econunit(texas_text)
+# #     yao_engine.set_econunit(texas_text)
+# #     texas_econ = yao_engine.get_econunit(texas_text)
 
 # #     fly_needunit = create_needunit(
 # #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
