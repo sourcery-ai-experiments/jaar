@@ -174,15 +174,20 @@ def test_RealUnit_add_personunit_CorrectlySetsPerson(reals_dir_setup_cleanup):
     assert music_real._personunits[luca_text] != None
     print(f"{get_test_reals_dir()=}")
     print(f"      {luca_person_dir=}")
-    assert music_real._personunits[luca_text]._road_delimiter == slash_text
+    assert music_real._personunits[luca_text].nook._road_delimiter == slash_text
     luca_person_obj = personunit_shop(
         person_id=luca_text,
         real_id=music_text,
         reals_dir=music_real.reals_dir,
         _road_delimiter=slash_text,
     )
-    assert music_real._personunits[luca_text].reals_dir == luca_person_obj.reals_dir
-    assert music_real._personunits[luca_text].real_id == luca_person_obj.real_id
+    assert (
+        music_real._personunits[luca_text].nook.reals_dir
+        == luca_person_obj.nook.reals_dir
+    )
+    assert (
+        music_real._personunits[luca_text].nook.real_id == luca_person_obj.nook.real_id
+    )
     assert music_real._personunits[luca_text] == luca_person_obj
 
 

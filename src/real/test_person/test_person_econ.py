@@ -34,7 +34,7 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanu
     )
 
     # THEN
-    idearoot_dir = f"{sue_person._econs_dir}/{get_rootpart_of_econ_dir()}"
+    idearoot_dir = f"{sue_person.nook._econs_dir}/{get_rootpart_of_econ_dir()}"
     assert texas_path == f"{idearoot_dir}/{texas_text}"
     assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
     assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
@@ -46,7 +46,7 @@ def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    assert os_path_exists(sue_person._econs_dir)
+    assert os_path_exists(sue_person.nook._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
     dallas_dir = sue_person._get_person_econ_dir(sue_nookunit, dallas_list)
@@ -66,7 +66,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     pound_text = "#"
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text, _road_delimiter=pound_text)
-    sue_nookunit = nookunit_shop(None, None, sue_text, x_road_delimiter=pound_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text, road_delimiter=pound_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -87,10 +87,10 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     assert sue_person._econ_objs != {}
     assert sue_person._econ_objs.get(dallas_road) != None
     dallas_econunit = sue_person._econ_objs.get(dallas_road)
-    assert dallas_econunit.real_id == sue_person.real_id
+    assert dallas_econunit.real_id == sue_person.nook.real_id
     assert dallas_econunit.econ_dir == dallas_dir
     assert dallas_econunit._manager_person_id == sue_text
-    assert dallas_econunit._road_delimiter == sue_person._road_delimiter
+    assert dallas_econunit._road_delimiter == sue_person.nook._road_delimiter
 
 
 def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
@@ -271,7 +271,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.real_id == sue_person.real_id
+    assert dallas_econ.real_id == sue_person.nook.real_id
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 

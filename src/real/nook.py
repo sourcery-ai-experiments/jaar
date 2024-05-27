@@ -83,46 +83,46 @@ class NookUnit:
 
 
 def nookunit_shop(
-    x_reals_dir: str,
-    x_real_id: RealID,
-    x_person_id: PersonID,
-    x_road_delimiter: str = None,
-    x_planck: float = None,
+    reals_dir: str,
+    real_id: RealID,
+    person_id: PersonID,
+    road_delimiter: str = None,
+    planck: float = None,
 ) -> NookUnit:
-    x_planck = default_planck_if_none(x_planck)
-    if x_reals_dir is None:
-        x_reals_dir = get_test_reals_dir()
-    if x_real_id is None:
-        x_real_id = get_test_real_id()
-    x_road_delimiter = default_road_delimiter_if_none(x_road_delimiter)
-    x_real_dir = f"{x_reals_dir}/{x_real_id}"
-    x_persons_dir = f"{x_real_dir}/persons"
-    x_person_id = validate_roadnode(x_person_id, x_road_delimiter)
-    x_person_dir = f"{x_persons_dir}/{x_person_id}"
-    x_econs_dir = f"{x_person_dir}/econs"
-    x_atoms_dir = f"{x_person_dir}/atoms"
-    x_gifts_dir = f"{x_person_dir}/{get_gifts_folder()}"
-    x_duty_file_name = f"{duty_str()}.json"
-    x_duty_path = f"{x_person_dir}/{x_duty_file_name}"
-    x_work_file_name = f"{work_str()}.json"
-    x_work_path = f"{x_person_dir}/{x_work_file_name}"
+    planck = default_planck_if_none(planck)
+    if reals_dir is None:
+        reals_dir = get_test_reals_dir()
+    if real_id is None:
+        real_id = get_test_real_id()
+    road_delimiter = default_road_delimiter_if_none(road_delimiter)
+    real_dir = f"{reals_dir}/{real_id}"
+    persons_dir = f"{real_dir}/persons"
+    person_id = validate_roadnode(person_id, road_delimiter)
+    person_dir = f"{persons_dir}/{person_id}"
+    econs_dir = f"{person_dir}/econs"
+    atoms_dir = f"{person_dir}/atoms"
+    gifts_dir = f"{person_dir}/{get_gifts_folder()}"
+    duty_file_name = f"{duty_str()}.json"
+    duty_path = f"{person_dir}/{duty_file_name}"
+    work_file_name = f"{work_str()}.json"
+    work_path = f"{person_dir}/{work_file_name}"
 
     return NookUnit(
-        person_id=x_person_id,
-        real_id=x_real_id,
-        real_dir=x_real_dir,
-        reals_dir=x_reals_dir,
-        persons_dir=x_persons_dir,
-        person_dir=x_person_dir,
-        _econs_dir=x_econs_dir,
-        _atoms_dir=x_atoms_dir,
-        _gifts_dir=x_gifts_dir,
-        _duty_file_name=x_duty_file_name,
-        _duty_path=x_duty_path,
-        _work_file_name=x_work_file_name,
-        _work_path=x_work_path,
-        _road_delimiter=x_road_delimiter,
-        _planck=x_planck,
+        person_id=person_id,
+        real_id=real_id,
+        real_dir=real_dir,
+        reals_dir=reals_dir,
+        persons_dir=persons_dir,
+        person_dir=person_dir,
+        _econs_dir=econs_dir,
+        _atoms_dir=atoms_dir,
+        _gifts_dir=gifts_dir,
+        _duty_file_name=duty_file_name,
+        _duty_path=duty_path,
+        _work_file_name=work_file_name,
+        _work_path=work_path,
+        _road_delimiter=road_delimiter,
+        _planck=planck,
     )
 
 

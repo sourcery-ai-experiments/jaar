@@ -92,7 +92,7 @@ class RealUnit:
 
     # person management
     def _set_personunit_in_memory(self, personunit: PersonUnit):
-        self._personunits[personunit.person_id] = personunit
+        self._personunits[personunit.nook.person_id] = personunit
 
     def personunit_exists_in_memory(self, person_id: PersonID):
         return self._personunits.get(person_id) != None
@@ -114,13 +114,13 @@ class RealUnit:
         )
         nookunit_create_core_dir_and_files(x_nookunit)
         if (
-            self.personunit_exists_in_memory(x_personunit.person_id) == False
+            self.personunit_exists_in_memory(x_personunit.nook.person_id) == False
             and not replace_personunit
         ):
             self._set_personunit_in_memory(x_personunit)
         elif replace_alert:
             raise PersonExistsException(
-                f"add_personunit fail: {x_personunit.person_id} already exists"
+                f"add_personunit fail: {x_personunit.nook.person_id} already exists"
             )
         return self.get_personunit_from_memory(person_id)
 
