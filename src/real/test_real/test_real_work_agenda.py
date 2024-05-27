@@ -19,10 +19,11 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
+    sue_nookunit = nookunit_shop(None, music_text, sue_text)
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work.json"
     assert os_path_exists(x_sue_work_path) == False
-    sue_engine = music_real.add_engineunit(sue_text)
-    assert sue_engine.nook._work_path == x_sue_work_path
+    music_real.add_engineunit(sue_text)
+    assert sue_nookunit._work_path == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
 
     # WHEN

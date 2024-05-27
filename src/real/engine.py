@@ -95,27 +95,15 @@ def get_econunit(x_nookunit: NookUnit, econ_road: RoadUnit) -> EconUnit:
     return init_econunit(x_nookunit, econ_road)
 
 
-@dataclass
-class EngineUnit:
-    nook: NookUnit = None
-
-    def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
-        x_nookunit = self.nook
-        x_econ = get_econunit(x_nookunit, econ_road)
-        x_econ.save_role_file(role)
-
-    def set_econunits_role(self, role: AgendaUnit):
-        x_nookunit = self.nook
-        for x_econ_road in _get_econs_roads(x_nookunit).keys():
-            self.set_econunit_role(x_econ_road, role)
-
-    def set_person_econunits_role(self):
-        x_nookunit = self.nook
-        self.set_econunits_role(get_duty_file_agenda(x_nookunit))
+def set_econunit_role(x_nookunit: NookUnit, econ_road: RoadUnit, role: AgendaUnit):
+    x_econ = get_econunit(x_nookunit, econ_road)
+    x_econ.save_role_file(role)
 
 
-def engineunit_shop(nookunit: NookUnit, create_files: bool = True) -> EngineUnit:
-    x_engineunit = EngineUnit(nookunit)
-    if create_files:
-        nookunit_create_core_dir_and_files(nookunit)
-    return x_engineunit
+def set_econunits_role(x_nookunit: NookUnit, role: AgendaUnit):
+    for x_econ_road in _get_econs_roads(x_nookunit).keys():
+        set_econunit_role(x_nookunit, x_econ_road, role)
+
+
+def set_person_econunits_role(x_nookunit: NookUnit):
+    set_econunits_role(x_nookunit, get_duty_file_agenda(x_nookunit))

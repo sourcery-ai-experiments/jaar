@@ -11,13 +11,15 @@ from src.real.nook import (
     nookunit_create_core_dir_and_files,
 )
 from src.real.engine import (
-    engineunit_shop,
     _get_econs_roads,
     get_econ_path,
     create_econ_dir,
     init_econunit,
     create_person_econunits,
     get_econunit,
+    set_econunit_role,
+    set_econunits_role,
+    set_person_econunits_role,
 )
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from pytest import raises as pytest_raises
@@ -157,7 +159,6 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    sue_engine = engineunit_shop(sue_nookunit)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -270,7 +271,6 @@ def test_EngineUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     # GIVEN
     sue_text = "Sue"
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    sue_engine = engineunit_shop(sue_nookunit)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -293,7 +293,7 @@ def test_EngineUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     assert os_path_exists(sue_role_file_path) == False
 
     # WHEN
-    sue_engine.set_econunit_role(dallas_road, sue_duty_agenda)
+    set_econunit_role(sue_nookunit, dallas_road, sue_duty_agenda)
 
     # THEN
     assert os_path_exists(sue_role_file_path)
@@ -303,7 +303,6 @@ def test_EngineUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     # GIVEN
     sue_text = "Sue"
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    sue_engine = engineunit_shop(sue_nookunit)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -332,7 +331,7 @@ def test_EngineUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     assert os_path_exists(elpaso_sue_role_file_path) == False
 
     # WHEN
-    sue_engine.set_econunits_role(sue_duty_agenda)
+    set_econunits_role(sue_nookunit, sue_duty_agenda)
 
     # THEN
     assert os_path_exists(dallas_sue_role_file_path)
@@ -345,7 +344,6 @@ def test_EngineUnit_set_person_econunits_role_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_nookunit = nookunit_shop(None, None, sue_text)
-    sue_engine = engineunit_shop(sue_nookunit)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -374,7 +372,7 @@ def test_EngineUnit_set_person_econunits_role_CorrectlySetsroles(
     assert os_path_exists(elpaso_sue_role_file_path) == False
 
     # WHEN
-    sue_engine.set_person_econunits_role()
+    set_person_econunits_role(sue_nookunit)
 
     # THEN
     assert os_path_exists(dallas_sue_role_file_path)
