@@ -201,7 +201,7 @@ class RealUnit:
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
     #     x_personunit = self.get_personunit_from_memory(x_person_id)
-    #     x_duty_agenda = get_duty_file_agenda()
+    #     x_duty_agenda = get_duty_file_agenda(x_personunit.nook)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

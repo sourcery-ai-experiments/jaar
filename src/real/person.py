@@ -47,19 +47,19 @@ class PersonUnit:
     _work_obj: AgendaUnit = None
     _econ_objs: dict[RoadUnit:EconUnit] = None
 
-    def _get_person_econ_dir(self, x_nookunit: NookUnit, x_list: list[RoadNode]) -> str:
-        return f"{x_nookunit._econs_dir}{get_directory_path(x_list=[*x_list])}"
+    def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
+        return f"{self.nook._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
-    def _create_econ_dir(self, x_nookunit: NookUnit, x_roadunit: RoadUnit) -> str:
+    def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
         econ_root = get_rootpart_of_econ_dir()
-        x_roadunit = change_road(x_roadunit, x_nookunit.real_id, econ_root)
-        road_nodes = get_all_road_nodes(x_roadunit, x_nookunit._road_delimiter)
-        x_econ_path = self._get_person_econ_dir(x_nookunit, road_nodes)
+        x_roadunit = change_road(x_roadunit, self.nook.real_id, econ_root)
+        road_nodes = get_all_road_nodes(x_roadunit, self.nook._road_delimiter)
+        x_econ_path = self._get_person_econ_dir(road_nodes)
         set_dir(x_econ_path)
         return x_econ_path
 
-    def _create_econunit(self, x_nookunit: NookUnit, econ_roadunit: RoadUnit):
-        x_econ_path = self._create_econ_dir(x_nookunit, econ_roadunit)
+    def _create_econunit(self, econ_roadunit: RoadUnit):
+        x_econ_path = self._create_econ_dir(econ_roadunit)
         x_econunit = econunit_shop(
             real_id=self.nook.real_id,
             econ_dir=x_econ_path,
@@ -69,10 +69,8 @@ class PersonUnit:
         x_econunit.set_econ_dirs()
         self._econ_objs[econ_roadunit] = x_econunit
 
-    def create_person_econunits(
-        self, x_nookunit: NookUnit, econ_exceptions: bool = True
-    ):
-        x_duty_agenda = get_duty_file_agenda(x_nookunit)
+    def create_person_econunits(self, econ_exceptions: bool = True):
+        x_duty_agenda = get_duty_file_agenda(self.nook)
         x_duty_agenda.calc_agenda_metrics(econ_exceptions)
         if x_duty_agenda._econs_justified == False:
             raise PersonCreateEconUnitsException(
@@ -87,7 +85,7 @@ class PersonUnit:
         x_person_econs = get_empty_dict_if_none(x_person_econs)
         self._econ_objs = {}
         for econ_idea in x_person_econs.values():
-            self._create_econunit(x_nookunit, econ_roadunit=econ_idea.get_road())
+            self._create_econunit(econ_roadunit=econ_idea.get_road())
 
         # delete any
         x_treasury_dirs = get_all_dirs_with_file(
@@ -133,9 +131,7 @@ def personunit_shop(
         road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         planck=default_planck_if_none(_planck),
     )
-    x_personunit = PersonUnit(
-        nook=x_nookunit, _econ_objs=get_empty_dict_if_none(_econ_objs)
-    )
+    x_personunit = PersonUnit(x_nookunit, _econ_objs=get_empty_dict_if_none(_econ_objs))
     if create_files:
         nookunit_create_core_dir_and_files(x_nookunit)
         x_personunit._duty_obj = get_duty_file_agenda(x_nookunit)

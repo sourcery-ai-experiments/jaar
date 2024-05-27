@@ -22,15 +22,11 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanu
     idearoot = get_rootpart_of_econ_dir()
 
     # WHEN
-    texas_path = sue_person._get_person_econ_dir(sue_nookunit, [idearoot, texas_text])
-    dallas_path = sue_person._get_person_econ_dir(
-        sue_nookunit, [idearoot, texas_text, dallas_text]
-    )
-    elpaso_path = sue_person._get_person_econ_dir(
-        sue_nookunit, [idearoot, texas_text, elpaso_text]
-    )
+    texas_path = sue_person._get_person_econ_dir([idearoot, texas_text])
+    dallas_path = sue_person._get_person_econ_dir([idearoot, texas_text, dallas_text])
+    elpaso_path = sue_person._get_person_econ_dir([idearoot, texas_text, elpaso_text])
     kern_path = sue_person._get_person_econ_dir(
-        sue_nookunit, [idearoot, texas_text, elpaso_text, kern_text]
+        [idearoot, texas_text, elpaso_text, kern_text]
     )
 
     # THEN
@@ -49,12 +45,12 @@ def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     assert os_path_exists(sue_person.nook._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
-    dallas_dir = sue_person._get_person_econ_dir(sue_nookunit, dallas_list)
+    dallas_dir = sue_person._get_person_econ_dir(dallas_list)
     print(f"{dallas_dir=}")
     assert os_path_exists(dallas_dir) == False
 
     # WHEN
-    sue_person._create_econ_dir(sue_nookunit, dallas_text)
+    sue_person._create_econ_dir(dallas_text)
 
     # THEN
     print(f"{dallas_dir=}")
@@ -72,7 +68,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     dallas_text = "dallas"
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
-    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{dallas_db_path=}")
@@ -80,7 +76,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     assert sue_person._econ_objs == {}
 
     # WHEN
-    sue_person._create_econunit(sue_nookunit, dallas_road)
+    sue_person._create_econunit(dallas_road)
 
     # THEN
     assert os_path_exists(dallas_db_path)
@@ -116,7 +112,7 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.create_person_econunits(sue_nookunit, econ_exceptions=False)
+        sue_person.create_person_econunits(econ_exceptions=False)
     assert (
         str(excinfo.value)
         == f"Cannot set '{sue_text}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
@@ -172,8 +168,8 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_nookunit, sue_duty_agenda)
 
-    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
-    elpaso_dir = sue_person._create_econ_dir(sue_nookunit, elpaso_road)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
@@ -216,8 +212,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_nookunit, sue_duty_agenda)
-    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
-    elpaso_dir = sue_person._create_econ_dir(sue_nookunit, elpaso_road)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
@@ -261,7 +257,7 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_nookunit, sue_duty_agenda)
-    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
+    dallas_dir = sue_person._create_econ_dir(dallas_road)
     print(f"{dallas_dir=}")
     assert sue_person._econ_objs == {}
 
