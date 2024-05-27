@@ -5,7 +5,7 @@ from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
 from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
 from src.real.gift import get_gifts_folder
-from src.real.econ_creator import create_person_econunits, get_econunit
+from src.real.duty_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 from os import path as os_path

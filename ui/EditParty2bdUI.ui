@@ -262,7 +262,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Change Group PID:</string>
+    <string>Modification Group PID:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

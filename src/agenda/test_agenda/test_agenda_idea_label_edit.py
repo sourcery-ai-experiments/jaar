@@ -129,7 +129,7 @@ def test_agenda_set_real_id_CorrectlySetsAttr():
     assert swim_idea._parent_road == new_casa_road
 
 
-def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
+def test_AgendaUnit_find_replace_road_CorrectlyModifys_kids_Scenario1():
     # GIVEN Idea with kids that will be different
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(tim_text)
@@ -177,7 +177,7 @@ def test_AgendaUnit_find_replace_road_CorrectlyChanges_kids_Scenario1():
     assert r_idea_red._parent_road == new_roses_road
 
 
-def test_agenda_edit_idea_label_Changes_beliefunits():
+def test_agenda_edit_idea_label_Modifys_beliefunits():
     # GIVEN agenda with beliefunits that will be different
     tim_text = "Tim"
     tim_agenda = agendaunit_shop(tim_text)
@@ -227,7 +227,7 @@ def test_agenda_edit_idea_label_Changes_beliefunits():
     assert beliefunit_obj.pick == new_rain_road
 
 
-def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
+def test_agenda_edit_idea_label_Modifys_idearoot_range_source_road():
     # GIVEN this should never happen but best be thorough
     tim_agenda = agendaunit_shop("Tim")
     old_casa_text = "casa"
@@ -245,7 +245,7 @@ def test_agenda_edit_idea_label_Changes_idearoot_range_source_road():
     assert tim_agenda._idearoot._range_source_road == new_casa_road
 
 
-def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
+def test_agenda_edit_idea_label_ModifysIdeaUnitN_range_source_road():
     bob_agenda = agendaunit_shop("Bob")
     casa_text = "casa"
     casa_road = bob_agenda.make_l1_road(casa_text)
@@ -281,7 +281,7 @@ def test_agenda_edit_idea_label_ChangesIdeaUnitN_range_source_road():
     assert mood_idea._range_source_road == new_rain_road
 
 
-def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
+def test_agenda_edit_idea_label_ModifysIdeaReasonUnitsScenario1():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     old_weekday_text = "weekdays"
@@ -326,7 +326,7 @@ def test_agenda_edit_idea_label_ChangesIdeaReasonUnitsScenario1():
     assert len(casa_idea._reasonunits) == 2
 
 
-def test_agenda_set_owner_id_CorrectlyChangesBoth():
+def test_agenda_set_owner_id_CorrectlyModifysBoth():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
     assert sue_agenda._owner_id == "Sue"
@@ -385,7 +385,7 @@ def test_agenda_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
     )
 
 
-def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
+def test_agenda_set_road_delimiter_CorrectlyModifys_parent_road():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     casa_text = "casa"
@@ -416,7 +416,7 @@ def test_agenda_set_road_delimiter_CorrectlyChanges_parent_road():
     assert cook_idea.get_road() == slash_cook_road
 
 
-def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
+def test_agenda_set_road_delimiter_CorrectlyModifysReasonUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     casa_text = "casa"
@@ -455,7 +455,7 @@ def test_agenda_set_road_delimiter_CorrectlyChangesReasonUnit():
     assert gen_time_reasonunit.premises.get(comma_8am_road) is None
 
 
-def test_agenda_set_road_delimiter_CorrectlyChangesBeliefUnit():
+def test_agenda_set_road_delimiter_CorrectlyModifysBeliefUnit():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     casa_text = "casa"
@@ -493,7 +493,7 @@ def test_agenda_set_road_delimiter_CorrectlyChangesBeliefUnit():
     assert casa_idea._beliefunits.get(comma_time_road) is None
 
 
-def test_agenda_set_road_delimiter_CorrectlyChanges_numeric_roadAND_range_source_road():
+def test_agenda_set_road_delimiter_CorrectlyModifys_numeric_roadAND_range_source_road():
     # GIVEN
     luca_agenda = agendaunit_shop("Luca", "Texas")
     casa_text = "casa"

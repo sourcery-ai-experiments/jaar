@@ -11,7 +11,7 @@ from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_AgendaUnit_set_belief_CorrectlyChangesAttr_1():
+def test_AgendaUnit_set_belief_CorrectlyModifysAttr_1():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -48,7 +48,7 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttr_1():
     assert x_idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
 
 
-def test_AgendaUnit_set_belief_CorrectlyChangesAttr_2():
+def test_AgendaUnit_set_belief_CorrectlyModifysAttr_2():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -63,7 +63,7 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttr_2():
     assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
-def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_pick_IsNone():
+def test_AgendaUnit_set_belief_CorrectlyModifysAttrWhen_pick_IsNone():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -77,7 +77,7 @@ def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_pick_IsNone():
     assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
-def test_AgendaUnit_set_belief_CorrectlyChangesAttrWhen_open_IsNone():
+def test_AgendaUnit_set_belief_CorrectlyModifysAttrWhen_open_IsNone():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -122,7 +122,7 @@ def test_AgendaUnit_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBel
     )
 
 
-def test_AgendaUnit_del_belief_CorrectlyChangesAttr():
+def test_AgendaUnit_del_belief_CorrectlyModifysAttr():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")

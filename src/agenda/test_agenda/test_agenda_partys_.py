@@ -978,7 +978,7 @@ def test_AgendaUnit_get_party_group_ids_ReturnsCorrectObj():
     assert yao_agenda.get_party_group_ids(carm_text) == [carm_text, swimmers]
 
 
-def test_AgendaUnit_edit_partyunit_party_id_CorrectlyChangesPartyUnit_party_id():
+def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifysPartyUnit_party_id():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1041,7 +1041,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
     )
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
+def test_AgendaUnit_PartyUnit_CorrectlyModifysGroupUnitPartyLinks():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"

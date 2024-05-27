@@ -431,7 +431,7 @@ def test_del_giftunit_DeletesGiftjsonAndNotAgendaAtomjsons(
     assert os_path_exists(sue_atom0_path)
 
 
-def test_save_giftunit_file_CanCreateAndChange3Giftunits(
+def test_save_giftunit_file_CanCreateAndModify3Giftunits(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -510,9 +510,7 @@ def test_create_save_giftunit_SaveCorrectObj(reals_dir_setup_cleanup):
     assert os_path_exists(sue_gift3_path)
 
 
-def test_merge_gifts_into_agenda_ReturnsObj_NoChange(
-    reals_dir_setup_cleanup,
-):
+def test_merge_gifts_into_agenda_ReturnsSameObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_nookunit = nookunit_shop(None, None, sue_text)
@@ -527,7 +525,7 @@ def test_merge_gifts_into_agenda_ReturnsObj_NoChange(
     assert new_agenda == duty_agenda
 
 
-def test_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
+def test_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftModifys_1atom(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -553,7 +551,7 @@ def test_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_1atom(
     assert new_agenda.idea_exists(sports_road)
 
 
-def test_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftChanges_2atoms(
+def test_merge_gifts_into_agenda_ReturnsObj_WithSingleGiftModifys_2atoms(
     reals_dir_setup_cleanup,
 ):
     # GIVEN

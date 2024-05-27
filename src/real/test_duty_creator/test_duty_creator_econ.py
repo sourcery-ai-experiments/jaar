@@ -10,7 +10,7 @@ from src.real.nook import (
     get_duty_file_agenda,
     nookunit_create_core_dir_and_files,
 )
-from src.real.econ_creator import (
+from src.real.duty_creator import (
     _get_econs_roads,
     get_econ_path,
     create_econ_dir,

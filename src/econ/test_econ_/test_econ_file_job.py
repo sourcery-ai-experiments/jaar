@@ -69,7 +69,7 @@ def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     assert os_path.exists(a_path) == False
 
 
-def test_EconUnit_modify_job_owner_id_ChangesFileName(env_dir_setup_cleanup):
+def test_EconUnit_modify_job_owner_id_ModifysFileName(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
@@ -91,7 +91,7 @@ def test_EconUnit_modify_job_owner_id_ChangesFileName(env_dir_setup_cleanup):
     assert os_path.exists(zia_agenda_path)
 
 
-def test_EconUnit_save_job_file_ChangesFile_idearoot(env_dir_setup_cleanup):
+def test_EconUnit_save_job_file_ModifysFile_idearoot(env_dir_setup_cleanup):
     # GIVEN
     x_real_id = get_temp_env_real_id()
     x_econ = econunit_shop(x_real_id, econ_dir=get_test_econ_dir())

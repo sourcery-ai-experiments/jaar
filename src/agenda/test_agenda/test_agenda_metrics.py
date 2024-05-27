@@ -143,7 +143,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefSays
     assert sue_agenda.get_idea_obj(casa_road)._active == False
 
 
-def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefChanges():
+def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModifys():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"

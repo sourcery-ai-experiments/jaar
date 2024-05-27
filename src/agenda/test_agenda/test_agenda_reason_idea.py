@@ -659,7 +659,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_tra
     assert not x_agenda._rational
 
 
-def test_AgendaUnit_tree_traverses_StopWhenNoChangeInStatusIsDetected():
+def test_AgendaUnit_tree_traverses_StopWhenSameStatusIsDetected():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     assert x_agenda._max_tree_traverse != 2

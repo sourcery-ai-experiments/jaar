@@ -5,7 +5,7 @@ from src.agenda.pledge import create_pledge
 from copy import deepcopy as copy_deepcopy
 
 
-def test_create_pledge_EmptyParametersDoNotChangeAgenda():
+def test_create_pledge_SameAgendaWithEmptyParameters():
     # GIVEN
     sue_text = "Sue"
     sue_agenda = agendaunit_shop(sue_text)
@@ -43,7 +43,7 @@ def test_create_pledge_CorrectlyAddspledgeToAgenda():
     assert clean_idea.pledge
 
 
-def test_create_pledge_CorrectlyChangesAgendaNonpledgeIdeaTopledgeIdea():
+def test_create_pledge_CorrectlyModifysAgendaNonpledgeIdeaTopledgeIdea():
     # GIVEN
     sue_text = "Sue"
     sue_agenda = agendaunit_shop(sue_text)

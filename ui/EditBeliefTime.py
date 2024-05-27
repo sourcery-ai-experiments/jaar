@@ -121,7 +121,3 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
             "prev_monthday": root_dt_nigh.day,
             "prev_year": root_dt_nigh.year,
         }
-
-    def closeRootChanges(self):
-        self.root_channges_submitted.emit(True)
-        self.close()

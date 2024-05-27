@@ -982,7 +982,7 @@ def test_IdeaUnit_get_kid_ReturnsCorrectObj():
     assert france_idea._label == france_text
 
 
-def test_IdeaUnit_del_kid_CorrectChangesAttr():
+def test_IdeaUnit_del_kid_CorrectModifysAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)

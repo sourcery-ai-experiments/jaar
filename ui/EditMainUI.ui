@@ -232,7 +232,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Change what is belief</string>
+    <string>Modification what is belief</string>
    </property>
   </widget>
   <widget class="QPushButton" name="belief_update_button">

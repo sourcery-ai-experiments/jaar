@@ -190,7 +190,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change PID</string>
+     <string>Modification PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="agenda_update_button">
@@ -208,7 +208,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change Agenda PID</string>
+     <string>Modification Agenda PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="agenda_insert_button">
@@ -277,7 +277,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Change owner_id PID</string>
+     <string>Modification owner_id PID</string>
     </property>
    </widget>
    <widget class="QPushButton" name="owner_id_insert_button">
