@@ -4,7 +4,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
 from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
-from src.real.gift import get_gifts_folder
+from src.real.change import get_changes_folder
 from src.real.duty_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -19,7 +19,7 @@ def test_RealUnit_exists(reals_dir_setup_cleanup):
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir is None
     assert music_real._journal_db is None
-    assert music_real._gifts_dir is None
+    assert music_real._changes_dir is None
     assert music_real._road_delimiter is None
     assert music_real._planck is None
 
@@ -37,7 +37,7 @@ def test_realunit_shop_ReturnsRealUnit(reals_dir_setup_cleanup):
     assert music_real.real_id == music_text
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir != None
-    assert music_real._gifts_dir != None
+    assert music_real._changes_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._planck == default_planck_if_none()
 
@@ -68,17 +68,17 @@ def test_RealUnit__set_real_dirs_SetsEngineDir(reals_dir_setup_cleanup):
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     x_real_dir = f"{get_test_reals_dir()}/{music_text}"
     x_persons_dir = f"{x_real_dir}/persons"
-    x_gifts_dir = f"{x_real_dir}/{get_gifts_folder()}"
+    x_changes_dir = f"{x_real_dir}/{get_changes_folder()}"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_real_dir}/{journal_file_name}"
 
     assert music_real._real_dir is None
     assert music_real._persons_dir is None
-    assert music_real._gifts_dir is None
+    assert music_real._changes_dir is None
     assert os_path.exists(x_real_dir) is False
     assert os_path.isdir(x_real_dir) is False
     assert os_path.exists(x_persons_dir) is False
-    assert os_path.exists(x_gifts_dir) is False
+    assert os_path.exists(x_changes_dir) is False
     assert os_path.exists(journal_file_path) is False
 
     # WHEN
@@ -87,11 +87,11 @@ def test_RealUnit__set_real_dirs_SetsEngineDir(reals_dir_setup_cleanup):
     # THEN
     assert music_real._real_dir == x_real_dir
     assert music_real._persons_dir == x_persons_dir
-    assert music_real._gifts_dir == x_gifts_dir
+    assert music_real._changes_dir == x_changes_dir
     assert os_path.exists(x_real_dir)
     assert os_path.isdir(x_real_dir)
     assert os_path.exists(x_persons_dir)
-    assert os_path.exists(x_gifts_dir)
+    assert os_path.exists(x_changes_dir)
     assert os_path.exists(journal_file_path)
 
 

@@ -3255,9 +3255,9 @@
                             "A,Internet": {
                                 "base": "A,Internet",
                                 "premises": {
-                                    "A,Internet,Faceboook": {
+                                    "A,Internet,Faaceboook": {
                                         "divisor": null,
-                                        "need": "A,Internet,Faceboook",
+                                        "need": "A,Internet,Faaceboook",
                                         "open": null
                                     }
                                 }
@@ -3925,9 +3925,9 @@
                         "_weight": 1,
                         "pledge": false
                     },
-                    "Faceboook": {
+                    "Faaceboook": {
                         "_is_expanded": true,
-                        "_label": "Faceboook",
+                        "_label": "Faaceboook",
                         "_meld_strategy": "default",
                         "_uid": 251,
                         "_weight": 1,

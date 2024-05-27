@@ -3822,9 +3822,9 @@
                             "music,Internet": {
                                 "base": "music,Internet",
                                 "premises": {
-                                    "music,Internet,Faceboook": {
+                                    "music,Internet,Faaceboook": {
                                         "divisor": null,
-                                        "need": "music,Internet,Faceboook",
+                                        "need": "music,Internet,Faaceboook",
                                         "nigh": null,
                                         "open": null
                                     }
@@ -4666,9 +4666,9 @@
                         "_weight": 1,
                         "pledge": false
                     },
-                    "Faceboook": {
+                    "Faaceboook": {
                         "_is_expanded": true,
-                        "_label": "Faceboook",
+                        "_label": "Faaceboook",
                         "_meld_strategy": "default",
                         "_uid": 251,
                         "_weight": 1,

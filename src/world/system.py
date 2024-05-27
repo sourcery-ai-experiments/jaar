@@ -22,14 +22,14 @@
 # )
 # from src.agenda.pledge import create_pledge
 # from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
-# from src.real.gift import (
-#     GiftUnit,
-#     giftunit_shop,
-#     get_json_filename as giftunit_get_json_filename,
-#     create_giftunit_from_files,
-#     init_gift_id,
-#     get_init_gift_id_if_None,
-#     get_gifts_folder,
+# from src.real.change import (
+#     changeUnit,
+#     changeunit_shop,
+#     get_json_filename as changeunit_get_json_filename,
+#     create_changeunit_from_files,
+#     init_change_id,
+#     get_init_change_id_if_None,
+#     get_changes_folder,
 # )
 # from src.real.examples.real_env_kit import get_test_reals_dir, get_test_real_id
 # from src._instrument.python import get_empty_dict_if_none
@@ -65,11 +65,11 @@
 #     pass
 
 
-# class SaveGiftFileException(Exception):
+# class SavechangeFileException(Exception):
 #     pass
 
 
-# class GiftFileMissingException(Exception):
+# class changeFileMissingException(Exception):
 #     pass
 
 
@@ -126,54 +126,54 @@
 #         set_dir(self.person_dir)
 #         set_dir(self._econs_dir)
 #         set_dir(self._atoms_dir)
-#         self.initialize_gift_and_duty_files()
+#         self.initialize_change_and_duty_files()
 #         self.initialize_work_file()
 
-#     def initialize_gift_and_duty_files(self):
+#     def initialize_change_and_duty_files(self):
 #         duty_file_exists = self.duty_file_exists()
-#         gift_file_exists = self.giftunit_file_exists(init_gift_id())
-#         if duty_file_exists == False and gift_file_exists == False:
-#             self._create_initial_gift_and_duty_files()
-#         elif duty_file_exists == False and gift_file_exists:
-#             self._create_duty_from_gifts()
-#         elif duty_file_exists and gift_file_exists == False:
-#             self._create_initial_gift_from_duty()
+#         change_file_exists = self.changeunit_file_exists(init_change_id())
+#         if duty_file_exists == False and change_file_exists == False:
+#             self._create_initial_change_and_duty_files()
+#         elif duty_file_exists == False and change_file_exists:
+#             self._create_duty_from_changes()
+#         elif duty_file_exists and change_file_exists == False:
+#             self._create_initial_change_from_duty()
 
-#     def _create_initial_gift_and_duty_files(self):
+#     def _create_initial_change_and_duty_files(self):
 #         default_duty_agenda = agendaunit_shop(
 #             self.person_id, self.real_id, self._road_delimiter, self._planck
 #         )
-#         x_giftunit = giftunit_shop(
+#         x_changeunit = changeunit_shop(
 #             _giver=self.person_id,
-#             _gift_id=get_init_gift_id_if_None(),
-#             _gifts_dir=self._gifts_dir,
+#             _change_id=get_init_change_id_if_None(),
+#             _changes_dir=self._changes_dir,
 #             _atoms_dir=self._atoms_dir,
 #         )
-#         x_giftunit._bookunit.add_all_different_agendaatoms(
+#         x_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(), after_agenda=default_duty_agenda
 #         )
-#         x_giftunit.save_files()
-#         self._create_duty_from_gifts()
+#         x_changeunit.save_files()
+#         self._create_duty_from_changes()
 
-#     def _create_initial_gift_from_duty(self):
-#         x_giftunit = giftunit_shop(
+#     def _create_initial_change_from_duty(self):
+#         x_changeunit = changeunit_shop(
 #             _giver=self.person_id,
-#             _gift_id=get_init_gift_id_if_None(),
-#             _gifts_dir=self._gifts_dir,
+#             _change_id=get_init_change_id_if_None(),
+#             _changes_dir=self._changes_dir,
 #             _atoms_dir=self._atoms_dir,
 #         )
-#         x_giftunit._bookunit.add_all_different_agendaatoms(
+#         x_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(),
 #             after_agenda=get_duty_file_agenda(x_nookunit),
 #         )
-#         x_giftunit.save_files()
+#         x_changeunit.save_files()
 
-#     def _create_duty_from_gifts(self):
-#         self.save_duty_file(_merge_gifts_into_agenda(self._get_empty_agenda()))
+#     def _create_duty_from_changes(self):
+#         self.save_duty_file(_merge_changes_into_agenda(self._get_empty_agenda()))
 
 #     def _get_empty_agenda(self) -> AgendaUnit:
 #         empty_agenda = agendaunit_shop(self.person_id, self.real_id)
-#         empty_agenda._last_gift_id = init_gift_id()
+#         empty_agenda._last_change_id = init_change_id()
 #         return empty_agenda
 
 #     def initialize_work_file(self):
@@ -229,92 +229,92 @@
 #     def load_work_file(self):
 #         self._work_obj = self.get_work_file_agenda()
 
-#     def giftunit_file_exists(self, gift_id: int) -> bool:
-#         gift_filename = giftunit_get_json_filename(gift_id)
-#         return os_path_exists(f"{self._gifts_dir}/{gift_filename}")
+#     def changeunit_file_exists(self, change_id: int) -> bool:
+#         change_filename = changeunit_get_json_filename(change_id)
+#         return os_path_exists(f"{self._changes_dir}/{change_filename}")
 
-#     def get_max_gift_file_number(self) -> int:
-#         if not os_path_exists(self._gifts_dir):
+#     def get_max_change_file_number(self) -> int:
+#         if not os_path_exists(self._changes_dir):
 #             return None
-#         gift_filenames = dir_files(self._gifts_dir, True, include_files=True).keys()
-#         gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
-#         return max(gift_file_numbers, default=None)
+#         change_filenames = dir_files(self._changes_dir, True, include_files=True).keys()
+#         change_file_numbers = {int(change_filename) for change_filename in change_filenames}
+#         return max(change_file_numbers, default=None)
 
-#     def _get_next_gift_file_number(self) -> int:
-#         max_file_number = self.get_max_gift_file_number()
+#     def _get_next_change_file_number(self) -> int:
+#         max_file_number = self.get_max_change_file_number()
 #         return (
-#             get_init_gift_id_if_None()
+#             get_init_change_id_if_None()
 #             if max_file_number is None
 #             else max_file_number + 1
 #         )
 
-#     def save_giftunit_file(
-#         self, x_gift: GiftUnit, replace: bool = True, _invalid_attrs: bool = True
-#     ) -> GiftUnit:
+#     def save_changeunit_file(
+#         self, x_change: changeUnit, replace: bool = True, _invalid_attrs: bool = True
+#     ) -> changeUnit:
 #         if _invalid_attrs:
-#             x_gift = validate_giftunit(x_gift)
+#             x_change = validate_changeunit(x_change)
 
-#         if x_gift._atoms_dir != self._atoms_dir:
-#             raise SaveGiftFileException(
-#                 f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {self._atoms_dir}."
+#         if x_change._atoms_dir != self._atoms_dir:
+#             raise SavechangeFileException(
+#                 f"changeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self._atoms_dir}."
 #             )
-#         if x_gift._gifts_dir != self._gifts_dir:
-#             raise SaveGiftFileException(
-#                 f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self._gifts_dir}."
+#         if x_change._changes_dir != self._changes_dir:
+#             raise SavechangeFileException(
+#                 f"changeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {self._changes_dir}."
 #             )
-#         if x_gift._giver != self.person_id:
-#             raise SaveGiftFileException(
-#                 f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {self.person_id}."
+#         if x_change._giver != self.person_id:
+#             raise SavechangeFileException(
+#                 f"changeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {self.person_id}."
 #             )
-#         gift_filename = giftunit_get_json_filename(x_gift._gift_id)
-#         if not replace and self.giftunit_file_exists(x_gift._gift_id):
-#             raise SaveGiftFileException(
-#                 f"GiftUnit file {gift_filename} already exists and cannot be saved over."
+#         change_filename = changeunit_get_json_filename(x_change._change_id)
+#         if not replace and self.changeunit_file_exists(x_change._change_id):
+#             raise SavechangeFileException(
+#                 f"changeUnit file {change_filename} already exists and cannot be saved over."
 #             )
-#         x_gift.save_files()
-#         return x_gift
+#         x_change.save_files()
+#         return x_change
 
-#     def _create_new_giftunit(self) -> GiftUnit:
-#         return giftunit_shop(
+#     def _create_new_changeunit(self) -> changeUnit:
+#         return changeunit_shop(
 #             _giver=self.person_id,
-#             _gift_id=self._get_next_gift_file_number(),
+#             _change_id=self._get_next_change_file_number(),
 #             _atoms_dir=self._atoms_dir,
-#             _gifts_dir=self._gifts_dir,
+#             _changes_dir=self._changes_dir,
 #         )
 
-#     def validate_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
-#         if x_giftunit._atoms_dir != self._atoms_dir:
-#             x_giftunit._atoms_dir = self._atoms_dir
-#         if x_giftunit._gifts_dir != self._gifts_dir:
-#             x_giftunit._gifts_dir = self._gifts_dir
-#         if x_giftunit._gift_id != self._get_next_gift_file_number():
-#             x_giftunit._gift_id = self._get_next_gift_file_number()
-#         if x_giftunit._giver != self.person_id:
-#             x_giftunit._giver = self.person_id
-#         if x_giftunit._book_start != self._get_next_atom_file_number(x_nookunit):
-#             x_giftunit._book_start = self._get_next_atom_file_number(x_nookunit)
-#         return x_giftunit
+#     def validate_changeunit(self, x_changeunit: changeUnit) -> changeUnit:
+#         if x_changeunit._atoms_dir != self._atoms_dir:
+#             x_changeunit._atoms_dir = self._atoms_dir
+#         if x_changeunit._changes_dir != self._changes_dir:
+#             x_changeunit._changes_dir = self._changes_dir
+#         if x_changeunit._change_id != self._get_next_change_file_number():
+#             x_changeunit._change_id = self._get_next_change_file_number()
+#         if x_changeunit._giver != self.person_id:
+#             x_changeunit._giver = self.person_id
+#         if x_changeunit._book_start != self._get_next_atom_file_number(x_nookunit):
+#             x_changeunit._book_start = self._get_next_atom_file_number(x_nookunit)
+#         return x_changeunit
 
-#     def get_giftunit(self, file_number: int) -> GiftUnit:
-#         if self.giftunit_file_exists(file_number) == False:
-#             raise GiftFileMissingException(
-#                 f"GiftUnit file_number {file_number} does not exist."
+#     def get_changeunit(self, file_number: int) -> changeUnit:
+#         if self.changeunit_file_exists(file_number) == False:
+#             raise changeFileMissingException(
+#                 f"changeUnit file_number {file_number} does not exist."
 #             )
-#         return create_giftunit_from_files(
-#             gifts_dir=self._gifts_dir, gift_id=file_number, atoms_dir=self._atoms_dir
+#         return create_changeunit_from_files(
+#             changes_dir=self._changes_dir, change_id=file_number, atoms_dir=self._atoms_dir
 #         )
 
-#     def del_giftunit_file(self, file_number: int):
-#         delete_dir(f"{self._gifts_dir}/{giftunit_get_json_filename(file_number)}")
+#     def del_changeunit_file(self, file_number: int):
+#         delete_dir(f"{self._changes_dir}/{changeunit_get_json_filename(file_number)}")
 
-#     def _merge_gifts_into_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
-#         gift_ints = get_integer_filenames(self._gifts_dir, x_agenda._last_gift_id)
-#         for gift_int in gift_ints:
-#             x_gift = get_giftunit(gift_int)
-#             new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+#     def _merge_changes_into_agenda(self, x_agenda: AgendaUnit) -> AgendaUnit:
+#         change_ints = get_integer_filenames(self._changes_dir, x_agenda._last_change_id)
+#         for change_int in change_ints:
+#             x_change = get_changeunit(change_int)
+#             new_agenda = x_change._bookunit.get_edited_agenda(x_agenda)
 
 #             update_text = "UPDATE"
-#             x_agendaunit = x_gift._bookunit.agendaatoms.get(update_text)
+#             x_agendaunit = x_change._bookunit.agendaatoms.get(update_text)
 #         return new_agenda
 
 #     def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
@@ -426,26 +426,26 @@
 #     def set_person_econunits_role(self):
 #         self.set_econunits_role(get_duty_file_agenda(x_nookunit))
 
-#     def add_pledge_gift(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
+#     def add_pledge_change(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
 #         duty_agenda = get_duty_file_agenda(x_nookunit)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-#         next_giftunit = _create_new_giftunit(x_nookunit)
-#         next_giftunit._bookunit.add_all_different_agendaatoms(
+#         next_changeunit = _create_new_changeunit(x_nookunit)
+#         next_changeunit._bookunit.add_all_different_agendaatoms(
 #             old_duty_agenda, duty_agenda
 #         )
-#         next_giftunit.save_files()
-#         self.append_gifts_to_duty_file()
+#         next_changeunit.save_files()
+#         self.append_changes_to_duty_file()
 
-#     def create_save_giftunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-#         new_giftunit = _create_new_giftunit(x_nookunit)
-#         new_giftunit._bookunit.add_all_different_agendaatoms(
+#     def create_save_changeunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
+#         new_changeunit = _create_new_changeunit(x_nookunit)
+#         new_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda, after_agenda
 #         )
-#         self.save_giftunit_file(new_giftunit)
+#         self.save_changeunit_file(new_changeunit)
 
-#     def append_gifts_to_duty_file(self):
-#         self.save_duty_file(_merge_gifts_into_agenda(get_duty_file_agenda(x_nookunit)))
+#     def append_changes_to_duty_file(self):
+#         self.save_duty_file(_merge_changes_into_agenda(get_duty_file_agenda(x_nookunit)))
 #         return get_duty_file_agenda(x_nookunit)
 
 

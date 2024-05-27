@@ -8,7 +8,7 @@ from src.real.nook import (
     get_duty_file_agenda,
     get_work_file_agenda,
 )
-from src.real.gift import init_gift_id
+from src.real.change import init_change_id
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 from os.path import exists as os_path_exists
@@ -31,10 +31,10 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
 
     # THEN
     example_agenda = agendaunit_shop(sue_text, music_text)
-    example_agenda._last_gift_id = init_gift_id()
+    example_agenda._last_change_id = init_change_id()
     example_agenda.calc_agenda_metrics()
     assert sue_work._real_id == example_agenda._real_id
-    assert sue_work._last_gift_id == example_agenda._last_gift_id
+    assert sue_work._last_change_id == example_agenda._last_change_id
     assert sue_work == example_agenda
 
 

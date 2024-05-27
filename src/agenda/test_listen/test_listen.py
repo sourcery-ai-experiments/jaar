@@ -37,7 +37,7 @@ def test_create_barren_agenda_ReturnsCorrectObj():
     assert yao_barren_job._owner_id != yao_role._owner_id
     assert yao_barren_job._owner_id == zia_text
     assert yao_barren_job._real_id == yao_role._real_id
-    assert yao_barren_job._last_gift_id is None
+    assert yao_barren_job._last_change_id is None
     assert yao_barren_job.get_groupunits_dict() == {}
     assert yao_barren_job._road_delimiter == yao_role._road_delimiter
     assert yao_barren_job._planck == yao_role._planck

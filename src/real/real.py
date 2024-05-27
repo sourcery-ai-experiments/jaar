@@ -4,7 +4,7 @@ from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
-from src.real.gift import get_gifts_folder
+from src.real.change import get_changes_folder
 from src.real.duty_creator import create_person_econunits, get_econunit
 from src.real.nook import (
     NookUnit,
@@ -31,7 +31,7 @@ class RealUnit:
     _real_dir: str = None
     _persons_dir: str = None
     _journal_db: str = None
-    _gifts_dir: str = None
+    _changes_dir: str = None
     _road_delimiter: str = None
     _planck: float = None
 
@@ -39,10 +39,10 @@ class RealUnit:
     def _set_real_dirs(self, in_memory_journal: bool = None):
         self._real_dir = f"{self.reals_dir}/{self.real_id}"
         self._persons_dir = f"{self._real_dir}/persons"
-        self._gifts_dir = f"{self._real_dir}/{get_gifts_folder()}"
+        self._changes_dir = f"{self._real_dir}/{get_changes_folder()}"
         set_dir(x_path=self._real_dir)
         set_dir(x_path=self._persons_dir)
-        set_dir(x_path=self._gifts_dir)
+        set_dir(x_path=self._changes_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
     def _get_person_dir(self, person_id):

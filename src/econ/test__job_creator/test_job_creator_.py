@@ -2,7 +2,7 @@ from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.real.gift import get_init_gift_id_if_None
+from src.real.change import get_init_change_id_if_None
 from src.econ.job_creator import (
     save_role_file,
     save_job_file,
@@ -114,7 +114,7 @@ def test_create_job_basis_ReturnsCorrectObj():
     # THEN
     assert yao_basis_job._owner_id == yao_role._owner_id
     assert yao_basis_job._real_id == yao_role._real_id
-    assert yao_basis_job._last_gift_id == yao_role._last_gift_id
+    assert yao_basis_job._last_change_id == yao_role._last_change_id
     assert yao_basis_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck

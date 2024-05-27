@@ -78,37 +78,37 @@ CREATE TABLE IF NOT EXISTS book_mstr (
 ;"""
 
 
-def get_book_gift_link_table_create_sqlstr() -> str:
+def get_book_change_link_table_create_sqlstr() -> str:
     return """
-CREATE TABLE book_gift_link
+CREATE TABLE book_change_link
 (
   book_rowid INT NOT NULL
-, gift_rowid INT NOT NULL
-, UNIQUE(book_rowid, gift_rowid)
+, change_rowid INT NOT NULL
+, UNIQUE(book_rowid, change_rowid)
 , CONSTRAINT atom_fk FOREIGN KEY (book_rowid) REFERENCES book_mstr (rowid)
-, CONSTRAINT book_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
 )
 ;"""
 
 
-def get_gift_table_create_sqlstr() -> str:
+def get_change_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS gift_mstr (
+CREATE TABLE IF NOT EXISTS change_mstr (
   author_person_id VARCHAR(255) NOT NULL
-, author_gift_number INT NOT NULL
-, UNIQUE(author_person_id, author_gift_number)
+, author_change_number INT NOT NULL
+, UNIQUE(author_person_id, author_change_number)
 )
 ;"""
 
 
-def get_gift_person_link_table_create_sqlstr() -> str:
+def get_change_person_link_table_create_sqlstr() -> str:
     return """
-CREATE TABLE gift_person_link
+CREATE TABLE change_person_link
 (
-  gift_rowid INT NOT NULL
+  change_rowid INT NOT NULL
 , person_rowid INT NOT NULL
-, UNIQUE(gift_rowid, person_rowid)
-, CONSTRAINT book_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+, UNIQUE(change_rowid, person_rowid)
+, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
 , CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
 )
 ;"""
@@ -158,9 +158,9 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_atom_mstr_table_create_sqlstr())
     list_x.append(get_atom_book_link_table_create_sqlstr())
     list_x.append(get_book_table_create_sqlstr())
-    list_x.append(get_book_gift_link_table_create_sqlstr())
-    list_x.append(get_gift_table_create_sqlstr())
-    list_x.append(get_gift_person_link_table_create_sqlstr())
+    list_x.append(get_book_change_link_table_create_sqlstr())
+    list_x.append(get_change_table_create_sqlstr())
+    list_x.append(get_change_person_link_table_create_sqlstr())
     list_x.append(get_person_mstr_table_create_sqlstr())
     list_x.append(get_road_ref_table_create_sqlstr())
     return list_x

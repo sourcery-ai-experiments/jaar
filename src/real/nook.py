@@ -29,14 +29,14 @@ from src.agenda.atom import (
 )
 from src.agenda.pledge import create_pledge
 from src.econ.econ import EconUnit
-from src.real.gift import (
-    GiftUnit,
-    giftunit_shop,
-    get_json_filename as giftunit_get_json_filename,
-    create_giftunit_from_files,
-    init_gift_id,
-    get_init_gift_id_if_None,
-    get_gifts_folder,
+from src.real.change import (
+    changeUnit,
+    changeunit_shop,
+    get_json_filename as changeunit_get_json_filename,
+    create_changeunit_from_files,
+    init_change_id,
+    get_init_change_id_if_None,
+    get_changes_folder,
 )
 from src.real.examples.real_env_kit import get_test_reals_dir, get_test_real_id
 from dataclasses import dataclass
@@ -52,11 +52,11 @@ class Invalid_work_Exception(Exception):
     pass
 
 
-class SaveGiftFileException(Exception):
+class SavechangeFileException(Exception):
     pass
 
 
-class GiftFileMissingException(Exception):
+class changeFileMissingException(Exception):
     pass
 
 
@@ -70,7 +70,7 @@ class NookUnit:
     person_dir: str = None
     _econs_dir: str = None
     _atoms_dir: str = None
-    _gifts_dir: str = None
+    _changes_dir: str = None
     _duty_file_name: str = None
     _duty_path: str = None
     _work_file_name: str = None
@@ -98,7 +98,7 @@ def nookunit_shop(
     person_dir = f"{persons_dir}/{person_id}"
     econs_dir = f"{person_dir}/econs"
     atoms_dir = f"{person_dir}/atoms"
-    gifts_dir = f"{person_dir}/{get_gifts_folder()}"
+    changes_dir = f"{person_dir}/{get_changes_folder()}"
     duty_file_name = f"{duty_str()}.json"
     duty_path = f"{person_dir}/{duty_file_name}"
     work_file_name = f"{work_str()}.json"
@@ -113,7 +113,7 @@ def nookunit_shop(
         person_dir=person_dir,
         _econs_dir=econs_dir,
         _atoms_dir=atoms_dir,
-        _gifts_dir=gifts_dir,
+        _changes_dir=changes_dir,
         _duty_file_name=duty_file_name,
         _duty_path=duty_path,
         _work_file_name=work_file_name,
@@ -175,9 +175,9 @@ def _get_next_atom_file_number(x_nookunit: NookUnit) -> str:
     return 0 if max_file_number is None else max_file_number + 1
 
 
-def giftunit_file_exists(x_nookunit: NookUnit, gift_id: int) -> bool:
-    gift_filename = giftunit_get_json_filename(gift_id)
-    return os_path_exists(f"{x_nookunit._gifts_dir}/{gift_filename}")
+def changeunit_file_exists(x_nookunit: NookUnit, change_id: int) -> bool:
+    change_filename = changeunit_get_json_filename(change_id)
+    return os_path_exists(f"{x_nookunit._changes_dir}/{change_filename}")
 
 
 def initialize_work_file(x_nookunit):
@@ -226,64 +226,70 @@ def get_duty_file_agenda(x_nookunit: NookUnit) -> AgendaUnit:
     return agendaunit_get_from_json(duty_json)
 
 
-def giftunit_file_exists(x_nookunit: NookUnit, gift_id: int) -> bool:
-    gift_filename = giftunit_get_json_filename(gift_id)
-    return os_path_exists(f"{x_nookunit._gifts_dir}/{gift_filename}")
+def changeunit_file_exists(x_nookunit: NookUnit, change_id: int) -> bool:
+    change_filename = changeunit_get_json_filename(change_id)
+    return os_path_exists(f"{x_nookunit._changes_dir}/{change_filename}")
 
 
-def get_max_gift_file_number(x_nookunit: NookUnit) -> int:
-    if not os_path_exists(x_nookunit._gifts_dir):
+def get_max_change_file_number(x_nookunit: NookUnit) -> int:
+    if not os_path_exists(x_nookunit._changes_dir):
         return None
-    gift_filenames = dir_files(x_nookunit._gifts_dir, True, include_files=True).keys()
-    gift_file_numbers = {int(gift_filename) for gift_filename in gift_filenames}
-    return max(gift_file_numbers, default=None)
+    change_filenames = dir_files(
+        x_nookunit._changes_dir, True, include_files=True
+    ).keys()
+    change_file_numbers = {int(change_filename) for change_filename in change_filenames}
+    return max(change_file_numbers, default=None)
 
 
-def _get_next_gift_file_number(x_nookunit: NookUnit) -> int:
-    max_file_number = get_max_gift_file_number(x_nookunit)
-    init_gift_id = get_init_gift_id_if_None()
-    return init_gift_id if max_file_number is None else max_file_number + 1
+def _get_next_change_file_number(x_nookunit: NookUnit) -> int:
+    max_file_number = get_max_change_file_number(x_nookunit)
+    init_change_id = get_init_change_id_if_None()
+    return init_change_id if max_file_number is None else max_file_number + 1
 
 
-def _create_initial_gift_from_duty(x_nookunit: NookUnit):
-    x_giftunit = giftunit_shop(
+def _create_initial_change_from_duty(x_nookunit: NookUnit):
+    x_changeunit = changeunit_shop(
         _giver=x_nookunit.person_id,
-        _gift_id=get_init_gift_id_if_None(),
-        _gifts_dir=x_nookunit._gifts_dir,
+        _change_id=get_init_change_id_if_None(),
+        _changes_dir=x_nookunit._changes_dir,
         _atoms_dir=x_nookunit._atoms_dir,
     )
-    x_giftunit._bookunit.add_all_different_agendaatoms(
+    x_changeunit._bookunit.add_all_different_agendaatoms(
         before_agenda=get_default_duty_agenda(x_nookunit),
         after_agenda=get_duty_file_agenda(x_nookunit),
     )
-    x_giftunit.save_files()
+    x_changeunit.save_files()
 
 
-def get_giftunit(x_nookunit: NookUnit, file_number: int) -> GiftUnit:
-    if giftunit_file_exists(x_nookunit, file_number) == False:
-        raise GiftFileMissingException(
-            f"GiftUnit file_number {file_number} does not exist."
+def get_changeunit(x_nookunit: NookUnit, file_number: int) -> changeUnit:
+    if changeunit_file_exists(x_nookunit, file_number) == False:
+        raise changeFileMissingException(
+            f"changeUnit file_number {file_number} does not exist."
         )
-    x_gifts_dir = x_nookunit._gifts_dir
+    x_changes_dir = x_nookunit._changes_dir
     x_atoms_dir = x_nookunit._atoms_dir
-    return create_giftunit_from_files(x_gifts_dir, file_number, x_atoms_dir)
+    return create_changeunit_from_files(x_changes_dir, file_number, x_atoms_dir)
 
 
-def _merge_gifts_into_agenda(x_nookunit: NookUnit, x_agenda: AgendaUnit) -> AgendaUnit:
-    gift_ints = get_integer_filenames(x_nookunit._gifts_dir, x_agenda._last_gift_id)
-    for gift_int in gift_ints:
-        x_gift = get_giftunit(x_nookunit, gift_int)
-        new_agenda = x_gift._bookunit.get_edited_agenda(x_agenda)
+def _merge_changes_into_agenda(
+    x_nookunit: NookUnit, x_agenda: AgendaUnit
+) -> AgendaUnit:
+    change_ints = get_integer_filenames(
+        x_nookunit._changes_dir, x_agenda._last_change_id
+    )
+    for change_int in change_ints:
+        x_change = get_changeunit(x_nookunit, change_int)
+        new_agenda = x_change._bookunit.get_edited_agenda(x_agenda)
 
         update_text = "UPDATE"
-        x_gift._bookunit.agendaatoms.get(update_text)
+        x_change._bookunit.agendaatoms.get(update_text)
     return new_agenda
 
 
-def _create_duty_from_gifts(x_nookunit):
+def _create_duty_from_changes(x_nookunit):
     save_duty_file(
         x_nookunit,
-        _merge_gifts_into_agenda(x_nookunit, get_default_duty_agenda(x_nookunit)),
+        _merge_changes_into_agenda(x_nookunit, get_default_duty_agenda(x_nookunit)),
     )
 
 
@@ -294,34 +300,34 @@ def get_default_duty_agenda(x_nookunit: NookUnit) -> AgendaUnit:
         x_nookunit._road_delimiter,
         x_nookunit._planck,
     )
-    x_agendaunit._last_gift_id = init_gift_id()
+    x_agendaunit._last_change_id = init_change_id()
     return x_agendaunit
 
 
-def _create_initial_gift_and_duty_files(x_nookunit: NookUnit):
-    x_giftunit = giftunit_shop(
+def _create_initial_change_and_duty_files(x_nookunit: NookUnit):
+    x_changeunit = changeunit_shop(
         _giver=x_nookunit.person_id,
-        _gift_id=get_init_gift_id_if_None(),
-        _gifts_dir=x_nookunit._gifts_dir,
+        _change_id=get_init_change_id_if_None(),
+        _changes_dir=x_nookunit._changes_dir,
         _atoms_dir=x_nookunit._atoms_dir,
     )
-    x_giftunit._bookunit.add_all_different_agendaatoms(
+    x_changeunit._bookunit.add_all_different_agendaatoms(
         before_agenda=get_default_duty_agenda(x_nookunit),
         after_agenda=get_default_duty_agenda(x_nookunit),
     )
-    x_giftunit.save_files()
-    _create_duty_from_gifts(x_nookunit)
+    x_changeunit.save_files()
+    _create_duty_from_changes(x_nookunit)
 
 
-def initialize_gift_and_duty_files(x_nookunit):
+def initialize_change_and_duty_files(x_nookunit):
     x_duty_file_exists = duty_file_exists(x_nookunit)
-    gift_file_exists = giftunit_file_exists(x_nookunit, init_gift_id())
-    if x_duty_file_exists == False and gift_file_exists == False:
-        _create_initial_gift_and_duty_files(x_nookunit)
-    elif x_duty_file_exists == False and gift_file_exists:
-        _create_duty_from_gifts(x_nookunit)
-    elif x_duty_file_exists and gift_file_exists == False:
-        _create_initial_gift_from_duty(x_nookunit)
+    change_file_exists = changeunit_file_exists(x_nookunit, init_change_id())
+    if x_duty_file_exists == False and change_file_exists == False:
+        _create_initial_change_and_duty_files(x_nookunit)
+    elif x_duty_file_exists == False and change_file_exists:
+        _create_duty_from_changes(x_nookunit)
+    elif x_duty_file_exists and change_file_exists == False:
+        _create_initial_change_from_duty(x_nookunit)
 
 
 def nookunit_create_core_dir_and_files(x_nookunit: NookUnit):
@@ -330,8 +336,8 @@ def nookunit_create_core_dir_and_files(x_nookunit: NookUnit):
     set_dir(x_nookunit.person_dir)
     set_dir(x_nookunit._econs_dir)
     set_dir(x_nookunit._atoms_dir)
-    set_dir(x_nookunit._gifts_dir)
-    initialize_gift_and_duty_files(x_nookunit)
+    set_dir(x_nookunit._changes_dir)
+    initialize_change_and_duty_files(x_nookunit)
     initialize_work_file(x_nookunit)
 
 
@@ -342,9 +348,9 @@ def get_work_file_agenda(x_nookunit: NookUnit) -> AgendaUnit:
     return agendaunit_get_from_json(work_json)
 
 
-def append_gifts_to_duty_file(x_nookunit: NookUnit) -> AgendaUnit:
+def append_changes_to_duty_file(x_nookunit: NookUnit) -> AgendaUnit:
     duty_agenda = get_duty_file_agenda(x_nookunit)
-    duty_agenda = _merge_gifts_into_agenda(x_nookunit, duty_agenda)
+    duty_agenda = _merge_changes_into_agenda(x_nookunit, duty_agenda)
     save_duty_file(x_nookunit, duty_agenda)
     return get_duty_file_agenda(x_nookunit)
 
@@ -363,76 +369,78 @@ def _get_max_atom_file_number(x_nookunit: NookUnit) -> int:
     return max(atom_file_numbers, default=None)
 
 
-def validate_giftunit(x_nookunit: NookUnit, x_giftunit: GiftUnit) -> GiftUnit:
-    if x_giftunit._atoms_dir != x_nookunit._atoms_dir:
-        x_giftunit._atoms_dir = x_nookunit._atoms_dir
-    if x_giftunit._gifts_dir != x_nookunit._gifts_dir:
-        x_giftunit._gifts_dir = x_nookunit._gifts_dir
-    if x_giftunit._gift_id != _get_next_gift_file_number(x_nookunit):
-        x_giftunit._gift_id = _get_next_gift_file_number(x_nookunit)
-    if x_giftunit._giver != x_nookunit.person_id:
-        x_giftunit._giver = x_nookunit.person_id
-    if x_giftunit._book_start != _get_next_atom_file_number(x_nookunit):
-        x_giftunit._book_start = _get_next_atom_file_number(x_nookunit)
-    return x_giftunit
+def validate_changeunit(x_nookunit: NookUnit, x_changeunit: changeUnit) -> changeUnit:
+    if x_changeunit._atoms_dir != x_nookunit._atoms_dir:
+        x_changeunit._atoms_dir = x_nookunit._atoms_dir
+    if x_changeunit._changes_dir != x_nookunit._changes_dir:
+        x_changeunit._changes_dir = x_nookunit._changes_dir
+    if x_changeunit._change_id != _get_next_change_file_number(x_nookunit):
+        x_changeunit._change_id = _get_next_change_file_number(x_nookunit)
+    if x_changeunit._giver != x_nookunit.person_id:
+        x_changeunit._giver = x_nookunit.person_id
+    if x_changeunit._book_start != _get_next_atom_file_number(x_nookunit):
+        x_changeunit._book_start = _get_next_atom_file_number(x_nookunit)
+    return x_changeunit
 
 
-def save_giftunit_file(
+def save_changeunit_file(
     x_nookunit: NookUnit,
-    x_gift: GiftUnit,
+    x_change: changeUnit,
     replace: bool = True,
     correct_invalid_attrs: bool = True,
-) -> GiftUnit:
+) -> changeUnit:
     if correct_invalid_attrs:
-        x_gift = validate_giftunit(x_nookunit, x_gift)
+        x_change = validate_changeunit(x_nookunit, x_change)
 
-    if x_gift._atoms_dir != x_nookunit._atoms_dir:
-        raise SaveGiftFileException(
-            f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {x_nookunit._atoms_dir}."
+    if x_change._atoms_dir != x_nookunit._atoms_dir:
+        raise SavechangeFileException(
+            f"changeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {x_nookunit._atoms_dir}."
         )
-    if x_gift._gifts_dir != x_nookunit._gifts_dir:
-        raise SaveGiftFileException(
-            f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {x_nookunit._gifts_dir}."
+    if x_change._changes_dir != x_nookunit._changes_dir:
+        raise SavechangeFileException(
+            f"changeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {x_nookunit._changes_dir}."
         )
-    if x_gift._giver != x_nookunit.person_id:
-        raise SaveGiftFileException(
-            f"GiftUnit file cannot be saved because giftunit._giver is incorrect: {x_gift._giver}. It must be {x_nookunit.person_id}."
+    if x_change._giver != x_nookunit.person_id:
+        raise SavechangeFileException(
+            f"changeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {x_nookunit.person_id}."
         )
-    gift_filename = giftunit_get_json_filename(x_gift._gift_id)
-    if not replace and giftunit_file_exists(x_nookunit, x_gift._gift_id):
-        raise SaveGiftFileException(
-            f"GiftUnit file {gift_filename} already exists and cannot be saved over."
+    change_filename = changeunit_get_json_filename(x_change._change_id)
+    if not replace and changeunit_file_exists(x_nookunit, x_change._change_id):
+        raise SavechangeFileException(
+            f"changeUnit file {change_filename} already exists and cannot be saved over."
         )
-    x_gift.save_files()
-    return x_gift
+    x_change.save_files()
+    return x_change
 
 
-def _create_new_giftunit(x_nookunit: NookUnit) -> GiftUnit:
-    return giftunit_shop(
+def _create_new_changeunit(x_nookunit: NookUnit) -> changeUnit:
+    return changeunit_shop(
         _giver=x_nookunit.person_id,
-        _gift_id=_get_next_gift_file_number(x_nookunit),
+        _change_id=_get_next_change_file_number(x_nookunit),
         _atoms_dir=x_nookunit._atoms_dir,
-        _gifts_dir=x_nookunit._gifts_dir,
+        _changes_dir=x_nookunit._changes_dir,
     )
 
 
-def create_save_giftunit(
+def create_save_changeunit(
     x_nookunit: NookUnit, before_agenda: AgendaUnit, after_agenda: AgendaUnit
 ):
-    new_giftunit = _create_new_giftunit(x_nookunit)
-    new_giftunit._bookunit.add_all_different_agendaatoms(before_agenda, after_agenda)
-    save_giftunit_file(x_nookunit, new_giftunit)
+    new_changeunit = _create_new_changeunit(x_nookunit)
+    new_changeunit._bookunit.add_all_different_agendaatoms(before_agenda, after_agenda)
+    save_changeunit_file(x_nookunit, new_changeunit)
 
 
-def add_pledge_gift(x_nookunit, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
+def add_pledge_change(x_nookunit, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
     duty_agenda = get_duty_file_agenda(x_nookunit)
     old_duty_agenda = copy_deepcopy(duty_agenda)
     create_pledge(duty_agenda, pledge_road, x_suffgroup)
-    next_giftunit = _create_new_giftunit(x_nookunit)
-    next_giftunit._bookunit.add_all_different_agendaatoms(old_duty_agenda, duty_agenda)
-    next_giftunit.save_files()
-    append_gifts_to_duty_file(x_nookunit)
+    next_changeunit = _create_new_changeunit(x_nookunit)
+    next_changeunit._bookunit.add_all_different_agendaatoms(
+        old_duty_agenda, duty_agenda
+    )
+    next_changeunit.save_files()
+    append_changes_to_duty_file(x_nookunit)
 
 
-def del_giftunit_file(x_nookunit: NookUnit, file_number: int):
-    delete_dir(f"{x_nookunit._gifts_dir}/{giftunit_get_json_filename(file_number)}")
+def del_changeunit_file(x_nookunit: NookUnit, file_number: int):
+    delete_dir(f"{x_nookunit._changes_dir}/{changeunit_get_json_filename(file_number)}")

@@ -30,7 +30,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._last_gift_id is None
+    assert x_agenda._last_change_id is None
     assert x_agenda._meld_strategy is None
     assert x_agenda._originunit is None
 
@@ -74,7 +74,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._last_gift_id is None
+    assert x_agenda._last_change_id is None
     assert x_agenda._meld_strategy == override_meld_strategy
     assert x_agenda._originunit == originunit_shop()
 
@@ -283,48 +283,48 @@ def test_AgendaUnit_set_money_desc_SetsAttrCorrectly():
     assert noa_agenda._money_desc == noa_money_desc
 
 
-def test_AgendaUnit_set_last_gift_id_SetsAttrCorrectly():
+def test_AgendaUnit_set_last_change_id_SetsAttrCorrectly():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    assert noa_agenda._last_gift_id is None
+    assert noa_agenda._last_change_id is None
 
     # WHEN
-    x_last_gift_id = 89
-    noa_agenda.set_last_gift_id(x_last_gift_id)
+    x_last_change_id = 89
+    noa_agenda.set_last_change_id(x_last_change_id)
 
     # THEN
-    assert noa_agenda._last_gift_id == x_last_gift_id
+    assert noa_agenda._last_change_id == x_last_change_id
 
 
-def test_AgendaUnit_set_last_gift_id_RaisesError():
+def test_AgendaUnit_set_last_change_id_RaisesError():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    old_last_gift_id = 89
-    noa_agenda.set_last_gift_id(old_last_gift_id)
+    old_last_change_id = 89
+    noa_agenda.set_last_change_id(old_last_change_id)
 
     # WHEN / THEN
-    new_last_gift_id = 72
-    assert new_last_gift_id < old_last_gift_id
+    new_last_change_id = 72
+    assert new_last_change_id < old_last_change_id
     with pytest_raises(Exception) as excinfo:
-        noa_agenda.set_last_gift_id(new_last_gift_id)
+        noa_agenda.set_last_change_id(new_last_change_id)
     assert (
         str(excinfo.value)
-        == f"Cannot set _last_gift_id to {new_last_gift_id} because it is less than {old_last_gift_id}."
+        == f"Cannot set _last_change_id to {new_last_change_id} because it is less than {old_last_change_id}."
     )
 
 
-def test_AgendaUnit_del_last_gift_id_SetsAttrCorrectly():
+def test_AgendaUnit_del_last_change_id_SetsAttrCorrectly():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    old_last_gift_id = 89
-    noa_agenda.set_last_gift_id(old_last_gift_id)
-    assert noa_agenda._last_gift_id != None
+    old_last_change_id = 89
+    noa_agenda.set_last_change_id(old_last_change_id)
+    assert noa_agenda._last_change_id != None
 
     # WHEN
-    noa_agenda.del_last_gift_id()
+    noa_agenda.del_last_change_id()
 
     # WHEN
-    assert noa_agenda._last_gift_id is None
+    assert noa_agenda._last_change_id is None
 
 
 def test_duty_str():

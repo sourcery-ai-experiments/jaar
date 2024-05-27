@@ -12,11 +12,11 @@ from src.real.nook import (
     initialize_work_file,
     save_duty_file,
     get_duty_file_agenda,
-    initialize_gift_and_duty_files,
+    initialize_change_and_duty_files,
     nookunit_create_core_dir_and_files,
     get_work_file_agenda,
 )
-from src.real.gift import init_gift_id
+from src.real.change import init_change_id
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,
@@ -122,7 +122,7 @@ def test_EngineUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     )
 
 
-def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGiftFile(
+def test_EngineUnit_initialize_change_and_duty_files_CorrectlySavesDutyFileAndchangeFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -133,22 +133,22 @@ def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     assert duty_file_exists(sue_nookunit)
     delete_dir(sue_nookunit._duty_path)
     assert duty_file_exists(sue_nookunit) == False
-    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_nookunit._gifts_dir)
-    assert os_path_exists(init_gift_file_path) == False
+    init_change_file_path = f"{sue_nookunit._changes_dir}/{init_change_id()}.json"
+    delete_dir(sue_nookunit._changes_dir)
+    assert os_path_exists(init_change_file_path) == False
 
     # WHEN
-    initialize_gift_and_duty_files(sue_nookunit)
+    initialize_change_and_duty_files(sue_nookunit)
 
     # THEN
     duty_agenda = get_duty_file_agenda(sue_nookunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
-    assert os_path_exists(init_gift_file_path)
+    assert os_path_exists(init_change_file_path)
 
 
-def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
+def test_EngineUnit_initialize_change_and_duty_files_CorrectlySavesOnlyDutyFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -159,21 +159,21 @@ def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     assert duty_file_exists(sue_nookunit)
     delete_dir(sue_nookunit._duty_path)
     assert duty_file_exists(sue_nookunit) == False
-    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
-    assert os_path_exists(init_gift_file_path)
+    init_change_file_path = f"{sue_nookunit._changes_dir}/{init_change_id()}.json"
+    assert os_path_exists(init_change_file_path)
 
     # WHEN
-    initialize_gift_and_duty_files(sue_nookunit)
+    initialize_change_and_duty_files(sue_nookunit)
 
     # THEN
     duty_agenda = get_duty_file_agenda(sue_nookunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
-    assert os_path_exists(init_gift_file_path)
+    assert os_path_exists(init_change_file_path)
 
 
-def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
+def test_EngineUnit_initialize_change_and_duty_files_CorrectlySavesOnlychangeFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -186,22 +186,22 @@ def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     sue_duty_agenda.add_partyunit(bob_text)
     save_duty_file(sue_nookunit, sue_duty_agenda)
     assert duty_file_exists(sue_nookunit)
-    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_nookunit._gifts_dir)
-    assert os_path_exists(init_gift_file_path) == False
+    init_change_file_path = f"{sue_nookunit._changes_dir}/{init_change_id()}.json"
+    delete_dir(sue_nookunit._changes_dir)
+    assert os_path_exists(init_change_file_path) == False
 
     # WHEN
-    initialize_gift_and_duty_files(sue_nookunit)
+    initialize_change_and_duty_files(sue_nookunit)
 
     # THEN
     assert sue_duty_agenda._real_id == get_test_real_id()
     assert sue_duty_agenda._owner_id == sue_text
     assert sue_duty_agenda._planck == seven_int
     assert sue_duty_agenda.get_party(bob_text) != None
-    assert os_path_exists(init_gift_file_path)
+    assert os_path_exists(init_change_file_path)
 
 
-# def test_EngineUnit_initialize_gift_and_duty_files_CorrectlyDoesNotOverwrite(
+# def test_EngineUnit_initialize_change_and_duty_files_CorrectlyDoesNotOverwrite(
 #     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
@@ -217,7 +217,7 @@ def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     sue_agenda = agendaunit_shop(sue_text)
 #     bob_text = "Bob"
 #     sue_agenda.add_partyunit(bob_text)
-#     initialize_gift_and_duty_files()
+#     initialize_change_and_duty_files()
 
 #     # THEN
 #     assert sue_person.duty_file_exists()

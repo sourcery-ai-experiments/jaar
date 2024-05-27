@@ -9,7 +9,7 @@ from src.real.nook import (
     get_duty_file_agenda,
     get_default_duty_agenda,
 )
-from src.real.gift import get_gifts_folder
+from src.real.change import get_changes_folder
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,
@@ -32,7 +32,7 @@ def test_NookUnit_Exists():
     assert x_nookunit.person_dir is None
     assert x_nookunit._econs_dir is None
     assert x_nookunit._atoms_dir is None
-    assert x_nookunit._gifts_dir is None
+    assert x_nookunit._changes_dir is None
     assert x_nookunit._duty_file_name is None
     assert x_nookunit._duty_path is None
     assert x_nookunit._work_file_name is None
@@ -61,7 +61,7 @@ def test_nookunit_shop_ReturnsCorrectObj():
     assert x_nookunit.person_dir == f"{x_nookunit.persons_dir}/{sue_text}"
     assert x_nookunit._econs_dir == f"{x_nookunit.person_dir}/econs"
     assert x_nookunit._atoms_dir == f"{x_nookunit.person_dir}/atoms"
-    assert x_nookunit._gifts_dir == f"{x_nookunit.person_dir}/{get_gifts_folder()}"
+    assert x_nookunit._changes_dir == f"{x_nookunit.person_dir}/{get_changes_folder()}"
     assert x_nookunit._duty_file_name == f"{duty_str()}.json"
     x_duty_path = f"{x_nookunit.person_dir}/{x_nookunit._duty_file_name}"
     assert x_nookunit._duty_path == x_duty_path
@@ -86,7 +86,9 @@ def test_nookunit_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_nookunit.person_dir == f"{sue_nookunit.persons_dir}/{sue_text}"
     assert sue_nookunit._econs_dir == f"{sue_nookunit.person_dir}/econs"
     assert sue_nookunit._atoms_dir == f"{sue_nookunit.person_dir}/atoms"
-    assert sue_nookunit._gifts_dir == f"{sue_nookunit.person_dir}/{get_gifts_folder()}"
+    assert (
+        sue_nookunit._changes_dir == f"{sue_nookunit.person_dir}/{get_changes_folder()}"
+    )
     assert sue_nookunit._duty_file_name == f"{duty_str()}.json"
     x_duty_path = f"{sue_nookunit.person_dir}/{sue_nookunit._duty_file_name}"
     assert sue_nookunit._duty_path == x_duty_path
@@ -109,7 +111,7 @@ def test_nookunit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_nookunit.person_dir) is False
     assert os_path_exists(sue_nookunit._econs_dir) is False
     assert os_path_exists(sue_nookunit._atoms_dir) is False
-    assert os_path_exists(sue_nookunit._gifts_dir) is False
+    assert os_path_exists(sue_nookunit._changes_dir) is False
     assert os_path_exists(sue_nookunit._duty_path) is False
     assert os_path_exists(sue_nookunit._work_path) is False
 
@@ -122,7 +124,7 @@ def test_nookunit_create_core_dir_and_files_CreatesDirsAndFiles(
     assert os_path_exists(sue_nookunit.person_dir)
     assert os_path_exists(sue_nookunit._econs_dir)
     assert os_path_exists(sue_nookunit._atoms_dir)
-    assert os_path_exists(sue_nookunit._gifts_dir)
+    assert os_path_exists(sue_nookunit._changes_dir)
     assert os_path_exists(sue_nookunit._duty_path)
     assert os_path_exists(sue_nookunit._work_path)
 

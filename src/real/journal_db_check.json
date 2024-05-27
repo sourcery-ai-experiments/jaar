@@ -9,16 +9,16 @@
         "atom_hx": {
             "columns": {}
         },
-        "book_gift_link": {
+        "book_change_link": {
             "columns": {}
         },
         "book_mstr": {
             "columns": {}
         },
-        "gift_mstr": {
+        "change_mstr": {
             "columns": {}
         },
-        "gift_person_link": {
+        "change_person_link": {
             "columns": {
                 "person_id": {}
             }
