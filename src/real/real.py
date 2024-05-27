@@ -91,14 +91,9 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def engineunit_exists_in_memory(self, person_id: PersonID):
-        return self._engineunits.get(person_id) != None
-
-    def add_engineunit(
+    def init_person_econs(
         self,
         person_id: PersonID,
-        replace_engineunit: bool = False,
-        replace_alert: bool = True,
     ):
         x_nookunit = nookunit_shop(
             person_id=person_id,
@@ -107,10 +102,6 @@ class RealUnit:
             road_delimiter=self._road_delimiter,
             planck=self._planck,
         )
-        if replace_engineunit and replace_alert:
-            raise EngineExistsException(
-                f"add_engineunit fail: {x_nookunit.person_id} already exists"
-            )
         nookunit_create_core_dir_and_files(x_nookunit)
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
@@ -196,7 +187,6 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_engineunit = self.get_engineunit_from_memory(x_person_id)
     #     x_duty_agenda = get_duty_file_agenda(x_nookunit)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):

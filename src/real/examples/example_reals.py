@@ -14,7 +14,7 @@ def create_example_real1() -> RealUnit:
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
-    yao_engine = music_real.add_engineunit(yao_text)
+    music_real.init_person_econs(yao_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     yao_duty_agenda = get_duty_file_agenda(yao_nookunit)
 
@@ -54,12 +54,12 @@ def create_example_real2() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_engine = music_real.add_engineunit(yao_text)
+    music_real.init_person_econs(yao_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
-    wei_engine = music_real.add_engineunit(wei_text)
-    zia_engine = music_real.add_engineunit(zia_text)
+    music_real.init_person_econs(wei_text)
+    music_real.init_person_econs(zia_text)
     yao_duty_agenda = get_duty_file_agenda(yao_nookunit)
     wei_duty_agenda = get_duty_file_agenda(wei_nookunit)
     zia_duty_agenda = get_duty_file_agenda(zia_nookunit)
@@ -106,8 +106,8 @@ def create_example_real2() -> RealUnit:
     create_person_econunits(yao_nookunit)
     create_person_econunits(wei_nookunit)
     create_person_econunits(zia_nookunit)
-    # yao_dallas_econ = yao_engine.get_econunit(dallas_road)
-    # zia_dallas_econ = zia_engine.get_econunit(dallas_road)
+    # yao_dallas_econ = yao_get_econunit(dallas_road)
+    # zia_dallas_econ = zia_get_econunit(dallas_road)
     music_real.set_person_econunits_dirs(yao_text)
     music_real.set_person_econunits_dirs(wei_text)
     music_real.set_person_econunits_dirs(zia_text)
@@ -122,9 +122,9 @@ def create_example_real3() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_engine = music_real.add_engineunit(yao_text)
-    wei_engine = music_real.add_engineunit(wei_text)
-    zia_engine = music_real.add_engineunit(zia_text)
+    music_real.init_person_econs(yao_text)
+    music_real.init_person_econs(wei_text)
+    music_real.init_person_econs(zia_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
@@ -170,9 +170,9 @@ def create_example_real4() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_engine = music_real.add_engineunit(yao_text)
-    wei_engine = music_real.add_engineunit(wei_text)
-    zia_engine = music_real.add_engineunit(zia_text)
+    music_real.init_person_econs(yao_text)
+    music_real.init_person_econs(wei_text)
+    music_real.init_person_econs(zia_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
@@ -245,11 +245,11 @@ def create_example_real4() -> RealUnit:
     save_duty_file(wei_nookunit, wei_duty_agenda)
     save_duty_file(zia_nookunit, zia_duty_agenda)
     # create_person_econunits(yao_nookunit)
-    # wei_engine.create_person_econunits()
-    # zia_engine.create_person_econunits()
-    # yao_dallas_econ = yao_engine.get_econunit(dallas_road)
-    # zia_dallas_econ = zia_engine.get_econunit(dallas_road)
-    # yao_elpaso_econ = yao_engine.get_econunit(elpaso_road)
+    # wei_create_person_econunits()
+    # zia_create_person_econunits()
+    # yao_dallas_econ = yao_get_econunit(dallas_road)
+    # zia_dallas_econ = zia_get_econunit(dallas_road)
+    # yao_elpaso_econ = yao_get_econunit(elpaso_road)
     # yao_dallas_econ.save_role_file(yao_duty_agenda)
     # yao_dallas_econ.save_role_file(wei_duty_agenda)
     # yao_dallas_econ.save_role_file(zia_duty_agenda)

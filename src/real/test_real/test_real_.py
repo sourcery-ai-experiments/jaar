@@ -10,7 +10,6 @@ from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 from os import path as os_path
 from os.path import exists as os_path_exists
-from pytest import raises as pytest_raises
 
 
 def test_RealUnit_exists(reals_dir_setup_cleanup):
@@ -109,7 +108,7 @@ def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):
     assert music_real._persons_dir == f"{music_real._real_dir}/persons"
 
 
-def test_RealUnit_add_engineunit_CorrectlySetsEngine(reals_dir_setup_cleanup):
+def test_RealUnit_init_person_econs_CorrectlySetsEngine(reals_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
@@ -126,7 +125,7 @@ def test_RealUnit_add_engineunit_CorrectlySetsEngine(reals_dir_setup_cleanup):
     assert os_path_exists(luca_nookunit._work_path) == False
 
     # WHEN
-    music_real.add_engineunit(luca_text)
+    music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
@@ -138,7 +137,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
-    music_real.add_engineunit(luca_text)
+    music_real.init_person_econs(luca_text)
     luca_nookunit = nookunit_shop(None, music_text, luca_text)
     bob_text = "Bob"
     luca_duty = get_duty_file_agenda(luca_nookunit)
@@ -161,8 +160,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
-    luca_engine = music_real.add_engineunit(luca_text)
-    todd_engine = music_real.add_engineunit(todd_text)
+    music_real.init_person_econs(luca_text)
+    music_real.init_person_econs(todd_text)
     luca_nookunit = nookunit_shop(None, music_text, luca_text)
     todd_nookunit = nookunit_shop(None, music_text, todd_text)
     luca_duty_agenda = get_duty_file_agenda(luca_nookunit)
@@ -238,8 +237,8 @@ def test_RealUnit_get_person_paths_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert len(music_real.get_person_paths()) == 0
 
     # WHEN
-    music_real.add_engineunit(luca_text)
-    music_real.add_engineunit(todd_text)
+    music_real.init_person_econs(luca_text)
+    music_real.init_person_econs(todd_text)
     music_all_persons = music_real.get_person_paths()
 
     # THEN
