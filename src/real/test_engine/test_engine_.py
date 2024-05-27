@@ -19,7 +19,7 @@ from src.real.nook import (
     get_work_file_agenda,
 )
 from src.real.gift import init_gift_id
-from src.real.person import PersonUnit, personunit_shop
+from src.real.engine import EngineUnit, engineunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,
@@ -30,9 +30,9 @@ from os.path import exists as os_path_exists
 from src._instrument.file import open_file, save_file, delete_dir
 
 
-def test_PersonUnit_Exists():
+def test_EngineUnit_Exists():
     # GIVEN / WHEN
-    x_person = PersonUnit()
+    x_person = EngineUnit()
 
     # THEN
     assert x_person.nook is None
@@ -41,7 +41,7 @@ def test_PersonUnit_Exists():
     assert x_person._econ_objs is None
 
 
-def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
+def test_EngineUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -50,21 +50,21 @@ def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimite
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        personunit_shop(person_id=bob_text, _road_delimiter=slash_text)
+        engineunit_shop(person_id=bob_text, _road_delimiter=slash_text)
     assert (
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
 
 
-def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
+def test_engineunit_shop_ReturnsCorrectEngineUnit(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     x_reals_dir = get_test_reals_dir()
     x_real_id = "froopiland"
 
     # WHEN
-    sue_person = personunit_shop(sue_text, x_real_id, reals_dir=x_reals_dir)
+    sue_person = engineunit_shop(sue_text, x_real_id, reals_dir=x_reals_dir)
 
     # THEN
     sue_nookunit = nookunit_shop(x_reals_dir, x_real_id, sue_text)
@@ -80,7 +80,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
     assert sue_person.nook._planck == default_planck_if_none()
 
 
-def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
+def test_engineunit_shop_ReturnsCorrectEngineUnitWhenGivenEmptyRealParameters(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -89,7 +89,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
     two_int = 2
 
     # WHEN
-    sue_person = personunit_shop(sue_text, _road_delimiter=slash_text, _planck=two_int)
+    sue_person = engineunit_shop(sue_text, _road_delimiter=slash_text, _planck=two_int)
     sue_nookunit = nookunit_shop(None, None, sue_text, slash_text, two_int)
 
     # THEN
@@ -101,7 +101,7 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
     assert sue_person.nook._planck == two_int
 
 
-def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
+def test_EngineUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
@@ -112,7 +112,7 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     print(f"{sue_duty_path=}")
     assert os_path_exists(sue_duty_path) == False
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
     assert os_path_exists(sue_duty_path)
     assert duty_file_exists(sue_nookunit)
@@ -132,7 +132,7 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     assert duty_file_exists(sue_nookunit)
 
 
-def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
+def test_EngineUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
@@ -142,7 +142,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_duty_path = f"{sue_person_dir}/{sue_duty_file_name}"
 
     # WHEN
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
 
     # THEN
@@ -180,12 +180,12 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     assert duty_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_EngineUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
 
     # WHEN / THEN
@@ -198,13 +198,13 @@ def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     )
 
 
-def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGiftFile(
+def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGiftFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
+    sue_person = engineunit_shop(person_id=sue_text, _planck=seven_int)
     sue_nookunit = sue_person.nook
     assert duty_file_exists(sue_nookunit)
     delete_dir(sue_nookunit._duty_path)
@@ -224,13 +224,13 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     assert os_path_exists(init_gift_file_path)
 
 
-def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
+def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
+    sue_person = engineunit_shop(person_id=sue_text, _planck=seven_int)
     sue_nookunit = sue_person.nook
     assert duty_file_exists(sue_nookunit)
     delete_dir(sue_nookunit._duty_path)
@@ -249,13 +249,13 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     assert os_path_exists(init_gift_file_path)
 
 
-def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
+def test_EngineUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_person = personunit_shop(sue_text, _planck=seven_int)
+    sue_person = engineunit_shop(sue_text, _planck=seven_int)
     sue_nookunit = sue_person.nook
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     bob_text = "Bob"
@@ -277,13 +277,13 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     assert os_path_exists(init_gift_file_path)
 
 
-# def test_PersonUnit_initialize_gift_and_duty_files_CorrectlyDoesNotOverwrite(
+# def test_EngineUnit_initialize_gift_and_duty_files_CorrectlyDoesNotOverwrite(
 #     reals_dir_setup_cleanup,
 # ):
 #     # GIVEN
 #     sue_text = "Sue"
 #     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
-#     sue_person = personunit_shop(person_id=sue_text)
+#     sue_person = engineunit_shop(person_id=sue_text)
 # sue_nookunit = sue_person.nook
 #     assert sue_person.duty_file_exists()
 #     delete_dir(sue_person._duty_path)
@@ -309,7 +309,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     assert duty_agenda._owner_id == sue_text
 
 
-def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
+def test_EngineUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
@@ -319,7 +319,7 @@ def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     sue_work_path = f"{sue_person_dir}/{sue_work_file_name}"
     print(f"{sue_work_path=}")
     assert os_path_exists(sue_work_path) == False
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
     assert work_file_exists(sue_nookunit)
     delete_dir(sue_person.nook._work_path)
@@ -338,10 +338,10 @@ def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     assert work_file_exists(sue_nookunit)
 
 
-def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
+def test_EngineUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
     assert work_file_exists(sue_nookunit)
     delete_dir(sue_person.nook._work_path)
@@ -378,12 +378,12 @@ def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     assert work_agenda.get_party(zia_text) != None
 
 
-def test_PersonUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_EngineUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
 
     # WHEN / THEN
@@ -396,12 +396,12 @@ def test_PersonUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     )
 
 
-def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
+def test_EngineUnit_initialize_work_file_CorrectlySavesFile(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = sue_person.nook
     assert work_file_exists(sue_nookunit)
     delete_dir(sue_person.nook._work_path)
@@ -432,14 +432,14 @@ def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     assert work_agenda.get_party(bob_text)
 
 
-def test_PersonUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
+def test_EngineUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_planck = 7
-    sue_person = personunit_shop(person_id=sue_text, _planck=sue_planck)
+    sue_person = engineunit_shop(person_id=sue_text, _planck=sue_planck)
     sue_nookunit = sue_person.nook
     assert work_file_exists(sue_nookunit)
     delete_dir(sue_person.nook._work_path)
@@ -466,7 +466,7 @@ def test_PersonUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     assert work_agenda._planck == sue_planck
 
 
-def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
+def test_EngineUnit_create_core_dir_and_files_CreatesDirsAndFiles(
     reals_dir_setup_cleanup,
 ):
     # GIVEN

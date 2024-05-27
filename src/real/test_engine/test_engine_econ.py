@@ -4,16 +4,16 @@ from src.agenda.graphic import display_ideatree
 from src.econ.job_creator import get_owner_file_name
 from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
 from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
-from src.real.person import personunit_shop
+from src.real.engine import engineunit_shop
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_EngineUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     texas_text = "texas"
     dallas_text = "dallas"
@@ -37,10 +37,10 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanu
     assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
 
 
-def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
+def test_EngineUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     assert os_path_exists(sue_person.nook._econs_dir)
     dallas_text = "dallas"
@@ -57,11 +57,11 @@ def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     assert os_path_exists(dallas_dir)
 
 
-def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
+def test_EngineUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     # GIVEN
     pound_text = "#"
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text, _road_delimiter=pound_text)
+    sue_person = engineunit_shop(person_id=sue_text, _road_delimiter=pound_text)
     sue_nookunit = nookunit_shop(None, None, sue_text, road_delimiter=pound_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     texas_text = "Texas"
@@ -89,12 +89,12 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     assert dallas_econunit._road_delimiter == sue_person.nook._road_delimiter
 
 
-def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
+def test_EngineUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -119,12 +119,12 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     )
 
 
-def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
+def test_EngineUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -146,10 +146,10 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     )
 
 
-def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
+def test_EngineUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -191,10 +191,10 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     assert sue_person._econ_objs.get(elpaso_road) != None
 
 
-def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cleanup):
+def test_EngineUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -240,10 +240,10 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     assert os_path_exists(elpaso_db_path) == False
 
 
-def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_EngineUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -271,10 +271,10 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert sue_person._econ_objs.get(dallas_road) == dallas_econ
 
 
-def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
+def test_EngineUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -304,10 +304,10 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     assert os_path_exists(sue_role_file_path)
 
 
-def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
+def test_EngineUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
@@ -344,12 +344,12 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     assert os_path_exists(elpaso_sue_role_file_path)
 
 
-def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
+def test_EngineUnit_set_person_econunits_role_CorrectlySetsroles(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_person = personunit_shop(person_id=sue_text)
+    sue_person = engineunit_shop(person_id=sue_text)
     sue_nookunit = nookunit_shop(None, None, sue_text)
     sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)

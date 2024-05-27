@@ -5,7 +5,7 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.gift import get_gifts_folder
-from src.real.person import PersonUnit, personunit_shop
+from src.real.engine import EngineUnit, engineunit_shop
 from src.real.nook import (
     nookunit_shop,
     _save_work_file as person_save_work_file,
@@ -30,7 +30,7 @@ class RealUnit:
     _real_dir: str = None
     _persons_dir: str = None
     _journal_db: str = None
-    _personunits: dict[PersonID:PersonUnit] = None
+    _engineunits: dict[PersonID:EngineUnit] = None
     _gifts_dir: str = None
     _road_delimiter: str = None
     _planck: float = None
@@ -91,19 +91,19 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def _set_personunit_in_memory(self, personunit: PersonUnit):
-        self._personunits[personunit.nook.person_id] = personunit
+    def _set_engineunit_in_memory(self, engineunit: EngineUnit):
+        self._engineunits[engineunit.nook.person_id] = engineunit
 
-    def personunit_exists_in_memory(self, person_id: PersonID):
-        return self._personunits.get(person_id) != None
+    def engineunit_exists_in_memory(self, person_id: PersonID):
+        return self._engineunits.get(person_id) != None
 
-    def add_personunit(
+    def add_engineunit(
         self,
         person_id: PersonID,
-        replace_personunit: bool = False,
+        replace_engineunit: bool = False,
         replace_alert: bool = True,
-    ) -> PersonUnit:
-        x_personunit = personunit_shop(
+    ) -> EngineUnit:
+        x_engineunit = engineunit_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
@@ -114,18 +114,18 @@ class RealUnit:
         )
         nookunit_create_core_dir_and_files(x_nookunit)
         if (
-            self.personunit_exists_in_memory(x_personunit.nook.person_id) == False
-            and not replace_personunit
+            self.engineunit_exists_in_memory(x_engineunit.nook.person_id) == False
+            and not replace_engineunit
         ):
-            self._set_personunit_in_memory(x_personunit)
+            self._set_engineunit_in_memory(x_engineunit)
         elif replace_alert:
             raise PersonExistsException(
-                f"add_personunit fail: {x_personunit.nook.person_id} already exists"
+                f"add_engineunit fail: {x_engineunit.nook.person_id} already exists"
             )
-        return self.get_personunit_from_memory(person_id)
+        return self.get_engineunit_from_memory(person_id)
 
-    def get_personunit_from_memory(self, person_id: PersonID) -> PersonUnit:
-        return self._personunits.get(person_id)
+    def get_engineunit_from_memory(self, person_id: PersonID) -> EngineUnit:
+        return self._engineunits.get(person_id)
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         x_nookunit = nookunit_shop(
@@ -137,7 +137,7 @@ class RealUnit:
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_person = self.get_personunit_from_memory(healer_id)
+            healer_person = self.get_engineunit_from_memory(healer_id)
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
                     healer_person=healer_person,
@@ -147,7 +147,7 @@ class RealUnit:
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_person: PersonUnit,
+        healer_person: EngineUnit,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
@@ -156,7 +156,7 @@ class RealUnit:
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_personunit = self.get_personunit_from_memory(person_id)
+        x_engineunit = self.get_engineunit_from_memory(person_id)
         x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
@@ -166,7 +166,7 @@ class RealUnit:
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_person = self.get_personunit_from_memory(healer_id)
+            healer_person = self.get_engineunit_from_memory(healer_id)
             healer_person.create_person_econunits(x_nookunit)
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
@@ -187,7 +187,7 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_personunit = self.get_personunit_from_memory(person_id)
+        x_engineunit = self.get_engineunit_from_memory(person_id)
         x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
@@ -200,8 +200,8 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_personunit = self.get_personunit_from_memory(x_person_id)
-    #     x_duty_agenda = get_duty_file_agenda(x_personunit.nook)
+    #     x_engineunit = self.get_engineunit_from_memory(x_person_id)
+    #     x_duty_agenda = get_duty_file_agenda(x_engineunit.nook)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass
@@ -217,7 +217,7 @@ def realunit_shop(
     real_x = RealUnit(
         real_id=real_id,
         reals_dir=reals_dir,
-        _personunits=get_empty_dict_if_none(None),
+        _engineunits=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
     )

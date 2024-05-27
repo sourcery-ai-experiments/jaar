@@ -21,7 +21,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     sue_text = "Sue"
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work.json"
     assert os_path_exists(x_sue_work_path) == False
-    sue_person = music_real.add_personunit(sue_text)
+    sue_person = music_real.add_engineunit(sue_text)
     assert sue_person.nook._work_path == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
 
@@ -41,7 +41,7 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
-    sue_person = music_real.add_personunit(sue_text)
+    sue_person = music_real.add_engineunit(sue_text)
     sue_nookunit = nookunit_shop(music_real.reals_dir, music_real.real_id, sue_text)
     before_sue_agenda = get_work_file_agenda(sue_nookunit)
     bob_text = "Bob"
@@ -62,7 +62,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     bob_text = "Bob"
-    bob_person = music_real.add_personunit(bob_text)
+    bob_person = music_real.add_engineunit(bob_text)
     bob_nookunit = nookunit_shop(music_real.reals_dir, music_real.real_id, bob_text)
     before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     sue_text = "Sue"
@@ -87,7 +87,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWith_healerhold(
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
     bob_text = "Bob"
-    bob_person = music_real.add_personunit(bob_text)
+    bob_person = music_real.add_engineunit(bob_text)
     bob_nookunit = nookunit_shop(music_real.reals_dir, music_real.real_id, bob_text)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     assert after_bob_work_agenda.get_party(bob_text) is None
@@ -117,9 +117,9 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
 
     bob_text = "Bob"
     sue_text = "Sue"
-    bob_person = music_real.add_personunit(bob_text)
+    bob_person = music_real.add_engineunit(bob_text)
     bob_nookunit = nookunit_shop(music_real.reals_dir, music_real.real_id, bob_text)
-    sue_person = music_real.add_personunit(sue_text)
+    sue_person = music_real.add_engineunit(sue_text)
     sue_nookunit = nookunit_shop(music_real.reals_dir, music_real.real_id, sue_text)
     bob_duty_agenda = music_real.generate_work_agenda(bob_text)
     sue_duty_agenda = music_real.generate_work_agenda(sue_text)

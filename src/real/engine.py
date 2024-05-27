@@ -41,7 +41,7 @@ class PersonCreateEconUnitsException(Exception):
 
 
 @dataclass
-class PersonUnit:
+class EngineUnit:
     nook: NookUnit = None
     _duty_obj: AgendaUnit = None
     _work_obj: AgendaUnit = None
@@ -115,7 +115,7 @@ class PersonUnit:
         self.set_econunits_role(self._duty_obj)
 
 
-def personunit_shop(
+def engineunit_shop(
     person_id: PersonID,
     real_id: str = None,
     reals_dir: str = None,
@@ -123,7 +123,7 @@ def personunit_shop(
     _road_delimiter: str = None,
     _planck: float = None,
     create_files: bool = True,
-) -> PersonUnit:
+) -> EngineUnit:
     x_nookunit = nookunit_shop(
         reals_dir=reals_dir,
         real_id=real_id,
@@ -131,8 +131,8 @@ def personunit_shop(
         road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         planck=default_planck_if_none(_planck),
     )
-    x_personunit = PersonUnit(x_nookunit, _econ_objs=get_empty_dict_if_none(_econ_objs))
+    x_engineunit = EngineUnit(x_nookunit, _econ_objs=get_empty_dict_if_none(_econ_objs))
     if create_files:
         nookunit_create_core_dir_and_files(x_nookunit)
-        x_personunit._duty_obj = get_duty_file_agenda(x_nookunit)
-    return x_personunit
+        x_engineunit._duty_obj = get_duty_file_agenda(x_nookunit)
+    return x_engineunit

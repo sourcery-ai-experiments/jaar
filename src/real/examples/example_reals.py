@@ -13,7 +13,7 @@ def create_example_real1() -> RealUnit:
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
-    yao_person = music_real.add_personunit(yao_text)
+    yao_person = music_real.add_engineunit(yao_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     yao_duty_agenda = get_duty_file_agenda(yao_nookunit)
 
@@ -53,12 +53,12 @@ def create_example_real2() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_real.add_personunit(yao_text)
+    yao_person = music_real.add_engineunit(yao_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
-    wei_person = music_real.add_personunit(wei_text)
-    zia_person = music_real.add_personunit(zia_text)
+    wei_person = music_real.add_engineunit(wei_text)
+    zia_person = music_real.add_engineunit(zia_text)
     yao_duty_agenda = get_duty_file_agenda(yao_nookunit)
     wei_duty_agenda = get_duty_file_agenda(wei_nookunit)
     zia_duty_agenda = get_duty_file_agenda(zia_nookunit)
@@ -121,9 +121,9 @@ def create_example_real3() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_real.add_personunit(yao_text)
-    wei_person = music_real.add_personunit(wei_text)
-    zia_person = music_real.add_personunit(zia_text)
+    yao_person = music_real.add_engineunit(yao_text)
+    wei_person = music_real.add_engineunit(wei_text)
+    zia_person = music_real.add_engineunit(zia_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
@@ -169,9 +169,9 @@ def create_example_real4() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    yao_person = music_real.add_personunit(yao_text)
-    wei_person = music_real.add_personunit(wei_text)
-    zia_person = music_real.add_personunit(zia_text)
+    yao_person = music_real.add_engineunit(yao_text)
+    wei_person = music_real.add_engineunit(wei_text)
+    zia_person = music_real.add_engineunit(zia_text)
     yao_nookunit = nookunit_shop(None, music_text, yao_text)
     wei_nookunit = nookunit_shop(None, music_text, wei_text)
     zia_nookunit = nookunit_shop(None, music_text, zia_text)
