@@ -1,20 +1,19 @@
+from src._instrument.python import get_empty_dict_if_none
+from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.gift import get_gifts_folder
-from src.real.person import (
-    PersonUnit,
-    personunit_shop,
-    chapunit_shop,
+from src.real.person import PersonUnit, personunit_shop
+from src.real.nook import (
+    nookunit_shop,
     _save_work_file as person_save_work_file,
     get_duty_file_agenda,
-    chap_create_core_dir_and_files,
+    nookunit_create_core_dir_and_files,
     get_work_file_agenda,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
-from src._instrument.python import get_empty_dict_if_none
-from src._instrument.file import set_dir, delete_dir, dir_files
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from copy import deepcopy as copy_deepcopy
@@ -110,10 +109,10 @@ class RealUnit:
             reals_dir=self.reals_dir,
             _road_delimiter=self._road_delimiter,
         )
-        x_chapunit = chapunit_shop(
+        x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
-        chap_create_core_dir_and_files(x_chapunit)
+        nookunit_create_core_dir_and_files(x_nookunit)
         if (
             self.personunit_exists_in_memory(x_personunit.person_id) == False
             and not replace_personunit
@@ -129,10 +128,10 @@ class RealUnit:
         return self._personunits.get(person_id)
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        x_chapunit = chapunit_shop(
+        x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
-        return get_duty_file_agenda(x_chapunit)
+        return get_duty_file_agenda(x_nookunit)
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
@@ -158,17 +157,17 @@ class RealUnit:
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_chapunit = chapunit_shop(
+        x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
-        x_duty = get_duty_file_agenda(x_chapunit)
+        x_duty = get_duty_file_agenda(x_nookunit)
         x_duty.calc_agenda_metrics()
 
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_person = self.get_personunit_from_memory(healer_id)
-            healer_person.create_person_econunits(x_chapunit)
+            healer_person.create_person_econunits(x_nookunit)
             for econ_idea in healer_dict.values():
                 x_econ = healer_person.get_econ(econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
@@ -180,7 +179,7 @@ class RealUnit:
         # if work_agenda has not changed st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
-        person_save_work_file(x_chapunit, x_work)
+        person_save_work_file(x_nookunit, x_work)
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
@@ -189,10 +188,10 @@ class RealUnit:
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_personunit = self.get_personunit_from_memory(person_id)
-        x_chapunit = chapunit_shop(
+        x_nookunit = nookunit_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
-        return get_work_file_agenda(x_chapunit)
+        return get_work_file_agenda(x_nookunit)
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

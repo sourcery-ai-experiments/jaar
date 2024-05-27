@@ -1,3 +1,4 @@
+from src._instrument.file import open_file
 from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
     duty_str,
@@ -7,7 +8,6 @@ from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,
 )
-from src._instrument.file import open_file
 from src.real.real import RealUnit
 from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table

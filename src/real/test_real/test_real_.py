@@ -3,19 +3,11 @@ from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
+from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
 from src.real.gift import get_gifts_folder
+from src.real.person import personunit_shop
 from src.real.real import RealUnit, realunit_shop
-from src.real.examples.real_env_kit import (
-    get_test_reals_dir,
-    reals_dir_setup_cleanup,
-)
-
-from src.real.person import (
-    personunit_shop,
-    chapunit_shop,
-    save_duty_file,
-    get_duty_file_agenda,
-)
+from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
 from os import path as os_path
 from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
@@ -287,11 +279,11 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     luca_text = "Luca"
     music_real.add_personunit(luca_text)
     luca_person = music_real.get_personunit_from_memory(luca_text)
-    luca_chapunit = chapunit_shop(None, music_text, luca_text)
+    luca_nookunit = nookunit_shop(None, music_text, luca_text)
     bob_text = "Bob"
-    luca_duty = get_duty_file_agenda(luca_chapunit)
+    luca_duty = get_duty_file_agenda(luca_nookunit)
     luca_duty.add_partyunit(bob_text)
-    save_duty_file(luca_chapunit, luca_duty)
+    save_duty_file(luca_nookunit, luca_duty)
 
     # WHEN
     gen_luca_duty = music_real.get_person_duty_from_file(luca_text)
@@ -311,10 +303,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_text = "Todd"
     luca_person = music_real.add_personunit(luca_text)
     todd_person = music_real.add_personunit(todd_text)
-    luca_chapunit = chapunit_shop(None, music_text, luca_text)
-    todd_chapunit = chapunit_shop(None, music_text, todd_text)
-    luca_duty_agenda = get_duty_file_agenda(luca_chapunit)
-    todd_duty_agenda = get_duty_file_agenda(todd_chapunit)
+    luca_nookunit = nookunit_shop(None, music_text, luca_text)
+    todd_nookunit = nookunit_shop(None, music_text, todd_text)
+    luca_duty_agenda = get_duty_file_agenda(luca_nookunit)
+    todd_duty_agenda = get_duty_file_agenda(todd_nookunit)
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)
@@ -338,10 +330,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_duty_agenda.add_idea(dallas_idea, texas_road)
     todd_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
-    save_duty_file(luca_chapunit, luca_duty_agenda)
-    save_duty_file(todd_chapunit, todd_duty_agenda)
-    luca_person.create_person_econunits(luca_chapunit)
-    todd_person.create_person_econunits(todd_chapunit)
+    save_duty_file(luca_nookunit, luca_duty_agenda)
+    save_duty_file(todd_nookunit, todd_duty_agenda)
+    luca_person.create_person_econunits(luca_nookunit)
+    todd_person.create_person_econunits(todd_nookunit)
     luca_dallas_econ = luca_person.get_econ(dallas_road)
     todd_dallas_econ = todd_person.get_econ(dallas_road)
     luca_file_name = get_owner_file_name(luca_text)

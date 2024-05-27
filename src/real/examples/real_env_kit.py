@@ -1,4 +1,4 @@
-from src._instrument.file import delete_dir, dir_files
+from src._instrument.file import delete_dir
 from pytest import fixture as pytest_fixture
 
 

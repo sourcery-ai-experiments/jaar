@@ -164,7 +164,7 @@
 #         )
 #         x_giftunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(),
-#             after_agenda=get_duty_file_agenda(x_chapunit),
+#             after_agenda=get_duty_file_agenda(x_nookunit),
 #         )
 #         x_giftunit.save_files()
 
@@ -224,7 +224,7 @@
 #         return agendaunit_get_from_json(work_json)
 
 #     def load_duty_file(self):
-#         self._duty_obj = get_duty_file_agenda(x_chapunit)
+#         self._duty_obj = get_duty_file_agenda(x_nookunit)
 
 #     def load_work_file(self):
 #         self._work_obj = self.get_work_file_agenda()
@@ -291,8 +291,8 @@
 #             x_giftunit._gift_id = self._get_next_gift_file_number()
 #         if x_giftunit._giver != self.person_id:
 #             x_giftunit._giver = self.person_id
-#         if x_giftunit._book_start != self._get_next_atom_file_number(x_chapunit):
-#             x_giftunit._book_start = self._get_next_atom_file_number(x_chapunit)
+#         if x_giftunit._book_start != self._get_next_atom_file_number(x_nookunit):
+#             x_giftunit._book_start = self._get_next_atom_file_number(x_nookunit)
 #         return x_giftunit
 
 #     def get_giftunit(self, file_number: int) -> GiftUnit:
@@ -341,7 +341,7 @@
 #         return 0 if max_file_number is None else max_file_number + 1
 
 #     def save_atom_file(self, x_atom: AgendaAtom):
-#         x_filename = self._get_next_atom_file_number(x_chapunit)
+#         x_filename = self._get_next_atom_file_number(x_nookunit)
 #         return self._save_valid_atom_file(x_atom, x_filename)
 
 #     def _get_agenda_from_atom_files(self) -> AgendaUnit:
@@ -382,7 +382,7 @@
 #         self._econ_objs[econ_roadunit] = x_econunit
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
-#         x_duty_agenda = get_duty_file_agenda(x_chapunit)
+#         x_duty_agenda = get_duty_file_agenda(x_nookunit)
 #         x_duty_agenda.calc_agenda_metrics(econ_exceptions)
 #         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
@@ -424,13 +424,13 @@
 #             self.set_econunit_role(x_econ_road, role)
 
 #     def set_person_econunits_role(self):
-#         self.set_econunits_role(get_duty_file_agenda(x_chapunit))
+#         self.set_econunits_role(get_duty_file_agenda(x_nookunit))
 
 #     def add_pledge_gift(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-#         duty_agenda = get_duty_file_agenda(x_chapunit)
+#         duty_agenda = get_duty_file_agenda(x_nookunit)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-#         next_giftunit = _create_new_giftunit(x_chapunit)
+#         next_giftunit = _create_new_giftunit(x_nookunit)
 #         next_giftunit._bookunit.add_all_different_agendaatoms(
 #             old_duty_agenda, duty_agenda
 #         )
@@ -438,15 +438,15 @@
 #         self.append_gifts_to_duty_file()
 
 #     def create_save_giftunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-#         new_giftunit = _create_new_giftunit(x_chapunit)
+#         new_giftunit = _create_new_giftunit(x_nookunit)
 #         new_giftunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda, after_agenda
 #         )
 #         self.save_giftunit_file(new_giftunit)
 
 #     def append_gifts_to_duty_file(self):
-#         self.save_duty_file(_merge_gifts_into_agenda(get_duty_file_agenda(x_chapunit)))
-#         return get_duty_file_agenda(x_chapunit)
+#         self.save_duty_file(_merge_gifts_into_agenda(get_duty_file_agenda(x_nookunit)))
+#         return get_duty_file_agenda(x_nookunit)
 
 
 # def personunit_shop(

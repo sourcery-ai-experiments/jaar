@@ -1,11 +1,9 @@
-from src._road.road import create_road_from_nodes as roadnodes
 from src.agenda.book import bookunit_shop
 from src.real.gift import giftunit_shop, create_giftunit_from_files, get_gifts_folder
 from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,
     get_atom_example_ideaunit_ball,
-    get_bookunit_carm_example,
 )
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -14,7 +12,6 @@ from src.real.examples.real_env_kit import (
 )
 from src._instrument.python import get_dict_from_json
 from src._instrument.file import open_file
-from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 

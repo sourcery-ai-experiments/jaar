@@ -6,58 +6,57 @@ from src.agenda.agenda import (
     duty_str,
     work_str,
 )
-from src.real.gift import init_gift_id, get_gifts_folder
-from src.real.person import (
-    PersonUnit,
-    personunit_shop,
-    chapunit_shop,
+from src.real.nook import (
+    NookUnit,
+    nookunit_shop,
     duty_file_exists,
     work_file_exists,
-    ChapUnit,
     _save_work_file,
     initialize_work_file,
     save_duty_file,
     get_duty_file_agenda,
     initialize_gift_and_duty_files,
-    chap_create_core_dir_and_files,
+    nookunit_create_core_dir_and_files,
     get_work_file_agenda,
 )
-from pytest import raises as pytest_raises
+from src.real.gift import init_gift_id, get_gifts_folder
+from src.real.person import PersonUnit, personunit_shop
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,
     reals_dir_setup_cleanup,
 )
+from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 from src._instrument.file import open_file, save_file, delete_dir
 
 
-def test_ChapUnit_Exists():
+def test_NookUnit_Exists():
     # GIVEN / WHEN
-    x_chap = ChapUnit()
+    x_nookunit = NookUnit()
 
     # THEN
-    assert x_chap.person_id is None
-    assert x_chap.real_id is None
-    assert x_chap.real_dir is None
-    assert x_chap.reals_dir is None
-    assert x_chap.persons_dir is None
-    assert x_chap.person_dir is None
-    assert x_chap._econs_dir is None
-    assert x_chap._atoms_dir is None
-    assert x_chap._gifts_dir is None
-    assert x_chap._duty_obj is None
-    assert x_chap._duty_file_name is None
-    assert x_chap._duty_path is None
-    assert x_chap._work_obj is None
-    assert x_chap._work_file_name is None
-    assert x_chap._work_path is None
-    assert x_chap._econ_objs is None
-    assert x_chap._road_delimiter is None
-    assert x_chap._planck is None
+    assert x_nookunit.person_id is None
+    assert x_nookunit.real_id is None
+    assert x_nookunit.real_dir is None
+    assert x_nookunit.reals_dir is None
+    assert x_nookunit.persons_dir is None
+    assert x_nookunit.person_dir is None
+    assert x_nookunit._econs_dir is None
+    assert x_nookunit._atoms_dir is None
+    assert x_nookunit._gifts_dir is None
+    assert x_nookunit._duty_obj is None
+    assert x_nookunit._duty_file_name is None
+    assert x_nookunit._duty_path is None
+    assert x_nookunit._work_obj is None
+    assert x_nookunit._work_file_name is None
+    assert x_nookunit._work_path is None
+    assert x_nookunit._econ_objs is None
+    assert x_nookunit._road_delimiter is None
+    assert x_nookunit._planck is None
 
 
-def test_chapunit_shop_ReturnsCorrectObj():
+def test_nookunit_shop_ReturnsCorrectObj():
     # GIVEN
     x_reals_dir = "src/real/examples"
     x_real_id = "music"
@@ -66,25 +65,25 @@ def test_chapunit_shop_ReturnsCorrectObj():
     x_planck = 3
 
     # WHEN
-    x_chapunit = chapunit_shop(
+    x_nookunit = nookunit_shop(
         x_reals_dir, x_real_id, x_person_id, x_road_delimiter, x_planck
     )
 
     # THEN
-    assert x_chapunit._road_delimiter == x_road_delimiter
-    assert x_chapunit.real_dir == f"{x_reals_dir}/{x_real_id}"
-    assert x_chapunit.persons_dir == f"{x_chapunit.real_dir}/persons"
-    assert x_chapunit.person_id == x_person_id
-    assert x_chapunit.person_dir == f"{x_chapunit.persons_dir}/{x_person_id}"
-    assert x_chapunit._econs_dir == f"{x_chapunit.person_dir}/econs"
-    assert x_chapunit._atoms_dir == f"{x_chapunit.person_dir}/atoms"
-    assert x_chapunit._gifts_dir == f"{x_chapunit.person_dir}/{get_gifts_folder()}"
-    assert x_chapunit._duty_file_name == f"{duty_str()}.json"
-    x_duty_path = f"{x_chapunit.person_dir}/{x_chapunit._duty_file_name}"
-    assert x_chapunit._duty_path == x_duty_path
-    assert x_chapunit._work_file_name == f"{work_str()}.json"
-    x_workpath = f"{x_chapunit.person_dir}/{x_chapunit._work_file_name}"
-    assert x_chapunit._work_path == x_workpath
+    assert x_nookunit._road_delimiter == x_road_delimiter
+    assert x_nookunit.real_dir == f"{x_reals_dir}/{x_real_id}"
+    assert x_nookunit.persons_dir == f"{x_nookunit.real_dir}/persons"
+    assert x_nookunit.person_id == x_person_id
+    assert x_nookunit.person_dir == f"{x_nookunit.persons_dir}/{x_person_id}"
+    assert x_nookunit._econs_dir == f"{x_nookunit.person_dir}/econs"
+    assert x_nookunit._atoms_dir == f"{x_nookunit.person_dir}/atoms"
+    assert x_nookunit._gifts_dir == f"{x_nookunit.person_dir}/{get_gifts_folder()}"
+    assert x_nookunit._duty_file_name == f"{duty_str()}.json"
+    x_duty_path = f"{x_nookunit.person_dir}/{x_nookunit._duty_file_name}"
+    assert x_nookunit._duty_path == x_duty_path
+    assert x_nookunit._work_file_name == f"{work_str()}.json"
+    x_workpath = f"{x_nookunit.person_dir}/{x_nookunit._work_file_name}"
+    assert x_nookunit._work_path == x_workpath
 
 
 def test_PersonUnit_Exists():
@@ -114,13 +113,13 @@ def test_PersonUnit_set_person_id_CorrectlySetsAttr():
 
     # GIVEN
     yao_text = "Yao"
-    x_chapunit = chapunit_shop(None, None, yao_text)
-    x_person.set_person_id(x_chapunit)
+    x_nookunit = nookunit_shop(None, None, yao_text)
+    x_person.set_person_id(x_nookunit)
 
     # THEN
     assert x_person.person_id == yao_text
     assert x_person._work_file_name == f"{work_str()}.json"
-    assert x_person._econs_dir == f"{x_chapunit.person_dir}/econs"
+    assert x_person._econs_dir == f"{x_nookunit.person_dir}/econs"
 
 
 def test_PersonUnit_set_person_id_RaisesErrorIf_person_id_Contains_road_delimiter(
@@ -149,13 +148,13 @@ def test_personunit_shop_ReturnsCorrectPersonUnit(reals_dir_setup_cleanup):
     sue_person = personunit_shop(sue_text, x_real_id, reals_dir=x_reals_dir)
 
     # THEN
-    sue_chapunit = chapunit_shop(x_reals_dir, x_real_id, sue_text)
+    sue_nookunit = nookunit_shop(x_reals_dir, x_real_id, sue_text)
     assert sue_person.person_id == sue_text
     assert sue_person.real_id == x_real_id
     assert sue_person.reals_dir == x_reals_dir
-    assert sue_person._econs_dir == f"{sue_chapunit.person_dir}/econs"
+    assert sue_person._econs_dir == f"{sue_nookunit.person_dir}/econs"
     assert sue_person._work_file_name == f"{work_str()}.json"
-    sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
+    sue_work_file_path = f"{sue_nookunit.person_dir}/{sue_nookunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._econ_objs == {}
     assert sue_person._road_delimiter == default_road_delimiter_if_none()
@@ -172,12 +171,12 @@ def test_personunit_shop_ReturnsCorrectPersonUnitWhenGivenEmptyRealParameters(
 
     # WHEN
     sue_person = personunit_shop(sue_text, _road_delimiter=slash_text, _planck=two_int)
-    sue_chapunit = chapunit_shop(None, None, sue_text, slash_text, two_int)
+    sue_nookunit = nookunit_shop(None, None, sue_text, slash_text, two_int)
 
     # THEN
     assert sue_person.person_id == sue_text
     assert sue_person._work_file_name == f"{work_str()}.json"
-    sue_work_file_path = f"{sue_chapunit.person_dir}/{sue_chapunit._work_file_name}"
+    sue_work_file_path = f"{sue_nookunit.person_dir}/{sue_nookunit._work_file_name}"
     assert sue_person._work_path == sue_work_file_path
     assert sue_person._road_delimiter == slash_text
     assert sue_person._planck == two_int
@@ -191,27 +190,27 @@ def test_PersonUnit_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
     sue_duty_file_name = f"{duty_str()}.json"
     sue_duty_path = f"{sue_person_dir}/{sue_duty_file_name}"
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
     print(f"{sue_duty_path=}")
     assert os_path_exists(sue_duty_path) == False
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
     assert os_path_exists(sue_duty_path)
-    assert duty_file_exists(sue_chapunit)
+    assert duty_file_exists(sue_nookunit)
     delete_dir(sue_duty_path)
     assert os_path_exists(sue_duty_path) == False
-    assert duty_file_exists(sue_chapunit) == False
+    assert duty_file_exists(sue_nookunit) == False
 
     # WHEN
     save_file(
-        dest_dir=sue_chapunit.person_dir,
-        file_name=sue_chapunit._duty_file_name,
+        dest_dir=sue_nookunit.person_dir,
+        file_name=sue_nookunit._duty_file_name,
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
     # THEN
     assert os_path_exists(sue_duty_path)
-    assert duty_file_exists(sue_chapunit)
+    assert duty_file_exists(sue_nookunit)
 
 
 def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
@@ -225,23 +224,23 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
 
     # WHEN
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
 
     # THEN
-    assert duty_file_exists(sue_chapunit)
+    assert duty_file_exists(sue_nookunit)
 
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
     delete_dir(sue_duty_path)
-    assert duty_file_exists(sue_chapunit) == False
+    assert duty_file_exists(sue_nookunit) == False
 
     # WHEN
-    save_duty_file(sue_chapunit, sue_agenda)
+    save_duty_file(sue_nookunit, sue_agenda)
 
     # THEN
-    assert duty_file_exists(sue_chapunit)
+    assert duty_file_exists(sue_nookunit)
 
     # GIVEN
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
@@ -253,7 +252,7 @@ def test_PersonUnit_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    save_duty_file(sue_chapunit, sue2_agenda)
+    save_duty_file(sue_nookunit, sue2_agenda)
 
     # THEN
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
@@ -268,12 +267,12 @@ def test_PersonUnit_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
 
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        save_duty_file(sue_chapunit, agendaunit_shop(yao_text))
+        save_duty_file(sue_nookunit, agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
@@ -287,19 +286,19 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesDutyFileAndGift
     sue_text = "Sue"
     seven_int = 7
     sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
-    sue_chapunit = chapunit_shop(None, None, sue_text, x_planck=seven_int)
-    assert duty_file_exists(sue_chapunit)
-    delete_dir(sue_chapunit._duty_path)
-    assert duty_file_exists(sue_chapunit) == False
-    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_chapunit._gifts_dir)
+    sue_nookunit = nookunit_shop(None, None, sue_text, x_planck=seven_int)
+    assert duty_file_exists(sue_nookunit)
+    delete_dir(sue_nookunit._duty_path)
+    assert duty_file_exists(sue_nookunit) == False
+    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
+    delete_dir(sue_nookunit._gifts_dir)
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_nookunit)
 
     # THEN
-    duty_agenda = get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_nookunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -313,18 +312,18 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyDutyFile(
     sue_text = "Sue"
     seven_int = 7
     sue_person = personunit_shop(person_id=sue_text, _planck=seven_int)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    assert duty_file_exists(sue_chapunit)
-    delete_dir(sue_chapunit._duty_path)
-    assert duty_file_exists(sue_chapunit) == False
-    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    assert duty_file_exists(sue_nookunit)
+    delete_dir(sue_nookunit._duty_path)
+    assert duty_file_exists(sue_nookunit) == False
+    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
     assert os_path_exists(init_gift_file_path)
 
     # WHEN
-    initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_nookunit)
 
     # THEN
-    duty_agenda = get_duty_file_agenda(sue_chapunit)
+    duty_agenda = get_duty_file_agenda(sue_nookunit)
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -338,18 +337,18 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
     sue_text = "Sue"
     seven_int = 7
     sue_person = personunit_shop(sue_text, _planck=seven_int)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    assert duty_file_exists(sue_chapunit)
-    init_gift_file_path = f"{sue_chapunit._gifts_dir}/{init_gift_id()}.json"
-    delete_dir(sue_chapunit._gifts_dir)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    assert duty_file_exists(sue_nookunit)
+    init_gift_file_path = f"{sue_nookunit._gifts_dir}/{init_gift_id()}.json"
+    delete_dir(sue_nookunit._gifts_dir)
     assert os_path_exists(init_gift_file_path) == False
 
     # WHEN
-    initialize_gift_and_duty_files(sue_chapunit)
+    initialize_gift_and_duty_files(sue_nookunit)
 
     # THEN
     assert sue_duty_agenda._real_id == get_test_real_id()
@@ -366,7 +365,7 @@ def test_PersonUnit_initialize_gift_and_duty_files_CorrectlySavesOnlyGiftFile(
 #     sue_text = "Sue"
 #     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
 #     sue_person = personunit_shop(person_id=sue_text)
-# sue_chapunit = chapunit_shop(None, None, sue_text)
+# sue_nookunit = nookunit_shop(None, None, sue_text)
 #     assert sue_person.duty_file_exists()
 #     delete_dir(sue_person._duty_path)
 #     assert sue_person.duty_file_exists() == False
@@ -402,43 +401,43 @@ def test_PersonUnit_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup)
     print(f"{sue_work_path=}")
     assert os_path_exists(sue_work_path) == False
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    assert work_file_exists(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    assert work_file_exists(sue_nookunit)
     delete_dir(sue_person._work_path)
     assert os_path_exists(sue_work_path) == False
-    assert work_file_exists(sue_chapunit) == False
+    assert work_file_exists(sue_nookunit) == False
 
     # WHEN
     save_file(
-        dest_dir=sue_chapunit.person_dir,
-        file_name=sue_chapunit._work_file_name,
+        dest_dir=sue_nookunit.person_dir,
+        file_name=sue_nookunit._work_file_name,
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
     # THEN
     assert os_path_exists(sue_work_path)
-    assert work_file_exists(sue_chapunit)
+    assert work_file_exists(sue_nookunit)
 
 
 def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    assert work_file_exists(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    assert work_file_exists(sue_nookunit)
     delete_dir(sue_person._work_path)
-    assert work_file_exists(sue_chapunit) == False
+    assert work_file_exists(sue_nookunit) == False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    _save_work_file(sue_chapunit, sue_agenda)
+    _save_work_file(sue_nookunit, sue_agenda)
 
     # THEN
-    assert work_file_exists(sue_chapunit)
+    assert work_file_exists(sue_nookunit)
 
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
@@ -453,7 +452,7 @@ def test_PersonUnit_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
     sue2_agenda.add_partyunit(zia_text)
-    _save_work_file(sue_chapunit, sue2_agenda)
+    _save_work_file(sue_nookunit, sue2_agenda)
 
     # THEN
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
@@ -468,12 +467,12 @@ def test_PersonUnit_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
 
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        _save_work_file(sue_chapunit, agendaunit_shop(yao_text))
+        _save_work_file(sue_nookunit, agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s work agenda."
@@ -486,16 +485,16 @@ def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    assert work_file_exists(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    assert work_file_exists(sue_nookunit)
     delete_dir(sue_person._work_path)
-    assert work_file_exists(sue_chapunit) == False
+    assert work_file_exists(sue_nookunit) == False
 
     # WHEN
-    initialize_work_file(sue_chapunit)
+    initialize_work_file(sue_nookunit)
 
     # THEN
-    work_agenda = get_work_file_agenda(sue_chapunit)
+    work_agenda = get_work_file_agenda(sue_nookunit)
     assert work_agenda._real_id == get_test_real_id()
     assert work_agenda._owner_id == sue_text
     bob_text = "Bob"
@@ -504,15 +503,15 @@ def test_PersonUnit_initialize_work_file_CorrectlySavesFile(
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    _save_work_file(sue_chapunit, sue_agenda)
-    work_agenda = get_work_file_agenda(sue_chapunit)
+    _save_work_file(sue_nookunit, sue_agenda)
+    work_agenda = get_work_file_agenda(sue_nookunit)
     assert work_agenda.get_party(bob_text)
 
     # WHEN
-    initialize_work_file(sue_chapunit)
+    initialize_work_file(sue_nookunit)
 
     # THEN
-    work_agenda = get_work_file_agenda(sue_chapunit)
+    work_agenda = get_work_file_agenda(sue_nookunit)
     assert work_agenda.get_party(bob_text)
 
 
@@ -524,19 +523,19 @@ def test_PersonUnit_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_planck = 7
     sue_person = personunit_shop(person_id=sue_text, _planck=sue_planck)
-    sue_chapunit = chapunit_shop(None, None, sue_text, x_planck=sue_planck)
-    assert work_file_exists(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text, x_planck=sue_planck)
+    assert work_file_exists(sue_nookunit)
     delete_dir(sue_person._work_path)
-    assert work_file_exists(sue_chapunit) == False
+    assert work_file_exists(sue_nookunit) == False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    initialize_work_file(sue_chapunit)
+    initialize_work_file(sue_nookunit)
 
     # THEN
-    assert work_file_exists(sue_chapunit)
+    assert work_file_exists(sue_nookunit)
 
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
@@ -555,26 +554,26 @@ def test_PersonUnit_create_core_dir_and_files_CreatesDirsAndFiles(
 ):
     # GIVEN
     sue_text = "Sue"
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    delete_dir(sue_chapunit.real_dir)
-    assert os_path_exists(sue_chapunit.real_dir) is False
-    assert os_path_exists(sue_chapunit.persons_dir) is False
-    assert os_path_exists(sue_chapunit.person_dir) is False
-    assert os_path_exists(sue_chapunit._econs_dir) is False
-    assert os_path_exists(sue_chapunit._atoms_dir) is False
-    assert os_path_exists(sue_chapunit._gifts_dir) is False
-    assert os_path_exists(sue_chapunit._duty_path) is False
-    assert os_path_exists(sue_chapunit._work_path) is False
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    delete_dir(sue_nookunit.real_dir)
+    assert os_path_exists(sue_nookunit.real_dir) is False
+    assert os_path_exists(sue_nookunit.persons_dir) is False
+    assert os_path_exists(sue_nookunit.person_dir) is False
+    assert os_path_exists(sue_nookunit._econs_dir) is False
+    assert os_path_exists(sue_nookunit._atoms_dir) is False
+    assert os_path_exists(sue_nookunit._gifts_dir) is False
+    assert os_path_exists(sue_nookunit._duty_path) is False
+    assert os_path_exists(sue_nookunit._work_path) is False
 
     # WHEN
-    chap_create_core_dir_and_files(sue_chapunit)
+    nookunit_create_core_dir_and_files(sue_nookunit)
 
     # THEN
-    assert os_path_exists(sue_chapunit.real_dir)
-    assert os_path_exists(sue_chapunit.persons_dir)
-    assert os_path_exists(sue_chapunit.person_dir)
-    assert os_path_exists(sue_chapunit._econs_dir)
-    assert os_path_exists(sue_chapunit._atoms_dir)
-    assert os_path_exists(sue_chapunit._gifts_dir)
-    assert os_path_exists(sue_chapunit._duty_path)
-    assert os_path_exists(sue_chapunit._work_path)
+    assert os_path_exists(sue_nookunit.real_dir)
+    assert os_path_exists(sue_nookunit.persons_dir)
+    assert os_path_exists(sue_nookunit.person_dir)
+    assert os_path_exists(sue_nookunit._econs_dir)
+    assert os_path_exists(sue_nookunit._atoms_dir)
+    assert os_path_exists(sue_nookunit._gifts_dir)
+    assert os_path_exists(sue_nookunit._duty_path)
+    assert os_path_exists(sue_nookunit._work_path)

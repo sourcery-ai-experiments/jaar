@@ -1,31 +1,20 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
-from src.econ.job_creator import (
-    get_role_file,
-    save_role_file,
-    get_owner_file_name,
-)
+from src.econ.job_creator import get_owner_file_name
 from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
-from src.real.person import (
-    PersonUnit,
-    personunit_shop,
-    chapunit_shop,
-    save_duty_file,
-    get_duty_file_agenda,
-)
-from pytest import raises as pytest_raises
+from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
+from src.real.person import personunit_shop
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
+from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(
-    reals_dir_setup_cleanup,
-):
+def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
     texas_text = "texas"
     dallas_text = "dallas"
     elpaso_text = "el paso"
@@ -33,15 +22,15 @@ def test_PersonUnit_get_person_econ_dir_ReturnsCorrectObj(
     idearoot = get_rootpart_of_econ_dir()
 
     # WHEN
-    texas_path = sue_person._get_person_econ_dir(sue_chapunit, [idearoot, texas_text])
+    texas_path = sue_person._get_person_econ_dir(sue_nookunit, [idearoot, texas_text])
     dallas_path = sue_person._get_person_econ_dir(
-        sue_chapunit, [idearoot, texas_text, dallas_text]
+        sue_nookunit, [idearoot, texas_text, dallas_text]
     )
     elpaso_path = sue_person._get_person_econ_dir(
-        sue_chapunit, [idearoot, texas_text, elpaso_text]
+        sue_nookunit, [idearoot, texas_text, elpaso_text]
     )
     kern_path = sue_person._get_person_econ_dir(
-        sue_chapunit, [idearoot, texas_text, elpaso_text, kern_text]
+        sue_nookunit, [idearoot, texas_text, elpaso_text, kern_text]
     )
 
     # THEN
@@ -56,16 +45,16 @@ def test_PersonUnit_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
     assert os_path_exists(sue_person._econs_dir)
     dallas_text = "dallas"
     dallas_list = [dallas_text]
-    dallas_dir = sue_person._get_person_econ_dir(sue_chapunit, dallas_list)
+    dallas_dir = sue_person._get_person_econ_dir(sue_nookunit, dallas_list)
     print(f"{dallas_dir=}")
     assert os_path_exists(dallas_dir) == False
 
     # WHEN
-    sue_person._create_econ_dir(sue_chapunit, dallas_text)
+    sue_person._create_econ_dir(sue_nookunit, dallas_text)
 
     # THEN
     print(f"{dallas_dir=}")
@@ -77,13 +66,13 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     pound_text = "#"
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text, _road_delimiter=pound_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text, x_road_delimiter=pound_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text, x_road_delimiter=pound_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     dallas_text = "dallas"
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
-    dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
+    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{dallas_db_path=}")
@@ -91,7 +80,7 @@ def test_PersonUnit_create_econunit_CreatesEconUnit(reals_dir_setup_cleanup):
     assert sue_person._econ_objs == {}
 
     # WHEN
-    sue_person._create_econunit(sue_chapunit, dallas_road)
+    sue_person._create_econunit(sue_nookunit, dallas_road)
 
     # THEN
     assert os_path_exists(dallas_db_path)
@@ -110,8 +99,8 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -123,11 +112,11 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_justified_IsF
     sue_duty_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.calc_agenda_metrics()
     assert sue_duty_agenda._econs_justified == False
-    save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.create_person_econunits(sue_chapunit, econ_exceptions=False)
+        sue_person.create_person_econunits(sue_nookunit, econ_exceptions=False)
     assert (
         str(excinfo.value)
         == f"Cannot set '{sue_text}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
@@ -140,8 +129,8 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Tex/as"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -150,11 +139,11 @@ def test_PersonUnit_create_person_econunits_RaisesErrorWhen__econs_buildable_IsF
     sue_duty_agenda.calc_agenda_metrics()
     assert sue_duty_agenda._econs_justified
     assert sue_duty_agenda._econs_buildable == False
-    save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        sue_person.create_person_econunits(sue_chapunit)
+        sue_person.create_person_econunits(sue_nookunit)
     assert (
         str(excinfo.value)
         == f"Cannot set '{sue_text}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
@@ -165,8 +154,8 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -181,10 +170,10 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
 
-    dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
-    elpaso_dir = sue_person._create_econ_dir(sue_chapunit, elpaso_road)
+    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(sue_nookunit, elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
@@ -196,7 +185,7 @@ def test_PersonUnit_create_person_econunits_CreatesEconUnits(reals_dir_setup_cle
     assert sue_person._econ_objs == {}
 
     # WHEN
-    sue_person.create_person_econunits(sue_chapunit)
+    sue_person.create_person_econunits(sue_nookunit)
 
     # THEN
     assert os_path_exists(dallas_db_path)
@@ -210,8 +199,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -226,16 +215,16 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
-    elpaso_dir = sue_person._create_econ_dir(sue_chapunit, elpaso_road)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
+    elpaso_dir = sue_person._create_econ_dir(sue_nookunit, elpaso_road)
     dallas_db_path = f"{dallas_dir}/{treasury_db_filename()}"
     elpaso_db_path = f"{elpaso_dir}/{treasury_db_filename()}"
     print(f"{dallas_dir=}")
     print(f"{elpaso_db_path=}")
     print(f"{dallas_db_path=}")
     print(f"{elpaso_db_path=}")
-    sue_person.create_person_econunits(sue_chapunit)
+    sue_person.create_person_econunits(sue_nookunit)
     assert os_path_exists(dallas_db_path)
     assert os_path_exists(elpaso_db_path)
     assert sue_person._econ_objs.get(dallas_road) != None
@@ -245,8 +234,8 @@ def test_PersonUnit_create_person_econunits_DeletesEconUnits(reals_dir_setup_cle
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({}))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_duty_agenda.calc_agenda_metrics()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    sue_person.create_person_econunits(sue_chapunit)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    sue_person.create_person_econunits(sue_nookunit)
 
     # THEN
     assert sue_person._econ_objs.get(dallas_road) != None
@@ -259,8 +248,8 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -271,13 +260,13 @@ def test_PersonUnit_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    dallas_dir = sue_person._create_econ_dir(sue_chapunit, dallas_road)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    dallas_dir = sue_person._create_econ_dir(sue_nookunit, dallas_road)
     print(f"{dallas_dir=}")
     assert sue_person._econ_objs == {}
 
     # WHEN
-    sue_person.create_person_econunits(sue_chapunit)
+    sue_person.create_person_econunits(sue_nookunit)
     dallas_econ = sue_person.get_econ(dallas_road)
 
     # THEN
@@ -290,8 +279,8 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -304,8 +293,8 @@ def test_PersonUnit_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup
     sue_duty_agenda.add_idea(dallas_idea, texas_road)
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    sue_person.create_person_econunits(sue_chapunit)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    sue_person.create_person_econunits(sue_nookunit)
     print(f"{sue_person._econ_objs.keys()=}")
     dallas_econ = sue_person.get_econ(dallas_road)
     sue_file_name = get_owner_file_name(sue_text)
@@ -323,8 +312,8 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -341,8 +330,8 @@ def test_PersonUnit_set_econunits_role_CorrectlySets_roles(reals_dir_setup_clean
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    sue_person.create_person_econunits(sue_chapunit)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    sue_person.create_person_econunits(sue_nookunit)
     sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
@@ -365,8 +354,8 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_person = personunit_shop(person_id=sue_text)
-    sue_chapunit = chapunit_shop(None, None, sue_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_chapunit)
+    sue_nookunit = nookunit_shop(None, None, sue_text)
+    sue_duty_agenda = get_duty_file_agenda(sue_nookunit)
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -383,8 +372,8 @@ def test_PersonUnit_set_person_econunits_role_CorrectlySetsroles(
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    save_duty_file(sue_chapunit, sue_duty_agenda)
-    sue_person.create_person_econunits(sue_chapunit)
+    save_duty_file(sue_nookunit, sue_duty_agenda)
+    sue_person.create_person_econunits(sue_nookunit)
     sue_file_name = get_owner_file_name(sue_text)
     dallas_econ = sue_person.get_econ(dallas_road)
     dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"

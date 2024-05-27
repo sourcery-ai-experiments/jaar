@@ -11,7 +11,6 @@ from src.real.examples.example_atoms import (
     get_bookunit_carm_example,
 )
 from src._instrument.python import x_is_json
-from pytest import raises as pytest_raises
 
 
 def test_get_gifts_folder_ReturnsCorrectObj():
