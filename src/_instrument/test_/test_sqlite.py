@@ -36,26 +36,26 @@ def test_sqlite_null_ReturnsCorrectObj():
 def test_sqlite_create_insert_sqlstr_ReturnsCorrectObj():
     # GIVEN
     x_table = "kubo_trains"
-    person_id_text = "person_id"
+    eagle_id_text = "eagle_id"
     train_id_text = "train_id"
     train_color_text = "train_color"
-    x_columns = [person_id_text, train_id_text, train_color_text]
-    person_id_value = 47
+    x_columns = [eagle_id_text, train_id_text, train_color_text]
+    eagle_id_value = 47
     train_id_value = "TR34"
     train_color_value = "red"
-    x_values = [person_id_value, train_id_value, train_color_value]
+    x_values = [eagle_id_value, train_id_value, train_color_value]
 
     # WHEN
     gen_sqlstr = create_insert_sqlstr(x_table, x_columns, x_values)
 
     # THEN
     example_sqlstr = f"""INSERT INTO {x_table} (
-  {person_id_text}
+  {eagle_id_text}
 , {train_id_text}
 , {train_color_text}
 )
 VALUES (
-  {person_id_value}
+  {eagle_id_value}
 , '{train_id_value}'
 , '{train_color_value}'
 )
