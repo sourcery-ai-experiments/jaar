@@ -5,7 +5,7 @@ from src.agenda.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
-from src.real.change import (
+from src.agenda.change import (
     ChangeUnit,
     changeunit_shop,
     get_json_filename as changeunit_get_json_filename,
@@ -13,7 +13,7 @@ from src.real.change import (
     init_change_id,
     get_init_change_id_if_None,
 )
-from src.real.userdir import UserDir
+from src._road.userdir import UserDir
 from os.path import exists as os_path_exists
 
 

@@ -1,9 +1,6 @@
-from src.agenda.agenda import (
-    agendaunit_shop,
-    get_from_json as agendaunit_get_from_json,
-    duty_str,
-)
-from src.real.userdir import userdir_shop
+from src._road.jaar_config import duty_str
+from src._road.userdir import userdir_shop
+from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.real.admin_duty import (
     duty_file_exists,
     save_duty_file,
@@ -11,7 +8,7 @@ from src.real.admin_duty import (
     initialize_change_duty_files,
     get_default_duty_agenda,
 )
-from src.real.change import init_change_id
+from src.agenda.change import init_change_id
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     get_test_real_id,

@@ -1,5 +1,5 @@
 from src.agenda.book import bookunit_shop
-from src.real.change import (
+from src.agenda.change import (
     changeunit_shop,
     create_changeunit_from_files,
     get_changes_folder,
@@ -135,7 +135,7 @@ def test_ChangeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     change_file_dict = get_dict_from_json(change_file_json)
     print(f"{change_file_dict=}")
     assert change_file_dict.get("book_atom_numbers") == []
-    assert change_file_dict.get("changeer") == sue_text
+    assert change_file_dict.get("giver") == sue_text
     assert change_file_dict.get("faces") == {}
 
 

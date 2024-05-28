@@ -7,13 +7,17 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
-from src.real.change import changeunit_shop, init_change_id, get_init_change_id_if_None
+from src.agenda.change import (
+    changeunit_shop,
+    init_change_id,
+    get_init_change_id_if_None,
+)
 from src.real.admin_change import (
     changeunit_file_exists,
     _merge_changes_into_agenda,
     _create_new_changeunit,
 )
-from src.real.userdir import UserDir
+from src._road.userdir import UserDir
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
 

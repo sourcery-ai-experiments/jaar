@@ -73,14 +73,6 @@
 #     pass
 
 
-# def duty_str() -> str:
-#     return "duty"
-
-
-# def work_str() -> str:
-#     return "work"
-
-
 # @dataclass
 # class neUnit:
 #     person_id: PersonID = None

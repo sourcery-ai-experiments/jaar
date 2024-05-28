@@ -2573,9 +2573,3 @@ def get_party_relevant_groups(
     }
 
 
-def duty_str() -> str:
-    return "duty"
-
-
-def work_str() -> str:
-    return "work"

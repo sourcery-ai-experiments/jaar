@@ -1,12 +1,12 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
-from src.agenda.agenda import duty_str, work_str
-from src.real.userdir import UserDir, userdir_shop
-from src.real.change import get_changes_folder
-from src.real.examples.real_env_kit import (
+from src._road.userdir import UserDir, userdir_shop
+from src._road.jaar_config import (
+    get_changes_folder,
+    duty_str,
+    work_str,
     get_test_reals_dir,
     get_test_real_id,
-    reals_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
 
