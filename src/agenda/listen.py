@@ -13,7 +13,7 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def create_barren_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
+def create_empty_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
     barren_agenda = agendaunit_shop(
         x_owner_id, ref_agenda._real_id, _road_delimiter=ref_agenda._road_delimiter
     )
@@ -68,7 +68,7 @@ def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
         )
 
     speaker_debtor_weight = speaker_partyunit.debtor_weight
-    if listener._party_debtor_pool is None or speaker == create_barren_agenda(
+    if listener._party_debtor_pool is None or speaker == create_empty_agenda(
         speaker, speaker._owner_id
     ):
         speaker_partyunit.add_missing_job_debtor_weight(speaker_debtor_weight)

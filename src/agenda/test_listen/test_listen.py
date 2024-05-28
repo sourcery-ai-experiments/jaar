@@ -5,13 +5,14 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
     listen_to_speaker,
     generate_ingest_list,
-    create_barren_agenda,
+    create_empty_agenda,
 )
+from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 
 
-def test_create_barren_agenda_ReturnsCorrectObj():
+def test_create_empty_agenda_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
     slash_text = "/"
@@ -35,7 +36,7 @@ def test_create_barren_agenda_ReturnsCorrectObj():
     yao_role.set_party_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
-    yao_barren_job = create_barren_agenda(yao_role, x_owner_id=zia_text)
+    yao_barren_job = create_empty_agenda(yao_role, x_owner_id=zia_text)
 
     # THEN
     assert yao_barren_job._owner_id != yao_role._owner_id
@@ -430,7 +431,7 @@ def test_listen_to_speaker_ProcessesIrrationalAgenda():
     )
 
     # WHEN
-    yao_job = create_barren_agenda(yao_role, yao_text)
+    yao_job = create_empty_agenda(yao_role, yao_text)
     yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
@@ -463,8 +464,8 @@ def test_listen_to_speaker_ProcessesBarrenAgenda():
     yao_role.set_party_pool(yao_pool)
 
     # WHEN
-    sue_job = create_barren_agenda(yao_role, sue_text)
-    yao_job = create_barren_agenda(yao_role, yao_text)
+    sue_job = create_empty_agenda(yao_role, sue_text)
+    yao_job = create_empty_agenda(yao_role, yao_text)
     yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
