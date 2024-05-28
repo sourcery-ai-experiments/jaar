@@ -5,7 +5,7 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.change import get_changes_folder
-from src.real.duty_creator import create_person_econunits, get_econunit
+from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.nook import (
     NookUnit,
     nookunit_shop,
