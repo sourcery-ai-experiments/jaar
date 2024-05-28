@@ -4,7 +4,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
 from src.real.userdir import userdir_shop
-from src.real.duty_init import save_duty_file, get_duty_file_agenda
+from src.real.admin_duty import save_duty_file, get_duty_file_agenda
 from src.real.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop

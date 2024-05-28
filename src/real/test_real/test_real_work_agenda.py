@@ -2,7 +2,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.real.userdir import userdir_shop
-from src.real.duty_init import save_duty_file, get_duty_file_agenda
+from src.real.admin_duty import save_duty_file, get_duty_file_agenda
 from src.real.admin_work import (
     save_work_file,
     get_work_file_agenda,

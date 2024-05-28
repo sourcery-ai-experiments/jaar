@@ -6,7 +6,7 @@ from src.econ.econ import EconUnit
 from src.real.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.userdir import UserDir, userdir_shop
-from src.real.duty_init import get_duty_file_agenda, initialize_change_duty_files
+from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
 from src.real.admin_work import (
     initialize_work_file,
     save_work_file as personsave_work_file,

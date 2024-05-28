@@ -20,9 +20,9 @@ from src.econ.econ import (
     treasury_db_filename,
     get_rootpart_of_econ_dir,
 )
-from src.real.duty_init import get_duty_file_agenda
+from src.real.admin_duty import get_duty_file_agenda
 from src.real.userdir import UserDir
-from src.real.duty_init import get_duty_file_agenda
+from src.real.admin_duty import get_duty_file_agenda
 
 
 class InvalidEconException(Exception):

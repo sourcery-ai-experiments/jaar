@@ -1,6 +1,6 @@
 from src.real.userdir import userdir_shop
-from src.real.duty_init import (
-    initialize_change_duty_files,
+from src.real.admin_duty import initialize_change_duty_files
+from src.real.admin_change import (
     userdir_save_atom_file,
     _save_valid_atom_file,
     userdir_atom_file_exists,

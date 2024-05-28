@@ -20,11 +20,11 @@ class Invalid_work_Exception(Exception):
     pass
 
 
-class SavechangeFileException(Exception):
+class SaveChangeFileException(Exception):
     pass
 
 
-class changeFileMissingException(Exception):
+class ChangeFileMissingException(Exception):
     pass
 
 

@@ -4,7 +4,7 @@ from src.agenda.agenda import (
     duty_str,
 )
 from src.real.userdir import userdir_shop
-from src.real.duty_init import (
+from src.real.admin_duty import (
     duty_file_exists,
     save_duty_file,
     get_duty_file_agenda,
@@ -211,35 +211,3 @@ def test_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     assert sue_duty_agenda._planck == seven_int
     assert sue_duty_agenda.get_party(bob_text) != None
     assert os_path_exists(init_change_file_path)
-
-
-# def test_initialize_change_duty_files_CorrectlyDoesNotOverwrite(
-#     reals_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     sue_text = "Sue"
-#     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
-#     sue_userdir = userdir_shop(None, None, sue_text)
-# sue_userdir = sue_userdir
-#     assert sue_person.duty_file_exists()
-#     delete_dir(sue_person._duty_path)
-#     assert sue_person.duty_file_exists() == False
-
-#     # WHEN
-#     sue_agenda = agendaunit_shop(sue_text)
-#     bob_text = "Bob"
-#     sue_agenda.add_partyunit(bob_text)
-#     initialize_change_duty_files()
-
-#     # THEN
-#     assert sue_person.duty_file_exists()
-
-#     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
-#     sue_persons_dir = f"{sue_real_dir}/persons"
-#     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-#     sue_duty_file_name = f"{duty_str()}.json"
-#     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
-#     print(f"{duty_file_text=}")
-#     duty_agenda = agendaunit_get_from_json(duty_file_text)
-#     assert duty_agenda._real_id == get_test_real_id()
-#     assert duty_agenda._owner_id == sue_text

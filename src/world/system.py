@@ -65,11 +65,11 @@
 #     pass
 
 
-# class SavechangeFileException(Exception):
+# class SaveChangeFileException(Exception):
 #     pass
 
 
-# class changeFileMissingException(Exception):
+# class ChangeFileMissingException(Exception):
 #     pass
 
 
@@ -255,20 +255,20 @@
 #             x_change = validate_changeunit(x_change)
 
 #         if x_change._atoms_dir != self._atoms_dir:
-#             raise SavechangeFileException(
+#             raise SaveChangeFileException(
 #                 f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self._atoms_dir}."
 #             )
 #         if x_change._changes_dir != self._changes_dir:
-#             raise SavechangeFileException(
+#             raise SaveChangeFileException(
 #                 f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {self._changes_dir}."
 #             )
 #         if x_change._giver != self.person_id:
-#             raise SavechangeFileException(
+#             raise SaveChangeFileException(
 #                 f"ChangeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {self.person_id}."
 #             )
 #         change_filename = changeunit_get_json_filename(x_change._change_id)
 #         if not replace and self.changeunit_file_exists(x_change._change_id):
-#             raise SavechangeFileException(
+#             raise SaveChangeFileException(
 #                 f"ChangeUnit file {change_filename} already exists and cannot be saved over."
 #             )
 #         x_change.save_files()
@@ -297,7 +297,7 @@
 
 #     def get_changeunit(self, file_number: int) -> ChangeUnit:
 #         if self.changeunit_file_exists(file_number) == False:
-#             raise changeFileMissingException(
+#             raise ChangeFileMissingException(
 #                 f"ChangeUnit file_number {file_number} does not exist."
 #             )
 #         return create_changeunit_from_files(

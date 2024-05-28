@@ -4,7 +4,7 @@ from src.agenda.idea import ideaunit_shop
 
 # from src.agenda.graphic import display_ideatree
 from src.real.userdir import userdir_shop
-from src.real.duty_init import save_duty_file, get_duty_file_agenda
+from src.real.admin_duty import save_duty_file, get_duty_file_agenda
 from src.real.econ_creator import create_person_econunits
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup

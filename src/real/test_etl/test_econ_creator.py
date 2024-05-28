@@ -5,7 +5,7 @@ from src.agenda.graphic import display_ideatree
 from src.econ.job_creator import get_owner_file_name
 from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
 from src.real.userdir import userdir_shop
-from src.real.duty_init import (
+from src.real.admin_duty import (
     save_duty_file,
     get_duty_file_agenda,
     initialize_change_duty_files,
