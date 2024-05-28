@@ -198,9 +198,9 @@ def is_path_valid(path: str) -> bool:
         return True
 
 
-def can_active_user_edit_paths(path: str = None) -> bool:
+def can_active_usser_edit_paths(path: str = None) -> bool:
     """
-    `True` if the active user has sufficient permissions to create the passed
+    `True` if the active usser has sufficient permissions to create the passed
     path; `False` otherwise.
     """
     # Parent directory of the passed path. If empty, we substitute the active
@@ -220,7 +220,7 @@ def is_path_existent_or_creatable(path: str) -> bool:
         # To prevent "os" module calls from raising undesirable exceptions on
         # invalid path, is_path_valid() is explicitly called first.
         return is_path_valid(path) and (
-            os_path_exists(path) or can_active_user_edit_paths(path)
+            os_path_exists(path) or can_active_usser_edit_paths(path)
         )
     # Report failure on non-fatal filesystem complaints (e.g., connection
     # timeouts, permissions issues) implying this path to be inaccessible. All
@@ -231,7 +231,7 @@ def is_path_existent_or_creatable(path: str) -> bool:
 
 def is_path_probably_creatable(path: str = None) -> bool:
     """
-    `True` if the active user has sufficient permissions to create **siblings**
+    `True` if the active usser has sufficient permissions to create **siblings**
     (i.e., arbitrary files in the parent directory) of the passed path;
     `False` otherwise.
     """

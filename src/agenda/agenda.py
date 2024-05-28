@@ -955,7 +955,7 @@ class AgendaUnit:
         if belief_base_idea.is_arithmetic() == False:
             x_idearoot.set_beliefunit(x_beliefunit)
 
-        # if belief's idea no range or is a "range-root" then allow belief to be set by user
+        # if belief's idea no range or is a "range-root" then allow belief to be set
         elif (
             belief_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) == False
         ):
@@ -971,7 +971,7 @@ class AgendaUnit:
             # there exists a reason base "timeline,weeks" with premise.need = "timeline,weeks"
             # and (1,2) divisor=2 (every other week)
             #
-            # user should not set "timeline,weeks" belief, only "timeline" belief and
+            # should not set "timeline,weeks" belief, only "timeline" belief and
             # "timeline,weeks" should be set automatica_lly since there exists a reason
             # that has that base.
             x_idearoot.set_beliefunit(x_beliefunit)
