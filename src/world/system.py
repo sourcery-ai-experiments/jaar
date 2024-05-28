@@ -23,7 +23,7 @@
 # from src.agenda.pledge import create_pledge
 # from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 # from src.real.change import (
-#     changeUnit,
+#     ChangeUnit,
 #     changeunit_shop,
 #     get_json_filename as changeunit_get_json_filename,
 #     create_changeunit_from_files,
@@ -82,7 +82,7 @@
 
 
 # @dataclass
-# class EngineUnit:
+# class neUnit:
 #     person_id: PersonID = None
 #     reals_dir: str = None
 #     real_id: str = None
@@ -126,10 +126,10 @@
 #         set_dir(self.person_dir)
 #         set_dir(self._econs_dir)
 #         set_dir(self._atoms_dir)
-#         self.initialize_change_and_duty_files()
+#         self.initialize_change_duty_files()
 #         self.initialize_work_file()
 
-#     def initialize_change_and_duty_files(self):
+#     def initialize_change_duty_files(self):
 #         duty_file_exists = self.duty_file_exists()
 #         change_file_exists = self.changeunit_file_exists(init_change_id())
 #         if duty_file_exists == False and change_file_exists == False:
@@ -164,7 +164,7 @@
 #         )
 #         x_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda=self._get_empty_agenda(),
-#             after_agenda=get_duty_file_agenda(x_userunit),
+#             after_agenda=get_duty_file_agenda(x_userdir),
 #         )
 #         x_changeunit.save_files()
 
@@ -181,7 +181,7 @@
 #             default_work_agenda = agendaunit_shop(
 #                 self.person_id, self.real_id, self._road_delimiter, self._planck
 #             )
-#             self._save_work_file(default_work_agenda)
+#             self.save_work_file(default_work_agenda)
 
 #     def duty_file_exists(self) -> bool:
 #         return os_path_exists(self._duty_path)
@@ -202,7 +202,7 @@
 #                 replace=replace,
 #             )
 
-#     def _save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
 #             raise Invalid_work_Exception(
 #                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
@@ -224,7 +224,7 @@
 #         return agendaunit_get_from_json(work_json)
 
 #     def load_duty_file(self):
-#         self._duty_obj = get_duty_file_agenda(x_userunit)
+#         self._duty_obj = get_duty_file_agenda(x_userdir)
 
 #     def load_work_file(self):
 #         self._work_obj = self.get_work_file_agenda()
@@ -249,32 +249,32 @@
 #         )
 
 #     def save_changeunit_file(
-#         self, x_change: changeUnit, replace: bool = True, _invalid_attrs: bool = True
-#     ) -> changeUnit:
+#         self, x_change: ChangeUnit, replace: bool = True, _invalid_attrs: bool = True
+#     ) -> ChangeUnit:
 #         if _invalid_attrs:
 #             x_change = validate_changeunit(x_change)
 
 #         if x_change._atoms_dir != self._atoms_dir:
 #             raise SavechangeFileException(
-#                 f"changeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self._atoms_dir}."
+#                 f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self._atoms_dir}."
 #             )
 #         if x_change._changes_dir != self._changes_dir:
 #             raise SavechangeFileException(
-#                 f"changeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {self._changes_dir}."
+#                 f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {self._changes_dir}."
 #             )
 #         if x_change._giver != self.person_id:
 #             raise SavechangeFileException(
-#                 f"changeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {self.person_id}."
+#                 f"ChangeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {self.person_id}."
 #             )
 #         change_filename = changeunit_get_json_filename(x_change._change_id)
 #         if not replace and self.changeunit_file_exists(x_change._change_id):
 #             raise SavechangeFileException(
-#                 f"changeUnit file {change_filename} already exists and cannot be saved over."
+#                 f"ChangeUnit file {change_filename} already exists and cannot be saved over."
 #             )
 #         x_change.save_files()
 #         return x_change
 
-#     def _create_new_changeunit(self) -> changeUnit:
+#     def _create_new_changeunit(self) -> ChangeUnit:
 #         return changeunit_shop(
 #             _giver=self.person_id,
 #             _change_id=self._get_next_change_file_number(),
@@ -282,7 +282,7 @@
 #             _changes_dir=self._changes_dir,
 #         )
 
-#     def validate_changeunit(self, x_changeunit: changeUnit) -> changeUnit:
+#     def validate_changeunit(self, x_changeunit: ChangeUnit) -> ChangeUnit:
 #         if x_changeunit._atoms_dir != self._atoms_dir:
 #             x_changeunit._atoms_dir = self._atoms_dir
 #         if x_changeunit._changes_dir != self._changes_dir:
@@ -291,14 +291,14 @@
 #             x_changeunit._change_id = self._get_next_change_file_number()
 #         if x_changeunit._giver != self.person_id:
 #             x_changeunit._giver = self.person_id
-#         if x_changeunit._book_start != self._get_next_atom_file_number(x_userunit):
-#             x_changeunit._book_start = self._get_next_atom_file_number(x_userunit)
+#         if x_changeunit._book_start != self._get_next_atom_file_number(x_userdir):
+#             x_changeunit._book_start = self._get_next_atom_file_number(x_userdir)
 #         return x_changeunit
 
-#     def get_changeunit(self, file_number: int) -> changeUnit:
+#     def get_changeunit(self, file_number: int) -> ChangeUnit:
 #         if self.changeunit_file_exists(file_number) == False:
 #             raise changeFileMissingException(
-#                 f"changeUnit file_number {file_number} does not exist."
+#                 f"ChangeUnit file_number {file_number} does not exist."
 #             )
 #         return create_changeunit_from_files(
 #             changes_dir=self._changes_dir, change_id=file_number, atoms_dir=self._atoms_dir
@@ -341,7 +341,7 @@
 #         return 0 if max_file_number is None else max_file_number + 1
 
 #     def save_atom_file(self, x_atom: AgendaAtom):
-#         x_filename = self._get_next_atom_file_number(x_userunit)
+#         x_filename = self._get_next_atom_file_number(x_userdir)
 #         return self._save_valid_atom_file(x_atom, x_filename)
 
 #     def _get_agenda_from_atom_files(self) -> AgendaUnit:
@@ -382,7 +382,7 @@
 #         self._econ_objs[econ_roadunit] = x_econunit
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
-#         x_duty_agenda = get_duty_file_agenda(x_userunit)
+#         x_duty_agenda = get_duty_file_agenda(x_userdir)
 #         x_duty_agenda.calc_agenda_metrics(econ_exceptions)
 #         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
@@ -424,13 +424,13 @@
 #             self.set_econunit_role(x_econ_road, role)
 
 #     def set_person_econunits_role(self):
-#         self.set_econunits_role(get_duty_file_agenda(x_userunit))
+#         self.set_econunits_role(get_duty_file_agenda(x_userdir))
 
 #     def add_pledge_change(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-#         duty_agenda = get_duty_file_agenda(x_userunit)
+#         duty_agenda = get_duty_file_agenda(x_userdir)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-#         next_changeunit = _create_new_changeunit(x_userunit)
+#         next_changeunit = _create_new_changeunit(x_userdir)
 #         next_changeunit._bookunit.add_all_different_agendaatoms(
 #             old_duty_agenda, duty_agenda
 #         )
@@ -438,20 +438,12 @@
 #         self.append_changes_to_duty_file()
 
 #     def create_save_changeunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-#         new_changeunit = _create_new_changeunit(x_userunit)
+#         new_changeunit = _create_new_changeunit(x_userdir)
 #         new_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda, after_agenda
 #         )
 #         self.save_changeunit_file(new_changeunit)
 
 #     def append_changes_to_duty_file(self):
-#         self.save_duty_file(_merge_changes_into_agenda(get_duty_file_agenda(x_userunit)))
-#         return get_duty_file_agenda(x_userunit)
-
-
-# def get_from_json(x_person_json: str) -> EngineUnit:
-#     return None
-
-
-# def get_from_dict(person_dict: dict) -> EngineUnit:
-#     return None
+#         self.save_duty_file(_merge_changes_into_agenda(get_duty_file_agenda(x_userdir)))
+#         return get_duty_file_agenda(x_userdir)

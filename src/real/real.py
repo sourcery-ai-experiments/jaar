@@ -1,4 +1,3 @@
-from src._instrument.python import get_empty_dict_if_none
 from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
@@ -6,22 +5,17 @@ from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src.econ.econ import EconUnit
 from src.real.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src.real.user import (
-    UserUnit,
-    userunit_shop,
-    _save_work_file as person_save_work_file,
-    get_duty_file_agenda,
-    userunit_create_core_dir_and_files,
+from src.real.userdir import UserDir, userdir_shop
+from src.real.duty_init import get_duty_file_agenda, initialize_change_duty_files
+from src.real.admin_work import (
+    initialize_work_file,
+    save_work_file as personsave_work_file,
     get_work_file_agenda,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from copy import deepcopy as copy_deepcopy
-
-
-class EngineExistsException(Exception):
-    pass
 
 
 @dataclass
@@ -91,30 +85,28 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def init_person_econs(
-        self,
-        person_id: PersonID,
-    ):
-        x_userunit = userunit_shop(
+    def init_person_econs(self, person_id: PersonID):
+        x_userdir = userdir_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
             road_delimiter=self._road_delimiter,
             planck=self._planck,
         )
-        userunit_create_core_dir_and_files(x_userunit)
+        initialize_change_duty_files(x_userdir)
+        initialize_work_file(x_userdir)
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        x_userunit = userunit_shop(
+        x_userdir = userdir_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter
         )
-        return get_duty_file_agenda(x_userunit)
+        return get_duty_file_agenda(x_userdir)
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_userunit = userunit_shop(
+            healer_userdir = userdir_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
@@ -123,41 +115,41 @@ class RealUnit:
             )
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_userunit=healer_userunit,
+                    healer_userdir=healer_userdir,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_userunit: UserUnit,
+        healer_userdir: UserDir,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = get_econunit(healer_userunit, econ_road)
+        x_econ = get_econunit(healer_userdir, econ_road)
         x_econ.save_role_file(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_userunit = userunit_shop(
+        x_userdir = userdir_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
-        x_duty = get_duty_file_agenda(x_userunit)
+        x_duty = get_duty_file_agenda(x_userdir)
         x_duty.calc_agenda_metrics()
 
         x_work = agendaunit_shop(person_id, self.real_id)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_userunit = userunit_shop(
+            healer_userdir = userdir_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
                 self._road_delimiter,
                 self._planck,
             )
-            create_person_econunits(healer_userunit)
+            create_person_econunits(healer_userdir)
             for econ_idea in healer_dict.values():
-                x_econ = get_econunit(healer_userunit, econ_idea.get_road())
+                x_econ = get_econunit(healer_userdir, econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
                 x_job.calc_agenda_metrics()
@@ -167,7 +159,7 @@ class RealUnit:
         # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
-        person_save_work_file(x_userunit, x_work)
+        personsave_work_file(x_userdir, x_work)
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
@@ -175,10 +167,10 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_userunit = userunit_shop(
+        x_userdir = userdir_shop(
             self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
         )
-        return get_work_file_agenda(x_userunit)
+        return get_work_file_agenda(x_userdir)
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
@@ -187,7 +179,7 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_duty_agenda = get_duty_file_agenda(x_userunit)
+    #     x_duty_agenda = get_duty_file_agenda(x_userdir)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

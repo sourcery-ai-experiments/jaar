@@ -19,7 +19,7 @@ from src._instrument.file import open_file
 from os.path import exists as os_path_exists
 
 
-def test_changeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -49,7 +49,7 @@ def test_changeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
     assert two_file_json == sports_atom.get_json()
 
 
-def test_changeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -76,7 +76,7 @@ def test_changeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert farm_changeunit.atom_file_exists(two_int)
 
 
-def test_changeUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -103,7 +103,7 @@ def test_changeUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert file_atom == sports_atom
 
 
-def test_changeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -139,7 +139,7 @@ def test_changeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     assert change_file_dict.get("faces") == {}
 
 
-def test_changeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -165,7 +165,7 @@ def test_changeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup
     assert farm_changeunit.change_file_exists()
 
 
-def test_changeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
@@ -202,7 +202,7 @@ def test_changeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     assert farm_changeunit.atom_file_exists(five_int)
 
 
-def test_changeUnit_create_bookunit_from_atom_files_SetsAttr(reals_dir_setup_cleanup):
+def test_ChangeUnit_create_bookunit_from_atom_files_SetsAttr(reals_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"

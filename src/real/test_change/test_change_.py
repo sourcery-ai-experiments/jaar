@@ -1,6 +1,6 @@
 from src.agenda.book import bookunit_shop
 from src.real.change import (
-    changeUnit,
+    ChangeUnit,
     changeunit_shop,
     get_init_change_id_if_None,
     init_change_id,
@@ -30,9 +30,9 @@ def test_get_init_change_id_if_None_ReturnsCorrectObj():
     assert get_init_change_id_if_None(1) == 1
 
 
-def test_changeUnit_exists():
+def test_ChangeUnit_exists():
     # GIVEN / WHEN
-    x_changeunit = changeUnit()
+    x_changeunit = ChangeUnit()
 
     # THEN
     assert x_changeunit._change_id is None
@@ -112,7 +112,7 @@ def test_changeunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     assert farm_changeunit._faces == x_faces
 
 
-def test_changeUnit_set_face_SetsAttribute():
+def test_ChangeUnit_set_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
@@ -127,7 +127,7 @@ def test_changeUnit_set_face_SetsAttribute():
     assert tim_text in farm_changeunit._faces
 
 
-def test_changeUnit_face_exists_ReturnsCorrectObj():
+def test_ChangeUnit_face_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
@@ -143,7 +143,7 @@ def test_changeUnit_face_exists_ReturnsCorrectObj():
     assert farm_changeunit.face_exists(tim_text)
 
 
-def test_changeUnit_del_face_SetsAttribute():
+def test_ChangeUnit_del_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
@@ -162,7 +162,7 @@ def test_changeUnit_del_face_SetsAttribute():
     assert farm_changeunit.face_exists(yao_text) == False
 
 
-def test_changeUnit_set_bookunit_SetsAttribute():
+def test_ChangeUnit_set_bookunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
@@ -177,7 +177,7 @@ def test_changeUnit_set_bookunit_SetsAttribute():
     assert farm_changeunit._bookunit == farm_bookunit
 
 
-def test_changeUnit_set_book_start_SetsAttribute():
+def test_ChangeUnit_set_book_start_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(bob_text)
@@ -191,7 +191,7 @@ def test_changeUnit_set_book_start_SetsAttribute():
     assert farm_changeunit._book_start == farm_book_start
 
 
-def test_changeUnit_agendaatom_exists_ReturnsCorrectObj():
+def test_ChangeUnit_agendaatom_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_bookunit = bookunit_shop()
@@ -212,7 +212,7 @@ def test_changeUnit_agendaatom_exists_ReturnsCorrectObj():
     assert farm_changeunit.agendaatom_exists(sports_agendaatom)
 
 
-def test_changeUnit_del_bookunit_SetsAttribute():
+def test_ChangeUnit_del_bookunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_bookunit = bookunit_shop()
@@ -228,7 +228,7 @@ def test_changeUnit_del_bookunit_SetsAttribute():
     assert farm_changeunit._bookunit == bookunit_shop()
 
 
-def test_changeUnit_get_step_dict_ReturnsCorrectObj_Simple():
+def test_ChangeUnit_get_step_dict_ReturnsCorrectObj_Simple():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -258,7 +258,7 @@ def test_changeUnit_get_step_dict_ReturnsCorrectObj_Simple():
     assert x_dict.get(book_text) == {}
 
 
-def test_changeUnit_get_step_dict_ReturnsCorrectObj_WithBookPopulated():
+def test_ChangeUnit_get_step_dict_ReturnsCorrectObj_WithBookPopulated():
     # GIVEN
     bob_text = "Bob"
     carm_bookunit = get_bookunit_carm_example()
@@ -280,7 +280,7 @@ def test_changeUnit_get_step_dict_ReturnsCorrectObj_WithBookPopulated():
     assert carm_agendaatoms_dict.get(1) != None
 
 
-def test_changeUnit_get_step_dict_ReturnsCorrectObj_book_start():
+def test_ChangeUnit_get_step_dict_ReturnsCorrectObj_book_start():
     # GIVEN
     bob_text = "Bob"
     carm_bookunit = get_bookunit_carm_example()
@@ -307,7 +307,7 @@ def test_changeUnit_get_step_dict_ReturnsCorrectObj_book_start():
     assert carm_agendaatoms_dict.get(farm_book_start + 1) != None
 
 
-def test_changeUnit_get_book_atom_numbers_ReturnsCorrectObj():
+def test_ChangeUnit_get_book_atom_numbers_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -327,7 +327,7 @@ def test_changeUnit_get_book_atom_numbers_ReturnsCorrectObj():
     assert farm_book_atom_numbers == [farm_book_start, farm_book_start + 1]
 
 
-def test_changeUnit_get_bookmetric_dict_ReturnsCorrectObj():
+def test_ChangeUnit_get_bookmetric_dict_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"
@@ -365,7 +365,7 @@ def test_changeUnit_get_bookmetric_dict_ReturnsCorrectObj():
     assert x_dict.get(book_max_text) is None
 
 
-def test_changeUnit_get_bookmetric_json_ReturnsCorrectObj():
+def test_ChangeUnit_get_bookmetric_json_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     tim_text = "Tim"

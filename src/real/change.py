@@ -28,7 +28,7 @@ def get_json_filename(filename_without_extention) -> str:
 
 
 @dataclass
-class changeUnit:
+class ChangeUnit:
     _giver: PersonID = None
     _change_id: int = None
     _faces: set[PersonID] = None
@@ -134,7 +134,7 @@ def changeunit_shop(
 ):
     if _bookunit is None:
         _bookunit = bookunit_shop()
-    x_changeunit = changeUnit(
+    x_changeunit = ChangeUnit(
         _giver=_giver,
         _change_id=get_init_change_id_if_None(_change_id),
         _faces=get_empty_set_if_none(_faces),
@@ -151,7 +151,7 @@ def create_changeunit_from_files(
     changes_dir: str,
     change_id: str,
     atoms_dir: str,
-) -> changeUnit:
+) -> ChangeUnit:
     change_filename = get_json_filename(change_id)
     change_dict = get_dict_from_json(open_file(changes_dir, change_filename))
     x_giver = change_dict.get("changeer")
