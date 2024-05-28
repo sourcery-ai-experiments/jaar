@@ -312,7 +312,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFile
     assert sue_changeunit._change_id == init_change_id()
     assert sue_changeunit._change_id == 0
     assert sue_changeunit._change_id == _get_next_change_file_number(sue_nookunit)
-    assert sue_changeunit._takers == set()
+    assert sue_changeunit._faces == set()
     assert sue_changeunit._atoms_dir == sue_nookunit._atoms_dir
     assert sue_changeunit._changes_dir == sue_nookunit._changes_dir
 
@@ -339,7 +339,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesE
     assert sue_changeunit._change_id == init_change_id() + 1
     assert sue_changeunit._change_id == 1
     assert sue_changeunit._change_id == _get_next_change_file_number(sue_nookunit)
-    assert sue_changeunit._takers == set()
+    assert sue_changeunit._faces == set()
     assert sue_changeunit._atoms_dir == sue_nookunit._atoms_dir
     assert sue_changeunit._changes_dir == sue_nookunit._changes_dir
 
@@ -352,11 +352,11 @@ def test_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     sue_nookunit = nookunit_shop(None, None, sue_text)
     yao_text = "yao"
     x0_changeunit = _create_new_changeunit(sue_nookunit)
-    x0_changeunit.set_taker(yao_text)
+    x0_changeunit.set_face(yao_text)
     save_changeunit_file(sue_nookunit, x0_changeunit)
     bob_text = "Bob"
     x1_changeunit = _create_new_changeunit(sue_nookunit)
-    x1_changeunit.set_taker(bob_text)
+    x1_changeunit.set_face(bob_text)
     save_changeunit_file(sue_nookunit, x1_changeunit)
 
     # WHEN
@@ -366,9 +366,9 @@ def test_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     # THEN
     assert y0_changeunit != None
     assert y1_changeunit != None
-    assert yao_text in y0_changeunit._takers
-    assert bob_text not in y0_changeunit._takers
-    assert bob_text in y1_changeunit._takers
+    assert yao_text in y0_changeunit._faces
+    assert bob_text not in y0_changeunit._faces
+    assert bob_text in y1_changeunit._faces
 
 
 def test_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
@@ -379,11 +379,11 @@ def test_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
     sue_nookunit = nookunit_shop(None, None, sue_text)
     yao_text = "yao"
     x0_changeunit = _create_new_changeunit(sue_nookunit)
-    x0_changeunit.set_taker(yao_text)
+    x0_changeunit.set_face(yao_text)
     save_changeunit_file(sue_nookunit, x0_changeunit)
     bob_text = "Bob"
     x1_changeunit = _create_new_changeunit(sue_nookunit)
-    x1_changeunit.set_taker(bob_text)
+    x1_changeunit.set_face(bob_text)
     save_changeunit_file(sue_nookunit, x1_changeunit)
 
     # WHEN / THEN

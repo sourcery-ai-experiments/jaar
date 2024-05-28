@@ -136,7 +136,7 @@ def test_changeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     print(f"{change_file_dict=}")
     assert change_file_dict.get("book_atom_numbers") == []
     assert change_file_dict.get("changeer") == sue_text
-    assert change_file_dict.get("takers") == {}
+    assert change_file_dict.get("faces") == {}
 
 
 def test_changeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -181,8 +181,8 @@ def test_changeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
         sue_text, _atoms_dir=sue_atoms_dir, _changes_dir=sue_changes_dir
     )
     farm_changeunit.set_book_start(farm_book_start)
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
     four_int = 4
     five_int = 5
     four_atom = get_atom_example_ideaunit_sports()
@@ -251,8 +251,8 @@ def test_create_changeunit_from_files_ReturnsCorrectObj(reals_dir_setup_cleanup)
         sue_text, _atoms_dir=sue_atoms_dir, _changes_dir=sue_changes_dir
     )
     src_sue_changeunit.set_book_start(sue_book_start)
-    src_sue_changeunit.set_taker(tim_text)
-    src_sue_changeunit.set_taker(yao_text)
+    src_sue_changeunit.set_face(tim_text)
+    src_sue_changeunit.set_face(yao_text)
     sports_atom = get_atom_example_ideaunit_sports()
     knee_atom = get_atom_example_ideaunit_knee()
     ball_atom = get_atom_example_ideaunit_ball()
@@ -270,5 +270,5 @@ def test_create_changeunit_from_files_ReturnsCorrectObj(reals_dir_setup_cleanup)
 
     # THEN
     assert src_sue_changeunit._giver == new_sue_changeunit._giver
-    assert src_sue_changeunit._takers == new_sue_changeunit._takers
+    assert src_sue_changeunit._faces == new_sue_changeunit._faces
     assert src_sue_changeunit._bookunit == new_sue_changeunit._bookunit

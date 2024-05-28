@@ -37,7 +37,7 @@ def test_changeUnit_exists():
     # THEN
     assert x_changeunit._change_id is None
     assert x_changeunit._giver is None
-    assert x_changeunit._takers is None
+    assert x_changeunit._faces is None
     assert x_changeunit._bookunit is None
     assert x_changeunit._book_start is None
     assert x_changeunit._person_dir is None
@@ -55,7 +55,7 @@ def test_changeunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     # THEN
     assert farm_changeunit._change_id == 0
     assert farm_changeunit._giver == bob_text
-    assert farm_changeunit._takers == set()
+    assert farm_changeunit._faces == set()
     assert farm_changeunit._bookunit == bookunit_shop()
     assert farm_changeunit._book_start == 0
     assert farm_changeunit._person_dir is None
@@ -67,7 +67,7 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # GIVEN
     bob_text = "Bob"
     bob_change_id = 13
-    bob_takers = {"Sue", "Yao"}
+    bob_faces = {"Sue", "Yao"}
     bob_bookunit = get_bookunit_carm_example()
     bob_book_start = 6
     bob_person_dir = "exampletext5"
@@ -78,7 +78,7 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     farm_changeunit = changeunit_shop(
         bob_text,
         _change_id=bob_change_id,
-        _takers=bob_takers,
+        _faces=bob_faces,
         _bookunit=bob_bookunit,
         _book_start=bob_book_start,
         _person_dir=bob_person_dir,
@@ -89,7 +89,7 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # THEN
     assert farm_changeunit._giver == bob_text
     assert farm_changeunit._change_id == bob_change_id
-    assert farm_changeunit._takers == bob_takers
+    assert farm_changeunit._faces == bob_faces
     assert farm_changeunit._bookunit == bob_bookunit
     assert farm_changeunit._book_start == bob_book_start
     assert farm_changeunit._person_dir == bob_person_dir
@@ -102,64 +102,64 @@ def test_changeunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     bob_text = "Bob"
     tim_text = "Tim"
     yao_text = "Yao"
-    x_takers = {bob_text, tim_text, yao_text}
+    x_faces = {bob_text, tim_text, yao_text}
 
     # WHEN
-    farm_changeunit = changeunit_shop(_giver=bob_text, _takers=x_takers)
+    farm_changeunit = changeunit_shop(_giver=bob_text, _faces=x_faces)
 
     # THEN
     assert farm_changeunit._giver == bob_text
-    assert farm_changeunit._takers == x_takers
+    assert farm_changeunit._faces == x_faces
 
 
-def test_changeUnit_set_taker_SetsAttribute():
+def test_changeUnit_set_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
     tim_text = "Tim"
-    assert farm_changeunit._takers == set()
-    assert tim_text not in farm_changeunit._takers
+    assert farm_changeunit._faces == set()
+    assert tim_text not in farm_changeunit._faces
 
     # WHEN
-    farm_changeunit.set_taker(tim_text)
+    farm_changeunit.set_face(tim_text)
 
     # THEN
-    assert tim_text in farm_changeunit._takers
+    assert tim_text in farm_changeunit._faces
 
 
-def test_changeUnit_taker_exists_ReturnsCorrectObj():
+def test_changeUnit_face_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
     tim_text = "Tim"
-    assert farm_changeunit._takers == set()
-    assert tim_text not in farm_changeunit._takers
+    assert farm_changeunit._faces == set()
+    assert tim_text not in farm_changeunit._faces
 
     # WHEN / THEN
-    assert farm_changeunit.taker_exists(tim_text) == False
+    assert farm_changeunit.face_exists(tim_text) == False
 
     # WHEN / THEN
-    farm_changeunit.set_taker(tim_text)
-    assert farm_changeunit.taker_exists(tim_text)
+    farm_changeunit.set_face(tim_text)
+    assert farm_changeunit.face_exists(tim_text)
 
 
-def test_changeUnit_del_taker_SetsAttribute():
+def test_changeUnit_del_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop(_giver=bob_text)
     tim_text = "Tim"
     yao_text = "Yao"
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
-    assert farm_changeunit.taker_exists(tim_text)
-    assert farm_changeunit.taker_exists(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
+    assert farm_changeunit.face_exists(tim_text)
+    assert farm_changeunit.face_exists(yao_text)
 
     # WHEN
-    farm_changeunit.del_taker(yao_text)
+    farm_changeunit.del_face(yao_text)
 
     # THEN
-    assert farm_changeunit.taker_exists(tim_text)
-    assert farm_changeunit.taker_exists(yao_text) == False
+    assert farm_changeunit.face_exists(tim_text)
+    assert farm_changeunit.face_exists(yao_text) == False
 
 
 def test_changeUnit_set_bookunit_SetsAttribute():
@@ -234,8 +234,8 @@ def test_changeUnit_get_step_dict_ReturnsCorrectObj_Simple():
     tim_text = "Tim"
     yao_text = "Yao"
     farm_changeunit = changeunit_shop(_giver=bob_text)
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
 
     # WHEN
     x_dict = farm_changeunit.get_step_dict()
@@ -245,12 +245,12 @@ def test_changeUnit_get_step_dict_ReturnsCorrectObj_Simple():
     assert x_dict.get(changeer_text) != None
     assert x_dict.get(changeer_text) == bob_text
 
-    takers_text = "takers"
-    assert x_dict.get(takers_text) != None
-    takers_dict = x_dict.get(takers_text)
-    assert takers_dict.get(bob_text) is None
-    assert takers_dict.get(tim_text) != None
-    assert takers_dict.get(yao_text) != None
+    faces_text = "faces"
+    assert x_dict.get(faces_text) != None
+    faces_dict = x_dict.get(faces_text)
+    assert faces_dict.get(bob_text) is None
+    assert faces_dict.get(tim_text) != None
+    assert faces_dict.get(yao_text) != None
 
     book_text = "book"
     assert x_dict.get(book_text) != None
@@ -317,8 +317,8 @@ def test_changeUnit_get_book_atom_numbers_ReturnsCorrectObj():
     farm_changeunit = changeunit_shop(bob_text)
     farm_changeunit.set_bookunit(carm_bookunit)
     farm_changeunit.set_book_start(farm_book_start)
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
     farm_dict = farm_changeunit.get_step_dict()
 
     # WHEN
@@ -337,8 +337,8 @@ def test_changeUnit_get_bookmetric_dict_ReturnsCorrectObj():
     farm_changeunit = changeunit_shop(bob_text)
     farm_changeunit.set_bookunit(carm_bookunit)
     farm_changeunit.set_book_start(farm_book_start)
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
 
     # WHEN
     x_dict = farm_changeunit.get_bookmetric_dict()
@@ -348,12 +348,12 @@ def test_changeUnit_get_bookmetric_dict_ReturnsCorrectObj():
     assert x_dict.get(changeer_text) != None
     assert x_dict.get(changeer_text) == bob_text
 
-    takers_text = "takers"
-    assert x_dict.get(takers_text) != None
-    takers_dict = x_dict.get(takers_text)
-    assert takers_dict.get(bob_text) is None
-    assert takers_dict.get(tim_text) != None
-    assert takers_dict.get(yao_text) != None
+    faces_text = "faces"
+    assert x_dict.get(faces_text) != None
+    faces_dict = x_dict.get(faces_text)
+    assert faces_dict.get(bob_text) is None
+    assert faces_dict.get(tim_text) != None
+    assert faces_dict.get(yao_text) != None
 
     book_atom_numbers_text = "book_atom_numbers"
     assert x_dict.get(book_atom_numbers_text) != None
@@ -375,8 +375,8 @@ def test_changeUnit_get_bookmetric_json_ReturnsCorrectObj():
     farm_changeunit = changeunit_shop(bob_text)
     farm_changeunit.set_bookunit(carm_bookunit)
     farm_changeunit.set_book_start(farm_book_start)
-    farm_changeunit.set_taker(tim_text)
-    farm_changeunit.set_taker(yao_text)
+    farm_changeunit.set_face(tim_text)
+    farm_changeunit.set_face(yao_text)
 
     # WHEN
     farm_json = farm_changeunit.get_bookmetric_json()

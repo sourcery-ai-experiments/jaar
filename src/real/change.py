@@ -31,21 +31,21 @@ def get_json_filename(filename_without_extention) -> str:
 class changeUnit:
     _giver: PersonID = None
     _change_id: int = None
-    _takers: set[PersonID] = None
+    _faces: set[PersonID] = None
     _bookunit: BookUnit = None
     _book_start: int = None
     _person_dir: str = None
     _changes_dir: str = None
     _atoms_dir: str = None
 
-    def set_taker(self, x_taker: PersonID):
-        self._takers.add(x_taker)
+    def set_face(self, x_face: PersonID):
+        self._faces.add(x_face)
 
-    def taker_exists(self, x_taker: PersonID) -> bool:
-        return x_taker in self._takers
+    def face_exists(self, x_face: PersonID) -> bool:
+        return x_face in self._faces
 
-    def del_taker(self, x_taker: PersonID):
-        self._takers.remove(x_taker)
+    def del_face(self, x_face: PersonID):
+        self._faces.remove(x_face)
 
     def set_bookunit(self, x_bookunit: BookUnit):
         self._bookunit = x_bookunit
@@ -62,7 +62,7 @@ class changeUnit:
     def get_step_dict(self) -> dict[str:]:
         return {
             "changeer": self._giver,
-            "takers": {x_taker: 1 for x_taker in self._takers},
+            "faces": {x_face: 1 for x_face in self._faces},
             "book": self._bookunit.get_ordered_agendaatoms(self._book_start),
         }
 
@@ -74,7 +74,7 @@ class changeUnit:
         x_dict = self.get_step_dict()
         return {
             "changeer": x_dict.get("changeer"),
-            "takers": x_dict.get("takers"),
+            "faces": x_dict.get("faces"),
             "book_atom_numbers": self.get_book_atom_numbers(x_dict),
         }
 
@@ -125,7 +125,7 @@ class changeUnit:
 def changeunit_shop(
     _giver: PersonID,
     _change_id: int = None,
-    _takers: set[PersonID] = None,
+    _faces: set[PersonID] = None,
     _bookunit: BookUnit = None,
     _book_start: int = None,
     _person_dir: str = None,
@@ -137,7 +137,7 @@ def changeunit_shop(
     x_changeunit = changeUnit(
         _giver=_giver,
         _change_id=get_init_change_id_if_None(_change_id),
-        _takers=get_empty_set_if_none(_takers),
+        _faces=get_empty_set_if_none(_faces),
         _bookunit=_bookunit,
         _person_dir=_person_dir,
         _changes_dir=_changes_dir,
@@ -155,8 +155,8 @@ def create_changeunit_from_files(
     change_filename = get_json_filename(change_id)
     change_dict = get_dict_from_json(open_file(changes_dir, change_filename))
     x_giver = change_dict.get("changeer")
-    x_takers = set(change_dict.get("takers").keys())
-    x_changeunit = changeunit_shop(x_giver, change_id, x_takers, _atoms_dir=atoms_dir)
+    x_faces = set(change_dict.get("faces").keys())
+    x_changeunit = changeunit_shop(x_giver, change_id, x_faces, _atoms_dir=atoms_dir)
     book_atom_numbers_list = change_dict.get("book_atom_numbers")
     x_changeunit._create_bookunit_from_atom_files(book_atom_numbers_list)
     return x_changeunit
