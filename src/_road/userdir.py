@@ -1,9 +1,13 @@
+from src._instrument.file import get_directory_path
 from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
     PersonID,
     RealID,
     validate_roadnode,
+    RoadNode,
+    rebuild_road,
+    get_all_road_nodes,
 )
 from src._road.jaar_config import (
     get_changes_folder,
@@ -11,6 +15,7 @@ from src._road.jaar_config import (
     work_str,
     get_test_reals_dir,
     get_test_real_id,
+    get_rootpart_of_econ_dir,
 )
 from dataclasses import dataclass
 
@@ -76,3 +81,10 @@ def userdir_shop(
         _road_delimiter=road_delimiter,
         _planck=planck,
     )
+
+
+def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
+    econ_root = get_rootpart_of_econ_dir()
+    x_road = rebuild_road(x_road, x_userdir.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_userdir._road_delimiter)
+    return f"{x_userdir._econs_dir}{get_directory_path(x_list=[*x_list])}"

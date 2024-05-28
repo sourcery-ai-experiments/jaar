@@ -1,12 +1,13 @@
-from src._road.road import default_road_delimiter_if_none
+from src._road.road import default_road_delimiter_if_none, create_road_from_nodes
 from src._road.finance import default_planck_if_none
-from src._road.userdir import UserDir, userdir_shop
+from src._road.userdir import UserDir, userdir_shop, get_econ_path
 from src._road.jaar_config import (
     get_changes_folder,
     duty_str,
     work_str,
     get_test_reals_dir,
     get_test_real_id,
+    get_rootpart_of_econ_dir,
 )
 from pytest import raises as pytest_raises
 
@@ -78,9 +79,8 @@ def test_userdir_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userdir.person_dir == f"{sue_userdir.persons_dir}/{sue_text}"
     assert sue_userdir._econs_dir == f"{sue_userdir.person_dir}/econs"
     assert sue_userdir._atoms_dir == f"{sue_userdir.person_dir}/atoms"
-    assert (
-        sue_userdir._changes_dir == f"{sue_userdir.person_dir}/{get_changes_folder()}"
-    )
+    x_changes_dir = f"{sue_userdir.person_dir}/{get_changes_folder()}"
+    assert sue_userdir._changes_dir == x_changes_dir
     assert sue_userdir._duty_file_name == f"{duty_str()}.json"
     x_duty_path = f"{sue_userdir.person_dir}/{sue_userdir._duty_file_name}"
     assert sue_userdir._duty_path == x_duty_path
@@ -103,3 +103,42 @@ def test_userdir_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
+
+
+def test_get_econ_path_ReturnsCorrectObj():
+    # GIVEN
+    sue_text = "Sue"
+    peru_text = "peru"
+    sue_userdir = userdir_shop(None, real_id=peru_text, person_id=sue_text)
+    texas_text = "texas"
+    dallas_text = "dallas"
+    elpaso_text = "el paso"
+    kern_text = "kern"
+    idearoot = get_rootpart_of_econ_dir()
+    texas_road = create_road_from_nodes([idearoot, texas_text])
+    dallas_road = create_road_from_nodes([idearoot, texas_text, dallas_text])
+    elpaso_road = create_road_from_nodes([idearoot, texas_text, elpaso_text])
+    kern_road = create_road_from_nodes([idearoot, texas_text, elpaso_text, kern_text])
+
+    # WHEN
+    texas_path = get_econ_path(sue_userdir, texas_road)
+    dallas_path = get_econ_path(sue_userdir, dallas_road)
+    elpaso_path = get_econ_path(sue_userdir, elpaso_road)
+    kern_path = get_econ_path(sue_userdir, kern_road)
+
+    # THEN
+    idearoot_dir = f"{sue_userdir._econs_dir}/{get_rootpart_of_econ_dir()}"
+    print(f"{kern_road=}")
+    print(f"{idearoot_dir=}")
+    assert texas_path == f"{idearoot_dir}/{texas_text}"
+    assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
+    assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
+    assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
+
+    # WHEN / THEN
+    diff_root_texas_road = create_road_from_nodes([peru_text, texas_text])
+    diff_root_dallas_road = create_road_from_nodes([peru_text, texas_text, dallas_text])
+    diff_root_elpaso_road = create_road_from_nodes([peru_text, texas_text, elpaso_text])
+    assert texas_path == get_econ_path(sue_userdir, diff_root_texas_road)
+    assert dallas_path == get_econ_path(sue_userdir, diff_root_dallas_road)
+    assert elpaso_path == get_econ_path(sue_userdir, diff_root_elpaso_road)

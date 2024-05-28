@@ -28,3 +28,7 @@ def duty_str() -> str:
 
 def work_str() -> str:
     return "work"
+
+
+def get_rootpart_of_econ_dir() -> str:
+    return "idearoot"

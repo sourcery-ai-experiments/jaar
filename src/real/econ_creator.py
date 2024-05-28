@@ -1,27 +1,15 @@
 from src._instrument.python import get_empty_dict_if_none
 from src._instrument.file import (
     set_dir,
-    get_directory_path,
     get_all_dirs_with_file,
     get_parts_dir,
     delete_dir,
 )
-from src._road.road import (
-    RoadUnit,
-    RoadNode,
-    get_all_road_nodes,
-    rebuild_road,
-    create_road_from_nodes,
-)
+from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
+from src._road.userdir import UserDir, get_rootpart_of_econ_dir, get_econ_path
 from src.agenda.agenda import AgendaUnit
-from src.econ.econ import (
-    EconUnit,
-    econunit_shop,
-    treasury_db_filename,
-    get_rootpart_of_econ_dir,
-)
+from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.real.admin_duty import get_duty_file_agenda
-from src._road.userdir import UserDir
 from src.real.admin_duty import get_duty_file_agenda
 
 
@@ -45,13 +33,6 @@ def _get_econs_roads(x_userdir: UserDir) -> dict[RoadUnit:EconUnit]:
 
     x_person_econs = x_duty_agenda._healers_dict.get(x_userdir.person_id)
     return get_empty_dict_if_none(x_person_econs)
-
-
-def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
-    # econ_root = get_rootpart_of_econ_dir()
-    # x_road = rebuild_road(x_road, x_userdir.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_userdir._road_delimiter)
-    return f"{x_userdir._econs_dir}{get_directory_path(x_list=[*x_list])}"
 
 
 def create_econ_dir(x_userdir: UserDir, x_road: RoadUnit) -> str:

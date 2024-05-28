@@ -6,7 +6,6 @@ from src.econ.econ import (
     econunit_shop,
     get_temp_env_person_id,
     get_temp_env_real_id,
-    get_rootpart_of_econ_dir,
 )
 from src.econ.examples.econ_env_kit import (
     get_test_econ_dir,
@@ -15,11 +14,6 @@ from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
-
-
-def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():
-    # GIVEN / WHEN / THEN
-    assert get_rootpart_of_econ_dir() == "idearoot"
 
 
 def test_EconUnit_exists():
