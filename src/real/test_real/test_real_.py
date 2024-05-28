@@ -3,7 +3,7 @@ from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
-from src.real.nook import nookunit_shop, save_duty_file, get_duty_file_agenda
+from src.real.user import userunit_shop, save_duty_file, get_duty_file_agenda
 from src.real.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
@@ -121,15 +121,15 @@ def test_RealUnit_init_person_econs_CorrectlySetsEngine(reals_dir_setup_cleanup)
         in_memory_journal=True,
     )
     luca_text = "Luca"
-    luca_nookunit = nookunit_shop(None, music_text, luca_text, planck=x_planck)
-    assert os_path_exists(luca_nookunit._work_path) == False
+    luca_userunit = userunit_shop(None, music_text, luca_text, planck=x_planck)
+    assert os_path_exists(luca_userunit._work_path) == False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_nookunit._work_path)
+    assert os_path_exists(luca_userunit._work_path)
 
 
 def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -138,11 +138,11 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     music_real.init_person_econs(luca_text)
-    luca_nookunit = nookunit_shop(None, music_text, luca_text)
+    luca_userunit = userunit_shop(None, music_text, luca_text)
     bob_text = "Bob"
-    luca_duty = get_duty_file_agenda(luca_nookunit)
+    luca_duty = get_duty_file_agenda(luca_userunit)
     luca_duty.add_partyunit(bob_text)
-    save_duty_file(luca_nookunit, luca_duty)
+    save_duty_file(luca_userunit, luca_duty)
 
     # WHEN
     gen_luca_duty = music_real.get_person_duty_from_file(luca_text)
@@ -162,10 +162,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_text = "Todd"
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    luca_nookunit = nookunit_shop(None, music_text, luca_text)
-    todd_nookunit = nookunit_shop(None, music_text, todd_text)
-    luca_duty_agenda = get_duty_file_agenda(luca_nookunit)
-    todd_duty_agenda = get_duty_file_agenda(todd_nookunit)
+    luca_userunit = userunit_shop(None, music_text, luca_text)
+    todd_userunit = userunit_shop(None, music_text, todd_text)
+    luca_duty_agenda = get_duty_file_agenda(luca_userunit)
+    todd_duty_agenda = get_duty_file_agenda(todd_userunit)
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)
@@ -189,12 +189,12 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_duty_agenda.add_idea(dallas_idea, texas_road)
     todd_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
-    save_duty_file(luca_nookunit, luca_duty_agenda)
-    save_duty_file(todd_nookunit, todd_duty_agenda)
-    create_person_econunits(luca_nookunit)
-    create_person_econunits(todd_nookunit)
-    luca_dallas_econ = get_econunit(luca_nookunit, dallas_road)
-    todd_dallas_econ = get_econunit(todd_nookunit, dallas_road)
+    save_duty_file(luca_userunit, luca_duty_agenda)
+    save_duty_file(todd_userunit, todd_duty_agenda)
+    create_person_econunits(luca_userunit)
+    create_person_econunits(todd_userunit)
+    luca_dallas_econ = get_econunit(luca_userunit, dallas_road)
+    todd_dallas_econ = get_econunit(todd_userunit, dallas_road)
     luca_file_name = get_owner_file_name(luca_text)
     todd_file_name = get_owner_file_name(todd_text)
     luca_roles_dir = luca_dallas_econ.get_roles_dir()
