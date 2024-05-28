@@ -141,32 +141,6 @@
 #             _changes_dir=self._changes_dir,
 #             _atoms_dir=self._atoms_dir,
 #         )
-#         x_changeunit._bookunit.add_all_different_agendaatoms(
-#             before_agenda=self._get_empty_agenda(), after_agenda=default_duty_agenda
-#         )
-#         x_changeunit.save_files()
-#         self._create_duty_from_changes()
-
-#     def _create_initial_change_from_duty(self):
-#         x_changeunit = changeunit_shop(
-#             _giver=self.person_id,
-#             _change_id=get_init_change_id_if_None(),
-#             _changes_dir=self._changes_dir,
-#             _atoms_dir=self._atoms_dir,
-#         )
-#         x_changeunit._bookunit.add_all_different_agendaatoms(
-#             before_agenda=self._get_empty_agenda(),
-#             after_agenda=get_duty_file_agenda(x_userdir),
-#         )
-#         x_changeunit.save_files()
-
-#     def _create_duty_from_changes(self):
-#         self.save_duty_file(_merge_changes_into_agenda(self._get_empty_agenda()))
-
-#     def _get_empty_agenda(self) -> AgendaUnit:
-#         empty_agenda = agendaunit_shop(self.person_id, self.real_id)
-#         empty_agenda._last_change_id = init_change_id()
-#         return empty_agenda
 
 #     def initialize_work_file(self):
 #         if self.work_file_exists() == False:

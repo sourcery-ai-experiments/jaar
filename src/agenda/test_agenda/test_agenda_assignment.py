@@ -77,8 +77,8 @@ def test_agendaunit_get_assignment_ReturnsCorrectPartys():
     tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
 
-    empty_agenda = agendaunit_shop(_owner_id=jes_text)
-    x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
+    x_agenda = agendaunit_shop(jes_text)
+    x_assignment_agenda = jes_agenda.get_assignment(x_agenda, tx._partys, bob_text)
 
     # THEN
     assert len(x_assignment_agenda._partys) == 3
@@ -124,8 +124,10 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
     tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
     tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
 
-    empty_agenda = agendaunit_shop(_owner_id=jes_text)
-    x_assignment_agenda = jes_agenda.get_assignment(empty_agenda, tx._partys, bob_text)
+    valueless_agenda = agendaunit_shop(_owner_id=jes_text)
+    x_assignment_agenda = jes_agenda.get_assignment(
+        valueless_agenda, tx._partys, bob_text
+    )
 
     # THEN
     assert len(x_assignment_agenda._groups) == 5

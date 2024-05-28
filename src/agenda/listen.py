@@ -43,7 +43,7 @@ def _distribute_ingest(
                 x_count = 0
 
 
-def get_ingest_list(
+def generate_ingest_list(
     item_list: list[IdeaUnit], debtor_amount: float, planck: float
 ) -> list[IdeaUnit]:
     x_list = []
@@ -87,7 +87,7 @@ def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
 
     intent_list = list(perspective_agendaunit.get_intent_dict().values())
     debtor_amount = listener._party_debtor_pool
-    ingest_list = get_ingest_list(intent_list, debtor_amount, listener._planck)
+    ingest_list = generate_ingest_list(intent_list, debtor_amount, listener._planck)
     for ingest_ideaunit in ingest_list:
         _ingest_single_ideaunit(listener, ingest_ideaunit)
     return listener
