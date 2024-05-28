@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class EditBeliefTime(qtw.QTableWidget, Ui_Form):
-    root_changes_submitted = qtc.pyqtSignal(bool)
+    root_channges_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -31,7 +31,7 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         self.show
 
     def update_belief(self):
-        # change time belief so that the open is the date entered
+        # modify time belief so that the open is the date entered
         open_month = self.prev_month.currentText()
         open_monthday = self.prev_monthday.currentText()
         open_year = self.prev_year.currentText()
@@ -61,7 +61,7 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         )
 
         self.agenda_x.set_time_beliefs(open=open_dt_x, nigh=nigh_dt_x)
-        self.root_changes_submitted.emit(True)
+        self.root_channges_submitted.emit(True)
         self.close()
 
     def display_belief_time(self):
@@ -121,7 +121,3 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
             "prev_monthday": root_dt_nigh.day,
             "prev_year": root_dt_nigh.year,
         }
-
-    def closeRootChanges(self):
-        self.root_changes_submitted.emit(True)
-        self.close()

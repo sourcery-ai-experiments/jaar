@@ -52,7 +52,7 @@ def default_road_delimiter_if_none(delimiter: str = None) -> str:
     return delimiter if delimiter != None else ","
 
 
-def change_road(
+def rebuild_road(
     subj_road: RoadUnit, old_road: RoadUnit, new_road: RoadUnit
 ) -> RoadUnit:
     if subj_road is None:
@@ -132,7 +132,7 @@ def road_validate(road: RoadUnit, delimiter: str, root_node: RoadNode) -> RoadUn
         return RoadUnit("")
     x_root = get_root_node_from_road(road, delimiter)
     return (
-        change_road(
+        rebuild_road(
             subj_road=road,
             old_road=x_root,
             new_road=root_node,

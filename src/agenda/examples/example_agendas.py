@@ -9,7 +9,7 @@ from src.agenda.reason_idea import (
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
-    get_from_json as agenda_get_from_json,
+    get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.agenda_env import get_agenda_examples_dir
@@ -17,7 +17,7 @@ from src._instrument.file import open_file
 
 
 def agenda_v001() -> AgendaUnit:
-    return agenda_get_from_json(
+    return agendaunit_get_from_json(
         open_file(get_agenda_examples_dir(), "example_agenda1.json")
     )
 
@@ -50,7 +50,7 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
 
 
 def agenda_v002() -> AgendaUnit:
-    bob_agenda = agenda_get_from_json(
+    bob_agenda = agendaunit_get_from_json(
         open_file(
             dest_dir=get_agenda_examples_dir(),
             file_name="example_agenda2.json",
@@ -63,9 +63,9 @@ def agenda_v002() -> AgendaUnit:
 def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_owner_id="Sue", _weight=10)
 
-    gig = "gig"
-    idea_kid_gig = ideaunit_shop(gig, _weight=30, pledge=True)
-    sue_agenda.add_l1_idea(idea_kid_gig)
+    casa = "casa"
+    idea_kid_casa = ideaunit_shop(casa, _weight=30, pledge=True)
+    sue_agenda.add_l1_idea(idea_kid_casa)
 
     cat = "feed cat"
     idea_kid_feedcat = ideaunit_shop(cat, _weight=30, pledge=True)
@@ -141,10 +141,10 @@ def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
     nation_reason = reasonunit_shop(nation_road)
     nation_reason.set_premise(usa_road)
 
-    gig_text = "gig"
-    gig_road = sue_agenda.make_l1_road(gig_text)
-    sue_agenda.edit_idea_attr(road=gig_road, reason=week_reason)
-    sue_agenda.edit_idea_attr(road=gig_road, reason=nation_reason)
+    casa_text = "casa"
+    casa_road = sue_agenda.make_l1_road(casa_text)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=week_reason)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=nation_reason)
     return sue_agenda
 
 
@@ -226,9 +226,9 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
         nigh=clean_table_7am_premise_nigh,
     )
     sue_agenda.edit_idea_attr(road=clean_road, reason=clean_table_7am_reason)
-    gig_text = "gig"
-    gig_road = sue_agenda.make_l1_road(gig_text)
-    sue_agenda.edit_idea_attr(road=gig_road, reason=clean_table_7am_reason)
+    casa_text = "casa"
+    casa_road = sue_agenda.make_l1_road(casa_text)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=clean_table_7am_reason)
     return sue_agenda
 
 
@@ -298,7 +298,7 @@ def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
 
 def get_agenda_base_time_example() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_owner_id="Sue")
-    sue_agenda.add_l1_idea(ideaunit_shop("gig"))
+    sue_agenda.add_l1_idea(ideaunit_shop("casa"))
     return sue_agenda
 
 
@@ -311,7 +311,7 @@ def get_agenda_irrational_example() -> AgendaUnit:
     # Step 2: if chicken._active == False, egg._active is set to True
     # Step 3: if egg._active == True, chicken._active is set to True
     # Step 4: back to step 0.
-    # after hatter_agenda.set_agenda_metrics these should be true:
+    # after hatter_agenda.calc_agenda_metrics these should be true:
     # 1. hatter_agenda._irrational == True
     # 2. hatter_agenda._tree_traverse_count = hatter_agenda._max_tree_traverse
 
@@ -458,7 +458,7 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     # )
     # laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
     # # print(f"{laundry_reasonunit.base=} {laundry_premise=}")
-    # bob_agenda.set_agenda_metrics()
+    # bob_agenda.calc_agenda_metrics()
     # for x_ideaunit in bob_agenda._idea_dict.values():
     #     if x_ideaunit._label in [laundry_text]:
     # print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")

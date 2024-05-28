@@ -1,9 +1,8 @@
 from src._road.finance import default_planck_if_none
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
-    get_agenda_with_4_levels,
 )
-from src.agenda.agenda import agendaunit_shop, AgendaUnit
+from src.agenda.agenda import agendaunit_shop, AgendaUnit, duty_str, work_str
 from src._road.road import (
     get_default_real_id_roadnode as root_label,
     default_road_delimiter_if_none,
@@ -31,7 +30,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._last_gift_id is None
+    assert x_agenda._last_change_id is None
     assert x_agenda._meld_strategy is None
     assert x_agenda._originunit is None
 
@@ -75,7 +74,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._money_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
-    assert x_agenda._last_gift_id is None
+    assert x_agenda._last_change_id is None
     assert x_agenda._meld_strategy == override_meld_strategy
     assert x_agenda._originunit == originunit_shop()
 
@@ -128,7 +127,7 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=85)
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     assert mail_idea.pledge == True
@@ -236,14 +235,14 @@ def test_AgendaUnit_make_road_ReturnsCorrectObj():
         _real_id=real_id_text,
         _road_delimiter=slash_road_delimiter,
     )
-    gig_text = "gig"
-    v1_gig_road = x_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    v1_casa_road = x_agenda.make_l1_road(casa_text)
 
     # WHEN
-    v2_gig_road = x_agenda.make_l1_road(gig_text)
+    v2_casa_road = x_agenda.make_l1_road(casa_text)
 
     # THEN
-    assert v1_gig_road == v2_gig_road
+    assert v1_casa_road == v2_casa_road
 
 
 def test_AgendaUnit_set_meld_strategy_CorrectlySetsAttr():
@@ -284,45 +283,53 @@ def test_AgendaUnit_set_money_desc_SetsAttrCorrectly():
     assert noa_agenda._money_desc == noa_money_desc
 
 
-def test_AgendaUnit_set_last_gift_id_SetsAttrCorrectly():
+def test_AgendaUnit_set_last_change_id_SetsAttrCorrectly():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    assert noa_agenda._last_gift_id is None
+    assert noa_agenda._last_change_id is None
 
     # WHEN
-    x_last_gift_id = 89
-    noa_agenda.set_last_gift_id(x_last_gift_id)
+    x_last_change_id = 89
+    noa_agenda.set_last_change_id(x_last_change_id)
 
     # THEN
-    assert noa_agenda._last_gift_id == x_last_gift_id
+    assert noa_agenda._last_change_id == x_last_change_id
 
 
-def test_AgendaUnit_set_last_gift_id_RaisesError():
+def test_AgendaUnit_set_last_change_id_RaisesError():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    old_last_gift_id = 89
-    noa_agenda.set_last_gift_id(old_last_gift_id)
+    old_last_change_id = 89
+    noa_agenda.set_last_change_id(old_last_change_id)
 
     # WHEN / THEN
-    new_last_gift_id = 72
-    assert new_last_gift_id < old_last_gift_id
+    new_last_change_id = 72
+    assert new_last_change_id < old_last_change_id
     with pytest_raises(Exception) as excinfo:
-        noa_agenda.set_last_gift_id(new_last_gift_id)
+        noa_agenda.set_last_change_id(new_last_change_id)
     assert (
         str(excinfo.value)
-        == f"Cannot set _last_gift_id to {new_last_gift_id} because it is less than {old_last_gift_id}."
+        == f"Cannot set _last_change_id to {new_last_change_id} because it is less than {old_last_change_id}."
     )
 
 
-def test_AgendaUnit_del_last_gift_id_SetsAttrCorrectly():
+def test_AgendaUnit_del_last_change_id_SetsAttrCorrectly():
     # GIVEN
     noa_agenda = agendaunit_shop("Noa", "Texas")
-    old_last_gift_id = 89
-    noa_agenda.set_last_gift_id(old_last_gift_id)
-    assert noa_agenda._last_gift_id != None
+    old_last_change_id = 89
+    noa_agenda.set_last_change_id(old_last_change_id)
+    assert noa_agenda._last_change_id != None
 
     # WHEN
-    noa_agenda.del_last_gift_id()
+    noa_agenda.del_last_change_id()
 
     # WHEN
-    assert noa_agenda._last_gift_id is None
+    assert noa_agenda._last_change_id is None
+
+
+def test_duty_str():
+    assert duty_str() == "duty"
+
+
+def test_work_str():
+    assert work_str() == "work"

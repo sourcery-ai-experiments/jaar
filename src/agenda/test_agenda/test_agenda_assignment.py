@@ -144,14 +144,14 @@ def test_agendaunit_get_assignment_ReturnsCorrectGroups_Scenario1():
 def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # WHEN
     assignor_pledges = x_agenda._get_assignor_pledge_ideas(x_agenda, "any")
 
     # THEN
     print(f"{assignor_pledges=}")
-    gig_road = x_agenda.make_l1_road("gig")
+    casa_road = x_agenda.make_l1_road("casa")
     house_road = x_agenda.make_l1_road("housemanagement")
     table_road = x_agenda.make_road(house_road, "clean table")
     dish_road = x_agenda.make_road(table_road, "remove dishs")
@@ -160,7 +160,7 @@ def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
     feed_road = x_agenda.make_l1_road("feed cat")
 
     x_dict = {
-        gig_road: -1,
+        casa_road: -1,
         table_road: -1,
         dish_road: -1,
         soap_road: -1,
@@ -173,7 +173,7 @@ def test_agenda__get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
 def test_agenda__get_relevant_roads_EmptyRoadUnitReturnsEmpty():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # WHEN
     relevant_roads = x_agenda._get_relevant_roads({})
@@ -187,7 +187,7 @@ def test_agenda__get_relevant_roads_EmptyRoadUnitReturnsEmpty():
 def test_agenda__get_relevant_roads_RootRoadUnitReturnsOnlyItself():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # WHEN
     root_dict = {x_agenda._real_id: -1}
@@ -202,7 +202,7 @@ def test_agenda__get_relevant_roads_RootRoadUnitReturnsOnlyItself():
 def test_agenda__get_relevant_roads_SimpleReturnsOnlyAncestors():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # WHEN
     week_text = "weekdays"
@@ -242,7 +242,7 @@ def test_agenda__get_relevant_roads_ReturnsSimpleReasonUnitBase():
     neo_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
 
     # WHEN
-    neo_agenda.set_agenda_metrics()
+    neo_agenda.calc_agenda_metrics()
     floor_dict = {floor_road}
     relevant_roads = neo_agenda._get_relevant_roads(floor_dict)
 
@@ -285,7 +285,7 @@ def test_agenda__get_relevant_roads_ReturnsReasonUnitBaseAndDescendents():
     dirty_road = x_agenda.make_road(status_road, dirty_text)
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
     floor_dict = {floor_road}
     relevant_roads = x_agenda._get_relevant_roads(floor_dict)
 
@@ -317,31 +317,31 @@ def test_agenda__get_relevant_roads_numeric_road_ReturnSimple():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(_owner_id=yao_text)
-    gig_text = "gig"
-    gig_road = yao_agenda.make_l1_road(gig_text)
-    yao_agenda.add_l1_idea(ideaunit_shop(gig_text))
-    gig_idea = yao_agenda.get_idea_obj(gig_road)
+    casa_text = "casa"
+    casa_road = yao_agenda.make_l1_road(casa_text)
+    yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
+    casa_idea = yao_agenda.get_idea_obj(casa_road)
     day_text = "day_range"
     day_road = yao_agenda.make_l1_road(day_text)
     day_idea = ideaunit_shop(day_text, _begin=44, _close=110)
     yao_agenda.add_l1_idea(day_idea)
-    yao_agenda.edit_idea_attr(road=gig_road, denom=11, numeric_road=day_road)
-    assert gig_idea._begin == 4
-    print(f"{gig_idea._label=} {gig_idea._begin=} {gig_idea._close=}")
+    yao_agenda.edit_idea_attr(road=casa_road, denom=11, numeric_road=day_road)
+    assert casa_idea._begin == 4
+    print(f"{casa_idea._label=} {casa_idea._begin=} {casa_idea._close=}")
 
     # WHEN
-    yao_agenda.set_agenda_metrics()
-    roads_dict = {gig_road}
+    yao_agenda.calc_agenda_metrics()
+    roads_dict = {casa_road}
     relevant_roads = yao_agenda._get_relevant_roads(roads_dict)
 
     # THEN
     print(f"{relevant_roads=}")
     assert len(relevant_roads) == 3
-    assert relevant_roads.get(gig_road) != None
+    assert relevant_roads.get(casa_road) != None
     assert relevant_roads.get(day_road) != None
     assert relevant_roads == {
         yao_agenda._real_id: -1,
-        gig_road: -1,
+        casa_road: -1,
         day_road: -1,
     }
 
@@ -366,7 +366,7 @@ def test_agenda__get_relevant_roads_range_source_road_ReturnSimple():
     yao_agenda.add_idea(min_days_idea, parent_road=min_range_road)
 
     # WHEN
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
     print(f"{yao_agenda._idea_dict.keys()}")
     roads_dict = {min_days_road}
     relevant_roads = yao_agenda._get_relevant_roads(roads_dict)
@@ -390,7 +390,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     casa_text = "casa"
     casa_road = yao_agenda.make_l1_road(casa_text)
     yao_agenda.add_l1_idea(ideaunit_shop(casa_text))
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # WHEN
     bob_text = "Bob"
@@ -402,7 +402,7 @@ def test_agenda_set_assignment_ideas_ReturnsCorrectIdeas():
     yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
 
     # THEN
-    bob_agenda.set_agenda_metrics()
+    bob_agenda.calc_agenda_metrics()
     print(f"{bob_agenda._idea_dict.keys()=}")
     assert len(bob_agenda._idea_dict) == 2
     assert bob_agenda.get_idea_obj(casa_road) != None
@@ -432,8 +432,8 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
 
-    yao_agenda.set_agenda_metrics()
-    bob_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
+    bob_agenda.calc_agenda_metrics()
     assert list(yao_agenda._idearoot._beliefunits.keys()) == [basket_road, room_road]
     assert not list(bob_agenda._idearoot._beliefunits.keys())
 
@@ -446,7 +446,7 @@ def test_agenda__set_assignment_ideas_ReturnsCorrect_idearoot_beliefs():
     yao_agenda._set_assignment_ideas(x_agenda=bob_agenda, relevant_roads=relevant_roads)
 
     # THEN
-    bob_agenda.set_agenda_metrics()
+    bob_agenda.calc_agenda_metrics()
     assert bob_agenda._idearoot._beliefunits.get(room_road) is None
     assert list(bob_agenda._idearoot._beliefunits.keys()) == [basket_road]
 
@@ -481,7 +481,7 @@ def test_agenda_get_assignment_getsCorrectIdeas_scenario1():
     )
 
     # THEN
-    assignment_x.set_agenda_metrics()
+    assignment_x.calc_agenda_metrics()
     print(f"{assignment_x._idea_dict.keys()=}")
     assert len(assignment_x._idea_dict) == 8
     assert assignment_x._idea_dict.get(clean_road) != None
@@ -518,7 +518,7 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
 
     # THEN
     assert cali_assignment != None
-    cali_assignment.set_agenda_metrics()
+    cali_assignment.calc_agenda_metrics()
     assert len(cali_assignment._idea_dict.keys()) == 9
 
     # for road_x in cali_assignment._idea_dict.keys():

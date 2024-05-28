@@ -6,16 +6,15 @@ from src.real.journal_sqlstr import (
     get_atom_hx_table_insert_sqlstr,
     get_atom_mstr_table_create_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_book_gift_link_table_create_sqlstr,
+    get_book_change_link_table_create_sqlstr,
     get_book_table_create_sqlstr,
-    get_gift_table_create_sqlstr,
-    get_gift_person_link_table_create_sqlstr,
+    get_change_table_create_sqlstr,
+    get_change_person_link_table_create_sqlstr,
     get_person_mstr_table_create_sqlstr,
     get_road_ref_table_create_sqlstr,
     get_road_ref_table_single_insert_sqlstr,
     get_road_ref_table_row_id_select_sqlstr,
 )
-from src._instrument.sqlite import sqlite_text
 
 
 def test_get_book_table_create_sqlstr_ReturnsCorrectStr():
@@ -45,46 +44,46 @@ CREATE TABLE atom_book_link
     assert example_sqlstr == get_atom_book_link_table_create_sqlstr()
 
 
-def test_get_gift_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_change_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS gift_mstr (
+CREATE TABLE IF NOT EXISTS change_mstr (
   author_person_id VARCHAR(255) NOT NULL
-, author_gift_number INT NOT NULL
-, UNIQUE(author_person_id, author_gift_number)
+, author_change_number INT NOT NULL
+, UNIQUE(author_person_id, author_change_number)
 )
 ;"""
-    assert example_sqlstr == get_gift_table_create_sqlstr()
+    assert example_sqlstr == get_change_table_create_sqlstr()
 
 
-def test_get_book_gift_link_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_book_change_link_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE book_gift_link
+CREATE TABLE book_change_link
 (
   book_rowid INT NOT NULL
-, gift_rowid INT NOT NULL
-, UNIQUE(book_rowid, gift_rowid)
+, change_rowid INT NOT NULL
+, UNIQUE(book_rowid, change_rowid)
 , CONSTRAINT atom_fk FOREIGN KEY (book_rowid) REFERENCES book_mstr (rowid)
-, CONSTRAINT book_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
 )
 ;"""
-    assert example_sqlstr == get_book_gift_link_table_create_sqlstr()
+    assert example_sqlstr == get_book_change_link_table_create_sqlstr()
 
 
-def test_get_gift_person_link_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_change_person_link_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE gift_person_link
+CREATE TABLE change_person_link
 (
-  gift_rowid INT NOT NULL
+  change_rowid INT NOT NULL
 , person_rowid INT NOT NULL
-, UNIQUE(gift_rowid, person_rowid)
-, CONSTRAINT book_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+, UNIQUE(change_rowid, person_rowid)
+, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
 , CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
 )
 ;"""
-    assert example_sqlstr == get_gift_person_link_table_create_sqlstr()
+    assert example_sqlstr == get_change_person_link_table_create_sqlstr()
 
 
 def test_get_person_mstr_table_create_sqlstr_ReturnsCorrectStr():

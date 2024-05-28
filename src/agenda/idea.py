@@ -31,7 +31,7 @@ from src.agenda.reason_idea import (
     ReasonHeir,
     reasonheir_shop,
     RoadUnit,
-    change_road,
+    rebuild_road,
     find_replace_road_key_dict,
     reasons_get_from_dict,
     beliefunits_get_from_dict,
@@ -333,8 +333,8 @@ class IdeaUnit:
     def set_beliefunit_to_complete(self, base_beliefunit: BeliefUnit):
         # if a idea is considered a task then a beliefheir.open attribute can be increased to
         # a number <= beliefheir.nigh so the idea no longer is a task. This method finds
-        # the minimal beliefheir.open to change idea._task == False. idea_core._beliefheir cannot be straight up manpulated
-        # so it is mandatory that idea._beliefunit is changed.
+        # the minimal beliefheir.open to modify idea._task == False. idea_core._beliefheir cannot be straight up manpulated
+        # so it is mandatory that idea._beliefunit is different.
         # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
         self._beliefunits[base_beliefunit.base] = beliefunit_shop(
             base=base_beliefunit.base,
@@ -1045,13 +1045,13 @@ class IdeaUnit:
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         if is_sub_road(ref_road=self._parent_road, sub_road=old_road):
-            self._parent_road = change_road(self._parent_road, old_road, new_road)
+            self._parent_road = rebuild_road(self._parent_road, old_road, new_road)
         if is_sub_road(ref_road=self._range_source_road, sub_road=old_road):
-            self._range_source_road = change_road(
+            self._range_source_road = rebuild_road(
                 self._range_source_road, old_road, new_road
             )
         if is_sub_road(ref_road=self._numeric_road, sub_road=old_road):
-            self._numeric_road = change_road(self._numeric_road, old_road, new_road)
+            self._numeric_road = rebuild_road(self._numeric_road, old_road, new_road)
 
         self._reasonunits == find_replace_road_key_dict(
             dict_x=self._reasonunits, old_road=old_road, new_road=new_road

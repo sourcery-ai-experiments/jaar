@@ -11,16 +11,16 @@ from dataclasses import dataclass
 from os.path import exists as os_path_exists
 
 
-def get_gifts_folder() -> str:
-    return "gifts"
+def get_changes_folder() -> str:
+    return "changes"
 
 
-def init_gift_id() -> int:
+def init_change_id() -> int:
     return 0
 
 
-def get_init_gift_id_if_None(x_gift_id: int = None) -> int:
-    return init_gift_id() if x_gift_id is None else x_gift_id
+def get_init_change_id_if_None(x_change_id: int = None) -> int:
+    return init_change_id() if x_change_id is None else x_change_id
 
 
 def get_json_filename(filename_without_extention) -> str:
@@ -28,24 +28,24 @@ def get_json_filename(filename_without_extention) -> str:
 
 
 @dataclass
-class GiftUnit:
+class ChangeUnit:
     _giver: PersonID = None
-    _gift_id: int = None
-    _takers: set[PersonID] = None
+    _change_id: int = None
+    _faces: set[PersonID] = None
     _bookunit: BookUnit = None
     _book_start: int = None
     _person_dir: str = None
-    _gifts_dir: str = None
+    _changes_dir: str = None
     _atoms_dir: str = None
 
-    def set_taker(self, x_taker: PersonID):
-        self._takers.add(x_taker)
+    def set_face(self, x_face: PersonID):
+        self._faces.add(x_face)
 
-    def taker_exists(self, x_taker: PersonID) -> bool:
-        return x_taker in self._takers
+    def face_exists(self, x_face: PersonID) -> bool:
+        return x_face in self._faces
 
-    def del_taker(self, x_taker: PersonID):
-        self._takers.remove(x_taker)
+    def del_face(self, x_face: PersonID):
+        self._faces.remove(x_face)
 
     def set_bookunit(self, x_bookunit: BookUnit):
         self._bookunit = x_bookunit
@@ -54,27 +54,27 @@ class GiftUnit:
         self._bookunit = bookunit_shop()
 
     def set_book_start(self, x_book_start: int):
-        self._book_start = get_init_gift_id_if_None(x_book_start)
+        self._book_start = get_init_change_id_if_None(x_book_start)
 
     def agendaatom_exists(self, x_agendaatom: AgendaAtom):
         return self._bookunit.agendaatom_exists(x_agendaatom)
 
     def get_step_dict(self) -> dict[str:]:
         return {
-            "gifter": self._giver,
-            "takers": {x_taker: 1 for x_taker in self._takers},
+            "changeer": self._giver,
+            "faces": {x_face: 1 for x_face in self._faces},
             "book": self._bookunit.get_ordered_agendaatoms(self._book_start),
         }
 
-    def get_book_atom_numbers(self, giftunit_dict: dict[str:]) -> int:
-        book_dict = giftunit_dict.get("book")
+    def get_book_atom_numbers(self, changeunit_dict: dict[str:]) -> int:
+        book_dict = changeunit_dict.get("book")
         return list(book_dict.keys())
 
     def get_bookmetric_dict(self) -> dict:
         x_dict = self.get_step_dict()
         return {
-            "gifter": x_dict.get("gifter"),
-            "takers": x_dict.get("takers"),
+            "changeer": x_dict.get("changeer"),
+            "faces": x_dict.get("faces"),
             "book_atom_numbers": self.get_book_atom_numbers(x_dict),
         }
 
@@ -96,13 +96,13 @@ class GiftUnit:
         x_json = open_file(self._atoms_dir, self._get_num_filename(atom_number))
         return agendaatom_get_from_json(x_json)
 
-    def _save_gift_file(self):
-        x_filename = self._get_num_filename(self._gift_id)
-        save_file(self._gifts_dir, x_filename, self.get_bookmetric_json())
+    def _save_change_file(self):
+        x_filename = self._get_num_filename(self._change_id)
+        save_file(self._changes_dir, x_filename, self.get_bookmetric_json())
 
-    def gift_file_exists(self) -> bool:
-        x_filename = self._get_num_filename(self._gift_id)
-        return os_path_exists(f"{self._gifts_dir}/{x_filename}")
+    def change_file_exists(self) -> bool:
+        x_filename = self._get_num_filename(self._change_id)
+        return os_path_exists(f"{self._changes_dir}/{x_filename}")
 
     def _save_atom_files(self):
         step_dict = self.get_step_dict()
@@ -111,7 +111,7 @@ class GiftUnit:
             self._save_atom_file(order_int, agendaatom)
 
     def save_files(self):
-        self._save_gift_file()
+        self._save_change_file()
         self._save_atom_files()
 
     def _create_bookunit_from_atom_files(self, atom_number_list: list) -> BookUnit:
@@ -122,41 +122,41 @@ class GiftUnit:
         self._bookunit = x_bookunit
 
 
-def giftunit_shop(
+def changeunit_shop(
     _giver: PersonID,
-    _gift_id: int = None,
-    _takers: set[PersonID] = None,
+    _change_id: int = None,
+    _faces: set[PersonID] = None,
     _bookunit: BookUnit = None,
     _book_start: int = None,
     _person_dir: str = None,
-    _gifts_dir: str = None,
+    _changes_dir: str = None,
     _atoms_dir: str = None,
 ):
     if _bookunit is None:
         _bookunit = bookunit_shop()
-    x_giftunit = GiftUnit(
+    x_changeunit = ChangeUnit(
         _giver=_giver,
-        _gift_id=get_init_gift_id_if_None(_gift_id),
-        _takers=get_empty_set_if_none(_takers),
+        _change_id=get_init_change_id_if_None(_change_id),
+        _faces=get_empty_set_if_none(_faces),
         _bookunit=_bookunit,
         _person_dir=_person_dir,
-        _gifts_dir=_gifts_dir,
+        _changes_dir=_changes_dir,
         _atoms_dir=_atoms_dir,
     )
-    x_giftunit.set_book_start(_book_start)
-    return x_giftunit
+    x_changeunit.set_book_start(_book_start)
+    return x_changeunit
 
 
-def create_giftunit_from_files(
-    gifts_dir: str,
-    gift_id: str,
+def create_changeunit_from_files(
+    changes_dir: str,
+    change_id: str,
     atoms_dir: str,
-) -> GiftUnit:
-    gift_filename = get_json_filename(gift_id)
-    gift_dict = get_dict_from_json(open_file(gifts_dir, gift_filename))
-    x_giver = gift_dict.get("gifter")
-    x_takers = set(gift_dict.get("takers").keys())
-    x_giftunit = giftunit_shop(x_giver, gift_id, x_takers, _atoms_dir=atoms_dir)
-    book_atom_numbers_list = gift_dict.get("book_atom_numbers")
-    x_giftunit._create_bookunit_from_atom_files(book_atom_numbers_list)
-    return x_giftunit
+) -> ChangeUnit:
+    change_filename = get_json_filename(change_id)
+    change_dict = get_dict_from_json(open_file(changes_dir, change_filename))
+    x_giver = change_dict.get("changeer")
+    x_faces = set(change_dict.get("faces").keys())
+    x_changeunit = changeunit_shop(x_giver, change_id, x_faces, _atoms_dir=atoms_dir)
+    book_atom_numbers_list = change_dict.get("book_atom_numbers")
+    x_changeunit._create_bookunit_from_atom_files(book_atom_numbers_list)
+    return x_changeunit

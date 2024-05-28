@@ -31,7 +31,7 @@ def test_agenda_idearoot_assignedunit_CorrectlySets_idea_assignedheir():
     assert tim_agenda._idearoot._assignedheir is None
 
     # WHEN
-    tim_agenda.set_agenda_metrics()
+    tim_agenda.calc_agenda_metrics()
 
     # THEN
     assigned_heir_x = assigned_heir_shop()
@@ -58,7 +58,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     assert run_idea._assignedheir is None
 
     # WHEN
-    bob_agenda.set_agenda_metrics()
+    bob_agenda.calc_agenda_metrics()
 
     # THEN
     assert run_idea._assignedheir != None
@@ -101,7 +101,7 @@ def test_agenda_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir(
     assert four_idea._assignedheir is None
 
     # WHEN
-    noa_agenda.set_agenda_metrics()
+    noa_agenda.calc_agenda_metrics()
 
     # THEN
     assigned_heir_x = assigned_heir_shop()
@@ -123,11 +123,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa1_agenda.add_partyunit(party_id=xia_text)
     noa1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = noa1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = noa1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(casa_text), parent_road=noa1_agenda._real_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)
@@ -156,11 +156,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa1_agenda.add_partyunit(party_id=xia_text)
     noa1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = noa1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = noa1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = noa1_agenda.make_l1_road(swim_text)
-    noa1_agenda.add_idea(ideaunit_shop(gig_text), parent_road=noa1_agenda._real_id)
+    noa1_agenda.add_idea(ideaunit_shop(casa_text), parent_road=noa1_agenda._real_id)
     noa1_agenda.add_idea(ideaunit_shop(swim_text), parent_road=noa1_agenda._real_id)
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffgroup(group_id=xia_text)

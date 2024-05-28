@@ -109,7 +109,7 @@ def test_AgendaUnit_groups_set_groupunit_CorrectlySets_partylinks():
     assert len(x_agenda.get_groupunit(swim_text)._partys) == 2
 
 
-def test_AgendaUnit_groups_del_groupunit_gigsCorrectly():
+def test_AgendaUnit_groups_del_groupunit_casasCorrectly():
     # GIVEN
     x_agenda = agendaunit_shop()
     swim_text = "swimmers"
@@ -136,7 +136,7 @@ def test_examples_agenda_v001_HasGroups():
     assert everyone_partys_len == 22
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
     idea_dict = x_agenda._idea_dict
 
     # THEN
@@ -337,7 +337,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     assert len(x_agenda._groups) == 3
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_rico = x_agenda.get_groupunit(rico_text)
@@ -364,7 +364,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     bl_sele = balancelink_shop(group_id=sele_text, creditor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._groups) == 4
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_sele = x_agenda.get_groupunit(sele_text)
@@ -418,7 +418,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImpo
     assert len(x_agenda._groups) == 3
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
     group_rico = x_agenda.get_groupunit(rico_text)
@@ -469,7 +469,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     x_agenda.add_l1_idea(ideaunit_shop("hunt", _weight=3))
 
     # WHEN
-    x_agenda.set_agenda_metrics()
+    x_agenda.calc_agenda_metrics()
 
     # THEN
 
@@ -563,7 +563,7 @@ def test_AgendaUnit_edit_Groupunit_group_id_raiseErrorNewPersonIDPreviouslyExist
         )
     assert (
         str(excinfo.value)
-        == f"Group '{swim_text}' change to '{jog_text}' failed since '{jog_text}' exists."
+        == f"Group '{swim_text}' modify to '{jog_text}' failed since '{jog_text}' exists."
     )
 
 
@@ -607,7 +607,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_AgendaUnit_edit_groupunit_group_id_CorrectlyChangesBalanceLinks():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyModifysBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
@@ -694,8 +694,8 @@ def test_AgendaUnit_add_idea_CreatesMissingGroups():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
-    gig_road = x_agenda.make_l1_road("gig")
-    new_idea_parent_road = x_agenda.make_road(gig_road, "cleaning")
+    casa_road = x_agenda.make_l1_road("casa")
+    new_idea_parent_road = x_agenda.make_road(casa_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
         _weight=40, _label=clean_cookery_text, pledge=True
@@ -725,11 +725,11 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda.add_partyunit(party_id=xia_text)
     x1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = x1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = x1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(casa_text))
     x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
     x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(xia_text))
     x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(zoa_text))
@@ -755,11 +755,11 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda.add_partyunit(party_id=xia_text)
     x1_agenda.add_partyunit(party_id=zoa_text)
 
-    gig_text = "gig"
-    gig_road = x1_agenda.make_l1_road(gig_text)
+    casa_text = "casa"
+    casa_road = x1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_idea(ideaunit_shop(gig_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(casa_text))
     x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
     x1_agenda.edit_idea_attr(
         road=swim_road, balancelink=balancelink_shop(group_id=xia_text)
@@ -785,8 +785,8 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteGroups():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    gig_road = bob_agenda.make_l1_road("gig")
-    new_idea_parent_road = bob_agenda.make_road(gig_road, "cleaning")
+    casa_road = bob_agenda.make_l1_road("casa")
+    new_idea_parent_road = bob_agenda.make_road(casa_road, "cleaning")
     clean_cookery_text = "clean_cookery"
     clean_cookery_idea = ideaunit_shop(
         _weight=40, _label=clean_cookery_text, pledge=True

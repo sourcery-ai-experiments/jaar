@@ -18,7 +18,7 @@ from src.agenda.atom import (
     CRUD_command,
     AgendaAtom,
     agendaatom_shop,
-    change_agenda_with_agendaatom,
+    modify_agenda_with_agendaatom,
     InvalidAgendaAtomException,
     atom_delete,
     atom_insert,
@@ -77,7 +77,7 @@ class BookUnit:
     def get_edited_agenda(self, before_agenda: AgendaUnit):
         edited_agenda = copy_deepcopy(before_agenda)
         for x_agendaatom in self.get_sorted_agendaatoms():
-            change_agenda_with_agendaatom(edited_agenda, x_agendaatom)
+            modify_agenda_with_agendaatom(edited_agenda, x_agendaatom)
         return edited_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):
@@ -140,8 +140,8 @@ class BookUnit:
     def add_all_different_agendaatoms(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        before_agenda.set_agenda_metrics()
-        after_agenda.set_agenda_metrics()
+        before_agenda.calc_agenda_metrics()
+        after_agenda.calc_agenda_metrics()
         self.add_agendaatoms_agendaunit_simple_attrs(before_agenda, after_agenda)
         self.add_agendaatom_partyunits(before_agenda, after_agenda)
         self.add_agendaatom_groupunits(before_agenda, after_agenda)
@@ -942,7 +942,7 @@ def validate_agenda_build_from_book(x_book: BookUnit, x_agenda: AgendaUnit = Non
     x_agenda = x_book.get_edited_agenda(x_agenda)
 
     try:
-        x_agenda.set_agenda_metrics()
+        x_agenda.calc_agenda_metrics()
     except Exception:
         return False
 
@@ -1171,11 +1171,11 @@ def add_agendaunit_legible_list(
 
     if _max_tree_traverse_value != None:
         legible_list.append(
-            f"{x_agenda._owner_id}'s maximum number of Agenda output evaluations changed to {_max_tree_traverse_value}"
+            f"{x_agenda._owner_id}'s maximum number of Agenda output evaluations transited to {_max_tree_traverse_value}"
         )
     if _meld_strategy_value != None:
         legible_list.append(
-            f"{x_agenda._owner_id}'s Meld strategy changed to '{_meld_strategy_value}'"
+            f"{x_agenda._owner_id}'s Meld strategy transited to '{_meld_strategy_value}'"
         )
     if _money_desc_value != None:
         legible_list.append(
@@ -1199,7 +1199,7 @@ def add_agendaunit_legible_list(
         )
     if _weight_value != None:
         legible_list.append(
-            f"{x_agenda._owner_id}'s agenda weight was changed to {_weight_value}"
+            f"{x_agenda._owner_id}'s agenda weight was transited to {_weight_value}"
         )
 
 
@@ -1427,7 +1427,7 @@ def add_agenda_ideaunit_update_to_legible_list(
             _reest_value = ideaunit_atom.get_value(_reest_text)
             _weight_value = ideaunit_atom.get_value(_weight_text)
             pledge_value = ideaunit_atom.get_value(pledge_text)
-            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} changed these attributes: "
+            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} transited these attributes: "
             if _addin_value != None:
                 x_str += f"_addin={_addin_value}."
             if _begin_value != None:
@@ -1492,11 +1492,11 @@ def add_agenda_idea_balancelink_update_to_legible_list(
             creditor_weight_value = idea_balancelink_atom.get_value("creditor_weight")
             debtor_weight_value = idea_balancelink_atom.get_value("debtor_weight")
             if creditor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
             elif creditor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
+                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
             elif creditor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Balancelink has been changed for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
@@ -1536,7 +1536,7 @@ def add_agenda_idea_reasonunit_update_to_legible_list(
             base_value = idea_reasonunit_atom.get_value("base")
             suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
             if suff_idea_active_value != None:
-                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' changed with suff_idea_active={suff_idea_active_value}."
+                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' transited with suff_idea_active={suff_idea_active_value}."
             elif suff_idea_active_value is None:
                 x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' and no longer checks base active mode."
             legible_list.append(x_str)

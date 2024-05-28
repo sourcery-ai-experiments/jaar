@@ -5,15 +5,11 @@ from src.agenda.reason_idea import (
     RoadUnit,
     beliefunit_shop,
 )
-from src._road.road import (
-    get_default_real_id_roadnode as root_label,
-    create_road,
-)
-from pytest import raises as pytest_raises
+from src._road.road import get_default_real_id_roadnode as root_label, create_road
 
 
-def test_IdeaUnit_find_replace_road_CorrectlyChanges_parent_road():
-    # GIVEN Idea with _parent_road that will be changed
+def test_IdeaUnit_find_replace_road_CorrectlyModifys_parent_road():
+    # GIVEN Idea with _parent_road that will be different
     old_casa_text = "casa1"
     old_casa_road = create_road(root_label(), old_casa_text)
     bloomers_text = "bloomers"
@@ -36,8 +32,8 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_parent_road():
     assert create_road(idea_x._parent_road, idea_x._label) == new_roses_road
 
 
-def test_IdeaUnit_find_replace_road_CorrectlyChanges_range_source_road_numeric_road():
-    # GIVEN Idea with special road and numeric road that will be changed
+def test_IdeaUnit_find_replace_road_CorrectlyModifys_range_source_road_numeric_road():
+    # GIVEN Idea with special road and numeric road that will be different
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
@@ -76,8 +72,8 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_range_source_road_numeric_r
     assert idea_x._numeric_road == new_snow_road
 
 
-def test_IdeaUnit_find_replace_road_CorrectlyChanges_reasonunits():
-    # GIVEN Idea with reason that will be changed
+def test_IdeaUnit_find_replace_road_CorrectlyModifys_reasonunits():
+    # GIVEN Idea with reason that will be different
     casa_text = "casa1"
     casa_road = create_road(root_label(), casa_text)
     bloomers_text = "bloomers"
@@ -130,8 +126,8 @@ def test_IdeaUnit_find_replace_road_CorrectlyChanges_reasonunits():
     assert premise_obj.need == new_rain_road
 
 
-def test_IdeaUnit_find_replace_road_CorrectlyChanges_beliefunits():
-    # GIVEN Idea with beliefunit that will be changed
+def test_IdeaUnit_find_replace_road_CorrectlyModifys_beliefunits():
+    # GIVEN Idea with beliefunit that will be different
     roses_text = "roses"
     old_water_text = "water"
     old_water_road = create_road(root_label(), old_water_text)
@@ -178,7 +174,7 @@ def test_IdeaUnit_get_obj_key_ReturnsCorrectInfo():
     assert red_idea.get_obj_key() == red_text
 
 
-def test_IdeaUnit_set_road_delimiter_CorrectlyChangesReasonRoadUnits():
+def test_IdeaUnit_set_road_delimiter_CorrectlyModifysReasonRoadUnits():
     # GIVEN
     casa_text = "casa"
     casa_idea = ideaunit_shop(casa_text)

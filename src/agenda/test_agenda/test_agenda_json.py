@@ -9,7 +9,7 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import (
     agendaunit_shop,
-    get_from_json as agenda_get_from_json,
+    get_from_json as agendaunit_get_from_json,
     get_dict_of_agenda_from_dict,
 )
 from src.agenda.examples.agenda_env import (
@@ -49,8 +49,8 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda.set_party_debtor_pool(x_party_debtor_pool)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
-    x_last_gift_id = 77
-    x_agenda.set_last_gift_id(x_last_gift_id)
+    x_last_change_id = 77
+    x_agenda.set_last_change_id(x_last_change_id)
 
     # WHEN
     agenda_dict = x_agenda.get_dict()
@@ -68,7 +68,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
-    assert agenda_dict["_last_gift_id"] == x_agenda._last_gift_id
+    assert agenda_dict["_last_change_id"] == x_agenda._last_change_id
     assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
     assert len(agenda_dict["_partys"]) != 12
     assert len(agenda_dict["_groups"]) == 12
@@ -221,7 +221,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
         agenda_dict["_party_debtor_pool"]
     assert str(excinfo.value) == "'_party_debtor_pool'"
     with pytest_raises(Exception) as excinfo:
-        agenda_dict["_last_gift_id"]
+        agenda_dict["_last_change_id"]
 
     x_idearoot = zia_agenda._idearoot
     idearoot_dict = agenda_dict.get("_idearoot")
@@ -313,7 +313,7 @@ def test_save_file_CorrectlySavesAgendaUnitJSON(env_dir_setup_cleanup):
     assert open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
 
 
-def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
+def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     # GIVEN
     zia_agenda = example_agendas_get_agenda_x1_3levels_1reason_1beliefs()
     zia_agenda.set_max_tree_traverse(23)
@@ -325,8 +325,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_party_debtor_pool = 2
     zia_agenda.set_party_creditor_pool(zia_party_creditor_pool)
     zia_agenda.set_party_debtor_pool(zia_party_debtor_pool)
-    zia_last_gift_id = 73
-    zia_agenda.set_last_gift_id(zia_last_gift_id)
+    zia_last_change_id = 73
+    zia_agenda.set_last_change_id(zia_last_change_id)
 
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
@@ -369,7 +369,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     # WHEN
     x_json = zia_agenda.get_json()
     assert x_is_json(x_json) == True
-    json_agenda = agenda_get_from_json(x_agenda_json=x_json)
+    json_agenda = agendaunit_get_from_json(x_agenda_json=x_json)
 
     # THEN
     assert str(type(json_agenda)).find(".agenda.AgendaUnit'>") > 0
@@ -387,8 +387,8 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._party_debtor_pool == zia_party_debtor_pool
     assert json_agenda._meld_strategy == zia_agenda._meld_strategy
     assert json_agenda._meld_strategy == override_text
-    assert json_agenda._last_gift_id == zia_agenda._last_gift_id
-    assert json_agenda._last_gift_id == zia_last_gift_id
+    assert json_agenda._last_change_id == zia_agenda._last_change_id
+    assert json_agenda._last_change_id == zia_last_change_id
     print(f"{json_agenda._groups.keys()=}")
     print(f"{zia_agenda._groups.keys()=}")
     assert json_agenda._groups == zia_agenda._groups
@@ -431,7 +431,7 @@ def test_agenda_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._originunit == zia_agenda._originunit
 
 
-def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
+def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     # GIVEN
     slash_delimiter = "/"
     before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
@@ -439,7 +439,7 @@ def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
 
     # WHEN
     bob_json = before_bob_agenda.get_json()
-    after_bob_agenda = agenda_get_from_json(bob_json)
+    after_bob_agenda = agendaunit_get_from_json(bob_json)
 
     # THEN
     assert after_bob_agenda._road_delimiter != default_road_delimiter_if_none()
@@ -447,7 +447,7 @@ def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     assert after_bob_agenda._road_delimiter == before_bob_agenda._road_delimiter
 
 
-def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample():
+def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample():
     # GIVEN
     slash_delimiter = "/"
     before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
@@ -457,14 +457,14 @@ def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample():
 
     # WHEN
     bob_json = before_bob_agenda.get_json()
-    after_bob_agenda = agenda_get_from_json(bob_json)
+    after_bob_agenda = agendaunit_get_from_json(bob_json)
 
     # THEN
     after_bob_partyunit = after_bob_agenda.get_party(bob_text)
     assert after_bob_partyunit._road_delimiter == slash_delimiter
 
 
-def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_GroupExample():
+def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_GroupExample():
     # GIVEN
     slash_delimiter = "/"
     before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
@@ -476,14 +476,14 @@ def test_agenda_get_from_json_ReturnsCorrectObj_road_delimiter_GroupExample():
 
     # WHEN
     bob_json = before_bob_agenda.get_json()
-    after_bob_agenda = agenda_get_from_json(bob_json)
+    after_bob_agenda = agendaunit_get_from_json(bob_json)
 
     # THEN
     after_bob_groupunit = after_bob_agenda.get_groupunit(swimmers_text)
     assert after_bob_groupunit._road_delimiter == slash_delimiter
 
 
-def test_agenda_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
+def test_agendaunit_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
     # GIVEN
     x1_agenda = example_agendas_agenda_v001()
     x1_agenda._weight = 15
@@ -492,7 +492,7 @@ def test_agenda_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
     assert x1_agenda._idearoot._weight == 1
 
     # WHEN
-    x2_agenda = agenda_get_from_json(x1_agenda.get_json())
+    x2_agenda = agendaunit_get_from_json(x1_agenda.get_json())
 
     # THEN
     assert x1_agenda._weight == 15
@@ -541,5 +541,5 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     assert ccn2_agenda._idea_dict == x2_agenda._idea_dict
     assert ccn2_agenda == x2_agenda
     ccn_agenda3 = ccn_dict_of_obj.get(x3_agenda._owner_id)
-    x3_agenda.set_agenda_metrics()
+    x3_agenda.calc_agenda_metrics()
     assert ccn_agenda3 == x3_agenda

@@ -8,7 +8,7 @@ from src.agenda.hreg_time import PremiseUnitHregTime, HregTimeIdeaSource
 
 
 class Edit_Agenda(qw, Ui_Form):
-    intent_changed = qsig(bool)
+    intent_channged = qsig(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,7 +41,7 @@ class Edit_Agenda(qw, Ui_Form):
         #         yo_id_lesser=yo_id_lesser, yo_id_greater=yo_id_greater
         #     )
         #     self.refresh_all()
-        #     self.intent_changed.emit(True)
+        #     self.intent_channged.emit(True)
         #     self.close()
 
     def refresh_all(self):

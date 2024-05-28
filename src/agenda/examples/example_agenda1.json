@@ -108,7 +108,7 @@
             },
             "group_id": ",appreciates US DOLLAR"
         },
-        ",Climate Change": {
+        ",Climate Death": {
             "_party_mirror": false,
             "_partys": {
                 "Philipa": {
@@ -127,7 +127,7 @@
                     "party_id": "Thomas OSU"
                 }
             },
-            "group_id": ",Climate Change"
+            "group_id": ",Climate Death"
         },
         ",Everyone": {
             "_party_mirror": false,
@@ -3822,9 +3822,9 @@
                             "music,Internet": {
                                 "base": "music,Internet",
                                 "premises": {
-                                    "music,Internet,Faceboook": {
+                                    "music,Internet,Faaceboook": {
                                         "divisor": null,
-                                        "need": "music,Internet,Faceboook",
+                                        "need": "music,Internet,Faaceboook",
                                         "nigh": null,
                                         "open": null
                                     }
@@ -4079,10 +4079,10 @@
             },
             "D&B": {
                 "_balancelinks": {
-                    ",Climate Change": {
+                    ",Climate Death": {
                         "creditor_weight": 1.0,
                         "debtor_weight": 1.0,
-                        "group_id": ",Climate Change"
+                        "group_id": ",Climate Death"
                     },
                     ",Family": {
                         "creditor_weight": 1.0,
@@ -4231,16 +4231,16 @@
                     "donate to action committees": {
                         "_is_expanded": false,
                         "_kids": {
-                            "donate to influential people that are pro-Climate Change": {
+                            "donate to influential people that are pro-Climate Death": {
                                 "_balancelinks": {
-                                    ",Climate Change": {
+                                    ",Climate Death": {
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "group_id": ",Climate Change"
+                                        "group_id": ",Climate Death"
                                     }
                                 },
                                 "_is_expanded": true,
-                                "_label": "donate to influential people that are pro-Climate Change",
+                                "_label": "donate to influential people that are pro-Climate Death",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "music,Aaron Donald things effected by him": {
@@ -4387,10 +4387,10 @@
                                     },
                                     "call David and discuss methodology": {
                                         "_balancelinks": {
-                                            ",Climate Change": {
+                                            ",Climate Death": {
                                                 "creditor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "group_id": ",Climate Change"
+                                                "group_id": ",Climate Death"
                                             },
                                             "Renee Elise Goldsberry": {
                                                 "creditor_weight": 1.0,
@@ -4483,16 +4483,16 @@
                     "write letters to reps": {
                         "_is_expanded": false,
                         "_kids": {
-                            "write letters about Climate Change to congressman": {
+                            "write letters about Climate Death to congressman": {
                                 "_balancelinks": {
-                                    ",Climate Change": {
+                                    ",Climate Death": {
                                         "creditor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "group_id": ",Climate Change"
+                                        "group_id": ",Climate Death"
                                     }
                                 },
                                 "_is_expanded": true,
-                                "_label": "write letters about Climate Change to congressman",
+                                "_label": "write letters about Climate Death to congressman",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "music,Aaron Donald things effected by him": {
@@ -4666,9 +4666,9 @@
                         "_weight": 1,
                         "pledge": false
                     },
-                    "Faceboook": {
+                    "Faaceboook": {
                         "_is_expanded": true,
-                        "_label": "Faceboook",
+                        "_label": "Faaceboook",
                         "_meld_strategy": "default",
                         "_uid": 251,
                         "_weight": 1,

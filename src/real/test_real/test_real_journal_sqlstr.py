@@ -2,7 +2,6 @@ from src.agenda.atom import atom_hx_table_name
 from src._instrument.sqlite import check_table_column_existence
 from src.real.journal_sqlstr import get_atom_hx_table_insert_sqlstr
 from src.real.real import realunit_shop
-from src.real.examples.example_atoms import get_atom_example_beliefunit_knee
 from src.real.examples.real_env_kit import (
     get_test_real_id,
     get_test_reals_dir,

@@ -49,7 +49,7 @@ def test_AgendaUnit_set_party_CorrectlySets_partys_groups():
     # GIVEN
     x_planck = 0.5
     yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
     assert len(yao_agenda._partys) == 0
     assert len(yao_agenda._groups) == 0
 
@@ -193,7 +193,7 @@ def test_AgendaUnit_get_party_ReturnsCorrectObj():
     assert carm_party == yao_agenda._partys.get(carm_text)
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -227,7 +227,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt
     #         assert partylink._agenda_credit is None
     #         assert partylink._agenda_debt is None
 
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # for balancelink in yao_agenda._balanceheirs.values():
     #     print(
@@ -282,7 +282,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt
             group_id=GroupID(selena_text), creditor_weight=20, debtor_weight=13
         )
     )
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # THEN
     selena_groupunit = yao_agenda.get_groupunit(selena_text)
@@ -342,7 +342,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyLinkAgendaCreditAndDebt
     )
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
@@ -372,7 +372,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
     assert patr_partyunit._agenda_debt == 0
 
     # WHEN
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # THEN
     partyunit_agenda_credit_sum = 0.0
@@ -424,7 +424,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
             group_id=selena_text, creditor_weight=20, debtor_weight=10
         )
     )
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # THEN
     selena_partyunit = yao_agenda._partys.get(selena_text)
@@ -487,7 +487,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartGroupedLWPartyUnitAgendaImportance():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartGroupedLWPartyUnitAgendaImportance():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
@@ -510,7 +510,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartGroupedLWPartyUnitAgenda
     yao_agenda.add_l1_idea(ideaunit_shop(hunt_text, _weight=3))
 
     # WHEN
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # THEN
     rico_groupunit = yao_agenda.get_groupunit(rico_text)
@@ -597,7 +597,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartGroupedLWPartyUnitAgenda
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyAttrs():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     yao_agenda.add_l1_idea(ideaunit_shop("swim"))
@@ -620,7 +620,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     assert patr_partyunit._agenda_debt == 0
 
     # WHEN
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
     # THEN
     assert (
@@ -655,7 +655,7 @@ def test_AgendaUnit_set_agenda_metrics_CorrectlySetsPartyAttrs():
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_weight_sum_correct_IsFalse():
+def test_AgendaUnit_calc_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_weight_sum_correct_IsFalse():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -670,14 +670,14 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_we
     yao_agenda.set_partyunit(partyunit_shop(patr_text, None, patr_creditor_weight))
     assert yao_agenda._party_creditor_pool is None
     assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
     # WHEN
     x_int = 13
     yao_agenda.set_party_creditor_pool(x_int)
     assert yao_agenda.is_partyunits_creditor_weight_sum_correct() == False
     with pytest_raises(Exception) as excinfo:
-        yao_agenda.set_agenda_metrics()
+        yao_agenda.calc_agenda_metrics()
     assert (
         str(excinfo.value)
         == f"'{yao_text}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={x_int}. partyunits_creditor_weight_sum={yao_agenda.get_partyunits_creditor_weight_sum()}"
@@ -685,15 +685,15 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_we
 
     # WHEN / THEN
     yao_agenda.set_party_creditor_pool(yao_agenda.get_partyunits_creditor_weight_sum())
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
 
-def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_creditor_poolWhenPartySumIsZero():
+def test_AgendaUnit_calc_agenda_metrics_DoesNotRaiseError_party_creditor_poolWhenPartySumIsZero():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     assert yao_agenda._party_creditor_pool is None
     assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
     # WHEN
     x_int = 13
@@ -701,10 +701,10 @@ def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_creditor_poolWhen
 
     # THEN
     assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
 
-def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weight_sum_correct_IsFalse():
+def test_AgendaUnit_calc_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weight_sum_correct_IsFalse():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -719,14 +719,14 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weig
     yao_agenda.set_partyunit(partyunit_shop(patr_text, None, None, patr_debtor_weight))
     assert yao_agenda._party_debtor_pool is None
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
     # WHEN
     x_int = 13
     yao_agenda.set_party_debtor_pool(x_int)
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct() == False
     with pytest_raises(Exception) as excinfo:
-        yao_agenda.set_agenda_metrics()
+        yao_agenda.calc_agenda_metrics()
     assert (
         str(excinfo.value)
         == f"'{yao_text}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={x_int}. partyunits_debtor_weight_sum={yao_agenda.get_partyunits_debtor_weight_sum()}"
@@ -734,15 +734,15 @@ def test_AgendaUnit_set_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_weig
 
     # WHEN / THEN
     yao_agenda.set_party_debtor_pool(yao_agenda.get_partyunits_debtor_weight_sum())
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
 
-def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_debtor_poolWhenPartySumIsZero():
+def test_AgendaUnit_calc_agenda_metrics_DoesNotRaiseError_party_debtor_poolWhenPartySumIsZero():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     assert yao_agenda._party_creditor_pool is None
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
-    assert yao_agenda.set_agenda_metrics() is None
+    assert yao_agenda.calc_agenda_metrics() is None
 
     # WHEN
     x_int = 13
@@ -750,7 +750,7 @@ def test_AgendaUnit_set_agenda_metrics_DoesNotRaiseError_party_debtor_poolWhenPa
 
     # THEN
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
-    yao_agenda.set_agenda_metrics()
+    yao_agenda.calc_agenda_metrics()
 
 
 def clear_all_partyunits_groupunits_agenda_intent_credit_debt(x_agenda: AgendaUnit):
@@ -940,7 +940,7 @@ def test_AgendaUnit_intent_ratio_credit_debt_IsCorrectlySetWhenAgendaIsEmpty():
     assert noa_agenda_patr_party._agenda_intent_ratio_debt != 0.5
 
     # WHEN
-    noa_agenda.set_agenda_metrics()
+    noa_agenda.calc_agenda_metrics()
 
     # THEN
     assert noa_agenda_rico_party._agenda_intent_credit == 0
@@ -978,7 +978,7 @@ def test_AgendaUnit_get_party_group_ids_ReturnsCorrectObj():
     assert yao_agenda.get_party_group_ids(carm_text) == [carm_text, swimmers]
 
 
-def test_AgendaUnit_edit_partyunit_party_id_CorrectlyChangesPartyUnit_party_id():
+def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifysPartyUnit_party_id():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1037,11 +1037,11 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Party '{rico_text}' change to '{carmen_text}' failed since '{carmen_text}' exists."
+        == f"Party '{rico_text}' modify to '{carmen_text}' failed since '{carmen_text}' exists."
     )
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyChangesGroupUnitPartyLinks():
+def test_AgendaUnit_PartyUnit_CorrectlyModifysGroupUnitPartyLinks():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1201,7 +1201,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
         )
     assert (
         str(excinfo.value)
-        == f"Party '{rico_text}' change to '{carmen_text}' failed since non-single group '{carmen_text}' exists."
+        == f"Party '{rico_text}' modify to '{carmen_text}' failed since non-single group '{carmen_text}' exists."
     )
 
 

@@ -494,15 +494,15 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     yao_text = "Yao"
     sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
     yao_healerhold = healerhold_shop({yao_text})
-    gig_text = "gig"
-    gig_road = create_road(root_label(), gig_text)
+    casa_text = "casa"
+    casa_road = create_road(root_label(), casa_text)
     x_problem_bool = True
-    gig_idea = ideaunit_shop(
-        _parent_road=gig_road,
+    casa_idea = ideaunit_shop(
+        _parent_road=casa_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
         _weight=30,
-        _label=gig_text,
+        _label=casa_text,
         _level=1,
         _reasonunits=x1_reasonunits,
         _reasonheirs=x1_reasonheirs,
@@ -514,168 +514,168 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         _problem_bool=x_problem_bool,
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    gig_idea.set_beliefunit(beliefunit=beliefunit_x)
-    gig_idea._originunit.set_originlink(party_id="Ray", weight=None)
-    gig_idea._originunit.set_originlink(party_id="Lei", weight=4)
+    casa_idea.set_beliefunit(beliefunit=beliefunit_x)
+    casa_idea._originunit.set_originlink(party_id="Ray", weight=None)
+    casa_idea._originunit.set_originlink(party_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13
     x_denom = 14
     x_numor = 15
     x_reest = 16
-    gig_idea._begin = x_begin
-    gig_idea._close = x_close
-    gig_idea._addin = x_addin
-    gig_idea._denom = x_denom
-    gig_idea._numor = x_numor
-    gig_idea._reest = x_reest
-    gig_idea._uid = 17
-    gig_idea.add_kid(ideaunit_shop("paper"))
+    casa_idea._begin = x_begin
+    casa_idea._close = x_close
+    casa_idea._addin = x_addin
+    casa_idea._denom = x_denom
+    casa_idea._numor = x_numor
+    casa_idea._reest = x_reest
+    casa_idea._uid = 17
+    casa_idea.add_kid(ideaunit_shop("paper"))
 
     # WHEN
-    gig_dict = gig_idea.get_dict()
+    casa_dict = casa_idea.get_dict()
 
     # THEN
-    assert gig_dict != None
-    assert len(gig_dict["_kids"]) == 1
-    assert gig_dict["_kids"] == gig_idea.get_kids_dict()
-    assert gig_dict["_reasonunits"] == gig_idea.get_reasonunits_dict()
-    assert gig_dict["_balancelinks"] == gig_idea.get_balancelinks_dict()
-    assert gig_dict["_balancelinks"] == x1_balancelinks
-    assert gig_dict["_assignedunit"] == sue_assignedunit.get_dict()
-    assert gig_dict["_healerhold"] == yao_healerhold.get_dict()
-    assert gig_dict["_originunit"] == gig_idea.get_originunit_dict()
-    assert gig_dict["_weight"] == gig_idea._weight
-    assert gig_dict["_label"] == gig_idea._label
-    assert gig_dict["_uid"] == gig_idea._uid
-    assert gig_dict["_begin"] == gig_idea._begin
-    assert gig_dict["_close"] == gig_idea._close
-    assert gig_dict["_numor"] == gig_idea._numor
-    assert gig_dict["_denom"] == gig_idea._denom
-    assert gig_dict["_reest"] == gig_idea._reest
-    assert gig_dict["_range_source_road"] == gig_idea._range_source_road
-    assert gig_dict["pledge"] == gig_idea.pledge
-    assert gig_dict["_problem_bool"] == gig_idea._problem_bool
-    assert gig_dict["_problem_bool"] == x_problem_bool
-    assert gig_idea._is_expanded
-    assert gig_dict.get("_is_expanded") is None
-    assert len(gig_dict["_beliefunits"]) == len(gig_idea.get_beliefunits_dict())
-    assert gig_idea._meld_strategy == "default"
-    assert gig_dict.get("_meld_strategy") is None
+    assert casa_dict != None
+    assert len(casa_dict["_kids"]) == 1
+    assert casa_dict["_kids"] == casa_idea.get_kids_dict()
+    assert casa_dict["_reasonunits"] == casa_idea.get_reasonunits_dict()
+    assert casa_dict["_balancelinks"] == casa_idea.get_balancelinks_dict()
+    assert casa_dict["_balancelinks"] == x1_balancelinks
+    assert casa_dict["_assignedunit"] == sue_assignedunit.get_dict()
+    assert casa_dict["_healerhold"] == yao_healerhold.get_dict()
+    assert casa_dict["_originunit"] == casa_idea.get_originunit_dict()
+    assert casa_dict["_weight"] == casa_idea._weight
+    assert casa_dict["_label"] == casa_idea._label
+    assert casa_dict["_uid"] == casa_idea._uid
+    assert casa_dict["_begin"] == casa_idea._begin
+    assert casa_dict["_close"] == casa_idea._close
+    assert casa_dict["_numor"] == casa_idea._numor
+    assert casa_dict["_denom"] == casa_idea._denom
+    assert casa_dict["_reest"] == casa_idea._reest
+    assert casa_dict["_range_source_road"] == casa_idea._range_source_road
+    assert casa_dict["pledge"] == casa_idea.pledge
+    assert casa_dict["_problem_bool"] == casa_idea._problem_bool
+    assert casa_dict["_problem_bool"] == x_problem_bool
+    assert casa_idea._is_expanded
+    assert casa_dict.get("_is_expanded") is None
+    assert len(casa_dict["_beliefunits"]) == len(casa_idea.get_beliefunits_dict())
+    assert casa_idea._meld_strategy == "default"
+    assert casa_dict.get("_meld_strategy") is None
 
 
 def test_IdeaUnit_get_dict_ReturnsCorrectDictWithoutEmptyAttributes():
     # GIVEN
-    gig_idea = ideaunit_shop()
+    casa_idea = ideaunit_shop()
 
     # WHEN
-    gig_dict = gig_idea.get_dict()
+    casa_dict = casa_idea.get_dict()
 
     # THEN
-    assert gig_dict != None
-    assert gig_dict == {"_weight": 1}
+    assert casa_dict != None
+    assert casa_dict == {"_weight": 1}
 
 
 def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
-    gig_idea = ideaunit_shop()
-    gig_idea._is_expanded = False
-    gig_idea.pledge = True
+    casa_idea = ideaunit_shop()
+    casa_idea._is_expanded = False
+    casa_idea.pledge = True
     ignore_text = "ignore"
-    gig_idea._meld_strategy = ignore_text
+    casa_idea._meld_strategy = ignore_text
 
     a_text = "a"
     a_road = create_road(root_label(), a_text)
-    gig_idea.set_beliefunit(beliefunit_shop(a_road, a_road))
+    casa_idea.set_beliefunit(beliefunit_shop(a_road, a_road))
 
     yao_text = "Yao"
-    gig_idea.set_balancelink(balancelink_shop(yao_text))
+    casa_idea.set_balancelink(balancelink_shop(yao_text))
 
-    x_assignedunit = gig_idea._assignedunit
+    x_assignedunit = casa_idea._assignedunit
     x_assignedunit.set_suffgroup(group_id=yao_text)
 
-    x_originunit = gig_idea._originunit
+    x_originunit = casa_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
 
     rock_text = "Rock"
-    gig_idea.add_kid(ideaunit_shop(rock_text))
+    casa_idea.add_kid(ideaunit_shop(rock_text))
 
-    assert not gig_idea._is_expanded
-    assert gig_idea.pledge
-    assert gig_idea._meld_strategy != "default"
-    assert gig_idea._beliefunits != None
-    assert gig_idea._balancelinks != None
-    assert gig_idea._assignedunit != None
-    assert gig_idea._originunit != None
-    assert gig_idea._kids != {}
+    assert not casa_idea._is_expanded
+    assert casa_idea.pledge
+    assert casa_idea._meld_strategy != "default"
+    assert casa_idea._beliefunits != None
+    assert casa_idea._balancelinks != None
+    assert casa_idea._assignedunit != None
+    assert casa_idea._originunit != None
+    assert casa_idea._kids != {}
 
     # WHEN
-    gig_dict = gig_idea.get_dict()
+    casa_dict = casa_idea.get_dict()
 
     # THEN
-    assert gig_dict.get("_is_expanded") == False
-    assert gig_dict.get("pledge")
-    assert gig_dict.get("_meld_strategy") == ignore_text
-    assert gig_dict.get("_beliefunits") != None
-    assert gig_dict.get("_balancelinks") != None
-    assert gig_dict.get("_assignedunit") != None
-    assert gig_dict.get("_originunit") != None
-    assert gig_dict.get("_kids") != None
+    assert casa_dict.get("_is_expanded") == False
+    assert casa_dict.get("pledge")
+    assert casa_dict.get("_meld_strategy") == ignore_text
+    assert casa_dict.get("_beliefunits") != None
+    assert casa_dict.get("_balancelinks") != None
+    assert casa_dict.get("_assignedunit") != None
+    assert casa_dict.get("_originunit") != None
+    assert casa_dict.get("_kids") != None
 
 
 def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
-    gig_idea = ideaunit_shop()
-    assert gig_idea._is_expanded
-    assert gig_idea.pledge == False
-    assert gig_idea._meld_strategy == "default"
-    assert gig_idea._beliefunits == {}
-    assert gig_idea._balancelinks == {}
-    assert gig_idea._assignedunit == assignedunit_shop()
-    assert gig_idea._healerhold == healerhold_shop()
-    assert gig_idea._originunit == originunit_shop()
-    assert gig_idea._kids == {}
+    casa_idea = ideaunit_shop()
+    assert casa_idea._is_expanded
+    assert casa_idea.pledge == False
+    assert casa_idea._meld_strategy == "default"
+    assert casa_idea._beliefunits == {}
+    assert casa_idea._balancelinks == {}
+    assert casa_idea._assignedunit == assignedunit_shop()
+    assert casa_idea._healerhold == healerhold_shop()
+    assert casa_idea._originunit == originunit_shop()
+    assert casa_idea._kids == {}
 
     # WHEN
-    gig_dict = gig_idea.get_dict()
+    casa_dict = casa_idea.get_dict()
 
     # THEN
-    assert gig_dict.get("_is_expanded") is None
-    assert gig_dict.get("pledge") is None
-    assert gig_dict.get("_meld_strategy") is None
-    assert gig_dict.get("_beliefunits") is None
-    assert gig_dict.get("_balancelinks") is None
-    assert gig_dict.get("_assignedunit") is None
-    assert gig_dict.get("_healerhold") is None
-    assert gig_dict.get("_originunit") is None
-    assert gig_dict.get("_kids") is None
+    assert casa_dict.get("_is_expanded") is None
+    assert casa_dict.get("pledge") is None
+    assert casa_dict.get("_meld_strategy") is None
+    assert casa_dict.get("_beliefunits") is None
+    assert casa_dict.get("_balancelinks") is None
+    assert casa_dict.get("_assignedunit") is None
+    assert casa_dict.get("_healerhold") is None
+    assert casa_dict.get("_originunit") is None
+    assert casa_dict.get("_kids") is None
 
 
 def test_IdeaUnit_vaild_DenomCorrectInheritsBeginAndClose():
     # GIVEN
-    gig_text = "gig"
+    casa_text = "casa"
     clean_text = "clean"
     # parent idea
-    gig_idea = ideaunit_shop(_label=gig_text, _begin=22.0, _close=66.0)
+    casa_idea = ideaunit_shop(_label=casa_text, _begin=22.0, _close=66.0)
     # kid idea
     clean_idea = ideaunit_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
 
     # WHEN
-    gig_idea.add_kid(idea_kid=clean_idea)
+    casa_idea.add_kid(idea_kid=clean_idea)
 
     # THEN
-    assert gig_idea._kids[clean_text]._begin == 2
-    assert gig_idea._kids[clean_text]._close == 6
+    assert casa_idea._kids[clean_text]._begin == 2
+    assert casa_idea._kids[clean_text]._close == 6
     kid_idea_expected = ideaunit_shop(
         clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
-    assert gig_idea._kids[clean_text] == kid_idea_expected
+    assert casa_idea._kids[clean_text] == kid_idea_expected
 
 
 def test_IdeaUnit_invaild_DenomThrowsError():
     # GIVEN
-    gig_text = "gig"
-    parent_idea = ideaunit_shop(_label=gig_text)
+    casa_text = "casa"
+    parent_idea = ideaunit_shop(_label=casa_text)
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
     clean_text = "clean"
@@ -982,7 +982,7 @@ def test_IdeaUnit_get_kid_ReturnsCorrectObj():
     assert france_idea._label == france_text
 
 
-def test_IdeaUnit_del_kid_CorrectChangesAttr():
+def test_IdeaUnit_del_kid_CorrectModifysAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)

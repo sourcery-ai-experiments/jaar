@@ -21,10 +21,10 @@ from src.econ.job_creator import (
     PersonID,
     get_econ_roles_dir,
     get_econ_jobs_dir,
-    save_file_to_roles,
-    save_file_to_jobs,
-    get_file_in_roles,
-    get_file_in_jobs,
+    save_role_file,
+    save_job_file,
+    get_role_file,
+    get_job_file,
     get_owner_file_name,
     create_job_file_from_role_file,
 )
@@ -124,13 +124,13 @@ class EconUnit:
     # treasurying
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.get_file_in_roles(owner_id)
+            owner_role = self.get_role_file(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            save_file_to_roles(self.econ_dir, owner_role)
+            save_role_file(self.econ_dir, owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.get_file_in_jobs(x_owner_id)
+        x_agenda = self.get_job_file(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -143,7 +143,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.save_file_to_jobs(x_agenda)
+        self.save_job_file(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -156,16 +156,16 @@ class EconUnit:
         self._set_partytreasuryunits_circles(owner_id)
 
     def _set_river_blocks(self, x_owner_id: OwnerID, max_blocks_count: int):
-        # changes in river_block loop
+        # Transformations in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_owner_id)]
-        blocks_count = 0  # changes in river_block loop
+        blocks_count = 0  # Transformations in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
             parent_agenda_ledger = general_circle.pop(0)
             ledgers_len = len(parent_agenda_ledger._partyviews.values())
             parent_range = parent_agenda_ledger.get_range()
             parent_close = parent_agenda_ledger.cash_cease
 
-            # changes in river_block loop
+            # Transformations in river_block loop
             coin_onset = parent_agenda_ledger.cash_onset
             ledgers_count = 0
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
@@ -198,7 +198,7 @@ class EconUnit:
                 if blocks_count >= max_blocks_count:
                     break
 
-                # change coin_onset for next
+                # set coin_onset for next loop
                 coin_onset += coin_range
 
     def _insert_river_block_grab_river_ledger(
@@ -223,7 +223,7 @@ class EconUnit:
         default_cash_onset = 0.0
         default_cash_cease = 1.0
         default_root_river_tree_level = 0
-        default_root_block_num = None  # maybe change to 1?
+        default_root_block_num = None  # maybe 1?
         default_root_parent_block_num = None
         root_river_block = RiverBlockUnit(
             cash_owner_id=owner_id,
@@ -254,11 +254,11 @@ class EconUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.get_file_in_jobs(owner_id=owner_id)
+            x_agenda = self.get_job_file(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.save_file_to_jobs(x_agenda)
+            self.save_job_file(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -275,7 +275,7 @@ class EconUnit:
         for file_name in self.get_jobs_dir_file_names_list():
             agenda_json = open_file(self.get_jobs_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
-            agendaunit_x.set_agenda_metrics()
+            agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
             self._treasury_insert_partyunit(agendaunit_x)
@@ -362,7 +362,7 @@ class EconUnit:
 
     def _delete_treasury(self):
         self._treasury_db = None
-        delete_dir(dir=self.get_treasury_db_path())
+        delete_dir(self.get_treasury_db_path())
 
     def get_treasury_db_path(self):
         return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
@@ -371,38 +371,39 @@ class EconUnit:
     def get_roles_dir(self):
         return get_econ_roles_dir(self.get_object_root_dir())
 
-    def save_file_to_roles(self, x_agenda: AgendaUnit):
+    def save_role_file(self, x_agenda: AgendaUnit):
         x_agenda.set_real_id(real_id=self.real_id)
-        save_file_to_roles(self.get_object_root_dir(), x_agenda)
+        save_role_file(self.get_object_root_dir(), x_agenda)
 
-    def get_file_in_roles(self, owner_id: PersonID) -> AgendaUnit:
-        return get_file_in_roles(self.get_object_root_dir(), owner_id)
+    def get_role_file(self, owner_id: PersonID) -> AgendaUnit:
+        return get_role_file(self.get_object_root_dir(), owner_id)
 
-    def delete_file_in_roles(self, x_owner_id: PersonID):
+    def delete_role_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
         return get_econ_jobs_dir(self.get_object_root_dir())
 
-    def save_file_to_jobs(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(real_id=self.real_id)
-        save_file_to_jobs(self.get_object_root_dir(), x_agenda)
+    def save_job_file(self, x_agenda: AgendaUnit):
+        x_agenda.set_real_id(self.real_id)
+        save_job_file(self.get_object_root_dir(), x_agenda)
 
     def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
         return create_job_file_from_role_file(self.econ_dir, person_id)
 
-    def get_file_in_jobs(self, owner_id: str) -> AgendaUnit:
-        return get_file_in_jobs(self.get_object_root_dir(), owner_id)
+    def get_job_file(self, owner_id: str) -> AgendaUnit:
+        econ_dir = self.get_object_root_dir()
+        return get_job_file(econ_dir, owner_id, return_None_if_missing=False)
 
-    def delete_file_in_jobs(self, x_owner_id: PersonID):
+    def delete_job_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
 
-    def change_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
-        x_agenda = self.get_file_in_jobs(owner_id=old_owner_id)
-        x_agenda.set_owner_id(new_owner_id=new_owner_id)
-        self.save_file_to_jobs(x_agenda)
-        self.delete_file_in_jobs(x_owner_id=old_owner_id)
+    def modify_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
+        x_agenda = self.get_job_file(old_owner_id)
+        x_agenda.set_owner_id(new_owner_id)
+        self.save_job_file(x_agenda)
+        self.delete_job_file(old_owner_id)
 
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())

@@ -1,11 +1,24 @@
-from src._road.road import get_ancestor_roads, RoadUnit, get_root_node_from_road
+from src._road.road import (
+    get_ancestor_roads,
+    RoadUnit,
+    get_root_node_from_road,
+    PersonID,
+)
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from copy import deepcopy as copy_deepcopy
 
 
 class Missing_party_debtor_poolException(Exception):
     pass
+
+
+def create_barren_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
+    barren_agenda = agendaunit_shop(
+        x_owner_id, ref_agenda._real_id, _road_delimiter=ref_agenda._road_delimiter
+    )
+    barren_agenda._planck = ref_agenda._planck
+    return barren_agenda
 
 
 def _get_planck_scaled_weight(
@@ -30,7 +43,7 @@ def _distribute_ingest(
                 x_count = 0
 
 
-def _get_ingested_ideaunit_list(
+def get_ingest_list(
     item_list: list[IdeaUnit], debtor_amount: float, planck: float
 ) -> list[IdeaUnit]:
     x_list = []
@@ -48,44 +61,52 @@ def _get_ingested_ideaunit_list(
 
 
 def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener._party_debtor_pool is None:
+    speaker_partyunit = listener.get_party(speaker._owner_id)
+    if speaker_partyunit is None:
         raise Missing_party_debtor_poolException(
-            "Listening process is not possible without debtor pool."
-        )
-    if speaker._rational:
-        perspective_agendaunit = copy_deepcopy(speaker)
-        # look at things from speaker's prespective
-        perspective_agendaunit.set_owner_id(listener._owner_id)
-        intent_list = list(perspective_agendaunit.get_intent_dict().values())
-        ingest_list = _get_ingested_ideaunit_list(
-            item_list=intent_list,
-            debtor_amount=listener._party_debtor_pool,
-            planck=listener._planck,
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
         )
 
-        for ingested_ideaunit in ingest_list:
-            _ingest_ideaunit_into_listener(listener, ingested_ideaunit)
+    speaker_debtor_weight = speaker_partyunit.debtor_weight
+    if listener._party_debtor_pool is None or speaker == create_barren_agenda(
+        speaker, speaker._owner_id
+    ):
+        speaker_partyunit.add_missing_job_debtor_weight(speaker_debtor_weight)
+        return listener
+
+    # look at things from speaker's prespective
+    perspective_agendaunit = copy_deepcopy(speaker)
+    perspective_agendaunit.set_owner_id(listener._owner_id)
+    perspective_agendaunit.calc_agenda_metrics()
+
+    if perspective_agendaunit._rational == False:
+        speaker_partyunit = listener.get_party(speaker._owner_id)
+        speaker_debtor_weight = speaker_partyunit.debtor_weight
+        speaker_partyunit.add_irrational_debtor_weight(speaker_debtor_weight)
+        return listener
+
+    intent_list = list(perspective_agendaunit.get_intent_dict().values())
+    debtor_amount = listener._party_debtor_pool
+    ingest_list = get_ingest_list(intent_list, debtor_amount, listener._planck)
+    for ingest_ideaunit in ingest_list:
+        _ingest_single_ideaunit(listener, ingest_ideaunit)
     return listener
 
 
-def _ingest_ideaunit_into_listener(listener: AgendaUnit, ingested_ideaunit: IdeaUnit):
+def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):
     replace_weight_list, add_to_weight_list = _create_weight_replace_and_add_lists(
-        listener, ingested_ideaunit.get_road()
+        listener, ingest_ideaunit.get_road()
     )
 
-    if listener.idea_exists(ingested_ideaunit.get_road()) == False:
-        listener.add_idea(
-            idea_kid=ingested_ideaunit,
-            parent_road=ingested_ideaunit._parent_road,
-            create_missing_ideas=True,
-            create_missing_ancestors=True,
-        )
+    if listener.idea_exists(ingest_ideaunit.get_road()) == False:
+        x_parent_road = ingest_ideaunit._parent_road
+        listener.add_idea(ingest_ideaunit, x_parent_road, create_missing_ideas=True)
 
     _add_and_replace_ideaunit_weights(
         listener=listener,
         replace_weight_list=replace_weight_list,
         add_to_weight_list=add_to_weight_list,
-        x_weight=ingested_ideaunit._weight,
+        x_weight=ingest_ideaunit._weight,
     )
 
 
@@ -98,10 +119,9 @@ def _create_weight_replace_and_add_lists(
     root_road = get_root_node_from_road(x_road)
     for ancestor_road in ancestor_roads:
         if ancestor_road != root_road:
-            try:
-                listener.get_idea_obj(ancestor_road)
+            if listener.idea_exists(ancestor_road):
                 add_to_weight_list.append(ancestor_road)
-            except Exception:
+            else:
                 replace_weight_list.append(ancestor_road)
 
     return replace_weight_list, add_to_weight_list

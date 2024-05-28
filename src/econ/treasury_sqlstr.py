@@ -194,7 +194,7 @@ reach_order(
 , prev_src
 , src_step
 , range_step
-, change_step
+, delta_step
 , prev_start
 , prev_close
 , reach_start
@@ -210,7 +210,7 @@ reach_order(
         WHEN src_step =1 AND range_step =1 
         THEN 1
         ELSE src_step + range_step
-        END change_step
+        END delta_step
     , prev_start
     , prev_close
     , reach_start
@@ -229,7 +229,7 @@ reach_order(
     SELECT
       coin_mstr
     , src
-    , SUM(change_step) OVER (ORDER BY src, reach_start, reach_close) set_num
+    , SUM(delta_step) OVER (ORDER BY src, reach_start, reach_close) set_num
     , prev_start
     , prev_close
     , reach_start

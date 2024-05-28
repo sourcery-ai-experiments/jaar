@@ -32,10 +32,12 @@ class GroupCore:
 class GroupUnit(GroupCore):
     _party_mirror: bool = None  # set by AgendaUnit.set_partyunit()
     _partys: dict[PartyID:PartyLink] = None
-    _agenda_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
-    _agenda_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
-    _agenda_intent_credit: float = None  # calculated by AgendaUnit.set_agenda_metrics()
-    _agenda_intent_debt: float = None  # calculated by AgendaUnit.set_agenda_metrics()
+    _agenda_credit: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
+    _agenda_debt: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
+    _agenda_intent_credit: float = (
+        None  # calculated by AgendaUnit.calc_agenda_metrics()
+    )
+    _agenda_intent_debt: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
     _treasury_partylinks: RoadUnit = None
     _road_delimiter: str = None
 
