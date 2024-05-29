@@ -650,7 +650,6 @@ class AgendaUnit:
         self.set_partyunit(partyunit=partyunit)
 
     def set_partyunit(self, partyunit: PartyUnit):
-        # future: if party is new check existance of group with party party_id
         if partyunit._road_delimiter != self._road_delimiter:
             partyunit._road_delimiter = self._road_delimiter
         if partyunit._planck != self._planck:
