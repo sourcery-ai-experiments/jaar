@@ -25,7 +25,7 @@ class PartyCore:
 @dataclass
 class PartyUnit(PartyCore):
     """This represents the relationship from the AgendaUnit._owner_id to the PartyUnit.party_id
-    PartyUnit.creditor_weight represents how much creditor_weight the owner gives the party
+    PartyUnit.creditor_weight represents how much creditor_weight the _owner_id gives the party_id
     PartyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the party_id
     """
 
