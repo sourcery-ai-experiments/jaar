@@ -3,13 +3,13 @@ from src.agenda.party import partylink_shop
 from src.agenda.idea import ideaunit_shop, reasonunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
-    listen_to_speaker,
+    listen_to_speaker_intent,
     generate_ingest_list,
     create_empty_agenda,
     _allocate_irrational_debtor_weight,
     generate_perspective_intent,
     get_debtor_weight_ordered_partys,
-    add_missing_belief_bases,
+    listen_to_speaker_beliefs,
 )
 from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
 from copy import deepcopy as copy_deepcopy
@@ -234,7 +234,7 @@ def test_generate_ingest_list_ReturnsCorrectList_v4():
     assert ingested_list == [cook_ideaunit, clean_ideaunit]
 
 
-def test_listen_to_speaker_RaisesErrorIfPoolIsNotSet():
+def test_listen_to_speaker_intent_RaisesErrorIfPoolIsNotSet():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
@@ -243,14 +243,14 @@ def test_listen_to_speaker_RaisesErrorIfPoolIsNotSet():
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        listen_to_speaker(yao_agendaunit, zia_agendaunit)
+        listen_to_speaker_intent(yao_agendaunit, zia_agendaunit)
     assert (
         str(excinfo.value)
         == f"listener '{yao_text}' agenda is assumed to have {zia_agendaunit._owner_id} partyunit."
     )
 
 
-def test_listen_to_speaker_ReturnsSameAgenda():
+def test_listen_to_speaker_intent_ReturnsSameAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
@@ -260,13 +260,13 @@ def test_listen_to_speaker_ReturnsSameAgenda():
     zia_agendaunit = agendaunit_shop(zia_text)
 
     # WHEN
-    after_yao_agendaunit = listen_to_speaker(yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker_intent(yao_agendaunit, zia_agendaunit)
 
     # THEN
     assert after_yao_agendaunit == yao_agendaunit
 
 
-def test_listen_to_speaker_ReturnsSingleTaskAgenda():
+def test_listen_to_speaker_intent_ReturnsSingleTaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -287,7 +287,9 @@ def test_listen_to_speaker_ReturnsSingleTaskAgenda():
     print(f"{zia_yao_agendaunit.get_intent_dict()=}")
 
     # WHEN
-    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker_intent(
+        before_yao_agendaunit, zia_agendaunit
+    )
 
     # THEN
     clean_road = zia_agendaunit.make_l1_road(clean_text)
@@ -299,7 +301,7 @@ def test_listen_to_speaker_ReturnsSingleTaskAgenda():
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
 
-def test_listen_to_speaker_ReturnsLevel2TaskAgenda():
+def test_listen_to_speaker_intent_ReturnsLevel2TaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -321,7 +323,9 @@ def test_listen_to_speaker_ReturnsLevel2TaskAgenda():
     print(f"{zia_yao_agendaunit.get_intent_dict()=}")
 
     # WHEN
-    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker_intent(
+        before_yao_agendaunit, zia_agendaunit
+    )
 
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
@@ -337,7 +341,7 @@ def test_listen_to_speaker_ReturnsLevel2TaskAgenda():
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
 
-def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgenda():
+def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -368,7 +372,9 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgenda():
     assert len(zia_yao_agendaunit.get_intent_dict()) == 3
 
     # WHEN
-    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker_intent(
+        before_yao_agendaunit, zia_agendaunit
+    )
 
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
@@ -392,7 +398,7 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgenda():
     assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlreadyExists():
+def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlreadyExists():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -428,7 +434,9 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlr
     assert len(zia_yao_agendaunit.get_intent_dict()) == 3
 
     # WHEN
-    after_yao_agendaunit = listen_to_speaker(before_yao_agendaunit, zia_agendaunit)
+    after_yao_agendaunit = listen_to_speaker_intent(
+        before_yao_agendaunit, zia_agendaunit
+    )
 
     # THEN
     cook_road = zia_agendaunit.make_road(casa_road, cook_text)
@@ -451,7 +459,7 @@ def test_listen_to_speaker_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlr
     assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_speaker_ProcessesIrrationalAgenda():
+def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -500,7 +508,7 @@ def test_listen_to_speaker_ProcessesIrrationalAgenda():
     yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
-    yao_job = listen_to_speaker(yao_job, sue_agendaunit)
+    yao_job = listen_to_speaker_intent(yao_job, sue_agendaunit)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3
@@ -513,7 +521,7 @@ def test_listen_to_speaker_ProcessesIrrationalAgenda():
     assert sue_partyunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_speaker_ProcessesBarrenAgenda():
+def test_listen_to_speaker_intent_ProcessesBarrenAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
@@ -534,7 +542,7 @@ def test_listen_to_speaker_ProcessesBarrenAgenda():
     yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
-    yao_job = listen_to_speaker(yao_job, speaker=sue_job)
+    yao_job = listen_to_speaker_intent(yao_job, speaker=sue_job)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3
@@ -587,7 +595,7 @@ def test_get_debtor_weight_ordered_partys_ReturnsCorrectObj():
     assert ordered_partys2 == [bob_party, sue_party, zia_party]
 
 
-def test_set_add_missing_belief_bases_SetsBelief():
+def test_set_listen_to_speaker_beliefs_SetsBelief():
     # GIVEN
     yao_text = "Yao"
     yao_listener = agendaunit_shop(yao_text)
@@ -617,7 +625,7 @@ def test_set_add_missing_belief_bases_SetsBelief():
     assert yao_listener.get_missing_belief_bases().keys() == {status_road}
 
     # WHEN
-    add_missing_belief_bases(yao_listener, yao_speaker, missing_belief_bases)
+    listen_to_speaker_beliefs(yao_listener, yao_speaker, missing_belief_bases)
 
     # THEN
     assert len(yao_listener.get_missing_belief_bases().keys()) == 0

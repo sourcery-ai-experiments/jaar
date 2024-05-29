@@ -3,7 +3,7 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
-from src.agenda.listen import listen_to_speaker
+from src.agenda.listen import listen_to_speaker_intent
 from src.econ.econ import EconUnit
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src._road.userdir import UserDir, userdir_shop
@@ -161,7 +161,7 @@ class RealUnit:
                 x_econ = get_econunit(healer_userdir, econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
-                listen_to_speaker(x_work, x_job)
+                listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:

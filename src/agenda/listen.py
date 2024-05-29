@@ -13,7 +13,7 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
+def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
     if listener.party_exists(speaker._owner_id) == False:
         raise Missing_party_debtor_poolException(
             f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
@@ -172,9 +172,14 @@ def get_debtor_weight_ordered_partys(x_agenda: AgendaUnit) -> list[PartyUnit]:
     return partys_ordered_list
 
 
-def add_missing_belief_bases(
-    listener: AgendaUnit, speaker: AgendaUnit, missing_belief_bases: list[RoadUnit]
+def listen_to_speaker_beliefs(
+    listener: AgendaUnit,
+    speaker: AgendaUnit,
+    missing_belief_bases: list[RoadUnit] = None,
 ) -> AgendaUnit:
+    if missing_belief_bases is None:
+        missing_belief_bases = list(listener.get_missing_belief_bases())
+
     for missing_belief_base in missing_belief_bases:
         x_beliefunit = speaker.get_belief(missing_belief_base)
         if x_beliefunit != None:
