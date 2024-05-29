@@ -5,7 +5,7 @@ from src._road.road import (
     PersonID,
 )
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit, agendaunit_shop
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
 from copy import deepcopy as copy_deepcopy
 
 
@@ -164,3 +164,9 @@ def _add_and_replace_ideaunit_weights(
     for idea_road in add_to_weight_list:
         x_ideaunit = listener.get_idea_obj(idea_road)
         x_ideaunit._weight += x_weight
+
+
+def get_debtor_weight_ordered_partys(x_agenda: AgendaUnit) -> list[PartyUnit]:
+    partys_ordered_list = list(x_agenda._partys.values())
+    partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
+    return partys_ordered_list
