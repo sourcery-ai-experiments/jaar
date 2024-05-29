@@ -150,7 +150,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
 
     # THEN
     assert gen_luca_duty != None
-    assert gen_luca_duty.get_party(bob_text) != None
+    assert gen_luca_duty.party_exists(bob_text)
 
 
 def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(

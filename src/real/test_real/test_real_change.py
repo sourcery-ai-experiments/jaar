@@ -234,7 +234,7 @@
 
 #     # check tim role
 #     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
-#     assert tim_role.get_party(xio_text) != None
+#     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
 #     tim_jobs = texas_econ.get_job_agenda(tim_text)
@@ -330,7 +330,7 @@
 
 #     # check tim role
 #     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
-#     assert tim_role.get_party(xio_text) != None
+#     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
 #     tim_jobs = texas_econ.get_job_agenda(tim_text)

@@ -99,7 +99,7 @@ def test_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
     duty_agenda = agendaunit_get_from_json(duty_file_text)
-    assert duty_agenda.get_party(bob_text) != None
+    assert duty_agenda.party_exists(bob_text)
 
     # WHEN
     sue2_agenda = agendaunit_shop(sue_text)
@@ -111,7 +111,7 @@ def test_save_duty_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
     duty_agenda = agendaunit_get_from_json(duty_file_text)
-    assert duty_agenda.get_party(zia_text) != None
+    assert duty_agenda.party_exists(zia_text)
 
 
 def test_save_duty_file_RaisesErrorWhenAgenda_work_id_IsWrong(
@@ -206,5 +206,5 @@ def test_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     assert sue_duty_agenda._real_id == get_test_real_id()
     assert sue_duty_agenda._owner_id == sue_text
     assert sue_duty_agenda._planck == seven_int
-    assert sue_duty_agenda.get_party(bob_text) != None
+    assert sue_duty_agenda.party_exists(bob_text)
     assert os_path_exists(init_change_file_path)

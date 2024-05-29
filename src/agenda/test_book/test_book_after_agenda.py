@@ -98,8 +98,8 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     # THEN
     print(f"{sue_bookunit.agendaatoms=}")
     assert after_sue_agendaunit != before_sue_agendaunit
-    assert after_sue_agendaunit.get_party(rico_text) != None
-    assert after_sue_agendaunit.get_party(carm_text) is None
+    assert after_sue_agendaunit.party_exists(rico_text)
+    assert after_sue_agendaunit.party_exists(carm_text) == False
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
@@ -111,8 +111,8 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     rico_text = "Rico"
     carm_text = "Carmen"
     before_sue_agendaunit.add_partyunit(rico_text)
-    assert before_sue_agendaunit.get_party(rico_text) != None
-    assert before_sue_agendaunit.get_party(carm_text) is None
+    assert before_sue_agendaunit.party_exists(rico_text)
+    assert before_sue_agendaunit.party_exists(carm_text) == False
 
     # WHEN
     category = "agenda_partyunit"
@@ -1115,8 +1115,8 @@ def test_BookUnit_get_bookunit_example1_ContainsAgendaAtoms():
     assert before_sue_agendaunit._party_creditor_pool != 77
     assert before_sue_agendaunit._party_debtor_pool != 88
     assert before_sue_agendaunit._meld_strategy != "override"
-    assert before_sue_agendaunit.get_party(rico_text) != None
-    assert before_sue_agendaunit.get_party(carm_text) != None
+    assert before_sue_agendaunit.party_exists(rico_text)
+    assert before_sue_agendaunit.party_exists(carm_text)
     assert before_sue_agendaunit.get_groupunit(run_text) != None
     assert before_sue_agendaunit.get_groupunit(fly_text) != None
 
@@ -1130,5 +1130,5 @@ def test_BookUnit_get_bookunit_example1_ContainsAgendaAtoms():
     assert after_sue_agendaunit._party_creditor_pool == 77
     assert after_sue_agendaunit._party_debtor_pool == 88
     assert after_sue_agendaunit._meld_strategy == "override"
-    assert after_sue_agendaunit.get_party(rico_text) != None
-    assert after_sue_agendaunit.get_party(carm_text) is None
+    assert after_sue_agendaunit.party_exists(rico_text)
+    assert after_sue_agendaunit.party_exists(carm_text) == False

@@ -453,7 +453,7 @@ def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample(
     before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
     bob_text = ",Bob"
     before_bob_agenda.add_partyunit(bob_text)
-    assert before_bob_agenda.get_party(bob_text) != None
+    assert before_bob_agenda.party_exists(bob_text)
 
     # WHEN
     bob_json = before_bob_agenda.get_json()

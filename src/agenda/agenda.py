@@ -704,7 +704,7 @@ class AgendaUnit:
             and new_party_id_groupunit._party_mirror == False
         ):
             self.del_groupunit(group_id=new_party_id)
-        elif self.get_party(new_party_id) != None:
+        elif self.party_exists(new_party_id):
             old_party_id_creditor_weight += new_party_id_partyunit.creditor_weight
 
         # upsert new partyunit
@@ -2254,7 +2254,7 @@ class AgendaUnit:
         assignor_partys: dict[PartyID:PartyUnit],
         assignor_party_id: PartyID,
     ):
-        if self.get_party(assignor_party_id) != None:
+        if self.party_exists(assignor_party_id):
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
             for party_id_x in partys_set:

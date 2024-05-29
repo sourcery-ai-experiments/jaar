@@ -86,13 +86,13 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     bob_text = "Bob"
     before_sue_agenda.add_partyunit(bob_text)
     save_work_file(sue_userdir, before_sue_agenda)
-    assert get_work_file_agenda(sue_userdir).get_party(bob_text) != None
+    assert get_work_file_agenda(sue_userdir).party_exists(bob_text)
 
     # WHEN
     after_sue_agenda = music_real.generate_work_agenda(sue_text)
 
     # THEN method should wipe over work agenda
-    assert after_sue_agenda.get_party(bob_text) is None
+    assert after_sue_agenda.party_exists(bob_text) == False
 
 
 def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
@@ -105,7 +105,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     bob_userdir = userdir_shop(music_real.reals_dir, music_real.real_id, bob_text)
     before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     sue_text = "Sue"
-    assert before_bob_work_agenda.get_party(sue_text) is None
+    assert before_bob_work_agenda.party_exists(sue_text) == False
 
     # WHEN
     bob_duty_agenda = get_duty_file_agenda(bob_userdir)
@@ -116,7 +116,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
     # THEN
-    assert after_bob_work_agenda.get_party(sue_text) != None
+    assert after_bob_work_agenda.party_exists(sue_text)
 
 
 def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_cleanup):
@@ -127,7 +127,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     music_real.init_person_econs(bob_text)
     bob_userdir = userdir_shop(music_real.reals_dir, music_real.real_id, bob_text)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
-    assert after_bob_work_agenda.get_party(bob_text) is None
+    assert after_bob_work_agenda.party_exists(bob_text) == False
 
     # WHEN
     bob_duty_agenda = get_duty_file_agenda(bob_userdir)
@@ -144,7 +144,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
     # THEN
-    assert after_bob_work_agenda.get_party(bob_text) != None
+    assert after_bob_work_agenda.party_exists(bob_text)
 
 
 def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
@@ -183,8 +183,8 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert before_bob_work_agenda.get_party(bob_text) is None
-    assert before_sue_work_agenda.get_party(sue_text) is None
+    assert before_bob_work_agenda.party_exists(bob_text) == False
+    assert before_sue_work_agenda.party_exists(sue_text) == False
 
     # WHEN
     music_real.generate_all_work_agendas()
@@ -192,5 +192,5 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     # THEN
     after_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     after_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert after_bob_work_agenda.get_party(bob_text) != None
-    assert after_sue_work_agenda.get_party(sue_text) != None
+    assert after_bob_work_agenda.party_exists(bob_text)
+    assert after_sue_work_agenda.party_exists(sue_text)

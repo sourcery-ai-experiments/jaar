@@ -94,12 +94,12 @@ def test_create_pledge_CorrectlySets_suffgroup():
     # THEN
     assert floor_idea._assignedunit.suffgroup_exists(bob_text)
     yao_text = "Yao"
-    assert sue_agenda.get_party(yao_text) is None
+    assert sue_agenda.party_exists(yao_text) == False
     assert floor_idea._assignedunit.suffgroup_exists(yao_text) == False
 
     # WHEN
     create_pledge(sue_agenda, floor_road, yao_text)
 
     # THEN
-    assert sue_agenda.get_party(yao_text) != None
+    assert sue_agenda.party_exists(yao_text)
     assert floor_idea._assignedunit.suffgroup_exists(yao_text)

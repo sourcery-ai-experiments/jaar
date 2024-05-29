@@ -73,7 +73,7 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
-    assert work_agenda.get_party(bob_text) != None
+    assert work_agenda.party_exists(bob_text)
 
     # # WHEN
     sue2_agenda = agendaunit_shop(sue_text)
@@ -85,7 +85,7 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
-    assert work_agenda.get_party(zia_text) != None
+    assert work_agenda.party_exists(zia_text)
 
 
 def testsave_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
@@ -125,7 +125,7 @@ def test_initialize_work_file_CorrectlySavesFile(
     assert work_agenda._real_id == get_test_real_id()
     assert work_agenda._owner_id == sue_text
     bob_text = "Bob"
-    assert work_agenda.get_party(bob_text) is None
+    assert work_agenda.party_exists(bob_text) == False
 
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
