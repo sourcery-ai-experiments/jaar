@@ -32,7 +32,7 @@ def test_BeliefUnit_exists():
     assert sunday_belief.nigh == 2.3
 
 
-def test_BeliefUnit_clear_range_SetsAttrCorrectly_1():
+def test_BeliefUnit_set_range_null_SetsAttrCorrectly_1():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)
@@ -48,7 +48,43 @@ def test_BeliefUnit_clear_range_SetsAttrCorrectly_1():
     assert weekday_belief.nigh is None
 
 
-def test_BeliefUnit_clear_range_SetsAttrCorrectly_2():
+def test_BeliefUnit_set_pick_to_base_SetsAttr_1():
+    # GIVEN
+    floor_text = "floor"
+    floor_road = create_road(root_label(), floor_text)
+    dirty_text = "dirty"
+    dirty_road = create_road(root_label(), dirty_text)
+    floor_belief = beliefunit_shop(floor_road, dirty_road)
+    assert floor_belief.base == floor_road
+    assert floor_belief.pick == dirty_road
+
+    # WHEN
+    floor_belief.set_pick_to_base()
+
+    # THEN
+    assert floor_belief.base == floor_road
+    assert floor_belief.pick == floor_road
+
+
+def test_BeliefUnit_set_pick_to_base_SetsAttr_2():
+    # GIVEN
+    floor_text = "floor"
+    floor_road = create_road(root_label(), floor_text)
+    dirty_text = "dirty"
+    dirty_road = create_road(root_label(), dirty_text)
+    floor_belief = beliefunit_shop(floor_road, dirty_road, 1, 6)
+    assert floor_belief.open != None
+    assert floor_belief.nigh != None
+
+    # WHEN
+    floor_belief.set_pick_to_base()
+
+    # THEN
+    assert floor_belief.open is None
+    assert floor_belief.nigh is None
+
+
+def test_BeliefUnit_set_attr_SetsAttrCorrectly_2():
     # GIVEN
     weekday_text = "weekdays"
     weekday_road = create_road(root_label(), weekday_text)

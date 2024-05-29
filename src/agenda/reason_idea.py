@@ -45,6 +45,11 @@ class BeliefCore:
         if nigh != None:
             self.nigh = nigh
 
+    def set_pick_to_base(self):
+        self.set_attr(pick=self.base)
+        self.open = None
+        self.nigh = None
+
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self.base = rebuild_road(self.base, old_road, new_road)
         self.pick = rebuild_road(self.pick, old_road, new_road)

@@ -11,6 +11,7 @@ from src.real.admin_work import (
     initialize_work_file,
     save_work_file as personsave_work_file,
     get_work_file_agenda,
+    get_default_work_agenda,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
@@ -85,22 +86,22 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def init_person_econs(self, person_id: PersonID):
-        x_userdir = userdir_shop(
+    def _get_userdir(self, person_id: PersonID) -> UserDir:
+        return userdir_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
             road_delimiter=self._road_delimiter,
             planck=self._planck,
         )
+
+    def init_person_econs(self, person_id: PersonID):
+        x_userdir = self._get_userdir(person_id)
         initialize_change_duty_files(x_userdir)
-        initialize_work_file(x_userdir)
+        initialize_work_file(x_userdir, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        x_userdir = userdir_shop(
-            self.reals_dir, self.real_id, person_id, self._road_delimiter
-        )
-        return get_duty_file_agenda(x_userdir)
+        return get_duty_file_agenda(self._get_userdir(person_id))
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
@@ -131,13 +132,14 @@ class RealUnit:
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_userdir = userdir_shop(
-            self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
-        )
+        x_userdir = self._get_userdir(person_id)
         x_duty = get_duty_file_agenda(x_userdir)
+        print(f"{x_duty._party_debtor_pool=}")
+        print(f"{x_duty._party_creditor_pool=}")
+
         x_duty.calc_agenda_metrics()
 
-        x_work = agendaunit_shop(person_id, self.real_id)
+        x_work = get_default_work_agenda(x_duty)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_userdir = userdir_shop(
@@ -167,10 +169,7 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_userdir = userdir_shop(
-            self.reals_dir, self.real_id, person_id, self._road_delimiter, self._planck
-        )
-        return get_work_file_agenda(x_userdir)
+        return get_work_file_agenda(self._get_userdir(person_id))
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID

@@ -13,12 +13,71 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
+def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
+    if listener.party_exists(speaker._owner_id) == False:
+        raise Missing_party_debtor_poolException(
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
+        )
+    perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
+    intent = generate_perspective_intent(perspective_agenda)
+
+    if listener._party_debtor_pool is None or len(intent) == 0:
+        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
+
+    if perspective_agenda._rational == False:
+        return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
+
+    return _ingest_perspective_intent(listener, intent)
+
+
+def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit]:
+    for x_beliefunit in perspective_agenda._idearoot._beliefunits.values():
+        x_beliefunit.set_pick_to_base()
+    return list(perspective_agenda.get_intent_dict().values())
+
+
+def _ingest_perspective_intent(
+    listener: AgendaUnit, intent: list[IdeaUnit]
+) -> AgendaUnit:
+    debtor_amount = listener._party_debtor_pool
+    ingest_list = generate_ingest_list(intent, debtor_amount, listener._planck)
+    for ingest_ideaunit in ingest_list:
+        _ingest_single_ideaunit(listener, ingest_ideaunit)
+    return listener
+
+
+def _allocate_irrational_debtor_weight(
+    listener: AgendaUnit, speaker_owner_id: PersonID
+):
+    speaker_partyunit = listener.get_party(speaker_owner_id)
+    speaker_debtor_weight = speaker_partyunit.debtor_weight
+    speaker_partyunit.add_irrational_debtor_weight(speaker_debtor_weight)
+    return listener
+
+
+def _allocate_missing_job_debtor_weight(
+    listener: AgendaUnit, speaker_owner_id: PersonID
+):
+    speaker_partyunit = listener.get_party(speaker_owner_id)
+    speaker_partyunit.add_missing_job_debtor_weight(speaker_partyunit.debtor_weight)
+    return listener
+
+
+def get_speaker_perspective(speaker: AgendaUnit, listener_owner_id: PersonID):
+    perspective_agenda = copy_deepcopy(speaker)
+    perspective_agenda.set_owner_id(listener_owner_id)
+    perspective_agenda.calc_agenda_metrics()
+    return perspective_agenda
+
+
+def _is_empty_agenda(x_agenda: AgendaUnit) -> bool:
+    return x_agenda == create_empty_agenda(x_agenda, x_agenda._owner_id)
+
+
 def create_empty_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
-    barren_agenda = agendaunit_shop(
-        x_owner_id, ref_agenda._real_id, _road_delimiter=ref_agenda._road_delimiter
+    return agendaunit_shop(
+        x_owner_id, ref_agenda._real_id, ref_agenda._road_delimiter, ref_agenda._planck
     )
-    barren_agenda._planck = ref_agenda._planck
-    return barren_agenda
 
 
 def _get_planck_scaled_weight(
@@ -58,39 +117,6 @@ def generate_ingest_list(
     nonallocated_ingest = debtor_amount - sum_scaled_ingest
     _distribute_ingest(x_list, nonallocated_ingest, planck)
     return x_list
-
-
-def listen_to_speaker(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    speaker_partyunit = listener.get_party(speaker._owner_id)
-    if speaker_partyunit is None:
-        raise Missing_party_debtor_poolException(
-            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
-        )
-
-    speaker_debtor_weight = speaker_partyunit.debtor_weight
-    if listener._party_debtor_pool is None or speaker == create_empty_agenda(
-        speaker, speaker._owner_id
-    ):
-        speaker_partyunit.add_missing_job_debtor_weight(speaker_debtor_weight)
-        return listener
-
-    # look at things from speaker's prespective
-    perspective_agendaunit = copy_deepcopy(speaker)
-    perspective_agendaunit.set_owner_id(listener._owner_id)
-    perspective_agendaunit.calc_agenda_metrics()
-
-    if perspective_agendaunit._rational == False:
-        speaker_partyunit = listener.get_party(speaker._owner_id)
-        speaker_debtor_weight = speaker_partyunit.debtor_weight
-        speaker_partyunit.add_irrational_debtor_weight(speaker_debtor_weight)
-        return listener
-
-    intent_list = list(perspective_agendaunit.get_intent_dict().values())
-    debtor_amount = listener._party_debtor_pool
-    ingest_list = generate_ingest_list(intent_list, debtor_amount, listener._planck)
-    for ingest_ideaunit in ingest_list:
-        _ingest_single_ideaunit(listener, ingest_ideaunit)
-    return listener
 
 
 def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):

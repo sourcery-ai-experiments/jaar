@@ -672,6 +672,9 @@ class AgendaUnit:
             )
             self.set_groupunit(y_groupunit=group_unit)
 
+    def party_exists(self, party_id: PartyID) -> bool:
+        return self.get_party(party_id) != None
+
     def edit_partyunit_party_id(
         self,
         old_party_id: PartyID,
@@ -984,20 +987,6 @@ class AgendaUnit:
             )
 
         self.calc_agenda_metrics()
-
-    def get_beliefunits_base_and_belief_list(self) -> list:
-        belief_list = list(self._idearoot._beliefunits.values())
-        node_dict = {belief_x.base.lower(): belief_x for belief_x in belief_list}
-        node_lowercase_ordered_list = sorted(list(node_dict))
-        node_orginalcase_ordered_list = [
-            node_dict[node_l] for node_l in node_lowercase_ordered_list
-        ]
-
-        list_x = [["", ""]]
-        list_x.extend(
-            [belief_x.base, belief_x.pick] for belief_x in node_orginalcase_ordered_list
-        )
-        return list_x
 
     def del_belief(self, base: RoadUnit):
         self._idearoot.del_beliefunit(base)
@@ -2571,5 +2560,3 @@ def get_party_relevant_groups(
         for group_x in groups_x.values()
         if group_x._partys.get(party_id_x) != None
     }
-
-

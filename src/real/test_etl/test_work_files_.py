@@ -28,7 +28,8 @@ def test_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     print(f"{sue_work_path=}")
     assert os_path_exists(sue_work_path) == False
     sue_userdir = userdir_shop(None, None, sue_text)
-    initialize_work_file(sue_userdir)
+    sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
+    initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
     delete_dir(sue_userdir._work_path)
     assert os_path_exists(sue_work_path) == False
@@ -50,7 +51,8 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userdir = userdir_shop(None, None, sue_text)
-    initialize_work_file(sue_userdir)
+    sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
+    initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
     delete_dir(sue_userdir._work_path)
     assert work_file_exists(sue_userdir) == False
@@ -109,13 +111,14 @@ def test_initialize_work_file_CorrectlySavesFile(
     # GIVEN
     sue_text = "Sue"
     sue_userdir = userdir_shop(None, None, sue_text)
-    initialize_work_file(sue_userdir)
+    sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
+    initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
     delete_dir(sue_userdir._work_path)
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
-    initialize_work_file(sue_userdir)
+    initialize_work_file(sue_userdir, sue_agenda)
 
     # THEN
     work_agenda = get_work_file_agenda(sue_userdir)
@@ -132,7 +135,7 @@ def test_initialize_work_file_CorrectlySavesFile(
     assert work_agenda.get_party(bob_text)
 
     # WHEN
-    initialize_work_file(sue_userdir)
+    initialize_work_file(sue_userdir, sue_agenda)
 
     # THEN
     work_agenda = get_work_file_agenda(sue_userdir)
@@ -147,16 +150,16 @@ def test_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_planck = 7
     sue_userdir = userdir_shop(None, None, sue_text, None, planck=sue_planck)
-    initialize_work_file(sue_userdir)
+    sue_agenda = agendaunit_shop(sue_text, get_test_real_id(), _planck=sue_planck)
+    initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
     delete_dir(sue_userdir._work_path)
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
-    sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
     sue_agenda.add_partyunit(bob_text)
-    initialize_work_file(sue_userdir)
+    initialize_work_file(sue_userdir, sue_agenda)
 
     # THEN
     assert work_file_exists(sue_userdir)
@@ -183,7 +186,8 @@ def test_initialize_work_file_CreatesDirsAndFiles(
     assert os_path_exists(sue_userdir._work_path) is False
 
     # WHEN
-    initialize_work_file(sue_userdir)
+    sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
+    initialize_work_file(sue_userdir, sue_agenda)
 
     # THEN
     assert os_path_exists(sue_userdir._work_path)

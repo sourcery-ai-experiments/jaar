@@ -1,11 +1,14 @@
 from src.agenda.group import groupunit_shop
 from src.agenda.party import partylink_shop
-from src.agenda.idea import ideaunit_shop
+from src.agenda.idea import ideaunit_shop, reasonunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
     listen_to_speaker,
     generate_ingest_list,
     create_empty_agenda,
+    _allocate_irrational_debtor_weight,
+    _ingest_perspective_intent,
+    generate_perspective_intent,
 )
 from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
 from copy import deepcopy as copy_deepcopy
@@ -53,6 +56,67 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_barren_job._party_debtor_pool is None
     yao_barren_job.calc_agenda_metrics()
     assert yao_barren_job._partys == {}
+
+
+def test_allocate_irrational_debtor_weight_CorrectlySetsAgendaAttr():
+    yao_text = "Yao"
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    yao_agenda = agendaunit_shop(yao_text)
+    yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    zia_partyunit = yao_agenda.get_party(zia_text)
+    assert zia_partyunit._irrational_debtor_weight == 0
+
+    # WHEN
+    _allocate_irrational_debtor_weight(yao_agenda, zia_text)
+
+    # THEN
+    assert zia_partyunit._irrational_debtor_weight == zia_debtor_weight
+
+
+def test_generate_perspective_intent_CorrectlyGrabsIntentTasks():
+    # GIVEN
+    yao_text = "Yao"
+    yao_speaker = agendaunit_shop(yao_text)
+    yao_speaker.add_partyunit(yao_text)
+    yao_speaker.set_party_pool(20)
+    casa_text = "casa"
+    casa_road = yao_speaker.make_l1_road(casa_text)
+    status_text = "status"
+    status_road = yao_speaker.make_road(casa_road, status_text)
+    clean_text = "clean"
+    clean_road = yao_speaker.make_road(status_road, clean_text)
+    dirty_text = "dirty"
+    dirty_road = yao_speaker.make_road(status_road, dirty_text)
+    sweep_text = "sweep"
+    sweep_road = yao_speaker.make_road(casa_road, sweep_text)
+    yao_speaker.add_idea(ideaunit_shop(clean_text), status_road)
+    yao_speaker.add_idea(ideaunit_shop(dirty_text), status_road)
+    yao_speaker.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
+    yao_speaker.edit_idea_attr(
+        sweep_road, reason_base=status_road, reason_premise=dirty_road
+    )
+    yao_speaker.set_belief(status_road, clean_road)
+    assert len(yao_speaker.get_intent_dict()) == 0
+
+    # WHEN
+    intent_list = generate_perspective_intent(yao_speaker)
+
+    # THEN
+    assert len(intent_list) == 1
+
+    # yao_speaker.set_belief(status_road, clean_road)
+
+    # # THEN
+    # assert len(yao_speaker._idearoot._beliefunits) == 1
+    # assert len(yao_listener._idearoot._beliefunits) == 0
+    # assert yao_speaker.get_intent_dict().get(sweep_road) is None
+    # assert yao_listener.get_intent_dict().get(sweep_road) is None
+    # assert len(yao_speaker._idearoot._beliefunits) == 1
+    # assert len(yao_listener._idearoot._beliefunits) == 0
+    # assert yao_speaker.get_intent_dict().get(sweep_road) is None
+    # assert yao_listener.get_intent_dict().get(sweep_road) is None
 
 
 def test_generate_ingest_list_ReturnsCorrectList_v1():

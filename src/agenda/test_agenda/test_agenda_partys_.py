@@ -105,6 +105,21 @@ def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
     assert yao_agenda._partys.get(patr_text)._planck == x_planck
 
 
+def test_AgendaUnit_party_exists_ReturnsObj():
+    # GIVEN
+    bob_agenda = agendaunit_shop("Bob")
+    yao_text = "Yao"
+
+    # WHEN / THEN
+    assert bob_agenda.party_exists(yao_text) == False
+
+    # GIVEN
+    bob_agenda.add_partyunit(yao_text)
+
+    # WHEN / THEN
+    assert bob_agenda.party_exists(yao_text)
+
+
 def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_GroupUnit():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
