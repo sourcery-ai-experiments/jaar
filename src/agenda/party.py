@@ -24,10 +24,17 @@ class PartyCore:
 
 @dataclass
 class PartyUnit(PartyCore):
+    """This represents the relationship from the AgendaUnit._owner_id to the PartyUnit.party_id
+    PartyUnit.creditor_weight represents how much creditor_weight the owner gives the party
+    PartyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the party_id
+    """
+
     creditor_weight: int = None
     debtor_weight: int = None
-    _irrational_debtor_weight: int = None
-    _missing_job_debtor_weight: int = None
+    # calculated fields
+    _irrational_debtor_weight: int = None  # set by listening process
+    _missing_job_debtor_weight: int = None  # set by listening process
+    # set by Agenda.calc_agenda_metrics()
     _agenda_credit: float = None
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
@@ -36,6 +43,7 @@ class PartyUnit(PartyCore):
     _agenda_intent_ratio_debt: float = None
     _creditor_operational: bool = None
     _debtor_operational: bool = None
+    # set by River process
     _treasury_due_paid: float = None
     _treasury_due_diff: float = None
     _output_agenda_meld_order: int = None
