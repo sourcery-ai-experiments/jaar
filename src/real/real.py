@@ -2,7 +2,8 @@ from src._road.jaar_config import get_changes_folder
 from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src.agenda.agenda import agendaunit_shop, AgendaUnit
+from src.agenda.agenda import AgendaUnit
+from src.agenda.listen import listen_to_speaker
 from src.econ.econ import EconUnit
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src._road.userdir import UserDir, userdir_shop
@@ -21,6 +22,16 @@ from copy import deepcopy as copy_deepcopy
 
 @dataclass
 class RealUnit:
+    """Data pipelines:
+    pipeline1: changes->duty
+    pipeline2: duty->roles
+    pipeline3: role->job
+    pipeline4: job->work
+    pipeline5: duty->work (direct)
+    pipeline6: duty->job->work (through jobs)
+    pipeline7: changes->work (could be 5 of 6)
+    """
+
     real_id: RealID
     reals_dir: str
     _real_dir: str = None
@@ -134,11 +145,7 @@ class RealUnit:
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
         x_userdir = self._get_userdir(person_id)
         x_duty = get_duty_file_agenda(x_userdir)
-        print(f"{x_duty._party_debtor_pool=}")
-        print(f"{x_duty._party_creditor_pool=}")
-
         x_duty.calc_agenda_metrics()
-
         x_work = get_default_work_agenda(x_duty)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
@@ -154,9 +161,7 @@ class RealUnit:
                 x_econ = get_econunit(healer_userdir, econ_idea.get_road())
                 x_econ.save_role_file(x_duty)
                 x_job = x_econ.create_job_file_from_role_file(person_id)
-                x_job.calc_agenda_metrics()
-                x_work.meld(x_job)
-                x_work.calc_agenda_metrics
+                listen_to_speaker(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:

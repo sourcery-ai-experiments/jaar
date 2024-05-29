@@ -50,8 +50,8 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._party_creditor_pool is None
     assert default_work_agenda._party_debtor_pool is None
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_work_agenda.get_partys_dict()) == 0
-    assert len(default_work_agenda.get_groupunits_dict()) == 0
+    assert len(default_work_agenda.get_partys_dict()) == 1
+    assert len(default_work_agenda.get_groupunits_dict()) == 1
     assert len(default_work_agenda._idea_dict) == 1
 
 
@@ -119,9 +119,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     assert after_bob_work_agenda.get_party(sue_text) != None
 
 
-def test_RealUnit_generate_work_agenda_SetsCorrectFileWith_healerhold(
-    reals_dir_setup_cleanup,
-):
+def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
@@ -134,6 +132,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWith_healerhold(
     # WHEN
     bob_duty_agenda = get_duty_file_agenda(bob_userdir)
     bob_duty_agenda.add_partyunit(bob_text)
+    bob_duty_agenda.set_party_pool(100)
     texas_text = "Texas"
     texas_road = bob_duty_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"

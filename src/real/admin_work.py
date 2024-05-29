@@ -48,8 +48,8 @@ def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:
         _road_delimiter=duty._road_delimiter,
         _planck=duty._planck,
     )
-    # default_work_agenda._partys = duty._partys
-    # default_work_agenda._groups = duty._groups
+    default_work_agenda._partys = duty._partys
+    default_work_agenda._groups = duty._groups
     default_work_agenda._last_change_id = duty._last_change_id
     default_work_agenda.set_max_tree_traverse(duty._max_tree_traverse)
     return default_work_agenda
