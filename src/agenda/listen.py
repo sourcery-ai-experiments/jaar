@@ -170,3 +170,18 @@ def get_debtor_weight_ordered_partys(x_agenda: AgendaUnit) -> list[PartyUnit]:
     partys_ordered_list = list(x_agenda._partys.values())
     partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
     return partys_ordered_list
+
+
+def add_missing_belief_bases(
+    listener: AgendaUnit, speaker: AgendaUnit, missing_belief_bases: list[RoadUnit]
+) -> AgendaUnit:
+    for missing_belief_base in missing_belief_bases:
+        x_beliefunit = speaker.get_belief(missing_belief_base)
+        if x_beliefunit != None:
+            listener.set_belief(
+                base=x_beliefunit.base,
+                pick=x_beliefunit.pick,
+                open=x_beliefunit.open,
+                nigh=x_beliefunit.nigh,
+                create_missing_ideas=True,
+            )

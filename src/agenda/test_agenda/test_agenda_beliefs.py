@@ -758,16 +758,33 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
 def test_AgendaUnit_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    trouble_text = ""
-    trouble_road = sue_agenda.make_l1_road(trouble_text)
+    situations_text = "situations"
+    situations_road = sue_agenda.make_l1_road(situations_text)
     climate_text = "climate"
-    climate_road = sue_agenda.make_road(trouble_road, climate_text)
-    assert sue_agenda._idearoot.get_kid(trouble_text) is None
+    climate_road = sue_agenda.make_road(situations_road, climate_text)
+    assert sue_agenda._idearoot.get_kid(situations_text) is None
 
     # WHEN
-    sue_agenda.set_belief(trouble_road, climate_road, create_missing_ideas=True)
+    sue_agenda.set_belief(situations_road, climate_road, create_missing_ideas=True)
 
     # THEN
-    assert sue_agenda._idearoot.get_kid(trouble_text) != None
-    assert sue_agenda.get_idea_obj(trouble_road) != None
+    assert sue_agenda._idearoot.get_kid(situations_text) != None
+    assert sue_agenda.get_idea_obj(situations_road) != None
     assert sue_agenda.get_idea_obj(climate_road) != None
+
+
+def test_AgendaUnit_get_belief_ReturnsBeliefUnit():
+    # GIVEN
+    sue_agenda = agendaunit_shop("Sue")
+    situations_text = "situations"
+    situations_road = sue_agenda.make_l1_road(situations_text)
+    climate_text = "climate"
+    climate_road = sue_agenda.make_road(situations_road, climate_text)
+    sue_agenda.set_belief(situations_road, climate_road, create_missing_ideas=True)
+
+    # WHEN
+    generated_situations_base = sue_agenda.get_belief(situations_road)
+
+    # THEN
+    static_situations_base = sue_agenda._idearoot._beliefunits.get(situations_road)
+    assert generated_situations_base == static_situations_base

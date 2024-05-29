@@ -988,6 +988,9 @@ class AgendaUnit:
 
         self.calc_agenda_metrics()
 
+    def get_belief(self, base: RoadUnit) -> BeliefUnit:
+        return self._idearoot._beliefunits.get(base)
+
     def del_belief(self, base: RoadUnit):
         self._idearoot.del_beliefunit(base)
 

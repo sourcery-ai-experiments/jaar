@@ -504,8 +504,8 @@ def test_agenda_get_assignment_CorrectlyCreatesAssignmentFile_v1():
     casa_road = amer_agenda.make_l1_road(casa_text)
     laundry_task_road_text = "do_laundry"
     laundry_task_road_road = amer_agenda.make_road(casa_road, laundry_task_road_text)
-    do_laundery_idea = amer_agenda.get_idea_obj(laundry_task_road_road)
-    print(f"{do_laundery_idea._reasonunits.keys()=}")
+    do_laundry_idea = amer_agenda.get_idea_obj(laundry_task_road_road)
+    print(f"{do_laundry_idea._reasonunits.keys()=}")
 
     # WHEN
     cali_text = "Cali"
