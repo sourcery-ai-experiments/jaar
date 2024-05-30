@@ -1,4 +1,5 @@
 from src._road.road import PersonID, PartyID, PersonID
+from src._road.userdir import get_econ_roles_dir, get_econ_jobs_dir
 from src.agenda.party import PartyUnit
 from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
 from src.agenda.listen import listen_to_speaker_intent, create_empty_agenda
@@ -13,14 +14,6 @@ class RoleAgendaFileException(Exception):
 
 def get_owner_file_name(x_owner_id: str) -> str:
     return f"{x_owner_id}.json"
-
-
-def get_econ_roles_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/roles"
-
-
-def get_econ_jobs_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/jobs"
 
 
 def save_role_file(x_econ_dir: str, x_agenda: AgendaUnit):

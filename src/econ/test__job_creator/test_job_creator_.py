@@ -1,3 +1,5 @@
+from src._road.road import create_road, get_default_real_id_roadnode as root_label
+from src._road.userdir import econdir_shop
 from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
@@ -21,13 +23,14 @@ from os.path import exists as os_path_exists
 def test_get_role_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    save_role_file(get_test_econ_dir(), agendaunit_shop(yao_text))
+    src_yao_agenda = agendaunit_shop(yao_text)
+    save_role_file(get_test_econ_dir(), src_yao_agenda)
 
     # WHEN
     yao_role = get_role_file(get_test_econ_dir(), yao_text)
 
     # THEN
-    assert yao_role.get_dict() == yao_role.get_dict()
+    assert src_yao_agenda.get_dict() == yao_role.get_dict()
 
 
 def test_get_job_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):

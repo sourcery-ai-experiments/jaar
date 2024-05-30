@@ -122,6 +122,14 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
     return f"{x_userdir.econs_dir()}{get_directory_path(x_list=[*x_list])}"
 
 
+def get_econ_roles_dir(x_econ_dir: str) -> str:
+    return f"{x_econ_dir}/roles"
+
+
+def get_econ_jobs_dir(x_econ_dir: str) -> str:
+    return f"{x_econ_dir}/jobs"
+
+
 @dataclass
 class EconDir(UserDir):
     econ_road: RoadUnit = None
@@ -139,10 +147,10 @@ class EconDir(UserDir):
         return f"{self.jobs_dir()}/{self.owner_file_name(owner_id)}"
 
     def roles_dir(self) -> str:
-        return f"{self.econ_dir()}/roles"
+        return get_econ_roles_dir(self.econ_dir())
 
     def jobs_dir(self) -> str:
-        return f"{self.econ_dir()}/jobs"
+        return get_econ_jobs_dir(self.econ_dir())
 
     def save_file_role(self, owner_id: PersonID, file_text: str, replace: bool):
         save_file(
@@ -172,9 +180,7 @@ class EconDir(UserDir):
     def open_file_job(self, owner_id: PersonID) -> str:
         return open_file(self.jobs_dir(), self.owner_file_name(owner_id))
 
-    # role save
     # role delete
-    # job save
     # job delete
 
 
