@@ -59,13 +59,13 @@ def create_person_econunits(x_userdir: UserDir):
         init_econunit(x_userdir, econ_idea.get_road())
 
     db_filename = treasury_db_filename()
-    econs_dir = x_userdir._econs_dir
+    econs_dir = x_userdir.econs_dir()
     root_dir = get_rootpart_of_econ_dir()
     for treasury_dir in get_all_dirs_with_file(db_filename, econs_dir):
         treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
         treasury_road = rebuild_road(treasury_road, root_dir, x_userdir.real_id)
         if x_person_econs.get(treasury_road) is None:
-            dir_to_delete = f"{x_userdir._econs_dir}/{treasury_dir}"
+            dir_to_delete = f"{x_userdir.econs_dir()}/{treasury_dir}"
             delete_dir(dir_to_delete)
 
 

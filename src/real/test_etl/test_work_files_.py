@@ -31,14 +31,14 @@ def test_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
     initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
-    delete_dir(sue_userdir._work_path)
+    delete_dir(sue_userdir.work_path())
     assert os_path_exists(sue_work_path) == False
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
     save_file(
-        dest_dir=sue_userdir.person_dir,
-        file_name=sue_userdir._work_file_name,
+        dest_dir=sue_userdir.person_dir(),
+        file_name=sue_userdir.work_file_name(),
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
@@ -54,7 +54,7 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
     initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
-    delete_dir(sue_userdir._work_path)
+    delete_dir(sue_userdir.work_path())
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
@@ -114,7 +114,7 @@ def test_initialize_work_file_CorrectlySavesFile(
     sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
     initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
-    delete_dir(sue_userdir._work_path)
+    delete_dir(sue_userdir.work_path())
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
@@ -153,7 +153,7 @@ def test_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_agenda = agendaunit_shop(sue_text, get_test_real_id(), _planck=sue_planck)
     initialize_work_file(sue_userdir, sue_agenda)
     assert work_file_exists(sue_userdir)
-    delete_dir(sue_userdir._work_path)
+    delete_dir(sue_userdir.work_path())
     assert work_file_exists(sue_userdir) == False
 
     # WHEN
@@ -182,12 +182,12 @@ def test_initialize_work_file_CreatesDirsAndFiles(
     # GIVEN
     sue_text = "Sue"
     sue_userdir = userdir_shop(None, None, sue_text)
-    delete_dir(sue_userdir.real_dir)
-    assert os_path_exists(sue_userdir._work_path) is False
+    delete_dir(sue_userdir.real_dir())
+    assert os_path_exists(sue_userdir.work_path()) is False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text, get_test_real_id())
     initialize_work_file(sue_userdir, sue_agenda)
 
     # THEN
-    assert os_path_exists(sue_userdir._work_path)
+    assert os_path_exists(sue_userdir.work_path())

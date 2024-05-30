@@ -64,7 +64,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work.json"
     assert os_path_exists(x_sue_work_path) == False
     music_real.init_person_econs(sue_text)
-    assert sue_userdir._work_path == x_sue_work_path
+    assert sue_userdir.work_path() == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
 
     # WHEN

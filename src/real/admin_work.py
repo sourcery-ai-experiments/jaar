@@ -14,7 +14,7 @@ class Invalid_work_Exception(Exception):
 
 
 def work_file_exists(userdir: UserDir) -> bool:
-    return os_path_exists(userdir._work_path)
+    return os_path_exists(userdir.work_path())
 
 
 def save_work_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = True):
@@ -24,8 +24,8 @@ def save_work_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = Tru
         )
     if replace in {True, False}:
         save_file(
-            dest_dir=x_userdir.person_dir,
-            file_name=x_userdir._work_file_name,
+            dest_dir=x_userdir.person_dir(),
+            file_name=x_userdir.work_file_name(),
             file_text=x_agenda.get_json(),
             replace=replace,
         )
@@ -37,7 +37,7 @@ def initialize_work_file(x_userdir, duty: AgendaUnit):
 
 
 def get_work_file_agenda(x_userdir: UserDir) -> AgendaUnit:
-    work_json = open_file(x_userdir.person_dir, x_userdir._work_file_name)
+    work_json = open_file(x_userdir.person_dir(), x_userdir.work_file_name())
     return agendaunit_get_from_json(work_json)
 
 

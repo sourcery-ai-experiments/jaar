@@ -32,21 +32,21 @@ def userdir_save_atom_file(x_userdir: UserDir, x_atom: AgendaAtom):
 
 
 def _save_valid_atom_file(x_userdir: UserDir, x_atom: AgendaAtom, file_number: int):
-    save_file(x_userdir._atoms_dir, f"{file_number}.json", x_atom.get_json())
+    save_file(x_userdir.atoms_dir(), f"{file_number}.json", x_atom.get_json())
     return file_number
 
 
 def userdir_atom_file_exists(x_userdir, filename: int) -> bool:
-    return os_path_exists(f"{x_userdir._atoms_dir}/{filename}.json")
+    return os_path_exists(f"{x_userdir.atoms_dir()}/{filename}.json")
 
 
 def _delete_atom_file(x_userdir: UserDir, filename: int):
-    delete_dir(f"{x_userdir._atoms_dir}/{filename}.json")
+    delete_dir(f"{x_userdir.atoms_dir()}/{filename}.json")
 
 
 def _get_agenda_from_atom_files(x_userdir: UserDir) -> AgendaUnit:
     x_agenda = agendaunit_shop(x_userdir.person_id, x_userdir.real_id)
-    x_atom_files = dir_files(x_userdir._atoms_dir, delete_extensions=True)
+    x_atom_files = dir_files(x_userdir.atoms_dir(), delete_extensions=True)
     sorted_atom_filenames = sorted(list(x_atom_files.keys()))
 
     for x_atom_filename in sorted_atom_filenames:
@@ -57,9 +57,9 @@ def _get_agenda_from_atom_files(x_userdir: UserDir) -> AgendaUnit:
 
 
 def _get_max_atom_file_number(x_userdir: UserDir) -> int:
-    if not os_path_exists(x_userdir._atoms_dir):
+    if not os_path_exists(x_userdir.atoms_dir()):
         return None
-    atom_files_dict = dir_files(x_userdir._atoms_dir, True, include_files=True)
+    atom_files_dict = dir_files(x_userdir.atoms_dir(), True, include_files=True)
     atom_filenames = atom_files_dict.keys()
     atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
     return max(atom_file_numbers, default=None)
@@ -73,14 +73,14 @@ def _get_next_atom_file_number(x_userdir: UserDir) -> str:
 # ChangeUnit
 def changeunit_file_exists(x_userdir: UserDir, change_id: int) -> bool:
     change_filename = changeunit_get_json_filename(change_id)
-    return os_path_exists(f"{x_userdir._changes_dir}/{change_filename}")
+    return os_path_exists(f"{x_userdir.changes_dir()}/{change_filename}")
 
 
 def validate_changeunit(x_userdir: UserDir, x_changeunit: ChangeUnit) -> ChangeUnit:
-    if x_changeunit._atoms_dir != x_userdir._atoms_dir:
-        x_changeunit._atoms_dir = x_userdir._atoms_dir
-    if x_changeunit._changes_dir != x_userdir._changes_dir:
-        x_changeunit._changes_dir = x_userdir._changes_dir
+    if x_changeunit._atoms_dir != x_userdir.atoms_dir():
+        x_changeunit._atoms_dir = x_userdir.atoms_dir()
+    if x_changeunit._changes_dir != x_userdir.changes_dir():
+        x_changeunit._changes_dir = x_userdir.changes_dir()
     if x_changeunit._change_id != _get_next_change_file_number(x_userdir):
         x_changeunit._change_id = _get_next_change_file_number(x_userdir)
     if x_changeunit._giver != x_userdir.person_id:
@@ -99,13 +99,13 @@ def save_changeunit_file(
     if correct_invalid_attrs:
         x_change = validate_changeunit(x_userdir, x_change)
 
-    if x_change._atoms_dir != x_userdir._atoms_dir:
+    if x_change._atoms_dir != x_userdir.atoms_dir():
         raise SaveChangeFileException(
-            f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {x_userdir._atoms_dir}."
+            f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {x_userdir.atoms_dir()}."
         )
-    if x_change._changes_dir != x_userdir._changes_dir:
+    if x_change._changes_dir != x_userdir.changes_dir():
         raise SaveChangeFileException(
-            f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {x_userdir._changes_dir}."
+            f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {x_userdir.changes_dir()}."
         )
     if x_change._giver != x_userdir.person_id:
         raise SaveChangeFileException(
@@ -124,8 +124,8 @@ def _create_new_changeunit(x_userdir: UserDir) -> ChangeUnit:
     return changeunit_shop(
         _giver=x_userdir.person_id,
         _change_id=_get_next_change_file_number(x_userdir),
-        _atoms_dir=x_userdir._atoms_dir,
-        _changes_dir=x_userdir._changes_dir,
+        _atoms_dir=x_userdir.atoms_dir(),
+        _changes_dir=x_userdir.changes_dir(),
     )
 
 
@@ -138,9 +138,9 @@ def create_save_changeunit(
 
 
 def get_max_change_file_number(x_userdir: UserDir) -> int:
-    if not os_path_exists(x_userdir._changes_dir):
+    if not os_path_exists(x_userdir.changes_dir()):
         return None
-    x_changes_dir = x_userdir._changes_dir
+    x_changes_dir = x_userdir.changes_dir()
     change_filenames = dir_files(x_changes_dir, True, include_files=True).keys()
     change_file_numbers = {int(change_filename) for change_filename in change_filenames}
     return max(change_file_numbers, default=None)
@@ -157,13 +157,13 @@ def get_changeunit(x_userdir: UserDir, file_number: int) -> ChangeUnit:
         raise ChangeFileMissingException(
             f"ChangeUnit file_number {file_number} does not exist."
         )
-    x_changes_dir = x_userdir._changes_dir
-    x_atoms_dir = x_userdir._atoms_dir
+    x_changes_dir = x_userdir.changes_dir()
+    x_atoms_dir = x_userdir.atoms_dir()
     return create_changeunit_from_files(x_changes_dir, file_number, x_atoms_dir)
 
 
 def _merge_changes_into_agenda(x_userdir: UserDir, x_agenda: AgendaUnit) -> AgendaUnit:
-    changes_dir = x_userdir._changes_dir
+    changes_dir = x_userdir.changes_dir()
     change_ints = get_integer_filenames(changes_dir, x_agenda._last_change_id)
     for change_int in change_ints:
         x_change = get_changeunit(x_userdir, change_int)
@@ -175,4 +175,4 @@ def _merge_changes_into_agenda(x_userdir: UserDir, x_agenda: AgendaUnit) -> Agen
 
 
 def del_changeunit_file(x_userdir: UserDir, file_number: int):
-    delete_dir(f"{x_userdir._changes_dir}/{changeunit_get_json_filename(file_number)}")
+    delete_dir(f"{x_userdir.changes_dir()}/{changeunit_get_json_filename(file_number)}")

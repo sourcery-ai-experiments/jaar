@@ -222,7 +222,7 @@
 
 #         if x_change._atoms_dir != self._atoms_dir:
 #             raise SaveChangeFileException(
-#                 f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self._atoms_dir}."
+#                 f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change.atoms_dir()}. It must be {self.atoms_dir()}."
 #             )
 #         if x_change._changes_dir != self._changes_dir:
 #             raise SaveChangeFileException(
@@ -288,10 +288,10 @@
 #         return file_number
 
 #     def atom_file_exists(self, filename: int) -> bool:
-#         return os_path_exists(f"{self._atoms_dir}/{filename}.json")
+#         return os_path_exists(f"{self.atoms_dir()}/{filename}.json")
 
 #     def _delete_atom_file(self, filename: int):
-#         delete_dir(f"{self._atoms_dir}/{filename}.json")
+#         delete_dir(f"{self.atoms_dir()}/{filename}.json")
 
 #     def _get_max_atom_file_number(self) -> int:
 #         if not os_path_exists(self._atoms_dir):
@@ -325,7 +325,7 @@
 #         return "idearoot"
 
 #     def _get_person_econ_dir(self, x_list: list[RoadNode]) -> str:
-#         return f"{self._econs_dir}{get_directory_path(x_list=[*x_list])}"
+#         return f"{self_econs_dir()}{get_directory_path(x_list=[*x_list])}"
 
 #     def _create_econ_dir(self, x_roadunit: RoadUnit) -> str:
 #         x_roadunit = rebuild_road(
@@ -375,7 +375,7 @@
 #                 treasury_road, self.get_rootpart_of_econ_dir(), self.real_id
 #             )
 #             if x_person_econs.get(treasury_road) is None:
-#                 dir_to_delete = f"{self._econs_dir}/{treasury_dir}"
+#                 dir_to_delete = f"{self_econs_dir()}/{treasury_dir}"
 #                 delete_dir(dir_to_delete)
 
 #     def get_econ(self, econ_road: RoadUnit) -> EconUnit:

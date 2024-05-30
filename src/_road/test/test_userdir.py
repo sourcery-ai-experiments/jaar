@@ -17,19 +17,9 @@ def test_UserDir_Exists():
     x_userdir = UserDir()
 
     # THEN
-    assert x_userdir.person_id is None
-    assert x_userdir.real_id is None
-    assert x_userdir.real_dir is None
     assert x_userdir.reals_dir is None
-    assert x_userdir.persons_dir is None
-    assert x_userdir.person_dir is None
-    assert x_userdir._econs_dir is None
-    assert x_userdir._atoms_dir is None
-    assert x_userdir._changes_dir is None
-    assert x_userdir._duty_file_name is None
-    assert x_userdir._duty_path is None
-    assert x_userdir._work_file_name is None
-    assert x_userdir._work_path is None
+    assert x_userdir.real_id is None
+    assert x_userdir.person_id is None
     assert x_userdir._road_delimiter is None
     assert x_userdir._planck is None
 
@@ -48,21 +38,24 @@ def test_userdir_shop_ReturnsCorrectObj():
     )
 
     # THEN
-    assert x_userdir.real_dir == f"{x_reals_dir}/{x_real_id}"
-    assert x_userdir.persons_dir == f"{x_userdir.real_dir}/persons"
+    assert x_userdir.reals_dir == x_reals_dir
+    assert x_userdir.real_id == x_real_id
     assert x_userdir.person_id == sue_text
-    assert x_userdir.person_dir == f"{x_userdir.persons_dir}/{sue_text}"
-    assert x_userdir._econs_dir == f"{x_userdir.person_dir}/econs"
-    assert x_userdir._atoms_dir == f"{x_userdir.person_dir}/atoms"
-    assert x_userdir._changes_dir == f"{x_userdir.person_dir}/{get_changes_folder()}"
-    assert x_userdir._duty_file_name == f"{duty_str()}.json"
-    x_duty_path = f"{x_userdir.person_dir}/{x_userdir._duty_file_name}"
-    assert x_userdir._duty_path == x_duty_path
-    assert x_userdir._work_file_name == f"{work_str()}.json"
-    x_workpath = f"{x_userdir.person_dir}/{x_userdir._work_file_name}"
-    assert x_userdir._work_path == x_workpath
     assert x_userdir._road_delimiter == x_road_delimiter
     assert x_userdir._planck == x_planck
+
+    assert x_userdir.real_dir() == f"{x_reals_dir}/{x_real_id}"
+    assert x_userdir.persons_dir() == f"{x_userdir.real_dir()}/persons"
+    assert x_userdir.person_dir() == f"{x_userdir.persons_dir()}/{sue_text}"
+    assert x_userdir.econs_dir() == f"{x_userdir.person_dir()}/econs"
+    assert x_userdir.atoms_dir() == f"{x_userdir.person_dir()}/atoms"
+    assert x_userdir.changes_dir() == f"{x_userdir.person_dir()}/{get_changes_folder()}"
+    assert x_userdir.duty_file_name() == f"{duty_str()}.json"
+    x_duty_path = f"{x_userdir.person_dir()}/{x_userdir.duty_file_name()}"
+    assert x_userdir.duty_path() == x_duty_path
+    assert x_userdir.work_file_name() == f"{work_str()}.json"
+    x_workpath = f"{x_userdir.person_dir()}/{x_userdir.work_file_name()}"
+    assert x_userdir.work_path() == x_workpath
 
 
 def test_userdir_shop_ReturnsCorrectObjWhenEmpty():
@@ -73,22 +66,24 @@ def test_userdir_shop_ReturnsCorrectObjWhenEmpty():
     sue_userdir = userdir_shop(None, None, sue_text)
 
     # THEN
-    assert sue_userdir.real_dir == f"{get_test_reals_dir()}/{get_test_real_id()}"
-    assert sue_userdir.persons_dir == f"{sue_userdir.real_dir}/persons"
+    assert sue_userdir.reals_dir == get_test_reals_dir()
+    assert sue_userdir.real_id == get_test_real_id()
+    assert sue_userdir.real_dir() == f"{get_test_reals_dir()}/{get_test_real_id()}"
     assert sue_userdir.person_id == sue_text
-    assert sue_userdir.person_dir == f"{sue_userdir.persons_dir}/{sue_text}"
-    assert sue_userdir._econs_dir == f"{sue_userdir.person_dir}/econs"
-    assert sue_userdir._atoms_dir == f"{sue_userdir.person_dir}/atoms"
-    x_changes_dir = f"{sue_userdir.person_dir}/{get_changes_folder()}"
-    assert sue_userdir._changes_dir == x_changes_dir
-    assert sue_userdir._duty_file_name == f"{duty_str()}.json"
-    x_duty_path = f"{sue_userdir.person_dir}/{sue_userdir._duty_file_name}"
-    assert sue_userdir._duty_path == x_duty_path
-    assert sue_userdir._work_file_name == f"{work_str()}.json"
-    x_workpath = f"{sue_userdir.person_dir}/{sue_userdir._work_file_name}"
-    assert sue_userdir._work_path == x_workpath
     assert sue_userdir._road_delimiter == default_road_delimiter_if_none()
     assert sue_userdir._planck == default_planck_if_none()
+    assert sue_userdir.persons_dir() == f"{sue_userdir.real_dir()}/persons"
+    assert sue_userdir.person_dir() == f"{sue_userdir.persons_dir()}/{sue_text}"
+    assert sue_userdir.econs_dir() == f"{sue_userdir.person_dir()}/econs"
+    assert sue_userdir.atoms_dir() == f"{sue_userdir.person_dir()}/atoms"
+    x_changes_dir = f"{sue_userdir.person_dir()}/{get_changes_folder()}"
+    assert sue_userdir.changes_dir() == x_changes_dir
+    assert sue_userdir.duty_file_name() == f"{duty_str()}.json"
+    x_duty_path = f"{sue_userdir.person_dir()}/{sue_userdir.duty_file_name()}"
+    assert sue_userdir.duty_path() == x_duty_path
+    assert sue_userdir.work_file_name() == f"{work_str()}.json"
+    x_workpath = f"{sue_userdir.person_dir()}/{sue_userdir.work_file_name()}"
+    assert sue_userdir.work_path() == x_workpath
 
 
 def test_userdir_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
@@ -127,7 +122,7 @@ def test_get_econ_path_ReturnsCorrectObj():
     kern_path = get_econ_path(sue_userdir, kern_road)
 
     # THEN
-    idearoot_dir = f"{sue_userdir._econs_dir}/{get_rootpart_of_econ_dir()}"
+    idearoot_dir = f"{sue_userdir.econs_dir()}/{get_rootpart_of_econ_dir()}"
     print(f"{kern_road=}")
     print(f"{idearoot_dir=}")
     assert texas_path == f"{idearoot_dir}/{texas_text}"

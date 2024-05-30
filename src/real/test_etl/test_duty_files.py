@@ -23,14 +23,14 @@ def test_get_duty_file_agenda_IfFileMissingCreatesFile(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userdir = userdir_shop(None, None, sue_text)
-    delete_dir(sue_userdir.real_dir)
-    assert os_path_exists(sue_userdir._duty_path) is False
+    delete_dir(sue_userdir.real_dir())
+    assert os_path_exists(sue_userdir.duty_path()) is False
 
     # WHEN
     sue_duty = get_duty_file_agenda(sue_userdir)
 
     # THEN
-    assert os_path_exists(sue_userdir._duty_path)
+    assert os_path_exists(sue_userdir.duty_path())
     default_duty = get_default_duty_agenda(sue_userdir)
     default_duty.calc_agenda_metrics()
     assert sue_duty == default_duty
@@ -56,8 +56,8 @@ def test_duty_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
 
     # WHEN
     save_file(
-        dest_dir=sue_userdir.person_dir,
-        file_name=sue_userdir._duty_file_name,
+        dest_dir=sue_userdir.person_dir(),
+        file_name=sue_userdir.duty_file_name(),
         file_text=agendaunit_shop(sue_text).get_json(),
     )
 
@@ -140,10 +140,10 @@ def test_initialize_change_duty_files_CorrectlySavesDutyFileAndchangeFile(
     sue_userdir = userdir_shop(None, None, sue_text, None, planck=seven_int)
     initialize_change_duty_files(sue_userdir)
     assert duty_file_exists(sue_userdir)
-    delete_dir(sue_userdir._duty_path)
+    delete_dir(sue_userdir.duty_path())
     assert duty_file_exists(sue_userdir) == False
-    init_change_file_path = f"{sue_userdir._changes_dir}/{init_change_id()}.json"
-    delete_dir(sue_userdir._changes_dir)
+    init_change_file_path = f"{sue_userdir.changes_dir()}/{init_change_id()}.json"
+    delete_dir(sue_userdir.changes_dir())
     assert os_path_exists(init_change_file_path) == False
 
     # WHEN
@@ -166,9 +166,9 @@ def test_initialize_change_duty_files_CorrectlySavesOnlyDutyFile(
     sue_userdir = userdir_shop(None, None, sue_text, None, planck=seven_int)
     initialize_change_duty_files(sue_userdir)
     assert duty_file_exists(sue_userdir)
-    delete_dir(sue_userdir._duty_path)
+    delete_dir(sue_userdir.duty_path())
     assert duty_file_exists(sue_userdir) == False
-    init_change_file_path = f"{sue_userdir._changes_dir}/{init_change_id()}.json"
+    init_change_file_path = f"{sue_userdir.changes_dir()}/{init_change_id()}.json"
     assert os_path_exists(init_change_file_path)
 
     # WHEN
@@ -195,8 +195,8 @@ def test_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     sue_duty_agenda.add_partyunit(bob_text)
     save_duty_file(sue_userdir, sue_duty_agenda)
     assert duty_file_exists(sue_userdir)
-    init_change_file_path = f"{sue_userdir._changes_dir}/{init_change_id()}.json"
-    delete_dir(sue_userdir._changes_dir)
+    init_change_file_path = f"{sue_userdir.changes_dir()}/{init_change_id()}.json"
+    delete_dir(sue_userdir.changes_dir())
     assert os_path_exists(init_change_file_path) == False
 
     # WHEN
