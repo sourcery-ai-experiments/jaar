@@ -126,48 +126,51 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
 class EconDir(UserDir):
     econ_road: RoadUnit = None
 
-    def econ_dir(self):
+    def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
 
-    def role_file_name(self):
-        return f"{role_str()}.json"
+    def owner_file_name(self, owner_id: PersonID) -> str:
+        return f"{owner_id}.json"
 
-    def role_path(self) -> str:
-        return f"{self.econ_dir()}/{self.role_file_name()}"
+    def role_path(self, owner_id: PersonID) -> str:
+        return f"{self.roles_dir()}/{self.owner_file_name(owner_id)}"
 
-    def job_file_name(self):
-        return f"{job_str()}.json"
+    def job_path(self, owner_id: PersonID) -> str:
+        return f"{self.jobs_dir()}/{self.owner_file_name(owner_id)}"
 
-    def job_path(self) -> str:
-        return f"{self.econ_dir()}/{self.job_file_name()}"
+    def roles_dir(self) -> str:
+        return f"{self.econ_dir()}/roles"
 
-    def save_file_role(self, file_text: str, replace: bool):
+    def jobs_dir(self) -> str:
+        return f"{self.econ_dir()}/jobs"
+
+    def save_file_role(self, owner_id: PersonID, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.econ_dir(),
-            file_name=self.role_file_name(),
+            dest_dir=self.roles_dir(),
+            file_name=self.owner_file_name(owner_id),
             file_text=file_text,
             replace=replace,
         )
 
-    def save_file_job(self, file_text: str, replace: bool):
+    def save_file_job(self, owner_id: PersonID, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.econ_dir(),
-            file_name=self.job_file_name(),
+            dest_dir=self.jobs_dir(),
+            file_name=self.owner_file_name(owner_id),
             file_text=file_text,
             replace=replace,
         )
 
-    def role_file_exists(self) -> bool:
-        return os_path_exists(self.role_path())
+    def role_file_exists(self, owner_id: PersonID) -> bool:
+        return os_path_exists(self.role_path(owner_id))
 
-    def job_file_exists(self) -> bool:
-        return os_path_exists(self.job_path())
+    def job_file_exists(self, owner_id: PersonID) -> bool:
+        return os_path_exists(self.job_path(owner_id))
 
-    def open_file_role(self) -> str:
-        return open_file(self.econ_dir(), self.role_file_name())
+    def open_file_role(self, owner_id: PersonID) -> str:
+        return open_file(self.roles_dir(), self.owner_file_name(owner_id))
 
-    def open_file_job(self) -> str:
-        return open_file(self.econ_dir(), self.job_file_name())
+    def open_file_job(self, owner_id: PersonID) -> str:
+        return open_file(self.jobs_dir(), self.owner_file_name(owner_id))
 
     # role save
     # role delete

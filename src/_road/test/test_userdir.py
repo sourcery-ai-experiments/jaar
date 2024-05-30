@@ -266,8 +266,13 @@ def test_econdir_shop_ReturnsCorrectObjWhenEmpty():
     x_userdir = userdir_shop(None, None, sue_text)
     assert sue_econdir.econ_road == texas_road
     assert sue_econdir.econ_dir() == get_econ_path(x_userdir, texas_road)
-    assert sue_econdir.role_path() == f"{sue_econdir.econ_dir()}/role.json"
-    assert sue_econdir.job_path() == f"{sue_econdir.econ_dir()}/job.json"
+    bob_text = "Bob"
+    assert sue_econdir.roles_dir() == f"{sue_econdir.econ_dir()}/roles"
+    assert sue_econdir.jobs_dir() == f"{sue_econdir.econ_dir()}/jobs"
+    assert (
+        sue_econdir.role_path(bob_text) == f"{sue_econdir.roles_dir()}/{bob_text}.json"
+    )
+    assert sue_econdir.job_path(bob_text) == f"{sue_econdir.jobs_dir()}/{bob_text}.json"
 
 
 def test_EconDir_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -280,13 +285,14 @@ def test_EconDir_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
-    assert os_path_exists(sue_econdir.role_path()) == False
+    bob_text = "Bob"
+    assert os_path_exists(sue_econdir.role_path(bob_text)) == False
 
     # WHEN
-    sue_econdir.save_file_role(file_text="fooboo", replace=True)
+    sue_econdir.save_file_role(bob_text, file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_econdir.role_path())
+    assert os_path_exists(sue_econdir.role_path(bob_text))
 
 
 def test_EconDir_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
@@ -299,13 +305,14 @@ def test_EconDir_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
-    assert sue_econdir.role_file_exists() == False
+    bob_text = "Bob"
+    assert sue_econdir.role_file_exists(bob_text) == False
 
     # WHEN
-    sue_econdir.save_file_role(file_text="fooboo", replace=True)
+    sue_econdir.save_file_role(bob_text, file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_econdir.role_file_exists()
+    assert sue_econdir.role_file_exists(bob_text)
 
 
 def test_EconDir_open_file_role_OpensFile(env_dir_setup_cleanup):
@@ -319,10 +326,11 @@ def test_EconDir_open_file_role_OpensFile(env_dir_setup_cleanup):
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
     example_text = "fooboo"
-    sue_econdir.save_file_role(example_text, replace=True)
+    bob_text = "Bob"
+    sue_econdir.save_file_role(bob_text, example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_econdir.open_file_role() == example_text
+    assert sue_econdir.open_file_role(bob_text) == example_text
 
 
 def test_EconDir_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -335,13 +343,14 @@ def test_EconDir_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
-    assert os_path_exists(sue_econdir.job_path()) == False
+    bob_text = "Bob"
+    assert os_path_exists(sue_econdir.job_path(bob_text)) == False
 
     # WHEN
-    sue_econdir.save_file_job(file_text="fooboo", replace=True)
+    sue_econdir.save_file_job(bob_text, file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_econdir.job_path())
+    assert os_path_exists(sue_econdir.job_path(bob_text))
 
 
 def test_EconDir_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
@@ -354,13 +363,14 @@ def test_EconDir_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
-    assert sue_econdir.job_file_exists() == False
+    bob_text = "Bob"
+    assert sue_econdir.job_file_exists(bob_text) == False
 
     # WHEN
-    sue_econdir.save_file_job(file_text="fooboo", replace=True)
+    sue_econdir.save_file_job(bob_text, file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_econdir.job_file_exists()
+    assert sue_econdir.job_file_exists(bob_text)
 
 
 def test_EconDir_open_file_job_OpensFile(env_dir_setup_cleanup):
@@ -374,7 +384,8 @@ def test_EconDir_open_file_job_OpensFile(env_dir_setup_cleanup):
     texas_road = create_road(usa_road, texas_text)
     sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
     example_text = "fooboo"
-    sue_econdir.save_file_job(example_text, replace=True)
+    bob_text = "Bob"
+    sue_econdir.save_file_job(bob_text, example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_econdir.open_file_job() == example_text
+    assert sue_econdir.open_file_job(bob_text) == example_text
