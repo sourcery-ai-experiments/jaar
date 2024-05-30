@@ -14,6 +14,8 @@ from src._road.jaar_config import (
     get_changes_folder,
     duty_str,
     work_str,
+    role_str,
+    job_str,
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
@@ -124,6 +126,49 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
 class EconDir(UserDir):
     econ_road: RoadUnit = None
 
+    def econ_dir(self):
+        return get_econ_path(self, self.econ_road)
+
+    def role_file_name(self):
+        return f"{role_str()}.json"
+
+    def role_path(self) -> str:
+        return f"{self.econ_dir()}/{self.role_file_name()}"
+
+    def job_file_name(self):
+        return f"{job_str()}.json"
+
+    def job_path(self) -> str:
+        return f"{self.econ_dir()}/{self.job_file_name()}"
+
+    def save_file_role(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.econ_dir(),
+            file_name=self.role_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def save_file_job(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.econ_dir(),
+            file_name=self.job_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def role_file_exists(self) -> bool:
+        return os_path_exists(self.role_path())
+
+    def job_file_exists(self) -> bool:
+        return os_path_exists(self.job_path())
+
+    def open_file_role(self) -> str:
+        return open_file(self.econ_dir(), self.role_file_name())
+
+    def open_file_job(self) -> str:
+        return open_file(self.econ_dir(), self.job_file_name())
+
     # role save
     # role delete
     # job save
@@ -137,7 +182,7 @@ def econdir_shop(
     econ_road: RoadUnit,
     road_delimiter: str = None,
     planck: float = None,
-):
+) -> EconDir:
     x_userdir = userdir_shop(
         reals_dir=reals_dir,
         real_id=real_id,
@@ -149,7 +194,7 @@ def econdir_shop(
         reals_dir=x_userdir.reals_dir,
         real_id=x_userdir.real_id,
         person_id=x_userdir.person_id,
-        econ_road=get_econ_path(x_userdir, econ_road),
+        econ_road=econ_road,
         _road_delimiter=x_userdir._road_delimiter,
         _planck=x_userdir._planck,
     )

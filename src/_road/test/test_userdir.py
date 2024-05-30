@@ -264,4 +264,117 @@ def test_econdir_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_econdir._planck == default_planck_if_none()
     assert sue_econdir.persons_dir() == f"{sue_econdir.real_dir()}/persons"
     x_userdir = userdir_shop(None, None, sue_text)
-    assert sue_econdir.econ_road == get_econ_path(x_userdir, texas_road)
+    assert sue_econdir.econ_road == texas_road
+    assert sue_econdir.econ_dir() == get_econ_path(x_userdir, texas_road)
+    assert sue_econdir.role_path() == f"{sue_econdir.econ_dir()}/role.json"
+    assert sue_econdir.job_path() == f"{sue_econdir.econ_dir()}/job.json"
+
+
+def test_EconDir_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    assert os_path_exists(sue_econdir.role_path()) == False
+
+    # WHEN
+    sue_econdir.save_file_role(file_text="fooboo", replace=True)
+
+    # THEN
+    assert os_path_exists(sue_econdir.role_path())
+
+
+def test_EconDir_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    assert sue_econdir.role_file_exists() == False
+
+    # WHEN
+    sue_econdir.save_file_role(file_text="fooboo", replace=True)
+
+    # THEN
+    assert sue_econdir.role_file_exists()
+
+
+def test_EconDir_open_file_role_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    example_text = "fooboo"
+    sue_econdir.save_file_role(example_text, replace=True)
+
+    # WHEN / THEN
+    assert sue_econdir.open_file_role() == example_text
+
+
+def test_EconDir_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    assert os_path_exists(sue_econdir.job_path()) == False
+
+    # WHEN
+    sue_econdir.save_file_job(file_text="fooboo", replace=True)
+
+    # THEN
+    assert os_path_exists(sue_econdir.job_path())
+
+
+def test_EconDir_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    assert sue_econdir.job_file_exists() == False
+
+    # WHEN
+    sue_econdir.save_file_job(file_text="fooboo", replace=True)
+
+    # THEN
+    assert sue_econdir.job_file_exists()
+
+
+def test_EconDir_open_file_job_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_econdir = econdir_shop(get_road_temp_env_dir(), None, sue_text, texas_road)
+    example_text = "fooboo"
+    sue_econdir.save_file_job(example_text, replace=True)
+
+    # WHEN / THEN
+    assert sue_econdir.open_file_job() == example_text

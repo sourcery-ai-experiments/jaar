@@ -30,5 +30,13 @@ def work_str() -> str:
     return "work"
 
 
+def job_str() -> str:
+    return "job"
+
+
+def role_str() -> str:
+    return "role"
+
+
 def get_rootpart_of_econ_dir() -> str:
     return "idearoot"
