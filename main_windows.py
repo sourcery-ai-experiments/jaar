@@ -52,7 +52,7 @@ class MainApp(QApplication):
         self.edittime_view = EditBeliefTime()
         # create slot for editmain visibility
         self.main_window.open_edittime.connect(self.editbelief_show)
-        self.edittime_view.root_channges_submitted.connect(self.main_window.refresh_all)
+        self.edittime_view.root_modify_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
         self.editmain_view.x_agenda = self.main_window.x_agenda

@@ -143,7 +143,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefSays
     assert sue_agenda.get_idea_obj(casa_road)._active == False
 
 
-def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModifys():
+def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModifies():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
@@ -969,6 +969,43 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
     # display_ideatree(sue_agenda, "Econ").show()
     assert len(sue_agenda._econ_dict) == 0
     assert sue_agenda._econ_dict == {}
+
+
+# def test_agenda_metrics_CorrectlySets_healers_dict():
+#     # GIVEN
+#     sue_text = "Sue"
+#     bob_text = "Bob"
+#     sue_agenda = get_agenda_with_4_levels_and_2reasons()
+#     sue_agenda.add_partyunit(sue_text)
+#     sue_agenda.add_partyunit(bob_text)
+#     assert sue_agenda._healers_dict == {}
+
+#     # WHEN
+#     sue_agenda.calc_agenda_metrics()
+#     # THEN
+#     assert sue_agenda._healers_dict == {}
+
+#     # GIVEN
+#     nation_road = sue_agenda.make_l1_road("nation-state")
+#     usa_road = sue_agenda.make_road(nation_road, "USA")
+#     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
+#     sue_healerhold = healerhold_shop({sue_text})
+#     sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+
+#     week_road = sue_agenda.make_l1_road("weekdays")
+#     bob_healerhold = healerhold_shop({bob_text})
+#     sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+#     assert sue_agenda._healers_dict == {}
+
+#     # WHEN
+#     sue_agenda.calc_agenda_metrics()
+
+#     # THEN
+#     assert len(sue_agenda._healers_dict) == 2
+#     week_idea = sue_agenda.get_idea_obj(week_road)
+#     assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_idea}
+#     oregon_idea = sue_agenda.get_idea_obj(oregon_road)
+#     assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_idea}
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_healers_dict():

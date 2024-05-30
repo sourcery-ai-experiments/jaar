@@ -1,12 +1,12 @@
 from src.agenda.book import bookunit_shop
-from src.real.change import (
+from src.agenda.change import (
     ChangeUnit,
     changeunit_shop,
     get_init_change_id_if_None,
     init_change_id,
     get_changes_folder,
 )
-from src.real.examples.example_atoms import (
+from src.agenda.examples.example_books import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
@@ -40,7 +40,6 @@ def test_ChangeUnit_exists():
     assert x_changeunit._faces is None
     assert x_changeunit._bookunit is None
     assert x_changeunit._book_start is None
-    assert x_changeunit._person_dir is None
     assert x_changeunit._changes_dir is None
     assert x_changeunit._atoms_dir is None
 
@@ -58,7 +57,6 @@ def test_changeunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     assert farm_changeunit._faces == set()
     assert farm_changeunit._bookunit == bookunit_shop()
     assert farm_changeunit._book_start == 0
-    assert farm_changeunit._person_dir is None
     assert farm_changeunit._changes_dir is None
     assert farm_changeunit._atoms_dir is None
 
@@ -70,7 +68,6 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     bob_faces = {"Sue", "Yao"}
     bob_bookunit = get_bookunit_carm_example()
     bob_book_start = 6
-    bob_person_dir = "exampletext5"
     bob_changes_dir = "exampletext7"
     bob_atoms_dir = "exampletext9"
 
@@ -81,7 +78,6 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
         _faces=bob_faces,
         _bookunit=bob_bookunit,
         _book_start=bob_book_start,
-        _person_dir=bob_person_dir,
         _changes_dir=bob_changes_dir,
         _atoms_dir=bob_atoms_dir,
     )
@@ -92,7 +88,6 @@ def test_changeunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     assert farm_changeunit._faces == bob_faces
     assert farm_changeunit._bookunit == bob_bookunit
     assert farm_changeunit._book_start == bob_book_start
-    assert farm_changeunit._person_dir == bob_person_dir
     assert farm_changeunit._changes_dir == bob_changes_dir
     assert farm_changeunit._atoms_dir == bob_atoms_dir
 
@@ -241,9 +236,9 @@ def test_ChangeUnit_get_step_dict_ReturnsCorrectObj_Simple():
     x_dict = farm_changeunit.get_step_dict()
 
     # THEN
-    changeer_text = "changeer"
-    assert x_dict.get(changeer_text) != None
-    assert x_dict.get(changeer_text) == bob_text
+    giver_text = "giver"
+    assert x_dict.get(giver_text) != None
+    assert x_dict.get(giver_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None
@@ -344,9 +339,9 @@ def test_ChangeUnit_get_bookmetric_dict_ReturnsCorrectObj():
     x_dict = farm_changeunit.get_bookmetric_dict()
 
     # THEN
-    changeer_text = "changeer"
-    assert x_dict.get(changeer_text) != None
-    assert x_dict.get(changeer_text) == bob_text
+    giver_text = "giver"
+    assert x_dict.get(giver_text) != None
+    assert x_dict.get(giver_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None

@@ -66,7 +66,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     assert not sue_agenda._healers_dict
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlyClearsDescendantAttributes():
+def test_AgendaUnit_calc_agenda_metrics_ClearsDescendantAttributes():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     # test root status:

@@ -24,10 +24,17 @@ class PartyCore:
 
 @dataclass
 class PartyUnit(PartyCore):
+    """This represents the relationship from the AgendaUnit._owner_id to the PartyUnit.party_id
+    PartyUnit.creditor_weight represents how much creditor_weight the _owner_id gives the party_id
+    PartyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the party_id
+    """
+
     creditor_weight: int = None
     debtor_weight: int = None
-    _irrational_debtor_weight: int = None
-    _missing_job_debtor_weight: int = None
+    # calculated fields
+    _irrational_debtor_weight: int = None  # set by listening process
+    _missing_job_debtor_weight: int = None  # set by listening process
+    # set by Agenda.calc_agenda_metrics()
     _agenda_credit: float = None
     _agenda_debt: float = None
     _agenda_intent_credit: float = None
@@ -36,6 +43,7 @@ class PartyUnit(PartyCore):
     _agenda_intent_ratio_debt: float = None
     _creditor_operational: bool = None
     _debtor_operational: bool = None
+    # set by River process
     _treasury_due_paid: float = None
     _treasury_due_diff: float = None
     _output_agenda_meld_order: int = None
@@ -111,16 +119,16 @@ class PartyUnit(PartyCore):
             "_treasury_voice_rank": self._treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
         }
-        if self._irrational_debtor_weight != 0:
+        if self._irrational_debtor_weight not in [None, 0]:
             x_dict["_irrational_debtor_weight"] = self._irrational_debtor_weight
-        if self._missing_job_debtor_weight != 0:
+        if self._missing_job_debtor_weight not in [None, 0]:
             x_dict["_missing_job_debtor_weight"] = self._missing_job_debtor_weight
 
         if all_attrs:
-            self._add_all_attrs_to_dict(x_dict)
+            self._all_attrs_necessary_in_dict(x_dict)
         return x_dict
 
-    def _add_all_attrs_to_dict(self, x_dict):
+    def _all_attrs_necessary_in_dict(self, x_dict):
         x_dict["_agenda_credit"] = self._agenda_credit
         x_dict["_agenda_debt"] = self._agenda_debt
         x_dict["_agenda_intent_credit"] = self._agenda_intent_credit
@@ -233,14 +241,14 @@ def partyunits_get_from_dict(
 
 
 def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> PartyUnit:
-    _irrational_debtor_weight = partyunit_dict.get("_irrational_debtor_weight")
-    _missing_job_debtor_weight = partyunit_dict.get("_missing_job_debtor_weight")
-    _treasury_due_paid = partyunit_dict.get("_treasury_due_paid")
-    _treasury_due_diff = partyunit_dict.get("_treasury_due_diff")
-    _treasury_credit_score = partyunit_dict.get("_treasury_credit_score")
-    _treasury_voice_rank = partyunit_dict.get("_treasury_voice_rank")
+    _irrational_debtor_weight = partyunit_dict.get("_irrational_debtor_weight", 0)
+    _missing_job_debtor_weight = partyunit_dict.get("_missing_job_debtor_weight", 0)
+    _treasury_due_paid = partyunit_dict.get("_treasury_due_paid", 0)
+    _treasury_due_diff = partyunit_dict.get("_treasury_due_diff", 0)
+    _treasury_credit_score = partyunit_dict.get("_treasury_credit_score", 0)
+    _treasury_voice_rank = partyunit_dict.get("_treasury_voice_rank", 0)
     _treasury_voice_hx_lowest_rank = partyunit_dict.get(
-        "_treasury_voice_hx_lowest_rank"
+        "_treasury_voice_hx_lowest_rank", 0
     )
 
     x_partyunit = partyunit_shop(

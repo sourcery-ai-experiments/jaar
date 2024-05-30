@@ -1,4 +1,4 @@
-from src.real.userdir import userdir_shop
+from src._road.userdir import userdir_shop
 from src.real.admin_duty import initialize_change_duty_files
 from src.real.admin_change import (
     userdir_save_atom_file,
@@ -29,14 +29,14 @@ def test_save_valid_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     yao_text = "Yao"
     yao_userdir = userdir_shop(reals_dir(), real_id(), yao_text)
     one_int = 1
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{one_int}.json") == False
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{one_int}.json") == False
 
     # WHEN
     knee_atom = get_atom_example_beliefunit_knee()
     atom_num = _save_valid_atom_file(yao_userdir, knee_atom, one_int)
 
     # THEN
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{one_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{one_int}.json")
     assert atom_num == one_int
 
 
@@ -45,14 +45,14 @@ def test_userdir_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     yao_text = "Yao"
     yao_userdir = userdir_shop(reals_dir(), real_id(), yao_text)
     five_int = 5
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{five_int}.json") == False
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{five_int}.json") == False
     assert userdir_atom_file_exists(yao_userdir, five_int) == False
 
     # WHEN
     _save_valid_atom_file(yao_userdir, get_atom_example_beliefunit_knee(), five_int)
 
     # THEN
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{five_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{five_int}.json")
     assert userdir_atom_file_exists(yao_userdir, five_int)
 
 
@@ -62,13 +62,13 @@ def test_delete_atom_file_CorrectlyDeletesFile(reals_dir_setup_cleanup):
     yao_userdir = userdir_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_userdir, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{ten_int}.json")
 
     # WHEN
     _delete_atom_file(yao_userdir, ten_int)
 
     # THEN
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{ten_int}.json") == False
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{ten_int}.json") == False
 
 
 def test_get_max_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -77,7 +77,7 @@ def test_get_max_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
     yao_userdir = userdir_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
     _save_valid_atom_file(yao_userdir, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{ten_int}.json")
 
     # WHEN / THEN
     assert _get_max_atom_file_number(yao_userdir) == ten_int
@@ -103,7 +103,7 @@ def test_get_next_atom_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
 
     ten_int = 10
     _save_valid_atom_file(yao_userdir, get_atom_example_beliefunit_knee(), ten_int)
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{ten_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{ten_int}.json")
 
     # WHEN / THEN
     assert _get_next_atom_file_number(yao_userdir) == 11
@@ -117,7 +117,7 @@ def test_userdir_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     _save_valid_atom_file(yao_userdir, get_atom_example_beliefunit_knee(), ten_int)
     assert _get_max_atom_file_number(yao_userdir) == ten_int
     eleven_int = ten_int + 1
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{eleven_int}.json") == False
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{eleven_int}.json") == False
 
     # WHEN
     atom_num1 = userdir_save_atom_file(yao_userdir, get_atom_example_beliefunit_knee())
@@ -125,15 +125,13 @@ def test_userdir_save_atom_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     # THEN
     assert _get_max_atom_file_number(yao_userdir) != ten_int
     assert _get_max_atom_file_number(yao_userdir) == eleven_int
-    assert os_path_exists(f"{yao_userdir._atoms_dir}/{eleven_int}.json")
+    assert os_path_exists(f"{yao_userdir.atoms_dir()}/{eleven_int}.json")
     assert atom_num1 == eleven_int
     atom_num2 = userdir_save_atom_file(yao_userdir, get_atom_example_beliefunit_knee())
     assert atom_num2 == 12
 
 
-def test_get_agenda_from_atom_files_ReturnsCorrectFile_ZeroAtoms(
-    reals_dir_setup_cleanup,
-):
+def test_get_agenda_from_atom_files_ReturnsFileWithZeroAtoms(reals_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_userdir = userdir_shop(reals_dir(), real_id(), yao_text)
@@ -187,7 +185,7 @@ def test_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
     userdir_save_atom_file(yao_userdir, get_atom_example_ideaunit_ball(x_real_id))
     userdir_save_atom_file(yao_userdir, get_atom_example_ideaunit_knee(x_real_id))
     userdir_save_atom_file(yao_userdir, get_atom_example_beliefunit_knee(x_real_id))
-    print(f"{file_dir_files(yao_userdir._atoms_dir).keys()=}")
+    print(f"{file_dir_files(yao_userdir.atoms_dir()).keys()=}")
 
     # WHEN
     yao_agenda = _get_agenda_from_atom_files(yao_userdir)

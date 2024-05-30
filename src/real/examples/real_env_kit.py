@@ -1,17 +1,6 @@
+from src._road.jaar_config import get_test_real_id, get_test_reals_dir
 from src._instrument.file import delete_dir
 from pytest import fixture as pytest_fixture
-
-
-def get_test_real_id():
-    return "music_45"
-
-
-def get_test_reals_dir():
-    return "src/real/examples/reals"
-
-
-def get_test_real_dir():
-    return f"{get_test_reals_dir()}/{get_test_real_id()}"
 
 
 @pytest_fixture()

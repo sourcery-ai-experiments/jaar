@@ -12,8 +12,8 @@ from src._instrument.file import (
     get_all_dirs_with_file,
     get_integer_filenames,
 )
-from src.agenda.examples.agenda_env import (
-    get_agenda_temp_env_dir,
+from src._instrument.examples.instrument_env import (
+    get_instrument_temp_env_dir,
     env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
@@ -22,7 +22,7 @@ from platform import system as platform_system
 
 def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_file_name = "x1.txt"
     x2_file_name = "x2.txt"
     x1_file_text = "trying this"
@@ -41,7 +41,7 @@ def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
 
 def test_dir_files_delete_extensions_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -63,7 +63,7 @@ def test_dir_files_delete_extensions_ReturnsCorrectObj(env_dir_setup_cleanup):
 
 def test_dir_files_returnsSubDirs(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -93,7 +93,7 @@ def test_dir_files_returnsSubDirs(env_dir_setup_cleanup):
 
 def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_name = "x1"
     x1_file_ext = "txt"
     x1_file_name = f"{x1_name}.{x1_file_ext}"
@@ -123,7 +123,7 @@ def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
 
 def test_get_integer_filenames_GrabsFileNamesWithIntegers_v0(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_file_name = "1.json"
     x2_file_name = "2.json"
     x_file_text = "file text"
@@ -142,7 +142,7 @@ def test_get_integer_filenames_GrabsFileNamesWithIntegersWithCorrectExtension(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     z_file_name = "z.json"
     x1_file_name = "1.json"
     x2_file_name = "2.json"
@@ -171,7 +171,7 @@ def test_get_integer_filenames_GrabsFileNamesWithIntegersGreaterThanGiven(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     z_file_name = "z.json"
     x1_file_name = "1.json"
     x2_file_name = "2.json"
@@ -195,7 +195,7 @@ def test_open_file_OpensFilesCorrectlyWhenGivenDirectoryAndFileName(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -217,7 +217,7 @@ def test_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_name = "x1"
     x2_name = "x2"
     x1_file_ext = "txt"
@@ -241,7 +241,7 @@ def test_open_file_OpensFilesCorrectlyWhenGivenOnlyFilePath(
 
 def test_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x_old_name = "x_old"
     # x_new_name = "x_new"
     x_old_file_ext = "txt"
@@ -268,7 +268,7 @@ def test_save_file_ReplacesFileAsDefault(env_dir_setup_cleanup):
 
 def test_save_file_DoesNotreplaceFile(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x_old_name = "x_old"
     # x_new_name = "x_new"
     x_old_file_ext = "txt"
@@ -297,7 +297,7 @@ def test_count_files_ReturnsNoneIfDirectoryDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     does_not_exist_dir = f"{env_dir}/swim"
 
     # WHEN
@@ -377,7 +377,7 @@ def test_is_path_existent_or_probably_creatable_ReturnsCorrectObj():
 
 def test_get_all_dirs_with_file_ReturnsCorrectDirectorys(env_dir_setup_cleanup):
     # GIVEN
-    env_dir = get_agenda_temp_env_dir()
+    env_dir = get_instrument_temp_env_dir()
     x1_file_name = "x1.txt"
     x1_file_text = "trying this"
     iowa_rel_dir = "iowa/dallas"

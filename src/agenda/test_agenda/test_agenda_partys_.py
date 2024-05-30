@@ -105,6 +105,21 @@ def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
     assert yao_agenda._partys.get(patr_text)._planck == x_planck
 
 
+def test_AgendaUnit_party_exists_ReturnsObj():
+    # GIVEN
+    bob_agenda = agendaunit_shop("Bob")
+    yao_text = "Yao"
+
+    # WHEN / THEN
+    assert bob_agenda.party_exists(yao_text) == False
+
+    # GIVEN
+    bob_agenda.add_partyunit(yao_text)
+
+    # WHEN / THEN
+    assert bob_agenda.party_exists(yao_text)
+
+
 def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_GroupUnit():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
@@ -978,7 +993,7 @@ def test_AgendaUnit_get_party_group_ids_ReturnsCorrectObj():
     assert yao_agenda.get_party_group_ids(carm_text) == [carm_text, swimmers]
 
 
-def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifysPartyUnit_party_id():
+def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifiesPartyUnit_party_id():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1041,7 +1056,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
     )
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyModifysGroupUnitPartyLinks():
+def test_AgendaUnit_PartyUnit_CorrectlyModifiesGroupUnitPartyLinks():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"

@@ -313,235 +313,382 @@ def agendaatom_shop(
 
 def get_from_json(x_str: str) -> AgendaAtom:
     x_dict = get_dict_from_json(x_str)
-    x_agendaatom = agendaatom_shop(
-        category=x_dict["category"], crud_text=x_dict["crud_text"]
-    )
+    x_atom = agendaatom_shop(category=x_dict["category"], crud_text=x_dict["crud_text"])
     for x_key, x_value in x_dict["required_args"].items():
-        x_agendaatom.set_required_arg(x_key, x_value)
+        x_atom.set_required_arg(x_key, x_value)
     for x_key, x_value in x_dict["optional_args"].items():
-        x_agendaatom.set_optional_arg(x_key, x_value)
-    return x_agendaatom
+        x_atom.set_optional_arg(x_key, x_value)
+    return x_atom
 
 
-def modify_agenda_with_agendaatom(x_agenda: AgendaUnit, x_agendaatom: AgendaAtom):
-    # sourcery skip: extract-method
-    xs = x_agendaatom
-    if xs.category == "agendaunit" and xs.crud_text == atom_update():
-        x_arg = "_max_tree_traverse"
-        if xs.get_value(x_arg) != None:
-            x_agenda.set_max_tree_traverse(xs.get_value(x_arg))
-        x_arg = "_party_creditor_pool"
-        if xs.get_value(x_arg) != None:
-            x_agenda.set_party_creditor_pool(xs.get_value(x_arg))
-        x_arg = "_party_debtor_pool"
-        if xs.get_value(x_arg) != None:
-            x_agenda.set_party_debtor_pool(xs.get_value(x_arg))
-        x_arg = "_meld_strategy"
-        if xs.get_value(x_arg) != None:
-            x_agenda.set_meld_strategy(xs.get_value(x_arg))
-        x_arg = "_weight"
-        if xs.get_value(x_arg) != None:
-            x_agenda._weight = xs.get_value(x_arg)
-        x_arg = "_planck"
-        if xs.get_value(x_arg) != None:
-            x_agenda._planck = xs.get_value(x_arg)
-    elif xs.category == "agenda_groupunit" and xs.crud_text == atom_delete():
-        group_id = xs.get_value("group_id")
-        x_agenda.del_groupunit(group_id)
-    elif xs.category == "agenda_groupunit" and xs.crud_text == atom_update():
-        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-        x_groupunit._treasury_partylinks = xs.get_value("_treasury_partylinks")
-    elif xs.category == "agenda_groupunit" and xs.crud_text == atom_insert():
-        x_agenda.set_groupunit(
-            groupunit_shop(
-                group_id=xs.get_value("group_id"),
-                _treasury_partylinks=xs.get_value("_treasury_partylinks"),
-            ),
-            create_missing_partys=False,
-            replace=False,
-            add_partylinks=False,
+def _modify_agenda_update_agendaunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_arg = "_max_tree_traverse"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda.set_max_tree_traverse(x_atom.get_value(x_arg))
+    x_arg = "_party_creditor_pool"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda.set_party_creditor_pool(x_atom.get_value(x_arg))
+    x_arg = "_party_debtor_pool"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda.set_party_debtor_pool(x_atom.get_value(x_arg))
+    x_arg = "_meld_strategy"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda.set_meld_strategy(x_atom.get_value(x_arg))
+    x_arg = "_weight"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda._weight = x_atom.get_value(x_arg)
+    x_arg = "_planck"
+    if x_atom.get_value(x_arg) != None:
+        x_agenda._planck = x_atom.get_value(x_arg)
+
+
+def _modify_agenda_groupunit_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    group_id = x_atom.get_value("group_id")
+    x_agenda.del_groupunit(group_id)
+
+
+def _modify_agenda_groupunit_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_groupunit = x_agenda.get_groupunit(x_atom.get_value("group_id"))
+    x_groupunit._treasury_partylinks = x_atom.get_value("_treasury_partylinks")
+
+
+def _modify_agenda_groupunit_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_groupunit = groupunit_shop(
+        group_id=x_atom.get_value("group_id"),
+        _treasury_partylinks=x_atom.get_value("_treasury_partylinks"),
+    )
+    x_agenda.set_groupunit(
+        x_groupunit, create_missing_partys=False, replace=False, add_partylinks=False
+    )
+
+
+def _modify_agenda_group_partylink_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_party_id = x_atom.get_value("party_id")
+    x_group_id = x_atom.get_value("group_id")
+    x_agenda.get_groupunit(x_group_id).del_partylink(x_party_id)
+
+
+def _modify_agenda_group_partylink_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_groupunit = x_agenda.get_groupunit(x_atom.get_value("group_id"))
+    x_groupunit.edit_partylink(
+        party_id=x_atom.get_value("party_id"),
+        creditor_weight=x_atom.get_value("creditor_weight"),
+        debtor_weight=x_atom.get_value("debtor_weight"),
+    )
+
+
+def _modify_agenda_group_partylink_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_groupunit = x_agenda.get_groupunit(x_atom.get_value("group_id"))
+    x_groupunit.set_partylink(
+        partylink_shop(
+            party_id=x_atom.get_value("party_id"),
+            creditor_weight=x_atom.get_value("creditor_weight"),
+            debtor_weight=x_atom.get_value("debtor_weight"),
         )
-    elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_delete():
-        x_agenda.get_groupunit(xs.get_value("group_id")).del_partylink(
-            xs.get_value("party_id")
+    )
+
+
+def _modify_agenda_ideaunit_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    idea_road = create_road(
+        x_atom.get_value("parent_road"),
+        x_atom.get_value("label"),
+        delimiter=x_agenda._road_delimiter,
+    )
+    x_agenda.del_idea_obj(idea_road, del_children=x_atom.get_value("del_children"))
+
+
+def _modify_agenda_ideaunit_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    idea_road = create_road(
+        x_atom.get_value("parent_road"),
+        x_atom.get_value("label"),
+        delimiter=x_agenda._road_delimiter,
+    )
+    x_agenda.edit_idea_attr(
+        road=idea_road,
+        addin=x_atom.get_value("_addin"),
+        begin=x_atom.get_value("_begin"),
+        close=x_atom.get_value("_close"),
+        denom=x_atom.get_value("_denom"),
+        meld_strategy=x_atom.get_value("_meld_strategy"),
+        numeric_road=x_atom.get_value("_numeric_road"),
+        numor=x_atom.get_value("_numor"),
+        range_source_road=x_atom.get_value("_range_source_road"),
+        reest=x_atom.get_value("_reest"),
+        weight=x_atom.get_value("_weight"),
+        pledge=x_atom.get_value("pledge"),
+    )
+
+
+def _modify_agenda_ideaunit_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.add_idea(
+        idea_kid=ideaunit_shop(
+            _label=x_atom.get_value("label"),
+            _addin=x_atom.get_value("_addin"),
+            _begin=x_atom.get_value("_begin"),
+            _close=x_atom.get_value("_close"),
+            _denom=x_atom.get_value("_denom"),
+            _meld_strategy=x_atom.get_value("_meld_strategy"),
+            _numeric_road=x_atom.get_value("_numeric_road"),
+            _numor=x_atom.get_value("_numor"),
+            pledge=x_atom.get_value("pledge"),
+        ),
+        parent_road=x_atom.get_value("parent_road"),
+        create_missing_ideas=False,
+        create_missing_groups=False,
+        create_missing_ancestors=False,
+    )
+
+
+def _modify_agenda_idea_balancelink_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        balancelink_del=x_atom.get_value("group_id"),
+    )
+
+
+def _modify_agenda_idea_balancelink_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_idea = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_balancelink = x_idea._balancelinks.get(x_atom.get_value("group_id"))
+    x_creditor_weight = x_atom.get_value("creditor_weight")
+    if x_creditor_weight != None and x_balancelink.creditor_weight != x_creditor_weight:
+        x_balancelink.creditor_weight = x_creditor_weight
+    x_debtor_weight = x_atom.get_value("debtor_weight")
+    if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
+        x_balancelink.debtor_weight = x_debtor_weight
+    x_agenda.edit_idea_attr(x_atom.get_value("road"), balancelink=x_balancelink)
+
+
+def _modify_agenda_idea_balancelink_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_balancelink = balancelink_shop(
+        group_id=x_atom.get_value("group_id"),
+        creditor_weight=x_atom.get_value("creditor_weight"),
+        debtor_weight=x_atom.get_value("debtor_weight"),
+    )
+    x_agenda.edit_idea_attr(x_atom.get_value("road"), balancelink=x_balancelink)
+
+
+def _modify_agenda_idea_beliefunit_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_ideaunit.del_beliefunit(x_atom.get_value("base"))
+
+
+def _modify_agenda_idea_beliefunit_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_beliefunit = x_ideaunit._beliefunits.get(x_atom.get_value("base"))
+    x_beliefunit.set_attr(
+        pick=x_atom.get_value("pick"),
+        open=x_atom.get_value("open"),
+        nigh=x_atom.get_value("nigh"),
+    )
+    # x_ideaunit.set_beliefunit(x_beliefunit)
+
+
+def _modify_agenda_idea_beliefunit_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        beliefunit=beliefunit_shop(
+            base=x_atom.get_value("base"),
+            pick=x_atom.get_value("pick"),
+            open=x_atom.get_value("open"),
+            nigh=x_atom.get_value("nigh"),
+        ),
+    )
+
+
+def _modify_agenda_idea_reasonunit_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_ideaunit.del_reasonunit_base(x_atom.get_value("base"))
+
+
+def _modify_agenda_idea_reasonunit_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        reason_base=x_atom.get_value("base"),
+        reason_suff_idea_active=x_atom.get_value("suff_idea_active"),
+    )
+
+
+def _modify_agenda_idea_reasonunit_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        reason_base=x_atom.get_value("base"),
+        reason_suff_idea_active=x_atom.get_value("suff_idea_active"),
+    )
+
+
+def _modify_agenda_idea_reason_premiseunit_delete(
+    x_agenda: AgendaUnit, x_atom: AgendaAtom
+):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        reason_del_premise_base=x_atom.get_value("base"),
+        reason_del_premise_need=x_atom.get_value("need"),
+    )
+
+
+def _modify_agenda_idea_reason_premiseunit_update(
+    x_agenda: AgendaUnit, x_atom: AgendaAtom
+):
+    x_agenda.edit_idea_attr(
+        road=x_atom.get_value("road"),
+        reason_base=x_atom.get_value("base"),
+        reason_premise=x_atom.get_value("need"),
+        reason_premise_open=x_atom.get_value("open"),
+        reason_premise_nigh=x_atom.get_value("nigh"),
+        reason_premise_divisor=x_atom.get_value("divisor"),
+    )
+
+
+def _modify_agenda_idea_reason_premiseunit_insert(
+    x_agenda: AgendaUnit, x_atom: AgendaAtom
+):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_ideaunit.set_reason_premise(
+        base=x_atom.get_value("base"),
+        premise=x_atom.get_value("need"),
+        open=x_atom.get_value("open"),
+        nigh=x_atom.get_value("nigh"),
+        divisor=x_atom.get_value("divisor"),
+    )
+
+
+def _modify_agenda_idea_suffgroup_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_ideaunit._assignedunit.del_suffgroup(group_id=x_atom.get_value("group_id"))
+
+
+def _modify_agenda_idea_suffgroup_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_ideaunit = x_agenda.get_idea_obj(x_atom.get_value("road"))
+    x_ideaunit._assignedunit.set_suffgroup(group_id=x_atom.get_value("group_id"))
+
+
+def _modify_agenda_partyunit_delete(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.del_partyunit(x_atom.get_value("party_id"))
+
+
+def _modify_agenda_partyunit_update(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.edit_partyunit(
+        party_id=x_atom.get_value("party_id"),
+        creditor_weight=x_atom.get_value("creditor_weight"),
+        debtor_weight=x_atom.get_value("debtor_weight"),
+    )
+
+
+def _modify_agenda_partyunit_insert(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    x_agenda.set_partyunit(
+        partyunit_shop(
+            party_id=x_atom.get_value("party_id"),
+            creditor_weight=x_atom.get_value("creditor_weight"),
+            debtor_weight=x_atom.get_value("debtor_weight"),
         )
-    elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_update():
-        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-        x_groupunit.edit_partylink(
-            party_id=xs.get_value("party_id"),
-            creditor_weight=xs.get_value("creditor_weight"),
-            debtor_weight=xs.get_value("debtor_weight"),
-        )
-    elif xs.category == "agenda_group_partylink" and xs.crud_text == atom_insert():
-        x_groupunit = x_agenda.get_groupunit(xs.get_value("group_id"))
-        x_groupunit.set_partylink(
-            partylink_shop(
-                party_id=xs.get_value("party_id"),
-                creditor_weight=xs.get_value("creditor_weight"),
-                debtor_weight=xs.get_value("debtor_weight"),
-            )
-        )
-    elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_delete():
-        idea_road = create_road(
-            xs.get_value("parent_road"),
-            xs.get_value("label"),
-            delimiter=x_agenda._road_delimiter,
-        )
-        x_agenda.del_idea_obj(road=idea_road, del_children=xs.get_value("del_children"))
-    elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_update():
-        idea_road = create_road(
-            xs.get_value("parent_road"),
-            xs.get_value("label"),
-            delimiter=x_agenda._road_delimiter,
-        )
-        x_agenda.edit_idea_attr(
-            road=idea_road,
-            addin=xs.get_value("_addin"),
-            begin=xs.get_value("_begin"),
-            close=xs.get_value("_close"),
-            denom=xs.get_value("_denom"),
-            meld_strategy=xs.get_value("_meld_strategy"),
-            numeric_road=xs.get_value("_numeric_road"),
-            numor=xs.get_value("_numor"),
-            range_source_road=xs.get_value("_range_source_road"),
-            reest=xs.get_value("_reest"),
-            weight=xs.get_value("_weight"),
-            pledge=xs.get_value("pledge"),
-        )
-    elif xs.category == "agenda_ideaunit" and xs.crud_text == atom_insert():
-        x_agenda.add_idea(
-            idea_kid=ideaunit_shop(
-                _label=xs.get_value("label"),
-                _addin=xs.get_value("_addin"),
-                _begin=xs.get_value("_begin"),
-                _close=xs.get_value("_close"),
-                _denom=xs.get_value("_denom"),
-                _meld_strategy=xs.get_value("_meld_strategy"),
-                _numeric_road=xs.get_value("_numeric_road"),
-                _numor=xs.get_value("_numor"),
-                pledge=xs.get_value("pledge"),
-            ),
-            parent_road=xs.get_value("parent_road"),
-            create_missing_ideas=False,
-            create_missing_groups=False,
-            create_missing_ancestors=False,
-        )
-    elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_delete():
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"), balancelink_del=xs.get_value("group_id")
-        )
-    elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_update():
-        x_idea = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_balancelink = x_idea._balancelinks.get(xs.get_value("group_id"))
-        x_creditor_weight = xs.get_value("creditor_weight")
-        if (
-            x_creditor_weight != None
-            and x_balancelink.creditor_weight != x_creditor_weight
-        ):
-            x_balancelink.creditor_weight = x_creditor_weight
-        x_debtor_weight = xs.get_value("debtor_weight")
-        if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
-            x_balancelink.debtor_weight = x_debtor_weight
-        x_agenda.edit_idea_attr(xs.get_value("road"), balancelink=x_balancelink)
-    elif xs.category == "agenda_idea_balancelink" and xs.crud_text == atom_insert():
-        x_balancelink = balancelink_shop(
-            group_id=xs.get_value("group_id"),
-            creditor_weight=xs.get_value("creditor_weight"),
-            debtor_weight=xs.get_value("debtor_weight"),
-        )
-        x_agenda.edit_idea_attr(xs.get_value("road"), balancelink=x_balancelink)
-    elif xs.category == "agenda_idea_beliefunit" and xs.crud_text == atom_delete():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit.del_beliefunit(xs.get_value("base"))
-    elif xs.category == "agenda_idea_beliefunit" and xs.crud_text == atom_update():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_beliefunit = x_ideaunit._beliefunits.get(xs.get_value("base"))
-        x_beliefunit.set_attr(
-            pick=xs.get_value("pick"),
-            open=xs.get_value("open"),
-            nigh=xs.get_value("nigh"),
-        )
-        # x_ideaunit.set_beliefunit(x_beliefunit)
-    elif xs.category == "agenda_idea_beliefunit" and xs.crud_text == atom_insert():
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
-            beliefunit=beliefunit_shop(
-                base=xs.get_value("base"),
-                pick=xs.get_value("pick"),
-                open=xs.get_value("open"),
-                nigh=xs.get_value("nigh"),
-            ),
-        )
-    elif xs.category == "agenda_idea_reasonunit" and xs.crud_text == atom_delete():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit.del_reasonunit_base(xs.get_value("base"))
-    elif xs.category == "agenda_idea_reasonunit" and xs.crud_text == atom_update():
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
-            reason_base=xs.get_value("base"),
-            reason_suff_idea_active=xs.get_value("suff_idea_active"),
-        )
-    elif xs.category == "agenda_idea_reasonunit" and xs.crud_text == atom_insert():
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
-            reason_base=xs.get_value("base"),
-            reason_suff_idea_active=xs.get_value("suff_idea_active"),
-        )
-    elif (
-        xs.category == "agenda_idea_reason_premiseunit"
-        and xs.crud_text == atom_delete()
-    ):
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
-            reason_del_premise_base=xs.get_value("base"),
-            reason_del_premise_need=xs.get_value("need"),
-        )
-    elif (
-        xs.category == "agenda_idea_reason_premiseunit"
-        and xs.crud_text == atom_update()
-    ):
-        x_agenda.edit_idea_attr(
-            road=xs.get_value("road"),
-            reason_base=xs.get_value("base"),
-            reason_premise=xs.get_value("need"),
-            reason_premise_open=xs.get_value("open"),
-            reason_premise_nigh=xs.get_value("nigh"),
-            reason_premise_divisor=xs.get_value("divisor"),
-        )
-    elif (
-        xs.category == "agenda_idea_reason_premiseunit"
-        and xs.crud_text == atom_insert()
-    ):
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit.set_reason_premise(
-            base=xs.get_value("base"),
-            premise=xs.get_value("need"),
-            open=xs.get_value("open"),
-            nigh=xs.get_value("nigh"),
-            divisor=xs.get_value("divisor"),
-        )
-    elif xs.category == "agenda_idea_suffgroup" and xs.crud_text == atom_delete():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit._assignedunit.del_suffgroup(group_id=xs.get_value("group_id"))
-    elif xs.category == "agenda_idea_suffgroup" and xs.crud_text == atom_insert():
-        x_ideaunit = x_agenda.get_idea_obj(xs.get_value("road"))
-        x_ideaunit._assignedunit.set_suffgroup(group_id=xs.get_value("group_id"))
-    elif xs.category == "agenda_partyunit" and xs.crud_text == atom_delete():
-        x_agenda.del_partyunit(xs.get_value("party_id"))
-    elif xs.category == "agenda_partyunit" and xs.crud_text == atom_update():
-        x_agenda.edit_partyunit(
-            party_id=xs.get_value("party_id"),
-            creditor_weight=xs.get_value("creditor_weight"),
-            debtor_weight=xs.get_value("debtor_weight"),
-        )
-    elif xs.category == "agenda_partyunit" and xs.crud_text == atom_insert():
-        x_agenda.set_partyunit(
-            partyunit_shop(
-                party_id=xs.get_value("party_id"),
-                creditor_weight=xs.get_value("creditor_weight"),
-                debtor_weight=xs.get_value("debtor_weight"),
-            )
-        )
+    )
+
+
+def _modify_agenda_agendaunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_update():
+        _modify_agenda_update_agendaunit(x_agenda, x_atom)
+
+
+def _modify_agenda_groupunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_groupunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_groupunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_groupunit_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_group_partylink(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_group_partylink_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_group_partylink_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_group_partylink_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_ideaunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_ideaunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_ideaunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_ideaunit_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_idea_balancelink(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_idea_balancelink_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_idea_balancelink_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_idea_balancelink_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_idea_beliefunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_idea_beliefunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_idea_beliefunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_idea_beliefunit_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_idea_reasonunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_idea_reasonunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_idea_reasonunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_idea_reasonunit_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_idea_reason_premiseunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_idea_reason_premiseunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_idea_reason_premiseunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_idea_reason_premiseunit_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_idea_suffgroup(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_idea_suffgroup_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_idea_suffgroup_insert(x_agenda, x_atom)
+
+
+def _modify_agenda_partyunit(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.crud_text == atom_delete():
+        _modify_agenda_partyunit_delete(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_update():
+        _modify_agenda_partyunit_update(x_agenda, x_atom)
+    elif x_atom.crud_text == atom_insert():
+        _modify_agenda_partyunit_insert(x_agenda, x_atom)
+
+
+def modify_agenda_with_agendaatom(x_agenda: AgendaUnit, x_atom: AgendaAtom):
+    if x_atom.category == "agendaunit":
+        _modify_agenda_agendaunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_groupunit":
+        _modify_agenda_groupunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_group_partylink":
+        _modify_agenda_group_partylink(x_agenda, x_atom)
+    elif x_atom.category == "agenda_ideaunit":
+        _modify_agenda_ideaunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_idea_balancelink":
+        _modify_agenda_idea_balancelink(x_agenda, x_atom)
+    elif x_atom.category == "agenda_idea_beliefunit":
+        _modify_agenda_idea_beliefunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_idea_reasonunit":
+        _modify_agenda_idea_reasonunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_idea_reason_premiseunit":
+        _modify_agenda_idea_reason_premiseunit(x_agenda, x_atom)
+    elif x_atom.category == "agenda_idea_suffgroup":
+        _modify_agenda_idea_suffgroup(x_agenda, x_atom)
+    elif x_atom.category == "agenda_partyunit":
+        _modify_agenda_partyunit(x_agenda, x_atom)
 
 
 def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
@@ -609,9 +756,9 @@ def get_category_from_dict(x_row_dict: dict) -> str:
 
 def get_agendaatom_from_rowdata(x_rowdata: RowData) -> AgendaAtom:
     category_text, crud_text = get_category_from_dict(x_rowdata.row_dict)
-    x_agendaatom = agendaatom_shop(category=category_text, crud_text=crud_text)
+    x_atom = agendaatom_shop(category=category_text, crud_text=crud_text)
     front_len = len(category_text) + len(crud_text) + 2
     for x_columnname, x_value in x_rowdata.row_dict.items():
         arg_key = x_columnname[front_len:]
-        x_agendaatom.set_arg(x_key=arg_key, x_value=x_value)
-    return x_agendaatom
+        x_atom.set_arg(x_key=arg_key, x_value=x_value)
+    return x_atom

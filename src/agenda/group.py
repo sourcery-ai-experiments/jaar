@@ -31,15 +31,14 @@ class GroupCore:
 @dataclass
 class GroupUnit(GroupCore):
     _party_mirror: bool = None  # set by AgendaUnit.set_partyunit()
-    _partys: dict[PartyID:PartyLink] = None
-    _agenda_credit: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
-    _agenda_debt: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
-    _agenda_intent_credit: float = (
-        None  # calculated by AgendaUnit.calc_agenda_metrics()
-    )
-    _agenda_intent_debt: float = None  # calculated by AgendaUnit.calc_agenda_metrics()
-    _treasury_partylinks: RoadUnit = None
-    _road_delimiter: str = None
+    _partys: dict[PartyID:PartyLink] = None  # set by AgendaUnit.set_partyunit()
+    _treasury_partylinks: RoadUnit = None  # calculated by EconUnit
+    _road_delimiter: str = None  # calculated by AgendaUnit.set_groupunit
+    # calculated by AgendaUnit.calc_agenda_metrics()
+    _agenda_credit: float = None
+    _agenda_debt: float = None
+    _agenda_intent_credit: float = None
+    _agenda_intent_debt: float = None
 
     def set_group_id(self, group_id: GroupID = None):
         if group_id != None:

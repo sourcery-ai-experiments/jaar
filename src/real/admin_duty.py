@@ -1,4 +1,4 @@
-from src._instrument.file import save_file, open_file, set_dir
+from src._instrument.file import set_dir
 from src._road.road import RoadUnit
 from src.agenda.group import GroupID
 from src.agenda.agenda import (
@@ -7,14 +7,17 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
-from src.real.change import changeunit_shop, init_change_id, get_init_change_id_if_None
+from src.agenda.change import (
+    changeunit_shop,
+    init_change_id,
+    get_init_change_id_if_None,
+)
 from src.real.admin_change import (
     changeunit_file_exists,
     _merge_changes_into_agenda,
     _create_new_changeunit,
 )
-from src.real.userdir import UserDir
-from os.path import exists as os_path_exists
+from src._road.userdir import UserDir
 from copy import deepcopy as copy_deepcopy
 
 
@@ -26,8 +29,8 @@ def _create_initial_change_from_duty(x_userdir: UserDir):
     x_changeunit = changeunit_shop(
         _giver=x_userdir.person_id,
         _change_id=get_init_change_id_if_None(),
-        _changes_dir=x_userdir._changes_dir,
-        _atoms_dir=x_userdir._atoms_dir,
+        _changes_dir=x_userdir.changes_dir(),
+        _atoms_dir=x_userdir.atoms_dir(),
     )
     x_changeunit._bookunit.add_all_different_agendaatoms(
         before_agenda=get_default_duty_agenda(x_userdir),
@@ -36,29 +39,19 @@ def _create_initial_change_from_duty(x_userdir: UserDir):
     x_changeunit.save_files()
 
 
-# duty
 def save_duty_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = True):
     if x_agenda._owner_id != x_userdir.person_id:
         raise Invalid_duty_Exception(
             f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_userdir.person_id}''s duty agenda."
         )
     if replace in {True, False}:
-        save_file(
-            dest_dir=x_userdir.person_dir,
-            file_name=x_userdir._duty_file_name,
-            file_text=x_agenda.get_json(),
-            replace=replace,
-        )
-
-
-def duty_file_exists(userdir: UserDir) -> bool:
-    return os_path_exists(userdir._duty_path)
+        x_userdir.save_file_duty(x_agenda.get_json(), replace)
 
 
 def get_duty_file_agenda(x_userdir: UserDir) -> AgendaUnit:
-    if duty_file_exists(x_userdir) == False:
+    if x_userdir.duty_file_exists() == False:
         save_duty_file(x_userdir, get_default_duty_agenda(x_userdir))
-    duty_json = open_file(x_userdir.person_dir, x_userdir._duty_file_name)
+    duty_json = x_userdir.open_file_duty()
     return agendaunit_get_from_json(duty_json)
 
 
@@ -78,13 +71,13 @@ def get_default_duty_agenda(x_userdir: UserDir) -> AgendaUnit:
     return x_agendaunit
 
 
-def initialize_change_duty_files(x_userdir):
-    set_dir(x_userdir.real_dir)
-    set_dir(x_userdir.persons_dir)
-    set_dir(x_userdir.person_dir)
-    set_dir(x_userdir._atoms_dir)
-    set_dir(x_userdir._changes_dir)
-    x_duty_file_exists = duty_file_exists(x_userdir)
+def initialize_change_duty_files(x_userdir: UserDir):
+    set_dir(x_userdir.real_dir())
+    set_dir(x_userdir.persons_dir())
+    set_dir(x_userdir.person_dir())
+    set_dir(x_userdir.atoms_dir())
+    set_dir(x_userdir.changes_dir())
+    x_duty_file_exists = x_userdir.duty_file_exists()
     change_file_exists = changeunit_file_exists(x_userdir, init_change_id())
     if x_duty_file_exists == False and change_file_exists == False:
         _create_initial_change_and_duty_files(x_userdir)
@@ -105,8 +98,8 @@ def _create_initial_change_and_duty_files(x_userdir: UserDir):
     x_changeunit = changeunit_shop(
         _giver=x_userdir.person_id,
         _change_id=get_init_change_id_if_None(),
-        _changes_dir=x_userdir._changes_dir,
-        _atoms_dir=x_userdir._atoms_dir,
+        _changes_dir=x_userdir.changes_dir(),
+        _atoms_dir=x_userdir.atoms_dir(),
     )
     x_changeunit._bookunit.add_all_different_agendaatoms(
         before_agenda=get_default_duty_agenda(x_userdir),

@@ -118,7 +118,7 @@ def test_road_create_road_ReturnsCorrectRoadUnitWith_delimiter():
     assert slash_delimiter_rose_road == brackets_road
 
 
-def test_road_rebuild_road_CorrectlyRoadUnit():
+def test_road_rebuild_road_ReturnsCorrectRoadUnit():
     # GIVEN
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)

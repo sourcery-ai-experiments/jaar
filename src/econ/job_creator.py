@@ -1,7 +1,7 @@
 from src._road.road import PersonID, PartyID, PersonID
 from src.agenda.party import PartyUnit
 from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
-from src.agenda.listen import listen_to_speaker, create_barren_agenda
+from src.agenda.listen import listen_to_speaker_intent, create_empty_agenda
 from src._instrument.file import save_file, open_file
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -60,7 +60,7 @@ def get_job_file(
 
 
 def create_job_basis(x_role: AgendaUnit) -> AgendaUnit:
-    x_job = create_barren_agenda(x_role, x_owner_id=x_role._owner_id)
+    x_job = create_empty_agenda(x_role, x_owner_id=x_role._owner_id)
     x_job._partys = x_role._partys
     x_job._groups = x_role._groups
     x_job.set_money_desc(x_role._money_desc)
@@ -89,12 +89,12 @@ def _listen_to_debtors_roll(econ_dir: str, listener_role: AgendaUnit) -> AgendaU
 
     for x_partyunit in get_debtors_roll(x_job):
         if x_partyunit.party_id == x_job._owner_id:
-            listen_to_speaker(x_job, listener_role)
+            listen_to_speaker_intent(x_job, listener_role)
         else:
             speaker_job = get_job_file(econ_dir, x_partyunit.party_id)
             if speaker_job is None:
-                speaker_job = create_barren_agenda(x_job, x_partyunit.party_id)
-            listen_to_speaker(x_job, speaker_job)
+                speaker_job = create_empty_agenda(x_job, x_partyunit.party_id)
+            listen_to_speaker_intent(x_job, speaker_job)
     return x_job
 
 

@@ -650,7 +650,6 @@ class AgendaUnit:
         self.set_partyunit(partyunit=partyunit)
 
     def set_partyunit(self, partyunit: PartyUnit):
-        # future: if party is new check existance of group with party party_id
         if partyunit._road_delimiter != self._road_delimiter:
             partyunit._road_delimiter = self._road_delimiter
         if partyunit._planck != self._planck:
@@ -671,6 +670,9 @@ class AgendaUnit:
                 _road_delimiter=self._road_delimiter,
             )
             self.set_groupunit(y_groupunit=group_unit)
+
+    def party_exists(self, party_id: PartyID) -> bool:
+        return self.get_party(party_id) != None
 
     def edit_partyunit_party_id(
         self,
@@ -701,7 +703,7 @@ class AgendaUnit:
             and new_party_id_groupunit._party_mirror == False
         ):
             self.del_groupunit(group_id=new_party_id)
-        elif self.get_party(new_party_id) != None:
+        elif self.party_exists(new_party_id):
             old_party_id_creditor_weight += new_party_id_partyunit.creditor_weight
 
         # upsert new partyunit
@@ -985,19 +987,8 @@ class AgendaUnit:
 
         self.calc_agenda_metrics()
 
-    def get_beliefunits_base_and_belief_list(self) -> list:
-        belief_list = list(self._idearoot._beliefunits.values())
-        node_dict = {belief_x.base.lower(): belief_x for belief_x in belief_list}
-        node_lowercase_ordered_list = sorted(list(node_dict))
-        node_orginalcase_ordered_list = [
-            node_dict[node_l] for node_l in node_lowercase_ordered_list
-        ]
-
-        list_x = [["", ""]]
-        list_x.extend(
-            [belief_x.base, belief_x.pick] for belief_x in node_orginalcase_ordered_list
-        )
-        return list_x
+    def get_belief(self, base: RoadUnit) -> BeliefUnit:
+        return self._idearoot._beliefunits.get(base)
 
     def del_belief(self, base: RoadUnit):
         self._idearoot.del_beliefunit(base)
@@ -2262,7 +2253,7 @@ class AgendaUnit:
         assignor_partys: dict[PartyID:PartyUnit],
         assignor_party_id: PartyID,
     ):
-        if self.get_party(assignor_party_id) != None:
+        if self.party_exists(assignor_party_id):
             # get all partys that are both in self._partys and assignor_known_partys
             partys_set = get_intersection_of_partys(self._partys, assignor_partys)
             for party_id_x in partys_set:
@@ -2571,11 +2562,3 @@ def get_party_relevant_groups(
         for group_x in groups_x.values()
         if group_x._partys.get(party_id_x) != None
     }
-
-
-def duty_str() -> str:
-    return "duty"
-
-
-def work_str() -> str:
-    return "work"

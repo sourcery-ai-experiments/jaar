@@ -46,7 +46,7 @@ def test_AgendaUnit_set_party_creditor_pool_RaisesErrorWhenArgIsNotMultiple():
     )
 
 
-def test_AgendaUnit_set_party_creditor_pool_CorrectlyModifys_partys_creditor_weight():
+def test_AgendaUnit_set_party_creditor_pool_CorrectlyModifies_partys_creditor_weight():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"
@@ -237,7 +237,7 @@ def test_AgendaUnit_set_party_debtor_pool_RaisesErrorWhenArgIsNotMultiple():
     )
 
 
-def test_AgendaUnit_set_party_debtor_pool_CorrectlyModifys_partys_debtor_weight():
+def test_AgendaUnit_set_party_debtor_pool_CorrectlyModifies_partys_debtor_weight():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"

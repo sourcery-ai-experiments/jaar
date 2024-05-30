@@ -11,7 +11,7 @@ from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifysAttr_1():
+def test_AgendaUnit_set_belief_CorrectlyModifiesAttr_1():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -48,7 +48,7 @@ def test_AgendaUnit_set_belief_CorrectlyModifysAttr_1():
     assert x_idearoot._beliefunits == {usa_week_unit.base: usa_week_unit}
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifysAttr_2():
+def test_AgendaUnit_set_belief_CorrectlyModifiesAttr_2():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -63,7 +63,7 @@ def test_AgendaUnit_set_belief_CorrectlyModifysAttr_2():
     assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifysAttrWhen_pick_IsNone():
+def test_AgendaUnit_set_belief_CorrectlyModifiesAttrWhen_pick_IsNone():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -77,7 +77,7 @@ def test_AgendaUnit_set_belief_CorrectlyModifysAttrWhen_pick_IsNone():
     assert x_idearoot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifysAttrWhen_open_IsNone():
+def test_AgendaUnit_set_belief_CorrectlyModifiesAttrWhen_open_IsNone():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -122,7 +122,7 @@ def test_AgendaUnit_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBel
     )
 
 
-def test_AgendaUnit_del_belief_CorrectlyModifysAttr():
+def test_AgendaUnit_del_belief_CorrectlyModifiesAttr():
     # GIVEN
     x_agenda = examples_get_agenda_with_4_levels()
     weekday_road = x_agenda.make_l1_road("weekdays")
@@ -758,58 +758,33 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
 def test_AgendaUnit_set_belief_create_missing_ideas_CreatesBaseAndBelief():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    trouble_text = ""
-    trouble_road = sue_agenda.make_l1_road(trouble_text)
+    situations_text = "situations"
+    situations_road = sue_agenda.make_l1_road(situations_text)
     climate_text = "climate"
-    climate_road = sue_agenda.make_road(trouble_road, climate_text)
-    assert sue_agenda._idearoot.get_kid(trouble_text) is None
+    climate_road = sue_agenda.make_road(situations_road, climate_text)
+    assert sue_agenda._idearoot.get_kid(situations_text) is None
 
     # WHEN
-    sue_agenda.set_belief(trouble_road, climate_road, create_missing_ideas=True)
+    sue_agenda.set_belief(situations_road, climate_road, create_missing_ideas=True)
 
     # THEN
-    assert sue_agenda._idearoot.get_kid(trouble_text) != None
-    assert sue_agenda.get_idea_obj(trouble_road) != None
+    assert sue_agenda._idearoot.get_kid(situations_text) != None
+    assert sue_agenda.get_idea_obj(situations_road) != None
     assert sue_agenda.get_idea_obj(climate_road) != None
 
 
-def test_AgendaUnit_get_beliefunits_base_and_belief_list_ReturnsListOfBeliefUnits():
+def test_AgendaUnit_get_belief_ReturnsBeliefUnit():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-
-    trouble_text = "troubles"
-    trouble_road = sue_agenda.make_l1_road(trouble_text)
+    situations_text = "situations"
+    situations_road = sue_agenda.make_l1_road(situations_text)
     climate_text = "climate"
-    climate_road = sue_agenda.make_road(trouble_road, climate_text)
-    sue_agenda.set_belief(trouble_road, climate_road, create_missing_ideas=True)
-
-    weather_text = "weather"
-    weather_road = sue_agenda.make_l1_road(weather_text)
-    windy_text = "windy"
-    windy_road = sue_agenda.make_road(weather_road, windy_text)
-    sue_agenda.set_belief(weather_road, windy_road, create_missing_ideas=True)
-    hot_text = "hot"
-    hot_road = sue_agenda.make_road(weather_road, hot_text)
-    sue_agenda.set_belief(base=weather_road, pick=hot_road, create_missing_ideas=True)
-    cold_text = "cold"
-    cold_road = sue_agenda.make_road(weather_road, cold_text)
-    sue_agenda.set_belief(weather_road, cold_road, create_missing_ideas=True)
-
-    games_text = "games"
-    games_road = sue_agenda.make_l1_road(games_text)
-    football_text = "football"
-    football_road = sue_agenda.make_road(weather_road, football_text)
-    sue_agenda.set_belief(games_road, football_road, create_missing_ideas=True)
+    climate_road = sue_agenda.make_road(situations_road, climate_text)
+    sue_agenda.set_belief(situations_road, climate_road, create_missing_ideas=True)
 
     # WHEN
-    beliefunit_list_x = sue_agenda.get_beliefunits_base_and_belief_list()
+    generated_situations_base = sue_agenda.get_belief(situations_road)
 
     # THEN
-    assert beliefunit_list_x[0][0] == ""
-    assert beliefunit_list_x[1][0] == games_road
-    assert beliefunit_list_x[1][1] == football_road
-    assert beliefunit_list_x[2][0] == trouble_road
-    assert beliefunit_list_x[2][1] == climate_road
-    assert beliefunit_list_x[3][0] == weather_road
-    assert beliefunit_list_x[3][1] == cold_road
-    assert len(beliefunit_list_x) == 4
+    static_situations_base = sue_agenda._idearoot._beliefunits.get(situations_road)
+    assert generated_situations_base == static_situations_base

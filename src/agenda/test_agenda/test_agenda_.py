@@ -2,7 +2,7 @@ from src._road.finance import default_planck_if_none
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
 )
-from src.agenda.agenda import agendaunit_shop, AgendaUnit, duty_str, work_str
+from src.agenda.agenda import agendaunit_shop, AgendaUnit
 from src._road.road import (
     get_default_real_id_roadnode as root_label,
     default_road_delimiter_if_none,
@@ -325,11 +325,3 @@ def test_AgendaUnit_del_last_change_id_SetsAttrCorrectly():
 
     # WHEN
     assert noa_agenda._last_change_id is None
-
-
-def test_duty_str():
-    assert duty_str() == "duty"
-
-
-def test_work_str():
-    assert work_str() == "work"

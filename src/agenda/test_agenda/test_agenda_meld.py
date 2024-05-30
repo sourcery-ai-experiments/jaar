@@ -54,16 +54,16 @@ def test_AgendaUnit_meld_PartyUnits():
     zia_partyunit = partyunit_shop(party_id=zia_text)
     bob2_agenda.set_partyunit(zia_partyunit)
     assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.get_party(yao_text) != None
-    assert bob1_agenda.get_party(zia_text) is None
+    assert bob1_agenda.party_exists(yao_text)
+    assert bob1_agenda.party_exists(zia_text) == False
 
     # WHEN
     bob1_agenda.meld(other_agenda=bob2_agenda)
 
     # THEN
     assert len(bob1_agenda._partys) == 2
-    assert bob1_agenda.get_party(yao_text) != None
-    assert bob1_agenda.get_party(zia_text) != None
+    assert bob1_agenda.party_exists(yao_text)
+    assert bob1_agenda.party_exists(zia_text)
 
 
 def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
@@ -81,16 +81,16 @@ def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
     zia_partyunit = partyunit_shop(party_id=zia_text)
     bob2_agenda.set_partyunit(zia_partyunit)
     assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.get_party(yao_text) != None
-    assert bob1_agenda.get_party(zia_text) is None
+    assert bob1_agenda.party_exists(yao_text)
+    assert bob1_agenda.party_exists(zia_text) == False
 
     # WHEN
     bob1_agenda.meld(other_agenda=bob2_agenda, ignore_partyunits=True)
 
     # THEN
     assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.get_party(yao_text) != None
-    assert bob1_agenda.get_party(zia_text) is None
+    assert bob1_agenda.party_exists(yao_text)
+    assert bob1_agenda.party_exists(zia_text) == False
 
 
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():

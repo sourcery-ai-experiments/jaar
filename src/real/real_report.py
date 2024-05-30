@@ -1,9 +1,6 @@
+from src._road.jaar_config import work_str, duty_str
 from src._instrument.file import open_file
-from src.agenda.agenda import (
-    get_from_json as agendaunit_get_from_json,
-    duty_str,
-    work_str,
-)
+from src.agenda.agenda import get_from_json as agendaunit_get_from_json
 from src.agenda.report import (
     get_agenda_partyunits_dataframe,
     get_agenda_intent_dataframe,

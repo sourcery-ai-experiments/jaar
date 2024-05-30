@@ -1,11 +1,11 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
+from src._road.userdir import userdir_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.econ.job_creator import get_owner_file_name
-from src.real.userdir import userdir_shop
 from src.real.admin_duty import save_duty_file, get_duty_file_agenda
-from src.real.change import get_changes_folder
+from src.agenda.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -123,14 +123,14 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(reals_dir_setup_cle
     )
     luca_text = "Luca"
     luca_userdir = userdir_shop(None, music_text, luca_text, planck=x_planck)
-    assert os_path_exists(luca_userdir._work_path) == False
+    assert os_path_exists(luca_userdir.work_path()) == False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_userdir._work_path)
+    assert os_path_exists(luca_userdir.work_path())
 
 
 def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -150,7 +150,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
 
     # THEN
     assert gen_luca_duty != None
-    assert gen_luca_duty.get_party(bob_text) != None
+    assert gen_luca_duty.party_exists(bob_text)
 
 
 def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(

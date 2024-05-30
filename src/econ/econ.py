@@ -10,13 +10,7 @@ from src._road.road import (
 )
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
-from src._instrument.file import (
-    set_dir,
-    delete_dir,
-    save_file,
-    open_file,
-    dir_files,
-)
+from src._instrument.file import set_dir, delete_dir, open_file, dir_files
 from src.econ.job_creator import (
     PersonID,
     get_econ_roles_dir,
@@ -88,10 +82,6 @@ def treasury_db_filename() -> str:
     return "treasury.db"
 
 
-def get_rootpart_of_econ_dir() -> str:
-    return "idearoot"
-
-
 @dataclass
 class EconUnit:
     real_id: RealID = None
@@ -107,15 +97,10 @@ class EconUnit:
     def get_object_root_dir(self):
         return self.econ_dir
 
-    def _create_main_file_if_null(self, x_dir):
-        econ_file_name = "econ.json"
-        save_file(x_dir, econ_file_name, file_text="")
-
     def set_econ_dirs(self, in_memory_treasury: bool = None):
         set_dir(x_path=self.get_object_root_dir())
         set_dir(x_path=self.get_roles_dir())
         set_dir(x_path=self.get_jobs_dir())
-        self._create_main_file_if_null(x_dir=self.get_object_root_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
     def set_road_delimiter(self, new_road_delimiter: str):

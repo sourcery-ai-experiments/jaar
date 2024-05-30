@@ -1,10 +1,10 @@
 from src._road.road import create_road_from_nodes
+from src._road.userdir import userdir_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.econ.job_creator import get_owner_file_name
-from src.econ.econ import treasury_db_filename, get_rootpart_of_econ_dir
-from src.real.userdir import userdir_shop
+from src.econ.econ import treasury_db_filename
 from src.real.admin_duty import (
     save_duty_file,
     get_duty_file_agenda,
@@ -26,34 +26,6 @@ from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_get_person_econ_dir_ReturnsCorrectObj(reals_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_userdir = userdir_shop(None, None, sue_text)
-    texas_text = "texas"
-    dallas_text = "dallas"
-    elpaso_text = "el paso"
-    kern_text = "kern"
-    idearoot = get_rootpart_of_econ_dir()
-
-    # WHEN
-    texas_road = create_road_from_nodes([idearoot, texas_text])
-    dallas_road = create_road_from_nodes([idearoot, texas_text, dallas_text])
-    elpaso_road = create_road_from_nodes([idearoot, texas_text, elpaso_text])
-    kern_road = create_road_from_nodes([idearoot, texas_text, elpaso_text, kern_text])
-    texas_path = get_econ_path(sue_userdir, texas_road)
-    dallas_path = get_econ_path(sue_userdir, dallas_road)
-    elpaso_path = get_econ_path(sue_userdir, elpaso_road)
-    kern_path = get_econ_path(sue_userdir, kern_road)
-
-    # THEN
-    idearoot_dir = f"{sue_userdir._econs_dir}/{get_rootpart_of_econ_dir()}"
-    assert texas_path == f"{idearoot_dir}/{texas_text}"
-    assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
-    assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
-    assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
-
-
 def test_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
@@ -65,7 +37,7 @@ def test_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
     assert os_path_exists(dallas_dir) == False
 
     # WHEN
-    create_econ_dir(sue_userdir, dallas_text)
+    create_econ_dir(sue_userdir, dallas_road)
 
     # THEN
     print(f"{dallas_dir=}")

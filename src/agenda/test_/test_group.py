@@ -709,7 +709,7 @@ def test_balanceline_shop_ReturnsCorrectObj_exists():
     assert biker_balanceline._agenda_debt == bikers_agenda_debt
 
 
-def test_BalanceLine_add_agenda_credit_debt_CorrectlyModifysAttr():
+def test_BalanceLine_add_agenda_credit_debt_CorrectlyModifiesAttr():
     # GIVEN
     bikers_group_id = GroupID("bikers")
     bikers_balanceline = balanceline_shop(
