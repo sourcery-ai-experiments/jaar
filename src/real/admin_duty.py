@@ -1,4 +1,4 @@
-from src._instrument.file import save_file, open_file, set_dir
+from src._instrument.file import set_dir
 from src._road.road import RoadUnit
 from src.agenda.group import GroupID
 from src.agenda.agenda import (
@@ -18,7 +18,6 @@ from src.real.admin_change import (
     _create_new_changeunit,
 )
 from src._road.userdir import UserDir
-from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
 
 
@@ -40,29 +39,19 @@ def _create_initial_change_from_duty(x_userdir: UserDir):
     x_changeunit.save_files()
 
 
-# duty
 def save_duty_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = True):
     if x_agenda._owner_id != x_userdir.person_id:
         raise Invalid_duty_Exception(
             f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_userdir.person_id}''s duty agenda."
         )
     if replace in {True, False}:
-        save_file(
-            dest_dir=x_userdir.person_dir(),
-            file_name=x_userdir.duty_file_name(),
-            file_text=x_agenda.get_json(),
-            replace=replace,
-        )
-
-
-def duty_file_exists(userdir: UserDir) -> bool:
-    return os_path_exists(userdir.duty_path())
+        x_userdir.save_file_duty(x_agenda.get_json(), replace)
 
 
 def get_duty_file_agenda(x_userdir: UserDir) -> AgendaUnit:
-    if duty_file_exists(x_userdir) == False:
+    if x_userdir.duty_file_exists() == False:
         save_duty_file(x_userdir, get_default_duty_agenda(x_userdir))
-    duty_json = open_file(x_userdir.person_dir(), x_userdir.duty_file_name())
+    duty_json = x_userdir.open_file_duty()
     return agendaunit_get_from_json(duty_json)
 
 
@@ -88,7 +77,7 @@ def initialize_change_duty_files(x_userdir: UserDir):
     set_dir(x_userdir.person_dir())
     set_dir(x_userdir.atoms_dir())
     set_dir(x_userdir.changes_dir())
-    x_duty_file_exists = duty_file_exists(x_userdir)
+    x_duty_file_exists = x_userdir.duty_file_exists()
     change_file_exists = changeunit_file_exists(x_userdir, init_change_id())
     if x_duty_file_exists == False and change_file_exists == False:
         _create_initial_change_and_duty_files(x_userdir)

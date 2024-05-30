@@ -1,4 +1,4 @@
-from src._instrument.file import get_directory_path
+from src._instrument.file import get_directory_path, save_file, open_file
 from src._road.finance import default_planck_if_none
 from src._road.road import (
     default_road_delimiter_if_none,
@@ -18,6 +18,7 @@ from src._road.jaar_config import (
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
+from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
 
@@ -58,6 +59,34 @@ class UserDir:
 
     def work_path(self):
         return f"{self.person_dir()}/{self.work_file_name()}"
+
+    def save_file_duty(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.person_dir(),
+            file_name=self.duty_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def save_file_work(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.person_dir(),
+            file_name=self.work_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def duty_file_exists(self) -> bool:
+        return os_path_exists(self.duty_path())
+
+    def work_file_exists(self) -> bool:
+        return os_path_exists(self.work_path())
+
+    def open_file_duty(self):
+        return open_file(self.person_dir(), self.duty_file_name())
+
+    def open_file_work(self):
+        return open_file(self.person_dir(), self.work_file_name())
 
 
 def userdir_shop(

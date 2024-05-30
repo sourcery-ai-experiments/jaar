@@ -20,7 +20,12 @@ from src._road.jaar_config import (
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
+from src._road.examples.instrument_env import (
+    env_dir_setup_cleanup,
+    get_road_temp_env_dir,
+)
 from pytest import raises as pytest_raises
+from os.path import exists as os_path_exists
 
 
 def test_UserDir_Exists():
@@ -109,6 +114,80 @@ def test_userdir_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
+
+
+def test_UserDir_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    assert os_path_exists(sue_userdir.duty_path()) == False
+
+    # WHEN
+    sue_userdir.save_file_duty(file_text="fooboo", replace=True)
+
+    # THEN
+    assert os_path_exists(sue_userdir.duty_path())
+
+
+def test_UserDir_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    assert sue_userdir.duty_file_exists() == False
+
+    # WHEN
+    sue_userdir.save_file_duty(file_text="fooboo", replace=True)
+
+    # THEN
+    assert sue_userdir.duty_file_exists()
+
+
+def test_UserDir_open_file_duty_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    example_text = "fooboo"
+    sue_userdir.save_file_duty(example_text, replace=True)
+
+    # WHEN / THEN
+    assert sue_userdir.open_file_duty() == example_text
+
+
+def test_UserDir_save_file_work_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    assert os_path_exists(sue_userdir.work_path()) == False
+
+    # WHEN
+    sue_userdir.save_file_work(file_text="fooboo", replace=True)
+
+    # THEN
+    assert os_path_exists(sue_userdir.work_path())
+
+
+def test_UserDir_work_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    assert sue_userdir.work_file_exists() == False
+
+    # WHEN
+    sue_userdir.save_file_work(file_text="fooboo", replace=True)
+
+    # THEN
+    assert sue_userdir.work_file_exists()
+
+
+def test_UserDir_open_file_work_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userdir = userdir_shop(get_road_temp_env_dir(), None, sue_text)
+    example_text = "fooboo"
+    sue_userdir.save_file_work(example_text, replace=True)
+
+    # WHEN / THEN
+    assert sue_userdir.open_file_work() == example_text
 
 
 def test_get_econ_path_ReturnsCorrectObj():

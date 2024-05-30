@@ -1,20 +1,13 @@
-from src._instrument.file import save_file, open_file
+from src._road.userdir import UserDir
 from src.agenda.agenda import (
     AgendaUnit,
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
 )
-from src.agenda.listen import create_empty_agenda
-from src._road.userdir import UserDir
-from os.path import exists as os_path_exists
 
 
 class Invalid_work_Exception(Exception):
     pass
-
-
-def work_file_exists(userdir: UserDir) -> bool:
-    return os_path_exists(userdir.work_path())
 
 
 def save_work_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = True):
@@ -23,21 +16,16 @@ def save_work_file(x_userdir: UserDir, x_agenda: AgendaUnit, replace: bool = Tru
             f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_userdir.person_id}''s work agenda."
         )
     if replace in {True, False}:
-        save_file(
-            dest_dir=x_userdir.person_dir(),
-            file_name=x_userdir.work_file_name(),
-            file_text=x_agenda.get_json(),
-            replace=replace,
-        )
+        x_userdir.save_file_work(x_agenda.get_json(), replace)
 
 
-def initialize_work_file(x_userdir, duty: AgendaUnit):
-    if work_file_exists(x_userdir) == False:
+def initialize_work_file(x_userdir: UserDir, duty: AgendaUnit):
+    if x_userdir.work_file_exists() == False:
         save_work_file(x_userdir, get_default_work_agenda(duty))
 
 
 def get_work_file_agenda(x_userdir: UserDir) -> AgendaUnit:
-    work_json = open_file(x_userdir.person_dir(), x_userdir.work_file_name())
+    work_json = x_userdir.open_file_work()
     return agendaunit_get_from_json(work_json)
 
 
