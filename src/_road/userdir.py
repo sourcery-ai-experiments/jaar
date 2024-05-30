@@ -25,6 +25,91 @@ from dataclasses import dataclass
 
 
 @dataclass
+class RealDir:
+    reals_dir: str = None
+    real_id: str = None
+    _road_delimiter: str = None
+    _planck: float = None
+
+    def real_dir(self) -> str:
+        return f"{self.reals_dir}/{self.real_id}"
+
+    def persons_dir(self) -> str:
+        return f"{self.real_dir()}/persons"
+
+    def person_dir(self, person_id: PersonID) -> str:
+        return f"{self.persons_dir()}/{person_id}"
+
+    def econs_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/econs"
+
+    def atoms_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/atoms"
+
+    def changes_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/{get_changes_folder()}"
+
+    def duty_file_name(self):
+        return f"{duty_str()}.json"
+
+    def duty_path(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/{self.duty_file_name()}"
+
+    def work_file_name(self):
+        return f"{work_str()}.json"
+
+    def work_path(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/{self.work_file_name()}"
+
+    def save_file_duty(self, person_id: PersonID, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.person_dir(person_id),
+            file_name=self.duty_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def save_file_work(self, person_id: PersonID, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.person_dir(person_id),
+            file_name=self.work_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def duty_file_exists(self, person_id: PersonID) -> bool:
+        return os_path_exists(self.duty_path(person_id))
+
+    def work_file_exists(self, person_id: PersonID) -> bool:
+        return os_path_exists(self.work_path(person_id))
+
+    def open_file_duty(self, person_id: PersonID):
+        return open_file(self.person_dir(person_id), self.duty_file_name())
+
+    def open_file_work(self, person_id: PersonID):
+        return open_file(self.person_dir(person_id), self.work_file_name())
+
+
+def realdir_shop(
+    reals_dir: str,
+    real_id: RealID,
+    road_delimiter: str = None,
+    planck: float = None,
+) -> RealDir:
+    if reals_dir is None:
+        reals_dir = get_test_reals_dir()
+    if real_id is None:
+        real_id = get_test_real_id()
+
+    return RealDir(
+        real_id=validate_roadnode(real_id, road_delimiter),
+        reals_dir=reals_dir,
+        _road_delimiter=default_road_delimiter_if_none(road_delimiter),
+        _planck=default_planck_if_none(planck),
+    )
+
+
+@dataclass
 class UserDir:
     person_id: PersonID = None
     reals_dir: str = None
