@@ -333,7 +333,7 @@ class IdeaUnit:
     def set_beliefunit_to_complete(self, base_beliefunit: BeliefUnit):
         # if a idea is considered a task then a beliefheir.open attribute can be increased to
         # a number <= beliefheir.nigh so the idea no longer is a task. This method finds
-        # the minimal beliefheir.open to modify idea._task == False. idea_core._beliefheir cannot be straight up manpulated
+        # the minimal beliefheir.open to modify idea._task == False. idea_core._beliefheir cannot be straight up manipulated
         # so it is mandatory that idea._beliefunit is different.
         # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
         self._beliefunits[base_beliefunit.base] = beliefunit_shop(

@@ -624,6 +624,62 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     }
 
 
+def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsZerp():
+    # GIVEN
+    bob_text = "Bob"
+    bob_partyunit = partyunit_shop(bob_text)
+    assert bob_partyunit._irrational_debtor_weight == 0
+    assert bob_partyunit._missing_job_debtor_weight == 0
+
+    # WHEN
+    x_dict = bob_partyunit.get_dict(all_attrs=True)
+
+    # THEN
+    x_irrational_debtor_weight = "_irrational_debtor_weight"
+    x_missing_job_debtor_weight = "_missing_job_debtor_weight"
+    assert x_dict.get(x_irrational_debtor_weight) is None
+    assert x_dict.get(x_missing_job_debtor_weight) is None
+    assert len(x_dict.keys()) == 17
+
+
+def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNumber():
+    # GIVEN
+    bob_text = "Bob"
+    bob_partyunit = partyunit_shop(bob_text)
+    bob_irrational_debtor_weight = 87
+    bob_missing_job_debtor_weight = 97
+    bob_partyunit.add_irrational_debtor_weight(bob_irrational_debtor_weight)
+    bob_partyunit.add_missing_job_debtor_weight(bob_missing_job_debtor_weight)
+
+    # WHEN
+    x_dict = bob_partyunit.get_dict(all_attrs=True)
+
+    # THEN
+    x_irrational_debtor_weight = "_irrational_debtor_weight"
+    x_missing_job_debtor_weight = "_missing_job_debtor_weight"
+    assert x_dict.get(x_irrational_debtor_weight) == bob_irrational_debtor_weight
+    assert x_dict.get(x_missing_job_debtor_weight) == bob_missing_job_debtor_weight
+    assert len(x_dict.keys()) == 19
+
+
+def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNone():
+    # GIVEN
+    bob_text = "Bob"
+    bob_partyunit = partyunit_shop(bob_text)
+    bob_partyunit._irrational_debtor_weight = None
+    bob_partyunit._missing_job_debtor_weight = None
+
+    # WHEN
+    x_dict = bob_partyunit.get_dict(all_attrs=True)
+
+    # THEN
+    x_irrational_debtor_weight = "_irrational_debtor_weight"
+    x_missing_job_debtor_weight = "_missing_job_debtor_weight"
+    assert x_dict.get(x_irrational_debtor_weight) is None
+    assert x_dict.get(x_missing_job_debtor_weight) is None
+    assert len(x_dict.keys()) == 17
+
+
 def test_partyunit_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
     # GIVEN
     yao_text = ",Yao"
