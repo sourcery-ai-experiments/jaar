@@ -296,20 +296,20 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     assert len(agenda_dict[originunit_text][_links])
 
 
-def test_save_file_CorrectlySavesAgendaUnitJSON(env_dir_setup_cleanup):
+def test_AgendaUnit_get_json_CreatesJSONThatCanBeSavedAsFile(env_dir_setup_cleanup):
     # GIVEN
     yao_agenda = example_agendas_agenda_v001()
-    x_yao_agenda_json = yao_agenda.get_json()
-    file_name_x = "example_agenda1.json"
 
     # WHEN
+    x_yao_agenda_json = yao_agenda.get_json()
+
+    # THEN
+    file_name_x = "example_agenda1.json"
     save_file(
         dest_dir=get_agenda_temp_env_dir(),
         file_name=file_name_x,
         file_text=x_yao_agenda_json,
     )
-
-    # THEN
     assert open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
 
 

@@ -61,9 +61,7 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
         os_makedirs(dest_dir)
 
     file_path = f"{dest_dir}/{file_name}"
-    if (os_path_exists(path=file_path) and replace) or os_path_exists(
-        path=file_path
-    ) == False:
+    if (os_path_exists(file_path) and replace) or os_path_exists(file_path) == False:
         with open(file_path, "w") as f:
             f.write(file_text)
             f.close()

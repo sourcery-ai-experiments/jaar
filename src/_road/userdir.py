@@ -6,6 +6,7 @@ from src._road.road import (
     RealID,
     validate_roadnode,
     RoadNode,
+    RoadUnit,
     rebuild_road,
     get_all_road_nodes,
 )
@@ -27,29 +28,6 @@ class UserDir:
     real_id: str = None
     _road_delimiter: str = None
     _planck: float = None
-    # real_dir: str = None
-    # persons_dir: str = None
-    # person_dir: str = None
-    # econs_dir: str = None
-    # atoms_dir: str = None
-    # changes_dir: str = None
-    # duty_file_name: str = None
-    # duty_path: str = None
-    # work_file_name: str = None
-    # work_path: str = None
-
-    # road_delimiter = default_road_delimiter_if_none(road_delimiter)
-    # real_dir = f"{reals_dir}/{real_id}"
-    # persons_dir = f"{real_dir}/persons"
-    # person_id = validate_roadnode(person_id, road_delimiter)
-    # person_dir = f"{persons_dir}/{person_id}"
-    # econs_dir = f"{person_dir}/econs"
-    # atoms_dir = f"{person_dir}/atoms"
-    # changes_dir = f"{person_dir}/{get_changes_folder()}"
-    # duty_file_name = f"{duty_str()}.json"
-    # duty_path = f"{person_dir}/{duty_file_name}"
-    # work_file_name = f"{work_str()}.json"
-    # work_path = f"{person_dir}/{work_file_name}"
 
     def real_dir(self):
         return f"{self.reals_dir}/{self.real_id}"
@@ -108,3 +86,42 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
     x_road = rebuild_road(x_road, x_userdir.real_id, econ_root)
     x_list = get_all_road_nodes(x_road, x_userdir._road_delimiter)
     return f"{x_userdir.econs_dir()}{get_directory_path(x_list=[*x_list])}"
+
+
+@dataclass
+class EconDir(UserDir):
+    econ_road: RoadUnit = None
+
+
+def econdir_shop(
+    reals_dir: str,
+    real_id: RealID,
+    person_id: PersonID,
+    econ_road: RoadUnit,
+    road_delimiter: str = None,
+    planck: float = None,
+):
+    x_userdir = userdir_shop(
+        reals_dir=reals_dir,
+        real_id=real_id,
+        person_id=person_id,
+        road_delimiter=road_delimiter,
+        planck=planck,
+    )
+    return EconDir(
+        reals_dir=x_userdir.reals_dir,
+        real_id=x_userdir.real_id,
+        person_id=x_userdir.person_id,
+        econ_road=get_econ_path(x_userdir, econ_road),
+        _road_delimiter=x_userdir._road_delimiter,
+        _planck=x_userdir._planck,
+    )
+
+    # duty save
+    # duty delete
+    # role save
+    # role delete
+    # job save
+    # job delete
+    # work save
+    # work delete

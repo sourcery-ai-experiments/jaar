@@ -1,6 +1,17 @@
-from src._road.road import default_road_delimiter_if_none, create_road_from_nodes
+from src._road.road import (
+    default_road_delimiter_if_none,
+    create_road_from_nodes,
+    create_road,
+    get_default_real_id_roadnode as root_label,
+)
 from src._road.finance import default_planck_if_none
-from src._road.userdir import UserDir, userdir_shop, get_econ_path
+from src._road.userdir import (
+    UserDir,
+    userdir_shop,
+    get_econ_path,
+    EconDir,
+    econdir_shop,
+)
 from src._road.jaar_config import (
     get_changes_folder,
     duty_str,
@@ -137,3 +148,41 @@ def test_get_econ_path_ReturnsCorrectObj():
     assert texas_path == get_econ_path(sue_userdir, diff_root_texas_road)
     assert dallas_path == get_econ_path(sue_userdir, diff_root_dallas_road)
     assert elpaso_path == get_econ_path(sue_userdir, diff_root_elpaso_road)
+
+
+def test_EconDir_Exists():
+    # GIVEN / WHEN
+    x_econdir = EconDir()
+
+    # THEN
+    assert x_econdir.reals_dir is None
+    assert x_econdir.real_id is None
+    assert x_econdir.person_id is None
+    assert x_econdir.econ_road is None
+    assert x_econdir._road_delimiter is None
+    assert x_econdir._planck is None
+
+
+def test_econdir_shop_ReturnsCorrectObjWhenEmpty():
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+
+    # WHEN
+    sue_econdir = econdir_shop(None, None, sue_text, econ_road=texas_road)
+
+    # THEN
+    assert sue_econdir.reals_dir == get_test_reals_dir()
+    assert sue_econdir.real_id == get_test_real_id()
+    assert sue_econdir.real_dir() == f"{get_test_reals_dir()}/{get_test_real_id()}"
+    assert sue_econdir.person_id == sue_text
+    assert sue_econdir._road_delimiter == default_road_delimiter_if_none()
+    assert sue_econdir._planck == default_planck_if_none()
+    assert sue_econdir.persons_dir() == f"{sue_econdir.real_dir()}/persons"
+    x_userdir = userdir_shop(None, None, sue_text)
+    assert sue_econdir.econ_road == get_econ_path(x_userdir, texas_road)
