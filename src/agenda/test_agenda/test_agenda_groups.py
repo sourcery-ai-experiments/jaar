@@ -607,7 +607,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_AgendaUnit_edit_groupunit_group_id_CorrectlyModifysBalanceLinks():
+def test_AgendaUnit_edit_groupunit_group_id_CorrectlyModifiesBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"

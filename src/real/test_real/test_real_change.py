@@ -50,7 +50,7 @@
 #     assert oregon_real.changeunit_file_exists(static_yao_sue_uid)
 
 
-# def test_RealUnit_del_changeunit_CorrectModifysAttr(reals_dir_setup_cleanup):
+# def test_RealUnit_del_changeunit_CorrectModifiesAttr(reals_dir_setup_cleanup):
 #     # GIVEN
 #     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
 #     yao_sue_uid = oregon_real.set_changeunit(example_yao_sue_changeunit())

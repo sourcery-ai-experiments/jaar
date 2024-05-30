@@ -171,7 +171,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert x_econ.get_treasury_db_path() == treasury_file_path
 
 
-def test_modify_real_id_example_econ_CorrectlyModifysDirAndFiles(
+def test_modify_real_id_example_econ_CorrectlyModifiesDirAndFiles(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ

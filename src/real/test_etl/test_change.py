@@ -528,7 +528,7 @@ def test_merge_changes_into_agenda_ReturnsSameObj(reals_dir_setup_cleanup):
     assert new_agenda == duty_agenda
 
 
-def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifys_1atom(
+def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifies_1atom(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -554,7 +554,7 @@ def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifys_1atom(
     assert new_agenda.idea_exists(sports_road)
 
 
-def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifys_2atoms(
+def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifies_2atoms(
     reals_dir_setup_cleanup,
 ):
     # GIVEN

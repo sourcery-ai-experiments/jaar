@@ -43,7 +43,7 @@ def test_create_pledge_CorrectlyAddspledgeToAgenda():
     assert clean_idea.pledge
 
 
-def test_create_pledge_CorrectlyModifysAgendaNonpledgeIdeaTopledgeIdea():
+def test_create_pledge_CorrectlyModifiesAgendaNonpledgeIdeaTopledgeIdea():
     # GIVEN
     sue_text = "Sue"
     sue_agenda = agendaunit_shop(sue_text)
