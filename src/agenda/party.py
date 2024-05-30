@@ -171,7 +171,7 @@ class PartyUnit(PartyCore):
     def add_missing_job_debtor_weight(self, x_missing_job_debtor_weight: float):
         self._missing_job_debtor_weight += x_missing_job_debtor_weight
 
-    def reset_job_basis_attrs(self):
+    def reset_listen_calculated_attrs(self):
         self._irrational_debtor_weight = 0
         self._missing_job_debtor_weight = 0
 

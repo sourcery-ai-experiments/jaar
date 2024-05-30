@@ -5,6 +5,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
     generate_ingest_list,
     create_empty_agenda,
+    create_listen_basis,
     _allocate_irrational_debtor_weight,
     generate_perspective_intent,
 )
@@ -51,6 +52,51 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._party_debtor_pool is None
     yao_empty_job.calc_agenda_metrics()
     assert yao_empty_job._partys == {}
+
+
+def test_create_listen_basis_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    slash_text = "/"
+    yao_role = agendaunit_shop(yao_text, _road_delimiter=slash_text)
+    yao_role.add_l1_idea(ideaunit_shop("Texas"))
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    zia_creditor_pool = 87
+    zia_debtor_pool = 81
+    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    zia_irrational_debtor_weight = 11
+    zia_missing_job_debtor_weight = 22
+    role_zia_partyunit = yao_role.get_party(zia_text)
+    role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
+    role_zia_partyunit.add_missing_job_debtor_weight(zia_missing_job_debtor_weight)
+    swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
+    swim_group.set_partylink(partylink_shop(zia_text))
+    yao_role.set_groupunit(swim_group)
+    yao_role.set_party_creditor_pool(zia_creditor_pool, True)
+    yao_role.set_party_debtor_pool(zia_debtor_pool, True)
+
+    # WHEN
+    yao_basis_job = create_listen_basis(yao_role)
+
+    # THEN
+    assert yao_basis_job._owner_id == yao_role._owner_id
+    assert yao_basis_job._real_id == yao_role._real_id
+    assert yao_basis_job._last_change_id == yao_role._last_change_id
+    assert yao_basis_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
+    assert yao_basis_job._road_delimiter == yao_role._road_delimiter
+    assert yao_basis_job._planck == yao_role._planck
+    assert yao_basis_job._money_desc == yao_role._money_desc
+    assert yao_basis_job._party_creditor_pool == yao_role._party_creditor_pool
+    assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
+    yao_basis_job.calc_agenda_metrics()
+    assert len(yao_basis_job._idea_dict) != len(yao_role._idea_dict)
+    assert len(yao_basis_job._idea_dict) == 1
+    job_zia_partyunit = yao_basis_job.get_party(zia_text)
+    assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
+    assert job_zia_partyunit._irrational_debtor_weight == 0
+    assert job_zia_partyunit._missing_job_debtor_weight == 0
 
 
 def test_allocate_irrational_debtor_weight_CorrectlySetsAgendaAttr():

@@ -2,7 +2,11 @@ from src._road.road import PersonID, PartyID, PersonID
 from src._road.userdir import get_econ_roles_dir, get_econ_jobs_dir
 from src.agenda.party import PartyUnit
 from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
-from src.agenda.listen import listen_to_speaker_intent, create_empty_agenda
+from src.agenda.listen import (
+    listen_to_speaker_intent,
+    create_empty_agenda,
+    create_listen_basis,
+)
 from src._instrument.file import save_file, open_file
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -52,21 +56,6 @@ def get_job_file(
         None
 
 
-def create_job_basis(x_role: AgendaUnit) -> AgendaUnit:
-    x_job = create_empty_agenda(x_role, x_owner_id=x_role._owner_id)
-    x_job._partys = x_role._partys
-    x_job._groups = x_role._groups
-    x_job.set_money_desc(x_role._money_desc)
-    if x_role._party_creditor_pool != None:
-        x_job.set_party_creditor_pool(x_role._party_creditor_pool)
-    if x_role._party_debtor_pool != None:
-        x_job.set_party_debtor_pool(x_role._party_debtor_pool)
-    x_job = copy_deepcopy(x_job)
-    for x_partyunit in x_job._partys.values():
-        x_partyunit.reset_job_basis_attrs()
-    return x_job
-
-
 def get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
     return [
         x_partyunit
@@ -76,7 +65,7 @@ def get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
 
 
 def _listen_to_debtors_roll(econ_dir: str, listener_role: AgendaUnit) -> AgendaUnit:
-    x_job = create_job_basis(listener_role)
+    x_job = create_listen_basis(listener_role)
     if x_job._party_debtor_pool is None:
         return x_job
 

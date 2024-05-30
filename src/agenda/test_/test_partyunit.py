@@ -287,7 +287,7 @@ def test_PartyUnit_add_missing_job_debtor_weight_SetsAttrCorrectly():
     assert bob_partyunit._missing_job_debtor_weight == bob_int1 + bob_int2
 
 
-def test_PartyUnit_reset_job_basis_attrs_SetsAttrCorrectly():
+def test_PartyUnit_reset_listen_calculated_attrs_SetsAttrCorrectly():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
     bob_int1 = 11
@@ -298,7 +298,7 @@ def test_PartyUnit_reset_job_basis_attrs_SetsAttrCorrectly():
     assert bob_partyunit._missing_job_debtor_weight == bob_int2
 
     # WHEN
-    bob_partyunit.reset_job_basis_attrs()
+    bob_partyunit.reset_listen_calculated_attrs()
 
     # THEN
     assert bob_partyunit._irrational_debtor_weight == 0

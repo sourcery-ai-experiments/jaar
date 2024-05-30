@@ -4,6 +4,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
 )
+from src.agenda.listen import create_listen_basis
 
 
 class Invalid_work_Exception(Exception):
@@ -30,14 +31,8 @@ def get_work_file_agenda(x_userdir: UserDir) -> AgendaUnit:
 
 
 def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:
-    default_work_agenda = agendaunit_shop(
-        _owner_id=duty._owner_id,
-        _real_id=duty._real_id,
-        _road_delimiter=duty._road_delimiter,
-        _planck=duty._planck,
-    )
-    default_work_agenda._partys = duty._partys
-    default_work_agenda._groups = duty._groups
+    default_work_agenda = create_listen_basis(duty)
     default_work_agenda._last_change_id = duty._last_change_id
-    default_work_agenda.set_max_tree_traverse(duty._max_tree_traverse)
+    default_work_agenda._party_creditor_pool = None
+    default_work_agenda._party_debtor_pool = None
     return default_work_agenda
