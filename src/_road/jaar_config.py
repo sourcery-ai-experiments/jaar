@@ -30,12 +30,12 @@ def work_str() -> str:
     return "work"
 
 
-def job_str() -> str:
-    return "job"
+def jobs_str() -> str:
+    return "jobs"
 
 
-def role_str() -> str:
-    return "role"
+def roles_str() -> str:
+    return "roles"
 
 
 def get_rootpart_of_econ_dir() -> str:

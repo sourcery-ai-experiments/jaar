@@ -14,8 +14,8 @@ from src._road.jaar_config import (
     get_changes_folder,
     duty_str,
     work_str,
-    role_str,
-    job_str,
+    roles_str,
+    jobs_str,
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
@@ -123,11 +123,11 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
 
 
 def get_econ_roles_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/roles"
+    return f"{x_econ_dir}/{roles_str()}"
 
 
 def get_econ_jobs_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/jobs"
+    return f"{x_econ_dir}/{jobs_str()}"
 
 
 @dataclass
