@@ -95,7 +95,7 @@ class NewDelimiterException(Exception):
     pass
 
 
-class PartyunitsCreditorDebtorSumException(Exception):
+class PartyUnitsCreditorDebtorSumException(Exception):
     pass
 
 
@@ -1952,11 +1952,11 @@ class AgendaUnit:
 
     def _pre_tree_traverse_credit_debt_reset(self):
         if self.is_partyunits_creditor_weight_sum_correct() == False:
-            raise PartyunitsCreditorDebtorSumException(
+            raise PartyUnitsCreditorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
             )
         if self.is_partyunits_debtor_weight_sum_correct() == False:
-            raise PartyunitsCreditorDebtorSumException(
+            raise PartyUnitsCreditorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
             )
         self._reset_groupunits_agenda_credit_debt()

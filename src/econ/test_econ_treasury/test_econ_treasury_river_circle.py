@@ -15,7 +15,7 @@ from src.econ.treasury_sqlstr import (
 def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
 
     sal_text = "Sal"
@@ -54,7 +54,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
 
     sal_text = "Sal"

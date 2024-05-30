@@ -84,7 +84,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryF
 def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
@@ -130,7 +130,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitT
 def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
@@ -157,7 +157,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
 def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
@@ -304,7 +304,7 @@ def test_EconUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTabl
 def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -375,7 +375,7 @@ def test_EconUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_clea
 def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -402,7 +402,7 @@ def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopula
 def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -460,7 +460,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
 def test_EconUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
     x_econ.refresh_treasury_job_agendas_data()
 
