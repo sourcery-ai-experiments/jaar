@@ -13,7 +13,7 @@ from src.agenda.change import (
     init_change_id,
     get_init_change_id_if_None,
 )
-from src._road.userdir import UserDir
+from src._road.worlddir import UserDir
 from os.path import exists as os_path_exists
 
 

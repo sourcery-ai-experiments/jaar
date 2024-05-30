@@ -1,5 +1,5 @@
 from src._road.road import PersonID, PartyID, PersonID
-from src._road.userdir import get_econ_roles_dir, get_econ_jobs_dir
+from src._road.worlddir import get_econ_roles_dir, get_econ_jobs_dir
 from src.agenda.party import PartyUnit
 from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
 from src.agenda.listen import (

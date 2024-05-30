@@ -6,7 +6,7 @@ from src.agenda.agenda import AgendaUnit
 from src.agenda.listen import listen_to_speaker_intent
 from src.econ.econ import EconUnit
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src._road.userdir import UserDir, userdir_shop
+from src._road.worlddir import UserDir, userdir_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
 from src.real.admin_work import (
     initialize_work_file,

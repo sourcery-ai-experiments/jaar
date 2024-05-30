@@ -1,4 +1,4 @@
-from src._road.userdir import userdir_shop
+from src._road.worlddir import userdir_shop
 from src.real.admin_duty import initialize_change_duty_files
 from src.real.admin_change import (
     userdir_save_atom_file,

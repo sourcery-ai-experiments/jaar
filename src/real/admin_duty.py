@@ -17,7 +17,7 @@ from src.real.admin_change import (
     _merge_changes_into_agenda,
     _create_new_changeunit,
 )
-from src._road.userdir import UserDir
+from src._road.worlddir import UserDir
 from copy import deepcopy as copy_deepcopy
 
 

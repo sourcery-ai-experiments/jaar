@@ -1,5 +1,5 @@
 from src._road.jaar_config import work_str
-from src._road.userdir import userdir_shop
+from src._road.worlddir import userdir_shop
 from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.real.admin_work import (
     save_work_file,

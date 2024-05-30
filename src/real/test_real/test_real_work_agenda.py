@@ -1,4 +1,4 @@
-from src._road.userdir import userdir_shop
+from src._road.worlddir import userdir_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop

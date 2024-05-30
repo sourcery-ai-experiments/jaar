@@ -1,5 +1,5 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src._road.userdir import econdir_shop
+from src._road.worlddir import econdir_shop
 from src.agenda.party import partylink_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
