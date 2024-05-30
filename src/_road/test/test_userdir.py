@@ -20,7 +20,7 @@ from src._road.jaar_config import (
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
-from src._road.examples.instrument_env import (
+from src._road.examples.road_env import (
     env_dir_setup_cleanup,
     get_road_temp_env_dir,
 )

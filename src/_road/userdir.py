@@ -88,6 +88,9 @@ class UserDir:
     def open_file_work(self):
         return open_file(self.person_dir(), self.work_file_name())
 
+    # duty delete
+    # work delete
+
 
 def userdir_shop(
     reals_dir: str,
@@ -121,6 +124,11 @@ def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
 class EconDir(UserDir):
     econ_road: RoadUnit = None
 
+    # role save
+    # role delete
+    # job save
+    # job delete
+
 
 def econdir_shop(
     reals_dir: str,
@@ -145,12 +153,3 @@ def econdir_shop(
         _road_delimiter=x_userdir._road_delimiter,
         _planck=x_userdir._planck,
     )
-
-    # duty save
-    # duty delete
-    # role save
-    # role delete
-    # job save
-    # job delete
-    # work save
-    # work delete
