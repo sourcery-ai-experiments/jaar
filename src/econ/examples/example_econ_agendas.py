@@ -6,7 +6,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import temp_real_id, get_texas_econdir
+from src.econ.examples.econ_env_kit import temp_real_id, get_texas_econnox
 from random import randrange
 
 
@@ -173,10 +173,10 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex4():
     ex4_id = "ex4"
-    ex4_econdir = get_texas_econdir()
-    ex4_econdir.real_id = ex4_id
-    x_econ = econunit_shop(ex4_econdir)
-    delete_dir(x_econ.econdir.econ_dir())
+    ex4_econnox = get_texas_econnox()
+    ex4_econnox.real_id = ex4_id
+    x_econ = econunit_shop(ex4_econnox)
+    delete_dir(x_econ.econnox.econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_job_file(get_7nodeJRootWithH_agenda())
     x_econ.save_job_file(get_agenda_with7amCleanTableReason())
@@ -187,10 +187,10 @@ def _delete_and_set_ex4():
 def _delete_and_set_ex6(ex6_id: str = None):
     if ex6_id is None:
         ex6_id = "ex6"
-    ex6_econdir = get_texas_econdir()
-    ex6_econdir.real_id = ex6_id
-    x_econ = econunit_shop(ex6_econdir)
-    delete_dir(x_econ.econdir.econ_dir())
+    ex6_econnox = get_texas_econnox()
+    ex6_econnox.real_id = ex6_id
+    x_econ = econunit_shop(ex6_econnox)
+    delete_dir(x_econ.econnox.econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     sal_text = "Sal"

@@ -1,6 +1,6 @@
 # # command to for converting ui form to python file: pyuic5 ui\MainWindow.ui -o ui\MainWindow.py
 import contextlib
-from src._road.worlddir import get_file_name
+from src._road.worldnox import get_file_name
 from datetime import datetime, timedelta
 from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView

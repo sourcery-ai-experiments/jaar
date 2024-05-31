@@ -6,7 +6,7 @@ from src.econ.examples.econ_env_kit import (
     temp_reals_dir,
     temp_reals_dir,
     temp_real_id,
-    get_texas_econdir,
+    get_texas_econnox,
 )
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -14,32 +14,32 @@ from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 def test_EconUnit_exists():
     # GIVEN
-    texas_econdir = get_texas_econdir()
+    texas_econnox = get_texas_econnox()
 
     # WHEN
-    x_econ = EconUnit(econdir=texas_econdir)
+    x_econ = EconUnit(econnox=texas_econnox)
 
     # THEN
-    assert x_econ.econdir == texas_econdir
+    assert x_econ.econnox == texas_econnox
 
 
 def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_id = temp_real_id()
     sue_text = "Sue"
-    sue_texas_econdir = get_texas_econdir()
-    sue_texas_econdir.person_id = sue_text
+    sue_texas_econnox = get_texas_econnox()
+    sue_texas_econnox.person_id = sue_text
 
     # WHEN
-    texas_econ = econunit_shop(sue_texas_econdir)
+    texas_econ = econunit_shop(sue_texas_econnox)
 
     # THEN
     assert texas_econ != None
-    assert texas_econ.econdir.real_id == x_real_id
-    assert os_path_exists(sue_texas_econdir.econ_dir())
+    assert texas_econ.econnox.real_id == x_real_id
+    assert os_path_exists(sue_texas_econnox.econ_dir())
     assert texas_econ._treasury_db != None
-    assert texas_econ.econdir.person_id == sue_text
-    assert texas_econ.econdir._road_delimiter == default_road_delimiter_if_none()
+    assert texas_econ.econnox.person_id == sue_text
+    assert texas_econ.econnox._road_delimiter == default_road_delimiter_if_none()
 
 
 def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
@@ -47,11 +47,11 @@ def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     # assert os_path_exists(econ_dir) is False
 
     # WHEN
-    texas_econ = econunit_shop(get_texas_econdir())
+    texas_econ = econunit_shop(get_texas_econnox())
 
     # THEN
     assert texas_econ != None
-    assert texas_econ.econdir == get_texas_econdir()
+    assert texas_econ.econnox == get_texas_econnox()
     # assert os_path_exists(econ_dir)
     assert texas_econ._treasury_db != None
 
@@ -60,13 +60,13 @@ def test_econunit_shop_RaisesErrorIfParameterContains_road_delimiter():
     # GIVEN
     slash_text = "/"
     texas_text = f"Texas{slash_text}Arkansas"
-    texas_econdir = get_texas_econdir()
-    texas_econdir.real_id = texas_text
-    texas_econdir._road_delimiter = slash_text
+    texas_econnox = get_texas_econnox()
+    texas_econnox.real_id = texas_text
+    texas_econnox._road_delimiter = slash_text
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        econunit_shop(texas_econdir)
+        econunit_shop(texas_econnox)
     assert (
         str(excinfo.value)
         == f"'{texas_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
@@ -75,38 +75,38 @@ def test_econunit_shop_RaisesErrorIfParameterContains_road_delimiter():
 
 def test_EconUnit_get_jobs_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN create econ
-    texas_econdir = get_texas_econdir()
-    x_econ = EconUnit(texas_econdir)
+    texas_econnox = get_texas_econnox()
+    x_econ = EconUnit(texas_econnox)
 
     # WHEN / THEN
     jobs_text = "jobs"
-    assert x_econ.get_jobs_dir() == f"{x_econ.econdir.econ_dir()}/{jobs_text}"
+    assert x_econ.get_jobs_dir() == f"{x_econ.econnox.econ_dir()}/{jobs_text}"
 
 
 def test_EconUnit_get_roles_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN create econ
-    texas_econdir = get_texas_econdir()
-    x_econ = EconUnit(texas_econdir)
+    texas_econnox = get_texas_econnox()
+    x_econ = EconUnit(texas_econnox)
 
     # WHEN / THEN
     roles_text = "roles"
-    assert x_econ.get_roles_dir() == f"{x_econ.econdir.econ_dir()}/{roles_text}"
+    assert x_econ.get_roles_dir() == f"{x_econ.econnox.econ_dir()}/{roles_text}"
 
 
 def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     # GIVEN create econ
-    texas_econdir = get_texas_econdir()
-    x_econ = EconUnit(texas_econdir)
-    texas_econdir = get_texas_econdir()
-    print(f"{temp_reals_dir()=} {x_econ.econdir.econ_dir()=}")
-    # delete_dir(x_econ.econdir.econ_dir())
-    print(f"delete {x_econ.econdir.econ_dir()=}")
-    delete_dir(texas_econdir.reals_dir)
+    texas_econnox = get_texas_econnox()
+    x_econ = EconUnit(texas_econnox)
+    texas_econnox = get_texas_econnox()
+    print(f"{temp_reals_dir()=} {x_econ.econnox.econ_dir()=}")
+    # delete_dir(x_econ.econnox.econ_dir())
+    print(f"delete {x_econ.econnox.econ_dir()=}")
+    delete_dir(texas_econnox.reals_dir)
     treasury_file_name = "treasury.db"
-    treasury_file_path = f"{texas_econdir.econ_dir()}/{treasury_file_name}"
+    treasury_file_path = f"{texas_econnox.econ_dir()}/{treasury_file_name}"
 
-    assert os_path_exists(texas_econdir.reals_dir) is False
-    assert os_path_isdir(texas_econdir.reals_dir) is False
+    assert os_path_exists(texas_econnox.reals_dir) is False
+    assert os_path_isdir(texas_econnox.reals_dir) is False
     assert os_path_exists(x_econ.get_jobs_dir()) is False
     assert os_path_exists(x_econ.get_roles_dir()) is False
     assert os_path_exists(treasury_file_path) is False
@@ -115,12 +115,12 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     # THEN check agendas src directory created
-    assert os_path_exists(texas_econdir.reals_dir)
-    assert os_path_isdir(texas_econdir.reals_dir)
+    assert os_path_exists(texas_econnox.reals_dir)
+    assert os_path_isdir(texas_econnox.reals_dir)
     assert os_path_exists(x_econ.get_jobs_dir())
     assert os_path_exists(x_econ.get_roles_dir())
     assert os_path_exists(treasury_file_path)
-    assert x_econ.econdir.econ_dir() == texas_econdir.econ_dir()
+    assert x_econ.econnox.econ_dir() == texas_econnox.econ_dir()
     assert x_econ.get_jobs_dir() == x_econ.get_jobs_dir()
     assert x_econ.get_roles_dir() == x_econ.get_roles_dir()
     assert x_econ.get_treasury_db_path() == treasury_file_path
@@ -130,23 +130,23 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     env_dir_setup_cleanup,
 # ):
 #     # GIVEN create econ
-#     texas_econdir = get_texas_econdir()
-#     old_x_real_id = texas_econdir.real_id
-#     old_econ_dir = texas_econdir.econ_dir()
-#     old_jobs_dir = texas_econdir.jobs_dir()
-#     old_roles_dir = texas_econdir.roles_dir()
-#     print(f"{texas_econdir.econ_road=}")
+#     texas_econnox = get_texas_econnox()
+#     old_x_real_id = texas_econnox.real_id
+#     old_econ_dir = texas_econnox.econ_dir()
+#     old_jobs_dir = texas_econnox.jobs_dir()
+#     old_roles_dir = texas_econnox.roles_dir()
+#     print(f"{texas_econnox.econ_road=}")
 
-#     new_econdir = get_texas_econdir()
-#     new_econdir.real_id = "music"
-#     new_x_real_id = new_econdir.real_id
-#     new_econ_dir = new_econdir.econ_dir()
-#     new_jobs_dir = new_econdir.jobs_dir()
-#     new_roles_dir = new_econdir.roles_dir()
+#     new_econnox = get_texas_econnox()
+#     new_econnox.real_id = "music"
+#     new_x_real_id = new_econnox.real_id
+#     new_econ_dir = new_econnox.econ_dir()
+#     new_jobs_dir = new_econnox.jobs_dir()
+#     new_roles_dir = new_econnox.roles_dir()
 #     delete_dir(dir=new_econ_dir)
 #     print(f"{new_econ_dir=}")
 
-#     texas_econ = econunit_shop(texas_econdir)
+#     texas_econ = econunit_shop(texas_econnox)
 
 #     texas_econ.set_econ_dirs(in_memory_treasury=True)
 
@@ -169,11 +169,11 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     print(f"{new_x_real_id=} {old_x_real_id=}")
 #     print(f"{old_econ_dir=}")
 #     assert os_path_exists(old_econ_dir)
-#     texas_econdir.save_file_job("sue", "fooboo", True)
+#     texas_econnox.save_file_job("sue", "fooboo", True)
 #     modify_real_id_example_econ(
 #         econ_obj=texas_econ,
-#         src_econdir=texas_econdir,
-#         dst_econdir=new_econdir,
+#         src_econnox=texas_econnox,
+#         dst_econnox=new_econnox,
 #         new_real_id=new_x_real_id,
 #     )
 
@@ -210,7 +210,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     old_jobs_dir = f"{old_econ_dir}/{jobs_text}"
 #     roles_text = "roles"
 #     old_roles_dir = f"{old_econ_dir}/{roles_text}"
-#     texas_econdir = get_texas_econdir()
+#     texas_econnox = get_texas_econnox()
 
 #     x_econ = econunit_shop(old_x_real_id, temp_reals_dir())
 #     x_econ.set_econ_dirs()
@@ -255,7 +255,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert x_econ.real_id != new_x_real_id
 
 #     # Undo modification to directory
-#     # delete_dir(x_econ.econdir.econ_dir())
+#     # delete_dir(x_econ.econnox.econ_dir())
 #     # delete_dir(dir=old_econ_dir)
 #     delete_dir(dir=new_econ_dir)
 
@@ -271,5 +271,5 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #         copy_evaluation_econ(src_real_id=x_econ.real_id, dest_real_id=old_x_real_id)
 #     assert (
 #         str(excinfo.value)
-#         == f"Cannot copy econ to '{x_econ.econdir.econ_dir()}' directory because '{x_econ.econdir.econ_dir()}' exists."
+#         == f"Cannot copy econ to '{x_econ.econnox.econ_dir()}' directory because '{x_econ.econnox.econ_dir()}' exists."
 #     )

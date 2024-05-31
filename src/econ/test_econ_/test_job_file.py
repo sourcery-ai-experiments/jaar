@@ -12,7 +12,7 @@ from src.econ.examples.example_econ_agendas import (
 from src.econ.examples.econ_env_kit import (
     temp_real_id,
     env_dir_setup_cleanup,
-    get_texas_econdir,
+    get_texas_econnox,
 )
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
@@ -20,7 +20,7 @@ from os.path import exists as os_path_exists
 
 def test_EconUnit_save_job_file_CreatesAgendaFile(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     a_agenda = example_get_1node_agenda()
     a_path = f"{x_econ.get_jobs_dir()}/{a_agenda._owner_id}.json"
     assert os_path_exists(a_path) == False
@@ -35,7 +35,7 @@ def test_EconUnit_save_job_file_CreatesAgendaFile(env_dir_setup_cleanup):
 
 def test_EconUnit_get_job_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     y_agenda = example_get_7nodeJRootWithH_agenda()
 
     # WHEN / THEN
@@ -55,7 +55,7 @@ def test_EconUnit_get_job_file_ReturnsCorrectObj(env_dir_setup_cleanup):
 
 def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     a_agenda = example_get_1node_agenda()
     a_path = f"{x_econ.get_jobs_dir()}/{get_file_name(a_agenda._owner_id)}"
     x_econ.save_job_file(a_agenda)
@@ -71,7 +71,7 @@ def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
 
 def test_EconUnit_modify_job_owner_id_ModifiesFileName(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     yao_owner_id = "yao"
     y_agenda = agendaunit_shop(_owner_id=yao_owner_id)
@@ -94,7 +94,7 @@ def test_EconUnit_modify_job_owner_id_ModifiesFileName(env_dir_setup_cleanup):
 def test_EconUnit_save_job_file_ModifiesFile_idearoot(env_dir_setup_cleanup):
     # GIVEN
     x_real_id = temp_real_id()
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     old_x_agenda = example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief()
     assert old_x_agenda._idearoot._label == root_label()
@@ -111,7 +111,7 @@ def test_EconUnit_save_job_file_ModifiesFile_idearoot(env_dir_setup_cleanup):
 
 def test_EconUnit_create_job_file_from_role_file_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     bob_text = "Bob"
     bob_role = get_agenda_2CleanNodesRandomWeights(bob_text)

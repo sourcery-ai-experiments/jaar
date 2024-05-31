@@ -5,7 +5,7 @@ from src._road.road import (
     get_root_node_from_road,
     PersonID,
 )
-from src._road.worlddir import get_file_name
+from src._road.worldnox import get_file_name
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import (
     AgendaUnit,

@@ -114,7 +114,7 @@ def realdir_shop(
 
 
 @dataclass
-class UserDir:
+class UserNox:
     person_id: PersonID = None
     reals_dir: str = None
     real_id: str = None
@@ -180,19 +180,19 @@ class UserDir:
         return open_file(self.person_dir(), self.work_file_name())
 
 
-def userdir_shop(
+def usernox_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID,
     road_delimiter: str = None,
     planck: float = None,
-) -> UserDir:
+) -> UserNox:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
     if real_id is None:
         real_id = get_test_real_id()
 
-    return UserDir(
+    return UserNox(
         person_id=validate_roadnode(person_id, road_delimiter),
         real_id=real_id,
         reals_dir=reals_dir,
@@ -201,11 +201,11 @@ def userdir_shop(
     )
 
 
-def get_econ_path(x_userdir: UserDir, x_road: RoadNode) -> str:
+def get_econ_path(x_usernox: UserNox, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_userdir.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_userdir._road_delimiter)
-    return f"{x_userdir.econs_dir()}{get_directory_path(x_list=[*x_list])}"
+    x_road = rebuild_road(x_road, x_usernox.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_usernox._road_delimiter)
+    return f"{x_usernox.econs_dir()}{get_directory_path(x_list=[*x_list])}"
 
 
 def get_econ_roles_dir(x_econ_dir: str) -> str:
@@ -217,7 +217,7 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
 
 
 @dataclass
-class EconDir(UserDir):
+class EconNox(UserNox):
     econ_road: RoadUnit = None
 
     def econ_dir(self) -> str:
@@ -270,26 +270,26 @@ class EconDir(UserDir):
     # job delete
 
 
-def econdir_shop(
+def econnox_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID,
     econ_road: RoadUnit,
     road_delimiter: str = None,
     planck: float = None,
-) -> EconDir:
-    x_userdir = userdir_shop(
+) -> EconNox:
+    x_usernox = usernox_shop(
         reals_dir=reals_dir,
         real_id=real_id,
         person_id=person_id,
         road_delimiter=road_delimiter,
         planck=planck,
     )
-    return EconDir(
-        reals_dir=x_userdir.reals_dir,
-        real_id=x_userdir.real_id,
-        person_id=x_userdir.person_id,
+    return EconNox(
+        reals_dir=x_usernox.reals_dir,
+        real_id=x_usernox.real_id,
+        person_id=x_usernox.person_id,
         econ_road=econ_road,
-        _road_delimiter=x_userdir._road_delimiter,
-        _planck=x_userdir._planck,
+        _road_delimiter=x_usernox._road_delimiter,
+        _planck=x_usernox._planck,
     )

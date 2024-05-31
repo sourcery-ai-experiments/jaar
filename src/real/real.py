@@ -2,12 +2,12 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src._road.worlddir import econdir_shop
+from src._road.worldnox import econnox_shop
 from src.agenda.agenda import AgendaUnit
 from src.agenda.listen import listen_to_speaker_intent
 from src.econ.econ import create_job_file_from_role_file, save_role_file_agenda
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src._road.worlddir import UserDir, userdir_shop
+from src._road.worldnox import UserNox, usernox_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
 from src.real.admin_work import (
     initialize_work_file,
@@ -98,8 +98,8 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def _get_userdir(self, person_id: PersonID) -> UserDir:
-        return userdir_shop(
+    def _get_usernox(self, person_id: PersonID) -> UserNox:
+        return usernox_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
@@ -108,18 +108,18 @@ class RealUnit:
         )
 
     def init_person_econs(self, person_id: PersonID):
-        x_userdir = self._get_userdir(person_id)
-        initialize_change_duty_files(x_userdir)
-        initialize_work_file(x_userdir, self.get_person_duty_from_file(person_id))
+        x_usernox = self._get_usernox(person_id)
+        initialize_change_duty_files(x_usernox)
+        initialize_work_file(x_usernox, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        return get_duty_file_agenda(self._get_userdir(person_id))
+        return get_duty_file_agenda(self._get_usernox(person_id))
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_userdir = userdir_shop(
+            healer_usernox = usernox_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
@@ -128,38 +128,38 @@ class RealUnit:
             )
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_userdir=healer_userdir,
+                    healer_usernox=healer_usernox,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_userdir: UserDir,
+        healer_usernox: UserNox,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = get_econunit(healer_userdir, econ_road)
+        x_econ = get_econunit(healer_usernox, econ_road)
         x_econ.save_role_file_agenda(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_userdir = self._get_userdir(person_id)
-        x_duty = get_duty_file_agenda(x_userdir)
+        x_usernox = self._get_usernox(person_id)
+        x_duty = get_duty_file_agenda(x_usernox)
         x_duty.calc_agenda_metrics()
         x_work = get_default_work_agenda(x_duty)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_userdir = userdir_shop(
+            healer_usernox = usernox_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
                 self._road_delimiter,
                 self._planck,
             )
-            create_person_econunits(healer_userdir)
+            create_person_econunits(healer_usernox)
             for econ_road in healer_dict.keys():
-                x_econdir = econdir_shop(
+                x_econnox = econnox_shop(
                     self.reals_dir,
                     self.real_id,
                     healer_id,
@@ -167,14 +167,14 @@ class RealUnit:
                     self._road_delimiter,
                     self._planck,
                 )
-                save_role_file_agenda(x_econdir, x_duty)
-                x_job = create_job_file_from_role_file(x_econdir, person_id)
+                save_role_file_agenda(x_econnox, x_duty)
+                x_job = create_job_file_from_role_file(x_econnox, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
-        personsave_work_file(x_userdir, x_work)
+        personsave_work_file(x_usernox, x_work)
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
@@ -182,7 +182,7 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        return get_work_file_agenda(self._get_userdir(person_id))
+        return get_work_file_agenda(self._get_usernox(person_id))
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
@@ -191,7 +191,7 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_duty_agenda = get_duty_file_agenda(x_userdir)
+    #     x_duty_agenda = get_duty_file_agenda(x_usernox)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

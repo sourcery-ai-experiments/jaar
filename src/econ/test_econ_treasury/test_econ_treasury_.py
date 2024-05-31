@@ -1,7 +1,7 @@
 from src._instrument.file import save_file, open_file, delete_dir
 from src._instrument.sqlite import check_connection
 from src.econ.econ import econunit_shop, EconUnit, treasury_db_filename
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econdir
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econnox
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
@@ -10,7 +10,7 @@ def test_EconUnit_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     delete_dir(dir=x_econ.get_treasury_db_path())  # clear out any treasury.db file
     assert os_path_exists(x_econ.get_treasury_db_path()) == False
 
@@ -25,7 +25,7 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     delete_dir(dir=x_econ.get_treasury_db_path())  # clear out any treasury.db file
     x_econ._create_treasury_db()
     assert os_path_exists(x_econ.get_treasury_db_path())
@@ -50,7 +50,7 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
 
 def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
 
     x_econ._treasury_db = None
     assert x_econ._treasury_db is None
@@ -68,7 +68,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_econdir())
+    x_econ = econunit_shop(get_texas_econnox())
     # x_econ._create_treasury_db(in_memory=True)
     assert os_path_exists(x_econ.get_treasury_db_path()) == False
 
@@ -83,7 +83,7 @@ def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = EconUnit(get_texas_econdir())
+    x_econ = EconUnit(get_texas_econnox())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(x_econ.get_treasury_conn())
