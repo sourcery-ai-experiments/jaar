@@ -46,33 +46,40 @@ def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
 def get_job_file(
     x_econ_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
 ) -> AgendaUnit:
+    jobs_dir = get_econ_jobs_dir(x_econ_dir)
+    return get_speaker_agenda(jobs_dir, owner_id, return_None_if_missing)
+
+
+def get_speaker_agenda(
+    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
     job_file_name = get_file_name(owner_id)
-    job_dir = get_econ_jobs_dir(x_econ_dir)
-    job_file_path = f"{job_dir}/{job_file_name}"
+    job_file_path = f"{x_dir}/{job_file_name}"
     if os_path_exists(job_file_path) or not return_None_if_missing:
-        return agendaunit_get_from_json(open_file(job_dir, job_file_name))
+        return agendaunit_get_from_json(open_file(x_dir, job_file_name))
     else:
         None
 
 
-def _listen_to_debtors_roll(econ_dir: str, listener_role: AgendaUnit) -> AgendaUnit:
-    x_job = create_listen_basis(listener_role)
-    if x_job._party_debtor_pool is None:
-        return x_job
+def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
+    new_agenda = create_listen_basis(listener)
+    if new_agenda._party_debtor_pool is None:
+        return new_agenda
 
-    for x_partyunit in get_ordered_partys_roll(x_job):
-        if x_partyunit.party_id == x_job._owner_id:
-            listen_to_speaker_intent(x_job, listener_role)
+    for x_partyunit in get_ordered_partys_roll(new_agenda):
+        if x_partyunit.party_id == new_agenda._owner_id:
+            listen_to_speaker_intent(new_agenda, listener)
         else:
-            speaker_job = get_job_file(econ_dir, x_partyunit.party_id)
+            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
             if speaker_job is None:
-                speaker_job = create_empty_agenda(x_job, x_partyunit.party_id)
-            listen_to_speaker_intent(x_job, speaker_job)
-    return x_job
+                speaker_job = create_empty_agenda(new_agenda, x_partyunit.party_id)
+            listen_to_speaker_intent(new_agenda, speaker_job)
+    return new_agenda
 
 
 def create_job_file_from_role_file(econ_dir, person_id: PersonID):
     x_role = get_role_file(econ_dir, person_id)
-    x_job = _listen_to_debtors_roll(econ_dir, x_role)
+    jobs_dir = get_econ_jobs_dir(econ_dir)
+    x_job = listen_to_debtors_roll(x_role, jobs_dir)
     save_job_file(econ_dir, x_job)
     return x_job
