@@ -1,28 +1,12 @@
 from src._instrument.file import save_file, dir_files
 from src._road.worlddir import get_file_name
-from src.agenda.group import groupunit_shop
-from src.agenda.party import partylink_shop
-from src.agenda.idea import ideaunit_shop, reasonunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.listen import (
-    listen_to_speaker_intent,
-    generate_ingest_list,
-    create_empty_agenda,
-    _allocate_irrational_debtor_weight,
-    generate_perspective_intent,
-    get_all_partys_with_debtor_weight,
-    get_ordered_partys_roll,
-    listen_to_speaker_beliefs,
-    create_listen_basis,
-    listen_to_debtors_roll,
-)
-from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
+from src.agenda.listen import create_listen_basis, listen_to_debtors_roll
 from src.agenda.examples.agenda_env import (
     get_agenda_temp_env_dir,
     env_dir_setup_cleanup,
 )
-from copy import deepcopy as copy_deepcopy
-from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
