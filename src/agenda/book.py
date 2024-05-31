@@ -1,17 +1,7 @@
-from src._road.road import (
-    RoadUnit,
-    get_terminus_node,
-    get_parent_road,
-)
+from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src.agenda.reason_idea import BeliefUnit, ReasonUnit
-from src.agenda.party import (
-    PartyLink,
-    PartyID,
-)
-from src.agenda.group import (
-    GroupUnit,
-    GroupID,
-)
+from src.agenda.party import PartyLink, PartyID
+from src.agenda.group import GroupUnit, GroupID
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.agenda.atom import (

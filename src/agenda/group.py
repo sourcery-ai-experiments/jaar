@@ -1,18 +1,18 @@
 from dataclasses import dataclass
-from src.agenda.party import (
-    PartyID,
-    PartyLink,
-    partylinks_get_from_dict,
-    partylink_shop,
-)
-from src.agenda.meld import get_meld_weight
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_1_if_None,
     get_dict_from_json,
     get_0_if_None,
 )
-from src._road.road import RoadUnit, default_road_delimiter_if_none, validate_roadnode
+from src._road.road import (
+    PartyID,
+    RoadUnit,
+    default_road_delimiter_if_none,
+    validate_roadnode,
+)
+from src.agenda.party import PartyLink, partylinks_get_from_dict, partylink_shop
+from src.agenda.meld import get_meld_weight
 
 
 class InvalidGroupException(Exception):
