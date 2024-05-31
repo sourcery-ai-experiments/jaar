@@ -7,7 +7,7 @@
 # from src.real.examples.example_changes import (
 #     yao_sue_changeunit as example_yao_sue_changeunit,
 # )
-# from os import path as os_path
+# from os.path import exists as os_path_exists
 
 
 # def test_RealUnit_set_changeunit_CorrectSetsAttr(reals_dir_setup_cleanup):
@@ -96,9 +96,9 @@
 #     jobs_tim_file_path = f"{texas_jobs_dir}/{tim_text}.json"
 #     jobs_xio_file_path = f"{texas_jobs_dir}/{xio_text}.json"
 #     jobs_yao_file_path = f"{texas_jobs_dir}/{yao_text}.json"
-#     assert os_path.exists(jobs_tim_file_path) is False
-#     assert os_path.exists(jobs_xio_file_path) is False
-#     assert os_path.exists(jobs_yao_file_path) is False
+#     assert os_path_exists(jobs_tim_file_path) is False
+#     assert os_path_exists(jobs_xio_file_path) is False
+#     assert os_path_exists(jobs_yao_file_path) is False
 
 #     # WHEN
 #     real.apply_requestunit(highwaay_requestunit)
@@ -107,9 +107,9 @@
 #     assert real.get_FILLERFILLERunit_from_memory(tim_text) != None
 #     assert real.get_FILLERFILLERunit_from_memory(xio_text) != None
 #     print(f"{jobs_tim_file_path=}")
-#     assert os_path.exists(jobs_tim_file_path)
-#     assert os_path.exists(jobs_xio_file_path)
-#     assert os_path.exists(jobs_yao_file_path)
+#     assert os_path_exists(jobs_tim_file_path)
+#     assert os_path_exists(jobs_xio_file_path)
+#     assert os_path_exists(jobs_yao_file_path)
 #     assert texas_econ.create_job_file_from_role_file(tim_text).get_role() != None
 #     assert texas_econ.create_job_file_from_role_file(xio_text).get_role() != None
 #     assert texas_econ.create_job_file_from_role_file(yao_text).get_role() != None
@@ -163,12 +163,12 @@
 #     assert tim_partyunit != None
 #     assert tim_partyunit.creditor_weight == 1
 #     assert tim_partyunit.debtor_weight == 1
-#     flying_road = econunit.build_econ_road(texas_econ.econ_id, flying_text)
-#     no_fly_road = econunit.build_econ_road(flying_road, no_fly_text)
-#     yesfly_road = econunit.build_econ_road(flying_road, yesfly_text)
-#     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
-#     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
-#     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
+#     flying_road = econunit.buuild_econ_road(texas_econ.econ_id, flying_text)
+#     no_fly_road = econunit.buuild_econ_road(flying_road, no_fly_text)
+#     yesfly_road = econunit.buuild_econ_road(flying_road, yesfly_text)
+#     weather_road = econunit.buuild_econ_road(texas_econ.econ_id, weather_text)
+#     healthy_road = econunit.buuild_econ_road(weather_road, healthy_text)
+#     boiling_road = econunit.buuild_econ_road(weather_road, boiling_text)
 #     print(f"{xio_role._idea_dict.keys()=}")
 #     print(f"{flying_road=}")
 #     print(f"{no_fly_road=}")
@@ -295,12 +295,12 @@
 #     assert len(environmentalist_group._partys) == 1
 #     assert environmentalist_group.get_partylink(tim_text) != None
 
-#     flying_road = econunit.build_econ_road(texas_econ.econ_id, flying_text)
-#     no_fly_road = econunit.build_econ_road(flying_road, no_fly_text)
-#     yesfly_road = econunit.build_econ_road(flying_road, yesfly_text)
-#     weather_road = econunit.build_econ_road(texas_econ.econ_id, weather_text)
-#     healthy_road = econunit.build_econ_road(weather_road, healthy_text)
-#     boiling_road = econunit.build_econ_road(weather_road, boiling_text)
+#     flying_road = econunit.buuild_econ_road(texas_econ.econ_id, flying_text)
+#     no_fly_road = econunit.buuild_econ_road(flying_road, no_fly_text)
+#     yesfly_road = econunit.buuild_econ_road(flying_road, yesfly_text)
+#     weather_road = econunit.buuild_econ_road(texas_econ.econ_id, weather_text)
+#     healthy_road = econunit.buuild_econ_road(weather_road, healthy_text)
+#     boiling_road = econunit.buuild_econ_road(weather_road, boiling_text)
 #     flying_idea = xio_role.get_idea_obj(flying_road)
 #     no_fly_idea = xio_role.get_idea_obj(no_fly_road)
 #     yesfly_idea = xio_role.get_idea_obj(yesfly_road)

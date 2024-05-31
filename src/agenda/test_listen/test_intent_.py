@@ -1,11 +1,6 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.listen import (
-    listen_to_speaker_intent,
-    create_empty_agenda,
-    get_debtor_weight_ordered_partys,
-    listen_to_speaker_beliefs,
-)
+from src.agenda.listen import listen_to_speaker_intent, create_empty_agenda
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 

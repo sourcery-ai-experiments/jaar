@@ -1,10 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import (
-    get_temp_env_real_id,
-    get_test_econ_dir,
-    env_dir_setup_cleanup,
-)
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econnox
 from src.econ.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
@@ -15,8 +11,8 @@ from src.econ.treasury_sqlstr import (
 def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    x_econ = econunit_shop(get_texas_econnox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -54,8 +50,8 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 Partyunits = 12 ledger rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    x_econ = econunit_shop(get_texas_econnox())
 
     sal_text = "Sal"
     bob_text = "Bob"

@@ -1,21 +1,22 @@
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with_tuesday_cleaning_task,
 )
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import (
-    get_temp_env_real_id,
-    get_test_econ_dir,
-    env_dir_setup_cleanup,
-)
 from src.econ.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
     CalendarIntentUnit,
     CalendarReport,
 )
-from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
+from src.econ.examples.econ_env_kit import (
+    temp_real_id,
+    temp_reals_dir,
+    env_dir_setup_cleanup,
+    get_texas_econnox,
+)
 from pytest import raises as pytest_raises
 
 
@@ -132,8 +133,8 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    real_id = get_temp_env_real_id()
-    x_econ = econunit_shop(real_id, get_test_econ_dir())
+    real_id = temp_real_id()
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
@@ -195,8 +196,8 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
 def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
     # GIVEN
     # A agenda that has 1 intent item
-    real_id = get_temp_env_real_id()
-    x_econ = econunit_shop(real_id, get_test_econ_dir())
+    real_id = temp_real_id()
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -222,7 +223,7 @@ def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErr
 def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A agenda that has 1 intent item
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econnox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")

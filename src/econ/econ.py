@@ -1,27 +1,9 @@
-from src._road.road import (
-    RoadUnit,
-    create_road,
-    default_road_delimiter_if_none,
-    OwnerID,
-    HealerID,
-    PersonID,
-    RealID,
-    validate_roadnode,
-)
+from src._road.road import OwnerID, PersonID, validate_roadnode
+from src._road.worldnox import EconNox, get_file_name
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
-from src._instrument.file import set_dir, delete_dir, open_file, dir_files
-from src.econ.job_creator import (
-    PersonID,
-    get_econ_roles_dir,
-    get_econ_jobs_dir,
-    save_role_file,
-    save_job_file,
-    get_role_file,
-    get_job_file,
-    get_owner_file_name,
-    create_job_file_from_role_file,
-)
+from src.agenda.listen import get_speaker_agenda, listen_to_debtors_roll
+from src._instrument.file import set_dir, delete_dir, open_file, dir_files, save_file
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 from src.econ.treasury_sqlstr import (
@@ -56,22 +38,7 @@ from src.econ.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
 )
-
-
-def get_temp_env_real_id():
-    return "ex_econ04"
-
-
-def get_temp_env_healer_id():
-    return "ex_healer04"
-
-
-def get_temp_env_person_id():
-    return "ex_person04"
-
-
-def get_temp_env_problem_id():
-    return "ex_problem04"
+from os.path import exists as os_path_exists
 
 
 class IntentBaseDoesNotExistException(Exception):
@@ -82,37 +49,32 @@ def treasury_db_filename() -> str:
     return "treasury.db"
 
 
+class RoleAgendaFileException(Exception):
+    pass
+
+
 @dataclass
 class EconUnit:
-    real_id: RealID = None
-    econ_dir: str = None
-    _manager_person_id: HealerID = None
+    econnox: EconNox
     _treasury_db = None
-    _road_delimiter: str = None
 
     # Admin
-    def set_real_id(self, real_id: str):
-        self.real_id = validate_roadnode(real_id, self._road_delimiter)
-
-    def get_object_root_dir(self):
-        return self.econ_dir
+    def econ_dir(self) -> str:
+        return self.econnox.econ_dir()
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
-        set_dir(x_path=self.get_object_root_dir())
+        set_dir(x_path=self.econnox.econ_dir())
         set_dir(x_path=self.get_roles_dir())
         set_dir(x_path=self.get_jobs_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
-    def set_road_delimiter(self, new_road_delimiter: str):
-        self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
-
     # treasurying
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.get_role_file(owner_id)
+            owner_role = self.get_role_file_agenda(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            save_role_file(self.econ_dir, owner_role)
+            self.save_role_file_agenda(owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
         x_agenda = self.get_job_file(x_owner_id)
@@ -350,39 +312,43 @@ class EconUnit:
         delete_dir(self.get_treasury_db_path())
 
     def get_treasury_db_path(self):
-        return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
+        return f"{self.econnox.econ_dir()}/{treasury_db_filename()}"
 
     # roles dir management
     def get_roles_dir(self):
-        return get_econ_roles_dir(self.get_object_root_dir())
+        return self.econnox.roles_dir()
 
-    def save_role_file(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(real_id=self.real_id)
-        save_role_file(self.get_object_root_dir(), x_agenda)
+    def save_role_file_agenda(self, x_agenda: AgendaUnit):
+        save_role_file_agenda(self.econnox, x_agenda)
 
-    def get_role_file(self, owner_id: PersonID) -> AgendaUnit:
-        return get_role_file(self.get_object_root_dir(), owner_id)
+    def get_role_file_agenda(self, owner_id: PersonID) -> AgendaUnit:
+        # get_role_file_agenda(self.econnox, owner_id)
+        role_file_name = get_file_name(owner_id)
+        if os_path_exists(f"{self.econnox.role_path(owner_id)}") == False:
+            raise RoleAgendaFileException(
+                f"Role agenda file '{role_file_name}' does not exist."
+            )
+        return get_speaker_agenda(self.econnox.roles_dir(), owner_id)
 
     def delete_role_file(self, x_owner_id: PersonID):
-        delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_roles_dir()}/{get_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
-        return get_econ_jobs_dir(self.get_object_root_dir())
+        return self.econnox.jobs_dir()
 
     def save_job_file(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(self.real_id)
-        save_job_file(self.get_object_root_dir(), x_agenda)
+        x_agenda.set_real_id(self.econnox.real_id)
+        save_job_file(self.econnox, x_agenda)
 
     def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
-        return create_job_file_from_role_file(self.econ_dir, person_id)
+        return create_job_file_from_role_file(self.econnox, person_id)
 
     def get_job_file(self, owner_id: str) -> AgendaUnit:
-        econ_dir = self.get_object_root_dir()
-        return get_job_file(econ_dir, owner_id, return_None_if_missing=False)
+        return get_job_file(self.econnox, owner_id, return_None_if_missing=False)
 
     def delete_job_file(self, x_owner_id: PersonID):
-        delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_jobs_dir()}/{get_file_name(x_owner_id)}")
 
     def modify_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
         x_agenda = self.get_job_file(old_owner_id)
@@ -392,16 +358,6 @@ class EconUnit:
 
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
-
-    def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
-        if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.real_id
-        else:
-            return create_road(
-                parent_road=self.real_id,
-                terminus_node=road_wo_econ_root,
-                delimiter=self._road_delimiter,
-            )
 
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
@@ -439,23 +395,12 @@ class EconUnit:
                     cur.execute(sqlstr)
 
 
-def econunit_shop(
-    real_id: RealID,
-    econ_dir: str = None,
-    _manager_person_id: PersonID = None,
-    in_memory_treasury: bool = None,
-    _road_delimiter: str = None,
-) -> EconUnit:
+def econunit_shop(x_econnox: EconNox, in_memory_treasury: bool = None) -> EconUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
-    if econ_dir is None:
-        econ_dir = f"./{real_id}"
-    econ_x = EconUnit(econ_dir=econ_dir)
-    if _manager_person_id is None:
-        _manager_person_id = get_temp_env_person_id()
-    econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_real_id(real_id=real_id)
-    econ_x._manager_person_id = _manager_person_id
+
+    x_econnox.real_id = validate_roadnode(x_econnox.real_id, x_econnox._road_delimiter)
+    econ_x = EconUnit(x_econnox)
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x
 
@@ -473,3 +418,33 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
                 credit_score=partytreasuryunit.credit_score,
                 voice_rank=partytreasuryunit.voice_rank,
             )
+
+
+def save_role_file_agenda(x_econnox: EconNox, x_agenda: AgendaUnit):
+    x_econnox.save_file_role(x_agenda._owner_id, x_agenda.get_json(), True)
+
+
+def save_job_file(x_econnox: EconNox, x_agenda: AgendaUnit):
+    x_econnox.save_file_job(x_agenda._owner_id, x_agenda.get_json(), True)
+
+
+def get_role_file_agenda(x_econnox: EconNox, owner_id: PersonID) -> AgendaUnit:
+    role_file_name = get_file_name(owner_id)
+    if os_path_exists(x_econnox.role_path(owner_id)) == False:
+        raise RoleAgendaFileException(
+            f"Role agenda file '{role_file_name}' does not exist."
+        )
+    return get_speaker_agenda(x_econnox.roles_dir(), owner_id)
+
+
+def get_job_file(
+    x_econnox: EconNox, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
+    return get_speaker_agenda(x_econnox.jobs_dir(), owner_id, return_None_if_missing)
+
+
+def create_job_file_from_role_file(econ_dir: EconNox, person_id: PersonID):
+    x_role = get_role_file_agenda(econ_dir, person_id)
+    x_job = listen_to_debtors_roll(x_role, econ_dir.jobs_dir())
+    save_job_file(econ_dir, x_job)
+    return x_job

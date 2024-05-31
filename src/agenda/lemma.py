@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+from src._instrument.python import get_empty_dict_if_none
 from src.agenda.reason_idea import BeliefUnit, RoadUnit, beliefunit_shop
 from src.agenda.idea import IdeaUnit
-from src._instrument.python import get_empty_dict_if_none
+from dataclasses import dataclass
 
 
 class InvalidLemmaException(Exception):
@@ -70,7 +70,7 @@ class Lemmas:
         idea_close,
         src_open,
         src_nigh,
-    ) -> (float, float):
+    ) -> set[float, float]:
         belief_open = None
         belief_nigh = None
         if src_open <= idea_begin and src_nigh >= idea_close:
@@ -119,7 +119,7 @@ class Lemmas:
         idea_denom,
         src_open,
         src_nigh,
-    ) -> (float, float):
+    ) -> set[float, float]:
         return self._get_range_calc_belief_attr(
             idea_begin=idea_begin,
             idea_close=idea_close,

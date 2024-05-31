@@ -12,7 +12,7 @@ from src.real.examples.real_env_kit import (
     get_test_reals_dir,
     reals_dir_setup_cleanup,
 )
-from os import path as os_path
+from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 
 
@@ -36,15 +36,15 @@ def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(real_id=music_text, reals_dir=get_test_reals_dir())
-    assert os_path.exists(music_real.get_journal_db_path())
+    assert os_path_exists(music_real.get_journal_db_path())
     delete_dir(music_real.get_journal_db_path())
-    assert os_path.exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) == False
 
     # WHEN
     music_real._create_journal_db()
 
     # THEN
-    assert os_path.exists(music_real.get_journal_db_path())
+    assert os_path_exists(music_real.get_journal_db_path())
 
 
 def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
@@ -55,13 +55,13 @@ def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
     music_real = realunit_shop(real_id=music_text, reals_dir=get_test_reals_dir())
     delete_dir(dir=music_real.get_journal_db_path())  # clear out any treasury.db file
     music_real._create_journal_db()
-    assert os_path.exists(music_real.get_journal_db_path())
+    assert os_path_exists(music_real.get_journal_db_path())
 
     # SETUP
     x_file_text = "Texas Dallas ElPaso"
     db_file = "journal.db"
     save_file(music_real._real_dir, db_file, file_text=x_file_text, replace=True)
-    assert os_path.exists(music_real.get_journal_db_path())
+    assert os_path_exists(music_real.get_journal_db_path())
     assert open_file(music_real._real_dir, file_name=db_file) == x_file_text
 
     # WHEN
@@ -84,14 +84,14 @@ def test_RealUnit_create_journal_db_CanCreateInMemory(reals_dir_setup_cleanup):
 
     music_real._journal_db = None
     assert music_real._journal_db is None
-    assert os_path.exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) == False
 
     # WHEN
     music_real._create_journal_db(in_memory=True)
 
     # THEN
     assert music_real._journal_db != None
-    assert os_path.exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) == False
 
 
 def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(

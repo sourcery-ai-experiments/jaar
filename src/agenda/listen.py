@@ -1,34 +1,36 @@
+from src._instrument.file import open_file
 from src._road.road import (
     get_ancestor_roads,
     RoadUnit,
     get_root_node_from_road,
     PersonID,
 )
+from src._road.worldnox import get_file_name
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
+from src.agenda.agenda import (
+    AgendaUnit,
+    agendaunit_shop,
+    PartyUnit,
+    get_from_json as agendaunit_get_from_json,
+)
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
+from os.path import exists as os_path_exists
 
 
 class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener.party_exists(speaker._owner_id) == False:
-        raise Missing_party_debtor_poolException(
-            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
-        )
-    perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
-    if perspective_agenda._rational == False:
-        return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
-
-    if listener._party_debtor_pool is None:
-        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
-    intent = generate_perspective_intent(perspective_agenda)
-    if len(intent) == 0:
-        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
-    return _ingest_perspective_intent(listener, intent)
+def get_speaker_agenda(
+    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
+    x_file_name = get_file_name(owner_id)
+    x_file_path = f"{x_dir}/{x_file_name}"
+    if os_path_exists(x_file_path) or not return_None_if_missing:
+        return agendaunit_get_from_json(open_file(x_dir, x_file_name))
+    else:
+        None
 
 
 def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit]:
@@ -72,13 +74,33 @@ def get_speaker_perspective(speaker: AgendaUnit, listener_owner_id: PersonID):
 
 
 def _is_empty_agenda(x_agenda: AgendaUnit) -> bool:
-    return x_agenda == create_empty_agenda(x_agenda, x_agenda._owner_id)
+    empty_agenda = create_empty_agenda(x_agenda)
+    return x_agenda.get_dict() == empty_agenda.get_dict()
 
 
-def create_empty_agenda(ref_agenda: AgendaUnit, x_owner_id: PersonID) -> AgendaUnit:
-    return agendaunit_shop(
-        x_owner_id, ref_agenda._real_id, ref_agenda._road_delimiter, ref_agenda._planck
-    )
+def create_empty_agenda(
+    ref_agenda: AgendaUnit, x_owner_id: PersonID = None
+) -> AgendaUnit:
+    if x_owner_id is None:
+        x_owner_id = ref_agenda._owner_id
+    x_road_delimiter = ref_agenda._road_delimiter
+    x_planck = ref_agenda._planck
+    return agendaunit_shop(x_owner_id, ref_agenda._real_id, x_road_delimiter, x_planck)
+
+
+def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
+    x_listen = create_empty_agenda(x_role, x_owner_id=x_role._owner_id)
+    x_listen._partys = x_role._partys
+    x_listen._groups = x_role._groups
+    x_listen.set_money_desc(x_role._money_desc)
+    x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
+    if x_role._party_creditor_pool != None:
+        x_listen.set_party_creditor_pool(x_role._party_creditor_pool)
+    if x_role._party_debtor_pool != None:
+        x_listen.set_party_debtor_pool(x_role._party_debtor_pool)
+    for x_partyunit in x_listen._partys.values():
+        x_partyunit.reset_listen_calculated_attrs()
+    return x_listen
 
 
 def _get_planck_scaled_weight(
@@ -169,8 +191,16 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtor_weight_ordered_partys(x_agenda: AgendaUnit) -> list[PartyUnit]:
-    partys_ordered_list = list(x_agenda._partys.values())
+def get_debtors_roll(x_role: AgendaUnit) -> list[PartyUnit]:
+    return [
+        x_partyunit
+        for x_partyunit in x_role._partys.values()
+        if x_partyunit.debtor_weight != 0
+    ]
+
+
+def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
+    partys_ordered_list = get_debtors_roll(x_agenda)
     partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
     return partys_ordered_list
 
@@ -193,3 +223,47 @@ def listen_to_speaker_beliefs(
                 nigh=x_beliefunit.nigh,
                 create_missing_ideas=True,
             )
+
+
+def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
+    if listener.party_exists(speaker._owner_id) == False:
+        raise Missing_party_debtor_poolException(
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
+        )
+    perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
+    if perspective_agenda._rational == False:
+        return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
+
+    if listener._party_debtor_pool is None:
+        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
+    intent = generate_perspective_intent(perspective_agenda)
+    if len(intent) == 0:
+        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
+    return _ingest_perspective_intent(listener, intent)
+
+
+def listen_to_speakers_intent(listener: AgendaUnit, speakers_dir: str):
+    debtors_roll = get_debtors_roll(listener)
+    for x_partyunit in debtors_roll:
+        if x_partyunit.party_id == listener._owner_id:
+            listen_to_speaker_intent(listener, listener)
+        else:
+            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            if speaker_job is None:
+                speaker_job = create_empty_agenda(listener, x_partyunit.party_id)
+            listen_to_speaker_intent(listener, speaker_job)
+
+
+def listen_to_speakers_belief(listener: AgendaUnit, speakers_dir: str):
+    debtors_roll = get_ordered_debtors_roll(listener)
+
+
+def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
+    new_agenda = create_listen_basis(listener)
+    if listener._party_debtor_pool is None:
+        return new_agenda
+
+    listen_to_speakers_intent(new_agenda, speakers_dir)
+    listen_to_speakers_belief(new_agenda, speakers_dir)
+
+    return new_agenda

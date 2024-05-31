@@ -19,7 +19,7 @@
 #     create_example_econ,
 #     delete_dir_example_econ,
 #     modification_econ_id_example_econ,
-#     get_test_econ_dir,
+#     temp_reals_dir,
 # )
 # from src._instrument.file import open_file, dir_files
 # from ui.pyqt_func import agenda_importance_diplay
@@ -98,7 +98,7 @@
 #         self.iggnore_agenda_x = None
 #         setup_test_example_environment()
 #         first_env = "ex5"
-#         self.econ_x = econunit_shop(econ_id=first_env, econ_dir=get_test_econ_dir())
+#         self.econ_x = econunit_shop(econ_id=first_env, econ_dir=temp_reals_dir())
 #         self.refresh_econ()
 #         self.econ_id_combo_refresh()
 #         self.econ_id_combo.setCurrentText(first_env)
@@ -124,7 +124,7 @@
 
 #     def econ_load_from_file(self):
 #         econ_selected = self.econ_id_combo.currentText()
-#         self.econ_x = econunit_shop(econ_id=econ_selected, econ_dir=get_test_econ_dir())
+#         self.econ_x = econunit_shop(econ_id=econ_selected, econ_dir=temp_reals_dir())
 #         self.econ_x.set_econ_dirs(in_memory_treasury=False)
 #         self.econ_id.setText(econ_selected)
 #         self.refresh_econ()

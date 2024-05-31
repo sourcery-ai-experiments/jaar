@@ -1,7 +1,8 @@
+from src._road.worldnox import econnox_shop
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_real_id,
-    get_test_econ_dir,
+    temp_real_id,
+    temp_reals_dir,
     env_dir_setup_cleanup,
 )
 from src._instrument.sqlite import get_single_result
@@ -266,7 +267,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # x_econ = _delete_and_set_ex6()
     #     # # x_econ.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
-    #     # x_econ = econunit_shop(real_id=ex6_text, econ_dir=get_test_econ_dir())
+    #     # x_econ = econunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
     #     # x_econ.set_road_nodes(sal_text)
     #     # x_econ.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 

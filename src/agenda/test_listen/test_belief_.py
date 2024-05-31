@@ -1,22 +1,53 @@
-from src.agenda.group import groupunit_shop
-from src.agenda.party import partylink_shop
-from src.agenda.idea import ideaunit_shop, reasonunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
-    listen_to_speaker_intent,
-    generate_ingest_list,
-    create_empty_agenda,
-    _allocate_irrational_debtor_weight,
-    generate_perspective_intent,
-    get_debtor_weight_ordered_partys,
+    get_debtors_roll,
+    get_ordered_debtors_roll,
     listen_to_speaker_beliefs,
 )
-from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
-from copy import deepcopy as copy_deepcopy
-from pytest import raises as pytest_raises
 
 
-def test_get_debtor_weight_ordered_partys_ReturnsCorrectObj():
+def test_get_debtors_roll_ReturnsObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_role = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.calc_agenda_metrics()
+
+    # WHEN
+    yao_roll = get_debtors_roll(yao_role)
+
+    # THEN
+    zia_partyunit = yao_role.get_party(zia_text)
+    assert yao_roll == [zia_partyunit]
+
+
+def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
+    # GIVEN
+    yao_text = "Yao"
+    yao_role = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_creditor_weight = 47
+    zia_debtor_weight = 41
+    wei_text = "Wei"
+    wei_creditor_weight = 67
+    wei_debtor_weight = 0
+    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(wei_text, wei_creditor_weight, wei_debtor_weight)
+    yao_role.calc_agenda_metrics()
+
+    # WHEN
+    yao_roll = get_debtors_roll(yao_role)
+
+    # THEN
+    zia_partyunit = yao_role.get_party(zia_text)
+    assert yao_roll == [zia_partyunit]
+
+
+def test_get_ordered_debtors_roll_ReturnsObjsInOrder():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -32,7 +63,7 @@ def test_get_debtor_weight_ordered_partys_ReturnsCorrectObj():
     yao_agenda.set_party_pool(yao_pool)
 
     # WHEN
-    ordered_partys1 = get_debtor_weight_ordered_partys(yao_agenda)
+    ordered_partys1 = get_ordered_debtors_roll(yao_agenda)
 
     # THEN
     zia_party = yao_agenda.get_party(zia_text)
@@ -47,9 +78,40 @@ def test_get_debtor_weight_ordered_partys_ReturnsCorrectObj():
     bob_party = yao_agenda.get_party(bob_text)
 
     # WHEN
-    ordered_partys2 = get_debtor_weight_ordered_partys(yao_agenda)
+    ordered_partys2 = get_ordered_debtors_roll(yao_agenda)
 
     # THEN
+    assert ordered_partys2[0].get_dict() == bob_party.get_dict()
+    assert ordered_partys2 == [bob_party, sue_party, zia_party]
+
+
+def test_get_ordered_debtors_roll_DoesNotReturnZero_debtor_weight():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
+    zia_text = "Zia"
+    zia_debtor_weight = 41
+    sue_text = "Sue"
+    sue_debtor_weight = 51
+    yao_pool = 92
+    yao_agenda.set_party_pool(yao_pool)
+    bob_text = "Bob"
+    bob_debtor_weight = 75
+    xio_text = "Xio"
+    yao_agenda.add_partyunit(zia_text, 0, zia_debtor_weight)
+    yao_agenda.add_partyunit(sue_text, 0, sue_debtor_weight)
+    yao_agenda.add_partyunit(bob_text, 0, bob_debtor_weight)
+    yao_agenda.add_partyunit(yao_text, 0, 0)
+    yao_agenda.add_partyunit(xio_text, 0, 0)
+
+    # WHEN
+    ordered_partys2 = get_ordered_debtors_roll(yao_agenda)
+
+    # THEN
+    assert len(ordered_partys2) == 3
+    zia_party = yao_agenda.get_party(zia_text)
+    sue_party = yao_agenda.get_party(sue_text)
+    bob_party = yao_agenda.get_party(bob_text)
     assert ordered_partys2[0].get_dict() == bob_party.get_dict()
     assert ordered_partys2 == [bob_party, sue_party, zia_party]
 
