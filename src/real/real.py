@@ -1,10 +1,11 @@
-from src._road.jaar_config import get_changes_folder
 from src._instrument.file import set_dir, delete_dir, dir_files
+from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
+from src._road.worlddir import econdir_shop
 from src.agenda.agenda import AgendaUnit
 from src.agenda.listen import listen_to_speaker_intent
-from src.econ.econ import EconUnit
+from src.econ.job_creator import create_job_file_from_role_file, save_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src._road.worlddir import UserDir, userdir_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
@@ -157,10 +158,17 @@ class RealUnit:
                 self._planck,
             )
             create_person_econunits(healer_userdir)
-            for econ_idea in healer_dict.values():
-                x_econ = get_econunit(healer_userdir, econ_idea.get_road())
-                x_econ.save_role_file(x_duty)
-                x_job = x_econ.create_job_file_from_role_file(person_id)
+            for econ_road in healer_dict.keys():
+                x_econdir = econdir_shop(
+                    self.reals_dir,
+                    self.real_id,
+                    healer_id,
+                    econ_road,
+                    self._road_delimiter,
+                    self._planck,
+                )
+                save_role_file(x_econdir.econ_dir(), x_duty)
+                x_job = create_job_file_from_role_file(x_econdir.econ_dir(), person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
