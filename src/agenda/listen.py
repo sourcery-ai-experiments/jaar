@@ -205,7 +205,7 @@ def get_all_partys_with_debtor_weight(x_role: AgendaUnit) -> list[PartyUnit]:
     ]
 
 
-def get_ordered_partys_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
+def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
     partys_ordered_list = get_all_partys_with_debtor_weight(x_agenda)
     partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
     return partys_ordered_list
@@ -247,7 +247,9 @@ def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUni
     if new_agenda._party_debtor_pool is None:
         return new_agenda
 
-    for x_partyunit in get_ordered_partys_roll(new_agenda):
+    debtors_roll = get_ordered_debtors_roll(new_agenda)
+
+    for x_partyunit in debtors_roll:
         if x_partyunit.party_id == new_agenda._owner_id:
             listen_to_speaker_intent(new_agenda, listener)
         else:

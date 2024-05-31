@@ -2,7 +2,7 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
     get_all_partys_with_debtor_weight,
-    get_ordered_partys_roll,
+    get_ordered_debtors_roll,
     listen_to_speaker_beliefs,
 )
 
@@ -47,7 +47,7 @@ def test_get_all_partys_with_debtor_weight_ReturnsObjIgnoresZero_debtor_weight()
     assert yao_roll == [zia_partyunit]
 
 
-def test_get_ordered_partys_roll_ReturnsObjsInOrder():
+def test_get_ordered_debtors_roll_ReturnsObjsInOrder():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -63,7 +63,7 @@ def test_get_ordered_partys_roll_ReturnsObjsInOrder():
     yao_agenda.set_party_pool(yao_pool)
 
     # WHEN
-    ordered_partys1 = get_ordered_partys_roll(yao_agenda)
+    ordered_partys1 = get_ordered_debtors_roll(yao_agenda)
 
     # THEN
     zia_party = yao_agenda.get_party(zia_text)
@@ -78,14 +78,14 @@ def test_get_ordered_partys_roll_ReturnsObjsInOrder():
     bob_party = yao_agenda.get_party(bob_text)
 
     # WHEN
-    ordered_partys2 = get_ordered_partys_roll(yao_agenda)
+    ordered_partys2 = get_ordered_debtors_roll(yao_agenda)
 
     # THEN
     assert ordered_partys2[0].get_dict() == bob_party.get_dict()
     assert ordered_partys2 == [bob_party, sue_party, zia_party]
 
 
-def test_get_ordered_partys_roll_DoesNotReturnZero_debtor_weight():
+def test_get_ordered_debtors_roll_DoesNotReturnZero_debtor_weight():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
@@ -105,7 +105,7 @@ def test_get_ordered_partys_roll_DoesNotReturnZero_debtor_weight():
     yao_agenda.add_partyunit(xio_text, 0, 0)
 
     # WHEN
-    ordered_partys2 = get_ordered_partys_roll(yao_agenda)
+    ordered_partys2 = get_ordered_debtors_roll(yao_agenda)
 
     # THEN
     assert len(ordered_partys2) == 3
