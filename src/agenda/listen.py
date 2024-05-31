@@ -191,7 +191,7 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_all_partys_with_debtor_weight(x_role: AgendaUnit) -> list[PartyUnit]:
+def get_debtors_roll(x_role: AgendaUnit) -> list[PartyUnit]:
     return [
         x_partyunit
         for x_partyunit in x_role._partys.values()
@@ -200,7 +200,7 @@ def get_all_partys_with_debtor_weight(x_role: AgendaUnit) -> list[PartyUnit]:
 
 
 def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
-    partys_ordered_list = get_all_partys_with_debtor_weight(x_agenda)
+    partys_ordered_list = get_debtors_roll(x_agenda)
     partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
     return partys_ordered_list
 
@@ -243,7 +243,7 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
 
 
 def listen_to_speakers_intent(listener: AgendaUnit, speakers_dir: str):
-    debtors_roll = get_ordered_debtors_roll(listener)
+    debtors_roll = get_debtors_roll(listener)
     for x_partyunit in debtors_roll:
         if x_partyunit.party_id == listener._owner_id:
             listen_to_speaker_intent(listener, listener)
@@ -255,7 +255,7 @@ def listen_to_speakers_intent(listener: AgendaUnit, speakers_dir: str):
 
 
 def listen_to_speakers_belief(listener: AgendaUnit, speakers_dir: str):
-    pass
+    debtors_roll = get_ordered_debtors_roll(listener)
 
 
 def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
