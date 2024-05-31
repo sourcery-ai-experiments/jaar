@@ -1,18 +1,18 @@
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, RealID
-from src.econ.econ import get_temp_env_real_id
+from src.econ.econ import temp_real_id
 from random import randrange
 
 
 def get_1node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
 
 def get_Jnode2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("A"))
     x_agenda.calc_agenda_metrics()
     return x_agenda
@@ -20,13 +20,13 @@ def get_Jnode2node_agenda() -> AgendaUnit:
 
 def get_2node_agenda(real_id: RealID = None) -> AgendaUnit:
     if real_id is None:
-        real_id = get_temp_env_real_id()
+        real_id = temp_real_id()
     a_text = "A"
     b_text = "B"
     x_agenda = agendaunit_shop(_owner_id=a_text)
     x_agenda.set_real_id(real_id)
     idea_b = ideaunit_shop(b_text)
-    x_agenda.add_idea(idea_b, parent_road=get_temp_env_real_id())
+    x_agenda.add_idea(idea_b, parent_road=temp_real_id())
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -34,7 +34,7 @@ def get_2node_agenda(real_id: RealID = None) -> AgendaUnit:
 def get_3node_agenda() -> AgendaUnit:
     a_text = "A"
     x_agenda = agendaunit_shop(a_text)
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("B"))
     x_agenda.add_l1_idea(ideaunit_shop("C"))
     x_agenda.calc_agenda_metrics()
@@ -44,7 +44,7 @@ def get_3node_agenda() -> AgendaUnit:
 def get_3node_D_E_F_agenda() -> AgendaUnit:
     d_text = "D"
     x_agenda = agendaunit_shop(d_text)
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("E"))
     x_agenda.add_l1_idea(ideaunit_shop("F"))
     x_agenda.calc_agenda_metrics()
@@ -53,7 +53,7 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
 
 def get_6node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("B"))
     x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
@@ -66,7 +66,7 @@ def get_6node_agenda() -> AgendaUnit:
 
 def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("B"))
     x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
@@ -80,7 +80,7 @@ def get_7nodeInsertH_agenda() -> AgendaUnit:
 
 def get_5nodeHG_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("B"))
     x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
@@ -92,7 +92,7 @@ def get_5nodeHG_agenda() -> AgendaUnit:
 
 def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("A"))
 
     a_road = x_agenda.make_l1_road("A")
@@ -108,7 +108,7 @@ def get_7nodeJRoot_agenda() -> AgendaUnit:
 
 def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
-    x_agenda.set_real_id(get_temp_env_real_id())
+    x_agenda.set_real_id(temp_real_id())
     x_agenda.add_l1_idea(ideaunit_shop("A"))
 
     a_road = x_agenda.make_l1_road("A")

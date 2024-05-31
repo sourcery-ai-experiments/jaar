@@ -8,6 +8,7 @@ from src._road.road import (
     RealID,
     validate_roadnode,
 )
+from src._road.worlddir import EconDir
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
 from src._instrument.file import set_dir, delete_dir, open_file, dir_files
@@ -58,7 +59,7 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def get_temp_env_real_id():
+def temp_real_id():
     return "ex_econ04"
 
 
@@ -66,7 +67,7 @@ def get_temp_env_healer_id():
     return "ex_healer04"
 
 
-def get_temp_env_person_id():
+def temp_person_id():
     return "ex_person04"
 
 
@@ -393,16 +394,6 @@ class EconUnit:
     def get_jobs_dir_file_names_list(self):
         return list(dir_files(dir_path=self.get_jobs_dir()).keys())
 
-    def build_econ_road(self, road_wo_econ_root: RoadUnit = None):
-        if road_wo_econ_root is None or road_wo_econ_root == "":
-            return self.real_id
-        else:
-            return create_road(
-                parent_road=self.real_id,
-                terminus_node=road_wo_econ_root,
-                delimiter=self._road_delimiter,
-            )
-
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
@@ -439,20 +430,18 @@ class EconUnit:
                     cur.execute(sqlstr)
 
 
-def econunit_shop(
-    real_id: RealID,
-    econ_dir: str = None,
-    _manager_person_id: PersonID = None,
-    in_memory_treasury: bool = None,
-    _road_delimiter: str = None,
-) -> EconUnit:
+def econunit_shop(x_econdir: EconDir, in_memory_treasury: bool = None) -> EconUnit:
+
+    real_id = x_econdir.real_id
+    econ_dir = x_econdir.econ_dir()
+    _manager_person_id = x_econdir.person_id
+    _road_delimiter = x_econdir._road_delimiter
+
     if in_memory_treasury is None:
         in_memory_treasury = True
-    if econ_dir is None:
-        econ_dir = f"./{real_id}"
     econ_x = EconUnit(econ_dir=econ_dir)
     if _manager_person_id is None:
-        _manager_person_id = get_temp_env_person_id()
+        _manager_person_id = temp_person_id()
     econ_x.set_road_delimiter(_road_delimiter)
     econ_x.set_real_id(real_id=real_id)
     econ_x._manager_person_id = _manager_person_id

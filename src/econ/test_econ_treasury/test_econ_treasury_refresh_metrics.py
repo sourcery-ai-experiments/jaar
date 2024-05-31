@@ -7,8 +7,8 @@ from src.agenda.agenda import (
 )
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
-    get_temp_env_real_id,
-    get_test_econ_dir,
+    temp_real_id,
+    get_texas_econdir,
     env_dir_setup_cleanup,
 )
 from src._instrument.sqlite import get_single_result
@@ -37,7 +37,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryI
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -61,7 +61,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryF
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     bob_text = "Bob"
@@ -85,7 +85,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -131,7 +131,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -158,7 +158,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -185,7 +185,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_gr
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -213,7 +213,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(real_id=get_temp_env_real_id(), econ_dir=get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
@@ -281,7 +281,7 @@ def test_EconUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -289,7 +289,7 @@ def test_EconUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTabl
         assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    resources_road = create_road(get_temp_env_real_id(), "resources")
+    resources_road = create_road(temp_real_id(), "resources")
     water_road = create_road(resources_road, "water")
     water_agenda_ideaunit = IdeaCatalog(owner_id=bob_text, idea_road=water_road)
     water_insert_sqlstr = get_agenda_ideaunit_table_insert_sqlstr(water_agenda_ideaunit)
@@ -305,7 +305,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_ta
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -336,7 +336,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_ta
 
 def test_EconUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -363,12 +363,12 @@ def test_EconUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_clea
 
     # WHEN / THEN
     assert len(get_agenda_ideaunit_dict(x_econ.get_treasury_conn())) == 20
-    b_road = create_road(get_temp_env_real_id(), "B")
+    b_road = create_road(temp_real_id(), "B")
     assert len(get_agenda_ideaunit_dict(x_econ.get_treasury_conn(), b_road)) == 3
-    c_road = create_road(get_temp_env_real_id(), "C")
+    c_road = create_road(temp_real_id(), "C")
     ce_road = create_road(c_road, "E")
     assert len(get_agenda_ideaunit_dict(x_econ.get_treasury_conn(), ce_road)) == 2
-    ex_road = create_road(get_temp_env_real_id())
+    ex_road = create_road(temp_real_id())
     assert len(get_agenda_ideaunit_dict(x_econ.get_treasury_conn(), ex_road)) == 4
 
 
@@ -376,7 +376,7 @@ def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopula
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -384,7 +384,7 @@ def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopula
         assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    weather_road = create_road(get_temp_env_real_id(), "weather")
+    weather_road = create_road(temp_real_id(), "weather")
     weather_rain = BeliefCatalog(
         owner_id=bob_text,
         base=weather_road,
@@ -403,7 +403,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     # create 3 agendas with varying numbers of beliefs
@@ -461,7 +461,7 @@ def test_EconUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -472,7 +472,7 @@ def test_EconUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTab
     bob_group_x = GroupUnitCatalog(
         owner_id=bob_text,
         groupunit_group_id="US Dollar",
-        treasury_partylinks=create_road(get_temp_env_real_id(), "USA"),
+        treasury_partylinks=create_road(temp_real_id(), "USA"),
     )
     bob_group_sqlstr = get_agenda_groupunit_table_insert_sqlstr(bob_group_x)
     with x_econ.get_treasury_conn() as treasury_conn:
@@ -487,7 +487,7 @@ def test_EconUnit_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
 
     bob_text = "Bob"
     tom_text = "Tom"

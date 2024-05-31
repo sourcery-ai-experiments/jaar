@@ -3,21 +3,14 @@ from src.agenda.agenda import (
     get_file_names_in_voice_rank_order,
     partyunit_shop,
 )
-from src._instrument.file import (
-    save_file,
-    delete_dir,
-)
+from src._instrument.file import save_file, delete_dir
 from src.econ.econ import econunit_shop, save_role_file
-from src.econ.examples.econ_env_kit import (
-    get_temp_env_real_id,
-    get_test_econ_dir,
-    env_dir_setup_cleanup,
-)
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econdir
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_test_econ_dir()}/voice_rank_order_temp"
+    temp_dir = f"{get_texas_econdir().reals_dir}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "Yao"
 
@@ -87,7 +80,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_temp_env_real_id(), get_test_econ_dir())
+    x_econ = econunit_shop(get_texas_econdir())
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"

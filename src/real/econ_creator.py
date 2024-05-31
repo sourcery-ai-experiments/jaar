@@ -6,7 +6,12 @@ from src._instrument.file import (
     delete_dir,
 )
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
-from src._road.worlddir import UserDir, get_rootpart_of_econ_dir, get_econ_path
+from src._road.worlddir import (
+    UserDir,
+    get_rootpart_of_econ_dir,
+    get_econ_path,
+    econdir_shop,
+)
 from src.agenda.agenda import AgendaUnit
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.real.admin_duty import get_duty_file_agenda
@@ -42,13 +47,15 @@ def create_econ_dir(x_userdir: UserDir, x_road: RoadUnit) -> str:
 
 
 def init_econunit(x_userdir: UserDir, econ_road: RoadUnit) -> EconUnit:
-    x_econ_path = create_econ_dir(x_userdir, econ_road)
-    x_econunit = econunit_shop(
+    x_econdir = econdir_shop(
+        reals_dir=x_userdir.reals_dir,
         real_id=x_userdir.real_id,
-        econ_dir=x_econ_path,
-        _manager_person_id=x_userdir.person_id,
-        _road_delimiter=x_userdir._road_delimiter,
+        person_id=x_userdir.person_id,
+        econ_road=econ_road,
+        road_delimiter=x_userdir._road_delimiter,
+        planck=x_userdir._planck,
     )
+    x_econunit = econunit_shop(x_econdir)
     x_econunit.set_econ_dirs()
     return x_econunit
 

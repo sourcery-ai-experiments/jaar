@@ -1,49 +1,47 @@
-# from lw.agenda import AgendaUnit
+from src._instrument.file import delete_dir, copy_dir, save_file, dir_files
+from src._road.road import create_road_from_nodes, RoadUnit
+from src._road.worlddir import econdir_shop, EconDir
 from src.agenda.agenda import agendaunit_shop
-from src._instrument.file import (
-    # set_dir,
-    delete_dir,
-    copy_dir,
-    save_file,
-    # open_file,
-    dir_files,
-)
 from src.agenda.examples.example_agendas import (
-    # agenda_v001 as example_agendas_agenda_v001,
-    # agenda_v002 as example_agendas_agenda_v002,
-    # get_agenda_1Task_1CE0MinutesReason_1Belief as example_agendas_get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with7amCleanTableReason as example_agendas_get_agenda_with7amCleanTableReason,
     get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
     get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
 )
-from src.econ.econ import (
-    EconUnit,
-    econunit_shop,
-    get_temp_env_real_id,
-)
+from src.econ.econ import EconUnit, econunit_shop, temp_real_id, temp_person_id
 from src.econ.examples.example_econ_agendas import (
     get_7nodeJRootWithH_agenda as example_get_7nodeJRootWithH_agenda,
-    # get_agenda_2CleanNodesRandomWeights as example_get_agenda_2CleanNodesRandomWeights,
-    # get_agenda_3CleanNodesRandomWeights as example_get_agenda_3CleanNodesRandomWeights,
 )
 from os import rename as os_rename, path as os_path
 from pytest import fixture as pytest_fixture
 
 
-def get_test_econ_dir():
-    return f"{get_test_econs_dir()}/{get_temp_env_real_id()}"
+def temp_real_dir():
+    return f"{temp_reals_dir()}/{temp_real_id()}"
 
 
-def get_test_econs_dir():
-    return "src/econ/examples/econs"
+def temp_reals_dir():
+    return "src/econ/examples/reals"
 
 
 @pytest_fixture()
 def env_dir_setup_cleanup():
-    env_dir = get_test_econ_dir()
-    delete_dir(dir=env_dir)
+    env_dir = temp_reals_dir()
+    delete_dir(env_dir)
     yield env_dir
-    delete_dir(dir=env_dir)
+    delete_dir(env_dir)
+
+
+def get_texas_road() -> RoadUnit:
+    naton_text = "nation-state"
+    usa_text = "usa"
+    texas_text = "texas"
+    return create_road_from_nodes([naton_text, usa_text, texas_text])
+
+
+def get_texas_econdir() -> EconDir:
+    return econdir_shop(
+        temp_reals_dir(), temp_real_id(), temp_person_id(), get_texas_road()
+    )
 
 
 def create_agenda_file_for_econs(econ_dir: str, owner_id: str):
@@ -61,9 +59,7 @@ def create_agenda_file_for_econs(econ_dir: str, owner_id: str):
 
 
 def create_example_econs_list():
-    return dir_files(
-        dir_path=get_test_econs_dir(), include_dirs=True, include_files=False
-    )
+    return dir_files(dir_path=temp_reals_dir(), include_dirs=True, include_files=False)
 
 
 def setup_test_example_environment():
@@ -75,8 +71,9 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex4():
     ex4_id = "ex4"
-    ex4_dir = f"{get_test_econs_dir()}/{ex4_id}"
-    x_econ = econunit_shop(ex4_id, econ_dir=ex4_dir)
+    ex4_econdir = get_texas_econdir()
+    ex4_econdir.real_id = ex4_id
+    x_econ = econunit_shop(ex4_econdir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_job_file(example_get_7nodeJRootWithH_agenda())
@@ -88,8 +85,9 @@ def _delete_and_set_ex4():
 def _delete_and_set_ex6(ex6_id: str = None):
     if ex6_id is None:
         ex6_id = "ex6"
-    ex6_dir = f"{get_test_econs_dir()}/{ex6_id}"
-    x_econ = econunit_shop(ex6_id, econ_dir=ex6_dir)
+    ex6_econdir = get_texas_econdir()
+    ex6_econdir.real_id = ex6_id
+    x_econ = econunit_shop(ex6_econdir)
     delete_dir(x_econ.get_object_root_dir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
@@ -129,23 +127,18 @@ def _delete_and_set_ex6(ex6_id: str = None):
     return x_econ
 
 
-def create_example_econ(real_id: str):
-    x_econ = econunit_shop(real_id=real_id, econ_dir=get_test_econ_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+# def modify_real_id_example_econ(
+#     econ_obj: EconUnit, src_econdir: EconDir, dst_econdir: EconDir, new_real_id
+# ):
+#     src_dir = src_econdir.econ_dir()
+#     dst_dir = dst_econdir.econ_dir()
+#     print(f"     {os_path.exists(src_dir)=}")
+#     print(f"     {src_dir=}")
+#     print(f"     {dst_dir=}")
 
-
-def delete_dir_example_econ(econ_obj: EconUnit):
-    delete_dir(econ_obj.get_object_root_dir())
-
-
-def modify_real_id_example_econ(econ_obj: EconUnit, new_real_id):
-    # base_dir = econ_obj.get_object_root_dir()
-    base_dir = "src/econ/examples/econs"
-    src_dir = f"{base_dir}/{econ_obj.real_id}"
-    dst_dir = f"{base_dir}/{new_real_id}"
-    os_rename(src=src_dir, dst=dst_dir)
-    econ_obj.set_real_id(real_id=new_real_id)
-    econ_obj.econ_dir = dst_dir
+#     os_rename(src=src_dir, dst=dst_dir)
+#     econ_obj.set_real_id(real_id=new_real_id)
+#     econ_obj.econ_dir = dst_dir
 
 
 class InvalideconCopyException(Exception):

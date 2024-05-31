@@ -1,4 +1,5 @@
 from src.econ.examples.econ_env_kit import (
+    env_dir_setup_cleanup,
     # _delete_and_set_ex3,
     _delete_and_set_ex4,
     # _delete_and_set_ex5,
@@ -6,7 +7,7 @@ from src.econ.examples.econ_env_kit import (
 )
 
 
-def test_econ_delete_and_set_ex3_thru_6_RunWithOutError():
+def test_econ_delete_and_set_ex3_thru_6_RunWithOutError(env_dir_setup_cleanup):
     # WHEN/THEN
     print("Try ex3...")
     # assert _delete_and_set_ex3() is None
