@@ -19,7 +19,6 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     yao_role.set_party_pool(zia_pool)
 
-    zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
@@ -83,11 +82,11 @@ def test_listen_to_speakers_intent_ProcessesIrrationalAgenda(env_dir_setup_clean
     sue_agendaunit = agendaunit_shop(sue_text)
     sue_agendaunit.set_max_tree_traverse(5)
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
-    vaccum_text = "Vaccum"
-    vaccum_road = sue_agendaunit.make_l1_road(vaccum_text)
-    sue_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
-    vaccum_ideaunit = sue_agendaunit.get_idea_obj(vaccum_road)
-    vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
+    vacuum_text = "vacuum"
+    vacuum_road = sue_agendaunit.make_l1_road(vacuum_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = sue_agendaunit.get_idea_obj(vacuum_road)
+    vacuum_ideaunit._assignedunit.set_suffgroup(yao_text)
 
     egg_text = "egg first"
     egg_road = sue_agendaunit.make_l1_road(egg_text)
@@ -215,11 +214,11 @@ def test_listen_to_speakers_intent_ListensToOwner_role_AndNotOwner_job(
 
     # save yao with task to roles
     yao_job = agendaunit_shop(yao_text)
-    vaccum_text = "Vaccum"
-    vaccum_road = yao_job.make_l1_road(vaccum_text)
-    yao_job.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
-    vaccum_ideaunit = yao_job.get_idea_obj(vaccum_road)
-    vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
+    vacuum_text = "vacuum"
+    vacuum_road = yao_job.make_l1_road(vacuum_text)
+    yao_job.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = yao_job.get_idea_obj(vacuum_road)
+    vacuum_ideaunit._assignedunit.set_suffgroup(yao_text)
     save_file(jobs_dir, get_file_name(yao_text), yao_job.get_json())
 
     # WHEN
@@ -228,5 +227,4 @@ def test_listen_to_speakers_intent_ListensToOwner_role_AndNotOwner_job(
 
     # THEN irrational agenda is ignored
     assert len(x_job.get_intent_dict()) != 3
-    print(f"{x_job.get_intent_dict().keys()=}")
     assert len(x_job.get_intent_dict()) == 2

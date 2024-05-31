@@ -247,11 +247,11 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
 
     sue_agendaunit = agendaunit_shop(sue_text)
     sue_agendaunit.set_max_tree_traverse(5)
-    vaccum_text = "Vaccum"
-    vaccum_road = sue_agendaunit.make_l1_road(vaccum_text)
-    sue_agendaunit.add_l1_idea(ideaunit_shop(vaccum_text, pledge=True))
-    vaccum_ideaunit = sue_agendaunit.get_idea_obj(vaccum_road)
-    vaccum_ideaunit._assignedunit.set_suffgroup(yao_text)
+    vacuum_text = "vacuum"
+    vacuum_road = sue_agendaunit.make_l1_road(vacuum_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = sue_agendaunit.get_idea_obj(vacuum_road)
+    vacuum_ideaunit._assignedunit.set_suffgroup(yao_text)
 
     egg_text = "egg first"
     egg_road = sue_agendaunit.make_l1_road(egg_text)
