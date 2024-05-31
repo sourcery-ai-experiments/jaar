@@ -15,7 +15,7 @@ from src.econ.examples.econ_env_kit import (
     get_texas_econdir,
 )
 from pytest import raises as pytest_raises
-from os import path as os_path
+from os.path import exists as os_path_exists
 
 
 def test_EconUnit_save_job_file_CreatesAgendaFile(env_dir_setup_cleanup):
@@ -23,14 +23,14 @@ def test_EconUnit_save_job_file_CreatesAgendaFile(env_dir_setup_cleanup):
     x_econ = econunit_shop(get_texas_econdir())
     a_agenda = example_get_1node_agenda()
     a_path = f"{x_econ.get_jobs_dir()}/{a_agenda._owner_id}.json"
-    assert os_path.exists(a_path) == False
+    assert os_path_exists(a_path) == False
 
     # WHEN
     x_econ.save_job_file(a_agenda)
 
     # THEN
     print(f"{a_path=}")
-    assert os_path.exists(a_path)
+    assert os_path_exists(a_path)
 
 
 def test_EconUnit_get_job_file_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -60,13 +60,13 @@ def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     a_path = f"{x_econ.get_jobs_dir()}/{get_file_name(a_agenda._owner_id)}"
     x_econ.save_job_file(a_agenda)
     print(f"{a_path=}")
-    assert os_path.exists(a_path)
+    assert os_path_exists(a_path)
 
     # WHEN
     x_econ.delete_job_file(a_agenda._owner_id)
 
     # THEN
-    assert os_path.exists(a_path) == False
+    assert os_path_exists(a_path) == False
 
 
 def test_EconUnit_modify_job_owner_id_ModifiesFileName(env_dir_setup_cleanup):
@@ -82,13 +82,13 @@ def test_EconUnit_modify_job_owner_id_ModifiesFileName(env_dir_setup_cleanup):
     # WHEN
     zia_owner_id = "new1"
     zia_agenda_path = f"{x_econ.get_jobs_dir()}/{zia_owner_id}.json"
-    assert os_path.exists(zia_agenda_path) == False
-    assert os_path.exists(yao_agenda_path)
+    assert os_path_exists(zia_agenda_path) == False
+    assert os_path_exists(yao_agenda_path)
     x_econ.modify_job_owner_id(old_owner_id=yao_owner_id, new_owner_id=zia_owner_id)
 
     # THEN
-    assert os_path.exists(yao_agenda_path) == False
-    assert os_path.exists(zia_agenda_path)
+    assert os_path_exists(yao_agenda_path) == False
+    assert os_path_exists(zia_agenda_path)
 
 
 def test_EconUnit_save_job_file_ModifiesFile_idearoot(env_dir_setup_cleanup):
@@ -115,7 +115,7 @@ def test_EconUnit_create_job_file_from_role_file_ReturnsObj(env_dir_setup_cleanu
     x_econ.set_econ_dirs(in_memory_treasury=True)
     bob_text = "Bob"
     bob_role = get_agenda_2CleanNodesRandomWeights(bob_text)
-    x_econ.save_role_file(bob_role)
+    x_econ.save_role_file_agenda(bob_role)
 
     # WHEN
     bob_job = x_econ.create_job_file_from_role_file(bob_text)

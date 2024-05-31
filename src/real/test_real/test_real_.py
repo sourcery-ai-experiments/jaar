@@ -1,16 +1,14 @@
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none
-from src._road.worlddir import userdir_shop
+from src._road.worlddir import userdir_shop, get_file_name
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
-from src.econ.job_creator import get_file_name
 from src.real.admin_duty import save_duty_file, get_duty_file_agenda
 from src.agenda.change import get_changes_folder
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
-from os import path as os_path
-from os.path import exists as os_path_exists
+from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
 def test_RealUnit_exists(reals_dir_setup_cleanup):
@@ -76,11 +74,11 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(reals_dir_setup_cleanup)
     assert music_real._real_dir is None
     assert music_real._persons_dir is None
     assert music_real._changes_dir is None
-    assert os_path.exists(x_real_dir) is False
-    assert os_path.isdir(x_real_dir) is False
-    assert os_path.exists(x_persons_dir) is False
-    assert os_path.exists(x_changes_dir) is False
-    assert os_path.exists(journal_file_path) is False
+    assert os_path_exists(x_real_dir) is False
+    assert os_path_isdir(x_real_dir) is False
+    assert os_path_exists(x_persons_dir) is False
+    assert os_path_exists(x_changes_dir) is False
+    assert os_path_exists(journal_file_path) is False
 
     # WHEN
     music_real._set_real_dirs()
@@ -89,11 +87,11 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(reals_dir_setup_cleanup)
     assert music_real._real_dir == x_real_dir
     assert music_real._persons_dir == x_persons_dir
     assert music_real._changes_dir == x_changes_dir
-    assert os_path.exists(x_real_dir)
-    assert os_path.isdir(x_real_dir)
-    assert os_path.exists(x_persons_dir)
-    assert os_path.exists(x_changes_dir)
-    assert os_path.exists(journal_file_path)
+    assert os_path_exists(x_real_dir)
+    assert os_path_isdir(x_real_dir)
+    assert os_path_exists(x_persons_dir)
+    assert os_path_exists(x_changes_dir)
+    assert os_path_exists(journal_file_path)
 
 
 def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):

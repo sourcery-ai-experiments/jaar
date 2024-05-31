@@ -1,22 +1,15 @@
 from src._instrument.file import delete_dir
-from src._road.road import default_road_delimiter_if_none, create_road
-from src._road.worlddir import econdir_shop
-from src.econ.econ import (
-    EconUnit,
-    econunit_shop,
-    temp_person_id,
-    temp_real_id,
-)
+from src._road.road import default_road_delimiter_if_none
+from src.econ.econ import EconUnit, econunit_shop
 from src.econ.examples.econ_env_kit import (
-    temp_reals_dir,
-    temp_reals_dir,
-    copy_evaluation_econ,
     env_dir_setup_cleanup,
-    get_texas_road,
+    temp_reals_dir,
+    temp_reals_dir,
+    temp_real_id,
     get_texas_econdir,
 )
 from pytest import raises as pytest_raises
-from os import path as os_path
+from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
 def test_EconUnit_exists():
@@ -43,7 +36,7 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # THEN
     assert texas_econ != None
     assert texas_econ.econdir.real_id == x_real_id
-    assert os_path.exists(sue_texas_econdir.econ_dir())
+    assert os_path_exists(sue_texas_econdir.econ_dir())
     assert texas_econ._treasury_db != None
     assert texas_econ.econdir.person_id == sue_text
     assert texas_econ.econdir._road_delimiter == default_road_delimiter_if_none()
@@ -51,8 +44,7 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
 
 def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     # GIVEN
-    x_real_id = temp_real_id()
-    # assert os_path.exists(econ_dir) is False
+    # assert os_path_exists(econ_dir) is False
 
     # WHEN
     texas_econ = econunit_shop(get_texas_econdir())
@@ -60,7 +52,7 @@ def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     # THEN
     assert texas_econ != None
     assert texas_econ.econdir == get_texas_econdir()
-    # assert os_path.exists(econ_dir)
+    # assert os_path_exists(econ_dir)
     assert texas_econ._treasury_db != None
 
 
@@ -113,21 +105,21 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{texas_econdir.econ_dir()}/{treasury_file_name}"
 
-    assert os_path.exists(texas_econdir.reals_dir) is False
-    assert os_path.isdir(texas_econdir.reals_dir) is False
-    assert os_path.exists(x_econ.get_jobs_dir()) is False
-    assert os_path.exists(x_econ.get_roles_dir()) is False
-    assert os_path.exists(treasury_file_path) is False
+    assert os_path_exists(texas_econdir.reals_dir) is False
+    assert os_path_isdir(texas_econdir.reals_dir) is False
+    assert os_path_exists(x_econ.get_jobs_dir()) is False
+    assert os_path_exists(x_econ.get_roles_dir()) is False
+    assert os_path_exists(treasury_file_path) is False
 
     # WHEN
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     # THEN check agendas src directory created
-    assert os_path.exists(texas_econdir.reals_dir)
-    assert os_path.isdir(texas_econdir.reals_dir)
-    assert os_path.exists(x_econ.get_jobs_dir())
-    assert os_path.exists(x_econ.get_roles_dir())
-    assert os_path.exists(treasury_file_path)
+    assert os_path_exists(texas_econdir.reals_dir)
+    assert os_path_isdir(texas_econdir.reals_dir)
+    assert os_path_exists(x_econ.get_jobs_dir())
+    assert os_path_exists(x_econ.get_roles_dir())
+    assert os_path_exists(treasury_file_path)
     assert x_econ.econdir.econ_dir() == texas_econdir.econ_dir()
     assert x_econ.get_jobs_dir() == x_econ.get_jobs_dir()
     assert x_econ.get_roles_dir() == x_econ.get_roles_dir()
@@ -158,17 +150,17 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 
 #     texas_econ.set_econ_dirs(in_memory_treasury=True)
 
-#     assert os_path.exists(old_econ_dir)
-#     assert os_path.isdir(old_econ_dir)
-#     assert os_path.exists(old_jobs_dir)
-#     assert os_path.exists(old_roles_dir)
+#     assert os_path_exists(old_econ_dir)
+#     assert os_path_isdir(old_econ_dir)
+#     assert os_path_exists(old_jobs_dir)
+#     assert os_path_exists(old_roles_dir)
 #     assert texas_econ.get_jobs_dir() == old_jobs_dir
 #     assert texas_econ.get_roles_dir() == old_roles_dir
 
-#     assert os_path.exists(new_econ_dir) is False
-#     assert os_path.isdir(new_econ_dir) is False
-#     assert os_path.exists(new_jobs_dir) is False
-#     assert os_path.exists(new_roles_dir) is False
+#     assert os_path_exists(new_econ_dir) is False
+#     assert os_path_isdir(new_econ_dir) is False
+#     assert os_path_exists(new_jobs_dir) is False
+#     assert os_path_exists(new_roles_dir) is False
 #     assert texas_econ.get_jobs_dir() != new_jobs_dir
 #     assert texas_econ.get_roles_dir() != new_roles_dir
 #     assert texas_econ.real_id != new_x_real_id
@@ -176,7 +168,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     # WHEN
 #     print(f"{new_x_real_id=} {old_x_real_id=}")
 #     print(f"{old_econ_dir=}")
-#     assert os_path.exists(old_econ_dir)
+#     assert os_path_exists(old_econ_dir)
 #     texas_econdir.save_file_job("sue", "fooboo", True)
 #     modify_real_id_example_econ(
 #         econ_obj=texas_econ,
@@ -186,20 +178,20 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     )
 
 #     # THEN check agendas src directory created
-#     assert os_path.exists(old_econ_dir) is False
-#     assert os_path.isdir(old_econ_dir) is False
-#     assert os_path.exists(old_jobs_dir) is False
-#     assert os_path.exists(old_roles_dir) is False
+#     assert os_path_exists(old_econ_dir) is False
+#     assert os_path_isdir(old_econ_dir) is False
+#     assert os_path_exists(old_jobs_dir) is False
+#     assert os_path_exists(old_roles_dir) is False
 #     assert texas_econ.real_id == new_x_real_id
 #     print(f"{texas_econ.get_jobs_dir()=}")
 #     print(f"           {old_jobs_dir=}")
 #     assert texas_econ.get_jobs_dir() != old_jobs_dir
 #     assert texas_econ.get_roles_dir() != old_roles_dir
 
-#     assert os_path.exists(new_econ_dir)
-#     assert os_path.isdir(new_econ_dir)
-#     assert os_path.exists(new_jobs_dir)
-#     assert os_path.exists(new_roles_dir)
+#     assert os_path_exists(new_econ_dir)
+#     assert os_path_isdir(new_econ_dir)
+#     assert os_path_exists(new_jobs_dir)
+#     assert os_path_exists(new_roles_dir)
 #     assert texas_econ.get_jobs_dir() == new_jobs_dir
 #     assert texas_econ.get_roles_dir() == new_roles_dir
 
@@ -223,10 +215,10 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     x_econ = econunit_shop(old_x_real_id, temp_reals_dir())
 #     x_econ.set_econ_dirs()
 
-#     assert os_path.exists(old_econ_dir)
-#     assert os_path.isdir(old_econ_dir)
-#     assert os_path.exists(old_jobs_dir)
-#     assert os_path.exists(old_roles_dir)
+#     assert os_path_exists(old_econ_dir)
+#     assert os_path_isdir(old_econ_dir)
+#     assert os_path_exists(old_jobs_dir)
+#     assert os_path_exists(old_roles_dir)
 #     assert x_econ.get_jobs_dir() == old_jobs_dir
 #     assert x_econ.get_roles_dir() == old_roles_dir
 
@@ -235,10 +227,10 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     new_jobs_dir = f"{new_econ_dir}/{jobs_text}"
 #     new_roles_dir = f"{new_econ_dir}/{roles_text}"
 
-#     assert os_path.exists(new_econ_dir) is False
-#     assert os_path.isdir(new_econ_dir) is False
-#     assert os_path.exists(new_jobs_dir) is False
-#     assert os_path.exists(new_roles_dir) is False
+#     assert os_path_exists(new_econ_dir) is False
+#     assert os_path_isdir(new_econ_dir) is False
+#     assert os_path_exists(new_jobs_dir) is False
+#     assert os_path_exists(new_roles_dir) is False
 #     assert x_econ.get_jobs_dir() != new_jobs_dir
 #     assert x_econ.get_roles_dir() != new_roles_dir
 #     assert x_econ.real_id != new_x_real_id
@@ -247,17 +239,17 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     copy_evaluation_econ(src_real_id=x_econ.real_id, dest_real_id=new_x_real_id)
 
 #     # THEN check agendas src directory created
-#     assert os_path.exists(old_econ_dir)
-#     assert os_path.isdir(old_econ_dir)
-#     assert os_path.exists(old_jobs_dir)
-#     assert os_path.exists(old_roles_dir)
+#     assert os_path_exists(old_econ_dir)
+#     assert os_path_isdir(old_econ_dir)
+#     assert os_path_exists(old_jobs_dir)
+#     assert os_path_exists(old_roles_dir)
 #     assert x_econ.get_jobs_dir() == old_jobs_dir
 #     assert x_econ.get_roles_dir() == old_roles_dir
 
-#     assert os_path.exists(new_econ_dir)
-#     assert os_path.isdir(new_econ_dir)
-#     assert os_path.exists(new_jobs_dir)
-#     assert os_path.exists(new_roles_dir)
+#     assert os_path_exists(new_econ_dir)
+#     assert os_path_isdir(new_econ_dir)
+#     assert os_path_exists(new_jobs_dir)
+#     assert os_path_exists(new_roles_dir)
 #     assert x_econ.get_jobs_dir() != new_jobs_dir
 #     assert x_econ.get_roles_dir() != new_roles_dir
 #     assert x_econ.real_id != new_x_real_id

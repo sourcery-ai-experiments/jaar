@@ -8,7 +8,7 @@ from src.real.examples.real_env_kit import (
     reals_dir_setup_cleanup,
 )
 from src._instrument.sqlite import check_connection, get_row_count
-from os import path as os_path
+from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
 
 

@@ -82,7 +82,7 @@ def get_econunit(x_userdir: UserDir, econ_road: RoadUnit) -> EconUnit:
 
 def set_econunit_role(x_userdir: UserDir, econ_road: RoadUnit, role: AgendaUnit):
     x_econ = get_econunit(x_userdir, econ_road)
-    x_econ.save_role_file(role)
+    x_econ.save_role_file_agenda(role)
 
 
 def set_econunits_role(x_userdir: UserDir, role: AgendaUnit):

@@ -5,7 +5,7 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src._road.worlddir import econdir_shop
 from src.agenda.agenda import AgendaUnit
 from src.agenda.listen import listen_to_speaker_intent
-from src.econ.job_creator import create_job_file_from_role_file, save_role_file
+from src.econ.econ import create_job_file_from_role_file, save_role_file_agenda
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src._road.worlddir import UserDir, userdir_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
@@ -140,7 +140,7 @@ class RealUnit:
         duty_agenda: AgendaUnit,
     ):
         x_econ = get_econunit(healer_userdir, econ_road)
-        x_econ.save_role_file(duty_agenda)
+        x_econ.save_role_file_agenda(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
@@ -167,8 +167,8 @@ class RealUnit:
                     self._road_delimiter,
                     self._planck,
                 )
-                save_role_file(x_econdir.econ_dir(), x_duty)
-                x_job = create_job_file_from_role_file(x_econdir.econ_dir(), person_id)
+                save_role_file_agenda(x_econdir, x_duty)
+                x_job = create_job_file_from_role_file(x_econdir, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
