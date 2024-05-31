@@ -1,4 +1,5 @@
 from src._instrument.file import set_dir
+from src._road.jaar_config import init_change_id
 from src._road.road import RoadUnit
 from src.agenda.group import GroupID
 from src.agenda.agenda import (
@@ -7,11 +8,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
-from src.agenda.change import (
-    changeunit_shop,
-    init_change_id,
-    get_init_change_id_if_None,
-)
+from src.agenda.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
     changeunit_file_exists,
     _merge_changes_into_agenda,
