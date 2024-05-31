@@ -94,7 +94,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
-    save_role_file(x_econ.econ_dir, yao_role0_agenda)
+    save_role_file(x_econ.econ_dir(), yao_role0_agenda)
     x_econ.create_job_file_from_role_file(yao_text)
     yao_role1_agenda = x_econ.get_role_file(yao_text)
     assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None

@@ -1,13 +1,7 @@
 from src._instrument.file import save_file, open_file, delete_dir
 from src._instrument.sqlite import check_connection
-from src._road.worlddir import econdir_shop
 from src.econ.econ import econunit_shop, EconUnit, treasury_db_filename
-from src.econ.examples.econ_env_kit import (
-    temp_real_id,
-    temp_reals_dir,
-    env_dir_setup_cleanup,
-    get_texas_econdir,
-)
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econdir
 from pytest import raises as pytest_raises
 from os import path as os_path
 
@@ -39,19 +33,19 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     # GIVEN
     x_file_text = "Texas Dallas ElPaso"
     db_file = treasury_db_filename()
-    save_file(x_econ.econ_dir, file_name=db_file, file_text=x_file_text, replace=True)
+    save_file(x_econ.econ_dir(), file_name=db_file, file_text=x_file_text, replace=True)
     assert os_path.exists(x_econ.get_treasury_db_path())
-    assert open_file(x_econ.econ_dir, file_name=db_file) == x_file_text
+    assert open_file(x_econ.econ_dir(), file_name=db_file) == x_file_text
 
     # WHEN
     x_econ._create_treasury_db()
     # THEN
-    assert open_file(x_econ.econ_dir, file_name=db_file) == x_file_text
+    assert open_file(x_econ.econ_dir(), file_name=db_file) == x_file_text
 
     # # WHEN
     # x_econ._create_treasury_db(overwrite=True)
     # # THEN
-    # assert open_file(x_econ.econ_dir, file_name=db_file) != x_file_text
+    # assert open_file(x_econ.econ_dir(), file_name=db_file) != x_file_text
 
 
 def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):
@@ -89,7 +83,7 @@ def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = EconUnit(temp_real_id(), temp_reals_dir())
+    x_econ = EconUnit(get_texas_econdir())
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
         check_connection(x_econ.get_treasury_conn())

@@ -225,7 +225,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
     # run set_treasury_metrics
     # assert group "swimming expert" has 2 different party
-    x_real_id = x_econ.real_id
+    x_real_id = x_econ.econdir.real_id
 
     sal_text = "Sal"
     bob_text = "Bob"

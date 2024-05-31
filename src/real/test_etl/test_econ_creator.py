@@ -66,10 +66,10 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(dallas_db_path)
-    assert sue_dallas_econunit.real_id == sue_userdir.real_id
-    assert sue_dallas_econunit.econ_dir == dallas_dir
-    assert sue_dallas_econunit._manager_person_id == sue_text
-    assert sue_dallas_econunit._road_delimiter == sue_userdir._road_delimiter
+    assert sue_dallas_econunit.econdir.real_id == sue_userdir.real_id
+    assert sue_dallas_econunit.econ_dir() == dallas_dir
+    assert sue_dallas_econunit.econdir.person_id == sue_text
+    assert sue_dallas_econunit.econdir._road_delimiter == sue_userdir._road_delimiter
 
 
 def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
@@ -236,7 +236,7 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.real_id == sue_userdir.real_id
+    assert dallas_econ.econdir.real_id == sue_userdir.real_id
 
 
 def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):

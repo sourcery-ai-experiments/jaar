@@ -74,7 +74,7 @@ def _delete_and_set_ex4():
     ex4_econdir = get_texas_econdir()
     ex4_econdir.real_id = ex4_id
     x_econ = econunit_shop(ex4_econdir)
-    delete_dir(x_econ.get_object_root_dir())
+    delete_dir(x_econ.econdir.econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.save_job_file(example_get_7nodeJRootWithH_agenda())
     x_econ.save_job_file(example_agendas_get_agenda_with7amCleanTableReason())
@@ -88,7 +88,7 @@ def _delete_and_set_ex6(ex6_id: str = None):
     ex6_econdir = get_texas_econdir()
     ex6_econdir.real_id = ex6_id
     x_econ = econunit_shop(ex6_econdir)
-    delete_dir(x_econ.get_object_root_dir())
+    delete_dir(x_econ.econdir.econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     sal_text = "Sal"
@@ -152,7 +152,7 @@ def copy_evaluation_econ(src_real_id: str, dest_real_id: str):
         raise InvalideconCopyException(
             f"Cannot copy econ to '{new_dir}' directory because '{new_dir}' exists."
         )
-    # base_dir = econ_obj.get_object_root_dir()
+    # base_dir = econ_obj.econdir.econ_dir()
     src_dir = f"{base_dir}/{src_real_id}"
     dest_dir = f"{base_dir}/{dest_real_id}"
     copy_dir(src_dir=src_dir, dest_dir=dest_dir)

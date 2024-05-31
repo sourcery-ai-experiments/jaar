@@ -85,21 +85,15 @@ def treasury_db_filename() -> str:
 
 @dataclass
 class EconUnit:
-    real_id: RealID = None
-    econ_dir: str = None
-    _manager_person_id: HealerID = None
+    econdir: EconDir
     _treasury_db = None
-    _road_delimiter: str = None
 
     # Admin
-    def set_real_id(self, real_id: str):
-        self.real_id = validate_roadnode(real_id, self._road_delimiter)
-
-    def get_object_root_dir(self):
-        return self.econ_dir
+    def econ_dir(self) -> str:
+        return self.econdir.econ_dir()
 
     def set_econ_dirs(self, in_memory_treasury: bool = None):
-        set_dir(x_path=self.get_object_root_dir())
+        set_dir(x_path=self.econdir.econ_dir())
         set_dir(x_path=self.get_roles_dir())
         set_dir(x_path=self.get_jobs_dir())
         self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
@@ -113,7 +107,7 @@ class EconUnit:
             owner_role = self.get_role_file(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            save_role_file(self.econ_dir, owner_role)
+            save_role_file(self.econ_dir(), owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
         x_agenda = self.get_job_file(x_owner_id)
@@ -351,35 +345,35 @@ class EconUnit:
         delete_dir(self.get_treasury_db_path())
 
     def get_treasury_db_path(self):
-        return f"{self.get_object_root_dir()}/{treasury_db_filename()}"
+        return f"{self.econdir.econ_dir()}/{treasury_db_filename()}"
 
     # roles dir management
     def get_roles_dir(self):
-        return get_econ_roles_dir(self.get_object_root_dir())
+        return get_econ_roles_dir(self.econdir.econ_dir())
 
     def save_role_file(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(real_id=self.real_id)
-        save_role_file(self.get_object_root_dir(), x_agenda)
+        x_agenda.set_real_id(self.econdir.real_id)
+        save_role_file(self.econdir.econ_dir(), x_agenda)
 
     def get_role_file(self, owner_id: PersonID) -> AgendaUnit:
-        return get_role_file(self.get_object_root_dir(), owner_id)
+        return get_role_file(self.econdir.econ_dir(), owner_id)
 
     def delete_role_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_roles_dir()}/{get_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
-        return get_econ_jobs_dir(self.get_object_root_dir())
+        return get_econ_jobs_dir(self.econdir.econ_dir())
 
     def save_job_file(self, x_agenda: AgendaUnit):
-        x_agenda.set_real_id(self.real_id)
-        save_job_file(self.get_object_root_dir(), x_agenda)
+        x_agenda.set_real_id(self.econdir.real_id)
+        save_job_file(self.econdir.econ_dir(), x_agenda)
 
     def create_job_file_from_role_file(self, person_id: PersonID) -> AgendaUnit:
-        return create_job_file_from_role_file(self.econ_dir, person_id)
+        return create_job_file_from_role_file(self.econdir.econ_dir(), person_id)
 
     def get_job_file(self, owner_id: str) -> AgendaUnit:
-        econ_dir = self.get_object_root_dir()
+        econ_dir = self.econdir.econ_dir()
         return get_job_file(econ_dir, owner_id, return_None_if_missing=False)
 
     def delete_job_file(self, x_owner_id: PersonID):
@@ -431,20 +425,11 @@ class EconUnit:
 
 
 def econunit_shop(x_econdir: EconDir, in_memory_treasury: bool = None) -> EconUnit:
-
-    real_id = x_econdir.real_id
-    econ_dir = x_econdir.econ_dir()
-    _manager_person_id = x_econdir.person_id
-    _road_delimiter = x_econdir._road_delimiter
-
     if in_memory_treasury is None:
         in_memory_treasury = True
-    econ_x = EconUnit(econ_dir=econ_dir)
-    if _manager_person_id is None:
-        _manager_person_id = temp_person_id()
-    econ_x.set_road_delimiter(_road_delimiter)
-    econ_x.set_real_id(real_id=real_id)
-    econ_x._manager_person_id = _manager_person_id
+
+    x_econdir.real_id = validate_roadnode(x_econdir.real_id, x_econdir._road_delimiter)
+    econ_x = EconUnit(x_econdir)
     econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
     return econ_x
 
