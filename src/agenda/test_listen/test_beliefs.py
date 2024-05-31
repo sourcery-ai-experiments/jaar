@@ -1,20 +1,10 @@
-from src.agenda.group import groupunit_shop
-from src.agenda.party import partylink_shop
-from src.agenda.idea import ideaunit_shop, reasonunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
-    listen_to_speaker_intent,
-    generate_ingest_list,
-    create_empty_agenda,
-    _allocate_irrational_debtor_weight,
-    generate_perspective_intent,
     get_all_partys_with_debtor_weight,
     get_ordered_partys_roll,
     listen_to_speaker_beliefs,
 )
-from src.agenda.examples.example_agendas import get_agenda_x1_3levels_1reason_1beliefs
-from copy import deepcopy as copy_deepcopy
-from pytest import raises as pytest_raises
 
 
 def test_get_all_partys_with_debtor_weight_ReturnsObj():

@@ -1,13 +1,21 @@
+from src._instrument.file import open_file
 from src._road.road import (
     get_ancestor_roads,
     RoadUnit,
     get_root_node_from_road,
     PersonID,
 )
+from src._road.worlddir import get_file_name
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
+from src.agenda.agenda import (
+    AgendaUnit,
+    agendaunit_shop,
+    PartyUnit,
+    get_from_json as agendaunit_get_from_json,
+)
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
+from os.path import exists as os_path_exists
 
 
 class Missing_party_debtor_poolException(Exception):
@@ -221,3 +229,30 @@ def listen_to_speaker_beliefs(
                 nigh=x_beliefunit.nigh,
                 create_missing_ideas=True,
             )
+
+
+def get_speaker_agenda(
+    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
+    x_file_name = get_file_name(owner_id)
+    x_file_path = f"{x_dir}/{x_file_name}"
+    if os_path_exists(x_file_path) or not return_None_if_missing:
+        return agendaunit_get_from_json(open_file(x_dir, x_file_name))
+    else:
+        None
+
+
+def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
+    new_agenda = create_listen_basis(listener)
+    if new_agenda._party_debtor_pool is None:
+        return new_agenda
+
+    for x_partyunit in get_ordered_partys_roll(new_agenda):
+        if x_partyunit.party_id == new_agenda._owner_id:
+            listen_to_speaker_intent(new_agenda, listener)
+        else:
+            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            if speaker_job is None:
+                speaker_job = create_empty_agenda(new_agenda, x_partyunit.party_id)
+            listen_to_speaker_intent(new_agenda, speaker_job)
+    return new_agenda
