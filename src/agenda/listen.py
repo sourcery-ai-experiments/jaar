@@ -189,8 +189,16 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtor_weight_ordered_partys(x_agenda: AgendaUnit) -> list[PartyUnit]:
-    partys_ordered_list = list(x_agenda._partys.values())
+def get_all_partys_with_debtor_weight(x_role: AgendaUnit) -> list[PartyUnit]:
+    return [
+        x_partyunit
+        for x_partyunit in x_role._partys.values()
+        if x_partyunit.debtor_weight != 0
+    ]
+
+
+def get_ordered_partys_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
+    partys_ordered_list = get_all_partys_with_debtor_weight(x_agenda)
     partys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.party_id), reverse=True)
     return partys_ordered_list
 

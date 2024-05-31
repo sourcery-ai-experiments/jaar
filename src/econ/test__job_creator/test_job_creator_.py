@@ -8,11 +8,10 @@ from src.agenda.change import get_init_change_id_if_None
 from src.econ.job_creator import (
     save_role_file,
     save_job_file,
-    get_owner_file_name,
+    get_file_name,
     get_job_file,
     create_listen_basis,
     get_role_file,
-    get_debtors_roll,
     _listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
@@ -46,46 +45,6 @@ def test_get_job_file_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup):
     yao_job = get_job_file(get_test_econ_dir(), yao_text)
     # THEN
     assert yao_job.get_dict() == yao_job.get_dict()
-
-
-def test_get_debtors_roll_ReturnsObj():
-    # GIVEN
-    yao_text = "Yao"
-    yao_role = agendaunit_shop(yao_text)
-    zia_text = "Zia"
-    zia_creditor_weight = 47
-    zia_debtor_weight = 41
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.calc_agenda_metrics()
-
-    # WHEN
-    yao_roll = get_debtors_roll(yao_role)
-
-    # THEN
-    zia_partyunit = yao_role.get_party(zia_text)
-    assert yao_roll == [zia_partyunit]
-
-
-def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
-    # GIVEN
-    yao_text = "Yao"
-    yao_role = agendaunit_shop(yao_text)
-    zia_text = "Zia"
-    zia_creditor_weight = 47
-    zia_debtor_weight = 41
-    wei_text = "Wei"
-    wei_creditor_weight = 67
-    wei_debtor_weight = 0
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(wei_text, wei_creditor_weight, wei_debtor_weight)
-    yao_role.calc_agenda_metrics()
-
-    # WHEN
-    yao_roll = get_debtors_roll(yao_role)
-
-    # THEN
-    zia_partyunit = yao_role.get_party(zia_text)
-    assert yao_roll == [zia_partyunit]
 
 
 def test_listen_to_debtors_roll_AddsTasksToJobAgenda(env_dir_setup_cleanup):
@@ -303,7 +262,7 @@ def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
     yao_role = agendaunit_shop(yao_text)
     yao_role.calc_agenda_metrics()
     save_role_file(get_test_econ_dir(), yao_role)
-    yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_owner_file_name(yao_text)}"
+    yao_job_file_path = f"{get_test_econ_dir()}/jobs/{get_file_name(yao_text)}"
     assert os_path_exists(yao_job_file_path) == False
 
     # WHEN

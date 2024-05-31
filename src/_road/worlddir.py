@@ -24,6 +24,10 @@ from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
 
+def get_file_name(x_person_id: PersonID) -> str:
+    return f"{x_person_id}.json"
+
+
 @dataclass
 class RealDir:
     reals_dir: str = None
@@ -50,13 +54,13 @@ class RealDir:
         return f"{self.person_dir(person_id)}/{get_changes_folder()}"
 
     def duty_file_name(self):
-        return f"{duty_str()}.json"
+        return get_file_name(duty_str())
 
     def duty_path(self, person_id: PersonID) -> str:
         return f"{self.person_dir(person_id)}/{self.duty_file_name()}"
 
     def work_file_name(self):
-        return f"{work_str()}.json"
+        return get_file_name(work_str())
 
     def work_path(self, person_id: PersonID) -> str:
         return f"{self.person_dir(person_id)}/{self.work_file_name()}"
@@ -136,13 +140,13 @@ class UserDir:
         return f"{self.person_dir()}/{get_changes_folder()}"
 
     def duty_file_name(self):
-        return f"{duty_str()}.json"
+        return get_file_name(duty_str())
 
     def duty_path(self):
         return f"{self.person_dir()}/{self.duty_file_name()}"
 
     def work_file_name(self):
-        return f"{work_str()}.json"
+        return get_file_name(work_str())
 
     def work_path(self):
         return f"{self.person_dir()}/{self.work_file_name()}"
@@ -174,9 +178,6 @@ class UserDir:
 
     def open_file_work(self):
         return open_file(self.person_dir(), self.work_file_name())
-
-    # duty delete
-    # work delete
 
 
 def userdir_shop(
@@ -223,7 +224,7 @@ class EconDir(UserDir):
         return get_econ_path(self, self.econ_road)
 
     def owner_file_name(self, owner_id: PersonID) -> str:
-        return f"{owner_id}.json"
+        return get_file_name(owner_id)
 
     def role_path(self, owner_id: PersonID) -> str:
         return f"{self.roles_dir()}/{self.owner_file_name(owner_id)}"

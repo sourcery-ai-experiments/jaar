@@ -19,7 +19,7 @@ from src.econ.job_creator import (
     save_job_file,
     get_role_file,
     get_job_file,
-    get_owner_file_name,
+    get_file_name,
     create_job_file_from_role_file,
 )
 from dataclasses import dataclass
@@ -364,7 +364,7 @@ class EconUnit:
         return get_role_file(self.get_object_root_dir(), owner_id)
 
     def delete_role_file(self, x_owner_id: PersonID):
-        delete_dir(f"{self.get_roles_dir()}/{get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_roles_dir()}/{get_file_name(x_owner_id)}")
 
     # jobs dir management
     def get_jobs_dir(self):
@@ -382,7 +382,7 @@ class EconUnit:
         return get_job_file(econ_dir, owner_id, return_None_if_missing=False)
 
     def delete_job_file(self, x_owner_id: PersonID):
-        delete_dir(f"{self.get_jobs_dir()}/{get_owner_file_name(x_owner_id)}")
+        delete_dir(f"{self.get_jobs_dir()}/{get_file_name(x_owner_id)}")
 
     def modify_job_owner_id(self, old_owner_id: OwnerID, new_owner_id: OwnerID):
         x_agenda = self.get_job_file(old_owner_id)

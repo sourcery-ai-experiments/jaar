@@ -3,7 +3,7 @@ from src._road.worlddir import userdir_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
-from src.econ.job_creator import get_owner_file_name
+from src.econ.job_creator import get_file_name
 from src.econ.econ import treasury_db_filename
 from src.real.admin_duty import (
     save_duty_file,
@@ -260,7 +260,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     create_person_econunits(sue_userdir)
     print(f"{_get_econs_roads(sue_userdir).keys()=}")
     dallas_econ = get_econunit(sue_userdir, dallas_road)
-    sue_file_name = get_owner_file_name(sue_text)
+    sue_file_name = get_file_name(sue_text)
     sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
     assert os_path_exists(sue_role_file_path) == False
 
@@ -294,7 +294,7 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_userdir, sue_duty_agenda)
     create_person_econunits(sue_userdir)
-    sue_file_name = get_owner_file_name(sue_text)
+    sue_file_name = get_file_name(sue_text)
     dallas_econ = get_econunit(sue_userdir, dallas_road)
     dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_userdir, elpaso_road)
@@ -335,7 +335,7 @@ def test_set_person_econunits_role_CorrectlySetsroles(
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     save_duty_file(sue_userdir, sue_duty_agenda)
     create_person_econunits(sue_userdir)
-    sue_file_name = get_owner_file_name(sue_text)
+    sue_file_name = get_file_name(sue_text)
     dallas_econ = get_econunit(sue_userdir, dallas_road)
     dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_userdir, elpaso_road)

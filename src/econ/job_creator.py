@@ -1,39 +1,38 @@
-from src._road.road import PersonID, PartyID, PersonID
-from src._road.worlddir import get_econ_roles_dir, get_econ_jobs_dir
-from src.agenda.party import PartyUnit
+from src._road.road import PersonID, PersonID
+from src._road.worlddir import (
+    get_econ_roles_dir,
+    get_econ_jobs_dir,
+    get_file_name,
+)
 from src.agenda.agenda import get_from_json as agendaunit_get_from_json, AgendaUnit
 from src.agenda.listen import (
+    get_ordered_partys_roll,
     listen_to_speaker_intent,
     create_empty_agenda,
     create_listen_basis,
 )
 from src._instrument.file import save_file, open_file
 from os.path import exists as os_path_exists
-from copy import deepcopy as copy_deepcopy
 
 
 class RoleAgendaFileException(Exception):
     pass
 
 
-def get_owner_file_name(x_owner_id: str) -> str:
-    return f"{x_owner_id}.json"
-
-
 def save_role_file(x_econ_dir: str, x_agenda: AgendaUnit):
     x_dest_dir = get_econ_roles_dir(x_econ_dir)
-    x_file_name = get_owner_file_name(x_agenda._owner_id)
+    x_file_name = get_file_name(x_agenda._owner_id)
     save_file(x_dest_dir, x_file_name, x_agenda.get_json())
 
 
 def save_job_file(x_econ_dir: str, x_agenda: AgendaUnit):
     x_dest_dir = get_econ_jobs_dir(x_econ_dir)
-    x_file_name = get_owner_file_name(x_agenda._owner_id)
+    x_file_name = get_file_name(x_agenda._owner_id)
     save_file(x_dest_dir, x_file_name, x_agenda.get_json())
 
 
 def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
-    role_file_name = get_owner_file_name(owner_id)
+    role_file_name = get_file_name(owner_id)
     role_dir = get_econ_roles_dir(x_econ_dir)
     try:
         role_file_text = open_file(role_dir, role_file_name)
@@ -47,7 +46,7 @@ def get_role_file(x_econ_dir: str, owner_id: PersonID) -> AgendaUnit:
 def get_job_file(
     x_econ_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
 ) -> AgendaUnit:
-    job_file_name = get_owner_file_name(owner_id)
+    job_file_name = get_file_name(owner_id)
     job_dir = get_econ_jobs_dir(x_econ_dir)
     job_file_path = f"{job_dir}/{job_file_name}"
     if os_path_exists(job_file_path) or not return_None_if_missing:
@@ -56,20 +55,12 @@ def get_job_file(
         None
 
 
-def get_debtors_roll(x_role: AgendaUnit) -> dict[PartyID:PartyUnit]:
-    return [
-        x_partyunit
-        for x_partyunit in x_role._partys.values()
-        if x_partyunit.debtor_weight != 0
-    ]
-
-
 def _listen_to_debtors_roll(econ_dir: str, listener_role: AgendaUnit) -> AgendaUnit:
     x_job = create_listen_basis(listener_role)
     if x_job._party_debtor_pool is None:
         return x_job
 
-    for x_partyunit in get_debtors_roll(x_job):
+    for x_partyunit in get_ordered_partys_roll(x_job):
         if x_partyunit.party_id == x_job._owner_id:
             listen_to_speaker_intent(x_job, listener_role)
         else:
