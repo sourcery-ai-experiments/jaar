@@ -22,21 +22,15 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener.party_exists(speaker._owner_id) == False:
-        raise Missing_party_debtor_poolException(
-            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
-        )
-    perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
-    if perspective_agenda._rational == False:
-        return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
-
-    if listener._party_debtor_pool is None:
-        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
-    intent = generate_perspective_intent(perspective_agenda)
-    if len(intent) == 0:
-        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
-    return _ingest_perspective_intent(listener, intent)
+def get_speaker_agenda(
+    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
+) -> AgendaUnit:
+    x_file_name = get_file_name(owner_id)
+    x_file_path = f"{x_dir}/{x_file_name}"
+    if os_path_exists(x_file_path) or not return_None_if_missing:
+        return agendaunit_get_from_json(open_file(x_dir, x_file_name))
+    else:
+        None
 
 
 def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit]:
@@ -231,30 +225,45 @@ def listen_to_speaker_beliefs(
             )
 
 
-def get_speaker_agenda(
-    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
-) -> AgendaUnit:
-    x_file_name = get_file_name(owner_id)
-    x_file_path = f"{x_dir}/{x_file_name}"
-    if os_path_exists(x_file_path) or not return_None_if_missing:
-        return agendaunit_get_from_json(open_file(x_dir, x_file_name))
-    else:
-        None
+def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
+    if listener.party_exists(speaker._owner_id) == False:
+        raise Missing_party_debtor_poolException(
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
+        )
+    perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
+    if perspective_agenda._rational == False:
+        return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
+
+    if listener._party_debtor_pool is None:
+        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
+    intent = generate_perspective_intent(perspective_agenda)
+    if len(intent) == 0:
+        return _allocate_missing_job_debtor_weight(listener, speaker._owner_id)
+    return _ingest_perspective_intent(listener, intent)
+
+
+def listen_to_speakers_intent(listener: AgendaUnit, speakers_dir: str):
+    debtors_roll = get_ordered_debtors_roll(listener)
+    for x_partyunit in debtors_roll:
+        if x_partyunit.party_id == listener._owner_id:
+            listen_to_speaker_intent(listener, listener)
+        else:
+            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            if speaker_job is None:
+                speaker_job = create_empty_agenda(listener, x_partyunit.party_id)
+            listen_to_speaker_intent(listener, speaker_job)
+
+
+def listen_to_speakers_belief(listener: AgendaUnit, speakers_dir: str):
+    pass
 
 
 def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
     new_agenda = create_listen_basis(listener)
-    if new_agenda._party_debtor_pool is None:
+    if listener._party_debtor_pool is None:
         return new_agenda
 
-    debtors_roll = get_ordered_debtors_roll(new_agenda)
+    listen_to_speakers_intent(new_agenda, speakers_dir)
+    listen_to_speakers_belief(new_agenda, speakers_dir)
 
-    for x_partyunit in debtors_roll:
-        if x_partyunit.party_id == new_agenda._owner_id:
-            listen_to_speaker_intent(new_agenda, listener)
-        else:
-            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
-            if speaker_job is None:
-                speaker_job = create_empty_agenda(new_agenda, x_partyunit.party_id)
-            listen_to_speaker_intent(new_agenda, speaker_job)
     return new_agenda
