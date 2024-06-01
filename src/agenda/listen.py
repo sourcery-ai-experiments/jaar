@@ -242,20 +242,31 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
     return _ingest_perspective_intent(listener, intent)
 
 
-def listen_to_speakers_intent(listener: AgendaUnit, speakers_dir: str):
-    debtors_roll = get_debtors_roll(listener)
+def listen_to_speakers_intent(
+    new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit
+):
+    debtors_roll = get_debtors_roll(new_listener)
     for x_partyunit in debtors_roll:
-        if x_partyunit.party_id == listener._owner_id:
-            listen_to_speaker_intent(listener, listener)
+        if x_partyunit.party_id == new_listener._owner_id:
+            listen_to_speaker_intent(new_listener, src_listener)
         else:
             speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
             if speaker_job is None:
-                speaker_job = create_empty_agenda(listener, x_partyunit.party_id)
-            listen_to_speaker_intent(listener, speaker_job)
+                speaker_job = create_empty_agenda(new_listener, x_partyunit.party_id)
+            listen_to_speaker_intent(new_listener, speaker_job)
 
 
-def listen_to_speakers_belief(listener: AgendaUnit, speakers_dir: str):
-    debtors_roll = get_ordered_debtors_roll(listener)
+def listen_to_speakers_belief(
+    new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit = None
+):
+    listen_to_speaker_belief(new_listener, src_listener)
+    # debtors_roll = get_ordered_debtors_roll(new_listener)
+    debtors_roll = get_debtors_roll(new_listener)
+    for x_partyunit in debtors_roll:
+        if x_partyunit.party_id != new_listener._owner_id:
+            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            if speaker_job != None:
+                listen_to_speaker_belief(new_listener, speaker_job)
 
 
 def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
@@ -263,7 +274,7 @@ def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUni
     if listener._party_debtor_pool is None:
         return new_agenda
 
-    listen_to_speakers_intent(new_agenda, speakers_dir)
-    listen_to_speakers_belief(new_agenda, speakers_dir)
+    listen_to_speakers_intent(new_agenda, speakers_dir, listener)
+    listen_to_speakers_belief(new_agenda, speakers_dir, listener)
 
     return new_agenda
