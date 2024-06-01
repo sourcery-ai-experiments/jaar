@@ -118,6 +118,45 @@ def test_listen_to_speaker_belief_GetsBeliefsFromSrcAgendaSelfNotSpeakerSelf(
     assert new_yao_agenda.get_belief(eat_road()).pick == full_road()
 
 
+def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgenda(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    # yao_src_listener has belief eat_road = full
+    # yao_speaker has belief eat_road = hungry
+    # new_yao_agenda picks yao_src_listener belief eat_road = full
+    yao_src = get_example_yao_speaker()
+    yao_src.del_belief(eat_road())
+    assert yao_src.get_belief(eat_road()) is None
+
+    zia_speaker = get_example_zia_speaker()
+    zia_speaker.set_belief(eat_road(), eat_road())
+    assert zia_speaker.get_belief(eat_road()).pick == eat_road()
+    texas_econnox = get_texas_econnox()
+    texas_econnox.save_file_job("Zia", zia_speaker.get_json(), True)
+
+    yao_speaker = get_example_yao_speaker()
+    assert yao_speaker.get_belief(eat_road()).pick == hungry_road()
+    texas_econnox.save_file_job("Yao", yao_speaker.get_json(), True)
+
+    new_yao_agenda = create_listen_basis(yao_src)
+    assert new_yao_agenda.get_belief(eat_road()) is None
+    assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
+    listen_to_speakers_intent(new_yao_agenda, texas_econnox.jobs_dir(), yao_src)
+    print(f"{new_yao_agenda.get_missing_belief_bases().keys()=}")
+    print(f"{new_yao_agenda._idearoot._beliefunits.keys()=}")
+    assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
+
+    # WHEN
+    listen_to_speakers_belief(new_yao_agenda, texas_econnox.jobs_dir(), yao_src)
+
+    # THEN
+    assert yao_src.get_belief(eat_road()) is None
+    assert yao_speaker.get_belief(eat_road()).pick == hungry_road()
+    assert zia_speaker.get_belief(eat_road()).pick == eat_road()
+    assert new_yao_agenda.get_belief(eat_road()).pick == eat_road()
+
+
 def test_listen_to_speaker_belief_SetsPrioritizesSelfBeliefsOverOthers(
     env_dir_setup_cleanup,
 ):
