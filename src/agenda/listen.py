@@ -205,7 +205,7 @@ def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
     return partys_ordered_list
 
 
-def listen_to_speaker_beliefs(
+def listen_to_speaker_belief(
     listener: AgendaUnit,
     speaker: AgendaUnit,
     missing_belief_bases: list[RoadUnit] = None,

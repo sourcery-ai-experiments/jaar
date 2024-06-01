@@ -3,7 +3,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
     get_debtors_roll,
     get_ordered_debtors_roll,
-    listen_to_speaker_beliefs,
+    listen_to_speaker_belief,
 )
 
 
@@ -116,7 +116,7 @@ def test_get_ordered_debtors_roll_DoesNotReturnZero_debtor_weight():
     assert ordered_partys2 == [bob_party, sue_party, zia_party]
 
 
-def test_set_listen_to_speaker_beliefs_SetsBelief():
+def test_set_listen_to_speaker_belief_SetsBelief():
     # GIVEN
     yao_text = "Yao"
     yao_listener = agendaunit_shop(yao_text)
@@ -146,13 +146,13 @@ def test_set_listen_to_speaker_beliefs_SetsBelief():
     assert yao_listener.get_missing_belief_bases().keys() == {status_road}
 
     # WHEN
-    listen_to_speaker_beliefs(yao_listener, yao_speaker, missing_belief_bases)
+    listen_to_speaker_belief(yao_listener, yao_speaker, missing_belief_bases)
 
     # THEN
     assert len(yao_listener.get_missing_belief_bases().keys()) == 0
 
 
-def test_set_listen_to_speaker_beliefs_DoesNotOverrideBelief():
+def test_set_listen_to_speaker_belief_DoesNotOverrideBelief():
     # GIVEN
     yao_text = "Yao"
     yao_listener = agendaunit_shop(yao_text)
@@ -193,7 +193,7 @@ def test_set_listen_to_speaker_beliefs_DoesNotOverrideBelief():
     yao_speaker.set_belief(status_road, clean_road, create_missing_ideas=True)
     yao_speaker.set_belief(fridge_road, running_road, create_missing_ideas=True)
     missing_belief_bases = list(yao_listener.get_missing_belief_bases().keys())
-    listen_to_speaker_beliefs(yao_listener, yao_speaker, missing_belief_bases)
+    listen_to_speaker_belief(yao_listener, yao_speaker, missing_belief_bases)
 
     # THEN
     assert len(yao_listener.get_missing_belief_bases()) == 0
