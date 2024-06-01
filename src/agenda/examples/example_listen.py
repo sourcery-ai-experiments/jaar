@@ -77,12 +77,32 @@ def get_example_zia_speaker() -> AgendaUnit:
     return zia_speaker
 
 
+def get_example_bob_speaker() -> AgendaUnit:
+    bob_text = "Bob"
+    bob_speaker = agendaunit_shop(bob_text)
+    bob_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    bob_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
+    bob_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
+    yao_text = "Yao"
+    bob_speaker.add_partyunit(yao_text, debtor_weight=12)
+    cook_ideaunit = bob_speaker.get_idea_obj(cook_road())
+    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
+    bob_speaker.edit_idea_attr(
+        cook_road(), reason_base=eat_road(), reason_premise=hungry_road()
+    )
+    bob_speaker.set_belief(eat_road(), hungry_road())
+    bob_speaker.set_party_pool(100)
+    return bob_speaker
+
+
 def get_example_yao_speaker() -> AgendaUnit:
     yao_text = "Yao"
     zia_text = "Zia"
+    bob_text = "Bob"
     yao_speaker = agendaunit_shop(yao_text)
     yao_speaker.add_partyunit(yao_text, debtor_weight=12)
     yao_speaker.add_partyunit(zia_text, debtor_weight=36)
+    yao_speaker.add_partyunit(bob_text, debtor_weight=48)
     yao_speaker.set_party_pool(100)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())

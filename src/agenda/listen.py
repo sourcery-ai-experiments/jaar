@@ -267,9 +267,7 @@ def listen_to_speakers_belief(
     new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit = None
 ):
     listen_to_speaker_belief(new_listener, src_listener)
-    # debtors_roll = get_ordered_debtors_roll(new_listener)
-    debtors_roll = get_debtors_roll(new_listener)
-    for x_partyunit in debtors_roll:
+    for x_partyunit in get_ordered_debtors_roll(new_listener):
         if x_partyunit.party_id != new_listener._owner_id:
             speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
             if speaker_job != None:

@@ -21,6 +21,7 @@ from src.agenda.examples.example_listen import (
     clean_road,
     get_example_zia_speaker,
     get_example_yao_speaker,
+    get_example_bob_speaker,
 )
 
 
@@ -190,6 +191,67 @@ def test_listen_to_speaker_belief_SetsPrioritizesSelfBeliefsOverOthers(
     # THEN
     assert new_yao_agenda.get_belief(eat_road()) != None
     assert new_yao_agenda.get_belief(eat_road()).pick == full_road()
+
+
+def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgenda(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    # yao_src_listener has belief eat_road = full
+    # yao_speaker has belief eat_road = hungry
+    # new_yao_agenda picks yao_src_listener belief eat_road = full
+    zia_speaker = get_example_zia_speaker()
+    zia_text = zia_speaker._owner_id
+    zia_speaker.set_belief(eat_road(), eat_road())
+    assert zia_speaker.get_belief(eat_road()).pick == eat_road()
+    texas_econnox = get_texas_econnox()
+    texas_econnox.save_file_job(zia_text, zia_speaker.get_json(), True)
+
+    bob_speaker = get_example_bob_speaker()
+    bob_text = bob_speaker._owner_id
+    assert bob_speaker.get_belief(eat_road()).pick == hungry_road()
+    texas_econnox.save_file_job(bob_text, bob_speaker.get_json(), True)
+
+    yao_src = get_example_yao_speaker()
+    yao_src.del_belief(eat_road())
+    assert yao_src.get_belief(eat_road()) is None
+    new_yao1_agenda = create_listen_basis(yao_src)
+    assert new_yao1_agenda.get_belief(eat_road()) is None
+    assert new_yao1_agenda.get_missing_belief_bases().get(eat_road()) is None
+    listen_to_speakers_intent(new_yao1_agenda, texas_econnox.jobs_dir(), yao_src)
+    print(f"{new_yao1_agenda.get_missing_belief_bases().keys()=}")
+    print(f"{new_yao1_agenda._idearoot._beliefunits.keys()=}")
+    assert new_yao1_agenda.get_missing_belief_bases().get(eat_road()) != None
+
+    # WHEN
+    listen_to_speakers_belief(new_yao1_agenda, texas_econnox.jobs_dir(), yao_src)
+
+    # THEN
+    assert yao_src.get_belief(eat_road()) is None
+    zia_partyunit = new_yao1_agenda.get_party(zia_text)
+    bob_partyunit = new_yao1_agenda.get_party(bob_text)
+    assert zia_partyunit.debtor_weight < bob_partyunit.debtor_weight
+    assert bob_speaker.get_belief(eat_road()).pick == hungry_road()
+    assert zia_speaker.get_belief(eat_road()).pick == eat_road()
+    assert new_yao1_agenda.get_belief(eat_road()).pick == hungry_road()
+
+    # WHEN
+    yao_zia_debtor_weight = 15
+    yao_bob_debtor_weight = 5
+    yao_src.add_partyunit(zia_text, None, yao_zia_debtor_weight)
+    yao_src.add_partyunit(bob_text, None, yao_bob_debtor_weight)
+    yao_src.set_party_pool(100)
+    new_yao2_agenda = create_listen_basis(yao_src)
+    listen_to_speakers_intent(new_yao2_agenda, texas_econnox.jobs_dir(), yao_src)
+    listen_to_speakers_belief(new_yao2_agenda, texas_econnox.jobs_dir(), yao_src)
+
+    # THEN
+    zia_partyunit = new_yao2_agenda.get_party(zia_text)
+    bob_partyunit = new_yao2_agenda.get_party(bob_text)
+    assert zia_partyunit.debtor_weight > bob_partyunit.debtor_weight
+    assert bob_speaker.get_belief(eat_road()).pick == hungry_road()
+    assert zia_speaker.get_belief(eat_road()).pick == eat_road()
+    assert new_yao2_agenda.get_belief(eat_road()).pick == eat_road()
 
 
 # def test_listen_to_speaker_belief_SetsBelief(env_dir_setup_cleanup):
