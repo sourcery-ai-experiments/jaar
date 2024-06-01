@@ -252,8 +252,7 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
 def listen_to_speakers_intent(
     new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit
 ):
-    debtors_roll = get_debtors_roll(new_listener)
-    for x_partyunit in debtors_roll:
+    for x_partyunit in get_ordered_debtors_roll(new_listener):
         if x_partyunit.party_id == new_listener._owner_id:
             listen_to_speaker_intent(new_listener, src_listener)
         else:

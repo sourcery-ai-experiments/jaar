@@ -19,6 +19,8 @@ from src.agenda.examples.example_listen import (
     clean_road,
     run_road,
     get_example_yao_speaker,
+    get_example_zia_speaker,
+    get_example_bob_speaker,
 )
 
 
@@ -86,6 +88,64 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgenda(env_dir_setup_cleanup):
 
     # THEN
     assert len(new_agenda.get_intent_dict()) == 2
+
+
+def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debtor_weight(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    zia_speaker = get_example_zia_speaker()
+    bob_speaker = get_example_bob_speaker()
+    bob_speaker.edit_idea_attr(
+        road=cook_road(),
+        reason_del_premise_base=eat_road(),
+        reason_del_premise_need=hungry_road(),
+    )
+    bob_cook_ideaunit = bob_speaker.get_idea_obj(cook_road())
+    zia_cook_ideaunit = zia_speaker.get_idea_obj(cook_road())
+    assert bob_cook_ideaunit != zia_cook_ideaunit
+    assert len(zia_cook_ideaunit._reasonunits) == 1
+    assert len(bob_cook_ideaunit._reasonunits) == 0
+    zia_text = zia_speaker._owner_id
+    bob_text = bob_speaker._owner_id
+    texas_econnox = get_texas_econnox()
+    texas_econnox.save_file_job(zia_text, zia_speaker.get_json(), True)
+    texas_econnox.save_file_job(bob_text, bob_speaker.get_json(), True)
+
+    yao_src = get_example_yao_speaker()
+    new_yao1_agenda = create_listen_basis(yao_src)
+    assert new_yao1_agenda.idea_exists(cook_road()) == False
+
+    # WHEN
+    listen_to_speakers_intent(new_yao1_agenda, texas_econnox.jobs_dir(), yao_src)
+
+    # THEN
+    assert new_yao1_agenda.idea_exists(cook_road())
+    new_cook_idea = new_yao1_agenda.get_idea_obj(cook_road())
+    zia_partyunit = new_yao1_agenda.get_party(zia_text)
+    bob_partyunit = new_yao1_agenda.get_party(bob_text)
+    assert zia_partyunit.debtor_weight < bob_partyunit.debtor_weight
+    assert new_cook_idea.get_reasonunit(eat_road()) is None
+
+    yao_zia_debtor_weight = 15
+    yao_bob_debtor_weight = 5
+    yao_src.add_partyunit(zia_text, None, yao_zia_debtor_weight)
+    yao_src.add_partyunit(bob_text, None, yao_bob_debtor_weight)
+    yao_src.set_party_pool(100)
+    new_yao2_agenda = create_listen_basis(yao_src)
+    assert new_yao2_agenda.idea_exists(cook_road()) == False
+
+    # WHEN
+    listen_to_speakers_intent(new_yao2_agenda, texas_econnox.jobs_dir(), yao_src)
+
+    # THEN
+    assert new_yao2_agenda.idea_exists(cook_road())
+    new_cook_idea = new_yao2_agenda.get_idea_obj(cook_road())
+    zia_partyunit = new_yao2_agenda.get_party(zia_text)
+    bob_partyunit = new_yao2_agenda.get_party(bob_text)
+    assert zia_partyunit.debtor_weight > bob_partyunit.debtor_weight
+    zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
+    assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
 def test_listen_to_speakers_intent_ProcessesIrrationalAgenda(env_dir_setup_cleanup):

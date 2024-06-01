@@ -123,9 +123,6 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    # yao_src_listener has belief eat_road = full
-    # yao_speaker has belief eat_road = hungry
-    # new_yao_agenda picks yao_src_listener belief eat_road = full
     yao_src = get_example_yao_speaker()
     yao_src.del_belief(eat_road())
     assert yao_src.get_belief(eat_road()) is None
@@ -162,9 +159,6 @@ def test_listen_to_speaker_belief_SetsPrioritizesSelfBeliefsOverOthers(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    # yao_src_listener has belief eat_road = full
-    # zia_speaker has belief eat_road = hungry
-    # new_yao_agenda picks yao_src_listener belief eat_road = full
     yao_src_listener = get_example_yao_speaker()
     yao_src_listener.set_belief(eat_road(), full_road())
     assert yao_src_listener.get_belief(eat_road()).pick == full_road()
@@ -197,9 +191,6 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    # yao_src_listener has belief eat_road = full
-    # yao_speaker has belief eat_road = hungry
-    # new_yao_agenda picks yao_src_listener belief eat_road = full
     zia_speaker = get_example_zia_speaker()
     zia_text = zia_speaker._owner_id
     zia_speaker.set_belief(eat_road(), eat_road())
