@@ -3,6 +3,8 @@ from src.agenda.party import partylink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.listen import (
+    create_ingest_idea,
+    _get_planck_scaled_weight,
     generate_ingest_list,
     create_empty_agenda,
     create_listen_basis,
@@ -99,6 +101,25 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert job_zia_partyunit._missing_job_debtor_weight == 0
 
 
+# def test_create_ingest_idea_ReturnsCorrectIdea():
+#     clean_text = "clean"
+#     old_ideaunit = ideaunit_shop(clean_text, _weight=14)
+#     old_ideaunit.set_agenda_importance(0.5)
+#     swimmers_text = ",swimmers"
+#     old_ideaunit._assignedunit.set_suffgroup(swimmers_text)
+#     print(f"{old_ideaunit._weight=}")
+#     assert old_ideaunit._assignedunit.suffgroup_exists(swimmers_text)
+
+#     # WHEN
+#     yao_text = "Yao"
+#     new_ideaunit = create_ingest_idea(old_ideaunit, 6, 0.25, listener=yao_text)
+
+#     # THEN
+#     assert new_ideaunit._assignedunit.suffgroup_exists(swimmers_text) == False
+#     assert new_ideaunit._assignedunit.suffgroup_exists(yao_text)
+#     assert new_ideaunit._weight == 99
+
+
 def test_allocate_irrational_debtor_weight_CorrectlySetsAgendaAttr():
     yao_text = "Yao"
     zia_text = "Zia"
@@ -146,18 +167,6 @@ def test_generate_perspective_intent_CorrectlyGrabsIntentTasks():
 
     # THEN
     assert len(intent_list) == 1
-
-    # yao_speaker.set_belief(status_road, clean_road)
-
-    # # THEN
-    # assert len(yao_speaker._idearoot._beliefunits) == 1
-    # assert len(yao_listener._idearoot._beliefunits) == 0
-    # assert yao_speaker.get_intent_dict().get(sweep_road) is None
-    # assert yao_listener.get_intent_dict().get(sweep_road) is None
-    # assert len(yao_speaker._idearoot._beliefunits) == 1
-    # assert len(yao_listener._idearoot._beliefunits) == 0
-    # assert yao_speaker.get_intent_dict().get(sweep_road) is None
-    # assert yao_listener.get_intent_dict().get(sweep_road) is None
 
 
 def test_generate_ingest_list_ReturnsCorrectList_v1():

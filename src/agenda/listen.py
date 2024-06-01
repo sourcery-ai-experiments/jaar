@@ -125,17 +125,24 @@ def _distribute_ingest(
                 x_count = 0
 
 
+def create_ingest_idea(
+    x_ideaunit: IdeaUnit, debtor_amount: float, planck: float
+) -> IdeaUnit:
+    x_ideaunit._weight = _get_planck_scaled_weight(
+        x_agenda_importance=x_ideaunit._agenda_importance,
+        debtor_amount=debtor_amount,
+        planck=planck,
+    )
+    return x_ideaunit
+
+
 def generate_ingest_list(
     item_list: list[IdeaUnit], debtor_amount: float, planck: float
 ) -> list[IdeaUnit]:
-    x_list = []
-    for x_ideaunit in item_list:
-        x_ideaunit._weight = _get_planck_scaled_weight(
-            x_agenda_importance=x_ideaunit._agenda_importance,
-            debtor_amount=debtor_amount,
-            planck=planck,
-        )
-        x_list.append(x_ideaunit)
+    x_list = [
+        create_ingest_idea(x_ideaunit, debtor_amount, planck)
+        for x_ideaunit in item_list
+    ]
     sum_scaled_ingest = sum(x_ideaunit._weight for x_ideaunit in item_list)
     nonallocated_ingest = debtor_amount - sum_scaled_ingest
     _distribute_ingest(x_list, nonallocated_ingest, planck)
