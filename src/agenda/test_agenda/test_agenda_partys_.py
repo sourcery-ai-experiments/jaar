@@ -5,12 +5,17 @@ from src.agenda.party import (
     partyunit_shop,
     PartyUnitExternalMetrics,
 )
-from src.agenda.group import GroupID, groupunit_shop, balancelink_shop
+from src.agenda.group import (
+    GroupID,
+    groupunit_shop,
+    balancelink_shop,
+    get_intersection_of_partys,
+)
 from src.agenda.examples.example_agendas import (
     agenda_v001 as examples_agenda_v001,
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, get_intersection_of_partys
+from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.agenda.idea import ideaunit_shop, IdeaUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass

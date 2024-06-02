@@ -4,7 +4,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
 )
-from src.agenda.listen import create_listen_basis
+from src.change.listen import create_listen_basis
 
 
 class Invalid_work_Exception(Exception):

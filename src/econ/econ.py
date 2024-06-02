@@ -2,7 +2,7 @@ from src._road.road import OwnerID, PersonID, validate_roadnode
 from src._road.worldnox import EconNox, get_file_name
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
-from src.agenda.listen import get_speaker_agenda, listen_to_debtors_roll
+from src.change.listen import get_speaker_agenda, listen_to_debtors_roll
 from src._instrument.file import set_dir, delete_dir, open_file, dir_files, save_file
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection

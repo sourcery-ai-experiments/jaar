@@ -1,12 +1,12 @@
 from src._instrument.file import save_file, delete_dir, dir_files, get_integer_filenames
 from src._road.worldnox import UserNox
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.agenda.atom import (
+from src.change.atom import (
     AgendaAtom,
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
-from src.agenda.change import (
+from src.change.change import (
     ChangeUnit,
     changeunit_shop,
     get_json_filename as changeunit_get_json_filename,

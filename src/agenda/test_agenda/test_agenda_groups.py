@@ -1,15 +1,15 @@
 from src._road.road import get_default_real_id_roadnode
-from src.agenda.group import GroupID, balancelink_shop, groupunit_shop
-from src.agenda.party import PartyID, partyunit_shop, partylink_shop
-from src.agenda.idea import ideaunit_shop
-from src.agenda.examples.example_agendas import (
-    agenda_v001 as examples_agenda_v001,
-)
-from src.agenda.agenda import (
-    agendaunit_shop,
+from src.agenda.group import (
+    GroupID,
+    balancelink_shop,
+    groupunit_shop,
     get_partys_relevant_groups,
     get_party_relevant_groups,
 )
+from src.agenda.party import PartyID, partyunit_shop, partylink_shop
+from src.agenda.idea import ideaunit_shop
+from src.agenda.agenda import agendaunit_shop
+from src.agenda.examples.example_agendas import agenda_v001 as examples_agenda_v001
 from pytest import raises as pytest_raises
 
 

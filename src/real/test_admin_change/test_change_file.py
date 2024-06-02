@@ -1,6 +1,6 @@
 from src._road.jaar_config import get_changes_folder
-from src.agenda.book import bookunit_shop
-from src.agenda.change import changeunit_shop, create_changeunit_from_files
+from src.change.book import bookunit_shop
+from src.change.change import changeunit_shop, create_changeunit_from_files
 from src.real.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,

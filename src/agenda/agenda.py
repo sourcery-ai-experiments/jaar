@@ -43,6 +43,9 @@ from src.agenda.group import (
     get_groupunits_from_dict,
     groupunit_shop,
     balancelink_shop,
+    get_party_relevant_groups,
+    get_partys_relevant_groups,
+    get_intersection_of_partys,
 )
 from src.agenda.healer import HealerHold
 from src.agenda.reason_idea import (
@@ -73,7 +76,6 @@ from src._instrument.python import (
     get_False_if_None,
     get_empty_dict_if_none,
 )
-from src._instrument.file import dir_files, open_file
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 from datetime import datetime
@@ -84,10 +86,6 @@ class InvalidAgendaException(Exception):
 
 
 class InvalidLabelException(Exception):
-    pass
-
-
-class AssignmentPartyException(Exception):
     pass
 
 
@@ -2469,96 +2467,3 @@ def get_dict_of_agenda_from_dict(x_dict: dict[str:dict]) -> dict[str:AgendaUnit]
         x_agenda = get_from_dict(agenda_dict=agendaunit_dict)
         agendaunits[x_agenda._owner_id] = x_agenda
     return agendaunits
-
-
-@dataclass
-class MeldeeOrderUnit:
-    owner_id: OwnerID
-    voice_rank: int
-    voice_hx_lowest_rank: int
-    file_name: str
-
-
-def get_meldeeorderunit(
-    primary_agenda: AgendaUnit, meldee_file_name: str
-) -> MeldeeOrderUnit:
-    file_src_owner_id = meldee_file_name.replace(".json", "")
-    primary_meldee_partyunit = primary_agenda.get_party(file_src_owner_id)
-
-    default_voice_rank = 0
-    default_voice_hx_lowest_rank = 0
-    if primary_meldee_partyunit is None:
-        primary_voice_rank_for_meldee = default_voice_rank
-        primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
-    else:
-        primary_voice_rank_for_meldee = primary_meldee_partyunit._treasury_voice_rank
-        primary_voice_hx_lowest_rank_for_meldee = (
-            primary_meldee_partyunit._treasury_voice_hx_lowest_rank
-        )
-        if primary_voice_rank_for_meldee is None:
-            primary_voice_rank_for_meldee = default_voice_rank
-            primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
-
-    return MeldeeOrderUnit(
-        owner_id=file_src_owner_id,
-        voice_rank=primary_voice_rank_for_meldee,
-        voice_hx_lowest_rank=primary_voice_hx_lowest_rank_for_meldee,
-        file_name=meldee_file_name,
-    )
-
-
-def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]:
-    agenda_voice_ranks = {}
-    for meldee_file_name in dir_files(dir_path=meldees_dir):
-        meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
-        agenda_voice_ranks[meldee_orderunit.owner_id] = meldee_orderunit
-    agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
-    agendas_voice_rank_ordered_list.sort(
-        key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.owner_id)
-    )
-    return [
-        x_meldeeorderunit.file_name
-        for x_meldeeorderunit in agendas_voice_rank_ordered_list
-    ]
-
-
-def get_meld_of_agenda_files(
-    primary_agenda: AgendaUnit, meldees_dir: str
-) -> AgendaUnit:
-    for x_filename in get_file_names_in_voice_rank_order(primary_agenda, meldees_dir):
-        primary_agenda.meld(get_from_json(open_file(meldees_dir, x_filename)))
-    primary_agenda.calc_agenda_metrics()
-    return primary_agenda
-
-
-def get_intersection_of_partys(
-    partys_x: dict[PartyID:PartyUnit], partys_y: dict[PartyID:PartyUnit]
-) -> dict[PartyID:-1]:
-    x_set = set(partys_x)
-    y_set = set(partys_y)
-    intersection_x = x_set.intersection(y_set)
-    return {party_id_x: -1 for party_id_x in intersection_x}
-
-
-def get_partys_relevant_groups(
-    groups_x: dict[GroupID:GroupUnit], partys_x: dict[PartyID:PartyUnit]
-) -> dict[GroupID:{PartyID: -1}]:
-    relevant_groups = {}
-    for party_id_x in partys_x:
-        for group_x in groups_x.values():
-            if group_x._partys.get(party_id_x) != None:
-                if relevant_groups.get(group_x.group_id) is None:
-                    relevant_groups[group_x.group_id] = {}
-                relevant_groups.get(group_x.group_id)[party_id_x] = -1
-
-    return relevant_groups
-
-
-def get_party_relevant_groups(
-    groups_x: dict[GroupID:GroupUnit], party_id_x: PartyID
-) -> dict[GroupID:-1]:
-    return {
-        group_x.group_id: -1
-        for group_x in groups_x.values()
-        if group_x._partys.get(party_id_x) != None
-    }

@@ -11,7 +11,12 @@ from src._road.road import (
     default_road_delimiter_if_none,
     validate_roadnode,
 )
-from src.agenda.party import PartyLink, partylinks_get_from_dict, partylink_shop
+from src.agenda.party import (
+    PartyLink,
+    partylinks_get_from_dict,
+    partylink_shop,
+    PartyUnit,
+)
 from src.agenda.meld import get_meld_weight
 
 
@@ -355,3 +360,36 @@ def balanceline_shop(group_id: GroupID, _agenda_credit: float, _agenda_debt: flo
     return BalanceLine(
         group_id=group_id, _agenda_credit=_agenda_credit, _agenda_debt=_agenda_debt
     )
+
+
+def get_intersection_of_partys(
+    partys_x: dict[PartyID:PartyUnit], partys_y: dict[PartyID:PartyUnit]
+) -> dict[PartyID:-1]:
+    x_set = set(partys_x)
+    y_set = set(partys_y)
+    intersection_x = x_set.intersection(y_set)
+    return {party_id_x: -1 for party_id_x in intersection_x}
+
+
+def get_partys_relevant_groups(
+    groups_x: dict[GroupID:GroupUnit], partys_x: dict[PartyID:PartyUnit]
+) -> dict[GroupID:{PartyID: -1}]:
+    relevant_groups = {}
+    for party_id_x in partys_x:
+        for group_x in groups_x.values():
+            if group_x._partys.get(party_id_x) != None:
+                if relevant_groups.get(group_x.group_id) is None:
+                    relevant_groups[group_x.group_id] = {}
+                relevant_groups.get(group_x.group_id)[party_id_x] = -1
+
+    return relevant_groups
+
+
+def get_party_relevant_groups(
+    groups_x: dict[GroupID:GroupUnit], party_id_x: PartyID
+) -> dict[GroupID:-1]:
+    return {
+        group_x.group_id: -1
+        for group_x in groups_x.values()
+        if group_x._partys.get(party_id_x) != None
+    }

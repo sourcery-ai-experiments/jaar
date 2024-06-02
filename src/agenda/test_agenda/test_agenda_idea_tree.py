@@ -241,14 +241,14 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     week_text = "weekdays"
     mon_text = "Monday"
     tue_text = "Tuesday"
-    vaccum_text = "vaccum"
+    vacuum_text = "vacuum"
     sue_text = "sue"
 
     casa_road = x_agenda.make_l1_road(casa_text)
     email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=casa_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
-    x_agenda.add_idea(vaccum_idea, parent_road=casa_road)
+    vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
+    x_agenda.add_idea(vacuum_idea, parent_road=casa_road)
 
     x_agenda.add_partyunit(party_id=sue_text)
     x_balancelink = balancelink_shop(group_id=sue_text)
@@ -272,8 +272,8 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     assert casa_idea._all_party_debt == False
     assert casa_idea._kids[email_text]._all_party_credit == False
     assert casa_idea._kids[email_text]._all_party_debt == False
-    assert casa_idea._kids[vaccum_text]._all_party_credit == True
-    assert casa_idea._kids[vaccum_text]._all_party_debt == True
+    assert casa_idea._kids[vacuum_text]._all_party_credit == True
+    assert casa_idea._kids[vacuum_text]._all_party_debt == True
     week_idea = x_agenda._idearoot._kids[week_text]
     assert week_idea._all_party_credit == True
     assert week_idea._all_party_debt == True
@@ -406,13 +406,13 @@ def test_agenda4party_Exists():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
     casa_text = "casa"
-    vaccum_text = "vaccum"
+    vacuum_text = "vacuum"
     sue_text = "sue"
     casa_road = x_agenda.make_l1_road(casa_text)
     email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=casa_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
-    x_agenda.add_idea(vaccum_idea, parent_road=casa_road)
+    vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
+    x_agenda.add_idea(vacuum_idea, parent_road=casa_road)
 
     sue_party_id = PartyID(sue_text)
     x_agenda.add_partyunit(party_id=sue_party_id)
@@ -434,15 +434,15 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     x_agenda = example_agendas_get_agenda_with_4_levels()
     email_text = "email"
     casa_text = "casa"
-    vaccum_text = "vaccum"
+    vacuum_text = "vacuum"
     sue_text = "sue"
     week_text = "weekdays"
     feed_text = "feed cat"
     casa_road = x_agenda.make_l1_road(casa_text)
     email_idea = ideaunit_shop(_label=email_text, pledge=True)
     x_agenda.add_idea(email_idea, parent_road=casa_road)
-    vaccum_idea = ideaunit_shop(_label=vaccum_text, pledge=True)
-    x_agenda.add_idea(vaccum_idea, parent_road=casa_road)
+    vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
+    x_agenda.add_idea(vacuum_idea, parent_road=casa_road)
 
     billy_party_id = PartyID("billy")
     x_agenda.add_partyunit(party_id=billy_party_id)

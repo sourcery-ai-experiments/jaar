@@ -29,7 +29,7 @@ def get_file_name(x_person_id: PersonID) -> str:
 
 
 @dataclass
-class RealDir:
+class RealNox:
     reals_dir: str = None
     real_id: str = None
     _road_delimiter: str = None
@@ -94,18 +94,18 @@ class RealDir:
         return open_file(self.person_dir(person_id), self.work_file_name())
 
 
-def realdir_shop(
+def realnox_shop(
     reals_dir: str,
     real_id: RealID,
     road_delimiter: str = None,
     planck: float = None,
-) -> RealDir:
+) -> RealNox:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
     if real_id is None:
         real_id = get_test_real_id()
 
-    return RealDir(
+    return RealNox(
         real_id=validate_roadnode(real_id, road_delimiter),
         reals_dir=reals_dir,
         _road_delimiter=default_road_delimiter_if_none(road_delimiter),

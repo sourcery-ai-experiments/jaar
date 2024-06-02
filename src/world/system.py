@@ -16,7 +16,7 @@
 #     agendaunit_shop,
 #     get_from_json as agendaunit_get_from_json,
 # )
-# from src.agenda.atom import (
+# from src.change.atom import (
 #     AgendaAtom,
 #     get_from_json as agendaatom_get_from_json,
 #     modify_agenda_with_agendaatom,

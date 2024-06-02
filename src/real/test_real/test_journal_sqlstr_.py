@@ -1,5 +1,5 @@
 from src._road.road import create_road
-from src.agenda.atom import agendaatom_shop, atom_insert, atom_hx_table_name
+from src.change.atom import agendaatom_shop, atom_insert, atom_hx_table_name
 from src.real.journal_sqlstr import (
     get_atom_book_link_table_create_sqlstr,
     get_atom_hx_table_create_sqlstr,
