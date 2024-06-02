@@ -1,150 +1,193 @@
-# from src._road.road import (
-#     default_road_delimiter_if_none,
-#     create_road_from_nodes,
-#     create_road,
-#     get_default_real_id_roadnode as root_label,
-# )
-# from src._road.finance import default_planck_if_none
-# from src.change.agendanox import usernox_shop, get_econ_path, AgendaNox, agendanox_shop
-# from src._road.jaar_config import (
-#     get_changes_folder,
-#     duty_str,
-#     work_str,
-#     get_test_reals_dir,
-#     get_test_real_id,
-#     get_rootpart_of_econ_dir,
-# )
-# from src.change.examples.change_env import (
-#     env_dir_setup_cleanup,
-#     get_change_temp_env_dir,
-# )
-# from pytest import raises as pytest_raises
-# from os.path import exists as os_path_exists
+from src._instrument.file import save_file
+from src._road.jaar_config import duty_str, work_str
+from src._road.road import create_road, get_default_real_id_roadnode as root_label
+from src.change.agendanox import usernox_shop, agendanox_shop, pipeline_role_job_text
+from src.change.examples.examples import get_agenda_with_4_levels
+from src.change.examples.change_env import (
+    env_dir_setup_cleanup,
+    get_change_temp_env_dir,
+)
+from pytest import raises as pytest_raises
+from os.path import exists as os_path_exists
 
 
-# def test_AgendaNox_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_AgendaNox_agendanox_shop_RaisesErrorWhen_nox_type_IsInvalid():
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    temp_env_dir = get_change_temp_env_dir()
+    x_nox_type = "work_duty1"
+
+    with pytest_raises(Exception) as excinfo:
+        agendanox_shop(temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type)
+    assert str(excinfo.value) == f"'{x_nox_type}' is an invalid nox_type"
+
+
+def test_AgendaNox_agendanox_shop_When_nox_typeIs_role_job_AttrsAreCorrect():
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    temp_env_dir = get_change_temp_env_dir()
+    x_nox_type = "role_job"
+
+    # WHEN
+    sue_agendanox = agendanox_shop(
+        temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type
+    )
+
+    # THEN
+    assert sue_agendanox._nox_type == "role_job"
+    assert sue_agendanox._nox_type == x_nox_type
+    bob_text = "Bob"
+    assert sue_agendanox.speaker_dir(bob_text) == sue_agendanox.jobs_dir()
+    assert sue_agendanox.speaker_file_name(bob_text) == f"{bob_text}.json"
+    assert sue_agendanox.listener_dir(bob_text) == sue_agendanox.roles_dir()
+    assert sue_agendanox.listener_file_name(bob_text) == f"{bob_text}.json"
+    assert sue_agendanox.destination_dir(bob_text) == sue_agendanox.jobs_dir()
+    assert sue_agendanox.destination_file_name(bob_text) == f"{bob_text}.json"
+
+
+def test_AgendaNox_agendanox_shop_When_nox_typeIs_duty_work_AttrsAreCorrect():
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    temp_env_dir = get_change_temp_env_dir()
+    x_nox_type = "duty_work"
+
+    # WHEN
+    sue_agendanox = agendanox_shop(
+        temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type
+    )
+
+    # THEN
+    assert sue_agendanox._nox_type == "duty_work"
+    assert sue_agendanox._nox_type == x_nox_type
+    bob_text = "Bob"
+    bob_usernox = usernox_shop(
+        reals_dir=sue_agendanox.reals_dir,
+        real_id=sue_agendanox.real_id,
+        person_id=bob_text,
+    )
+    assert sue_agendanox.speaker_dir(bob_text) == bob_usernox.person_dir()
+    assert sue_agendanox.speaker_file_name(bob_text) == f"{work_str()}.json"
+    assert sue_agendanox.listener_dir(bob_text) == sue_agendanox.person_dir()
+    assert sue_agendanox.listener_file_name(bob_text) == f"{duty_str()}.json"
+    assert sue_agendanox.destination_dir(bob_text) == sue_agendanox.person_dir()
+    assert sue_agendanox.destination_file_name(bob_text) == f"{work_str()}.json"
+
+
+# def test_AgendaNox_agendanox_shop_When_nox_typeIs_job_work_AttrsAreCorrect(
+#
+# ):
 #     # GIVEN
 #     sue_text = "Sue"
 #     nation_text = "nation-state"
 #     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
-#     )
-#     bob_text = "Bob"
-#     assert os_path_exists(sue_agendanox.role_path(bob_text)) == False
+#     temp_env_dir = get_change_temp_env_dir()
+#     x_nox_type = "job_work"
 
 #     # WHEN
-#     sue_agendanox.save_file_role(bob_text, file_text="fooboo", replace=True)
+#     sue_agendanox = agendanox_shop(
+#         temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type
+#     )
 
 #     # THEN
-#     assert os_path_exists(sue_agendanox.role_path(bob_text))
-
-
-# def test_AgendaNox_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     nation_text = "nation-state"
-#     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
-#     )
+#     assert sue_agendanox._nox_type == "job_work"
+#     assert sue_agendanox._nox_type == x_nox_type
 #     bob_text = "Bob"
-#     assert sue_agendanox.role_file_exists(bob_text) == False
+#     bob_agendanox = agendanox_shop(
+#         reals_dir=sue_agendanox.reals_dir,
+#         real_id=sue_agendanox.real_id,
+#         person_id=bob_text,
+#         econ_road=nation_road,
 
-#     # WHEN
-#     sue_agendanox.save_file_role(bob_text, file_text="fooboo", replace=True)
-
-#     # THEN
-#     assert sue_agendanox.role_file_exists(bob_text)
-
-
-# def test_AgendaNox_open_file_role_OpensFile(env_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     nation_text = "nation-state"
-#     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
 #     )
-#     example_text = "fooboo"
-#     bob_text = "Bob"
-#     sue_agendanox.save_file_role(bob_text, example_text, replace=True)
-
-#     # WHEN / THEN
-#     assert sue_agendanox.open_file_role(bob_text) == example_text
-
-
-# def test_AgendaNox_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     nation_text = "nation-state"
-#     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
-#     )
-#     bob_text = "Bob"
-#     assert os_path_exists(sue_agendanox.job_path(bob_text)) == False
-
-#     # WHEN
-#     sue_agendanox.save_file_job(bob_text, file_text="fooboo", replace=True)
-
-#     # THEN
-#     assert os_path_exists(sue_agendanox.job_path(bob_text))
+#     assert sue_agendanox.speaker_dir(bob_text) == bob_usernox.person_dir()
+#     assert sue_agendanox.speaker_file_name(bob_text) == f"{work_str()}.json"
+#     assert sue_agendanox.listener_dir(bob_text) == sue_agendanox.person_dir()
+#     assert sue_agendanox.listener_file_name(bob_text) == f"{duty_str()}.json"
+#     assert sue_agendanox.destination_dir(bob_text) == sue_agendanox.person_dir()
+#     assert sue_agendanox.destination_file_name(bob_text) == f"{work_str()}.json"
 
 
-# def test_AgendaNox_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     nation_text = "nation-state"
-#     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
-#     )
-#     bob_text = "Bob"
-#     assert sue_agendanox.job_file_exists(bob_text) == False
+def test_AgendaNox_get_speaker_agenda_ReturnsObjWhenFileDoesNotExists(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    temp_env_dir = get_change_temp_env_dir()
+    x_nox_type = "role_job"
+    sue_agendanox = agendanox_shop(
+        temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type
+    )
 
-#     # WHEN
-#     sue_agendanox.save_file_job(bob_text, file_text="fooboo", replace=True)
-
-#     # THEN
-#     assert sue_agendanox.job_file_exists(bob_text)
+    # WHEN / THEN
+    assert sue_agendanox.get_speaker_agenda(sue_text) is None
 
 
-# def test_AgendaNox_open_file_job_OpensFile(env_dir_setup_cleanup):
-#     # GIVEN
-#     sue_text = "Sue"
-#     nation_text = "nation-state"
-#     nation_road = create_road(root_label(), nation_text)
-#     usa_text = "USA"
-#     usa_road = create_road(nation_road, usa_text)
-#     texas_text = "Texas"
-#     texas_road = create_road(usa_road, texas_text)
-#     sue_agendanox = agendanox_shop(
-#         get_change_temp_env_dir(), None, sue_text, texas_road
-#     )
-#     example_text = "fooboo"
-#     bob_text = "Bob"
-#     sue_agendanox.save_file_job(bob_text, example_text, replace=True)
+def test_AgendaNox_get_speaker_agenda_ReturnsObj_role_job(env_dir_setup_cleanup):
+    # GIVEN
+    old_sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = old_sue_agendaunit._owner_id
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendanox = agendanox_shop(
+        env_dir, real_id, sue_text, nation_road, nox_type=pipeline_role_job_text()
+    )
+    speaker_dir = sue_agendanox.speaker_dir(sue_text)
+    speaker_file_name = sue_agendanox.speaker_file_name(sue_text)
+    save_file(speaker_dir, speaker_file_name, old_sue_agendaunit.get_json())
 
-#     # WHEN / THEN
-#     assert sue_agendanox.open_file_job(bob_text) == example_text
+    # WHEN
+    new_sue_agendaunit = sue_agendanox.get_speaker_agenda(sue_text)
+
+    # THEN
+    assert old_sue_agendaunit.get_dict() == new_sue_agendaunit.get_dict()
+    assert new_sue_agendaunit._owner_id == sue_text
+
+
+def test_AgendaNox_get_listener_agenda_ReturnsObjWhenFileDoesNotExists(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    temp_env_dir = get_change_temp_env_dir()
+    x_nox_type = "role_job"
+    sue_agendanox = agendanox_shop(
+        temp_env_dir, None, sue_text, nation_road, nox_type=x_nox_type
+    )
+
+    # WHEN / THEN
+    assert sue_agendanox.get_listener_agenda(sue_text) is None
+
+
+def test_AgendaNox_get_listener_agenda_ReturnsObj_role_job(env_dir_setup_cleanup):
+    # GIVEN
+    old_sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = old_sue_agendaunit._owner_id
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendanox = agendanox_shop(
+        env_dir, real_id, sue_text, nation_road, nox_type=pipeline_role_job_text()
+    )
+    listener_dir = sue_agendanox.listener_dir(sue_text)
+    listener_file_name = sue_agendanox.listener_file_name(sue_text)
+    save_file(listener_dir, listener_file_name, old_sue_agendaunit.get_json())
+
+    # WHEN
+    new_sue_agendaunit = sue_agendanox.get_listener_agenda(sue_text)
+
+    # THEN
+    assert old_sue_agendaunit.get_dict() == new_sue_agendaunit.get_dict()
+    assert new_sue_agendaunit._owner_id == sue_text

@@ -160,12 +160,13 @@ class RealUnit:
             create_person_econunits(healer_usernox)
             for econ_road in healer_dict.keys():
                 x_agendanox = agendanox_shop(
-                    self.reals_dir,
-                    self.real_id,
-                    healer_id,
-                    econ_road,
-                    self._road_delimiter,
-                    self._planck,
+                    reals_dir=self.reals_dir,
+                    real_id=self.real_id,
+                    person_id=healer_id,
+                    econ_road=econ_road,
+                    nox_type="role_job",
+                    road_delimiter=self._road_delimiter,
+                    planck=self._planck,
                 )
                 save_role_file_agenda(x_agendanox, x_duty)
                 x_job = create_job_file_from_role_file(x_agendanox, person_id)

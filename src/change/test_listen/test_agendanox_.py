@@ -5,7 +5,6 @@ from src._road.road import (
     get_default_real_id_roadnode as root_label,
 )
 from src._road.finance import default_planck_if_none
-from src.change.agendanox import usernox_shop, get_econ_path, AgendaNox, agendanox_shop
 from src._road.jaar_config import (
     get_changes_folder,
     duty_str,
@@ -13,6 +12,13 @@ from src._road.jaar_config import (
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
+)
+from src.change.agendanox import (
+    usernox_shop,
+    get_econ_path,
+    AgendaNox,
+    agendanox_shop,
+    get_nox_type_set,
 )
 from src.change.examples.change_env import (
     env_dir_setup_cleanup,
@@ -61,6 +67,11 @@ def test_get_econ_path_ReturnsCorrectObj():
     assert elpaso_path == get_econ_path(sue_usernox, diff_root_elpaso_road)
 
 
+def test_get_nox_type_set_ReturnsObj():
+    # GIVEN / WHEN / THEN
+    assert get_nox_type_set() == {"duty_work", "role_job", "job_work"}
+
+
 def test_AgendaNox_Exists():
     # GIVEN / WHEN
     x_agendanox = AgendaNox()
@@ -70,6 +81,7 @@ def test_AgendaNox_Exists():
     assert x_agendanox.real_id is None
     assert x_agendanox.person_id is None
     assert x_agendanox.econ_road is None
+    assert x_agendanox._nox_type is None
     assert x_agendanox._road_delimiter is None
     assert x_agendanox._planck is None
 
@@ -85,7 +97,7 @@ def test_agendanox_shop_ReturnsCorrectObjWhenEmpty():
     texas_road = create_road(usa_road, texas_text)
 
     # WHEN
-    sue_agendanox = agendanox_shop(None, None, sue_text, econ_road=texas_road)
+    sue_agendanox = agendanox_shop(None, None, sue_text, texas_road)
 
     # THEN
     assert sue_agendanox.reals_dir == get_test_reals_dir()

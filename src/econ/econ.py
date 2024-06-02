@@ -2,8 +2,8 @@ from src._road.road import OwnerID, PersonID, validate_roadnode
 from src._road.worldnox import get_file_name
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
-from src.change.agendanox import AgendaNox
-from src.change.listen import get_speaker_agenda, listen_to_debtors_roll
+from src.change.agendanox import AgendaNox, pipeline_role_job_text
+from src.change.listen import listen_to_debtors_roll
 from src._instrument.file import set_dir, delete_dir, open_file, dir_files, save_file
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -323,13 +323,7 @@ class EconUnit:
         save_role_file_agenda(self.agendanox, x_agenda)
 
     def get_role_file_agenda(self, owner_id: PersonID) -> AgendaUnit:
-        # get_role_file_agenda(self.agendanox, owner_id)
-        role_file_name = get_file_name(owner_id)
-        if os_path_exists(f"{self.agendanox.role_path(owner_id)}") == False:
-            raise RoleAgendaFileException(
-                f"Role agenda file '{role_file_name}' does not exist."
-            )
-        return get_speaker_agenda(self.agendanox.roles_dir(), owner_id)
+        return get_role_file_agenda(self.agendanox, owner_id)
 
     def delete_role_file(self, x_owner_id: PersonID):
         delete_dir(f"{self.get_roles_dir()}/{get_file_name(x_owner_id)}")
@@ -437,13 +431,15 @@ def get_role_file_agenda(x_agendanox: AgendaNox, owner_id: PersonID) -> AgendaUn
         raise RoleAgendaFileException(
             f"Role agenda file '{role_file_name}' does not exist."
         )
-    return get_speaker_agenda(x_agendanox.roles_dir(), owner_id)
+    x_agendanox._nox_type = pipeline_role_job_text()
+    return x_agendanox.get_listener_agenda(owner_id)
 
 
 def get_job_file(
     x_agendanox: AgendaNox, owner_id: PersonID, return_None_if_missing: bool = True
 ) -> AgendaUnit:
-    return get_speaker_agenda(x_agendanox.jobs_dir(), owner_id, return_None_if_missing)
+    x_agendanox._nox_type = pipeline_role_job_text()
+    return x_agendanox.get_speaker_agenda(owner_id, return_None_if_missing)
 
 
 def create_job_file_from_role_file(agendanox: AgendaNox, person_id: PersonID):

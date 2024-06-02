@@ -23,17 +23,6 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def get_speaker_agenda(
-    x_dir: str, owner_id: PersonID, return_None_if_missing: bool = True
-) -> AgendaUnit:
-    x_file_name = get_file_name(owner_id)
-    x_file_path = f"{x_dir}/{x_file_name}"
-    if os_path_exists(x_file_path) or not return_None_if_missing:
-        return agendaunit_get_from_json(open_file(x_dir, x_file_name))
-    else:
-        None
-
-
 def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit]:
     for x_beliefunit in perspective_agenda._idearoot._beliefunits.values():
         x_beliefunit.set_pick_to_base()
@@ -257,7 +246,7 @@ def listen_to_speakers_intent(
         if x_partyunit.party_id == new_listener._owner_id:
             listen_to_speaker_intent(new_listener, src_listener)
         else:
-            speaker_job = get_speaker_agenda(agendanox.jobs_dir(), x_partyunit.party_id)
+            speaker_job = agendanox.get_speaker_agenda(x_partyunit.party_id)
             if speaker_job is None:
                 speaker_job = create_empty_agenda(new_listener, x_partyunit.party_id)
             listen_to_speaker_intent(new_listener, speaker_job)
@@ -269,7 +258,7 @@ def listen_to_speakers_belief(
     listen_to_speaker_belief(new_listener, src_listener)
     for x_partyunit in get_ordered_debtors_roll(new_listener):
         if x_partyunit.party_id != new_listener._owner_id:
-            speaker_job = get_speaker_agenda(agendanox.jobs_dir(), x_partyunit.party_id)
+            speaker_job = agendanox.get_speaker_agenda(x_partyunit.party_id)
             if speaker_job != None:
                 listen_to_speaker_belief(new_listener, speaker_job)
 
