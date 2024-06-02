@@ -1,4 +1,4 @@
-from src._road.worldnox import econnox_shop
+from src.change.agendanox import econnox_shop
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import get_texas_econnox, env_dir_setup_cleanup

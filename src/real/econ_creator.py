@@ -6,12 +6,8 @@ from src._instrument.file import (
     delete_dir,
 )
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
-from src._road.worldnox import (
-    UserNox,
-    get_rootpart_of_econ_dir,
-    get_econ_path,
-    econnox_shop,
-)
+from src._road.worldnox import UserNox, get_rootpart_of_econ_dir
+from src.change.agendanox import get_econ_path, econnox_shop
 from src.agenda.agenda import AgendaUnit
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.real.admin_duty import get_duty_file_agenda

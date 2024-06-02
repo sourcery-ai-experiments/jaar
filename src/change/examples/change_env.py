@@ -1,6 +1,6 @@
 from src._instrument.file import delete_dir
 from src._road.road import create_road_from_nodes, get_default_real_id_roadnode
-from src._road.worldnox import EconNox, econnox_shop
+from src.change.agendanox import EconNox, econnox_shop
 from pytest import fixture as pytest_fixture
 
 

@@ -1,4 +1,4 @@
-from src._road.worldnox import econnox_shop
+from src.change.agendanox import econnox_shop
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
 from src.econ.examples.econ_env_kit import (
     temp_real_id,

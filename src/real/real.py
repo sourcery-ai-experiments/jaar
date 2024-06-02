@@ -2,7 +2,7 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src._road.worldnox import econnox_shop
+from src.change.agendanox import econnox_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.listen import listen_to_speaker_intent
 from src.econ.econ import create_job_file_from_role_file, save_role_file_agenda
