@@ -8,7 +8,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
-from src.agenda.change import changeunit_shop, get_init_change_id_if_None
+from src.change.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
     changeunit_file_exists,
     _merge_changes_into_agenda,

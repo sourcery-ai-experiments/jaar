@@ -1,5 +1,5 @@
 from src.agenda.party import partyunit_shop
-from src.agenda.atom import (
+from src.change.atom import (
     AgendaAtom,
     agendaatom_shop,
     atom_insert,

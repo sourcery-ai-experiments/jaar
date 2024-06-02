@@ -4,7 +4,6 @@ from src.agenda.agenda import AgendaUnit
 from src.agenda.idea import ideaunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
-from src.agenda.examples.agenda_env import get_codespace_agenda_dir
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_json_from_dict,
@@ -13,6 +12,7 @@ from src._instrument.python import (
 from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._instrument.file import open_file, save_file
 from dataclasses import dataclass
+from os import getcwd as os_getcwd
 
 
 class CRUD_command(str):
@@ -43,10 +43,12 @@ def get_atom_config_file_name() -> str:
     return "atom_config.json"
 
 
+def config_file_dir() -> str:
+    return f"{os_getcwd()}/src/change"
+
+
 def get_atom_config_dict() -> dict:
-    return get_dict_from_json(
-        open_file(get_codespace_agenda_dir(), get_atom_config_file_name())
-    )
+    return get_dict_from_json(open_file(config_file_dir(), get_atom_config_file_name()))
 
 
 def add_to_atom_table_columns(x_dict, atom_category, crud, arg_key, arg_value):
@@ -116,7 +118,7 @@ def get_atom_columns_build() -> dict[str:]:
 
 def save_atom_config_file(atom_config_dict):
     save_file(
-        dest_dir=get_codespace_agenda_dir(),
+        dest_dir=config_file_dir(),
         file_name=get_atom_config_file_name(),
         file_text=get_json_from_dict(atom_config_dict),
     )

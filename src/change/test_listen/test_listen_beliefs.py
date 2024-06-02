@@ -1,12 +1,12 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.listen import (
+from src.change.listen import (
     create_listen_basis,
     listen_to_speakers_belief,
     listen_to_speakers_intent,
 )
-from src.agenda.examples.agenda_env import get_texas_econnox, env_dir_setup_cleanup
-from src.agenda.examples.example_listen import (
+from src.change.examples.agenda_env import get_texas_econnox, env_dir_setup_cleanup
+from src.change.examples.example_listen import (
     casa_text,
     cook_text,
     eat_text,

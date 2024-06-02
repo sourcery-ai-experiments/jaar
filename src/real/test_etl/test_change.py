@@ -1,7 +1,7 @@
 from src._instrument.file import open_file, dir_files, delete_dir, set_dir
 from src._road.jaar_config import init_change_id
 from src._road.worldnox import usernox_shop
-from src.agenda.change import changeunit_shop, get_json_filename
+from src.change.change import changeunit_shop, get_json_filename
 from src.real.examples.example_atoms import get_atom_example_ideaunit_knee
 from src.real.examples.example_changes import (
     get_sue_changeunit,

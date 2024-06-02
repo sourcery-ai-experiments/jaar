@@ -6,14 +6,14 @@ from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.atom import (
+from src.change.atom import (
     atom_update,
     atom_delete,
     atom_insert,
     agendaatom_shop,
 )
-from src.agenda.book import bookunit_shop
-from src.agenda.examples.example_books import get_bookunit_example1
+from src.change.book import bookunit_shop
+from src.change.examples.example_books import get_bookunit_example1
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_SimplestScenario():

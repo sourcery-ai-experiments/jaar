@@ -2,7 +2,7 @@ from src._road.road import create_road
 from src.agenda.party import partylink_shop
 from src.agenda.reason_idea import beliefunit_shop
 from src.agenda.group import groupunit_shop
-from src.agenda.atom import (
+from src.change.atom import (
     atom_update,
     atom_delete,
     atom_insert,

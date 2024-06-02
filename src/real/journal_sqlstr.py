@@ -1,4 +1,4 @@
-from src.agenda.atom import (
+from src.change.atom import (
     get_atom_columns_build,
     atom_hx_table_name,
     atom_mstr_table_name,

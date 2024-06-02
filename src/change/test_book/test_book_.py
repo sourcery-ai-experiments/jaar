@@ -1,6 +1,6 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.agenda.party import partyunit_shop
-from src.agenda.book import (
+from src.change.book import (
     BookUnit,
     bookunit_shop,
     validate_agenda_build_from_book,
@@ -10,7 +10,7 @@ from src.agenda.book import (
     atom_delete,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.examples.example_books import get_bookunit_example1
+from src.change.examples.example_books import get_bookunit_example1
 from src._instrument.python import x_is_json
 from pytest import raises as pytest_raises
 

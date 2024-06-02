@@ -1,13 +1,13 @@
 from src._road.jaar_config import get_test_real_id
 from src._road.road import RealID
-from src.agenda.atom import (
+from src.change.atom import (
     AgendaAtom,
     atom_delete,
     atom_update,
     atom_insert,
     agendaatom_shop,
 )
-from src.agenda.book import BookUnit, bookunit_shop
+from src.change.book import BookUnit, bookunit_shop
 
 
 def get_atom_example_ideaunit_sports(real_id: RealID = None) -> AgendaAtom:

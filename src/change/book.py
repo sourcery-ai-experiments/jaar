@@ -4,7 +4,7 @@ from src.agenda.party import PartyLink, PartyID
 from src.agenda.group import GroupUnit, GroupID
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.agenda.atom import (
+from src.change.atom import (
     CRUD_command,
     AgendaAtom,
     agendaatom_shop,

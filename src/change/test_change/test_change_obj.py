@@ -1,7 +1,7 @@
 from src._road.jaar_config import init_change_id, get_changes_folder
-from src.agenda.book import bookunit_shop
-from src.agenda.change import ChangeUnit, changeunit_shop, get_init_change_id_if_None
-from src.agenda.examples.example_books import (
+from src.change.book import bookunit_shop
+from src.change.change import ChangeUnit, changeunit_shop, get_init_change_id_if_None
+from src.change.examples.example_books import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
