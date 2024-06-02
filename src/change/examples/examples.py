@@ -1,5 +1,4 @@
 from src.agenda.idea import ideaunit_shop
-from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 
 
@@ -65,42 +64,4 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     idea_grandgrandkid_usa_oregon = ideaunit_shop(oregon_text, _weight=50)
     sue_agenda.add_idea(idea_grandgrandkid_usa_texas, usa_road)
     sue_agenda.add_idea(idea_grandgrandkid_usa_oregon, usa_road)
-    return sue_agenda
-
-
-def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels()
-    week_text = "weekdays"
-    week_road = sue_agenda.make_l1_road(week_text)
-    wed_text = "Wednesday"
-    wed_road = sue_agenda.make_road(week_road, wed_text)
-    week_reason = reasonunit_shop(week_road)
-    week_reason.set_premise(wed_road)
-
-    nation_text = "nation-state"
-    nation_road = sue_agenda.make_l1_road(nation_text)
-    usa_text = "USA"
-    usa_road = sue_agenda.make_road(nation_road, usa_text)
-    nation_reason = reasonunit_shop(nation_road)
-    nation_reason.set_premise(usa_road)
-
-    casa_text = "casa"
-    casa_road = sue_agenda.make_l1_road(casa_text)
-    sue_agenda.edit_idea_attr(road=casa_road, reason=week_reason)
-    sue_agenda.edit_idea_attr(road=casa_road, reason=nation_reason)
-    return sue_agenda
-
-
-def get_agenda_with_4_levels_and_2reasons_2beliefs() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    week_text = "weekdays"
-    week_road = sue_agenda.make_l1_road(week_text)
-    wed_text = "Wednesday"
-    wed_road = sue_agenda.make_road(week_road, wed_text)
-    states_text = "nation-state"
-    states_road = sue_agenda.make_l1_road(states_text)
-    usa_text = "USA"
-    usa_road = sue_agenda.make_road(states_road, usa_text)
-    sue_agenda.set_belief(base=week_road, pick=wed_road)
-    sue_agenda.set_belief(base=states_road, pick=usa_road)
     return sue_agenda
