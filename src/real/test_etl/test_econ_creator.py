@@ -65,10 +65,10 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(dallas_db_path)
-    assert sue_dallas_econunit.econnox.real_id == sue_usernox.real_id
+    assert sue_dallas_econunit.agendanox.real_id == sue_usernox.real_id
     assert sue_dallas_econunit.econ_dir() == dallas_dir
-    assert sue_dallas_econunit.econnox.person_id == sue_text
-    assert sue_dallas_econunit.econnox._road_delimiter == sue_usernox._road_delimiter
+    assert sue_dallas_econunit.agendanox.person_id == sue_text
+    assert sue_dallas_econunit.agendanox._road_delimiter == sue_usernox._road_delimiter
 
 
 def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
@@ -235,7 +235,7 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
 
     # THEN
     assert dallas_econ != None
-    assert dallas_econ.econnox.real_id == sue_usernox.real_id
+    assert dallas_econ.agendanox.real_id == sue_usernox.real_id
 
 
 def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):

@@ -41,7 +41,7 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
 
 
 @dataclass
-class EconNox(UserNox):
+class AgendaNox(UserNox):
     econ_road: RoadUnit = None
 
     def econ_dir(self) -> str:
@@ -94,14 +94,14 @@ class EconNox(UserNox):
     # job delete
 
 
-def econnox_shop(
+def agendanox_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID,
     econ_road: RoadUnit,
     road_delimiter: str = None,
     planck: float = None,
-) -> EconNox:
+) -> AgendaNox:
     x_usernox = usernox_shop(
         reals_dir=reals_dir,
         real_id=real_id,
@@ -109,7 +109,7 @@ def econnox_shop(
         road_delimiter=road_delimiter,
         planck=planck,
     )
-    return EconNox(
+    return AgendaNox(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,

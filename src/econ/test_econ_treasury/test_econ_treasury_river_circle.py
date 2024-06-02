@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econnox
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_agendanox
 from src.econ.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
@@ -12,7 +12,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -51,7 +51,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"

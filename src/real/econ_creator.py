@@ -7,7 +7,7 @@ from src._instrument.file import (
 )
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
 from src._road.worldnox import UserNox, get_rootpart_of_econ_dir
-from src.change.agendanox import get_econ_path, econnox_shop
+from src.change.agendanox import get_econ_path, agendanox_shop
 from src.agenda.agenda import AgendaUnit
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.real.admin_duty import get_duty_file_agenda
@@ -43,7 +43,7 @@ def create_econ_dir(x_usernox: UserNox, x_road: RoadUnit) -> str:
 
 
 def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
-    x_econnox = econnox_shop(
+    x_agendanox = agendanox_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -51,7 +51,7 @@ def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
         road_delimiter=x_usernox._road_delimiter,
         planck=x_usernox._planck,
     )
-    x_econunit = econunit_shop(x_econnox)
+    x_econunit = econunit_shop(x_agendanox)
     x_econunit.set_econ_dirs()
     return x_econunit
 

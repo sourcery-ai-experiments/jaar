@@ -8,7 +8,7 @@ from src.agenda.agenda import (
 from src.econ.econ import econunit_shop
 from src.econ.examples.econ_env_kit import (
     temp_real_id,
-    get_texas_econnox,
+    get_texas_agendanox,
     env_dir_setup_cleanup,
 )
 from src._instrument.sqlite import get_single_result
@@ -37,7 +37,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryI
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -61,7 +61,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryF
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=False)
 
     bob_text = "Bob"
@@ -85,7 +85,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitT
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -131,7 +131,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -158,7 +158,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -185,7 +185,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_gr
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     bob_text = "Bob"
@@ -213,7 +213,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.set_econ_dirs(in_memory_treasury=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
@@ -225,7 +225,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
     # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
     # run set_treasury_metrics
     # assert group "swimming expert" has 2 different party
-    x_real_id = x_econ.econnox.real_id
+    x_real_id = x_econ.agendanox.real_id
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -281,7 +281,7 @@ def test_EconUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -305,7 +305,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_ta
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -336,7 +336,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_ta
 
 def test_EconUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -376,7 +376,7 @@ def test_EconUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopula
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -403,7 +403,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     # create 3 agendas with varying numbers of beliefs
@@ -461,7 +461,7 @@ def test_EconUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
     x_econ.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -487,7 +487,7 @@ def test_EconUnit_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     bob_text = "Bob"
     tom_text = "Tom"

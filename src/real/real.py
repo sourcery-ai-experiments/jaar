@@ -2,7 +2,7 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src.change.agendanox import econnox_shop
+from src.change.agendanox import agendanox_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.listen import listen_to_speaker_intent
 from src.econ.econ import create_job_file_from_role_file, save_role_file_agenda
@@ -159,7 +159,7 @@ class RealUnit:
             )
             create_person_econunits(healer_usernox)
             for econ_road in healer_dict.keys():
-                x_econnox = econnox_shop(
+                x_agendanox = agendanox_shop(
                     self.reals_dir,
                     self.real_id,
                     healer_id,
@@ -167,8 +167,8 @@ class RealUnit:
                     self._road_delimiter,
                     self._planck,
                 )
-                save_role_file_agenda(x_econnox, x_duty)
-                x_job = create_job_file_from_role_file(x_econnox, person_id)
+                save_role_file_agenda(x_agendanox, x_duty)
+                x_job = create_job_file_from_role_file(x_agendanox, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty

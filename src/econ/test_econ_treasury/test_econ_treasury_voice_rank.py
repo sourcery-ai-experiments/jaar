@@ -3,12 +3,12 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.meld_files import get_file_names_in_voice_rank_order
 from src._instrument.file import save_file, delete_dir
 from src.econ.econ import econunit_shop, save_role_file_agenda
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econnox
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_agendanox
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_texas_econnox().reals_dir}/voice_rank_order_temp"
+    temp_dir = f"{get_texas_agendanox().reals_dir}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "Yao"
 
@@ -78,8 +78,8 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    texas_econnox = get_texas_econnox()
-    x_econ = econunit_shop(texas_econnox)
+    texas_agendanox = get_texas_agendanox()
+    x_econ = econunit_shop(texas_agendanox)
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"
@@ -93,7 +93,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
-    save_role_file_agenda(texas_econnox, yao_role0_agenda)
+    save_role_file_agenda(texas_agendanox, yao_role0_agenda)
     x_econ.create_job_file_from_role_file(yao_text)
     yao_role1_agenda = x_econ.get_role_file_agenda(yao_text)
     assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None

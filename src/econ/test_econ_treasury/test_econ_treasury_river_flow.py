@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_econnox
+from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_agendanox
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
@@ -28,7 +28,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunit
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -104,7 +104,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunit
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -178,7 +178,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunit
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -259,7 +259,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunit
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -344,7 +344,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -410,7 +410,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryunit
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -496,7 +496,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousRa
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -565,7 +565,7 @@ def test_EconUnit_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendanox())
 
     sal_text = "Sal"
     bob_text = "Bob"
