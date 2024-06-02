@@ -13,6 +13,7 @@ from src.agenda.agenda import (
     PartyUnit,
     get_from_json as agendaunit_get_from_json,
 )
+from src.change.agendanox import AgendaNox
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
@@ -250,35 +251,35 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
 
 
 def listen_to_speakers_intent(
-    new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit
+    new_listener: AgendaUnit, agendanox: AgendaNox, src_listener: AgendaUnit
 ):
     for x_partyunit in get_ordered_debtors_roll(new_listener):
         if x_partyunit.party_id == new_listener._owner_id:
             listen_to_speaker_intent(new_listener, src_listener)
         else:
-            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            speaker_job = get_speaker_agenda(agendanox.jobs_dir(), x_partyunit.party_id)
             if speaker_job is None:
                 speaker_job = create_empty_agenda(new_listener, x_partyunit.party_id)
             listen_to_speaker_intent(new_listener, speaker_job)
 
 
 def listen_to_speakers_belief(
-    new_listener: AgendaUnit, speakers_dir: str, src_listener: AgendaUnit = None
+    new_listener: AgendaUnit, agendanox: AgendaNox, src_listener: AgendaUnit = None
 ):
     listen_to_speaker_belief(new_listener, src_listener)
     for x_partyunit in get_ordered_debtors_roll(new_listener):
         if x_partyunit.party_id != new_listener._owner_id:
-            speaker_job = get_speaker_agenda(speakers_dir, x_partyunit.party_id)
+            speaker_job = get_speaker_agenda(agendanox.jobs_dir(), x_partyunit.party_id)
             if speaker_job != None:
                 listen_to_speaker_belief(new_listener, speaker_job)
 
 
-def listen_to_debtors_roll(listener: AgendaUnit, speakers_dir: str) -> AgendaUnit:
+def listen_to_debtors_roll(listener: AgendaUnit, agendanox: AgendaNox) -> AgendaUnit:
     new_agenda = create_listen_basis(listener)
     if listener._party_debtor_pool is None:
         return new_agenda
 
-    listen_to_speakers_intent(new_agenda, speakers_dir, listener)
-    listen_to_speakers_belief(new_agenda, speakers_dir, listener)
+    listen_to_speakers_intent(new_agenda, agendanox, listener)
+    listen_to_speakers_belief(new_agenda, agendanox, listener)
 
     return new_agenda

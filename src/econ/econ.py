@@ -446,8 +446,8 @@ def get_job_file(
     return get_speaker_agenda(x_agendanox.jobs_dir(), owner_id, return_None_if_missing)
 
 
-def create_job_file_from_role_file(econ_dir: AgendaNox, person_id: PersonID):
-    x_role = get_role_file_agenda(econ_dir, person_id)
-    x_job = listen_to_debtors_roll(x_role, econ_dir.jobs_dir())
-    save_job_file(econ_dir, x_job)
+def create_job_file_from_role_file(agendanox: AgendaNox, person_id: PersonID):
+    x_role = get_role_file_agenda(agendanox, person_id)
+    x_job = listen_to_debtors_roll(x_role, agendanox)
+    save_job_file(agendanox, x_job)
     return x_job

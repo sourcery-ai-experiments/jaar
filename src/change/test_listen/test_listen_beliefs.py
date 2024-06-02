@@ -42,11 +42,11 @@ def test_listen_to_speakers_belief_SetsSingleBeliefUnit_v1(env_dir_setup_cleanup
 
     new_yao_agenda = create_listen_basis(yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(new_yao_agenda, texas_agendanox.jobs_dir(), yao_listener)
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_speakers_belief(new_yao_agenda, texas_agendanox.jobs_dir(), yao_listener)
+    listen_to_speakers_belief(new_yao_agenda, texas_agendanox, yao_listener)
 
     # THEN
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
@@ -74,12 +74,12 @@ def test_listen_to_speakers_belief_SetsSingleBeliefUnitWithOtherTask(
 
     new_yao_agenda = create_listen_basis(yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(new_yao_agenda, texas_agendanox.jobs_dir(), yao_listener)
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
     assert new_yao_agenda.get_belief(eat_road()) is None
 
     # WHEN
-    listen_to_speakers_belief(new_yao_agenda, texas_agendanox.jobs_dir(), yao_listener)
+    listen_to_speakers_belief(new_yao_agenda, texas_agendanox, yao_listener)
 
     # THEN
     assert new_yao_agenda.get_belief(eat_road()) != None
@@ -104,15 +104,11 @@ def test_listen_to_speaker_belief_GetsBeliefsFromSrcAgendaSelfNotSpeakerSelf(
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.get_belief(eat_road()) is None
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(
-        new_yao_agenda, texas_agendanox.jobs_dir(), yao_src_listener
-    )
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_src_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_speakers_belief(
-        new_yao_agenda, texas_agendanox.jobs_dir(), yao_src_listener
-    )
+    listen_to_speakers_belief(new_yao_agenda, texas_agendanox, yao_src_listener)
 
     # THEN
     assert new_yao_agenda.get_belief(eat_road()) != None
@@ -140,13 +136,13 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     new_yao_agenda = create_listen_basis(yao_src)
     assert new_yao_agenda.get_belief(eat_road()) is None
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(new_yao_agenda, texas_agendanox.jobs_dir(), yao_src)
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_src)
     print(f"{new_yao_agenda.get_missing_belief_bases().keys()=}")
     print(f"{new_yao_agenda._idearoot._beliefunits.keys()=}")
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_speakers_belief(new_yao_agenda, texas_agendanox.jobs_dir(), yao_src)
+    listen_to_speakers_belief(new_yao_agenda, texas_agendanox, yao_src)
 
     # THEN
     assert yao_src.get_belief(eat_road()) is None
@@ -172,15 +168,11 @@ def test_listen_to_speaker_belief_SetsPrioritizesSelfBeliefsOverOthers(
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.get_belief(eat_road()) is None
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(
-        new_yao_agenda, texas_agendanox.jobs_dir(), yao_src_listener
-    )
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_src_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_speakers_belief(
-        new_yao_agenda, texas_agendanox.jobs_dir(), yao_src_listener
-    )
+    listen_to_speakers_belief(new_yao_agenda, texas_agendanox, yao_src_listener)
 
     # THEN
     assert new_yao_agenda.get_belief(eat_road()) != None
@@ -209,13 +201,13 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     new_yao1_agenda = create_listen_basis(yao_src)
     assert new_yao1_agenda.get_belief(eat_road()) is None
     assert new_yao1_agenda.get_missing_belief_bases().get(eat_road()) is None
-    listen_to_speakers_intent(new_yao1_agenda, texas_agendanox.jobs_dir(), yao_src)
+    listen_to_speakers_intent(new_yao1_agenda, texas_agendanox, yao_src)
     print(f"{new_yao1_agenda.get_missing_belief_bases().keys()=}")
     print(f"{new_yao1_agenda._idearoot._beliefunits.keys()=}")
     assert new_yao1_agenda.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_speakers_belief(new_yao1_agenda, texas_agendanox.jobs_dir(), yao_src)
+    listen_to_speakers_belief(new_yao1_agenda, texas_agendanox, yao_src)
 
     # THEN
     assert yao_src.get_belief(eat_road()) is None
@@ -233,8 +225,8 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     yao_src.add_partyunit(bob_text, None, yao_bob_debtor_weight)
     yao_src.set_party_pool(100)
     new_yao2_agenda = create_listen_basis(yao_src)
-    listen_to_speakers_intent(new_yao2_agenda, texas_agendanox.jobs_dir(), yao_src)
-    listen_to_speakers_belief(new_yao2_agenda, texas_agendanox.jobs_dir(), yao_src)
+    listen_to_speakers_intent(new_yao2_agenda, texas_agendanox, yao_src)
+    listen_to_speakers_belief(new_yao2_agenda, texas_agendanox, yao_src)
 
     # THEN
     zia_partyunit = new_yao2_agenda.get_party(zia_text)
@@ -280,7 +272,7 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
 #     new_yao_agenda = create_listen_basis(yao_listener)
 #     print(f"{new_yao_agenda.get_idea_dict().keys()=}")
 #     # assert new_yao_agenda.get_missing_belief_bases().get(status_road) is None
-#     listen_to_speakers_intent(new_yao_agenda, texas_agendanox.jobs_dir())
+#     listen_to_speakers_intent(new_yao_agenda, texas_agendanox)
 #     print(f"{new_yao_agenda.get_idea_dict().keys()=}")
 #     assert new_yao_agenda.get_missing_belief_bases().get(status_road) != None
 
