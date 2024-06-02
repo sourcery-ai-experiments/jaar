@@ -5,7 +5,7 @@ from src.change.listen import (
     listen_to_speakers_belief,
     listen_to_speakers_intent,
 )
-from src.change.examples.agenda_env import get_texas_econnox, env_dir_setup_cleanup
+from src.change.examples.change_env import get_texas_econnox, env_dir_setup_cleanup
 from src.change.examples.example_listen import (
     casa_text,
     cook_text,
