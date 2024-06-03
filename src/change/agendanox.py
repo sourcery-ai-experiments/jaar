@@ -1,4 +1,10 @@
-from src._instrument.file import get_directory_path, save_file, open_file, delete_dir
+from src._instrument.file import (
+    get_directory_path,
+    save_file,
+    open_file,
+    delete_dir,
+    dir_files,
+)
 from src._road.road import (
     PersonID,
     RealID,
@@ -81,6 +87,9 @@ class AgendaNox(UserNox):
 
     def jobs_dir(self) -> str:
         return get_econ_jobs_dir(self.econ_dir())
+
+    def get_jobs_dir_file_names_list(self):
+        return list(dir_files(dir_path=self.jobs_dir()).keys())
 
     def save_file_role(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)

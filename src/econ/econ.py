@@ -216,7 +216,7 @@ class EconUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.get_jobs_dir_file_names_list():
+        for file_name in self.agendanox.get_jobs_dir_file_names_list():
             agenda_json = open_file(self.agendanox.jobs_dir(), file_name)
             agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
             agendaunit_x.calc_agenda_metrics()
@@ -345,10 +345,6 @@ class EconUnit:
                     )
                     sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
                     cur.execute(sqlstr)
-
-    # jobs dir management
-    def get_jobs_dir_file_names_list(self):
-        return list(dir_files(dir_path=self.agendanox.jobs_dir()).keys())
 
 
 def econunit_shop(x_agendanox: AgendaNox, in_memory_treasury: bool = None) -> EconUnit:
