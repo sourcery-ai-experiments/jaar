@@ -1,7 +1,7 @@
-from src.change.agendanox import agendanox_shop
+from src.change.agendahub import agendahub_shop
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import get_texas_agendanox, env_dir_setup_cleanup
+from src.econ.examples.econ_env_kit import get_texas_agendahub, env_dir_setup_cleanup
 from src.econ.treasury_sqlstr import get_agendatreasuryunits_dict
 
 
@@ -9,7 +9,7 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_agendanox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -22,7 +22,7 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
 
 def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
     # GIVEN
-    x_econ = econunit_shop(get_texas_agendanox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_econ.get_treasury_conn())) == 0
@@ -33,11 +33,11 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_c
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    x_econ.agendanox.save_file_job(agendaunit_shop(_owner_id=sal_text))
-    x_econ.agendanox.save_file_job(agendaunit_shop(_owner_id=bob_text))
-    x_econ.agendanox.save_file_job(agendaunit_shop(_owner_id=tom_text))
-    x_econ.agendanox.save_file_job(agendaunit_shop(_owner_id=ava_text))
-    x_econ.agendanox.save_file_job(agendaunit_shop(_owner_id=elu_text))
+    x_econ.agendahub.save_file_job(agendaunit_shop(_owner_id=sal_text))
+    x_econ.agendahub.save_file_job(agendaunit_shop(_owner_id=bob_text))
+    x_econ.agendahub.save_file_job(agendaunit_shop(_owner_id=tom_text))
+    x_econ.agendahub.save_file_job(agendaunit_shop(_owner_id=ava_text))
+    x_econ.agendahub.save_file_job(agendaunit_shop(_owner_id=elu_text))
     x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
 
@@ -69,7 +69,7 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_agendanox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     sal_text = "Sal"
@@ -82,11 +82,11 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
-    x_econ.agendanox.save_file_job(sal_agenda)
-    x_econ.agendanox.save_file_job(bob_agenda)
-    x_econ.agendanox.save_file_job(tom_agenda)
-    x_econ.agendanox.save_file_job(ava_agenda)
-    x_econ.agendanox.save_file_job(elu_agenda)
+    x_econ.agendahub.save_file_job(sal_agenda)
+    x_econ.agendahub.save_file_job(bob_agenda)
+    x_econ.agendahub.save_file_job(tom_agenda)
+    x_econ.agendahub.save_file_job(ava_agenda)
+    x_econ.agendahub.save_file_job(elu_agenda)
     x_econ.refresh_treasury_job_agendas_data()
     x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
     assert x_agendatreasuryunits.get(sal_text).rational is None

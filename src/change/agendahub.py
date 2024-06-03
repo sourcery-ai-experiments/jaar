@@ -66,7 +66,7 @@ def pipeline_job_work_text() -> str:
 
 
 @dataclass
-class AgendaNox(UserNox):
+class AgendaHub(UserNox):
     econ_road: RoadUnit = None
     _nox_type: str = None  # can be "duty_work", "role_job", "job_work"
 
@@ -127,7 +127,7 @@ class AgendaNox(UserNox):
         else:
             raise Invalid_nox_type_Exception(f"'{nox_type}' is an invalid nox_type")
 
-    def speaker_dir(self, x_person_id: PersonID = None):
+    def speaker_dir(self, x_person_id: PersonID = None, x_econ_path: RoadUnit = None):
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
@@ -139,17 +139,31 @@ class AgendaNox(UserNox):
                 planck=self._planck,
             )
             return speaker_usernox.person_dir()
+        if self._nox_type == pipeline_job_work_text():
+            speaker_agendahub = agendahub_shop(
+                reals_dir=self.reals_dir,
+                real_id=self.real_id,
+                person_id=x_person_id,
+                econ_road=x_econ_path,
+                road_delimiter=self._road_delimiter,
+                planck=self._planck,
+            )
+            return speaker_agendahub.jobs_dir()
 
     def speaker_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
             return get_file_name(work_str())
+        if self._nox_type == pipeline_job_work_text():
+            return get_file_name(self.person_id)
 
     def listener_dir(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return self.roles_dir()
         if self._nox_type == pipeline_duty_work_text():
+            return self.person_dir()
+        if self._nox_type == pipeline_job_work_text():
             return self.person_dir()
 
     def listener_file_name(self, x_arg=None) -> str:
@@ -157,17 +171,23 @@ class AgendaNox(UserNox):
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
             return get_file_name(duty_str())
+        if self._nox_type == pipeline_job_work_text():
+            return get_file_name(duty_str())
 
     def destination_dir(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
             return self.person_dir()
+        if self._nox_type == pipeline_job_work_text():
+            return self.person_dir()
 
     def destination_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
+            return get_file_name(work_str())
+        if self._nox_type == pipeline_job_work_text():
             return get_file_name(work_str())
 
     def get_speaker_agenda(
@@ -193,7 +213,7 @@ class AgendaNox(UserNox):
             None
 
 
-def agendanox_shop(
+def agendahub_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID,
@@ -201,7 +221,7 @@ def agendanox_shop(
     nox_type: str = None,
     road_delimiter: str = None,
     planck: float = None,
-) -> AgendaNox:
+) -> AgendaHub:
     x_usernox = usernox_shop(
         reals_dir=reals_dir,
         real_id=real_id,
@@ -209,7 +229,7 @@ def agendanox_shop(
         road_delimiter=road_delimiter,
         planck=planck,
     )
-    x_agendanox = AgendaNox(
+    x_agendahub = AgendaHub(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -217,5 +237,5 @@ def agendanox_shop(
         _road_delimiter=x_usernox._road_delimiter,
         _planck=x_usernox._planck,
     )
-    x_agendanox.set_nox_type(nox_type)
-    return x_agendanox
+    x_agendahub.set_nox_type(nox_type)
+    return x_agendahub

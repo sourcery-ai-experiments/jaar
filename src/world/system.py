@@ -1,4 +1,4 @@
-# from src.change.agendanox import agendanox_shop
+# from src.change.agendahub import agendahub_shop
 # from src._road.finance import default_planck_if_none
 # from src._road.road import (
 #     default_road_delimiter_if_none,
@@ -384,7 +384,7 @@
 
 #     def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
 #         x_econ = self.get_econ(econ_road)
-#         x_econ.agendanox.save_file_role(role)
+#         x_econ.agendahub.save_file_role(role)
 
 #     def set_econunits_role(self, role: AgendaUnit):
 #         for x_econ_road in self._econ_objs.keys():

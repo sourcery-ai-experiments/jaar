@@ -75,7 +75,7 @@
 #     texas_text = "Texas"
 #     yao_FILLERFILLER.set_econunit(texas_text)
 #     texas_econ = yao_FILLERFILLER.get_econunit(texas_text)
-#     texas_jobs_dir = texas_econ.agendanox.jobs_dir()
+#     texas_jobs_dir = texas_econ.agendahub.jobs_dir()
 
 #     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
