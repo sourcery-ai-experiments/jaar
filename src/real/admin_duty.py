@@ -8,6 +8,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
+from src.change.agendahub import agendahub_shop
 from src.change.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
     changeunit_file_exists,
@@ -37,12 +38,15 @@ def _create_initial_change_from_duty(x_usernox: UserNox):
 
 
 def save_duty_file(x_usernox: UserNox, x_agenda: AgendaUnit, replace: bool = True):
-    if x_agenda._owner_id != x_usernox.person_id:
-        raise Invalid_duty_Exception(
-            f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{x_usernox.person_id}''s duty agenda."
-        )
-    if replace in {True, False}:
-        x_usernox.save_file_duty(x_agenda.get_json(), replace)
+    x_agendahub = agendahub_shop(
+        reals_dir=x_usernox.reals_dir,
+        real_id=x_usernox.real_id,
+        person_id=x_usernox.person_id,
+        econ_road=None,
+        road_delimiter=x_usernox._road_delimiter,
+        planck=x_usernox._planck,
+    )
+    x_agendahub.save_duty_agenda(x_agenda)
 
 
 def get_duty_file_agenda(x_usernox: UserNox) -> AgendaUnit:

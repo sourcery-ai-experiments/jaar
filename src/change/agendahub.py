@@ -30,6 +30,14 @@ class Invalid_nox_type_Exception(Exception):
     pass
 
 
+class Invalid_duty_Exception(Exception):
+    pass
+
+
+class Invalid_work_Exception(Exception):
+    pass
+
+
 def get_econ_path(x_usernox: UserNox, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
     x_road = rebuild_road(x_road, x_usernox.real_id, econ_root)
@@ -99,6 +107,20 @@ class AgendaHub(UserNox):
         x_file_name = self.owner_file_name(x_agenda._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_agenda.get_json())
 
+    def save_duty_agenda(self, x_agenda: AgendaUnit):
+        if x_agenda._owner_id != self.person_id:
+            raise Invalid_duty_Exception(
+                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
+            )
+        save_file(self.person_dir(), self.duty_file_name(), x_agenda.get_json())
+
+    def save_work_agenda(self, x_agenda: AgendaUnit):
+        if x_agenda._owner_id != self.person_id:
+            raise Invalid_work_Exception(
+                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
+            )
+        save_file(self.person_dir(), self.work_file_name(), x_agenda.get_json())
+
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
 
@@ -113,6 +135,10 @@ class AgendaHub(UserNox):
 
     def get_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
+        return agendaunit_get_from_json(file_content)
+
+    def get_work_agenda(self) -> AgendaUnit:
+        file_content = self.open_file_work()
         return agendaunit_get_from_json(file_content)
 
     def delete_role_file(self, owner_id: PersonID):

@@ -2,19 +2,13 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src.change.agendahub import agendahub_shop
 from src.agenda.agenda import AgendaUnit
+from src.change.agendahub import agendahub_shop, AgendaHub
 from src.change.listen import listen_to_speaker_intent
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src._road.worldnox import UserNox, usernox_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
-from src.real.admin_work import (
-    initialize_work_file,
-    save_work_file as personsave_work_file,
-    get_work_file_agenda,
-    get_default_work_agenda,
-)
+from src.real.admin_work import initialize_work_file, get_default_work_agenda
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -98,68 +92,73 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def _get_usernox(self, person_id: PersonID) -> UserNox:
-        return usernox_shop(
+    def _get_agendahub(self, person_id: PersonID) -> AgendaHub:
+        return agendahub_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
+            econ_road=None,
             road_delimiter=self._road_delimiter,
             planck=self._planck,
         )
 
     def init_person_econs(self, person_id: PersonID):
-        x_usernox = self._get_usernox(person_id)
-        initialize_change_duty_files(x_usernox)
-        initialize_work_file(x_usernox, self.get_person_duty_from_file(person_id))
+        x_agendahub = self._get_agendahub(person_id)
+        initialize_change_duty_files(x_agendahub)
+        initialize_work_file(x_agendahub, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        return get_duty_file_agenda(self._get_usernox(person_id))
+        return get_duty_file_agenda(self._get_agendahub(person_id))
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_usernox = usernox_shop(
+            healer_agendahub = agendahub_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
-                self._road_delimiter,
-                self._planck,
+                econ_road=None,
+                nox_type="role_job",
+                road_delimiter=self._road_delimiter,
+                planck=self._planck,
             )
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_usernox=healer_usernox,
+                    healer_agendahub=healer_agendahub,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_usernox: UserNox,
+        healer_agendahub: AgendaHub,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = get_econunit(healer_usernox, econ_road)
+        x_econ = get_econunit(healer_agendahub, econ_road)
         x_econ.agendahub.save_file_role(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_usernox = self._get_usernox(person_id)
-        x_duty = get_duty_file_agenda(x_usernox)
+        x_agendahub = self._get_agendahub(person_id)
+        x_duty = get_duty_file_agenda(x_agendahub)
         x_duty.calc_agenda_metrics()
         x_work = get_default_work_agenda(x_duty)
         x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_usernox = usernox_shop(
-                self.reals_dir,
-                self.real_id,
-                healer_id,
-                self._road_delimiter,
-                self._planck,
+            healer_agendahub = agendahub_shop(
+                reals_dir=self.reals_dir,
+                real_id=self.real_id,
+                person_id=healer_id,
+                econ_road=None,
+                nox_type="role_job",
+                road_delimiter=self._road_delimiter,
+                planck=self._planck,
             )
-            create_person_econunits(healer_usernox)
+            create_person_econunits(healer_agendahub)
             for econ_road in healer_dict.keys():
-                x_agendahub = agendahub_shop(
+                econ_agendahub = agendahub_shop(
                     reals_dir=self.reals_dir,
                     real_id=self.real_id,
                     person_id=healer_id,
@@ -168,14 +167,14 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     planck=self._planck,
                 )
-                x_agendahub.save_file_role(x_duty)
-                x_job = create_job_file_from_role_file(x_agendahub, person_id)
+                econ_agendahub.save_file_role(x_duty)
+                x_job = create_job_file_from_role_file(econ_agendahub, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if work_agenda has not transited st work agenda to duty
         if x_work == x_work_deepcopy:
             x_work = x_duty
-        personsave_work_file(x_usernox, x_work)
+        x_agendahub.save_work_agenda(x_work)
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
@@ -183,7 +182,7 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        return get_work_file_agenda(self._get_usernox(person_id))
+        return self._get_agendahub(person_id).get_work_agenda()
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
@@ -192,7 +191,7 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_duty_agenda = get_duty_file_agenda(x_usernox)
+    #     x_duty_agenda = get_duty_file_agenda(x_agendahub)
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

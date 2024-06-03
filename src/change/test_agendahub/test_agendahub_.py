@@ -13,6 +13,7 @@ from src._road.jaar_config import (
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
+from src.agenda.agenda import agendaunit_shop
 from src.change.agendahub import (
     usernox_shop,
     get_econ_path,
@@ -285,3 +286,95 @@ def test_AgendaHub_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(job_path) == False
+
+
+def test_AgendaHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendahub = agendahub_shop(env_dir, real_id, sue_text, None)
+
+    print(f"{sue_agendahub.duty_path()=}")
+    assert sue_agendahub.duty_file_exists() == False
+
+    # WHEN
+    sue_agendahub.save_duty_agenda(sue_agendaunit)
+
+    # THEN
+    assert sue_agendahub.duty_file_exists()
+
+
+def test_AgendaHub_save_duty_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendahub = agendahub_shop(env_dir, real_id, sue_text, None)
+
+    # WHEN / THEN
+    yao_text = "yao"
+    with pytest_raises(Exception) as excinfo:
+        sue_agendahub.save_duty_agenda(agendaunit_shop(yao_text))
+    assert (
+        str(excinfo.value)
+        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
+    )
+
+
+def test_AgendaHub_save_work_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendahub = agendahub_shop(env_dir, real_id, sue_text, None)
+
+    print(f"{sue_agendahub.work_path()=}")
+    assert sue_agendahub.work_file_exists() == False
+
+    # WHEN
+    sue_agendahub.save_work_agenda(sue_agendaunit)
+
+    # THEN
+    assert sue_agendahub.work_file_exists()
+
+
+def test_AgendaHub_get_work_agenda_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    temp_env_dir = get_change_temp_env_dir()
+    sue_agendahub = agendahub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_agendahub.save_work_agenda(sue_agendaunit)
+
+    # WHEN / THEN
+    assert sue_agendahub.get_work_agenda().get_dict() == sue_agendaunit.get_dict()
+
+
+def test_AgendaHub_save_work_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    env_dir = get_change_temp_env_dir()
+    real_id = root_label()
+    sue_agendahub = agendahub_shop(env_dir, real_id, sue_text, None)
+
+    # WHEN / THEN
+    yao_text = "yao"
+    with pytest_raises(Exception) as excinfo:
+        sue_agendahub.save_work_agenda(agendaunit_shop(yao_text))
+    assert (
+        str(excinfo.value)
+        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s work agenda."
+    )

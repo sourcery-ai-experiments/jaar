@@ -148,7 +148,7 @@
 #             default_work_agenda = agendaunit_shop(
 #                 self.person_id, self.real_id, self._road_delimiter, self._planck
 #             )
-#             self.save_work_file(default_work_agenda)
+#             self.(default_work_agenda)
 
 #     def duty_file_exists(self) -> bool:
 #         return os_path_exists(self._duty_path)
@@ -169,7 +169,7 @@
 #                 replace=replace,
 #             )
 
-#     def save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def (self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
 #             raise Invalid_work_Exception(
 #                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
@@ -186,7 +186,7 @@
 #         duty_json = open_file(dest_dir=self.person_dir, file_name=self._duty_file_name)
 #         return agendaunit_get_from_json(duty_json)
 
-#     def get_work_file_agenda(self) -> AgendaUnit:
+#     def (self) -> AgendaUnit:
 #         work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
 #         return agendaunit_get_from_json(work_json)
 
@@ -194,7 +194,7 @@
 #         self._duty_obj = get_duty_file_agenda(x_usernox)
 
 #     def load_work_file(self):
-#         self._work_obj = self.get_work_file_agenda()
+#         self._work_obj = self.()
 
 #     def changeunit_file_exists(self, change_id: int) -> bool:
 #         change_filename = changeunit_get_json_filename(change_id)

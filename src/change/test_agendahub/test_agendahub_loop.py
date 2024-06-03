@@ -17,7 +17,7 @@ from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_AgendaHub_agendahub_shop_RaisesErrorWhen_nox_type_IsInvalid():
+def test_agendahub_shop_RaisesErrorWhen_nox_type_IsInvalid():
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -30,7 +30,7 @@ def test_AgendaHub_agendahub_shop_RaisesErrorWhen_nox_type_IsInvalid():
     assert str(excinfo.value) == f"'{x_nox_type}' is an invalid nox_type"
 
 
-def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_role_job():
+def test_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_role_job():
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -55,7 +55,7 @@ def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_role_job():
     assert sue_agendahub.destination_file_name(bob_text) == f"{bob_text}.json"
 
 
-def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_duty_work():
+def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_duty_work():
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -85,7 +85,7 @@ def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_duty_work():
     assert sue_agendahub.destination_file_name(bob_text) == f"{work_str()}.json"
 
 
-def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_job_workScenario1():
+def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario1():
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -116,7 +116,7 @@ def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_job_workScenari
     assert sue_agendahub.destination_file_name() == f"{work_str()}.json"
 
 
-def test_AgendaHub_agendahub_shop_AttrsAreCorrectWhen_nox_typeIs_job_workScenario2():
+def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario2():
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
