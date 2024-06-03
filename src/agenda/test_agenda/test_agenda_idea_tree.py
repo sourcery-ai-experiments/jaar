@@ -488,7 +488,7 @@ def test_agenda4party_hasCorrectLevel1StructureNoGrouplessAncestors():
     )
 
 
-def test_AgendaUnit_get_orderd_node_list_ReturnsCorrectObj():
+def test_AgendaUnit_get_idea_tree_ordered_road_list_ReturnsCorrectObj():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     week_text = "weekdays"
@@ -515,7 +515,7 @@ def test_AgendaUnit_get_orderd_node_list_ReturnsCorrectObj():
     assert y_1st_road_in_ordered_list == x_agenda._real_id
 
 
-def test_AgendaUnit_get_orderd_node_list_CorrectlyFiltersRangedIdeaRoadUnits():
+def test_AgendaUnit_get_idea_tree_ordered_road_list_CorrectlyFiltersRangedIdeaRoadUnits():
     # GIVEN
     tim_agenda = agendaunit_shop("Tim")
 
