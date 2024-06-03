@@ -2,7 +2,7 @@ from src.agenda.party import partyunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.meld_files import get_file_names_in_voice_rank_order
 from src._instrument.file import save_file, delete_dir
-from src.econ.econ import econunit_shop, save_role_file_agenda
+from src.econ.econ import econunit_shop, create_job_file_from_role_file
 from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_agendanox
 
 
@@ -93,9 +93,9 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
-    save_role_file_agenda(texas_agendanox, yao_role0_agenda)
-    x_econ.create_job_file_from_role_file(yao_text)
-    yao_role1_agenda = x_econ.get_role_file_agenda(yao_text)
+    texas_agendanox.save_file_role(yao_role0_agenda)
+    create_job_file_from_role_file(texas_agendanox, yao_text)
+    yao_role1_agenda = texas_agendanox.get_role_agenda(yao_text)
     assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None
     assert yao_role1_agenda.get_party(bob_text)._treasury_voice_rank is None
     assert yao_role1_agenda.get_party(cal_text)._treasury_voice_rank is None
@@ -107,7 +107,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     x_econ.set_role_voice_ranks(yao_text, sort_order=descending_text)
 
     # THEN
-    yao_role2_agenda = x_econ.get_role_file_agenda(yao_text)
+    yao_role2_agenda = texas_agendanox.get_role_agenda(yao_text)
     assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank != None
     assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank != None
     assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank != None

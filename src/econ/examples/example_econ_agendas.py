@@ -178,10 +178,10 @@ def _delete_and_set_ex4():
     x_econ = econunit_shop(ex4_agendanox)
     delete_dir(x_econ.agendanox.econ_dir())
     x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.save_job_file(get_7nodeJRootWithH_agenda())
-    x_econ.save_job_file(get_agenda_with7amCleanTableReason())
-    x_econ.save_job_file(get_agenda_base_time_example())
-    x_econ.save_job_file(get_agenda_x1_3levels_1reason_1beliefs())
+    x_econ.agendanox.save_file_job(get_7nodeJRootWithH_agenda())
+    x_econ.agendanox.save_file_job(get_agenda_with7amCleanTableReason())
+    x_econ.agendanox.save_file_job(get_agenda_base_time_example())
+    x_econ.agendanox.save_file_job(get_agenda_x1_3levels_1reason_1beliefs())
 
 
 def _delete_and_set_ex6(ex6_id: str = None):
@@ -203,25 +203,25 @@ def _delete_and_set_ex6(ex6_id: str = None):
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_file(sal_agenda)
+    x_econ.agendanox.save_file_job(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.save_job_file(bob_agenda)
+    x_econ.agendanox.save_file_job(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_econ.save_job_file(tom_agenda)
+    x_econ.agendanox.save_file_job(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_econ.save_job_file(ava_agenda)
+    x_econ.agendanox.save_file_job(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_econ.save_job_file(elu_agenda)
+    x_econ.agendanox.save_file_job(elu_agenda)
 
     x_econ.refresh_treasury_job_agendas_data()
     x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)

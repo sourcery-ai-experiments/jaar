@@ -75,7 +75,7 @@
 #     texas_text = "Texas"
 #     yao_FILLERFILLER.set_econunit(texas_text)
 #     texas_econ = yao_FILLERFILLER.get_econunit(texas_text)
-#     texas_jobs_dir = texas_econ.get_jobs_dir()
+#     texas_jobs_dir = texas_econ.agendanox.jobs_dir()
 
 #     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),
@@ -110,9 +110,9 @@
 #     assert os_path_exists(jobs_tim_file_path)
 #     assert os_path_exists(jobs_xio_file_path)
 #     assert os_path_exists(jobs_yao_file_path)
-#     assert texas_econ.create_job_file_from_role_file(tim_text).get_role() != None
-#     assert texas_econ.create_job_file_from_role_file(xio_text).get_role() != None
-#     assert texas_econ.create_job_file_from_role_file(yao_text).get_role() != None
+#     assert create_job_file_from_role_file(tim_text).get_role() != None
+#     assert create_job_file_from_role_file(xio_text).get_role() != None
+#     assert create_job_file_from_role_file(yao_text).get_role() != None
 
 
 # def test_RealUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_role_agenda(
@@ -156,7 +156,7 @@
 #     real.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = texas_econ.create_job_file_from_role_file(xio_text).get_role()
+#     xio_role = create_job_file_from_role_file(xio_text).get_role()
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -233,11 +233,11 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
+#     tim_role = create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
-#     tim_jobs = texas_econ.get_job_agenda(tim_text)
+#     tim_jobs = texas_econ.(tim_text)
 #     assert len(tim_jobs.get_intent_dict()) == 1
 #     assert tim_jobs.get_intent_dict()[0].get_road() == no_fly_road
 
@@ -283,7 +283,7 @@
 #     real.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = texas_econ.create_job_file_from_role_file(xio_text).get_role()
+#     xio_role = create_job_file_from_role_file(xio_text).get_role()
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -329,11 +329,11 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = texas_econ.create_job_file_from_role_file(tim_text).get_role()
+#     tim_role = create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
-#     tim_jobs = texas_econ.get_job_agenda(tim_text)
+#     tim_jobs = texas_econ.(tim_text)
 #     assert len(tim_jobs.get_intent_dict()) == 1
 #     assert tim_jobs.get_intent_dict()[0].get_road() == no_fly_road
 

@@ -196,8 +196,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_dallas_econ = get_econunit(todd_usernox, dallas_road)
     luca_file_name = get_file_name(luca_text)
     todd_file_name = get_file_name(todd_text)
-    luca_roles_dir = luca_dallas_econ.get_roles_dir()
-    todd_roles_dir = todd_dallas_econ.get_roles_dir()
+    luca_roles_dir = luca_dallas_econ.agendanox.roles_dir()
+    todd_roles_dir = todd_dallas_econ.agendanox.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"

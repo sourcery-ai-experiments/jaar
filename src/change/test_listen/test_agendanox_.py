@@ -20,7 +20,9 @@ from src.change.agendanox import (
     agendanox_shop,
     get_nox_type_set,
 )
+from src.change.examples.examples import get_agenda_with_4_levels
 from src.change.examples.change_env import (
+    get_texas_agendanox,
     env_dir_setup_cleanup,
     get_change_temp_env_dir,
 )
@@ -131,10 +133,12 @@ def test_AgendaNox_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
     bob_text = "Bob"
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
     assert os_path_exists(sue_agendanox.role_path(bob_text)) == False
 
     # WHEN
-    sue_agendanox.save_file_role(bob_text, file_text="fooboo", replace=True)
+    sue_agendanox.save_file_role(bob_agenda)
 
     # THEN
     assert os_path_exists(sue_agendanox.role_path(bob_text))
@@ -152,16 +156,18 @@ def test_AgendaNox_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
     bob_text = "Bob"
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
     assert sue_agendanox.role_file_exists(bob_text) == False
 
     # WHEN
-    sue_agendanox.save_file_role(bob_text, file_text="fooboo", replace=True)
+    sue_agendanox.save_file_role(bob_agenda)
 
     # THEN
     assert sue_agendanox.role_file_exists(bob_text)
 
 
-def test_AgendaNox_open_file_role_OpensFile(env_dir_setup_cleanup):
+def test_AgendaNox_get_role_agenda_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -172,12 +178,30 @@ def test_AgendaNox_open_file_role_OpensFile(env_dir_setup_cleanup):
     texas_road = create_road(usa_road, texas_text)
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
-    example_text = "fooboo"
     bob_text = "Bob"
-    sue_agendanox.save_file_role(bob_text, example_text, replace=True)
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
+    sue_agendanox.save_file_role(bob_agenda)
 
     # WHEN / THEN
-    assert sue_agendanox.open_file_role(bob_text) == example_text
+    assert sue_agendanox.get_role_agenda(bob_text).get_dict() == bob_agenda.get_dict()
+
+
+def test_AgendaNox_delete_role_file_DeletesAgendaFile(env_dir_setup_cleanup):
+    # GIVEN
+    texas_agendanox = get_texas_agendanox()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_text = sue_agenda._owner_id
+    texas_agendanox.save_file_role(sue_agenda)
+    print(f"{texas_agendanox.role_path(sue_text)=}")
+    role_path = texas_agendanox.role_path(sue_text)
+    assert os_path_exists(role_path)
+
+    # WHEN
+    texas_agendanox.delete_role_file(sue_text)
+
+    # THEN
+    assert os_path_exists(role_path) == False
 
 
 def test_AgendaNox_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -192,10 +216,12 @@ def test_AgendaNox_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
     bob_text = "Bob"
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
     assert os_path_exists(sue_agendanox.job_path(bob_text)) == False
 
     # WHEN
-    sue_agendanox.save_file_job(bob_text, file_text="fooboo", replace=True)
+    sue_agendanox.save_file_job(bob_agenda)
 
     # THEN
     assert os_path_exists(sue_agendanox.job_path(bob_text))
@@ -213,16 +239,18 @@ def test_AgendaNox_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
     bob_text = "Bob"
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
     assert sue_agendanox.job_file_exists(bob_text) == False
 
     # WHEN
-    sue_agendanox.save_file_job(bob_text, file_text="fooboo", replace=True)
+    sue_agendanox.save_file_job(bob_agenda)
 
     # THEN
     assert sue_agendanox.job_file_exists(bob_text)
 
 
-def test_AgendaNox_open_file_job_OpensFile(env_dir_setup_cleanup):
+def test_AgendaNox_get_job_agenda_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -233,9 +261,27 @@ def test_AgendaNox_open_file_job_OpensFile(env_dir_setup_cleanup):
     texas_road = create_road(usa_road, texas_text)
     temp_env_dir = get_change_temp_env_dir()
     sue_agendanox = agendanox_shop(temp_env_dir, None, sue_text, texas_road)
-    example_text = "fooboo"
     bob_text = "Bob"
-    sue_agendanox.save_file_job(bob_text, example_text, replace=True)
+    bob_agenda = get_agenda_with_4_levels()
+    bob_agenda.set_owner_id(bob_text)
+    sue_agendanox.save_file_job(bob_agenda)
 
     # WHEN / THEN
-    assert sue_agendanox.open_file_job(bob_text) == example_text
+    assert sue_agendanox.get_job_agenda(bob_text).get_dict() == bob_agenda.get_dict()
+
+
+def test_AgendaNox_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
+    # GIVEN
+    texas_agendanox = get_texas_agendanox()
+    sue_agenda = get_agenda_with_4_levels()
+    sue_text = sue_agenda._owner_id
+    texas_agendanox.save_file_job(sue_agenda)
+    print(f"{texas_agendanox.job_path(sue_text)=}")
+    job_path = texas_agendanox.job_path(sue_text)
+    assert os_path_exists(job_path)
+
+    # WHEN
+    texas_agendanox.delete_job_file(sue_text)
+
+    # THEN
+    assert os_path_exists(job_path) == False

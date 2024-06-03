@@ -169,7 +169,7 @@
 #         iggnore_agenda_owner_id = self.iggnores_table.item(
 #             self.iggnores_table.currentRow(), 0
 #         ).text()
-#         # self.iggnore_agenda_x = self.econ_x.get_job_agenda(
+#         # self.iggnore_agenda_x = self.econ_x.(
 #         self.iggnore_agenda_x = self.econ_x.get_agenda_from_iggnores_dir(
 #             FunctionThatBuildsJob_id=self.x_FunctionThatBuildsJob.pid, _owner_id=iggnore_agenda_owner_id
 #         )

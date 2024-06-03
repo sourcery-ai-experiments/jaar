@@ -46,7 +46,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWhenNo_suffgroupIsSet(
     zia_agendaunit.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
     agendanox = agendanox_shop(None, None, yao_text, get_texas_road(), role_job())
-    agendanox.save_file_job(zia_text, zia_agendaunit.get_json(), True)
+    agendanox.save_file_job(zia_agendaunit)
     new_agenda = create_listen_basis(yao_src_listener)
     assert len(new_agenda.get_intent_dict()) == 0
 
@@ -110,16 +110,16 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
     assert len(bob_cook_ideaunit._reasonunits) == 0
     zia_text = zia_speaker._owner_id
     bob_text = bob_speaker._owner_id
-    texas_econnox = get_texas_agendanox()
-    texas_econnox.save_file_job(zia_text, zia_speaker.get_json(), True)
-    texas_econnox.save_file_job(bob_text, bob_speaker.get_json(), True)
+    texas_agendanox = get_texas_agendanox()
+    texas_agendanox.save_file_job(zia_speaker)
+    texas_agendanox.save_file_job(bob_speaker)
 
     yao_src = get_example_yao_speaker()
     new_yao1_agenda = create_listen_basis(yao_src)
     assert new_yao1_agenda.idea_exists(cook_road()) == False
 
     # WHEN
-    listen_to_speakers_intent(new_yao1_agenda, texas_econnox, yao_src)
+    listen_to_speakers_intent(new_yao1_agenda, texas_agendanox, yao_src)
 
     # THEN
     assert new_yao1_agenda.idea_exists(cook_road())
@@ -138,7 +138,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
     assert new_yao2_agenda.idea_exists(cook_road()) == False
 
     # WHEN
-    listen_to_speakers_intent(new_yao2_agenda, texas_econnox, yao_src)
+    listen_to_speakers_intent(new_yao2_agenda, texas_agendanox, yao_src)
 
     # THEN
     assert new_yao2_agenda.idea_exists(cook_road())
@@ -341,15 +341,15 @@ def test_listen_to_speakers_intent_GetsIntentFromSrcAgendaNotSpeakerSelf(
     assert yao_speaker.idea_exists(run_road()) == False
     assert yao_speaker.idea_exists(clean_road()) == False
     yao_speaker.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    texas_econnox = get_texas_agendanox()
-    texas_econnox.save_file_job("Yao", yao_speaker.get_json(), True)
+    texas_agendanox = get_texas_agendanox()
+    texas_agendanox.save_file_job(yao_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.idea_exists(run_road()) == False
     assert new_yao_agenda.idea_exists(clean_road()) == False
 
     # WHEN
-    listen_to_speakers_intent(new_yao_agenda, texas_econnox, yao_src_listener)
+    listen_to_speakers_intent(new_yao_agenda, texas_agendanox, yao_src_listener)
 
     # THEN
     assert new_yao_agenda.idea_exists(clean_road()) == False

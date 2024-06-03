@@ -66,7 +66,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     # THEN
     assert os_path_exists(dallas_db_path)
     assert sue_dallas_econunit.agendanox.real_id == sue_usernox.real_id
-    assert sue_dallas_econunit.econ_dir() == dallas_dir
+    assert sue_dallas_econunit.agendanox.econ_dir() == dallas_dir
     assert sue_dallas_econunit.agendanox.person_id == sue_text
     assert sue_dallas_econunit.agendanox._road_delimiter == sue_usernox._road_delimiter
 
@@ -260,7 +260,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     print(f"{_get_econs_roads(sue_usernox).keys()=}")
     dallas_econ = get_econunit(sue_usernox, dallas_road)
     sue_file_name = get_file_name(sue_text)
-    sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    sue_role_file_path = f"{dallas_econ.agendanox.roles_dir()}/{sue_file_name}"
     assert os_path_exists(sue_role_file_path) == False
 
     # WHEN
@@ -295,9 +295,9 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     create_person_econunits(sue_usernox)
     sue_file_name = get_file_name(sue_text)
     dallas_econ = get_econunit(sue_usernox, dallas_road)
-    dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    dallas_sue_role_file_path = f"{dallas_econ.agendanox.roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_usernox, elpaso_road)
-    elpaso_sue_role_file_path = f"{elpaso_econ.get_roles_dir()}/{sue_file_name}"
+    elpaso_sue_role_file_path = f"{elpaso_econ.agendanox.roles_dir()}/{sue_file_name}"
     assert os_path_exists(dallas_sue_role_file_path) == False
     assert os_path_exists(elpaso_sue_role_file_path) == False
 
@@ -336,9 +336,9 @@ def test_set_person_econunits_role_CorrectlySetsroles(
     create_person_econunits(sue_usernox)
     sue_file_name = get_file_name(sue_text)
     dallas_econ = get_econunit(sue_usernox, dallas_road)
-    dallas_sue_role_file_path = f"{dallas_econ.get_roles_dir()}/{sue_file_name}"
+    dallas_sue_role_file_path = f"{dallas_econ.agendanox.roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_usernox, elpaso_road)
-    elpaso_sue_role_file_path = f"{elpaso_econ.get_roles_dir()}/{sue_file_name}"
+    elpaso_sue_role_file_path = f"{elpaso_econ.agendanox.roles_dir()}/{sue_file_name}"
     assert os_path_exists(dallas_sue_role_file_path) == False
     assert os_path_exists(elpaso_sue_role_file_path) == False
 

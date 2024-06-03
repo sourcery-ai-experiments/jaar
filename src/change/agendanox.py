@@ -1,4 +1,4 @@
-from src._instrument.file import get_directory_path, save_file, open_file
+from src._instrument.file import get_directory_path, save_file, open_file, delete_dir
 from src._road.road import (
     PersonID,
     RealID,
@@ -82,21 +82,13 @@ class AgendaNox(UserNox):
     def jobs_dir(self) -> str:
         return get_econ_jobs_dir(self.econ_dir())
 
-    def save_file_role(self, owner_id: PersonID, file_text: str, replace: bool):
-        save_file(
-            dest_dir=self.roles_dir(),
-            file_name=self.owner_file_name(owner_id),
-            file_text=file_text,
-            replace=replace,
-        )
+    def save_file_role(self, x_agenda: AgendaUnit):
+        x_file_name = self.owner_file_name(x_agenda._owner_id)
+        save_file(self.roles_dir(), x_file_name, x_agenda.get_json())
 
-    def save_file_job(self, owner_id: PersonID, file_text: str, replace: bool):
-        save_file(
-            dest_dir=self.jobs_dir(),
-            file_name=self.owner_file_name(owner_id),
-            file_text=file_text,
-            replace=replace,
-        )
+    def save_file_job(self, x_agenda: AgendaUnit):
+        x_file_name = self.owner_file_name(x_agenda._owner_id)
+        save_file(self.jobs_dir(), x_file_name, x_agenda.get_json())
 
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
@@ -104,11 +96,21 @@ class AgendaNox(UserNox):
     def job_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.job_path(owner_id))
 
-    def open_file_role(self, owner_id: PersonID) -> str:
-        return open_file(self.roles_dir(), self.owner_file_name(owner_id))
+    def get_role_agenda(self, owner_id: PersonID) -> AgendaUnit:
+        if self.role_file_exists(owner_id) == False:
+            return None
+        file_content = open_file(self.roles_dir(), self.owner_file_name(owner_id))
+        return agendaunit_get_from_json(file_content)
 
-    def open_file_job(self, owner_id: PersonID) -> str:
-        return open_file(self.jobs_dir(), self.owner_file_name(owner_id))
+    def get_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
+        file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
+        return agendaunit_get_from_json(file_content)
+
+    def delete_role_file(self, owner_id: PersonID):
+        delete_dir(self.role_path(owner_id))
+
+    def delete_job_file(self, owner_id: PersonID):
+        delete_dir(self.job_path(owner_id))
 
     def set_nox_type(self, nox_type: str):
         if nox_type is None or nox_type in get_nox_type_set():
@@ -129,33 +131,33 @@ class AgendaNox(UserNox):
             )
             return speaker_usernox.person_dir()
 
-    def speaker_file_name(self, person_id: PersonID = None):
+    def speaker_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
-            return get_file_name(person_id)
+            return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
             return get_file_name(work_str())
 
-    def listener_dir(self, x_person_id: PersonID = None):
+    def listener_dir(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return self.roles_dir()
         if self._nox_type == pipeline_duty_work_text():
             return self.person_dir()
 
-    def listener_file_name(self, person_id: PersonID = None):
+    def listener_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
-            return get_file_name(person_id)
+            return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
             return get_file_name(duty_str())
 
-    def destination_dir(self, person_id: PersonID = None):
+    def destination_dir(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
             return self.person_dir()
 
-    def destination_file_name(self, person_id: PersonID = None):
+    def destination_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
-            return get_file_name(person_id)
+            return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
             return get_file_name(work_str())
 

@@ -33,19 +33,24 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     # GIVEN
     x_file_text = "Texas Dallas ElPaso"
     db_file = treasury_db_filename()
-    save_file(x_econ.econ_dir(), file_name=db_file, file_text=x_file_text, replace=True)
+    save_file(
+        x_econ.agendanox.econ_dir(),
+        file_name=db_file,
+        file_text=x_file_text,
+        replace=True,
+    )
     assert os_path_exists(x_econ.get_treasury_db_path())
-    assert open_file(x_econ.econ_dir(), file_name=db_file) == x_file_text
+    assert open_file(x_econ.agendanox.econ_dir(), file_name=db_file) == x_file_text
 
     # WHEN
     x_econ._create_treasury_db()
     # THEN
-    assert open_file(x_econ.econ_dir(), file_name=db_file) == x_file_text
+    assert open_file(x_econ.agendanox.econ_dir(), file_name=db_file) == x_file_text
 
     # # WHEN
     # x_econ._create_treasury_db(overwrite=True)
     # # THEN
-    # assert open_file(x_econ.econ_dir(), file_name=db_file) != x_file_text
+    # assert open_file(x_econ.agendanox.econ_dir(), file_name=db_file) != x_file_text
 
 
 def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):

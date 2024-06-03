@@ -56,23 +56,6 @@ def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     assert texas_econ._treasury_db != None
 
 
-def test_econunit_shop_RaisesErrorIfParameterContains_road_delimiter():
-    # GIVEN
-    slash_text = "/"
-    texas_text = f"Texas{slash_text}Arkansas"
-    texas_agendanox = get_texas_agendanox()
-    texas_agendanox.real_id = texas_text
-    texas_agendanox._road_delimiter = slash_text
-
-    # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        econunit_shop(texas_agendanox)
-    assert (
-        str(excinfo.value)
-        == f"'{texas_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
-    )
-
-
 def test_EconUnit_get_jobs_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN create econ
     texas_agendanox = get_texas_agendanox()
@@ -80,7 +63,7 @@ def test_EconUnit_get_jobs_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
 
     # WHEN / THEN
     jobs_text = "jobs"
-    assert x_econ.get_jobs_dir() == f"{x_econ.agendanox.econ_dir()}/{jobs_text}"
+    assert x_econ.agendanox.jobs_dir() == f"{x_econ.agendanox.econ_dir()}/{jobs_text}"
 
 
 def test_EconUnit_get_roles_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -90,7 +73,7 @@ def test_EconUnit_get_roles_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
 
     # WHEN / THEN
     roles_text = "roles"
-    assert x_econ.get_roles_dir() == f"{x_econ.agendanox.econ_dir()}/{roles_text}"
+    assert x_econ.agendanox.roles_dir() == f"{x_econ.agendanox.econ_dir()}/{roles_text}"
 
 
 def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
@@ -107,8 +90,8 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 
     assert os_path_exists(texas_agendanox.reals_dir) is False
     assert os_path_isdir(texas_agendanox.reals_dir) is False
-    assert os_path_exists(x_econ.get_jobs_dir()) is False
-    assert os_path_exists(x_econ.get_roles_dir()) is False
+    assert os_path_exists(x_econ.agendanox.jobs_dir()) is False
+    assert os_path_exists(x_econ.agendanox.roles_dir()) is False
     assert os_path_exists(treasury_file_path) is False
 
     # WHEN
@@ -117,12 +100,12 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     # THEN check agendas src directory created
     assert os_path_exists(texas_agendanox.reals_dir)
     assert os_path_isdir(texas_agendanox.reals_dir)
-    assert os_path_exists(x_econ.get_jobs_dir())
-    assert os_path_exists(x_econ.get_roles_dir())
+    assert os_path_exists(x_econ.agendanox.jobs_dir())
+    assert os_path_exists(x_econ.agendanox.roles_dir())
     assert os_path_exists(treasury_file_path)
     assert x_econ.agendanox.econ_dir() == texas_agendanox.econ_dir()
-    assert x_econ.get_jobs_dir() == x_econ.get_jobs_dir()
-    assert x_econ.get_roles_dir() == x_econ.get_roles_dir()
+    assert x_econ.agendanox.jobs_dir() == x_econ.agendanox.jobs_dir()
+    assert x_econ.agendanox.roles_dir() == x_econ.agendanox.roles_dir()
     assert x_econ.get_treasury_db_path() == treasury_file_path
 
 
@@ -154,15 +137,15 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert os_path_isdir(old_econ_dir)
 #     assert os_path_exists(old_jobs_dir)
 #     assert os_path_exists(old_roles_dir)
-#     assert texas_econ.get_jobs_dir() == old_jobs_dir
-#     assert texas_econ.get_roles_dir() == old_roles_dir
+#     assert texas_econ.agendanox.jobs_dir() == old_jobs_dir
+#     assert texas_econ.agendanox.roles_dir() == old_roles_dir
 
 #     assert os_path_exists(new_econ_dir) is False
 #     assert os_path_isdir(new_econ_dir) is False
 #     assert os_path_exists(new_jobs_dir) is False
 #     assert os_path_exists(new_roles_dir) is False
-#     assert texas_econ.get_jobs_dir() != new_jobs_dir
-#     assert texas_econ.get_roles_dir() != new_roles_dir
+#     assert texas_econ.agendanox.jobs_dir() != new_jobs_dir
+#     assert texas_econ.agendanox.roles_dir() != new_roles_dir
 #     assert texas_econ.real_id != new_x_real_id
 
 #     # WHEN
@@ -183,17 +166,17 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert os_path_exists(old_jobs_dir) is False
 #     assert os_path_exists(old_roles_dir) is False
 #     assert texas_econ.real_id == new_x_real_id
-#     print(f"{texas_econ.get_jobs_dir()=}")
+#     print(f"{texas_econ.agendanox.jobs_dir()=}")
 #     print(f"           {old_jobs_dir=}")
-#     assert texas_econ.get_jobs_dir() != old_jobs_dir
-#     assert texas_econ.get_roles_dir() != old_roles_dir
+#     assert texas_econ.agendanox.jobs_dir() != old_jobs_dir
+#     assert texas_econ.agendanox.roles_dir() != old_roles_dir
 
 #     assert os_path_exists(new_econ_dir)
 #     assert os_path_isdir(new_econ_dir)
 #     assert os_path_exists(new_jobs_dir)
 #     assert os_path_exists(new_roles_dir)
-#     assert texas_econ.get_jobs_dir() == new_jobs_dir
-#     assert texas_econ.get_roles_dir() == new_roles_dir
+#     assert texas_econ.agendanox.jobs_dir() == new_jobs_dir
+#     assert texas_econ.agendanox.roles_dir() == new_roles_dir
 
 #     # Undo modification to directory
 #     # delete_dir(dir=old_econ_dir)
@@ -219,8 +202,8 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert os_path_isdir(old_econ_dir)
 #     assert os_path_exists(old_jobs_dir)
 #     assert os_path_exists(old_roles_dir)
-#     assert x_econ.get_jobs_dir() == old_jobs_dir
-#     assert x_econ.get_roles_dir() == old_roles_dir
+#     assert x_econ.agendanox.jobs_dir() == old_jobs_dir
+#     assert x_econ.agendanox.roles_dir() == old_roles_dir
 
 #     new_x_real_id = "ex_env1"
 #     new_econ_dir = f"src/econ/examples/econs/{new_x_real_id}"
@@ -231,8 +214,8 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert os_path_isdir(new_econ_dir) is False
 #     assert os_path_exists(new_jobs_dir) is False
 #     assert os_path_exists(new_roles_dir) is False
-#     assert x_econ.get_jobs_dir() != new_jobs_dir
-#     assert x_econ.get_roles_dir() != new_roles_dir
+#     assert x_econ.agendanox.jobs_dir() != new_jobs_dir
+#     assert x_econ.agendanox.roles_dir() != new_roles_dir
 #     assert x_econ.real_id != new_x_real_id
 
 #     # WHEN
@@ -243,15 +226,15 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 #     assert os_path_isdir(old_econ_dir)
 #     assert os_path_exists(old_jobs_dir)
 #     assert os_path_exists(old_roles_dir)
-#     assert x_econ.get_jobs_dir() == old_jobs_dir
-#     assert x_econ.get_roles_dir() == old_roles_dir
+#     assert x_econ.agendanox.jobs_dir() == old_jobs_dir
+#     assert x_econ.agendanox.roles_dir() == old_roles_dir
 
 #     assert os_path_exists(new_econ_dir)
 #     assert os_path_isdir(new_econ_dir)
 #     assert os_path_exists(new_jobs_dir)
 #     assert os_path_exists(new_roles_dir)
-#     assert x_econ.get_jobs_dir() != new_jobs_dir
-#     assert x_econ.get_roles_dir() != new_roles_dir
+#     assert x_econ.agendanox.jobs_dir() != new_jobs_dir
+#     assert x_econ.agendanox.roles_dir() != new_roles_dir
 #     assert x_econ.real_id != new_x_real_id
 
 #     # Undo modification to directory

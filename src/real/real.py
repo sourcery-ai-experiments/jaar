@@ -5,7 +5,7 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.change.agendanox import agendanox_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.listen import listen_to_speaker_intent
-from src.econ.econ import create_job_file_from_role_file, save_role_file_agenda
+from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src._road.worldnox import UserNox, usernox_shop
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
@@ -140,7 +140,7 @@ class RealUnit:
         duty_agenda: AgendaUnit,
     ):
         x_econ = get_econunit(healer_usernox, econ_road)
-        x_econ.save_role_file_agenda(duty_agenda)
+        x_econ.agendanox.save_file_role(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
@@ -168,7 +168,7 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     planck=self._planck,
                 )
-                save_role_file_agenda(x_agendanox, x_duty)
+                x_agendanox.save_file_role(x_duty)
                 x_job = create_job_file_from_role_file(x_agendanox, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
