@@ -105,6 +105,7 @@ def get_example_yao_agenda() -> AgendaUnit:
 def get_example_yao_job1_speaker() -> AgendaUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_agenda()
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(40)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
@@ -119,6 +120,7 @@ def get_example_yao_job1_speaker() -> AgendaUnit:
 def get_example_yao_job2_speaker() -> AgendaUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_agenda()
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(30)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
@@ -138,6 +140,7 @@ def get_example_yao_job2_speaker() -> AgendaUnit:
 
 def get_example_yao_job3_speaker() -> AgendaUnit:
     yao_speaker = get_example_yao_agenda()
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(10)
     yao_speaker.add_idea(ideaunit_shop(sweep_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(dirty_text()), sanitation_road())
@@ -279,11 +282,11 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert yao_work._partys.keys() == yao_duty0._partys.keys()
     assert yao_work.get_party(yao_text)._irrational_debtor_weight == 0
     assert yao_work.get_groupunits_dict() == yao_duty0.get_groupunits_dict()
-    assert len(yao_work._idea_dict) == 11
+    assert len(yao_work._idea_dict) == 10
     print(f"{yao_work._idea_dict.keys()=}")
     print(f"{yao_work.get_beliefunits_dict().keys()=}")
     assert yao_work.idea_exists(cook_road())
     assert yao_work.idea_exists(clean_road())
+    assert yao_work.idea_exists(run_road()) == False
     assert len(yao_work._idearoot._beliefunits) == 2
     assert yao_work != yao_duty0
-    assert yao_work.idea_exists(run_road())
