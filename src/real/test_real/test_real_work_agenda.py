@@ -3,7 +3,7 @@ from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.change.agendahub import agendahub_shop
-from src.real.admin_duty import save_duty_file, get_duty_file_agenda
+from src.real.admin_duty import get_duty_file_agenda
 from src.real.admin_work import get_default_work_agenda
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -110,7 +110,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     # WHEN
     bob_duty_agenda = get_duty_file_agenda(bob_agendahub)
     bob_duty_agenda.add_partyunit(sue_text)
-    save_duty_file(bob_agendahub, bob_duty_agenda)
+    bob_agendahub.save_duty_agenda(bob_duty_agenda)
 
     # WHEN
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
@@ -142,7 +142,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    save_duty_file(bob_agendahub, bob_duty_agenda)
+    bob_agendahub.save_duty_agenda(bob_duty_agenda)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
     # THEN
@@ -175,14 +175,14 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    save_duty_file(bob_agendahub, bob_duty_agenda)
+    bob_agendahub.save_duty_agenda(bob_duty_agenda)
 
     sue_duty_agenda = get_duty_file_agenda(sue_agendahub)
     sue_duty_agenda.add_partyunit(sue_text)
     sue_duty_agenda.add_partyunit(bob_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    save_duty_file(sue_agendahub, sue_duty_agenda)
+    sue_agendahub.save_duty_agenda(sue_duty_agenda)
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)

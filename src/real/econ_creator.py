@@ -11,7 +11,6 @@ from src.change.agendahub import get_econ_path, agendahub_shop
 from src.agenda.agenda import AgendaUnit
 from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
 from src.real.admin_duty import get_duty_file_agenda
-from src.real.admin_duty import get_duty_file_agenda
 
 
 class InvalidEconException(Exception):

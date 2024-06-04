@@ -37,7 +37,23 @@ def _create_initial_change_from_duty(x_usernox: UserNox):
     x_changeunit.save_files()
 
 
-def save_duty_file(x_usernox: UserNox, x_agenda: AgendaUnit, replace: bool = True):
+def get_duty_file_agenda(x_usernox: UserNox) -> AgendaUnit:
+    x_agendahub = agendahub_shop(
+        reals_dir=x_usernox.reals_dir,
+        real_id=x_usernox.real_id,
+        person_id=x_usernox.person_id,
+        econ_road=None,
+        road_delimiter=x_usernox._road_delimiter,
+        planck=x_usernox._planck,
+    )
+    if x_usernox.duty_file_exists() == False:
+        x_agendahub.save_duty_agenda(get_default_duty_agenda(x_agendahub))
+    duty_json = x_usernox.open_file_duty()
+    return agendaunit_get_from_json(duty_json)
+
+
+def _create_duty_from_changes(x_usernox):
+    x_agenda = _merge_changes_into_agenda(x_usernox, get_default_duty_agenda(x_usernox))
     x_agendahub = agendahub_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
@@ -47,18 +63,6 @@ def save_duty_file(x_usernox: UserNox, x_agenda: AgendaUnit, replace: bool = Tru
         planck=x_usernox._planck,
     )
     x_agendahub.save_duty_agenda(x_agenda)
-
-
-def get_duty_file_agenda(x_usernox: UserNox) -> AgendaUnit:
-    if x_usernox.duty_file_exists() == False:
-        save_duty_file(x_usernox, get_default_duty_agenda(x_usernox))
-    duty_json = x_usernox.open_file_duty()
-    return agendaunit_get_from_json(duty_json)
-
-
-def _create_duty_from_changes(x_usernox):
-    x_agenda = _merge_changes_into_agenda(x_usernox, get_default_duty_agenda(x_usernox))
-    save_duty_file(x_usernox, x_agenda)
 
 
 def get_default_duty_agenda(x_usernox: UserNox) -> AgendaUnit:
@@ -91,8 +95,16 @@ def initialize_change_duty_files(x_usernox: UserNox):
 def append_changes_to_duty_file(x_usernox: UserNox) -> AgendaUnit:
     duty_agenda = get_duty_file_agenda(x_usernox)
     duty_agenda = _merge_changes_into_agenda(x_usernox, duty_agenda)
-    save_duty_file(x_usernox, duty_agenda)
-    return get_duty_file_agenda(x_usernox)
+    x_agendahub = agendahub_shop(
+        reals_dir=x_usernox.reals_dir,
+        real_id=x_usernox.real_id,
+        person_id=x_usernox.person_id,
+        econ_road=None,
+        road_delimiter=x_usernox._road_delimiter,
+        planck=x_usernox._planck,
+    )
+    x_agendahub.save_duty_agenda(duty_agenda)
+    return x_agendahub.get_duty_agenda()
 
 
 def _create_initial_change_and_duty_files(x_usernox: UserNox):
