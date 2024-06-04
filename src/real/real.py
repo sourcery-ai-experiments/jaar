@@ -137,7 +137,7 @@ class RealUnit:
         duty_agenda: AgendaUnit,
     ):
         x_econ = get_econunit(healer_agendahub, econ_road)
-        x_econ.agendahub.save_file_role(duty_agenda)
+        x_econ.agendahub.save_role_agenda(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
@@ -167,7 +167,7 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     planck=self._planck,
                 )
-                econ_agendahub.save_file_role(x_duty)
+                econ_agendahub.save_role_agenda(x_duty)
                 x_job = create_job_file_from_role_file(econ_agendahub, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 

@@ -1,19 +1,12 @@
-from src._instrument.file import open_file
 from src._road.road import (
     get_ancestor_roads,
     RoadUnit,
     get_root_node_from_road,
     PersonID,
 )
-from src._road.worldnox import get_file_name
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import (
-    AgendaUnit,
-    agendaunit_shop,
-    PartyUnit,
-    get_from_json as agendaunit_get_from_json,
-)
-from src.change.agendahub import AgendaHub
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
+from src.change.agendahub import AgendaHub, agendahub_shop
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 from os.path import exists as os_path_exists
@@ -90,7 +83,7 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
         x_listen.set_party_debtor_pool(x_role._party_debtor_pool)
     for x_partyunit in x_listen._partys.values():
         x_partyunit.reset_listen_calculated_attrs()
-    return x_listen
+    return copy_deepcopy(x_listen)
 
 
 def _get_planck_scaled_weight(
@@ -267,8 +260,39 @@ def listen_to_debtors_roll(listener: AgendaUnit, agendahub: AgendaHub) -> Agenda
     new_agenda = create_listen_basis(listener)
     if listener._party_debtor_pool is None:
         return new_agenda
-
     listen_to_speakers_intent(new_agenda, agendahub, listener)
     listen_to_speakers_belief(new_agenda, agendahub, listener)
-
     return new_agenda
+
+
+def listen_to_person_jobs(listener_agendahub: AgendaHub):
+    duty = listener_agendahub.get_duty_agenda()
+    new_work = create_listen_basis(duty)
+    new_work = copy_deepcopy(new_work)
+    duty.calc_agenda_metrics()
+    new_work.calc_agenda_metrics()
+
+    for x_healer_id, econ_dict in duty._healers_dict.items():
+        healer_agendahub = copy_deepcopy(listener_agendahub)
+        healer_agendahub.person_id = x_healer_id
+        for econ_path in econ_dict.keys():
+            healer_agendahub.econ_road = econ_path
+            listener_id = listener_agendahub.person_id
+            if healer_agendahub.job_file_exists(listener_id):
+                econ_job = healer_agendahub.get_job_agenda(listener_id)
+            else:
+                econ_job = create_empty_agenda(new_work, new_work._owner_id)
+
+            listen_to_job_intent(new_work, econ_job)
+    listener_agendahub.save_work_agenda(new_work)
+
+
+def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
+    for x_idea in job._idea_dict.values():
+        if listener.idea_exists(x_idea.get_road()) == False:
+            listener.add_idea(x_idea, x_idea._parent_road)
+        if listener.get_belief(x_idea.get_road()) == False:
+            listener.add_idea(x_idea, x_idea._parent_road)
+    for x_belief_road, x_belief_unit in job._idearoot._beliefunits.items():
+        listener._idearoot.set_beliefunit(x_belief_unit)
+    listener.calc_agenda_metrics()

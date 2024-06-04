@@ -93,7 +93,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
     yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
-    texas_agendahub.save_file_role(yao_role0_agenda)
+    texas_agendahub.save_role_agenda(yao_role0_agenda)
     create_job_file_from_role_file(texas_agendahub, yao_text)
     yao_role1_agenda = texas_agendahub.get_role_agenda(yao_text)
     assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None

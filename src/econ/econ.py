@@ -71,7 +71,7 @@ class EconUnit:
             owner_role = self.agendahub.get_role_agenda(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            self.agendahub.save_file_role(owner_role)
+            self.agendahub.save_role_agenda(owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
         x_agenda = self.agendahub.get_job_agenda(x_owner_id)
@@ -87,7 +87,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.agendahub.save_file_job(x_agenda)
+        self.agendahub.save_job_agenda(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -202,7 +202,7 @@ class EconUnit:
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.agendahub.save_file_job(x_agenda)
+            self.agendahub.save_job_agenda(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -374,5 +374,5 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
 def create_job_file_from_role_file(agendahub: AgendaHub, person_id: PersonID):
     x_role = agendahub.get_role_agenda(person_id)
     x_job = listen_to_debtors_roll(x_role, agendahub)
-    agendahub.save_file_job(x_job)
+    agendahub.save_job_agenda(x_job)
     return x_job

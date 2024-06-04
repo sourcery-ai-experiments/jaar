@@ -122,7 +122,7 @@ def test_agendahub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_agendahub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
 
 
-def test_AgendaHub_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_AgendaHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -139,7 +139,7 @@ def test_AgendaHub_save_file_role_CorrectlySavesFile(env_dir_setup_cleanup):
     assert os_path_exists(sue_agendahub.role_path(bob_text)) == False
 
     # WHEN
-    sue_agendahub.save_file_role(bob_agenda)
+    sue_agendahub.save_role_agenda(bob_agenda)
 
     # THEN
     assert os_path_exists(sue_agendahub.role_path(bob_text))
@@ -162,7 +162,7 @@ def test_AgendaHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     assert sue_agendahub.role_file_exists(bob_text) == False
 
     # WHEN
-    sue_agendahub.save_file_role(bob_agenda)
+    sue_agendahub.save_role_agenda(bob_agenda)
 
     # THEN
     assert sue_agendahub.role_file_exists(bob_text)
@@ -182,7 +182,7 @@ def test_AgendaHub_get_role_agenda_OpensFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    sue_agendahub.save_file_role(bob_agenda)
+    sue_agendahub.save_role_agenda(bob_agenda)
 
     # WHEN / THEN
     assert sue_agendahub.get_role_agenda(bob_text).get_dict() == bob_agenda.get_dict()
@@ -193,7 +193,7 @@ def test_AgendaHub_delete_role_file_DeletesAgendaFile(env_dir_setup_cleanup):
     texas_agendahub = get_texas_agendahub()
     sue_agenda = get_agenda_with_4_levels()
     sue_text = sue_agenda._owner_id
-    texas_agendahub.save_file_role(sue_agenda)
+    texas_agendahub.save_role_agenda(sue_agenda)
     print(f"{texas_agendahub.role_path(sue_text)=}")
     role_path = texas_agendahub.role_path(sue_text)
     assert os_path_exists(role_path)
@@ -205,7 +205,7 @@ def test_AgendaHub_delete_role_file_DeletesAgendaFile(env_dir_setup_cleanup):
     assert os_path_exists(role_path) == False
 
 
-def test_AgendaHub_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_AgendaHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -222,7 +222,7 @@ def test_AgendaHub_save_file_job_CorrectlySavesFile(env_dir_setup_cleanup):
     assert os_path_exists(sue_agendahub.job_path(bob_text)) == False
 
     # WHEN
-    sue_agendahub.save_file_job(bob_agenda)
+    sue_agendahub.save_job_agenda(bob_agenda)
 
     # THEN
     assert os_path_exists(sue_agendahub.job_path(bob_text))
@@ -245,7 +245,7 @@ def test_AgendaHub_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     assert sue_agendahub.job_file_exists(bob_text) == False
 
     # WHEN
-    sue_agendahub.save_file_job(bob_agenda)
+    sue_agendahub.save_job_agenda(bob_agenda)
 
     # THEN
     assert sue_agendahub.job_file_exists(bob_text)
@@ -265,7 +265,7 @@ def test_AgendaHub_get_job_agenda_OpensFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    sue_agendahub.save_file_job(bob_agenda)
+    sue_agendahub.save_job_agenda(bob_agenda)
 
     # WHEN / THEN
     assert sue_agendahub.get_job_agenda(bob_text).get_dict() == bob_agenda.get_dict()
@@ -276,7 +276,7 @@ def test_AgendaHub_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     texas_agendahub = get_texas_agendahub()
     sue_agenda = get_agenda_with_4_levels()
     sue_text = sue_agenda._owner_id
-    texas_agendahub.save_file_job(sue_agenda)
+    texas_agendahub.save_job_agenda(sue_agenda)
     print(f"{texas_agendahub.job_path(sue_text)=}")
     job_path = texas_agendahub.job_path(sue_text)
     assert os_path_exists(job_path)
@@ -323,6 +323,24 @@ def test_AgendaHub_save_duty_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
         str(excinfo.value)
         == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
     )
+
+
+def test_AgendaHub_get_duty_agenda_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    temp_env_dir = get_change_temp_env_dir()
+    sue_agendahub = agendahub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_agendahub.save_duty_agenda(sue_agendaunit)
+
+    # WHEN / THEN
+    assert sue_agendahub.get_duty_agenda().get_dict() == sue_agendaunit.get_dict()
 
 
 def test_AgendaHub_save_work_agenda_CorrectlySavesFile(env_dir_setup_cleanup):

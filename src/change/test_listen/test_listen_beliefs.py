@@ -38,7 +38,7 @@ def test_listen_to_speakers_belief_SetsSingleBeliefUnit_v1(env_dir_setup_cleanup
 
     zia_speaker = get_example_zia_speaker()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(zia_speaker)
+    texas_agendahub.save_job_agenda(zia_speaker)
 
     new_yao_agenda = create_listen_basis(yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
@@ -70,7 +70,7 @@ def test_listen_to_speakers_belief_SetsSingleBeliefUnitWithOtherTask(
     clean_ideaunit = zia_speaker.get_idea_obj(clean_road())
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(zia_speaker)
+    texas_agendahub.save_job_agenda(zia_speaker)
 
     new_yao_agenda = create_listen_basis(yao_listener)
     assert new_yao_agenda.get_missing_belief_bases().get(eat_road()) is None
@@ -99,7 +99,7 @@ def test_listen_to_speaker_belief_GetsBeliefsFromSrcAgendaSelfNotSpeakerSelf(
     yao_speaker = get_example_yao_speaker()
     assert yao_speaker.get_belief(eat_road()).pick == hungry_road()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(yao_speaker)
+    texas_agendahub.save_job_agenda(yao_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.get_belief(eat_road()) is None
@@ -127,11 +127,11 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     zia_speaker.set_belief(eat_road(), eat_road())
     assert zia_speaker.get_belief(eat_road()).pick == eat_road()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(zia_speaker)
+    texas_agendahub.save_job_agenda(zia_speaker)
 
     yao_speaker = get_example_yao_speaker()
     assert yao_speaker.get_belief(eat_road()).pick == hungry_road()
-    texas_agendahub.save_file_job(yao_speaker)
+    texas_agendahub.save_job_agenda(yao_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src)
     assert new_yao_agenda.get_belief(eat_road()) is None
@@ -163,7 +163,7 @@ def test_listen_to_speaker_belief_SetsPrioritizesSelfBeliefsOverOthers(
     zia_speaker.set_belief(eat_road(), hungry_road())
     assert zia_speaker.get_belief(eat_road()).pick == hungry_road()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(zia_speaker)
+    texas_agendahub.save_job_agenda(zia_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.get_belief(eat_road()) is None
@@ -188,12 +188,12 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
     zia_speaker.set_belief(eat_road(), eat_road())
     assert zia_speaker.get_belief(eat_road()).pick == eat_road()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_job(zia_speaker)
+    texas_agendahub.save_job_agenda(zia_speaker)
 
     bob_speaker = get_example_bob_speaker()
     bob_text = bob_speaker._owner_id
     assert bob_speaker.get_belief(eat_road()).pick == hungry_road()
-    texas_agendahub.save_file_job(bob_speaker)
+    texas_agendahub.save_job_agenda(bob_speaker)
 
     yao_src = get_example_yao_speaker()
     yao_src.del_belief(eat_road())
@@ -265,7 +265,7 @@ def test_listen_to_speaker_belief_ConfirmNoBeliefPickedFromOwnersSpeakerDirAgend
 #     sweep_idea._assignedunit.set_suffgroup(yao_text)
 
 #     texas_agendahub = get_texas_agendahub()
-#     texas_agendahub.save_file_job(sue_text, sue_speaker.get_json(), True)
+#     texas_agendahub.save_job_agenda(sue_text, sue_speaker.get_json(), True)
 #     yao_listener = agendaunit_shop(yao_text)
 #     yao_listener.add_partyunit(yao_text)
 #     yao_listener.add_partyunit(sue_text)

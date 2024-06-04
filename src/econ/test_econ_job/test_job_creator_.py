@@ -9,7 +9,7 @@ def test_get_role_agenda_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanu
     texas_agendahub = get_texas_agendahub()
     sue_text = "Sue"
     src_sue_agenda = agendaunit_shop(sue_text)
-    texas_agendahub.save_file_role(src_sue_agenda)
+    texas_agendahub.save_role_agenda(src_sue_agenda)
 
     # WHEN
     sue_role = texas_agendahub.get_role_agenda(sue_text)
@@ -28,7 +28,7 @@ def test_get_job_agenda_ReturnsCorrectAgendaWhenFileExists(env_dir_setup_cleanup
     assert texas_agendahub.get_role_agenda(sue_text) is None
 
     # GIVEN
-    texas_agendahub.save_file_role(agendaunit_shop(sue_text))
+    texas_agendahub.save_role_agenda(agendaunit_shop(sue_text))
     # WHEN
     sue_job = texas_agendahub.get_role_agenda(sue_text)
     # THEN
@@ -42,7 +42,7 @@ def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
     sue_role = agendaunit_shop(sue_text)
     sue_role.calc_agenda_metrics()
     texas_agendahub = get_texas_agendahub()
-    texas_agendahub.save_file_role(sue_role)
+    texas_agendahub.save_role_agenda(sue_role)
     sue_job_file_path = texas_agendahub.job_path(sue_text)
     assert os_path_exists(sue_job_file_path) == False
 

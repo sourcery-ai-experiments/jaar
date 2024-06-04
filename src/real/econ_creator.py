@@ -78,7 +78,7 @@ def get_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
 
 def set_econunit_role(x_usernox: UserNox, econ_road: RoadUnit, role: AgendaUnit):
     x_econ = get_econunit(x_usernox, econ_road)
-    x_econ.agendahub.save_file_role(role)
+    x_econ.agendahub.save_role_agenda(role)
 
 
 def set_econunits_role(x_usernox: UserNox, role: AgendaUnit):
