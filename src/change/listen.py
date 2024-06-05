@@ -268,23 +268,44 @@ def listen_to_debtors_roll(listener: AgendaUnit, agendahub: AgendaHub) -> Agenda
 def listen_to_person_jobs(listener_agendahub: AgendaHub):
     duty = listener_agendahub.get_duty_agenda()
     new_work = create_listen_basis(duty)
-    new_work = copy_deepcopy(new_work)
+    pre_jobs_work_copy = copy_deepcopy(new_work)
     duty.calc_agenda_metrics()
     new_work.calc_agenda_metrics()
 
     for x_healer_id, econ_dict in duty._healers_dict.items():
+        listener_id = listener_agendahub.person_id
         healer_agendahub = copy_deepcopy(listener_agendahub)
         healer_agendahub.person_id = x_healer_id
-        for econ_path in econ_dict.keys():
-            healer_agendahub.econ_road = econ_path
-            listener_id = listener_agendahub.person_id
-            if healer_agendahub.job_file_exists(listener_id):
-                econ_job = healer_agendahub.get_job_agenda(listener_id)
-            else:
-                econ_job = create_empty_agenda(new_work, new_work._owner_id)
+        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_agendahub, new_work)
 
-            listen_to_job_intent(new_work, econ_job)
+    if new_work.get_dict() == pre_jobs_work_copy.get_dict():
+        intent = list(duty.get_intent_dict().values())
+        _ingest_perspective_intent(new_work, intent)
+        listen_to_speaker_belief(new_work, duty)
+
     listener_agendahub.save_work_agenda(new_work)
+
+
+def _pick_econ_jobs_and_listen(
+    listener_id: PersonID,
+    econ_dict: dict[RoadUnit],
+    healer_agendahub: AgendaHub,
+    new_work: AgendaUnit,
+):
+    for econ_path in econ_dict:
+        healer_agendahub.econ_road = econ_path
+        _pick_econ_job_and_listen(listener_id, healer_agendahub, new_work)
+
+
+def _pick_econ_job_and_listen(
+    listener_person_id: PersonID, healer_agendahub: AgendaHub, new_work: AgendaUnit
+):
+    listener_id = listener_person_id
+    if healer_agendahub.job_file_exists(listener_id):
+        econ_job = healer_agendahub.get_job_agenda(listener_id)
+    else:
+        econ_job = create_empty_agenda(new_work, new_work._owner_id)
+    listen_to_job_intent(new_work, econ_job)
 
 
 def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):

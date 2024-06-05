@@ -16,7 +16,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     yao_text = "Yao"
     slash_text = "/"
     yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text)
-    yao_duty.add_l1_idea(ideaunit_shop("Texas"))
+    yao_duty.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_creditor_weight = 47
     zia_debtor_weight = 41
@@ -59,7 +59,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     yao_text = "Yao"
     slash_text = "/"
     yao_role = agendaunit_shop(yao_text, _road_delimiter=slash_text)
-    yao_role.add_l1_idea(ideaunit_shop("Texas"))
+    yao_role.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_creditor_weight = 47
     zia_debtor_weight = 41

@@ -166,16 +166,48 @@ def get_utah_text() -> RoadNode:
     return "Utah"
 
 
+def get_swim_text() -> RoadNode:
+    return "swim"
+
+
+def get_location_text() -> RoadNode:
+    return "location"
+
+
+def get_in_ocean_text() -> RoadNode:
+    return "in_ocean"
+
+
+def get_on_land_text() -> RoadNode:
+    return "on_land"
+
+
 def get_iowa_road() -> RoadUnit:
-    return create_road(get_usa_road(), "Iowa")
+    return create_road(get_usa_road(), get_iowa_text())
 
 
 def get_ohio_road() -> RoadUnit:
-    return create_road(get_usa_road(), "Ohio")
+    return create_road(get_usa_road(), get_ohio_text())
 
 
 def get_utah_road() -> RoadUnit:
-    return create_road(get_usa_road(), "Utah")
+    return create_road(get_usa_road(), get_utah_text())
+
+
+def get_swim_road() -> RoadUnit:
+    return create_road(get_default_real_id_roadnode(), get_swim_text())
+
+
+def get_location_road() -> RoadUnit:
+    return create_road(get_default_real_id_roadnode(), get_location_text())
+
+
+def get_in_ocean_road() -> RoadUnit:
+    return create_road(get_location_road(), get_in_ocean_text())
+
+
+def get_on_land_road() -> RoadUnit:
+    return create_road(get_location_road(), get_on_land_text())
 
 
 def get_yao_ohio_agendahub() -> AgendaHub:
@@ -237,12 +269,16 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     # yao_job3 with 1 new task, belief stays with it
 
     yao_duty0 = get_example_yao_duty_with_3_healers()
+    yao_duty0.del_idea_obj(run_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_location_text()))
+    yao_duty0.add_idea(ideaunit_shop(get_in_ocean_text()), get_location_road())
+    yao_duty0.add_idea(ideaunit_shop(get_on_land_text()), get_location_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_swim_text(), pledge=True))
+    yao_duty0.edit_reason(get_swim_road(), get_location_road(), get_in_ocean_road())
     yao_duty0.calc_agenda_metrics()
     assert yao_duty0._econ_dict.get(get_iowa_road())
     assert yao_duty0._econ_dict.get(get_ohio_road())
     assert yao_duty0._econ_dict.get(get_utah_road())
-    yao_duty0.del_idea_obj(run_road())
-    yao_duty0.calc_agenda_metrics()
     assert len(yao_duty0._econ_dict) == 3
     print(f"{yao_duty0._idea_dict.keys()=}")
 
@@ -252,25 +288,21 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     yao_job3 = get_example_yao_job3_speaker()
     yao_iowa_agendahub = get_yao_iowa_agendahub()
     yao_ohio_agendahub = get_yao_ohio_agendahub()
-    yao_utah_agendahub = get_zia_utah_agendahub()
+    zia_utah_agendahub = get_zia_utah_agendahub()
     # delete_dir(yao_iowa_agendahub.persons_dir())
     assert yao_iowa_agendahub.duty_file_exists() == False
     assert yao_iowa_agendahub.work_file_exists() == False
     assert yao_iowa_agendahub.job_file_exists(yao_text) == False
     assert yao_ohio_agendahub.job_file_exists(yao_text) == False
-    assert yao_utah_agendahub.job_file_exists(yao_text) == False
+    assert zia_utah_agendahub.job_file_exists(yao_text) == False
     yao_iowa_agendahub.save_duty_agenda(yao_duty0)
     yao_iowa_agendahub.save_job_agenda(yao_job1)
     yao_ohio_agendahub.save_job_agenda(yao_job2)
-    yao_utah_agendahub.save_job_agenda(yao_job3)
+    zia_utah_agendahub.save_job_agenda(yao_job3)
     assert yao_iowa_agendahub.duty_file_exists()
     assert yao_iowa_agendahub.job_file_exists(yao_text)
     assert yao_ohio_agendahub.job_file_exists(yao_text)
-    assert yao_utah_agendahub.job_file_exists(yao_text)
-
-    # yao_job1 saves texas econ, healer is yao
-    # yao job2 saves texas_econ, healer is yao
-    # yao_job3 saves texas_econ, healer is bob
+    assert zia_utah_agendahub.job_file_exists(yao_text)
 
     # WHEN
     assert yao_iowa_agendahub.work_file_exists() == False
@@ -289,4 +321,78 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert yao_work.idea_exists(clean_road())
     assert yao_work.idea_exists(run_road()) == False
     assert len(yao_work._idearoot._beliefunits) == 2
+    assert yao_work != yao_duty0
+
+
+def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItself(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    # yao0_duty with 3 debotors of different creditor_weights
+    # yao_job1 with 1 task, belief that doesn't want that task
+    # yao_job2 with 2 tasks, one is same belief wants task
+    # yao_job3 with 1 new task, belief stays with it
+
+    yao_duty0 = get_example_yao_duty_with_3_healers()
+    yao_duty0.add_l1_idea(ideaunit_shop(get_location_text()))
+    yao_duty0.add_idea(ideaunit_shop(get_in_ocean_text()), get_location_road())
+    yao_duty0.add_idea(ideaunit_shop(get_on_land_text()), get_location_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_swim_text(), pledge=True))
+    yao_duty0.edit_reason(get_swim_road(), get_location_road(), get_in_ocean_road())
+    yao_duty0.set_belief(get_location_road(), get_in_ocean_road())
+    print(f"{yao_duty0.get_belief(get_location_road())=}")
+    yao_duty0.del_idea_obj(run_road())
+    assert yao_duty0._econ_dict.get(get_iowa_road())
+    assert yao_duty0._econ_dict.get(get_ohio_road())
+    assert yao_duty0._econ_dict.get(get_utah_road())
+    yao_duty0.calc_agenda_metrics()
+    assert len(yao_duty0._econ_dict) == 3
+    # print(f"{yao_duty0._idea_dict.keys()=}")
+
+    yao_text = yao_duty0._owner_id
+    yao_job1 = get_example_yao_job1_speaker()
+    yao_job2 = get_example_yao_job2_speaker()
+    yao_job3 = get_example_yao_job3_speaker()
+    yao_iowa_agendahub = get_yao_iowa_agendahub()
+    yao_ohio_agendahub = get_yao_ohio_agendahub()
+    zia_utah_agendahub = get_zia_utah_agendahub()
+    # delete_dir(yao_iowa_agendahub.persons_dir())
+    assert yao_iowa_agendahub.duty_file_exists() == False
+    assert yao_iowa_agendahub.work_file_exists() == False
+    assert yao_iowa_agendahub.job_file_exists(yao_text) == False
+    assert yao_ohio_agendahub.job_file_exists(yao_text) == False
+    assert zia_utah_agendahub.job_file_exists(yao_text) == False
+    print(f"{yao_duty0.get_belief(get_location_road())=}")
+    yao_iowa_agendahub.save_duty_agenda(yao_duty0)
+    # yao_iowa_agendahub.save_job_agenda(yao_job1)
+    # yao_ohio_agendahub.save_job_agenda(yao_job2)
+    # zia_utah_agendahub.save_job_agenda(yao_job3)
+    assert yao_iowa_agendahub.duty_file_exists()
+    assert yao_iowa_agendahub.job_file_exists(yao_text) == False
+    assert yao_ohio_agendahub.job_file_exists(yao_text) == False
+    assert zia_utah_agendahub.job_file_exists(yao_text) == False
+
+    # WHEN
+    assert yao_iowa_agendahub.work_file_exists() == False
+    listen_to_person_jobs(yao_iowa_agendahub)
+    assert yao_iowa_agendahub.work_file_exists()
+
+    yao_work = yao_iowa_agendahub.get_work_agenda()
+    yao_work.calc_agenda_metrics()
+    assert yao_work._partys.keys() == yao_duty0._partys.keys()
+    assert yao_work.get_party(yao_text)._irrational_debtor_weight == 0
+    assert yao_work.get_groupunits_dict() == yao_duty0.get_groupunits_dict()
+    assert len(yao_work._idea_dict) == 4
+    print(f"{yao_work._idea_dict.keys()=}")
+    print(f"{yao_work.get_beliefunits_dict().keys()=}")
+    assert yao_work.idea_exists(cook_road()) == False
+    assert yao_work.idea_exists(clean_road()) == False
+    assert yao_work.idea_exists(run_road()) == False
+    assert yao_work.idea_exists(get_swim_road())
+    assert yao_work.idea_exists(get_in_ocean_road())
+    assert yao_work.idea_exists(get_on_land_road()) == False
+    assert yao_work.get_belief(get_location_road()) != None
+    assert yao_work.get_belief(get_location_road()).pick == get_in_ocean_road()
+    assert len(yao_work.get_intent_dict()) == 1
+    assert len(yao_work._idearoot._beliefunits) == 1
     assert yao_work != yao_duty0
