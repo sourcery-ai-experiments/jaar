@@ -227,21 +227,39 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
-def test_RealUnit_get_person_paths_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_RealUnit_get_person_agendahubs_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
 
     # WHEN / THEN
-    assert len(music_real.get_person_paths()) == 0
+    assert len(music_real.get_person_agendahubs()) == 0
 
     # WHEN
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    music_all_persons = music_real.get_person_paths()
+    music_all_persons = music_real.get_person_agendahubs()
 
     # THEN
-    assert f"{music_real._persons_dir}/{luca_text}" in music_all_persons
-    assert f"{music_real._persons_dir}/{todd_text}" in music_all_persons
-    assert len(music_real.get_person_paths()) == 2
+    luca_agendahub = agendahub_shop(
+        reals_dir=music_real.reals_dir,
+        real_id=music_real.real_id,
+        person_id=luca_text,
+        econ_road=None,
+        nox_type=None,
+        road_delimiter=music_real._road_delimiter,
+        planck=music_real._planck,
+    )
+    todd_agendahub = agendahub_shop(
+        reals_dir=music_real.reals_dir,
+        real_id=music_real.real_id,
+        person_id=todd_text,
+        econ_road=None,
+        nox_type=None,
+        road_delimiter=music_real._road_delimiter,
+        planck=music_real._planck,
+    )
+    assert music_all_persons.get(luca_text) == luca_agendahub
+    assert music_all_persons.get(todd_text) == todd_agendahub
+    assert len(music_real.get_person_agendahubs()) == 2

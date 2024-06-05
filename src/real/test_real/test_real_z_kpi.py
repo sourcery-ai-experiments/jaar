@@ -95,7 +95,6 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "_missing_job_debtor_weight",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
@@ -161,33 +160,32 @@ def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cl
     #     x_fig.show()
 
 
-# def test_get_real_works_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # TODO change the example so that the generate_all_work_agendas correctly creates mulitple work agenda files. Need most of the work in #157 to finish.
-#     # GIVEN
-#     music_real = create_example_real4()
-#     music_real.generate_all_work_agendas()
+def test_get_real_works_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+    # GIVEN
+    music_real = create_example_real4()
+    music_real.generate_all_work_agendas()
 
-#     # WHEN
-#     x_df = get_real_works_intent_dataframe(music_real)
+    # WHEN
+    x_df = get_real_works_intent_dataframe(music_real)
 
-#     # THEN
-#     intent_colums = {
-#         "owner_id",
-#         "agenda_importance",
-#         "_label",
-#         "_parent_road",
-#         "_begin",
-#         "_close",
-#         "_addin",
-#         "_denom",
-#         "_numor",
-#         "_reest",
-#     }
-#     print(f"{set(x_df.columns)=}")
-#     print(x_df)
+    # THEN
+    intent_colums = {
+        "owner_id",
+        "agenda_importance",
+        "_label",
+        "_parent_road",
+        "_begin",
+        "_close",
+        "_addin",
+        "_denom",
+        "_numor",
+        "_reest",
+    }
+    print(f"{set(x_df.columns)=}")
+    print(x_df)
 
-#     assert set(x_df.columns) == intent_colums
-#     assert x_df.shape[0] in [8, 9]
+    assert set(x_df.columns) == intent_colums
+    assert x_df.shape[0] in [8, 9]
 
 
 def test_get_real_works_intent_plotly_fig_DisplaysCorrectInfo(

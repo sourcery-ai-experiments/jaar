@@ -3,8 +3,8 @@ from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
-from src.change.agendahub import agendahub_shop, AgendaHub
-from src.change.listen import listen_to_speaker_intent
+from src.change.agendahub import agendahub_shop, AgendaHub, pipeline_duty_work_text
+from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
@@ -53,9 +53,20 @@ class RealUnit:
         persons = dir_files(self._persons_dir, include_dirs=True, include_files=False)
         return set(persons.keys())
 
-    def get_person_paths(self):
+    def get_person_agendahubs(self) -> dict[PersonID:AgendaHub]:
         x_person_ids = self._get_person_folder_names()
-        return {f"{self._persons_dir}/{x_person_id}" for x_person_id in x_person_ids}
+        return {
+            x_person_id: agendahub_shop(
+                reals_dir=self.reals_dir,
+                real_id=self.real_id,
+                person_id=x_person_id,
+                econ_road=None,
+                nox_type=None,
+                road_delimiter=self._road_delimiter,
+                planck=self._planck,
+            )
+            for x_person_id in x_person_ids
+        }
 
     # database
     def get_journal_db_path(self) -> str:
@@ -141,11 +152,10 @@ class RealUnit:
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        x_agendahub = self._get_agendahub(person_id)
-        x_duty = get_duty_file_agenda(x_agendahub)
+        listener_agendahub = self._get_agendahub(person_id)
+        x_duty = get_duty_file_agenda(listener_agendahub)
         x_duty.calc_agenda_metrics()
         x_work = get_default_work_agenda(x_duty)
-        x_work_deepcopy = copy_deepcopy(x_work)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_agendahub = agendahub_shop(
                 reals_dir=self.reals_dir,
@@ -171,10 +181,16 @@ class RealUnit:
                 x_job = create_job_file_from_role_file(econ_agendahub, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
-        # if work_agenda has not transited st work agenda to duty
-        if x_work == x_work_deepcopy:
+        # if nothing has come from duty->role->job->work pipeline use duty->work pipeline
+        x_work.calc_agenda_metrics()
+        if len(x_work._idea_dict) == 1:
+            listener_agendahub.set_nox_type(pipeline_duty_work_text())
+            x_work = listen_to_debtors_roll(x_work, listener_agendahub)
+            x_work.calc_agenda_metrics()
+        if len(x_work._idea_dict) == 1:
             x_work = x_duty
-        x_agendahub.save_work_agenda(x_work)
+        listener_agendahub.save_work_agenda(x_work)
+
         return self.get_work_file_agenda(person_id)
 
     def generate_all_work_agendas(self):
