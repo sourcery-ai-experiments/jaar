@@ -1,5 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.treasury_sqlstr import (
+    get_agendaunit_table_create_sqlstr,
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
     get_agenda_partyunit_table_create_sqlstr,
@@ -13,6 +14,23 @@ from src.econ.treasury_sqlstr import (
     get_river_score_select_sqlstr,
 )
 from src._instrument.sqlite import sqlite_text
+
+
+def test_get_agendaunit_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN /  WHEN
+    gen_sqlstr = get_agendaunit_table_create_sqlstr()
+
+    # THEN
+    example_sqlstr = """
+CREATE TABLE IF NOT EXISTS agendaunit (
+  owner_id VARCHAR(255) PRIMARY KEY ASC
+, real_id VARCHAR(255) NOT NULL
+, rational INT NULL
+, UNIQUE(owner_id)
+)
+;
+"""
+    assert gen_sqlstr == example_sqlstr
 
 
 def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():

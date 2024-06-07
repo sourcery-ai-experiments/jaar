@@ -527,6 +527,7 @@ def get_agendaunit_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS agendaunit (
   owner_id VARCHAR(255) PRIMARY KEY ASC
+, real_id VARCHAR(255) NOT NULL
 , rational INT NULL
 , UNIQUE(owner_id)
 )
@@ -537,11 +538,13 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
     return f"""
 INSERT INTO agendaunit (
-  owner_id
+  real_id
+, owner_id
 , rational
 )
 VALUES (
-  '{x_agenda._owner_id}' 
+  '{x_agenda._real_id}' 
+, '{x_agenda._owner_id}' 
 , NULL
 )
 ;

@@ -42,7 +42,8 @@
         "agendaunit": {
             "columns": {
                 "owner_id": {},
-                "rational": {}
+                "rational": {},
+                "real_id": {}
             }
         },
         "calendar": {
