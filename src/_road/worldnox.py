@@ -19,13 +19,14 @@ from src._road.jaar_config import (
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
+    get_json_filename,
 )
 from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
 
 def get_file_name(x_person_id: PersonID) -> str:
-    return f"{x_person_id}.json"
+    return get_json_filename(x_person_id)
 
 
 @dataclass
@@ -53,22 +54,28 @@ class RealNox:
     def changes_dir(self, person_id: PersonID) -> str:
         return f"{self.person_dir(person_id)}/{get_changes_folder()}"
 
-    def duty_file_name(self):
-        return get_file_name(duty_str())
+    def duty_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/duty"
+
+    def work_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/work"
+
+    def duty_file_name(self, person_id: PersonID):
+        return get_file_name(person_id)
 
     def duty_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.duty_file_name()}"
+        return f"{self.person_dir(person_id)}/{self.duty_file_name(person_id)}"
 
-    def work_file_name(self):
-        return get_file_name(work_str())
+    def work_file_name(self, person_id: PersonID):
+        return get_file_name(person_id)
 
     def work_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.work_file_name()}"
+        return f"{self.person_dir(person_id)}/{self.work_file_name(person_id)}"
 
     def save_file_duty(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
             dest_dir=self.person_dir(person_id),
-            file_name=self.duty_file_name(),
+            file_name=self.duty_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
@@ -76,7 +83,7 @@ class RealNox:
     def save_file_work(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
             dest_dir=self.person_dir(person_id),
-            file_name=self.work_file_name(),
+            file_name=self.work_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
@@ -88,10 +95,10 @@ class RealNox:
         return os_path_exists(self.work_path(person_id))
 
     def open_file_duty(self, person_id: PersonID):
-        return open_file(self.person_dir(person_id), self.duty_file_name())
+        return open_file(self.person_dir(person_id), self.duty_file_name(person_id))
 
-    def open_file_work(self, person_id: PersonID):
-        return open_file(self.person_dir(person_id), self.work_file_name())
+    def open_file_work(self, person_id: PersonID) -> str:
+        return open_file(self.person_dir(person_id), self.work_file_name(person_id))
 
 
 def realnox_shop(
@@ -139,21 +146,27 @@ class UserNox:
     def changes_dir(self):
         return f"{self.person_dir()}/{get_changes_folder()}"
 
+    def duty_dir(self) -> str:
+        return f"{self.person_dir()}/duty"
+
+    def work_dir(self) -> str:
+        return f"{self.person_dir()}/work"
+
     def duty_file_name(self):
-        return get_file_name(duty_str())
+        return get_file_name(self.person_id)
 
     def duty_path(self):
-        return f"{self.person_dir()}/{self.duty_file_name()}"
+        return f"{self.duty_dir()}/{self.duty_file_name()}"
 
     def work_file_name(self):
-        return get_file_name(work_str())
+        return get_file_name(self.person_id)
 
     def work_path(self):
-        return f"{self.person_dir()}/{self.work_file_name()}"
+        return f"{self.work_dir()}/{self.work_file_name()}"
 
     def save_file_duty(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(),
+            dest_dir=self.duty_dir(),
             file_name=self.duty_file_name(),
             file_text=file_text,
             replace=replace,
@@ -161,7 +174,7 @@ class UserNox:
 
     def save_file_work(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(),
+            dest_dir=self.work_dir(),
             file_name=self.work_file_name(),
             file_text=file_text,
             replace=replace,
@@ -174,10 +187,10 @@ class UserNox:
         return os_path_exists(self.work_path())
 
     def open_file_duty(self):
-        return open_file(self.person_dir(), self.duty_file_name())
+        return open_file(self.duty_dir(), self.duty_file_name())
 
     def open_file_work(self):
-        return open_file(self.person_dir(), self.work_file_name())
+        return open_file(self.work_dir(), self.work_file_name())
 
 
 def usernox_shop(
@@ -198,98 +211,4 @@ def usernox_shop(
         reals_dir=reals_dir,
         _road_delimiter=default_road_delimiter_if_none(road_delimiter),
         _planck=default_planck_if_none(planck),
-    )
-
-
-def get_econ_path(x_usernox: UserNox, x_road: RoadNode) -> str:
-    econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_usernox.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_usernox._road_delimiter)
-    return f"{x_usernox.econs_dir()}{get_directory_path(x_list=[*x_list])}"
-
-
-def get_econ_roles_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/{roles_str()}"
-
-
-def get_econ_jobs_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/{jobs_str()}"
-
-
-@dataclass
-class EconNox(UserNox):
-    econ_road: RoadUnit = None
-
-    def econ_dir(self) -> str:
-        return get_econ_path(self, self.econ_road)
-
-    def owner_file_name(self, owner_id: PersonID) -> str:
-        return get_file_name(owner_id)
-
-    def role_path(self, owner_id: PersonID) -> str:
-        return f"{self.roles_dir()}/{self.owner_file_name(owner_id)}"
-
-    def job_path(self, owner_id: PersonID) -> str:
-        return f"{self.jobs_dir()}/{self.owner_file_name(owner_id)}"
-
-    def roles_dir(self) -> str:
-        return get_econ_roles_dir(self.econ_dir())
-
-    def jobs_dir(self) -> str:
-        return get_econ_jobs_dir(self.econ_dir())
-
-    def save_file_role(self, owner_id: PersonID, file_text: str, replace: bool):
-        save_file(
-            dest_dir=self.roles_dir(),
-            file_name=self.owner_file_name(owner_id),
-            file_text=file_text,
-            replace=replace,
-        )
-
-    def save_file_job(self, owner_id: PersonID, file_text: str, replace: bool):
-        save_file(
-            dest_dir=self.jobs_dir(),
-            file_name=self.owner_file_name(owner_id),
-            file_text=file_text,
-            replace=replace,
-        )
-
-    def role_file_exists(self, owner_id: PersonID) -> bool:
-        return os_path_exists(self.role_path(owner_id))
-
-    def job_file_exists(self, owner_id: PersonID) -> bool:
-        return os_path_exists(self.job_path(owner_id))
-
-    def open_file_role(self, owner_id: PersonID) -> str:
-        return open_file(self.roles_dir(), self.owner_file_name(owner_id))
-
-    def open_file_job(self, owner_id: PersonID) -> str:
-        return open_file(self.jobs_dir(), self.owner_file_name(owner_id))
-
-    # role delete
-    # job delete
-
-
-def econnox_shop(
-    reals_dir: str,
-    real_id: RealID,
-    person_id: PersonID,
-    econ_road: RoadUnit,
-    road_delimiter: str = None,
-    planck: float = None,
-) -> EconNox:
-    x_usernox = usernox_shop(
-        reals_dir=reals_dir,
-        real_id=real_id,
-        person_id=person_id,
-        road_delimiter=road_delimiter,
-        planck=planck,
-    )
-    return EconNox(
-        reals_dir=x_usernox.reals_dir,
-        real_id=x_usernox.real_id,
-        person_id=x_usernox.person_id,
-        econ_road=econ_road,
-        _road_delimiter=x_usernox._road_delimiter,
-        _planck=x_usernox._planck,
     )

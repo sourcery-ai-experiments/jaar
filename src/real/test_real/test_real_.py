@@ -1,10 +1,11 @@
 from src._road.finance import default_planck_if_none
 from src._road.jaar_config import get_changes_folder
 from src._road.road import default_road_delimiter_if_none
-from src._road.worldnox import usernox_shop, get_file_name
+from src._road.worldnox import get_file_name
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
-from src.real.admin_duty import save_duty_file, get_duty_file_agenda
+from src.change.agendahub import agendahub_shop
+from src.real.admin_duty import get_duty_file_agenda
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -120,15 +121,15 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(reals_dir_setup_cle
         in_memory_journal=True,
     )
     luca_text = "Luca"
-    luca_usernox = usernox_shop(None, music_text, luca_text, planck=x_planck)
-    assert os_path_exists(luca_usernox.work_path()) == False
+    luca_agendahub = agendahub_shop(None, music_text, luca_text, None, planck=x_planck)
+    assert os_path_exists(luca_agendahub.work_path()) == False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_usernox.work_path())
+    assert os_path_exists(luca_agendahub.work_path())
 
 
 def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -137,11 +138,11 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     music_real.init_person_econs(luca_text)
-    luca_usernox = usernox_shop(None, music_text, luca_text)
+    luca_agendahub = agendahub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
-    luca_duty = get_duty_file_agenda(luca_usernox)
+    luca_duty = get_duty_file_agenda(luca_agendahub)
     luca_duty.add_partyunit(bob_text)
-    save_duty_file(luca_usernox, luca_duty)
+    luca_agendahub.save_duty_agenda(luca_duty)
 
     # WHEN
     gen_luca_duty = music_real.get_person_duty_from_file(luca_text)
@@ -161,10 +162,10 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_text = "Todd"
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    luca_usernox = usernox_shop(None, music_text, luca_text)
-    todd_usernox = usernox_shop(None, music_text, todd_text)
-    luca_duty_agenda = get_duty_file_agenda(luca_usernox)
-    todd_duty_agenda = get_duty_file_agenda(todd_usernox)
+    luca_agendahub = agendahub_shop(None, music_text, luca_text, None)
+    todd_agendahub = agendahub_shop(None, music_text, todd_text, None)
+    luca_duty_agenda = get_duty_file_agenda(luca_agendahub)
+    todd_duty_agenda = get_duty_file_agenda(todd_agendahub)
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)
@@ -188,16 +189,16 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     todd_duty_agenda.add_idea(dallas_idea, texas_road)
     todd_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
-    save_duty_file(luca_usernox, luca_duty_agenda)
-    save_duty_file(todd_usernox, todd_duty_agenda)
-    create_person_econunits(luca_usernox)
-    create_person_econunits(todd_usernox)
-    luca_dallas_econ = get_econunit(luca_usernox, dallas_road)
-    todd_dallas_econ = get_econunit(todd_usernox, dallas_road)
+    luca_agendahub.save_duty_agenda(luca_duty_agenda)
+    todd_agendahub.save_duty_agenda(todd_duty_agenda)
+    create_person_econunits(luca_agendahub)
+    create_person_econunits(todd_agendahub)
+    luca_dallas_econ = get_econunit(luca_agendahub, dallas_road)
+    todd_dallas_econ = get_econunit(todd_agendahub, dallas_road)
     luca_file_name = get_file_name(luca_text)
     todd_file_name = get_file_name(todd_text)
-    luca_roles_dir = luca_dallas_econ.get_roles_dir()
-    todd_roles_dir = todd_dallas_econ.get_roles_dir()
+    luca_roles_dir = luca_dallas_econ.agendahub.roles_dir()
+    todd_roles_dir = todd_dallas_econ.agendahub.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
@@ -226,21 +227,39 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
-def test_RealUnit_get_person_paths_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_RealUnit_get_person_agendahubs_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
 
     # WHEN / THEN
-    assert len(music_real.get_person_paths()) == 0
+    assert len(music_real.get_person_agendahubs()) == 0
 
     # WHEN
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    music_all_persons = music_real.get_person_paths()
+    music_all_persons = music_real.get_person_agendahubs()
 
     # THEN
-    assert f"{music_real._persons_dir}/{luca_text}" in music_all_persons
-    assert f"{music_real._persons_dir}/{todd_text}" in music_all_persons
-    assert len(music_real.get_person_paths()) == 2
+    luca_agendahub = agendahub_shop(
+        reals_dir=music_real.reals_dir,
+        real_id=music_real.real_id,
+        person_id=luca_text,
+        econ_road=None,
+        nox_type=None,
+        road_delimiter=music_real._road_delimiter,
+        planck=music_real._planck,
+    )
+    todd_agendahub = agendahub_shop(
+        reals_dir=music_real.reals_dir,
+        real_id=music_real.real_id,
+        person_id=todd_text,
+        econ_road=None,
+        nox_type=None,
+        road_delimiter=music_real._road_delimiter,
+        planck=music_real._planck,
+    )
+    assert music_all_persons.get(luca_text) == luca_agendahub
+    assert music_all_persons.get(todd_text) == todd_agendahub
+    assert len(music_real.get_person_agendahubs()) == 2

@@ -1397,6 +1397,24 @@ class AgendaUnit:
 
         return begin, close
 
+    def edit_reason(
+        self,
+        road: RoadUnit,
+        reason_base: RoadUnit = None,
+        reason_premise: RoadUnit = None,
+        reason_premise_open: float = None,
+        reason_premise_nigh: float = None,
+        reason_premise_divisor: int = None,
+    ):
+        self.edit_idea_attr(
+            road=road,
+            reason_base=reason_base,
+            reason_premise=reason_premise,
+            reason_premise_open=reason_premise_open,
+            reason_premise_nigh=reason_premise_nigh,
+            reason_premise_divisor=reason_premise_divisor,
+        )
+
     def edit_idea_attr(
         self,
         road: RoadUnit,
@@ -1914,7 +1932,7 @@ class AgendaUnit:
     def _after_all_tree_traverses_set_healerhold_importance(self):
         self._set_econ_dict()
         self._healers_dict = self._get_healers_dict()
-        self._econs_buildable = self._get_econs_buildable()
+        self._econs_buildable = self._get_buildable_econs()
 
     def _set_econ_dict(self):
         if self._econs_justified == False:
@@ -1941,10 +1959,9 @@ class AgendaUnit:
                         healer_dict[x_econ_road] = x_econ_idea
         return _healers_dict
 
-    def _get_econs_buildable(self) -> bool:
+    def _get_buildable_econs(self) -> bool:
         return all(
-            is_roadunit_convertible_to_path(econ_road, delimiter=self._road_delimiter)
-            != False
+            is_roadunit_convertible_to_path(econ_road, self._road_delimiter) != False
             for econ_road in self._econ_dict.keys()
         )
 

@@ -1,4 +1,4 @@
-# from src._road.worldnox import econnox_shop
+# from src.change.agendahub import agendahub_shop
 # from src._road.finance import default_planck_if_none
 # from src._road.road import (
 #     default_road_delimiter_if_none,
@@ -105,11 +105,11 @@
 #         self._econs_dir = f"{self.person_dir}/econs"
 #         self._atoms_dir = f"{self.person_dir}/atoms"
 #         if self._duty_file_name is None:
-#             self._duty_file_name = f"{duty_str()}.json"
+#             self._duty_file_name = f"{sue_text}.json"
 #         if self._duty_path is None:
 #             self._duty_path = f"{self.person_dir}/{self._duty_file_name}"
 #         if self._work_file_name is None:
-#             self._work_file_name = f"{work_str()}.json"
+#             self._work_file_name = f"{sue_text}.json"
 #         if self._work_path is None:
 #             self._work_path = f"{self.person_dir}/{self._work_file_name}"
 
@@ -148,7 +148,7 @@
 #             default_work_agenda = agendaunit_shop(
 #                 self.person_id, self.real_id, self._road_delimiter, self._planck
 #             )
-#             self.save_work_file(default_work_agenda)
+#             self.(default_work_agenda)
 
 #     def duty_file_exists(self) -> bool:
 #         return os_path_exists(self._duty_path)
@@ -156,7 +156,7 @@
 #     def work_file_exists(self) -> bool:
 #         return os_path_exists(self._work_path)
 
-#     def save_duty_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def save_duty_agenda(self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
 #             raise Invalid_duty_Exception(
 #                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
@@ -169,7 +169,7 @@
 #                 replace=replace,
 #             )
 
-#     def save_work_file(self, x_agenda: AgendaUnit, replace: bool = True):
+#     def (self, x_agenda: AgendaUnit, replace: bool = True):
 #         if x_agenda._owner_id != self.person_id:
 #             raise Invalid_work_Exception(
 #                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
@@ -186,15 +186,15 @@
 #         duty_json = open_file(dest_dir=self.person_dir, file_name=self._duty_file_name)
 #         return agendaunit_get_from_json(duty_json)
 
-#     def get_work_file_agenda(self) -> AgendaUnit:
+#     def (self) -> AgendaUnit:
 #         work_json = open_file(dest_dir=self.person_dir, file_name=self._work_file_name)
 #         return agendaunit_get_from_json(work_json)
 
 #     def load_duty_file(self):
-#         self._duty_obj = get_duty_file_agenda(x_usernox)
+#         self._duty_obj = get_duty_file_agenda(x_agnedahub)
 
 #     def load_work_file(self):
-#         self._work_obj = self.get_work_file_agenda()
+#         self._work_obj = self.()
 
 #     def changeunit_file_exists(self, change_id: int) -> bool:
 #         change_filename = changeunit_get_json_filename(change_id)
@@ -258,8 +258,8 @@
 #             x_changeunit._change_id = self._get_next_change_file_number()
 #         if x_changeunit._giver != self.person_id:
 #             x_changeunit._giver = self.person_id
-#         if x_changeunit._book_start != self._get_next_atom_file_number(x_usernox):
-#             x_changeunit._book_start = self._get_next_atom_file_number(x_usernox)
+#         if x_changeunit._book_start != self._get_next_atom_file_number(x_agnedahub):
+#             x_changeunit._book_start = self._get_next_atom_file_number(x_agnedahub)
 #         return x_changeunit
 
 #     def get_changeunit(self, file_number: int) -> ChangeUnit:
@@ -308,7 +308,7 @@
 #         return 0 if max_file_number is None else max_file_number + 1
 
 #     def save_atom_file(self, x_atom: AgendaAtom):
-#         x_filename = self._get_next_atom_file_number(x_usernox)
+#         x_filename = self._get_next_atom_file_number(x_agnedahub)
 #         return self._save_valid_atom_file(x_atom, x_filename)
 
 #     def _get_agenda_from_atom_files(self) -> AgendaUnit:
@@ -349,7 +349,7 @@
 #         self._econ_objs[econ_roadunit] = x_econunit
 
 #     def create_person_econunits(self, econ_exceptions: bool = True):
-#         x_duty_agenda = get_duty_file_agenda(x_usernox)
+#         x_duty_agenda = get_duty_file_agenda(x_agnedahub)
 #         x_duty_agenda.calc_agenda_metrics(econ_exceptions)
 #         if x_duty_agenda._econs_justified == False:
 #             raise PersonCreateEconUnitsException(
@@ -384,20 +384,20 @@
 
 #     def set_econunit_role(self, econ_road: RoadUnit, role: AgendaUnit):
 #         x_econ = self.get_econ(econ_road)
-#         x_econ.save_role_file_agenda(role)
+#         x_econ.agendahub.save_role_agenda(role)
 
 #     def set_econunits_role(self, role: AgendaUnit):
 #         for x_econ_road in self._econ_objs.keys():
 #             self.set_econunit_role(x_econ_road, role)
 
 #     def set_person_econunits_role(self):
-#         self.set_econunits_role(get_duty_file_agenda(x_usernox))
+#         self.set_econunits_role(get_duty_file_agenda(x_agnedahub))
 
 #     def add_pledge_change(self, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-#         duty_agenda = get_duty_file_agenda(x_usernox)
+#         duty_agenda = get_duty_file_agenda(x_agnedahub)
 #         old_duty_agenda = copy_deepcopy(duty_agenda)
 #         create_pledge(duty_agenda, pledge_road, x_suffgroup)
-#         next_changeunit = _create_new_changeunit(x_usernox)
+#         next_changeunit = _create_new_changeunit(x_agnedahub)
 #         next_changeunit._bookunit.add_all_different_agendaatoms(
 #             old_duty_agenda, duty_agenda
 #         )
@@ -405,12 +405,12 @@
 #         self.append_changes_to_duty_file()
 
 #     def create_save_changeunit(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-#         new_changeunit = _create_new_changeunit(x_usernox)
+#         new_changeunit = _create_new_changeunit(x_agnedahub)
 #         new_changeunit._bookunit.add_all_different_agendaatoms(
 #             before_agenda, after_agenda
 #         )
 #         self.save_changeunit_file(new_changeunit)
 
 #     def append_changes_to_duty_file(self):
-#         self.save_duty_file(_merge_changes_into_agenda(get_duty_file_agenda(x_usernox)))
-#         return get_duty_file_agenda(x_usernox)
+#         self.save_duty_agenda(_merge_changes_into_agenda(get_duty_file_agenda(x_agnedahub)))
+#         return get_duty_file_agenda(x_agnedahub)

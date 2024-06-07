@@ -437,7 +437,7 @@ def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithDenomSetsPremiseDivision():
     assert casa_idea1._reasonunits[time_road].premises[week_road].nigh == 5
 
 
-def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithBeginCloseSetsPremiseOpenNigh():
+def test_AgendaUnit_ReasonUnits_set_premiseIdeaWithBeginCloseSetsPremiseOpen_Nigh():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
     casa = "casa"

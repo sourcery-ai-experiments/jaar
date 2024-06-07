@@ -622,7 +622,7 @@ def test_PremiseUnit_set_status_CorrectlySetCEDWeekStatusTrue():
     assert week_premise._status == True
 
 
-def test_PremiseUnit_get_dict_ReturnsCorrectDictWithDvisiorAndOpenNigh():
+def test_PremiseUnit_get_dict_ReturnsCorrectDictWithDvisiorAndOpen_Nigh():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)

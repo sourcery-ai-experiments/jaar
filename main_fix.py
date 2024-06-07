@@ -86,7 +86,7 @@
 #         self.show_iggnores_button.clicked.connect(self.show_iggnores_table)
 #         self.show_digests_button.clicked.connect(self.show_digests_table)
 #         self.role_open_button.clicked.connect(self.open_editmain)
-#         self.role_save_button.clicked.connect(self.save_role)
+#         self.role_save_button.clicked.connect(self.)
 
 #         self.deiepotlink_insert_button.clicked.connect(self.deiepotlink_insert)
 #         self.deiepotlink_update_button.clicked.connect(self.deiepotlink_update)
@@ -104,9 +104,9 @@
 #         self.econ_id_combo.setCurrentText(first_env)
 #         self._owner_id_load(FunctionThatBuildsJob_id="ernie")
 
-#     def save_role(self):
+#     def (self):
 #         if self.role != None:
-#             self.x_FunctionThatBuildsJob.save_role_agenda(self.role)
+#             self.x_FunctionThatBuildsJob._agenda(self.role)
 #         self.refresh_owner_id()
 
 #     def reload_jobs_job_agendas(self):
@@ -169,7 +169,7 @@
 #         iggnore_agenda_owner_id = self.iggnores_table.item(
 #             self.iggnores_table.currentRow(), 0
 #         ).text()
-#         # self.iggnore_agenda_x = self.econ_x.get_job_agenda(
+#         # self.iggnore_agenda_x = self.econ_x.(
 #         self.iggnore_agenda_x = self.econ_x.get_agenda_from_iggnores_dir(
 #             FunctionThatBuildsJob_id=self.x_FunctionThatBuildsJob.pid, _owner_id=iggnore_agenda_owner_id
 #         )
@@ -206,7 +206,7 @@
 #         self.refresh_econ()
 
 #     def agenda_insert(self):
-#         self.econ_x.save_job_file(
+#         self.econ_x._file(
 #             agenda_x=agendaunit_shop(_owner_id=self.agenda_owner_id.text())
 #         )
 #         self.refresh_econ()

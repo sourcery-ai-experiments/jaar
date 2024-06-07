@@ -15,7 +15,7 @@ from src.econ.examples.econ_env_kit import (
     temp_real_id,
     temp_reals_dir,
     env_dir_setup_cleanup,
-    get_texas_econnox,
+    get_texas_agendahub,
 )
 from pytest import raises as pytest_raises
 
@@ -134,7 +134,7 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
 ):
     # GIVEN
     real_id = temp_real_id()
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
@@ -197,7 +197,7 @@ def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErr
     # GIVEN
     # A agenda that has 1 intent item
     real_id = temp_real_id()
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
 
@@ -223,7 +223,7 @@ def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErr
 def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A agenda that has 1 intent item
-    x_econ = econunit_shop(get_texas_econnox())
+    x_econ = econunit_shop(get_texas_agendahub())
     x_econ.set_econ_dirs(in_memory_treasury=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
