@@ -77,12 +77,12 @@ def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_duty_work():
         real_id=sue_agendahub.real_id,
         person_id=bob_text,
     )
-    assert sue_agendahub.speaker_dir(bob_text) == bob_usernox.person_dir()
-    assert sue_agendahub.speaker_file_name(bob_text) == f"{work_str()}.json"
-    assert sue_agendahub.listener_dir(bob_text) == sue_agendahub.person_dir()
-    assert sue_agendahub.listener_file_name(bob_text) == f"{duty_str()}.json"
-    assert sue_agendahub.destination_dir(bob_text) == sue_agendahub.person_dir()
-    assert sue_agendahub.destination_file_name(bob_text) == f"{work_str()}.json"
+    assert sue_agendahub.speaker_dir(bob_text) == bob_usernox.work_dir()
+    assert sue_agendahub.speaker_file_name(bob_text) == f"{sue_text}.json"
+    assert sue_agendahub.listener_dir(bob_text) == sue_agendahub.duty_dir()
+    assert sue_agendahub.listener_file_name(bob_text) == f"{sue_text}.json"
+    assert sue_agendahub.destination_dir(bob_text) == sue_agendahub.work_dir()
+    assert sue_agendahub.destination_file_name(bob_text) == f"{sue_text}.json"
 
 
 def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario1():
@@ -110,10 +110,10 @@ def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario1():
     assert sue_agendahub.speaker_dir(sue_text, iowa_road) == iowa_agendahub.jobs_dir()
     assert sue_agendahub.speaker_dir(sue_text, ohio_road) == ohio_agendahub.jobs_dir()
     assert sue_agendahub.speaker_file_name() == f"{sue_text}.json"
-    assert sue_agendahub.listener_dir() == sue_agendahub.person_dir()
-    assert sue_agendahub.listener_file_name() == f"{duty_str()}.json"
-    assert sue_agendahub.destination_dir() == sue_agendahub.person_dir()
-    assert sue_agendahub.destination_file_name() == f"{work_str()}.json"
+    assert sue_agendahub.listener_dir() == sue_agendahub.duty_dir()
+    assert sue_agendahub.listener_file_name() == f"{sue_text}.json"
+    assert sue_agendahub.destination_dir() == sue_agendahub.work_dir()
+    assert sue_agendahub.destination_file_name() == f"{sue_text}.json"
 
 
 def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario2():
@@ -142,10 +142,10 @@ def test_AgendaHub_AttrsAreCorrectWhen_nox_typeIs_job_workScenario2():
     assert sue_agendahub.speaker_dir(bob_text, iowa_road) == iowa_agendahub.jobs_dir()
     assert sue_agendahub.speaker_dir(bob_text, ohio_road) == ohio_agendahub.jobs_dir()
     assert sue_agendahub.speaker_file_name() == f"{sue_text}.json"
-    assert sue_agendahub.listener_dir() == sue_agendahub.person_dir()
-    assert sue_agendahub.listener_file_name() == f"{duty_str()}.json"
-    assert sue_agendahub.destination_dir() == sue_agendahub.person_dir()
-    assert sue_agendahub.destination_file_name() == f"{work_str()}.json"
+    assert sue_agendahub.listener_dir() == sue_agendahub.duty_dir()
+    assert sue_agendahub.listener_file_name() == f"{sue_text}.json"
+    assert sue_agendahub.destination_dir() == sue_agendahub.work_dir()
+    assert sue_agendahub.destination_file_name() == f"{sue_text}.json"
 
 
 def test_AgendaHub_get_speaker_agenda_ReturnsObjWhenFileDoesNotExists():

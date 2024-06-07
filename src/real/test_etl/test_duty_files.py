@@ -39,8 +39,9 @@ def test_save_duty_agenda_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_duty_file_name = f"{duty_str()}.json"
-    sue_duty_path = f"{sue_person_dir}/{sue_duty_file_name}"
+    sue_duty_dir = f"{sue_person_dir}/duty"
+    sue_duty_file_name = f"{sue_text}.json"
+    sue_duty_path = f"{sue_duty_dir}/{sue_duty_file_name}"
 
     # WHEN
     sue_agendahub = agendahub_shop(None, None, sue_text, None)
@@ -63,7 +64,7 @@ def test_save_duty_agenda_CorrectlySavesFile(reals_dir_setup_cleanup):
     assert sue_agendahub.duty_file_exists()
 
     # GIVEN
-    duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
+    duty_file_text = open_file(dest_dir=sue_duty_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
     duty_agenda = agendaunit_get_from_json(duty_file_text)
     assert duty_agenda.party_exists(bob_text)
@@ -75,7 +76,7 @@ def test_save_duty_agenda_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_agendahub.save_duty_agenda(sue2_agenda)
 
     # THEN
-    duty_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_duty_file_name)
+    duty_file_text = open_file(dest_dir=sue_duty_dir, file_name=sue_duty_file_name)
     print(f"{duty_file_text=}")
     duty_agenda = agendaunit_get_from_json(duty_file_text)
     assert duty_agenda.party_exists(zia_text)

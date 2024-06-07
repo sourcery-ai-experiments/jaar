@@ -21,8 +21,9 @@ def test_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{work_str()}.json"
-    sue_work_path = f"{sue_person_dir}/{sue_work_file_name}"
+    sue_work_dir = f"{sue_person_dir}/work"
+    sue_work_file_name = f"{sue_text}.json"
+    sue_work_path = f"{sue_work_dir}/{sue_work_file_name}"
     print(f"{sue_work_path=}")
     assert os_path_exists(sue_work_path) == False
     sue_agendahub = agendahub_shop(None, None, sue_text, None)
@@ -35,7 +36,7 @@ def test_work_file_exists_ReturnsCorrectBool(reals_dir_setup_cleanup):
 
     # WHEN
     save_file(
-        dest_dir=sue_agendahub.person_dir(),
+        dest_dir=sue_agendahub.work_dir(),
         file_name=sue_agendahub.work_file_name(),
         file_text=agendaunit_shop(sue_text).get_json(),
     )
@@ -67,8 +68,9 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{work_str()}.json"
-    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    sue_work_dir = f"{sue_person_dir}/work"
+    sue_work_file_name = f"{sue_text}.json"
+    work_file_text = open_file(dest_dir=sue_work_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda.party_exists(bob_text)
@@ -80,7 +82,7 @@ def test_save_work_file_CorrectlySavesFile(reals_dir_setup_cleanup):
     sue_agendahub.save_work_agenda(sue2_agenda)
 
     # THEN
-    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    work_file_text = open_file(dest_dir=sue_work_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda.party_exists(zia_text)
@@ -159,8 +161,9 @@ def test_initialize_work_file_CorrectlyDoesNotOverwrite(reals_dir_setup_cleanup)
     sue_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
     sue_persons_dir = f"{sue_real_dir}/persons"
     sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_work_file_name = f"{work_str()}.json"
-    work_file_text = open_file(dest_dir=sue_person_dir, file_name=sue_work_file_name)
+    sue_work_dir = f"{sue_person_dir}/work"
+    sue_work_file_name = f"{sue_text}.json"
+    work_file_text = open_file(dest_dir=sue_work_dir, file_name=sue_work_file_name)
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda._real_id == get_test_real_id()

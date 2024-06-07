@@ -48,17 +48,18 @@ def test_realnox_shop_ReturnsCorrectObj():
     sue_econs_dir = f"{x_realnox.person_dir(sue_text)}/econs"
     sue_atoms_dir = f"{x_realnox.person_dir(sue_text)}/atoms"
     sue_changes_dir = f"{x_realnox.person_dir(sue_text)}/{get_changes_folder()}"
-    sue_duty_path = f"{x_realnox.person_dir(sue_text)}/{x_realnox.duty_file_name()}"
-    sue_work_path = f"{x_realnox.person_dir(sue_text)}/{x_realnox.work_file_name()}"
+    sue_person_dir = x_realnox.person_dir(sue_text)
+    sue_duty_path = f"{sue_person_dir}/{x_realnox.duty_file_name(sue_text)}"
+    sue_work_path = f"{sue_person_dir}/{x_realnox.work_file_name(sue_text)}"
 
     assert x_realnox.persons_dir() == sue_real_dir
     assert x_realnox.person_dir(sue_text) == sue_dir_dir
     assert x_realnox.econs_dir(sue_text) == sue_econs_dir
     assert x_realnox.atoms_dir(sue_text) == sue_atoms_dir
     assert x_realnox.changes_dir(sue_text) == sue_changes_dir
-    assert x_realnox.duty_file_name() == f"{duty_str()}.json"
+    assert x_realnox.duty_file_name(sue_text) == f"{sue_text}.json"
     assert x_realnox.duty_path(sue_text) == sue_duty_path
-    assert x_realnox.work_file_name() == f"{work_str()}.json"
+    assert x_realnox.work_file_name(sue_text) == f"{sue_text}.json"
     assert x_realnox.work_path(sue_text) == sue_work_path
 
 
@@ -80,17 +81,21 @@ def test_realnox_shop_ReturnsCorrectObjWhenEmpty():
     sue_person_dir = f"{sue_realnox.persons_dir()}/{sue_text}"
     sue_econs_dir = f"{sue_realnox.person_dir(sue_text)}/econs"
     sue_atoms_dir = f"{sue_realnox.person_dir(sue_text)}/atoms"
+    sue_duty_dir = f"{sue_realnox.person_dir(sue_text)}/duty"
+    sue_work_dir = f"{sue_realnox.person_dir(sue_text)}/work"
     x_changes_dir = f"{sue_realnox.person_dir(sue_text)}/{get_changes_folder()}"
-    x_duty_path = f"{sue_realnox.person_dir(sue_text)}/{sue_realnox.duty_file_name()}"
-    x_workpath = f"{sue_realnox.person_dir(sue_text)}/{sue_realnox.work_file_name()}"
+    x_duty_path = f"{sue_person_dir}/{sue_realnox.duty_file_name(sue_text)}"
+    x_workpath = f"{sue_person_dir}/{sue_realnox.work_file_name(sue_text)}"
     assert sue_realnox.persons_dir() == f"{sue_realnox.real_dir()}/persons"
     assert sue_realnox.person_dir(sue_text) == sue_person_dir
     assert sue_realnox.econs_dir(sue_text) == sue_econs_dir
     assert sue_realnox.atoms_dir(sue_text) == sue_atoms_dir
+    assert sue_realnox.duty_dir(sue_text) == sue_duty_dir
+    assert sue_realnox.work_dir(sue_text) == sue_work_dir
     assert sue_realnox.changes_dir(sue_text) == x_changes_dir
-    assert sue_realnox.duty_file_name() == f"{duty_str()}.json"
+    assert sue_realnox.duty_file_name(sue_text) == f"{sue_text}.json"
     assert sue_realnox.duty_path(sue_text) == x_duty_path
-    assert sue_realnox.work_file_name() == f"{work_str()}.json"
+    assert sue_realnox.work_file_name(sue_text) == f"{sue_text}.json"
     assert sue_realnox.work_path(sue_text) == x_workpath
 
 
@@ -207,12 +212,14 @@ def test_usernox_shop_ReturnsCorrectObj():
     assert x_usernox.person_dir() == f"{x_usernox.persons_dir()}/{sue_text}"
     assert x_usernox.econs_dir() == f"{x_usernox.person_dir()}/econs"
     assert x_usernox.atoms_dir() == f"{x_usernox.person_dir()}/atoms"
+    assert x_usernox.duty_dir() == f"{x_usernox.person_dir()}/duty"
+    assert x_usernox.work_dir() == f"{x_usernox.person_dir()}/work"
     assert x_usernox.changes_dir() == f"{x_usernox.person_dir()}/{get_changes_folder()}"
-    assert x_usernox.duty_file_name() == f"{duty_str()}.json"
-    x_duty_path = f"{x_usernox.person_dir()}/{x_usernox.duty_file_name()}"
+    assert x_usernox.duty_file_name() == f"{sue_text}.json"
+    x_duty_path = f"{x_usernox.duty_dir()}/{x_usernox.duty_file_name()}"
     assert x_usernox.duty_path() == x_duty_path
-    assert x_usernox.work_file_name() == f"{work_str()}.json"
-    x_workpath = f"{x_usernox.person_dir()}/{x_usernox.work_file_name()}"
+    assert x_usernox.work_file_name() == f"{sue_text}.json"
+    x_workpath = f"{x_usernox.work_dir()}/{x_usernox.work_file_name()}"
     assert x_usernox.work_path() == x_workpath
 
 
@@ -236,11 +243,11 @@ def test_usernox_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_usernox.atoms_dir() == f"{sue_usernox.person_dir()}/atoms"
     x_changes_dir = f"{sue_usernox.person_dir()}/{get_changes_folder()}"
     assert sue_usernox.changes_dir() == x_changes_dir
-    assert sue_usernox.duty_file_name() == f"{duty_str()}.json"
-    x_duty_path = f"{sue_usernox.person_dir()}/{sue_usernox.duty_file_name()}"
+    assert sue_usernox.duty_file_name() == f"{sue_text}.json"
+    x_duty_path = f"{sue_usernox.duty_dir()}/{sue_usernox.duty_file_name()}"
     assert sue_usernox.duty_path() == x_duty_path
-    assert sue_usernox.work_file_name() == f"{work_str()}.json"
-    x_workpath = f"{sue_usernox.person_dir()}/{sue_usernox.work_file_name()}"
+    assert sue_usernox.work_file_name() == f"{sue_text}.json"
+    x_workpath = f"{sue_usernox.work_dir()}/{sue_usernox.work_file_name()}"
     assert sue_usernox.work_path() == x_workpath
 
 

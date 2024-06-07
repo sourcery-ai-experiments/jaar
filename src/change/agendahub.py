@@ -168,7 +168,7 @@ class AgendaHub(UserNox):
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            return speaker_usernox.person_dir()
+            return speaker_usernox.work_dir()
         if self._nox_type == pipeline_job_work_text():
             speaker_agendahub = agendahub_shop(
                 reals_dir=self.reals_dir,
@@ -184,7 +184,7 @@ class AgendaHub(UserNox):
         if self._nox_type == pipeline_role_job_text():
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
-            return get_file_name(work_str())
+            return get_file_name(self.person_id)
         if self._nox_type == pipeline_job_work_text():
             return get_file_name(self.person_id)
 
@@ -192,33 +192,33 @@ class AgendaHub(UserNox):
         if self._nox_type == pipeline_role_job_text():
             return self.roles_dir()
         if self._nox_type == pipeline_duty_work_text():
-            return self.person_dir()
+            return self.duty_dir()
         if self._nox_type == pipeline_job_work_text():
-            return self.person_dir()
+            return self.duty_dir()
 
     def listener_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
-            return get_file_name(duty_str())
+            return get_file_name(self.person_id)
         if self._nox_type == pipeline_job_work_text():
-            return get_file_name(duty_str())
+            return get_file_name(self.person_id)
 
     def destination_dir(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
-            return self.person_dir()
+            return self.work_dir()
         if self._nox_type == pipeline_job_work_text():
-            return self.person_dir()
+            return self.work_dir()
 
     def destination_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
             return get_file_name(x_arg)
         if self._nox_type == pipeline_duty_work_text():
-            return get_file_name(work_str())
+            return get_file_name(self.person_id)
         if self._nox_type == pipeline_job_work_text():
-            return get_file_name(work_str())
+            return get_file_name(self.person_id)
 
     def get_speaker_agenda(
         self, person_id: PersonID, return_None_if_missing: bool = True

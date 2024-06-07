@@ -57,7 +57,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
     sue_agendahub = agendahub_shop(None, music_text, sue_text, None)
-    x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work.json"
+    x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work/{sue_text}.json"
     assert os_path_exists(x_sue_work_path) == False
     music_real.init_person_econs(sue_text)
     assert sue_agendahub.work_path() == x_sue_work_path

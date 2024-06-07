@@ -54,22 +54,28 @@ class RealNox:
     def changes_dir(self, person_id: PersonID) -> str:
         return f"{self.person_dir(person_id)}/{get_changes_folder()}"
 
-    def duty_file_name(self):
-        return get_file_name(duty_str())
+    def duty_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/duty"
+
+    def work_dir(self, person_id: PersonID) -> str:
+        return f"{self.person_dir(person_id)}/work"
+
+    def duty_file_name(self, person_id: PersonID):
+        return get_file_name(person_id)
 
     def duty_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.duty_file_name()}"
+        return f"{self.person_dir(person_id)}/{self.duty_file_name(person_id)}"
 
-    def work_file_name(self):
-        return get_file_name(work_str())
+    def work_file_name(self, person_id: PersonID):
+        return get_file_name(person_id)
 
     def work_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.work_file_name()}"
+        return f"{self.person_dir(person_id)}/{self.work_file_name(person_id)}"
 
     def save_file_duty(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
             dest_dir=self.person_dir(person_id),
-            file_name=self.duty_file_name(),
+            file_name=self.duty_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
@@ -77,7 +83,7 @@ class RealNox:
     def save_file_work(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
             dest_dir=self.person_dir(person_id),
-            file_name=self.work_file_name(),
+            file_name=self.work_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
@@ -89,10 +95,10 @@ class RealNox:
         return os_path_exists(self.work_path(person_id))
 
     def open_file_duty(self, person_id: PersonID):
-        return open_file(self.person_dir(person_id), self.duty_file_name())
+        return open_file(self.person_dir(person_id), self.duty_file_name(person_id))
 
-    def open_file_work(self, person_id: PersonID):
-        return open_file(self.person_dir(person_id), self.work_file_name())
+    def open_file_work(self, person_id: PersonID) -> str:
+        return open_file(self.person_dir(person_id), self.work_file_name(person_id))
 
 
 def realnox_shop(
@@ -140,21 +146,27 @@ class UserNox:
     def changes_dir(self):
         return f"{self.person_dir()}/{get_changes_folder()}"
 
+    def duty_dir(self) -> str:
+        return f"{self.person_dir()}/duty"
+
+    def work_dir(self) -> str:
+        return f"{self.person_dir()}/work"
+
     def duty_file_name(self):
-        return get_file_name(duty_str())
+        return get_file_name(self.person_id)
 
     def duty_path(self):
-        return f"{self.person_dir()}/{self.duty_file_name()}"
+        return f"{self.duty_dir()}/{self.duty_file_name()}"
 
     def work_file_name(self):
-        return get_file_name(work_str())
+        return get_file_name(self.person_id)
 
     def work_path(self):
-        return f"{self.person_dir()}/{self.work_file_name()}"
+        return f"{self.work_dir()}/{self.work_file_name()}"
 
     def save_file_duty(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(),
+            dest_dir=self.duty_dir(),
             file_name=self.duty_file_name(),
             file_text=file_text,
             replace=replace,
@@ -162,7 +174,7 @@ class UserNox:
 
     def save_file_work(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(),
+            dest_dir=self.work_dir(),
             file_name=self.work_file_name(),
             file_text=file_text,
             replace=replace,
@@ -175,10 +187,10 @@ class UserNox:
         return os_path_exists(self.work_path())
 
     def open_file_duty(self):
-        return open_file(self.person_dir(), self.duty_file_name())
+        return open_file(self.duty_dir(), self.duty_file_name())
 
     def open_file_work(self):
-        return open_file(self.person_dir(), self.work_file_name())
+        return open_file(self.work_dir(), self.work_file_name())
 
 
 def usernox_shop(

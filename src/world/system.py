@@ -105,11 +105,11 @@
 #         self._econs_dir = f"{self.person_dir}/econs"
 #         self._atoms_dir = f"{self.person_dir}/atoms"
 #         if self._duty_file_name is None:
-#             self._duty_file_name = f"{duty_str()}.json"
+#             self._duty_file_name = f"{sue_text}.json"
 #         if self._duty_path is None:
 #             self._duty_path = f"{self.person_dir}/{self._duty_file_name}"
 #         if self._work_file_name is None:
-#             self._work_file_name = f"{work_str()}.json"
+#             self._work_file_name = f"{sue_text}.json"
 #         if self._work_path is None:
 #             self._work_path = f"{self.person_dir}/{self._work_file_name}"
 
