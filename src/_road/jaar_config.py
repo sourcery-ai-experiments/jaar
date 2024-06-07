@@ -40,3 +40,11 @@ def roles_str() -> str:
 
 def get_rootpart_of_econ_dir() -> str:
     return "idearoot"
+
+
+def treasury_str() -> str:
+    return "treasury"
+
+
+def treasury_file_name() -> str:
+    return f"{treasury_str()}.db"

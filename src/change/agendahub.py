@@ -14,11 +14,11 @@ from src._road.road import (
     get_all_road_nodes,
 )
 from src._road.jaar_config import (
-    duty_str,
-    work_str,
     roles_str,
     jobs_str,
     get_rootpart_of_econ_dir,
+    treasury_str,
+    treasury_file_name,
 )
 from src._road.worldnox import UserNox, usernox_shop, get_file_name
 from src.agenda.agenda import AgendaUnit, get_from_json as agendaunit_get_from_json
@@ -84,6 +84,12 @@ class AgendaHub(UserNox):
     def owner_file_name(self, owner_id: PersonID) -> str:
         return get_file_name(owner_id)
 
+    def treasury_file_name(self) -> str:
+        return treasury_file_name()
+
+    def treasury_db_path(self) -> str:
+        return f"{self.econ_dir()}/{treasury_file_name()}"
+
     def role_path(self, owner_id: PersonID) -> str:
         return f"{self.roles_dir()}/{self.owner_file_name(owner_id)}"
 
@@ -97,7 +103,7 @@ class AgendaHub(UserNox):
         return get_econ_jobs_dir(self.econ_dir())
 
     def get_jobs_dir_file_names_list(self):
-        return list(dir_files(dir_path=self.jobs_dir()).keys())
+        return list(dir_files(self.jobs_dir(), True).keys())
 
     def save_role_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)

@@ -10,25 +10,27 @@ def test_EconUnit_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_agendahub())
-    delete_dir(dir=x_econ.get_treasury_db_path())  # clear out any treasury.db file
-    assert os_path_exists(x_econ.get_treasury_db_path()) == False
+    texas_agendahub = get_texas_agendahub()
+    x_econ = econunit_shop(texas_agendahub)
+    delete_dir(texas_agendahub.treasury_db_path())  # clear out any treasury.db file
+    assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
     x_econ._create_treasury_db()
 
     # THEN
-    assert os_path_exists(x_econ.get_treasury_db_path())
+    assert os_path_exists(x_econ.agendahub.treasury_db_path())
 
 
 def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_agendahub())
-    delete_dir(dir=x_econ.get_treasury_db_path())  # clear out any treasury.db file
+    texas_agendahub = get_texas_agendahub()
+    x_econ = econunit_shop(texas_agendahub)
+    delete_dir(texas_agendahub.treasury_db_path())  # clear out any treasury.db file
     x_econ._create_treasury_db()
-    assert os_path_exists(x_econ.get_treasury_db_path())
+    assert os_path_exists(x_econ.agendahub.treasury_db_path())
 
     # GIVEN
     x_file_text = "Texas Dallas ElPaso"
@@ -39,7 +41,7 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
         file_text=x_file_text,
         replace=True,
     )
-    assert os_path_exists(x_econ.get_treasury_db_path())
+    assert os_path_exists(x_econ.agendahub.treasury_db_path())
     assert open_file(x_econ.agendahub.econ_dir(), file_name=db_file) == x_file_text
 
     # WHEN
@@ -55,33 +57,35 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
 
 def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_agendahub())
+    texas_agendahub = get_texas_agendahub()
+    x_econ = econunit_shop(texas_agendahub)
 
     x_econ._treasury_db = None
     assert x_econ._treasury_db is None
-    assert os_path_exists(x_econ.get_treasury_db_path()) == False
+    assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
     x_econ._create_treasury_db(in_memory=True)
 
     # THEN
     assert x_econ._treasury_db != None
-    assert os_path_exists(x_econ.get_treasury_db_path()) == False
+    assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
 
 def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_agendahub())
+    texas_agendahub = get_texas_agendahub()
+    x_econ = econunit_shop(texas_agendahub)
     # x_econ._create_treasury_db(in_memory=True)
-    assert os_path_exists(x_econ.get_treasury_db_path()) == False
+    assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
     x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
-    assert os_path_exists(x_econ.get_treasury_db_path()) == False
+    assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
 
 def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(

@@ -216,9 +216,8 @@ class EconUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.agendahub.get_jobs_dir_file_names_list():
-            agenda_json = open_file(self.agendahub.jobs_dir(), file_name)
-            agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
+        for person_id in self.agendahub.get_jobs_dir_file_names_list():
+            agendaunit_x = self.agendahub.get_job_agenda(person_id)
             agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
@@ -283,7 +282,7 @@ class EconUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return sqlite3_connect(self.get_treasury_db_path())
+            return sqlite3_connect(self.agendahub.treasury_db_path())
         else:
             return self._treasury_db
 
@@ -297,7 +296,7 @@ class EconUnit:
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            sqlite3_connect(self.get_treasury_db_path())
+            sqlite3_connect(self.agendahub.treasury_db_path())
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
@@ -306,10 +305,7 @@ class EconUnit:
 
     def _delete_treasury(self):
         self._treasury_db = None
-        delete_dir(self.get_treasury_db_path())
-
-    def get_treasury_db_path(self):
-        return f"{self.agendahub.econ_dir()}/{treasury_db_filename()}"
+        delete_dir(self.agendahub.treasury_db_path())
 
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport

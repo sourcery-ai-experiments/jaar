@@ -120,6 +120,10 @@ def test_agendahub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_agendahub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
     sue_jobs_dir = sue_agendahub.jobs_dir()
     assert sue_agendahub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
+    treasury_file_name = "treasury.db"
+    treasury_file_path = f"{sue_agendahub.econ_dir()}/{treasury_file_name}"
+    assert sue_agendahub.treasury_file_name() == treasury_file_name
+    assert sue_agendahub.treasury_db_path() == treasury_file_path
 
 
 def test_AgendaHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):

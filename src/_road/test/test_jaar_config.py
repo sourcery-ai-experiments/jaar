@@ -1,4 +1,9 @@
-from src._road.jaar_config import duty_str, work_str, get_rootpart_of_econ_dir
+from src._road.jaar_config import (
+    duty_str,
+    work_str,
+    get_rootpart_of_econ_dir,
+    treasury_file_name,
+)
 
 
 def test_duty_str():
@@ -12,3 +17,7 @@ def test_work_str():
 def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
     assert get_rootpart_of_econ_dir() == "idearoot"
+
+
+def test_treasury_file_name_ReturnsObj() -> str:
+    assert treasury_file_name() == "treasury.db"

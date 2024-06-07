@@ -106,7 +106,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
     assert x_econ.agendahub.econ_dir() == texas_agendahub.econ_dir()
     assert x_econ.agendahub.jobs_dir() == x_econ.agendahub.jobs_dir()
     assert x_econ.agendahub.roles_dir() == x_econ.agendahub.roles_dir()
-    assert x_econ.get_treasury_db_path() == treasury_file_path
+    assert x_econ.agendahub.treasury_db_path() == treasury_file_path
 
 
 # def test_modify_real_id_example_econ_CorrectlyModifiesDirAndFiles(
