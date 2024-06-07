@@ -1,11 +1,5 @@
-from src.change.agendahub import agendahub_shop
+from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.econ.examples.econ_env_kit import (
-    temp_real_id,
-    temp_reals_dir,
-    env_dir_setup_cleanup,
-)
-from src._instrument.sqlite import get_single_result
 from src.econ.treasury_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
@@ -14,11 +8,10 @@ from src.econ.treasury_sqlstr import (
     get_river_reach_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
     get_agenda_partyunit_table_create_sqlstr,
-    get_agenda_partyunit_table_insert_sqlstr,
+    get_agenda_partyunit_table_insert_sqlstr as party_insert_sqlstr,
     get_agenda_partyunit_table_update_credit_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
 )
-from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from sqlite3 import connect as sqlite3_connect
 
 
@@ -84,15 +77,9 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
     dee_select_sqlstr2 = f"SELECT '{yao_text}', '{dee_text}', 7, {dee_s2}, {dee_close2}"
 
     with x_db as x_conn:
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, bob_partyunit)
-        )
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, cal_partyunit)
-        )
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, dee_partyunit)
-        )
+        x_conn.execute(party_insert_sqlstr(yao_agenda, bob_partyunit))
+        x_conn.execute(party_insert_sqlstr(yao_agenda, cal_partyunit))
+        x_conn.execute(party_insert_sqlstr(yao_agenda, dee_partyunit))
         x_conn.execute(get_river_reach_table_insert_sqlstr(bob_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(cal_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr1))
@@ -179,15 +166,9 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
     x_db = sqlite3_connect(":memory:")
     with x_db as x_conn:
         x_conn.execute(get_agenda_partyunit_table_create_sqlstr())
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, bob_partyunit)
-        )
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, cal_partyunit)
-        )
-        x_conn.execute(
-            get_agenda_partyunit_table_insert_sqlstr(yao_agenda, dee_partyunit)
-        )
+        x_conn.execute(party_insert_sqlstr(yao_agenda, bob_partyunit))
+        x_conn.execute(party_insert_sqlstr(yao_agenda, cal_partyunit))
+        x_conn.execute(party_insert_sqlstr(yao_agenda, dee_partyunit))
         assert 3 == get_single_result(x_conn, get_row_count_sqlstr(partyunit_text))
 
     partyunit_select_str = f"""

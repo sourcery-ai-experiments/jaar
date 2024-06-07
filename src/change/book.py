@@ -1,3 +1,12 @@
+from src._instrument.python import (
+    get_empty_dict_if_none,
+    get_json_from_dict,
+    get_dict_from_json,
+    place_obj_in_dict,
+    get_nested_value,
+    get_all_nondictionary_objs,
+    get_0_if_None,
+)
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src.agenda.reason_idea import BeliefUnit, ReasonUnit
 from src.agenda.party import PartyLink, PartyID
@@ -14,15 +23,6 @@ from src.change.atom import (
     atom_insert,
     atom_update,
     optional_args_different,
-)
-from src._instrument.python import (
-    get_empty_dict_if_none,
-    get_json_from_dict,
-    get_dict_from_json,
-    place_obj_in_dict,
-    get_nested_value,
-    get_all_nondictionary_objs,
-    get_0_if_None,
 )
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy

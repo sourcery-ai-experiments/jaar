@@ -6,10 +6,9 @@ from src._road.road import (
 )
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
-from src.change.agendahub import AgendaHub, agendahub_shop
+from src.change.agendahub import AgendaHub
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
-from os.path import exists as os_path_exists
 
 
 class Missing_party_debtor_poolException(Exception):
