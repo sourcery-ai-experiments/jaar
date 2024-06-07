@@ -29,7 +29,7 @@ def test_originlink_shop_ReturnsCorrectObj():
     assert originlink_x.weight == roy_weight
 
 
-def test_originlink_shop_WeightIsNotReason():
+def test_originlink_shop_WeightIsNot_Reason():
     # GIVEN
     roy_text = "Roy"
     # roy_party_id = PartyID(roy_text)
