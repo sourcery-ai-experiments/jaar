@@ -13,7 +13,7 @@
   <property name="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="party_insert_button">
+  <widget class="QPushButton" name="party_gui_insert_button">
    <property name="geometry">
     <rect>
      <x>170</x>
