@@ -1,3 +1,4 @@
+from src._instrument.file import dir_files as file_dir_files
 from src.change.filehub import filehub_shop
 from src.change.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
@@ -10,7 +11,6 @@ from src.change.examples.change_env import (
     get_default_real_id_roadnode as real_id,
     env_dir_setup_cleanup,
 )
-from src._instrument.file import dir_files as file_dir_files
 from os.path import exists as os_path_exists
 
 
@@ -148,22 +148,21 @@ def test_FileHub_save_atom_file_CorrectlySavesFile(env_dir_setup_cleanup):
     assert atom_num2 == 12
 
 
-# def test_FileHub_get_agenda_from_atom_files_ReturnsFileWithZeroAtoms(
-#     env_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
-#     # initialize_change_duty_files(yao_filehub)
+def test_FileHub_get_agenda_from_atom_files_ReturnsFileWithZeroAtoms(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    yao_text = "Yao"
+    yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
 
-#     # WHEN
-#     yao_agenda = yao_filehub._get_agenda_from_atom_files()
+    # WHEN
+    yao_agenda = yao_filehub._get_agenda_from_atom_files()
 
-#     # THEN
-#     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._real_id == yao_filehub.real_id
-#     assert yao_agenda._road_delimiter == yao_filehub.road_delimiter
-#     assert yao_agenda._planck == yao_filehub.planck
+    # THEN
+    assert yao_agenda._owner_id == yao_text
+    assert yao_agenda._real_id == yao_filehub.real_id
+    assert yao_agenda._road_delimiter == yao_filehub.road_delimiter
+    assert yao_agenda._planck == yao_filehub.planck
 
 
 def test_FileHub_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
@@ -190,30 +189,29 @@ def test_FileHub_get_agenda_from_atom_files_ReturnsCorrectFile_SimpleIdea(
     assert yao_agenda.idea_exists(sports_road)
 
 
-# def test_FileHub_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
-#     env_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     yao_text = "Yao"
-#     yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
-#     initialize_change_duty_files(yao_filehub)
+def test_FileHub_get_agenda_from_atom_files_ReturnsCorrectFile_WithBeliefUnit(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    yao_text = "Yao"
+    yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
 
-#     # save atom files
-#     x_real_id = yao_filehub.real_id
-#     yao_filehub.save_atom_file(get_atom_example_ideaunit_sports(x_real_id))
-#     yao_filehub.save_atom_file(get_atom_example_ideaunit_ball(x_real_id))
-#     yao_filehub.save_atom_file(get_atom_example_ideaunit_knee(x_real_id))
-#     yao_filehub.save_atom_file(get_atom_example_beliefunit_knee(x_real_id))
-#     print(f"{file_dir_files(yao_filehub.atoms_dir()).keys()=}")
+    # save atom files
+    x_real_id = yao_filehub.real_id
+    yao_filehub.save_atom_file(get_atom_example_ideaunit_sports(x_real_id))
+    yao_filehub.save_atom_file(get_atom_example_ideaunit_ball(x_real_id))
+    yao_filehub.save_atom_file(get_atom_example_ideaunit_knee(x_real_id))
+    yao_filehub.save_atom_file(get_atom_example_beliefunit_knee(x_real_id))
+    print(f"{file_dir_files(yao_filehub.atoms_dir()).keys()=}")
 
-#     # WHEN
-#     yao_agenda = yao_filehub._get_agenda_from_atom_files()
+    # WHEN
+    yao_agenda = yao_filehub._get_agenda_from_atom_files()
 
-#     # THEN
-#     assert yao_agenda._owner_id == yao_text
-#     assert yao_agenda._real_id == yao_filehub.real_id
-#     assert yao_agenda._road_delimiter == yao_filehub.road_delimiter
-#     sports_text = "sports"
-#     sports_road = yao_agenda.make_l1_road(sports_text)
+    # THEN
+    assert yao_agenda._owner_id == yao_text
+    assert yao_agenda._real_id == yao_filehub.real_id
+    assert yao_agenda._road_delimiter == yao_filehub.road_delimiter
+    sports_text = "sports"
+    sports_road = yao_agenda.make_l1_road(sports_text)
 
-#     assert yao_agenda.idea_exists(sports_road)
+    assert yao_agenda.idea_exists(sports_road)
