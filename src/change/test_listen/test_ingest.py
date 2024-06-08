@@ -45,7 +45,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job.get_groupunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
     assert yao_empty_job._planck == yao_duty._planck
-    assert yao_empty_job._money_desc is None
+    assert yao_empty_job._monetary_desc is None
     assert yao_empty_job._party_creditor_pool != yao_duty._party_creditor_pool
     assert yao_empty_job._party_creditor_pool is None
     assert yao_empty_job._party_debtor_pool != yao_duty._party_debtor_pool
@@ -87,7 +87,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck
-    assert yao_basis_job._money_desc == yao_role._money_desc
+    assert yao_basis_job._monetary_desc == yao_role._monetary_desc
     assert yao_basis_job._party_creditor_pool == yao_role._party_creditor_pool
     assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
     yao_basis_job.calc_agenda_metrics()

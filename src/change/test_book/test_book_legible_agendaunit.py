@@ -31,22 +31,24 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_weight():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_money_desc():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_monetary_desc():
     # GIVEN
     category = "agendaunit"
-    _money_desc_text = "_money_desc"
-    sue_money_desc = "dragon funds"
-    _money_desc_agendaatom = agendaatom_shop(category, atom_update())
-    _money_desc_agendaatom.set_arg(_money_desc_text, sue_money_desc)
+    _monetary_desc_text = "_monetary_desc"
+    sue_monetary_desc = "dragon funds"
+    _monetary_desc_agendaatom = agendaatom_shop(category, atom_update())
+    _monetary_desc_agendaatom.set_arg(_monetary_desc_text, sue_monetary_desc)
     x_bookunit = bookunit_shop()
-    x_bookunit.set_agendaatom(_money_desc_agendaatom)
+    x_bookunit.set_agendaatom(_monetary_desc_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._owner_id}'s money is now called '{sue_money_desc}'"
+    x_str = (
+        f"{sue_agenda._owner_id}'s monetary_desc is now called '{sue_monetary_desc}'"
+    )
     assert legible_list[0] == x_str
 
 
@@ -64,18 +66,18 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_creditor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_money_desc} creditor pool is now {party_creditor_pool_int}"
+    x_str = f"{sue_monetary_desc} creditor pool is now {party_creditor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_With_money_desc_None():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_With_monetary_desc_None():
     # GIVEN
     category = "agendaunit"
     party_creditor_pool_text = "_party_creditor_pool"
@@ -94,9 +96,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Wit
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = (
-        f"{sue_agenda._owner_id}'s money creditor pool is now {party_creditor_pool_int}"
-    )
+    x_str = f"{sue_agenda._owner_id}'s monetary_desc creditor pool is now {party_creditor_pool_int}"
     assert legible_list[0] == x_str
 
 
@@ -112,14 +112,14 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_debtor_pool():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(party_debtor_pool_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_money_desc} debtor pool is now {party_debtor_pool_int}"
+    x_str = f"{sue_monetary_desc} debtor pool is now {party_debtor_pool_int}"
     assert legible_list[0] == x_str
 
 
@@ -135,14 +135,14 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_party_creditor_pool_Equ
     agendaunit_agendaatom.set_arg(party_debtor_pool_text, party_pool_int)
     x_bookunit.set_agendaatom(agendaunit_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_money_desc} total pool is now {party_pool_int}"
+    x_str = f"{sue_monetary_desc} total pool is now {party_pool_int}"
     assert len(legible_list) == 1
     assert legible_list[0] == x_str
 

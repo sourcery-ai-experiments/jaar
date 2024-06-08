@@ -20,19 +20,19 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{rico_text} was added with {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt"
+    x_str = f"{rico_text} was added with {creditor_weight_value} {sue_agenda._monetary_desc} credit and {debtor_weight_value} {sue_agenda._monetary_desc} debt"
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
+def test_create_legible_list_ReturnsObj_partyunit_INSERT_monetary_desc_IsNone():
     # GIVEN
     category = "agenda_partyunit"
     party_id_text = "party_id"
@@ -54,7 +54,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT_money_desc_IsNone():
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{rico_text} was added with {creditor_weight_value} money credit and {debtor_weight_value} money debt"
+    x_str = f"{rico_text} was added with {creditor_weight_value} monetary_desc credit and {debtor_weight_value} monetary_desc debt"
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -76,14 +76,14 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight_debtor_
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{rico_text} now has {creditor_weight_value} {sue_agenda._money_desc} credit and {debtor_weight_value} {sue_agenda._money_desc} debt."
+    x_str = f"{rico_text} now has {creditor_weight_value} {sue_agenda._monetary_desc} credit and {debtor_weight_value} {sue_agenda._monetary_desc} debt."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -102,16 +102,14 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_creditor_weight():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = (
-        f"{rico_text} now has {creditor_weight_value} {sue_agenda._money_desc} credit."
-    )
+    x_str = f"{rico_text} now has {creditor_weight_value} {sue_agenda._monetary_desc} credit."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -130,14 +128,16 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE_debtor_weight():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{rico_text} now has {debtor_weight_value} {sue_agenda._money_desc} debt."
+    x_str = (
+        f"{rico_text} now has {debtor_weight_value} {sue_agenda._monetary_desc} debt."
+    )
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -153,13 +153,13 @@ def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     x_bookunit = bookunit_shop()
     x_bookunit.set_agendaatom(rico_agendaatom)
     sue_agenda = agendaunit_shop("Sue")
-    sue_money_desc = "dragon funds"
-    sue_agenda.set_money_desc(sue_money_desc)
+    sue_monetary_desc = "dragon funds"
+    sue_agenda.set_monetary_desc(sue_monetary_desc)
 
     # WHEN
     legible_list = create_legible_list(x_bookunit, sue_agenda)
 
     # THEN
-    x_str = f"{rico_text} was removed from {sue_agenda._money_desc} partys."
+    x_str = f"{rico_text} was removed from {sue_agenda._monetary_desc} partys."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

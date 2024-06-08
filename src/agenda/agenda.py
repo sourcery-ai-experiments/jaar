@@ -129,7 +129,7 @@ class AgendaUnit:
     _max_tree_traverse: int = None
     _road_delimiter: str = None
     _planck: float = None
-    _money_desc: str = None
+    _monetary_desc: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
@@ -155,8 +155,8 @@ class AgendaUnit:
             )
         self._last_change_id = x_last_change_id
 
-    def set_money_desc(self, x_money_desc: str):
-        self._money_desc = x_money_desc
+    def set_monetary_desc(self, x_monetary_desc: str):
+        self._monetary_desc = x_monetary_desc
 
     def set_party_pool(self, x_party_pool: int):
         self.set_party_creditor_pool(
