@@ -1,6 +1,7 @@
 from src._instrument.file import save_file, open_file, delete_dir
 from src._instrument.sqlite import check_connection
-from src.econ.econ import econunit_shop, EconUnit, treasury_db_filename
+from src._road.jaar_config import treasury_file_name
+from src.econ.econ import econunit_shop, EconUnit
 from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_agendahub
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
@@ -34,7 +35,7 @@ def test_EconUnitcreate_treasury_db_DoesNotOverWriteDBIfItExists(
 
     # GIVEN
     x_file_text = "Texas Dallas ElPaso"
-    db_file = treasury_db_filename()
+    db_file = treasury_file_name()
     save_file(
         x_econ.agendahub.econ_dir(),
         file_name=db_file,

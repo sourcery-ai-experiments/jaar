@@ -5,11 +5,12 @@ from src._instrument.file import (
     get_parts_dir,
     delete_dir,
 )
+from src._road.jaar_config import treasury_file_name
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
 from src._road.worldnox import UserNox, get_rootpart_of_econ_dir
-from src.change.agendahub import get_econ_path, agendahub_shop
 from src.agenda.agenda import AgendaUnit
-from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
+from src.change.agendahub import get_econ_path, agendahub_shop
+from src.econ.econ import EconUnit, econunit_shop
 from src.real.admin_duty import get_duty_file_agenda
 
 
@@ -57,16 +58,6 @@ def create_person_econunits(x_usernox: UserNox):
     x_person_econs = _get_econs_roads(x_usernox)
     for econ_idea in x_person_econs.values():
         init_econunit(x_usernox, econ_idea.get_road())
-
-    db_filename = treasury_db_filename()
-    econs_dir = x_usernox.econs_dir()
-    root_dir = get_rootpart_of_econ_dir()
-    for treasury_dir in get_all_dirs_with_file(db_filename, econs_dir):
-        treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
-        treasury_road = rebuild_road(treasury_road, root_dir, x_usernox.real_id)
-        if x_person_econs.get(treasury_road) is None:
-            dir_to_delete = f"{x_usernox.econs_dir()}/{treasury_dir}"
-            delete_dir(dir_to_delete)
 
 
 def get_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:

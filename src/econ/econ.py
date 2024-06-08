@@ -1,11 +1,9 @@
+from src._instrument.file import delete_dir
 from src._road.road import OwnerID, PersonID
 from src.agenda.party import partylink_shop
-from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
+from src.agenda.agenda import AgendaUnit
 from src.change.agendahub import AgendaHub
 from src.change.listen import listen_to_debtors_roll
-from src._instrument.file import set_dir, delete_dir, open_file
-from dataclasses import dataclass
-from sqlite3 import connect as sqlite3_connect, Connection
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -38,15 +36,12 @@ from src.econ.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
 )
-from os.path import exists as os_path_exists
+from sqlite3 import connect as sqlite3_connect, Connection
+from dataclasses import dataclass
 
 
 class IntentBaseDoesNotExistException(Exception):
     pass
-
-
-def treasury_db_filename() -> str:
-    return "treasury.db"
 
 
 class RoleAgendaFileException(Exception):
