@@ -6,6 +6,17 @@ from src._instrument.file import (
     dir_files,
     set_dir,
 )
+from src._road.jaar_config import (
+    roles_str,
+    jobs_str,
+    get_rootpart_of_econ_dir,
+    treasury_str,
+    treasury_file_name,
+    get_changes_folder,
+    get_test_real_id,
+    get_test_reals_dir,
+)
+from src._road.finance import default_planck_if_none
 from src._road.road import (
     PersonID,
     RealID,
@@ -13,15 +24,10 @@ from src._road.road import (
     RoadUnit,
     rebuild_road,
     get_all_road_nodes,
+    validate_roadnode,
+    default_road_delimiter_if_none,
 )
-from src._road.jaar_config import (
-    roles_str,
-    jobs_str,
-    get_rootpart_of_econ_dir,
-    treasury_str,
-    treasury_file_name,
-)
-from src._road.worldnox import UserNox, usernox_shop, get_file_name
+from src._road.worldnox import get_file_name
 from src.agenda.agenda import AgendaUnit, get_from_json as agendaunit_get_from_json
 from os.path import exists as os_path_exists
 from dataclasses import dataclass
@@ -37,13 +43,6 @@ class Invalid_duty_Exception(Exception):
 
 class Invalid_work_Exception(Exception):
     pass
-
-
-def get_econ_path(x_usernox: UserNox, x_road: RoadNode) -> str:
-    econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_usernox.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_usernox._road_delimiter)
-    return f"{x_usernox.econs_dir()}{get_directory_path(x_list=[*x_list])}"
 
 
 def get_econ_roles_dir(x_econ_dir: str) -> str:
@@ -75,9 +74,78 @@ def pipeline_job_work_text() -> str:
 
 
 @dataclass
-class FileHub(UserNox):
+class FileHub:
+    person_id: PersonID = None
+    reals_dir: str = None
+    real_id: str = None
     econ_road: RoadUnit = None
     _nox_type: str = None  # can be "duty_work", "role_job", "job_work"
+    road_delimiter: str = None
+    planck: float = None
+
+    def real_dir(self):
+        return f"{self.reals_dir}/{self.real_id}"
+
+    def persons_dir(self):
+        return f"{self.real_dir()}/persons"
+
+    def person_dir(self):
+        return f"{self.persons_dir()}/{self.person_id}"
+
+    def econs_dir(self):
+        return f"{self.person_dir()}/econs"
+
+    def atoms_dir(self):
+        return f"{self.person_dir()}/atoms"
+
+    def changes_dir(self):
+        return f"{self.person_dir()}/{get_changes_folder()}"
+
+    def duty_dir(self) -> str:
+        return f"{self.person_dir()}/duty"
+
+    def work_dir(self) -> str:
+        return f"{self.person_dir()}/work"
+
+    def duty_file_name(self):
+        return get_file_name(self.person_id)
+
+    def duty_path(self):
+        return f"{self.duty_dir()}/{self.duty_file_name()}"
+
+    def work_file_name(self):
+        return get_file_name(self.person_id)
+
+    def work_path(self):
+        return f"{self.work_dir()}/{self.work_file_name()}"
+
+    def save_file_duty(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.duty_dir(),
+            file_name=self.duty_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def save_file_work(self, file_text: str, replace: bool):
+        save_file(
+            dest_dir=self.work_dir(),
+            file_name=self.work_file_name(),
+            file_text=file_text,
+            replace=replace,
+        )
+
+    def duty_file_exists(self) -> bool:
+        return os_path_exists(self.duty_path())
+
+    def work_file_exists(self) -> bool:
+        return os_path_exists(self.work_path())
+
+    def open_file_duty(self):
+        return open_file(self.duty_dir(), self.duty_file_name())
+
+    def open_file_work(self):
+        return open_file(self.work_dir(), self.work_file_name())
 
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
@@ -174,22 +242,22 @@ class FileHub(UserNox):
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
-            speaker_usernox = usernox_shop(
+            speaker_filehub = filehub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
-                road_delimiter=self._road_delimiter,
-                planck=self._planck,
+                road_delimiter=self.road_delimiter,
+                planck=self.planck,
             )
-            return speaker_usernox.work_dir()
+            return speaker_filehub.work_dir()
         if self._nox_type == pipeline_job_work_text():
             speaker_filehub = filehub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
                 econ_road=x_econ_path,
-                road_delimiter=self._road_delimiter,
-                planck=self._planck,
+                road_delimiter=self.road_delimiter,
+                planck=self.planck,
             )
             return speaker_filehub.jobs_dir()
 
@@ -259,26 +327,31 @@ class FileHub(UserNox):
 def filehub_shop(
     reals_dir: str,
     real_id: RealID,
-    person_id: PersonID,
-    econ_road: RoadUnit,
+    person_id: PersonID = None,
+    econ_road: RoadUnit = None,
     nox_type: str = None,
     road_delimiter: str = None,
     planck: float = None,
 ) -> FileHub:
-    x_usernox = usernox_shop(
+    if reals_dir is None:
+        reals_dir = get_test_reals_dir()
+    if real_id is None:
+        real_id = get_test_real_id()
+
+    x_filehub = FileHub(
         reals_dir=reals_dir,
         real_id=real_id,
-        person_id=person_id,
-        road_delimiter=road_delimiter,
-        planck=planck,
-    )
-    x_filehub = FileHub(
-        reals_dir=x_usernox.reals_dir,
-        real_id=x_usernox.real_id,
-        person_id=x_usernox.person_id,
+        person_id=validate_roadnode(person_id, road_delimiter),
         econ_road=econ_road,
-        _road_delimiter=x_usernox._road_delimiter,
-        _planck=x_usernox._planck,
+        road_delimiter=default_road_delimiter_if_none(road_delimiter),
+        planck=default_planck_if_none(planck),
     )
     x_filehub.set_nox_type(nox_type)
     return x_filehub
+
+
+def get_econ_path(x_filehub, x_road: RoadNode) -> str:
+    econ_root = get_rootpart_of_econ_dir()
+    x_road = rebuild_road(x_road, x_filehub.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_filehub.road_delimiter)
+    return f"{x_filehub.econs_dir()}{get_directory_path(x_list=[*x_list])}"

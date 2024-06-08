@@ -44,7 +44,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     assert os_path_exists(dallas_db_path)
     assert sue_dallas_econunit.filehub.real_id == sue_filehub.real_id
     assert sue_dallas_econunit.filehub.person_id == sue_text
-    assert sue_dallas_econunit.filehub._road_delimiter == sue_filehub._road_delimiter
+    assert sue_dallas_econunit.filehub.road_delimiter == sue_filehub.road_delimiter
 
 
 def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(

@@ -38,7 +38,7 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert texas_econ.filehub.real_id == x_real_id
     assert texas_econ._treasury_db != None
     assert texas_econ.filehub.person_id == sue_text
-    assert texas_econ.filehub._road_delimiter == default_road_delimiter_if_none()
+    assert texas_econ.filehub.road_delimiter == default_road_delimiter_if_none()
 
 
 def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):

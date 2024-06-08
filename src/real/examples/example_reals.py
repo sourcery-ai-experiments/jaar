@@ -50,8 +50,8 @@ def create_example_real1() -> RealUnit:
         real_id=yao_filehub.real_id,
         person_id=yao_filehub.person_id,
         econ_road=None,
-        road_delimiter=yao_filehub._road_delimiter,
-        planck=yao_filehub._planck,
+        road_delimiter=yao_filehub.road_delimiter,
+        planck=yao_filehub.planck,
     )
     x_filehub.save_duty_agenda(yao_duty_agenda)
     create_person_econunits(yao_filehub)

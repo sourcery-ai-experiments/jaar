@@ -2,7 +2,6 @@ from src._instrument.file import save_file
 from src._road.jaar_config import duty_str, work_str
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.change.filehub import (
-    usernox_shop,
     filehub_shop,
     pipeline_role_job_text,
     pipeline_duty_work_text,
@@ -72,12 +71,12 @@ def test_FileHub_AttrsAreCorrectWhen_nox_typeIs_duty_work():
     assert sue_filehub._nox_type == "duty_work"
     assert sue_filehub._nox_type == x_nox_type
     bob_text = "Bob"
-    bob_usernox = usernox_shop(
+    bob_filehub = filehub_shop(
         reals_dir=sue_filehub.reals_dir,
         real_id=sue_filehub.real_id,
         person_id=bob_text,
     )
-    assert sue_filehub.speaker_dir(bob_text) == bob_usernox.work_dir()
+    assert sue_filehub.speaker_dir(bob_text) == bob_filehub.work_dir()
     assert sue_filehub.speaker_file_name(bob_text) == f"{sue_text}.json"
     assert sue_filehub.listener_dir(bob_text) == sue_filehub.duty_dir()
     assert sue_filehub.listener_file_name(bob_text) == f"{sue_text}.json"
