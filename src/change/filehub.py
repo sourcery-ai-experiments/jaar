@@ -40,7 +40,7 @@ from src.change.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
-from src.change.change import ChangeUnit
+from src.change.change import ChangeUnit, changeunit_shop, create_changeunit_from_files
 from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
@@ -232,9 +232,12 @@ class FileHub:
     def change_file_name(self, change_id: int) -> str:
         return get_json_filename(change_id)
 
-    def change_file_exists(self, change_id: int) -> bool:
+    def change_file_path(self, change_id: int) -> bool:
         change_filename = self.change_file_name(change_id)
-        return os_path_exists(f"{self.changes_dir()}/{change_filename}")
+        return f"{self.changes_dir()}/{change_filename}"
+
+    def change_file_exists(self, change_id: int) -> bool:
+        return os_path_exists(self.change_file_path(change_id))
 
     def validate_changeunit(self, x_changeunit: ChangeUnit) -> ChangeUnit:
         if x_changeunit._atoms_dir != self.atoms_dir():
@@ -277,6 +280,26 @@ class FileHub:
             )
         x_change.save_files()
         return x_change
+
+    def _del_change_file(self, change_id: int):
+        delete_dir(self.change_file_path(change_id))
+
+    def _create_new_changeunit(self) -> ChangeUnit:
+        return changeunit_shop(
+            _giver=self.person_id,
+            _change_id=self._get_next_change_file_number(),
+            _atoms_dir=self.atoms_dir(),
+            _changes_dir=self.changes_dir(),
+        )
+
+    def get_changeunit(self, change_id: int) -> ChangeUnit:
+        if self.change_file_exists(change_id) == False:
+            raise ChangeFileMissingException(
+                f"ChangeUnit file_number {change_id} does not exist."
+            )
+        x_changes_dir = self.changes_dir()
+        x_atoms_dir = self.atoms_dir()
+        return create_changeunit_from_files(x_changes_dir, change_id, x_atoms_dir)
 
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)

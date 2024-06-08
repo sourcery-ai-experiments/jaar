@@ -17,11 +17,8 @@ from src.real.admin_duty import (
     add_pledge_change,
 )
 from src.real.admin_change import (
-    get_changeunit,
     _merge_changes_into_agenda,
-    _create_new_changeunit,
     create_save_changeunit,
-    del_changeunit_file,
 )
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from os.path import exists as os_path_exists
@@ -181,8 +178,7 @@ def test_FileHub_save_change_file_RaisesErrorIf_replace_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    initialize_change_duty_files(sue_filehub)
-    x_change_id = 1
+    x_change_id = 0
     six_filename = get_json_filename(x_change_id)
     sue_changeunit = changeunit_shop(
         _giver=sue_text,
@@ -192,8 +188,7 @@ def test_FileHub_save_change_file_RaisesErrorIf_replace_IsFalse(
     )
     saved_changeunit = sue_filehub.save_change_file(sue_changeunit)
 
-    sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
-    print(f"{sue_change0_path=}")
+    print(f"{sue_filehub.change_file_path(x_change_id)=}")
     assert sue_filehub.change_file_exists(x_change_id)
 
     # WHEN / THEN
@@ -265,7 +260,7 @@ def test_FileHub_save_change_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
     two_file_json = open_file(sue_filehub.changes_dir(), next_filename)
 
 
-def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFilesExist(
+def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFilesExist(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -274,7 +269,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFile
 
     # WHEN
     delete_dir(sue_filehub.changes_dir())
-    sue_changeunit = _create_new_changeunit(sue_filehub)
+    sue_changeunit = sue_filehub._create_new_changeunit()
 
     # THEN
     assert sue_changeunit._giver == sue_text
@@ -286,7 +281,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFile
     assert sue_changeunit._changes_dir == sue_filehub.changes_dir()
 
 
-def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesExist(
+def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesExist(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -301,7 +296,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesE
     sue_filehub.save_change_file(zero_changeunit)
 
     # WHEN
-    sue_changeunit = _create_new_changeunit(sue_filehub)
+    sue_changeunit = sue_filehub._create_new_changeunit()
 
     # THEN
     assert sue_changeunit._giver == sue_text
@@ -313,24 +308,24 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesE
     assert sue_changeunit._changes_dir == sue_filehub.changes_dir()
 
 
-def test_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
+def test_FileHub_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     yao_text = "yao"
-    x0_changeunit = _create_new_changeunit(sue_filehub)
+    x0_changeunit = sue_filehub._create_new_changeunit()
     x0_changeunit.set_face(yao_text)
     sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
-    x1_changeunit = _create_new_changeunit(sue_filehub)
+    x1_changeunit = sue_filehub._create_new_changeunit()
     x1_changeunit.set_face(bob_text)
     sue_filehub.save_change_file(x1_changeunit)
 
     # WHEN
-    y0_changeunit = get_changeunit(sue_filehub, x0_changeunit._change_id)
-    y1_changeunit = get_changeunit(sue_filehub, x1_changeunit._change_id)
+    y0_changeunit = sue_filehub.get_changeunit(x0_changeunit._change_id)
+    y1_changeunit = sue_filehub.get_changeunit(x1_changeunit._change_id)
 
     # THEN
     assert y0_changeunit != None
@@ -340,39 +335,38 @@ def test_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     assert bob_text in y1_changeunit._faces
 
 
-def test_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
+def test_FileHub_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     yao_text = "yao"
-    x0_changeunit = _create_new_changeunit(sue_filehub)
+    x0_changeunit = sue_filehub._create_new_changeunit()
     x0_changeunit.set_face(yao_text)
     sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
-    x1_changeunit = _create_new_changeunit(sue_filehub)
+    x1_changeunit = sue_filehub._create_new_changeunit()
     x1_changeunit.set_face(bob_text)
     sue_filehub.save_change_file(x1_changeunit)
 
     # WHEN / THEN
     six_file_number = 6
     with pytest_raises(Exception) as excinfo:
-        get_changeunit(sue_filehub, six_file_number)
+        sue_filehub.get_changeunit(six_file_number)
     assert (
         str(excinfo.value)
         == f"ChangeUnit file_number {six_file_number} does not exist."
     )
 
 
-def test_del_changeunit_DeleteschangejsonAndNotAgendaAtomjsons(
+def test_FileHub_del_change_file_DeleteschangejsonAndNotAgendaAtomjsons(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     six_int = 6
-    six_filename = get_json_filename(six_int)
     sue_changeunit = changeunit_shop(
         _giver=sue_text,
         _change_id=six_int,
@@ -380,25 +374,23 @@ def test_del_changeunit_DeleteschangejsonAndNotAgendaAtomjsons(
         _changes_dir=sue_filehub.changes_dir(),
     )
     sue_changeunit._bookunit.set_agendaatom(get_atom_example_ideaunit_knee())
-    atom0_filename = sue_changeunit._get_num_filename(0)
-    sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
-    sue_atom0_path = f"{sue_filehub.atoms_dir()}/{atom0_filename}"
+    zero_int = 0
     assert sue_filehub.change_file_exists(six_int) == False
-    assert os_path_exists(sue_atom0_path) == False
+    assert sue_filehub.atom_file_exists(zero_int) == False
 
     sue_filehub = filehub_shop(None, None, sue_text)
     sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
 
     print(f"{dir_files(sue_filehub.atoms_dir())}")
     assert sue_filehub.change_file_exists(six_int)
-    assert os_path_exists(sue_atom0_path)
+    assert sue_filehub.atom_file_exists(zero_int)
 
     # WHEN
-    del_changeunit_file(sue_filehub, sue_changeunit._change_id)
+    sue_filehub._del_change_file(sue_changeunit._change_id)
 
     # THEN
     assert sue_filehub.change_file_exists(six_int) == False
-    assert os_path_exists(sue_atom0_path)
+    assert sue_filehub.atom_file_exists(zero_int)
 
 
 def test_FileHub_save_change_file_CanCreateAndModify3changeunits(

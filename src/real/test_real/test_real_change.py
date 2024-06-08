@@ -24,18 +24,6 @@
 #     assert yao_sue_uid == 1
 
 
-# def test_RealUnit_get_changeunit_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
-#     yao_sue_uid = oregon_real.set_changeunit(example_yao_sue_changeunit())
-
-#     # WHEN
-#     yao_sue_changeunit = oregon_real.get_changeunit(yao_sue_uid)
-
-#     # THEN
-#     assert yao_sue_changeunit == example_yao_sue_changeunit()
-
-
 # def test_RealUnit_apply_requestunit_CorrectlyCreates_role_agendas(
 #     reals_dir_setup_cleanup,
 # ):

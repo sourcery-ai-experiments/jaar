@@ -12,7 +12,6 @@ from src.change.filehub import filehub_shop, FileHub
 from src.change.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
     _merge_changes_into_agenda,
-    _create_new_changeunit,
 )
 from copy import deepcopy as copy_deepcopy
 
@@ -75,11 +74,6 @@ def get_default_duty_agenda(x_filehub: FileHub) -> AgendaUnit:
 
 
 def initialize_change_duty_files(x_filehub: FileHub):
-    set_dir(x_filehub.real_dir())
-    set_dir(x_filehub.persons_dir())
-    set_dir(x_filehub.person_dir())
-    set_dir(x_filehub.atoms_dir())
-    set_dir(x_filehub.changes_dir())
     x_duty_file_exists = x_filehub.duty_file_exists()
     change_file_exists = x_filehub.change_file_exists(init_change_id())
     if x_duty_file_exists == False and change_file_exists == False:
@@ -124,7 +118,7 @@ def add_pledge_change(x_filehub, pledge_road: RoadUnit, x_suffgroup: GroupID = N
     duty_agenda = get_duty_file_agenda(x_filehub)
     old_duty_agenda = copy_deepcopy(duty_agenda)
     create_pledge(duty_agenda, pledge_road, x_suffgroup)
-    next_changeunit = _create_new_changeunit(x_filehub)
+    next_changeunit = x_filehub._create_new_changeunit()
     next_changeunit._bookunit.add_all_different_agendaatoms(
         old_duty_agenda, duty_agenda
     )
