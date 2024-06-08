@@ -8,7 +8,7 @@ from src.agenda.agenda import (
     get_from_json as agendaunit_get_from_json,
 )
 from src.agenda.pledge import create_pledge
-from src.change.agendahub import agendahub_shop
+from src.change.filehub import filehub_shop
 from src.change.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
     changeunit_file_exists,
@@ -38,7 +38,7 @@ def _create_initial_change_from_duty(x_usernox: UserNox):
 
 
 def get_duty_file_agenda(x_usernox: UserNox) -> AgendaUnit:
-    x_agendahub = agendahub_shop(
+    x_filehub = filehub_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -47,14 +47,14 @@ def get_duty_file_agenda(x_usernox: UserNox) -> AgendaUnit:
         planck=x_usernox._planck,
     )
     if x_usernox.duty_file_exists() == False:
-        x_agendahub.save_duty_agenda(get_default_duty_agenda(x_agendahub))
+        x_filehub.save_duty_agenda(get_default_duty_agenda(x_filehub))
     duty_json = x_usernox.open_file_duty()
     return agendaunit_get_from_json(duty_json)
 
 
 def _create_duty_from_changes(x_usernox):
     x_agenda = _merge_changes_into_agenda(x_usernox, get_default_duty_agenda(x_usernox))
-    x_agendahub = agendahub_shop(
+    x_filehub = filehub_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -62,7 +62,7 @@ def _create_duty_from_changes(x_usernox):
         road_delimiter=x_usernox._road_delimiter,
         planck=x_usernox._planck,
     )
-    x_agendahub.save_duty_agenda(x_agenda)
+    x_filehub.save_duty_agenda(x_agenda)
 
 
 def get_default_duty_agenda(x_usernox: UserNox) -> AgendaUnit:
@@ -95,7 +95,7 @@ def initialize_change_duty_files(x_usernox: UserNox):
 def append_changes_to_duty_file(x_usernox: UserNox) -> AgendaUnit:
     duty_agenda = get_duty_file_agenda(x_usernox)
     duty_agenda = _merge_changes_into_agenda(x_usernox, duty_agenda)
-    x_agendahub = agendahub_shop(
+    x_filehub = filehub_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -103,8 +103,8 @@ def append_changes_to_duty_file(x_usernox: UserNox) -> AgendaUnit:
         road_delimiter=x_usernox._road_delimiter,
         planck=x_usernox._planck,
     )
-    x_agendahub.save_duty_agenda(duty_agenda)
-    return x_agendahub.get_duty_agenda()
+    x_filehub.save_duty_agenda(duty_agenda)
+    return x_filehub.get_duty_agenda()
 
 
 def _create_initial_change_and_duty_files(x_usernox: UserNox):

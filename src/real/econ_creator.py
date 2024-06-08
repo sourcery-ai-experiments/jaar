@@ -9,7 +9,7 @@ from src._road.jaar_config import treasury_file_name
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
 from src._road.worldnox import UserNox, get_rootpart_of_econ_dir
 from src.agenda.agenda import AgendaUnit
-from src.change.agendahub import get_econ_path, agendahub_shop
+from src.change.filehub import get_econ_path, filehub_shop
 from src.econ.econ import EconUnit, econunit_shop
 from src.real.admin_duty import get_duty_file_agenda
 
@@ -37,7 +37,7 @@ def _get_econs_roads(x_usernox: UserNox) -> dict[RoadUnit:EconUnit]:
 
 
 def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
-    x_agendahub = agendahub_shop(
+    x_filehub = filehub_shop(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -45,7 +45,7 @@ def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
         road_delimiter=x_usernox._road_delimiter,
         planck=x_usernox._planck,
     )
-    return econunit_shop(x_agendahub, in_memory_treasury=False)
+    return econunit_shop(x_filehub, in_memory_treasury=False)
 
 
 def create_person_econunits(x_usernox: UserNox):
@@ -60,7 +60,7 @@ def get_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
 
 def set_econunit_role(x_usernox: UserNox, econ_road: RoadUnit, role: AgendaUnit):
     x_econ = get_econunit(x_usernox, econ_road)
-    x_econ.agendahub.save_role_agenda(role)
+    x_econ.filehub.save_role_agenda(role)
 
 
 def set_econunits_role(x_usernox: UserNox, role: AgendaUnit):

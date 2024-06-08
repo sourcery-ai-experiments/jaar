@@ -75,7 +75,7 @@ def pipeline_job_work_text() -> str:
 
 
 @dataclass
-class AgendaHub(UserNox):
+class FileHub(UserNox):
     econ_road: RoadUnit = None
     _nox_type: str = None  # can be "duty_work", "role_job", "job_work"
 
@@ -183,7 +183,7 @@ class AgendaHub(UserNox):
             )
             return speaker_usernox.work_dir()
         if self._nox_type == pipeline_job_work_text():
-            speaker_agendahub = agendahub_shop(
+            speaker_filehub = filehub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
@@ -191,7 +191,7 @@ class AgendaHub(UserNox):
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            return speaker_agendahub.jobs_dir()
+            return speaker_filehub.jobs_dir()
 
     def speaker_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
@@ -256,7 +256,7 @@ class AgendaHub(UserNox):
             None
 
 
-def agendahub_shop(
+def filehub_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID,
@@ -264,7 +264,7 @@ def agendahub_shop(
     nox_type: str = None,
     road_delimiter: str = None,
     planck: float = None,
-) -> AgendaHub:
+) -> FileHub:
     x_usernox = usernox_shop(
         reals_dir=reals_dir,
         real_id=real_id,
@@ -272,7 +272,7 @@ def agendahub_shop(
         road_delimiter=road_delimiter,
         planck=planck,
     )
-    x_agendahub = AgendaHub(
+    x_filehub = FileHub(
         reals_dir=x_usernox.reals_dir,
         real_id=x_usernox.real_id,
         person_id=x_usernox.person_id,
@@ -280,5 +280,5 @@ def agendahub_shop(
         _road_delimiter=x_usernox._road_delimiter,
         _planck=x_usernox._planck,
     )
-    x_agendahub.set_nox_type(nox_type)
-    return x_agendahub
+    x_filehub.set_nox_type(nox_type)
+    return x_filehub
