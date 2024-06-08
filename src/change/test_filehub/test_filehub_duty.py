@@ -40,3 +40,20 @@ def test_FileHub_default_duty_agenda_ReturnsCorrectObj():
     assert sue_default_duty._owner_id == sue_filehub.person_id
     assert sue_default_duty._road_delimiter == sue_filehub.road_delimiter
     assert sue_default_duty._planck == sue_filehub.planck
+
+
+def test_FileHub_get_duty_agenda_IfFileMissingCreatesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+
+    delete_dir(sue_filehub.real_dir())
+    assert sue_filehub.duty_file_exists() is False
+
+    # WHEN
+    sue_duty = sue_filehub.get_duty_agenda()
+
+    # THEN
+    assert sue_filehub.duty_file_exists()
+    default_duty = sue_filehub.default_duty_agenda()
+    assert sue_duty.get_dict() == default_duty.get_dict()

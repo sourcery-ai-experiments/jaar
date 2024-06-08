@@ -10,9 +10,6 @@ from src.agenda.agenda import (
 from src.agenda.pledge import create_pledge
 from src.change.filehub import filehub_shop, FileHub
 from src.change.change import changeunit_shop, get_init_change_id_if_None
-from src.real.admin_change import (
-    _merge_changes_into_agenda,
-)
 from copy import deepcopy as copy_deepcopy
 
 
@@ -29,20 +26,13 @@ def _create_initial_change_from_duty(x_filehub: FileHub):
     )
     x_changeunit._bookunit.add_all_different_agendaatoms(
         before_agenda=x_filehub.default_duty_agenda(),
-        after_agenda=get_duty_file_agenda(x_filehub),
+        after_agenda=x_filehub.get_duty_agenda(),
     )
     x_changeunit.save_files()
 
 
-def get_duty_file_agenda(x_filehub: FileHub) -> AgendaUnit:
-    if x_filehub.duty_file_exists() == False:
-        x_filehub.save_duty_agenda(x_filehub.default_duty_agenda())
-    duty_json = x_filehub.open_file_duty()
-    return agendaunit_get_from_json(duty_json)
-
-
 def _create_duty_from_changes(x_filehub: FileHub):
-    x_agenda = _merge_changes_into_agenda(x_filehub, x_filehub.default_duty_agenda())
+    x_agenda = x_filehub._merge_any_changes(x_filehub.default_duty_agenda())
     x_filehub.save_duty_agenda(x_agenda)
 
 
@@ -58,8 +48,8 @@ def initialize_change_duty_files(x_filehub: FileHub):
 
 
 def append_changes_to_duty_file(x_filehub: FileHub) -> AgendaUnit:
-    duty_agenda = get_duty_file_agenda(x_filehub)
-    duty_agenda = _merge_changes_into_agenda(x_filehub, duty_agenda)
+    duty_agenda = x_filehub.get_duty_agenda()
+    duty_agenda = x_filehub._merge_any_changes(duty_agenda)
     x_filehub = filehub_shop(
         reals_dir=x_filehub.reals_dir,
         real_id=x_filehub.real_id,
@@ -88,7 +78,7 @@ def _create_initial_change_and_duty_files(x_filehub: FileHub):
 
 
 def add_pledge_change(x_filehub, pledge_road: RoadUnit, x_suffgroup: GroupID = None):
-    duty_agenda = get_duty_file_agenda(x_filehub)
+    duty_agenda = x_filehub.get_duty_agenda()
     old_duty_agenda = copy_deepcopy(duty_agenda)
     create_pledge(duty_agenda, pledge_road, x_suffgroup)
     next_changeunit = x_filehub._create_new_changeunit()

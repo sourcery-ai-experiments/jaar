@@ -10,7 +10,6 @@ from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
 from src.agenda.agenda import AgendaUnit
 from src.change.filehub import get_econ_path, filehub_shop, FileHub
 from src.econ.econ import EconUnit, econunit_shop
-from src.real.admin_duty import get_duty_file_agenda
 
 
 class InvalidEconException(Exception):
@@ -22,7 +21,7 @@ class PersonCreateEconUnitsException(Exception):
 
 
 def _get_econs_roads(x_filehub: FileHub) -> dict[RoadUnit:EconUnit]:
-    x_duty_agenda = get_duty_file_agenda(x_filehub)
+    x_duty_agenda = x_filehub.get_duty_agenda()
     x_duty_agenda.calc_agenda_metrics()
     if x_duty_agenda._econs_justified == False:
         x_str = f"Cannot set '{x_filehub.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
@@ -68,4 +67,4 @@ def set_econunits_role(x_filehub: FileHub, role: AgendaUnit):
 
 
 def set_person_econunits_role(x_filehub: FileHub):
-    set_econunits_role(x_filehub, get_duty_file_agenda(x_filehub))
+    set_econunits_role(x_filehub, x_filehub.get_duty_agenda())

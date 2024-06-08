@@ -6,7 +6,6 @@ from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
 
 # from src.agenda.graphic import display_ideatree
-from src.real.admin_duty import get_duty_file_agenda
 from src.real.econ_creator import create_person_econunits
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import (
@@ -23,7 +22,7 @@ def create_example_real1() -> RealUnit:
     yao_text = "Yao"
     music_real.init_person_econs(yao_text)
     yao_filehub = filehub_shop(None, music_text, yao_text, None)
-    yao_duty_agenda = get_duty_file_agenda(yao_filehub)
+    yao_duty_agenda = yao_filehub.get_duty_agenda()
 
     yao_duty_agenda.set_party_creditor_pool(101)
     yao_duty_agenda.set_party_debtor_pool(1000)
@@ -75,9 +74,9 @@ def create_example_real2() -> RealUnit:
     zia_filehub = filehub_shop(None, music_text, zia_text, None)
     music_real.init_person_econs(wei_text)
     music_real.init_person_econs(zia_text)
-    yao_duty_agenda = get_duty_file_agenda(yao_filehub)
-    wei_duty_agenda = get_duty_file_agenda(wei_filehub)
-    zia_duty_agenda = get_duty_file_agenda(zia_filehub)
+    yao_duty_agenda = yao_filehub.get_duty_agenda()
+    wei_duty_agenda = wei_filehub.get_duty_agenda()
+    zia_duty_agenda = zia_filehub.get_duty_agenda()
 
     yao_duty_agenda.set_party_creditor_pool(101)
     wei_duty_agenda.set_party_creditor_pool(75)
@@ -143,9 +142,9 @@ def create_example_real3() -> RealUnit:
     yao_filehub = filehub_shop(None, music_text, yao_text, None)
     wei_filehub = filehub_shop(None, music_text, wei_text, None)
     zia_filehub = filehub_shop(None, music_text, zia_text, None)
-    yao_duty_agenda = get_duty_file_agenda(yao_filehub)
-    wei_duty_agenda = get_duty_file_agenda(wei_filehub)
-    zia_duty_agenda = get_duty_file_agenda(zia_filehub)
+    yao_duty_agenda = yao_filehub.get_duty_agenda()
+    wei_duty_agenda = wei_filehub.get_duty_agenda()
+    zia_duty_agenda = zia_filehub.get_duty_agenda()
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)
@@ -191,9 +190,9 @@ def create_example_real4() -> RealUnit:
     yao_filehub = filehub_shop(None, music_text, yao_text, None)
     wei_filehub = filehub_shop(None, music_text, wei_text, None)
     zia_filehub = filehub_shop(None, music_text, zia_text, None)
-    yao_duty_agenda = get_duty_file_agenda(yao_filehub)
-    wei_duty_agenda = get_duty_file_agenda(wei_filehub)
-    zia_duty_agenda = get_duty_file_agenda(zia_filehub)
+    yao_duty_agenda = yao_filehub.get_duty_agenda()
+    wei_duty_agenda = wei_filehub.get_duty_agenda()
+    zia_duty_agenda = zia_filehub.get_duty_agenda()
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)

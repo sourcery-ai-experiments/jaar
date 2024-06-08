@@ -7,7 +7,7 @@ from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
 from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
+from src.real.admin_duty import initialize_change_duty_files
 from src.real.admin_work import initialize_work_file, get_default_work_agenda
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
@@ -119,7 +119,7 @@ class RealUnit:
         initialize_work_file(x_filehub, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        return get_duty_file_agenda(self._get_filehub(person_id))
+        return self._get_filehub(person_id).get_duty_agenda()
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
@@ -153,7 +153,7 @@ class RealUnit:
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
         listener_filehub = self._get_filehub(person_id)
-        x_duty = get_duty_file_agenda(listener_filehub)
+        x_duty = listener_filehub.get_duty_agenda()
         x_duty.calc_agenda_metrics()
         x_work = get_default_work_agenda(x_duty)
         for healer_id, healer_dict in x_duty._healers_dict.items():
@@ -207,7 +207,7 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_duty_agenda = get_duty_file_agenda(x_filehub)
+    #     x_duty_agenda = x_filehub.get_duty_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

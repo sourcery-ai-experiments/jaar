@@ -5,7 +5,6 @@ from src._road.worldnox import get_file_name
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.change.filehub import filehub_shop
-from src.real.admin_duty import get_duty_file_agenda
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -140,7 +139,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
     music_real.init_person_econs(luca_text)
     luca_filehub = filehub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
-    luca_duty = get_duty_file_agenda(luca_filehub)
+    luca_duty = luca_filehub.get_duty_agenda()
     luca_duty.add_partyunit(bob_text)
     luca_filehub.save_duty_agenda(luca_duty)
 
@@ -164,8 +163,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     music_real.init_person_econs(todd_text)
     luca_filehub = filehub_shop(None, music_text, luca_text, None)
     todd_filehub = filehub_shop(None, music_text, todd_text, None)
-    luca_duty_agenda = get_duty_file_agenda(luca_filehub)
-    todd_duty_agenda = get_duty_file_agenda(todd_filehub)
+    luca_duty_agenda = luca_filehub.get_duty_agenda()
+    todd_duty_agenda = todd_filehub.get_duty_agenda()
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)

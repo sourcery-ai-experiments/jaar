@@ -5,6 +5,7 @@ from src._instrument.file import (
     delete_dir,
     dir_files,
     set_dir,
+    get_integer_filenames,
 )
 from src._road.jaar_config import (
     roles_str,
@@ -310,6 +311,14 @@ class FileHub:
         x_atoms_dir = self.atoms_dir()
         return create_changeunit_from_files(x_changes_dir, change_id, x_atoms_dir)
 
+    def _merge_any_changes(self, x_agenda: AgendaUnit) -> AgendaUnit:
+        changes_dir = self.changes_dir()
+        change_ints = get_integer_filenames(changes_dir, x_agenda._last_change_id)
+        for change_int in change_ints:
+            x_change = self.get_changeunit(change_int)
+            new_agenda = x_change._bookunit.get_edited_agenda(x_agenda)
+        return new_agenda
+
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
 
@@ -382,6 +391,8 @@ class FileHub:
         return agendaunit_get_from_json(file_content)
 
     def get_duty_agenda(self) -> AgendaUnit:
+        if self.duty_file_exists() == False:
+            self.save_duty_agenda(self.default_duty_agenda())
         file_content = self.open_file_duty()
         return agendaunit_get_from_json(file_content)
 

@@ -3,7 +3,6 @@ from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.change.filehub import filehub_shop
-from src.real.admin_duty import get_duty_file_agenda
 from src.real.admin_work import get_default_work_agenda
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -104,7 +103,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     assert before_bob_work_agenda.party_exists(sue_text) == False
 
     # WHEN
-    bob_duty_agenda = get_duty_file_agenda(bob_filehub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(sue_text)
     bob_filehub.save_duty_agenda(bob_duty_agenda)
 
@@ -126,7 +125,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     assert after_bob_work_agenda.party_exists(bob_text) == False
 
     # WHEN
-    bob_duty_agenda = get_duty_file_agenda(bob_filehub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.set_party_pool(100)
     texas_text = "Texas"
@@ -165,13 +164,13 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
-    bob_duty_agenda = get_duty_file_agenda(bob_filehub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
     bob_filehub.save_duty_agenda(bob_duty_agenda)
 
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     sue_duty_agenda.add_partyunit(bob_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))

@@ -3,7 +3,6 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.change.filehub import filehub_shop
 from src.real.admin_duty import (
-    get_duty_file_agenda,
     initialize_change_duty_files,
 )
 from src.real.econ_creator import (
@@ -25,7 +24,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     pound_text = "#"
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None, road_delimiter=pound_text)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
 
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -53,7 +52,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -82,7 +81,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Tex/as"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -106,7 +105,7 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -142,7 +141,7 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
@@ -168,7 +167,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -200,7 +199,7 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -241,7 +240,7 @@ def test_set_person_econunits_role_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)

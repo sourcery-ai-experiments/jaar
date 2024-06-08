@@ -2,7 +2,6 @@ from src._road.jaar_config import duty_str, init_change_id
 from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.change.filehub import filehub_shop
 from src.real.admin_duty import (
-    get_duty_file_agenda,
     initialize_change_duty_files,
 )
 from src.real.examples.real_env_kit import (
@@ -13,23 +12,6 @@ from src.real.examples.real_env_kit import (
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 from src._instrument.file import open_file, delete_dir
-
-
-def test_get_duty_file_agenda_IfFileMissingCreatesFile(reals_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_filehub = filehub_shop(None, None, sue_text, None)
-    delete_dir(sue_filehub.real_dir())
-    assert os_path_exists(sue_filehub.duty_path()) is False
-
-    # WHEN
-    sue_duty = get_duty_file_agenda(sue_filehub)
-
-    # THEN
-    assert os_path_exists(sue_filehub.duty_path())
-    default_duty = sue_filehub.default_duty_agenda()
-    default_duty.calc_agenda_metrics()
-    assert sue_duty == default_duty
 
 
 def test_save_duty_agenda_CorrectlySavesFile(reals_dir_setup_cleanup):
@@ -117,7 +99,7 @@ def test_initialize_change_duty_files_CorrectlySavesDutyFileAndchangeFile(
     initialize_change_duty_files(sue_filehub)
 
     # THEN
-    duty_agenda = get_duty_file_agenda(sue_filehub)
+    duty_agenda = sue_filehub.get_duty_agenda()
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -142,7 +124,7 @@ def test_initialize_change_duty_files_CorrectlySavesOnlyDutyFile(
     initialize_change_duty_files(sue_filehub)
 
     # THEN
-    duty_agenda = get_duty_file_agenda(sue_filehub)
+    duty_agenda = sue_filehub.get_duty_agenda()
     assert duty_agenda._real_id == get_test_real_id()
     assert duty_agenda._owner_id == sue_text
     assert duty_agenda._planck == seven_int
@@ -157,7 +139,7 @@ def test_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     seven_int = 7
     sue_filehub = filehub_shop(None, None, sue_text, None, planck=seven_int)
     initialize_change_duty_files(sue_filehub)
-    sue_duty_agenda = get_duty_file_agenda(sue_filehub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
     sue_filehub.save_duty_agenda(sue_duty_agenda)
