@@ -18,6 +18,7 @@ from src._instrument.examples.instrument_env import (
 )
 from pytest import raises as pytest_raises
 from platform import system as platform_system
+from os.path import exists as os_path_exist
 
 
 def test_dir_files_correctlyGrabsFileData(env_dir_setup_cleanup):
@@ -119,6 +120,22 @@ def test_dir_files_doesNotReturnsFiles(env_dir_setup_cleanup):
     assert str(excinfo.value) == "'x1.txt'"
     assert files_dict.get(x2_name) == True
     assert len(files_dict) == 1
+
+
+def test_get_integer_filenames_ReturnsCoorectObjIfDirectoryDoesNotExist(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    env_dir = get_instrument_temp_env_dir()
+    temp_dir = f"{env_dir}/temp_does_not_exist"
+    assert os_path_exist(temp_dir) == False
+
+    # WHEN
+    files_dict = get_integer_filenames(temp_dir, 0)
+
+    # THEN
+    assert len(files_dict) == 0
+    assert files_dict == set()
 
 
 def test_get_integer_filenames_GrabsFileNamesWithIntegers_v0(env_dir_setup_cleanup):

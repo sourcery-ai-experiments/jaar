@@ -44,6 +44,7 @@ from src.change.atom import (
 )
 from src.change.change import ChangeUnit, changeunit_shop, create_changeunit_from_files
 from os.path import exists as os_path_exists
+from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 
 
@@ -314,6 +315,9 @@ class FileHub:
     def _merge_any_changes(self, x_agenda: AgendaUnit) -> AgendaUnit:
         changes_dir = self.changes_dir()
         change_ints = get_integer_filenames(changes_dir, x_agenda._last_change_id)
+        if len(change_ints) == 0:
+            return copy_deepcopy(x_agenda)
+
         for change_int in change_ints:
             x_change = self.get_changeunit(change_int)
             new_agenda = x_change._bookunit.get_edited_agenda(x_agenda)

@@ -131,6 +131,9 @@ def get_integer_filenames(
         min_integer = 0
 
     x_set = set()
+    if os_path_exists(dir_path) == False:
+        return x_set
+
     for obj_name in os_listdir(dir_path):
         obj_path = f"{dir_path}/{obj_name}"
         if os_path_isfile(obj_path):

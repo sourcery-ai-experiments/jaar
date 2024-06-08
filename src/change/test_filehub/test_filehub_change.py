@@ -457,3 +457,65 @@ def test_FileHub_create_save_change_file_SaveCorrectObj(env_dir_setup_cleanup):
 
     # THEN
     assert sue_filehub.change_file_exists(three_int)
+
+
+def test_FileHub_merge_any_changes_ReturnsSameObj(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    duty_agenda = sue_filehub.get_duty_agenda()
+    duty_agenda._last_change_id is None
+
+    # WHEN
+    new_agenda = sue_filehub._merge_any_changes(duty_agenda)
+
+    # THEN
+    assert new_agenda == duty_agenda
+
+
+def test_FileHub_merge_any_changes_ReturnsObj_WithSinglechangeModifies_1atom(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    sue_filehub.save_change_file(sue_1atomunits_changeunit())
+    duty_agenda = sue_filehub.get_duty_agenda()
+    print(f"{duty_agenda._real_id=}")
+    sports_text = "sports"
+    sports_road = duty_agenda.make_l1_road(sports_text)
+    knee_text = "knee"
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
+
+    # WHEN
+    new_agenda = sue_filehub._merge_any_changes(duty_agenda)
+
+    # THEN
+    assert new_agenda != duty_agenda
+    assert new_agenda.idea_exists(sports_road)
+
+
+def test_FileHub_merge_any_changes_ReturnsObj_WithSinglechangeModifies_2atoms(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    sue_filehub.save_change_file(sue_2atomunits_changeunit())
+    duty_agenda = sue_filehub.get_duty_agenda()
+    print(f"{duty_agenda._real_id=}")
+    sports_text = "sports"
+    sports_road = duty_agenda.make_l1_road(sports_text)
+    knee_text = "knee"
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
+    assert duty_agenda.idea_exists(knee_road) == False
+
+    # WHEN
+    new_agenda = sue_filehub._merge_any_changes(duty_agenda)
+
+    # THEN
+    assert new_agenda != duty_agenda
+    assert new_agenda.idea_exists(sports_road)
+    assert new_agenda.idea_exists(knee_road)
