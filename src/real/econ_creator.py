@@ -36,12 +36,6 @@ def _get_econs_roads(x_usernox: UserNox) -> dict[RoadUnit:EconUnit]:
     return get_empty_dict_if_none(x_person_econs)
 
 
-def create_econ_dir(x_usernox: UserNox, x_road: RoadUnit) -> str:
-    x_econ_path = get_econ_path(x_usernox, x_road)
-    set_dir(x_econ_path)
-    return x_econ_path
-
-
 def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
     x_agendahub = agendahub_shop(
         reals_dir=x_usernox.reals_dir,

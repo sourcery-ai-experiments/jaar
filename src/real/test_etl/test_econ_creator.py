@@ -1,4 +1,3 @@
-from src._road.road import create_road_from_nodes
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
@@ -9,8 +8,6 @@ from src.real.admin_duty import (
 )
 from src.real.econ_creator import (
     _get_econs_roads,
-    get_econ_path,
-    create_econ_dir,
     init_econunit,
     create_person_econunits,
     get_econunit,
@@ -21,24 +18,6 @@ from src.real.econ_creator import (
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
-
-
-def test_create_econ_dir_CreatesDir(reals_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_agendahub = agendahub_shop(None, None, sue_text, None)
-    dallas_text = "dallas"
-    dallas_road = create_road_from_nodes([dallas_text])
-    dallas_dir = get_econ_path(sue_agendahub, dallas_road)
-    print(f"{dallas_dir=}")
-    assert os_path_exists(dallas_dir) == False
-
-    # WHEN
-    create_econ_dir(sue_agendahub, dallas_road)
-
-    # THEN
-    print(f"{dallas_dir=}")
-    assert os_path_exists(dallas_dir)
 
 
 def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
@@ -148,23 +127,19 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     sue_agendahub.save_duty_agenda(sue_duty_agenda)
 
-    dallas_dir = create_econ_dir(sue_agendahub, dallas_road)
-    elpaso_dir = create_econ_dir(sue_agendahub, elpaso_road)
-    dallas_db_path = f"{dallas_dir}/{sue_agendahub.treasury_file_name()}"
-    elpaso_db_path = f"{elpaso_dir}/{sue_agendahub.treasury_file_name()}"
-    print(f"{dallas_dir=}")
-    print(f"{elpaso_db_path=}")
-    print(f"{dallas_db_path=}")
-    print(f"{elpaso_db_path=}")
-    assert os_path_exists(dallas_db_path) == False
-    assert os_path_exists(elpaso_db_path) == False
+    dallas_agendahub = agendahub_shop(None, None, sue_text, dallas_road)
+    elpaso_agendahub = agendahub_shop(None, None, sue_text, elpaso_road)
+    print(f"{dallas_agendahub.treasury_db_path()=}")
+    print(f"{elpaso_agendahub.treasury_db_path()=}")
+    assert os_path_exists(dallas_agendahub.treasury_db_path()) == False
+    assert os_path_exists(elpaso_agendahub.treasury_db_path()) == False
 
     # WHEN
     create_person_econunits(sue_agendahub)
 
     # THEN
-    assert os_path_exists(dallas_db_path)
-    assert os_path_exists(elpaso_db_path)
+    assert os_path_exists(dallas_agendahub.treasury_db_path())
+    assert os_path_exists(elpaso_agendahub.treasury_db_path())
 
 
 def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
@@ -183,8 +158,6 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     sue_agendahub.save_duty_agenda(sue_duty_agenda)
-    dallas_dir = create_econ_dir(sue_agendahub, dallas_road)
-    print(f"{dallas_dir=}")
 
     # WHEN
     create_person_econunits(sue_agendahub)
