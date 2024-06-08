@@ -135,7 +135,7 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
     # GIVEN
     real_id = temp_real_id()
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
@@ -198,7 +198,7 @@ def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErr
     # A agenda that has 1 intent item
     real_id = temp_real_id()
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
@@ -224,7 +224,7 @@ def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasur
     # GIVEN
     # A agenda that has 1 intent item
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0

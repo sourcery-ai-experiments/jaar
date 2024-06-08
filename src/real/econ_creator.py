@@ -50,9 +50,7 @@ def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
         road_delimiter=x_usernox._road_delimiter,
         planck=x_usernox._planck,
     )
-    x_econunit = econunit_shop(x_agendahub)
-    x_econunit.set_econ_dirs()
-    return x_econunit
+    return econunit_shop(x_agendahub, in_memory_treasury=False)
 
 
 def create_person_econunits(x_usernox: UserNox):

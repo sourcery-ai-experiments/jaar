@@ -36,7 +36,6 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # THEN
     assert texas_econ != None
     assert texas_econ.agendahub.real_id == x_real_id
-    assert os_path_exists(sue_texas_agendahub.econ_dir())
     assert texas_econ._treasury_db != None
     assert texas_econ.agendahub.person_id == sue_text
     assert texas_econ.agendahub._road_delimiter == default_road_delimiter_if_none()
@@ -90,18 +89,14 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 
     assert os_path_exists(texas_agendahub.reals_dir) is False
     assert os_path_isdir(texas_agendahub.reals_dir) is False
-    assert os_path_exists(x_econ.agendahub.jobs_dir()) is False
-    assert os_path_exists(x_econ.agendahub.roles_dir()) is False
     assert os_path_exists(treasury_file_path) is False
 
     # WHEN
-    x_econ.set_econ_dirs(in_memory_treasury=False)
+    x_econ.create_treasury_db(in_memory=False)
 
     # THEN check agendas src directory created
     assert os_path_exists(texas_agendahub.reals_dir)
     assert os_path_isdir(texas_agendahub.reals_dir)
-    assert os_path_exists(x_econ.agendahub.jobs_dir())
-    assert os_path_exists(x_econ.agendahub.roles_dir())
     assert os_path_exists(treasury_file_path)
     assert x_econ.agendahub.econ_dir() == texas_agendahub.econ_dir()
     assert x_econ.agendahub.jobs_dir() == x_econ.agendahub.jobs_dir()
@@ -131,7 +126,7 @@ def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
 
 #     texas_econ = econunit_shop(texas_agendahub)
 
-#     texas_econ.set_econ_dirs(in_memory_treasury=True)
+#     texas_econ.create_treasury_db(in_memory=True)
 
 #     assert os_path_exists(old_econ_dir)
 #     assert os_path_isdir(old_econ_dir)

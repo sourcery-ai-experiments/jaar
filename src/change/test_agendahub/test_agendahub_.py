@@ -126,6 +126,26 @@ def test_agendahub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_agendahub.treasury_db_path() == treasury_file_path
 
 
+def test_AgendaHub_create_econ_dir_if_missing_CreatesDirectory(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    temp_env_dir = get_change_temp_env_dir()
+    sue_agendahub = agendahub_shop(temp_env_dir, None, sue_text, texas_road)
+    assert os_path_exists(sue_agendahub.econ_dir()) == False
+
+    # WHEN
+    sue_agendahub.create_econ_dir_if_missing()
+
+    # THEN
+    assert os_path_exists(sue_agendahub.econ_dir())
+
+
 def test_AgendaHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"

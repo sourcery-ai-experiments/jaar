@@ -38,7 +38,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryI
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -62,7 +62,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryF
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=False)
+    x_econ.create_treasury_db(in_memory=False)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -86,7 +86,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitT
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -132,7 +132,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -159,7 +159,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTabl
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -186,7 +186,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_gr
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -214,7 +214,7 @@ def test_EconUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     # create 4 agendas, 1 with group "swimming expert" linked to 1 party
     # two others have idea create_road(root_label()},sports,swimming"

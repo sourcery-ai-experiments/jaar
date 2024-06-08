@@ -64,7 +64,7 @@ def test_EconUnit_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
 def test_create_job_file_from_role_file_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     bob_text = "Bob"
     bob_role = get_agenda_2CleanNodesRandomWeights(bob_text)
     x_econ.agendahub.save_role_agenda(bob_role)

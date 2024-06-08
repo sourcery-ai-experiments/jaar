@@ -125,7 +125,7 @@
 #     def econ_load_from_file(self):
 #         econ_selected = self.econ_id_combo.currentText()
 #         self.econ_x = econunit_shop(econ_id=econ_selected, econ_dir=temp_reals_dir())
-#         self.econ_x.set_econ_dirs(in_memory_treasury=False)
+#         self.econ_x.create_treasury_db(in_memory=False)
 #         self.econ_id.setText(econ_selected)
 #         self.refresh_econ()
 

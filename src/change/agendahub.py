@@ -4,6 +4,7 @@ from src._instrument.file import (
     open_file,
     delete_dir,
     dir_files,
+    set_dir,
 )
 from src._road.road import (
     PersonID,
@@ -81,6 +82,9 @@ class AgendaHub(UserNox):
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
 
+    def create_econ_dir_if_missing(self):
+        set_dir(self.econ_dir())
+
     def owner_file_name(self, owner_id: PersonID) -> str:
         return get_file_name(owner_id)
 
@@ -103,7 +107,10 @@ class AgendaHub(UserNox):
         return get_econ_jobs_dir(self.econ_dir())
 
     def get_jobs_dir_file_names_list(self):
-        return list(dir_files(self.jobs_dir(), True).keys())
+        try:
+            return list(dir_files(self.jobs_dir(), True).keys())
+        except Exception:
+            return []
 
     def save_role_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)

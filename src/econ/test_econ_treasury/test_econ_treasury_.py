@@ -6,7 +6,7 @@ from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_EconUnit_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
+def test_EconUnitcreate_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -16,20 +16,20 @@ def test_EconUnit_create_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
     assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
-    x_econ._create_treasury_db()
+    x_econ.create_treasury_db()
 
     # THEN
     assert os_path_exists(x_econ.agendahub.treasury_db_path())
 
 
-def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
+def test_EconUnitcreate_treasury_db_DoesNotOverWriteDBIfItExists(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
     texas_agendahub = get_texas_agendahub()
     x_econ = econunit_shop(texas_agendahub)
     delete_dir(texas_agendahub.treasury_db_path())  # clear out any treasury.db file
-    x_econ._create_treasury_db()
+    x_econ.create_treasury_db()
     assert os_path_exists(x_econ.agendahub.treasury_db_path())
 
     # GIVEN
@@ -45,17 +45,17 @@ def test_EconUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
     assert open_file(x_econ.agendahub.econ_dir(), file_name=db_file) == x_file_text
 
     # WHEN
-    x_econ._create_treasury_db()
+    x_econ.create_treasury_db()
     # THEN
     assert open_file(x_econ.agendahub.econ_dir(), file_name=db_file) == x_file_text
 
     # # WHEN
-    # x_econ._create_treasury_db(overwrite=True)
+    # x_econ.create_treasury_db(overwrite=True)
     # # THEN
     # assert open_file(x_econ.agendahub.econ_dir(), file_name=db_file) != x_file_text
 
 
-def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):
+def test_EconUnitcreate_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cleanup):
     # GIVEN create econ
     texas_agendahub = get_texas_agendahub()
     x_econ = econunit_shop(texas_agendahub)
@@ -65,7 +65,7 @@ def test_EconUnit_create_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cle
     assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
-    x_econ._create_treasury_db(in_memory=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     # THEN
     assert x_econ._treasury_db != None
@@ -78,7 +78,7 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory
     # GIVEN create econ
     texas_agendahub = get_texas_agendahub()
     x_econ = econunit_shop(texas_agendahub)
-    # x_econ._create_treasury_db(in_memory=True)
+    # x_econ.create_treasury_db(in_memory=True)
     assert os_path_exists(x_econ.agendahub.treasury_db_path()) == False
 
     # WHEN
@@ -99,7 +99,7 @@ def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
     assert str(excinfo.value) == "unable to open database file"
 
     # WHEN
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     # THEN
     assert check_connection(x_econ.get_treasury_conn())

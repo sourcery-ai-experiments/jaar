@@ -10,7 +10,7 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
 
     # WHEN
@@ -23,7 +23,7 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
 def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
     assert len(get_agendatreasuryunits_dict(x_econ.get_treasury_conn())) == 0
 
@@ -70,7 +70,7 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
 ):
     # GIVEN
     x_econ = econunit_shop(get_texas_agendahub())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.refresh_treasury_job_agendas_data()
     sal_text = "Sal"
     bob_text = "Bob"

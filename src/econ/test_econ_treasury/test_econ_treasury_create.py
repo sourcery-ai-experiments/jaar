@@ -31,7 +31,7 @@ def test_EconUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     x_econ = econunit_shop(get_texas_agendahub())
 
     # WHEN
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
 
     # THEN
     # grab config.json

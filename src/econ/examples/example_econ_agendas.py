@@ -177,7 +177,7 @@ def _delete_and_set_ex4():
     ex4_agendahub.real_id = ex4_id
     x_econ = econunit_shop(ex4_agendahub)
     delete_dir(x_econ.agendahub.econ_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
+    x_econ.create_treasury_db(in_memory=True)
     x_econ.agendahub.save_job_agenda(get_7nodeJRootWithH_agenda())
     x_econ.agendahub.save_job_agenda(get_agenda_with7amCleanTableReason())
     x_econ.agendahub.save_job_agenda(get_agenda_base_time_example())
@@ -191,7 +191,7 @@ def _delete_and_set_ex6(ex6_id: str = None):
     ex6_agendahub.real_id = ex6_id
     x_econ = econunit_shop(ex6_agendahub)
     delete_dir(x_econ.agendahub.econ_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=False)
+    x_econ.create_treasury_db(in_memory=False)
 
     sal_text = "Sal"
     bob_text = "Bob"

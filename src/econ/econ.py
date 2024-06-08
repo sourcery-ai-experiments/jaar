@@ -58,13 +58,6 @@ class EconUnit:
     agendahub: AgendaHub
     _treasury_db = None
 
-    # Admin
-    def set_econ_dirs(self, in_memory_treasury: bool = None):
-        set_dir(x_path=self.agendahub.econ_dir())
-        set_dir(x_path=self.agendahub.roles_dir())
-        set_dir(x_path=self.agendahub.jobs_dir())
-        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
-
     # treasurying
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
@@ -212,7 +205,7 @@ class EconUnit:
     def refresh_treasury_job_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
-        self._create_treasury_db(in_memory=in_memory, overwrite=True)
+        self.create_treasury_db(in_memory=in_memory, overwrite=True)
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
@@ -286,16 +279,17 @@ class EconUnit:
         else:
             return self._treasury_db
 
-    def _create_treasury_db(
+    def create_treasury_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         if overwrite:
-            self._delete_treasury()
+            self.delete_treasury()
 
         treasury_file_new = True
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
+            self.agendahub.create_econ_dir_if_missing()
             sqlite3_connect(self.agendahub.treasury_db_path())
 
         if treasury_file_new:
@@ -303,7 +297,7 @@ class EconUnit:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
                     treasury_conn.execute(sqlstr)
 
-    def _delete_treasury(self):
+    def delete_treasury(self):
         self._treasury_db = None
         delete_dir(self.agendahub.treasury_db_path())
 
@@ -348,7 +342,7 @@ def econunit_shop(x_agendahub: AgendaHub, in_memory_treasury: bool = None) -> Ec
         in_memory_treasury = True
 
     econ_x = EconUnit(x_agendahub)
-    econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
+    econ_x.create_treasury_db(in_memory=in_memory_treasury)
     return econ_x
 
 
