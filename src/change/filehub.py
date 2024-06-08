@@ -28,7 +28,16 @@ from src._road.road import (
     default_road_delimiter_if_none,
 )
 from src._road.worldnox import get_file_name
-from src.agenda.agenda import AgendaUnit, get_from_json as agendaunit_get_from_json
+from src.agenda.agenda import (
+    AgendaUnit,
+    get_from_json as agendaunit_get_from_json,
+    agendaunit_shop,
+)
+from src.change.atom import (
+    AgendaAtom,
+    get_from_json as agendaatom_get_from_json,
+    modify_agenda_with_agendaatom,
+)
 from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
@@ -146,6 +155,54 @@ class FileHub:
 
     def open_file_work(self):
         return open_file(self.work_dir(), self.work_file_name())
+
+    def get_max_atom_file_number(self) -> int:
+        if not os_path_exists(self.atoms_dir()):
+            return None
+        atom_files_dict = dir_files(self.atoms_dir(), True, include_files=True)
+        atom_filenames = atom_files_dict.keys()
+        atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
+        return max(atom_file_numbers, default=None)
+
+    def _get_next_atom_file_number(self) -> int:
+        max_file_number = self.get_max_atom_file_number()
+        return 0 if max_file_number is None else max_file_number + 1
+
+    def atom_file_name(self, atom_number: int) -> str:
+        return f"{atom_number}.json"
+
+    def atom_file_path(self, atom_number: int) -> str:
+        return f"{self.atoms_dir()}/{self.atom_file_name(atom_number)}"
+
+    def _save_valid_atom_file(self, x_atom: AgendaAtom, file_number: int):
+        save_file(
+            self.atoms_dir(),
+            self.atom_file_name(file_number),
+            x_atom.get_json(),
+            replace=False,
+        )
+        return file_number
+
+    def save_atom_file(self, x_atom: AgendaAtom):
+        x_atom_filename = self._get_next_atom_file_number()
+        return self._save_valid_atom_file(x_atom, x_atom_filename)
+
+    def atom_file_exists(self, atom_number: int) -> bool:
+        return os_path_exists(self.atom_file_path(atom_number))
+
+    def delete_atom_file(self, atom_number: int):
+        delete_dir(self.atom_file_path(atom_number))
+
+    def _get_agenda_from_atom_files(self) -> AgendaUnit:
+        x_agenda = agendaunit_shop(self.person_id, self.real_id)
+        x_atom_files = dir_files(self.atoms_dir(), delete_extensions=True)
+        sorted_atom_filenames = sorted(list(x_atom_files.keys()))
+
+        for x_atom_filename in sorted_atom_filenames:
+            x_file_text = x_atom_files.get(x_atom_filename)
+            x_atom = agendaatom_get_from_json(x_file_text)
+            modify_agenda_with_agendaatom(x_agenda, x_atom)
+        return x_agenda
 
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)

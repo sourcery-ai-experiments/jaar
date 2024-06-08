@@ -1,11 +1,6 @@
-from src._instrument.file import save_file, delete_dir, dir_files, get_integer_filenames
+from src._instrument.file import delete_dir, dir_files, get_integer_filenames
 from src.change.filehub import FileHub
-from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.change.atom import (
-    AgendaAtom,
-    get_from_json as agendaatom_get_from_json,
-    modify_agenda_with_agendaatom,
-)
+from src.agenda.agenda import AgendaUnit
 from src.change.change import (
     ChangeUnit,
     changeunit_shop,
@@ -24,51 +19,6 @@ class ChangeFileMissingException(Exception):
     pass
 
 
-# AgendaAtom
-def filehub_save_atom_file(x_filehub: FileHub, x_atom: AgendaAtom):
-    x_filename = _get_next_atom_file_number(x_filehub)
-    return _save_valid_atom_file(x_filehub, x_atom, x_filename)
-
-
-def _save_valid_atom_file(x_filehub: FileHub, x_atom: AgendaAtom, file_number: int):
-    save_file(x_filehub.atoms_dir(), f"{file_number}.json", x_atom.get_json())
-    return file_number
-
-
-def filehub_atom_file_exists(x_filehub, filename: int) -> bool:
-    return os_path_exists(f"{x_filehub.atoms_dir()}/{filename}.json")
-
-
-def _delete_atom_file(x_filehub: FileHub, filename: int):
-    delete_dir(f"{x_filehub.atoms_dir()}/{filename}.json")
-
-
-def _get_agenda_from_atom_files(x_filehub: FileHub) -> AgendaUnit:
-    x_agenda = agendaunit_shop(x_filehub.person_id, x_filehub.real_id)
-    x_atom_files = dir_files(x_filehub.atoms_dir(), delete_extensions=True)
-    sorted_atom_filenames = sorted(list(x_atom_files.keys()))
-
-    for x_atom_filename in sorted_atom_filenames:
-        x_file_text = x_atom_files.get(x_atom_filename)
-        x_atom = agendaatom_get_from_json(x_file_text)
-        modify_agenda_with_agendaatom(x_agenda, x_atom)
-    return x_agenda
-
-
-def _get_max_atom_file_number(x_filehub: FileHub) -> int:
-    if not os_path_exists(x_filehub.atoms_dir()):
-        return None
-    atom_files_dict = dir_files(x_filehub.atoms_dir(), True, include_files=True)
-    atom_filenames = atom_files_dict.keys()
-    atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
-    return max(atom_file_numbers, default=None)
-
-
-def _get_next_atom_file_number(x_filehub: FileHub) -> str:
-    max_file_number = _get_max_atom_file_number(x_filehub)
-    return 0 if max_file_number is None else max_file_number + 1
-
-
 # ChangeUnit
 def changeunit_file_exists(x_filehub: FileHub, change_id: int) -> bool:
     change_filename = changeunit_get_json_filename(change_id)
@@ -84,8 +34,8 @@ def validate_changeunit(x_filehub: FileHub, x_changeunit: ChangeUnit) -> ChangeU
         x_changeunit._change_id = _get_next_change_file_number(x_filehub)
     if x_changeunit._giver != x_filehub.person_id:
         x_changeunit._giver = x_filehub.person_id
-    if x_changeunit._book_start != _get_next_atom_file_number(x_filehub):
-        x_changeunit._book_start = _get_next_atom_file_number(x_filehub)
+    if x_changeunit._book_start != x_filehub._get_next_atom_file_number():
+        x_changeunit._book_start = x_filehub._get_next_atom_file_number()
     return x_changeunit
 
 
