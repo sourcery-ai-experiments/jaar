@@ -2,9 +2,6 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.change.filehub import filehub_shop
-from src.real.admin_duty import (
-    initialize_change_duty_files,
-)
 from src.real.econ_creator import (
     _get_econs_roads,
     init_econunit,
@@ -32,7 +29,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     dallas_text = "dallas"
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
     sue_filehub.econ_road = dallas_road
-    initialize_change_duty_files(sue_filehub)
+    sue_filehub.initialize_change_duty_files()
     dallas_db_path = sue_filehub.treasury_db_path()
     print(f"{dallas_db_path=}")
     assert os_path_exists(dallas_db_path) == False

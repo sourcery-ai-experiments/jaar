@@ -7,12 +7,10 @@ from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
 from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src.real.admin_duty import initialize_change_duty_files
 from src.real.admin_work import initialize_work_file, get_default_work_agenda
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
-from copy import deepcopy as copy_deepcopy
 
 
 @dataclass
@@ -115,7 +113,7 @@ class RealUnit:
 
     def init_person_econs(self, person_id: PersonID):
         x_filehub = self._get_filehub(person_id)
-        initialize_change_duty_files(x_filehub)
+        x_filehub.initialize_change_duty_files()
         initialize_work_file(x_filehub, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:

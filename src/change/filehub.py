@@ -376,6 +376,16 @@ class FileHub:
         )
         x_changeunit.save_files()
 
+    def initialize_change_duty_files(self):
+        x_duty_file_exists = self.duty_file_exists()
+        change_file_exists = self.change_file_exists(init_change_id())
+        if x_duty_file_exists == False and change_file_exists == False:
+            self._create_initial_change_and_duty_files()
+        elif x_duty_file_exists == False and change_file_exists:
+            self._create_duty_from_changes()
+        elif x_duty_file_exists and change_file_exists == False:
+            self._create_initial_change_files_from_duty()
+
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
 

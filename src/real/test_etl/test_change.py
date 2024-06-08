@@ -1,9 +1,5 @@
 from src.change.filehub import filehub_shop
-from src.real.admin_duty import (
-    initialize_change_duty_files,
-    append_changes_to_duty_file,
-    add_pledge_change,
-)
+from src.real.admin_duty import append_changes_to_duty_file, add_pledge_change
 from src.real.examples.example_changes import sue_2atomunits_changeunit
 from src.real.examples.real_env_kit import reals_dir_setup_cleanup
 
@@ -14,7 +10,7 @@ def test_append_changes_to_duty_file_AddschangesToDutyFile(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    initialize_change_duty_files(sue_filehub)
+    sue_filehub.initialize_change_duty_files()
     sue_filehub.save_change_file(sue_2atomunits_changeunit())
     duty_agenda = sue_filehub.get_duty_agenda()
     print(f"{duty_agenda._real_id=}")
@@ -38,7 +34,7 @@ def test_add_pledge_change_Addspledgechange(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    initialize_change_duty_files(sue_filehub)
+    sue_filehub.initialize_change_duty_files()
     old_sue_duty = sue_filehub.get_duty_agenda()
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
@@ -61,7 +57,7 @@ def test_add_pledge_change_SetsDutyAgendapledgeIdea_suffgroup(reals_dir_setup_cl
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    initialize_change_duty_files(sue_filehub)
+    sue_filehub.initialize_change_duty_files()
     old_sue_duty = sue_filehub.get_duty_agenda()
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
