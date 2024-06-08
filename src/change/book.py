@@ -1,3 +1,12 @@
+from src._instrument.python import (
+    get_empty_dict_if_none,
+    get_json_from_dict,
+    get_dict_from_json,
+    place_obj_in_dict,
+    get_nested_value,
+    get_all_nondictionary_objs,
+    get_0_if_None,
+)
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src.agenda.reason_idea import BeliefUnit, ReasonUnit
 from src.agenda.party import PartyLink, PartyID
@@ -14,15 +23,6 @@ from src.change.atom import (
     atom_insert,
     atom_update,
     optional_args_different,
-)
-from src._instrument.python import (
-    get_empty_dict_if_none,
-    get_json_from_dict,
-    get_dict_from_json,
-    place_obj_in_dict,
-    get_nested_value,
-    get_all_nondictionary_objs,
-    get_0_if_None,
 )
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -149,8 +149,8 @@ class BookUnit:
             )
         if before_agenda._meld_strategy != after_agenda._meld_strategy:
             x_agendaatom.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
-        if before_agenda._money_desc != after_agenda._money_desc:
-            x_agendaatom.set_optional_arg("_money_desc", after_agenda._money_desc)
+        if before_agenda._monetary_desc != after_agenda._monetary_desc:
+            x_agendaatom.set_optional_arg("_monetary_desc", after_agenda._monetary_desc)
         if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
             x_agendaatom.set_optional_arg(
                 "_party_creditor_pool", after_agenda._party_creditor_pool
@@ -1144,20 +1144,20 @@ def add_agendaunit_legible_list(
     _weight_text = "_weight"
     _max_tree_traverse_text = "_max_tree_traverse"
     _meld_strategy_text = "_meld_strategy"
-    _money_desc_text = "_money_desc"
+    _monetary_desc_text = "_monetary_desc"
     _party_creditor_pool_text = "_party_creditor_pool"
     _party_debtor_pool_text = "_party_debtor_pool"
 
     _max_tree_traverse_value = optional_args.get(_max_tree_traverse_text)
     _meld_strategy_value = optional_args.get(_meld_strategy_text)
-    _money_desc_value = optional_args.get(_money_desc_text)
+    _monetary_desc_value = optional_args.get(_monetary_desc_text)
     _party_creditor_pool_value = optional_args.get(_party_creditor_pool_text)
     _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
     _weight_value = optional_args.get(_weight_text)
 
-    x_money_desc = x_agenda._money_desc
-    if x_money_desc is None:
-        x_money_desc = f"{x_agenda._owner_id}'s money"
+    x_monetary_desc = x_agenda._monetary_desc
+    if x_monetary_desc is None:
+        x_monetary_desc = f"{x_agenda._owner_id}'s monetary_desc"
 
     if _max_tree_traverse_value != None:
         legible_list.append(
@@ -1167,9 +1167,9 @@ def add_agendaunit_legible_list(
         legible_list.append(
             f"{x_agenda._owner_id}'s Meld strategy transited to '{_meld_strategy_value}'"
         )
-    if _money_desc_value != None:
+    if _monetary_desc_value != None:
         legible_list.append(
-            f"{x_agenda._owner_id}'s money is now called '{_money_desc_value}'"
+            f"{x_agenda._owner_id}'s monetary_desc is now called '{_monetary_desc_value}'"
         )
     if (
         _party_creditor_pool_value != None
@@ -1177,15 +1177,15 @@ def add_agendaunit_legible_list(
         and _party_creditor_pool_value == _party_debtor_pool_value
     ):
         legible_list.append(
-            f"{x_money_desc} total pool is now {_party_creditor_pool_value}"
+            f"{x_monetary_desc} total pool is now {_party_creditor_pool_value}"
         )
     elif _party_creditor_pool_value != None:
         legible_list.append(
-            f"{x_money_desc} creditor pool is now {_party_creditor_pool_value}"
+            f"{x_monetary_desc} creditor pool is now {_party_creditor_pool_value}"
         )
     elif _party_debtor_pool_value != None:
         legible_list.append(
-            f"{x_money_desc} debtor pool is now {_party_debtor_pool_value}"
+            f"{x_monetary_desc} debtor pool is now {_party_debtor_pool_value}"
         )
     if _weight_value != None:
         legible_list.append(
@@ -1196,45 +1196,47 @@ def add_agendaunit_legible_list(
 def add_agenda_partyunit_insert_to_legible_list(
     legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    x_money_desc = x_agenda._money_desc
-    if x_money_desc is None:
-        x_money_desc = "money"
+    x_monetary_desc = x_agenda._monetary_desc
+    if x_monetary_desc is None:
+        x_monetary_desc = "monetary_desc"
     for partyunit_atom in partyunit_dict.values():
         party_id = partyunit_atom.get_value("party_id")
         creditor_weight_value = partyunit_atom.get_value("creditor_weight")
         debtor_weight_value = partyunit_atom.get_value("debtor_weight")
-        x_str = f"{party_id} was added with {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt"
+        x_str = f"{party_id} was added with {creditor_weight_value} {x_monetary_desc} credit and {debtor_weight_value} {x_monetary_desc} debt"
         legible_list.append(x_str)
 
 
 def add_agenda_partyunit_update_to_legible_list(
     legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    x_money_desc = x_agenda._money_desc
-    if x_money_desc is None:
-        x_money_desc = "money"
+    x_monetary_desc = x_agenda._monetary_desc
+    if x_monetary_desc is None:
+        x_monetary_desc = "monetary_desc"
     for partyunit_atom in partyunit_dict.values():
         party_id = partyunit_atom.get_value("party_id")
         creditor_weight_value = partyunit_atom.get_value("creditor_weight")
         debtor_weight_value = partyunit_atom.get_value("debtor_weight")
         if creditor_weight_value != None and debtor_weight_value != None:
-            x_str = f"{party_id} now has {creditor_weight_value} {x_money_desc} credit and {debtor_weight_value} {x_money_desc} debt."
+            x_str = f"{party_id} now has {creditor_weight_value} {x_monetary_desc} credit and {debtor_weight_value} {x_monetary_desc} debt."
         elif creditor_weight_value != None and debtor_weight_value is None:
-            x_str = f"{party_id} now has {creditor_weight_value} {x_money_desc} credit."
+            x_str = (
+                f"{party_id} now has {creditor_weight_value} {x_monetary_desc} credit."
+            )
         elif creditor_weight_value is None and debtor_weight_value != None:
-            x_str = f"{party_id} now has {debtor_weight_value} {x_money_desc} debt."
+            x_str = f"{party_id} now has {debtor_weight_value} {x_monetary_desc} debt."
         legible_list.append(x_str)
 
 
 def add_agenda_partyunit_delete_to_legible_list(
     legible_list: list[str], partyunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    x_money_desc = x_agenda._money_desc
-    if x_money_desc is None:
-        x_money_desc = "money"
+    x_monetary_desc = x_agenda._monetary_desc
+    if x_monetary_desc is None:
+        x_monetary_desc = "monetary_desc"
     for partyunit_atom in partyunit_dict.values():
         party_id = partyunit_atom.get_value("party_id")
-        x_str = f"{party_id} was removed from {x_money_desc} partys."
+        x_str = f"{party_id} was removed from {x_monetary_desc} partys."
         legible_list.append(x_str)
 
 
@@ -1269,9 +1271,9 @@ def add_agenda_groupunit_update_to_legible_list(
 def add_agenda_groupunit_delete_to_legible_list(
     legible_list: list[str], groupunit_dict: AgendaAtom, x_agenda: AgendaUnit
 ):
-    x_money_desc = x_agenda._money_desc
-    if x_money_desc is None:
-        x_money_desc = "money"
+    x_monetary_desc = x_agenda._monetary_desc
+    if x_monetary_desc is None:
+        x_monetary_desc = "monetary_desc"
     for groupunit_atom in groupunit_dict.values():
         group_id = groupunit_atom.get_value("group_id")
         x_str = f"The group '{group_id}' was deleted."

@@ -19,7 +19,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.setupUi(self)
 
         self.party_table.itemClicked.connect(self.party_select)
-        self.party_insert_button.clicked.connect(self.party_insert)
+        self.party_gui_insert_button.clicked.connect(self.party_gui_insert)
         self.party_update_button.clicked.connect(self.party_update)
         self.party_delete_button.clicked.connect(self.party_delete)
         self.groups_in_table.itemClicked.connect(self.groups_in_select)
@@ -241,7 +241,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
         self.refresh_groups_out_table()
         self.refresh_groups_stan_table()
 
-    def party_insert(self):
+    def party_gui_insert(self):
         self.x_agenda.add_partyunit(party_id=self.party_id.text())
         self.refresh_all()
 

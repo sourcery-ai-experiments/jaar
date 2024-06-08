@@ -24,45 +24,6 @@
 #     assert yao_sue_uid == 1
 
 
-# def test_RealUnit_get_changeunit_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
-#     yao_sue_uid = oregon_real.set_changeunit(example_yao_sue_changeunit())
-
-#     # WHEN
-#     yao_sue_changeunit = oregon_real.get_changeunit(yao_sue_uid)
-
-#     # THEN
-#     assert yao_sue_changeunit == example_yao_sue_changeunit()
-
-
-# def test_RealUnit_changeunit_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
-#     # GIVEN
-#     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
-#     static_yao_sue_uid = 1
-#     assert oregon_real.changeunit_file_exists(static_yao_sue_uid) == False
-
-#     # WHEN
-#     gen_yao_sue_uid = oregon_real.set_changeunit(example_yao_sue_changeunit())
-#     assert static_yao_sue_uid == gen_yao_sue_uid
-
-#     # THEN
-#     assert oregon_real.changeunit_file_exists(static_yao_sue_uid)
-
-
-# def test_RealUnit_del_changeunit_CorrectModifiesAttr(reals_dir_setup_cleanup):
-#     # GIVEN
-#     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
-#     yao_sue_uid = oregon_real.set_changeunit(example_yao_sue_changeunit())
-#     assert oregon_real.changeunit_file_exists(yao_sue_uid)
-
-#     # WHEN
-#     oregon_real.del_changeunit(yao_sue_uid)
-
-#     # THEN
-#     assert oregon_real.changeunit_file_exists(yao_sue_uid) == False
-
-
 # def test_RealUnit_apply_requestunit_CorrectlyCreates_role_agendas(
 #     reals_dir_setup_cleanup,
 # ):
@@ -75,7 +36,7 @@
 #     texas_text = "Texas"
 #     yao_FILLERFILLER.set_econunit(texas_text)
 #     texas_econ = yao_FILLERFILLER.get_econunit(texas_text)
-#     texas_jobs_dir = texas_econ.agendahub.jobs_dir()
+#     texas_jobs_dir = texas_econ.filehub.jobs_dir()
 
 #     highwaay_needunit = create_needunit(
 #         econdeleteme=econdeleteme_shop("war", yao_text, texas_text),

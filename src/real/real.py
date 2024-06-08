@@ -3,11 +3,11 @@ from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
-from src.change.agendahub import agendahub_shop, AgendaHub, pipeline_duty_work_text
+from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
 from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src.real.admin_duty import get_duty_file_agenda, initialize_change_duty_files
+from src.real.admin_duty import initialize_change_duty_files
 from src.real.admin_work import initialize_work_file, get_default_work_agenda
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
@@ -53,10 +53,10 @@ class RealUnit:
         persons = dir_files(self._persons_dir, include_dirs=True, include_files=False)
         return set(persons.keys())
 
-    def get_person_agendahubs(self) -> dict[PersonID:AgendaHub]:
+    def get_person_filehubs(self) -> dict[PersonID:FileHub]:
         x_person_ids = self._get_person_folder_names()
         return {
-            x_person_id: agendahub_shop(
+            x_person_id: filehub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
@@ -103,8 +103,8 @@ class RealUnit:
             return self._journal_db
 
     # person management
-    def _get_agendahub(self, person_id: PersonID) -> AgendaHub:
-        return agendahub_shop(
+    def _get_filehub(self, person_id: PersonID) -> FileHub:
+        return filehub_shop(
             person_id=person_id,
             real_id=self.real_id,
             reals_dir=self.reals_dir,
@@ -114,18 +114,18 @@ class RealUnit:
         )
 
     def init_person_econs(self, person_id: PersonID):
-        x_agendahub = self._get_agendahub(person_id)
-        initialize_change_duty_files(x_agendahub)
-        initialize_work_file(x_agendahub, self.get_person_duty_from_file(person_id))
+        x_filehub = self._get_filehub(person_id)
+        initialize_change_duty_files(x_filehub)
+        initialize_work_file(x_filehub, self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
-        return get_duty_file_agenda(self._get_agendahub(person_id))
+        return self._get_filehub(person_id).get_duty_agenda()
 
     def set_person_econunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_agendahub = agendahub_shop(
+            healer_filehub = filehub_shop(
                 self.reals_dir,
                 self.real_id,
                 healer_id,
@@ -136,28 +136,28 @@ class RealUnit:
             )
             for econ_idea in healer_dict.values():
                 self._set_person_econunits_agent_contract(
-                    healer_agendahub=healer_agendahub,
+                    healer_filehub=healer_filehub,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
     def _set_person_econunits_agent_contract(
         self,
-        healer_agendahub: AgendaHub,
+        healer_filehub: FileHub,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = get_econunit(healer_agendahub, econ_road)
-        x_econ.agendahub.save_role_agenda(duty_agenda)
+        x_econ = get_econunit(healer_filehub, econ_road)
+        x_econ.filehub.save_role_agenda(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
-        listener_agendahub = self._get_agendahub(person_id)
-        x_duty = get_duty_file_agenda(listener_agendahub)
+        listener_filehub = self._get_filehub(person_id)
+        x_duty = listener_filehub.get_duty_agenda()
         x_duty.calc_agenda_metrics()
         x_work = get_default_work_agenda(x_duty)
         for healer_id, healer_dict in x_duty._healers_dict.items():
-            healer_agendahub = agendahub_shop(
+            healer_filehub = filehub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=healer_id,
@@ -166,9 +166,9 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            create_person_econunits(healer_agendahub)
+            create_person_econunits(healer_filehub)
             for econ_road in healer_dict.keys():
-                econ_agendahub = agendahub_shop(
+                econ_filehub = filehub_shop(
                     reals_dir=self.reals_dir,
                     real_id=self.real_id,
                     person_id=healer_id,
@@ -177,19 +177,19 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     planck=self._planck,
                 )
-                econ_agendahub.save_role_agenda(x_duty)
-                x_job = create_job_file_from_role_file(econ_agendahub, person_id)
+                econ_filehub.save_role_agenda(x_duty)
+                x_job = create_job_file_from_role_file(econ_filehub, person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if nothing has come from duty->role->job->work pipeline use duty->work pipeline
         x_work.calc_agenda_metrics()
         if len(x_work._idea_dict) == 1:
-            listener_agendahub.set_nox_type(pipeline_duty_work_text())
-            x_work = listen_to_debtors_roll(x_work, listener_agendahub)
+            listener_filehub.set_nox_type(pipeline_duty_work_text())
+            x_work = listen_to_debtors_roll(x_work, listener_filehub)
             x_work.calc_agenda_metrics()
         if len(x_work._idea_dict) == 1:
             x_work = x_duty
-        listener_agendahub.save_work_agenda(x_work)
+        listener_filehub.save_work_agenda(x_work)
 
         return self.get_work_file_agenda(person_id)
 
@@ -198,7 +198,7 @@ class RealUnit:
             self.generate_work_agenda(x_person_id)
 
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        return self._get_agendahub(person_id).get_work_agenda()
+        return self._get_filehub(person_id).get_work_agenda()
 
     # def _set_partyunit(
     #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
@@ -207,7 +207,7 @@ class RealUnit:
     #     .save_refreshed_job_to_jobs()
 
     # def _display_duty_party_graph(self, x_person_id: PersonID):
-    #     x_duty_agenda = get_duty_file_agenda(x_agendahub)
+    #     x_duty_agenda = x_filehub.get_duty_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):
     #     pass

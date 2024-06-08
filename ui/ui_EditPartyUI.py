@@ -15,9 +15,9 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1289, 712)
-        self.party_insert_button = QtWidgets.QPushButton(Form)
-        self.party_insert_button.setGeometry(QtCore.QRect(500, 70, 171, 21))
-        self.party_insert_button.setObjectName("party_insert_button")
+        self.party_gui_insert_button = QtWidgets.QPushButton(Form)
+        self.party_gui_insert_button.setGeometry(QtCore.QRect(500, 70, 171, 21))
+        self.party_gui_insert_button.setObjectName("party_gui_insert_button")
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(500, 300, 171, 20))
         self.label.setObjectName("label")
@@ -103,7 +103,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.party_insert_button.setText(_translate("Form", "Add new Party"))
+        self.party_gui_insert_button.setText(_translate("Form", "Add new Party"))
         self.label.setText(_translate("Form", "Click to see Group partyship"))
         self.party_update_button.setText(
             _translate("Form", "update old party pid to new")

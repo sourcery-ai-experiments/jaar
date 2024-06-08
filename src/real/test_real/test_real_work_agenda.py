@@ -2,8 +2,7 @@ from src.agenda.healer import healerhold_shop
 from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.change.agendahub import agendahub_shop
-from src.real.admin_duty import get_duty_file_agenda
+from src.change.filehub import filehub_shop
 from src.real.admin_work import get_default_work_agenda
 from src.real.real import realunit_shop
 from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
@@ -56,11 +55,11 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
-    sue_agendahub = agendahub_shop(None, music_text, sue_text, None)
+    sue_filehub = filehub_shop(None, music_text, sue_text, None)
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work/{sue_text}.json"
     assert os_path_exists(x_sue_work_path) == False
     music_real.init_person_econs(sue_text)
-    assert sue_agendahub.work_path() == x_sue_work_path
+    assert sue_filehub.work_path() == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
 
     # WHEN
@@ -77,14 +76,12 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
     music_real.init_person_econs(sue_text)
-    sue_agendahub = agendahub_shop(
-        music_real.reals_dir, music_real.real_id, sue_text, None
-    )
-    before_sue_agenda = sue_agendahub.get_work_agenda()
+    sue_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
+    before_sue_agenda = sue_filehub.get_work_agenda()
     bob_text = "Bob"
     before_sue_agenda.add_partyunit(bob_text)
-    sue_agendahub.save_work_agenda(before_sue_agenda)
-    assert sue_agendahub.get_work_agenda().party_exists(bob_text)
+    sue_filehub.save_work_agenda(before_sue_agenda)
+    assert sue_filehub.get_work_agenda().party_exists(bob_text)
 
     # WHEN
     after_sue_agenda = music_real.generate_work_agenda(sue_text)
@@ -100,17 +97,15 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     bob_text = "Bob"
     music_real.init_person_econs(bob_text)
-    bob_agendahub = agendahub_shop(
-        music_real.reals_dir, music_real.real_id, bob_text, None
-    )
+    bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     sue_text = "Sue"
     assert before_bob_work_agenda.party_exists(sue_text) == False
 
     # WHEN
-    bob_duty_agenda = get_duty_file_agenda(bob_agendahub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(sue_text)
-    bob_agendahub.save_duty_agenda(bob_duty_agenda)
+    bob_filehub.save_duty_agenda(bob_duty_agenda)
 
     # WHEN
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
@@ -125,14 +120,12 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
 
     bob_text = "Bob"
     music_real.init_person_econs(bob_text)
-    bob_agendahub = agendahub_shop(
-        music_real.reals_dir, music_real.real_id, bob_text, None
-    )
+    bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     assert after_bob_work_agenda.party_exists(bob_text) == False
 
     # WHEN
-    bob_duty_agenda = get_duty_file_agenda(bob_agendahub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.set_party_pool(100)
     texas_text = "Texas"
@@ -142,7 +135,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    bob_agendahub.save_duty_agenda(bob_duty_agenda)
+    bob_filehub.save_duty_agenda(bob_duty_agenda)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
     # THEN
@@ -159,9 +152,9 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     sue_text = "Sue"
     music_real.init_person_econs(bob_text)
     reals_dir = music_real.reals_dir
-    bob_agendahub = agendahub_shop(reals_dir, music_real.real_id, bob_text, None)
+    bob_filehub = filehub_shop(reals_dir, music_real.real_id, bob_text, None)
     music_real.init_person_econs(sue_text)
-    sue_agendahub = agendahub_shop(reals_dir, music_real.real_id, sue_text, None)
+    sue_filehub = filehub_shop(reals_dir, music_real.real_id, sue_text, None)
     bob_duty_agenda = music_real.generate_work_agenda(bob_text)
     sue_duty_agenda = music_real.generate_work_agenda(sue_text)
 
@@ -171,18 +164,18 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
-    bob_duty_agenda = get_duty_file_agenda(bob_agendahub)
+    bob_duty_agenda = bob_filehub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(bob_text)
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
-    bob_agendahub.save_duty_agenda(bob_duty_agenda)
+    bob_filehub.save_duty_agenda(bob_duty_agenda)
 
-    sue_duty_agenda = get_duty_file_agenda(sue_agendahub)
+    sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     sue_duty_agenda.add_partyunit(bob_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
-    sue_agendahub.save_duty_agenda(sue_duty_agenda)
+    sue_filehub.save_duty_agenda(sue_duty_agenda)
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)

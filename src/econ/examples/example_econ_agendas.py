@@ -6,7 +6,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import temp_real_id, get_texas_agendahub
+from src.econ.examples.econ_env_kit import temp_real_id, get_texas_filehub
 from random import randrange
 
 
@@ -173,25 +173,25 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex4():
     ex4_id = "ex4"
-    ex4_agendahub = get_texas_agendahub()
-    ex4_agendahub.real_id = ex4_id
-    x_econ = econunit_shop(ex4_agendahub)
-    delete_dir(x_econ.agendahub.econ_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=True)
-    x_econ.agendahub.save_job_agenda(get_7nodeJRootWithH_agenda())
-    x_econ.agendahub.save_job_agenda(get_agenda_with7amCleanTableReason())
-    x_econ.agendahub.save_job_agenda(get_agenda_base_time_example())
-    x_econ.agendahub.save_job_agenda(get_agenda_x1_3levels_1reason_1beliefs())
+    ex4_filehub = get_texas_filehub()
+    ex4_filehub.real_id = ex4_id
+    x_econ = econunit_shop(ex4_filehub)
+    delete_dir(x_econ.filehub.econ_dir())
+    x_econ.create_treasury_db(in_memory=True)
+    x_econ.filehub.save_job_agenda(get_7nodeJRootWithH_agenda())
+    x_econ.filehub.save_job_agenda(get_agenda_with7amCleanTableReason())
+    x_econ.filehub.save_job_agenda(get_agenda_base_time_example())
+    x_econ.filehub.save_job_agenda(get_agenda_x1_3levels_1reason_1beliefs())
 
 
 def _delete_and_set_ex6(ex6_id: str = None):
     if ex6_id is None:
         ex6_id = "ex6"
-    ex6_agendahub = get_texas_agendahub()
-    ex6_agendahub.real_id = ex6_id
-    x_econ = econunit_shop(ex6_agendahub)
-    delete_dir(x_econ.agendahub.econ_dir())
-    x_econ.set_econ_dirs(in_memory_treasury=False)
+    ex6_filehub = get_texas_filehub()
+    ex6_filehub.real_id = ex6_id
+    x_econ = econunit_shop(ex6_filehub)
+    delete_dir(x_econ.filehub.econ_dir())
+    x_econ.create_treasury_db(in_memory=False)
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -203,25 +203,25 @@ def _delete_and_set_ex6(ex6_id: str = None):
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.agendahub.save_job_agenda(sal_agenda)
+    x_econ.filehub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.agendahub.save_job_agenda(bob_agenda)
+    x_econ.filehub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_econ.agendahub.save_job_agenda(tom_agenda)
+    x_econ.filehub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_econ.agendahub.save_job_agenda(ava_agenda)
+    x_econ.filehub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_econ.agendahub.save_job_agenda(elu_agenda)
+    x_econ.filehub.save_job_agenda(elu_agenda)
 
     x_econ.refresh_treasury_job_agendas_data()
     x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)

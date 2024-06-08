@@ -1,11 +1,9 @@
+from src._instrument.file import delete_dir
 from src._road.road import OwnerID, PersonID
 from src.agenda.party import partylink_shop
-from src.agenda.agenda import AgendaUnit, get_from_json as get_agenda_from_json
-from src.change.agendahub import AgendaHub
+from src.agenda.agenda import AgendaUnit
+from src.change.filehub import FileHub
 from src.change.listen import listen_to_debtors_roll
-from src._instrument.file import set_dir, delete_dir, open_file
-from dataclasses import dataclass
-from sqlite3 import connect as sqlite3_connect, Connection
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -38,15 +36,12 @@ from src.econ.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
 )
-from os.path import exists as os_path_exists
+from sqlite3 import connect as sqlite3_connect, Connection
+from dataclasses import dataclass
 
 
 class IntentBaseDoesNotExistException(Exception):
     pass
-
-
-def treasury_db_filename() -> str:
-    return "treasury.db"
 
 
 class RoleAgendaFileException(Exception):
@@ -55,26 +50,19 @@ class RoleAgendaFileException(Exception):
 
 @dataclass
 class EconUnit:
-    agendahub: AgendaHub
+    filehub: FileHub
     _treasury_db = None
-
-    # Admin
-    def set_econ_dirs(self, in_memory_treasury: bool = None):
-        set_dir(x_path=self.agendahub.econ_dir())
-        set_dir(x_path=self.agendahub.roles_dir())
-        set_dir(x_path=self.agendahub.jobs_dir())
-        self._create_treasury_db(in_memory=in_memory_treasury, overwrite=True)
 
     # treasurying
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.agendahub.get_role_agenda(owner_id)
+            owner_role = self.filehub.get_role_agenda(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            self.agendahub.save_role_agenda(owner_role)
+            self.filehub.save_role_agenda(owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.agendahub.get_job_agenda(x_owner_id)
+        x_agenda = self.filehub.get_job_agenda(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -87,7 +75,7 @@ class EconUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.agendahub.save_job_agenda(x_agenda)
+        self.filehub.save_job_agenda(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
     def set_credit_flow_for_agenda(
@@ -198,11 +186,11 @@ class EconUnit:
             )
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.agendahub.get_job_agenda(owner_id=owner_id)
+            x_agenda = self.filehub.get_job_agenda(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.agendahub.save_job_agenda(x_agenda)
+            self.filehub.save_job_agenda(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -212,13 +200,12 @@ class EconUnit:
     def refresh_treasury_job_agendas_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
-        self._create_treasury_db(in_memory=in_memory, overwrite=True)
+        self.create_treasury_db(in_memory=in_memory, overwrite=True)
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for file_name in self.agendahub.get_jobs_dir_file_names_list():
-            agenda_json = open_file(self.agendahub.jobs_dir(), file_name)
-            agendaunit_x = get_agenda_from_json(x_agenda_json=agenda_json)
+        for person_id in self.filehub.get_jobs_dir_file_names_list():
+            agendaunit_x = self.filehub.get_job_agenda(person_id)
             agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
@@ -283,33 +270,31 @@ class EconUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return sqlite3_connect(self.get_treasury_db_path())
+            return sqlite3_connect(self.filehub.treasury_db_path())
         else:
             return self._treasury_db
 
-    def _create_treasury_db(
+    def create_treasury_db(
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         if overwrite:
-            self._delete_treasury()
+            self.delete_treasury()
 
         treasury_file_new = True
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            sqlite3_connect(self.get_treasury_db_path())
+            self.filehub.create_econ_dir_if_missing()
+            sqlite3_connect(self.filehub.treasury_db_path())
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
                     treasury_conn.execute(sqlstr)
 
-    def _delete_treasury(self):
+    def delete_treasury(self):
         self._treasury_db = None
-        delete_dir(self.get_treasury_db_path())
-
-    def get_treasury_db_path(self):
-        return f"{self.agendahub.econ_dir()}/{treasury_db_filename()}"
+        delete_dir(self.filehub.treasury_db_path())
 
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
@@ -347,12 +332,12 @@ class EconUnit:
                     cur.execute(sqlstr)
 
 
-def econunit_shop(x_agendahub: AgendaHub, in_memory_treasury: bool = None) -> EconUnit:
+def econunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> EconUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
 
-    econ_x = EconUnit(x_agendahub)
-    econ_x.set_econ_dirs(in_memory_treasury=in_memory_treasury)
+    econ_x = EconUnit(x_filehub)
+    econ_x.create_treasury_db(in_memory=in_memory_treasury)
     return econ_x
 
 
@@ -371,8 +356,8 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
             )
 
 
-def create_job_file_from_role_file(agendahub: AgendaHub, person_id: PersonID):
-    x_role = agendahub.get_role_agenda(person_id)
-    x_job = listen_to_debtors_roll(x_role, agendahub)
-    agendahub.save_job_agenda(x_job)
+def create_job_file_from_role_file(filehub: FileHub, person_id: PersonID):
+    x_role = filehub.get_role_agenda(person_id)
+    x_job = listen_to_debtors_roll(x_role, filehub)
+    filehub.save_job_agenda(x_job)
     return x_job

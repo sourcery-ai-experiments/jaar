@@ -5,12 +5,11 @@ from src._instrument.file import (
     get_parts_dir,
     delete_dir,
 )
+from src._road.jaar_config import treasury_file_name, get_rootpart_of_econ_dir
 from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
-from src._road.worldnox import UserNox, get_rootpart_of_econ_dir
-from src.change.agendahub import get_econ_path, agendahub_shop
 from src.agenda.agenda import AgendaUnit
-from src.econ.econ import EconUnit, econunit_shop, treasury_db_filename
-from src.real.admin_duty import get_duty_file_agenda
+from src.change.filehub import get_econ_path, filehub_shop, FileHub
+from src.econ.econ import EconUnit, econunit_shop
 
 
 class InvalidEconException(Exception):
@@ -21,69 +20,51 @@ class PersonCreateEconUnitsException(Exception):
     pass
 
 
-def _get_econs_roads(x_usernox: UserNox) -> dict[RoadUnit:EconUnit]:
-    x_duty_agenda = get_duty_file_agenda(x_usernox)
+def _get_econs_roads(x_filehub: FileHub) -> dict[RoadUnit:EconUnit]:
+    x_duty_agenda = x_filehub.get_duty_agenda()
     x_duty_agenda.calc_agenda_metrics()
     if x_duty_agenda._econs_justified == False:
-        x_str = f"Cannot set '{x_usernox.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
+        x_str = f"Cannot set '{x_filehub.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
         raise PersonCreateEconUnitsException(x_str)
     if x_duty_agenda._econs_buildable == False:
-        x_str = f"Cannot set '{x_usernox.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
+        x_str = f"Cannot set '{x_filehub.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
         raise PersonCreateEconUnitsException(x_str)
 
-    x_person_econs = x_duty_agenda._healers_dict.get(x_usernox.person_id)
+    x_person_econs = x_duty_agenda._healers_dict.get(x_filehub.person_id)
     return get_empty_dict_if_none(x_person_econs)
 
 
-def create_econ_dir(x_usernox: UserNox, x_road: RoadUnit) -> str:
-    x_econ_path = get_econ_path(x_usernox, x_road)
-    set_dir(x_econ_path)
-    return x_econ_path
-
-
-def init_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
-    x_agendahub = agendahub_shop(
-        reals_dir=x_usernox.reals_dir,
-        real_id=x_usernox.real_id,
-        person_id=x_usernox.person_id,
+def init_econunit(x_filehub: FileHub, econ_road: RoadUnit) -> EconUnit:
+    x_filehub = filehub_shop(
+        reals_dir=x_filehub.reals_dir,
+        real_id=x_filehub.real_id,
+        person_id=x_filehub.person_id,
         econ_road=econ_road,
-        road_delimiter=x_usernox._road_delimiter,
-        planck=x_usernox._planck,
+        road_delimiter=x_filehub.road_delimiter,
+        planck=x_filehub.planck,
     )
-    x_econunit = econunit_shop(x_agendahub)
-    x_econunit.set_econ_dirs()
-    return x_econunit
+    return econunit_shop(x_filehub, in_memory_treasury=False)
 
 
-def create_person_econunits(x_usernox: UserNox):
-    x_person_econs = _get_econs_roads(x_usernox)
+def create_person_econunits(x_filehub: FileHub):
+    x_person_econs = _get_econs_roads(x_filehub)
     for econ_idea in x_person_econs.values():
-        init_econunit(x_usernox, econ_idea.get_road())
-
-    db_filename = treasury_db_filename()
-    econs_dir = x_usernox.econs_dir()
-    root_dir = get_rootpart_of_econ_dir()
-    for treasury_dir in get_all_dirs_with_file(db_filename, econs_dir):
-        treasury_road = create_road_from_nodes(get_parts_dir(treasury_dir))
-        treasury_road = rebuild_road(treasury_road, root_dir, x_usernox.real_id)
-        if x_person_econs.get(treasury_road) is None:
-            dir_to_delete = f"{x_usernox.econs_dir()}/{treasury_dir}"
-            delete_dir(dir_to_delete)
+        init_econunit(x_filehub, econ_idea.get_road())
 
 
-def get_econunit(x_usernox: UserNox, econ_road: RoadUnit) -> EconUnit:
-    return init_econunit(x_usernox, econ_road)
+def get_econunit(x_filehub: FileHub, econ_road: RoadUnit) -> EconUnit:
+    return init_econunit(x_filehub, econ_road)
 
 
-def set_econunit_role(x_usernox: UserNox, econ_road: RoadUnit, role: AgendaUnit):
-    x_econ = get_econunit(x_usernox, econ_road)
-    x_econ.agendahub.save_role_agenda(role)
+def set_econunit_role(x_filehub: FileHub, econ_road: RoadUnit, role: AgendaUnit):
+    x_econ = get_econunit(x_filehub, econ_road)
+    x_econ.filehub.save_role_agenda(role)
 
 
-def set_econunits_role(x_usernox: UserNox, role: AgendaUnit):
-    for x_econ_road in _get_econs_roads(x_usernox).keys():
-        set_econunit_role(x_usernox, x_econ_road, role)
+def set_econunits_role(x_filehub: FileHub, role: AgendaUnit):
+    for x_econ_road in _get_econs_roads(x_filehub).keys():
+        set_econunit_role(x_filehub, x_econ_road, role)
 
 
-def set_person_econunits_role(x_usernox: UserNox):
-    set_econunits_role(x_usernox, get_duty_file_agenda(x_usernox))
+def set_person_econunits_role(x_filehub: FileHub):
+    set_econunits_role(x_filehub, x_filehub.get_duty_agenda())

@@ -15,9 +15,9 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1199, 771)
-        self.party_insert_button = QtWidgets.QPushButton(Form)
-        self.party_insert_button.setGeometry(QtCore.QRect(170, 40, 61, 31))
-        self.party_insert_button.setObjectName("party_insert_button")
+        self.party_gui_insert_button = QtWidgets.QPushButton(Form)
+        self.party_gui_insert_button.setGeometry(QtCore.QRect(170, 40, 61, 31))
+        self.party_gui_insert_button.setObjectName("party_gui_insert_button")
         self.party_update_button = QtWidgets.QPushButton(Form)
         self.party_update_button.setGeometry(QtCore.QRect(170, 70, 61, 28))
         self.party_update_button.setObjectName("party_update_button")
@@ -153,7 +153,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.party_insert_button.setText(_translate("Form", "Add Party"))
+        self.party_gui_insert_button.setText(_translate("Form", "Add Party"))
         self.party_update_button.setText(_translate("Form", "Update"))
         self.label_3.setText(_translate("Form", "Weight:"))
         self.party_delete_button.setText(_translate("Form", "delete Party"))

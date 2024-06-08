@@ -155,14 +155,14 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_AgendaUnit_si
     x_planck = 0.5
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
-    x_money_desc = "dragon funds"
+    x_monetary_desc = "dragon funds"
     x_party_creditor_pool = 77
     x_party_debtor_pool = 88
     after_sue_agenda._weight = x_agendaUnit_weight
     after_sue_agenda._planck = x_planck
     after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
-    after_sue_agenda.set_money_desc(x_money_desc)
+    after_sue_agenda.set_monetary_desc(x_monetary_desc)
     after_sue_agenda.set_party_creditor_pool(x_party_creditor_pool)
     after_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
 
@@ -175,7 +175,7 @@ def test_BookUnit_add_all_different_agendaatoms_Creates_AgendaAtom_AgendaUnit_si
     rico_agendaatom = get_nested_value(sue_bookunit.agendaatoms, x_keylist)
     assert rico_agendaatom.get_value("_max_tree_traverse") == x_max_tree_traverse
     assert rico_agendaatom.get_value("_meld_strategy") == x_meld_strategy
-    assert rico_agendaatom.get_value("_money_desc") == x_money_desc
+    assert rico_agendaatom.get_value("_monetary_desc") == x_monetary_desc
     assert rico_agendaatom.get_value("_party_creditor_pool") == x_party_creditor_pool
     assert rico_agendaatom.get_value("_party_debtor_pool") == x_party_debtor_pool
     assert rico_agendaatom.get_value("_weight") == x_agendaUnit_weight

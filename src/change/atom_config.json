@@ -352,7 +352,7 @@
                 "python_type": "bool",
                 "sqlite_datatype": "TEXT"
             },
-            "_money_desc": {
+            "_monetary_desc": {
                 "python_type": "str",
                 "sqlite_datatype": "TEXT"
             },
