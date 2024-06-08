@@ -24,6 +24,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     pound_text = "#"
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None, road_delimiter=pound_text)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
 
     texas_text = "Texas"
@@ -52,6 +53,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -81,6 +83,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Tex/as"
@@ -105,6 +108,7 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -141,6 +145,7 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     texas_text = "Texas"
@@ -167,6 +172,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -199,6 +205,7 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"
@@ -240,6 +247,7 @@ def test_set_person_econunits_role_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     bob_text = "Bob"

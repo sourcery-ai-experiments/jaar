@@ -252,7 +252,7 @@ def test_FileHub_save_change_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
     two_file_json = open_file(sue_filehub.changes_dir(), next_filename)
 
 
-def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFilesExist(
+def test_FileHub_default_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFilesExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -261,7 +261,7 @@ def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNocha
 
     # WHEN
     delete_dir(sue_filehub.changes_dir())
-    sue_changeunit = sue_filehub._create_new_changeunit()
+    sue_changeunit = sue_filehub._default_changeunit()
 
     # THEN
     assert sue_changeunit._giver == sue_text
@@ -273,7 +273,7 @@ def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNocha
     assert sue_changeunit._changes_dir == sue_filehub.changes_dir()
 
 
-def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesExist(
+def test_FileHub_default_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -288,7 +288,7 @@ def test_FileHub_create_new_changeunit_ReturnsObjWithCorrect_change_id_Whenchang
     sue_filehub.save_change_file(zero_changeunit)
 
     # WHEN
-    sue_changeunit = sue_filehub._create_new_changeunit()
+    sue_changeunit = sue_filehub._default_changeunit()
 
     # THEN
     assert sue_changeunit._giver == sue_text
@@ -307,11 +307,11 @@ def test_FileHub_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
     yao_text = "yao"
-    x0_changeunit = sue_filehub._create_new_changeunit()
+    x0_changeunit = sue_filehub._default_changeunit()
     x0_changeunit.set_face(yao_text)
     sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
-    x1_changeunit = sue_filehub._create_new_changeunit()
+    x1_changeunit = sue_filehub._default_changeunit()
     x1_changeunit.set_face(bob_text)
     sue_filehub.save_change_file(x1_changeunit)
 
@@ -334,11 +334,11 @@ def test_FileHub_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
     yao_text = "yao"
-    x0_changeunit = sue_filehub._create_new_changeunit()
+    x0_changeunit = sue_filehub._default_changeunit()
     x0_changeunit.set_face(yao_text)
     sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
-    x1_changeunit = sue_filehub._create_new_changeunit()
+    x1_changeunit = sue_filehub._default_changeunit()
     x1_changeunit.set_face(bob_text)
     sue_filehub.save_change_file(x1_changeunit)
 
@@ -463,6 +463,7 @@ def test_FileHub_merge_any_changes_ReturnsSameObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     duty_agenda = sue_filehub.get_duty_agenda()
     duty_agenda._last_change_id is None
 
@@ -480,6 +481,7 @@ def test_FileHub_merge_any_changes_ReturnsObj_WithSinglechangeModifies_1atom(
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
     sue_filehub.save_change_file(sue_1atomunits_changeunit())
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     duty_agenda = sue_filehub.get_duty_agenda()
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
@@ -503,6 +505,7 @@ def test_FileHub_merge_any_changes_ReturnsObj_WithSinglechangeModifies_2atoms(
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
     sue_filehub.save_change_file(sue_2atomunits_changeunit())
+    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
     duty_agenda = sue_filehub.get_duty_agenda()
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
