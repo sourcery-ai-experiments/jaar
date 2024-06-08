@@ -15,6 +15,8 @@ from src._road.jaar_config import (
     get_changes_folder,
     get_test_real_id,
     get_test_reals_dir,
+    get_init_change_id_if_None,
+    get_json_filename,
 )
 from src._road.finance import default_planck_if_none
 from src._road.road import (
@@ -38,6 +40,7 @@ from src.change.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
+from src.change.change import ChangeUnit
 from os.path import exists as os_path_exists
 from dataclasses import dataclass
 
@@ -51,6 +54,14 @@ class Invalid_duty_Exception(Exception):
 
 
 class Invalid_work_Exception(Exception):
+    pass
+
+
+class SaveChangeFileException(Exception):
+    pass
+
+
+class ChangeFileMissingException(Exception):
     pass
 
 
@@ -204,6 +215,68 @@ class FileHub:
                 x_atom = agendaatom_get_from_json(x_file_text)
                 modify_agenda_with_agendaatom(x_agenda, x_atom)
         return x_agenda
+
+    def get_max_change_file_number(self) -> int:
+        if not os_path_exists(self.changes_dir()):
+            return None
+        changes_dir = self.changes_dir()
+        change_filenames = dir_files(changes_dir, True, include_files=True).keys()
+        change_file_numbers = {int(filename) for filename in change_filenames}
+        return max(change_file_numbers, default=None)
+
+    def _get_next_change_file_number(self) -> int:
+        max_file_number = self.get_max_change_file_number()
+        init_change_id = get_init_change_id_if_None()
+        return init_change_id if max_file_number is None else max_file_number + 1
+
+    def change_file_name(self, change_id: int) -> str:
+        return get_json_filename(change_id)
+
+    def change_file_exists(self, change_id: int) -> bool:
+        change_filename = self.change_file_name(change_id)
+        return os_path_exists(f"{self.changes_dir()}/{change_filename}")
+
+    def validate_changeunit(self, x_changeunit: ChangeUnit) -> ChangeUnit:
+        if x_changeunit._atoms_dir != self.atoms_dir():
+            x_changeunit._atoms_dir = self.atoms_dir()
+        if x_changeunit._changes_dir != self.changes_dir():
+            x_changeunit._changes_dir = self.changes_dir()
+        if x_changeunit._change_id != self._get_next_change_file_number():
+            x_changeunit._change_id = self._get_next_change_file_number()
+        if x_changeunit._giver != self.person_id:
+            x_changeunit._giver = self.person_id
+        if x_changeunit._book_start != self._get_next_atom_file_number():
+            x_changeunit._book_start = self._get_next_atom_file_number()
+        return x_changeunit
+
+    def save_change_file(
+        self,
+        x_change: ChangeUnit,
+        replace: bool = True,
+        correct_invalid_attrs: bool = True,
+    ) -> ChangeUnit:
+        if correct_invalid_attrs:
+            x_change = self.validate_changeunit(x_change)
+
+        if x_change._atoms_dir != self.atoms_dir():
+            raise SaveChangeFileException(
+                f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {x_change._atoms_dir}. It must be {self.atoms_dir()}."
+            )
+        if x_change._changes_dir != self.changes_dir():
+            raise SaveChangeFileException(
+                f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {x_change._changes_dir}. It must be {self.changes_dir()}."
+            )
+        if x_change._giver != self.person_id:
+            raise SaveChangeFileException(
+                f"ChangeUnit file cannot be saved because changeunit._giver is incorrect: {x_change._giver}. It must be {self.person_id}."
+            )
+        change_filename = self.change_file_name(x_change._change_id)
+        if not replace and self.change_file_exists(x_change._change_id):
+            raise SaveChangeFileException(
+                f"ChangeUnit file {change_filename} already exists and cannot be saved over."
+            )
+        x_change.save_files()
+        return x_change
 
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)

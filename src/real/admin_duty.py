@@ -11,7 +11,6 @@ from src.agenda.pledge import create_pledge
 from src.change.filehub import filehub_shop, FileHub
 from src.change.change import changeunit_shop, get_init_change_id_if_None
 from src.real.admin_change import (
-    changeunit_file_exists,
     _merge_changes_into_agenda,
     _create_new_changeunit,
 )
@@ -82,7 +81,7 @@ def initialize_change_duty_files(x_filehub: FileHub):
     set_dir(x_filehub.atoms_dir())
     set_dir(x_filehub.changes_dir())
     x_duty_file_exists = x_filehub.duty_file_exists()
-    change_file_exists = changeunit_file_exists(x_filehub, init_change_id())
+    change_file_exists = x_filehub.change_file_exists(init_change_id())
     if x_duty_file_exists == False and change_file_exists == False:
         _create_initial_change_and_duty_files(x_filehub)
     elif x_duty_file_exists == False and change_file_exists:

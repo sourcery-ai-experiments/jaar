@@ -1,4 +1,4 @@
-from src._instrument.file import open_file, dir_files, delete_dir, set_dir
+from src._instrument.file import open_file, dir_files, delete_dir, set_dir, save_file
 from src._road.jaar_config import init_change_id
 from src.change.change import changeunit_shop, get_json_filename
 from src.change.filehub import filehub_shop
@@ -17,13 +17,8 @@ from src.real.admin_duty import (
     add_pledge_change,
 )
 from src.real.admin_change import (
-    changeunit_file_exists,
-    _get_next_change_file_number,
-    get_max_change_file_number,
     get_changeunit,
     _merge_changes_into_agenda,
-    validate_changeunit,
-    save_changeunit_file,
     _create_new_changeunit,
     create_save_changeunit,
     del_changeunit_file,
@@ -34,7 +29,47 @@ from pytest import raises as pytest_raises
 from copy import deepcopy as copy_deepcopy
 
 
-def test_save_changeunit_file_SaveCorrectObj(reals_dir_setup_cleanup):
+def test_FileHub_get_max_change_file_number_ReturnsCorrectObj(reals_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(None, None, sue_text)
+
+    # WHEN / THEN
+    delete_dir(sue_filehub.changes_dir())
+    assert sue_filehub.get_max_change_file_number() is None
+    assert sue_filehub._get_next_change_file_number() == init_change_id()
+    assert sue_filehub._get_next_change_file_number() == 0
+
+    # GIVEN
+    six_int = 6
+    save_file(sue_filehub.changes_dir(), sue_filehub.change_file_name(six_int), "x")
+
+    # WHEN / THEN
+    assert sue_filehub.get_max_change_file_number() == six_int
+    assert sue_filehub._get_next_change_file_number() == 7
+
+
+def test_FileHub_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(None, None, sue_text)
+    assert sue_filehub.change_file_exists(None) == False
+    assert sue_filehub.change_file_exists(0) == False
+    six_int = 6
+    assert sue_filehub.change_file_exists(six_int) == False
+
+    # WHEN
+    six_int = 6
+    save_file(sue_filehub.changes_dir(), sue_filehub.change_file_name(six_int), "x")
+
+    # THEN
+    assert sue_filehub.change_file_exists(None) == False
+    assert sue_filehub.change_file_exists(0) == False
+    six_int = 6
+    assert sue_filehub.change_file_exists(six_int)
+
+
+def test_FileHub_save_change_file_SaveCorrectObj(reals_dir_setup_cleanup):
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     two_int = 2
@@ -45,27 +80,26 @@ def test_save_changeunit_file_SaveCorrectObj(reals_dir_setup_cleanup):
     sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
     print(f"{sue_change2_path=}")
     print(f"{sue_change0_path=}")
-    x_change_id = two_int
     sue_changeunit = changeunit_shop(
         _giver=sue_text,
-        _change_id=x_change_id,
+        _change_id=two_int,
         _atoms_dir=sue_filehub.atoms_dir(),
         _changes_dir=sue_filehub.changes_dir(),
     )
-    assert os_path_exists(sue_change2_path) == False
-    assert os_path_exists(sue_change0_path) == False
+    assert sue_filehub.change_file_exists(two_int) == False
+    assert sue_filehub.change_file_exists(six_int) == False
 
     # WHEN
-    save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
+    sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
 
     # THEN
-    assert os_path_exists(sue_change2_path)
-    assert os_path_exists(sue_change0_path) == False
+    assert sue_filehub.change_file_exists(two_int)
+    assert sue_filehub.change_file_exists(six_int) == False
     two_file_json = open_file(sue_filehub.changes_dir(), two_filename)
     assert two_file_json == sue_changeunit.get_bookmetric_json()
 
 
-def test_save_changeunit_file_RaisesErrorIfChangeUnit_atoms_dir_IsWrong(
+def test_FileHub_save_change_file_RaisesErrorIfChangeUnit_atoms_dir_IsWrong(
     reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -83,14 +117,14 @@ def test_save_changeunit_file_RaisesErrorIfChangeUnit_atoms_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
+        sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"ChangeUnit file cannot be saved because changeunit._atoms_dir is incorrect: {sue_changeunit._atoms_dir}. It must be {sue_filehub.atoms_dir()}."
     )
 
 
-def test_save_changeunit_file_RaisesErrorIfChangeUnit_changes_dir_IsWrong(
+def test_FileHub_save_change_file_RaisesErrorIfChangeUnit_changes_dir_IsWrong(
     reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -108,47 +142,14 @@ def test_save_changeunit_file_RaisesErrorIfChangeUnit_changes_dir_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
+        sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"ChangeUnit file cannot be saved because changeunit._changes_dir is incorrect: {sue_changeunit._changes_dir}. It must be {sue_filehub.changes_dir()}."
     )
 
 
-def test_changeunit_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
-    sue_text = "Sue"
-    sue_filehub = filehub_shop(None, None, sue_text)
-    x_change_id = 2
-    six_int = 6
-    two_filename = get_json_filename(x_change_id)
-    six_filename = get_json_filename(six_int)
-    sue_change2_path = f"{sue_filehub.changes_dir()}/{two_filename}"
-    sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
-    print(f"{sue_change2_path=}")
-    sue_changeunit = changeunit_shop(
-        _giver=sue_text,
-        _change_id=x_change_id,
-        _atoms_dir=sue_filehub.atoms_dir(),
-        _changes_dir=sue_filehub.changes_dir(),
-    )
-    assert os_path_exists(sue_change2_path) == False
-    assert os_path_exists(sue_change0_path) == False
-    assert changeunit_file_exists(sue_filehub, x_change_id) == False
-    assert changeunit_file_exists(sue_filehub, six_int) == False
-
-    # WHEN
-    save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
-
-    # THEN
-    assert os_path_exists(sue_change2_path)
-    assert os_path_exists(sue_change0_path) == False
-    assert changeunit_file_exists(sue_filehub, x_change_id)
-    assert changeunit_file_exists(sue_filehub, six_int) == False
-    two_file_json = open_file(sue_filehub.changes_dir(), two_filename)
-    assert two_file_json == sue_changeunit.get_bookmetric_json()
-
-
-def test_save_changeunit_file_RaisesErrorIfChangeUnit_giver_IsWrong(
+def test_FileHub_save_change_file_RaisesErrorIfChangeUnit_giver_IsWrong(
     reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -167,14 +168,14 @@ def test_save_changeunit_file_RaisesErrorIfChangeUnit_giver_IsWrong(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
+        sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
         == f"ChangeUnit file cannot be saved because changeunit._giver is incorrect: {sue_changeunit._giver}. It must be {sue_text}."
     )
 
 
-def test_save_changeunit_file_RaisesErrorIf_replace_IsFalse(
+def test_FileHub_save_change_file_RaisesErrorIf_replace_IsFalse(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -189,16 +190,16 @@ def test_save_changeunit_file_RaisesErrorIf_replace_IsFalse(
         _atoms_dir=sue_filehub.atoms_dir(),
         _changes_dir=sue_filehub.changes_dir(),
     )
-    saved_changeunit = save_changeunit_file(sue_filehub, sue_changeunit)
+    saved_changeunit = sue_filehub.save_change_file(sue_changeunit)
 
     sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
     print(f"{sue_change0_path=}")
-    assert os_path_exists(sue_change0_path)
+    assert sue_filehub.change_file_exists(x_change_id)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        save_changeunit_file(
-            sue_filehub, saved_changeunit, replace=False, correct_invalid_attrs=False
+        sue_filehub.save_change_file(
+            saved_changeunit, replace=False, correct_invalid_attrs=False
         )
     assert (
         str(excinfo.value)
@@ -206,7 +207,7 @@ def test_save_changeunit_file_RaisesErrorIf_replace_IsFalse(
     )
 
 
-def test_validate_changeunit_ReturnsObjWithAttributesFixed(
+def test_FileHub_validate_changeunit_ReturnsObjWithAttributesFixed(
     reals_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -219,84 +220,49 @@ def test_validate_changeunit_ReturnsObjWithAttributesFixed(
     # WHEN
     invalid_sue_changeunit = changeunit_shop(
         _giver="Bob",
-        _change_id=_get_next_change_file_number(sue_filehub) - 5,
+        _change_id=sue_filehub._get_next_change_file_number() - 5,
         _atoms_dir=f"{sue_filehub.econs_dir()}/swimming",
         _changes_dir=f"{sue_filehub.econs_dir()}/swimming",
     )
-    valid_changeunit = validate_changeunit(sue_filehub, invalid_sue_changeunit)
+    valid_changeunit = sue_filehub.validate_changeunit(invalid_sue_changeunit)
 
     # THEN
     assert valid_changeunit._atoms_dir == sue_filehub.atoms_dir()
     assert valid_changeunit._changes_dir == sue_filehub.changes_dir()
-    assert valid_changeunit._change_id == _get_next_change_file_number(sue_filehub)
+    assert valid_changeunit._change_id == sue_filehub._get_next_change_file_number()
     correct_sue_changeunit = changeunit_shop(
         _giver=sue_text,
-        _change_id=_get_next_change_file_number(sue_filehub),
+        _change_id=sue_filehub._get_next_change_file_number(),
         _atoms_dir=sue_filehub.atoms_dir(),
         _changes_dir=sue_filehub.changes_dir(),
     )
     assert valid_changeunit == correct_sue_changeunit
 
 
-def test_save_changeunit_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
+def test_FileHub_save_change_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    next_int = _get_next_change_file_number(sue_filehub)
+    next_int = sue_filehub._get_next_change_file_number()
     next_filename = get_json_filename(next_int)
     sue_change2_path = f"{sue_filehub.changes_dir()}/{next_filename}"
     print(f"{sue_change2_path=}")
-    assert os_path_exists(sue_change2_path) == False
+    assert sue_filehub.change_file_exists(next_int) == False
 
     # WHEN
     invalid_sue_changeunit = changeunit_shop(
         _giver="Bob",
-        _change_id=_get_next_change_file_number(sue_filehub) - 5,
+        _change_id=sue_filehub._get_next_change_file_number() - 5,
         _atoms_dir=f"{sue_filehub.econs_dir()}/swimming",
         _changes_dir=f"{sue_filehub.econs_dir()}/swimming",
     )
-    save_changeunit_file(sue_filehub, invalid_sue_changeunit)
+    sue_filehub.save_change_file(invalid_sue_changeunit)
 
     # THEN
-    assert os_path_exists(sue_change2_path)
+    assert sue_filehub.change_file_exists(next_int)
     two_file_json = open_file(sue_filehub.changes_dir(), next_filename)
-
-
-def test_get_max_change_file_number_ReturnsCorrectObj(
-    reals_dir_setup_cleanup,
-):
-    # GIVEN
-    sue_text = "Sue"
-    sue_filehub = filehub_shop(None, None, sue_text)
-
-    # WHEN / THEN
-    delete_dir(sue_filehub.changes_dir())
-    assert get_max_change_file_number(sue_filehub) is None
-    assert _get_next_change_file_number(sue_filehub) == init_change_id()
-    assert _get_next_change_file_number(sue_filehub) == 0
-
-    # GIVEN
-    six_int = 6
-    sue6_changeunit = changeunit_shop(
-        _giver=sue_text,
-        _change_id=six_int,
-        _atoms_dir=sue_filehub.atoms_dir(),
-        _changes_dir=sue_filehub.changes_dir(),
-    )
-    sue2_changeunit = changeunit_shop(
-        _giver=sue_text,
-        _change_id=2,
-        _atoms_dir=sue_filehub.atoms_dir(),
-        _changes_dir=sue_filehub.changes_dir(),
-    )
-    save_changeunit_file(sue_filehub, sue6_changeunit, correct_invalid_attrs=False)
-    save_changeunit_file(sue_filehub, sue2_changeunit, correct_invalid_attrs=False)
-
-    # WHEN / THEN
-    assert get_max_change_file_number(sue_filehub) == six_int
-    assert _get_next_change_file_number(sue_filehub) == 7
 
 
 def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFilesExist(
@@ -314,7 +280,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenNochangeFile
     assert sue_changeunit._giver == sue_text
     assert sue_changeunit._change_id == init_change_id()
     assert sue_changeunit._change_id == 0
-    assert sue_changeunit._change_id == _get_next_change_file_number(sue_filehub)
+    assert sue_changeunit._change_id == sue_filehub._get_next_change_file_number()
     assert sue_changeunit._faces == set()
     assert sue_changeunit._atoms_dir == sue_filehub.atoms_dir()
     assert sue_changeunit._changes_dir == sue_filehub.changes_dir()
@@ -329,10 +295,10 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesE
     delete_dir(sue_filehub.changes_dir())
 
     zero_changeunit = get_sue_changeunit()
-    zero_changeunit._change_id = _get_next_change_file_number(sue_filehub)
+    zero_changeunit._change_id = sue_filehub._get_next_change_file_number()
     zero_changeunit._atoms_dir = sue_filehub.atoms_dir()
     zero_changeunit._changes_dir = sue_filehub.changes_dir()
-    save_changeunit_file(sue_filehub, zero_changeunit)
+    sue_filehub.save_change_file(zero_changeunit)
 
     # WHEN
     sue_changeunit = _create_new_changeunit(sue_filehub)
@@ -341,7 +307,7 @@ def test__create_new_changeunit_ReturnsObjWithCorrect_change_id_WhenchangeFilesE
     assert sue_changeunit._giver == sue_text
     assert sue_changeunit._change_id == init_change_id() + 1
     assert sue_changeunit._change_id == 1
-    assert sue_changeunit._change_id == _get_next_change_file_number(sue_filehub)
+    assert sue_changeunit._change_id == sue_filehub._get_next_change_file_number()
     assert sue_changeunit._faces == set()
     assert sue_changeunit._atoms_dir == sue_filehub.atoms_dir()
     assert sue_changeunit._changes_dir == sue_filehub.changes_dir()
@@ -356,11 +322,11 @@ def test_get_changeunit_ReturnsCorrectObjWhenFilesDoesExist(
     yao_text = "yao"
     x0_changeunit = _create_new_changeunit(sue_filehub)
     x0_changeunit.set_face(yao_text)
-    save_changeunit_file(sue_filehub, x0_changeunit)
+    sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
     x1_changeunit = _create_new_changeunit(sue_filehub)
     x1_changeunit.set_face(bob_text)
-    save_changeunit_file(sue_filehub, x1_changeunit)
+    sue_filehub.save_change_file(x1_changeunit)
 
     # WHEN
     y0_changeunit = get_changeunit(sue_filehub, x0_changeunit._change_id)
@@ -383,11 +349,11 @@ def test_get_changeunit_RaisesExceptionWhenFileDoesNotExist(
     yao_text = "yao"
     x0_changeunit = _create_new_changeunit(sue_filehub)
     x0_changeunit.set_face(yao_text)
-    save_changeunit_file(sue_filehub, x0_changeunit)
+    sue_filehub.save_change_file(x0_changeunit)
     bob_text = "Bob"
     x1_changeunit = _create_new_changeunit(sue_filehub)
     x1_changeunit.set_face(bob_text)
-    save_changeunit_file(sue_filehub, x1_changeunit)
+    sue_filehub.save_change_file(x1_changeunit)
 
     # WHEN / THEN
     six_file_number = 6
@@ -405,11 +371,11 @@ def test_del_changeunit_DeleteschangejsonAndNotAgendaAtomjsons(
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
-    x_change_id = 6
-    six_filename = get_json_filename(x_change_id)
+    six_int = 6
+    six_filename = get_json_filename(six_int)
     sue_changeunit = changeunit_shop(
         _giver=sue_text,
-        _change_id=x_change_id,
+        _change_id=six_int,
         _atoms_dir=sue_filehub.atoms_dir(),
         _changes_dir=sue_filehub.changes_dir(),
     )
@@ -417,25 +383,25 @@ def test_del_changeunit_DeleteschangejsonAndNotAgendaAtomjsons(
     atom0_filename = sue_changeunit._get_num_filename(0)
     sue_change0_path = f"{sue_filehub.changes_dir()}/{six_filename}"
     sue_atom0_path = f"{sue_filehub.atoms_dir()}/{atom0_filename}"
-    assert os_path_exists(sue_change0_path) == False
+    assert sue_filehub.change_file_exists(six_int) == False
     assert os_path_exists(sue_atom0_path) == False
 
     sue_filehub = filehub_shop(None, None, sue_text)
-    save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
+    sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
 
     print(f"{dir_files(sue_filehub.atoms_dir())}")
-    assert os_path_exists(sue_change0_path)
+    assert sue_filehub.change_file_exists(six_int)
     assert os_path_exists(sue_atom0_path)
 
     # WHEN
     del_changeunit_file(sue_filehub, sue_changeunit._change_id)
 
     # THEN
-    assert os_path_exists(sue_change0_path) == False
+    assert sue_filehub.change_file_exists(six_int) == False
     assert os_path_exists(sue_atom0_path)
 
 
-def test_save_changeunit_file_CanCreateAndModify3changeunits(
+def test_FileHub_save_change_file_CanCreateAndModify3changeunits(
     reals_dir_setup_cleanup,
 ):
     # GIVEN
@@ -449,16 +415,16 @@ def test_save_changeunit_file_CanCreateAndModify3changeunits(
     assert len(dir_files(sue_filehub.atoms_dir())) == 0
 
     # WHEN
-    save_changeunit_file(sue_filehub, sue_2atomunits_changeunit())
-    save_changeunit_file(sue_filehub, sue_3atomunits_changeunit())
-    save_changeunit_file(sue_filehub, sue_4atomunits_changeunit())
+    sue_filehub.save_change_file(sue_2atomunits_changeunit())
+    sue_filehub.save_change_file(sue_3atomunits_changeunit())
+    sue_filehub.save_change_file(sue_4atomunits_changeunit())
 
     # THEN
     assert len(dir_files(sue_filehub.changes_dir())) == 3
     assert len(dir_files(sue_filehub.atoms_dir())) == 9
 
 
-def test_save_changeunit_file_ReturnsValidObj(reals_dir_setup_cleanup):
+def test_FileHub_save_change_file_ReturnsValidObj(reals_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
@@ -466,11 +432,11 @@ def test_save_changeunit_file_ReturnsValidObj(reals_dir_setup_cleanup):
     sue2_changeunit._atoms_dir = f"{sue_filehub.econs_dir()}/swimming"
     sue2_changeunit._changes_dir = f"{sue_filehub.econs_dir()}/swimming"
     sue2_changeunit._giver = "Bob"
-    sue2_changeunit._change_id = _get_next_change_file_number(sue_filehub) - 5
+    sue2_changeunit._change_id = sue_filehub._get_next_change_file_number() - 5
     prev_sue2_changeunit = copy_deepcopy(sue2_changeunit)
 
     # WHEN
-    valid_changeunit = save_changeunit_file(sue_filehub, sue2_changeunit)
+    valid_changeunit = sue_filehub.save_change_file(sue2_changeunit)
 
     # THEN
     assert valid_changeunit._changes_dir != prev_sue2_changeunit._changes_dir
@@ -499,8 +465,8 @@ def test_create_save_changeunit_SaveCorrectObj(reals_dir_setup_cleanup):
         _changes_dir=sue_filehub.changes_dir(),
     )
     sue_filehub = filehub_shop(None, None, sue_text)
-    save_changeunit_file(sue_filehub, sue_changeunit, correct_invalid_attrs=False)
-    assert os_path_exists(sue_change2_path)
+    sue_filehub.save_change_file(sue_changeunit, correct_invalid_attrs=False)
+    assert sue_filehub.change_file_exists(two_int)
     assert os_path_exists(sue_change3_path) == False
 
     # WHEN
@@ -536,9 +502,7 @@ def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifies_1atom(
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     initialize_change_duty_files(sue_filehub)
-    save_changeunit_file(sue_filehub, sue_1atomunits_changeunit())
-    # save_changeunit_file(sue_3atomunits_changeunit())
-    # save_changeunit_file(sue_4atomunits_changeunit())
+    sue_filehub.save_change_file(sue_1atomunits_changeunit())
     duty_agenda = get_duty_file_agenda(sue_filehub)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
@@ -562,9 +526,7 @@ def test_merge_changes_into_agenda_ReturnsObj_WithSinglechangeModifies_2atoms(
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     initialize_change_duty_files(sue_filehub)
-    save_changeunit_file(sue_filehub, sue_2atomunits_changeunit())
-    # save_changeunit_file(sue_3atomunits_changeunit())
-    # save_changeunit_file(sue_4atomunits_changeunit())
+    sue_filehub.save_change_file(sue_2atomunits_changeunit())
     duty_agenda = get_duty_file_agenda(sue_filehub)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
@@ -590,7 +552,7 @@ def test_append_changes_to_duty_file_AddschangesToDutyFile(
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text)
     initialize_change_duty_files(sue_filehub)
-    save_changeunit_file(sue_filehub, sue_2atomunits_changeunit())
+    sue_filehub.save_change_file(sue_2atomunits_changeunit())
     duty_agenda = get_duty_file_agenda(sue_filehub)
     print(f"{duty_agenda._real_id=}")
     sports_text = "sports"
