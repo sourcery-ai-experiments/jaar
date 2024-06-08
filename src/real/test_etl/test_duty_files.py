@@ -4,7 +4,6 @@ from src.change.filehub import filehub_shop
 from src.real.admin_duty import (
     get_duty_file_agenda,
     initialize_change_duty_files,
-    get_default_duty_agenda,
 )
 from src.real.examples.real_env_kit import (
     get_test_reals_dir,
@@ -28,7 +27,7 @@ def test_get_duty_file_agenda_IfFileMissingCreatesFile(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(sue_filehub.duty_path())
-    default_duty = get_default_duty_agenda(sue_filehub)
+    default_duty = sue_filehub.default_duty_agenda()
     default_duty.calc_agenda_metrics()
     assert sue_duty == default_duty
 

@@ -17,6 +17,7 @@ from src._road.jaar_config import (
     get_test_reals_dir,
     get_init_change_id_if_None,
     get_json_filename,
+    init_change_id,
 )
 from src._road.finance import default_planck_if_none
 from src._road.road import (
@@ -292,6 +293,14 @@ class FileHub:
             _changes_dir=self.changes_dir(),
         )
 
+    def create_save_change_file(
+        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
+    ):
+        new_changeunit = self._create_new_changeunit()
+        new_bookunit = new_changeunit._bookunit
+        new_bookunit.add_all_different_agendaatoms(before_agenda, after_agenda)
+        self.save_change_file(new_changeunit)
+
     def get_changeunit(self, change_id: int) -> ChangeUnit:
         if self.change_file_exists(change_id) == False:
             raise ChangeFileMissingException(
@@ -375,6 +384,14 @@ class FileHub:
     def get_duty_agenda(self) -> AgendaUnit:
         file_content = self.open_file_duty()
         return agendaunit_get_from_json(file_content)
+
+    def default_duty_agenda(self) -> AgendaUnit:
+        real_id = self.real_id
+        road_delimiter = self.road_delimiter
+        planck = self.planck
+        x_agendaunit = agendaunit_shop(self.person_id, real_id, road_delimiter, planck)
+        x_agendaunit._last_change_id = init_change_id()
+        return x_agendaunit
 
     def get_work_agenda(self) -> AgendaUnit:
         file_content = self.open_file_work()

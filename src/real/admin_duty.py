@@ -28,49 +28,22 @@ def _create_initial_change_from_duty(x_filehub: FileHub):
         _atoms_dir=x_filehub.atoms_dir(),
     )
     x_changeunit._bookunit.add_all_different_agendaatoms(
-        before_agenda=get_default_duty_agenda(x_filehub),
+        before_agenda=x_filehub.default_duty_agenda(),
         after_agenda=get_duty_file_agenda(x_filehub),
     )
     x_changeunit.save_files()
 
 
 def get_duty_file_agenda(x_filehub: FileHub) -> AgendaUnit:
-    x_filehub = filehub_shop(
-        reals_dir=x_filehub.reals_dir,
-        real_id=x_filehub.real_id,
-        person_id=x_filehub.person_id,
-        econ_road=None,
-        road_delimiter=x_filehub.road_delimiter,
-        planck=x_filehub.planck,
-    )
     if x_filehub.duty_file_exists() == False:
-        x_filehub.save_duty_agenda(get_default_duty_agenda(x_filehub))
+        x_filehub.save_duty_agenda(x_filehub.default_duty_agenda())
     duty_json = x_filehub.open_file_duty()
     return agendaunit_get_from_json(duty_json)
 
 
-def _create_duty_from_changes(x_filehub):
-    x_agenda = _merge_changes_into_agenda(x_filehub, get_default_duty_agenda(x_filehub))
-    x_filehub = filehub_shop(
-        reals_dir=x_filehub.reals_dir,
-        real_id=x_filehub.real_id,
-        person_id=x_filehub.person_id,
-        econ_road=None,
-        road_delimiter=x_filehub.road_delimiter,
-        planck=x_filehub.planck,
-    )
+def _create_duty_from_changes(x_filehub: FileHub):
+    x_agenda = _merge_changes_into_agenda(x_filehub, x_filehub.default_duty_agenda())
     x_filehub.save_duty_agenda(x_agenda)
-
-
-def get_default_duty_agenda(x_filehub: FileHub) -> AgendaUnit:
-    x_agendaunit = agendaunit_shop(
-        x_filehub.person_id,
-        x_filehub.real_id,
-        x_filehub.road_delimiter,
-        x_filehub.planck,
-    )
-    x_agendaunit._last_change_id = init_change_id()
-    return x_agendaunit
 
 
 def initialize_change_duty_files(x_filehub: FileHub):
@@ -107,8 +80,8 @@ def _create_initial_change_and_duty_files(x_filehub: FileHub):
         _atoms_dir=x_filehub.atoms_dir(),
     )
     x_changeunit._bookunit.add_all_different_agendaatoms(
-        before_agenda=get_default_duty_agenda(x_filehub),
-        after_agenda=get_default_duty_agenda(x_filehub),
+        before_agenda=x_filehub.default_duty_agenda(),
+        after_agenda=x_filehub.default_duty_agenda(),
     )
     x_changeunit.save_files()
     _create_duty_from_changes(x_filehub)
