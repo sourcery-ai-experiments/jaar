@@ -13,7 +13,7 @@ class Invalid_duty_Exception(Exception):
     pass
 
 
-def _create_initial_change_from_duty(x_filehub: FileHub):
+def _create_initial_change_file_from_duty(x_filehub: FileHub):
     x_changeunit = changeunit_shop(
         _giver=x_filehub.person_id,
         _change_id=get_init_change_id_if_None(),
@@ -40,7 +40,7 @@ def initialize_change_duty_files(x_filehub: FileHub):
     elif x_duty_file_exists == False and change_file_exists:
         _create_duty_from_changes(x_filehub)
     elif x_duty_file_exists and change_file_exists == False:
-        _create_initial_change_from_duty(x_filehub)
+        _create_initial_change_file_from_duty(x_filehub)
 
 
 def append_changes_to_duty_file(x_filehub: FileHub) -> AgendaUnit:
@@ -58,7 +58,7 @@ def append_changes_to_duty_file(x_filehub: FileHub) -> AgendaUnit:
     return x_filehub.get_duty_agenda()
 
 
-def _create_initial_change_and_duty_files(x_filehub: FileHub):
+def _create_initial_change_files_from_default(x_filehub: FileHub):
     x_changeunit = changeunit_shop(
         _giver=x_filehub.person_id,
         _change_id=get_init_change_id_if_None(),
@@ -70,6 +70,10 @@ def _create_initial_change_and_duty_files(x_filehub: FileHub):
         after_agenda=x_filehub.default_duty_agenda(),
     )
     x_changeunit.save_files()
+
+
+def _create_initial_change_and_duty_files(x_filehub: FileHub):
+    _create_initial_change_files_from_default(x_filehub)
     _create_duty_from_changes(x_filehub)
 
 

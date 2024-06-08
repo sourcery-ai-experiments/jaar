@@ -1,6 +1,6 @@
 from src._instrument.file import dir_files as file_dir_files
 from src.change.filehub import filehub_shop
-from src.change.examples.example_atoms import (
+from src.change.examples.example_change_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_ball,

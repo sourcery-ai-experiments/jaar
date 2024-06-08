@@ -3,8 +3,8 @@ from src._road.jaar_config import init_change_id
 from src._road.road import get_default_real_id_roadnode as root_label
 from src.change.change import changeunit_shop, get_json_filename
 from src.change.filehub import filehub_shop
-from src.change.examples.example_atoms import get_atom_example_ideaunit_knee
-from src.change.examples.example_changes import (
+from src.change.examples.example_change_atoms import get_atom_example_ideaunit_knee
+from src.change.examples.example_change_changes import (
     get_sue_changeunit,
     sue_1atomunits_changeunit,
     sue_2atomunits_changeunit,

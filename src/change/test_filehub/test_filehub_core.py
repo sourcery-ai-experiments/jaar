@@ -54,8 +54,8 @@ def test_filehub_shop_ReturnsCorrectObj():
     assert x_filehub.work_dir() == f"{x_filehub.person_dir()}/work"
     assert x_filehub.changes_dir() == f"{x_filehub.person_dir()}/{get_changes_folder()}"
     assert x_filehub.duty_file_name() == f"{sue_text}.json"
-    x_duty_path = f"{x_filehub.duty_dir()}/{x_filehub.duty_file_name()}"
-    assert x_filehub.duty_path() == x_duty_path
+    x_duty_file_path = f"{x_filehub.duty_dir()}/{x_filehub.duty_file_name()}"
+    assert x_filehub.duty_file_path() == x_duty_file_path
     assert x_filehub.work_file_name() == f"{sue_text}.json"
     x_workpath = f"{x_filehub.work_dir()}/{x_filehub.work_file_name()}"
     assert x_filehub.work_path() == x_workpath
@@ -82,8 +82,8 @@ def test_filehub_shop_ReturnsCorrectObjWhenEmpty():
     x_changes_dir = f"{sue_filehub.person_dir()}/{get_changes_folder()}"
     assert sue_filehub.changes_dir() == x_changes_dir
     assert sue_filehub.duty_file_name() == f"{sue_text}.json"
-    x_duty_path = f"{sue_filehub.duty_dir()}/{sue_filehub.duty_file_name()}"
-    assert sue_filehub.duty_path() == x_duty_path
+    x_duty_file_path = f"{sue_filehub.duty_dir()}/{sue_filehub.duty_file_name()}"
+    assert sue_filehub.duty_file_path() == x_duty_file_path
     assert sue_filehub.work_file_name() == f"{sue_text}.json"
     x_workpath = f"{sue_filehub.work_dir()}/{sue_filehub.work_file_name()}"
     assert sue_filehub.work_path() == x_workpath
@@ -107,13 +107,13 @@ def test_FileHub_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(get_road_temp_env_dir(), None, sue_text)
-    assert os_path_exists(sue_filehub.duty_path()) == False
+    assert os_path_exists(sue_filehub.duty_file_path()) == False
 
     # WHEN
     sue_filehub.save_file_duty(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_filehub.duty_path())
+    assert os_path_exists(sue_filehub.duty_file_path())
 
 
 def test_FileHub_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):

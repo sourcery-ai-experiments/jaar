@@ -319,7 +319,7 @@ def test_FileHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     real_id = root_label()
     sue_filehub = filehub_shop(env_dir, real_id, sue_text, None)
 
-    print(f"{sue_filehub.duty_path()=}")
+    print(f"{sue_filehub.duty_file_path()=}")
     assert sue_filehub.duty_file_exists() == False
 
     # WHEN

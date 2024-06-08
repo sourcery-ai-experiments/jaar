@@ -133,7 +133,7 @@ class FileHub:
     def duty_file_name(self):
         return get_file_name(self.person_id)
 
-    def duty_path(self):
+    def duty_file_path(self):
         return f"{self.duty_dir()}/{self.duty_file_name()}"
 
     def work_file_name(self):
@@ -159,13 +159,37 @@ class FileHub:
         )
 
     def duty_file_exists(self) -> bool:
-        return os_path_exists(self.duty_path())
+        return os_path_exists(self.duty_file_path())
 
     def work_file_exists(self) -> bool:
         return os_path_exists(self.work_path())
 
     def open_file_duty(self):
         return open_file(self.duty_dir(), self.duty_file_name())
+
+    def save_duty_agenda(self, x_agenda: AgendaUnit):
+        if x_agenda._owner_id != self.person_id:
+            raise Invalid_duty_Exception(
+                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
+            )
+        self.save_file_duty(x_agenda.get_json(), True)
+
+    def get_duty_agenda(self) -> AgendaUnit:
+        if self.duty_file_exists() == False:
+            self.save_duty_agenda(self.default_duty_agenda())
+        file_content = self.open_file_duty()
+        return agendaunit_get_from_json(file_content)
+
+    def default_duty_agenda(self) -> AgendaUnit:
+        real_id = self.real_id
+        road_delimiter = self.road_delimiter
+        planck = self.planck
+        x_agendaunit = agendaunit_shop(self.person_id, real_id, road_delimiter, planck)
+        x_agendaunit._last_change_id = init_change_id()
+        return x_agendaunit
+
+    def delete_duty_file(self):
+        delete_dir(self.duty_file_path())
 
     def open_file_work(self):
         return open_file(self.work_dir(), self.work_file_name())
@@ -364,13 +388,6 @@ class FileHub:
         x_file_name = self.owner_file_name(x_agenda._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_agenda.get_json())
 
-    def save_duty_agenda(self, x_agenda: AgendaUnit):
-        if x_agenda._owner_id != self.person_id:
-            raise Invalid_duty_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
-            )
-        self.save_file_duty(x_agenda.get_json(), True)
-
     def save_work_agenda(self, x_agenda: AgendaUnit):
         if x_agenda._owner_id != self.person_id:
             raise Invalid_work_Exception(
@@ -393,20 +410,6 @@ class FileHub:
     def get_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return agendaunit_get_from_json(file_content)
-
-    def get_duty_agenda(self) -> AgendaUnit:
-        if self.duty_file_exists() == False:
-            self.save_duty_agenda(self.default_duty_agenda())
-        file_content = self.open_file_duty()
-        return agendaunit_get_from_json(file_content)
-
-    def default_duty_agenda(self) -> AgendaUnit:
-        real_id = self.real_id
-        road_delimiter = self.road_delimiter
-        planck = self.planck
-        x_agendaunit = agendaunit_shop(self.person_id, real_id, road_delimiter, planck)
-        x_agendaunit._last_change_id = init_change_id()
-        return x_agendaunit
 
     def get_work_agenda(self) -> AgendaUnit:
         file_content = self.open_file_work()
@@ -536,7 +539,7 @@ def filehub_shop(
     return x_filehub
 
 
-def get_econ_path(x_filehub, x_road: RoadNode) -> str:
+def get_econ_path(x_filehub: FileHub, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
     x_road = rebuild_road(x_road, x_filehub.real_id, econ_root)
     x_list = get_all_road_nodes(x_road, x_filehub.road_delimiter)

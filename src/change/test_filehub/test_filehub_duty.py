@@ -3,8 +3,8 @@ from src._road.jaar_config import init_change_id
 from src._road.road import get_default_real_id_roadnode as root_label
 from src.change.change import changeunit_shop, get_json_filename
 from src.change.filehub import filehub_shop
-from src.change.examples.example_atoms import get_atom_example_ideaunit_knee
-from src.change.examples.example_changes import (
+from src.change.examples.example_change_atoms import get_atom_example_ideaunit_knee
+from src.change.examples.example_change_changes import (
     get_sue_changeunit,
     sue_1atomunits_changeunit,
     sue_2atomunits_changeunit,
@@ -57,3 +57,17 @@ def test_FileHub_get_duty_agenda_IfFileMissingCreatesFile(env_dir_setup_cleanup)
     assert sue_filehub.duty_file_exists()
     default_duty = sue_filehub.default_duty_agenda()
     assert sue_duty.get_dict() == default_duty.get_dict()
+
+
+def test_FileHub_delete_duty_file_DeletesDutyFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    sue_duty = sue_filehub.get_duty_agenda()
+    assert sue_filehub.duty_file_exists()
+
+    # WHEN
+    sue_filehub.delete_duty_file()
+
+    # THEN
+    assert sue_filehub.duty_file_exists() == False
