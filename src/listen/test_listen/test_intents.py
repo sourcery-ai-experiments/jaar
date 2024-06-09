@@ -2,15 +2,15 @@ from src._instrument.file import delete_dir, save_file
 from src._road.jaar_config import get_json_filename
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.change.filehub import filehub_shop, pipeline_role_job_text as role_job
-from src.change.listen import create_listen_basis, listen_to_speakers_intent
-from src.change.examples.change_env import (
-    get_change_temp_env_dir as temp_dir,
+from src.listen.filehub import filehub_shop, pipeline_role_job_text as role_job
+from src.listen.listen import create_listen_basis, listen_to_speakers_intent
+from src.listen.examples.listen_env import (
+    get_listen_temp_env_dir as temp_dir,
     env_dir_setup_cleanup,
     get_dakota_filehub,
     get_dakota_road,
 )
-from src.change.examples.example_listen import (
+from src.listen.examples.example_listen import (
     cook_text,
     clean_text,
     run_text,

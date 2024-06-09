@@ -40,7 +40,7 @@ from src.change.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
-from src.change.basis_agendas import get_default_work_agenda
+from src.listen.basis_agendas import get_default_work_agenda
 from src.change.change import ChangeUnit, changeunit_shop, create_changeunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy

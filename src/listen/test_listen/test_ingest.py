@@ -1,6 +1,6 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.change.listen import (
+from src.listen.listen import (
     generate_ingest_list,
     _allocate_irrational_debtor_weight,
     generate_perspective_intent,

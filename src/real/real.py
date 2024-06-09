@@ -3,9 +3,9 @@ from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
-from src.change.basis_agendas import get_default_work_agenda
-from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
-from src.change.listen import (
+from src.listen.basis_agendas import get_default_work_agenda
+from src.listen.filehub import filehub_shop, FileHub, pipeline_duty_work_text
+from src.listen.listen import (
     listen_to_speaker_intent,
     listen_to_debtors_roll,
     create_job_file_from_role_file,

@@ -1,6 +1,6 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.change.listen import listen_to_speaker_intent, create_empty_agenda
+from src.listen.listen import listen_to_speaker_intent, create_empty_agenda
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 
