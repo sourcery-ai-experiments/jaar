@@ -116,7 +116,7 @@ def test_AgendaUnit_party_exists_ReturnsObj():
     yao_text = "Yao"
 
     # WHEN / THEN
-    assert bob_agenda.party_exists(yao_text) == False
+    assert bob_agenda.party_exists(yao_text) is False
 
     # GIVEN
     bob_agenda.add_partyunit(yao_text)
@@ -695,7 +695,7 @@ def test_AgendaUnit_calc_agenda_metrics_RaisesErrorWhen_is_partyunits_creditor_w
     # WHEN
     x_int = 13
     yao_agenda.set_party_creditor_pool(x_int)
-    assert yao_agenda.is_partyunits_creditor_weight_sum_correct() == False
+    assert yao_agenda.is_partyunits_creditor_weight_sum_correct() is False
     with pytest_raises(Exception) as excinfo:
         yao_agenda.calc_agenda_metrics()
     assert (
@@ -744,7 +744,7 @@ def test_AgendaUnit_calc_agenda_metrics_RaisesErrorWhen_is_partyunits_debtor_wei
     # WHEN
     x_int = 13
     yao_agenda.set_party_debtor_pool(x_int)
-    assert yao_agenda.is_partyunits_debtor_weight_sum_correct() == False
+    assert yao_agenda.is_partyunits_debtor_weight_sum_correct() is False
     with pytest_raises(Exception) as excinfo:
         yao_agenda.calc_agenda_metrics()
     assert (
@@ -1208,7 +1208,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
     yao_agenda.set_groupunit(y_groupunit=carmen_group)
     assert len(yao_agenda._groups) == 3
     assert yao_agenda._partys.get(carmen_text) is None
-    assert yao_agenda.get_groupunit(carmen_text)._party_mirror == False
+    assert yao_agenda.get_groupunit(carmen_text)._party_mirror is False
     assert len(yao_agenda.get_groupunit(carmen_text)._partys) == 2
 
     # WHEN / THEN
@@ -1244,7 +1244,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDGroupUnitPreviouslyExists():
 #     assert len(yao_agenda._groups) == 3
 #     assert yao_agenda._partys.get(rico_text) != None
 #     assert yao_agenda._partys.get(carmen_text) is None
-#     assert yao_agenda.get_groupunit(carmen_text)._party_mirror == False
+#     assert yao_agenda.get_groupunit(carmen_text)._party_mirror is False
 #     assert len(yao_agenda.get_groupunit(carmen_text)._partys) == 2
 #     assert (
 #         yao_agenda.get_groupunit(carmen_text)._partys.get(anna_text).creditor_weight
@@ -1409,7 +1409,7 @@ def test_AgendaUnit_is_partyunits_creditor_weight_sum_correct_ReturnsCorrectBool
     # WHEN / THEN
     assert yao_agenda.is_partyunits_creditor_weight_sum_correct()
     yao_agenda.set_party_creditor_pool(13)
-    assert yao_agenda.is_partyunits_creditor_weight_sum_correct() == False
+    assert yao_agenda.is_partyunits_creditor_weight_sum_correct() is False
     # WHEN / THEN
     yao_party_credit_pool = (
         rico_creditor_weight + carm_creditor_weight + patr_creditor_weight
@@ -1435,7 +1435,7 @@ def test_AgendaUnit_is_partyunits_debtor_weight_sum_correct_ReturnsCorrectBool()
     yao_party_debt_pool = rico_debtor_weight + carm_debtor_weight + patr_debtor_weight
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()
     yao_agenda.set_party_debtor_pool(yao_party_debt_pool + 1)
-    assert yao_agenda.is_partyunits_debtor_weight_sum_correct() == False
+    assert yao_agenda.is_partyunits_debtor_weight_sum_correct() is False
     # WHEN / THEN
     yao_agenda.set_party_debtor_pool(yao_party_debt_pool)
     assert yao_agenda.is_partyunits_debtor_weight_sum_correct()

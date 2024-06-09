@@ -73,7 +73,7 @@ def test_road_is_sub_road_correctlyReturnsBool():
     # WHEN / THEN
     assert is_sub_road(cleaning_road, cleaning_road)
     assert is_sub_road(laundrys_road, cleaning_road)
-    assert is_sub_road(cleaning_road, laundrys_road) == False
+    assert is_sub_road(cleaning_road, laundrys_road) is False
 
 
 def test_road_road_validate_correctlyReturnsRoadUnit():
@@ -403,7 +403,7 @@ def test_Roadnode_is_node_ReturnsCorrectBool():
     # WHEN / THEN
     x_s = default_road_delimiter_if_none()
     x_roadnode = RoadNode(f"casa{x_s}kitchen")
-    assert x_roadnode.is_node() == False
+    assert x_roadnode.is_node() is False
 
 
 def test_get_diff_road_ReturnsCorrectObj():
@@ -443,8 +443,8 @@ def test_is_heir_road_CorrectlyIdentifiesHeirs():
     # WHEN / THEN
     assert is_heir_road(src=usa_road, heir=usa_road)
     assert is_heir_road(src=usa_road, heir=texas_road)
-    assert is_heir_road(f"earth{x_s}sea", f"earth{x_s}seaside{x_s}beach") == False
-    assert is_heir_road(src=f"earth{x_s}sea", heir=f"earth{x_s}seaside") == False
+    assert is_heir_road(f"earth{x_s}sea", f"earth{x_s}seaside{x_s}beach") is False
+    assert is_heir_road(src=f"earth{x_s}sea", heir=f"earth{x_s}seaside") is False
 
 
 def test_replace_road_delimiter_ReturnsNewObj():
@@ -595,7 +595,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
     print(f"{platform_system()=}")
     assert (
         platform_system() == "Windows"
-        and is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) == False
+        and is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) is False
     ) or platform_system() == "Linux"
 
 
@@ -615,7 +615,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
     assert (
         platform_system() == "Windows"
-        and is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+        and is_roadunit_convertible_to_path(lap_road, delimiter=",") is False
     ) or platform_system() == "Linux"
 
 
@@ -631,6 +631,6 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiter
     assert lap_road == f"{sport_road}?{run_text}?{lap_text}"
 
     assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text) == False
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text) == False
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") == False
+    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text) is False
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text) is False
+    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") is False

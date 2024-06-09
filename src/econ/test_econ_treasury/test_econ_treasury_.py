@@ -1,10 +1,40 @@
 from src._instrument.file import save_file, open_file, delete_dir
 from src._instrument.sqlite import check_connection
 from src._road.jaar_config import treasury_file_name
+from src._road.road import default_road_delimiter_if_none
 from src.econ.econ import econunit_shop, EconUnit
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_filehub
+from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
+
+
+def test_EconUnit_exists():
+    # GIVEN
+    texas_filehub = get_texas_filehub()
+
+    # WHEN
+    x_econ = EconUnit(filehub=texas_filehub)
+
+    # THEN
+    assert x_econ.filehub == texas_filehub
+
+
+def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_texas_filehub = get_texas_filehub()
+    sue_texas_filehub.person_id = sue_text
+
+    # WHEN
+    texas_econ = econunit_shop(sue_texas_filehub)
+
+    # THEN
+    assert texas_econ != None
+    assert texas_econ.filehub.real_id != None
+    assert texas_econ._treasury_db != None
+    assert texas_econ.filehub.person_id == sue_text
+    assert texas_econ.filehub.road_delimiter == default_road_delimiter_if_none()
+    assert texas_econ.filehub == sue_texas_filehub
 
 
 def test_EconUnitcreate_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
@@ -14,7 +44,7 @@ def test_EconUnitcreate_treasury_db_CreatesTreasuryDBIfItDoesNotExist(
     texas_filehub = get_texas_filehub()
     x_econ = econunit_shop(texas_filehub)
     delete_dir(texas_filehub.treasury_db_path())  # clear out any treasury.db file
-    assert os_path_exists(x_econ.filehub.treasury_db_path()) == False
+    assert os_path_exists(x_econ.filehub.treasury_db_path()) is False
 
     # WHEN
     x_econ.create_treasury_db()
@@ -63,14 +93,14 @@ def test_EconUnitcreate_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_clea
 
     x_econ._treasury_db = None
     assert x_econ._treasury_db is None
-    assert os_path_exists(x_econ.filehub.treasury_db_path()) == False
+    assert os_path_exists(x_econ.filehub.treasury_db_path()) is False
 
     # WHEN
     x_econ.create_treasury_db(in_memory=True)
 
     # THEN
     assert x_econ._treasury_db != None
-    assert os_path_exists(x_econ.filehub.treasury_db_path()) == False
+    assert os_path_exists(x_econ.filehub.treasury_db_path()) is False
 
 
 def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory(
@@ -80,13 +110,13 @@ def test_EconUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory
     texas_filehub = get_texas_filehub()
     x_econ = econunit_shop(texas_filehub)
     # x_econ.create_treasury_db(in_memory=True)
-    assert os_path_exists(x_econ.filehub.treasury_db_path()) == False
+    assert os_path_exists(x_econ.filehub.treasury_db_path()) is False
 
     # WHEN
     x_econ.refresh_treasury_job_agendas_data()
 
     # THEN
-    assert os_path_exists(x_econ.filehub.treasury_db_path()) == False
+    assert os_path_exists(x_econ.filehub.treasury_db_path()) is False
 
 
 def test_EconUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(

@@ -13,7 +13,7 @@ from pytest import raises as pytest_raises
 
 
 def test_sqlite_bool_ReturnsCorrectObj():
-    assert sqlite_bool(int_x=0) == False
+    assert sqlite_bool(int_x=0) is False
     assert sqlite_bool(int_x=1)
     assert sqlite_bool(int_x=None) == "NULL"
 

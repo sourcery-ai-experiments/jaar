@@ -2,10 +2,11 @@ from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, 
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
-from src.change.listen import listen_to_person_jobs
+from src.change.listen import listen_to_person_jobs, create_job_file_from_role_file
 from src.change.examples.change_env import (
     env_dir_setup_cleanup,
     get_change_temp_env_dir,
+    get_texas_filehub,
 )
 
 
@@ -290,11 +291,11 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     yao_ohio_filehub = get_yao_ohio_filehub()
     zia_utah_filehub = get_zia_utah_filehub()
     # delete_dir(yao_iowa_filehub.persons_dir())
-    assert yao_iowa_filehub.duty_file_exists() == False
-    assert yao_iowa_filehub.work_file_exists() == False
-    assert yao_iowa_filehub.job_file_exists(yao_text) == False
-    assert yao_ohio_filehub.job_file_exists(yao_text) == False
-    assert zia_utah_filehub.job_file_exists(yao_text) == False
+    assert yao_iowa_filehub.duty_file_exists() is False
+    assert yao_iowa_filehub.work_file_exists() is False
+    assert yao_iowa_filehub.job_file_exists(yao_text) is False
+    assert yao_ohio_filehub.job_file_exists(yao_text) is False
+    assert zia_utah_filehub.job_file_exists(yao_text) is False
     yao_iowa_filehub.save_duty_agenda(yao_duty0)
     yao_iowa_filehub.save_job_agenda(yao_job1)
     yao_ohio_filehub.save_job_agenda(yao_job2)
@@ -305,7 +306,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert zia_utah_filehub.job_file_exists(yao_text)
 
     # WHEN
-    assert yao_iowa_filehub.work_file_exists() == False
+    assert yao_iowa_filehub.work_file_exists() is False
     listen_to_person_jobs(yao_iowa_filehub)
     assert yao_iowa_filehub.work_file_exists()
 
@@ -319,7 +320,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     print(f"{yao_work.get_beliefunits_dict().keys()=}")
     assert yao_work.idea_exists(cook_road())
     assert yao_work.idea_exists(clean_road())
-    assert yao_work.idea_exists(run_road()) == False
+    assert yao_work.idea_exists(run_road()) is False
     assert len(yao_work._idearoot._beliefunits) == 2
     assert yao_work != yao_duty0
 
@@ -357,23 +358,23 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     yao_ohio_filehub = get_yao_ohio_filehub()
     zia_utah_filehub = get_zia_utah_filehub()
     # delete_dir(yao_iowa_filehub.persons_dir())
-    assert yao_iowa_filehub.duty_file_exists() == False
-    assert yao_iowa_filehub.work_file_exists() == False
-    assert yao_iowa_filehub.job_file_exists(yao_text) == False
-    assert yao_ohio_filehub.job_file_exists(yao_text) == False
-    assert zia_utah_filehub.job_file_exists(yao_text) == False
+    assert yao_iowa_filehub.duty_file_exists() is False
+    assert yao_iowa_filehub.work_file_exists() is False
+    assert yao_iowa_filehub.job_file_exists(yao_text) is False
+    assert yao_ohio_filehub.job_file_exists(yao_text) is False
+    assert zia_utah_filehub.job_file_exists(yao_text) is False
     print(f"{yao_duty0.get_belief(get_location_road())=}")
     yao_iowa_filehub.save_duty_agenda(yao_duty0)
     # yao_iowa_filehub.save_job_agenda(yao_job1)
     # yao_ohio_filehub.save_job_agenda(yao_job2)
     # zia_utah_filehub.save_job_agenda(yao_job3)
     assert yao_iowa_filehub.duty_file_exists()
-    assert yao_iowa_filehub.job_file_exists(yao_text) == False
-    assert yao_ohio_filehub.job_file_exists(yao_text) == False
-    assert zia_utah_filehub.job_file_exists(yao_text) == False
+    assert yao_iowa_filehub.job_file_exists(yao_text) is False
+    assert yao_ohio_filehub.job_file_exists(yao_text) is False
+    assert zia_utah_filehub.job_file_exists(yao_text) is False
 
     # WHEN
-    assert yao_iowa_filehub.work_file_exists() == False
+    assert yao_iowa_filehub.work_file_exists() is False
     listen_to_person_jobs(yao_iowa_filehub)
     assert yao_iowa_filehub.work_file_exists()
 
@@ -385,14 +386,32 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     assert len(yao_work._idea_dict) == 4
     print(f"{yao_work._idea_dict.keys()=}")
     print(f"{yao_work.get_beliefunits_dict().keys()=}")
-    assert yao_work.idea_exists(cook_road()) == False
-    assert yao_work.idea_exists(clean_road()) == False
-    assert yao_work.idea_exists(run_road()) == False
+    assert yao_work.idea_exists(cook_road()) is False
+    assert yao_work.idea_exists(clean_road()) is False
+    assert yao_work.idea_exists(run_road()) is False
     assert yao_work.idea_exists(get_swim_road())
     assert yao_work.idea_exists(get_in_ocean_road())
-    assert yao_work.idea_exists(get_on_land_road()) == False
+    assert yao_work.idea_exists(get_on_land_road()) is False
     assert yao_work.get_belief(get_location_road()) != None
     assert yao_work.get_belief(get_location_road()).pick == get_in_ocean_road()
     assert len(yao_work.get_intent_dict()) == 1
     assert len(yao_work._idearoot._beliefunits) == 1
     assert yao_work != yao_duty0
+
+
+def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_role = agendaunit_shop(sue_text)
+    texas_filehub = get_texas_filehub()
+    texas_filehub.save_role_agenda(sue_role)
+    assert texas_filehub.job_file_exists(sue_text) is False
+
+    # WHEN
+    sue_job = create_job_file_from_role_file(texas_filehub, sue_text)
+
+    # GIVEN
+    assert sue_job._owner_id != None
+    assert sue_job._owner_id == sue_text
+    assert sue_job.get_dict() == sue_role.get_dict()
+    assert texas_filehub.job_file_exists(sue_text)

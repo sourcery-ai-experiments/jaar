@@ -1,6 +1,6 @@
 from src._instrument.file import dir_files as file_dir_files
 from src.change.filehub import filehub_shop
-from src.change.examples.example_change_atoms import (
+from src.change.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_ball,
@@ -46,7 +46,7 @@ def test_FileHub_save_valid_atom_file_CorrectlySavesFile(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
     one_int = 1
-    assert os_path_exists(yao_filehub.atom_file_path(one_int)) == False
+    assert os_path_exists(yao_filehub.atom_file_path(one_int)) is False
 
     # WHEN
     knee_atom = get_atom_example_beliefunit_knee()
@@ -62,8 +62,8 @@ def test_FileHub_atom_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_filehub = filehub_shop(reals_dir(), real_id(), yao_text)
     five_int = 5
-    assert os_path_exists(yao_filehub.atom_file_path(five_int)) == False
-    assert yao_filehub.atom_file_exists(five_int) == False
+    assert os_path_exists(yao_filehub.atom_file_path(five_int)) is False
+    assert yao_filehub.atom_file_exists(five_int) is False
 
     # WHEN
     yao_filehub._save_valid_atom_file(get_atom_example_beliefunit_knee(), five_int)
@@ -85,7 +85,7 @@ def test_FileHub_delete_atom_file_CorrectlyDeletesFile(env_dir_setup_cleanup):
     yao_filehub.delete_atom_file(ten_int)
 
     # THEN
-    assert yao_filehub.atom_file_exists(ten_int) == False
+    assert yao_filehub.atom_file_exists(ten_int) is False
 
 
 def test_FileHub_get_max_atom_file_number_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -134,7 +134,7 @@ def test_FileHub_save_atom_file_CorrectlySavesFile(env_dir_setup_cleanup):
     yao_filehub._save_valid_atom_file(get_atom_example_beliefunit_knee(), ten_int)
     assert yao_filehub.get_max_atom_file_number() == ten_int
     eleven_int = ten_int + 1
-    assert yao_filehub.atom_file_exists(eleven_int) == False
+    assert yao_filehub.atom_file_exists(eleven_int) is False
 
     # WHEN
     atom_num1 = yao_filehub.save_atom_file(get_atom_example_beliefunit_knee())

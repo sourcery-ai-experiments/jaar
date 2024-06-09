@@ -13,10 +13,10 @@ from src.real.examples.example_reals import (
     create_example_real3,
     create_example_real4,
 )
-from src.real.examples.real_env_kit import reals_dir_setup_cleanup
+from src.real.examples.real_env import env_dir_setup_cleanup
 
 
-def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
@@ -51,7 +51,7 @@ def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(reals_dir_setup_clean
     assert x_df.shape[0] == 8
 
 
-def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
+def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
@@ -66,7 +66,7 @@ def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cl
 
 
 def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
@@ -104,7 +104,7 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
 
 
 def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
@@ -120,7 +120,7 @@ def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(
     # assert 1 == 2
 
 
-def test_get_real_dutys_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_real_dutys_intent_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real3()
 
@@ -147,7 +147,7 @@ def test_get_real_dutys_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_clean
     assert x_df.shape[0] == 8
 
 
-def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cleanup):
+def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real3()
 
@@ -160,7 +160,7 @@ def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(reals_dir_setup_cl
     #     x_fig.show()
 
 
-def test_get_real_works_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_real_works_intent_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real4()
     music_real.generate_all_work_agendas()
@@ -189,7 +189,7 @@ def test_get_real_works_intent_dataframe_ReturnsCorrectObj(reals_dir_setup_clean
 
 
 def test_get_real_works_intent_plotly_fig_DisplaysCorrectInfo(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real4()

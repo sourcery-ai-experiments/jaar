@@ -565,7 +565,7 @@ def test_AgendaUnit_edit_idea_attr_agendaIsAbleToEdit_suff_idea_active_AnyIdeaIf
     reasonunit_casa = commute_idea._reasonunits.get(casa_road)
     assert reasonunit_casa.base == casa_road
     assert len(reasonunit_casa.premises) == 0
-    assert reasonunit_casa.suff_idea_active == False
+    assert reasonunit_casa.suff_idea_active is False
 
     # WHEN
     x_agenda.edit_idea_attr(
@@ -607,7 +607,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     )
     x_agenda.calc_agenda_metrics()  # set tree metrics
     casa_idea = x_agenda.get_idea_obj(casa_road)
-    assert casa_idea._active == False
+    assert casa_idea._active is False
 
     # 5. idea(...,commute to casa) with
     # 5.1. ReasonUnit: idea(base=...,casa) has .suff_idea_active = True
@@ -622,14 +622,14 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     )
     commute_idea = x_agenda.get_idea_obj(commute_road)
     x_agenda.calc_agenda_metrics()
-    assert commute_idea._active == False
+    assert commute_idea._active is False
 
     # Belief: base: (...,weekdays) pick: (...,weekdays,wednesday)
     x_agenda.set_belief(base=weekdays_road, pick=wed_road)
     x_agenda.calc_agenda_metrics()
 
-    assert casa_idea._active == False
-    assert commute_idea._active == False
+    assert casa_idea._active is False
+    assert commute_idea._active is False
 
     # WHEN
     print("before changing belief")
@@ -645,7 +645,7 @@ def test_AgendaUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
 def test_AgendaUnit_calc_agenda_metrics_SetsRationalAttrToFalseWhen_max_tree_traverse_Is1():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels()
-    assert x_agenda._rational == False
+    assert x_agenda._rational is False
     # x_agenda.calc_agenda_metrics()
     x_agenda._rational = True
     assert x_agenda._rational

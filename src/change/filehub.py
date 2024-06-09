@@ -11,7 +11,6 @@ from src._road.jaar_config import (
     roles_str,
     jobs_str,
     get_rootpart_of_econ_dir,
-    treasury_str,
     treasury_file_name,
     get_changes_folder,
     get_test_real_id,
@@ -42,6 +41,7 @@ from src.change.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
+from src.change.basis_agendas import get_default_work_agenda
 from src.change.change import ChangeUnit, changeunit_shop, create_changeunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -175,8 +175,8 @@ class FileHub:
         self.save_file_duty(x_agenda.get_json(), True)
 
     def get_duty_agenda(self) -> AgendaUnit:
-        if self.duty_file_exists() == False:
-            self.save_duty_agenda(self.default_duty_agenda())
+        if self.duty_file_exists() is False:
+            return None
         file_content = self.open_file_duty()
         return agendaunit_get_from_json(file_content)
 
@@ -311,7 +311,7 @@ class FileHub:
     def _del_change_file(self, change_id: int):
         delete_dir(self.change_file_path(change_id))
 
-    def _create_new_changeunit(self) -> ChangeUnit:
+    def _default_changeunit(self) -> ChangeUnit:
         return changeunit_shop(
             _giver=self.person_id,
             _change_id=self._get_next_change_file_number(),
@@ -322,13 +322,13 @@ class FileHub:
     def create_save_change_file(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        new_changeunit = self._create_new_changeunit()
+        new_changeunit = self._default_changeunit()
         new_bookunit = new_changeunit._bookunit
         new_bookunit.add_all_different_agendaatoms(before_agenda, after_agenda)
         self.save_change_file(new_changeunit)
 
     def get_changeunit(self, change_id: int) -> ChangeUnit:
-        if self.change_file_exists(change_id) == False:
+        if self.change_file_exists(change_id) is False:
             raise ChangeFileMissingException(
                 f"ChangeUnit file_number {change_id} does not exist."
             )
@@ -346,6 +346,51 @@ class FileHub:
             x_change = self.get_changeunit(change_int)
             new_agenda = x_change._bookunit.get_edited_agenda(x_agenda)
         return new_agenda
+
+    def _create_initial_change_files_from_default(self):
+        x_changeunit = changeunit_shop(
+            _giver=self.person_id,
+            _change_id=get_init_change_id_if_None(),
+            _changes_dir=self.changes_dir(),
+            _atoms_dir=self.atoms_dir(),
+        )
+        x_changeunit._bookunit.add_all_different_agendaatoms(
+            before_agenda=self.default_duty_agenda(),
+            after_agenda=self.default_duty_agenda(),
+        )
+        x_changeunit.save_files()
+
+    def _create_duty_from_changes(self):
+        x_agenda = self._merge_any_changes(self.default_duty_agenda())
+        self.save_duty_agenda(x_agenda)
+
+    def _create_initial_change_and_duty_files(self):
+        self._create_initial_change_files_from_default()
+        self._create_duty_from_changes()
+
+    def _create_initial_change_files_from_duty(self):
+        x_changeunit = self._default_changeunit()
+        x_changeunit._bookunit.add_all_different_agendaatoms(
+            before_agenda=self.default_duty_agenda(),
+            after_agenda=self.get_duty_agenda(),
+        )
+        x_changeunit.save_files()
+
+    def initialize_change_duty_files(self):
+        x_duty_file_exists = self.duty_file_exists()
+        change_file_exists = self.change_file_exists(init_change_id())
+        if x_duty_file_exists is False and change_file_exists is False:
+            self._create_initial_change_and_duty_files()
+        elif x_duty_file_exists is False and change_file_exists:
+            self._create_duty_from_changes()
+        elif x_duty_file_exists and change_file_exists is False:
+            self._create_initial_change_files_from_duty()
+
+    def append_changes_to_duty_file(self):
+        duty_agenda = self.get_duty_agenda()
+        duty_agenda = self._merge_any_changes(duty_agenda)
+        self.save_duty_agenda(duty_agenda)
+        return self.get_duty_agenda()
 
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
@@ -395,6 +440,10 @@ class FileHub:
             )
         self.save_file_work(x_agenda.get_json(), True)
 
+    def initialize_work_file(self, duty: AgendaUnit):
+        if self.work_file_exists() is False:
+            self.save_work_agenda(get_default_work_agenda(duty))
+
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
 
@@ -402,7 +451,7 @@ class FileHub:
         return os_path_exists(self.job_path(owner_id))
 
     def get_role_agenda(self, owner_id: PersonID) -> AgendaUnit:
-        if self.role_file_exists(owner_id) == False:
+        if self.role_file_exists(owner_id) is False:
             return None
         file_content = open_file(self.roles_dir(), self.owner_file_name(owner_id))
         return agendaunit_get_from_json(file_content)
@@ -499,8 +548,6 @@ class FileHub:
         if os_path_exists(x_file_path) or not return_None_if_missing:
             file_contents = open_file(speaker_dir, speaker_file_name)
             return agendaunit_get_from_json(file_contents)
-        else:
-            None
 
     def get_listener_agenda(self, person_id: PersonID) -> AgendaUnit:
         listener_dir = self.listener_dir(person_id)
@@ -509,8 +556,6 @@ class FileHub:
         if os_path_exists(x_file_path):
             file_contents = open_file(listener_dir, listener_file_name)
             return agendaunit_get_from_json(file_contents)
-        else:
-            None
 
 
 def filehub_shop(

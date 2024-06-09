@@ -1,63 +1,20 @@
 from src.agenda.healer import healerhold_shop
-from src.agenda.group import groupunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.change.filehub import filehub_shop
-from src.real.admin_work import get_default_work_agenda
 from src.real.real import realunit_shop
-from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
+from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_get_default_work_agenda_ReturnsCorrectObj():
-    # GIVEN
-    sue_text = "Sue"
-    blue_text = "blue"
-    slash_text = "/"
-    five_planck = 5
-    sue_party_pool = 800
-    casa_text = "casa"
-    bob_text = "Bob"
-    last_change_id = 7
-    sue_max_tree_traverse = 9
-    sue_agendaunit = agendaunit_shop(sue_text, blue_text, slash_text, five_planck)
-    sue_agendaunit.set_last_change_id(last_change_id)
-    sue_agendaunit.add_partyunit(bob_text, 3, 4)
-    swim_text = "/swimmers"
-    swim_groupunit = groupunit_shop(swim_text, _road_delimiter=slash_text)
-    swim_groupunit.edit_partylink(bob_text)
-    sue_agendaunit.set_groupunit(swim_groupunit)
-    sue_agendaunit.set_party_pool(sue_party_pool)
-    sue_agendaunit.add_l1_idea(ideaunit_shop(casa_text))
-    sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
-
-    # WHEN
-    default_work_agenda = get_default_work_agenda(sue_agendaunit)
-
-    # THEN
-    default_work_agenda.calc_agenda_metrics()
-    assert default_work_agenda._owner_id == sue_agendaunit._owner_id
-    assert default_work_agenda._owner_id == sue_text
-    assert default_work_agenda._real_id == sue_agendaunit._real_id
-    assert default_work_agenda._real_id == blue_text
-    assert default_work_agenda._road_delimiter == slash_text
-    assert default_work_agenda._planck == five_planck
-    assert default_work_agenda._party_creditor_pool is None
-    assert default_work_agenda._party_debtor_pool is None
-    assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_work_agenda.get_partys_dict()) == 1
-    assert len(default_work_agenda.get_groupunits_dict()) == 1
-    assert len(default_work_agenda._idea_dict) == 1
-
-
-def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(env_dir_setup_cleanup):
     # GIVEN
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, music_text, sue_text, None)
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work/{sue_text}.json"
-    assert os_path_exists(x_sue_work_path) == False
+    assert os_path_exists(x_sue_work_path) is False
     music_real.init_person_econs(sue_text)
     assert sue_filehub.work_path() == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
@@ -71,7 +28,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     assert sue_work._owner_id == example_agenda._owner_id
 
 
-def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
@@ -87,11 +44,11 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     after_sue_agenda = music_real.generate_work_agenda(sue_text)
 
     # THEN method should wipe over work agenda
-    assert after_sue_agenda.party_exists(bob_text) == False
+    assert after_sue_agenda.party_exists(bob_text) is False
 
 
 def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
@@ -100,7 +57,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     sue_text = "Sue"
-    assert before_bob_work_agenda.party_exists(sue_text) == False
+    assert before_bob_work_agenda.party_exists(sue_text) is False
 
     # WHEN
     bob_duty_agenda = bob_filehub.get_duty_agenda()
@@ -114,7 +71,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     assert after_bob_work_agenda.party_exists(sue_text)
 
 
-def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
@@ -122,7 +79,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     music_real.init_person_econs(bob_text)
     bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
-    assert after_bob_work_agenda.party_exists(bob_text) == False
+    assert after_bob_work_agenda.party_exists(bob_text) is False
 
     # WHEN
     bob_duty_agenda = bob_filehub.get_duty_agenda()
@@ -143,7 +100,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
 
 
 def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
@@ -179,8 +136,8 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert before_bob_work_agenda.party_exists(bob_text) == False
-    assert before_sue_work_agenda.party_exists(sue_text) == False
+    assert before_bob_work_agenda.party_exists(bob_text) is False
+    assert before_sue_work_agenda.party_exists(sue_text) is False
 
     # WHEN
     music_real.generate_all_work_agendas()

@@ -5,7 +5,8 @@ from src._road.road import (
     PersonID,
 )
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, PartyUnit
+from src.agenda.agenda import AgendaUnit, PartyUnit
+from src.change.basis_agendas import create_empty_agenda, create_listen_basis
 from src.change.filehub import FileHub
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
@@ -53,36 +54,6 @@ def get_speaker_perspective(speaker: AgendaUnit, listener_owner_id: PersonID):
     perspective_agenda.set_owner_id(listener_owner_id)
     perspective_agenda.calc_agenda_metrics()
     return perspective_agenda
-
-
-def _is_empty_agenda(x_agenda: AgendaUnit) -> bool:
-    empty_agenda = create_empty_agenda(x_agenda)
-    return x_agenda.get_dict() == empty_agenda.get_dict()
-
-
-def create_empty_agenda(
-    ref_agenda: AgendaUnit, x_owner_id: PersonID = None
-) -> AgendaUnit:
-    if x_owner_id is None:
-        x_owner_id = ref_agenda._owner_id
-    x_road_delimiter = ref_agenda._road_delimiter
-    x_planck = ref_agenda._planck
-    return agendaunit_shop(x_owner_id, ref_agenda._real_id, x_road_delimiter, x_planck)
-
-
-def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
-    x_listen = create_empty_agenda(x_role, x_owner_id=x_role._owner_id)
-    x_listen._partys = x_role._partys
-    x_listen._groups = x_role._groups
-    x_listen.set_monetary_desc(x_role._monetary_desc)
-    x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
-    if x_role._party_creditor_pool != None:
-        x_listen.set_party_creditor_pool(x_role._party_creditor_pool)
-    if x_role._party_debtor_pool != None:
-        x_listen.set_party_debtor_pool(x_role._party_debtor_pool)
-    for x_partyunit in x_listen._partys.values():
-        x_partyunit.reset_listen_calculated_attrs()
-    return copy_deepcopy(x_listen)
 
 
 def _get_planck_scaled_weight(
@@ -134,7 +105,7 @@ def generate_ingest_list(
 def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):
     weight_data = _create_weight_data(listener, ingest_ideaunit.get_road())
 
-    if listener.idea_exists(ingest_ideaunit.get_road()) == False:
+    if listener.idea_exists(ingest_ideaunit.get_road()) is False:
         x_parent_road = ingest_ideaunit._parent_road
         listener.add_idea(ingest_ideaunit, x_parent_road, create_missing_ideas=True)
 
@@ -215,12 +186,12 @@ def listen_to_speaker_belief(
 
 
 def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener.party_exists(speaker._owner_id) == False:
+    if listener.party_exists(speaker._owner_id) is False:
         raise Missing_party_debtor_poolException(
             f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
         )
     perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
-    if perspective_agenda._rational == False:
+    if perspective_agenda._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
 
     if listener._party_debtor_pool is None:
@@ -264,10 +235,10 @@ def listen_to_debtors_roll(listener: AgendaUnit, filehub: FileHub) -> AgendaUnit
     return new_agenda
 
 
-def listen_to_person_jobs(listener_filehub: FileHub):
+def listen_to_person_jobs(listener_filehub: FileHub) -> None:
     duty = listener_filehub.get_duty_agenda()
     new_work = create_listen_basis(duty)
-    pre_jobs_work_copy = copy_deepcopy(new_work)
+    pre_work_dict = new_work.get_dict()
     duty.calc_agenda_metrics()
     new_work.calc_agenda_metrics()
 
@@ -277,7 +248,7 @@ def listen_to_person_jobs(listener_filehub: FileHub):
         healer_filehub.person_id = x_healer_id
         _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_filehub, new_work)
 
-    if new_work.get_dict() == pre_jobs_work_copy.get_dict():
+    if new_work.get_dict() == pre_work_dict:
         intent = list(duty.get_intent_dict().values())
         _ingest_perspective_intent(new_work, intent)
         listen_to_speaker_belief(new_work, duty)
@@ -293,10 +264,10 @@ def _pick_econ_jobs_and_listen(
 ):
     for econ_path in econ_dict:
         healer_filehub.econ_road = econ_path
-        _pick_econ_job_and_listen(listener_id, healer_filehub, new_work)
+        pick_econ_job_and_listen(listener_id, healer_filehub, new_work)
 
 
-def _pick_econ_job_and_listen(
+def pick_econ_job_and_listen(
     listener_person_id: PersonID, healer_filehub: FileHub, new_work: AgendaUnit
 ):
     listener_id = listener_person_id
@@ -309,10 +280,17 @@ def _pick_econ_job_and_listen(
 
 def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
     for x_idea in job._idea_dict.values():
-        if listener.idea_exists(x_idea.get_road()) == False:
+        if listener.idea_exists(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)
-        if listener.get_belief(x_idea.get_road()) == False:
+        if listener.get_belief(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)
     for x_belief_road, x_belief_unit in job._idearoot._beliefunits.items():
         listener._idearoot.set_beliefunit(x_belief_unit)
     listener.calc_agenda_metrics()
+
+
+def create_job_file_from_role_file(filehub: FileHub, person_id: PersonID):
+    x_role = filehub.get_role_agenda(person_id)
+    x_job = listen_to_debtors_roll(x_role, filehub)
+    filehub.save_job_agenda(x_job)
+    return x_job

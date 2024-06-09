@@ -1,24 +1,24 @@
+from src._instrument.file import open_file
+from src._instrument.python import get_dict_from_json
 from src._road.jaar_config import get_changes_folder
 from src.change.book import bookunit_shop
 from src.change.change import changeunit_shop, create_changeunit_from_files
-from src.real.examples.example_atoms import (
+from src.change.examples.example_atoms import (
     get_atom_example_ideaunit_sports,
     get_atom_example_ideaunit_knee,
     get_atom_example_ideaunit_ball,
 )
-from src.real.examples.real_env_kit import (
-    get_test_reals_dir,
-    get_test_real_id,
-    reals_dir_setup_cleanup,
+from src.change.examples.change_env import (
+    get_change_temp_env_dir as reals_dir,
+    get_default_real_id_roadnode as real_id,
+    env_dir_setup_cleanup,
 )
-from src._instrument.python import get_dict_from_json
-from src._instrument.file import open_file
 from os.path import exists as os_path_exists
 
 
-def test_ChangeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -32,8 +32,8 @@ def test_ChangeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
-    assert os_path_exists(sue_atom2_path) == False
-    assert os_path_exists(sue_atom6_path) == False
+    assert os_path_exists(sue_atom2_path) is False
+    assert os_path_exists(sue_atom6_path) is False
 
     # WHEN
     sports_atom = get_atom_example_ideaunit_sports()
@@ -41,14 +41,14 @@ def test_ChangeUnit_save_atom_file_SavesCorrectFile(reals_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(sue_atom2_path)
-    assert os_path_exists(sue_atom6_path) == False
+    assert os_path_exists(sue_atom6_path) is False
     two_file_json = open_file(sue_atoms_dir, two_filename)
     assert two_file_json == sports_atom.get_json()
 
 
-def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -62,8 +62,8 @@ def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
-    assert os_path_exists(sue_atom2_path) == False
-    assert farm_changeunit.atom_file_exists(two_int) == False
+    assert os_path_exists(sue_atom2_path) is False
+    assert farm_changeunit.atom_file_exists(two_int) is False
 
     # WHEN
     sports_atom = get_atom_example_ideaunit_sports()
@@ -73,9 +73,9 @@ def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert farm_changeunit.atom_file_exists(two_int)
 
 
-def test_ChangeUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_open_atom_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -100,9 +100,9 @@ def test_ChangeUnit_open_atom_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert file_atom == sports_atom
 
 
-def test_ChangeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_change_file_SavesCorrectFile(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_change_id = 2
@@ -119,15 +119,15 @@ def test_ChangeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     farm_changeunit = changeunit_shop(
         sue_text, sue_change_id, _changes_dir=sue_changes_dir
     )
-    assert os_path_exists(sue_change2_path) == False
-    assert os_path_exists(sue_change6_path) == False
+    assert os_path_exists(sue_change2_path) is False
+    assert os_path_exists(sue_change6_path) is False
 
     # WHEN
     farm_changeunit._save_change_file()
 
     # THEN
     assert os_path_exists(sue_change2_path)
-    assert os_path_exists(sue_change6_path) == False
+    assert os_path_exists(sue_change6_path) is False
     change_file_json = open_file(sue_changes_dir, two_filename)
     change_file_dict = get_dict_from_json(change_file_json)
     print(f"{change_file_dict=}")
@@ -136,9 +136,9 @@ def test_ChangeUnit_save_change_file_SavesCorrectFile(reals_dir_setup_cleanup):
     assert change_file_dict.get("faces") == {}
 
 
-def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -152,8 +152,8 @@ def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup
     print(f"{sue_change2_path=}")
     print(f"{sue_change6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _changes_dir=sue_changes_dir)
-    assert os_path_exists(sue_change2_path) == False
-    assert farm_changeunit.change_file_exists() == False
+    assert os_path_exists(sue_change2_path) is False
+    assert farm_changeunit.change_file_exists() is False
 
     # WHEN
     farm_changeunit._save_change_file()
@@ -162,9 +162,9 @@ def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(reals_dir_setup_cleanup
     assert farm_changeunit.change_file_exists()
 
 
-def test_ChangeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
+def test_ChangeUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -186,9 +186,9 @@ def test_ChangeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     five_atom = get_atom_example_ideaunit_knee()
     farm_changeunit._bookunit.set_agendaatom(four_atom)
     farm_changeunit._bookunit.set_agendaatom(five_atom)
-    assert farm_changeunit.change_file_exists() == False
-    assert farm_changeunit.atom_file_exists(four_int) == False
-    assert farm_changeunit.atom_file_exists(five_int) == False
+    assert farm_changeunit.change_file_exists() is False
+    assert farm_changeunit.atom_file_exists(four_int) is False
+    assert farm_changeunit.atom_file_exists(five_int) is False
 
     # WHEN
     farm_changeunit.save_files()
@@ -199,9 +199,9 @@ def test_ChangeUnit_save_files_CorrectlySavesFiles(reals_dir_setup_cleanup):
     assert farm_changeunit.atom_file_exists(five_int)
 
 
-def test_ChangeUnit_create_bookunit_from_atom_files_SetsAttr(reals_dir_setup_cleanup):
+def test_ChangeUnit_create_bookunit_from_atom_files_SetsAttr(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"
@@ -232,9 +232,9 @@ def test_ChangeUnit_create_bookunit_from_atom_files_SetsAttr(reals_dir_setup_cle
     assert sue_changeunit._bookunit == static_bookunit
 
 
-def test_create_changeunit_from_files_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_create_changeunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
-    x_real_dir = f"{get_test_reals_dir()}/{get_test_real_id()}"
+    x_real_dir = f"{reals_dir()}/{real_id()}"
     x_persons_dir = f"{x_real_dir}/persons"
     sue_text = "Sue"
     sue_person_dir = f"{x_persons_dir}/{sue_text}"

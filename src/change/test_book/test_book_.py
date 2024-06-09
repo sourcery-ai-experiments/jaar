@@ -30,7 +30,7 @@ def test_bookunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert ex1_bookunit.agendaatoms == {}
-    assert ex1_bookunit._agenda_build_validated == False
+    assert ex1_bookunit._agenda_build_validated is False
 
 
 def test_BookUnit_set_agendaatom_CorrectlySets_AgendaUnitSimpleAttrs():
@@ -399,7 +399,7 @@ def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenNoAgenda():
     sue_bookunit.set_agendaatom(x_agendaatom)
 
     # WHEN/THEN
-    assert validate_agenda_build_from_book(sue_bookunit) == False
+    assert validate_agenda_build_from_book(sue_bookunit) is False
 
     # WHEN
     rico_text = "Rico"
@@ -419,7 +419,7 @@ def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenNoAgenda():
     sue_bookunit.set_agendaatom(x_agendaatom)
 
     # THEN
-    assert validate_agenda_build_from_book(sue_bookunit) == False
+    assert validate_agenda_build_from_book(sue_bookunit) is False
 
 
 def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenAgenda():
@@ -439,7 +439,7 @@ def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenAgenda():
     # WHEN/THEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_party_creditor_pool(100)
-    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) == False
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) is False
 
     # WHEN
     rico_text = "Rico"
@@ -463,7 +463,7 @@ def test_validate_agenda_build_from_book_ReturnsCorrectObjGivenAgenda():
     # THEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.set_party_creditor_pool(100)
-    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) == False
+    assert validate_agenda_build_from_book(sue_bookunit, sue_agenda) is False
 
 
 def test_BookUnit_get_ordered_agendaatoms_ReturnsCorrectObj_GivenNoStartingNumber():
@@ -624,7 +624,7 @@ def test_BookUnit_agendaatom_exists_ReturnsCorrectObj():
     carm_agendaatom = agendaatom_shop(category, atom_insert())
     carm_agendaatom.set_arg("party_id", carm_text)
     carm_agendaatom.set_arg("creditor_weight", 70)
-    assert farm_bookunit.agendaatom_exists(carm_agendaatom) == False
+    assert farm_bookunit.agendaatom_exists(carm_agendaatom) is False
 
     # WHEN
     farm_bookunit.set_agendaatom(carm_agendaatom)

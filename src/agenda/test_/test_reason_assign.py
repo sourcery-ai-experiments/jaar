@@ -89,7 +89,7 @@ def test_AssignedUnit_suffgroup_exists_ReturnsCorrectObj():
     # GIVEN
     assignedunit_x = assignedunit_shop(_suffgroups={})
     jim_text = "Jim"
-    assert assignedunit_x.suffgroup_exists(jim_text) == False
+    assert assignedunit_x.suffgroup_exists(jim_text) is False
 
     # WHEN
     assignedunit_x.set_suffgroup(group_id=jim_text)
@@ -194,7 +194,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_Empty_suffgro
     # GIVEN
     _suffgroups_x = {}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
     # WHEN
     agenda_groups = {}
@@ -222,7 +222,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
     # WHEN
     assigned_heir_x.set_owner_id_assigned(agenda_groups, agenda_owner_id)
@@ -247,13 +247,13 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {sue_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
     # WHEN
     assigned_heir_x.set_owner_id_assigned(agenda_groups, agenda_owner_id)
 
     # THEN
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
 
 def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
@@ -274,7 +274,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
     assigned_heir_x.set_owner_id_assigned(x_agenda._groups, x_agenda._owner_id)
     assert assigned_heir_x._owner_id_assigned
 
@@ -284,7 +284,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     assigned_heir_x.set_owner_id_assigned(x_agenda._groups, x_agenda._owner_id)
 
     # THEN
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
 
 def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
@@ -305,7 +305,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
 
     _suffgroups_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffgroups=_suffgroups_x)
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
     assigned_heir_x.set_owner_id_assigned(x_agenda._groups, x_agenda._owner_id)
     assert assigned_heir_x._owner_id_assigned
 
@@ -315,7 +315,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffgroups_x_v3():
     assigned_heir_x.set_owner_id_assigned(x_agenda._groups, x_agenda._owner_id)
 
     # THEN
-    assert assigned_heir_x._owner_id_assigned == False
+    assert assigned_heir_x._owner_id_assigned is False
 
 
 def test_AssignedHeir_set_suffgroup_AssignedUnitEmpty_ParentAssignedHeirEmpty():
@@ -566,9 +566,9 @@ def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsNotEmpty():
     # WHEN / THEN
     assert assignedheir_x.group_in(swim_dict)
     assert assignedheir_x.group_in(hike_dict)
-    assert assignedheir_x.group_in(hunt_dict) == False
+    assert assignedheir_x.group_in(hunt_dict) is False
     assert assignedheir_x.group_in(hunt_hike_dict)
-    assert assignedheir_x.group_in(hunt_play_dict) == False
+    assert assignedheir_x.group_in(hunt_play_dict) is False
 
 
 def test_AssignedHeir_group_in_ReturnsCorrectBoolWhen_suffgroupsEmpty():

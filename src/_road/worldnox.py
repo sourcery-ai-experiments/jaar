@@ -27,69 +27,73 @@ class RealNox:
     _road_delimiter: str = None
     _planck: float = None
 
-    def real_dir(self) -> str:
+    def rn_real_dir(self) -> str:
         return f"{self.reals_dir}/{self.real_id}"
 
-    def persons_dir(self) -> str:
-        return f"{self.real_dir()}/persons"
+    def rn_persons_dir(self) -> str:
+        return f"{self.rn_real_dir()}/persons"
 
-    def person_dir(self, person_id: PersonID) -> str:
-        return f"{self.persons_dir()}/{person_id}"
+    def rn_person_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_persons_dir()}/{person_id}"
 
-    def econs_dir(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/econs"
+    def rn_econs_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/econs"
 
-    def atoms_dir(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/atoms"
+    def rn_atoms_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/atoms"
 
-    def changes_dir(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{get_changes_folder()}"
+    def rn_changes_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/{get_changes_folder()}"
 
-    def duty_dir(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/duty"
+    def rn_duty_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/duty"
 
-    def work_dir(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/work"
+    def rn_work_dir(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/work"
 
-    def duty_file_name(self, person_id: PersonID):
+    def rn_duty_file_name(self, person_id: PersonID):
         return get_file_name(person_id)
 
-    def duty_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.duty_file_name(person_id)}"
+    def rn_duty_path(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/{self.rn_duty_file_name(person_id)}"
 
-    def work_file_name(self, person_id: PersonID):
+    def rn_work_file_name(self, person_id: PersonID):
         return get_file_name(person_id)
 
-    def work_path(self, person_id: PersonID) -> str:
-        return f"{self.person_dir(person_id)}/{self.work_file_name(person_id)}"
+    def rn_work_path(self, person_id: PersonID) -> str:
+        return f"{self.rn_person_dir(person_id)}/{self.rn_work_file_name(person_id)}"
 
-    def save_file_duty(self, person_id: PersonID, file_text: str, replace: bool):
+    def rn_save_file_duty(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(person_id),
-            file_name=self.duty_file_name(person_id),
+            dest_dir=self.rn_person_dir(person_id),
+            file_name=self.rn_duty_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
 
-    def save_file_work(self, person_id: PersonID, file_text: str, replace: bool):
+    def rn_save_file_work(self, person_id: PersonID, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.person_dir(person_id),
-            file_name=self.work_file_name(person_id),
+            dest_dir=self.rn_person_dir(person_id),
+            file_name=self.rn_work_file_name(person_id),
             file_text=file_text,
             replace=replace,
         )
 
-    def duty_file_exists(self, person_id: PersonID) -> bool:
-        return os_path_exists(self.duty_path(person_id))
+    def rn_duty_file_exists(self, person_id: PersonID) -> bool:
+        return os_path_exists(self.rn_duty_path(person_id))
 
-    def work_file_exists(self, person_id: PersonID) -> bool:
-        return os_path_exists(self.work_path(person_id))
+    def rn_work_file_exists(self, person_id: PersonID) -> bool:
+        return os_path_exists(self.rn_work_path(person_id))
 
-    def open_file_duty(self, person_id: PersonID):
-        return open_file(self.person_dir(person_id), self.duty_file_name(person_id))
+    def rn_open_file_duty(self, person_id: PersonID):
+        return open_file(
+            self.rn_person_dir(person_id), self.rn_duty_file_name(person_id)
+        )
 
-    def open_file_work(self, person_id: PersonID) -> str:
-        return open_file(self.person_dir(person_id), self.work_file_name(person_id))
+    def rn_open_file_work(self, person_id: PersonID) -> str:
+        return open_file(
+            self.rn_person_dir(person_id), self.rn_work_file_name(person_id)
+        )
 
 
 def realnox_shop(

@@ -15,7 +15,7 @@ def get_test_world_dir():
 
 
 @pytest_fixture()
-def worlds_dir_setup_cleanup():
+def env_dir_setup_cleanup():
     env_dir = get_test_worlds_dir()
     delete_dir(dir=env_dir)
     yield env_dir

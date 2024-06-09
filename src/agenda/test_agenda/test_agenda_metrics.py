@@ -140,7 +140,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefSays
 
     # for idea in sue_agenda._idea_dict.values():
     #     print(f"{casa_road=} {idea.get_road()=}")
-    assert sue_agenda.get_idea_obj(casa_road)._active == False
+    assert sue_agenda.get_idea_obj(casa_road)._active is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModifies():
@@ -160,7 +160,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModi
     sue_agenda.calc_agenda_metrics()
     assert sue_agenda._idea_dict
     assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(casa_road)._active == False
+    assert sue_agenda._idea_dict.get(casa_road)._active is False
 
     # WHEN
     states_text = "nation-state"
@@ -184,7 +184,7 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModi
     sue_agenda.calc_agenda_metrics()
     assert sue_agenda._idea_dict
     assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(casa_road)._active == False
+    assert sue_agenda._idea_dict.get(casa_road)._active is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
@@ -277,7 +277,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
     # print(f"    {usa_premise.base=}")
     # print(f"    {usa_premise._task=}")
     # print(f"    {usa_premise._task=}")
-    assert week_reasonheir._task == False
+    assert week_reasonheir._task is False
     # print(f"      premises: {w=}")
     # w_need = usa_premise.premises[wed_road].need
     # print(f"      {w_need=}")
@@ -438,7 +438,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesRangeAttributes():
     house_road = sue_agenda.make_l1_road(house_text)
     clean_text = "clean table"
     clean_road = sue_agenda.make_road(house_road, clean_text)
-    assert sue_agenda._idea_dict.get(clean_road)._active == False
+    assert sue_agenda._idea_dict.get(clean_road)._active is False
 
     # set beliefs as midnight to 8am
     time_text = "timetech"
@@ -473,7 +473,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesRangeAttributes():
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict.get(clean_road)._active == False
+    assert sue_agenda._idea_dict.get(clean_road)._active is False
 
 
 def test_get_intent_dict_ReturnsCorrectObj():
@@ -539,8 +539,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsData_agenda_v001():
     #     if idea._label == laundry_text:
     #         for reason in idea._reasonunits.values():
     #             print(f"{idea._label=} {reason.base=}")  # {reason.premises=}")
-    # assert idea._active == False
-    assert yao_agenda._idea_dict.get(laundry_road)._active == False
+    # assert idea._active is False
+    assert yao_agenda._idea_dict.get(laundry_road)._active is False
 
     # WHEN
     week_text = "weekdays"
@@ -551,7 +551,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsData_agenda_v001():
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    assert yao_agenda._idea_dict.get(laundry_road)._active == False
+    assert yao_agenda._idea_dict.get(laundry_road)._active is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v001():
@@ -636,7 +636,7 @@ def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v
     casa_road = yao_agenda.make_l1_road(casa_text)
     bird_text = "say hi to birds"
     bird_road = yao_agenda.make_road(casa_road, bird_text)
-    assert from_list_get_active(road=bird_road, idea_dict=idea_dict) == False
+    assert from_list_get_active(road=bird_road, idea_dict=idea_dict) is False
 
     # yao_agenda.set_belief(base=week_road, pick=mon_road)
     # idea_dict = yao_agenda.get_idea_dict()
@@ -654,7 +654,7 @@ def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v
 
     # yao_agenda.set_belief(base=f"{yao_agenda._real_id},weekdays", pick=f"{yao_agenda._real_id},weekdays,Wednesday")
     # idea_dict = yao_agenda.get_idea_dict()
-    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == False
+    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6WeeksReason_agenda_v001():
@@ -695,7 +695,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6We
     premise_open = ced_week_premise.open
     premise_nigh = ced_week_premise.nigh
     # print(f"{idea._reasonunits=}")
-    assert clean_sheet_idea._active == False
+    assert clean_sheet_idea._active is False
 
     # for idea in idea_dict:
     #     # print(f"{idea._parent_road=}")
@@ -757,7 +757,7 @@ def test_AgendaUnit_calc_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
     #             first_idea_kid_none_count += 1
     #         elif idea._active:
     #             first_idea_kid_true_count += 1
-    #         elif idea._active == False:
+    #         elif idea._active is False:
     #             first_idea_kid_false_count += 1
 
     # print(f"{first_idea_kid_count=}")
@@ -811,7 +811,7 @@ def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_
     clean_road = yao_agenda.make_road(casa_road, clean_text)
     mat_label = "deep clean play mat"
     mat_road = yao_agenda.make_road(clean_road, mat_label)
-    assert from_list_get_active(road=mat_road, idea_dict=idea_dict) == False
+    assert from_list_get_active(road=mat_road, idea_dict=idea_dict) is False
 
     year_month_base = yao_agenda.make_l1_road("year_month")
     print(f"{year_month_base=}, {year_month_base=}")
@@ -1052,7 +1052,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_True():
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    assert sue_agenda._econs_buildable == False
+    assert sue_agenda._econs_buildable is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -1083,7 +1083,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_False():
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     sue_agenda.add_partyunit(sue_text)
     sue_agenda.add_partyunit(bob_text)
-    assert sue_agenda._econs_buildable == False
+    assert sue_agenda._econs_buildable is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -1104,4 +1104,4 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_False():
     # WHEN
     sue_agenda.calc_agenda_metrics()
     # THEN
-    assert sue_agenda._econs_buildable == False
+    assert sue_agenda._econs_buildable is False

@@ -6,7 +6,7 @@ from src.agenda.agenda import (
     partylink_shop,
 )
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import (
+from src.econ.examples.econ_env import (
     temp_real_id,
     get_texas_filehub,
     env_dir_setup_cleanup,

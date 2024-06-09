@@ -223,7 +223,7 @@ def test_partylink_exists_ReturnsCorrectObj():
     # WHEN / THEN
     assert swimmers_group.partylink_exists(todd_text)
     assert swimmers_group.partylink_exists(mery_text)
-    assert swimmers_group.partylink_exists("todd") == False
+    assert swimmers_group.partylink_exists("todd") is False
 
 
 def test_GroupUnit_del_partylink_SetsAttrCorrectly():

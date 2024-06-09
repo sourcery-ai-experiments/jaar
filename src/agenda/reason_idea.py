@@ -218,7 +218,7 @@ class PremiseStatusFinder:
                     self.premise_divisor,
                     self.belief_nigh_full,
                 )
-                == False
+                is False
             )
         )
 
@@ -343,13 +343,13 @@ class PremiseUnit:
         if beliefheir is None:
             x_status = False
         elif self.is_in_lineage(belief_pick=beliefheir.pick) == True:
-            if self._is_range_or_segregate() == False:
+            if self._is_range_or_segregate() is False:
                 x_status = True
-            elif self._is_range_or_segregate() and beliefheir.is_range() == False:
+            elif self._is_range_or_segregate() and beliefheir.is_range() is False:
                 x_status = False
             elif self._is_range_or_segregate() and beliefheir.is_range():
                 x_status = self._get_range_segregate_status(beliefheir=beliefheir)
-        elif self.is_in_lineage(belief_pick=beliefheir.pick) == False:
+        elif self.is_in_lineage(belief_pick=beliefheir.pick) is False:
             x_status = False
 
         return x_status

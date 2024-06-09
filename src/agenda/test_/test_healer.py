@@ -88,21 +88,21 @@ def test_HealerHold_group_id_exists_ReturnsCorrectObj():
     x_healerhold = healerhold_shop()
     jim_text = "Jim"
     sue_text = "Sue"
-    assert x_healerhold.group_id_exists(jim_text) == False
-    assert x_healerhold.group_id_exists(sue_text) == False
+    assert x_healerhold.group_id_exists(jim_text) is False
+    assert x_healerhold.group_id_exists(sue_text) is False
 
     # WHEN
     x_healerhold.set_group_id(x_group_id=jim_text)
 
     # THEN
     assert x_healerhold.group_id_exists(jim_text)
-    assert x_healerhold.group_id_exists(sue_text) == False
+    assert x_healerhold.group_id_exists(sue_text) is False
 
 
 def test_HealerHold_any_group_id_exists_ReturnsCorrectObj():
     # GIVEN
     x_healerhold = healerhold_shop()
-    assert x_healerhold.any_group_id_exists() == False
+    assert x_healerhold.any_group_id_exists() is False
 
     # WHEN / THEN
     sue_text = "Sue"
@@ -120,7 +120,7 @@ def test_HealerHold_any_group_id_exists_ReturnsCorrectObj():
 
     # WHEN / THEN
     x_healerhold.del_group_id(x_group_id=sue_text)
-    assert x_healerhold.any_group_id_exists() == False
+    assert x_healerhold.any_group_id_exists() is False
 
 
 def test_healerhold_get_from_dict_ReturnsCorrectObj():

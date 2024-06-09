@@ -2,12 +2,8 @@ from src._instrument.file import delete_dir
 from pytest import fixture as pytest_fixture
 
 
-def get_codespace_road_dir() -> str:
-    return "src/_road"
-
-
 def get_road_examples_dir():
-    return f"{get_codespace_road_dir()}/examples"
+    return "src/_road/examples"
 
 
 def get_road_temp_env_dir():

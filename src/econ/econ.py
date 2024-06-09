@@ -1,9 +1,8 @@
 from src._instrument.file import delete_dir
-from src._road.road import OwnerID, PersonID
+from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.filehub import FileHub
-from src.change.listen import listen_to_debtors_roll
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -41,10 +40,6 @@ from dataclasses import dataclass
 
 
 class IntentBaseDoesNotExistException(Exception):
-    pass
-
-
-class RoleAgendaFileException(Exception):
     pass
 
 
@@ -141,7 +136,7 @@ class EconUnit:
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
 
-            if river_block_x.block_returned() == False:
+            if river_block_x.block_returned() is False:
                 river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
 
         return river_ledger_x
@@ -299,7 +294,7 @@ class EconUnit:
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
-        if x_agendaunit.idea_exists(x_calendarreport.time_road) == False:
+        if x_agendaunit.idea_exists(x_calendarreport.time_road) is False:
             raise IntentBaseDoesNotExistException(
                 f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._owner_id}'."
             )
@@ -354,10 +349,3 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
                 credit_score=partytreasuryunit.credit_score,
                 voice_rank=partytreasuryunit.voice_rank,
             )
-
-
-def create_job_file_from_role_file(filehub: FileHub, person_id: PersonID):
-    x_role = filehub.get_role_agenda(person_id)
-    x_job = listen_to_debtors_roll(x_role, filehub)
-    filehub.save_job_agenda(x_job)
-    return x_job

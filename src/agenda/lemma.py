@@ -218,7 +218,7 @@ class Lemmas:
 
     def get_unevaluated_lemma(self) -> Lemma:
         for lemma in self.lemmas.values():
-            if lemma.eval_status == False:
+            if lemma.eval_status is False:
                 # set to True
                 lemma.eval_status = True
                 return lemma

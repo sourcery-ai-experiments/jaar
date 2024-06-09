@@ -1,5 +1,5 @@
 from src.econ.econ import econunit_shop, EconUnit
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_filehub
+from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 from src._instrument.sqlite import get_db_tables, get_db_columns
 from src._instrument.file import open_file
 from src._instrument.python import get_nested_value, get_dict_from_json

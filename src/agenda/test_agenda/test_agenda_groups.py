@@ -526,7 +526,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyCreatesNewPersonID():
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
     assert agenda.get_groupunit(swim_text) != None
-    assert agenda.get_groupunit(swim_text)._party_mirror == False
+    assert agenda.get_groupunit(swim_text)._party_mirror is False
     assert len(agenda.get_groupunit(swim_text)._partys) == 1
 
     # WHEN
@@ -540,7 +540,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyCreatesNewPersonID():
     assert agenda.get_groupunit(swim_text) is None
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
-    assert agenda.get_groupunit(jog_text)._party_mirror == False
+    assert agenda.get_groupunit(jog_text)._party_mirror is False
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
 
 
@@ -601,7 +601,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     assert agenda.get_groupunit(swim_text) is None
     assert len(agenda._partys) == 1
     assert len(agenda._groups) == 2
-    assert agenda.get_groupunit(jog_text)._party_mirror == False
+    assert agenda.get_groupunit(jog_text)._party_mirror is False
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).creditor_weight == 12
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13

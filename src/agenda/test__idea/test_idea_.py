@@ -104,7 +104,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._assignedheir is None
     assert x_ideaunit._originunit == originunit_shop()
     assert x_ideaunit._road_delimiter == default_road_delimiter_if_none()
-    assert x_ideaunit._root == False
+    assert x_ideaunit._root is False
     assert x_ideaunit._agenda_real_id == root_label()
     assert x_ideaunit._healerhold_importance == 0
 
@@ -386,21 +386,21 @@ def test_get_obj_from_idea_dict_ReturnsCorrectObj():
     # WHEN / THEN
     assert get_obj_from_idea_dict({field_text: True}, field_text)
     assert get_obj_from_idea_dict({}, field_text)
-    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
+    assert get_obj_from_idea_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "pledge"
     # WHEN / THEN
     assert get_obj_from_idea_dict({field_text: True}, field_text)
-    assert get_obj_from_idea_dict({}, field_text) == False
-    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
+    assert get_obj_from_idea_dict({}, field_text) is False
+    assert get_obj_from_idea_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "_problem_bool"
     # WHEN / THEN
     assert get_obj_from_idea_dict({field_text: True}, field_text)
-    assert get_obj_from_idea_dict({}, field_text) == False
-    assert get_obj_from_idea_dict({field_text: False}, field_text) == False
+    assert get_obj_from_idea_dict({}, field_text) is False
+    assert get_obj_from_idea_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "_kids"
@@ -613,7 +613,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     casa_dict = casa_idea.get_dict()
 
     # THEN
-    assert casa_dict.get("_is_expanded") == False
+    assert casa_dict.get("_is_expanded") is False
     assert casa_dict.get("pledge")
     assert casa_dict.get("_meld_strategy") == ignore_text
     assert casa_dict.get("_beliefunits") != None
@@ -627,7 +627,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     casa_idea = ideaunit_shop()
     assert casa_idea._is_expanded
-    assert casa_idea.pledge == False
+    assert casa_idea.pledge is False
     assert casa_idea._meld_strategy == "default"
     assert casa_idea._beliefunits == {}
     assert casa_idea._balancelinks == {}

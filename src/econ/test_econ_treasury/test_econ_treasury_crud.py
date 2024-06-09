@@ -1,7 +1,7 @@
 from src.change.filehub import filehub_shop
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import get_texas_filehub, env_dir_setup_cleanup
+from src.econ.examples.econ_env import get_texas_filehub, env_dir_setup_cleanup
 from src.econ.treasury_sqlstr import get_agendatreasuryunits_dict
 
 

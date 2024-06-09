@@ -176,7 +176,7 @@ class AgendaUnit:
         update_partys_creditor_weight: bool = False,
         correct_planck_issues: bool = False,
     ):
-        if (new_party_creditor_pool / self._planck).is_integer() == False:
+        if (new_party_creditor_pool / self._planck).is_integer() is False:
             raise _planck_RatioException(
                 f"Agenda '{self._owner_id}' cannot set _party_creditor_pool='{new_party_creditor_pool}'. It is not divisible by planck '{self._planck}'"
             )
@@ -217,7 +217,7 @@ class AgendaUnit:
         update_partys_debtor_weight: bool = False,
         correct_planck_issues: bool = False,
     ):
-        if (new_party_debtor_pool / self._planck).is_integer() == False:
+        if (new_party_debtor_pool / self._planck).is_integer() is False:
             raise _planck_RatioException(
                 f"Agenda '{self._owner_id}' cannot set _party_debtor_pool='{new_party_debtor_pool}'. It is not divisible by planck '{self._planck}'"
             )
@@ -690,7 +690,7 @@ class AgendaUnit:
         elif (
             not allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._party_mirror == False
+            and new_party_id_groupunit._party_mirror is False
         ):
             raise InvalidAgendaException(
                 f"Party '{old_party_id}' modify to '{new_party_id}' failed since non-single group '{new_party_id}' exists."
@@ -698,7 +698,7 @@ class AgendaUnit:
         elif (
             allow_nonsingle_group_overwrite
             and new_party_id_groupunit != None
-            and new_party_id_groupunit._party_mirror == False
+            and new_party_id_groupunit._party_mirror is False
         ):
             self.del_groupunit(group_id=new_party_id)
         elif self.party_exists(new_party_id):
@@ -900,7 +900,7 @@ class AgendaUnit:
         # Now get associates (all their descendants and range_source_roads)
         lemma_beliefunits = {}  # belief.base : beliefUnit
         count_x = 0
-        while x_lemmas.is_lemmas_evaluated() == False or count_x > 10000:
+        while x_lemmas.is_lemmas_evaluated() is False or count_x > 10000:
             count_x += 1
             if count_x == 9998:
                 raise InvalidAgendaException("lemma loop failed")
@@ -952,12 +952,12 @@ class AgendaUnit:
             x_nigh = nigh
         x_beliefunit = beliefunit_shop(base=base, pick=pick, open=x_open, nigh=x_nigh)
 
-        if belief_base_idea.is_arithmetic() == False:
+        if belief_base_idea.is_arithmetic() is False:
             x_idearoot.set_beliefunit(x_beliefunit)
 
         # if belief's idea no range or is a "range-root" then allow belief to be set
         elif (
-            belief_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) == False
+            belief_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) is False
         ):
             raise InvalidAgendaException(
                 f"Non range-root belief:{base} can only be set by range-root belief"
@@ -995,7 +995,7 @@ class AgendaUnit:
         self.calc_agenda_metrics()
         if not problem:
             return self._idea_dict
-        if self._econs_justified == False:
+        if self._econs_justified is False:
             raise Exception_econs_justified(
                 f"Cannot return problem set because _econs_justified={self._econs_justified}."
             )
@@ -1125,12 +1125,12 @@ class AgendaUnit:
         idea_kid.set_parent_road(parent_road=parent_road)
 
         # create any missing ideas
-        if not create_missing_ancestors and self.idea_exists(parent_road) == False:
+        if not create_missing_ancestors and self.idea_exists(parent_road) is False:
             raise InvalidAgendaException(
                 f"add_idea failed because '{parent_road}' idea does not exist."
             )
         parent_road_idea = self.get_idea_obj(parent_road, create_missing_ancestors)
-        if parent_road_idea._root == False:
+        if parent_road_idea._root is False:
             parent_road_idea
         parent_road_idea.add_kid(idea_kid)
 
@@ -1198,7 +1198,7 @@ class AgendaUnit:
             self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
     def _set_ideakid_if_empty(self, road: RoadUnit):
-        if self.idea_exists(road) == False:
+        if self.idea_exists(road) is False:
             self.add_idea(
                 ideaunit_shop(get_terminus_node(road, self._road_delimiter)),
                 parent_road=get_parent_road(road),
@@ -1233,7 +1233,7 @@ class AgendaUnit:
             raise InvalidLabelException(
                 f"Cannot modify '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
             )
-        if self.idea_exists(old_road) == False:
+        if self.idea_exists(old_road) is False:
             raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         parent_road = get_parent_road(road=old_road)
@@ -1694,7 +1694,7 @@ class AgendaUnit:
     def get_idea_obj(self, road: RoadUnit, if_missing_create: bool = False) -> IdeaUnit:
         if road is None:
             raise InvalidAgendaException("get_idea_obj received road=None")
-        if self.idea_exists(road) == False and not if_missing_create:
+        if self.idea_exists(road) is False and not if_missing_create:
             raise InvalidAgendaException(f"get_idea_obj failed. no item at '{road}'")
         roadnodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
         if len(roadnodes) == 1:
@@ -1750,8 +1750,8 @@ class AgendaUnit:
                 and x_idea_obj._balanceheirs != {}
             ) or (
                 group_everyone != False
-                and x_idea_obj._all_party_credit == False
-                and x_idea_obj._all_party_debt == False
+                and x_idea_obj._all_party_credit is False
+                and x_idea_obj._all_party_debt is False
             ):
                 group_everyone = False
             elif group_everyone != False:
@@ -1766,7 +1766,7 @@ class AgendaUnit:
             if x_idea_obj._problem_bool:
                 econ_justified_by_problem = True
 
-        if econ_justified_by_problem == False or healerhold_count > 1:
+        if econ_justified_by_problem is False or healerhold_count > 1:
             if econ_exceptions:
                 raise Exception_econs_justified(
                     f"IdeaUnit '{road}' cannot sponsor ancestor econs."
@@ -1841,7 +1841,7 @@ class AgendaUnit:
     def _distribute_agenda_importance(self, idea: IdeaUnit):
         # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
-        if idea.is_balanceheirless() == False:
+        if idea.is_balanceheirless() is False:
             self._set_groupunits_agenda_importance(idea._balanceheirs)
         elif idea.is_balanceheirless():
             self._add_to_partyunits_agenda_credit_debt(idea._agenda_importance)
@@ -1921,7 +1921,7 @@ class AgendaUnit:
             if idea._active_hx.get(self._tree_traverse_count) != None:
                 any_idea_active_status_has_altered = True
 
-        if any_idea_active_status_has_altered == False:
+        if any_idea_active_status_has_altered is False:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):
@@ -1935,7 +1935,7 @@ class AgendaUnit:
         self._econs_buildable = self._get_buildable_econs()
 
     def _set_econ_dict(self):
-        if self._econs_justified == False:
+        if self._econs_justified is False:
             self._sum_healerhold_importance = 0
         for x_idea in self._idea_dict.values():
             if self._sum_healerhold_importance == 0:
@@ -1966,11 +1966,11 @@ class AgendaUnit:
         )
 
     def _pre_tree_traverse_credit_debt_reset(self):
-        if self.is_partyunits_creditor_weight_sum_correct() == False:
+        if self.is_partyunits_creditor_weight_sum_correct() is False:
             raise PartyUnitsCreditorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
             )
-        if self.is_partyunits_debtor_weight_sum_correct() == False:
+        if self.is_partyunits_debtor_weight_sum_correct() is False:
             raise PartyUnitsCreditorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
             )
@@ -2028,7 +2028,7 @@ class AgendaUnit:
         return {
             group_group_id: group_obj.get_dict()
             for group_group_id, group_obj in self._groups.items()
-            if group_obj._party_mirror == False
+            if group_obj._party_mirror is False
         }
 
     def get_dict(self) -> dict[str:str]:

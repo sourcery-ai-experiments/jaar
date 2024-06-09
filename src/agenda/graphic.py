@@ -86,7 +86,7 @@ def _add_ideaunit_traces(
     source_y = 0
     while ideas != []:
         x_idea = ideas.pop(-1)
-        if is_sub_road(x_idea.get_road(), prev_road) == False:
+        if is_sub_road(x_idea.get_road(), prev_road) is False:
             source_y -= 1
         _add_individual_trace(
             trace_list=trace_list,

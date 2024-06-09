@@ -369,7 +369,7 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     tr2_src_belief = tr2_lemma.src_belief
     print(f"0 transition: {tr1_src_belief.base=} {tr1_lemma.eval_status=}")
     print(f"0 transition: {tr2_src_belief.base=} {tr2_lemma.eval_status=}")
-    assert z_lemmas.is_lemmas_evaluated() == False
+    assert z_lemmas.is_lemmas_evaluated() is False
 
     # WHEN
     lem1 = z_lemmas.get_unevaluated_lemma()
@@ -377,7 +377,7 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     assert len(z_lemmas.lemmas) == 2
     print(f"1 transition: {tr1_src_belief.base=} {tr1_lemma.eval_status=}")
     print(f"1 transition: {tr2_src_belief.base=} {tr2_lemma.eval_status=}")
-    assert z_lemmas.is_lemmas_evaluated() == False
+    assert z_lemmas.is_lemmas_evaluated() is False
 
     # WHEN
     lem2 = z_lemmas.get_unevaluated_lemma()
