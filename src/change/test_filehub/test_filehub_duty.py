@@ -1,16 +1,8 @@
-from src._instrument.file import open_file, dir_files, delete_dir, set_dir, save_file
+from src._instrument.file import delete_dir
 from src._road.jaar_config import init_change_id
 from src._road.road import get_default_real_id_roadnode as root_label
-from src.change.change import changeunit_shop, get_json_filename
 from src.change.filehub import filehub_shop
-from src.change.examples.example_change_atoms import get_atom_example_ideaunit_knee
-from src.change.examples.example_change_changes import (
-    get_sue_changeunit,
-    sue_1atomunits_changeunit,
-    sue_2atomunits_changeunit,
-    sue_3atomunits_changeunit,
-    sue_4atomunits_changeunit,
-)
+from src.change.examples.example_change_changes import sue_2atomunits_changeunit
 from src.change.examples.change_env import (
     env_dir_setup_cleanup,
     get_change_temp_env_dir as env_dir,
@@ -54,7 +46,7 @@ def test_FileHub_delete_duty_file_DeletesDutyFile(env_dir_setup_cleanup):
     sue_filehub.delete_duty_file()
 
     # THEN
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
 
 
 def test_FileHub_create_initial_change_files_from_default_CorrectlySavesChangeUnitFiles(
@@ -66,15 +58,15 @@ def test_FileHub_create_initial_change_files_from_default_CorrectlySavesChangeUn
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     init_change_file_name = sue_filehub.change_file_name(init_change_id())
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
-    assert os_path_exists(init_change_file_path) == False
-    assert sue_filehub.duty_file_exists() == False
+    assert os_path_exists(init_change_file_path) is False
+    assert sue_filehub.duty_file_exists() is False
 
     # WHEN
     sue_filehub._create_initial_change_files_from_default()
 
     # THEN
     assert os_path_exists(init_change_file_path)
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
 
 
 def test_FileHub_create_duty_from_changes_CreatesDutyFileFromChangeFiles(
@@ -88,7 +80,7 @@ def test_FileHub_create_duty_from_changes_CreatesDutyFileFromChangeFiles(
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
     sue_filehub._create_initial_change_files_from_default()
     assert os_path_exists(init_change_file_path)
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
 
     # WHEN
     sue_filehub._create_duty_from_changes()
@@ -108,8 +100,8 @@ def test_FileHub_create_initial_change_and_duty_files_CreatesChangeFilesAndDutyF
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     init_change_file_name = sue_filehub.change_file_name(init_change_id())
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
-    assert os_path_exists(init_change_file_path) == False
-    assert sue_filehub.duty_file_exists() == False
+    assert os_path_exists(init_change_file_path) is False
+    assert sue_filehub.duty_file_exists() is False
 
     # WHEN
     sue_filehub._create_initial_change_and_duty_files()
@@ -131,11 +123,11 @@ def test_FileHub_create_initial_change_files_from_duty_SavesOnlyChangeFiles(
     sue_duty_agenda = sue_filehub.default_duty_agenda()
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
     sue_filehub.save_duty_agenda(sue_duty_agenda)
     assert sue_filehub.duty_file_exists()
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_id()}.json"
-    assert os_path_exists(init_change_file_path) == False
+    assert os_path_exists(init_change_file_path) is False
 
     # WHEN
     sue_filehub._create_initial_change_files_from_duty()
@@ -151,10 +143,10 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesDutyFileAndChangeFil
     sue_text = "Sue"
     seven_int = 7
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_id()}.json"
     delete_dir(sue_filehub.changes_dir())
-    assert os_path_exists(init_change_file_path) == False
+    assert os_path_exists(init_change_file_path) is False
 
     # WHEN
     sue_filehub.initialize_change_duty_files()
@@ -177,7 +169,7 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesOnlyDutyFile(
     sue_filehub.initialize_change_duty_files()
     assert sue_filehub.duty_file_exists()
     sue_filehub.delete_duty_file()
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_id()}.json"
     assert os_path_exists(init_change_file_path)
 
@@ -207,7 +199,7 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     assert sue_filehub.duty_file_exists()
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_id()}.json"
     delete_dir(sue_filehub.changes_dir())
-    assert os_path_exists(init_change_file_path) == False
+    assert os_path_exists(init_change_file_path) is False
 
     # WHEN
     sue_filehub.initialize_change_duty_files()
@@ -234,8 +226,8 @@ def test_FileHub_append_changes_to_duty_file_AddschangesToDutyFile(
     sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
     knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.idea_exists(sports_road) == False
-    assert duty_agenda.idea_exists(knee_road) == False
+    assert duty_agenda.idea_exists(sports_road) is False
+    assert duty_agenda.idea_exists(knee_road) is False
 
     # WHEN
     new_agenda = sue_filehub.append_changes_to_duty_file()

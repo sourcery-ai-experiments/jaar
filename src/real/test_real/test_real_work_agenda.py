@@ -14,7 +14,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, music_text, sue_text, None)
     x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work/{sue_text}.json"
-    assert os_path_exists(x_sue_work_path) == False
+    assert os_path_exists(x_sue_work_path) is False
     music_real.init_person_econs(sue_text)
     assert sue_filehub.work_path() == x_sue_work_path
     assert os_path_exists(x_sue_work_path)
@@ -44,7 +44,7 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
     after_sue_agenda = music_real.generate_work_agenda(sue_text)
 
     # THEN method should wipe over work agenda
-    assert after_sue_agenda.party_exists(bob_text) == False
+    assert after_sue_agenda.party_exists(bob_text) is False
 
 
 def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
@@ -57,7 +57,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
     sue_text = "Sue"
-    assert before_bob_work_agenda.party_exists(sue_text) == False
+    assert before_bob_work_agenda.party_exists(sue_text) is False
 
     # WHEN
     bob_duty_agenda = bob_filehub.get_duty_agenda()
@@ -79,7 +79,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
     music_real.init_person_econs(bob_text)
     bob_filehub = filehub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
-    assert after_bob_work_agenda.party_exists(bob_text) == False
+    assert after_bob_work_agenda.party_exists(bob_text) is False
 
     # WHEN
     bob_duty_agenda = bob_filehub.get_duty_agenda()
@@ -136,8 +136,8 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
     before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert before_bob_work_agenda.party_exists(bob_text) == False
-    assert before_sue_work_agenda.party_exists(sue_text) == False
+    assert before_bob_work_agenda.party_exists(bob_text) is False
+    assert before_sue_work_agenda.party_exists(sue_text) is False
 
     # WHEN
     music_real.generate_all_work_agendas()

@@ -408,7 +408,7 @@ def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     #     #     print(idea._label)
     #     if idea.pledge == True:
     #         action_true_count += 1
-    #         # if idea.pledge == False:
+    #         # if idea.pledge is False:
     #         #     print(f"action is false {idea._label}")
     #         # for reason in idea._reasonunits.values():
     #         #     assert reason._status in (True, False)

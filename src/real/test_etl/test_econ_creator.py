@@ -32,7 +32,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
     sue_filehub.initialize_change_duty_files()
     dallas_db_path = sue_filehub.treasury_db_path()
     print(f"{dallas_db_path=}")
-    assert os_path_exists(dallas_db_path) == False
+    assert os_path_exists(dallas_db_path) is False
 
     # WHEN
     sue_dallas_econunit = init_econunit(sue_filehub, dallas_road)
@@ -62,7 +62,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
     sue_duty_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.calc_agenda_metrics()
-    assert sue_duty_agenda._econs_justified == False
+    assert sue_duty_agenda._econs_justified is False
     sue_filehub.save_duty_agenda(sue_duty_agenda)
 
     # WHEN / THEN
@@ -89,7 +89,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
     sue_duty_agenda.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
     sue_duty_agenda.calc_agenda_metrics()
     assert sue_duty_agenda._econs_justified
-    assert sue_duty_agenda._econs_buildable == False
+    assert sue_duty_agenda._econs_buildable is False
     sue_filehub.save_duty_agenda(sue_duty_agenda)
 
     # WHEN / THEN
@@ -127,8 +127,8 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     elpaso_filehub = filehub_shop(None, None, sue_text, elpaso_road)
     print(f"{dallas_filehub.treasury_db_path()=}")
     print(f"{elpaso_filehub.treasury_db_path()=}")
-    assert os_path_exists(dallas_filehub.treasury_db_path()) == False
-    assert os_path_exists(elpaso_filehub.treasury_db_path()) == False
+    assert os_path_exists(dallas_filehub.treasury_db_path()) is False
+    assert os_path_exists(elpaso_filehub.treasury_db_path()) is False
 
     # WHEN
     create_person_econunits(sue_filehub)
@@ -189,7 +189,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     dallas_econ = get_econunit(sue_filehub, dallas_road)
     sue_file_name = sue_filehub.owner_file_name(sue_text)
     sue_role_file_path = f"{dallas_econ.filehub.roles_dir()}/{sue_file_name}"
-    assert os_path_exists(sue_role_file_path) == False
+    assert os_path_exists(sue_role_file_path) is False
 
     # WHEN
     set_econunit_role(sue_filehub, dallas_road, sue_duty_agenda)
@@ -227,8 +227,8 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
     dallas_sue_role_file_path = f"{dallas_econ.filehub.roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_filehub, elpaso_road)
     elpaso_sue_role_file_path = f"{elpaso_econ.filehub.roles_dir()}/{sue_file_name}"
-    assert os_path_exists(dallas_sue_role_file_path) == False
-    assert os_path_exists(elpaso_sue_role_file_path) == False
+    assert os_path_exists(dallas_sue_role_file_path) is False
+    assert os_path_exists(elpaso_sue_role_file_path) is False
 
     # WHEN
     set_econunits_role(sue_filehub, sue_duty_agenda)
@@ -269,8 +269,8 @@ def test_set_person_econunits_role_CorrectlySetsroles(
     dallas_sue_role_file_path = f"{dallas_econ.filehub.roles_dir()}/{sue_file_name}"
     elpaso_econ = get_econunit(sue_filehub, elpaso_road)
     elpaso_sue_role_file_path = f"{elpaso_econ.filehub.roles_dir()}/{sue_file_name}"
-    assert os_path_exists(dallas_sue_role_file_path) == False
-    assert os_path_exists(elpaso_sue_role_file_path) == False
+    assert os_path_exists(dallas_sue_role_file_path) is False
+    assert os_path_exists(elpaso_sue_role_file_path) is False
 
     # WHEN
     set_person_econunits_role(sue_filehub)

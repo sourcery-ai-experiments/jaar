@@ -170,7 +170,7 @@ class AgendaAtom:
     atom_order: int = None
 
     def get_insert_sqlstr(self) -> str:
-        if self.is_valid() == False:
+        if self.is_valid() is False:
             raise AgendaAtomDescriptionException(
                 f"Cannot get_insert_sqlstr '{self.category}' with is_valid=False."
             )
@@ -188,7 +188,7 @@ class AgendaAtom:
         return create_insert_sqlstr(atom_hx_table_name(), x_columns, x_values)
 
     def get_description(self) -> str:
-        if self.is_valid() == False:
+        if self.is_valid() is False:
             raise AgendaAtomDescriptionException("agendaatom is not valid")
 
         description_elements = self._get_crud_dict().get("description_elements")

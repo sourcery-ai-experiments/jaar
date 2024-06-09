@@ -233,7 +233,7 @@ def validate_roadnode(
         raise ValidateRoadNodeException(
             f"'{x_roadnode}' needs to not be a RoadNode. Must contain delimiter: '{x_delimiter}'"
         )
-    elif is_roadnode(x_roadnode, x_delimiter) == False and not not_roadnode_required:
+    elif is_roadnode(x_roadnode, x_delimiter) is False and not not_roadnode_required:
         raise ValidateRoadNodeException(
             f"'{x_roadnode}' needs to be a RoadNode. Cannot contain delimiter: '{x_delimiter}'"
         )

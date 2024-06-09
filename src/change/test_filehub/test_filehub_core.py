@@ -2,8 +2,6 @@ from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
 from src._road.jaar_config import (
     get_changes_folder,
-    duty_str,
-    work_str,
     get_test_reals_dir,
     get_test_real_id,
 )
@@ -107,7 +105,7 @@ def test_FileHub_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(get_road_temp_env_dir(), None, sue_text)
-    assert os_path_exists(sue_filehub.duty_file_path()) == False
+    assert os_path_exists(sue_filehub.duty_file_path()) is False
 
     # WHEN
     sue_filehub.save_file_duty(file_text="fooboo", replace=True)
@@ -120,7 +118,7 @@ def test_FileHub_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(get_road_temp_env_dir(), None, sue_text)
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
 
     # WHEN
     sue_filehub.save_file_duty(file_text="fooboo", replace=True)
@@ -144,7 +142,7 @@ def test_FileHub_save_file_work_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(get_road_temp_env_dir(), None, sue_text)
-    assert os_path_exists(sue_filehub.work_path()) == False
+    assert os_path_exists(sue_filehub.work_path()) is False
 
     # WHEN
     sue_filehub.save_file_work(file_text="fooboo", replace=True)
@@ -157,7 +155,7 @@ def test_FileHub_work_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(get_road_temp_env_dir(), None, sue_text)
-    assert sue_filehub.work_file_exists() == False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     sue_filehub.save_file_work(file_text="fooboo", replace=True)

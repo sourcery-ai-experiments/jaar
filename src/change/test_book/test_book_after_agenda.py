@@ -99,7 +99,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_party():
     print(f"{sue_bookunit.agendaatoms=}")
     assert after_sue_agendaunit != before_sue_agendaunit
     assert after_sue_agendaunit.party_exists(rico_text)
-    assert after_sue_agendaunit.party_exists(carm_text) == False
+    assert after_sue_agendaunit.party_exists(carm_text) is False
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
@@ -112,7 +112,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     carm_text = "Carmen"
     before_sue_agendaunit.add_partyunit(rico_text)
     assert before_sue_agendaunit.party_exists(rico_text)
-    assert before_sue_agendaunit.party_exists(carm_text) == False
+    assert before_sue_agendaunit.party_exists(carm_text) is False
 
     # WHEN
     category = "agenda_partyunit"
@@ -400,7 +400,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit
 
     # THEN
     assert after_sue_agendaunit.idea_exists(ball_road)
-    assert after_sue_agendaunit.idea_exists(disc_road) == False
+    assert after_sue_agendaunit.idea_exists(disc_road) is False
 
 
 def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit():
@@ -415,7 +415,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_ideaunit
     disc_road = before_sue_agendaunit.make_road(sports_road, disc_text)
     before_sue_agendaunit.add_idea(ideaunit_shop(ball_text), sports_road)
     assert before_sue_agendaunit.idea_exists(ball_road)
-    assert before_sue_agendaunit.idea_exists(disc_road) == False
+    assert before_sue_agendaunit.idea_exists(disc_road) is False
 
     # WHEN
     # x_addin = 140
@@ -460,7 +460,7 @@ def test_BookUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_ideaunit
     assert before_sue_agendaunit.get_idea_obj(ball_road)._begin is None
     assert before_sue_agendaunit.get_idea_obj(ball_road)._close is None
     assert before_sue_agendaunit.get_idea_obj(ball_road)._meld_strategy == "default"
-    assert before_sue_agendaunit.get_idea_obj(ball_road).pledge == False
+    assert before_sue_agendaunit.get_idea_obj(ball_road).pledge is False
 
     # WHEN
     # x_addin = 140
@@ -1131,4 +1131,4 @@ def test_BookUnit_get_bookunit_example1_ContainsAgendaAtoms():
     assert after_sue_agendaunit._party_debtor_pool == 88
     assert after_sue_agendaunit._meld_strategy == "override"
     assert after_sue_agendaunit.party_exists(rico_text)
-    assert after_sue_agendaunit.party_exists(carm_text) == False
+    assert after_sue_agendaunit.party_exists(carm_text) is False

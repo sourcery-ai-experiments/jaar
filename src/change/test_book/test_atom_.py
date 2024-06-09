@@ -33,7 +33,7 @@ def test_atom_config_HasCorrect_category():
         "river_reach",
     }
     assert "agenda_partyunit" in category_ref()
-    assert is_category_ref("idearoot") == False
+    assert is_category_ref("idearoot") is False
 
 
 def check_every_crud_dict_has_element(atom_config_dict, atom_order_text):
@@ -312,7 +312,7 @@ def test_AgendaAtom_is_optional_args_valid_ReturnsCorrectBoolean():
     bob_insert_agendaatom.set_optional_arg("x_x_x", 77)
     # THEN
     assert len(bob_insert_agendaatom.optional_args) == 3
-    assert bob_insert_agendaatom.is_optional_args_valid() == False
+    assert bob_insert_agendaatom.is_optional_args_valid() is False
 
 
 def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
@@ -326,17 +326,17 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom = agendaatom_shop(partyunit_text, crud_text=atom_insert())
 
     # THEN
-    assert bob_insert_agendaatom.is_required_args_valid() == False
+    assert bob_insert_agendaatom.is_required_args_valid() is False
     assert bob_insert_agendaatom.is_optional_args_valid()
-    assert bob_insert_agendaatom.is_valid() == False
+    assert bob_insert_agendaatom.is_valid() is False
 
     # WHEN
     bob_insert_agendaatom.set_optional_arg("x_x_x", 12)
 
     # THEN
-    assert bob_insert_agendaatom.is_required_args_valid() == False
-    assert bob_insert_agendaatom.is_optional_args_valid() == False
-    assert bob_insert_agendaatom.is_valid() == False
+    assert bob_insert_agendaatom.is_required_args_valid() is False
+    assert bob_insert_agendaatom.is_optional_args_valid() is False
+    assert bob_insert_agendaatom.is_valid() is False
 
     # WHEN
     party_id_text = "party_id"
@@ -344,8 +344,8 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # THEN
     assert bob_insert_agendaatom.is_required_args_valid()
-    assert bob_insert_agendaatom.is_optional_args_valid() == False
-    assert bob_insert_agendaatom.is_valid() == False
+    assert bob_insert_agendaatom.is_optional_args_valid() is False
+    assert bob_insert_agendaatom.is_valid() is False
 
     # WHEN
     bob_insert_agendaatom.optional_args = {}
@@ -367,8 +367,8 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_insert_agendaatom.crud_text = None
 
     # THEN
-    assert bob_insert_agendaatom.is_required_args_valid() == False
-    assert bob_insert_agendaatom.is_valid() == False
+    assert bob_insert_agendaatom.is_required_args_valid() is False
+    assert bob_insert_agendaatom.is_valid() is False
 
     # WHEN
     bob_insert_agendaatom.crud_text = atom_insert()
@@ -415,8 +415,8 @@ def test_AgendaAtom_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
     bob_delete_agendaatom = agendaatom_shop(partyunit_text, crud_text=delete_text)
 
     # THEN
-    assert bob_delete_agendaatom.is_required_args_valid() == False
-    assert bob_delete_agendaatom.is_valid() == False
+    assert bob_delete_agendaatom.is_required_args_valid() is False
+    assert bob_delete_agendaatom.is_valid() is False
 
     # WHEN
     bob_delete_agendaatom.set_required_arg("party_id", bob_text)

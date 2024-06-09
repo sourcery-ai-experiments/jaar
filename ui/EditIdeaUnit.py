@@ -93,7 +93,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.x_idea = None
 
     def toogle_reasonheir_tables(self):
-        self.reasonheir_table_hidden = self.reasonheir_table_hidden == False
+        self.reasonheir_table_hidden = self.reasonheir_table_hidden is False
         self.reasonheir_table.setHidden(self.reasonheir_table_hidden)
 
     def set_base_to_hregtime(self):
@@ -222,7 +222,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.reason_premise_divisor_combo.clear()
         self.idea2group_insert_combo.clear()
 
-        if setHiddenBool == False:
+        if setHiddenBool is False:
             self.x_idea_populate()
 
     def x_idea_populate(self):

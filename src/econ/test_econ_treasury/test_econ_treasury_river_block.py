@@ -77,7 +77,7 @@ def test_EconUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTab
     assert tim_ledger._agenda_intent_ratio_credit == 0.5
     assert tim_ledger._agenda_intent_ratio_debt == 0.4
     assert tim_ledger._creditor_operational
-    assert tim_ledger._debtor_operational == False
+    assert tim_ledger._debtor_operational == 0
     assert tim_ledger._treasury_due_paid == tim_due_paid
     assert tim_ledger._treasury_credit_score == tim_credit_score
     assert tim_ledger._treasury_voice_rank == tim_voice_rank
@@ -141,7 +141,7 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
     assert river_block_x.cash_owner_id != river_block_x.dst_owner_id
 
     # THEN
-    assert river_block_x.block_returned() == False
+    assert river_block_x.block_returned() is False
 
     # WHEN
     river_block_x.dst_owner_id = bob_text

@@ -136,7 +136,7 @@ class EconUnit:
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_river_block_table_insert_sqlstr(river_block_x))
 
-            if river_block_x.block_returned() == False:
+            if river_block_x.block_returned() is False:
                 river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
 
         return river_ledger_x
@@ -294,7 +294,7 @@ class EconUnit:
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
-        if x_agendaunit.idea_exists(x_calendarreport.time_road) == False:
+        if x_agendaunit.idea_exists(x_calendarreport.time_road) is False:
             raise IntentBaseDoesNotExistException(
                 f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._owner_id}'."
             )

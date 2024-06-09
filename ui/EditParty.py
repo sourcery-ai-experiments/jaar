@@ -183,7 +183,7 @@ class EditParty(qtw.QTableWidget, Ui_Form):
                 and groupunit._partys.get(groupunit.group_id) is None
                 and (
                     self.party_in_group(partyunit=self.partyunit_x, groupunit=groupunit)
-                    == False
+                    is False
                 )
             )
             or self.partyunit_x is None

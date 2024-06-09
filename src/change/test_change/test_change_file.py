@@ -32,8 +32,8 @@ def test_ChangeUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
-    assert os_path_exists(sue_atom2_path) == False
-    assert os_path_exists(sue_atom6_path) == False
+    assert os_path_exists(sue_atom2_path) is False
+    assert os_path_exists(sue_atom6_path) is False
 
     # WHEN
     sports_atom = get_atom_example_ideaunit_sports()
@@ -41,7 +41,7 @@ def test_ChangeUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
 
     # THEN
     assert os_path_exists(sue_atom2_path)
-    assert os_path_exists(sue_atom6_path) == False
+    assert os_path_exists(sue_atom6_path) is False
     two_file_json = open_file(sue_atoms_dir, two_filename)
     assert two_file_json == sports_atom.get_json()
 
@@ -62,8 +62,8 @@ def test_ChangeUnit_atom_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
-    assert os_path_exists(sue_atom2_path) == False
-    assert farm_changeunit.atom_file_exists(two_int) == False
+    assert os_path_exists(sue_atom2_path) is False
+    assert farm_changeunit.atom_file_exists(two_int) is False
 
     # WHEN
     sports_atom = get_atom_example_ideaunit_sports()
@@ -119,15 +119,15 @@ def test_ChangeUnit_save_change_file_SavesCorrectFile(env_dir_setup_cleanup):
     farm_changeunit = changeunit_shop(
         sue_text, sue_change_id, _changes_dir=sue_changes_dir
     )
-    assert os_path_exists(sue_change2_path) == False
-    assert os_path_exists(sue_change6_path) == False
+    assert os_path_exists(sue_change2_path) is False
+    assert os_path_exists(sue_change6_path) is False
 
     # WHEN
     farm_changeunit._save_change_file()
 
     # THEN
     assert os_path_exists(sue_change2_path)
-    assert os_path_exists(sue_change6_path) == False
+    assert os_path_exists(sue_change6_path) is False
     change_file_json = open_file(sue_changes_dir, two_filename)
     change_file_dict = get_dict_from_json(change_file_json)
     print(f"{change_file_dict=}")
@@ -152,8 +152,8 @@ def test_ChangeUnit_change_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     print(f"{sue_change2_path=}")
     print(f"{sue_change6_path=}")
     farm_changeunit = changeunit_shop(sue_text, _changes_dir=sue_changes_dir)
-    assert os_path_exists(sue_change2_path) == False
-    assert farm_changeunit.change_file_exists() == False
+    assert os_path_exists(sue_change2_path) is False
+    assert farm_changeunit.change_file_exists() is False
 
     # WHEN
     farm_changeunit._save_change_file()
@@ -186,9 +186,9 @@ def test_ChangeUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
     five_atom = get_atom_example_ideaunit_knee()
     farm_changeunit._bookunit.set_agendaatom(four_atom)
     farm_changeunit._bookunit.set_agendaatom(five_atom)
-    assert farm_changeunit.change_file_exists() == False
-    assert farm_changeunit.atom_file_exists(four_int) == False
-    assert farm_changeunit.atom_file_exists(five_int) == False
+    assert farm_changeunit.change_file_exists() is False
+    assert farm_changeunit.atom_file_exists(four_int) is False
+    assert farm_changeunit.atom_file_exists(five_int) is False
 
     # WHEN
     farm_changeunit.save_files()

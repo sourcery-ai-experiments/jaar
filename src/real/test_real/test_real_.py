@@ -121,7 +121,7 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(reals_dir_setup_cle
     )
     luca_text = "Luca"
     luca_filehub = filehub_shop(None, music_text, luca_text, None, planck=x_planck)
-    assert os_path_exists(luca_filehub.work_path()) == False
+    assert os_path_exists(luca_filehub.work_path()) is False
 
     # WHEN
     music_real.init_person_econs(luca_text)
@@ -202,19 +202,19 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
     todd_dallas_todd_role_file_path = f"{todd_roles_dir}/{todd_file_name}"
-    assert os_path_exists(luca_dallas_luca_role_file_path) == False
-    assert os_path_exists(luca_dallas_todd_role_file_path) == False
-    assert os_path_exists(todd_dallas_luca_role_file_path) == False
-    assert os_path_exists(todd_dallas_todd_role_file_path) == False
+    assert os_path_exists(luca_dallas_luca_role_file_path) is False
+    assert os_path_exists(luca_dallas_todd_role_file_path) is False
+    assert os_path_exists(todd_dallas_luca_role_file_path) is False
+    assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
     music_real.set_person_econunits_dirs(luca_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)
-    assert os_path_exists(luca_dallas_todd_role_file_path) == False
+    assert os_path_exists(luca_dallas_todd_role_file_path) is False
     assert os_path_exists(todd_dallas_luca_role_file_path)
-    assert os_path_exists(todd_dallas_todd_role_file_path) == False
+    assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
     music_real.set_person_econunits_dirs(todd_text)

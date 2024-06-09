@@ -50,7 +50,7 @@ def test_AgendaUnit_add_l1_idea_CorrectlySetsAttr():
     zia_agenda = agendaunit_shop("Zia")
     casa_text = "casa"
     casa_road = zia_agenda.make_l1_road(casa_text)
-    assert zia_agenda.idea_exists(casa_road) == False
+    assert zia_agenda.idea_exists(casa_road) is False
 
     # WHEN
     zia_agenda.add_l1_idea(ideaunit_shop(casa_text))
@@ -649,7 +649,7 @@ def test_AgendaUnit_edit_idea_attr_agendaWhenParentAndNumeric_roadBothHaveRangeT
     assert casa_idea3._close == 10
     assert casa_idea3._numor == 1
     assert casa_idea3._denom == 11
-    assert casa_idea3._reest == False
+    assert casa_idea3._reest is False
     assert casa_idea3._addin == 0
 
 

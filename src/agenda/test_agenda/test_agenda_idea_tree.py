@@ -60,7 +60,7 @@ def test_AgendaUnit_clear_agenda_base_metrics_CorrectlySetsAttrs():
     # THEN
     assert sue_agenda._econs_justified != x_econ_justifed
     assert sue_agenda._econs_justified
-    assert sue_agenda._econs_buildable == False
+    assert sue_agenda._econs_buildable is False
     assert sue_agenda._sum_healerhold_importance == 0
     assert not sue_agenda._econ_dict
     assert not sue_agenda._healers_dict
@@ -265,13 +265,13 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     # print(x_agenda._kids[casa_text]._kids[email_text]._balancelink)
 
     # THEN
-    assert x_agenda._idearoot._all_party_credit == False
-    assert x_agenda._idearoot._all_party_debt == False
+    assert x_agenda._idearoot._all_party_credit is False
+    assert x_agenda._idearoot._all_party_debt is False
     casa_idea = x_agenda._idearoot._kids[casa_text]
-    assert casa_idea._all_party_credit == False
-    assert casa_idea._all_party_debt == False
-    assert casa_idea._kids[email_text]._all_party_credit == False
-    assert casa_idea._kids[email_text]._all_party_debt == False
+    assert casa_idea._all_party_credit is False
+    assert casa_idea._all_party_debt is False
+    assert casa_idea._kids[email_text]._all_party_credit is False
+    assert casa_idea._kids[email_text]._all_party_debt is False
     assert casa_idea._kids[vacuum_text]._all_party_credit == True
     assert casa_idea._kids[vacuum_text]._all_party_debt == True
     week_idea = x_agenda._idearoot._kids[week_text]
@@ -581,8 +581,8 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     japan_road = sue_agenda.make_road(nation_road, "Japan")
 
     # WHEN/THEN
-    assert sue_agenda.idea_exists("") == False
-    assert sue_agenda.idea_exists(None) == False
+    assert sue_agenda.idea_exists("") is False
+    assert sue_agenda.idea_exists(None) is False
     assert sue_agenda.idea_exists(root_label())
     assert sue_agenda.idea_exists(cat_road)
     assert sue_agenda.idea_exists(week_road)
@@ -600,17 +600,17 @@ def test_AgendaUnit_idea_exists_ReturnsCorrectBool():
     assert sue_agenda.idea_exists(brazil_road)
     assert sue_agenda.idea_exists(texas_road)
     assert sue_agenda.idea_exists(oregon_road)
-    assert sue_agenda.idea_exists("B") == False
-    assert sue_agenda.idea_exists(sports_road) == False
-    assert sue_agenda.idea_exists(swim_road) == False
-    assert sue_agenda.idea_exists(idaho_road) == False
-    assert sue_agenda.idea_exists(japan_road) == False
+    assert sue_agenda.idea_exists("B") is False
+    assert sue_agenda.idea_exists(sports_road) is False
+    assert sue_agenda.idea_exists(swim_road) is False
+    assert sue_agenda.idea_exists(idaho_road) is False
+    assert sue_agenda.idea_exists(japan_road) is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenAgendaUnitEmpty():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -622,7 +622,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenAgenda
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenThereAreNotAny():
     # GIVEN
     sue_agenda = example_agendas_get_agenda_with_4_levels()
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -635,13 +635,13 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenSingle
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     sue_agenda.add_l1_idea(ideaunit_shop("Texas", _healerhold=healerhold_shop({"Yao"})))
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
 
     # THEN
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenSingleProblemAndEcon():
@@ -653,7 +653,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenSingle
     sue_agenda.add_l1_idea(
         ideaunit_shop("Texas", _healerhold=yao_healerhold, _problem_bool=True)
     )
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -674,7 +674,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenEconIs
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     ep_text = "El Paso"
     sue_agenda.add_idea(ideaunit_shop(ep_text, _healerhold=yao_healerhold), texas_road)
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -691,13 +691,13 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenEconIs
     yao_healerhold = healerhold_shop({"Yao"})
     sue_agenda.add_l1_idea(ideaunit_shop(texas_text, _healerhold=yao_healerhold))
     sue_agenda.add_idea(ideaunit_shop("El Paso", _problem_bool=True), texas_road)
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
 
     # THEN
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelowProblem():
@@ -710,7 +710,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelow
     sue_agenda.add_l1_idea(texas_idea)
     elpaso_idea = ideaunit_shop("El Paso", _problem_bool=True)
     sue_agenda.add_idea(elpaso_idea, texas_road)
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
@@ -735,13 +735,13 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEco
         "El Paso", _healerhold=yao_healerhold, _problem_bool=True
     )
     sue_agenda.add_idea(elpaso_idea, texas_road)
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
 
     # THEN
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
 
 def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_econs_justified_IsFalse():
@@ -759,7 +759,7 @@ def test_AgendaUnit_get_idea_dict_RaisesErrorWhen_econs_justified_IsFalse():
     )
     sue_agenda.add_idea(elpaso_idea, texas_road)
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._econs_justified == False
+    assert sue_agenda._econs_justified is False
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:

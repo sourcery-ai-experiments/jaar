@@ -128,7 +128,7 @@ def test_get_integer_filenames_ReturnsCoorectObjIfDirectoryDoesNotExist(
     # GIVEN
     env_dir = get_instrument_temp_env_dir()
     temp_dir = f"{env_dir}/temp_does_not_exist"
-    assert os_path_exist(temp_dir) == False
+    assert os_path_exist(temp_dir) is False
 
     # WHEN
     files_dict = get_integer_filenames(temp_dir, 0)
@@ -351,10 +351,10 @@ def test_is_path_valid_ReturnsCorrectObj():
     assert is_path_valid("run/trail")
     assert is_path_valid("run/,trail")
     assert (
-        platform_system() == "Windows" and is_path_valid("trail?") == False
+        platform_system() == "Windows" and is_path_valid("trail?") is False
     ) or platform_system() == "Linux"
     assert (
-        platform_system() == "Windows" and is_path_valid("run/trail?") == False
+        platform_system() == "Windows" and is_path_valid("run/trail?") is False
     ) or platform_system() == "Linux"
     assert is_path_valid("run//trail////")
 
@@ -371,7 +371,7 @@ def test_is_path_existent_or_creatable_ReturnsCorrectObj():
     assert is_path_existent_or_creatable("run")
     assert (
         platform_system() == "Windows"
-        and is_path_existent_or_creatable("run/trail?") == False
+        and is_path_existent_or_creatable("run/trail?") is False
     ) or platform_system() == "Linux"
     assert is_path_existent_or_creatable("run///trail")
 
@@ -380,16 +380,16 @@ def test_is_path_probably_creatable_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_probably_creatable("run")
-    assert is_path_probably_creatable("run/trail?") == False
-    assert is_path_probably_creatable("run///trail") == False
+    assert is_path_probably_creatable("run/trail?") is False
+    assert is_path_probably_creatable("run///trail") is False
 
 
 def test_is_path_existent_or_probably_creatable_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
     """I don't have the tools to test this rigth now. For now make sure it runs."""
     assert is_path_existent_or_probably_creatable("run")
-    assert is_path_existent_or_probably_creatable("run/trail?") == False
-    assert is_path_existent_or_probably_creatable("run///trail") == False
+    assert is_path_existent_or_probably_creatable("run/trail?") is False
+    assert is_path_existent_or_probably_creatable("run///trail") is False
 
 
 def test_get_all_dirs_with_file_ReturnsCorrectDirectorys(env_dir_setup_cleanup):

@@ -307,8 +307,8 @@ def get_agenda_irrational_example() -> AgendaUnit:
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active == True, egg._active is set to False
-    # Step 1: if egg._active == False, chicken._active is set to False
-    # Step 2: if chicken._active == False, egg._active is set to True
+    # Step 1: if egg._active is False, chicken._active is set to False
+    # Step 2: if chicken._active is False, egg._active is set to True
     # Step 3: if egg._active == True, chicken._active is set to True
     # Step 4: back to step 0.
     # after hatter_agenda.calc_agenda_metrics these should be true:
@@ -490,7 +490,7 @@ def from_list_get_active(
 
         if idea._active:
             active_true_count += 1
-        elif idea._active == False:
+        elif idea._active is False:
             active_false_count += 1
 
     active = temp_idea._active

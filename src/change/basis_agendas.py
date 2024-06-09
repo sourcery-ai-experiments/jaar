@@ -30,7 +30,7 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
         x_listen.set_party_debtor_pool(x_role._party_debtor_pool)
     for x_partyunit in x_listen._partys.values():
         x_partyunit.reset_listen_calculated_attrs()
-    return copy_deepcopy(x_listen)
+    return x_listen
 
 
 def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:

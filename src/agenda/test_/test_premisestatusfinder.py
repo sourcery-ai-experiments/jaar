@@ -623,5 +623,5 @@ def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample
     print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
     # THEN
-    assert segr_obj.get_active() == False
-    assert segr_obj.get_task_status() == False
+    assert segr_obj.get_active() is False
+    assert segr_obj.get_task_status() is False

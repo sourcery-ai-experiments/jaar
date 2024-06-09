@@ -103,7 +103,7 @@ def test_RealNox_rn_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_realnox = realnox_shop(get_road_temp_env_dir(), None)
-    assert os_path_exists(sue_realnox.rn_duty_path(sue_text)) == False
+    assert os_path_exists(sue_realnox.rn_duty_path(sue_text)) is False
 
     # WHEN
     sue_realnox.rn_save_file_duty(sue_text, file_text="fooboo", replace=True)
@@ -118,7 +118,7 @@ def test_RealNox_rn_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_realnox = realnox_shop(get_road_temp_env_dir(), None)
-    assert sue_realnox.rn_duty_file_exists(sue_text) == False
+    assert sue_realnox.rn_duty_file_exists(sue_text) is False
 
     # WHEN
     sue_realnox.rn_save_file_duty(sue_text, file_text="fooboo", replace=True)
@@ -142,7 +142,7 @@ def test_RealNox_rn_save_file_work_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_realnox = realnox_shop(get_road_temp_env_dir(), None)
-    assert os_path_exists(sue_realnox.rn_work_path(sue_text)) == False
+    assert os_path_exists(sue_realnox.rn_work_path(sue_text)) is False
 
     # WHEN
     sue_realnox.rn_save_file_work(sue_text, file_text="fooboo", replace=True)
@@ -155,7 +155,7 @@ def test_RealNox_rn_work_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_realnox = realnox_shop(get_road_temp_env_dir(), None)
-    assert sue_realnox.rn_work_file_exists(sue_text) == False
+    assert sue_realnox.rn_work_file_exists(sue_text) is False
 
     # WHEN
     sue_realnox.rn_save_file_work(sue_text, file_text="fooboo", replace=True)

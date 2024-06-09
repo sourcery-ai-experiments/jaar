@@ -116,7 +116,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
 
     yao_src = get_example_yao_speaker()
     new_yao1_agenda = create_listen_basis(yao_src)
-    assert new_yao1_agenda.idea_exists(cook_road()) == False
+    assert new_yao1_agenda.idea_exists(cook_road()) is False
 
     # WHEN
     listen_to_speakers_intent(new_yao1_agenda, dakota_filehub, yao_src)
@@ -135,7 +135,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
     yao_src.add_partyunit(bob_text, None, yao_bob_debtor_weight)
     yao_src.set_party_pool(100)
     new_yao2_agenda = create_listen_basis(yao_src)
-    assert new_yao2_agenda.idea_exists(cook_road()) == False
+    assert new_yao2_agenda.idea_exists(cook_road()) is False
 
     # WHEN
     listen_to_speakers_intent(new_yao2_agenda, dakota_filehub, yao_src)
@@ -333,24 +333,24 @@ def test_listen_to_speakers_intent_GetsIntentFromSrcAgendaNotSpeakerSelf(
     # yao_speaker has task clean_road
     # new_yao_agenda picks yao_src_listener task run_road and not clean_road
     yao_src_listener = get_example_yao_speaker()
-    assert yao_src_listener.idea_exists(run_road()) == False
-    assert yao_src_listener.idea_exists(clean_road()) == False
+    assert yao_src_listener.idea_exists(run_road()) is False
+    assert yao_src_listener.idea_exists(clean_road()) is False
     yao_src_listener.add_idea(ideaunit_shop(run_text(), pledge=True), casa_road())
 
     yao_speaker = get_example_yao_speaker()
-    assert yao_speaker.idea_exists(run_road()) == False
-    assert yao_speaker.idea_exists(clean_road()) == False
+    assert yao_speaker.idea_exists(run_road()) is False
+    assert yao_speaker.idea_exists(clean_road()) is False
     yao_speaker.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     dakota_filehub = get_dakota_filehub()
     dakota_filehub.save_job_agenda(yao_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src_listener)
-    assert new_yao_agenda.idea_exists(run_road()) == False
-    assert new_yao_agenda.idea_exists(clean_road()) == False
+    assert new_yao_agenda.idea_exists(run_road()) is False
+    assert new_yao_agenda.idea_exists(clean_road()) is False
 
     # WHEN
     listen_to_speakers_intent(new_yao_agenda, dakota_filehub, yao_src_listener)
 
     # THEN
-    assert new_yao_agenda.idea_exists(clean_road()) == False
+    assert new_yao_agenda.idea_exists(clean_road()) is False
     assert new_yao_agenda.idea_exists(run_road())

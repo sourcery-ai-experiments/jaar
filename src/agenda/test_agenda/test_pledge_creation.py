@@ -37,7 +37,7 @@ def test_create_pledge_CorrectlyAddspledgeToAgenda():
 
     # THEN
     assert new_sue_agenda != old_sue_agenda
-    assert old_sue_agenda.idea_exists(clean_road) == False
+    assert old_sue_agenda.idea_exists(clean_road) is False
     assert new_sue_agenda.idea_exists(clean_road)
     clean_idea = new_sue_agenda.get_idea_obj(clean_road)
     assert clean_idea.pledge
@@ -58,7 +58,7 @@ def test_create_pledge_CorrectlyModifiesAgendaNonpledgeIdeaTopledgeIdea():
     sue_agenda.add_idea(floor_idea, clean_road)
     old_clean_idea = sue_agenda.get_idea_obj(clean_road)
     old_floor_idea = sue_agenda.get_idea_obj(floor_road)
-    assert old_clean_idea.pledge == False
+    assert old_clean_idea.pledge is False
     assert old_floor_idea.pledge
 
     # WHEN
@@ -86,7 +86,7 @@ def test_create_pledge_CorrectlySets_suffgroup():
     floor_idea._assignedunit.set_suffgroup(bob_text)
     sue_agenda.add_idea(floor_idea, clean_road)
     floor_idea = sue_agenda.get_idea_obj(floor_road)
-    assert floor_idea._assignedunit.suffgroup_exists(bob_text) == False
+    assert floor_idea._assignedunit.suffgroup_exists(bob_text) is False
 
     # WHEN
     create_pledge(sue_agenda, floor_road, bob_text)
@@ -94,8 +94,8 @@ def test_create_pledge_CorrectlySets_suffgroup():
     # THEN
     assert floor_idea._assignedunit.suffgroup_exists(bob_text)
     yao_text = "Yao"
-    assert sue_agenda.party_exists(yao_text) == False
-    assert floor_idea._assignedunit.suffgroup_exists(yao_text) == False
+    assert sue_agenda.party_exists(yao_text) is False
+    assert floor_idea._assignedunit.suffgroup_exists(yao_text) is False
 
     # WHEN
     create_pledge(sue_agenda, floor_road, yao_text)

@@ -82,10 +82,10 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._econ_dict == {}
     assert x_agenda._healers_dict == {}
     assert x_agenda._tree_traverse_count is None
-    assert x_agenda._rational == False
-    assert x_agenda._econs_justified == False
-    assert x_agenda._econs_buildable == False
-    assert x_agenda._sum_healerhold_importance == False
+    assert x_agenda._rational is False
+    assert x_agenda._econs_justified is False
+    assert x_agenda._econs_buildable is False
+    assert x_agenda._sum_healerhold_importance == 0
     print(f"{type(x_agenda._idearoot)=}") == 0
     assert str(type(x_agenda._idearoot)).find(".idea.IdeaUnit'>") > 0
 
@@ -131,7 +131,7 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
 
     # THEN
     assert mail_idea.pledge == True
-    assert mail_idea._task == False
+    assert mail_idea._task is False
 
 
 def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
@@ -143,7 +143,7 @@ def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Idea_1():
     idea_dict = x_agenda.get_idea_dict()
     mail_idea = idea_dict.get(mail_road)
     assert mail_idea.pledge == True
-    assert mail_idea._task == False
+    assert mail_idea._task is False
 
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=95)
     idea_dict = x_agenda.get_idea_dict()

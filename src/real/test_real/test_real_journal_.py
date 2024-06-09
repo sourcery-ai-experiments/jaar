@@ -38,7 +38,7 @@ def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
     music_real = realunit_shop(real_id=music_text, reals_dir=get_test_reals_dir())
     assert os_path_exists(music_real.get_journal_db_path())
     delete_dir(music_real.get_journal_db_path())
-    assert os_path_exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) is False
 
     # WHEN
     music_real._create_journal_db()
@@ -84,14 +84,14 @@ def test_RealUnit_create_journal_db_CanCreateInMemory(reals_dir_setup_cleanup):
 
     music_real._journal_db = None
     assert music_real._journal_db is None
-    assert os_path_exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) is False
 
     # WHEN
     music_real._create_journal_db(in_memory=True)
 
     # THEN
     assert music_real._journal_db != None
-    assert os_path_exists(music_real.get_journal_db_path()) == False
+    assert os_path_exists(music_real.get_journal_db_path()) is False
 
 
 def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(

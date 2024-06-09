@@ -55,7 +55,7 @@ def test_AgendaUnit_meld_PartyUnits():
     bob2_agenda.set_partyunit(zia_partyunit)
     assert len(bob1_agenda._partys) == 1
     assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) == False
+    assert bob1_agenda.party_exists(zia_text) is False
 
     # WHEN
     bob1_agenda.meld(other_agenda=bob2_agenda)
@@ -82,7 +82,7 @@ def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
     bob2_agenda.set_partyunit(zia_partyunit)
     assert len(bob1_agenda._partys) == 1
     assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) == False
+    assert bob1_agenda.party_exists(zia_text) is False
 
     # WHEN
     bob1_agenda.meld(other_agenda=bob2_agenda, ignore_partyunits=True)
@@ -90,7 +90,7 @@ def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
     # THEN
     assert len(bob1_agenda._partys) == 1
     assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) == False
+    assert bob1_agenda.party_exists(zia_text) is False
 
 
 def test_AgendaUnit_meld_GroupUnits_WhereGroupUnitIsMissing():
@@ -190,10 +190,10 @@ def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     bob2_agenda.add_idea(ideaunit_shop(bowl_text), parent_road=tech_road)
     bob2_agenda.add_idea(ideaunit_shop(free_text), parent_road=swim_road)
     assert len(bob1_agenda.get_idea_dict()) == 1
-    assert bob1_agenda.idea_exists(tech_road) == False
-    assert bob1_agenda.idea_exists(bowl_road) == False
-    assert bob1_agenda.idea_exists(swim_road) == False
-    assert bob1_agenda.idea_exists(free_road) == False
+    assert bob1_agenda.idea_exists(tech_road) is False
+    assert bob1_agenda.idea_exists(bowl_road) is False
+    assert bob1_agenda.idea_exists(swim_road) is False
+    assert bob1_agenda.idea_exists(free_road) is False
 
     # WHEN
     bob1_agenda.meld(bob2_agenda)
@@ -321,7 +321,7 @@ def test_AgendaUnit_beliefunits_meld_IdeasMeldedBeforeBeliefs():
     bob1_idearoot = bob1_agenda._idearoot
     bob2_idearoot = bob2_agenda._idearoot
     assert len(bob1_idearoot._beliefunits) == 0
-    assert bob1_agenda.idea_exists(swim_road) == False
+    assert bob1_agenda.idea_exists(swim_road) is False
     assert len(bob1_idearoot._beliefunits) != len(bob2_idearoot._beliefunits)
     assert bob1_idearoot._beliefunits != bob2_agenda._idearoot._beliefunits
 

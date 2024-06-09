@@ -126,7 +126,7 @@ def test_ChangeUnit_face_exists_ReturnsCorrectObj():
     assert tim_text not in farm_changeunit._faces
 
     # WHEN / THEN
-    assert farm_changeunit.face_exists(tim_text) == False
+    assert farm_changeunit.face_exists(tim_text) is False
 
     # WHEN / THEN
     farm_changeunit.set_face(tim_text)
@@ -149,7 +149,7 @@ def test_ChangeUnit_del_face_SetsAttribute():
 
     # THEN
     assert farm_changeunit.face_exists(tim_text)
-    assert farm_changeunit.face_exists(yao_text) == False
+    assert farm_changeunit.face_exists(yao_text) is False
 
 
 def test_ChangeUnit_set_bookunit_SetsAttribute():
@@ -192,7 +192,7 @@ def test_ChangeUnit_agendaatom_exists_ReturnsCorrectObj():
     sports_agendaatom = get_atom_example_ideaunit_sports()
 
     # THEN
-    assert farm_changeunit.agendaatom_exists(sports_agendaatom) == False
+    assert farm_changeunit.agendaatom_exists(sports_agendaatom) is False
 
     # WHEN
     farm_bookunit.set_agendaatom(sports_agendaatom)

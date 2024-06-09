@@ -105,7 +105,7 @@ def generate_ingest_list(
 def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):
     weight_data = _create_weight_data(listener, ingest_ideaunit.get_road())
 
-    if listener.idea_exists(ingest_ideaunit.get_road()) == False:
+    if listener.idea_exists(ingest_ideaunit.get_road()) is False:
         x_parent_road = ingest_ideaunit._parent_road
         listener.add_idea(ingest_ideaunit, x_parent_road, create_missing_ideas=True)
 
@@ -186,12 +186,12 @@ def listen_to_speaker_belief(
 
 
 def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener.party_exists(speaker._owner_id) == False:
+    if listener.party_exists(speaker._owner_id) is False:
         raise Missing_party_debtor_poolException(
             f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} partyunit."
         )
     perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
-    if perspective_agenda._rational == False:
+    if perspective_agenda._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
 
     if listener._party_debtor_pool is None:
@@ -235,10 +235,10 @@ def listen_to_debtors_roll(listener: AgendaUnit, filehub: FileHub) -> AgendaUnit
     return new_agenda
 
 
-def listen_to_person_jobs(listener_filehub: FileHub):
+def listen_to_person_jobs(listener_filehub: FileHub) -> None:
     duty = listener_filehub.get_duty_agenda()
     new_work = create_listen_basis(duty)
-    pre_jobs_work_copy = copy_deepcopy(new_work)
+    pre_work_dict = new_work.get_dict()
     duty.calc_agenda_metrics()
     new_work.calc_agenda_metrics()
 
@@ -248,7 +248,7 @@ def listen_to_person_jobs(listener_filehub: FileHub):
         healer_filehub.person_id = x_healer_id
         _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_filehub, new_work)
 
-    if new_work.get_dict() == pre_jobs_work_copy.get_dict():
+    if new_work.get_dict() == pre_work_dict:
         intent = list(duty.get_intent_dict().values())
         _ingest_perspective_intent(new_work, intent)
         listen_to_speaker_belief(new_work, duty)
@@ -264,10 +264,10 @@ def _pick_econ_jobs_and_listen(
 ):
     for econ_path in econ_dict:
         healer_filehub.econ_road = econ_path
-        _pick_econ_job_and_listen(listener_id, healer_filehub, new_work)
+        pick_econ_job_and_listen(listener_id, healer_filehub, new_work)
 
 
-def _pick_econ_job_and_listen(
+def pick_econ_job_and_listen(
     listener_person_id: PersonID, healer_filehub: FileHub, new_work: AgendaUnit
 ):
     listener_id = listener_person_id
@@ -280,9 +280,9 @@ def _pick_econ_job_and_listen(
 
 def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
     for x_idea in job._idea_dict.values():
-        if listener.idea_exists(x_idea.get_road()) == False:
+        if listener.idea_exists(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)
-        if listener.get_belief(x_idea.get_road()) == False:
+        if listener.get_belief(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)
     for x_belief_road, x_belief_unit in job._idearoot._beliefunits.items():
         listener._idearoot.set_beliefunit(x_belief_unit)

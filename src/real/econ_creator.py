@@ -16,10 +16,10 @@ class PersonCreateEconUnitsException(Exception):
 def _get_econs_roads(x_filehub: FileHub) -> dict[RoadUnit:EconUnit]:
     x_duty_agenda = x_filehub.get_duty_agenda()
     x_duty_agenda.calc_agenda_metrics()
-    if x_duty_agenda._econs_justified == False:
+    if x_duty_agenda._econs_justified is False:
         x_str = f"Cannot set '{x_filehub.person_id}' duty agenda econunits because 'AgendaUnit._econs_justified' is False."
         raise PersonCreateEconUnitsException(x_str)
-    if x_duty_agenda._econs_buildable == False:
+    if x_duty_agenda._econs_buildable is False:
         x_str = f"Cannot set '{x_filehub.person_id}' duty agenda econunits because 'AgendaUnit._econs_buildable' is False."
         raise PersonCreateEconUnitsException(x_str)
 

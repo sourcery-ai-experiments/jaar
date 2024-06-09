@@ -333,7 +333,7 @@ class IdeaUnit:
     def set_beliefunit_to_complete(self, base_beliefunit: BeliefUnit):
         # if a idea is considered a task then a beliefheir.open attribute can be increased to
         # a number <= beliefheir.nigh so the idea no longer is a task. This method finds
-        # the minimal beliefheir.open to modify idea._task == False. idea_core._beliefheir cannot be straight up manipulated
+        # the minimal beliefheir.open to modify idea._task is False. idea_core._beliefheir cannot be straight up manipulated
         # so it is mandatory that idea._beliefunit is different.
         # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
         self._beliefunits[base_beliefunit.base] = beliefunit_shop(
@@ -786,7 +786,7 @@ class IdeaUnit:
 
     def set_reason_suff_idea_active(self, base: RoadUnit, suff_idea_active: str):
         x_reasonunit = self._get_or_create_reasonunit(base=base)
-        if suff_idea_active == False:
+        if suff_idea_active is False:
             x_reasonunit.suff_idea_active = False
         elif suff_idea_active == "Set to Ignore":
             x_reasonunit.suff_idea_active = None
@@ -839,7 +839,7 @@ class IdeaUnit:
         self._kids = dict(sorted(self._kids.items()))
 
     def get_kid(self, idea_kid_label: RoadNode, if_missing_create=False):
-        if if_missing_create == False:
+        if if_missing_create is False:
             return self._kids.get(idea_kid_label)
         try:
             return self._kids[idea_kid_label]
@@ -917,7 +917,7 @@ class IdeaUnit:
             and self._assignedheir._suffgroups != {}
         ):
             self._assignedheir.set_owner_id_assigned(agenda_groupunits, agenda_owner_id)
-            if self._assignedheir._owner_id_assigned == False:
+            if self._assignedheir._owner_id_assigned is False:
                 x_bool = False
         return x_bool
 
@@ -1036,7 +1036,7 @@ class IdeaUnit:
             x_dict["_problem_bool"] = self._problem_bool
         if self._beliefunits not in [{}, None]:
             x_dict["_beliefunits"] = self.get_beliefunits_dict()
-        if self._is_expanded == False:
+        if self._is_expanded is False:
             x_dict["_is_expanded"] = self._is_expanded
         if self._meld_strategy != "default":
             x_dict["_meld_strategy"] = self._meld_strategy

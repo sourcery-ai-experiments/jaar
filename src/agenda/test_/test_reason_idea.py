@@ -32,7 +32,7 @@ def test_ReasonCore_attributesExist():
     # THEN
     assert wkday_reason.base == wkday_road
     assert wkday_reason.premises == premises
-    assert wkday_reason.suff_idea_active == False
+    assert wkday_reason.suff_idea_active is False
     assert wkday_reason.delimiter is None
 
 
@@ -130,7 +130,7 @@ def test_ReasonHeir_set_status_CorrectlySetsStatus():
     fri_beliefs = {fri_belief.base: fri_belief}
     two_reason.set_status(beliefs=fri_beliefs)
     # THEN
-    assert two_reason._status == False
+    assert two_reason._status is False
 
 
 def test_ReasonHeir_set_status_EmptyBeliefCorrectlySetsStatus():
@@ -144,7 +144,7 @@ def test_ReasonHeir_set_status_EmptyBeliefCorrectlySetsStatus():
     wkday_reason = reasonheir_shop(base=wkday_road, premises=wed_premises)
     assert wkday_reason._status is None
     wkday_reason.set_status(beliefs=None)
-    assert wkday_reason._status == False
+    assert wkday_reason._status is False
 
 
 def test_ReasonHeir_set_base_idea_active_Correctly():
@@ -203,7 +203,7 @@ def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     wkday_reason.set_status(beliefs=None)
 
     # THEN
-    assert wkday_reason._status == False
+    assert wkday_reason._status is False
 
 
 def test_ReasonHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
@@ -218,7 +218,7 @@ def test_ReasonHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     wkday_reason.set_status(beliefs={})
 
     # THEN
-    assert wkday_reason._status == False
+    assert wkday_reason._status is False
 
 
 def test_reasonunit_shop_ReturnsCorrectObj():
@@ -352,14 +352,14 @@ def test_ReasonHeir_correctSetsActionState():
     range_3_to_6_reason.set_status(beliefs=range_5_to_6_beliefs)
     # THEN
     assert range_3_to_6_reason._status == True
-    assert range_3_to_6_reason._task == False
+    assert range_3_to_6_reason._task is False
 
     # WHEN
     range_0_to_1_belief = beliefheir_shop(day_road, day_road, open=0, nigh=1)
     range_0_to_1_beliefs = {range_0_to_1_belief.base: range_0_to_1_belief}
     range_3_to_6_reason.set_status(beliefs=range_0_to_1_beliefs)
     # THEN
-    assert range_3_to_6_reason._status == False
+    assert range_3_to_6_reason._status is False
     assert range_3_to_6_reason._task is None
 
 

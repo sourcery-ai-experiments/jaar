@@ -232,7 +232,7 @@ def test_BeliefHeir_is_range_ReturnsRangeStatus():
 
     # WHEN
     x_beliefheir = beliefheir_shop(base=min_road, pick=min_road)
-    assert x_beliefheir.is_range() == False
+    assert x_beliefheir.is_range() is False
 
     # THEN
     x_beliefheir = beliefheir_shop(min_road, pick=min_road, open=10.0, nigh=30.0)
@@ -248,7 +248,7 @@ def test_beliefheir_is_range_ReturnsRangeStatus():
     x_beliefheir = beliefheir_shop(base=min_road, pick=min_road)
 
     # THEN
-    assert x_beliefheir.is_range() == False
+    assert x_beliefheir.is_range() is False
 
     # WHEN
     x_beliefheir = beliefheir_shop(min_road, pick=min_road, open=10.0, nigh=30.0)

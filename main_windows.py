@@ -382,7 +382,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         row = 0
         self.operating_task_road = None
         for intent_item in intent_list:
-            if intent_item._task == False:
+            if intent_item._task is False:
                 self.populate_intent_table_row(row=row, intent_item=intent_item)
                 row += 1
             elif intent_item._task == True and self.operating_task_road is None:

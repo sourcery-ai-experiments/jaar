@@ -138,14 +138,14 @@ class PartyUnit(PartyCore):
         x_dict["_output_agenda_meld_order"] = self._output_agenda_meld_order
 
     def set_creditor_weight(self, creditor_weight: int):
-        if (creditor_weight / self._planck).is_integer() == False:
+        if (creditor_weight / self._planck).is_integer() is False:
             raise _planck_RatioException(
                 f"'{creditor_weight}' is not divisible by planck '{self._planck}'"
             )
         self.creditor_weight = creditor_weight
 
     def set_debtor_weight(self, debtor_weight: int):
-        if (debtor_weight / self._planck).is_integer() == False:
+        if (debtor_weight / self._planck).is_integer() is False:
             raise _planck_RatioException(
                 f"'{debtor_weight}' is not divisible by planck '{self._planck}'"
             )

@@ -143,12 +143,12 @@
 #     assert healthy_idea != None
 #     assert boiling_idea != None
 
-#     assert flying_idea.pledge == False
+#     assert flying_idea.pledge is False
 #     assert no_fly_idea.pledge
-#     assert yesfly_idea.pledge == False
-#     assert weather_idea.pledge == False
-#     assert healthy_idea.pledge == False
-#     assert boiling_idea.pledge == False
+#     assert yesfly_idea.pledge is False
+#     assert weather_idea.pledge is False
+#     assert healthy_idea.pledge is False
+#     assert boiling_idea.pledge is False
 
 #     assert len(flying_idea._reasonunits) == 0
 #     assert len(no_fly_idea._reasonunits) == 1

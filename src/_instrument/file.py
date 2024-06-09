@@ -61,7 +61,7 @@ def save_file(dest_dir: str, file_name: str, file_text: str, replace: bool = Non
         os_makedirs(dest_dir)
 
     file_path = f"{dest_dir}/{file_name}"
-    if (os_path_exists(file_path) and replace) or os_path_exists(file_path) == False:
+    if (os_path_exists(file_path) and replace) or os_path_exists(file_path) is False:
         with open(file_path, "w") as f:
             f.write(file_text)
             f.close()
@@ -131,7 +131,7 @@ def get_integer_filenames(
         min_integer = 0
 
     x_set = set()
-    if os_path_exists(dir_path) == False:
+    if os_path_exists(dir_path) is False:
         return x_set
 
     for obj_name in os_listdir(dir_path):

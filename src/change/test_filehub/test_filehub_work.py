@@ -14,8 +14,8 @@ def test_FileHub_work_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, None)
-    assert os_path_exists(sue_filehub.work_path()) == False
-    assert sue_filehub.work_file_exists() == False
+    assert os_path_exists(sue_filehub.work_path()) is False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     save_file(
@@ -33,7 +33,7 @@ def test_FileHub_save_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, None)
-    assert sue_filehub.work_file_exists() == False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
@@ -84,7 +84,7 @@ def test_FileHub_initialize_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     sue_text = "Sue"
     sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, None)
     sue_agenda = agendaunit_shop(sue_text, root_label())
-    assert sue_filehub.work_file_exists() == False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     sue_filehub.initialize_work_file(sue_agenda)
@@ -94,7 +94,7 @@ def test_FileHub_initialize_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     assert work_agenda._real_id == root_label()
     assert work_agenda._owner_id == sue_text
     bob_text = "Bob"
-    assert work_agenda.party_exists(bob_text) == False
+    assert work_agenda.party_exists(bob_text) is False
 
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
@@ -125,7 +125,7 @@ def test_FileHub_initialize_work_file_CorrectlyDoesNotOverwrite(
     sue_filehub.initialize_work_file(sue_agenda)
     assert sue_filehub.work_file_exists()
     delete_dir(sue_filehub.work_path())
-    assert sue_filehub.work_file_exists() == False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     bob_text = "Bob"

@@ -6,9 +6,6 @@ from src._road.road import (
 )
 from src._road.finance import default_planck_if_none
 from src._road.jaar_config import (
-    get_changes_folder,
-    duty_str,
-    work_str,
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
@@ -23,8 +20,8 @@ from src.change.filehub import (
 from src.change.examples.examples import get_agenda_with_4_levels
 from src.change.examples.change_env import (
     get_texas_filehub,
-    env_dir_setup_cleanup,
     get_change_temp_env_dir,
+    env_dir_setup_cleanup,
 )
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
@@ -136,7 +133,7 @@ def test_FileHub_create_econ_dir_if_missing_CreatesDirectory(env_dir_setup_clean
     texas_road = create_road(usa_road, texas_text)
     temp_env_dir = get_change_temp_env_dir()
     sue_filehub = filehub_shop(temp_env_dir, None, sue_text, texas_road)
-    assert os_path_exists(sue_filehub.econ_dir()) == False
+    assert os_path_exists(sue_filehub.econ_dir()) is False
 
     # WHEN
     sue_filehub.create_econ_dir_if_missing()
@@ -159,7 +156,7 @@ def test_FileHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert os_path_exists(sue_filehub.role_path(bob_text)) == False
+    assert os_path_exists(sue_filehub.role_path(bob_text)) is False
 
     # WHEN
     sue_filehub.save_role_agenda(bob_agenda)
@@ -182,7 +179,7 @@ def test_FileHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert sue_filehub.role_file_exists(bob_text) == False
+    assert sue_filehub.role_file_exists(bob_text) is False
 
     # WHEN
     sue_filehub.save_role_agenda(bob_agenda)
@@ -225,7 +222,7 @@ def test_FileHub_delete_role_file_DeletesAgendaFile(env_dir_setup_cleanup):
     texas_filehub.delete_role_file(sue_text)
 
     # THEN
-    assert os_path_exists(role_path) == False
+    assert os_path_exists(role_path) is False
 
 
 def test_FileHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -242,7 +239,7 @@ def test_FileHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert os_path_exists(sue_filehub.job_path(bob_text)) == False
+    assert os_path_exists(sue_filehub.job_path(bob_text)) is False
 
     # WHEN
     sue_filehub.save_job_agenda(bob_agenda)
@@ -265,7 +262,7 @@ def test_FileHub_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert sue_filehub.job_file_exists(bob_text) == False
+    assert sue_filehub.job_file_exists(bob_text) is False
 
     # WHEN
     sue_filehub.save_job_agenda(bob_agenda)
@@ -308,7 +305,7 @@ def test_FileHub_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     texas_filehub.delete_job_file(sue_text)
 
     # THEN
-    assert os_path_exists(job_path) == False
+    assert os_path_exists(job_path) is False
 
 
 def test_FileHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -320,7 +317,7 @@ def test_FileHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     sue_filehub = filehub_shop(env_dir, real_id, sue_text, None)
 
     print(f"{sue_filehub.duty_file_path()=}")
-    assert sue_filehub.duty_file_exists() == False
+    assert sue_filehub.duty_file_exists() is False
 
     # WHEN
     sue_filehub.save_duty_agenda(sue_agendaunit)
@@ -375,7 +372,7 @@ def test_FileHub_save_work_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     sue_filehub = filehub_shop(env_dir, real_id, sue_text, None)
 
     print(f"{sue_filehub.work_path()=}")
-    assert sue_filehub.work_file_exists() == False
+    assert sue_filehub.work_file_exists() is False
 
     # WHEN
     sue_filehub.save_work_agenda(sue_agendaunit)

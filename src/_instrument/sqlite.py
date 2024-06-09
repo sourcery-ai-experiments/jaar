@@ -15,7 +15,7 @@ def sqlite_text(bool_x) -> str:
     """convert_python_bool_to_SQLITE_bool"""
     if bool_x == True:
         x_text = "TRUE"
-    elif bool_x == False:
+    elif bool_x is False:
         x_text = "FALSE"
     else:
         raise TypeError("function requires boolean")

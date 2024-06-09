@@ -38,7 +38,7 @@ def test_AgendaUnit_get_tree_metrics_CorrectlySetsBoolean_all_idea_uids_are_uniq
     tree_metrics_x = yao_agenda.get_tree_metrics()
 
     # THEN
-    assert tree_metrics_x.all_idea_uids_are_unique == False
+    assert tree_metrics_x.all_idea_uids_are_unique is False
     assert len(tree_metrics_x.uid_dict) == 219
 
 

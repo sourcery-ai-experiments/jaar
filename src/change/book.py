@@ -71,7 +71,7 @@ class BookUnit:
         return edited_agenda
 
     def set_agendaatom(self, x_agendaatom: AgendaAtom):
-        if x_agendaatom.is_valid() == False:
+        if x_agendaatom.is_valid() is False:
             raise InvalidAgendaAtomException(
                 f"""'{x_agendaatom.category}' {x_agendaatom.crud_text} AgendaAtom is invalid
                 {x_agendaatom.is_required_args_valid()=}
@@ -87,7 +87,7 @@ class BookUnit:
         place_obj_in_dict(self.agendaatoms, x_keylist, x_agendaatom)
 
     def agendaatom_exists(self, x_agendaatom: AgendaAtom) -> bool:
-        if x_agendaatom.is_valid() == False:
+        if x_agendaatom.is_valid() is False:
             raise InvalidAgendaAtomException(
                 f"""'{x_agendaatom.category}' {x_agendaatom.crud_text} AgendaAtom is invalid
                 {x_agendaatom.is_required_args_valid()=}
@@ -234,12 +234,12 @@ class BookUnit:
         before_group_ids = {
             before_group_id
             for before_group_id in before_agenda._groups.keys()
-            if before_agenda.get_groupunit(before_group_id)._party_mirror == False
+            if before_agenda.get_groupunit(before_group_id)._party_mirror is False
         }
         after_group_ids = {
             after_group_id
             for after_group_id in after_agenda._groups.keys()
-            if after_agenda.get_groupunit(after_group_id)._party_mirror == False
+            if after_agenda.get_groupunit(after_group_id)._party_mirror is False
         }
 
         self.add_agendaatom_groupunit_inserts(

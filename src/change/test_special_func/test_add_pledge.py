@@ -17,9 +17,9 @@ def test_add_pledge_change_Addspledgechange(env_dir_setup_cleanup):
     clean_road = old_sue_duty.make_l1_road(clean_text)
     one_int = 1
     print(f"{sue_filehub.change_file_path(one_int)=}")
-    assert sue_filehub.change_file_exists(one_int) == False
+    assert sue_filehub.change_file_exists(one_int) is False
     old_sue_duty = sue_filehub.get_duty_agenda()
-    assert old_sue_duty.idea_exists(clean_road) == False
+    assert old_sue_duty.idea_exists(clean_road) is False
 
     # WHEN
     add_pledge_change(sue_filehub, clean_road)
@@ -38,7 +38,7 @@ def test_add_pledge_change_SetsDutyAgendapledgeIdea_suffgroup(env_dir_setup_clea
     old_sue_duty = sue_filehub.get_duty_agenda()
     clean_text = "clean"
     clean_road = old_sue_duty.make_l1_road(clean_text)
-    assert old_sue_duty.idea_exists(clean_road) == False
+    assert old_sue_duty.idea_exists(clean_road) is False
 
     # WHEN
     bob_text = "Bob"

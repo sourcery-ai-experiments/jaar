@@ -24,7 +24,7 @@ from src.change.listen import (
 #     new_ideaunit = create_ingest_idea(old_ideaunit, 6, 0.25, listener=yao_text)
 
 #     # THEN
-#     assert new_ideaunit._assignedunit.suffgroup_exists(swimmers_text) == False
+#     assert new_ideaunit._assignedunit.suffgroup_exists(swimmers_text) is False
 #     assert new_ideaunit._assignedunit.suffgroup_exists(yao_text)
 #     assert new_ideaunit._weight == 99
 
