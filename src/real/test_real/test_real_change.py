@@ -71,9 +71,6 @@
 #     assert os_path_exists(jobs_tim_file_path)
 #     assert os_path_exists(jobs_xio_file_path)
 #     assert os_path_exists(jobs_yao_file_path)
-#     assert create_job_file_from_role_file(tim_text).get_role() != None
-#     assert create_job_file_from_role_file(xio_text).get_role() != None
-#     assert create_job_file_from_role_file(yao_text).get_role() != None
 
 
 # def test_RealUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_role_agenda(
@@ -117,7 +114,7 @@
 #     real.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = create_job_file_from_role_file(xio_text).get_role()
+
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -194,7 +191,6 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs
@@ -244,7 +240,6 @@
 #     real.apply_requestunit(highwaay_requestunit)
 
 #     # THEN
-#     xio_role = create_job_file_from_role_file(xio_text).get_role()
 #     xio_partyunit = xio_role.get_party(xio_text)
 #     tim_partyunit = xio_role.get_party(tim_text)
 #     assert xio_partyunit != None
@@ -290,7 +285,6 @@
 #     assert len(xio_role.get_intent_dict()) == 0
 
 #     # check tim role
-#     tim_role = create_job_file_from_role_file(tim_text).get_role()
 #     assert tim_role.party_exists(xio_text)
 #     assert tim_role.get_party(xio_text).debtor_weight == 7
 #     # check tim jobs

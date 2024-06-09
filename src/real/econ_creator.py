@@ -1,14 +1,7 @@
 from src._instrument.python import get_empty_dict_if_none
-from src._instrument.file import (
-    set_dir,
-    get_all_dirs_with_file,
-    get_parts_dir,
-    delete_dir,
-)
-from src._road.jaar_config import treasury_file_name, get_rootpart_of_econ_dir
-from src._road.road import RoadUnit, rebuild_road, create_road_from_nodes
+from src._road.road import RoadUnit
 from src.agenda.agenda import AgendaUnit
-from src.change.filehub import get_econ_path, filehub_shop, FileHub
+from src.change.filehub import filehub_shop, FileHub
 from src.econ.econ import EconUnit, econunit_shop
 
 
@@ -57,8 +50,8 @@ def get_econunit(x_filehub: FileHub, econ_road: RoadUnit) -> EconUnit:
 
 
 def set_econunit_role(x_filehub: FileHub, econ_road: RoadUnit, role: AgendaUnit):
-    x_econ = get_econunit(x_filehub, econ_road)
-    x_econ.filehub.save_role_agenda(role)
+    x_filehub.econ_road = econ_road
+    x_filehub.save_role_agenda(role)
 
 
 def set_econunits_role(x_filehub: FileHub, role: AgendaUnit):

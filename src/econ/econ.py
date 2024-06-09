@@ -44,10 +44,6 @@ class IntentBaseDoesNotExistException(Exception):
     pass
 
 
-class RoleAgendaFileException(Exception):
-    pass
-
-
 @dataclass
 class EconUnit:
     filehub: FileHub

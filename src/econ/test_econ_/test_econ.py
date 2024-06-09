@@ -1,6 +1,6 @@
-from src._instrument.file import delete_dir
 from src._road.road import default_road_delimiter_if_none
-from src.econ.econ import EconUnit, econunit_shop
+from src.agenda.agenda import agendaunit_shop
+from src.econ.econ import econunit_shop, EconUnit, create_job_file_from_role_file
 from src.econ.examples.econ_env_kit import (
     env_dir_setup_cleanup,
     temp_reals_dir,
@@ -8,8 +8,10 @@ from src.econ.examples.econ_env_kit import (
     temp_real_id,
     get_texas_filehub,
 )
-from pytest import raises as pytest_raises
-from os.path import exists as os_path_exists, isdir as os_path_isdir
+from src.econ.examples.example_econ_agendas import (
+    get_agenda_2CleanNodesRandomWeights,
+)
+from os.path import exists as os_path_exists
 
 
 def test_EconUnit_exists():
@@ -42,10 +44,7 @@ def test_econunit_shop_ReturnsObj(env_dir_setup_cleanup):
 
 
 def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
-    # GIVEN
-    # assert os_path_exists(econ_dir) is False
-
-    # WHEN
+    # GIVEN / WHEN
     texas_econ = econunit_shop(get_texas_filehub())
 
     # THEN
@@ -55,199 +54,38 @@ def test_econunit_shop_ReturnsObj_WithTempNames(env_dir_setup_cleanup):
     assert texas_econ._treasury_db != None
 
 
-def test_EconUnit_get_jobs_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_EconUnit_create_treasury_db_CreatesDatabaseFile(env_dir_setup_cleanup):
     # GIVEN create econ
     texas_filehub = get_texas_filehub()
     x_econ = EconUnit(texas_filehub)
-
-    # WHEN / THEN
-    jobs_text = "jobs"
-    assert x_econ.filehub.jobs_dir() == f"{x_econ.filehub.econ_dir()}/{jobs_text}"
-
-
-def test_EconUnit_get_roles_dir_ReturnsCorrectObj(env_dir_setup_cleanup):
-    # GIVEN create econ
-    texas_filehub = get_texas_filehub()
-    x_econ = EconUnit(texas_filehub)
-
-    # WHEN / THEN
-    roles_text = "roles"
-    assert x_econ.filehub.roles_dir() == f"{x_econ.filehub.econ_dir()}/{roles_text}"
-
-
-def test_EconUnit_set_econ_dirs_CreatesDirAndFiles(env_dir_setup_cleanup):
-    # GIVEN create econ
-    texas_filehub = get_texas_filehub()
-    x_econ = EconUnit(texas_filehub)
-    texas_filehub = get_texas_filehub()
     print(f"{temp_reals_dir()=} {x_econ.filehub.econ_dir()=}")
-    # delete_dir(x_econ.filehub.econ_dir())
     print(f"delete {x_econ.filehub.econ_dir()=}")
-    delete_dir(texas_filehub.reals_dir)
-    treasury_file_name = "treasury.db"
-    treasury_file_path = f"{texas_filehub.econ_dir()}/{treasury_file_name}"
+    treasury_file_path = texas_filehub.treasury_db_path()
 
-    assert os_path_exists(texas_filehub.reals_dir) is False
-    assert os_path_isdir(texas_filehub.reals_dir) is False
     assert os_path_exists(treasury_file_path) is False
 
     # WHEN
     x_econ.create_treasury_db(in_memory=False)
 
     # THEN check agendas src directory created
-    assert os_path_exists(texas_filehub.reals_dir)
-    assert os_path_isdir(texas_filehub.reals_dir)
     assert os_path_exists(treasury_file_path)
-    assert x_econ.filehub.econ_dir() == texas_filehub.econ_dir()
-    assert x_econ.filehub.jobs_dir() == x_econ.filehub.jobs_dir()
-    assert x_econ.filehub.roles_dir() == x_econ.filehub.roles_dir()
-    assert x_econ.filehub.treasury_db_path() == treasury_file_path
 
 
-# def test_modify_real_id_example_econ_CorrectlyModifiesDirAndFiles(
-#     env_dir_setup_cleanup,
-# ):
-#     # GIVEN create econ
-#     texas_filehub = get_texas_filehub()
-#     old_x_real_id = texas_filehub.real_id
-#     old_econ_dir = texas_filehub.econ_dir()
-#     old_jobs_dir = texas_filehub.jobs_dir()
-#     old_roles_dir = texas_filehub.roles_dir()
-#     print(f"{texas_filehub.econ_road=}")
+def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_role = agendaunit_shop(sue_text)
+    sue_role.calc_agenda_metrics()
+    texas_filehub = get_texas_filehub()
+    texas_filehub.save_role_agenda(sue_role)
+    sue_job_file_path = texas_filehub.job_path(sue_text)
+    assert os_path_exists(sue_job_file_path) == False
 
-#     new_filehub = get_texas_filehub()
-#     new_filehub.real_id = "music"
-#     new_x_real_id = new_filehub.real_id
-#     new_econ_dir = new_filehub.econ_dir()
-#     new_jobs_dir = new_filehub.jobs_dir()
-#     new_roles_dir = new_filehub.roles_dir()
-#     delete_dir(dir=new_econ_dir)
-#     print(f"{new_econ_dir=}")
+    # WHEN
+    sue_job = create_job_file_from_role_file(texas_filehub, sue_text)
 
-#     texas_econ = econunit_shop(texas_filehub)
-
-#     texas_econ.create_treasury_db(in_memory=True)
-
-#     assert os_path_exists(old_econ_dir)
-#     assert os_path_isdir(old_econ_dir)
-#     assert os_path_exists(old_jobs_dir)
-#     assert os_path_exists(old_roles_dir)
-#     assert texas_econ.filehub.jobs_dir() == old_jobs_dir
-#     assert texas_econ.filehub.roles_dir() == old_roles_dir
-
-#     assert os_path_exists(new_econ_dir) is False
-#     assert os_path_isdir(new_econ_dir) is False
-#     assert os_path_exists(new_jobs_dir) is False
-#     assert os_path_exists(new_roles_dir) is False
-#     assert texas_econ.filehub.jobs_dir() != new_jobs_dir
-#     assert texas_econ.filehub.roles_dir() != new_roles_dir
-#     assert texas_econ.real_id != new_x_real_id
-
-#     # WHEN
-#     print(f"{new_x_real_id=} {old_x_real_id=}")
-#     print(f"{old_econ_dir=}")
-#     assert os_path_exists(old_econ_dir)
-#     texas_filehub.save_job_agenda("sue", "fooboo", True)
-#     modify_real_id_example_econ(
-#         econ_obj=texas_econ,
-#         src_filehub=texas_filehub,
-#         dst_filehub=new_filehub,
-#         new_real_id=new_x_real_id,
-#     )
-
-#     # THEN check agendas src directory created
-#     assert os_path_exists(old_econ_dir) is False
-#     assert os_path_isdir(old_econ_dir) is False
-#     assert os_path_exists(old_jobs_dir) is False
-#     assert os_path_exists(old_roles_dir) is False
-#     assert texas_econ.real_id == new_x_real_id
-#     print(f"{texas_econ.filehub.jobs_dir()=}")
-#     print(f"           {old_jobs_dir=}")
-#     assert texas_econ.filehub.jobs_dir() != old_jobs_dir
-#     assert texas_econ.filehub.roles_dir() != old_roles_dir
-
-#     assert os_path_exists(new_econ_dir)
-#     assert os_path_isdir(new_econ_dir)
-#     assert os_path_exists(new_jobs_dir)
-#     assert os_path_exists(new_roles_dir)
-#     assert texas_econ.filehub.jobs_dir() == new_jobs_dir
-#     assert texas_econ.filehub.roles_dir() == new_roles_dir
-
-#     # Undo modification to directory
-#     # delete_dir(dir=old_econ_dir)
-#     # print(f"{old_econ_dir=}")
-#     delete_dir(dir=new_econ_dir)
-#     print(f"{new_econ_dir=}")
-
-
-# def test_copy_evaluation_econ_CorrectlyCopiesDirAndFiles(env_dir_setup_cleanup):
-#     # GIVEN create econ
-#     old_x_real_id = temp_real_id()
-#     old_econ_dir = f"src/econ/examples/econs/{old_x_real_id}"
-#     jobs_text = "jobs"
-#     old_jobs_dir = f"{old_econ_dir}/{jobs_text}"
-#     roles_text = "roles"
-#     old_roles_dir = f"{old_econ_dir}/{roles_text}"
-#     texas_filehub = get_texas_filehub()
-
-#     x_econ = econunit_shop(old_x_real_id, temp_reals_dir())
-#     x_econ.set_econ_dirs()
-
-#     assert os_path_exists(old_econ_dir)
-#     assert os_path_isdir(old_econ_dir)
-#     assert os_path_exists(old_jobs_dir)
-#     assert os_path_exists(old_roles_dir)
-#     assert x_econ.filehub.jobs_dir() == old_jobs_dir
-#     assert x_econ.filehub.roles_dir() == old_roles_dir
-
-#     new_x_real_id = "ex_env1"
-#     new_econ_dir = f"src/econ/examples/econs/{new_x_real_id}"
-#     new_jobs_dir = f"{new_econ_dir}/{jobs_text}"
-#     new_roles_dir = f"{new_econ_dir}/{roles_text}"
-
-#     assert os_path_exists(new_econ_dir) is False
-#     assert os_path_isdir(new_econ_dir) is False
-#     assert os_path_exists(new_jobs_dir) is False
-#     assert os_path_exists(new_roles_dir) is False
-#     assert x_econ.filehub.jobs_dir() != new_jobs_dir
-#     assert x_econ.filehub.roles_dir() != new_roles_dir
-#     assert x_econ.real_id != new_x_real_id
-
-#     # WHEN
-#     copy_evaluation_econ(src_real_id=x_econ.real_id, dest_real_id=new_x_real_id)
-
-#     # THEN check agendas src directory created
-#     assert os_path_exists(old_econ_dir)
-#     assert os_path_isdir(old_econ_dir)
-#     assert os_path_exists(old_jobs_dir)
-#     assert os_path_exists(old_roles_dir)
-#     assert x_econ.filehub.jobs_dir() == old_jobs_dir
-#     assert x_econ.filehub.roles_dir() == old_roles_dir
-
-#     assert os_path_exists(new_econ_dir)
-#     assert os_path_isdir(new_econ_dir)
-#     assert os_path_exists(new_jobs_dir)
-#     assert os_path_exists(new_roles_dir)
-#     assert x_econ.filehub.jobs_dir() != new_jobs_dir
-#     assert x_econ.filehub.roles_dir() != new_roles_dir
-#     assert x_econ.real_id != new_x_real_id
-
-#     # Undo modification to directory
-#     # delete_dir(x_econ.filehub.econ_dir())
-#     # delete_dir(dir=old_econ_dir)
-#     delete_dir(dir=new_econ_dir)
-
-
-# def test_copy_evaluation_econ_CorrectlyRaisesError(env_dir_setup_cleanup):
-#     # GIVEN create econ
-#     old_x_real_id = temp_real_id()
-#     x_econ = econunit_shop(old_x_real_id, temp_reals_dir())
-#     x_econ.set_econ_dirs()
-
-#     # WHEN/THEN
-#     with pytest_raises(Exception) as excinfo:
-#         copy_evaluation_econ(src_real_id=x_econ.real_id, dest_real_id=old_x_real_id)
-#     assert (
-#         str(excinfo.value)
-#         == f"Cannot copy econ to '{x_econ.filehub.econ_dir()}' directory because '{x_econ.filehub.econ_dir()}' exists."
-#     )
+    # GIVEN
+    assert sue_job._owner_id != None
+    assert sue_job._owner_id == sue_text
+    assert sue_job.get_dict() == sue_role.get_dict()
+    assert os_path_exists(sue_job_file_path)
