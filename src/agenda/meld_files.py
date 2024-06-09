@@ -2,7 +2,6 @@ from src._road.road import OwnerID
 from src.agenda.agenda import AgendaUnit, get_from_json as agenda_get_from_json
 from src._instrument.file import dir_files, open_file
 from dataclasses import dataclass
-from datetime import datetime
 
 
 @dataclass
