@@ -7,11 +7,11 @@ from src.agenda.idea import ideaunit_shop
 from src.change.filehub import filehub_shop
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.real import RealUnit, realunit_shop
-from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
+from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
 
 
-def test_RealUnit_exists(reals_dir_setup_cleanup):
+def test_RealUnit_exists(env_dir_setup_cleanup):
     music_text = "music"
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     assert music_real.real_id == music_text
@@ -23,7 +23,7 @@ def test_RealUnit_exists(reals_dir_setup_cleanup):
     assert music_real._planck is None
 
 
-def test_realunit_shop_ReturnsRealUnit(reals_dir_setup_cleanup):
+def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
 
@@ -41,7 +41,7 @@ def test_realunit_shop_ReturnsRealUnit(reals_dir_setup_cleanup):
     assert music_real._planck == default_planck_if_none()
 
 
-def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(reals_dir_setup_cleanup):
+def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
@@ -61,7 +61,7 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(reals_dir_setup_cleanu
     assert music_real._planck == three_int
 
 
-def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(reals_dir_setup_cleanup):
+def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
@@ -94,7 +94,7 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(reals_dir_setup_cleanup)
     assert os_path_exists(journal_file_path)
 
 
-def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):
+def test_realunit_shop_SetsRealsDirs(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
 
@@ -107,7 +107,7 @@ def test_realunit_shop_SetsRealsDirs(reals_dir_setup_cleanup):
     assert music_real._persons_dir == f"{music_real._real_dir}/persons"
 
 
-def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(reals_dir_setup_cleanup):
+def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
@@ -131,7 +131,7 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(reals_dir_setup_cle
     assert os_path_exists(luca_filehub.work_path())
 
 
-def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
@@ -152,7 +152,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(reals_dir_setup_cl
 
 
 def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_text = "music"
@@ -226,7 +226,7 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
-def test_RealUnit_get_person_filehubs_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_RealUnit_get_person_filehubs_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"

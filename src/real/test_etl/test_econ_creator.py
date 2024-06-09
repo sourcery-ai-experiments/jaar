@@ -11,12 +11,12 @@ from src.real.econ_creator import (
     set_econunits_role,
     set_person_econunits_role,
 )
-from src.real.examples.real_env_kit import reals_dir_setup_cleanup
+from src.real.examples.real_env import env_dir_setup_cleanup
 from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
+def test_init_econunit_CreatesAndReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     pound_text = "#"
     sue_text = "Sue"
@@ -45,7 +45,7 @@ def test_init_econunit_CreatesAndReturnsObj(reals_dir_setup_cleanup):
 
 
 def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -75,7 +75,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_justified_IsFalse(
 
 
 def test_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
@@ -101,7 +101,7 @@ def test_create_person_econunits_RaisesErrorWhen__econs_buildable_IsFalse(
     )
 
 
-def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
+def test_create_person_econunits_CreatesEconUnits(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -138,7 +138,7 @@ def test_create_person_econunits_CreatesEconUnits(reals_dir_setup_cleanup):
     assert os_path_exists(elpaso_filehub.treasury_db_path())
 
 
-def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
+def test_get_econ_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -165,7 +165,7 @@ def test_get_econ_ReturnsCorrectObj(reals_dir_setup_cleanup):
     assert dallas_econ.filehub.real_id == sue_filehub.real_id
 
 
-def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
+def test_set_econunit_role_CorrectlySets_role(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -198,7 +198,7 @@ def test_set_econunit_role_CorrectlySets_role(reals_dir_setup_cleanup):
     assert os_path_exists(sue_role_file_path)
 
 
-def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
+def test_set_econunits_role_CorrectlySets_roles(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -239,7 +239,7 @@ def test_set_econunits_role_CorrectlySets_roles(reals_dir_setup_cleanup):
 
 
 def test_set_person_econunits_role_CorrectlySetsroles(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"

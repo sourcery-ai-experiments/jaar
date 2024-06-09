@@ -3,11 +3,11 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.change.filehub import filehub_shop
 from src.real.real import realunit_shop
-from src.real.examples.real_env_kit import get_test_reals_dir, reals_dir_setup_cleanup
+from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(env_dir_setup_cleanup):
     # GIVEN
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
@@ -28,7 +28,7 @@ def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(reals_dir_setup_clea
     assert sue_work._owner_id == example_agenda._owner_id
 
 
-def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
@@ -48,7 +48,7 @@ def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(reals_dir_setup_cle
 
 
 def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
@@ -71,7 +71,7 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     assert after_bob_work_agenda.party_exists(sue_text)
 
 
-def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_cleanup):
+def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
@@ -100,7 +100,7 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(reals_dir_setup_c
 
 
 def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)

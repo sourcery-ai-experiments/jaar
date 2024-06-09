@@ -2,7 +2,7 @@
 # from src.real.real import realunit_shop
 # from src.real.examples.real_env_kit import (
 #     get_test_reals_dir,
-#     reals_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # )
 # from src.real.examples.example_changes import (
 #     yao_sue_changeunit as example_yao_sue_changeunit,
@@ -10,7 +10,7 @@
 # from os.path import exists as os_path_exists
 
 
-# def test_RealUnit_set_changeunit_CorrectSetsAttr(reals_dir_setup_cleanup):
+# def test_RealUnit_set_changeunit_CorrectSetsAttr(env_dir_setup_cleanup):
 #     # GIVEN
 #     oregon_real = realunit_shop("Oregon", get_test_reals_dir(), in_memory_journal=True)
 #     assert oregon_real._changeunits == {}
@@ -25,7 +25,7 @@
 
 
 # def test_RealUnit_apply_requestunit_CorrectlyCreates_role_agendas(
-#     reals_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     # GIVEN requester and requestee role_agendas does not exist
 #     w1_text = "w1"
@@ -74,7 +74,7 @@
 
 
 # def test_RealUnit_apply_requestunit_CorrectlyAddsTaskTo_requester_role_agenda(
-#     reals_dir_setup_cleanup,
+#     env_dir_setup_cleanup,
 # ):
 #     real = realunit_shop("w1", get_test_reals_dir(), in_memory_journal=True)
 #     yao_text = "Yao"
@@ -199,7 +199,7 @@
 #     assert tim_jobs.get_intent_dict()[0].get_road() == no_fly_road
 
 
-# def test_RealUnit_apply_requestunit_CorrectlyAppliesGroup(reals_dir_setup_cleanup):
+# def test_RealUnit_apply_requestunit_CorrectlyAppliesGroup(env_dir_setup_cleanup):
 #     real = realunit_shop("w1", get_test_reals_dir(), in_memory_journal=True)
 #     yao_text = "Yao"
 #     real.init_person_econs(yao_text)
@@ -294,7 +294,7 @@
 
 
 # # def test_RealUnit_apply_requestunit_Multiple_requestunitsCreateMultiple_intent_items(
-# #     reals_dir_setup_cleanup,
+# #     env_dir_setup_cleanup,
 # # ):
 # #     real = realunit_shop("w1", get_test_reals_dir(), in_memory_journal=True)
 # #     yao_text = "Yao"

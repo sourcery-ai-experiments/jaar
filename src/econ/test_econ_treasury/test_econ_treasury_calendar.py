@@ -11,7 +11,7 @@ from src.econ.treasury_sqlstr import (
     CalendarIntentUnit,
     CalendarReport,
 )
-from src.econ.examples.econ_env_kit import (
+from src.econ.examples.econ_env import (
     temp_real_id,
     temp_reals_dir,
     env_dir_setup_cleanup,

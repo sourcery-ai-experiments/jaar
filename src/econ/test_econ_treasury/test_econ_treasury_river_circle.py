@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_filehub
+from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 from src.econ.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,

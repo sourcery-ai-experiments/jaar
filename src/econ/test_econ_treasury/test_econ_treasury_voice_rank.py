@@ -4,7 +4,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.agenda.meld_files import get_file_names_in_voice_rank_order
 from src.change.listen import create_job_file_from_role_file
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_filehub
+from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):

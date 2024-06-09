@@ -6,7 +6,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_x1_3levels_1reason_1beliefs,
 )
 from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env_kit import temp_real_id, get_texas_filehub
+from src.econ.examples.econ_env import temp_real_id, get_texas_filehub
 from random import randrange
 
 

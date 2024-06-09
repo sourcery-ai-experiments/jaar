@@ -3,7 +3,7 @@ from src.econ.econ import (
     econunit_shop,
     set_treasury_partytreasuryunits_to_agenda_partyunits,
 )
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup, get_texas_filehub
+from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 from src.econ.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,

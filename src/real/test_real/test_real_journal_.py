@@ -6,11 +6,11 @@ from src._instrument.sqlite import (
     check_connection,
     check_table_column_existence,
 )
+from src._road.jaar_config import get_test_real_id
 from src.real.real import RealUnit, realunit_shop
-from src.real.examples.real_env_kit import (
-    get_test_real_id,
+from src.real.examples.real_env import (
     get_test_reals_dir,
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 )
 from os.path import exists as os_path_exists
 from pytest import raises as pytest_raises
@@ -31,7 +31,7 @@ def test_RealUnit_get_journal_db_path_ReturnsCorrectObj():
 
 
 def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_text = "music"
@@ -48,7 +48,7 @@ def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
 
 
 def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN
     music_text = "music"
@@ -75,7 +75,7 @@ def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
     # assert open_file(music_real._real_dir, file_name=db_file) != x_file_text
 
 
-def test_RealUnit_create_journal_db_CanCreateInMemory(reals_dir_setup_cleanup):
+def test_RealUnit_create_journal_db_CanCreateInMemory(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(
@@ -95,7 +95,7 @@ def test_RealUnit_create_journal_db_CanCreateInMemory(reals_dir_setup_cleanup):
 
 
 def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(
-    reals_dir_setup_cleanup,
+    env_dir_setup_cleanup,
 ):
     # GIVEN create Real
     x_real = RealUnit(get_test_real_id(), get_test_reals_dir())
@@ -111,7 +111,7 @@ def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(
     assert check_connection(x_real.get_journal_conn())
 
 
-def test_real_set_real_dirs_CorrectlyCreatesDBTables(reals_dir_setup_cleanup):
+def test_real_set_real_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create real
     x_real = realunit_shop(get_test_real_id(), get_test_reals_dir())
 

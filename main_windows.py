@@ -7,7 +7,6 @@ from ui.EditMain import EditMainView
 from ui.EditBeliefTime import EditBeliefTime
 from ui.Edit_Agenda import Edit_Agenda
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
-from src.agenda.examples.agenda_env import get_agenda_examples_dir
 from src.agenda.hreg_time import HregTimeIdeaSource
 from ui.pyqt_func import (
     agenda_importance_diplay as pyqt_func_agenda_importance_diplay,

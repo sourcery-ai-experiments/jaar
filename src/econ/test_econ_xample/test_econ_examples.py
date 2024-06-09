@@ -1,4 +1,4 @@
-from src.econ.examples.econ_env_kit import env_dir_setup_cleanup
+from src.econ.examples.econ_env import env_dir_setup_cleanup
 from src.econ.examples.example_econ_agendas import (
     # _delete_and_set_ex3,
     _delete_and_set_ex4,
