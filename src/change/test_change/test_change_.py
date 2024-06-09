@@ -1,3 +1,4 @@
+from src._instrument.python import x_is_json
 from src._road.jaar_config import init_change_id, get_changes_folder
 from src.change.book import bookunit_shop
 from src.change.change import ChangeUnit, changeunit_shop, get_init_change_id_if_None
@@ -5,7 +6,6 @@ from src.change.examples.example_books import (
     get_atom_example_ideaunit_sports,
     get_bookunit_carm_example,
 )
-from src._instrument.python import x_is_json
 
 
 def test_get_changes_folder_ReturnsCorrectObj():
