@@ -3,7 +3,7 @@ from src.agenda.idea import ideaunit_shop
 from src.listen.filehub import filehub_shop
 
 # from src.agenda.graphic import display_ideatree
-from src.real.econ_creator import create_person_moneyunits
+from src.real.econ_creator import create_duty_treasury_dbs
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir
 
@@ -46,7 +46,7 @@ def create_example_real1() -> RealUnit:
         planck=yao_filehub.planck,
     )
     x_filehub.save_duty_agenda(yao_duty_agenda)
-    create_person_moneyunits(yao_filehub)
+    create_duty_treasury_dbs(yao_filehub)
 
     # WHEN
     music_real.set_person_moneyunits_dirs(yao_text)
@@ -110,11 +110,11 @@ def create_example_real2() -> RealUnit:
     yao_filehub.save_duty_agenda(yao_duty_agenda)
     wei_filehub.save_duty_agenda(wei_duty_agenda)
     zia_filehub.save_duty_agenda(zia_duty_agenda)
-    create_person_moneyunits(yao_filehub)
-    create_person_moneyunits(wei_filehub)
-    create_person_moneyunits(zia_filehub)
-    # yao_dallas_econ = yao_get_moneyunit(dallas_road)
-    # zia_dallas_econ = zia_get_moneyunit(dallas_road)
+    create_duty_treasury_dbs(yao_filehub)
+    create_duty_treasury_dbs(wei_filehub)
+    create_duty_treasury_dbs(zia_filehub)
+    # yao_dallas_econ = yao_init_moneyunit(dallas_road)
+    # zia_dallas_econ = zia_init_moneyunit(dallas_road)
     music_real.set_person_moneyunits_dirs(yao_text)
     music_real.set_person_moneyunits_dirs(wei_text)
     music_real.set_person_moneyunits_dirs(zia_text)
@@ -251,12 +251,12 @@ def create_example_real4() -> RealUnit:
     yao_filehub.save_duty_agenda(yao_duty_agenda)
     wei_filehub.save_duty_agenda(wei_duty_agenda)
     zia_filehub.save_duty_agenda(zia_duty_agenda)
-    # create_person_moneyunits(yao_filehub)
-    # wei_create_person_moneyunits()
-    # zia_create_person_moneyunits()
-    # yao_dallas_econ = yao_get_moneyunit(dallas_road)
-    # zia_dallas_econ = zia_get_moneyunit(dallas_road)
-    # yao_elpaso_econ = yao_get_moneyunit(elpaso_road)
+    # create_duty_treasury_dbs(yao_filehub)
+    # wei_create_duty_treasury_dbs()
+    # zia_create_duty_treasury_dbs()
+    # yao_dallas_econ = yao_init_moneyunit(dallas_road)
+    # zia_dallas_econ = zia_init_moneyunit(dallas_road)
+    # yao_elpaso_econ = yao_init_moneyunit(elpaso_road)
     # yao_dallas_money.filehub.save_role_agenda(yao_duty_agenda)
     # yao_dallas_money.filehub.save_role_agenda(wei_duty_agenda)
     # yao_dallas_money.filehub.save_role_agenda(zia_duty_agenda)

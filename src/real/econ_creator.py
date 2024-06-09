@@ -1,12 +1,8 @@
 from src._instrument.python import get_empty_dict_if_none
 from src._road.road import RoadUnit
 from src.agenda.agenda import AgendaUnit, IdeaUnit
-from src.listen.filehub import filehub_shop, FileHub
+from src.listen.filehub import FileHub
 from src.money.money import MoneyUnit, moneyunit_shop
-
-
-class InvalidEconException(Exception):
-    pass
 
 
 class PersonCreateMoneyUnitsException(Exception):
@@ -32,25 +28,16 @@ def init_moneyunit(x_filehub: FileHub, econ_road: RoadUnit) -> MoneyUnit:
     return moneyunit_shop(x_filehub, in_memory_treasury=False)
 
 
-def create_person_moneyunits(x_filehub: FileHub):
-    x_person_econs = _get_econs_ideas(x_filehub)
-    for econ_idea in x_person_econs.values():
-        init_moneyunit(x_filehub, econ_idea.get_road())
-
-
-def get_moneyunit(x_filehub: FileHub, econ_road: RoadUnit) -> MoneyUnit:
-    return init_moneyunit(x_filehub, econ_road)
-
-
-def set_moneyunit_role(x_filehub: FileHub, econ_road: RoadUnit, role: AgendaUnit):
-    x_filehub.econ_road = econ_road
-    x_filehub.save_role_agenda(role)
-
-
-def set_moneyunits_role(x_filehub: FileHub, role: AgendaUnit):
+def create_duty_treasury_dbs(x_filehub: FileHub):
     for x_econ_road in _get_econs_ideas(x_filehub).keys():
-        set_moneyunit_role(x_filehub, x_econ_road, role)
+        init_moneyunit(x_filehub, x_econ_road)
+
+
+def set_all_role_files(x_filehub: FileHub, role: AgendaUnit):
+    for x_econ_road in _get_econs_ideas(x_filehub).keys():
+        x_filehub.econ_road = x_econ_road
+        x_filehub.save_role_agenda(role)
 
 
 def set_person_moneyunits_role(x_filehub: FileHub):
-    set_moneyunits_role(x_filehub, x_filehub.get_duty_agenda())
+    set_all_role_files(x_filehub, x_filehub.get_duty_agenda())
