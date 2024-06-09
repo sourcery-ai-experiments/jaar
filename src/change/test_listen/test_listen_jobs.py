@@ -2,10 +2,11 @@ from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, 
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
-from src.change.listen import listen_to_person_jobs
+from src.change.listen import listen_to_person_jobs, create_job_file_from_role_file
 from src.change.examples.change_env import (
     env_dir_setup_cleanup,
     get_change_temp_env_dir,
+    get_texas_filehub,
 )
 
 
@@ -396,3 +397,21 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     assert len(yao_work.get_intent_dict()) == 1
     assert len(yao_work._idearoot._beliefunits) == 1
     assert yao_work != yao_duty0
+
+
+def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_role = agendaunit_shop(sue_text)
+    texas_filehub = get_texas_filehub()
+    texas_filehub.save_role_agenda(sue_role)
+    assert texas_filehub.job_file_exists(sue_text) == False
+
+    # WHEN
+    sue_job = create_job_file_from_role_file(texas_filehub, sue_text)
+
+    # GIVEN
+    assert sue_job._owner_id != None
+    assert sue_job._owner_id == sue_text
+    assert sue_job.get_dict() == sue_role.get_dict()
+    assert texas_filehub.job_file_exists(sue_text)

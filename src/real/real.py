@@ -5,8 +5,11 @@ from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, R
 from src.agenda.agenda import AgendaUnit
 from src.change.basis_agendas import get_default_work_agenda
 from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
-from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
-from src.econ.econ import create_job_file_from_role_file
+from src.change.listen import (
+    listen_to_speaker_intent,
+    listen_to_debtors_roll,
+    create_job_file_from_role_file,
+)
 from src.real.econ_creator import create_person_econunits, get_econunit
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass

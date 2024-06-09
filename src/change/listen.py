@@ -287,3 +287,10 @@ def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
     for x_belief_road, x_belief_unit in job._idearoot._beliefunits.items():
         listener._idearoot.set_beliefunit(x_belief_unit)
     listener.calc_agenda_metrics()
+
+
+def create_job_file_from_role_file(filehub: FileHub, person_id: PersonID):
+    x_role = filehub.get_role_agenda(person_id)
+    x_job = listen_to_debtors_roll(x_role, filehub)
+    filehub.save_job_agenda(x_job)
+    return x_job

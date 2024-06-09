@@ -1,9 +1,8 @@
 from src._instrument.file import delete_dir
-from src._road.road import OwnerID, PersonID
+from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.filehub import FileHub
-from src.change.listen import listen_to_debtors_roll
 from src.econ.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -350,10 +349,3 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
                 credit_score=partytreasuryunit.credit_score,
                 voice_rank=partytreasuryunit.voice_rank,
             )
-
-
-def create_job_file_from_role_file(filehub: FileHub, person_id: PersonID):
-    x_role = filehub.get_role_agenda(person_id)
-    x_job = listen_to_debtors_roll(x_role, filehub)
-    filehub.save_job_agenda(x_job)
-    return x_job
