@@ -1,7 +1,6 @@
 from src._road.finance import default_planck_if_none
-from src._road.jaar_config import get_changes_folder
+from src._road.jaar_config import get_changes_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
-from src._road.worldnox import get_file_name
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.change.filehub import filehub_shop
@@ -194,8 +193,8 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     create_person_econunits(todd_filehub)
     luca_dallas_econ = get_econunit(luca_filehub, dallas_road)
     todd_dallas_econ = get_econunit(todd_filehub, dallas_road)
-    luca_file_name = get_file_name(luca_text)
-    todd_file_name = get_file_name(todd_text)
+    luca_file_name = get_json_filename(luca_text)
+    todd_file_name = get_json_filename(todd_text)
     luca_roles_dir = luca_dallas_econ.filehub.roles_dir()
     todd_roles_dir = todd_dallas_econ.filehub.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"

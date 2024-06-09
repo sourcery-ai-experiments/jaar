@@ -3,7 +3,7 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.change.filehub import filehub_shop
 from src.real.econ_creator import (
-    _get_econs_roads,
+    _get_econs_ideas,
     init_econunit,
     create_person_econunits,
     get_econunit,
@@ -185,7 +185,7 @@ def test_set_econunit_role_CorrectlySets_role(env_dir_setup_cleanup):
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     sue_filehub.save_duty_agenda(sue_duty_agenda)
     create_person_econunits(sue_filehub)
-    print(f"{_get_econs_roads(sue_filehub).keys()=}")
+    print(f"{_get_econs_ideas(sue_filehub).keys()=}")
     dallas_econ = get_econunit(sue_filehub, dallas_road)
     sue_file_name = sue_filehub.owner_file_name(sue_text)
     sue_role_file_path = f"{dallas_econ.filehub.roles_dir()}/{sue_file_name}"

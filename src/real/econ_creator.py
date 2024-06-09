@@ -1,6 +1,6 @@
 from src._instrument.python import get_empty_dict_if_none
 from src._road.road import RoadUnit
-from src.agenda.agenda import AgendaUnit
+from src.agenda.agenda import AgendaUnit, IdeaUnit
 from src.change.filehub import filehub_shop, FileHub
 from src.econ.econ import EconUnit, econunit_shop
 
@@ -13,7 +13,7 @@ class PersonCreateEconUnitsException(Exception):
     pass
 
 
-def _get_econs_roads(x_filehub: FileHub) -> dict[RoadUnit:EconUnit]:
+def _get_econs_ideas(x_filehub: FileHub) -> dict[RoadUnit:IdeaUnit]:
     x_duty_agenda = x_filehub.get_duty_agenda()
     x_duty_agenda.calc_agenda_metrics()
     if x_duty_agenda._econs_justified is False:
@@ -28,19 +28,12 @@ def _get_econs_roads(x_filehub: FileHub) -> dict[RoadUnit:EconUnit]:
 
 
 def init_econunit(x_filehub: FileHub, econ_road: RoadUnit) -> EconUnit:
-    x_filehub = filehub_shop(
-        reals_dir=x_filehub.reals_dir,
-        real_id=x_filehub.real_id,
-        person_id=x_filehub.person_id,
-        econ_road=econ_road,
-        road_delimiter=x_filehub.road_delimiter,
-        planck=x_filehub.planck,
-    )
+    x_filehub.econ_road = econ_road
     return econunit_shop(x_filehub, in_memory_treasury=False)
 
 
 def create_person_econunits(x_filehub: FileHub):
-    x_person_econs = _get_econs_roads(x_filehub)
+    x_person_econs = _get_econs_ideas(x_filehub)
     for econ_idea in x_person_econs.values():
         init_econunit(x_filehub, econ_idea.get_road())
 
@@ -55,7 +48,7 @@ def set_econunit_role(x_filehub: FileHub, econ_road: RoadUnit, role: AgendaUnit)
 
 
 def set_econunits_role(x_filehub: FileHub, role: AgendaUnit):
-    for x_econ_road in _get_econs_roads(x_filehub).keys():
+    for x_econ_road in _get_econs_ideas(x_filehub).keys():
         set_econunit_role(x_filehub, x_econ_road, role)
 
 

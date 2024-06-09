@@ -1,6 +1,6 @@
 # # command to for converting ui form to python file: pyuic5 ui\MainWindow.ui -o ui\MainWindow.py
 import contextlib
-from src._road.worldnox import get_file_name
+from src._road.jaar_config import get_json_filename
 from datetime import datetime, timedelta
 from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView
@@ -250,7 +250,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_file(self):
         if self.file_path is None:
-            self.file_path = f"{get_agenda_examples_dir()}/{get_file_name()}"
+            self.file_path = f"{get_agenda_examples_dir()}/{get_json_filename()}"
         self._commit_file_save()
 
     def _commit_file_save(self):
