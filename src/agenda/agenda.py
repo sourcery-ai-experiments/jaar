@@ -1,3 +1,12 @@
+from src._instrument.python import (
+    get_json_from_dict,
+    get_dict_from_json,
+    get_1_if_None,
+    get_0_if_None,
+    get_False_if_None,
+    get_empty_dict_if_none,
+)
+from src._road.finance import trim_planck_excess, default_planck_if_none
 from src._road.road import (
     get_parent_road,
     is_sub_road,
@@ -21,7 +30,6 @@ from src._road.road import (
     RealID,
     is_roadunit_convertible_to_path,
 )
-from src._road.finance import trim_planck_excess, default_planck_if_none
 from src.agenda.meld import (
     get_meld_weight,
     MeldStrategy,
@@ -58,23 +66,15 @@ from src.agenda.reason_idea import (
 )
 from src.agenda.reason_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
+from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
+from src.agenda.lemma import lemmas_shop, Lemmas
+from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
 from src.agenda.idea import (
     IdeaUnit,
     ideaunit_shop,
     ideaattrfilter_shop,
     IdeaAttrFilter,
     get_obj_from_idea_dict,
-)
-from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
-from src.agenda.lemma import lemmas_shop, Lemmas
-from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
-from src._instrument.python import (
-    get_json_from_dict,
-    get_dict_from_json,
-    get_1_if_None,
-    get_0_if_None,
-    get_False_if_None,
-    get_empty_dict_if_none,
 )
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass

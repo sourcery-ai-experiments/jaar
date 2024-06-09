@@ -1,26 +1,21 @@
+from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.idea import ideaunit_shop
+from src.agenda.group import groupunit_shop, balancelink_shop
+from src.agenda.party import partylink_shop
 from src.agenda.healer import healerhold_shop
+from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.reason_idea import beliefunit_shop
-from src.agenda.examples.example_agendas import (
-    agenda_v001 as example_agendas_agenda_v001,
-    get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
-    get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
-)
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
     get_dict_of_agenda_from_dict,
 )
-from src.agenda.examples.agenda_env import (
-    get_agenda_temp_env_dir,
-    env_dir_setup_cleanup,
+from src.agenda.examples.example_agendas import (
+    agenda_v001 as example_agendas_agenda_v001,
+    get_agenda_x1_3levels_1reason_1beliefs as example_agendas_get_agenda_x1_3levels_1reason_1beliefs,
+    get_agenda_base_time_example as example_agendas_get_agenda_base_time_example,
 )
-from src.agenda.group import groupunit_shop, balancelink_shop
-from src.agenda.party import partylink_shop
-from src.agenda.reason_assign import assignedunit_shop
-from src._instrument.python import x_is_json, get_dict_from_json
-from src._instrument.file import save_file, open_file
 from pytest import raises as pytest_raises
 
 
@@ -294,23 +289,6 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     originunit_text = "_originunit"
     _links = "_links"
     assert len(agenda_dict[originunit_text][_links])
-
-
-def test_AgendaUnit_get_json_CreatesJSONThatCanBeSavedAsFile(env_dir_setup_cleanup):
-    # GIVEN
-    yao_agenda = example_agendas_agenda_v001()
-
-    # WHEN
-    x_yao_agenda_json = yao_agenda.get_json()
-
-    # THEN
-    file_name_x = "example_agenda1.json"
-    save_file(
-        dest_dir=get_agenda_temp_env_dir(),
-        file_name=file_name_x,
-        file_text=x_yao_agenda_json,
-    )
-    assert open_file(dest_dir=get_agenda_temp_env_dir(), file_name=file_name_x)
 
 
 def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():

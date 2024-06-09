@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from src._road.road import (
     RoadUnit,
     rebuild_road,
@@ -9,6 +8,7 @@ from src._road.road import (
 )
 from src._instrument.python import get_empty_dict_if_none
 from copy import deepcopy as copy_deepcopy
+from dataclasses import dataclass
 
 
 class InvalidReasonException(Exception):

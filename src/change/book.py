@@ -1,7 +1,6 @@
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_json_from_dict,
-    get_dict_from_json,
     place_obj_in_dict,
     get_nested_value,
     get_all_nondictionary_objs,

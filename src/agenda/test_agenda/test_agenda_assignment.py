@@ -493,7 +493,7 @@ def test_AgendaUnit_get_assignment_getsCorrectIdeas_scenario1():
     assert assignment_x._idea_dict.get(unim_road) is None
 
 
-def test_AgendaUnit_get_assignment_CorrectlyCreatesAssignmentFile_v1():
+def test_AgendaUnit_get_assignment_CorrectlyCreatesAssignmentAgendaUnit_v1():
     # GIVEN
     amer_agenda = get_agenda_assignment_laundry_example1()
     real_id_text = "tiger"

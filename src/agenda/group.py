@@ -37,7 +37,7 @@ class GroupCore:
 class GroupUnit(GroupCore):
     _party_mirror: bool = None  # set by AgendaUnit.set_partyunit()
     _partys: dict[PartyID:PartyLink] = None  # set by AgendaUnit.set_partyunit()
-    _treasury_partylinks: RoadUnit = None  # calculated by EconUnit
+    _treasury_partylinks: RoadUnit = None  # calculated by MoneyUnit
     _road_delimiter: str = None  # calculated by AgendaUnit.set_groupunit
     # calculated by AgendaUnit.calc_agenda_metrics()
     _agenda_credit: float = None
