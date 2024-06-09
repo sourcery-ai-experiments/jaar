@@ -1,5 +1,4 @@
 from src._instrument.file import save_file
-from src._road.jaar_config import duty_str, work_str
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.change.filehub import (
     filehub_shop,
@@ -13,7 +12,6 @@ from src.change.examples.change_env import (
     get_change_temp_env_dir,
 )
 from pytest import raises as pytest_raises
-from os.path import exists as os_path_exists
 
 
 def test_filehub_shop_RaisesErrorWhen_nox_type_IsInvalid():

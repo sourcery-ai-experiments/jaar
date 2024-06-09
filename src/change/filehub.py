@@ -11,7 +11,6 @@ from src._road.jaar_config import (
     roles_str,
     jobs_str,
     get_rootpart_of_econ_dir,
-    treasury_str,
     treasury_file_name,
     get_changes_folder,
     get_test_real_id,
@@ -42,6 +41,7 @@ from src.change.atom import (
     get_from_json as agendaatom_get_from_json,
     modify_agenda_with_agendaatom,
 )
+from src.change.basis_agendas import get_default_work_agenda
 from src.change.change import ChangeUnit, changeunit_shop, create_changeunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -386,6 +386,12 @@ class FileHub:
         elif x_duty_file_exists and change_file_exists == False:
             self._create_initial_change_files_from_duty()
 
+    def append_changes_to_duty_file(self):
+        duty_agenda = self.get_duty_agenda()
+        duty_agenda = self._merge_any_changes(duty_agenda)
+        self.save_duty_agenda(duty_agenda)
+        return self.get_duty_agenda()
+
     def econ_dir(self) -> str:
         return get_econ_path(self, self.econ_road)
 
@@ -433,6 +439,10 @@ class FileHub:
                 f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
             )
         self.save_file_work(x_agenda.get_json(), True)
+
+    def initialize_work_file(self, duty: AgendaUnit):
+        if self.work_file_exists() == False:
+            self.save_work_agenda(get_default_work_agenda(duty))
 
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))

@@ -63,9 +63,7 @@ def test_FileHub_create_initial_change_files_from_default_CorrectlySavesChangeUn
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     init_change_file_name = sue_filehub.change_file_name(init_change_id())
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
     assert os_path_exists(init_change_file_path) == False
@@ -85,9 +83,7 @@ def test_FileHub_create_duty_from_changes_CreatesDutyFileFromChangeFiles(
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     init_change_file_name = sue_filehub.change_file_name(init_change_id())
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
     sue_filehub._create_initial_change_files_from_default()
@@ -109,9 +105,7 @@ def test_FileHub_create_initial_change_and_duty_files_CreatesChangeFilesAndDutyF
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     init_change_file_name = sue_filehub.change_file_name(init_change_id())
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_file_name}"
     assert os_path_exists(init_change_file_path) == False
@@ -133,9 +127,7 @@ def test_FileHub_create_initial_change_files_from_duty_SavesOnlyChangeFiles(
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     sue_duty_agenda = sue_filehub.default_duty_agenda()
     bob_text = "Bob"
     sue_duty_agenda.add_partyunit(bob_text)
@@ -158,9 +150,7 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesDutyFileAndChangeFil
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     assert sue_filehub.duty_file_exists() == False
     init_change_file_path = f"{sue_filehub.changes_dir()}/{init_change_id()}.json"
     delete_dir(sue_filehub.changes_dir())
@@ -183,9 +173,7 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesOnlyDutyFile(
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     sue_filehub.initialize_change_duty_files()
     assert sue_filehub.duty_file_exists()
     sue_filehub.delete_duty_file()
@@ -210,9 +198,7 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
-    sue_filehub = filehub_shop(
-        env_dir(), root_label(), sue_text, None, planck=seven_int
-    )
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text, planck=seven_int)
     sue_filehub.initialize_change_duty_files()
     sue_duty_agenda = sue_filehub.get_duty_agenda()
     bob_text = "Bob"
@@ -232,3 +218,29 @@ def test_FileHub_initialize_change_duty_files_CorrectlySavesOnlychangeFile(
     assert sue_duty_agenda._planck == seven_int
     assert sue_duty_agenda.party_exists(bob_text)
     assert os_path_exists(init_change_file_path)
+
+
+def test_FileHub_append_changes_to_duty_file_AddschangesToDutyFile(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    sue_text = "Sue"
+    sue_filehub = filehub_shop(env_dir(), root_label(), sue_text)
+    sue_filehub.initialize_change_duty_files()
+    sue_filehub.save_change_file(sue_2atomunits_changeunit())
+    duty_agenda = sue_filehub.get_duty_agenda()
+    print(f"{duty_agenda._real_id=}")
+    sports_text = "sports"
+    sports_road = duty_agenda.make_l1_road(sports_text)
+    knee_text = "knee"
+    knee_road = duty_agenda.make_road(sports_road, knee_text)
+    assert duty_agenda.idea_exists(sports_road) == False
+    assert duty_agenda.idea_exists(knee_road) == False
+
+    # WHEN
+    new_agenda = sue_filehub.append_changes_to_duty_file()
+
+    # THEN
+    assert new_agenda != duty_agenda
+    assert new_agenda.idea_exists(sports_road)
+    assert new_agenda.idea_exists(knee_road)

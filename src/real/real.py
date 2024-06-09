@@ -3,11 +3,11 @@ from src._road.jaar_config import get_changes_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
+from src.change.basis_agendas import get_default_work_agenda
 from src.change.filehub import filehub_shop, FileHub, pipeline_duty_work_text
 from src.change.listen import listen_to_speaker_intent, listen_to_debtors_roll
 from src.econ.econ import create_job_file_from_role_file
 from src.real.econ_creator import create_person_econunits, get_econunit
-from src.real.admin_work import initialize_work_file, get_default_work_agenda
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -114,7 +114,7 @@ class RealUnit:
     def init_person_econs(self, person_id: PersonID):
         x_filehub = self._get_filehub(person_id)
         x_filehub.initialize_change_duty_files()
-        initialize_work_file(x_filehub, self.get_person_duty_from_file(person_id))
+        x_filehub.initialize_work_file(self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         return self._get_filehub(person_id).get_duty_agenda()
