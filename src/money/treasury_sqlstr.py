@@ -1,4 +1,3 @@
-from src.agenda.agenda import AgendaUnit, PartyUnit
 from src._road.road import create_road_without_root_node, RoadUnit, PersonID, PartyID
 from src._instrument.sqlite import (
     sqlite_bool,
@@ -8,6 +7,7 @@ from src._instrument.sqlite import (
     get_row_count_sqlstr,
     get_single_result,
 )
+from src.agenda.agenda import AgendaUnit, PartyUnit
 from dataclasses import dataclass
 from sqlite3 import Connection
 

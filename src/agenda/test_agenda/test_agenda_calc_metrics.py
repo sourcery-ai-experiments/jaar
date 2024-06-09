@@ -1,7 +1,6 @@
 from datetime import datetime
 from src._road.road import RoadUnit
 from src.agenda.agenda import agendaunit_shop, get_from_json
-from src.agenda.examples.agenda_env import get_agenda_examples_dir
 from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
@@ -15,9 +14,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001 as example_agendas_agenda_v001,
     agenda_v001_with_large_intent as example_agendas_agenda_v001_with_large_intent,
     agenda_v002 as example_agendas_agenda_v002,
-    yr_elucidation,
 )
-from src._instrument.file import open_file
 
 
 def test_get_intent_dict_ReturnsCorrectObj():
@@ -378,9 +375,7 @@ def test_set_intent_task_as_complete_SetsAttrCorrectly_Division():
 
 def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     # GIVEN
-    file_dir = get_agenda_examples_dir()
-    file_name = "example_agenda1.json"
-    x_agenda_json = open_file(dest_dir=file_dir, file_name=file_name)
+    x_agenda_json = example_agendas_agenda_v001().get_json()
 
     # WHEN
     x_agenda = get_from_json(x_agenda_json=x_agenda_json)
