@@ -4,14 +4,14 @@ from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
     get_agenda_with_tuesday_cleaning_task,
 )
-from src.econ.econ import econunit_shop
-from src.econ.treasury_sqlstr import (
+from src.money.money import moneyunit_shop
+from src.money.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
     CalendarIntentUnit,
     CalendarReport,
 )
-from src.econ.examples.econ_env import (
+from src.money.examples.econ_env import (
     temp_real_id,
     temp_reals_dir,
     env_dir_setup_cleanup,
@@ -129,16 +129,16 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.task == x_task
 
 
-def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
+def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     real_id = temp_real_id()
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
     time_road = create_road(root_label(), "time")
     jaja_road = create_road(time_road, "jajatime")
@@ -177,34 +177,34 @@ def test_EconUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord
     # WHEN
     calendar_insert_sqlstr = get_calendar_table_insert_sqlstr(bob_calendarintentunit)
     print(f"{calendar_insert_sqlstr}")
-    econ_conn = x_econ.get_treasury_conn()
+    econ_conn = x_money.get_treasury_conn()
     econ_conn.execute(calendar_insert_sqlstr)
 
     # THEN
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 1
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 1
 
     # WHEN
     calendar_delete_sqlstr = get_calendar_table_delete_sqlstr(bob_text)
     print(f"{calendar_delete_sqlstr}")
-    econ_conn = x_econ.get_treasury_conn()
+    econ_conn = x_money.get_treasury_conn()
     econ_conn.execute(calendar_delete_sqlstr)
 
     # THEN
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
 
-def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
+def test_MoneyUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
     # GIVEN
     # A agenda that has 1 intent item
     real_id = temp_real_id()
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
 
     amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
 
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
     bob_text = "Bob"
@@ -213,21 +213,21 @@ def test_EconUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistErr
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        x_econ.insert_intent_into_treasury(amos_agenda, x_calendarreport)
+        x_money.insert_intent_into_treasury(amos_agenda, x_calendarreport)
     assert (
         str(excinfo.value)
         == f"Intent base cannot be '{bad_road}' because it does not exist in agenda '{amos_agenda._owner_id}'."
     )
 
 
-def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
+def test_MoneyUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A agenda that has 1 intent item
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 0
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
     bob_agenda = get_agenda_with_tuesday_cleaning_task()
@@ -248,10 +248,10 @@ def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasur
         intent_max_count_task=x_intent_max_count_task,
         intent_max_count_state=x_intent_max_count_state,
     )
-    x_econ.insert_intent_into_treasury(bob_agenda, x_calendarreport)
+    x_money.insert_intent_into_treasury(bob_agenda, x_calendarreport)
 
     # THEN
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 6
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 6
 
     # GIVEN
     new_interval_count = 3
@@ -265,6 +265,6 @@ def test_EconUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasur
         intent_max_count_task=x_intent_max_count_task,
         intent_max_count_state=x_intent_max_count_state,
     )
-    x_econ.insert_intent_into_treasury(bob_agenda, x_calendarreport)
+    x_money.insert_intent_into_treasury(bob_agenda, x_calendarreport)
     # THEN
-    assert get_single_result(x_econ.get_treasury_conn(), calendar_count_sqlstr) == 4
+    assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 4

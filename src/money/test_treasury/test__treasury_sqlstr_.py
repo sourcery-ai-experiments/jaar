@@ -1,5 +1,5 @@
 from src.agenda.agenda import agendaunit_shop
-from src.econ.treasury_sqlstr import (
+from src.money.treasury_sqlstr import (
     get_agendaunit_table_create_sqlstr,
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,

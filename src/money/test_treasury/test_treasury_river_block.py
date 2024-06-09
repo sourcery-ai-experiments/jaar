@@ -1,10 +1,10 @@
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.econ.econ import (
-    econunit_shop,
+from src.money.money import (
+    moneyunit_shop,
     set_treasury_partytreasuryunits_to_agenda_partyunits,
 )
-from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
-from src.econ.treasury_sqlstr import (
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
     get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
@@ -19,12 +19,12 @@ from src.econ.treasury_sqlstr import (
 )
 
 
-def test_EconUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     tim_text = "Tim"
@@ -55,11 +55,11 @@ def test_EconUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTab
     print(insert_sqlstr)
 
     # WHEN
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr)
 
     ledger_dict = get_partyview_dict(
-        db_conn=x_econ.get_treasury_conn(), payer_owner_id=bob_text
+        db_conn=x_money.get_treasury_conn(), payer_owner_id=bob_text
     )
     # tim_ledger = None
     # for key, value in ledger_dict.items():
@@ -150,10 +150,10 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
     assert river_block_x.block_returned()
 
 
-def test_EconUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
+def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     sal_text = "Sal"
@@ -187,7 +187,7 @@ def test_EconUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cle
         bob_agenda, tim_partyunit
     )
 
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr_sal)
         treasury_conn.execute(insert_sqlstr_tim)
         partyview_dict_x = get_partyview_dict(
@@ -205,7 +205,7 @@ def test_EconUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cle
         parent_block_num=6,
         river_tree_level=4,
     )
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
 
     # THEN
@@ -221,7 +221,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_filehub())
 
     bob_text = "Bob"
     tim_text = "Tim"
@@ -241,7 +241,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     print(insert_sqlstr)
 
     # WHEN
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr)
         river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=bob_text)
         print(f"{river_blocks=}")
@@ -398,11 +398,11 @@ def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryin
     assert x_agenda._partys.get(elu_text)._treasury_due_diff is None
 
 
-def test_EconUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_filehub())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -445,7 +445,7 @@ def test_EconUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Cor
     st0 = river_block_insert(river_block_3)
     ss0 = river_block_insert(river_block_4)
 
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr_tom)
         treasury_conn.execute(insert_sqlstr_sal)
         treasury_conn.execute(sb0)
@@ -457,12 +457,12 @@ def test_EconUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Cor
     mstr_sqlstr = get_agenda_partyunit_table_update_treasury_due_paid_sqlstr(
         cash_owner_id=bob_text
     )
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         print(mstr_sqlstr)
         treasury_conn.execute(mstr_sqlstr)
 
     # THEN
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         partytreasuryunits = get_partytreasuryunit_dict(
             treasury_conn, cash_owner_id=bob_text
         )

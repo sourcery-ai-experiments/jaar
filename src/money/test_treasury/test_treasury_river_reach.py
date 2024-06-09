@@ -1,6 +1,6 @@
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.agenda.agenda import agendaunit_shop, partyunit_shop
-from src.econ.treasury_sqlstr import (
+from src.money.treasury_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
     get_river_block_table_create_sqlstr,
@@ -246,16 +246,16 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     x_econ = _delete_and_set_ex6(x_real_id=ex7_text)
     #     sal_text = "Sal"
     #     # x_econ = _delete_and_set_ex6()
-    #     # # x_econ.set_road_nodes(sal_text)
+    #     # # x_money.set_road_nodes(sal_text)
     #     # ex6_text = "ex6"
-    #     # x_econ = econunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
-    #     # x_econ.set_road_nodes(sal_text)
-    #     # x_econ.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
+    #     # x_money = moneyunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
+    #     # x_money.set_road_nodes(sal_text)
+    #     # x_money.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
 
     #     # WHEN
     #     reach_sqlstr = get_river_reach_table_touch_select_sqlstr(sal_text)
     #     reach_count_sqlstr = f"""SELECT COUNT(*) FROM ({reach_sqlstr}) x;"""
-    #     reach_rows_num = get_single_result(x_econ.get_x_conn(), reach_count_sqlstr)
+    #     reach_rows_num = get_single_result(x_money.get_x_conn(), reach_count_sqlstr)
 
     #     # THEN
     #     assert reach_rows_num == 94

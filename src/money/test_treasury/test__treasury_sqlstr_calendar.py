@@ -1,5 +1,5 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src.econ.treasury_sqlstr import (
+from src.money.treasury_sqlstr import (
     get_calendar_table_create_sqlstr,
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,

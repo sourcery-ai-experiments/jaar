@@ -4,7 +4,7 @@ from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.change.filehub import filehub_shop
-from src.real.econ_creator import create_person_econunits, get_econunit
+from src.real.econ_creator import create_person_moneyunits, get_moneyunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -150,7 +150,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_clea
     assert gen_luca_duty.party_exists(bob_text)
 
 
-def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
+def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -189,14 +189,14 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     luca_filehub.save_duty_agenda(luca_duty_agenda)
     todd_filehub.save_duty_agenda(todd_duty_agenda)
-    create_person_econunits(luca_filehub)
-    create_person_econunits(todd_filehub)
-    luca_dallas_econ = get_econunit(luca_filehub, dallas_road)
-    todd_dallas_econ = get_econunit(todd_filehub, dallas_road)
+    create_person_moneyunits(luca_filehub)
+    create_person_moneyunits(todd_filehub)
+    luca_dallas_money = get_moneyunit(luca_filehub, dallas_road)
+    todd_dallas_money = get_moneyunit(todd_filehub, dallas_road)
     luca_file_name = get_json_filename(luca_text)
     todd_file_name = get_json_filename(todd_text)
-    luca_roles_dir = luca_dallas_econ.filehub.roles_dir()
-    todd_roles_dir = todd_dallas_econ.filehub.roles_dir()
+    luca_roles_dir = luca_dallas_money.filehub.roles_dir()
+    todd_roles_dir = todd_dallas_money.filehub.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
@@ -207,7 +207,7 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
-    music_real.set_person_econunits_dirs(luca_text)
+    music_real.set_person_moneyunits_dirs(luca_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)
@@ -216,7 +216,7 @@ def test_RealUnit_set_person_econunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
-    music_real.set_person_econunits_dirs(todd_text)
+    music_real.set_person_moneyunits_dirs(todd_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)

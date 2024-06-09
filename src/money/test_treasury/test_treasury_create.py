@@ -1,12 +1,12 @@
-from src.econ.econ import econunit_shop, EconUnit
-from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.money import moneyunit_shop, MoneyUnit
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 from src._instrument.sqlite import get_db_tables, get_db_columns
 from src._instrument.file import open_file
 from src._instrument.python import get_nested_value, get_dict_from_json
 
 
-def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
-    with x_econ.get_treasury_conn() as treasury_conn:
+def check_table_column_existence(tables_dict: dict, x_money: MoneyUnit) -> bool:
+    with x_money.get_treasury_conn() as treasury_conn:
         db_tables = get_db_tables(treasury_conn)
         db_tables_columns = get_db_columns(treasury_conn)
 
@@ -26,17 +26,17 @@ def check_table_column_existence(tables_dict: dict, x_econ: EconUnit) -> bool:
     return True
 
 
-def test_EconUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
+def test_MoneyUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create econ
-    x_econ = econunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_filehub())
 
     # WHEN
-    x_econ.create_treasury_db(in_memory=True)
+    x_money.create_treasury_db(in_memory=True)
 
     # THEN
     # grab config.json
-    config_text = open_file(dest_dir="src/econ", file_name="treasury_db_config.json")
+    config_text = open_file(dest_dir="src/money", file_name="treasury_db_config.json")
     config_dict = get_dict_from_json(config_text)
     tables_dict = get_nested_value(config_dict, ["tables"])
 
-    assert check_table_column_existence(tables_dict, x_econ)
+    assert check_table_column_existence(tables_dict, x_money)

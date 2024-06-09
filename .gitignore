@@ -135,11 +135,11 @@ dmypy.json
 cython_debug/
 
 # automatica_lly generated testing environments on each run
-src/econ/examples/econs/ex3/
-src/econ/examples/econs/ex4/
-src/econ/examples/econs/ex5/
-src/econ/examples/econs/ex6/
-src/econ/examples/econs/ex7
-src/econ/examples/econs/river_env/
+src/money/examples/econs/ex3/
+src/money/examples/econs/ex4/
+src/money/examples/econs/ex5/
+src/money/examples/econs/ex6/
+src/money/examples/econs/ex7
+src/money/examples/econs/river_env/
 main_cli_app.py
 main_cli_app2.py

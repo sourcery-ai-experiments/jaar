@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
-from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
-from src.econ.treasury_sqlstr import (
+from src.money.money import moneyunit_shop
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
     get_river_circle_table_delete_sqlstr,
@@ -12,7 +12,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_filehub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -24,26 +24,26 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.filehub.save_job_agenda(sal_agenda)
+    x_money.filehub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.filehub.save_job_agenda(bob_agenda)
+    x_money.filehub.save_job_agenda(bob_agenda)
 
-    x_econ.refresh_treasury_job_agendas_data()
-    x_econ.set_credit_flow_for_agenda(owner_id=sal_text)
+    x_money.refresh_treasury_job_agendas_data()
+    x_money.set_credit_flow_for_agenda(owner_id=sal_text)
 
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         assert len(get_river_circle_dict(treasury_conn, sal_text)) > 0
 
     # WHEN
     sqlstr = get_river_circle_table_delete_sqlstr(sal_text)
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(sqlstr)
 
     # THEN
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         assert len(get_river_circle_dict(treasury_conn, sal_text)) == 0
 
 
@@ -51,7 +51,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_econ = econunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_filehub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -63,35 +63,35 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.filehub.save_job_agenda(sal_agenda)
+    x_money.filehub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_econ.filehub.save_job_agenda(bob_agenda)
+    x_money.filehub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_econ.filehub.save_job_agenda(tom_agenda)
+    x_money.filehub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_econ.filehub.save_job_agenda(ava_agenda)
+    x_money.filehub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_econ.filehub.save_job_agenda(elu_agenda)
+    x_money.filehub.save_job_agenda(elu_agenda)
 
-    x_econ.refresh_treasury_job_agendas_data()
-    x_econ.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
-    with x_econ.get_treasury_conn() as treasury_conn:
+    x_money.refresh_treasury_job_agendas_data()
+    x_money.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
+    with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert len(get_river_circle_dict(treasury_conn, cash_owner_id=sal_text)) == 0
 
     # WHEN / THEN
     mstr_sqlstr = get_river_circle_table_insert_sqlstr(cash_owner_id=sal_text)
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         print(mstr_sqlstr)
         treasury_conn.execute(mstr_sqlstr)
         # river_blocks = get_river_block_dict(treasury_conn, cash_owner_id=sal_text)
@@ -99,7 +99,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
         #     print(f"{river_block=}")
 
     # THEN
-    with x_econ.get_treasury_conn() as treasury_conn:
+    with x_money.get_treasury_conn() as treasury_conn:
         river_circles = get_river_circle_dict(treasury_conn, cash_owner_id=sal_text)
         # for river_circle in river_circles.values():
         #     print(f"huh {river_circle=}")

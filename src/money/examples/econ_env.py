@@ -14,7 +14,7 @@ def temp_real_dir():
 
 
 def temp_reals_dir():
-    return "src/econ/examples/reals"
+    return "src/money/examples/reals"
 
 
 def temp_person_id():
@@ -43,7 +43,7 @@ def get_texas_filehub() -> FileHub:
 
 
 # def modify_real_id_example_econ(
-#     econ_obj: EconUnit, src_filehub: FileHub, dst_filehub: FileHub, new_real_id
+#     econ_obj: MoneyUnit, src_filehub: FileHub, dst_filehub: FileHub, new_real_id
 # ):
 #     src_dir = src_filehub.econ_dir()
 #     dst_dir = dst_filehub.econ_dir()
@@ -57,7 +57,7 @@ class InvalideconCopyException(Exception):
 
 
 def copy_evaluation_econ(src_real_id: str, dest_real_id: str):
-    base_dir = "src/econ/examples/econs"
+    base_dir = "src/money/examples/econs"
     new_dir = f"{base_dir}/{dest_real_id}"
     if os_path_exists(new_dir):
         raise InvalideconCopyException(

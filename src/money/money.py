@@ -3,7 +3,7 @@ from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
 from src.change.filehub import FileHub
-from src.econ.treasury_sqlstr import (
+from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
     get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
@@ -44,7 +44,7 @@ class IntentBaseDoesNotExistException(Exception):
 
 
 @dataclass
-class EconUnit:
+class MoneyUnit:
     filehub: FileHub
     _treasury_db = None
 
@@ -327,13 +327,13 @@ class EconUnit:
                     cur.execute(sqlstr)
 
 
-def econunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> EconUnit:
+def moneyunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> MoneyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
 
-    econ_x = EconUnit(x_filehub)
-    econ_x.create_treasury_db(in_memory=in_memory_treasury)
-    return econ_x
+    x_moneyunit = MoneyUnit(x_filehub)
+    x_moneyunit.create_treasury_db(in_memory=in_memory_treasury)
+    return x_moneyunit
 
 
 def set_treasury_partytreasuryunits_to_agenda_partyunits(

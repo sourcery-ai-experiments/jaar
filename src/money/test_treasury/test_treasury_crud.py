@@ -1,31 +1,33 @@
 from src.change.filehub import filehub_shop
 from src.agenda.agenda import agendaunit_shop
-from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env import get_texas_filehub, env_dir_setup_cleanup
-from src.econ.treasury_sqlstr import get_agendatreasuryunits_dict
+from src.money.money import moneyunit_shop
+from src.money.examples.econ_env import get_texas_filehub, env_dir_setup_cleanup
+from src.money.treasury_sqlstr import get_agendatreasuryunits_dict
 
 
-def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
+def test_MoneyUnit_treasury_get_agendaunits_ReturnsCorrectEmptyObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
 
     # WHEN
-    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
+    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_money.get_treasury_conn())
 
     # THEN
     assert len(x_agendatreasuryunits) == 0
 
 
-def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_cleanup):
+def test_MoneyUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(
+    env_dir_setup_cleanup,
+):
     # GIVEN
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
-    assert len(get_agendatreasuryunits_dict(x_econ.get_treasury_conn())) == 0
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
+    assert len(get_agendatreasuryunits_dict(x_money.get_treasury_conn())) == 0
 
     # WHEN
     sal_text = "Sal"
@@ -33,13 +35,13 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_c
     tom_text = "Tom"
     ava_text = "Ava"
     elu_text = "Elu"
-    x_econ.filehub.save_job_agenda(agendaunit_shop(_owner_id=sal_text))
-    x_econ.filehub.save_job_agenda(agendaunit_shop(_owner_id=bob_text))
-    x_econ.filehub.save_job_agenda(agendaunit_shop(_owner_id=tom_text))
-    x_econ.filehub.save_job_agenda(agendaunit_shop(_owner_id=ava_text))
-    x_econ.filehub.save_job_agenda(agendaunit_shop(_owner_id=elu_text))
-    x_econ.refresh_treasury_job_agendas_data()
-    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
+    x_money.filehub.save_job_agenda(agendaunit_shop(_owner_id=sal_text))
+    x_money.filehub.save_job_agenda(agendaunit_shop(_owner_id=bob_text))
+    x_money.filehub.save_job_agenda(agendaunit_shop(_owner_id=tom_text))
+    x_money.filehub.save_job_agenda(agendaunit_shop(_owner_id=ava_text))
+    x_money.filehub.save_job_agenda(agendaunit_shop(_owner_id=elu_text))
+    x_money.refresh_treasury_job_agendas_data()
+    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_money.get_treasury_conn())
 
     # THEN
     assert len(x_agendatreasuryunits) == 5
@@ -65,13 +67,13 @@ def test_EconUnit_treasury_get_agendaunits_ReturnsCorrectNoneObj(env_dir_setup_c
     assert x_agendatreasuryunits.get(elu_text).rational is None
 
 
-def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
+def test_MoneyUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_econ = econunit_shop(get_texas_filehub())
-    x_econ.create_treasury_db(in_memory=True)
-    x_econ.refresh_treasury_job_agendas_data()
+    x_money = moneyunit_shop(get_texas_filehub())
+    x_money.create_treasury_db(in_memory=True)
+    x_money.refresh_treasury_job_agendas_data()
     sal_text = "Sal"
     bob_text = "Bob"
     tom_text = "Tom"
@@ -82,13 +84,13 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
-    x_econ.filehub.save_job_agenda(sal_agenda)
-    x_econ.filehub.save_job_agenda(bob_agenda)
-    x_econ.filehub.save_job_agenda(tom_agenda)
-    x_econ.filehub.save_job_agenda(ava_agenda)
-    x_econ.filehub.save_job_agenda(elu_agenda)
-    x_econ.refresh_treasury_job_agendas_data()
-    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
+    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.refresh_treasury_job_agendas_data()
+    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_money.get_treasury_conn())
     assert x_agendatreasuryunits.get(sal_text).rational is None
     assert x_agendatreasuryunits.get(bob_text).rational is None
 
@@ -96,11 +98,11 @@ def test_EconUnit_treasury_treasury_set_agendaunit_attrs_CorrectlyUpdatesRecord(
     sal_agenda.calc_agenda_metrics()
     bob_rational = False
     bob_agenda._rational = bob_rational
-    x_econ._treasury_set_agendaunit_attrs(sal_agenda)
-    x_econ._treasury_set_agendaunit_attrs(bob_agenda)
+    x_money._treasury_set_agendaunit_attrs(sal_agenda)
+    x_money._treasury_set_agendaunit_attrs(bob_agenda)
 
     # THEN
-    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_econ.get_treasury_conn())
+    x_agendatreasuryunits = get_agendatreasuryunits_dict(x_money.get_treasury_conn())
     print(f"{x_agendatreasuryunits.get(sal_text)=}")
     print(f"{x_agendatreasuryunits.get(bob_text)=}")
     print(f"{x_agendatreasuryunits.get(tom_text)=}")

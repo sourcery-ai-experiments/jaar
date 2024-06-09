@@ -10,7 +10,7 @@ from src.change.listen import (
     listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
-from src.real.econ_creator import create_person_econunits, get_econunit
+from src.real.econ_creator import create_person_moneyunits, get_moneyunit
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -122,7 +122,7 @@ class RealUnit:
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         return self._get_filehub(person_id).get_duty_agenda()
 
-    def set_person_econunits_dirs(self, person_id: PersonID):
+    def set_person_moneyunits_dirs(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
@@ -136,20 +136,20 @@ class RealUnit:
                 planck=self._planck,
             )
             for econ_idea in healer_dict.values():
-                self._set_person_econunits_agent_contract(
+                self._set_person_moneyunits_agent_contract(
                     healer_filehub=healer_filehub,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
-    def _set_person_econunits_agent_contract(
+    def _set_person_moneyunits_agent_contract(
         self,
         healer_filehub: FileHub,
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_econ = get_econunit(healer_filehub, econ_road)
-        x_econ.filehub.save_role_agenda(duty_agenda)
+        x_money = get_moneyunit(healer_filehub, econ_road)
+        x_money.filehub.save_role_agenda(duty_agenda)
 
     # work agenda management
     def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
@@ -167,7 +167,7 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            create_person_econunits(healer_filehub)
+            create_person_moneyunits(healer_filehub)
             for econ_road in healer_dict.keys():
                 econ_filehub = filehub_shop(
                     reals_dir=self.reals_dir,
@@ -202,7 +202,7 @@ class RealUnit:
         return self._get_filehub(person_id).get_work_agenda()
 
     # def _set_partyunit(
-    #     self, x_econunit: EconUnit, person_id: PersonID, party_id: PersonID
+    #     self, x_moneyunit: MoneyUnit, person_id: PersonID, party_id: PersonID
     # ):
     #     person_role.add_partyunit(party_id)
     #     .save_refreshed_job_to_jobs()

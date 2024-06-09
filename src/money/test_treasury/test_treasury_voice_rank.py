@@ -3,8 +3,8 @@ from src.agenda.party import partyunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.meld_files import get_file_names_in_voice_rank_order
 from src.change.listen import create_job_file_from_role_file
-from src.econ.econ import econunit_shop
-from src.econ.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.money import moneyunit_shop
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
@@ -75,12 +75,12 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     delete_dir(temp_dir)
 
 
-def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
+def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_1234(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     texas_filehub = get_texas_filehub()
-    x_econ = econunit_shop(texas_filehub)
+    x_money = moneyunit_shop(texas_filehub)
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"
@@ -105,7 +105,7 @@ def test_EconUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type_
 
     # WHEN
     descending_text = "descending"
-    x_econ.set_role_voice_ranks(yao_text, sort_order=descending_text)
+    x_money.set_role_voice_ranks(yao_text, sort_order=descending_text)
 
     # THEN
     yao_role2_agenda = texas_filehub.get_role_agenda(yao_text)
