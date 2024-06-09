@@ -1,5 +1,5 @@
 from src._instrument.file import set_dir, delete_dir, dir_files
-from src._road.jaar_config import get_changes_folder
+from src._road.jaar_config import get_atoms_folder
 from src._road.finance import default_planck_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
@@ -19,13 +19,13 @@ from sqlite3 import connect as sqlite3_connect, Connection
 @dataclass
 class RealUnit:
     """Data pipelines:
-    pipeline1: changes->duty
+    pipeline1: atoms->duty
     pipeline2: duty->roles
     pipeline3: role->job
     pipeline4: job->work
     pipeline5: duty->work (direct)
     pipeline6: duty->job->work (through jobs)
-    pipeline7: changes->work (could be 5 of 6)
+    pipeline7: atoms->work (could be 5 of 6)
     """
 
     real_id: RealID
@@ -33,7 +33,7 @@ class RealUnit:
     _real_dir: str = None
     _persons_dir: str = None
     _journal_db: str = None
-    _changes_dir: str = None
+    _atoms_dir: str = None
     _road_delimiter: str = None
     _planck: float = None
 
@@ -41,10 +41,10 @@ class RealUnit:
     def _set_real_dirs(self, in_memory_journal: bool = None):
         self._real_dir = f"{self.reals_dir}/{self.real_id}"
         self._persons_dir = f"{self._real_dir}/persons"
-        self._changes_dir = f"{self._real_dir}/{get_changes_folder()}"
+        self._atoms_dir = f"{self._real_dir}/{get_atoms_folder()}"
         set_dir(x_path=self._real_dir)
         set_dir(x_path=self._persons_dir)
-        set_dir(x_path=self._changes_dir)
+        set_dir(x_path=self._atoms_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
     def _get_person_dir(self, person_id):
@@ -116,7 +116,7 @@ class RealUnit:
 
     def init_person_econs(self, person_id: PersonID):
         x_filehub = self._get_filehub(person_id)
-        x_filehub.initialize_change_duty_files()
+        x_filehub.initialize_atom_duty_files()
         x_filehub.initialize_work_file(self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:

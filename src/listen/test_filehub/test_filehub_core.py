@@ -1,7 +1,7 @@
 from src._road.road import default_road_delimiter_if_none
 from src._road.finance import default_planck_if_none
 from src._road.jaar_config import (
-    get_changes_folder,
+    get_atoms_folder,
     get_test_reals_dir,
     get_test_real_id,
 )
@@ -47,10 +47,10 @@ def test_filehub_shop_ReturnsCorrectObj():
     assert x_filehub.persons_dir() == f"{x_filehub.real_dir()}/persons"
     assert x_filehub.person_dir() == f"{x_filehub.persons_dir()}/{sue_text}"
     assert x_filehub.econs_dir() == f"{x_filehub.person_dir()}/econs"
-    assert x_filehub.atoms_dir() == f"{x_filehub.person_dir()}/atoms"
+    assert x_filehub.quarks_dir() == f"{x_filehub.person_dir()}/quarks"
     assert x_filehub.duty_dir() == f"{x_filehub.person_dir()}/duty"
     assert x_filehub.work_dir() == f"{x_filehub.person_dir()}/work"
-    assert x_filehub.changes_dir() == f"{x_filehub.person_dir()}/{get_changes_folder()}"
+    assert x_filehub.atoms_dir() == f"{x_filehub.person_dir()}/{get_atoms_folder()}"
     assert x_filehub.duty_file_name() == f"{sue_text}.json"
     x_duty_file_path = f"{x_filehub.duty_dir()}/{x_filehub.duty_file_name()}"
     assert x_filehub.duty_file_path() == x_duty_file_path
@@ -76,9 +76,9 @@ def test_filehub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_filehub.persons_dir() == f"{sue_filehub.real_dir()}/persons"
     assert sue_filehub.person_dir() == f"{sue_filehub.persons_dir()}/{sue_text}"
     assert sue_filehub.econs_dir() == f"{sue_filehub.person_dir()}/econs"
-    assert sue_filehub.atoms_dir() == f"{sue_filehub.person_dir()}/atoms"
-    x_changes_dir = f"{sue_filehub.person_dir()}/{get_changes_folder()}"
-    assert sue_filehub.changes_dir() == x_changes_dir
+    assert sue_filehub.quarks_dir() == f"{sue_filehub.person_dir()}/quarks"
+    x_atoms_dir = f"{sue_filehub.person_dir()}/{get_atoms_folder()}"
+    assert sue_filehub.atoms_dir() == x_atoms_dir
     assert sue_filehub.duty_file_name() == f"{sue_text}.json"
     x_duty_file_path = f"{sue_filehub.duty_dir()}/{sue_filehub.duty_file_name()}"
     assert sue_filehub.duty_file_path() == x_duty_file_path

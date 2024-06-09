@@ -7,6 +7,7 @@ from src._instrument.python import (
     get_empty_dict_if_none,
 )
 from src._road.finance import trim_planck_excess, default_planck_if_none
+from src._road.jaar_config import max_tree_traverse_default
 from src._road.road import (
     get_parent_road,
     is_sub_road,
@@ -109,7 +110,7 @@ class _planck_RatioException(Exception):
     pass
 
 
-class _last_change_idException(Exception):
+class _last_atom_idException(Exception):
     pass
 
 
@@ -121,7 +122,7 @@ class healerhold_group_id_Exception(Exception):
 class AgendaUnit:
     _real_id: RealID = None
     _owner_id: OwnerID = None
-    _last_change_id: int = None
+    _last_atom_id: int = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
     _groups: dict[GroupID:GroupUnit] = None
@@ -145,15 +146,15 @@ class AgendaUnit:
     _sum_healerhold_importance: bool = None
     # calc_agenda_metrics Calculated field end
 
-    def del_last_change_id(self):
-        self._last_change_id = None
+    def del_last_atom_id(self):
+        self._last_atom_id = None
 
-    def set_last_change_id(self, x_last_change_id: int):
-        if self._last_change_id != None and x_last_change_id < self._last_change_id:
-            raise _last_change_idException(
-                f"Cannot set _last_change_id to {x_last_change_id} because it is less than {self._last_change_id}."
+    def set_last_atom_id(self, x_last_atom_id: int):
+        if self._last_atom_id != None and x_last_atom_id < self._last_atom_id:
+            raise _last_atom_idException(
+                f"Cannot set _last_atom_id to {x_last_atom_id} because it is less than {self._last_atom_id}."
             )
-        self._last_change_id = x_last_change_id
+        self._last_atom_id = x_last_atom_id
 
     def set_monetary_desc(self, x_monetary_desc: str):
         self._monetary_desc = x_monetary_desc
@@ -2050,8 +2051,8 @@ class AgendaUnit:
             x_dict["_party_debtor_pool"] = self._party_debtor_pool
         if self._meld_strategy != get_meld_default():
             x_dict["_meld_strategy"] = self._meld_strategy
-        if self._last_change_id != None:
-            x_dict["_last_change_id"] = self._last_change_id
+        if self._last_atom_id != None:
+            x_dict["_last_atom_id"] = self._last_atom_id
 
         return x_dict
 
@@ -2366,7 +2367,7 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         x_agenda._meld_strategy = get_obj_from_agenda_dict(
             agenda_dict, "_meld_strategy"
         )
-    x_agenda._last_change_id = get_obj_from_agenda_dict(agenda_dict, "_last_change_id")
+    x_agenda._last_atom_id = get_obj_from_agenda_dict(agenda_dict, "_last_atom_id")
     for x_partyunit in get_obj_from_agenda_dict(
         agenda_dict, dict_key="_partys", _road_delimiter=x_agenda._road_delimiter
     ).values():
@@ -2473,7 +2474,11 @@ def get_obj_from_agenda_dict(
             else get_groupunits_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_max_tree_traverse":
-        return x_dict[dict_key] if x_dict.get(dict_key) != None else 20
+        return (
+            x_dict[dict_key]
+            if x_dict.get(dict_key) != None
+            else max_tree_traverse_default()
+        )
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None
 

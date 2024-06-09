@@ -1,15 +1,15 @@
 from src._road.road import create_road
-from src.change.atom import agendaatom_shop, atom_insert, atom_hx_table_name
+from src.atom.quark import quarkunit_shop, quark_insert, quark_hx_table_name
 from src.real.journal_sqlstr import (
-    get_atom_book_link_table_create_sqlstr,
-    get_atom_hx_table_create_sqlstr,
-    get_atom_hx_table_insert_sqlstr,
-    get_atom_mstr_table_create_sqlstr,
+    get_quark_nuc_link_table_create_sqlstr,
+    get_quark_hx_table_create_sqlstr,
+    get_quark_hx_table_insert_sqlstr,
+    get_quark_mstr_table_create_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_book_change_link_table_create_sqlstr,
-    get_book_table_create_sqlstr,
-    get_change_table_create_sqlstr,
-    get_change_person_link_table_create_sqlstr,
+    get_nuc_atom_link_table_create_sqlstr,
+    get_nuc_table_create_sqlstr,
+    get_atom_table_create_sqlstr,
+    get_atom_person_link_table_create_sqlstr,
     get_person_mstr_table_create_sqlstr,
     get_road_ref_table_create_sqlstr,
     get_road_ref_table_single_insert_sqlstr,
@@ -17,73 +17,73 @@ from src.real.journal_sqlstr import (
 )
 
 
-def test_get_book_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_nuc_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS book_mstr (
+CREATE TABLE IF NOT EXISTS nuc_mstr (
   author_person_id VARCHAR(255) NOT NULL
-, author_book_number INT NOT NULL
-, UNIQUE(author_person_id, author_book_number)
+, author_nuc_number INT NOT NULL
+, UNIQUE(author_person_id, author_nuc_number)
 )
 ;"""
-    assert example_sqlstr == get_book_table_create_sqlstr()
+    assert example_sqlstr == get_nuc_table_create_sqlstr()
 
 
-def test_get_atom_book_link_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_quark_nuc_link_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE atom_book_link
+CREATE TABLE quark_nuc_link
+(
+  quark_rowid INT NOT NULL
+, nuc_rowid INT NOT NULL
+, UNIQUE(quark_rowid, nuc_rowid)
+, CONSTRAINT quark_fk FOREIGN KEY (quark_rowid) REFERENCES quark_mstr (rowid)
+, CONSTRAINT nuc_fk FOREIGN KEY (nuc_rowid) REFERENCES nuc_mstr (rowid)
+)
+;"""
+    assert example_sqlstr == get_quark_nuc_link_table_create_sqlstr()
+
+
+def test_get_atom_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN / THEN
+    example_sqlstr = """
+CREATE TABLE IF NOT EXISTS atom_mstr (
+  author_person_id VARCHAR(255) NOT NULL
+, author_atom_number INT NOT NULL
+, UNIQUE(author_person_id, author_atom_number)
+)
+;"""
+    assert example_sqlstr == get_atom_table_create_sqlstr()
+
+
+def test_get_nuc_atom_link_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN / THEN
+    example_sqlstr = """
+CREATE TABLE nuc_atom_link
+(
+  nuc_rowid INT NOT NULL
+, atom_rowid INT NOT NULL
+, UNIQUE(nuc_rowid, atom_rowid)
+, CONSTRAINT quark_fk FOREIGN KEY (nuc_rowid) REFERENCES nuc_mstr (rowid)
+, CONSTRAINT nuc_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
+)
+;"""
+    assert example_sqlstr == get_nuc_atom_link_table_create_sqlstr()
+
+
+def test_get_atom_person_link_table_create_sqlstr_ReturnsCorrectStr():
+    # GIVEN / WHEN / THEN
+    example_sqlstr = """
+CREATE TABLE atom_person_link
 (
   atom_rowid INT NOT NULL
-, book_rowid INT NOT NULL
-, UNIQUE(atom_rowid, book_rowid)
-, CONSTRAINT atom_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
-, CONSTRAINT book_fk FOREIGN KEY (book_rowid) REFERENCES book_mstr (rowid)
-)
-;"""
-    assert example_sqlstr == get_atom_book_link_table_create_sqlstr()
-
-
-def test_get_change_table_create_sqlstr_ReturnsCorrectStr():
-    # GIVEN / WHEN / THEN
-    example_sqlstr = """
-CREATE TABLE IF NOT EXISTS change_mstr (
-  author_person_id VARCHAR(255) NOT NULL
-, author_change_number INT NOT NULL
-, UNIQUE(author_person_id, author_change_number)
-)
-;"""
-    assert example_sqlstr == get_change_table_create_sqlstr()
-
-
-def test_get_book_change_link_table_create_sqlstr_ReturnsCorrectStr():
-    # GIVEN / WHEN / THEN
-    example_sqlstr = """
-CREATE TABLE book_change_link
-(
-  book_rowid INT NOT NULL
-, change_rowid INT NOT NULL
-, UNIQUE(book_rowid, change_rowid)
-, CONSTRAINT atom_fk FOREIGN KEY (book_rowid) REFERENCES book_mstr (rowid)
-, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
-)
-;"""
-    assert example_sqlstr == get_book_change_link_table_create_sqlstr()
-
-
-def test_get_change_person_link_table_create_sqlstr_ReturnsCorrectStr():
-    # GIVEN / WHEN / THEN
-    example_sqlstr = """
-CREATE TABLE change_person_link
-(
-  change_rowid INT NOT NULL
 , person_rowid INT NOT NULL
-, UNIQUE(change_rowid, person_rowid)
-, CONSTRAINT book_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
+, UNIQUE(atom_rowid, person_rowid)
+, CONSTRAINT nuc_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
 , CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
 )
 ;"""
-    assert example_sqlstr == get_change_person_link_table_create_sqlstr()
+    assert example_sqlstr == get_atom_person_link_table_create_sqlstr()
 
 
 def test_get_person_mstr_table_create_sqlstr_ReturnsCorrectStr():
@@ -149,28 +149,28 @@ WHERE road = '{texas_road}'
     assert example_sqlstr == generate_sqlstr
 
 
-def test_get_atom_hx_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_quark_hx_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_atom_hx_table_create_sqlstr()
+    generated_sqlstr = get_quark_hx_table_create_sqlstr()
 
     # THEN
     begin_sqlstr = """
-CREATE TABLE IF NOT EXISTS atom_hx (
+CREATE TABLE IF NOT EXISTS quark_hx (
   person_id VARCHAR(255) NOT NULL"""
     end_sqlstr = """)
 ;"""
 
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6170
+    assert generated_sqlstr.find(end_sqlstr) == 6171
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3591
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3592
 
 
-def test_get_atom_hx_table_insert_sqlstr_ReturnsCorrectStr():
+def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
     # WHEN
     sports_text = "sports"
     sports_road = create_road("a", sports_text)
@@ -185,16 +185,16 @@ def test_get_atom_hx_table_insert_sqlstr_ReturnsCorrectStr():
     road_text = "road"
     base_text = "base"
     open_text = "open"
-    update_disc_agendaatom = agendaatom_shop(x_category, atom_insert())
-    update_disc_agendaatom.set_required_arg(road_text, ball_road)
-    update_disc_agendaatom.set_required_arg(base_text, knee_road)
-    update_disc_agendaatom.set_optional_arg(open_text, knee_open)
+    update_disc_quarkunit = quarkunit_shop(x_category, quark_insert())
+    update_disc_quarkunit.set_required_arg(road_text, ball_road)
+    update_disc_quarkunit.set_required_arg(base_text, knee_road)
+    update_disc_quarkunit.set_optional_arg(open_text, knee_open)
 
     # THEN
-    example_sqlstr = f"""INSERT INTO {atom_hx_table_name()} (
-  {x_category}_{atom_insert()}_{road_text}
-, {x_category}_{atom_insert()}_{base_text}
-, {x_category}_{atom_insert()}_{open_text}
+    example_sqlstr = f"""INSERT INTO {quark_hx_table_name()} (
+  {x_category}_{quark_insert()}_{road_text}
+, {x_category}_{quark_insert()}_{base_text}
+, {x_category}_{quark_insert()}_{open_text}
 )
 VALUES (
   '{ball_road}'
@@ -202,28 +202,28 @@ VALUES (
 , {knee_open}
 )
 ;"""
-    assert get_atom_hx_table_insert_sqlstr(update_disc_agendaatom) == example_sqlstr
+    assert get_quark_hx_table_insert_sqlstr(update_disc_quarkunit) == example_sqlstr
 
 
-def test_get_atom_mstr_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_quark_mstr_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_atom_mstr_table_create_sqlstr()
+    generated_sqlstr = get_quark_mstr_table_create_sqlstr()
 
     # THEN
     begin_sqlstr = """
-CREATE TABLE IF NOT EXISTS atom_mstr (
+CREATE TABLE IF NOT EXISTS quark_mstr (
   person_id VARCHAR(255) NOT NULL
-, atom_hx_row_id INT NOT NULL"""
+, quark_hx_row_id INT NOT NULL"""
     end_sqlstr = """)
 ;"""
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6202
+    assert generated_sqlstr.find(end_sqlstr) == 6204
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3623
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3625
 
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():

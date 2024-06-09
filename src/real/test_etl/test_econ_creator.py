@@ -27,7 +27,7 @@ def test_init_moneyunit_CreatesAndReturnsObj(env_dir_setup_cleanup):
     dallas_text = "dallas"
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
     sue_filehub.econ_road = dallas_road
-    sue_filehub.initialize_change_duty_files()
+    sue_filehub.initialize_atom_duty_files()
     dallas_db_path = sue_filehub.treasury_db_path()
     print(f"{dallas_db_path=}")
     assert os_path_exists(dallas_db_path) is False

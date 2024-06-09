@@ -3,6 +3,7 @@ from src._road.jaar_config import (
     work_str,
     get_rootpart_of_econ_dir,
     treasury_file_name,
+    max_tree_traverse_default,
 )
 
 
@@ -21,3 +22,7 @@ def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():
 
 def test_treasury_file_name_ReturnsObj() -> str:
     assert treasury_file_name() == "treasury.db"
+
+
+def test_max_tree_traverse_default_ReturnsObj() -> str:
+    assert max_tree_traverse_default() == 20
