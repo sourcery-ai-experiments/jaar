@@ -1,5 +1,4 @@
 from src._instrument.file import is_path_valid
-from os.path import join as os_path_join
 from pathlib import Path as pathlib_Path
 
 

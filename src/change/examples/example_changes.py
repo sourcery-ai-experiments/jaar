@@ -1,5 +1,5 @@
 from src.change.change import changeunit_shop, ChangeUnit
-from src.change.examples.example_change_atoms import (
+from src.change.examples.example_atoms import (
     get_atom_example_beliefunit_knee,
     get_atom_example_ideaunit_ball,
     get_atom_example_ideaunit_knee,

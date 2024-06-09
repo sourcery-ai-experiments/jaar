@@ -2,7 +2,7 @@ from src._instrument.file import delete_dir
 from src._road.jaar_config import init_change_id
 from src._road.road import get_default_real_id_roadnode as root_label
 from src.change.filehub import filehub_shop
-from src.change.examples.example_change_changes import sue_2atomunits_changeunit
+from src.change.examples.example_changes import sue_2atomunits_changeunit
 from src.change.examples.change_env import (
     env_dir_setup_cleanup,
     get_change_temp_env_dir as env_dir,
