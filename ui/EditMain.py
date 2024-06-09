@@ -52,7 +52,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         )
         self.beliefs_table.setRowCount(0)
         self.beliefs_table.itemClicked.connect(self.belief_table_select)
-        self.belief_base_update_combo.currentTextChanged.connect(
+        self.belief_base_update_combo.currentTextAtomd.connect(
             self.belief_pick_combo_load
         )
         self.belief_update_button.clicked.connect(self.belief_set_action)

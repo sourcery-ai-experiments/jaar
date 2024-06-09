@@ -3,12 +3,10 @@ from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
 from src.listen.filehub import filehub_shop
 from src.real.econ_creator import (
-    _get_econs_ideas,
     init_moneyunit,
-    create_person_moneyunits,
-    get_moneyunit,
-    set_moneyunit_role,
-    set_moneyunits_role,
+    create_duty_treasury_dbs,
+    init_moneyunit,
+    set_all_role_files,
     set_person_moneyunits_role,
 )
 from src.real.examples.real_env import env_dir_setup_cleanup
@@ -29,7 +27,7 @@ def test_init_moneyunit_CreatesAndReturnsObj(env_dir_setup_cleanup):
     dallas_text = "dallas"
     dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
     sue_filehub.econ_road = dallas_road
-    sue_filehub.initialize_change_duty_files()
+    sue_filehub.initialize_atom_duty_files()
     dallas_db_path = sue_filehub.treasury_db_path()
     print(f"{dallas_db_path=}")
     assert os_path_exists(dallas_db_path) is False
@@ -44,7 +42,7 @@ def test_init_moneyunit_CreatesAndReturnsObj(env_dir_setup_cleanup):
     assert sue_dallas_moneyunit.filehub.road_delimiter == sue_filehub.road_delimiter
 
 
-def test_create_person_moneyunits_RaisesErrorWhen__econs_justified_IsFalse(
+def test_create_duty_treasury_dbs_RaisesErrorWhen__econs_justified_IsFalse(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -67,14 +65,14 @@ def test_create_person_moneyunits_RaisesErrorWhen__econs_justified_IsFalse(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        create_person_moneyunits(sue_filehub)
+        create_duty_treasury_dbs(sue_filehub)
     assert (
         str(excinfo.value)
         == f"Cannot set '{sue_text}' duty agenda moneyunits because 'AgendaUnit._econs_justified' is False."
     )
 
 
-def test_create_person_moneyunits_RaisesErrorWhen__econs_buildable_IsFalse(
+def test_create_duty_treasury_dbs_RaisesErrorWhen__econs_buildable_IsFalse(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -94,14 +92,14 @@ def test_create_person_moneyunits_RaisesErrorWhen__econs_buildable_IsFalse(
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        create_person_moneyunits(sue_filehub)
+        create_duty_treasury_dbs(sue_filehub)
     assert (
         str(excinfo.value)
         == f"Cannot set '{sue_text}' duty agenda moneyunits because 'AgendaUnit._econs_buildable' is False."
     )
 
 
-def test_create_person_moneyunits_CreatesMoneyUnits(env_dir_setup_cleanup):
+def test_create_duty_treasury_dbs_CreatesMoneyUnits(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -131,7 +129,7 @@ def test_create_person_moneyunits_CreatesMoneyUnits(env_dir_setup_cleanup):
     assert os_path_exists(elpaso_filehub.treasury_db_path()) is False
 
     # WHEN
-    create_person_moneyunits(sue_filehub)
+    create_duty_treasury_dbs(sue_filehub)
 
     # THEN
     assert os_path_exists(dallas_filehub.treasury_db_path())
@@ -157,48 +155,15 @@ def test_get_econ_ReturnsCorrectObj(env_dir_setup_cleanup):
     sue_filehub.save_duty_agenda(sue_duty_agenda)
 
     # WHEN
-    create_person_moneyunits(sue_filehub)
-    dallas_money = get_moneyunit(sue_filehub, dallas_road)
+    create_duty_treasury_dbs(sue_filehub)
+    dallas_money = init_moneyunit(sue_filehub, dallas_road)
 
     # THEN
     assert dallas_money != None
     assert dallas_money.filehub.real_id == sue_filehub.real_id
 
 
-def test_set_moneyunit_role_CorrectlySets_role(env_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_filehub = filehub_shop(None, None, sue_text, None)
-    sue_filehub.save_duty_agenda(sue_filehub.default_duty_agenda())
-    sue_duty_agenda = sue_filehub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
-    bob_text = "Bob"
-    sue_duty_agenda.add_partyunit(bob_text)
-    texas_text = "Texas"
-    texas_road = sue_duty_agenda.make_l1_road(texas_text)
-    sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    dallas_text = "dallas"
-    dallas_road = sue_duty_agenda.make_road(texas_road, dallas_text)
-    dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    sue_duty_agenda.add_idea(dallas_idea, texas_road)
-    sue_duty_agenda.calc_agenda_metrics()
-    # display_ideatree(sue_duty_agenda, mode="Econ").show()
-    sue_filehub.save_duty_agenda(sue_duty_agenda)
-    create_person_moneyunits(sue_filehub)
-    print(f"{_get_econs_ideas(sue_filehub).keys()=}")
-    dallas_money = get_moneyunit(sue_filehub, dallas_road)
-    sue_file_name = sue_filehub.owner_file_name(sue_text)
-    sue_role_file_path = f"{dallas_money.filehub.roles_dir()}/{sue_file_name}"
-    assert os_path_exists(sue_role_file_path) is False
-
-    # WHEN
-    set_moneyunit_role(sue_filehub, dallas_road, sue_duty_agenda)
-
-    # THEN
-    assert os_path_exists(sue_role_file_path)
-
-
-def test_set_moneyunits_role_CorrectlySets_roles(env_dir_setup_cleanup):
+def test_set_all_role_files_CorrectlySets_roles(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_filehub = filehub_shop(None, None, sue_text, None)
@@ -221,17 +186,17 @@ def test_set_moneyunits_role_CorrectlySets_roles(env_dir_setup_cleanup):
     # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     sue_filehub.save_duty_agenda(sue_duty_agenda)
-    create_person_moneyunits(sue_filehub)
+    create_duty_treasury_dbs(sue_filehub)
     sue_file_name = sue_filehub.owner_file_name(sue_text)
-    dallas_money = get_moneyunit(sue_filehub, dallas_road)
+    dallas_money = init_moneyunit(sue_filehub, dallas_road)
     dallas_sue_role_file_path = f"{dallas_money.filehub.roles_dir()}/{sue_file_name}"
-    elpaso_money = get_moneyunit(sue_filehub, elpaso_road)
+    elpaso_money = init_moneyunit(sue_filehub, elpaso_road)
     elpaso_sue_role_file_path = f"{elpaso_money.filehub.roles_dir()}/{sue_file_name}"
     assert os_path_exists(dallas_sue_role_file_path) is False
     assert os_path_exists(elpaso_sue_role_file_path) is False
 
     # WHEN
-    set_moneyunits_role(sue_filehub, sue_duty_agenda)
+    set_all_role_files(sue_filehub, sue_duty_agenda)
 
     # THEN
     assert os_path_exists(dallas_sue_role_file_path)
@@ -263,11 +228,11 @@ def test_set_person_moneyunits_role_CorrectlySetsroles(
     # sue_duty_agenda.calc_agenda_metrics()
     # display_ideatree(sue_duty_agenda, mode="Econ").show()
     sue_filehub.save_duty_agenda(sue_duty_agenda)
-    create_person_moneyunits(sue_filehub)
+    create_duty_treasury_dbs(sue_filehub)
     sue_file_name = sue_filehub.owner_file_name(sue_text)
-    dallas_money = get_moneyunit(sue_filehub, dallas_road)
+    dallas_money = init_moneyunit(sue_filehub, dallas_road)
     dallas_sue_role_file_path = f"{dallas_money.filehub.roles_dir()}/{sue_file_name}"
-    elpaso_money = get_moneyunit(sue_filehub, elpaso_road)
+    elpaso_money = init_moneyunit(sue_filehub, elpaso_road)
     elpaso_sue_role_file_path = f"{elpaso_money.filehub.roles_dir()}/{sue_file_name}"
     assert os_path_exists(dallas_sue_role_file_path) is False
     assert os_path_exists(elpaso_sue_role_file_path) is False

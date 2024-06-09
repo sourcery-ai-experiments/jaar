@@ -39,7 +39,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._owner_id != yao_duty._owner_id
     assert yao_empty_job._owner_id == zia_text
     assert yao_empty_job._real_id == yao_duty._real_id
-    assert yao_empty_job._last_change_id is None
+    assert yao_empty_job._last_atom_id is None
     assert yao_empty_job.get_groupunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
     assert yao_empty_job._planck == yao_duty._planck
@@ -81,7 +81,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     # THEN
     assert yao_basis_job._owner_id == yao_role._owner_id
     assert yao_basis_job._real_id == yao_role._real_id
-    assert yao_basis_job._last_change_id == yao_role._last_change_id
+    assert yao_basis_job._last_atom_id == yao_role._last_atom_id
     assert yao_basis_job.get_groupunits_dict() == yao_role.get_groupunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck
@@ -106,10 +106,10 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     sue_party_pool = 800
     casa_text = "casa"
     bob_text = "Bob"
-    last_change_id = 7
+    last_atom_id = 7
     sue_max_tree_traverse = 9
     sue_agendaunit = agendaunit_shop(sue_text, blue_text, slash_text, five_planck)
-    sue_agendaunit.set_last_change_id(last_change_id)
+    sue_agendaunit.set_last_atom_id(last_atom_id)
     sue_agendaunit.add_partyunit(bob_text, 3, 4)
     swim_text = "/swimmers"
     swim_groupunit = groupunit_shop(swim_text, _road_delimiter=slash_text)

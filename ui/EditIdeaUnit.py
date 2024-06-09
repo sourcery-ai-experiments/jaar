@@ -41,38 +41,36 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.submit_child_insert.clicked.connect(self.idea_insert)
         self.submit_pledge_insert.clicked.connect(self.idea_pledge_insert)
 
-        self.cb_rootadmiration.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_id.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_intent.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_action.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_complete.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_beliefunit_time.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_beliefunit_count.stateChanged.connect(self.refresh_tree)
-        self.cb_yo_beliefheir_count.stateChanged.connect(self.refresh_tree)
-        self.cb_reasonheir_count.stateChanged.connect(self.refresh_tree)
-        self.cb_reason_count.stateChanged.connect(self.refresh_tree)
-        self.cb_reason_view.stateChanged.connect(self.refresh_tree)
-        self.cb_beliefheir_view.stateChanged.connect(self.refresh_tree)
-        self.cb_yo2bd_count.stateChanged.connect(self.refresh_tree)
-        self.combo_dim_root.currentTextChanged.connect(self.refresh_tree)
+        self.cb_rootadmiration.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_id.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_intent.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_action.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_complete.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_beliefunit_time.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_beliefunit_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_beliefheir_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_reasonheir_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_reason_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_reason_view.stateAtomd.connect(self.refresh_tree)
+        self.cb_beliefheir_view.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo2bd_count.stateAtomd.connect(self.refresh_tree)
+        self.combo_dim_root.currentTextAtomd.connect(self.refresh_tree)
 
         self.idea2group_table.itemClicked.connect(self.idea2group_table_select)
         self.idea2group_delete_button.clicked.connect(self.idea2group_delete)
         self.idea2group_insert_button.clicked.connect(self.idea2group_update)
         self.reason_table.itemClicked.connect(self.reason_table_select)
-        self.reason_base_combo.currentTextChanged.connect(
-            self.reason_premise_combo_load
-        )
-        self.reason_premise_combo.currentTextChanged.connect(
+        self.reason_base_combo.currentTextAtomd.connect(self.reason_premise_combo_load)
+        self.reason_premise_combo.currentTextAtomd.connect(
             self.reason_premise_xxxx_combo_load
         )
-        self.reason_premise_open_combo.currentTextChanged.connect(
+        self.reason_premise_open_combo.currentTextAtomd.connect(
             self.reason_premise_open_combo_select
         )
-        self.reason_premise_nigh_combo.currentTextChanged.connect(
+        self.reason_premise_nigh_combo.currentTextAtomd.connect(
             self.reason_premise_nigh_combo_select
         )
-        self.reason_premise_divisor_combo.currentTextChanged.connect(
+        self.reason_premise_divisor_combo.currentTextAtomd.connect(
             self.reason_premise_divisor_combo_select
         )
         self.button_reason_upsert.clicked.connect(self.reason_upsert)

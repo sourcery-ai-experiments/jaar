@@ -18,10 +18,8 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.itemClicked.connect(self.select_intent_item)
         self.intent_table.setObjectName("Current Agenda")
         self.intent_table.setRowCount(0)
-        self.belief_base_update_combo.currentTextChanged.connect(
-            self.refreshAgendaTable
-        )
-        self.cb_beliefbase_display.stateChanged.connect(self.refresh_all)
+        self.belief_base_update_combo.currentTextAtomd.connect(self.refreshAgendaTable)
+        self.cb_beliefbase_display.stateAtomd.connect(self.refresh_all)
         self.belief_base_update_init_road = "time,jajatime"
         # self.refresh_all()
 

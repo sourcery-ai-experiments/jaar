@@ -35,7 +35,7 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
 
 def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:
     default_work_agenda = create_listen_basis(duty)
-    default_work_agenda._last_change_id = duty._last_change_id
+    default_work_agenda._last_atom_id = duty._last_atom_id
     default_work_agenda._party_creditor_pool = None
     default_work_agenda._party_debtor_pool = None
     return default_work_agenda

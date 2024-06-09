@@ -6,16 +6,16 @@ def get_test_reals_dir():
     return "src/real/examples/reals"
 
 
-def get_changes_folder() -> str:
-    return "changes"
+def get_atoms_folder() -> str:
+    return "atoms"
 
 
-def init_change_id() -> int:
+def init_atom_id() -> int:
     return 0
 
 
-def get_init_change_id_if_None(x_change_id: int = None) -> int:
-    return init_change_id() if x_change_id is None else x_change_id
+def get_init_atom_id_if_None(x_atom_id: int = None) -> int:
+    return init_atom_id() if x_atom_id is None else x_atom_id
 
 
 def get_json_filename(filename_without_extention) -> str:
@@ -44,3 +44,7 @@ def get_rootpart_of_econ_dir() -> str:
 
 def treasury_file_name() -> str:
     return "treasury.db"
+
+
+def max_tree_traverse_default() -> int:
+    return 20

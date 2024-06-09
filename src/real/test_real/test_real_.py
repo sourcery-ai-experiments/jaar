@@ -1,10 +1,10 @@
 from src._road.finance import default_planck_if_none
-from src._road.jaar_config import get_changes_folder, get_json_filename
+from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.listen.filehub import filehub_shop
-from src.real.econ_creator import create_person_moneyunits, get_moneyunit
+from src.real.econ_creator import create_duty_treasury_dbs, init_moneyunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -17,7 +17,7 @@ def test_RealUnit_exists(env_dir_setup_cleanup):
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir is None
     assert music_real._journal_db is None
-    assert music_real._changes_dir is None
+    assert music_real._atoms_dir is None
     assert music_real._road_delimiter is None
     assert music_real._planck is None
 
@@ -35,7 +35,7 @@ def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     assert music_real.real_id == music_text
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir != None
-    assert music_real._changes_dir != None
+    assert music_real._atoms_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._planck == default_planck_if_none()
 
@@ -66,17 +66,17 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     x_real_dir = f"{get_test_reals_dir()}/{music_text}"
     x_persons_dir = f"{x_real_dir}/persons"
-    x_changes_dir = f"{x_real_dir}/{get_changes_folder()}"
+    x_atoms_dir = f"{x_real_dir}/{get_atoms_folder()}"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_real_dir}/{journal_file_name}"
 
     assert music_real._real_dir is None
     assert music_real._persons_dir is None
-    assert music_real._changes_dir is None
+    assert music_real._atoms_dir is None
     assert os_path_exists(x_real_dir) is False
     assert os_path_isdir(x_real_dir) is False
     assert os_path_exists(x_persons_dir) is False
-    assert os_path_exists(x_changes_dir) is False
+    assert os_path_exists(x_atoms_dir) is False
     assert os_path_exists(journal_file_path) is False
 
     # WHEN
@@ -85,11 +85,11 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     # THEN
     assert music_real._real_dir == x_real_dir
     assert music_real._persons_dir == x_persons_dir
-    assert music_real._changes_dir == x_changes_dir
+    assert music_real._atoms_dir == x_atoms_dir
     assert os_path_exists(x_real_dir)
     assert os_path_isdir(x_real_dir)
     assert os_path_exists(x_persons_dir)
-    assert os_path_exists(x_changes_dir)
+    assert os_path_exists(x_atoms_dir)
     assert os_path_exists(journal_file_path)
 
 
@@ -189,10 +189,10 @@ def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     luca_filehub.save_duty_agenda(luca_duty_agenda)
     todd_filehub.save_duty_agenda(todd_duty_agenda)
-    create_person_moneyunits(luca_filehub)
-    create_person_moneyunits(todd_filehub)
-    luca_dallas_money = get_moneyunit(luca_filehub, dallas_road)
-    todd_dallas_money = get_moneyunit(todd_filehub, dallas_road)
+    create_duty_treasury_dbs(luca_filehub)
+    create_duty_treasury_dbs(todd_filehub)
+    luca_dallas_money = init_moneyunit(luca_filehub, dallas_road)
+    todd_dallas_money = init_moneyunit(todd_filehub, dallas_road)
     luca_file_name = get_json_filename(luca_text)
     todd_file_name = get_json_filename(todd_text)
     luca_roles_dir = luca_dallas_money.filehub.roles_dir()
