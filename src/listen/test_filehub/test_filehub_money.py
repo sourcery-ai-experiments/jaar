@@ -242,6 +242,7 @@ def test_FileHub_create_duty_treasury_db_files_CreatesDatabases(env_dir_setup_cl
     print(f"{elpaso_filehub.treasury_db_path()=}")
     assert os_path_exists(dallas_filehub.treasury_db_path()) is False
     assert os_path_exists(elpaso_filehub.treasury_db_path()) is False
+    assert sue_filehub.econ_road is None
 
     # WHEN
     sue_filehub.create_duty_treasury_db_files()
@@ -249,3 +250,4 @@ def test_FileHub_create_duty_treasury_db_files_CreatesDatabases(env_dir_setup_cl
     # THEN
     assert os_path_exists(dallas_filehub.treasury_db_path())
     assert os_path_exists(elpaso_filehub.treasury_db_path())
+    assert sue_filehub.econ_road is None

@@ -606,7 +606,7 @@ class FileHub:
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
             self.create_treasury_db_file()
-
+        self.econ_road = None
 
 
 def filehub_shop(
