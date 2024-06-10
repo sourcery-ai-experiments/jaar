@@ -7,7 +7,7 @@
 #     get_test_reals_dir,
 #     env_dir_setup_cleanup,
 # )
-# from src._instrument.sqlite import check_connection, get_row_count
+# from src._instrument.sqlite import get_row_count
 # from os.path import exists as os_path_exists
 # from pytest import raises as pytest_raises
 

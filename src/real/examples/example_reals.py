@@ -1,10 +1,10 @@
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.listen.filehub import filehub_shop
-
-# from src.agenda.graphic import display_ideatree
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir
+
+# from src.agenda.graphic import display_ideatree
 
 
 def create_example_real1() -> RealUnit:
@@ -48,7 +48,7 @@ def create_example_real1() -> RealUnit:
     yao_filehub.create_duty_treasury_db_files()
 
     # WHEN
-    music_real.set_person_moneyunits_dirs(yao_text)
+    music_real._set_all_healer_roles(yao_text)
 
     return music_real
 
@@ -112,9 +112,9 @@ def create_example_real2() -> RealUnit:
     yao_filehub.create_duty_treasury_db_files()
     wei_filehub.create_duty_treasury_db_files()
     zia_filehub.create_duty_treasury_db_files()
-    music_real.set_person_moneyunits_dirs(yao_text)
-    music_real.set_person_moneyunits_dirs(wei_text)
-    music_real.set_person_moneyunits_dirs(zia_text)
+    music_real._set_all_healer_roles(yao_text)
+    music_real._set_all_healer_roles(wei_text)
+    music_real._set_all_healer_roles(zia_text)
 
     return music_real
 

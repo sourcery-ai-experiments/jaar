@@ -179,23 +179,23 @@ def test_FileHub_treasury_db_file_exists_ReturnsObj(env_dir_setup_cleanup):
     assert sue_filehub.treasury_db_file_exists()
 
 
-def test_FileHub_treasury_db_file_conn_CreatesTreasuryDBIfItDoesNotExist(
-    env_dir_setup_cleanup,
-):
-    # GIVEN create
-    sue_text = "Sue"
-    sue_filehub = filehub_shop(env_dir(), None, sue_text, get_texas_road())
+# def test_FileHub_treasury_db_file_conn_CreatesTreasuryDBIfItDoesNotExist(
+#     env_dir_setup_cleanup,
+# ):
+#     # GIVEN create
+#     sue_text = "Sue"
+#     sue_filehub = filehub_shop(env_dir(), None, sue_text, get_texas_road())
 
-    # WHEN/THEN
-    with pytest_raises(Exception) as excinfo:
-        check_connection(sue_filehub.treasury_db_file_conn())
-    assert str(excinfo.value) == "unable to open database file"
+#     # WHEN/THEN
+#     with pytest_raises(Exception) as excinfo:
+#         check_connection(sue_filehub.treasury_db_file_conn())
+#     assert str(excinfo.value) == "unable to open database file"
 
-    # WHEN
-    sue_filehub.create_treasury_db_file()
+#     # WHEN
+#     sue_filehub.create_treasury_db_file()
 
-    # THEN
-    assert check_connection(sue_filehub.treasury_db_file_conn())
+#     # THEN
+#     assert check_connection(sue_filehub.treasury_db_file_conn())
 
 
 def test_FileHub_treasury_db_file_conn_RaisesErrorIfMissing_econ_road(

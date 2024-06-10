@@ -149,7 +149,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_clea
     assert gen_luca_duty.party_exists(bob_text)
 
 
-def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
+def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -204,7 +204,7 @@ def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
-    music_real.set_person_moneyunits_dirs(luca_text)
+    music_real._set_all_healer_roles(luca_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)
@@ -213,7 +213,7 @@ def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path) is False
 
     # WHEN
-    music_real.set_person_moneyunits_dirs(todd_text)
+    music_real._set_all_healer_roles(todd_text)
 
     # THEN
     assert os_path_exists(luca_dallas_luca_role_file_path)

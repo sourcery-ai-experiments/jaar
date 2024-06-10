@@ -8,6 +8,7 @@ from src._instrument.file import (
     get_integer_filenames,
 )
 from src._instrument.python import get_empty_set_if_none
+from src._instrument.sqlite import sqlite_connection
 from src._road.jaar_config import (
     roles_str,
     jobs_str,
@@ -590,7 +591,8 @@ class FileHub:
 
     def create_treasury_db_file(self):
         self.create_econ_dir_if_missing()
-        sqlite3_connect(self.treasury_db_path())
+        with sqlite3_connect(self.treasury_db_path()) as conn:
+            pass
 
     def treasury_db_file_exists(self) -> bool:
         return os_path_exists(self.treasury_db_path())
@@ -600,7 +602,9 @@ class FileHub:
             raise _econ_roadMissingException(
                 f"filehub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
             )
-        return sqlite3_connect(self.treasury_db_path())
+        if self.treasury_db_file_exists() is False:
+            self.create_treasury_db_file()
+        return sqlite_connection(self.treasury_db_path())
 
     def create_duty_treasury_db_files(self):
         for x_econ_road in self.get_econ_roads():
