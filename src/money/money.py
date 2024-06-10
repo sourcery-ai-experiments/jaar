@@ -7,9 +7,9 @@ from src.listen.filehub import FileHub
 from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
-    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    get_agenda_partyunit_table_update_credit_score_sqlstr,
-    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
+    get_agenda_partyunit_table_update_credit_score_sqlstr as update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -50,30 +50,6 @@ class MoneyUnit:
     _treasury_db = None
 
     # treasurying
-    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
-        if sort_order == "descending":
-            owner_role = self.filehub.get_role_agenda(owner_id)
-            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
-                x_partyunit.set_treasury_voice_rank(count_x)
-            self.filehub.save_role_agenda(owner_role)
-
-    def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.filehub.get_job_agenda(x_owner_id)
-
-        for groupunit_x in x_agenda._groups.values():
-            if groupunit_x._treasury_partylinks != None:
-                groupunit_x.clear_partylinks()
-                ic = get_agenda_ideaunit_dict(
-                    self.get_treasury_conn(),
-                    groupunit_x._treasury_partylinks,
-                )
-                for agenda_ideaunit in ic.values():
-                    if x_owner_id != agenda_ideaunit.owner_id:
-                        partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
-                        groupunit_x.set_partylink(partylink_x)
-        self.filehub.save_job_agenda(x_agenda)
-        self.refresh_treasury_job_agendas_data()
-
     def set_credit_flow_for_agenda(
         self, owner_id: OwnerID, max_blocks_count: int = None
     ):
@@ -171,15 +147,9 @@ class MoneyUnit:
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_river_circle_table_insert_sqlstr(owner_id))
             treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(owner_id))
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_due_paid_sqlstr(owner_id)
-            )
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_credit_score_sqlstr(owner_id)
-            )
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(owner_id)
-            )
+            treasury_conn.execute(update_treasury_due_paid_sqlstr(owner_id))
+            treasury_conn.execute(update_credit_score_sqlstr(owner_id))
+            treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
             x_agenda = self.filehub.get_job_agenda(owner_id=owner_id)
@@ -323,6 +293,31 @@ class MoneyUnit:
                     sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
                     cur.execute(sqlstr)
 
+    # exporting metrics to agenda files
+    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+        if sort_order == "descending":
+            owner_role = self.filehub.get_role_agenda(owner_id)
+            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
+                x_partyunit.set_treasury_voice_rank(count_x)
+            self.filehub.save_role_agenda(owner_role)
+
+    def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
+        x_agenda = self.filehub.get_job_agenda(x_owner_id)
+
+        for groupunit_x in x_agenda._groups.values():
+            if groupunit_x._treasury_partylinks != None:
+                groupunit_x.clear_partylinks()
+                ic = get_agenda_ideaunit_dict(
+                    self.get_treasury_conn(),
+                    groupunit_x._treasury_partylinks,
+                )
+                for agenda_ideaunit in ic.values():
+                    if x_owner_id != agenda_ideaunit.owner_id:
+                        partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
+                        groupunit_x.set_partylink(partylink_x)
+        self.filehub.save_job_agenda(x_agenda)
+        self.refresh_treasury_job_agendas_data()
+
 
 def moneyunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> MoneyUnit:
     if in_memory_treasury is None:
@@ -340,7 +335,7 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
         x_partyunit.clear_treasurying_data()
         partytreasuryunit = partytreasuryunits.get(x_partyunit.party_id)
         if partytreasuryunit != None:
-            x_partyunit.set_treasurying_data(
+            x_partyunit.set_treasury_attr(
                 due_paid=partytreasuryunit.due_total,
                 due_diff=partytreasuryunit.due_diff,
                 credit_score=partytreasuryunit.credit_score,

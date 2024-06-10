@@ -76,7 +76,7 @@ class PartyUnit(PartyCore):
         self._treasury_credit_score = None
         self._treasury_voice_rank = None
 
-    def set_treasurying_data(
+    def set_treasury_attr(
         self,
         due_paid: float,
         due_diff: float,
@@ -259,7 +259,7 @@ def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> Party
         _debtor_operational=partyunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
-    x_partyunit.set_treasurying_data(
+    x_partyunit.set_treasury_attr(
         due_paid=_treasury_due_paid,
         due_diff=_treasury_due_diff,
         credit_score=_treasury_credit_score,

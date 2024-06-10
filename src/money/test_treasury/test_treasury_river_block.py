@@ -44,7 +44,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     tim_due_paid = 0.5151
     tim_credit_score = 0.5252
     tim_voice_rank = 33
-    tim_partyunit.set_treasurying_data(
+    tim_partyunit.set_treasury_attr(
         tim_due_paid, None, tim_credit_score, tim_voice_rank
     )
     assert tim_partyunit._treasury_due_paid == tim_due_paid
@@ -344,7 +344,7 @@ def test_PartyTreasuryUnit_exists():
     assert x_partytreasury.voice_rank == x_voice_rank
 
 
-def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
+def test_agenda_set_treasury_attr_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=bob_text)

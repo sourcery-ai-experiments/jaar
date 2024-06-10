@@ -395,7 +395,7 @@ def test_PartyUnit_set_agenda_intent_ratio_credit_debt_SetsAttrCorrectly():
     assert bob_partyunit._agenda_intent_ratio_debt == 0.5
 
 
-def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
+def test_PartyUnit_set_treasury_attr_SetsAttrCorrectly():
     # GIVEN
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
@@ -416,7 +416,7 @@ def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
     x_due_diff = 0.123
     x_treasury_credit_score = 900
     x_treasury_voice_rank = 45
-    bob_partyunit.set_treasurying_data(
+    bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
         credit_score=x_treasury_credit_score,
@@ -432,7 +432,7 @@ def test_PartyUnit_set_treasurying_data_SetsAttrCorrectly():
     assert bob_partyunit._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
 
 
-def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
+def test_PartyUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
     x_agenda_intent_ratio_credit = 0.077
     x_agenda_intent_ratio_debt = 0.066
@@ -443,7 +443,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
     x_due_diff = 0.123
     x_treasury_credit_score = 900
     old_x_treasury_voice_rank = 45
-    bob_partyunit.set_treasurying_data(
+    bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
         credit_score=x_treasury_credit_score,
@@ -453,7 +453,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 
     # WHEN
     new_x_treasury_voice_rank = 33
-    bob_partyunit.set_treasurying_data(
+    bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
         credit_score=x_treasury_credit_score,
@@ -464,7 +464,7 @@ def test_PartyUnit_set_treasurying_data_CorrectlyDecreasesOrIgnores_treasury_voi
 
     # WHEN
     not_lower_x_treasury_voice_rank = 60
-    bob_partyunit.set_treasurying_data(
+    bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
         credit_score=x_treasury_credit_score,
@@ -481,7 +481,7 @@ def test_PartyUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     bob_partyunit._agenda_intent_ratio_debt = 0.066
     x_treasury_credit_score = 900
     x_treasury_voice_rank = 45
-    bob_partyunit.set_treasurying_data(
+    bob_partyunit.set_treasury_attr(
         due_paid=0.399,
         due_diff=0.044,
         credit_score=x_treasury_credit_score,
