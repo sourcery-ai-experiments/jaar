@@ -7,6 +7,7 @@ from src._instrument.file import (
     set_dir,
     get_integer_filenames,
 )
+from src._instrument.python import get_empty_set_if_none
 from src._road.jaar_config import (
     roles_str,
     jobs_str,
@@ -45,6 +46,7 @@ from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
+from sqlite3 import connect as sqlite3_connect, Connection
 
 
 class Invalid_nox_type_Exception(Exception):
@@ -64,6 +66,14 @@ class SaveAtomFileException(Exception):
 
 
 class AtomFileMissingException(Exception):
+    pass
+
+
+class PersonCreateMoneyUnitsException(Exception):
+    pass
+
+
+class _econ_roadMissingException(Exception):
     pass
 
 
@@ -555,6 +565,48 @@ class FileHub:
         if os_path_exists(x_file_path):
             file_contents = open_file(listener_dir, listener_file_name)
             return agendaunit_get_from_json(file_contents)
+
+    def get_econ_roads(self):
+        x_duty_agenda = self.get_duty_agenda()
+        x_duty_agenda.calc_agenda_metrics()
+        if x_duty_agenda._econs_justified is False:
+            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_justified' is False."
+            raise PersonCreateMoneyUnitsException(x_str)
+        if x_duty_agenda._econs_buildable is False:
+            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_buildable' is False."
+            raise PersonCreateMoneyUnitsException(x_str)
+        person_healer_dict = x_duty_agenda._healers_dict.get(self.person_id)
+        if person_healer_dict is None:
+            return get_empty_set_if_none(None)
+        econ_roads = x_duty_agenda._healers_dict.get(self.person_id).keys()
+        return get_empty_set_if_none(econ_roads)
+
+    def save_all_duty_roles(self):
+        duty = self.get_duty_agenda()
+        for x_econ_road in self.get_econ_roads():
+            self.econ_road = x_econ_road
+            self.save_role_agenda(duty)
+        self.econ_road = None
+
+    def create_treasury_db_file(self):
+        self.create_econ_dir_if_missing()
+        sqlite3_connect(self.treasury_db_path())
+
+    def treasury_db_file_exists(self) -> bool:
+        return os_path_exists(self.treasury_db_path())
+
+    def treasury_db_file_conn(self) -> Connection:
+        if self.econ_road is None:
+            raise _econ_roadMissingException(
+                f"filehub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
+            )
+        return sqlite3_connect(self.treasury_db_path())
+
+    def create_duty_treasury_db_files(self):
+        for x_econ_road in self.get_econ_roads():
+            self.econ_road = x_econ_road
+            self.create_treasury_db_file()
+        self.econ_road = None
 
 
 def filehub_shop(

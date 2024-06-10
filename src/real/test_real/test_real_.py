@@ -4,7 +4,6 @@ from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.listen.filehub import filehub_shop
-from src.real.econ_creator import create_duty_treasury_dbs, init_moneyunit
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -189,14 +188,12 @@ def test_RealUnit_set_person_moneyunits_dirs_CorrectlySetsroles(
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     luca_filehub.save_duty_agenda(luca_duty_agenda)
     todd_filehub.save_duty_agenda(todd_duty_agenda)
-    create_duty_treasury_dbs(luca_filehub)
-    create_duty_treasury_dbs(todd_filehub)
-    luca_dallas_money = init_moneyunit(luca_filehub, dallas_road)
-    todd_dallas_money = init_moneyunit(todd_filehub, dallas_road)
     luca_file_name = get_json_filename(luca_text)
     todd_file_name = get_json_filename(todd_text)
-    luca_roles_dir = luca_dallas_money.filehub.roles_dir()
-    todd_roles_dir = todd_dallas_money.filehub.roles_dir()
+    luca_dallas_filehub = filehub_shop(None, music_text, luca_text, dallas_road)
+    todd_dallas_filehub = filehub_shop(None, music_text, todd_text, dallas_road)
+    luca_roles_dir = luca_dallas_filehub.roles_dir()
+    todd_roles_dir = todd_dallas_filehub.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"

@@ -265,7 +265,7 @@ class MoneyUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return sqlite3_connect(self.filehub.treasury_db_path())
+            return self.filehub.treasury_db_file_conn()
         else:
             return self._treasury_db
 
@@ -279,8 +279,7 @@ class MoneyUnit:
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            self.filehub.create_econ_dir_if_missing()
-            sqlite3_connect(self.filehub.treasury_db_path())
+            self.filehub.create_treasury_db_file()
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
