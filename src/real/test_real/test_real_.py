@@ -1,4 +1,4 @@
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
@@ -19,6 +19,7 @@ def test_RealUnit_exists(env_dir_setup_cleanup):
     assert music_real._atoms_dir is None
     assert music_real._road_delimiter is None
     assert music_real._planck is None
+    assert music_real._penny is None
 
 
 def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
@@ -37,13 +38,15 @@ def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     assert music_real._atoms_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._planck == default_planck_if_none()
+    assert music_real._penny == default_penny_if_none()
 
 
 def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
-    three_int = 3
+    planck_float = 3
+    penny_float = 0.3
 
     # WHEN
     music_real = realunit_shop(
@@ -51,12 +54,14 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup)
         reals_dir=get_test_reals_dir(),
         in_memory_journal=True,
         _road_delimiter=slash_text,
-        _planck=three_int,
+        _planck=planck_float,
+        _penny=penny_float,
     )
 
     # THEN
     assert music_real._road_delimiter == slash_text
-    assert music_real._planck == three_int
+    assert music_real._planck == planck_float
+    assert music_real._penny == penny_float
 
 
 def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):

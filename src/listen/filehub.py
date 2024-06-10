@@ -21,7 +21,7 @@ from src._road.jaar_config import (
     get_json_filename,
     init_atom_id,
 )
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.road import (
     PersonID,
     RealID,
@@ -115,6 +115,7 @@ class FileHub:
     _nox_type: str = None  # can be "duty_work", "role_job", "job_work"
     road_delimiter: str = None
     planck: float = None
+    penny: float = None
 
     def real_dir(self):
         return f"{self.reals_dir}/{self.real_id}"
@@ -191,10 +192,13 @@ class FileHub:
         return agendaunit_get_from_json(file_content)
 
     def default_duty_agenda(self) -> AgendaUnit:
-        real_id = self.real_id
-        road_delimiter = self.road_delimiter
-        planck = self.planck
-        x_agendaunit = agendaunit_shop(self.person_id, real_id, road_delimiter, planck)
+        x_agendaunit = agendaunit_shop(
+            _owner_id=self.person_id,
+            _real_id=self.real_id,
+            _road_delimiter=self.road_delimiter,
+            _planck=self.planck,
+            _penny=self.penny,
+        )
         x_agendaunit._last_atom_id = init_atom_id()
         return x_agendaunit
 
@@ -480,6 +484,9 @@ class FileHub:
     def delete_job_file(self, owner_id: PersonID):
         delete_dir(self.job_path(owner_id))
 
+    def delete_treasury_db_file(self):
+        delete_dir(self.treasury_db_path())
+
     def set_nox_type(self, nox_type: str):
         if nox_type is None or nox_type in get_nox_type_set():
             self._nox_type = nox_type
@@ -621,6 +628,7 @@ def filehub_shop(
     nox_type: str = None,
     road_delimiter: str = None,
     planck: float = None,
+    penny: float = None,
 ) -> FileHub:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
@@ -634,6 +642,7 @@ def filehub_shop(
         econ_road=econ_road,
         road_delimiter=default_road_delimiter_if_none(road_delimiter),
         planck=default_planck_if_none(planck),
+        penny=default_penny_if_none(penny),
     )
     x_filehub.set_nox_type(nox_type)
     return x_filehub

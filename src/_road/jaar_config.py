@@ -52,3 +52,7 @@ def max_tree_traverse_default() -> int:
 
 def get_descending_text() -> str:
     return "descending"
+
+
+def default_river_blocks_count() -> str:
+    return 40

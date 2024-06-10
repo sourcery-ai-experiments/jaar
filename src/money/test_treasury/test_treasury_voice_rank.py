@@ -1,4 +1,5 @@
 from src._instrument.file import save_file, delete_dir
+from src._road.jaar_config import get_descending_text
 from src.agenda.party import partyunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
@@ -104,8 +105,7 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     assert yao_role1_agenda.get_party(elu_text)._treasury_voice_rank is None
 
     # WHEN
-    descending_text = "descending"
-    x_money.set_role_voice_ranks(yao_text, sort_order=descending_text)
+    x_money.set_role_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
     yao_role2_agenda = texas_filehub.get_role_agenda(yao_text)

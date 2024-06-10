@@ -1,6 +1,6 @@
 from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_atoms_folder
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
 from src.listen.basis_agendas import get_default_work_agenda
@@ -35,6 +35,7 @@ class RealUnit:
     _atoms_dir: str = None
     _road_delimiter: str = None
     _planck: float = None
+    _penny: float = None
 
     # directory setup
     def _set_real_dirs(self, in_memory_journal: bool = None):
@@ -134,12 +135,8 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            for econ_idea in healer_dict.values():
-                self._set_person_role(
-                    healer_filehub=healer_filehub,
-                    econ_road=econ_idea.get_road(),
-                    duty_agenda=x_duty,
-                )
+            for econ_road in healer_dict.keys():
+                self._set_person_role(healer_filehub, econ_road, x_duty)
 
     def _set_person_role(
         self,
@@ -220,12 +217,14 @@ def realunit_shop(
     in_memory_journal: bool = None,
     _road_delimiter: str = None,
     _planck: float = None,
+    _penny: float = None,
 ) -> RealUnit:
     real_x = RealUnit(
         real_id=real_id,
         reals_dir=reals_dir,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
+        _penny=default_penny_if_none(_penny),
     )
     real_x._set_real_dirs(in_memory_journal=in_memory_journal)
     return real_x

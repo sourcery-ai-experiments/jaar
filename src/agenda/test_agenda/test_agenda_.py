@@ -1,4 +1,4 @@
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_planck_if_none, default_penny_if_none
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Belief,
 )
@@ -27,6 +27,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._planck is None
+    assert x_agenda._penny is None
     assert x_agenda._monetary_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
@@ -52,6 +53,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     slash_road_delimiter = "/"
     override_meld_strategy = "override"
     five_planck = 5
+    penny_float = 0.8
 
     # WHEN
     x_agenda = agendaunit_shop(
@@ -60,6 +62,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
         _road_delimiter=slash_road_delimiter,
         _meld_strategy=override_meld_strategy,
         _planck=five_planck,
+        _penny=penny_float,
     )
     assert x_agenda
     assert x_agenda._owner_id == noa_text
@@ -71,6 +74,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._planck == five_planck
+    assert x_agenda._penny == penny_float
     assert x_agenda._monetary_desc is None
     assert x_agenda._party_creditor_pool is None
     assert x_agenda._party_debtor_pool is None
@@ -108,6 +112,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     assert x_agenda._real_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
     assert x_agenda._planck == default_planck_if_none()
+    assert x_agenda._penny == default_penny_if_none()
 
 
 def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():

@@ -13,7 +13,8 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
     slash_text = "/"
-    yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text)
+    penny_float = 0.7
+    yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
     yao_duty.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_creditor_weight = 47
@@ -43,6 +44,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job.get_groupunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
     assert yao_empty_job._planck == yao_duty._planck
+    assert yao_empty_job._penny == yao_duty._penny
     assert yao_empty_job._monetary_desc is None
     assert yao_empty_job._party_creditor_pool != yao_duty._party_creditor_pool
     assert yao_empty_job._party_creditor_pool is None

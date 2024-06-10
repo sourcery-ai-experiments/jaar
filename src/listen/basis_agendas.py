@@ -1,6 +1,5 @@
 from src._road.road import PersonID
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from copy import deepcopy as copy_deepcopy
 
 
 def _is_empty_agenda(x_agenda: AgendaUnit) -> bool:
@@ -15,7 +14,10 @@ def create_empty_agenda(
         x_owner_id = ref_agenda._owner_id
     x_road_delimiter = ref_agenda._road_delimiter
     x_planck = ref_agenda._planck
-    return agendaunit_shop(x_owner_id, ref_agenda._real_id, x_road_delimiter, x_planck)
+    x_penny = ref_agenda._penny
+    return agendaunit_shop(
+        x_owner_id, ref_agenda._real_id, x_road_delimiter, x_planck, x_penny
+    )
 
 
 def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:

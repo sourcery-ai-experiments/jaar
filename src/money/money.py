@@ -1,4 +1,5 @@
 from src._instrument.file import delete_dir
+from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
@@ -78,7 +79,7 @@ class MoneyUnit:
     ):
         self._clear_all_source_river_data(owner_id)
         if max_blocks_count is None:
-            max_blocks_count = 40
+            max_blocks_count = default_river_blocks_count()
         self._set_river_blocks(owner_id, max_blocks_count)
         self._set_partytreasuryunits_circles(owner_id)
 
@@ -273,7 +274,8 @@ class MoneyUnit:
         self, in_memory: bool = None, overwrite: bool = None
     ) -> Connection:
         if overwrite:
-            self.delete_treasury()
+            self._treasury_db = None
+            self.filehub.delete_treasury_db_file()
 
         treasury_file_new = True
         if in_memory:
@@ -285,10 +287,6 @@ class MoneyUnit:
             with self.get_treasury_conn() as treasury_conn:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
                     treasury_conn.execute(sqlstr)
-
-    def delete_treasury(self):
-        self._treasury_db = None
-        delete_dir(self.filehub.treasury_db_path())
 
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport

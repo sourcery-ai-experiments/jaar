@@ -4,7 +4,7 @@ from src._road.road import (
     create_road,
     get_default_real_id_roadnode as root_label,
 )
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.jaar_config import (
     get_atoms_folder,
     get_test_reals_dir,
@@ -78,6 +78,7 @@ def test_FileHub_Exists():
     assert x_filehub._nox_type is None
     assert x_filehub.road_delimiter is None
     assert x_filehub.planck is None
+    assert x_filehub.penny is None
 
 
 def test_filehub_shop_ReturnsCorrectObj():
@@ -87,10 +88,18 @@ def test_filehub_shop_ReturnsCorrectObj():
     sue_text = "Sue"
     x_road_delimiter = "/"
     x_planck = 3
+    x_penny = 0.3
 
     # WHEN
     x_filehub = filehub_shop(
-        x_reals_dir, x_real_id, sue_text, None, None, x_road_delimiter, x_planck
+        x_reals_dir,
+        x_real_id,
+        sue_text,
+        None,
+        None,
+        x_road_delimiter,
+        x_planck,
+        penny=x_penny,
     )
 
     # THEN
@@ -99,6 +108,7 @@ def test_filehub_shop_ReturnsCorrectObj():
     assert x_filehub.person_id == sue_text
     assert x_filehub.road_delimiter == x_road_delimiter
     assert x_filehub.planck == x_planck
+    assert x_filehub.penny == x_penny
 
     assert x_filehub.real_dir() == f"{x_reals_dir}/{x_real_id}"
     assert x_filehub.persons_dir() == f"{x_filehub.real_dir()}/persons"
@@ -136,6 +146,7 @@ def test_filehub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_filehub.person_id == sue_text
     assert sue_filehub.road_delimiter == default_road_delimiter_if_none()
     assert sue_filehub.planck == default_planck_if_none()
+    assert sue_filehub.penny == default_penny_if_none()
     assert sue_filehub.persons_dir() == f"{sue_filehub.real_dir()}/persons"
     x_filehub = filehub_shop(None, None, sue_text)
     assert sue_filehub.econ_road == texas_road
