@@ -83,6 +83,11 @@ class MoneyUnit:
         self._set_river_blocks(owner_id, max_blocks_count)
         self._set_partytreasuryunits_circles(owner_id)
 
+    def _clear_all_source_river_data(self, owner_id: str):
+        with self.get_treasury_conn() as treasury_conn:
+            block_s = get_river_block_table_delete_sqlstr(owner_id)
+            treasury_conn.execute(block_s)
+
     def _set_river_blocks(self, x_owner_id: OwnerID, max_blocks_count: int):
         # Transformations in river_block loop
         general_circle = [self._get_root_river_ledger_unit(x_owner_id)]
@@ -141,11 +146,6 @@ class MoneyUnit:
                 river_ledger_x = get_river_ledger_unit(treasury_conn, river_block_x)
 
         return river_ledger_x
-
-    def _clear_all_source_river_data(self, owner_id: str):
-        with self.get_treasury_conn() as treasury_conn:
-            block_s = get_river_block_table_delete_sqlstr(owner_id)
-            treasury_conn.execute(block_s)
 
     def _get_root_river_ledger_unit(self, owner_id: str) -> RiverLedgerUnit:
         default_cash_onset = 0.0
