@@ -204,7 +204,7 @@ def test_get_quark_columns_build_ReturnsCorrectObj():
     quark_columns = get_quark_columns_build()
 
     # THEN
-    assert len(quark_columns) == 112
+    assert len(quark_columns) == 113
     assert quark_columns.get("agendaunit_UPDATE__party_creditor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
 

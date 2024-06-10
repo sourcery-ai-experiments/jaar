@@ -46,13 +46,13 @@ def test_FileHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert os_path_exists(sue_filehub.role_path(bob_text)) is False
+    assert sue_filehub.role_file_exists(bob_text) is False
 
     # WHEN
     sue_filehub.save_role_agenda(bob_agenda)
 
     # THEN
-    assert os_path_exists(sue_filehub.role_path(bob_text))
+    assert sue_filehub.role_file_exists(bob_text)
 
 
 def test_FileHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
@@ -106,13 +106,13 @@ def test_FileHub_delete_role_file_DeletesAgendaFile(env_dir_setup_cleanup):
     texas_filehub.save_role_agenda(sue_agenda)
     print(f"{texas_filehub.role_path(sue_text)=}")
     role_path = texas_filehub.role_path(sue_text)
-    assert os_path_exists(role_path)
+    assert texas_filehub.role_file_exists(sue_text)
 
     # WHEN
     texas_filehub.delete_role_file(sue_text)
 
     # THEN
-    assert os_path_exists(role_path) is False
+    assert texas_filehub.role_file_exists(sue_text) is False
 
 
 def test_FileHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -129,13 +129,13 @@ def test_FileHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
-    assert os_path_exists(sue_filehub.job_path(bob_text)) is False
+    assert sue_filehub.job_file_exists(bob_text) is False
 
     # WHEN
     sue_filehub.save_job_agenda(bob_agenda)
 
     # THEN
-    assert os_path_exists(sue_filehub.job_path(bob_text))
+    assert sue_filehub.job_file_exists(bob_text)
 
 
 def test_FileHub_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
@@ -188,11 +188,23 @@ def test_FileHub_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):
     sue_text = sue_agenda._owner_id
     texas_filehub.save_job_agenda(sue_agenda)
     print(f"{texas_filehub.job_path(sue_text)=}")
-    job_path = texas_filehub.job_path(sue_text)
-    assert os_path_exists(job_path)
+    assert texas_filehub.job_file_exists(sue_text)
 
     # WHEN
     texas_filehub.delete_job_file(sue_text)
 
     # THEN
-    assert os_path_exists(job_path) is False
+    assert texas_filehub.job_file_exists(sue_text) is False
+
+
+def test_FileHub_delete_treasury_db_file_DeletesFile(env_dir_setup_cleanup):
+    # GIVEN
+    texas_filehub = get_texas_filehub()
+    texas_filehub.create_treasury_db_file()
+    assert texas_filehub.treasury_db_file_exists()
+
+    # WHEN
+    texas_filehub.delete_treasury_db_file()
+
+    # THEN
+    assert texas_filehub.treasury_db_file_exists() is False

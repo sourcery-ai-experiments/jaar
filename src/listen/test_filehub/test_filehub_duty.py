@@ -14,6 +14,7 @@ def test_FileHub_default_duty_agenda_ReturnsCorrectObj():
     sue_text = "Sue"
     slash_text = "/"
     point_five_float = 0.5
+    point_four_float = 0.4
     sue_filehub = filehub_shop(
         env_dir(),
         real_id(),
@@ -22,6 +23,7 @@ def test_FileHub_default_duty_agenda_ReturnsCorrectObj():
         nox_type=None,
         road_delimiter=slash_text,
         planck=point_five_float,
+        penny=point_four_float,
     )
 
     # WHEN
@@ -32,6 +34,7 @@ def test_FileHub_default_duty_agenda_ReturnsCorrectObj():
     assert sue_default_duty._owner_id == sue_filehub.person_id
     assert sue_default_duty._road_delimiter == sue_filehub.road_delimiter
     assert sue_default_duty._planck == sue_filehub.planck
+    assert sue_default_duty._penny == sue_filehub.penny
 
 
 def test_FileHub_delete_duty_file_DeletesDutyFile(env_dir_setup_cleanup):

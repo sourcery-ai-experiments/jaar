@@ -6,7 +6,11 @@ from src._instrument.python import (
     get_False_if_None,
     get_empty_dict_if_none,
 )
-from src._road.finance import trim_planck_excess, default_planck_if_none
+from src._road.finance import (
+    trim_planck_excess,
+    default_planck_if_none,
+    default_penny_if_none,
+)
 from src._road.jaar_config import max_tree_traverse_default
 from src._road.road import (
     get_parent_road,
@@ -130,6 +134,7 @@ class AgendaUnit:
     _max_tree_traverse: int = None
     _road_delimiter: str = None
     _planck: float = None
+    _penny: float = None
     _monetary_desc: str = None
     _party_creditor_pool: int = None
     _party_debtor_pool: int = None
@@ -2039,6 +2044,7 @@ class AgendaUnit:
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_planck": self._planck,
+            "_penny": self._penny,
             "_owner_id": self._owner_id,
             "_real_id": self._real_id,
             "_max_tree_traverse": self._max_tree_traverse,
@@ -2301,6 +2307,7 @@ def agendaunit_shop(
     _real_id: RealID = None,
     _road_delimiter: str = None,
     _planck: float = None,
+    _penny: float = None,
     _weight: float = None,
     _meld_strategy: MeldStrategy = None,
 ) -> AgendaUnit:
@@ -2322,6 +2329,7 @@ def agendaunit_shop(
         _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
+        _penny=default_penny_if_none(_penny),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _econs_justified=get_False_if_None(),
         _econs_buildable=get_False_if_None(),
@@ -2354,6 +2362,9 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     )
     x_agenda._planck = default_planck_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_planck")
+    )
+    x_agenda._penny = default_penny_if_none(
+        get_obj_from_agenda_dict(agenda_dict, "_penny")
     )
     x_agenda._party_creditor_pool = get_obj_from_agenda_dict(
         agenda_dict, "_party_creditor_pool"

@@ -344,6 +344,9 @@ def _modify_agenda_update_agendaunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_arg = "_planck"
     if x_quark.get_value(x_arg) != None:
         x_agenda._planck = x_quark.get_value(x_arg)
+    x_arg = "_penny"
+    if x_quark.get_value(x_arg) != None:
+        x_agenda._penny = x_quark.get_value(x_arg)
 
 
 def _modify_agenda_groupunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):

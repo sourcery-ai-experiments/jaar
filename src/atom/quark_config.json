@@ -364,6 +364,10 @@
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
+            "_penny": {
+                "python_type": "float",
+                "sqlite_datatype": "REAL"
+            },
             "_planck": {
                 "python_type": "float",
                 "sqlite_datatype": "REAL"
