@@ -7,6 +7,7 @@ from src._instrument.file import (
     set_dir,
     get_integer_filenames,
 )
+from src._instrument.python import get_empty_set_if_none
 from src._road.jaar_config import (
     roles_str,
     jobs_str,
@@ -64,6 +65,10 @@ class SaveAtomFileException(Exception):
 
 
 class AtomFileMissingException(Exception):
+    pass
+
+
+class PersonCreateMoneyUnitsException(Exception):
     pass
 
 
@@ -427,6 +432,8 @@ class FileHub:
     def save_role_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)
         save_file(self.roles_dir(), x_file_name, x_agenda.get_json())
+        save_path = f"{self.roles_dir()}/{x_file_name}"
+        print(f"{save_path=}")
 
     def save_job_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)
@@ -555,6 +562,28 @@ class FileHub:
         if os_path_exists(x_file_path):
             file_contents = open_file(listener_dir, listener_file_name)
             return agendaunit_get_from_json(file_contents)
+
+    def get_econ_roads(self):
+        x_duty_agenda = self.get_duty_agenda()
+        x_duty_agenda.calc_agenda_metrics()
+        if x_duty_agenda._econs_justified is False:
+            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_justified' is False."
+            raise PersonCreateMoneyUnitsException(x_str)
+        if x_duty_agenda._econs_buildable is False:
+            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_buildable' is False."
+            raise PersonCreateMoneyUnitsException(x_str)
+        person_healer_dict = x_duty_agenda._healers_dict.get(self.person_id)
+        if person_healer_dict is None:
+            return get_empty_set_if_none(None)
+        econ_roads = x_duty_agenda._healers_dict.get(self.person_id).keys()
+        return get_empty_set_if_none(econ_roads)
+
+    def save_all_duty_roles(self):
+        duty = self.get_duty_agenda()
+        for x_econ_road in self.get_econ_roads():
+            self.econ_road = x_econ_road
+            self.save_role_agenda(duty)
+        self.econ_road = None
 
 
 def filehub_shop(
