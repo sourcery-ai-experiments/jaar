@@ -901,7 +901,7 @@ class AgendaUnit:
         # Now get associates (all their descendants and range_source_roads)
         lemma_beliefunits = {}  # belief.base : beliefUnit
         count_x = 0
-        while x_lemmas.is_lemmas_evaluated() is False or count_x > 10000:
+        while count_x > 10000 or x_lemmas.is_lemmas_evaluated() is False:
             count_x += 1
             if count_x == 9998:
                 raise InvalidAgendaException("lemma loop failed")

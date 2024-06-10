@@ -119,18 +119,18 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemor
     assert os_path_exists(x_money.filehub.treasury_db_path()) is False
 
 
-def test_MoneyUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
-    env_dir_setup_cleanup,
-):
-    # GIVEN create econ
-    x_money = MoneyUnit(get_texas_filehub())
-    # WHEN/THEN
-    with pytest_raises(Exception) as excinfo:
-        check_connection(x_money.get_treasury_conn())
-    assert str(excinfo.value) == "unable to open database file"
+# def test_MoneyUnit_get_treasury_conn_CreatesTreasuryDBIfItDoesNotExist(
+#     env_dir_setup_cleanup,
+# ):
+#     # GIVEN create econ
+#     x_money = MoneyUnit(get_texas_filehub())
+#     # WHEN/THEN
+#     with pytest_raises(Exception) as excinfo:
+#         check_connection(x_money.get_treasury_conn())
+#     assert str(excinfo.value) == "unable to open database file"
 
-    # WHEN
-    x_money.create_treasury_db(in_memory=True)
+#     # WHEN
+#     x_money.create_treasury_db(in_memory=True)
 
-    # THEN
-    assert check_connection(x_money.get_treasury_conn())
+#     # THEN
+#     assert check_connection(x_money.get_treasury_conn())

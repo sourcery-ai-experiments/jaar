@@ -6,9 +6,8 @@ from src.atom.quark import (
     quark_hx_table_name,
     get_quarkunit_from_rowdata,
 )
-from src._instrument.sqlite import get_rowdata
+from src._instrument.sqlite import get_rowdata, sqlite_connection
 from pytest import raises as pytest_raises
-from sqlite3 import connect as sqlite3_connect
 
 
 def test_QuarkUnit_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
@@ -23,7 +22,6 @@ def test_QuarkUnit_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     # WHEN
     x_category = "agenda_idea_beliefunit"
     update_disc_quarkunit = quarkunit_shop(x_category, quark_update())
-    # update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
 
     # WHEN / THEN
@@ -44,7 +42,8 @@ def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     x_quarkunit.set_optional_arg(opt_arg2, new2_value)
     # THEN
     x_table = "quark_hx"
-    example_sqlstr = f"""INSERT INTO {x_table} (
+    example_sqlstr = f"""
+INSERT INTO {x_table} (
   {category}_{quark_update()}_{opt_arg2}
 )
 VALUES (
@@ -76,7 +75,8 @@ def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_idea_beliefunit():
     gen_sqlstr = update_disc_quarkunit.get_insert_sqlstr()
 
     # THEN
-    example_sqlstr = f"""INSERT INTO {quark_hx_table_name()} (
+    example_sqlstr = f"""
+INSERT INTO {quark_hx_table_name()} (
   {x_category}_{quark_insert()}_{road_text}
 , {x_category}_{quark_insert()}_{base_text}
 , {x_category}_{quark_insert()}_{open_text}
@@ -108,8 +108,8 @@ def test_get_quarkunit_from_rowdata_ReturnsCorrectObj_idea_beliefunit():
 , '{knee_road}' as {x_category}_{quark_insert()}_{base_text}
 , {knee_open} as {x_category}_{quark_insert()}_{open_text}
 """
-    x_conn = sqlite3_connect(":memory:")
-    x_rowdata = get_rowdata(quark_hx_table_name(), x_conn, x_sqlstr)
+    with sqlite_connection(":memory:") as x_conn:
+        x_rowdata = get_rowdata(quark_hx_table_name(), x_conn, x_sqlstr)
 
     # WHEN
     x_quarkunit = get_quarkunit_from_rowdata(x_rowdata)

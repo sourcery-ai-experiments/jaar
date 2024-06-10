@@ -121,7 +121,7 @@ class RealUnit:
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         return self._get_filehub(person_id).get_duty_agenda()
 
-    def set_person_moneyunits_dirs(self, person_id: PersonID):
+    def _set_all_healer_roles(self, person_id: PersonID):
         x_duty = self.get_person_duty_from_file(person_id)
         x_duty.calc_agenda_metrics()
         for healer_id, healer_dict in x_duty._healers_dict.items():
@@ -135,13 +135,13 @@ class RealUnit:
                 planck=self._planck,
             )
             for econ_idea in healer_dict.values():
-                self._set_person_moneyunits_agent_contract(
+                self._set_person_role(
                     healer_filehub=healer_filehub,
                     econ_road=econ_idea.get_road(),
                     duty_agenda=x_duty,
                 )
 
-    def _set_person_moneyunits_agent_contract(
+    def _set_person_role(
         self,
         healer_filehub: FileHub,
         econ_road: RoadUnit,

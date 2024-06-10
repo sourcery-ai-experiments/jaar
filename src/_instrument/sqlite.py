@@ -1,5 +1,6 @@
 from sqlite3 import Connection, connect as sqlite3_connect
 from dataclasses import dataclass
+from contextlib import contextmanager
 
 
 def sqlite_null(obj_x):
@@ -38,7 +39,8 @@ def check_connection(conn: Connection) -> bool:
 def create_insert_sqlstr(
     x_table: str, x_columns: list[str], x_values: list[str]
 ) -> str:
-    x_str = f"""INSERT INTO {x_table} ("""
+    x_str = f"""
+INSERT INTO {x_table} ("""
     columns_str = ""
     for x_column in x_columns:
         if columns_str == "":
@@ -148,3 +150,17 @@ def check_table_column_existence(tables_dict: dict, db_conn: Connection) -> bool
         #     return False
 
     return True
+
+
+@contextmanager
+def sqlite_connection(db_name):
+    conn = sqlite3_connect(db_name)
+    conn.row_factory = dict_factory
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()

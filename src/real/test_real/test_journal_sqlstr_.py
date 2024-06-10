@@ -191,7 +191,8 @@ def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
     update_disc_quarkunit.set_optional_arg(open_text, knee_open)
 
     # THEN
-    example_sqlstr = f"""INSERT INTO {quark_hx_table_name()} (
+    example_sqlstr = f"""
+INSERT INTO {quark_hx_table_name()} (
   {x_category}_{quark_insert()}_{road_text}
 , {x_category}_{quark_insert()}_{base_text}
 , {x_category}_{quark_insert()}_{open_text}
