@@ -10,7 +10,7 @@ from src.listen.listen import (
     listen_to_debtors_roll,
     create_job_file_from_role_file,
 )
-from src.real.econ_creator import create_duty_treasury_dbs, init_moneyunit
+from src.real.econ_creator import create_duty_treasury_db_files, init_treasury_db_file
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
@@ -148,7 +148,7 @@ class RealUnit:
         econ_road: RoadUnit,
         duty_agenda: AgendaUnit,
     ):
-        x_money = init_moneyunit(healer_filehub, econ_road)
+        x_money = init_treasury_db_file(healer_filehub, econ_road)
         x_money.filehub.save_role_agenda(duty_agenda)
 
     # work agenda management
@@ -167,7 +167,7 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
-            create_duty_treasury_dbs(healer_filehub)
+            create_duty_treasury_db_files(healer_filehub)
             for econ_road in healer_dict.keys():
                 econ_filehub = filehub_shop(
                     reals_dir=self.reals_dir,
