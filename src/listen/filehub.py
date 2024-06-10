@@ -46,6 +46,7 @@ from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
+from sqlite3 import connect as sqlite3_connect, Connection
 
 
 class Invalid_nox_type_Exception(Exception):
@@ -69,6 +70,10 @@ class AtomFileMissingException(Exception):
 
 
 class PersonCreateMoneyUnitsException(Exception):
+    pass
+
+
+class _econ_roadMissingException(Exception):
     pass
 
 
@@ -432,8 +437,6 @@ class FileHub:
     def save_role_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)
         save_file(self.roles_dir(), x_file_name, x_agenda.get_json())
-        save_path = f"{self.roles_dir()}/{x_file_name}"
-        print(f"{save_path=}")
 
     def save_job_agenda(self, x_agenda: AgendaUnit):
         x_file_name = self.owner_file_name(x_agenda._owner_id)
@@ -584,6 +587,26 @@ class FileHub:
             self.econ_road = x_econ_road
             self.save_role_agenda(duty)
         self.econ_road = None
+
+    def create_treasury_db_file(self):
+        self.create_econ_dir_if_missing()
+        sqlite3_connect(self.treasury_db_path())
+
+    def treasury_db_file_exists(self) -> bool:
+        return os_path_exists(self.treasury_db_path())
+
+    def treasury_db_file_conn(self) -> Connection:
+        if self.econ_road is None:
+            raise _econ_roadMissingException(
+                f"filehub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
+            )
+        return sqlite3_connect(self.treasury_db_path())
+
+    def create_duty_treasury_db_files(self):
+        for x_econ_road in self.get_econ_roads():
+            self.econ_road = x_econ_road
+            self.create_treasury_db_file()
+
 
 
 def filehub_shop(

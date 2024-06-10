@@ -3,7 +3,6 @@ from src.agenda.idea import ideaunit_shop
 from src.listen.filehub import filehub_shop
 
 # from src.agenda.graphic import display_ideatree
-from src.real.econ_creator import create_duty_treasury_db_files
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir
 
@@ -46,7 +45,7 @@ def create_example_real1() -> RealUnit:
         planck=yao_filehub.planck,
     )
     x_filehub.save_duty_agenda(yao_duty_agenda)
-    create_duty_treasury_db_files(yao_filehub)
+    yao_filehub.create_duty_treasury_db_files()
 
     # WHEN
     music_real.set_person_moneyunits_dirs(yao_text)
@@ -110,9 +109,9 @@ def create_example_real2() -> RealUnit:
     yao_filehub.save_duty_agenda(yao_duty_agenda)
     wei_filehub.save_duty_agenda(wei_duty_agenda)
     zia_filehub.save_duty_agenda(zia_duty_agenda)
-    create_duty_treasury_db_files(yao_filehub)
-    create_duty_treasury_db_files(wei_filehub)
-    create_duty_treasury_db_files(zia_filehub)
+    yao_filehub.create_duty_treasury_db_files()
+    wei_filehub.create_duty_treasury_db_files()
+    zia_filehub.create_duty_treasury_db_files()
     music_real.set_person_moneyunits_dirs(yao_text)
     music_real.set_person_moneyunits_dirs(wei_text)
     music_real.set_person_moneyunits_dirs(zia_text)
@@ -249,21 +248,5 @@ def create_example_real4() -> RealUnit:
     yao_filehub.save_duty_agenda(yao_duty_agenda)
     wei_filehub.save_duty_agenda(wei_duty_agenda)
     zia_filehub.save_duty_agenda(zia_duty_agenda)
-    # create_duty_treasury_db_files(yao_filehub)
-    # wei_create_duty_treasury_db_files()
-    # zia_create_duty_treasury_db_files()
-
-    # yao_dallas_money.filehub.save_role_agenda(yao_duty_agenda)
-    # yao_dallas_money.filehub.save_role_agenda(wei_duty_agenda)
-    # yao_dallas_money.filehub.save_role_agenda(zia_duty_agenda)
-    # zia_dallas_money.filehub.save_role_agenda(yao_duty_agenda)
-    # zia_dallas_money.filehub.save_role_agenda(wei_duty_agenda)
-    # zia_dallas_money.filehub.save_role_agenda(zia_duty_agenda)
-    # yao_elpaso_money.filehub.save_role_agenda(yao_duty_agenda)
-    # yao_elpaso_money.filehub.save_role_agenda(wei_duty_agenda)
-    # yao_elpaso_money.filehub.save_role_agenda(zia_duty_agenda)
-    # music_real.set_all_moneyunits_role(yao_text)
-    # music_real.set_all_moneyunits_role(wei_text)
-    # music_real.set_all_moneyunits_role(zia_text)
 
     return music_real
