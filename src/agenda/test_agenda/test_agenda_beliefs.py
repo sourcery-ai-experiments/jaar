@@ -607,12 +607,12 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario4_1():
     sue_agenda.set_belief(jajatime_road, jajatime_road, open=1500, nigh=1500)
     lhu = sue_agenda._get_lemma_beliefunits()
 
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 1500
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 1500
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open < 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh < 1
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 1500
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 1500
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 0
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 1
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 0
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 1
     assert lhu[sue_agenda.make_road(jajatime_road, "days")].open >= 1
     assert lhu[sue_agenda.make_road(jajatime_road, "days")].open <= 2
     assert lhu[sue_agenda.make_road(jajatime_road, "days")].nigh >= 1
@@ -634,12 +634,14 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario5():
     sue_agenda.set_belief(jajatime_road, jajatime_road, 1500, nigh=1063954002)
     lhu = sue_agenda._get_lemma_beliefunits()
 
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 210379680
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open < 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh < 6
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 0
+    assert (
+        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 210379680
+    )
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 0
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 1
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 5
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 6
     lemma_days = lhu[sue_agenda.make_road(jajatime_road, "days")]
     assert int(lemma_days.open) == 1  # 0 / 1440
     assert int(lemma_days.nigh) == 738856  # 1063953183 / 1440
@@ -662,12 +664,16 @@ def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario6():
     sue_agenda.set_belief(jajatime_road, jajatime_road, 1063954000, nigh=1063954002)
     lhu = sue_agenda._get_lemma_beliefunits()
 
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].open == 12055600.0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycle")].nigh == 12055602.0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].open < 6
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year cycles")].nigh < 6
+    assert (
+        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 12055600.0
+    )
+    assert (
+        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 12055602.0
+    )
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 5
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 6
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 5
+    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 6
     lemma_days = lhu[sue_agenda.make_road(jajatime_road, "days")]
     assert int(lemma_days.open) == 738856  # 1063954000 / 1440
     assert int(lemma_days.nigh) == 738856  # 1063954000 / 1440
