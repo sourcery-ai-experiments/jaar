@@ -1,15 +1,15 @@
 from src.agenda.party import PartyUnit
 
 
-def distribute_scale(partys: PartyUnit, scale_number: float, grain_unit):
+def allot_scale(partys: PartyUnit, scale_number: float, grain_unit):
     """
-    Distributes the scale_number across partys with creditor_weighted attributes with a resolution of the grain unit.
+    allots the scale_number across partys with creditor_weighted attributes with a resolution of the grain unit.
 
     :param partys: Dictionary of partys with 'creditor_weight' attribute.
-    :param scale_number: The total number to distribute.
+    :param scale_number: The total number to allot.
     :param grain_unit: The smallest unit of distribution.
     :raises ValueError: If the scale number is not a multiple of the grain unit.
-    :return: Dictionary with distributed values.
+    :return: Dictionary with alloted values.
     """
     # Check if the scale number is a multiple of the grain unit
     if scale_number % grain_unit != 0:
@@ -26,8 +26,8 @@ def distribute_scale(partys: PartyUnit, scale_number: float, grain_unit):
         share = (obj["creditor_weight"] / total_creditor_weight) * scale_number
 
         # Adjust to the nearest grain unit
-        distributed_value = round(share / grain_unit) * grain_unit
-        partys[key]["distributed_value"] = distributed_value
+        alloted_value = round(share / grain_unit) * grain_unit
+        partys[key]["alloted_value"] = alloted_value
 
     return partys
 
@@ -38,5 +38,5 @@ def distribute_scale(partys: PartyUnit, scale_number: float, grain_unit):
 # scale_number = 100
 # grain_unit = 0.3
 
-# distributed_partys = distribute_scale(partys, scale_number, grain_unit)
-# print(distributed_partys)
+# alloted_partys = allot_scale(partys, scale_number, grain_unit)
+# print(alloted_partys)

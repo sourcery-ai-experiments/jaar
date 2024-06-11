@@ -63,9 +63,7 @@ def _get_planck_scaled_weight(
     return int(x_ingest_weight / planck) * planck
 
 
-def _distribute_ingest(
-    x_list: list[IdeaUnit], nonallocated_ingest: float, planck: float
-):
+def _allot_ingest(x_list: list[IdeaUnit], nonallocated_ingest: float, planck: float):
     # TODO very slow needs to be optimized
     if x_list:
         x_count = 0
@@ -98,7 +96,7 @@ def generate_ingest_list(
     ]
     sum_scaled_ingest = sum(x_ideaunit._weight for x_ideaunit in item_list)
     nonallocated_ingest = debtor_amount - sum_scaled_ingest
-    _distribute_ingest(x_list, nonallocated_ingest, planck)
+    _allot_ingest(x_list, nonallocated_ingest, planck)
     return x_list
 
 

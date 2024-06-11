@@ -1616,10 +1616,10 @@ class AgendaUnit:
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
 
-    def _distribute_agenda_intent_importance(self):
+    def _allot_agenda_intent_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
-            # distribute agenda_importance via general partyunit
+            # allot agenda_importance via general partyunit
             # credit ratio and debt ratio
             # if idea.is_intent_item() and idea._balancelines == {}:
             if idea.is_intent_item():
@@ -1635,7 +1635,7 @@ class AgendaUnit:
                             balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
 
-    def _distribute_groups_agenda_importance(self):
+    def _allot_groups_agenda_importance(self):
         for group_obj in self._groups.values():
             group_obj._set_partylink_agenda_credit_debt()
             for partylink in group_obj._partys.values():
@@ -1805,7 +1805,7 @@ class AgendaUnit:
 
         if x_idearoot.is_kidless():
             self._set_ancestors_metrics(self._idearoot.get_road(), econ_exceptions)
-            self._distribute_agenda_importance(idea=self._idearoot)
+            self._allot_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
         self,
@@ -1842,9 +1842,9 @@ class AgendaUnit:
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
             self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
-            self._distribute_agenda_importance(idea=idea_kid)
+            self._allot_agenda_importance(idea=idea_kid)
 
-    def _distribute_agenda_importance(self, idea: IdeaUnit):
+    def _allot_agenda_importance(self, idea: IdeaUnit):
         # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
         if idea.is_balanceheirless() is False:
@@ -1931,8 +1931,8 @@ class AgendaUnit:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):
-        self._distribute_agenda_intent_importance()
-        self._distribute_groups_agenda_importance()
+        self._allot_agenda_intent_importance()
+        self._allot_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
