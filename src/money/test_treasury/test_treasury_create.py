@@ -1,5 +1,5 @@
 from src.money.money import moneyunit_shop, MoneyUnit
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src._instrument.sqlite import get_db_tables, get_db_columns
 from src._instrument.file import open_file
 from src._instrument.python import get_nested_value, get_dict_from_json
@@ -28,7 +28,7 @@ def check_table_column_existence(tables_dict: dict, x_money: MoneyUnit) -> bool:
 
 def test_MoneyUnit_set_econ_dirs_CorrectlyCreatesDBTables(env_dir_setup_cleanup):
     # GIVEN create econ
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     # WHEN
     x_money.create_treasury_db(in_memory=True)

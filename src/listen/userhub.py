@@ -107,7 +107,7 @@ def pipeline_job_work_text() -> str:
 
 
 @dataclass
-class FileHub:
+class UserHub:
     person_id: PersonID = None
     reals_dir: str = None
     real_id: str = None
@@ -497,16 +497,16 @@ class FileHub:
         if self._nox_type == pipeline_role_job_text():
             return self.jobs_dir()
         if self._nox_type == pipeline_duty_work_text():
-            speaker_filehub = filehub_shop(
+            speaker_userhub = userhub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
                 road_delimiter=self.road_delimiter,
                 planck=self.planck,
             )
-            return speaker_filehub.work_dir()
+            return speaker_userhub.work_dir()
         if self._nox_type == pipeline_job_work_text():
-            speaker_filehub = filehub_shop(
+            speaker_userhub = userhub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
                 person_id=x_person_id,
@@ -514,7 +514,7 @@ class FileHub:
                 road_delimiter=self.road_delimiter,
                 planck=self.planck,
             )
-            return speaker_filehub.jobs_dir()
+            return speaker_userhub.jobs_dir()
 
     def speaker_file_name(self, x_arg=None) -> str:
         if self._nox_type == pipeline_role_job_text():
@@ -607,7 +607,7 @@ class FileHub:
     def treasury_db_file_conn(self) -> Connection:
         if self.econ_road is None:
             raise _econ_roadMissingException(
-                f"filehub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
+                f"userhub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
             )
         if self.treasury_db_file_exists() is False:
             self.create_treasury_db_file()
@@ -620,7 +620,7 @@ class FileHub:
         self.econ_road = None
 
 
-def filehub_shop(
+def userhub_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID = None,
@@ -629,13 +629,13 @@ def filehub_shop(
     road_delimiter: str = None,
     planck: float = None,
     penny: float = None,
-) -> FileHub:
+) -> UserHub:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
     if real_id is None:
         real_id = get_test_real_id()
 
-    x_filehub = FileHub(
+    x_userhub = UserHub(
         reals_dir=reals_dir,
         real_id=real_id,
         person_id=validate_roadnode(person_id, road_delimiter),
@@ -644,12 +644,12 @@ def filehub_shop(
         planck=default_planck_if_none(planck),
         penny=default_penny_if_none(penny),
     )
-    x_filehub.set_nox_type(nox_type)
-    return x_filehub
+    x_userhub.set_nox_type(nox_type)
+    return x_userhub
 
 
-def get_econ_path(x_filehub: FileHub, x_road: RoadNode) -> str:
+def get_econ_path(x_userhub: UserHub, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_filehub.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_filehub.road_delimiter)
-    return f"{x_filehub.econs_dir()}{get_directory_path(x_list=[*x_list])}"
+    x_road = rebuild_road(x_road, x_userhub.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_userhub.road_delimiter)
+    return f"{x_userhub.econs_dir()}{get_directory_path(x_list=[*x_list])}"

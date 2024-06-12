@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
@@ -12,7 +12,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -24,12 +24,12 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
     x_money.set_credit_flow_for_agenda(owner_id=sal_text)
@@ -51,7 +51,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -63,25 +63,25 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
     x_money.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)

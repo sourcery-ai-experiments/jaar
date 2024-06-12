@@ -3,7 +3,7 @@ from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
-from src.listen.filehub import filehub_shop
+from src.listen.userhub import userhub_shop
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -123,15 +123,15 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_clean
         in_memory_journal=True,
     )
     luca_text = "Luca"
-    luca_filehub = filehub_shop(None, music_text, luca_text, None, planck=x_planck)
-    assert os_path_exists(luca_filehub.work_path()) is False
+    luca_userhub = userhub_shop(None, music_text, luca_text, None, planck=x_planck)
+    assert os_path_exists(luca_userhub.work_path()) is False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_filehub.work_path())
+    assert os_path_exists(luca_userhub.work_path())
 
 
 def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -140,11 +140,11 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_clea
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     music_real.init_person_econs(luca_text)
-    luca_filehub = filehub_shop(None, music_text, luca_text, None)
+    luca_userhub = userhub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
-    luca_duty = luca_filehub.get_duty_agenda()
+    luca_duty = luca_userhub.get_duty_agenda()
     luca_duty.add_partyunit(bob_text)
-    luca_filehub.save_duty_agenda(luca_duty)
+    luca_userhub.save_duty_agenda(luca_duty)
 
     # WHEN
     gen_luca_duty = music_real.get_person_duty_from_file(luca_text)
@@ -164,10 +164,10 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     todd_text = "Todd"
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    luca_filehub = filehub_shop(None, music_text, luca_text, None)
-    todd_filehub = filehub_shop(None, music_text, todd_text, None)
-    luca_duty_agenda = luca_filehub.get_duty_agenda()
-    todd_duty_agenda = todd_filehub.get_duty_agenda()
+    luca_userhub = userhub_shop(None, music_text, luca_text, None)
+    todd_userhub = userhub_shop(None, music_text, todd_text, None)
+    luca_duty_agenda = luca_userhub.get_duty_agenda()
+    todd_duty_agenda = todd_userhub.get_duty_agenda()
 
     luca_duty_agenda.add_partyunit(luca_text)
     luca_duty_agenda.add_partyunit(todd_text)
@@ -191,14 +191,14 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     todd_duty_agenda.add_idea(dallas_idea, texas_road)
     todd_duty_agenda.add_idea(elpaso_idea, texas_road)
     # display_ideatree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
-    luca_filehub.save_duty_agenda(luca_duty_agenda)
-    todd_filehub.save_duty_agenda(todd_duty_agenda)
+    luca_userhub.save_duty_agenda(luca_duty_agenda)
+    todd_userhub.save_duty_agenda(todd_duty_agenda)
     luca_file_name = get_json_filename(luca_text)
     todd_file_name = get_json_filename(todd_text)
-    luca_dallas_filehub = filehub_shop(None, music_text, luca_text, dallas_road)
-    todd_dallas_filehub = filehub_shop(None, music_text, todd_text, dallas_road)
-    luca_roles_dir = luca_dallas_filehub.roles_dir()
-    todd_roles_dir = todd_dallas_filehub.roles_dir()
+    luca_dallas_userhub = userhub_shop(None, music_text, luca_text, dallas_road)
+    todd_dallas_userhub = userhub_shop(None, music_text, todd_text, dallas_road)
+    luca_roles_dir = luca_dallas_userhub.roles_dir()
+    todd_roles_dir = todd_dallas_userhub.roles_dir()
     luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
     luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
     todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
@@ -227,22 +227,22 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
-def test_RealUnit_get_person_filehubs_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
 
     # WHEN / THEN
-    assert len(music_real.get_person_filehubs()) == 0
+    assert len(music_real.get_person_userhubs()) == 0
 
     # WHEN
     music_real.init_person_econs(luca_text)
     music_real.init_person_econs(todd_text)
-    music_all_persons = music_real.get_person_filehubs()
+    music_all_persons = music_real.get_person_userhubs()
 
     # THEN
-    luca_filehub = filehub_shop(
+    luca_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
         person_id=luca_text,
@@ -251,7 +251,7 @@ def test_RealUnit_get_person_filehubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         road_delimiter=music_real._road_delimiter,
         planck=music_real._planck,
     )
-    todd_filehub = filehub_shop(
+    todd_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
         person_id=todd_text,
@@ -260,6 +260,6 @@ def test_RealUnit_get_person_filehubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         road_delimiter=music_real._road_delimiter,
         planck=music_real._planck,
     )
-    assert music_all_persons.get(luca_text) == luca_filehub
-    assert music_all_persons.get(todd_text) == todd_filehub
-    assert len(music_real.get_person_filehubs()) == 2
+    assert music_all_persons.get(luca_text) == luca_userhub
+    assert music_all_persons.get(todd_text) == todd_userhub
+    assert len(music_real.get_person_userhubs()) == 2

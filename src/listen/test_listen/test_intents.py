@@ -2,12 +2,12 @@ from src._instrument.file import delete_dir, save_file
 from src._road.jaar_config import get_json_filename
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
-from src.listen.filehub import filehub_shop, pipeline_role_job_text as role_job
+from src.listen.userhub import userhub_shop, pipeline_role_job_text as role_job
 from src.listen.listen import create_listen_basis, listen_to_speakers_intent
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as temp_dir,
     env_dir_setup_cleanup,
-    get_dakota_filehub,
+    get_dakota_userhub,
     get_dakota_road,
 )
 from src.listen.examples.example_listen import (
@@ -45,14 +45,14 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWhenNo_suffgroupIsSet(
     zia_agendaunit.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_agendaunit.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_agendaunit.add_partyunit(yao_text, debtor_weight=12)
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
-    filehub.save_job_agenda(zia_agendaunit)
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    userhub.save_job_agenda(zia_agendaunit)
     new_agenda = create_listen_basis(yao_src_listener)
     assert len(new_agenda.get_intent_dict()) == 0
 
     # WHEN
     print(f"{len(new_agenda.get_idea_dict())=}")
-    listen_to_speakers_intent(new_agenda, filehub, yao_src_listener)
+    listen_to_speakers_intent(new_agenda, userhub, yao_src_listener)
 
     # THEN
     assert len(new_agenda.get_intent_dict()) == 2
@@ -77,9 +77,9 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgenda(env_dir_setup_cleanup):
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
     save_file(
-        filehub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
+        userhub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
     )
     # zia_file_path = f"{jobs_dir}/{zia_text}.json"
     # print(f"{os_path_exists(zia_file_path)=}")
@@ -88,7 +88,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgenda(env_dir_setup_cleanup):
 
     # WHEN
     print(f"{len(new_agenda.get_idea_dict())=}")
-    listen_to_speakers_intent(new_agenda, filehub, yao_src_listener)
+    listen_to_speakers_intent(new_agenda, userhub, yao_src_listener)
 
     # THEN
     assert len(new_agenda.get_intent_dict()) == 2
@@ -112,16 +112,16 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
     assert len(bob_cook_ideaunit._reasonunits) == 0
     zia_text = zia_speaker._owner_id
     bob_text = bob_speaker._owner_id
-    dakota_filehub = get_dakota_filehub()
-    dakota_filehub.save_job_agenda(zia_speaker)
-    dakota_filehub.save_job_agenda(bob_speaker)
+    dakota_userhub = get_dakota_userhub()
+    dakota_userhub.save_job_agenda(zia_speaker)
+    dakota_userhub.save_job_agenda(bob_speaker)
 
     yao_src = get_example_yao_speaker()
     new_yao1_agenda = create_listen_basis(yao_src)
     assert new_yao1_agenda.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_speakers_intent(new_yao1_agenda, dakota_filehub, yao_src)
+    listen_to_speakers_intent(new_yao1_agenda, dakota_userhub, yao_src)
 
     # THEN
     assert new_yao1_agenda.idea_exists(cook_road())
@@ -140,7 +140,7 @@ def test_listen_to_speakers_intent_AddsTasksToJobAgendaWithDetailsDecidedBy_debt
     assert new_yao2_agenda.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_speakers_intent(new_yao2_agenda, dakota_filehub, yao_src)
+    listen_to_speakers_intent(new_yao2_agenda, dakota_userhub, yao_src)
 
     # THEN
     assert new_yao2_agenda.idea_exists(cook_road())
@@ -178,9 +178,9 @@ def test_listen_to_speakers_intent_ProcessesIrrationalAgenda(env_dir_setup_clean
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
     save_file(
-        filehub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
+        userhub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
     )
 
     sue_agendaunit = agendaunit_shop(sue_text)
@@ -213,12 +213,12 @@ def test_listen_to_speakers_intent_ProcessesIrrationalAgenda(env_dir_setup_clean
         reason_suff_idea_active=False,
     )
     save_file(
-        filehub.jobs_dir(), get_json_filename(sue_text), sue_agendaunit.get_json()
+        userhub.jobs_dir(), get_json_filename(sue_text), sue_agendaunit.get_json()
     )
 
     # WHEN
     new_agenda = create_listen_basis(yao_src_listener)
-    listen_to_speakers_intent(new_agenda, filehub, yao_src_listener)
+    listen_to_speakers_intent(new_agenda, userhub, yao_src_listener)
 
     # THEN irrational agenda is ignored
     assert len(new_agenda.get_intent_dict()) != 3
@@ -236,8 +236,8 @@ def test_listen_to_speakers_intent_ProcessesMissingDebtorJobAgenda(
 ):
     # GIVEN
     yao_text = "Yao"
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
-    sue_file_path = f"{filehub.jobs_dir()}/Sue.json"
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    sue_file_path = f"{userhub.jobs_dir()}/Sue.json"
     delete_dir(sue_file_path)  # don't know why I have to do this...
     print(f"{os_path_exists(sue_file_path)=}")
     yao_src_listener = agendaunit_shop(yao_text)
@@ -252,7 +252,7 @@ def test_listen_to_speakers_intent_ProcessesMissingDebtorJobAgenda(
     yao_pool = 92
     yao_src_listener.set_party_pool(yao_pool)
     yao_json = yao_src_listener.get_json()
-    save_file(filehub.roles_dir(), get_json_filename(yao_text), yao_json)
+    save_file(userhub.roles_dir(), get_json_filename(yao_text), yao_json)
 
     zia_agendaunit = agendaunit_shop(zia_text)
     zia_agendaunit.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -262,14 +262,14 @@ def test_listen_to_speakers_intent_ProcessesMissingDebtorJobAgenda(
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
     save_file(
-        filehub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
+        userhub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
     )
 
     # WHEN
     new_agenda = create_listen_basis(yao_src_listener)
-    listen_to_speakers_intent(new_agenda, filehub, yao_src_listener)
+    listen_to_speakers_intent(new_agenda, userhub, yao_src_listener)
 
     # THEN irrational agenda is ignored
     assert len(new_agenda.get_intent_dict()) != 3
@@ -299,8 +299,8 @@ def test_listen_to_speakers_intent_ListensToOwner_role_AndNotOwner_job(
     yao_pool = 87
     yao_src_listener.set_party_pool(yao_pool)
     # save yao without task to roles
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
-    save_file(filehub.roles_dir(), yao_text, yao_src_listener.get_json())
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    save_file(userhub.roles_dir(), yao_text, yao_src_listener.get_json())
 
     # Save Zia to jobs
     zia_text = "Zia"
@@ -312,9 +312,9 @@ def test_listen_to_speakers_intent_ListensToOwner_role_AndNotOwner_job(
     cook_ideaunit = zia_agendaunit.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffgroup(yao_text)
     cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    filehub = filehub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
+    userhub = userhub_shop(temp_dir(), None, yao_text, get_dakota_road(), role_job())
     save_file(
-        filehub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
+        userhub.jobs_dir(), get_json_filename(zia_text), zia_agendaunit.get_json()
     )
 
     # save yao with task to roles
@@ -324,11 +324,11 @@ def test_listen_to_speakers_intent_ListensToOwner_role_AndNotOwner_job(
     yao_job.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
     vacuum_ideaunit = yao_job.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffgroup(yao_text)
-    save_file(filehub.jobs_dir(), get_json_filename(yao_text), yao_job.get_json())
+    save_file(userhub.jobs_dir(), get_json_filename(yao_text), yao_job.get_json())
 
     # WHEN
     new_agenda = create_listen_basis(yao_src_listener)
-    listen_to_speakers_intent(new_agenda, filehub, yao_src_listener)
+    listen_to_speakers_intent(new_agenda, userhub, yao_src_listener)
 
     # THEN irrational agenda is ignored
     assert len(new_agenda.get_intent_dict()) != 3
@@ -351,15 +351,15 @@ def test_listen_to_speakers_intent_GetsIntentFromSrcAgendaNotSpeakerSelf(
     assert yao_speaker.idea_exists(run_road()) is False
     assert yao_speaker.idea_exists(clean_road()) is False
     yao_speaker.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    dakota_filehub = get_dakota_filehub()
-    dakota_filehub.save_job_agenda(yao_speaker)
+    dakota_userhub = get_dakota_userhub()
+    dakota_userhub.save_job_agenda(yao_speaker)
 
     new_yao_agenda = create_listen_basis(yao_src_listener)
     assert new_yao_agenda.idea_exists(run_road()) is False
     assert new_yao_agenda.idea_exists(clean_road()) is False
 
     # WHEN
-    listen_to_speakers_intent(new_yao_agenda, dakota_filehub, yao_src_listener)
+    listen_to_speakers_intent(new_yao_agenda, dakota_userhub, yao_src_listener)
 
     # THEN
     assert new_yao_agenda.idea_exists(clean_road()) is False

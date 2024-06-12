@@ -3,7 +3,7 @@ from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
-from src.listen.filehub import FileHub
+from src.listen.userhub import UserHub
 from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
@@ -46,7 +46,7 @@ class IntentBaseDoesNotExistException(Exception):
 
 @dataclass
 class MoneyUnit:
-    filehub: FileHub
+    userhub: UserHub
     _treasury_db = None
 
     # treasurying
@@ -152,11 +152,11 @@ class MoneyUnit:
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.filehub.get_job_agenda(owner_id=owner_id)
+            x_agenda = self.userhub.get_job_agenda(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.filehub.save_job_agenda(x_agenda)
+            self.userhub.save_job_agenda(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -170,8 +170,8 @@ class MoneyUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for person_id in self.filehub.get_jobs_dir_file_names_list():
-            agendaunit_x = self.filehub.get_job_agenda(person_id)
+        for person_id in self.userhub.get_jobs_dir_file_names_list():
+            agendaunit_x = self.userhub.get_job_agenda(person_id)
             agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
@@ -236,7 +236,7 @@ class MoneyUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return self.filehub.treasury_db_file_conn()
+            return self.userhub.treasury_db_file_conn()
         else:
             return self._treasury_db
 
@@ -245,13 +245,13 @@ class MoneyUnit:
     ) -> Connection:
         if overwrite:
             self._treasury_db = None
-            self.filehub.delete_treasury_db_file()
+            self.userhub.delete_treasury_db_file()
 
         treasury_file_new = True
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            self.filehub.create_treasury_db_file()
+            self.userhub.create_treasury_db_file()
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
@@ -296,13 +296,13 @@ class MoneyUnit:
     # exporting metrics to agenda files
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.filehub.get_role_agenda(owner_id)
+            owner_role = self.userhub.get_role_agenda(owner_id)
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
-            self.filehub.save_role_agenda(owner_role)
+            self.userhub.save_role_agenda(owner_role)
 
     def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.filehub.get_job_agenda(x_owner_id)
+        x_agenda = self.userhub.get_job_agenda(x_owner_id)
 
         for groupunit_x in x_agenda._groups.values():
             if groupunit_x._treasury_partylinks != None:
@@ -315,15 +315,15 @@ class MoneyUnit:
                     if x_owner_id != agenda_ideaunit.owner_id:
                         partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
                         groupunit_x.set_partylink(partylink_x)
-        self.filehub.save_job_agenda(x_agenda)
+        self.userhub.save_job_agenda(x_agenda)
         self.refresh_treasury_job_agendas_data()
 
 
-def moneyunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> MoneyUnit:
+def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
 
-    x_moneyunit = MoneyUnit(x_filehub)
+    x_moneyunit = MoneyUnit(x_userhub)
     x_moneyunit.create_treasury_db(in_memory=in_memory_treasury)
     return x_moneyunit
 
