@@ -562,7 +562,6 @@ class UserHub:
         speaker_dir = self.speaker_dir(person_id)
         speaker_file_name = self.speaker_file_name(person_id)
         x_file_path = f"{speaker_dir}/{speaker_file_name}"
-        print(f"{x_file_path=}")
         if os_path_exists(x_file_path) or not return_None_if_missing:
             file_contents = open_file(speaker_dir, speaker_file_name)
             return agendaunit_get_from_json(file_contents)
