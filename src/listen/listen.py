@@ -7,7 +7,7 @@ from src._road.road import (
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, PartyUnit
 from src.listen.basis_agendas import create_empty_agenda, create_listen_basis
-from src.listen.userhub import UserHub
+from src.listen.userhub import UserHub, pipeline_duty_work_text
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 
@@ -292,3 +292,10 @@ def create_job_file_from_role_file(userhub: UserHub, person_id: PersonID):
     x_job = listen_to_debtors_roll(x_role, userhub)
     userhub.save_job_agenda(x_job)
     return x_job
+
+
+def create_work_file_from_duty_file(userhub: UserHub):
+    userhub.set_nox_type(pipeline_duty_work_text())
+    x_duty = userhub.get_duty_agenda()
+    x_work = listen_to_debtors_roll(x_duty, userhub)
+    userhub.save_work_agenda(x_work)

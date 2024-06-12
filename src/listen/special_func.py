@@ -17,7 +17,7 @@ def create_pledge(
             x_agenda.add_partyunit(x_suffgroup)
 
 
-def add_pledge_atom(
+def add_duty_pledge(
     x_userhub: UserHub, pledge_road: RoadUnit, x_suffgroup: GroupID = None
 ):
     duty_agenda = x_userhub.get_duty_agenda()

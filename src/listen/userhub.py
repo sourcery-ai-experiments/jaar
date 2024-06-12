@@ -520,7 +520,7 @@ class UserHub:
         if self._nox_type == pipeline_role_job_text():
             return get_json_filename(x_arg)
         if self._nox_type == pipeline_duty_work_text():
-            return get_json_filename(self.person_id)
+            return get_json_filename(x_arg)
         if self._nox_type == pipeline_job_work_text():
             return get_json_filename(self.person_id)
 
@@ -562,6 +562,7 @@ class UserHub:
         speaker_dir = self.speaker_dir(person_id)
         speaker_file_name = self.speaker_file_name(person_id)
         x_file_path = f"{speaker_dir}/{speaker_file_name}"
+        print(f"{x_file_path=}")
         if os_path_exists(x_file_path) or not return_None_if_missing:
             file_contents = open_file(speaker_dir, speaker_file_name)
             return agendaunit_get_from_json(file_contents)
@@ -573,6 +574,15 @@ class UserHub:
         if os_path_exists(x_file_path):
             file_contents = open_file(listener_dir, listener_file_name)
             return agendaunit_get_from_json(file_contents)
+
+    def get_perspective_agenda(self, speaker: AgendaUnit) -> AgendaUnit:
+        perspective_agenda = copy_deepcopy(speaker)
+        perspective_agenda.set_owner_id(self.person_id)
+        perspective_agenda.calc_agenda_metrics()
+        return perspective_agenda
+
+    def get_speaker_perspective(self, person_id: PersonID) -> AgendaUnit:
+        return self.get_perspective_agenda(self.get_speaker_agenda(person_id))
 
     def get_econ_roads(self):
         x_duty_agenda = self.get_duty_agenda()

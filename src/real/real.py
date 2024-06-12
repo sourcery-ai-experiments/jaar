@@ -176,7 +176,8 @@ class RealUnit:
                     planck=self._planck,
                 )
                 econ_userhub.save_role_agenda(x_duty)
-                x_job = create_job_file_from_role_file(econ_userhub, person_id)
+                create_job_file_from_role_file(econ_userhub, person_id)
+                x_job = econ_userhub.get_job_agenda(person_id)
                 listen_to_speaker_intent(x_work, x_job)
 
         # if nothing has come from duty->role->job->work pipeline use duty->work pipeline

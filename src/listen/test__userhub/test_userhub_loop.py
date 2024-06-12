@@ -76,7 +76,7 @@ def test_UserHub_AttrsAreCorrectWhen_nox_typeIs_duty_work():
         person_id=bob_text,
     )
     assert sue_userhub.speaker_dir(bob_text) == bob_userhub.work_dir()
-    assert sue_userhub.speaker_file_name(bob_text) == f"{sue_text}.json"
+    assert sue_userhub.speaker_file_name(bob_text) == f"{bob_text}.json"
     assert sue_userhub.listener_dir(bob_text) == sue_userhub.duty_dir()
     assert sue_userhub.listener_file_name(bob_text) == f"{sue_text}.json"
     assert sue_userhub.destination_dir(bob_text) == sue_userhub.work_dir()
@@ -184,6 +184,53 @@ def test_UserHub_get_speaker_agenda_ReturnsObj_role_job(env_dir_setup_cleanup):
     # THEN
     assert old_sue_agendaunit.get_dict() == new_sue_agendaunit.get_dict()
     assert new_sue_agendaunit._owner_id == sue_text
+
+
+def test_UserHub_get_perspective_agenda_ReturnsAgendaWith_owner_idSetToUserHub_person_id(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    bob_text = "Bob"
+    bob_agendaunit = get_agenda_with_4_levels()
+    bob_agendaunit.set_owner_id(bob_text)
+    bob_userhub = userhub_shop(env_dir(), real_id(), bob_text)
+    bob_userhub.save_work_agenda(bob_agendaunit)
+
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
+
+    # WHEN
+    perspective_agendaunit = sue_userhub.get_perspective_agenda(bob_agendaunit)
+
+    # THEN
+    assert perspective_agendaunit.get_dict() != bob_agendaunit.get_dict()
+    assert perspective_agendaunit._owner_id == sue_text
+    perspective_agendaunit.set_owner_id(bob_text)
+    assert perspective_agendaunit.get_dict() == bob_agendaunit.get_dict()
+
+
+def test_UserHub_get_speaker_perspective_ReturnsAgendaWith_owner_idSetToUserHub_person_id(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    bob_text = "Bob"
+    bob_agendaunit = get_agenda_with_4_levels()
+    bob_agendaunit.set_owner_id(bob_text)
+    bob_userhub = userhub_shop(env_dir(), real_id(), bob_text)
+    bob_userhub.save_work_agenda(bob_agendaunit)
+
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
+    sue_userhub.set_nox_type(pipeline_duty_work_text())
+
+    # WHEN
+    perspective_agendaunit = sue_userhub.get_speaker_perspective(bob_text)
+
+    # THEN
+    assert perspective_agendaunit.get_dict() != bob_agendaunit.get_dict()
+    assert perspective_agendaunit._owner_id == sue_text
+    perspective_agendaunit.set_owner_id(bob_text)
+    assert perspective_agendaunit.get_dict() == bob_agendaunit.get_dict()
 
 
 def test_UserHub_get_listener_agenda_ReturnsObjWhenFileDoesNotExists(
